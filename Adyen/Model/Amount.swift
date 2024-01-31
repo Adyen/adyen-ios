@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -72,14 +72,14 @@ public extension Amount {
     
     /// Returns a formatted representation of the amount, split in two components
     ///
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     var formattedComponents: AmountComponents {
         AmountComponents(amount: self)
     }
 
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension Amount: Comparable {
 
     public static func < (lhs: Amount, rhs: Amount) -> Bool {
@@ -109,7 +109,7 @@ extension Amount: Comparable {
 
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public struct AmountComponents {
     
     fileprivate init(amount: Amount) {

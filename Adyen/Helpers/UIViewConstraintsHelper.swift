@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,7 @@ import AdyenNetworking
 import UIKit
 
 /// Adds helper functionality to any `UIView` instance through the `adyen` property.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension AdyenScope where Base: UIView {
 
     /// Attaches top, bottom, left and right anchors of this view to the corresponding anchors inside the specified view.

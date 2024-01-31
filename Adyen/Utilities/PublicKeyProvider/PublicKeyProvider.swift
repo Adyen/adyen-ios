@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,7 @@ import AdyenNetworking
 import Foundation
 
 /// Interface to fetch the client public key.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol AnyPublicKeyProvider: AnyObject {
     
     typealias CompletionHandler = (Result<String, Error>) -> Void
@@ -18,7 +18,7 @@ public protocol AnyPublicKeyProvider: AnyObject {
 }
 
 /// `PublicKeyProvider` is used to fetch the client public key that is needed for encrypting data.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public final class PublicKeyProvider: AnyPublicKeyProvider {
 
     private let request: ClientKeyRequest

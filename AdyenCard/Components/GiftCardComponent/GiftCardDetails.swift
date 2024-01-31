@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
@@ -13,7 +13,7 @@ import Foundation
 /// Contains the details provided by the gift card component.
 public struct GiftCardDetails: PartialPaymentMethodDetails {
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var checkoutAttemptId: String?
 
     /// The payment method type.

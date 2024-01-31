@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,11 +8,11 @@ import AdyenNetworking
 import UIKit
 
 /// So that any `Bundle` instance will inherit the `adyen` scope.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension Bundle: AdyenCompatible {}
 
 /// Adds helper functionality to any `Bundle` instance through the `adyen` property.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension AdyenScope where Base: Bundle {
     
     /// Enables any `Bundle` instance to check whether a certain scheme is configured in the Info.plist or not.
@@ -28,7 +28,7 @@ extension AdyenScope where Base: Bundle {
     
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension Bundle {
     
     public enum Adyen {

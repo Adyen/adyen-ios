@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,7 +9,7 @@ import UIKit
 /// A text view that easily makes links - delimited with a `linkRangeDelimiter` - selectable
 ///
 /// Use ``update(text:style:linkRangeDelimiter:)`` to update the content
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public class LinkTextView: UITextView {
     
     private let linkSelectionHandler: (_ linkIndex: Int) -> Void
@@ -60,7 +60,7 @@ public class LinkTextView: UITextView {
             attributes: attributes
         )
         
-        text.adyen.linkRanges.enumerated().forEach { index, range in
+        for (index, range) in text.adyen.linkRanges.enumerated() {
             attributedString.addAttribute(.link, value: "\(index)", range: range)
         }
         

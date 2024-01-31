@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,7 @@ import AdyenNetworking
 import UIKit
 
 /// Adds helper functionality to any `UIViewController` instance through the `adyen` property.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public extension AdyenScope where Base: UIViewController {
     
     /// Enables any `UIViewController` to access its top most presented view controller, e.g `viewController.adyen.topPresenter`.
@@ -22,10 +22,10 @@ public extension AdyenScope where Base: UIViewController {
     
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension UIResponder: AdyenCompatible {}
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension AdyenScope where Base: UIResponder {
 
     func updatePreferredContentSize() {
@@ -39,7 +39,7 @@ extension AdyenScope where Base: UIResponder {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol PreferredContentSizeConsumer {
 
     func didUpdatePreferredContentSize()

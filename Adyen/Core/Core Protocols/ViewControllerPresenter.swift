@@ -1,19 +1,19 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import UIKit
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol ViewControllerPresenter: AnyObject {
     
     func presentViewController(_ viewController: UIViewController, animated: Bool)
     func dismissViewController(animated: Bool)
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension UIViewController: ViewControllerPresenter {
     
     public func presentViewController(_ viewController: UIViewController, animated: Bool) {
@@ -29,7 +29,7 @@ extension UIViewController: ViewControllerPresenter {
 /// It conforms to ``ViewControllerPresenter`` itself and forwards all ``ViewControllerPresenter`` calls to the reference.
 ///
 /// To be used in places where a non optional presenter is required (e.g. to instantiate a different object)
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public class WeakReferenceViewControllerPresenter: ViewControllerPresenter {
     
     private weak var presenter: ViewControllerPresenter?

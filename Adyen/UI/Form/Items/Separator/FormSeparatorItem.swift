@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 /// A form item that represents a separator line.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public final class FormSeparatorItem: FormItem {
 
     public var subitems: [FormItem] = []
@@ -25,7 +25,7 @@ public final class FormSeparatorItem: FormItem {
         self.color = color
     }
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }

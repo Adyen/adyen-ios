@@ -1,16 +1,17 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+
 #if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
+    import AdyenActions
 #endif
 import Foundation
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension AdyenSession: ActionComponentDelegate {
     public func didFail(with error: Error, from component: ActionComponent) {
         failWithError(error, component)
@@ -44,7 +45,7 @@ extension AdyenSession: ActionComponentDelegate {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension AdyenSession: AdyenSessionPaymentDetailsHandler {
     public func didProvide(_ actionComponentData: ActionComponentData,
                            from component: ActionComponent,

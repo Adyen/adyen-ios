@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 
 /// Billing address fields configurations
 public struct BillingAddressConfiguration {
@@ -35,7 +35,7 @@ public struct BillingAddressConfiguration {
         case optionalForCardTypes(Set<CardType>)
     }
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public func isOptional(for cardTypes: [CardType]) -> Bool {
         switch requirementPolicy {
         case .required:

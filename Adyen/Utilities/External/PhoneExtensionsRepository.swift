@@ -1,12 +1,12 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public enum PhoneNumberPaymentMethod {
 
     case qiwiWallet
@@ -51,7 +51,7 @@ public enum PhoneNumberPaymentMethod {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public struct PhoneExtensionsQuery {
 
     public let codes: [String]
@@ -66,7 +66,7 @@ public struct PhoneExtensionsQuery {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public enum PhoneExtensionsRepository {
 
     public static func get(with query: PhoneExtensionsQuery) -> [PhoneExtension] {

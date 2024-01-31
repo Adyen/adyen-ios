@@ -6,7 +6,7 @@
 //  Copyright © 2023 Adyen. All rights reserved.
 //
 
-@_spi(AdyenInternal) @testable import Adyen
+@_documentation(visibility: internal) @testable import Adyen
 @testable import AdyenComponents
 import XCTest
 

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 
 /// Provides access to injected dependencies.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public struct AdyenDependencyValues {
     
     /// The currently injected values
@@ -60,7 +60,7 @@ public struct AdyenDependencyValues {
 
 // MARK: - Property wrapper
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 @propertyWrapper
 public struct AdyenDependency<T> {
     private let keyPath: KeyPath<AdyenDependencyValues, T>
@@ -73,7 +73,7 @@ public struct AdyenDependency<T> {
 
 // MARK: - DependencyKey Protocol
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol AdyenDependencyKey {
     associatedtype Value
     static var liveValue: Self.Value { get }

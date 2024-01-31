@@ -1,12 +1,12 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 /// Describes the interface to have an installments configuration.
 public protocol InstallmentConfigurationAware: AdyenSessionAware {
     var installmentConfiguration: InstallmentConfiguration? { get }
@@ -17,11 +17,11 @@ public protocol InstallmentConfigurationAware: AdyenSessionAware {
 /// but in some countries `revolving` option may be added.
 public struct InstallmentOptions: Equatable, Codable {
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     /// Month options for regular installments.
     public let regularInstallmentMonths: [UInt]
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     /// Determines if revolving installment is an option.
     public let includesRevolving: Bool
     
@@ -48,7 +48,7 @@ public struct InstallmentOptions: Equatable, Codable {
         self.init(monthValues: Array(2...maxInstallmentMonth), includesRevolving: includesRevolving)
     }
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.regularInstallmentMonths = try container.decodeIfPresent([UInt].self, forKey: .regularInstallmentMonths) ?? []
@@ -77,18 +77,18 @@ public struct InstallmentOptions: Equatable, Codable {
 /// Configuration type to specify installment options.
 public struct InstallmentConfiguration: Decodable {
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     /// The option that apply to all card types, unless included `cardTypeBased` options.
     public let defaultOptions: InstallmentOptions?
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     /// Options that are specific to given card types
     public let cardBasedOptions: [CardType: InstallmentOptions]?
     
     /// Determines whether to show the amount next to the installment value.
     /// For example, `3 months X 500 USD` or `3 months`.
     /// Amount is calculated by simple division.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var showInstallmentAmount: Bool
     
     /// Creates a new installment configuration by providing both the card type based options
@@ -129,7 +129,7 @@ public struct InstallmentConfiguration: Decodable {
         self.showInstallmentAmount = showInstallmentAmount
     }
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: DynamicKey.self)
         var defaultOptions: InstallmentOptions?

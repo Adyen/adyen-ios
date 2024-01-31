@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -21,14 +21,14 @@ public protocol Cancellable: AnyObject {
     func didCancel()
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol AnyNavigationBar: UIView {
     
     var onCancelHandler: (() -> Void)? { get set }
     
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public enum NavigationBarType {
     case regular
     case custom(AnyNavigationBar)
@@ -45,28 +45,28 @@ public protocol PresentableComponent: Component {
     var viewController: UIViewController { get }
     
     /// Indicates whether Component implements a custom Navigation bar.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     var navBarType: NavigationBarType { get }
 }
 
 /// A component that provides a view controller for the shopper to fill payment details.
 public extension PresentableComponent {
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     var requiresModalPresentation: Bool { false }
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     var navBarType: NavigationBarType { .regular }
     
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol TrackableComponent: Component {
 
     func sendTelemetryEvent()
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension TrackableComponent where Self: PaymentMethodAware {
 
     public func sendTelemetryEvent() {

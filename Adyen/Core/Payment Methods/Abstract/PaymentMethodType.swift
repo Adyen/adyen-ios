@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -187,7 +187,7 @@ extension PaymentMethodType {
     /// The brand name of the card type
     ///
     /// - Warning: Currently only intended to be used as `accessibilityLabel` as it's not localized
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var name: String {
         switch self {
         case .card: return "card payment"

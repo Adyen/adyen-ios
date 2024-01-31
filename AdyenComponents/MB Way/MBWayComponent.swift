@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import Foundation
 import UIKit
 
@@ -31,18 +31,18 @@ public final class MBWayComponent: AbstractPersonalInformationComponent {
                    configuration: configuration)
     }
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     override public func submitButtonTitle() -> String {
         localizedString(.continueTo, configuration.localizationParameters, paymentMethod.name)
     }
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     override public func phoneExtensions() -> [PhoneExtension] {
         let query = PhoneExtensionsQuery(paymentMethod: PhoneNumberPaymentMethod.mbWay)
         return PhoneExtensionsRepository.get(with: query)
     }
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     override public func createPaymentDetails() throws -> PaymentMethodDetails {
         guard let phoneItem else {
             throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")

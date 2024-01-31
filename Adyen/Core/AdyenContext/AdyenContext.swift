@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -18,7 +18,7 @@ public final class AdyenContext: PaymentAware {
     /// The payment information.
     public private(set) var payment: Payment?
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public let analyticsProvider: AnalyticsProviderProtocol
 
     // MARK: - Initializers
@@ -57,7 +57,7 @@ public final class AdyenContext: PaymentAware {
         self.payment = payment
     }
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public func update(payment: Payment?) {
         self.payment = payment
     }

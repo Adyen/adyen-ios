@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,7 +9,7 @@ import UIKit
 
 /// A View Controller wrapper to blur its content when going into the background.
 /// Used to wrap view controllers that contain sensitive user info.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public final class SecuredViewController<ChildViewController: UIViewController>: UIViewController {
 
     private let notificationCenter = NotificationCenter.default

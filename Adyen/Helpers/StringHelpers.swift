@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import AdyenNetworking
 import Foundation
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension String: AdyenCompatible {
 
     public enum Adyen {
@@ -16,10 +16,10 @@ extension String: AdyenCompatible {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension Optional: AdyenCompatible {}
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public extension AdyenScope where Base == String? {
 
     /// Returns true if optional string is null or not empty.
@@ -35,7 +35,7 @@ public extension AdyenScope where Base == String? {
 
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public extension AdyenScope where Base == String {
 
     /// Return flag emoji if string is a country code; otherwise returns empty string.
@@ -168,7 +168,7 @@ public extension AdyenScope where Base == String {
             let regex = try NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options.caseInsensitive)
             let matches = regex.matches(in: base, options: [], range: NSRange(base.startIndex..., in: base))
 
-            matches.forEach { match in
+            for match in matches {
                 let range = match.range(at: 0)
                 ranges.append(range)
             }

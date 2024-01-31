@@ -16,7 +16,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     // MARK: - Properties
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public let context: AdyenContext
     
     public let paymentMethod: PaymentMethod
@@ -28,7 +28,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
 
     public let requiresModalPresentation: Bool = true
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var configuration: Configuration
     
     private let fields: [PersonalInformation]
@@ -54,7 +54,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     /// - Parameter context: The context object for this component.
     /// - Parameter fields: The component's fields.
     /// - Parameter configuration: The Component's configuration.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public init(paymentMethod: PaymentMethod,
                 context: AdyenContext,
                 fields: [PersonalInformation],
@@ -68,7 +68,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     // MARK: - Private
 
     private func build(_ formViewController: FormViewController) {
-        fields.forEach { field in
+        for field in fields {
             self.add(field, into: formViewController)
         }
         formViewController.append(FormSpacerItem())
@@ -110,7 +110,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return injector
     }()
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var firstNameItem: FormTextInputItem? { firstNameItemInjector?.item }
 
     internal lazy var lastNameItemInjector: NameFormItemInjector? = {
@@ -125,7 +125,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return injector
     }()
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var lastNameItem: FormTextInputItem? { lastNameItemInjector?.item }
 
     internal lazy var emailItemInjector: EmailFormItemInjector? = {
@@ -138,7 +138,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return injector
     }()
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var emailItem: FormTextInputItem? { emailItemInjector?.item }
     
     internal lazy var addressItemInjector: AddressFormItemInjector? = {
@@ -154,7 +154,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
                                        addressType: .billing)
     }()
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var addressItem: FormAddressPickerItem? { addressItemInjector?.item }
     
     internal lazy var deliveryAddressItemInjector: AddressFormItemInjector? = {
@@ -170,7 +170,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
                                        addressType: .delivery)
     }()
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var deliveryAddressItem: FormAddressPickerItem? { deliveryAddressItemInjector?.item }
 
     internal lazy var phoneItemInjector: PhoneFormItemInjector? = {
@@ -184,7 +184,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return injector
     }()
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var phoneItem: FormPhoneNumberItem? { phoneItemInjector?.item }
 
     private lazy var selectableValues: [PhoneExtensionPickerItem] = phoneExtensions().map {
@@ -202,22 +202,22 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return item
     }()
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     open func submitButtonTitle() -> String {
         fatalError("This is an abstract class that needs to be subclassed.")
     }
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     open func createPaymentDetails() throws -> PaymentMethodDetails {
         fatalError("This is an abstract class that needs to be subclassed.")
     }
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     open func phoneExtensions() -> [PhoneExtension] {
         fatalError("This is an abstract class that needs to be subclassed.")
     }
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     open func addressViewModelBuilder() -> AddressViewModelBuilder {
         DefaultAddressViewModelBuilder()
     }
@@ -226,7 +226,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         payment?.countryCode ?? Locale.current.regionCode ?? "US"
     }
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public func showValidation() {
         formViewController.showValidation()
     }
@@ -245,7 +245,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension AbstractPersonalInformationComponent: ViewControllerPresenter {
     
     public func presentViewController(_ viewController: UIViewController, animated: Bool) {
@@ -257,7 +257,7 @@ extension AbstractPersonalInformationComponent: ViewControllerPresenter {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension AbstractPersonalInformationComponent: ViewControllerDelegate {
     // MARK: - ViewControllerDelegate
 

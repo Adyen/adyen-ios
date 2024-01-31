@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
@@ -27,7 +27,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     }
     
     /// The context object for this component.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public let context: AdyenContext
     
     public var paymentMethod: PaymentMethod {
@@ -51,7 +51,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
 
     public let requiresModalPresentation: Bool = true
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public let publicKeyProvider: AnyPublicKeyProvider
     
     private var defaultCountryCode: String {
@@ -281,10 +281,10 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     }()
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension ACHDirectDebitComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension ACHDirectDebitComponent: ViewControllerDelegate {
 
     public func viewDidLoad(viewController: UIViewController) {
@@ -363,7 +363,7 @@ extension ACHDirectDebitComponent {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension ACHDirectDebitComponent: ViewControllerPresenter {
     
     public func presentViewController(_ viewController: UIViewController, animated: Bool) {
@@ -375,5 +375,5 @@ extension ACHDirectDebitComponent: ViewControllerPresenter {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension ACHDirectDebitComponent: PublicKeyConsumer {}

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 import UIKit
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public enum AddressField: String, CaseIterable {
     case street
     case houseNumberOrName
@@ -18,7 +18,7 @@ public enum AddressField: String, CaseIterable {
     case country
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public enum AddressFormScheme {
     public var children: [AddressField] {
         switch self {
@@ -31,16 +31,16 @@ public enum AddressFormScheme {
     case split(AddressField, AddressField)
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public struct AddressViewModel {
 
     internal var labels: [AddressField: LocalizationKey]
     internal var placeholder: [AddressField: LocalizationKey]
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var optionalFields: [AddressField]
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var scheme: [AddressFormScheme]
 
     public init(labels: [AddressField: LocalizationKey],
@@ -55,7 +55,7 @@ public struct AddressViewModel {
 
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public extension AddressViewModel {
     
     /// Returns all fields that are not specified as `optionalFields`
@@ -88,7 +88,7 @@ extension AddressField {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public extension PostalAddress {
 
     /// Validates whether all required fields are filled in and not empty

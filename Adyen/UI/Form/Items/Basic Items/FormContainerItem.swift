@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 /// Simple form item to wrap another item and provide a margin around it.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public class FormContainerItem: FormItem, Hidable {
 
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
@@ -57,7 +57,7 @@ public class FormContainerItem: FormItem, Hidable {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension FormItem {
 
     public func addingDefaultMargins() -> FormContainerItem {

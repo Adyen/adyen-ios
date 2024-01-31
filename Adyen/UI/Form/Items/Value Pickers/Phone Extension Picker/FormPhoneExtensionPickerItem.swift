@@ -1,12 +1,12 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension PhoneExtension: CustomStringConvertible {
 
     public var description: String { "\(countryDisplayName) (\(value))" }
@@ -14,11 +14,11 @@ extension PhoneExtension: CustomStringConvertible {
 }
 
 /// Describes a single phone extension picker item in the list of selectable items.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public typealias PhoneExtensionPickerItem = BasePickerElement<PhoneExtension>
 
 /// Describes a picker item.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public final class FormPhoneExtensionPickerItem: BaseFormPickerItem<PhoneExtension> {
 
     /// Initializes the picker item.

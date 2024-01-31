@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import AdyenNetworking
 import Foundation
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public struct OrderStatusResponse: Response {
 
     /// The remaining amount to be paid.
@@ -33,7 +33,7 @@ public struct OrderStatusResponse: Response {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public struct OrderPaymentMethod: PaymentMethod {
 
     public var name: String {
@@ -60,7 +60,7 @@ public struct OrderPaymentMethod: PaymentMethod {
         self.amount = amount
     }
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let disclosureText = AmountFormatter.formatted(amount: -amount.value,
                                                        currencyCode: amount.currencyCode,
@@ -79,7 +79,7 @@ public struct OrderPaymentMethod: PaymentMethod {
                                   accessibilityLabel: accessibilityLabel)
     }
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         AlreadyPaidPaymentComponent(paymentMethod: self,
                                     context: builder.context)

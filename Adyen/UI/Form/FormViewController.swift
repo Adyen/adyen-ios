@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,7 @@ import UIKit
 
 /// Displays a form for the user to enter details.
 @objc(ADYFormViewController)
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 open class FormViewController: UIViewController, AdyenObserver, PreferredContentSizeConsumer {
 
     fileprivate enum Animations {
@@ -123,7 +123,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     ///
     /// - Parameters:
     ///   - item: The item to append.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public func append(_ item: some FormItem) {
         let itemView = itemManager.append(item)
         observerVisibility(of: item, and: itemView)
@@ -170,7 +170,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
         return false
     }
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public func showValidation() {
         let validatableItemViews = itemManager.flatItemViews
             .compactMap { $0 as? AnyFormValidatableValueItemView }
@@ -237,7 +237,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
 
 // MARK: - FormTextItemViewDelegate
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension FormViewController: FormTextItemViewDelegate {
 
     public func didReachMaximumLength(in itemView: FormTextItemView<some FormTextItem>) {

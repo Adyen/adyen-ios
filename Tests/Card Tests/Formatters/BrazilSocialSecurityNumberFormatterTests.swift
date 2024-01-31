@@ -6,7 +6,7 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-@testable @_spi(AdyenInternal) import AdyenCard
+@testable import AdyenCard
 import XCTest
 
 class BrazilSocialSecurityNumberFormatterTests: XCTestCase {

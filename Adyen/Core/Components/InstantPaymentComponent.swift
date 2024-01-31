@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,7 +10,7 @@ import Foundation
 public final class InstantPaymentComponent: PaymentComponent {
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public let context: AdyenContext
 
     /// The ready to submit payment data.
@@ -61,13 +61,13 @@ public final class InstantPaymentComponent: PaymentComponent {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension InstantPaymentComponent: TrackableComponent {}
 
 /// Describes a payment details that contains nothing but the payment method type name.
 public struct InstantPaymentDetails: PaymentMethodDetails {
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var checkoutAttemptId: String?
 
     /// The payment method type name.

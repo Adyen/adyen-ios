@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import UIKit
 
 /// A component that provides a form for Affirm payment.
@@ -91,12 +91,12 @@ public final class AffirmComponent: AbstractPersonalInformationComponent {
     
     // MARK: - Public
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     override public func submitButtonTitle() -> String {
         localizedString(.confirmPurchase, configuration.localizationParameters)
     }
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     override public func createPaymentDetails() throws -> PaymentMethodDetails {
         
         guard let firstName = firstNameItem?.value,
@@ -120,12 +120,12 @@ public final class AffirmComponent: AbstractPersonalInformationComponent {
         )
     }
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     override public func phoneExtensions() -> [PhoneExtension] {
         let query = PhoneExtensionsQuery(paymentMethod: .generic)
         return PhoneExtensionsRepository.get(with: query)
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension AffirmComponent: AdyenObserver {}

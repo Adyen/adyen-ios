@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
@@ -33,12 +33,12 @@ public final class GiftCardComponent: PresentableComponent,
     }
     
     /// The context object for this component.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public let context: AdyenContext
     
     private let partialPaymentMethodType: PartialPaymentMethodType
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public let publicKeyProvider: AnyPublicKeyProvider
 
     /// The gift card payment method.
@@ -412,8 +412,8 @@ extension GiftCardComponent {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension GiftCardComponent: PartialPaymentComponent {}
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension GiftCardComponent: PublicKeyConsumer {}

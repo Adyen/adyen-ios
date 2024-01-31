@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 
 /// A picker form item for picking regions.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public final class FormRegionPickerItem: FormPickerItem {
     
     private let shouldShowCountryFlags: Bool

@@ -1,14 +1,14 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 #if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
+    import AdyenActions
 #endif
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import Foundation
 
 #if !targetEnvironment(simulator) && canImport(AdyenWeChatPayInternal)
@@ -20,7 +20,7 @@ import Foundation
 
         private static let universalLink = "https://www.adyen.com/"
 
-        @_spi(AdyenInternal)
+        @_documentation(visibility: internal)
         public var context: AdyenContext
     
         public weak var delegate: ActionComponentDelegate?
@@ -77,7 +77,7 @@ import Foundation
 
     }
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     extension WeChatPaySDKActionComponent: WXApiDelegate {
 
         public func onResp(_ resp: BaseResp) {
@@ -111,7 +111,7 @@ import Foundation
     /// Action component to handle WeChat Pay SDK action.
     public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
 
-        @_spi(AdyenInternal)
+        @_documentation(visibility: internal)
         public let context: AdyenContext
 
         public weak var delegate: ActionComponentDelegate?

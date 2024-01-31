@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 
 // Throttles come code execution.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public final class Throttler {
     
     private var workItem = DispatchWorkItem(block: { /* first work item is idle */ })

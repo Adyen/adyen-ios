@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 
 /// A full address form, suitable for all countries.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, AdyenObserver, CompoundFormItem, Hidable {
     
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
@@ -50,7 +50,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     private weak var presenter: ViewControllerPresenter?
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public private(set) var addressViewModel: AddressViewModel
 
     override public var title: String? {

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 /// A component that wraps any `Component` to make it a `PresentableComponent`.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public final class PresentableComponentWrapper: PresentableComponent,
     Cancellable,
     FinalizableComponent,
@@ -26,7 +26,7 @@ public final class PresentableComponentWrapper: PresentableComponent,
     
     public let requiresModalPresentation: Bool = true
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var navBarType: NavigationBarType
     
     /// Initializes the wrapper component.

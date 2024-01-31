@@ -1,18 +1,18 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import Foundation
 
 /// So that any `Array` instance will inherit the `adyen` scope.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension Array: AdyenCompatible {}
 
 /// Adds helper functionality to any `[CardType]` instance through the `adyen` property.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public extension AdyenScope where Base == [CardType] {
     
     /// Detects the type for a given card number.

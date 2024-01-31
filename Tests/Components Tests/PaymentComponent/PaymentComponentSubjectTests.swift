@@ -7,8 +7,8 @@
 //
 
 import XCTest
-@_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenComponents
+@_documentation(visibility: internal) @testable import Adyen
+@_documentation(visibility: internal) @testable import AdyenComponents
 
 class PaymentComponentSubjectTests: XCTestCase {
 

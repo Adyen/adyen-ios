@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -21,7 +21,7 @@ public struct EmptyStateViewStyle: ViewStyle {
 }
 
 /// A generic empty view with title and generic subtitle
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public class EmptyStateView<SubtitleLabel: UIView>: UIView, SearchResultsEmptyView {
     
     internal let style: EmptyStateViewStyle

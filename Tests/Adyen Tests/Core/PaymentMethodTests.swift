@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import Adyen
+@_documentation(visibility: internal) @testable import Adyen
 import AdyenComponents
 import XCTest
 
@@ -1017,7 +1017,7 @@ class PaymentMethodTests: XCTestCase {
         expectation.expectedFulfillmentCount = 2
         
         AdyenAssertion.listener = { assertion in
-            XCTAssertEqual(assertion, "`@_spi(AdyenInternal) var checkoutAttemptId: String?` needs to be provided on `DummyPaymentMethodDetails`")
+            XCTAssertEqual(assertion, "`@_documentation(visibility: internal) var checkoutAttemptId: String?` needs to be provided on `DummyPaymentMethodDetails`")
             expectation.fulfill()
         }
         

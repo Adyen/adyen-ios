@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -98,7 +98,7 @@ public struct PaymentComponentData {
     ///   - browserInfo: The device default browser info.
     ///   - checkoutAttemptId: The checkoutAttempt identifier.
     ///   - installments: Installments selection if specified.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public init(paymentMethodDetails: some PaymentMethodDetails,
                 amount: Amount?,
                 order: PartialPaymentOrder?,
@@ -113,7 +113,7 @@ public struct PaymentComponentData {
         self.installments = installments
     }
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public func replacing(order: PartialPaymentOrder) -> PaymentComponentData {
         PaymentComponentData(paymentMethodDetails: paymentMethod,
                              amount: amount,
@@ -123,7 +123,7 @@ public struct PaymentComponentData {
                              installments: installments)
     }
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public func replacing(amount: Amount) -> PaymentComponentData {
         PaymentComponentData(paymentMethodDetails: paymentMethod,
                              amount: amount,
@@ -133,7 +133,7 @@ public struct PaymentComponentData {
                              installments: installments)
     }
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public func replacing(checkoutAttemptId: String?) -> PaymentComponentData {
         guard let checkoutAttemptId else { return self }
         var paymentMethod = paymentMethod
@@ -151,7 +151,7 @@ public struct PaymentComponentData {
     ///
     /// - Parameters:
     ///   - completion: The completion closure that is called with the new `PaymentComponentData` instance.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public func dataByAddingBrowserInfo(completion: @escaping ((_ newData: PaymentComponentData) -> Void)) {
         BrowserInfo.initialize {
             completion(PaymentComponentData(paymentMethodDetails: paymentMethod,

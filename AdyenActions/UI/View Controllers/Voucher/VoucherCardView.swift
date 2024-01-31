@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import CoreGraphics
 import QuartzCore
 import UIKit
@@ -65,9 +65,9 @@ internal class VoucherCardView: UIView {
 
     private func updateLayout() {
         containerLayer.frame = containerLayerFrame
-        shadowsLayer.forEach {
-            $0.frame = shadowLayersFrame
-            $0.shadowPath = UIBezierPath(roundedRect: CGRect(origin: .zero, size: containerLayerFrame.size), cornerRadius: 12).cgPath
+        for item in shadowsLayer {
+            item.frame = shadowLayersFrame
+            item.shadowPath = UIBezierPath(roundedRect: CGRect(origin: .zero, size: containerLayerFrame.size), cornerRadius: 12).cgPath
         }
 
         drawCardCutOut()

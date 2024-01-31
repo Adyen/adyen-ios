@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,7 +11,7 @@ import UIKit
 /// specifically the voice over reading of the UITextField.placeholder.
 /// So in order to prevent this behaviour,
 /// accessibilityValue is overriden to return an empty string in case the text var is nil or empty string.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 @objc(AdyTextField)
 public final class TextField: UITextField {
     
@@ -57,7 +57,7 @@ public final class TextField: UITextField {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension TextField {
 
     public func apply(placeholderText: String?, with style: TextStyle?) {

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import UIKit
 
 /// A view representing a value item.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType, Style>>: FormItemView<ItemType>, AnyFormValueItemView {
 
     // MARK: - Title Label
@@ -176,7 +176,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
 }
 
 /// A type-erased form value item view.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol AnyFormValueItemView: AnyFormItemView {
     
     /// Indicates if the item is currently being edited.

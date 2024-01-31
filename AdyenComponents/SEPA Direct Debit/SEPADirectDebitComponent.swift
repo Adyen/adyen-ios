@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import Foundation
 import UIKit
 
@@ -15,7 +15,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
     public typealias Configuration = BasicComponentConfiguration
     
     /// The context object for this component.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public let context: AdyenContext
     
     /// Component's configuration
@@ -136,10 +136,10 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
 
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension SEPADirectDebitComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension SEPADirectDebitComponent: ViewControllerDelegate {
 
     public func viewWillAppear(viewController: UIViewController) {

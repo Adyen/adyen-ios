@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 
 /// A form item in which two items are shown side-by-side horizontally.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public final class FormSplitItem: FormItem {
 
     internal var leftItem: FormItem

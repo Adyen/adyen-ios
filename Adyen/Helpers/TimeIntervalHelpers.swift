@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,11 +8,11 @@ import AdyenNetworking
 import Foundation
 
 /// So that any `TimeInterval` instance will inherit the `adyen` scope.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension TimeInterval: AdyenCompatible {}
 
 /// Adds helper functionality to any `TimeInterval` instance through the `adyen` property.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public extension AdyenScope where Base == TimeInterval {
     
     /// Transform `TimeInterval` to a `String` with either "MM:SS" or "HH:MM:SS" depending

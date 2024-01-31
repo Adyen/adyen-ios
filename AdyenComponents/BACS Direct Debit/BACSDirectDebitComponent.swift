@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import UIKit
 
 internal protocol BACSDirectDebitRouterProtocol: AnyObject {
@@ -31,7 +31,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PaymentAware, Pre
     public var paymentMethod: PaymentMethod { bacsPaymentMethod }
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public let context: AdyenContext
 
     /// The object that acts as the presentation delegate of the component.

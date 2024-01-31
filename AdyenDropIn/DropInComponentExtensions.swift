@@ -1,23 +1,23 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 #if canImport(AdyenComponents)
     import AdyenComponents
 #endif
 #if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
+    import AdyenActions
 #endif
 #if canImport(AdyenCard)
-    @_spi(AdyenInternal) import AdyenCard
+    import AdyenCard
 #endif
 import AdyenNetworking
 import UIKit
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension DropInComponent: PaymentMethodListComponentDelegate {
 
     internal func didLoad(_ paymentMethodListComponent: PaymentMethodListComponent) {
@@ -46,7 +46,7 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension DropInComponent: PaymentComponentDelegate {
     
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
@@ -77,7 +77,7 @@ extension DropInComponent: PaymentComponentDelegate {
 
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension DropInComponent: ActionComponentDelegate {
     
     public func didOpenExternalApplication(component: ActionComponent) {
@@ -127,7 +127,7 @@ extension DropInComponent: NavigationDelegate {
         navigationController.dismiss(animated: true, completion: completion)
     }
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public func present(component: PresentableComponent) {
         navigationController.present(asModal: component)
     }
@@ -148,7 +148,7 @@ extension DropInComponent: FinalizableComponent {
 
 extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public func showConfirmation(for component: InstantPaymentComponent, with order: PartialPaymentOrder?) {
         let newRoot = preselectedPaymentMethodComponent(for: component, onCancel: { [weak self] in
             guard let self, let order else { return }

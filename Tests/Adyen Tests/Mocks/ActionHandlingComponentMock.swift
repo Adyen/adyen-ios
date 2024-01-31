@@ -7,8 +7,8 @@
 //
 
 import Foundation
-@_spi(AdyenInternal) import Adyen
-@_spi(AdyenInternal) import AdyenActions
+import Adyen
+import AdyenActions
 
 internal final class ActionHandlingComponentMock: ActionHandlingComponent {
 

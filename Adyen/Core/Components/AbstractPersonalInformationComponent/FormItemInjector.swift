@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 
 /// Builds a `FormItem` and injects it into a `FormViewController`.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol FormItemInjector {
 
     func inject(into formViewController: FormViewController)
@@ -15,7 +15,7 @@ public protocol FormItemInjector {
 }
 
 /// Injects a custom `FormItem` into a `FormViewController`.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public struct CustomFormItemInjector<T: FormItem>: FormItemInjector {
     
     private let item: T

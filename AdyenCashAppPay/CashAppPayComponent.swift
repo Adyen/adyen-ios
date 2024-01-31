@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import PayKit
 import PayKitUI
 import UIKit
@@ -25,7 +25,7 @@ public final class CashAppPayComponent: PaymentComponent,
     }
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var context: AdyenContext
 
     /// The payment method object for this component.
@@ -248,11 +248,11 @@ extension CashAppPayComponent {
 }
 
 @available(iOS 13.0, *)
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension CashAppPayComponent: TrackableComponent {}
 
 @available(iOS 13.0, *)
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension CashAppPayComponent: ViewControllerDelegate {
 
     public func viewWillAppear(viewController: UIViewController) {

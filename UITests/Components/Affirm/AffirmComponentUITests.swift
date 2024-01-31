@@ -5,7 +5,7 @@
 //
 
 import XCTest
-@_spi(AdyenInternal) @testable import Adyen
+@_documentation(visibility: internal) @testable import Adyen
 @testable import AdyenComponents
 
 class AffirmComponentUITests: XCTestCase {

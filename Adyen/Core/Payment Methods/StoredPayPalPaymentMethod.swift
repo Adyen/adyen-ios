@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -26,7 +26,7 @@ public struct StoredPayPalPaymentMethod: StoredPaymentMethod {
     /// The email address of the PayPal account.
     public let emailAddress: String
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }

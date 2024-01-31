@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -27,7 +27,7 @@ private struct LocalizationInput {
 ///   - parameters: The localization parameters.
 ///   - arguments: The arguments to substitute in the templated localized string.
 /// - Returns: The localized string for the given key, or the key itself if the localized string could not be found.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
     var translationAttempt: String?
 
@@ -112,7 +112,7 @@ private func attempt(_ input: LocalizationInput) -> String? {
     return nil
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public enum PaymentStyle {
     case needsRedirectToThirdParty(String)
 
@@ -125,7 +125,7 @@ public enum PaymentStyle {
 /// - Parameter amount: The amount to include in the submit button title.
 /// - Parameter paymentMethodName: The payment method name.
 /// - Parameter parameters: The localization parameters.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public func localizedSubmitButtonTitle(with amount: Amount?,
                                        style: PaymentStyle,
                                        _ parameters: LocalizationParameters?) -> String {

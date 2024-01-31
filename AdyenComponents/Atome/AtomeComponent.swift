@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import UIKit
 
 /// A component that provides a form for Atome payment.
@@ -59,12 +59,12 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
 
     // MARK: - Public
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     override public func submitButtonTitle() -> String {
         localizedString(.continueTitle, configuration.localizationParameters)
     }
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     override public func createPaymentDetails() throws -> PaymentMethodDetails {
         guard let firstName = firstNameItem?.value,
               let lastName = lastNameItem?.value,
@@ -81,13 +81,13 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
         return atomeDetails
     }
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     override public func phoneExtensions() -> [PhoneExtension] {
         let query = PhoneExtensionsQuery(paymentMethod: .generic)
         return PhoneExtensionsRepository.get(with: query)
     }
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     override public func addressViewModelBuilder() -> AddressViewModelBuilder {
         AtomeAddressViewModelBuilder()
     }

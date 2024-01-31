@@ -1,12 +1,12 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public enum TelemetryFlavor {
     case components(type: PaymentMethodType)
     case dropIn(type: String = "dropin", paymentMethods: [String])
@@ -28,14 +28,14 @@ public enum TelemetryFlavor {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol TelemetryTrackerProtocol {
     func sendTelemetryEvent(flavor: TelemetryFlavor)
 }
 
 // MARK: - TelemetryTrackerProtocol
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension AnalyticsProvider: TelemetryTrackerProtocol {
 
     internal func sendTelemetryEvent(flavor: TelemetryFlavor) {

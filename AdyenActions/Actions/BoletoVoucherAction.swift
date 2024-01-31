@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import Foundation
 
 /// Describes a voucher that can be downloaded.
@@ -32,7 +32,7 @@ public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadabl
     /// Download URL
     public let downloadUrl: URL
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public let passCreationToken: String?
     
     public required init(from decoder: Decoder) throws {

@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import Foundation
 import UIKit
 
@@ -16,7 +16,7 @@ public final class BoletoComponent: PaymentComponent,
     AdyenObserver {
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public let context: AdyenContext
 
     public weak var delegate: PaymentComponentDelegate?
@@ -166,10 +166,10 @@ public final class BoletoComponent: PaymentComponent,
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension BoletoComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension BoletoComponent: ViewControllerDelegate {
 
     public func viewDidLoad(viewController: UIViewController) {}
@@ -182,7 +182,7 @@ extension BoletoComponent: ViewControllerDelegate {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension BoletoComponent: PaymentComponentDelegate {
     
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
@@ -194,7 +194,7 @@ extension BoletoComponent: PaymentComponentDelegate {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension BoletoComponent {
     
     fileprivate final class FormComponent: AbstractPersonalInformationComponent {
@@ -214,12 +214,12 @@ extension BoletoComponent {
                        configuration: configuration)
         }
         
-        @_spi(AdyenInternal)
+        @_documentation(visibility: internal)
         override public func submitButtonTitle() -> String {
             localizedString(.boletobancarioBtnLabel, configuration.localizationParameters)
         }
         
-        @_spi(AdyenInternal)
+        @_documentation(visibility: internal)
         override public func createPaymentDetails() -> PaymentMethodDetails {
             onCreatePaymentDetails() ?? InstantPaymentDetails(type: paymentMethod.type)
         }

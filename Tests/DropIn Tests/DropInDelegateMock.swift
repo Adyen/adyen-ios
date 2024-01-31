@@ -6,8 +6,8 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-@_spi(AdyenInternal) import Adyen
-@_spi(AdyenInternal) import AdyenActions
+import Adyen
+import AdyenActions
 import AdyenDropIn
 
 class DropInDelegateMock: DropInComponentDelegate {

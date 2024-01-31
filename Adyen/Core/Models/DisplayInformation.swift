@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -20,19 +20,19 @@ public struct DisplayInformation: Equatable {
     public let subtitle: String?
 
     /// The name of the logo resource.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public let logoName: String
 
     /// The trailing disclosure text.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public let disclosureText: String?
 
     /// The footnote if any.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public let footnoteText: String?
     
     /// An optional custom `accessibilityLabel` to use.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public let accessibilityLabel: String?
 
     /// Initializes a`DisplayInformation`.

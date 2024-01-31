@@ -7,7 +7,7 @@
 import XCTest
 
 #if canImport(AdyenCashAppPay)
-    @_spi(AdyenInternal) @testable import Adyen
+    @_documentation(visibility: internal) @testable import Adyen
     @testable import AdyenCashAppPay
     import Foundation
     @testable import PayKit

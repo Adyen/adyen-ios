@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import Adyen
-@testable @_spi(AdyenInternal) import AdyenCard
+@_documentation(visibility: internal) @testable import Adyen
+@testable import AdyenCard
 import XCTest
 
 class CardSecurityCodeFormatterTests: XCTestCase {

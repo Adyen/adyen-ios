@@ -1,18 +1,18 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 #if canImport(AdyenComponents)
     import AdyenComponents
 #endif
 #if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
+    import AdyenActions
 #endif
 #if canImport(AdyenCard)
-    @_spi(AdyenInternal) import AdyenCard
+    import AdyenCard
 #endif
 import AdyenNetworking
 import UIKit
@@ -41,7 +41,7 @@ public final class DropInComponent: NSObject,
     public let title: String
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var context: AdyenContext
     
     /// Initializes the drop in component.
@@ -293,14 +293,14 @@ private extension Bundle {
 
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension DropInComponent: AdyenSessionAware {
     public var isSession: Bool {
         delegate is AdyenSessionAware
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension DropInComponent: StorePaymentMethodFieldAware {
     
     public var showStorePaymentMethodField: Bool? {
@@ -308,7 +308,7 @@ extension DropInComponent: StorePaymentMethodFieldAware {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension DropInComponent: InstallmentConfigurationAware {
     
     public var installmentConfiguration: InstallmentConfiguration? {

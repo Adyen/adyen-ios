@@ -6,8 +6,8 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-@_spi(AdyenInternal) import Adyen
-@_spi(AdyenInternal) @testable import AdyenActions
+import Adyen
+@_documentation(visibility: internal) @testable import AdyenActions
 import XCTest
 
 class MultibancoShareableVoucherViewProviderTests: XCTestCase {

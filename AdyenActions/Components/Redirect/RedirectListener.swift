@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,11 +7,11 @@
 import Foundation
 
 /// A typealias for a closure that handles a URL through which the application was opened.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public typealias URLHandler = (URL) throws -> Void
 
 /// Listens for the return of the shopper after a redirect.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public enum RedirectListener {
     
     // MARK: - Registering for URLs

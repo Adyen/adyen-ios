@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,7 +9,7 @@ import Foundation
 /// Conforming to the Observer protocol will make the observe and binding functions available for use.
 public protocol AdyenObserver: AnyObject {}
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public extension AdyenObserver {
     
     /// Observes an event publisher for events.

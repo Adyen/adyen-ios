@@ -1,17 +1,18 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+
 #if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
+    import AdyenActions
 #endif
 import Foundation
 import UIKit
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension AdyenSession: PaymentComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         let handler = delegate?.handlerForPayments(in: component, session: self) ?? self
@@ -48,7 +49,7 @@ extension AdyenSession: PaymentComponentDelegate {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension AdyenSession: AdyenSessionPaymentsHandler {
     public func didSubmit(_ paymentComponentData: PaymentComponentData,
                           from component: Component,

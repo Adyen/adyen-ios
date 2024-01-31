@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,7 +10,7 @@ private enum AssociatedKeys {
     internal static var animations: Void?
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public class AnimationContext: NSObject {
     fileprivate let animationKey: String
     
@@ -39,7 +39,7 @@ public class AnimationContext: NSObject {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public final class KeyFrameAnimationContext: AnimationContext {
     
     fileprivate let keyFrameOptions: UIView.KeyframeAnimationOptions
@@ -60,7 +60,7 @@ public final class KeyFrameAnimationContext: AnimationContext {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public final class SpringAnimationContext: AnimationContext {
 
     fileprivate let dampingRatio: CGFloat
@@ -85,7 +85,7 @@ public final class SpringAnimationContext: AnimationContext {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension AdyenScope where Base: UIView {
     
     public func cancelAnimations(with key: String) {
@@ -133,7 +133,7 @@ extension AdyenScope where Base: UIView {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 private extension UIView {
 
     var animations: [AnimationContext] {

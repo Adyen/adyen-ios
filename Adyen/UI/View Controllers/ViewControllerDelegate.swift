@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import UIKit
 
 /// Delegate to handle different viewController events.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol ViewControllerDelegate: AnyObject {
 
     /// Handles the UIViewController.viewDidLoad() event.
@@ -20,7 +20,7 @@ public protocol ViewControllerDelegate: AnyObject {
     func viewWillAppear(viewController: UIViewController)
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension ViewControllerDelegate {
 
     public func viewDidLoad(viewController: UIViewController) { /* Empty implementation */ }

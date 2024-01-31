@@ -1,19 +1,19 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol Hidable {
 
     var isHidden: AdyenObservable<Bool> { get }
 }
 
 /// An item in a form.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol FormItem: AnyObject {
     
     /// An identifier for the `FormItem`,
@@ -27,7 +27,7 @@ public protocol FormItem: AnyObject {
     func build(with builder: FormItemViewBuilder) -> AnyFormItemView
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public extension FormItem {
     
     /// The flat list of all sub-items.
@@ -38,7 +38,7 @@ public extension FormItem {
 }
 
 /// A validatable form item.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol ValidatableFormItem: FormItem {
     
     /// A message that is displayed when validation fails.
@@ -52,7 +52,7 @@ public protocol ValidatableFormItem: FormItem {
 }
 
 /// A form item that requires keyboard input or otherwise custom input view.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol InputViewRequiringFormItem: FormItem {}
 
 /// Delegate to the view all events that requires change in corespondent FormView changes.
@@ -67,7 +67,7 @@ internal protocol CompoundFormItem {
     var delegate: SelfRenderingFormItemDelegate? { get set }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension Hidable {
 
     public var isVisible: Bool {

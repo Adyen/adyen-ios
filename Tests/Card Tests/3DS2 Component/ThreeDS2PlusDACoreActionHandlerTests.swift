@@ -9,9 +9,9 @@
 import XCTest
 
 #if canImport(AdyenAuthentication)
-    @_spi(AdyenInternal) @testable import Adyen
+    @_documentation(visibility: internal) @testable import Adyen
     import Adyen3DS2
-    @_spi(AdyenInternal) @testable import AdyenActions
+    @_documentation(visibility: internal) @testable import AdyenActions
     import AdyenAuthentication
     import Foundation
     import UIKit

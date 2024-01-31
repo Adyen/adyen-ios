@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 
 /// A selectable item displayed in the list.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public class ListItem: FormItem {
     
     public var subitems: [FormItem] = []
@@ -104,7 +104,7 @@ public class ListItem: FormItem {
 
 // MARK: - Hashable & Equatable
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension ListItem: Hashable {
     
     public func hash(into hasher: inout Hasher) {

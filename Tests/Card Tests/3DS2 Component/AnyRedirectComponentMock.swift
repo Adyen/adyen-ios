@@ -6,8 +6,8 @@
 //  Copyright © 2020 Adyen. All rights reserved.
 //
 
-@_spi(AdyenInternal) @testable import AdyenActions
-@testable @_spi(AdyenInternal) import AdyenCard
+@_documentation(visibility: internal) @testable import AdyenActions
+@testable import AdyenCard
 import Foundation
 
 final class AnyRedirectComponentMock: AnyRedirectComponent {

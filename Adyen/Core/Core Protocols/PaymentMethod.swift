@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -23,10 +23,10 @@ public protocol PaymentMethod: Codable {
     ///
     /// - Parameters:
     ///   - using: The localization parameters.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent?
 }
 
@@ -35,10 +35,10 @@ public extension PaymentMethod {
     /// This default implementation has to be provided to be able to build with `BUILD_LIBRARY_FOR_DISTRIBUTION` enabled
     ///
     /// - Warning: Access will cause an failure in debug mode to assure the correct implementation of the `PaymentMethod` protocol
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         AdyenAssertion.assertionFailure(
-            message: "`@_spi(AdyenInternal) \(#function)` needs to be implemented on `\(String(describing: Self.self))`"
+            message: "`@_documentation(visibility: internal) \(#function)` needs to be implemented on `\(String(describing: Self.self))`"
         )
         
         return nil
@@ -48,7 +48,7 @@ public extension PaymentMethod {
 /// A protocol to define any partial payment method such as gift cards, `MealVoucher` etc.
 public protocol PartialPaymentMethod: PaymentMethod {}
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public extension PaymentMethod {
     
     func displayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
@@ -64,7 +64,7 @@ public extension PaymentMethod {
         return defaultDisplayInformation
     }
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
     }
@@ -82,7 +82,7 @@ public protocol StoredPaymentMethod: PaymentMethod {
     
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public func == (lhs: StoredPaymentMethod, rhs: StoredPaymentMethod) -> Bool {
     lhs.type == rhs.type &&
         lhs.name == rhs.name &&
@@ -91,19 +91,19 @@ public func == (lhs: StoredPaymentMethod, rhs: StoredPaymentMethod) -> Bool {
         String(describing: type(of: lhs)) == String(describing: type(of: rhs))
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public func != (lhs: StoredPaymentMethod, rhs: StoredPaymentMethod) -> Bool {
     !(lhs == rhs)
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public func == (lhs: PaymentMethod, rhs: PaymentMethod) -> Bool {
     lhs.type == rhs.type &&
         lhs.name == rhs.name &&
         String(describing: type(of: lhs)) == String(describing: type(of: rhs))
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public func != (lhs: PaymentMethod, rhs: PaymentMethod) -> Bool {
     !(lhs == rhs)
 }

@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import UIKit
 
 /// An error that occurred during the use of QRCodeComponent
@@ -21,7 +21,7 @@ internal enum QRCodeComponentError: LocalizedError {
 public final class QRCodeActionComponent: ActionComponent, Cancellable, ShareableComponent {
     
     /// The context object for this component.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public let context: AdyenContext
     
     /// Delegates `PresentableComponent`'s presentation.
@@ -238,7 +238,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension QRCodeActionComponent: ActionComponentDelegate {
 
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
@@ -255,7 +255,7 @@ extension QRCodeActionComponent: ActionComponentDelegate {
 
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension QRCodeActionComponent: QRCodeViewDelegate {
     
     internal func copyToPasteboard(with action: QRCodeAction) {

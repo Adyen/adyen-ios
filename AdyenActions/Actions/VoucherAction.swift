@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import Foundation
 
 /// Indicates the Voucher payment methods.
@@ -82,7 +82,7 @@ public enum VoucherAction: Decodable {
         case paymentMethodType
     }
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var anyAction: AnyVoucherAction {
         switch self {
         case let .boletoBancairoSantander(action):
@@ -131,7 +131,7 @@ public class GenericVoucherAction: Decodable, AnyVoucherAction {
     /// Merchant Name.
     public let merchantName: String
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public let passCreationToken: String?
 
     public required init(from decoder: Decoder) throws {

@@ -6,7 +6,7 @@
 //  Copyright © 2022 Adyen. All rights reserved.
 //
 
-@_spi(AdyenInternal) @testable import AdyenActions
+@_documentation(visibility: internal) @testable import AdyenActions
 import Foundation
 
 extension ThreeDSResult: Equatable {

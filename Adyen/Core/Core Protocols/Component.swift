@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -49,7 +49,7 @@ public protocol FinalizableComponent: Component {
 
 public extension Component {
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     var _isDropIn: Bool { // swiftlint:disable:this identifier_name
         get {
             guard let value = objc_getAssociatedObject(self, &AssociatedKeys.isDropIn) as? Bool else {

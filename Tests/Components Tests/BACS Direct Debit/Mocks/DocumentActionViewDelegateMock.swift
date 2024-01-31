@@ -6,8 +6,8 @@
 //  Copyright © 2021 Adyen. All rights reserved.
 //
 
-@_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenActions
+@_documentation(visibility: internal) @testable import Adyen
+@_documentation(visibility: internal) @testable import AdyenActions
 import Foundation
 
 internal final class DocumentActionViewDelegateMock: DocumentActionViewDelegate {

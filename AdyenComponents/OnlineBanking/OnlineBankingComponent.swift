@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import UIKit
 
 /// A component that provides a form for Online Banking payment.
@@ -28,7 +28,7 @@ public final class OnlineBankingComponent: PaymentComponent,
     public typealias Configuration = BasicComponentConfiguration
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var context: AdyenContext
 
     public var paymentMethod: PaymentMethod { onlineBankingPaymentMethod }
@@ -142,5 +142,5 @@ public final class OnlineBankingComponent: PaymentComponent,
 
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension OnlineBankingComponent: AdyenObserver {}

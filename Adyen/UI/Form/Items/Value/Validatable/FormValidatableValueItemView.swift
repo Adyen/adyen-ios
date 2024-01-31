@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import UIKit
 
 /// An abstract view representing a validatable value item.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValueItem<ValueType>>:
     FormValueItemView<ValueType, FormTextItemStyle, ItemType>, AnyFormValidatableValueItemView {
     
@@ -115,7 +115,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
 }
 
 /// A type-erased form value item view that provides a validation check
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol AnyFormValidatableValueItemView: AnyFormValueItemView {
 
     /// Invoke validation check. Performs all necessary UI transformations based on a validation result.

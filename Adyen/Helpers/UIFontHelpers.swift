@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,11 +8,11 @@ import AdyenNetworking
 import UIKit
 
 /// So that any `UIView` instance will inherit the `adyen` scope.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension UIFont: AdyenCompatible {}
 
 /// Adds helper functionality to any `UIViewController` instance through the `adyen` property.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public extension AdyenScope where Base: UIFont {
     
     /// Get new instance of `UIFont` with the same familyName and pointSize, but specified weight.

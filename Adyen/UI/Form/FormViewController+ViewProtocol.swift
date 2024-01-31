@@ -1,12 +1,12 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol FormViewProtocol {
     
     func add<T: FormItem>(item: T?)
@@ -14,7 +14,7 @@ public protocol FormViewProtocol {
     func displayValidation()
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension FormViewController: FormViewProtocol {
 
     public func add(item: (some FormItem)?) {

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 /// An item in which text can be entered using a text field.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFormItem {
 
     /// The placeholder of the text field.
@@ -68,7 +68,7 @@ open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFor
 
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension AnyFormItemView {
 
     internal func applyTextDelegateIfNeeded(delegate: FormTextItemViewDelegate) {

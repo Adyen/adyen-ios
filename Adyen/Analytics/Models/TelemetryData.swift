@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,7 +10,7 @@ import UIKit
 /// The context in which the SDK operates
 ///
 /// Used to e.g. override the version + platform from within the Flutter SDK
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public struct TelemetryContext {
     
     internal let version: String
@@ -25,7 +25,7 @@ public struct TelemetryContext {
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public extension TelemetryContext {
 
     enum Platform: String {

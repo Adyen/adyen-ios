@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -110,7 +110,7 @@ public struct PostalAddress: Equatable, Encodable {
 extension PostalAddress {
     
     /// Multi line mailing address
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public func formatted(using localizationParameters: LocalizationParameters?) -> String {
         let address = CNMutablePostalAddress()
         city.map { address.city = $0 }
@@ -127,7 +127,7 @@ extension PostalAddress {
         return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
     }
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var formattedStreet: String {
         let address = CNMutablePostalAddress()
         address.street = [street, houseNumberOrName, apartment]
@@ -138,7 +138,7 @@ extension PostalAddress {
             .replacingOccurrences(of: "\n", with: ", ")
     }
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public func formattedLocation(using localizationParameters: LocalizationParameters?) -> String {
         let address = CNMutablePostalAddress()
         city.map { address.city = $0 }

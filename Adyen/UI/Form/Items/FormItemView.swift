@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import UIKit
 
 /// A view representing a form item.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView, AdyenObserver {
     
     /// The item represented by the view.
@@ -40,7 +40,7 @@ open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView, AdyenObser
 }
 
 /// A type-erased form item view.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol AnyFormItemView: UIView {
     
     /// The embedding item view of the current item view.
@@ -53,7 +53,7 @@ public protocol AnyFormItemView: UIView {
     
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public extension AnyFormItemView {
     
     /// The embedding item view of the current item view.

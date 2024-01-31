@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,10 +15,10 @@ public struct AnalyticsConfiguration {
     /// A Boolean value that determines whether analytics is enabled.
     public var isEnabled = true
 
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var isTelemetryEnabled = true
     
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public var context: TelemetryContext = .init()
 
     // MARK: - Initializers
@@ -27,14 +27,14 @@ public struct AnalyticsConfiguration {
     public init() { /* Empty implementation */ }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 /// Additional fields to be provided with a ``TelemetryRequest``
 public struct AdditionalAnalyticsFields {
     /// The amount of the payment
     public let amount: Amount?
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol AnalyticsProviderProtocol: TelemetryTrackerProtocol {
     
     var checkoutAttemptId: String? { get }

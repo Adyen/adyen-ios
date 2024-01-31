@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,7 @@ import UIKit
 
 /// A view controller that allows looking up of addresses via a search term
 /// and also allows manual input of an address
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public class AddressLookupViewController: UINavigationController, AdyenObserver {
     
     internal private(set) var viewModel: ViewModel

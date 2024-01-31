@@ -6,8 +6,8 @@
 //  Copyright © 2022 Adyen. All rights reserved.
 //
 
-@_spi(AdyenInternal) import Adyen
-@_spi(AdyenInternal) import AdyenActions
+import Adyen
+import AdyenActions
 import AdyenComponents
 import AdyenDropIn
 import AdyenSession

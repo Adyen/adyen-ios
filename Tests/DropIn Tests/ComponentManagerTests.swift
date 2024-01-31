@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import Adyen
+@_documentation(visibility: internal) @testable import Adyen
 @testable import AdyenCard
 @testable import AdyenComponents
 @testable import AdyenDropIn
@@ -485,7 +485,7 @@ class ComponentManagerTests: XCTestCase {
         expectation.expectedFulfillmentCount = 1
         
         AdyenAssertion.listener = { assertion in
-            XCTAssertEqual(assertion, "`@_spi(AdyenInternal) buildComponent(using:)` needs to be implemented on `DummyPaymentMethod`")
+            XCTAssertEqual(assertion, "`@_documentation(visibility: internal) buildComponent(using:)` needs to be implemented on `DummyPaymentMethod`")
             expectation.fulfill()
         }
         

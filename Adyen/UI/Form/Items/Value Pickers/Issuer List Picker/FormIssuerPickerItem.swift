@@ -1,15 +1,15 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import UIKit
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public typealias IssuerPickerItem = BasePickerElement<Issuer>
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public final class FormIssuersPickerItem: BaseFormPickerItem<Issuer> {
 
     override public init(preselectedValue: IssuerPickerItem, selectableValues: [IssuerPickerItem], style: FormTextItemStyle) {

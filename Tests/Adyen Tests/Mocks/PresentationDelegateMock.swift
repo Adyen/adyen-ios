@@ -1,6 +1,6 @@
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 @testable import AdyenDropIn
 import Foundation
 import XCTest

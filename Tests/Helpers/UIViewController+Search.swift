@@ -6,7 +6,7 @@
 
 import UIKit
 import XCTest
-@_spi(AdyenInternal) @testable import Adyen
+@_documentation(visibility: internal) @testable import Adyen
 
 public extension UIViewController {
 

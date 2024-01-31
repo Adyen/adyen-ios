@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -17,7 +17,7 @@ public protocol EventPublisher: AnyObject {
     
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public extension EventPublisher {
     
     /// Adds an event handler.
@@ -42,7 +42,7 @@ public extension EventPublisher {
     ///
     /// - Parameter event: The event to publish.
     func publish(_ event: Event) {
-        eventHandlers.forEach { _, eventHandler in
+        for (_, eventHandler) in eventHandlers {
             eventHandler(event)
         }
     }

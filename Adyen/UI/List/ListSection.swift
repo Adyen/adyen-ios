@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,14 +7,14 @@
 import Foundation
 
 /// The editing style.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public enum EditingStyle {
     case delete
     case none
 }
 
 /// A section of items in a ListViewController.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public struct ListSection: Hashable {
     
     /// The title of the section.
@@ -67,7 +67,7 @@ public struct ListSection: Hashable {
 }
 
 /// A list section header.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public struct ListSectionHeader: Hashable {
 
     /// The header title.

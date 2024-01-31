@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import UIKit
 
 /// The interface of the delegate of a text item view.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol FormTextItemViewDelegate: AnyObject {
     
     /// Invoked when the text entered in the item view's text field has reached the maximum length.
@@ -23,7 +23,7 @@ public protocol FormTextItemViewDelegate: AnyObject {
 }
 
 /// Defines any form text item view.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public protocol AnyFormTextItemView: AnyFormItemView {
 
     /// Delegate text related events.
@@ -31,7 +31,7 @@ public protocol AnyFormTextItemView: AnyFormItemView {
 }
 
 /// A view representing a basic logic of text item.
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemView<String, ItemType>,
     UITextFieldDelegate,
     AnyFormTextItemView {
@@ -276,7 +276,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     }
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 public extension FormTextItemView {
 
     enum AccessoryType: Equatable {

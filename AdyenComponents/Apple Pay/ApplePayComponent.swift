@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import Foundation
 import PassKit
 
@@ -22,7 +22,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     internal let applePayPaymentMethod: ApplePayPaymentMethod
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
+    @_documentation(visibility: internal)
     public let context: AdyenContext
 
     /// The Apple Pay payment method.
@@ -126,10 +126,10 @@ extension ApplePayComponent {
 
 }
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension ApplePayComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
+@_documentation(visibility: internal)
 extension ApplePayComponent: ViewControllerDelegate {
     public func viewDidLoad(viewController: UIViewController) { /* Empty implementation */ }
 
