@@ -32,7 +32,7 @@ extension PaymentComponent {
     public func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
         let component = component ?? self
         
-        let updatedData = data.replacing(checkoutAttemptId: component.context.analyticsProvider.checkoutAttemptId)
+        let updatedData = data.replacing(checkoutAttemptId: component.context.analyticsProvider?.checkoutAttemptId)
 
         guard updatedData.browserInfo == nil else {
             delegate?.didSubmit(updatedData, from: component)

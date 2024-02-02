@@ -25,7 +25,7 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
         let flavor = TelemetryFlavor.dropIn(paymentMethods: paymentMethodTypes)
         let amount = context.payment?.amount
         let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AdyenAnalytics.sessionId)
-        context.analyticsProvider.sendInitialAnalytics(with: flavor, additionalFields: additionalFields)
+        context.analyticsProvider?.sendInitialAnalytics(with: flavor, additionalFields: additionalFields)
     }
     
     internal func didSelect(_ component: PaymentComponent,
@@ -55,7 +55,7 @@ extension DropInComponent: PaymentComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         paymentInProgress = true
         
-        let updatedData = data.replacing(checkoutAttemptId: component.context.analyticsProvider.checkoutAttemptId)
+        let updatedData = data.replacing(checkoutAttemptId: component.context.analyticsProvider?.checkoutAttemptId)
 
         guard updatedData.browserInfo == nil else {
             self.delegate?.didSubmit(updatedData, from: component, in: self)

@@ -32,8 +32,8 @@ class AnalyticsProviderTests: XCTestCase {
 
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
-        let checkoutAttemptIdResponse = CheckoutAttemptIdResponse(identifier: expectedCheckoutAttemptId)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
+        let initialAnalyticsResponse = InitialAnalyticsResponse(identifier: expectedCheckoutAttemptId)
+        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
         // When
@@ -64,8 +64,8 @@ class AnalyticsProviderTests: XCTestCase {
 
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
-        let checkoutAttemptIdResponse = CheckoutAttemptIdResponse(identifier: expectedCheckoutAttemptId)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
+        let initialAnalyticsResponse = InitialAnalyticsResponse(identifier: expectedCheckoutAttemptId)
+        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
         // When
@@ -103,8 +103,8 @@ class AnalyticsProviderTests: XCTestCase {
 
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
-        let checkoutAttemptIdResponse = CheckoutAttemptIdResponse(identifier: expectedCheckoutAttemptId)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
+        let initialAnalyticsResponse = InitialAnalyticsResponse(identifier: expectedCheckoutAttemptId)
+        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
         // When
@@ -122,8 +122,8 @@ class AnalyticsProviderTests: XCTestCase {
         let apiClient = APIClientMock()
         let sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
-        let checkoutAttemptIdResponse = CheckoutAttemptIdResponse(identifier: checkoutAttemptIdMockValue)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
+        let initialAnalyticsResponse = InitialAnalyticsResponse(identifier: checkoutAttemptIdMockValue)
+        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
         // When
@@ -141,13 +141,13 @@ class AnalyticsProviderTests: XCTestCase {
         
         let apiClient = APIClientMock()
         apiClient.mockedResults = [
-            .success(CheckoutAttemptIdResponse(identifier: checkoutAttemptId)),
+            .success(InitialAnalyticsResponse(identifier: checkoutAttemptId)),
         ]
         apiClient.onExecute = { request in
-            if let checkoutAttemptIdRequest = request as? CheckoutAttemptIdRequest {
-                XCTAssertNil(checkoutAttemptIdRequest.amount)
-                XCTAssertEqual(checkoutAttemptIdRequest.version, adyenSdkVersion)
-                XCTAssertEqual(checkoutAttemptIdRequest.platform, "ios")
+            if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
+                XCTAssertNil(initialAnalyticsdRequest.amount)
+                XCTAssertEqual(initialAnalyticsdRequest.version, adyenSdkVersion)
+                XCTAssertEqual(initialAnalyticsdRequest.platform, "ios")
                 telemetryExpectation.fulfill()
             }
         }
@@ -175,13 +175,13 @@ class AnalyticsProviderTests: XCTestCase {
         
         let apiClient = APIClientMock()
         apiClient.mockedResults = [
-            .success(CheckoutAttemptIdResponse(identifier: checkoutAttemptId))
+            .success(InitialAnalyticsResponse(identifier: checkoutAttemptId))
         ]
         apiClient.onExecute = { request in
-            if let checkoutAttemptIdRequest = request as? CheckoutAttemptIdRequest {
-                XCTAssertEqual(checkoutAttemptIdRequest.amount, amount)
-                XCTAssertEqual(checkoutAttemptIdRequest.version, "version")
-                XCTAssertEqual(checkoutAttemptIdRequest.platform, "react-native")
+            if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
+                XCTAssertEqual(initialAnalyticsdRequest.amount, amount)
+                XCTAssertEqual(initialAnalyticsdRequest.version, "version")
+                XCTAssertEqual(initialAnalyticsdRequest.platform, "react-native")
                 telemetryExpectation.fulfill()
             }
         }
@@ -207,7 +207,7 @@ class AnalyticsProviderTests: XCTestCase {
                                           additionalFields: AdditionalAnalyticsFields(amount: .init(value: 1, currencyCode: "EUR")),
                                           context: TelemetryContext(version: "version", platform: .flutter))
         
-        let request = CheckoutAttemptIdRequest(data: telemetryData)
+        let request = InitialAnalyticsRequest(data: telemetryData)
         
         let encodedRequest = try JSONEncoder().encode(request)
         let decodedRequest = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedRequest) as? [String: Any])

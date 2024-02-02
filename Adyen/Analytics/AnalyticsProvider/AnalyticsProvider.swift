@@ -57,7 +57,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     internal let apiClient: APIClientProtocol
     internal let configuration: AnalyticsConfiguration
     internal private(set) var checkoutAttemptId: String?
-    private let uniqueAssetAPIClient: UniqueAssetAPIClient<CheckoutAttemptIdResponse>
+    private let uniqueAssetAPIClient: UniqueAssetAPIClient<InitialAnalyticsResponse>
     
     private var batchTimer: Timer?
     
@@ -73,7 +73,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     ) {
         self.apiClient = apiClient
         self.configuration = configuration
-        self.uniqueAssetAPIClient = UniqueAssetAPIClient<CheckoutAttemptIdResponse>(apiClient: apiClient)
+        self.uniqueAssetAPIClient = UniqueAssetAPIClient<InitialAnalyticsResponse>(apiClient: apiClient)
     }
 
     // MARK: - Internal
@@ -89,9 +89,9 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
                                           additionalFields: additionalFields,
                                           context: configuration.context)
 
-        let checkoutAttemptIdRequest = CheckoutAttemptIdRequest(data: telemetryData)
+        let initialAnalyticsRequest = InitialAnalyticsRequest(data: telemetryData)
 
-        uniqueAssetAPIClient.perform(checkoutAttemptIdRequest) { [weak self] result in
+        uniqueAssetAPIClient.perform(initialAnalyticsRequest) { [weak self] result in
             switch result {
             case let .success(response):
                 self?.checkoutAttemptId = response.identifier
@@ -123,7 +123,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     @objc private func sendAll() {
         guard configuration.isEnabled,
               let checkoutAttemptId else { return }
-        var request = AdyenAnalyticsRequest(checkoutAttemptId: checkoutAttemptId)
+        var request = AnalyticsRequest(checkoutAttemptId: checkoutAttemptId)
         
         request.infos = infos
         request.logs = logs

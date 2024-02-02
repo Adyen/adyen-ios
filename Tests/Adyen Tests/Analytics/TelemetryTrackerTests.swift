@@ -18,7 +18,7 @@ class TelemetryTrackerTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         apiClient = APIClientMock()
-        let checkoutAttemptIdResponse = CheckoutAttemptIdResponse(identifier: "checkoutAttempId1")
+        let checkoutAttemptIdResponse = InitialAnalyticsResponse(identifier: "checkoutAttempId1")
         let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
         apiClient.mockedResults = [checkoutAttemptIdResult]
         sut = AnalyticsProvider(apiClient: apiClient, configuration: .init())
@@ -126,7 +126,7 @@ class TelemetryTrackerTests: XCTestCase {
 
     // MARK: - Private
 
-    private var checkoutAttemptIdResponse: CheckoutAttemptIdResponse {
+    private var checkoutAttemptIdResponse: InitialAnalyticsResponse {
         .init(identifier: "cb3eef98-978e-4f6f-b299-937a4450be1f1648546838056be73d8f38ee8bcc3a65ec14e41b037a59f255dcd9e83afe8c06bd3e7abcad993")
     }
 }

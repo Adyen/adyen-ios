@@ -7,7 +7,7 @@
 import AdyenNetworking
 import Foundation
 
-internal struct CheckoutAttemptIdResponse: Response {
+internal struct InitialAnalyticsResponse: Response {
 
     // MARK: - Properties
 
@@ -18,11 +18,11 @@ internal struct CheckoutAttemptIdResponse: Response {
     }
 }
 
-internal struct CheckoutAttemptIdRequest: APIRequest {
+internal struct InitialAnalyticsRequest: APIRequest {
 
-    internal typealias ResponseType = CheckoutAttemptIdResponse
+    internal typealias ResponseType = InitialAnalyticsResponse
 
-    internal let path: String = "/checkoutanalytics/v3/analytics"
+    internal let path: String = "checkoutanalytics/v3/analytics"
 
     internal var counter: UInt = 0
 

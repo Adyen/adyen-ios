@@ -32,10 +32,10 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
     // MARK: - BACSDirectDebitComponentTrackerProtocol
 
     internal func sendInitialAnalytics() {
-        let flavor: TelemetryFlavor = isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
+        let flavor: TelemetryFlavor = .components(type: paymentMethod.type)
         let amount = context.payment?.amount
         let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AdyenAnalytics.sessionId)
-        context.analyticsProvider.sendInitialAnalytics(with: flavor,
+        context.analyticsProvider?.sendInitialAnalytics(with: flavor,
                                                          additionalFields: additionalFields)
     }
 

@@ -67,21 +67,23 @@ public protocol TrackableComponent: Component {
 }
 
 @_spi(AdyenInternal)
-extension TrackableComponent where Self: PaymentMethodAware {
+extension TrackableComponent where Self: ViewControllerDelegate {
     
-    public func sendInitialAnalytics() {
-        let flavor: TelemetryFlavor = _isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
-        let amount = context.payment?.amount
-        let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AdyenAnalytics.sessionId)
-        context.analyticsProvider.sendInitialAnalytics(with: flavor,
-                                                         additionalFields: additionalFields)
+    public func viewWillAppear(viewController: UIViewController) {
+        // initial call is not needed again if inside dropIn
+//        guard !_isDropIn else { return }
+        sendInitialAnalytics()
     }
 }
 
 @_spi(AdyenInternal)
-extension TrackableComponent where Self: ViewControllerDelegate {
+extension TrackableComponent where Self: PaymentMethodAware {
     
-    public func viewWillAppear(viewController: UIViewController) {
-        sendInitialAnalytics()
+    public func sendInitialAnalytics() {
+        let flavor: TelemetryFlavor = .components(type: paymentMethod.type)
+        let amount = context.payment?.amount
+        let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AdyenAnalytics.sessionId)
+        context.analyticsProvider?.sendInitialAnalytics(with: flavor,
+                                                         additionalFields: additionalFields)
     }
 }
