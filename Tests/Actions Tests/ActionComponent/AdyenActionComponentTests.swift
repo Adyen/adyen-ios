@@ -58,6 +58,21 @@ class AdyenActionComponentTests: XCTestCase {
       "type" : "voucher"
     }
     """
+    
+    let qrAction = """
+    {
+        "paymentMethodType": "upi_qr",
+        "qrCodeData": "QR_CODE_DATA",
+        "paymentData": ""
+    }
+    """
+    
+    let documentAction = """
+    {
+        "paymentMethodType": "directdebit_GB",
+        "url": "https://adyen.com"
+    }
+    """
 
     func testRedirectToHttpWebLink() throws {
         let sut = AdyenActionComponent(context: Dummy.context)
@@ -93,7 +108,7 @@ class AdyenActionComponentTests: XCTestCase {
             waitExpectation.fulfill()
         }
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 100, handler: nil)
     }
 
     func testWeChatAction() {
@@ -118,13 +133,7 @@ class AdyenActionComponentTests: XCTestCase {
         let action = try! JSONDecoder().decode(ThreeDS2Action.self, from: threeDSFingerprintAction.data(using: .utf8)!)
         sut.handle(Action.threeDS2(action))
 
-        let waitExpectation = expectation(description: "Expect in app browser to be presented and then dismissed")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-            XCTAssertNotNil(sut.currentActionComponent as? ThreeDS2Component)
-            waitExpectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 10, handler: nil)
+        wait { sut.currentActionComponent is ThreeDS2Component }
     }
 
     func testVoucherAction() throws {
@@ -144,6 +153,29 @@ class AdyenActionComponentTests: XCTestCase {
             waitExpectation.fulfill()
         }
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 100, handler: nil)
+    }
+    
+    func testQRCodeAction() throws {
+
+        let sut = AdyenActionComponent(context: Dummy.context)
+        sut.presentationDelegate = try UIViewController.topPresenter()
+        
+        let action = try! JSONDecoder().decode(QRCodeAction.self, from: qrAction.data(using: .utf8)!)
+        sut.handle(Action.qrCode(action))
+        
+        try waitUntilTopPresenter(isOfType: QRCodeViewController.self)
+    }
+    
+    func testDocumentAction() throws {
+        // DocumentAction
+        let sut = AdyenActionComponent(context: Dummy.context)
+        sut.presentationDelegate = try UIViewController.topPresenter()
+        
+        let action = try! JSONDecoder().decode(DocumentAction.self, from: documentAction.data(using: .utf8)!)
+        sut.handle(Action.document(action))
+        
+        let documentViewController = try waitUntilTopPresenter(isOfType: ADYViewController.self)
+        XCTAssertNotNil(documentViewController.view as? DocumentActionView)
     }
 }

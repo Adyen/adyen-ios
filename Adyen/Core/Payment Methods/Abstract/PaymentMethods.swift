@@ -12,7 +12,7 @@ import Foundation
  - SeeAlso:
  [API Reference](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/paymentMethods__section_resParams)
  */
-public struct PaymentMethods: Decodable {
+public struct PaymentMethods: Codable {
 
     /// The already paid payment methods, in case of partial payments.
     public var paid: [PaymentMethod] = []
@@ -147,13 +147,32 @@ public struct PaymentMethods: Decodable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.regular = try container.decode([AnyPaymentMethod].self, forKey: .regular).compactMap(\.value)
         
-        if try container.containsValue(.stored) {
-            self.stored = try container.decode([AnyPaymentMethod].self, forKey: .stored).compactMap { $0.value as? StoredPaymentMethod }
-        } else {
-            self.stored = []
-        }
+        self.regular = try container.decode(
+            [AnyPaymentMethod].self,
+            forKey: .regular
+        ).compactMap(\.value)
+        
+        self.stored = try container.decodeIfPresent(
+            [AnyPaymentMethod].self,
+            forKey: .stored
+        )?.compactMap {
+            $0.value as? StoredPaymentMethod
+        } ?? []
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(
+            regular.map(\.toAnyPaymentMethod),
+            forKey: .regular
+        )
+        
+        try container.encode(
+            stored.map(\.toAnyPaymentMethod),
+            forKey: .stored
+        )
     }
     
     internal enum CodingKeys: String, CodingKey {
@@ -161,123 +180,4 @@ public struct PaymentMethods: Decodable {
         case stored = "storedPaymentMethods"
     }
     
-}
-
-internal enum AnyPaymentMethod: Decodable {
-    case storedInstant(StoredInstantPaymentMethod)
-    case storedCard(StoredCardPaymentMethod)
-    case storedPayPal(StoredPayPalPaymentMethod)
-    case storedBCMC(StoredBCMCPaymentMethod)
-    case storedBlik(StoredBLIKPaymentMethod)
-    case storedAchDirectDebit(StoredACHDirectDebitPaymentMethod)
-    case storedCashAppPay(StoredCashAppPayPaymentMethod)
-
-    case instant(PaymentMethod)
-    case card(AnyCardPaymentMethod)
-    case issuerList(IssuerListPaymentMethod)
-    case sepaDirectDebit(SEPADirectDebitPaymentMethod)
-    case bacsDirectDebit(BACSDirectDebitPaymentMethod)
-    case achDirectDebit(ACHDirectDebitPaymentMethod)
-    case applePay(ApplePayPaymentMethod)
-    case qiwiWallet(QiwiWalletPaymentMethod)
-    case weChatPay(WeChatPayPaymentMethod)
-    case mbWay(MBWayPaymentMethod)
-    case blik(BLIKPaymentMethod)
-    case giftcard(GiftCardPaymentMethod)
-    case mealVoucher(MealVoucherPaymentMethod)
-    case doku(DokuPaymentMethod)
-    case sevenEleven(SevenElevenPaymentMethod)
-    case econtextStores(EContextPaymentMethod)
-    case econtextATM(EContextPaymentMethod)
-    case econtextOnline(EContextPaymentMethod)
-    case boleto(BoletoPaymentMethod)
-    case affirm(AffirmPaymentMethod)
-    case atome(AtomePaymentMethod)
-    case onlineBanking(OnlineBankingPaymentMethod)
-    case upi(UPIPaymentMethod)
-    case cashAppPay(CashAppPayPaymentMethod)
-    
-    case none
-    
-    internal var value: PaymentMethod? {
-        switch self {
-        case let .storedCard(paymentMethod):
-            return paymentMethod
-        case let .storedPayPal(paymentMethod):
-            return paymentMethod
-        case let .storedBCMC(paymentMethod):
-            return paymentMethod
-        case let .instant(paymentMethod):
-            return paymentMethod
-        case let .storedInstant(paymentMethod):
-            return paymentMethod
-        case let .storedAchDirectDebit(paymentMethod):
-            return paymentMethod
-        case let .storedCashAppPay(paymentMethod):
-            return paymentMethod
-        case let .card(paymentMethod):
-            return paymentMethod
-        case let .issuerList(paymentMethod):
-            return paymentMethod
-        case let .sepaDirectDebit(paymentMethod):
-            return paymentMethod
-        case let .bacsDirectDebit(paymentMethod):
-            return paymentMethod
-        case let .achDirectDebit(paymentMethod):
-            return paymentMethod
-        case let .applePay(paymentMethod):
-            return paymentMethod
-        case let .qiwiWallet(paymentMethod):
-            return paymentMethod
-        case let .weChatPay(paymentMethod):
-            return paymentMethod
-        case let .mbWay(paymentMethod):
-            return paymentMethod
-        case let .blik(paymentMethod):
-            return paymentMethod
-        case let .storedBlik(paymentMethod):
-            return paymentMethod
-        case let .doku(paymentMethod):
-            return paymentMethod
-        case let .giftcard(paymentMethod):
-            return paymentMethod
-        case let .mealVoucher(paymentMethod):
-            return paymentMethod
-        case let .sevenEleven(paymentMethod):
-            return paymentMethod
-        case let .econtextStores(paymentMethod):
-            return paymentMethod
-        case let .econtextATM(paymentMethod):
-            return paymentMethod
-        case let .econtextOnline(paymentMethod):
-            return paymentMethod
-        case let .boleto(paymentMethod):
-            return paymentMethod
-        case let .affirm(paymentMethod):
-            return paymentMethod
-        case let .atome(paymentMethod):
-            return paymentMethod
-        case let .onlineBanking(paymentMethod):
-            return paymentMethod
-        case let .upi(paymentMethod):
-            return paymentMethod
-        case let .cashAppPay(paymentMethod):
-            return paymentMethod
-        case .none:
-            return nil
-        }
-    }
-    
-    // MARK: - Decoding
-    
-    internal init(from decoder: Decoder) throws {
-        self = AnyPaymentMethodDecoder.decode(from: decoder)
-    }
-    
-    internal enum CodingKeys: String, CodingKey {
-        case type
-        case details
-        case brand
-        case issuers
-    }
 }

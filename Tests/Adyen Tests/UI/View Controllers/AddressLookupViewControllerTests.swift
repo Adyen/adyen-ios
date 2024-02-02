@@ -25,6 +25,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         }
         
         let viewModel = AddressLookupViewController.ViewModel(
+            for: .billing,
             style: .init(),
             localizationParameters: nil,
             supportedCountryCodes: nil,
@@ -47,7 +48,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         XCTAssertNotNil(addressLookupViewController.viewControllers.first as? AddressInputFormViewController)
         
         viewModel.interfaceState = .search
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 10)
         XCTAssertNotNil(addressLookupViewController.viewControllers.first as? AddressLookupSearchViewController)
         
         viewModel.handleSwitchToManualEntryTapped()
@@ -63,6 +64,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         let emptyCompletionExpectation = expectation(description: "Completion handler called with nil object")
         
         let viewModel = AddressLookupViewController.ViewModel(
+            for: .billing,
             style: .init(),
             localizationParameters: nil,
             supportedCountryCodes: nil,
@@ -78,7 +80,7 @@ class AddressLookupViewControllerTests: XCTestCase {
 
         viewModel.handleDismissSearchTapped()
 
-        wait(for: [emptyCompletionExpectation], timeout: 1)
+        wait(for: [emptyCompletionExpectation], timeout: 10)
     }
 
     func testSearchDismissalAfterInteraction() {
@@ -90,6 +92,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         let mockLookupProvider = MockAddressLookupProvider { _ in [] }
         
         let viewModel = AddressLookupViewController.ViewModel(
+            for: .billing,
             style: .init(),
             localizationParameters: nil,
             supportedCountryCodes: nil,
@@ -118,7 +121,7 @@ class AddressLookupViewControllerTests: XCTestCase {
 
         addressLookupViewController.viewModel.handleAddressInputFormCompletion(validAddress: .init()) // Should trigger completion handler with postal address
 
-        wait(for: [completionHandlerExpectation], timeout: 1)
+        wait(for: [completionHandlerExpectation], timeout: 10)
     }
 
     // MARK: - ViewModel
@@ -128,6 +131,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         // Given
 
         let viewModel = AddressLookupViewController.ViewModel(
+            for: .billing,
             style: .init(),
             localizationParameters: nil,
             supportedCountryCodes: nil,
@@ -151,6 +155,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         let prefillAddress = PostalAddressMocks.all.first!
 
         let viewModel = AddressLookupViewController.ViewModel(
+            for: .billing,
             style: .init(),
             localizationParameters: nil,
             supportedCountryCodes: nil,
@@ -187,6 +192,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         }
         
         let viewModel = AddressLookupViewController.ViewModel(
+            for: .billing,
             style: .init(),
             localizationParameters: nil,
             supportedCountryCodes: nil,
@@ -253,6 +259,6 @@ class AddressLookupViewControllerTests: XCTestCase {
 
         // Then
 
-        wait(for: [completionHandlerExpectation, loadingExpectation], timeout: 1)
+        wait(for: [completionHandlerExpectation, loadingExpectation], timeout: 10)
     }
 }

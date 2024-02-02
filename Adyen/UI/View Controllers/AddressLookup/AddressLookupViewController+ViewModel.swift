@@ -25,6 +25,8 @@ public extension AddressLookupViewController {
         internal let lookupProvider: AddressLookupProvider
         private let completionHandler: (PostalAddress?) -> Void
         
+        internal let addressType: FormAddressPickerItem.AddressType
+        
         @AdyenObservable(nil)
         internal private(set) var prefillAddress: PostalAddress?
         
@@ -51,6 +53,7 @@ public extension AddressLookupViewController {
         ///   - completionHandler: A closure that takes an optional address.
         ///    It's the presenters responsibility to dismiss the viewController.
         public init(
+            for addressType: FormAddressPickerItem.AddressType,
             style: AddressLookupStyle = .init(),
             localizationParameters: LocalizationParameters?,
             supportedCountryCodes: [String]?,
@@ -59,6 +62,7 @@ public extension AddressLookupViewController {
             lookupProvider: AddressLookupProvider,
             completionHandler: @escaping (PostalAddress?) -> Void
         ) {
+            self.addressType = addressType
             self.style = style
             self.localizationParameters = localizationParameters
             self.supportedCountryCodes = supportedCountryCodes

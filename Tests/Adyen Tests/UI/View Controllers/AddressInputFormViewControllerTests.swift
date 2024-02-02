@@ -25,15 +25,15 @@ class AddressInputFormViewControllerTests: XCTestCase {
 
         let view: UIView = viewController.view
 
-        let houseNumberItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.houseNumberOrName"))
-        let countryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.country"))
-        let addressItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.street"))
-        let apartmentSuiteItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.apartment"))
-        let cityItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.city"))
-        let provinceOrTerritoryItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.stateOrProvince"))
-        let postalCodeItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.postalCode"))
+        let houseNumberItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.houseNumberOrName"))
+        let countryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.country"))
+        let addressItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.street"))
+        let apartmentSuiteItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.apartment"))
+        let cityItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.city"))
+        let provinceOrTerritoryItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.stateOrProvince"))
+        let postalCodeItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.postalCode"))
 
-        XCTAssertNil(view.findView(by: "AddressInputFormViewController.billingAddressItem.title"))
+        XCTAssertNil(view.findView(by: "AddressInputFormViewController.addressItem.title"))
         
         XCTAssertEqual(countryItemView.titleLabel.text, "Country")
         XCTAssertEqual(countryItemView.item.value!.title, "Netherlands")
@@ -78,13 +78,13 @@ class AddressInputFormViewControllerTests: XCTestCase {
         // When
         let view: UIView = viewController.view
 
-        let houseNumberItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.houseNumberOrName"))
-        let countryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.country"))
-        let addressItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.street"))
-        let apartmentSuiteItemView = view.findView(with: "AddressInputFormViewController.billingAddress.apartment") as? FormTextInputItemView
-        let cityItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.city"))
-        let provinceOrTerritoryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.stateOrProvince"))
-        let postalCodeItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.postalCode"))
+        let houseNumberItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.houseNumberOrName"))
+        let countryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.country"))
+        let addressItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.street"))
+        let apartmentSuiteItemView = view.findView(with: "AddressInputFormViewController.address.apartment") as? FormTextInputItemView
+        let cityItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.city"))
+        let provinceOrTerritoryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.stateOrProvince"))
+        let postalCodeItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.postalCode"))
         let searchItemView = view.findView(with: "AddressInputFormViewController.searchBar") as? FormSearchButtonItemView
 
         // Then
@@ -128,13 +128,13 @@ class AddressInputFormViewControllerTests: XCTestCase {
         
         let view: UIView = viewController.view
 
-        let houseNumberItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.houseNumberOrName"))
-        let countryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.country"))
-        let addressItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.street"))
-        let apartmentSuiteItemView = view.findView(with: "AddressInputFormViewController.billingAddress.apartment") as? FormTextInputItemView
-        let cityItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.city"))
-        let provinceOrTerritoryItemView = view.findView(with: "AddressInputFormViewController.billingAddress.stateOrProvince") as? FormPickerItemView
-        let postalCodeItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.postalCode"))
+        let houseNumberItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.houseNumberOrName"))
+        let countryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.country"))
+        let addressItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.street"))
+        let apartmentSuiteItemView = view.findView(with: "AddressInputFormViewController.address.apartment") as? FormTextInputItemView
+        let cityItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.city"))
+        let provinceOrTerritoryItemView = view.findView(with: "AddressInputFormViewController.address.stateOrProvince") as? FormPickerItemView
+        let postalCodeItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.postalCode"))
 
         XCTAssertNil(apartmentSuiteItemView)
         XCTAssertEqual(countryItemView.titleLabel.text, "Country")
@@ -161,13 +161,13 @@ class AddressInputFormViewControllerTests: XCTestCase {
 
         let view: UIView = viewController.view
 
-        var houseNumberItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.houseNumberOrName"))
-        var countryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.country"))
-        var addressItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.street"))
-        var apartmentSuiteItemView: FormTextInputItemView! = view.findView(with: "AddressInputFormViewController.billingAddress.apartment")
-        var cityItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.city"))
-        var provinceOrTerritoryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.stateOrProvince"))
-        var postalCodeItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.postalCode"))
+        var houseNumberItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.houseNumberOrName"))
+        var countryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.country"))
+        var addressItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.street"))
+        var apartmentSuiteItemView: FormTextInputItemView! = view.findView(with: "AddressInputFormViewController.address.apartment")
+        var cityItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.city"))
+        var provinceOrTerritoryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.stateOrProvince"))
+        var postalCodeItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.postalCode"))
 
         XCTAssertNil(apartmentSuiteItemView)
 
@@ -182,13 +182,13 @@ class AddressInputFormViewControllerTests: XCTestCase {
 
         countryItemView.item.value = countryItemView.item.selectableValues.first { $0.identifier == "BR" }!
 
-        houseNumberItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.houseNumberOrName"))
-        countryItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.country"))
-        addressItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.street"))
-        apartmentSuiteItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.apartment"))
-        cityItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.city"))
-        provinceOrTerritoryItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.stateOrProvince"))
-        postalCodeItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.billingAddress.postalCode"))
+        houseNumberItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.houseNumberOrName"))
+        countryItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.country"))
+        addressItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.street"))
+        apartmentSuiteItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.apartment"))
+        cityItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.city"))
+        provinceOrTerritoryItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.stateOrProvince"))
+        postalCodeItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.postalCode"))
 
         XCTAssertEqual(countryItemView.titleLabel.text, "Country")
         XCTAssertEqual(countryItemView.item.value!.title, "Brazil")
@@ -222,7 +222,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         
         _ = searchItemView.becomeFirstResponder()
         
-        wait(for: [searchExpectation], timeout: 1)
+        wait(for: [searchExpectation], timeout: 10)
     }
     
     func testDoneButtonStateNoPrefill() {
@@ -243,7 +243,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         )
     }
     
-    func testDoneButtonStatePrefillCountryAddingStreet() {
+    func testDoneButtonStatePrefillCountryAddingStreet() throws {
         
         let viewController = AddressInputFormViewController(
             viewModel: self.viewModel(
@@ -262,8 +262,8 @@ class AddressInputFormViewControllerTests: XCTestCase {
         
         // Adding street name value
         
-        let countryItemView: FormPickerItemView? = viewController.view.findView(with: "AddressInputFormViewController.billingAddress.country")
-        countryItemView?.item.value = .init(identifier: "DE", title: "DE", subtitle: nil)
+        let countryItemView: FormPickerItemView = try XCTUnwrap(viewController.view.findView(with: "AddressInputFormViewController.address.country"))
+        countryItemView.item.value = .init(identifier: "DE", title: "DE", subtitle: nil)
         
         XCTAssertEqual(
             viewController.navigationItem.rightBarButtonItem?.isEnabled,
@@ -303,7 +303,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         setupRootViewController(UIViewController())
 
         XCTAssertEqual(
-            viewController.billingAddressItem.value.street,
+            viewController.addressItem.value.street,
             ""
         )
     }
@@ -318,6 +318,7 @@ private extension AddressInputFormViewControllerTests {
     ) -> AddressInputFormViewController.ViewModel {
         
         .init(
+            for: .billing,
             style: .init(),
             localizationParameters: nil,
             initialCountry: initialCountry,

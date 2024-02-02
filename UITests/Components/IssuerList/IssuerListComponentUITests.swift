@@ -13,80 +13,54 @@ import XCTest
 
 final class IssuerListComponentUITests: XCTestCase {
 
-    private var context: AdyenContext!
-    private var paymentMethod: IssuerListPaymentMethod!
-    private var sut: IssuerListComponent!
-    private var searchViewController: SearchViewController!
-    private var listViewController: ListViewController!
+    private var context: AdyenContext { Dummy.context }
+    private var paymentMethod: IssuerListPaymentMethod { try! AdyenCoder.decode(issuerListDictionary) as IssuerListPaymentMethod }
 
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-
-        initializeComponent()
-    }
-    
-    private func initializeComponent() {
-        context = Dummy.context
-        paymentMethod = try! AdyenCoder.decode(issuerListDictionary) as IssuerListPaymentMethod
-        sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
-        searchViewController = sut.viewController as? SearchViewController
-        listViewController = searchViewController.resultsListViewController
-    }
-
-    override func tearDownWithError() throws {
-        context = nil
-        paymentMethod = nil
-        sut = nil
-        try super.tearDownWithError()
-    }
-
-    func testStartStopLoading() {
-        XCTAssertNotNil(listViewController)
+    func testStartStopLoading() throws {
+        let sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
+        let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
+        let listViewController = searchViewController.resultsListViewController
         
         setupRootViewController(sut.viewController)
         
-        let items = listViewController!.sections[0].items
+        let item = try XCTUnwrap(listViewController.sections.first?.items.first)
         
-        let index = 0
-        let item = items[index]
-        var cell = listViewController!.tableView.visibleCells[index] as! ListCell
+        var cell = try XCTUnwrap(Self.getCell(for: item, tableView: listViewController.tableView))
         XCTAssertFalse(cell.showsActivityIndicator)
+        XCTAssertTrue(listViewController.tableView.isUserInteractionEnabled)
         assertViewControllerImage(matching: sut.viewController, named: "initial_state")
     
         // start loading
         item.startLoading()
-        cell = getCell(for: item, tableView: listViewController!.tableView)!
+        cell = try XCTUnwrap(Self.getCell(for: item, tableView: listViewController.tableView))
         XCTAssertTrue(cell.showsActivityIndicator)
-        XCTAssertFalse(listViewController!.tableView.isUserInteractionEnabled)
+        XCTAssertFalse(listViewController.tableView.isUserInteractionEnabled)
         assertViewControllerImage(matching: sut.viewController, named: "loading_first_cell")
         
         // stop loading
         sut.stopLoadingIfNeeded()
-        cell = getCell(for: item, tableView: listViewController!.tableView)!
+        cell = try XCTUnwrap(Self.getCell(for: item, tableView: listViewController.tableView))
         XCTAssertFalse(cell.showsActivityIndicator)
-        XCTAssertTrue(listViewController!.tableView.isUserInteractionEnabled)
+        XCTAssertTrue(listViewController.tableView.isUserInteractionEnabled)
         assertViewControllerImage(matching: sut.viewController, named: "stopped_loading")
         
         // start loading again
         item.startLoading()
-        cell = getCell(for: item, tableView: listViewController!.tableView)!
-        XCTAssertFalse(listViewController!.tableView.isUserInteractionEnabled)
+        cell = try XCTUnwrap(Self.getCell(for: item, tableView: listViewController.tableView))
+        XCTAssertFalse(listViewController.tableView.isUserInteractionEnabled)
         XCTAssertTrue(cell.showsActivityIndicator)
         
         // stop loading on item -> should stop loading on list
         item.stopLoading()
-        cell = getCell(for: item, tableView: listViewController!.tableView)!
-        XCTAssertTrue(listViewController!.tableView.isUserInteractionEnabled)
+        cell = try XCTUnwrap(Self.getCell(for: item, tableView: listViewController.tableView))
+        XCTAssertTrue(listViewController.tableView.isUserInteractionEnabled)
         XCTAssertFalse(cell.showsActivityIndicator)
         
     }
     
-    private func getCell(for item: ListItem, tableView: UITableView) -> ListCell? {
-        for case let cell as ListCell in tableView.visibleCells where cell.item == item {
-            return cell
-        }
-        
-        return nil
+    private static func getCell(for item: ListItem, tableView: UITableView) -> ListCell? {
+        tableView.visibleCells.first { cell in
+            (cell as? ListCell).map { $0.item == item } ?? false
+        } as? ListCell
     }
-
 }

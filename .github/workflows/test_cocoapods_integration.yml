@@ -6,13 +6,12 @@ on:
 
   push:
     branches:
-    - master
     - develop
 
 jobs:
 
   pods:
-    runs-on: macos-12
+    runs-on: macos-12-xl
     steps:
     - uses: actions/checkout@v4
     - uses: n1hility/cancel-previous-runs@v3

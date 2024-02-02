@@ -83,6 +83,7 @@
 "adyen.billingAddressSection.title" = "账单地址";
 "adyen.billingAddress.placeholder" = "您的账单地址";
 "adyen.deliveryAddressSection.title" = "寄送地址";
+"adyen.deliveryAddress.placeholder" = "您的送货地址";
 "adyen.countryField.title" = "国家/地区";
 "adyen.countryField.placeholder" = "国家/地区";
 "adyen.countryField.invalid" = "无效国家/地区";

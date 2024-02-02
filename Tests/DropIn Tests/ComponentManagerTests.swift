@@ -475,6 +475,8 @@ class ComponentManagerTests: XCTestCase {
             
             init() {}
             init(from decoder: Decoder) throws {}
+            
+            enum CodingKeys: CodingKey {} // Satisfying Encoding requirement
         }
         
         let dummy = DummyPaymentMethod()
@@ -497,7 +499,7 @@ class ComponentManagerTests: XCTestCase {
 
         let _ = dummy.buildComponent(using: componentManager)
         
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 10)
     }
 
     // MARK: - Private

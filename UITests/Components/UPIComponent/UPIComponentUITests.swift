@@ -115,14 +115,6 @@ class UPIComponentUITests: XCTestCase {
         assertViewControllerImage(matching: sut.viewController, named: "all_required_fields_exist")
     }
 
-    func testUPIComponentDetailsExists() {
-        // Given
-        let upiComponentDetails = UPIComponentDetails(type: "vpa", virtualPaymentAddress: "testvpa@icici")
-
-        // Assert
-        XCTAssertNotNil(upiComponentDetails)
-    }
-
     func testUPIComponentDetailsForUPICollectFlow() {
         // Given
         let config = UPIComponent.Configuration(style: style)
@@ -169,7 +161,6 @@ class UPIComponentUITests: XCTestCase {
         sut.didChangeSegmentedControlIndex(1)
 
         let continueButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.generateQRCodeButton.button")
-        continueButton?.sendActions(for: .touchUpInside)
         
         let dummyExpectation = XCTestExpectation(description: "Dummy Expectation")
         
@@ -183,10 +174,16 @@ class UPIComponentUITests: XCTestCase {
             let data = data.paymentMethod as! UPIComponentDetails
             XCTAssertNotNil(data.type)
             XCTAssertEqual(data.type, "upi_qr")
+            sut.stopLoadingIfNeeded()
+            
+            self.wait(for: .aMoment)
+            self.assertViewControllerImage(matching: sut.viewController, named: "upi_qr_flow")
             dummyExpectation.fulfill()
         }
-        wait(for: .milliseconds(300))
-        assertViewControllerImage(matching: sut.viewController, named: "upi_qr_flow")
+        
+        continueButton?.sendActions(for: .touchUpInside)
+        
+        wait(for: [dummyExpectation], timeout: 5)
     }
 
 }

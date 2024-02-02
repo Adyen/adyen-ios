@@ -72,8 +72,6 @@ final class MBWayComponentUITests: XCTestCase {
         let phoneNumberView: FormPhoneNumberItemView! = sut.viewController.view.findView(with: MBWayViewIdentifier.phone)
         self.populate(textItemView: phoneNumberView, with: "1233456789")
 
-        submitButton?.sendActions(for: .touchUpInside)
-
         let delegateExpectation = XCTestExpectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
 
         delegate.onDidSubmit = { data, component in
@@ -83,12 +81,16 @@ final class MBWayComponentUITests: XCTestCase {
             XCTAssertEqual(data.telephoneNumber, "+3511233456789")
 
             sut.stopLoadingIfNeeded()
-            delegateExpectation.fulfill()
             XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
+            
+            self.verifyViewControllerImage(matching: sut.viewController, named: "mbway_flow")
+            delegateExpectation.fulfill()
         }
-        wait(for: .milliseconds(300))
-        assertViewControllerImage(matching: sut.viewController, named: "mbway_flow")
+        
+        submitButton?.sendActions(for: .touchUpInside)
+        
+        wait(for: [delegateExpectation], timeout: 60)
     }
 
     // MARK: - Private

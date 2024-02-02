@@ -86,6 +86,7 @@
 "adyen.billingAddressSection.title" = "Adresa de facturare";
 "adyen.billingAddress.placeholder" = "Adresa dvs. de facturare";
 "adyen.deliveryAddressSection.title" = "Adresă de livrare";
+"adyen.deliveryAddress.placeholder" = "Adresa dvs. de livrare";
 "adyen.countryField.title" = "Țară";
 "adyen.countryField.placeholder" = "Țară";
 "adyen.countryField.invalid" = "Țară incorectă";

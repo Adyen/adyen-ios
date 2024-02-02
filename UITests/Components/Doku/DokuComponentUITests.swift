@@ -70,7 +70,7 @@ final class DokuComponentUITests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
-        let submitButton: UIControl? = sut.viewController.view.findView(with: DokuViewIdentifier.payButton)
+        let submitButton: UIControl = try XCTUnwrap(sut.viewController.view.findView(with: DokuViewIdentifier.payButton))
 
         let firstNameView: FormTextInputItemView! = sut.viewController.view.findView(with: DokuViewIdentifier.firstName)
         self.populate(textItemView: firstNameView, with: "Mohamed")
@@ -81,8 +81,6 @@ final class DokuComponentUITests: XCTestCase {
         let emailView: FormTextInputItemView! = sut.viewController.view.findView(with: DokuViewIdentifier.email)
         self.populate(textItemView: emailView, with: "mohamed.smith@domain.com")
 
-        submitButton?.sendActions(for: .touchUpInside)
-
         let delegateExpectation = XCTestExpectation(description: "Dummy Expectation")
         delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
@@ -91,14 +89,20 @@ final class DokuComponentUITests: XCTestCase {
             XCTAssertEqual(data.firstName, "Mohamed")
             XCTAssertEqual(data.lastName, "Smith")
             XCTAssertEqual(data.emailAddress, "mohamed.smith@domain.com")
-
+            
             sut.stopLoadingIfNeeded()
             delegateExpectation.fulfill()
             XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
+            
+            self.verifyViewControllerImage(matching: sut.viewController, named: "doku_flow")
+
+            delegateExpectation.fulfill()
         }
-        wait(for: .milliseconds(300))
-        assertViewControllerImage(matching: sut.viewController, named: "doku_flow")
+        
+        submitButton.sendActions(for: .touchUpInside)
+
+        wait(for: [delegateExpectation], timeout: 60)
     }
 
     private enum DokuViewIdentifier {

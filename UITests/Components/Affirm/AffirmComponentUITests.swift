@@ -9,21 +9,17 @@ import XCTest
 @testable import AdyenComponents
 
 class AffirmComponentUITests: XCTestCase {
-
-    private var paymentMethod: PaymentMethod!
+    
+    private var paymentMethod: PaymentMethod { AtomePaymentMethod(type: .atome, name: "Affirm") }
     private var context = Dummy.context
-    private var style: FormComponentStyle!
+    private var style: FormComponentStyle { FormComponentStyle() }
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        paymentMethod = AtomePaymentMethod(type: .atome, name: "Affirm")
-        style = FormComponentStyle()
         BrowserInfo.cachedUserAgent = "some_value"
     }
 
     override func tearDownWithError() throws {
-        paymentMethod = nil
-        style = nil
         BrowserInfo.cachedUserAgent = nil
         try super.tearDownWithError()
     }
@@ -32,19 +28,27 @@ class AffirmComponentUITests: XCTestCase {
         // Given
         let expectedBillingAddress = PostalAddressMocks.newYorkPostalAddress
         let expectedDeliveryAddress = PostalAddressMocks.losAngelesPostalAddress
-        let sut = AffirmComponent(paymentMethod: paymentMethod,
-                                  context: Dummy.context(with: nil),
-                                  configuration: AffirmComponent.Configuration(style: style,
-                                                                               shopperInformation: PrefilledShopperInformation(
-                                                                                   shopperName: ShopperName(
-                                                                                       firstName: "Katrina",
-                                                                                       lastName: "Del Mar"
-                                                                                   ),
-                                                                                   emailAddress: "katrina@mail.com",
-                                                                                   phoneNumber: PhoneNumber(value: "2025550146", callingCode: "+1"),
-                                                                                   billingAddress: expectedBillingAddress,
-                                                                                   deliveryAddress: expectedDeliveryAddress
-                                                                               )))
+        let sut = AffirmComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context(with: nil),
+            configuration: AffirmComponent.Configuration(
+                style: style,
+                shopperInformation: PrefilledShopperInformation(
+                    shopperName: .init(
+                        firstName: "Katrina",
+                        lastName: "Del Mar"
+                    ),
+                    emailAddress: "katrina@mail.com",
+                    phoneNumber: .init(
+                        value: "2025550146",
+                        callingCode: "+1"
+                    ),
+                    billingAddress: expectedBillingAddress,
+                    deliveryAddress: expectedDeliveryAddress
+                )
+            )
+        )
+        
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         
@@ -63,20 +67,34 @@ class AffirmComponentUITests: XCTestCase {
             XCTAssertEqual(details.deliveryAddress, expectedDeliveryAddress)
 
             sut.stopLoadingIfNeeded()
+            
+            self.verifyViewControllerImage(matching: sut.viewController, named: "shopper-info-prefilled")
+            
             didSubmitExpectation.fulfill()
         }
 
-        wait(for: .aMoment)
-        assertViewControllerImage(matching: sut.viewController, named: "shopper-info-prefilled")
-
         let view: UIView = sut.viewController.view
+        
+        let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.firstName))
+        let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.lastName))
+        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.phone))
+        let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.email))
+        
+        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.billingAddress))
+        let deliveryAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddress))
+        
+        wait(until: firstNameView, at: \.isValid, is: true)
+        wait(until: lastNameView, at: \.isValid, is: true)
+        wait(until: phoneNumberView, at: \.isValid, is: true)
+        wait(until: emailView, at: \.isValid, is: true)
+        
+        wait(until: billingAddressView, at: \.isValid, is: true)
+        wait(until: deliveryAddressView, at: \.isValid, is: true)
+        
         let submitButton: UIControl = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.payButton))
         submitButton.sendActions(for: .touchUpInside)
 
-        XCTAssertNotNil(view.findView(by: "AdyenComponents.AffirmComponent.addressItem"))
-        XCTAssertNotNil(view.findView(by: "AdyenComponents.AffirmComponent.addressItem.title"))
-
-        waitForExpectations(timeout: 10, handler: nil)
+        wait(for: [didSubmitExpectation], timeout: 100)
     }
 
     func testAffirmPrefilling_givenDeliveryAddressIsSet() throws {
@@ -116,8 +134,15 @@ class AffirmComponentUITests: XCTestCase {
         let expectedDeliveryAddress = try XCTUnwrap(shopperInformation.deliveryAddress)
         let deliveryAddress = try XCTUnwrap(prefillSut.deliveryAddressItem?.value)
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
+        
+        let view = try XCTUnwrap(prefillSut.viewController.view)
+        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: "addressItem"))
+        wait(until: billingAddressView, at: \.isValid, is: true)
+        
+        endEditing(for: prefillSut.viewController.view)
+        
+        verifyViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled-address-set")
 
-        assertViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled")
     }
 
     func testAffirmPrefilling_givenDeliveryAddressIsNotSet() throws {
@@ -153,11 +178,16 @@ class AffirmComponentUITests: XCTestCase {
 
         XCTAssertFalse(prefillSut.deliveryAddressToggleItem.value)
 
-        let expectedDeliveryAddress = PostalAddressMocks.emptyUSPostalAddress
-        let deliveryAddress = try XCTUnwrap(prefillSut.deliveryAddressItem?.value)
-        XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
-
-        assertViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled")
+        let deliveryAddress = try XCTUnwrap(prefillSut.deliveryAddressItem)
+        XCTAssertNil(deliveryAddress.value)
+        
+        let view = try XCTUnwrap(prefillSut.viewController.view)
+        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: "addressItem"))
+        wait(until: billingAddressView, at: \.isValid, is: true)
+        
+        endEditing(for: prefillSut.viewController.view)
+        
+        verifyViewControllerImage(matching: prefillSut.viewController, named: "shopper-info-prefilled-address-not-set")
     }
 
     func testAffirm_givenNoShopperInformation_shouldNotPrefill() throws {
@@ -182,17 +212,17 @@ class AffirmComponentUITests: XCTestCase {
         let email = try XCTUnwrap(sut.emailItem?.value)
         XCTAssertTrue(email.isEmpty)
 
-        let expectedBillingAddress = PostalAddressMocks.emptyUSPostalAddress
-        let billingAddress = try XCTUnwrap(sut.addressItem?.value)
-        XCTAssertEqual(expectedBillingAddress, billingAddress)
+        let billingAddress = try XCTUnwrap(sut.addressItem)
+        XCTAssertNil(billingAddress.value)
 
         XCTAssertFalse(sut.deliveryAddressToggleItem.value)
 
-        let expectedDeliveryAddress = PostalAddressMocks.emptyUSPostalAddress
-        let deliveryAddress = try XCTUnwrap(sut.deliveryAddressItem?.value)
-        XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
-
-        assertViewControllerImage(matching: sut.viewController, named: "shopper-info-not-filled")
+        let deliveryAddress = try XCTUnwrap(sut.deliveryAddressItem)
+        XCTAssertNil(deliveryAddress.value)
+        
+        endEditing(for: sut.viewController.view)
+        
+        verifyViewControllerImage(matching: sut.viewController, named: "shopper-info-not-filled")
     }
 
     // MARK: - Private
