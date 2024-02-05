@@ -70,8 +70,6 @@ public protocol TrackableComponent: Component {
 extension TrackableComponent where Self: ViewControllerDelegate {
     
     public func viewWillAppear(viewController: UIViewController) {
-        // initial call is not needed again if inside dropIn
-//        guard !_isDropIn else { return }
         sendInitialAnalytics()
     }
 }
@@ -80,6 +78,8 @@ extension TrackableComponent where Self: ViewControllerDelegate {
 extension TrackableComponent where Self: PaymentMethodAware {
     
     public func sendInitialAnalytics() {
+        // initial call is not needed again if inside dropIn
+        guard !_isDropIn else { return }
         let flavor: TelemetryFlavor = .components(type: paymentMethod.type)
         let amount = context.payment?.amount
         let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AdyenAnalytics.sessionId)
