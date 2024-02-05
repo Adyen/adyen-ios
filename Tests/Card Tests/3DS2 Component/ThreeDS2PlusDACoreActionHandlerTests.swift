@@ -55,11 +55,6 @@ import XCTest
         }
 
         func testSettingThreeDSRequestorAppURL() throws {
-            guard #available(iOS 14.0, *) else {
-                // XCTestCase does not respect @available so we have skip all tests here
-                throw XCTSkip("Unsupported iOS version")
-            }
-            
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
                                                       appearanceConfiguration: ADYAppearanceConfiguration(),
                                                       delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations, presentationDelegate: nil)
@@ -68,11 +63,6 @@ import XCTest
         }
         
         func testWrappedComponent() throws {
-            guard #available(iOS 14.0, *) else {
-                // XCTestCase does not respect @available so we have skip all tests here
-                throw XCTSkip("Unsupported iOS version")
-            }
-            
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
                                                       appearanceConfiguration: ADYAppearanceConfiguration(),
                                                       delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations, presentationDelegate: nil)
@@ -88,11 +78,6 @@ import XCTest
         }
 
         func testFingerprintFlowSuccess() throws {
-            guard #available(iOS 14.0, *) else {
-                // XCTestCase does not respect @available so we have skip all tests here
-                throw XCTSkip("Unsupported iOS version")
-            }
-            
             let service = AnyADYServiceMock()
             service.authenticationRequestParameters = authenticationRequestParameters
         
@@ -124,11 +109,6 @@ import XCTest
         }
 
         func testInvalidFingerprintToken() throws {
-            guard #available(iOS 14.0, *) else {
-                // XCTestCase does not respect @available so we have skip all tests here
-                throw XCTSkip("Unsupported iOS version")
-            }
-            
             let service = AnyADYServiceMock()
             service.authenticationRequestParameters = authenticationRequestParameters
         
@@ -213,11 +193,6 @@ import XCTest
         }
     
         func testChallengeFlowFailure() throws {
-            guard #available(iOS 14.0, *) else {
-                // XCTestCase does not respect @available so we have skip all tests here
-                throw XCTSkip("Unsupported iOS version")
-            }
-            
             let service = AnyADYServiceMock()
             service.authenticationRequestParameters = authenticationRequestParameters
             let mockedTransaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
@@ -256,11 +231,6 @@ import XCTest
         }
 
         func testChallengeFlowMissingTransaction() throws {
-            guard #available(iOS 14.0, *) else {
-                // XCTestCase does not respect @available so we have skip all tests here
-                throw XCTSkip("Unsupported iOS version")
-            }
-            
             let service = AnyADYServiceMock()
         
             let authenticationServiceMock = AuthenticationServiceMock()
@@ -288,11 +258,6 @@ import XCTest
         }
 
         func testInvalidChallengeToken() throws {
-            guard #available(iOS 14.0, *) else {
-                // XCTestCase does not respect @available so we have skip all tests here
-                throw XCTSkip("Unsupported iOS version")
-            }
-            
             let service = AnyADYServiceMock()
             service.authenticationRequestParameters = authenticationRequestParameters
             let mockedTransaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)

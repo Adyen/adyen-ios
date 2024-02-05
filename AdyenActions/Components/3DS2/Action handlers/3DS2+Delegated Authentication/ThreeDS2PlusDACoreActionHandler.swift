@@ -33,6 +33,11 @@
         }
     }
 
+    private struct DelegatedAuthenticationPayload {
+        let delegatedAuthenticationOutput: String
+        let delete: Bool?
+    }
+
     /// Handles the 3D Secure 2 fingerprint and challenge actions separately + Delegated Authentication.
     @available(iOS 14.0, *)
     internal class ThreeDS2PlusDACoreActionHandler: ThreeDS2CoreActionHandler {
@@ -172,8 +177,11 @@
         /// 1. if DA has been registered on the device
         /// 2. shows an approval screen if it has been registered
         /// else calls the completion with a failure.
-        private func performDelegatedAuthentication(_ fingerprintToken: ThreeDS2Component.FingerprintToken,
-                                                    completion: @escaping (Result<DelegatedAuthenticationPayload, DelegateAuthenticationError>) -> Void) {
+        private func performDelegatedAuthentication(
+            _ fingerprintToken: ThreeDS2Component.FingerprintToken,
+            completion: @escaping (Result<DelegatedAuthenticationPayload, DelegateAuthenticationError>
+            ) -> Void
+        ) {
             guard let delegatedAuthenticationInput = fingerprintToken.delegatedAuthenticationSDKInput else {
                 completion(.failure(.authenticationFailed(cause: ThreeDS2PlusDACoreActionError.sdkInputNotAvailableForApproval)))
                 return
@@ -193,14 +201,12 @@
         }
     
         // MARK: Delegated Authentication Approval
-    
-        private struct DelegatedAuthenticationPayload {
-            let delegatedAuthenticationOutput: String
-            let delete: Bool?
-        }
-    
-        private func showApprovalScreen(delegatedAuthenticationInput: String,
-                                        completion: @escaping (Result<DelegatedAuthenticationPayload, DelegateAuthenticationError>) -> Void) {
+        
+        private func showApprovalScreen(
+            delegatedAuthenticationInput: String,
+            completion: @escaping (Result<DelegatedAuthenticationPayload, DelegateAuthenticationError>
+            ) -> Void
+        ) {
             presenter.showApprovalScreen(
                 component: self,
                 approveAuthenticationHandler: { [weak self] in
