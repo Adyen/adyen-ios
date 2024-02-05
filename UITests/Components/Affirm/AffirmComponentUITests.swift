@@ -80,8 +80,8 @@ class AffirmComponentUITests: XCTestCase {
         let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.phone))
         let emailView: FormTextInputItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.email))
         
-        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.billingAddress))
-        let deliveryAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddress))
+        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.billingAddress))
+        let deliveryAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.deliveryAddress))
         
         wait(until: firstNameView, at: \.isValid, is: true)
         wait(until: lastNameView, at: \.isValid, is: true)
@@ -90,8 +90,6 @@ class AffirmComponentUITests: XCTestCase {
         
         wait(until: billingAddressView, at: \.isValid, is: true)
         wait(until: deliveryAddressView, at: \.isValid, is: true)
-        
-        XCTAssertNotNil(view.findView(by: "AdyenComponents.AffirmComponent.addressItem.title"))
         
         let submitButton: UIControl = try XCTUnwrap(view.findView(by: AffirmViewIdentifier.payButton))
         submitButton.sendActions(for: .touchUpInside)
@@ -138,7 +136,7 @@ class AffirmComponentUITests: XCTestCase {
         XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
         
         let view = try XCTUnwrap(prefillSut.viewController.view)
-        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "addressItem"))
+        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: "addressItem"))
         wait(until: billingAddressView, at: \.isValid, is: true)
         
         endEditing(for: prefillSut.viewController.view)
@@ -180,12 +178,11 @@ class AffirmComponentUITests: XCTestCase {
 
         XCTAssertFalse(prefillSut.deliveryAddressToggleItem.value)
 
-        let expectedDeliveryAddress = PostalAddressMocks.emptyUSPostalAddress
-        let deliveryAddress = try XCTUnwrap(prefillSut.deliveryAddressItem?.value)
-        XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
+        let deliveryAddress = try XCTUnwrap(prefillSut.deliveryAddressItem)
+        XCTAssertNil(deliveryAddress.value)
         
         let view = try XCTUnwrap(prefillSut.viewController.view)
-        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = try XCTUnwrap(view.findView(by: "addressItem"))
+        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: "addressItem"))
         wait(until: billingAddressView, at: \.isValid, is: true)
         
         endEditing(for: prefillSut.viewController.view)
@@ -215,15 +212,13 @@ class AffirmComponentUITests: XCTestCase {
         let email = try XCTUnwrap(sut.emailItem?.value)
         XCTAssertTrue(email.isEmpty)
 
-        let expectedBillingAddress = PostalAddressMocks.emptyUSPostalAddress
-        let billingAddress = try XCTUnwrap(sut.addressItem?.value)
-        XCTAssertEqual(expectedBillingAddress, billingAddress)
+        let billingAddress = try XCTUnwrap(sut.addressItem)
+        XCTAssertNil(billingAddress.value)
 
         XCTAssertFalse(sut.deliveryAddressToggleItem.value)
 
-        let expectedDeliveryAddress = PostalAddressMocks.emptyUSPostalAddress
-        let deliveryAddress = try XCTUnwrap(sut.deliveryAddressItem?.value)
-        XCTAssertEqual(expectedDeliveryAddress, deliveryAddress)
+        let deliveryAddress = try XCTUnwrap(sut.deliveryAddressItem)
+        XCTAssertNil(deliveryAddress.value)
         
         endEditing(for: sut.viewController.view)
         

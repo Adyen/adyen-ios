@@ -70,6 +70,7 @@ internal struct CardSettingsView: View {
             .navigationBarTitle("")
             .navigationBarHidden(true)
         }
+        .navigationViewStyle(.stack)
     }
 }
 

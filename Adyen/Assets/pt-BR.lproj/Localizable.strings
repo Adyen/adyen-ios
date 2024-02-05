@@ -86,6 +86,7 @@
 "adyen.billingAddressSection.title" = "Endereço de cobrança";
 "adyen.billingAddress.placeholder" = "Endereço de cobrança";
 "adyen.deliveryAddressSection.title" = "Endereço de entrega";
+"adyen.deliveryAddress.placeholder" = "Seu endereço de entrega";
 "adyen.countryField.title" = "País";
 "adyen.countryField.placeholder" = "País";
 "adyen.countryField.invalid" = "País inválido";
@@ -197,8 +198,8 @@
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Cancelar";
 "adyen.picker.search.empty.title" = "Nenhum resultado encontrado";
 "adyen.picker.search.empty.subtitle" = "A pesquisa de '%@' não obteve resultados";
-"adyen.address.lookup.search.placeholder" = "Pesquise seu endereço";
-"adyen.address.lookup.search.empty.title" = "Não consegue pesquisar seu endereço?";
+"adyen.address.lookup.search.placeholder" = "Procure seu endereço";
+"adyen.address.lookup.search.empty.title" = "Não consegue encontrar seu endereço?";
 "adyen.address.lookup.search.empty.subtitle" = "Você pode #inserir seu endereço manualmente#";
 "adyen.address.lookup.search.empty.title.noResults" = "Nenhum resultado encontrado";
 "adyen.address.lookup.search.empty.subtitle.noResults" = "A pesquisa de '%@' não obteve resultados. Tente novamente ou use #inserir endereço manualmente#";

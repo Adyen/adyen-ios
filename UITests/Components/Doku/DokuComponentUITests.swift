@@ -89,14 +89,13 @@ final class DokuComponentUITests: XCTestCase {
             XCTAssertEqual(data.firstName, "Mohamed")
             XCTAssertEqual(data.lastName, "Smith")
             XCTAssertEqual(data.emailAddress, "mohamed.smith@domain.com")
-
+            
             sut.stopLoadingIfNeeded()
             delegateExpectation.fulfill()
             XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
             
-            self.wait(for: .aMoment)
-            self.assertViewControllerImage(matching: sut.viewController, named: "doku_flow")
+            self.verifyViewControllerImage(matching: sut.viewController, named: "doku_flow")
 
             delegateExpectation.fulfill()
         }

@@ -84,8 +84,7 @@ class OnlineBankingComponentUITests: XCTestCase {
             XCTAssertEqual(details.issuer, "jp")
             sut.stopLoadingIfNeeded()
             
-            self.wait(for: .aMoment)
-            self.assertViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
+            self.verifyViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
             didContinueExpectation.fulfill()
         }
         

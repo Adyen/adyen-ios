@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -34,11 +34,10 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
         personalDetailsHeaderItem = FormLabelItem(text: "", style: configuration.style.sectionHeader)
 
         let fields: [PersonalInformation] = [
-            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 2))),
-            .custom(CustomFormItemInjector(item: personalDetailsHeaderItem.addingDefaultMargins())),
             .firstName,
             .lastName,
             .phone,
+            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 2))),
             .address,
             .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1)))
         ]

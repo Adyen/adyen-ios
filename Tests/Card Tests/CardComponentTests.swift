@@ -1667,8 +1667,8 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(presentedViewController.viewControllers.first is AddressInputFormViewController)
         
         let inputForm = try XCTUnwrap(presentedViewController.viewControllers.first as? AddressInputFormViewController)
-        XCTAssertEqual(inputForm.billingAddressItem.configuration.supportedCountryCodes, ["UK"])
-        XCTAssertEqual(inputForm.billingAddressItem.countryPickerItem.value?.identifier, "UK")
+        XCTAssertEqual(inputForm.addressItem.configuration.supportedCountryCodes, ["UK"])
+        XCTAssertEqual(inputForm.addressItem.countryPickerItem.value?.identifier, "UK")
     }
     
     func testAddressWithSupportedCountriesWithMatchingPrefill() throws {
@@ -1703,8 +1703,8 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(presentedViewController.viewControllers.first is AddressInputFormViewController)
         
         let inputForm = try XCTUnwrap(presentedViewController.viewControllers.first as? AddressInputFormViewController)
-        XCTAssertEqual(inputForm.billingAddressItem.configuration.supportedCountryCodes, ["US", "JP"])
-        XCTAssertEqual(inputForm.billingAddressItem.value, expectedBillingAddress)
+        XCTAssertEqual(inputForm.addressItem.configuration.supportedCountryCodes, ["US", "JP"])
+        XCTAssertEqual(inputForm.addressItem.value, expectedBillingAddress)
     }
     
     func testAddressWithSupportedCountriesWithNonMatchingPrefill() throws {
@@ -1734,8 +1734,8 @@ class CardComponentTests: XCTestCase {
         
         let inputForm = try XCTUnwrap(presentedViewController.viewControllers.first as? AddressInputFormViewController)
         
-        XCTAssertEqual(inputForm.billingAddressItem.configuration.supportedCountryCodes, ["UK"])
-        XCTAssertEqual(inputForm.billingAddressItem.countryPickerItem.value?.identifier, "UK")
+        XCTAssertEqual(inputForm.addressItem.configuration.supportedCountryCodes, ["UK"])
+        XCTAssertEqual(inputForm.addressItem.countryPickerItem.value?.identifier, "UK")
     }
     
     func testOptionalInvalidFullAddressWithCertainSchemes() throws {

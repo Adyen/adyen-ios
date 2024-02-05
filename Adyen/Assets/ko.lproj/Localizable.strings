@@ -86,6 +86,7 @@
 "adyen.billingAddressSection.title" = "청구지 주소";
 "adyen.billingAddress.placeholder" = "청구 주소";
 "adyen.deliveryAddressSection.title" = "배송 주소";
+"adyen.deliveryAddress.placeholder" = "배송 주소";
 "adyen.countryField.title" = "국가";
 "adyen.countryField.placeholder" = "국가";
 "adyen.countryField.invalid" = "잘못된 국가";
