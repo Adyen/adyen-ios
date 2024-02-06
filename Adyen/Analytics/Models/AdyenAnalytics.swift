@@ -7,23 +7,27 @@
 import Foundation
 
 @_spi(AdyenInternal)
-public final class AdyenAnalytics {
+/// Used as a singleton to update the sessionId
+public final class AnalyticsForSession {
     
-    @_spi(AdyenInternal)
     /// Needed to be able to determine if using session
     public static var sessionId: String?
-  
-    internal struct CommonFields: Encodable {
-        
-        internal var timestamp = ISO8601DateFormatter().string(from: Date())
-        
-        internal var component: String
-        
-        internal var metadata: [String: String] = [:]
-    }
     
+    private init() { /* Private empty init */ }
 }
 
-internal protocol AdyenAnalyticsCommonFields: Encodable {
-    var commonFields: AdyenAnalytics.CommonFields { get }
+@_spi(AdyenInternal)
+/// A protocol that defines the events that can occur under Checkout Analytics.
+public protocol AnalyticsEvent: Encodable {
+    var timestamp: TimeInterval { get }
+    
+    var component: String { get }
+}
+
+@_spi(AdyenInternal)
+public extension AnalyticsEvent {
+    
+    var timestamp: TimeInterval {
+        Date().timeIntervalSince1970
+    }
 }

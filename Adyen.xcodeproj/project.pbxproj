@@ -285,9 +285,9 @@
 		A0D48FB827109B0200C0B82C /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */; };
 		A0DB48662AFD020400348C83 /* AnalyticsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB48652AFD020400348C83 /* AnalyticsRequest.swift */; };
 		A0DB48682AFD068400348C83 /* AdyenAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB48672AFD068400348C83 /* AdyenAnalytics.swift */; };
-		A0DB486A2AFD0BDC00348C83 /* AdyenAnalyticsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB48692AFD0BDC00348C83 /* AdyenAnalyticsInfo.swift */; };
-		A0DB486C2AFD0BEE00348C83 /* AdyenAnalyticsLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB486B2AFD0BEE00348C83 /* AdyenAnalyticsLog.swift */; };
-		A0DB486E2AFD0BFC00348C83 /* AdyenAnalyticsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB486D2AFD0BFC00348C83 /* AdyenAnalyticsError.swift */; };
+		A0DB486A2AFD0BDC00348C83 /* AnalyticsEventInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB48692AFD0BDC00348C83 /* AnalyticsEventInfo.swift */; };
+		A0DB486C2AFD0BEE00348C83 /* AnalyticsEventLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB486B2AFD0BEE00348C83 /* AnalyticsEventLog.swift */; };
+		A0DB486E2AFD0BFC00348C83 /* AnalyticsEventError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB486D2AFD0BFC00348C83 /* AnalyticsEventError.swift */; };
 		A0DDA6A72A6162F500EBD6AF /* AdyenSessionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DDA6A62A6162F500EBD6AF /* AdyenSessionResult.swift */; };
 		A0DE8F6D26CEA04500F2F1E8 /* Installments.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE8F6C26CEA04500F2F1E8 /* Installments.swift */; };
 		A0F41EAC26CD4AA50089AD6C /* FormCardInstallmentsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41EAB26CD4AA50089AD6C /* FormCardInstallmentsItem.swift */; };
@@ -1527,9 +1527,9 @@
 		A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayHelpers.swift; sourceTree = "<group>"; };
 		A0DB48652AFD020400348C83 /* AnalyticsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsRequest.swift; sourceTree = "<group>"; };
 		A0DB48672AFD068400348C83 /* AdyenAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenAnalytics.swift; sourceTree = "<group>"; };
-		A0DB48692AFD0BDC00348C83 /* AdyenAnalyticsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenAnalyticsInfo.swift; sourceTree = "<group>"; };
-		A0DB486B2AFD0BEE00348C83 /* AdyenAnalyticsLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenAnalyticsLog.swift; sourceTree = "<group>"; };
-		A0DB486D2AFD0BFC00348C83 /* AdyenAnalyticsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenAnalyticsError.swift; sourceTree = "<group>"; };
+		A0DB48692AFD0BDC00348C83 /* AnalyticsEventInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEventInfo.swift; sourceTree = "<group>"; };
+		A0DB486B2AFD0BEE00348C83 /* AnalyticsEventLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEventLog.swift; sourceTree = "<group>"; };
+		A0DB486D2AFD0BFC00348C83 /* AnalyticsEventError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEventError.swift; sourceTree = "<group>"; };
 		A0DDA6A62A6162F500EBD6AF /* AdyenSessionResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenSessionResult.swift; sourceTree = "<group>"; };
 		A0DE8F6C26CEA04500F2F1E8 /* Installments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Installments.swift; sourceTree = "<group>"; };
 		A0F41E5526CBCA6E0089AD6C /* InstallmentOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallmentOptions.swift; sourceTree = "<group>"; };
@@ -3136,9 +3136,9 @@
 			children = (
 				C9B6683627C8D7FB006950B9 /* TelemetryData.swift */,
 				A0DB48672AFD068400348C83 /* AdyenAnalytics.swift */,
-				A0DB48692AFD0BDC00348C83 /* AdyenAnalyticsInfo.swift */,
-				A0DB486B2AFD0BEE00348C83 /* AdyenAnalyticsLog.swift */,
-				A0DB486D2AFD0BFC00348C83 /* AdyenAnalyticsError.swift */,
+				A0DB48692AFD0BDC00348C83 /* AnalyticsEventInfo.swift */,
+				A0DB486B2AFD0BEE00348C83 /* AnalyticsEventLog.swift */,
+				A0DB486D2AFD0BFC00348C83 /* AnalyticsEventError.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -6578,7 +6578,7 @@
 				E224088D22B0FD220058923E /* StoredPayPalPaymentMethod.swift in Sources */,
 				F99D2F0A266136A700BB5B2F /* AppleWalletPassResponse.swift in Sources */,
 				F9639B3524DD97A30073F38A /* PaymentStatusResponse.swift in Sources */,
-				A0DB486E2AFD0BFC00348C83 /* AdyenAnalyticsError.swift in Sources */,
+				A0DB486E2AFD0BFC00348C83 /* AnalyticsEventError.swift in Sources */,
 				F9BA21C2246E82EE00D36A63 /* SizeUtilities.swift in Sources */,
 				F97C829225BB156600D7F85C /* AbstractPersonalInformationComponent+Extensions.swift in Sources */,
 				81BA08372A49C93100308160 /* FormSelectableValueItemView.swift in Sources */,
@@ -6652,7 +6652,7 @@
 				F9D5752A237C6084009C18B5 /* StoredBCMCPaymentMethod.swift in Sources */,
 				E2289B3C23D0BBB1002844BF /* ListSectionHeaderStyle.swift in Sources */,
 				E715A7342A1B96890047B87A /* UIApplicationHelpers.swift in Sources */,
-				A0DB486C2AFD0BEE00348C83 /* AdyenAnalyticsLog.swift in Sources */,
+				A0DB486C2AFD0BEE00348C83 /* AnalyticsEventLog.swift in Sources */,
 				F926D53723F6A35700D058D3 /* NumericFormatter.swift in Sources */,
 				A026C85127C4FE4700E6C34A /* BasicComponentConfiguration.swift in Sources */,
 				E7085B162628B29600D0153B /* FormPhoneExtensionPickerItemView.swift in Sources */,
@@ -6673,7 +6673,7 @@
 				E2C0E096220B04F0008616F6 /* FormViewController.swift in Sources */,
 				F9FE25D62626CD49001874BB /* ReadyToSubmitPaymentComponentDelegate.swift in Sources */,
 				F99D4556262717A500880D72 /* FormErrorItemView.swift in Sources */,
-				A0DB486A2AFD0BDC00348C83 /* AdyenAnalyticsInfo.swift in Sources */,
+				A0DB486A2AFD0BDC00348C83 /* AnalyticsEventInfo.swift in Sources */,
 				F96286BD256BDEB000043FE3 /* CoreBundleExtension.swift in Sources */,
 				E7085D7D262EEF6200D0153B /* AllRegions.swift in Sources */,
 				F919DF9124E682480027976E /* ClientKeyResponse.swift in Sources */,

@@ -36,7 +36,7 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
         guard !isDropIn else { return }
         let flavor: TelemetryFlavor = .components(type: paymentMethod.type)
         let amount = context.payment?.amount
-        let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AdyenAnalytics.sessionId)
+        let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AnalyticsForSession.sessionId)
         context.analyticsProvider?.sendInitialAnalytics(with: flavor,
                                                          additionalFields: additionalFields)
     }

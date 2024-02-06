@@ -25,11 +25,11 @@ internal struct AnalyticsRequest: APIRequest {
     
     internal var channel: String = "iOS"
     
-    internal var infos: [AdyenAnalytics.Info] = []
+    internal var infos: [AnalyticsEventInfo] = []
     
-    internal var logs: [AdyenAnalytics.Log] = []
+    internal var logs: [AnalyticsEventLog] = []
     
-    internal var errors: [AdyenAnalytics.Error] = []
+    internal var errors: [AnalyticsEventError] = []
     
     internal init(checkoutAttemptId: String) {
         self.path = "checkoutanalytics/v3/analytics/\(checkoutAttemptId)"
