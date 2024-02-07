@@ -171,7 +171,12 @@ public final class BoletoComponent: PaymentComponent,
 extension BoletoComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)
-extension BoletoComponent: ViewControllerDelegate {}
+extension BoletoComponent: ViewControllerDelegate {
+    
+    public func viewWillAppear(viewController: UIViewController) {
+        prefillFields(for: formComponent)
+    }
+}
 
 @_spi(AdyenInternal)
 extension BoletoComponent: PaymentComponentDelegate {

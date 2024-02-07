@@ -288,9 +288,7 @@ extension ACHDirectDebitComponent: TrackableComponent {}
 extension ACHDirectDebitComponent: ViewControllerDelegate {
 
     public func viewDidLoad(viewController: UIViewController) {
-        Analytics.sendEvent(component: paymentMethod.type.rawValue,
-                            flavor: _isDropIn ? .dropin : .components,
-                            context: context.apiContext)
+        sendInitialAnalytics()
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
     }

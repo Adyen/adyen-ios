@@ -526,7 +526,7 @@ class BCMCComponentTests: XCTestCase {
                                 context: context)
 
         // When
-        sut.cardViewController.viewDidLoad()
+        sut.viewDidLoad(viewController: sut.cardViewController)
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)

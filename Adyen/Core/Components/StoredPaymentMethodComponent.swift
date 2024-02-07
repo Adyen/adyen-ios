@@ -42,11 +42,6 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
     // MARK: - PresentableComponent
 
     public lazy var viewController: UIViewController = {
-        Analytics.sendEvent(
-            component: storedPaymentMethod.type.rawValue,
-            flavor: _isDropIn ? .dropin : .components,
-            context: context.apiContext
-        )
         sendInitialAnalytics()
 
         let localizationParameters = configuration.localizationParameters

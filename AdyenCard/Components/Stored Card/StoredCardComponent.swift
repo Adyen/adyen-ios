@@ -37,11 +37,6 @@ internal final class StoredCardComponent: PaymentComponent, PaymentAware, Presen
     }
     
     internal lazy var storedCardAlertManager: StoredCardAlertManager = {
-        Analytics.sendEvent(
-            component: paymentMethod.type.rawValue,
-            flavor: _isDropIn ? .dropin : .components,
-            context: context.apiContext
-        )
         sendInitialAnalytics()
         
         let manager = StoredCardAlertManager(paymentMethod: storedCardPaymentMethod,

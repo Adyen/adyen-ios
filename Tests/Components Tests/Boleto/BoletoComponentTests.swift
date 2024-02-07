@@ -28,13 +28,13 @@ class BoletoComponentTests: XCTestCase {
         
         let viewController = component.viewController
         
-        setupRootViewController(viewController)
-        
         let firstNameField: UITextField = try XCTUnwrap(viewController.view.findView(by: "firstNameItem.textField"))
         let lastNameField: UITextField = try XCTUnwrap(viewController.view.findView(by: "lastNameItem.textField"))
         let socialSecurityNumberField: UITextField = try XCTUnwrap(viewController.view.findView(by: "socialSecurityNumberItem.textField"))
         let emailField: UITextField = try XCTUnwrap(viewController.view.findView(by: "emailItem.textField"))
         let addressField: FormAddressPickerItemView = try XCTUnwrap(viewController.view.findView(by: "addressItem"))
+        
+        setupRootViewController(viewController)
         
         XCTAssertEqual(firstNameField.text, prefilledInformation.shopperName?.firstName)
         XCTAssertEqual(lastNameField.text, prefilledInformation.shopperName?.lastName)
