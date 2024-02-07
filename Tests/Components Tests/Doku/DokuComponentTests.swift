@@ -151,7 +151,7 @@ class DokuComponentTests: XCTestCase {
         XCTAssertTrue(email.isEmpty)
     }
 
-    func testViewWillAppearShouldSendTelemetryEvent() throws {
+    func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
@@ -160,7 +160,7 @@ class DokuComponentTests: XCTestCase {
                                 configuration: DokuComponent.Configuration())
 
         // When
-        sut.viewWillAppear(viewController: sut.viewController)
+        sut.viewDidLoad(viewController: sut.viewController)
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)

@@ -123,7 +123,7 @@ class BoletoComponentTests: XCTestCase {
         XCTAssertFalse(emailItem.isHidden)
     }
 
-    func testViewWillAppearShouldSendTelemetryEvent() throws {
+    func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
@@ -135,7 +135,7 @@ class BoletoComponentTests: XCTestCase {
         )
 
         // When
-        component.viewWillAppear(viewController: component.viewController)
+        component.viewDidLoad(viewController: component.viewController)
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)

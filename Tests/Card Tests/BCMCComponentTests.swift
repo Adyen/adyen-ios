@@ -513,7 +513,7 @@ class BCMCComponentTests: XCTestCase {
         XCTAssertEqual(sut.viewController.title, cardPaymentMethod.name)
     }
 
-    func testViewWillAppearShouldSendTelemetryEvent() throws {
+    func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
@@ -526,7 +526,7 @@ class BCMCComponentTests: XCTestCase {
                                 context: context)
 
         // When
-        sut.cardViewController.viewWillAppear(true)
+        sut.cardViewController.viewDidLoad()
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)

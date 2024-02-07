@@ -77,12 +77,12 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
-    func testViewWillAppearShouldSendTelemetryEvent() throws {
+    func testViewDidLoadShouldSendInitialCall() throws {
         // When
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
         sut = BLIKComponent(paymentMethod: method, context: context)
-        sut.viewWillAppear(viewController: sut.viewController)
+        sut.viewDidLoad(viewController: sut.viewController)
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)

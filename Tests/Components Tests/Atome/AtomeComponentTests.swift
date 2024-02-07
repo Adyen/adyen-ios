@@ -79,7 +79,7 @@ class AtomeComponentTests: XCTestCase {
         XCTAssertFalse(phoneExtensions.isEmpty)
     }
 
-    func testViewWillAppearShouldSendTelemetryEvent() throws {
+    func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
@@ -88,7 +88,7 @@ class AtomeComponentTests: XCTestCase {
         let mockViewController = UIViewController()
 
         // When
-        sut.viewWillAppear(viewController: mockViewController)
+        sut.viewDidLoad(viewController: mockViewController)
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)

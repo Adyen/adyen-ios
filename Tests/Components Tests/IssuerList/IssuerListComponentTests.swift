@@ -55,7 +55,7 @@ class IssuerListComponentTests: XCTestCase {
         waitForExpectations(timeout: 10)
     }
 
-    func testViewWillAppearShouldSendTelemetryEvent() throws {
+    func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
@@ -64,7 +64,7 @@ class IssuerListComponentTests: XCTestCase {
         let mockViewController = UIViewController()
 
         // When
-        sut.viewWillAppear(viewController: mockViewController)
+        sut.viewDidLoad(viewController: mockViewController)
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)

@@ -240,7 +240,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 5)
     }
 
-    func testViewWillAppearShouldSendTelemetryEvent() throws {
+    func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
@@ -250,7 +250,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
                                            context: context)
 
         // When
-        sut.viewWillAppear(viewController: mockViewController)
+        sut.viewDidLoad(viewController: mockViewController)
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)
