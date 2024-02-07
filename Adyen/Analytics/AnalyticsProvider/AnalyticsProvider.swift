@@ -48,6 +48,15 @@ public protocol AnalyticsProviderProtocol {
     func sendInitialAnalytics(with flavor: TelemetryFlavor, additionalFields: AdditionalAnalyticsFields?)
     
     var checkoutAttemptId: String? { get }
+    
+    /// Sends an info event to Checkout Anayltics
+    func send(info: AnalyticsEventInfo)
+    
+    /// Sends a log event to Checkout Anayltics
+    func send(log: AnalyticsEventLog)
+    
+    /// Sends an error event to Checkout Anayltics
+    func send(error: AnalyticsEventError)
 }
 
 internal final class AnalyticsProvider: AnalyticsProviderProtocol {
@@ -59,11 +68,9 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     internal private(set) var checkoutAttemptId: String?
     private let uniqueAssetAPIClient: UniqueAssetAPIClient<InitialAnalyticsResponse>
     
-    private var batchTimer: Timer?
-    
-    private var infos: [AdyenAnalytics.Info] = []
-    private var logs: [AdyenAnalytics.Log] = []
-    private var errors: [AdyenAnalytics.Error] = []
+    private var infos: [AnalyticsEventInfo] = []
+    private var logs: [AnalyticsEventLog] = []
+    private var errors: [AnalyticsEventError] = []
 
     // MARK: - Initializers
 
@@ -94,22 +101,22 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
         uniqueAssetAPIClient.perform(initialAnalyticsRequest) { [weak self] result in
             switch result {
             case let .success(response):
-                self?.checkoutAttemptId = response.identifier
+                self?.checkoutAttemptId = response.checkoutAttemptId
             case .failure:
                 self?.checkoutAttemptId = nil
             }
         }
     }
     
-    internal func send(info: AdyenAnalytics.Info) {
+    internal func send(info: AnalyticsEventInfo) {
         infos.append(info)
     }
     
-    internal func send(log: AdyenAnalytics.Log) {
+    internal func send(log: AnalyticsEventLog) {
         logs.append(log)
     }
     
-    internal func send(error: AdyenAnalytics.Error) {
+    internal func send(error: AnalyticsEventError) {
         errors.append(error)
         sendAll()
     }

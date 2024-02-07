@@ -24,7 +24,7 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
         let paymentMethodTypes = paymentMethods.regular.map(\.type.rawValue)
         let flavor = TelemetryFlavor.dropIn(paymentMethods: paymentMethodTypes)
         let amount = context.payment?.amount
-        let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AdyenAnalytics.sessionId)
+        let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AnalyticsForSession.sessionId)
         context.analyticsProvider?.sendInitialAnalytics(with: flavor, additionalFields: additionalFields)
     }
     

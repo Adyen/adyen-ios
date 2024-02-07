@@ -70,7 +70,7 @@ class SessionTests: XCTestCase {
                 XCTAssertEqual(session.sessionContext.paymentMethods, expectedPaymentMethods)
                 XCTAssertEqual(session.sessionContext.amount, .init(value: 220, currencyCode: "USD"))
                 XCTAssertFalse(session.sessionContext.configuration.enableStoreDetails)
-                XCTAssertEqual(AdyenAnalytics.sessionId, "session_id")
+                XCTAssertEqual(AnalyticsForSession.sessionId, "session_id")
             }
             expectation.fulfill()
         }

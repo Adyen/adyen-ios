@@ -32,7 +32,7 @@ class AnalyticsProviderTests: XCTestCase {
 
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
-        let initialAnalyticsResponse = InitialAnalyticsResponse(identifier: expectedCheckoutAttemptId)
+        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: expectedCheckoutAttemptId)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
@@ -64,7 +64,7 @@ class AnalyticsProviderTests: XCTestCase {
 
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
-        let initialAnalyticsResponse = InitialAnalyticsResponse(identifier: expectedCheckoutAttemptId)
+        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: expectedCheckoutAttemptId)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
@@ -103,7 +103,7 @@ class AnalyticsProviderTests: XCTestCase {
 
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
-        let initialAnalyticsResponse = InitialAnalyticsResponse(identifier: expectedCheckoutAttemptId)
+        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: expectedCheckoutAttemptId)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
@@ -122,7 +122,7 @@ class AnalyticsProviderTests: XCTestCase {
         let apiClient = APIClientMock()
         let sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
-        let initialAnalyticsResponse = InitialAnalyticsResponse(identifier: checkoutAttemptIdMockValue)
+        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
@@ -141,7 +141,7 @@ class AnalyticsProviderTests: XCTestCase {
         
         let apiClient = APIClientMock()
         apiClient.mockedResults = [
-            .success(InitialAnalyticsResponse(identifier: checkoutAttemptId)),
+            .success(InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptId)),
         ]
         apiClient.onExecute = { request in
             if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
@@ -175,7 +175,7 @@ class AnalyticsProviderTests: XCTestCase {
         
         let apiClient = APIClientMock()
         apiClient.mockedResults = [
-            .success(InitialAnalyticsResponse(identifier: checkoutAttemptId))
+            .success(InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptId))
         ]
         apiClient.onExecute = { request in
             if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {

@@ -119,7 +119,7 @@ public final class AdyenSession {
                                            sessionContext: sessionContext)
                 session.delegate = delegate
                 session.presentationDelegate = presentationDelegate
-                AdyenAnalytics.sessionId = sessionContext.identifier
+                AnalyticsForSession.sessionId = sessionContext.identifier
                 completion(.success(session))
             case let .failure(error):
                 completion(.failure(error))

@@ -11,10 +11,10 @@ internal struct InitialAnalyticsResponse: Response {
 
     // MARK: - Properties
 
-    internal let identifier: String
+    internal let checkoutAttemptId: String
 
     internal enum CodingKeys: String, CodingKey {
-        case identifier = "checkoutAttemptId"
+        case checkoutAttemptId
     }
 }
 
