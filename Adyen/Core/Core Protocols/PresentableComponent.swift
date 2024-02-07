@@ -69,7 +69,7 @@ public protocol TrackableComponent: Component {
 @_spi(AdyenInternal)
 extension TrackableComponent where Self: ViewControllerDelegate {
     
-    public func viewWillAppear(viewController: UIViewController) {
+    public func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
     }
 }
