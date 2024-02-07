@@ -48,15 +48,6 @@ public protocol AnalyticsProviderProtocol {
     func sendInitialAnalytics(with flavor: TelemetryFlavor, additionalFields: AdditionalAnalyticsFields?)
     
     var checkoutAttemptId: String? { get }
-    
-    /// Sends an info event to Checkout Anayltics
-    func send(info: AnalyticsEventInfo)
-    
-    /// Sends a log event to Checkout Anayltics
-    func send(log: AnalyticsEventLog)
-    
-    /// Sends an error event to Checkout Anayltics
-    func send(error: AnalyticsEventError)
 }
 
 internal final class AnalyticsProvider: AnalyticsProviderProtocol {
@@ -67,10 +58,6 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     internal let configuration: AnalyticsConfiguration
     internal private(set) var checkoutAttemptId: String?
     private let uniqueAssetAPIClient: UniqueAssetAPIClient<InitialAnalyticsResponse>
-    
-    private var infos: [AnalyticsEventInfo] = []
-    private var logs: [AnalyticsEventLog] = []
-    private var errors: [AnalyticsEventError] = []
 
     // MARK: - Initializers
 
@@ -106,45 +93,5 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
                 self?.checkoutAttemptId = nil
             }
         }
-    }
-    
-    internal func send(info: AnalyticsEventInfo) {
-        infos.append(info)
-    }
-    
-    internal func send(log: AnalyticsEventLog) {
-        logs.append(log)
-    }
-    
-    internal func send(error: AnalyticsEventError) {
-        errors.append(error)
-        sendAll()
-    }
-    
-    private func setupTimer() {
-        let timer = Timer(timeInterval: 10, target: self, selector: #selector(sendAll), userInfo: nil, repeats: true)
-        timer.tolerance = 1
-        RunLoop.current.add(timer, forMode: .common)
-    }
-    
-    @objc private func sendAll() {
-        guard configuration.isEnabled,
-              let checkoutAttemptId else { return }
-        var request = AnalyticsRequest(checkoutAttemptId: checkoutAttemptId)
-        
-        request.infos = infos
-        request.logs = logs
-        request.errors = errors
-        
-        apiClient.perform(request) { [weak self] _ in
-            guard let self else { return }
-            self.clearAll()
-        }
-    }
-    
-    private func clearAll() {
-        infos = []
-        logs = []
-        errors = []
     }
 }
