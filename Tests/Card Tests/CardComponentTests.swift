@@ -1972,7 +1972,7 @@ class CardComponentTests: XCTestCase {
         sut.viewDidLoad(viewController: sut.cardViewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
 
     }
 

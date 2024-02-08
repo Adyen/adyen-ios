@@ -8,7 +8,7 @@ import Foundation
 
 @_spi(AdyenInternal)
 /// Represents an info event  in the analytics scheme that can occur
-/// many times during the checkout flow, such as input field focus/unfocus etc.
+/// multiple times during the checkout flow, such as input field focus/unfocus etc.
 public struct AnalyticsEventInfo: AnalyticsEvent {
     public var component: String
     

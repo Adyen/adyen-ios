@@ -14,9 +14,9 @@ class BACSDirectDebitComponentTrackerProtocolMock: BACSDirectDebitComponentTrack
 
     // MARK: - sendEvent
 
-    var initialTelemetryEventCallsCount = 0
+    var initialEventCallsCount = 0
     
     func sendInitialAnalytics() {
-        initialTelemetryEventCallsCount += 1
+        initialEventCallsCount += 1
     }
 }

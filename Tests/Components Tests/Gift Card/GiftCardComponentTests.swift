@@ -575,7 +575,7 @@ class GiftCardComponentTests: XCTestCase {
         sut.viewDidLoad(viewController: mockViewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
     }
     
     func testGiftCardHidingSecurityCodeItemView() throws {

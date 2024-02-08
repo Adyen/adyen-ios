@@ -52,7 +52,7 @@ internal struct InitialAnalyticsRequest: APIRequest {
 
     // MARK: - Initializers
 
-    internal init(data: TelemetryData) {
+    internal init(data: AnalyticsData) {
         self.version = data.version
         self.platform = data.platform
         self.channel = data.channel

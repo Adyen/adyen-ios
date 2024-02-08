@@ -126,7 +126,7 @@ class MBWayComponentTests: XCTestCase {
         sut.viewDidLoad(viewController: sut.viewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.initialTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
     }
 
     // MARK: - Private

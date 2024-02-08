@@ -15,15 +15,15 @@ class AnalyticsProviderMock: AnalyticsProviderProtocol {
 
     // MARK: - checkoutAttemptId
     
-    func sendInitialAnalytics(with flavor: TelemetryFlavor, additionalFields: AdditionalAnalyticsFields?) {
-        initialTelemetryEventCallsCount += 1
+    func sendInitialAnalytics(with flavor: AnalyticsFlavor, additionalFields: AdditionalAnalyticsFields?) {
+        initialEventCallsCount += 1
         checkoutAttemptId = _checkoutAttemptId
     }
     
     var _checkoutAttemptId: String?
 
-    var initialTelemetryEventCallsCount = 0
-    var initialTelemetryEventCalled: Bool {
-        initialTelemetryEventCallsCount > 0
+    var initialEventCallsCount = 0
+    var initialEventCalled: Bool {
+        initialEventCallsCount > 0
     }
 }

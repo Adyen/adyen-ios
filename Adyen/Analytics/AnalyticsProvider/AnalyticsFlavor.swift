@@ -7,12 +7,12 @@
 import Foundation
 
 @_spi(AdyenInternal)
-public enum TelemetryFlavor {
+public enum AnalyticsFlavor {
     case components(type: PaymentMethodType)
     case dropIn(type: String = "dropin", paymentMethods: [String])
 
     // The `dropInComponent` type describes a component within the drop-in component.
-    // In telemetry, we need to distinguish when a component is used from the drop-in
+    // In analytics, we need to distinguish when a component is used from the drop-in
     // and when it's used as standalone.
     case dropInComponent
 

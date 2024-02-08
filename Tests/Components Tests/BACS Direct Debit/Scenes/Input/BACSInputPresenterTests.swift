@@ -64,7 +64,7 @@ class BACSInputPresenterTests: XCTestCase {
         sut.viewDidLoad()
 
         // Then
-        XCTAssertEqual(tracker.initialTelemetryEventCallsCount, 1)
+        XCTAssertEqual(tracker.initialEventCallsCount, 1)
     }
 
     func testContinuePaymentWhenButtonTappedShouldDisplayValidationOnView() throws {

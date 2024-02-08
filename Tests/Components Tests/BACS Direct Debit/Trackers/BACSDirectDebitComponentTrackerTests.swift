@@ -31,11 +31,11 @@ class BACSDirectDebitComponentTrackerTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testSendTelemetryEventShouldCallAnalyticsProviderSendTelemetryEvent() throws {
+    func testSendInitialEventShouldCallAnalyticsProviderSendInitialEvent() throws {
         // When
         sut.sendInitialAnalytics()
 
         // Then
-        XCTAssertEqual(analyticsProvider.initialTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProvider.initialEventCallsCount, 1)
     }
 }

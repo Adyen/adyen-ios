@@ -14,12 +14,9 @@ public struct AnalyticsConfiguration {
 
     /// A Boolean value that determines whether analytics is enabled.
     public var isEnabled = true
-
-    @_spi(AdyenInternal)
-    public var isTelemetryEnabled = true
     
     @_spi(AdyenInternal)
-    public var context: TelemetryContext = .init()
+    public var context: AnalyticsContext = .init()
 
     // MARK: - Initializers
     
@@ -28,14 +25,14 @@ public struct AnalyticsConfiguration {
 }
 
 @_spi(AdyenInternal)
-/// Additional fields to be provided with a ``TelemetryRequest``
+/// Additional fields to be provided with an ``InitialAnalyticsRequest``
 public struct AdditionalAnalyticsFields {
     /// The amount of the payment
     public let amount: Amount?
     
     public let sessionId: String?
     
-    public init(amount: Amount? = nil, sessionId: String? = nil) {
+    public init(amount: Amount?, sessionId: String?) {
         self.amount = amount
         self.sessionId = sessionId
     }
@@ -45,7 +42,7 @@ public struct AdditionalAnalyticsFields {
 public protocol AnalyticsProviderProtocol {
     
     /// Sends the initial data and retrieves the checkout attempt id as a response.
-    func sendInitialAnalytics(with flavor: TelemetryFlavor, additionalFields: AdditionalAnalyticsFields?)
+    func sendInitialAnalytics(with flavor: AnalyticsFlavor, additionalFields: AdditionalAnalyticsFields?)
     
     var checkoutAttemptId: String? { get }
 }
@@ -72,21 +69,21 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
 
     // MARK: - Internal
 
-    internal func sendInitialAnalytics(with flavor: TelemetryFlavor, additionalFields: AdditionalAnalyticsFields?) {
-        guard configuration.isEnabled, configuration.isTelemetryEnabled else {
+    internal func sendInitialAnalytics(with flavor: AnalyticsFlavor, additionalFields: AdditionalAnalyticsFields?) {
+        guard configuration.isEnabled else {
             checkoutAttemptId = "do-not-track"
             return
         }
         if case .dropInComponent = flavor { return }
         
-        let telemetryData = TelemetryData(flavor: flavor,
+        let analyticsData = AnalyticsData(flavor: flavor,
                                           additionalFields: additionalFields,
                                           context: configuration.context)
 
-        fetchCheckoutAttemptId(with: telemetryData)
+        fetchCheckoutAttemptId(with: analyticsData)
     }
     
-    private func fetchCheckoutAttemptId(with initialAnalyticsData: TelemetryData) {
+    private func fetchCheckoutAttemptId(with initialAnalyticsData: AnalyticsData) {
         let initialAnalyticsRequest = InitialAnalyticsRequest(data: initialAnalyticsData)
 
         uniqueAssetAPIClient.perform(initialAnalyticsRequest) { [weak self] result in

@@ -19,7 +19,6 @@ class AnalyticsProviderTests: XCTestCase {
 
         // Then
         XCTAssertTrue(sut.configuration.isEnabled)
-        XCTAssertTrue(sut.configuration.isTelemetryEnabled)
     }
 
     func testFetchCheckoutAttemptIdWhenAnalyticsIsEnabledShouldTriggerRequest() throws {
@@ -132,12 +131,12 @@ class AnalyticsProviderTests: XCTestCase {
         XCTAssertEqual(sut.checkoutAttemptId, "do-not-track")
     }
     
-    func testTelemetryRequest() throws {
+    func testInitialRequest() throws {
         // Given
         
         let checkoutAttemptId = checkoutAttemptIdMockValue
         
-        let telemetryExpectation = expectation(description: "Telemetry request is triggered")
+        let analyticsExpectation = expectation(description: "Initial request is triggered")
         
         let apiClient = APIClientMock()
         apiClient.mockedResults = [
@@ -148,7 +147,7 @@ class AnalyticsProviderTests: XCTestCase {
                 XCTAssertNil(initialAnalyticsdRequest.amount)
                 XCTAssertEqual(initialAnalyticsdRequest.version, adyenSdkVersion)
                 XCTAssertEqual(initialAnalyticsdRequest.platform, "ios")
-                telemetryExpectation.fulfill()
+                analyticsExpectation.fulfill()
             }
         }
         
@@ -161,7 +160,7 @@ class AnalyticsProviderTests: XCTestCase {
         
         analyticsProvider.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
         
-        wait(for: [telemetryExpectation], timeout: 10)
+        wait(for: [analyticsExpectation], timeout: 10)
     }
     
     func testAdditionalFields() throws {
@@ -171,7 +170,7 @@ class AnalyticsProviderTests: XCTestCase {
         let amount = Amount(value: 1, currencyCode: "EUR")
         let checkoutAttemptId = checkoutAttemptIdMockValue
         
-        let telemetryExpectation = expectation(description: "Telemetry request is triggered")
+        let analyticsExpectation = expectation(description: "Initial request is triggered")
         
         let apiClient = APIClientMock()
         apiClient.mockedResults = [
@@ -182,7 +181,7 @@ class AnalyticsProviderTests: XCTestCase {
                 XCTAssertEqual(initialAnalyticsdRequest.amount, amount)
                 XCTAssertEqual(initialAnalyticsdRequest.version, "version")
                 XCTAssertEqual(initialAnalyticsdRequest.platform, "react-native")
-                telemetryExpectation.fulfill()
+                analyticsExpectation.fulfill()
             }
         }
         
@@ -195,39 +194,40 @@ class AnalyticsProviderTests: XCTestCase {
         )
         
         // When
-        let additionalFields = AdditionalAnalyticsFields(amount: amount)
+        let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: nil)
         analyticsProvider.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: additionalFields)
         
-        wait(for: [telemetryExpectation], timeout: 10)
+        wait(for: [analyticsExpectation], timeout: 10)
     }
     
-    func testTelemetryRequestEncoding() throws {
+    func testInitialRequestEncoding() throws {
         
-        let telemetryData = TelemetryData(flavor: .dropInComponent,
-                                          additionalFields: AdditionalAnalyticsFields(amount: .init(value: 1, currencyCode: "EUR")),
-                                          context: TelemetryContext(version: "version", platform: .flutter))
+        let analyticsData = AnalyticsData(flavor: .dropInComponent,
+                                          additionalFields: AdditionalAnalyticsFields(amount: .init(value: 1, currencyCode: "EUR"), sessionId: "test_session_id"),
+                                          context: AnalyticsContext(version: "version", platform: .flutter))
         
-        let request = InitialAnalyticsRequest(data: telemetryData)
+        let request = InitialAnalyticsRequest(data: analyticsData)
         
         let encodedRequest = try JSONEncoder().encode(request)
         let decodedRequest = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedRequest) as? [String: Any])
         
         let expectedDecodedRequest = [
             "locale": "en_US",
-            "paymentMethods": telemetryData.paymentMethods,
+            "paymentMethods": analyticsData.paymentMethods,
             "platform": "flutter",
             "component": "",
             "flavor": "dropInComponent",
             "channel": "iOS",
-            "systemVersion": telemetryData.systemVersion,
-            "screenWidth": telemetryData.screenWidth,
-            "referrer": telemetryData.referrer,
-            "deviceBrand": telemetryData.deviceBrand,
-            "deviceModel": telemetryData.deviceModel,
+            "systemVersion": analyticsData.systemVersion,
+            "screenWidth": analyticsData.screenWidth,
+            "referrer": analyticsData.referrer,
+            "deviceBrand": analyticsData.deviceBrand,
+            "deviceModel": analyticsData.deviceModel,
             "amount": [
                 "currency": "EUR",
                 "value": 1
             ] as [String: Any],
+            "sessionId": "test_session_id",
             "version": "version"
         ] as [String: Any]
         

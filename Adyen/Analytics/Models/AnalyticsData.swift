@@ -11,7 +11,7 @@ import UIKit
 ///
 /// Used to e.g. override the version + platform from within the Flutter SDK
 @_spi(AdyenInternal)
-public struct TelemetryContext {
+public struct AnalyticsContext {
     
     internal let version: String
     internal let platform: Platform
@@ -26,7 +26,7 @@ public struct TelemetryContext {
 }
 
 @_spi(AdyenInternal)
-public extension TelemetryContext {
+public extension AnalyticsContext {
 
     enum Platform: String {
         case iOS = "ios"
@@ -35,7 +35,7 @@ public extension TelemetryContext {
     }
 }
 
-internal struct TelemetryData: Encodable {
+internal struct AnalyticsData: Encodable {
 
     // MARK: - Properties
 
@@ -89,9 +89,9 @@ internal struct TelemetryData: Encodable {
 
     // MARK: - Initializers
 
-    internal init(flavor: TelemetryFlavor,
+    internal init(flavor: AnalyticsFlavor,
                   additionalFields: AdditionalAnalyticsFields?,
-                  context: TelemetryContext) {
+                  context: AnalyticsContext) {
         self.flavor = flavor.value
         self.amount = additionalFields?.amount
         self.sessionId = additionalFields?.sessionId
