@@ -83,7 +83,11 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
                                           additionalFields: additionalFields,
                                           context: configuration.context)
 
-        let initialAnalyticsRequest = InitialAnalyticsRequest(data: telemetryData)
+        fetchCheckoutAttemptId(with: telemetryData)
+    }
+    
+    private func fetchCheckoutAttemptId(with initialAnalyticsData: TelemetryData) {
+        let initialAnalyticsRequest = InitialAnalyticsRequest(data: initialAnalyticsData)
 
         uniqueAssetAPIClient.perform(initialAnalyticsRequest) { [weak self] result in
             switch result {

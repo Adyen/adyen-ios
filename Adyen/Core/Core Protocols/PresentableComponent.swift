@@ -63,7 +63,7 @@ public extension PresentableComponent {
 @_spi(AdyenInternal)
 public protocol TrackableComponent: Component {
     
-    /// Sends the initial data and retireves the checkout attempt id
+    /// Sends the initial data and retrieves the checkout attempt id
     func sendInitialAnalytics()
 }
 
