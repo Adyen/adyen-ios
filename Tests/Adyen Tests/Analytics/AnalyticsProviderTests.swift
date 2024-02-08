@@ -87,7 +87,7 @@ class AnalyticsProviderTests: XCTestCase {
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
         // When
-        sut.sendInitialAnalytics(with: .dropInComponent, additionalFields: nil)
+        sut.sendInitialAnalytics(with: .components(type: .atome), additionalFields: nil)
         // Then
         XCTAssertNil(sut.checkoutAttemptId, "The checkoutAttemptId is not nil.")
     }
@@ -202,7 +202,7 @@ class AnalyticsProviderTests: XCTestCase {
     
     func testInitialRequestEncoding() throws {
         
-        let analyticsData = AnalyticsData(flavor: .dropInComponent,
+        let analyticsData = AnalyticsData(flavor: .components(type: .achDirectDebit),
                                           additionalFields: AdditionalAnalyticsFields(amount: .init(value: 1, currencyCode: "EUR"), sessionId: "test_session_id"),
                                           context: AnalyticsContext(version: "version", platform: .flutter))
         
@@ -215,8 +215,8 @@ class AnalyticsProviderTests: XCTestCase {
             "locale": "en_US",
             "paymentMethods": analyticsData.paymentMethods,
             "platform": "flutter",
-            "component": "",
-            "flavor": "dropInComponent",
+            "component": "ach",
+            "flavor": "components",
             "channel": "iOS",
             "systemVersion": analyticsData.systemVersion,
             "screenWidth": analyticsData.screenWidth,

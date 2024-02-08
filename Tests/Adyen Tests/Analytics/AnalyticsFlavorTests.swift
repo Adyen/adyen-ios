@@ -39,15 +39,4 @@ class AnalyticsFlavorTests: XCTestCase {
         // Then
         XCTAssertEqual(expectedFlavorValue, sut.value)
     }
-
-    func testAnalyticsFlavorValueWhenFlavorIsDropInComponentMatchesFlavorType() throws {
-        // Given
-        let expectedFlavorValue = "dropInComponent"
-
-        // When
-        sut = .dropInComponent
-
-        // Then
-        XCTAssertEqual(expectedFlavorValue, sut.value)
-    }
 }

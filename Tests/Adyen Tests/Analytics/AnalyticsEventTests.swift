@@ -50,25 +50,9 @@ class AnalyticsEventTests: XCTestCase {
         XCTAssertEqual(sut.checkoutAttemptId, "do-not-track")
     }
 
-    func testSendInitialEventGivenEnabledAndFlavorIsDropInComponentShouldNotSendAnyRequest() throws {
-        // Given
-        var analyticsConfiguration = AnalyticsConfiguration()
-        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
-
-        let flavor: AnalyticsFlavor = .dropInComponent
-        let expectedRequestCalls = 0
-
-        // When
-        sendInitialAnalytics(flavor: flavor)
-
-        // Then
-        XCTAssertEqual(expectedRequestCalls, apiClient.counter, "One or more analytics requests were sent.")
-        XCTAssertNil(sut.checkoutAttemptId)
-    }
-
     func testSendInitialEventGivenEnabledAndFlavorIsComponentsShouldSendInitialRequest() throws {
         // Given
-        var analyticsConfiguration = AnalyticsConfiguration()
+        let analyticsConfiguration = AnalyticsConfiguration()
         sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
         let flavor: AnalyticsFlavor = .components(type: .affirm)
@@ -88,7 +72,7 @@ class AnalyticsEventTests: XCTestCase {
 
     func testSendInitialEventGivenEnabledAndFlavorIsDropInShouldSendInitialRequest() throws {
         // Given
-        var analyticsConfiguration = AnalyticsConfiguration()
+        let analyticsConfiguration = AnalyticsConfiguration()
         sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
         let flavor: AnalyticsFlavor = .dropIn(paymentMethods: ["scheme", "paypal", "affirm"])

@@ -74,7 +74,6 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
             checkoutAttemptId = "do-not-track"
             return
         }
-        if case .dropInComponent = flavor { return }
         
         let analyticsData = AnalyticsData(flavor: flavor,
                                           additionalFields: additionalFields,
