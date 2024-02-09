@@ -79,19 +79,19 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
                                           additionalFields: additionalFields,
                                           context: configuration.context)
 
-        fetchCheckoutAttemptId(with: analyticsData)
-    }
-    
-    private func fetchCheckoutAttemptId(with initialAnalyticsData: AnalyticsData) {
-        let initialAnalyticsRequest = InitialAnalyticsRequest(data: initialAnalyticsData)
+        let initialAnalyticsRequest = InitialAnalyticsRequest(data: analyticsData)
 
         uniqueAssetAPIClient.perform(initialAnalyticsRequest) { [weak self] result in
-            switch result {
-            case let .success(response):
-                self?.checkoutAttemptId = response.checkoutAttemptId
-            case .failure:
-                self?.checkoutAttemptId = nil
-            }
+            self?.saveCheckoutAttemptId(from: result)
+        }
+    }
+    
+    private func saveCheckoutAttemptId(from result: Result<InitialAnalyticsResponse, Error>) {
+        switch result {
+        case let .success(response):
+            checkoutAttemptId = response.checkoutAttemptId
+        case .failure:
+            checkoutAttemptId = nil
         }
     }
 }

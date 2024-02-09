@@ -105,8 +105,6 @@ internal struct AnalyticsData: Encodable {
             self.component = type
         case let .components(type):
             self.component = type.rawValue
-        default:
-            self.component = ""
         }
     }
 }
