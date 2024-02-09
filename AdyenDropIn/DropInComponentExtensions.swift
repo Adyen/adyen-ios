@@ -21,11 +21,7 @@ import UIKit
 extension DropInComponent: PaymentMethodListComponentDelegate {
 
     internal func didLoad(_ paymentMethodListComponent: PaymentMethodListComponent) {
-        let paymentMethodTypes = paymentMethods.regular.map(\.type.rawValue)
-        let flavor = AnalyticsFlavor.dropIn(paymentMethods: paymentMethodTypes)
-        let amount = context.payment?.amount
-        let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AnalyticsForSession.sessionId)
-        context.analyticsProvider?.sendInitialAnalytics(with: flavor, additionalFields: additionalFields)
+        sendInitialAnalytics()
     }
     
     internal func didSelect(_ component: PaymentComponent,
@@ -157,5 +153,17 @@ extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
         })
         navigationController.present(root: newRoot)
         rootComponent = newRoot
+    }
+}
+
+@_spi(AdyenInternal)
+extension DropInComponent: TrackableComponent {
+    
+    public func sendInitialAnalytics() {
+        let paymentMethodTypes = paymentMethods.regular.map(\.type.rawValue)
+        let flavor = AnalyticsFlavor.dropIn(paymentMethods: paymentMethodTypes)
+        let amount = context.payment?.amount
+        let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AnalyticsForSession.sessionId)
+        context.analyticsProvider?.sendInitialAnalytics(with: flavor, additionalFields: additionalFields)
     }
 }
