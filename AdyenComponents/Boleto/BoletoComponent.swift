@@ -90,6 +90,7 @@ public final class BoletoComponent: PaymentComponent,
         }
         (component.viewController as? SecuredViewController<FormViewController>)?.delegate = self
         component.delegate = self
+        component._isDropIn = _isDropIn
         return component
     }()
     
@@ -171,13 +172,8 @@ extension BoletoComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)
 extension BoletoComponent: ViewControllerDelegate {
-
-    public func viewDidLoad(viewController: UIViewController) {}
-
-    public func viewDidAppear(viewController: UIViewController) {}
-
+    
     public func viewWillAppear(viewController: UIViewController) {
-        sendTelemetryEvent()
         prefillFields(for: formComponent)
     }
 }

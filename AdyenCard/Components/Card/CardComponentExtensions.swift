@@ -66,15 +66,9 @@ extension CardComponent: TrackableComponent {}
 extension CardComponent: ViewControllerDelegate {
 
     public func viewDidLoad(viewController: UIViewController) {
-        Analytics.sendEvent(component: paymentMethod.type.rawValue,
-                            flavor: _isDropIn ? .dropin : .components,
-                            context: context.apiContext)
+        sendInitialAnalytics()
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
-    }
-
-    public func viewWillAppear(viewController: UIViewController) {
-        sendTelemetryEvent()
     }
 }
 

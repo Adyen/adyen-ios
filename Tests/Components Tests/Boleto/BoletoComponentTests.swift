@@ -28,13 +28,13 @@ class BoletoComponentTests: XCTestCase {
         
         let viewController = component.viewController
         
-        setupRootViewController(viewController)
-        
         let firstNameField: UITextField = try XCTUnwrap(viewController.view.findView(by: "firstNameItem.textField"))
         let lastNameField: UITextField = try XCTUnwrap(viewController.view.findView(by: "lastNameItem.textField"))
         let socialSecurityNumberField: UITextField = try XCTUnwrap(viewController.view.findView(by: "socialSecurityNumberItem.textField"))
         let emailField: UITextField = try XCTUnwrap(viewController.view.findView(by: "emailItem.textField"))
         let addressField: FormAddressPickerItemView = try XCTUnwrap(viewController.view.findView(by: "addressItem"))
+        
+        setupRootViewController(viewController)
         
         XCTAssertEqual(firstNameField.text, prefilledInformation.shopperName?.firstName)
         XCTAssertEqual(lastNameField.text, prefilledInformation.shopperName?.lastName)
@@ -123,7 +123,7 @@ class BoletoComponentTests: XCTestCase {
         XCTAssertFalse(emailItem.isHidden)
     }
 
-    func testViewWillAppearShouldSendTelemetryEvent() throws {
+    func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
@@ -135,9 +135,9 @@ class BoletoComponentTests: XCTestCase {
         )
 
         // When
-        component.viewWillAppear(viewController: component.viewController)
+        component.viewDidLoad(viewController: component.viewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
     }
 }

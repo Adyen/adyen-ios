@@ -26,6 +26,9 @@ public class SearchViewController: UIViewController, AdyenObserver {
     internal let viewModel: ViewModel
     internal let emptyView: SearchResultsEmptyView
     
+    /// Delegate to handle different viewController events.
+    public weak var delegate: ViewControllerDelegate?
+    
     public lazy var resultsListViewController = ListViewController(style: viewModel.style)
     
     /// Initializes the search view controller.
@@ -71,6 +74,8 @@ public class SearchViewController: UIViewController, AdyenObserver {
 
         view.addSubview(loadingView)
         
+        delegate?.viewDidLoad(viewController: self)
+        
         emptyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardTapped)))
         emptyView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(emptyView)
@@ -102,11 +107,18 @@ public class SearchViewController: UIViewController, AdyenObserver {
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        delegate?.viewWillAppear(viewController: self)
+        
         if viewModel.shouldFocusSearchBarOnAppearance {
             DispatchQueue.main.async { // Fix animation glitch on iOS 17
                 self.searchBar.becomeFirstResponder()
             }
         }
+    }
+    
+    override open func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        delegate?.viewDidAppear(viewController: self)
     }
     
     private func setupConstraints() {

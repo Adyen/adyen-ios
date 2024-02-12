@@ -1960,7 +1960,7 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testViewWillAppearShouldSendTelemetryEvent() throws {
+    func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
@@ -1969,10 +1969,10 @@ class CardComponentTests: XCTestCase {
                                 configuration: CardComponent.Configuration())
 
         // When
-        sut.cardViewController.viewWillAppear(false)
+        sut.viewDidLoad(viewController: sut.cardViewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
 
     }
 

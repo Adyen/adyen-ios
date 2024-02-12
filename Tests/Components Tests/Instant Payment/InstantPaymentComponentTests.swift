@@ -57,21 +57,6 @@ class InstantPaymentComponentTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testInitiatePaymentShouldSendTelemetryEvent() throws {
-        // Given
-        let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(with: analyticsProviderMock)
-        sut = InstantPaymentComponent(paymentMethod: paymentMethod,
-                                      context: context,
-                                      paymentData: paymentComponentData)
-
-        // When
-        sut.initiatePayment()
-
-        // Then
-        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
-    }
-
     // MARK: - Private
 
     private var paymentComponentData: PaymentComponentData {

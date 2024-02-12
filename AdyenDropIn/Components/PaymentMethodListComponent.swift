@@ -163,12 +163,6 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     internal func stopLoading() {
         listViewController.stopLoading()
     }
-
-    // MARK: - Private
-
-    private func sendTelemetryEvent() {
-        context.analyticsProvider.sendTelemetryEvent(flavor: .dropIn(paymentMethods: []))
-    }
 }
 
 extension PaymentMethodListComponent: ViewControllerDelegate {

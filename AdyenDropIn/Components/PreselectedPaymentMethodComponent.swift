@@ -20,9 +20,10 @@ internal protocol PreselectedPaymentMethodComponentDelegate: AnyObject {
 
 /// A component that presents a single preselected payment method and option to open more payment methods.
 internal final class PreselectedPaymentMethodComponent: ComponentLoader,
-    PresentableComponent,
-    Localizable,
-    Cancellable {
+                                                        PresentableComponent,
+                                                        PaymentMethodAware,
+                                                        Localizable,
+                                                        Cancellable {
     
     private let title: String
     private let defaultComponent: PaymentComponent
@@ -169,3 +170,6 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
 }
 
 extension PreselectedPaymentMethodComponent: ViewControllerDelegate {}
+
+@_spi(AdyenInternal)
+extension PreselectedPaymentMethodComponent: TrackableComponent {}

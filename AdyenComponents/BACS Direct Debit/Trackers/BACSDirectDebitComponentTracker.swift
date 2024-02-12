@@ -8,7 +8,7 @@
 import Foundation
 
 internal protocol BACSDirectDebitComponentTrackerProtocol: AnyObject {
-    func sendTelemetryEvent()
+    func sendInitialAnalytics()
 }
 
 internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerProtocol {
@@ -16,27 +16,29 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
     // MARK: - Properties
 
     private let paymentMethod: BACSDirectDebitPaymentMethod
-    private let apiContext: APIContext
-    private let telemetryTracker: TelemetryTrackerProtocol
+    private let context: AdyenContext
     private let isDropIn: Bool
 
     // MARK: - Initializers
 
     internal init(paymentMethod: BACSDirectDebitPaymentMethod,
-                  apiContext: APIContext,
-                  telemetryTracker: TelemetryTrackerProtocol,
+                  context: AdyenContext,
                   isDropIn: Bool) {
         self.paymentMethod = paymentMethod
-        self.apiContext = apiContext
-        self.telemetryTracker = telemetryTracker
+        self.context = context
         self.isDropIn = isDropIn
     }
 
     // MARK: - BACSDirectDebitComponentTrackerProtocol
 
-    internal func sendTelemetryEvent() {
-        let flavor: TelemetryFlavor = isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
-        telemetryTracker.sendTelemetryEvent(flavor: flavor)
+    internal func sendInitialAnalytics() {
+        // initial call is not needed again if inside dropIn
+        guard !isDropIn else { return }
+        let flavor: AnalyticsFlavor = .components(type: paymentMethod.type)
+        let amount = context.payment?.amount
+        let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AnalyticsForSession.sessionId)
+        context.analyticsProvider?.sendInitialAnalytics(with: flavor,
+                                                         additionalFields: additionalFields)
     }
 
 }

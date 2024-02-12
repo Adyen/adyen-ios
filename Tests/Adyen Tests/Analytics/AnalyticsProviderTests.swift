@@ -19,34 +19,26 @@ class AnalyticsProviderTests: XCTestCase {
 
         // Then
         XCTAssertTrue(sut.configuration.isEnabled)
-        XCTAssertTrue(sut.configuration.isTelemetryEnabled)
     }
 
     func testFetchCheckoutAttemptIdWhenAnalyticsIsEnabledShouldTriggerRequest() throws {
         // Given
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = true
+
         let apiClient = APIClientMock()
         let sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
-        let checkoutAttemptIdResponse = CheckoutAttemptIdResponse(identifier: expectedCheckoutAttemptId)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
+        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: expectedCheckoutAttemptId)
+        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
-        let fetchCheckoutAttemptIdExpection = expectation(description: "checkoutAttemptId completion")
-
         // When
-        sut.fetchCheckoutAttemptId { receivedCheckoutAttemptId in
-
-            // Then
-            XCTAssertNotNil(receivedCheckoutAttemptId, "The checkoutAttemptId is nil.")
-            XCTAssertEqual(expectedCheckoutAttemptId, receivedCheckoutAttemptId, "The received checkoutAttemptId is not the expected one.")
-            fetchCheckoutAttemptIdExpection.fulfill()
-        }
-
-        waitForExpectations(timeout: 10)
+        sut.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
+        
+        wait(until: sut, at: \.checkoutAttemptId, is: expectedCheckoutAttemptId)
     }
 
     func testFetchCheckoutAttemptIdWhenAnalyticsIsDisabledShouldNotTriggerCheckoutAttemptIdRequest() throws {
@@ -56,48 +48,37 @@ class AnalyticsProviderTests: XCTestCase {
         let apiClient = APIClientMock()
         let sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
-        let fetchCheckoutAttemptIdExpection = expectation(description: "checkoutAttemptId completion")
-
         // When
-        sut.fetchCheckoutAttemptId { receivedCheckoutAttemptId in
-            XCTAssertEqual(sut.checkoutAttemptId, "do-not-track")
-            fetchCheckoutAttemptIdExpection.fulfill()
-        }
-
-        waitForExpectations(timeout: 10)
+        sut.sendInitialAnalytics(with: .components(type: .affirm), additionalFields: nil)
+        XCTAssertEqual(sut.checkoutAttemptId, "do-not-track")
     }
 
     func testFetchCheckoutAttemptIdWhenRequestSucceedShouldCallCompletionWithNonNilValue() throws {
         // Given
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = true
+
         let apiClient = APIClientMock()
         let sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
-        let checkoutAttemptIdResponse = CheckoutAttemptIdResponse(identifier: expectedCheckoutAttemptId)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
+        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: expectedCheckoutAttemptId)
+        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
-        let fetchCheckoutAttemptIdExpection = expectation(description: "checkoutAttemptId completion")
-
         // When
-        sut.fetchCheckoutAttemptId { receivedCheckoutAttemptId in
-
-            // Then
-            XCTAssertNotNil(receivedCheckoutAttemptId, "The checkoutAttemptId is nil.")
-            XCTAssertEqual(expectedCheckoutAttemptId, receivedCheckoutAttemptId, "The received checkoutAttemptId is not the expected one.")
-            fetchCheckoutAttemptIdExpection.fulfill()
-        }
-
-        waitForExpectations(timeout: 10)
+        sut.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
+        
+        // Then
+        wait(until: sut, at: \.checkoutAttemptId, is: expectedCheckoutAttemptId)
     }
 
     func testFetchCheckoutAttemptIdWhenAnalyticsIsEnabledGivenFailureShouldCallCompletionWithNilValue() throws {
         // Given
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = true
+
         let apiClient = APIClientMock()
         let sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
@@ -105,17 +86,10 @@ class AnalyticsProviderTests: XCTestCase {
         let checkoutAttemptIdResult: Result<Response, Error> = .failure(error)
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
-        let fetchCheckoutAttemptIdExpection = expectation(description: "checkoutAttemptId completion")
-
         // When
-        sut.fetchCheckoutAttemptId { receivedCheckoutAttemptId in
-
-            // Then
-            XCTAssertNil(receivedCheckoutAttemptId, "The checkoutAttemptId is not nil.")
-            fetchCheckoutAttemptIdExpection.fulfill()
-        }
-
-        waitForExpectations(timeout: 10)
+        sut.sendInitialAnalytics(with: .components(type: .atome), additionalFields: nil)
+        // Then
+        XCTAssertNil(sut.checkoutAttemptId, "The checkoutAttemptId is not nil.")
     }
 
     func testFetchCheckoutAttemptIdWhenAnalyticsIsEnabledShouldSetCheckoutAttemptIdProperty() throws {
@@ -128,16 +102,15 @@ class AnalyticsProviderTests: XCTestCase {
 
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
-        let checkoutAttemptIdResponse = CheckoutAttemptIdResponse(identifier: expectedCheckoutAttemptId)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
+        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: expectedCheckoutAttemptId)
+        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
         // When
-        sut.fetchCheckoutAttemptId { _ in
-
-            // Then
-            XCTAssertEqual(expectedCheckoutAttemptId, sut.checkoutAttemptId)
-        }
+        sut.sendInitialAnalytics(with: .components(type: .atome), additionalFields: nil)
+        
+        // Then
+        wait(until: sut, at: \.checkoutAttemptId, is: expectedCheckoutAttemptId)
     }
 
     func testFetchCheckoutAttemptIdWhenAnalyticsIsDisabledShouldNotSetCheckoutAttemptIdProperty() throws {
@@ -148,37 +121,33 @@ class AnalyticsProviderTests: XCTestCase {
         let apiClient = APIClientMock()
         let sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
 
-        let checkoutAttemptIdResponse = CheckoutAttemptIdResponse(identifier: checkoutAttemptIdMockValue)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
+        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
+        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
         // When
-        sut.fetchCheckoutAttemptId { _ in
-
-            // Then
-            XCTAssertEqual(sut.checkoutAttemptId, "do-not-track")
-        }
+        sut.sendInitialAnalytics(with: .components(type: .affirm), additionalFields: nil)
+        // Then
+        XCTAssertEqual(sut.checkoutAttemptId, "do-not-track")
     }
     
-    func testTelemetryRequest() throws {
+    func testInitialRequest() throws {
         // Given
         
-        let checkoutAttemptId = self.checkoutAttemptIdMockValue
+        let checkoutAttemptId = checkoutAttemptIdMockValue
         
-        let telemetryExpectation = expectation(description: "Telemetry request is triggered")
+        let analyticsExpectation = expectation(description: "Initial request is triggered")
         
         let apiClient = APIClientMock()
         apiClient.mockedResults = [
-            .success(CheckoutAttemptIdResponse(identifier: checkoutAttemptId)),
-            .success(TelemetryResponse())
+            .success(InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptId)),
         ]
         apiClient.onExecute = { request in
-            if let telemetryRequest = request as? TelemetryRequest {
-                XCTAssertNil(telemetryRequest.amount)
-                XCTAssertEqual(telemetryRequest.checkoutAttemptId, checkoutAttemptId)
-                XCTAssertEqual(telemetryRequest.version, adyenSdkVersion)
-                XCTAssertEqual(telemetryRequest.platform, "ios")
-                telemetryExpectation.fulfill()
+            if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
+                XCTAssertNil(initialAnalyticsdRequest.amount)
+                XCTAssertEqual(initialAnalyticsdRequest.version, adyenSdkVersion)
+                XCTAssertEqual(initialAnalyticsdRequest.platform, "ios")
+                analyticsExpectation.fulfill()
             }
         }
         
@@ -189,9 +158,9 @@ class AnalyticsProviderTests: XCTestCase {
         
         // When
         
-        analyticsProvider.sendTelemetryEvent(flavor: .components(type: .achDirectDebit))
+        analyticsProvider.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
         
-        wait(for: [telemetryExpectation], timeout: 10)
+        wait(for: [analyticsExpectation], timeout: 10)
     }
     
     func testAdditionalFields() throws {
@@ -199,22 +168,20 @@ class AnalyticsProviderTests: XCTestCase {
         // Given
         
         let amount = Amount(value: 1, currencyCode: "EUR")
-        let checkoutAttemptId = self.checkoutAttemptIdMockValue
+        let checkoutAttemptId = checkoutAttemptIdMockValue
         
-        let telemetryExpectation = expectation(description: "Telemetry request is triggered")
+        let analyticsExpectation = expectation(description: "Initial request is triggered")
         
         let apiClient = APIClientMock()
         apiClient.mockedResults = [
-            .success(CheckoutAttemptIdResponse(identifier: checkoutAttemptId)),
-            .success(TelemetryResponse())
+            .success(InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptId))
         ]
         apiClient.onExecute = { request in
-            if let telemetryRequest = request as? TelemetryRequest {
-                XCTAssertEqual(telemetryRequest.amount, amount)
-                XCTAssertEqual(telemetryRequest.checkoutAttemptId, checkoutAttemptId)
-                XCTAssertEqual(telemetryRequest.version, "version")
-                XCTAssertEqual(telemetryRequest.platform, "react-native")
-                telemetryExpectation.fulfill()
+            if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
+                XCTAssertEqual(initialAnalyticsdRequest.amount, amount)
+                XCTAssertEqual(initialAnalyticsdRequest.version, "version")
+                XCTAssertEqual(initialAnalyticsdRequest.platform, "react-native")
+                analyticsExpectation.fulfill()
             }
         }
         
@@ -226,52 +193,41 @@ class AnalyticsProviderTests: XCTestCase {
             configuration: analyticsConfiguration
         )
         
-        analyticsProvider.additionalFields = {
-            .init(amount: amount)
-        }
-        
         // When
+        let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: nil)
+        analyticsProvider.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: additionalFields)
         
-        analyticsProvider.sendTelemetryEvent(flavor: .components(type: .achDirectDebit))
-        
-        wait(for: [telemetryExpectation], timeout: 10)
+        wait(for: [analyticsExpectation], timeout: 10)
     }
     
-    func testTelemetryRequestEncoding() throws {
+    func testInitialRequestEncoding() throws {
         
-        let telemetryData = TelemetryData(
-            flavor: .dropInComponent,
-            amount: .init(value: 1, currencyCode: "EUR"),
-            context: .init(
-                version: "version",
-                platform: .flutter
-            )
-        )
+        let analyticsData = AnalyticsData(flavor: .components(type: .achDirectDebit),
+                                          additionalFields: AdditionalAnalyticsFields(amount: .init(value: 1, currencyCode: "EUR"), sessionId: "test_session_id"),
+                                          context: AnalyticsContext(version: "version", platform: .flutter))
         
-        let request = TelemetryRequest(
-            data: telemetryData,
-            checkoutAttemptId: checkoutAttemptIdMockValue
-        )
+        let request = InitialAnalyticsRequest(data: analyticsData)
         
         let encodedRequest = try JSONEncoder().encode(request)
         let decodedRequest = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedRequest) as? [String: Any])
         
         let expectedDecodedRequest = [
             "locale": "en_US",
-            "paymentMethods": telemetryData.paymentMethods,
+            "paymentMethods": analyticsData.paymentMethods,
             "platform": "flutter",
-            "component": "",
-            "flavor": "dropInComponent",
+            "component": "ach",
+            "flavor": "components",
             "channel": "iOS",
-            "systemVersion": telemetryData.systemVersion,
-            "screenWidth": telemetryData.screenWidth,
-            "referrer": telemetryData.referrer,
-            "deviceBrand": telemetryData.deviceBrand,
+            "systemVersion": analyticsData.systemVersion,
+            "screenWidth": analyticsData.screenWidth,
+            "referrer": analyticsData.referrer,
+            "deviceBrand": analyticsData.deviceBrand,
+            "deviceModel": analyticsData.deviceModel,
             "amount": [
                 "currency": "EUR",
                 "value": 1
             ] as [String: Any],
-            "checkoutAttemptId": checkoutAttemptIdMockValue,
+            "sessionId": "test_session_id",
             "version": "version"
         ] as [String: Any]
         

@@ -134,7 +134,7 @@ import XCTest
             XCTAssertFalse(sut.cashAppPayButton.showsActivityIndicator)
         }
         
-        func testViewWillAppearShouldSendTelemetryEvent() throws {
+        func testViewDidLoadShouldSendInitialCall() throws {
             
             // Given
             let analyticsProviderMock = AnalyticsProviderMock()
@@ -145,10 +145,10 @@ import XCTest
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
             // When
-            sut.viewWillAppear(viewController: sut.viewController)
+            sut.viewDidLoad(viewController: sut.viewController)
 
             // Then
-            XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+            XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
         }
         
         func testComponent_ShouldPaymentMethodTypeBeCashAppPay() throws {

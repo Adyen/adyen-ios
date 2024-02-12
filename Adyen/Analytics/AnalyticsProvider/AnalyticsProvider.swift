@@ -14,12 +14,9 @@ public struct AnalyticsConfiguration {
 
     /// A Boolean value that determines whether analytics is enabled.
     public var isEnabled = true
-
-    @_spi(AdyenInternal)
-    public var isTelemetryEnabled = true
     
     @_spi(AdyenInternal)
-    public var context: TelemetryContext = .init()
+    public var context: AnalyticsContext = .init()
 
     // MARK: - Initializers
     
@@ -28,20 +25,26 @@ public struct AnalyticsConfiguration {
 }
 
 @_spi(AdyenInternal)
-/// Additional fields to be provided with a ``TelemetryRequest``
+/// Additional fields to be provided with an ``InitialAnalyticsRequest``
 public struct AdditionalAnalyticsFields {
     /// The amount of the payment
     public let amount: Amount?
+    
+    public let sessionId: String?
+    
+    public init(amount: Amount?, sessionId: String?) {
+        self.amount = amount
+        self.sessionId = sessionId
+    }
 }
 
 @_spi(AdyenInternal)
-public protocol AnalyticsProviderProtocol: TelemetryTrackerProtocol {
+public protocol AnalyticsProviderProtocol {
+    
+    /// Sends the initial data and retrieves the checkout attempt id as a response.
+    func sendInitialAnalytics(with flavor: AnalyticsFlavor, additionalFields: AdditionalAnalyticsFields?)
     
     var checkoutAttemptId: String? { get }
-    
-    func fetchAndCacheCheckoutAttemptIdIfNeeded()
-    
-    var additionalFields: (() -> AdditionalAnalyticsFields)? { get }
 }
 
 internal final class AnalyticsProvider: AnalyticsProviderProtocol {
@@ -51,8 +54,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     internal let apiClient: APIClientProtocol
     internal let configuration: AnalyticsConfiguration
     internal private(set) var checkoutAttemptId: String?
-    internal var additionalFields: (() -> AdditionalAnalyticsFields)?
-    private let uniqueAssetAPIClient: UniqueAssetAPIClient<CheckoutAttemptIdResponse>
+    private let uniqueAssetAPIClient: UniqueAssetAPIClient<InitialAnalyticsResponse>
 
     // MARK: - Initializers
 
@@ -62,32 +64,34 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     ) {
         self.apiClient = apiClient
         self.configuration = configuration
-        self.uniqueAssetAPIClient = UniqueAssetAPIClient<CheckoutAttemptIdResponse>(apiClient: apiClient)
+        self.uniqueAssetAPIClient = UniqueAssetAPIClient<InitialAnalyticsResponse>(apiClient: apiClient)
     }
 
     // MARK: - Internal
-    
-    internal func fetchAndCacheCheckoutAttemptIdIfNeeded() {
-        fetchCheckoutAttemptId { _ in /* Do nothing, the point is to trigger the fetching and cache the value  */ }
-    }
 
-    internal func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
+    internal func sendInitialAnalytics(with flavor: AnalyticsFlavor, additionalFields: AdditionalAnalyticsFields?) {
         guard configuration.isEnabled else {
             checkoutAttemptId = "do-not-track"
-            completion(checkoutAttemptId)
             return
         }
+        
+        let analyticsData = AnalyticsData(flavor: flavor,
+                                          additionalFields: additionalFields,
+                                          context: configuration.context)
 
-        let checkoutAttemptIdRequest = CheckoutAttemptIdRequest()
+        let initialAnalyticsRequest = InitialAnalyticsRequest(data: analyticsData)
 
-        uniqueAssetAPIClient.perform(checkoutAttemptIdRequest) { [weak self] result in
-            switch result {
-            case let .success(response):
-                self?.checkoutAttemptId = response.identifier
-                completion(response.identifier)
-            case .failure:
-                completion(nil)
-            }
+        uniqueAssetAPIClient.perform(initialAnalyticsRequest) { [weak self] result in
+            self?.saveCheckoutAttemptId(from: result)
+        }
+    }
+    
+    private func saveCheckoutAttemptId(from result: Result<InitialAnalyticsResponse, Error>) {
+        switch result {
+        case let .success(response):
+            checkoutAttemptId = response.checkoutAttemptId
+        case .failure:
+            checkoutAttemptId = nil
         }
     }
 }

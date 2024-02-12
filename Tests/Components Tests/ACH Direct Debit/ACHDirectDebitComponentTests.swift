@@ -284,7 +284,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 100)
     }
 
-    func testViewWillAppearShouldSendTelemetryEvent() throws {
+    func testViewDidLoadShouldSendInitialCall() throws {
         
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
@@ -298,9 +298,9 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           publicKeyProvider: PublicKeyProviderMock())
 
         // When
-        sut.viewWillAppear(viewController: sut.viewController)
+        sut.viewDidLoad(viewController: sut.viewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
     }
 }
