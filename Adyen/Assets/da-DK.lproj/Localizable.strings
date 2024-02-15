@@ -86,6 +86,7 @@
 "adyen.billingAddressSection.title" = "Faktureringsadresse";
 "adyen.billingAddress.placeholder" = "Din faktureringsadresse";
 "adyen.deliveryAddressSection.title" = "Leveringsadresse";
+"adyen.deliveryAddress.placeholder" = "Din leveringsadresse";
 "adyen.countryField.title" = "Land";
 "adyen.countryField.placeholder" = "Land";
 "adyen.countryField.invalid" = "Ugyldigt land";
@@ -197,8 +198,8 @@
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Annuller";
 "adyen.picker.search.empty.title" = "Ingen resultater fundet";
 "adyen.picker.search.empty.subtitle" = "Fandt ikke noget match for '%@'";
-"adyen.address.lookup.search.placeholder" = "Søg på din adresse";
-"adyen.address.lookup.search.empty.title" = "Kan du ikke søge på din adresse?";
+"adyen.address.lookup.search.placeholder" = "Søg efter din adresse";
+"adyen.address.lookup.search.empty.title" = "Kan du ikke søge efter din adresse?";
 "adyen.address.lookup.search.empty.subtitle" = "Du kan altid #indtaste din adresse manuelt#";
 "adyen.address.lookup.search.empty.title.noResults" = "Ingen resultater fundet";
 "adyen.address.lookup.search.empty.subtitle.noResults" = "Fandt ikke noget match for '%@'. Prøv igen eller #indtast adresse manuelt#.";

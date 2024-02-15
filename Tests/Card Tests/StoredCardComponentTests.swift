@@ -225,7 +225,7 @@ class StoredCardComponentTests: XCTestCase {
         alertController.dismiss(animated: false, completion: nil)
     }
 
-    func testViewDidLoadShouldSendTelemetryEvent() throws {
+    func testViewDidLoadShouldSendInitialEvent() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
@@ -237,7 +237,7 @@ class StoredCardComponentTests: XCTestCase {
         sut.viewController.viewDidLoad()
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
     }
 
     // MARK: - Private

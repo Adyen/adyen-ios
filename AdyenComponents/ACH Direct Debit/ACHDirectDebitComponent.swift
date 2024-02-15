@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -209,27 +209,30 @@ public final class ACHDirectDebitComponent: PaymentComponent,
         return storeDetailsItem
     }()
     
-    internal lazy var billingAddressItem: FormAddressItem = {
+    internal lazy var billingAddressItem: FormAddressPickerItem = {
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                      postfix: ViewIdentifier.billingAddressItem)
 
         var initialCountry = defaultCountryCode
-        if let prefillCountryCode = configuration.shopperInformation?.billingAddress?.country,
-           configuration.billingAddressCountryCodes.contains(prefillCountryCode) {
+        
+        if
+            let prefillCountryCode = configuration.shopperInformation?.billingAddress?.country,
+            configuration.billingAddressCountryCodes.contains(prefillCountryCode) {
             initialCountry = prefillCountryCode
         }
-        let item = FormAddressItem(initialCountry: initialCountry,
-                                   configuration: .init(
-                                       style: configuration.style.addressStyle,
-                                       localizationParameters: configuration.localizationParameters,
-                                       supportedCountryCodes: configuration.billingAddressCountryCodes
-                                   ),
-                                   identifier: identifier,
-                                   presenter: self,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
-        configuration.shopperInformation?.billingAddress.map { item.value = $0 }
-        item.style.backgroundColor = UIColor.Adyen.lightGray
-        return item
+        
+        let prefillAddress = configuration.shopperInformation?.billingAddress
+        
+        return FormAddressPickerItem(
+            for: .billing,
+            initialCountry: initialCountry,
+            supportedCountryCodes: configuration.billingAddressCountryCodes,
+            prefillAddress: prefillAddress,
+            style: configuration.style,
+            localizationParameters: configuration.localizationParameters,
+            identifier: identifier,
+            presenter: self
+        )
     }()
     
     internal lazy var payButton: FormButtonItem = {
@@ -285,16 +288,9 @@ extension ACHDirectDebitComponent: TrackableComponent {}
 extension ACHDirectDebitComponent: ViewControllerDelegate {
 
     public func viewDidLoad(viewController: UIViewController) {
-        Analytics.sendEvent(component: paymentMethod.type.rawValue,
-                            flavor: _isDropIn ? .dropin : .components,
-                            context: context.apiContext)
+        sendInitialAnalytics()
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
-    }
-
-    /// :nodoc:
-    public func viewWillAppear(viewController: UIViewController) {
-        sendTelemetryEvent()
     }
 }
 

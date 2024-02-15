@@ -381,7 +381,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertTrue(compareCollections(supportedNetworks, [.masterCard, .elo]))
     }
 
-    func testViewWillAppearShouldSendTelemetryEvent() throws {
+    func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
@@ -394,10 +394,10 @@ class ApplePayComponentTest: XCTestCase {
                                      configuration: configuration)
 
         // When
-        sut.viewWillAppear(viewController: mockViewController)
+        sut.viewDidLoad(viewController: mockViewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
     }
     
     private func getRandomContactFieldSet() -> Set<PKContactField> {

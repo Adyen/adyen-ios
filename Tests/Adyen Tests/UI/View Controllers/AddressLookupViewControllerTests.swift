@@ -25,6 +25,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         }
         
         let viewModel = AddressLookupViewController.ViewModel(
+            for: .billing,
             style: .init(),
             localizationParameters: nil,
             supportedCountryCodes: nil,
@@ -63,6 +64,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         let emptyCompletionExpectation = expectation(description: "Completion handler called with nil object")
         
         let viewModel = AddressLookupViewController.ViewModel(
+            for: .billing,
             style: .init(),
             localizationParameters: nil,
             supportedCountryCodes: nil,
@@ -90,6 +92,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         let mockLookupProvider = MockAddressLookupProvider { _ in [] }
         
         let viewModel = AddressLookupViewController.ViewModel(
+            for: .billing,
             style: .init(),
             localizationParameters: nil,
             supportedCountryCodes: nil,
@@ -128,6 +131,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         // Given
 
         let viewModel = AddressLookupViewController.ViewModel(
+            for: .billing,
             style: .init(),
             localizationParameters: nil,
             supportedCountryCodes: nil,
@@ -151,6 +155,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         let prefillAddress = PostalAddressMocks.all.first!
 
         let viewModel = AddressLookupViewController.ViewModel(
+            for: .billing,
             style: .init(),
             localizationParameters: nil,
             supportedCountryCodes: nil,
@@ -187,6 +192,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         }
         
         let viewModel = AddressLookupViewController.ViewModel(
+            for: .billing,
             style: .init(),
             localizationParameters: nil,
             supportedCountryCodes: nil,

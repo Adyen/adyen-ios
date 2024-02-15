@@ -9,28 +9,6 @@ import XCTest
 
 class FormPickerItemTests: XCTestCase {
     
-    class MockPresenter: ViewControllerPresenter {
-        
-        var present: (UIViewController, Bool) -> Void
-        var dismiss: (Bool) -> Void
-        
-        init(
-            present: @escaping (UIViewController, Bool) -> Void,
-            dismiss: @escaping (Bool) -> Void
-        ) {
-            self.present = present
-            self.dismiss = dismiss
-        }
-        
-        func presentViewController(_ viewController: UIViewController, animated: Bool) {
-            present(viewController, animated)
-        }
-        
-        func dismissViewController(animated: Bool) {
-            dismiss(animated)
-        }
-    }
-    
     func testPresentation() throws {
         
         let presentViewControllerExpectation = expectation(description: "presenter.presentViewController was called")
@@ -38,7 +16,7 @@ class FormPickerItemTests: XCTestCase {
         
         var presentedViewController: FormPickerSearchViewController?
         
-        let mockPresenter = MockPresenter { viewController, animated in
+        let mockPresenter = PresenterMock { viewController, animated in
             presentedViewController = viewController as? FormPickerSearchViewController
             presentViewControllerExpectation.fulfill()
         } dismiss: { animated in

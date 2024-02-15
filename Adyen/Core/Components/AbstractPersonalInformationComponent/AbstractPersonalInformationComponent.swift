@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -76,8 +76,10 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
     }
 
-    private func add(_ field: PersonalInformation,
-                     into formViewController: FormViewController) {
+    private func add(
+        _ field: PersonalInformation,
+        into formViewController: FormViewController
+    ) {
         switch field {
         case .email:
             emailItemInjector?.inject(into: formViewController)
@@ -146,13 +148,14 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return AddressFormItemInjector(value: configuration.shopperInformation?.billingAddress,
                                        initialCountry: initialCountry,
                                        identifier: identifier,
-                                       style: configuration.style.addressStyle,
+                                       style: configuration.style,
                                        presenter: self,
-                                       addressViewModelBuilder: addressViewModelBuilder())
+                                       addressViewModelBuilder: addressViewModelBuilder(),
+                                       addressType: .billing)
     }()
     
     @_spi(AdyenInternal)
-    public var addressItem: FormAddressItem? { addressItemInjector?.item }
+    public var addressItem: FormAddressPickerItem? { addressItemInjector?.item }
     
     internal lazy var deliveryAddressItemInjector: AddressFormItemInjector? = {
         guard fields.contains(.deliveryAddress) else { return nil }
@@ -161,13 +164,14 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return AddressFormItemInjector(value: configuration.shopperInformation?.deliveryAddress,
                                        initialCountry: initialCountry,
                                        identifier: identifier,
-                                       style: configuration.style.addressStyle,
+                                       style: configuration.style,
                                        presenter: self,
-                                       addressViewModelBuilder: addressViewModelBuilder())
+                                       addressViewModelBuilder: addressViewModelBuilder(),
+                                       addressType: .delivery)
     }()
     
     @_spi(AdyenInternal)
-    public var deliveryAddressItem: FormAddressItem? { deliveryAddressItemInjector?.item }
+    public var deliveryAddressItem: FormAddressPickerItem? { deliveryAddressItemInjector?.item }
 
     internal lazy var phoneItemInjector: PhoneFormItemInjector? = {
         guard fields.contains(.phone) else { return nil }
@@ -258,7 +262,10 @@ extension AbstractPersonalInformationComponent: ViewControllerDelegate {
     // MARK: - ViewControllerDelegate
 
     public func viewWillAppear(viewController: UIViewController) {
-        sendTelemetryEvent()
         populateFields()
+    }
+    
+    public func viewDidLoad(viewController: UIViewController) {
+        sendInitialAnalytics()
     }
 }

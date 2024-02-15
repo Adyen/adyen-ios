@@ -65,18 +65,31 @@ extension DispatchTimeInterval {
 extension XCTestCase {
 
     enum TestAnimationSpeed: Float {
-        case paused = 0
+        /// Default system animation speed
         case system = 1
-        case fast = 100
+        /// 10x speed
+        case fast = 10
     }
 
     /// Executes a block with a specified animation speed
     ///
     /// After the block the animation speed gets reset to the previous speed
     func withAnimation(_ speed: TestAnimationSpeed, block: () throws -> Void) throws {
-        let speedBefore = UIApplication.shared.adyen.mainKeyWindow?.layer.speed ?? 1
+        let previousLayerSpeed = UIApplication.shared.adyen.mainKeyWindow?.layer.speed ?? 1
+        
         UIApplication.shared.adyen.mainKeyWindow?.layer.speed = speed.rawValue
         try block()
-        UIApplication.shared.adyen.mainKeyWindow?.layer.speed = speedBefore
+        UIApplication.shared.adyen.mainKeyWindow?.layer.speed = previousLayerSpeed
+    }
+    
+    /// Executes a block with UIView animations disabled
+    ///
+    /// After the block the animation speed gets reset to the previous value
+    func withoutAnimation(block: () throws -> Void) throws {
+        let wereAnimationsEnabled = UIView.areAnimationsEnabled
+        
+        UIView.setAnimationsEnabled(false)
+        try block()
+        UIView.setAnimationsEnabled(wereAnimationsEnabled)
     }
 }

@@ -64,12 +64,15 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
             handler(self.listItems(for: searchText))
         }
         
-        return SearchViewController(
+        let searchViewController = SearchViewController(
             viewModel: viewModel,
             emptyView: IssuerListEmptyView(
                 localizationParameters: configuration.localizationParameters
             )
         )
+        searchViewController.delegate = self
+        
+        return searchViewController
     }()
 
     public func stopLoading() {
@@ -129,12 +132,7 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
 }
 
 @_spi(AdyenInternal)
-extension IssuerListComponent: ViewControllerDelegate {
-
-    public func viewWillAppear(viewController: UIViewController) {
-        sendTelemetryEvent()
-    }
-}
+extension IssuerListComponent: ViewControllerDelegate {}
 
 @_spi(AdyenInternal)
 extension IssuerListComponent: TrackableComponent {}

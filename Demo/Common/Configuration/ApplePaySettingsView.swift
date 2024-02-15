@@ -30,5 +30,6 @@ internal struct ApplePaySettingsView: View {
             .navigationBarTitle("")
             .navigationBarHidden(true)
         }
+        .navigationViewStyle(.stack)
     }
 }

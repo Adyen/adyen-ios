@@ -10,19 +10,13 @@ import XCTest
 
 class PaymentMethodTests: XCTestCase {
     
-    var paymentMethods: PaymentMethods!
-    
     override func tearDown() {
         super.tearDown()
         AdyenAssertion.listener = nil
     }
     
-    override func setUpWithError() throws {
-        paymentMethods = try getPaymentMethods()
-    }
-    
-    private func getPaymentMethods() throws -> PaymentMethods {
-        let dictionary = [
+    private var paymentMethodsDictionary: [String: Any] {
+        [
             "storedPaymentMethods": [
                 storedCreditCardDictionary,
                 storedCreditCardDictionary,
@@ -80,14 +74,35 @@ class PaymentMethodTests: XCTestCase {
                 giftCard1,
                 givexGiftCard,
                 mealVoucherSodexo,
-                bizum
+                bizum,
+                boleto,
+                affirm,
+                atome,
+                upi,
+                cashAppPay
             ]
         ]
-        return try AdyenCoder.decode(dictionary) as PaymentMethods
+    }
+    
+    private func getPaymentMethods() throws -> PaymentMethods {
+        try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
+    }
+    
+    // MARK: - Payment Methods
+    
+    func testPaymentMethodsCoding() throws {
+        let paymentMethods: PaymentMethods = try getPaymentMethods()
+        
+        let encodedPaymentMethods: Data = try AdyenCoder.encode(paymentMethods)
+        let decodedPaymentMethods: PaymentMethods = try AdyenCoder.decode(encodedPaymentMethods)
+        
+        XCTAssertEqual(paymentMethods, decodedPaymentMethods)
     }
     
     func testDecodingPaymentMethods() throws {
         // Stored payment methods
+        
+        let paymentMethods = try getPaymentMethods()
         
         XCTAssertEqual(paymentMethods.stored.count, 8)
         XCTAssertTrue(paymentMethods.stored[0] is StoredCardPaymentMethod)
@@ -154,9 +169,10 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 26)
-        XCTAssertTrue(paymentMethods.regular[0] is CardPaymentMethod)
-        XCTAssertEqual((paymentMethods.regular[0] as! CardPaymentMethod).fundingSource!, .credit)
+        XCTAssertEqual(paymentMethods.regular.count, 31)
+        
+        let creditCardPaymentMethod = try XCTUnwrap(paymentMethods.regular[0] as? CardPaymentMethod)
+        XCTAssertEqual(creditCardPaymentMethod.fundingSource, .credit)
         
         XCTAssertTrue(paymentMethods.regular[1] is IssuerListPaymentMethod)
         XCTAssertTrue(paymentMethods.regular[2] is SEPADirectDebitPaymentMethod)
@@ -192,8 +208,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethods.regular[8].name, "GiroPay with non optional details")
         
         // Qiwi Wallet
-        XCTAssertTrue(paymentMethods.regular[9] is QiwiWalletPaymentMethod)
-        let qiwiMethod = paymentMethods.regular[9] as! QiwiWalletPaymentMethod
+        let qiwiMethod = try XCTUnwrap(paymentMethods.regular[9] as? QiwiWalletPaymentMethod)
         XCTAssertEqual(qiwiMethod.type.rawValue, "qiwiwallet")
         XCTAssertEqual(qiwiMethod.name, "Qiwi Wallet")
         XCTAssertEqual(qiwiMethod.phoneExtensions.count, 3)
@@ -210,8 +225,8 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethods.regular[10].type.rawValue, "wechatpaySDK")
         XCTAssertEqual(paymentMethods.regular[10].name, "WeChat Pay")
         
-        XCTAssertTrue(paymentMethods.regular[11] is CardPaymentMethod)
-        XCTAssertEqual((paymentMethods.regular[11] as! CardPaymentMethod).fundingSource!, .debit)
+        let debitCardPaymentMethod = try XCTUnwrap(paymentMethods.regular[11] as? CardPaymentMethod)
+        XCTAssertEqual(debitCardPaymentMethod.fundingSource, .debit)
 
         XCTAssertTrue(paymentMethods.regular[12] is MBWayPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[12].name, "MB WAY")
@@ -268,10 +283,34 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.regular[25] is MealVoucherPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[25].name, "Sodexo")
         XCTAssertEqual(paymentMethods.regular[25].type.rawValue, "mealVoucher_FR_sodexo")
-
+        
+        XCTAssertTrue(paymentMethods.regular[26] is BoletoPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[26].name, "Boleto Bancario")
+        XCTAssertEqual(paymentMethods.regular[26].type.rawValue, "boletobancario_santander")
+        
+        XCTAssertTrue(paymentMethods.regular[27] is AffirmPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[27].name, "Affirm")
+        XCTAssertEqual(paymentMethods.regular[27].type.rawValue, "affirm")
+        
+        XCTAssertTrue(paymentMethods.regular[28] is AtomePaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[28].name, "Atome")
+        XCTAssertEqual(paymentMethods.regular[28].type.rawValue, "atome")
+        
+        XCTAssertTrue(paymentMethods.regular[29] is UPIPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[29].name, "UPI")
+        XCTAssertEqual(paymentMethods.regular[29].type.rawValue, "upi")
+        
+        let cashAppPay = try XCTUnwrap(paymentMethods.regular[30] as? CashAppPayPaymentMethod)
+        XCTAssertEqual(cashAppPay.name, "Cash App Pay")
+        XCTAssertEqual(cashAppPay.type.rawValue, "cashapp")
+        XCTAssertEqual(cashAppPay.clientId, "testClient")
+        XCTAssertEqual(cashAppPay.scopeId, "testScope")
     }
     
+    // MARK: - Display Information Override
+    
     func testOverridingDisplayInformationCard() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .scheme,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -281,6 +320,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationBCMC() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .bcmc,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -290,6 +330,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationApplePay() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .applePay,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -299,6 +340,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationPayPal() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .payPal,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -308,6 +350,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationWeChat() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .weChatPaySDK,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -317,6 +360,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationQiwiWallet() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .qiwiWallet,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -326,6 +370,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationBLIK() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .blik,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -335,6 +380,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationStoredBLIK() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofStoredPaymentMethod: .blik,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -344,6 +390,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationStoredCreditCard() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofStoredPaymentMethod: .scheme,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"),
@@ -362,6 +409,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationStoredDebitCard() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofStoredPaymentMethod: .scheme,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"),
@@ -380,6 +428,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationGiro() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .other("giropay"),
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -389,6 +438,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationGenericGiftCard() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(
             ofRegularPaymentMethod: .giftcard,
             with: .init(title: "custom title",
@@ -413,6 +463,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationGivexGiftCard() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(
             ofRegularPaymentMethod: .giftcard,
             with: .init(title: "custom title",
@@ -441,6 +492,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationAnyGivenGiftCard() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(
             ofRegularPaymentMethod: .giftcard,
             with: .init(title: "custom title",
@@ -469,6 +521,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationMealVoucher() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .mealVoucherSodexo,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -479,6 +532,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationDukoWallet() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .dokuWallet,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -488,6 +542,7 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func testOverridingDisplayInformationIdeal() throws {
+        var paymentMethods = try getPaymentMethods()
         paymentMethods.overrideDisplayInformation(ofRegularPaymentMethod: .ideal,
                                                   with: .init(title: "custom title",
                                                               subtitle: "custom subtitle"))
@@ -495,6 +550,8 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(idealPaymentMethod?.displayInformation(using: nil).title, "custom title")
         XCTAssertEqual(idealPaymentMethod?.displayInformation(using: nil).subtitle, "custom subtitle")
     }
+    
+    // MARK: - Misc
 
     func testDecodingPaymentMethodsWithNullValues() throws {
 
@@ -600,6 +657,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.name, "Credit Card")
         XCTAssertEqual(paymentMethod.fundingSource!, .credit)
         XCTAssertEqual(paymentMethod.brands, [.masterCard, .visa, .americanExpress])
+        testCoding(paymentMethod)
     }
     
     func testDecodingDebitCardPaymentMethod() throws {
@@ -608,6 +666,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.name, "Credit Card")
         XCTAssertEqual(paymentMethod.fundingSource!, .debit)
         XCTAssertEqual(paymentMethod.brands, [.masterCard, .visa, .americanExpress])
+        testCoding(paymentMethod)
     }
     
     func testDecodingBCMCCardPaymentMethod() throws {
@@ -615,6 +674,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.type.rawValue, "bcmc")
         XCTAssertEqual(paymentMethod.name, "Bancontact card")
         XCTAssertEqual(paymentMethod.brands, [])
+        testCoding(paymentMethod)
     }
     
     func testDecodingCardPaymentMethodWithoutBrands() throws {
@@ -625,6 +685,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.type.rawValue, "scheme")
         XCTAssertEqual(paymentMethod.name, "Credit Card")
         XCTAssertTrue(paymentMethod.brands.isEmpty)
+        testCoding(paymentMethod)
     }
     
     func testDecodingStoredCreditCardPaymentMethod() throws {
@@ -641,6 +702,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.supportedShopperInteractions, [.shopperPresent, .shopperNotPresent])
         XCTAssertEqual(paymentMethod.displayInformation(using: nil), expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: nil))
         XCTAssertEqual(paymentMethod.displayInformation(using: expectedLocalizationParameters), expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: expectedLocalizationParameters))
+        testCoding(paymentMethod)
     }
     
     func testDecodingStoredDebitCardPaymentMethod() throws {
@@ -657,6 +719,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.supportedShopperInteractions, [.shopperPresent, .shopperNotPresent])
         XCTAssertEqual(paymentMethod.displayInformation(using: nil), expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: nil))
         XCTAssertEqual(paymentMethod.displayInformation(using: expectedLocalizationParameters), expectedStoredCardPaymentMethodDisplayInfo(method: paymentMethod, localizationParameters: expectedLocalizationParameters))
+        testCoding(paymentMethod)
     }
     
     public func expectedStoredCardPaymentMethodDisplayInfo(method: StoredCardPaymentMethod, localizationParameters: LocalizationParameters?) -> DisplayInformation {
@@ -691,6 +754,8 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.issuers[1].name, "Test Issuer 2")
         XCTAssertEqual(paymentMethod.issuers[2].identifier, "xxxx")
         XCTAssertEqual(paymentMethod.issuers[2].name, "Test Issuer 3")
+        
+        testCoding(paymentMethod)
     }
 
     func testDecodingIssuerListPaymentMethodWithoutDetailsObject() throws {
@@ -705,6 +770,8 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.issuers[1].name, "Test Issuer 2")
         XCTAssertEqual(paymentMethod.issuers[2].identifier, "1153")
         XCTAssertEqual(paymentMethod.issuers[2].name, "Test Issuer 3")
+        
+        testCoding(paymentMethod)
     }
     
     // MARK: - SEPA Direct Debit
@@ -718,6 +785,7 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try AdyenCoder.decode(sepaDirectDebitDictionary) as SEPADirectDebitPaymentMethod
         XCTAssertEqual(paymentMethod.type.rawValue, "sepadirectdebit")
         XCTAssertEqual(paymentMethod.name, "SEPA Direct Debit")
+        testCoding(paymentMethod)
     }
     
     // MARK: - Stored PayPal
@@ -729,6 +797,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.name, "PayPal")
         XCTAssertEqual(paymentMethod.emailAddress, "example@shopper.com")
         XCTAssertEqual(paymentMethod.supportedShopperInteractions, [.shopperPresent, .shopperNotPresent])
+        testCoding(paymentMethod)
     }
     
     // MARK: - Apple Pay
@@ -737,6 +806,7 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try AdyenCoder.decode(applePayDictionary) as ApplePayPaymentMethod
         XCTAssertEqual(paymentMethod.type.rawValue, "applepay")
         XCTAssertEqual(paymentMethod.name, "Apple Pay")
+        testCoding(paymentMethod)
     }
     
     // MARK: - Bancontact
@@ -745,6 +815,7 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try AdyenCoder.decode(bcmcCardDictionary) as BCMCPaymentMethod
         XCTAssertEqual(paymentMethod.type.rawValue, "bcmc")
         XCTAssertEqual(paymentMethod.name, "Bancontact card")
+        testCoding(paymentMethod)
     }
     
     // MARK: - GiroPay
@@ -753,6 +824,7 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try AdyenCoder.decode(giroPayDictionaryWithOptionalDetails) as InstantPaymentMethod
         XCTAssertEqual(paymentMethod.type.rawValue, "giropay")
         XCTAssertEqual(paymentMethod.name, "GiroPay")
+        testCoding(paymentMethod)
     }
 
     // MARK: - Seven Eleven
@@ -761,6 +833,7 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try AdyenCoder.decode(sevenElevenDictionary) as SevenElevenPaymentMethod
         XCTAssertEqual(paymentMethod.name, "7-Eleven")
         XCTAssertEqual(paymentMethod.type.rawValue, "econtext_seven_eleven")
+        testCoding(paymentMethod)
     }
 
     // MARK: - E-Context Online
@@ -769,6 +842,7 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try AdyenCoder.decode(econtextOnline) as EContextPaymentMethod
         XCTAssertEqual(paymentMethod.name, "Online Banking")
         XCTAssertEqual(paymentMethod.type.rawValue, "econtext_online")
+        testCoding(paymentMethod)
     }
     
     // MARK: - OXXO
@@ -777,6 +851,7 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try AdyenCoder.decode(oxxo) as OXXOPaymentMethod
         XCTAssertEqual(paymentMethod.name, "OXXO")
         XCTAssertEqual(paymentMethod.type.rawValue, "oxxo")
+        testCoding(paymentMethod)
     }
 
     // MARK: - E-Context ATM
@@ -785,6 +860,7 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try AdyenCoder.decode(econtextATM) as EContextPaymentMethod
         XCTAssertEqual(paymentMethod.name, "Pay-easy ATM")
         XCTAssertEqual(paymentMethod.type.rawValue, "econtext_atm")
+        testCoding(paymentMethod)
     }
 
     // MARK: - E-Context Stores
@@ -793,6 +869,7 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try AdyenCoder.decode(econtextStores) as EContextPaymentMethod
         XCTAssertEqual(paymentMethod.name, "Convenience Stores")
         XCTAssertEqual(paymentMethod.type.rawValue, "econtext_stores")
+        testCoding(paymentMethod)
     }
     
     // MARK: - Stored Bancontact
@@ -813,6 +890,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.displayInformation(using: nil), expectedDisplayInfo)
         XCTAssertEqual(paymentMethod.displayInformation(using: expectedLocalizationParameters),
                        expectedBancontactCardDisplayInfo(method: paymentMethod, localizationParameters: expectedLocalizationParameters))
+        testCoding(paymentMethod)
     }
 
     // MARK: - MBWay
@@ -821,6 +899,7 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try AdyenCoder.decode(mbway) as MBWayPaymentMethod
         XCTAssertEqual(paymentMethod.type.rawValue, "mbway")
         XCTAssertEqual(paymentMethod.name, "MB WAY")
+        testCoding(paymentMethod)
     }
 
     // MARK: - Doku wallet
@@ -829,6 +908,7 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try AdyenCoder.decode(dokuWallet) as DokuPaymentMethod
         XCTAssertEqual(paymentMethod.type.rawValue, "doku_wallet")
         XCTAssertEqual(paymentMethod.name, "DOKU wallet")
+        testCoding(paymentMethod)
     }
     
     public func expectedBancontactCardDisplayInfo(method: StoredBCMCPaymentMethod,
@@ -856,8 +936,9 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try AdyenCoder.decode(giftCard) as GiftCardPaymentMethod
         XCTAssertEqual(paymentMethod.type.rawValue, "giftcard")
         XCTAssertEqual(paymentMethod.name, "Generic GiftCard")
+        XCTAssertEqual(paymentMethod.displayInformation(using: nil).title, "Generic GiftCard")
         XCTAssertEqual(paymentMethod.displayInformation(using: nil).logoName, "genericgiftcard")
-        XCTAssertEqual(paymentMethod.displayInformation(using: nil).logoName, "genericgiftcard")
+        testCoding(paymentMethod)
     }
     
     func testDecodingMealVoucherPaymentMethod() throws {
@@ -866,6 +947,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.name, "Sodexo")
         XCTAssertEqual(paymentMethod.displayInformation(using: nil).title, "Sodexo")
         XCTAssertEqual(paymentMethod.displayInformation(using: nil).logoName, "mealVoucher_FR_sodexo")
+        testCoding(paymentMethod)
     }
     
     // MARK: - Boleto
@@ -874,8 +956,9 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try AdyenCoder.decode(boleto) as BoletoPaymentMethod
         XCTAssertEqual(paymentMethod.type.rawValue, "boletobancario_santander")
         XCTAssertEqual(paymentMethod.name, "Boleto Bancario")
+        XCTAssertEqual(paymentMethod.displayInformation(using: nil).title, "Boleto Bancario")
         XCTAssertEqual(paymentMethod.displayInformation(using: nil).logoName, "boletobancario_santander")
-        XCTAssertEqual(paymentMethod.displayInformation(using: nil).logoName, "boletobancario_santander")
+        testCoding(paymentMethod)
     }
 
     // MARK: - BACS Direct Debit
@@ -884,6 +967,7 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try AdyenCoder.decode(bacsDirectDebit) as BACSDirectDebitPaymentMethod
         XCTAssertEqual(paymentMethod.type.rawValue, "directdebit_GB")
         XCTAssertEqual(paymentMethod.name, "BACS Direct Debit")
+        testCoding(paymentMethod)
     }
 
     // MARK: - ACH Direct Debit
@@ -892,6 +976,7 @@ class PaymentMethodTests: XCTestCase {
         let paymentMethod = try AdyenCoder.decode(achDirectDebit) as ACHDirectDebitPaymentMethod
         XCTAssertEqual(paymentMethod.type.rawValue, "ach")
         XCTAssertEqual(paymentMethod.name, "ACH Direct Debit")
+        testCoding(paymentMethod)
     }
     
     func testDecodingStoredACHDirectDebitPaymentMethod() throws {
@@ -899,6 +984,25 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.type.rawValue, "ach")
         XCTAssertEqual(paymentMethod.name, "ACH Direct Debit")
         XCTAssertEqual(paymentMethod.bankAccountNumber, "123456789")
+        testCoding(paymentMethod)
+    }
+    
+    // MARK: - Cash App
+    
+    func testDecodingCashAppPayPaymentMethod() throws {
+        let paymentMethod = try AdyenCoder.decode(cashAppPay) as CashAppPayPaymentMethod
+        XCTAssertEqual(paymentMethod.type.rawValue, "cashapp")
+        XCTAssertEqual(paymentMethod.name, "Cash App Pay")
+        testCoding(paymentMethod)
+    }
+    
+    // MARK: - Cash App
+    
+    func testDecodingQiwiPaymentMethod() throws {
+        let paymentMethod = try AdyenCoder.decode(qiwiWallet) as QiwiWalletPaymentMethod
+        XCTAssertEqual(paymentMethod.type.rawValue, "qiwiwallet")
+        XCTAssertEqual(paymentMethod.name, "Qiwi Wallet")
+        testCoding(paymentMethod)
     }
     
     // MARK: - PaymentMethodDetails
@@ -937,6 +1041,26 @@ class PaymentMethodTests: XCTestCase {
             PaymentMethodType.onlineBankingSK: "online banking Slovakia"
         ].forEach {
             XCTAssertEqual($0.key.name, $0.value)
+        }
+    }
+}
+
+private extension PaymentMethodTests {
+    
+    func testCoding<T: PaymentMethod>(_ paymentMethod: T) {
+        do {
+            let encoded: Data = try AdyenCoder.encode(paymentMethod)
+            let decoded: T = try AdyenCoder.decode(encoded)
+            
+            // Re-Encode to compare if the data is still the same after the roundtrip
+            let reEncoded: Data = try AdyenCoder.encode(decoded)
+            
+            XCTAssertEqual(
+                String(data: encoded, encoding: .utf8),
+                String(data: reEncoded, encoding: .utf8)
+            )
+        } catch {
+            XCTFail(error.localizedDescription)
         }
     }
 }

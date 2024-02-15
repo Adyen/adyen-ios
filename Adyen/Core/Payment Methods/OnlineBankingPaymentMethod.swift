@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 
 /// An issuer (typically a bank) in an issuer list payment method.
-public struct Issuer: Decodable, CustomStringConvertible, Equatable {
+public struct Issuer: Codable, CustomStringConvertible, Equatable {
 
     /// The unique identifier of the issuer.
     public let identifier: String
@@ -39,15 +39,6 @@ public struct OnlineBankingPaymentMethod: PaymentMethod {
     
     /// The available issuers.
     public let issuers: [Issuer]
-
-    // MARK: - Coding
- 
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.type = try container.decode(PaymentMethodType.self, forKey: .type)
-        self.name = try container.decode(String.self, forKey: .name)
-        self.issuers = try container.decode([Issuer].self, forKey: .issuers)
-    }
 
     @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {

@@ -11,29 +11,19 @@ import Foundation
 
 class AnalyticsProviderMock: AnalyticsProviderProtocol {
     
-    var additionalFields: (() -> AdditionalAnalyticsFields)?
-    var checkoutAttemptId: String? { underlyingCheckoutAttemptId }
+    var checkoutAttemptId: String?
 
     // MARK: - checkoutAttemptId
-
-    func fetchCheckoutAttemptId(completion: @escaping (String?) -> Void) {
-        completion(underlyingCheckoutAttemptId)
+    
+    func sendInitialAnalytics(with flavor: AnalyticsFlavor, additionalFields: AdditionalAnalyticsFields?) {
+        initialEventCallsCount += 1
+        checkoutAttemptId = _checkoutAttemptId
     }
     
-    func fetchAndCacheCheckoutAttemptIdIfNeeded() {
-        fetchCheckoutAttemptId(completion: { _ in })
-    }
-    
-    var underlyingCheckoutAttemptId: String?
+    var _checkoutAttemptId: String?
 
-    // MARK: - sendTelemetryEvent
-
-    var sendTelemetryEventCallsCount = 0
-    var sendTelemetryEventCalled: Bool {
-        sendTelemetryEventCallsCount > 0
-    }
-
-    func sendTelemetryEvent(flavor: TelemetryFlavor) {
-        sendTelemetryEventCallsCount += 1
+    var initialEventCallsCount = 0
+    var initialEventCalled: Bool {
+        initialEventCallsCount > 0
     }
 }

@@ -69,7 +69,7 @@
 "adyen.voucher.collectionInstitutionNumber" = "収納機関番号";
 "adyen.voucher.merchantName" = "業者";
 "adyen.voucher.expirationDate" = "有効期限";
-"adyen.voucher.paymentReferenceLabel" = "支払いの参照";
+"adyen.voucher.paymentReferenceLabel" = "確認番号";
 "adyen.voucher.shopperName" = "購入者氏名";
 "adyen.button.copy" = "コピー";
 "adyen.voucher.introduction" = "お買い上げありがとうございます。以下の情報を使用して、お支払いを完了してください。";
@@ -86,6 +86,7 @@
 "adyen.billingAddressSection.title" = "ご請求住所";
 "adyen.billingAddress.placeholder" = "ご請求先住所";
 "adyen.deliveryAddressSection.title" = "配送先住所";
+"adyen.deliveryAddress.placeholder" = "配送先住所";
 "adyen.countryField.title" = "国";
 "adyen.countryField.placeholder" = "国";
 "adyen.countryField.invalid" = "国名が正しくありません";

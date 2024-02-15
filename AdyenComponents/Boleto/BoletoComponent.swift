@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -67,17 +67,6 @@ public final class BoletoComponent: PaymentComponent,
         return sendCopyToEmailItem
     }()
     
-    private func headerFormItem(key: LocalizationKey) -> FormContainerItem {
-        FormLabelItem(
-            text: localizedString(key, configuration.localizationParameters),
-            style: configuration.style.sectionHeader,
-            identifier: ViewIdentifierBuilder.build(
-                scopeInstance: self,
-                postfix: localizedString(key, configuration.localizationParameters)
-            )
-        ).addingDefaultMargins()
-    }
-    
     private lazy var formComponent: FormComponent = {
         let configuration = AbstractPersonalInformationComponent.Configuration(style: configuration.style,
                                                                                shopperInformation: configuration.shopperInformation,
@@ -101,6 +90,7 @@ public final class BoletoComponent: PaymentComponent,
         }
         (component.viewController as? SecuredViewController<FormViewController>)?.delegate = self
         component.delegate = self
+        component._isDropIn = _isDropIn
         return component
     }()
     
@@ -109,15 +99,15 @@ public final class BoletoComponent: PaymentComponent,
     /// Constructs the fields for the form based on the configuration
     private var formFields: [PersonalInformation] {
         var fields: [PersonalInformation] = [
-            .custom(CustomFormItemInjector(item: headerFormItem(key: .boletoPersonalDetails))),
             .firstName,
             .lastName,
             .custom(CustomFormItemInjector(item: socialSecurityNumberItem)),
-            .address
+            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 2))),
+            .address,
+            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1)))
         ]
 
         if configuration.showEmailAddress {
-            fields.append(.custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1))))
             fields.append(.custom(CustomFormItemInjector(item: sendCopyByEmailItem)))
             fields.append(.email)
             fields.append(.custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1))))
@@ -182,13 +172,8 @@ extension BoletoComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)
 extension BoletoComponent: ViewControllerDelegate {
-
-    public func viewDidLoad(viewController: UIViewController) {}
-
-    public func viewDidAppear(viewController: UIViewController) {}
-
+    
     public func viewWillAppear(viewController: UIViewController) {
-        sendTelemetryEvent()
         prefillFields(for: formComponent)
     }
 }

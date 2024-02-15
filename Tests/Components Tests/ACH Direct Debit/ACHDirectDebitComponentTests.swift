@@ -62,8 +62,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.bankRoutingNumberItem.placeholder, localizedString(.achAccountLocationFieldTitle, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.bankRoutingNumberItem.validationFailureMessage, localizedString(.achAccountLocationFieldInvalid, sut.configuration.localizationParameters))
         
-        XCTAssertEqual(sut.billingAddressItem.headerItem.text, localizedString(.billingAddressSectionTitle, sut.configuration.localizationParameters))
-        XCTAssertEqual(sut.billingAddressItem.configuration.supportedCountryCodes, ["US", "UK"])
+        XCTAssertEqual(sut.billingAddressItem.title, localizedString(.billingAddressSectionTitle, sut.configuration.localizationParameters))
 
         XCTAssertEqual(sut.payButton.title, localizedSubmitButtonTitle(with: sut.payment?.amount,
                                                                        style: .immediate,
@@ -121,7 +120,6 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.payButtonItem.button.titleLabel")
         
         XCTAssertNotNil(sut.viewController.view.findView(by: "AdyenComponents.ACHDirectDebitComponent.billingAddressItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(by: "AdyenComponents.ACHDirectDebitComponent.billingAddressItem.title"))
         
         /// holder name
         XCTAssertEqual(nameItemView?.backgroundColor, .red)
@@ -173,13 +171,11 @@ class ACHDirectDebitComponentTests: XCTestCase {
         
         setupRootViewController(sut.viewController)
 
-        wait(for: .milliseconds(300))
-
         // Then
         let view: UIView = sut.viewController.view
         
-        let billingAddressView: FormVerticalStackItemView<FormAddressItem> = view.findView(by: "AdyenComponents.ACHDirectDebitComponent.billingAddressItem")!
-        let expectedBillingAddress = shopperInformation.billingAddress!
+        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: "AdyenComponents.ACHDirectDebitComponent.billingAddressItem"))
+        let expectedBillingAddress = shopperInformation.billingAddress
         let billingAddress = billingAddressView.item.value
         XCTAssertEqual(expectedBillingAddress, billingAddress)
     }
@@ -251,7 +247,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           context: context,
-                                          configuration: .init(showsBillingAddress: false),
+                                          configuration: .init(shopperInformation: shopperInformation, showsBillingAddress: false),
                                           publicKeyProvider: PublicKeyProviderMock())
 
         setupRootViewController(sut.viewController)
@@ -288,7 +284,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 100)
     }
 
-    func testViewWillAppearShouldSendTelemetryEvent() throws {
+    func testViewDidLoadShouldSendInitialCall() throws {
         
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
@@ -302,9 +298,9 @@ class ACHDirectDebitComponentTests: XCTestCase {
                                           publicKeyProvider: PublicKeyProviderMock())
 
         // When
-        sut.viewWillAppear(viewController: sut.viewController)
+        sut.viewDidLoad(viewController: sut.viewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
     }
 }

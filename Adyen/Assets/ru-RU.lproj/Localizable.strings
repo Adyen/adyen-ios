@@ -86,6 +86,7 @@
 "adyen.billingAddressSection.title" = "Платежный адрес";
 "adyen.billingAddress.placeholder" = "Ваш платежный адрес";
 "adyen.deliveryAddressSection.title" = "Адрес доставки";
+"adyen.deliveryAddress.placeholder" = "Ваш адрес доставки";
 "adyen.countryField.title" = "Страна";
 "adyen.countryField.placeholder" = "Страна";
 "adyen.countryField.invalid" = "Неправильная страна";
@@ -197,8 +198,8 @@
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Отменить";
 "adyen.picker.search.empty.title" = "Результаты не найдены";
 "adyen.picker.search.empty.subtitle" = "Не найдено соответствий «%@»";
-"adyen.address.lookup.search.placeholder" = "Поиск по адресу";
-"adyen.address.lookup.search.empty.title" = "Не можете найти адрес?";
+"adyen.address.lookup.search.placeholder" = "Найдите свой адрес";
+"adyen.address.lookup.search.empty.title" = "Не удается найти адрес?";
 "adyen.address.lookup.search.empty.subtitle" = "Можно #ввести адрес вручную#";
 "adyen.address.lookup.search.empty.title.noResults" = "Результаты не найдены";
 "adyen.address.lookup.search.empty.subtitle.noResults" = "Не найдено соответствий «%@». Повторите попытку или используйте #ручной ввод адреса#";

@@ -84,8 +84,7 @@ class OnlineBankingComponentUITests: XCTestCase {
             XCTAssertEqual(details.issuer, "jp")
             sut.stopLoadingIfNeeded()
             
-            self.wait(for: .aMoment)
-            self.assertViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
+            self.verifyViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
             didContinueExpectation.fulfill()
         }
         
@@ -107,7 +106,7 @@ class OnlineBankingComponentUITests: XCTestCase {
             sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
         )
 
-        try withAnimation(.paused) {
+        try withoutAnimation {
             // start loading
             button.showsActivityIndicator = true
             wait(until: button, at: \.showsActivityIndicator, is: true)
