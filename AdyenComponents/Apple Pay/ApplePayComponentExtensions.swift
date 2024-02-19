@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -29,7 +29,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
             return
         }
 
-        state = .paid(completion)
+        state = .submitted(completion)
         let token = payment.token.paymentData.base64EncodedString()
         let network = payment.token.paymentMethod.network?.rawValue ?? ""
         let details = ApplePayDetails(paymentMethod: applePayPaymentMethod,
