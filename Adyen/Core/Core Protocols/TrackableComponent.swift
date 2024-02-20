@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// A component that can send analytics events.
 @_spi(AdyenInternal)
