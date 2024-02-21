@@ -158,12 +158,8 @@ extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
 
 @_spi(AdyenInternal)
 extension DropInComponent: TrackableComponent {
-    
-    public func sendInitialAnalytics() {
+    public var analyticsFlavor: AnalyticsFlavor {
         let paymentMethodTypes = paymentMethods.regular.map(\.type.rawValue)
-        let flavor = AnalyticsFlavor.dropIn(paymentMethods: paymentMethodTypes)
-        let amount = context.payment?.amount
-        let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AnalyticsForSession.sessionId)
-        context.analyticsProvider?.sendInitialAnalytics(with: flavor, additionalFields: additionalFields)
+        return .dropIn(paymentMethods: paymentMethodTypes)
     }
 }

@@ -59,32 +59,3 @@ public extension PresentableComponent {
     var navBarType: NavigationBarType { .regular }
     
 }
-
-@_spi(AdyenInternal)
-public protocol TrackableComponent: Component {
-    
-    /// Sends the initial data and retrieves the checkout attempt id
-    func sendInitialAnalytics()
-}
-
-@_spi(AdyenInternal)
-extension TrackableComponent where Self: ViewControllerDelegate {
-    
-    public func viewDidLoad(viewController: UIViewController) {
-        sendInitialAnalytics()
-    }
-}
-
-@_spi(AdyenInternal)
-extension TrackableComponent where Self: PaymentMethodAware {
-    
-    public func sendInitialAnalytics() {
-        // initial call is not needed again if inside dropIn
-        guard !_isDropIn else { return }
-        let flavor: AnalyticsFlavor = .components(type: paymentMethod.type)
-        let amount = context.payment?.amount
-        let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AnalyticsForSession.sessionId)
-        context.analyticsProvider?.sendInitialAnalytics(with: flavor,
-                                                         additionalFields: additionalFields)
-    }
-}
