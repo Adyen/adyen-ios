@@ -20,6 +20,7 @@ jobs:
           device: 'iPhone 14'
           displayname: 'iPhone-14'
           os: 'macos-13-xl'
+          xcode_version: '14.3'
           needs_custom_sim: false # Takes the shipped simulator that comes with Xcode 14
         
         - version: '15.0'
@@ -27,6 +28,7 @@ jobs:
           device: 'iPhone 13'
           displayname: 'iPhone-13'
           os: 'macos-12-xl'
+          xcode_version: '13.4.1'
           needs_custom_sim: true
         
         - version: '14.2'
@@ -34,6 +36,7 @@ jobs:
           displayname: 'iPhone-12'
           runtime: 'iOS-14-2'
           os: 'macos-12-xl'
+          xcode_version: '13.4.1'
           needs_custom_sim: true
           
         - version: '13.7'
@@ -41,6 +44,7 @@ jobs:
           device: 'iPhone 11'
           displayname: 'iPhone-11'
           os: 'macos-12-xl'
+          xcode_version: '13.4.1'
           needs_custom_sim: true
           
     steps:
@@ -52,6 +56,12 @@ jobs:
     - name: Prepare custom devices
       run: |
         sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
+
+    - name: Select Xcode ${{ matrix.xcode_version}}
+      run: |
+        sudo xcode-select -s /Applications/Xcode_${xcode_version}.app/Contents/Developer
+      env:
+        xcode_version: ${{ matrix.xcode_version }}
 
     - name: Download simulator if needed (${{ matrix.version }})
       if: matrix.needs_custom_sim
