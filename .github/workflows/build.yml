@@ -59,6 +59,7 @@ jobs:
 
     - name: Select Xcode ${{ matrix.xcode_version}}
       run: |
+        ls /Applications/Xcode_*.app
         sudo xcode-select -s /Applications/Xcode_${xcode_version}.app/Contents/Developer
       env:
         xcode_version: ${{ matrix.xcode_version }}
