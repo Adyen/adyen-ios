@@ -19,7 +19,7 @@ jobs:
           runtime: 'iOS-16-2'
           device: 'iPhone 13'
           displayname: 'iPhone-13'
-          os: 'macos-12-xl'
+          os: 'macos-12'
           needs_custom_sim: true
         
         - version: '15.0'
