@@ -15,11 +15,11 @@ jobs:
       matrix:
         include:
         
-        - version: '16.4'
-          runtime: 'iOS-16-4'
-          device: 'iPhone 14'
-          displayname: 'iPhone-14'
-          os: 'macos-13-xl'
+        - version: '16.2'
+          runtime: 'iOS-16-2'
+          device: 'iPhone 13'
+          displayname: 'iPhone-13'
+          os: 'macos-12-xl'
           needs_custom_sim: true
         
         - version: '15.0'
