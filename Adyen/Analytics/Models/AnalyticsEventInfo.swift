@@ -14,7 +14,7 @@ public struct AnalyticsEventInfo: AnalyticsEvent {
     
     public var type: InfoType
     
-    public var target: String?
+    public var target: AnalyticsEventTarget?
     
     public var isStoredPaymentMethod: Bool?
     

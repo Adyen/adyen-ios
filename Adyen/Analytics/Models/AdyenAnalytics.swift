@@ -22,6 +22,8 @@ public protocol AnalyticsEvent: Encodable {
     var timestamp: TimeInterval { get }
     
     var component: String { get }
+    
+    var id: String { get }
 }
 
 @_spi(AdyenInternal)
@@ -30,4 +32,23 @@ public extension AnalyticsEvent {
     var timestamp: TimeInterval {
         Date().timeIntervalSince1970
     }
+    
+    var id: String { UUID().uuidString }
+}
+
+@_spi(AdyenInternal)
+public enum AnalyticsEventTarget: String, Encodable {
+    case cardNumber = "card_number"
+    case expiryDate = "expiry_date"
+    case securityCode = "security_code"
+    case holderName = "holder_name"
+    case dualBrand
+    case boletoSocialSecurityNumber = "social_security_number"
+    case taxNumber = "tax_number"
+    case addressStreet = "street"
+    case addressHouseNumber = "house_number_or_name"
+    case addressCity = "city"
+    case addressPostalCode = "postal_code"
+    case issuerList = "list"
+    case listSearch = "list_search"
 }

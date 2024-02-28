@@ -16,7 +16,7 @@ public struct AnalyticsEventLog: AnalyticsEvent {
     
     public var subType: LogSubType
     
-    public var target: String
+    public var target: AnalyticsEventTarget?
     
     public var message: String?
     
