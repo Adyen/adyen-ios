@@ -105,6 +105,8 @@ internal class AnalyticsEventHandler {
                 return nil
             }
             
+            // as per this call's limitation, we only send up to the
+            // limit of each event and discard the older ones
             var request = AnalyticsRequest(checkoutAttemptId: checkoutAttemptId)
             request.infos = infos.suffix(Constants.infoLimit)
             request.logs = logs.suffix(Constants.logLimit)
