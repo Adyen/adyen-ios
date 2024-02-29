@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,7 +16,7 @@
 #endif
 import AdyenNetworking
 #if canImport(AdyenTwint)
-import AdyenTwint
+    import AdyenTwint
 #endif
 import UIKit
 
@@ -237,10 +237,10 @@ public final class DropInComponent: NSObject,
             navigationController.present(asModal: component)
         case let component as InstantPaymentComponent:
             component.initiatePayment()
-            #if canImport(AdyenTwint)
-        case let component as TwintComponent:
-            component.initiatePayment()
-            #endif
+        #if canImport(AdyenTwint)
+            case let component as TwintComponent:
+                component.initiatePayment()
+        #endif
         default:
             break
         }

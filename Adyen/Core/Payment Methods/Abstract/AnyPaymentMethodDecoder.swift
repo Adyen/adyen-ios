@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -484,21 +484,18 @@ private struct CashAppPayPaymentMethodDecoder: PaymentMethodDecoder {
 private struct TwintPaymentMethodDecoder: PaymentMethodDecoder {
 
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
-#if canImport(AdyenTwint)
-        try .twint(TwintPaymentMethod(from: decoder))
-
-#else
-        return AnyPaymentMethod(InstantPaymentMethod(type: .twint, name: "Twint"))
-#endif
+        #if canImport(TwintSDK)
+            try .twint(TwintPaymentMethod(from: decoder))
+        #else
+            return AnyPaymentMethod(InstantPaymentMethod(type: .twint, name: "Twint"))
+        #endif
     }
 
     func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
-#if canImport(AdyenTwint)
-        (paymentMethod as? TwintPaymentMethod).map { .twint($0) }
-
-
-#else
-        return nil
-#endif
+        #if canImport(TwintSDK)
+            (paymentMethod as? TwintPaymentMethod).map { .twint($0) }
+        #else
+            return nil
+        #endif
     }
 }

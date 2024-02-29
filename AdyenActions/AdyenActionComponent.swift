@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -176,10 +176,10 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         switch sdkAction {
         case let .weChatPay(weChatPaySDKAction):
             handle(weChatPaySDKAction)
-#if canImport(AdyenTwint)
-        case let .twint(twintSDKAction):
-            handle(twintSDKAction)
-#endif
+        #if canImport(TwintSDK)
+            case let .twint(twintSDKAction):
+                handle(twintSDKAction)
+        #endif
         }
     }
     
@@ -197,20 +197,20 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         currentActionComponent = weChatPaySDKActionComponent
     }
 
-#if canImport(AdyenTwint)
-    private func handle(_ action: TwintSDKAction) {
-        let component = TwintSDKActionComponent(context: context)
-        component.configuration.style = configuration.style.awaitComponentStyle
-        component._isDropIn = _isDropIn
-        component.delegate = delegate
-        component.presentationDelegate = presentationDelegate
-        component.configuration.localizationParameters = configuration.localizationParameters
+    #if canImport(TwintSDK)
+        private func handle(_ action: TwintSDKAction) {
+            let component = TwintSDKActionComponent(context: context)
+            component.configuration.style = configuration.style.awaitComponentStyle
+            component._isDropIn = _isDropIn
+            component.delegate = delegate
+            component.presentationDelegate = presentationDelegate
+            component.configuration.localizationParameters = configuration.localizationParameters
 
-        component.handle(action)
-        currentActionComponent = component
+            component.handle(action)
+            currentActionComponent = component
 
-    }
-#endif
+        }
+    #endif
 
     private func handle(_ action: AwaitAction) {
         let component = AwaitComponent(context: context)
