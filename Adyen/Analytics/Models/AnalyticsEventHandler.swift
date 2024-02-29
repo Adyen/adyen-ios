@@ -74,7 +74,7 @@ internal class AnalyticsEventHandler {
         
         apiClient.perform(request) { [weak self] result in
             guard let self else { return }
-            // clear the current events on succesful send
+            // clear the current events on successful send
             switch result {
             case .success:
                 self.removeAllEvents()
