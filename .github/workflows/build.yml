@@ -16,8 +16,11 @@ jobs:
         include:
         
         - version: '16.4'
-          displayname: 'iPhone 14'
+          runtime: 'iOS-16-4'
+          device: 'iPhone 14'
+          displayname: 'iPhone-14'
           os: 'macos-13-xl'
+          xcode_version: '14.3'
           needs_custom_sim: false # Takes the shipped simulator that comes with Xcode 14
         
         - version: '15.0'
@@ -51,10 +54,23 @@ jobs:
       run: |
         sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
 
-    - name: Prepare ${{ matrix.version }}
+    - name: Select Xcode ${{ matrix.xcode_version }}
+      if: matrix.xcode_version != ''
+      run: |
+        ls /Applications/Xcode_*.app
+        sudo xcode-select -s /Applications/Xcode_${xcode_version}.app/Contents/Developer
+      env:
+        xcode_version: ${{ matrix.xcode_version }}
+
+    - name: Download simulator if needed (${{ matrix.version }})
       if: matrix.needs_custom_sim
       run: |
         xcversion simulators --install="iOS ${version}"
+      env:
+        version: ${{ matrix.version }}
+
+    - name: Create simulator ${{ matrix.version }}
+      run: |
         xcrun simctl list devices ${version}
         xcrun simctl create ${displayname} "${device}" "com.apple.CoreSimulator.SimRuntime.${runtime}"
       env:
