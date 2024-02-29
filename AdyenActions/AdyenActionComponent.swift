@@ -223,13 +223,15 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
             
             let component = TwintSDKActionComponent(
                 context: context,
-                configuration: .init(returnUrl: twintConfiguration.returnUrl)
+                configuration: .init(
+                    style: configuration.style.awaitComponentStyle,
+                    returnUrl: twintConfiguration.returnUrl,
+                    localizationParameters: configuration.localizationParameters
+                )
             )
-            component.configuration.style = configuration.style.awaitComponentStyle
             component._isDropIn = _isDropIn
             component.delegate = delegate
             component.presentationDelegate = presentationDelegate
-            component.configuration.localizationParameters = configuration.localizationParameters
 
             component.handle(action)
             currentActionComponent = component
