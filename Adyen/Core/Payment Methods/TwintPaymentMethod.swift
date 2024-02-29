@@ -15,12 +15,6 @@ public struct TwintPaymentMethod: PaymentMethod {
 
     public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.type = try container.decode(PaymentMethodType.self, forKey: .type)
-        self.name = try container.decode(String.self, forKey: .name)
-    }
-
     @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)

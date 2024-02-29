@@ -39,7 +39,10 @@ internal enum AnyPaymentMethod: Codable {
     case onlineBanking(OnlineBankingPaymentMethod)
     case upi(UPIPaymentMethod)
     case cashAppPay(CashAppPayPaymentMethod)
-    
+    #if canImport(AdyenTwint)
+    case twint(TwintPaymentMethod)
+    #endif
+
     case none
     
     internal var value: PaymentMethod? {
@@ -75,6 +78,9 @@ internal enum AnyPaymentMethod: Codable {
         case let .onlineBanking(paymentMethod): return paymentMethod
         case let .upi(paymentMethod): return paymentMethod
         case let .cashAppPay(paymentMethod): return paymentMethod
+            #if canImport(AdyenTwint)
+        case let .twint(paymentMethod): return paymentMethod
+            #endif
         case .none: return nil
         }
     }

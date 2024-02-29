@@ -83,7 +83,8 @@ internal enum AnyPaymentMethodDecoder {
         .onlineBankingCZ: OnlineBankingPaymentMethodDecoder(),
         .onlineBankingSK: OnlineBankingPaymentMethodDecoder(),
         .upi: UPIPaymentMethodDecoder(),
-        .cashAppPay: CashAppPayPaymentMethodDecoder()
+        .cashAppPay: CashAppPayPaymentMethodDecoder(),
+        .twint: TwintPaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = InstantPaymentMethodDecoder()
@@ -477,5 +478,27 @@ private struct CashAppPayPaymentMethodDecoder: PaymentMethodDecoder {
         #endif
         
         return nil
+    }
+}
+
+private struct TwintPaymentMethodDecoder: PaymentMethodDecoder {
+
+    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
+#if canImport(AdyenTwint)
+        try .twint(TwintPaymentMethod(from: decoder))
+
+#else
+        return AnyPaymentMethod(InstantPaymentMethod(type: .twint, name: "Twint"))
+#endif
+    }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+#if canImport(AdyenTwint)
+        (paymentMethod as? TwintPaymentMethod).map { .twint($0) }
+
+
+#else
+        return nil
+#endif
     }
 }

@@ -10,6 +10,9 @@ import AdyenActions
     import PayKit
 #endif
 import UIKit
+#if canImport(TwintSDK)
+    import TwintSDK
+#endif
 
 @main
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -35,15 +38,37 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     internal func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        RedirectComponent.applicationDidOpen(from: url)
-        #if canImport(PayKit)
+        if RedirectComponent.applicationDidOpen(from: url) {
+#if canImport(PayKit)
             NotificationCenter.default.post(
                 name: CashAppPay.RedirectNotification,
                 object: nil,
                 userInfo: [UIApplication.LaunchOptionsKey.url: url]
             )
-        #endif
-        
+#endif
+        } else {
+#if canImport(TwintSDK)
+            let handled = Twint.handleOpen(url) { [weak self] error in
+                if let error = error as? NSError {
+                    if error.code == TWErrorCode.B_SUCCESS.rawValue {
+                        self?.handlePaymentSuccessful()
+
+                    } else {
+                        self?.handlePaymentFailure(error: error)
+                    }
+                }
+            }
+            return handled
+#endif
+        }
         return true
+    }
+
+    private func handlePaymentSuccessful() {
+        print("payment successful")
+    }
+
+    private func handlePaymentFailure(error: NSError) {
+        print("payment Failure")
     }
 }

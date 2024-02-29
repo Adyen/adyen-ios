@@ -15,6 +15,9 @@
     @_spi(AdyenInternal) import AdyenCard
 #endif
 import AdyenNetworking
+#if canImport(AdyenTwint)
+import AdyenTwint
+#endif
 import UIKit
 
 /**
@@ -234,6 +237,10 @@ public final class DropInComponent: NSObject,
             navigationController.present(asModal: component)
         case let component as InstantPaymentComponent:
             component.initiatePayment()
+            #if canImport(AdyenTwint)
+        case let component as TwintComponent:
+            component.initiatePayment()
+            #endif
         default:
             break
         }

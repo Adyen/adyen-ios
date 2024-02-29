@@ -53,6 +53,7 @@
 			<string>com.adyen.AdyenUIHost</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>ui-host-twint</string>
 				<string>ui-host</string>
 			</array>
 		</dict>

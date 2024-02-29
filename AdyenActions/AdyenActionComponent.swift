@@ -176,6 +176,10 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         switch sdkAction {
         case let .weChatPay(weChatPaySDKAction):
             handle(weChatPaySDKAction)
+#if canImport(AdyenTwint)
+        case let .twint(twintSDKAction):
+            handle(twintSDKAction)
+#endif
         }
     }
     
@@ -192,7 +196,22 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         
         currentActionComponent = weChatPaySDKActionComponent
     }
-    
+
+#if canImport(AdyenTwint)
+    private func handle(_ action: TwintSDKAction) {
+        let component = TwintSDKActionComponent(context: context)
+        component.configuration.style = configuration.style.awaitComponentStyle
+        component._isDropIn = _isDropIn
+        component.delegate = delegate
+        component.presentationDelegate = presentationDelegate
+        component.configuration.localizationParameters = configuration.localizationParameters
+
+        component.handle(action)
+        currentActionComponent = component
+
+    }
+#endif
+
     private func handle(_ action: AwaitAction) {
         let component = AwaitComponent(context: context)
         component.configuration.style = configuration.style.awaitComponentStyle
