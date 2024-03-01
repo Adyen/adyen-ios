@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -39,8 +39,8 @@ internal enum AnyPaymentMethod: Codable {
     case onlineBanking(OnlineBankingPaymentMethod)
     case upi(UPIPaymentMethod)
     case cashAppPay(CashAppPayPaymentMethod)
-    #if canImport(AdyenTwint)
-    case twint(TwintPaymentMethod)
+    #if canImport(TwintSDK)
+        case twint(TwintPaymentMethod)
     #endif
 
     case none
@@ -78,9 +78,9 @@ internal enum AnyPaymentMethod: Codable {
         case let .onlineBanking(paymentMethod): return paymentMethod
         case let .upi(paymentMethod): return paymentMethod
         case let .cashAppPay(paymentMethod): return paymentMethod
-            #if canImport(AdyenTwint)
-        case let .twint(paymentMethod): return paymentMethod
-            #endif
+        #if canImport(TwintSDK)
+            case let .twint(paymentMethod): return paymentMethod
+        #endif
         case .none: return nil
         }
     }
