@@ -99,8 +99,8 @@ import Foundation
                 self.delegate?.didFail(with: ComponentError.cancelled, from: self)
             }
             
-            if let viewcontroller = appChooserViewController, let delegate = presentationDelegate {
-                present(viewcontroller, presentationDelegate: delegate)
+            if let viewController = appChooserViewController, let delegate = presentationDelegate {
+                present(viewController, presentationDelegate: delegate)
             }
         }
 
