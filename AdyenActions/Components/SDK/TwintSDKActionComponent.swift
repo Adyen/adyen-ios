@@ -127,7 +127,6 @@ import Foundation
                     title: localizedString(.dismissButton, configuration.localizationParameters),
                     style: .default, 
                     handler: { _ in
-                        // TODO: Is this the right thing to do here? - we have to let drop-in know to hide the spinner without dismissing drop-in
                         self.delegate?.didFail(with: ComponentError.cancelled, from: self)
                     }
                 )
