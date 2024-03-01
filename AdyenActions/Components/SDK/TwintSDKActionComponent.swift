@@ -25,8 +25,6 @@ import Foundation
 
         public let requiresModalPresentation: Bool = false
 
-        private let callback = "ui-host-twint"
-
         /// The TwintSDK component configurations.
         public struct Configuration {
 
@@ -35,16 +33,22 @@ import Foundation
 
             /// The localization parameters, leave it nil to use the default parameters.
             public var localizationParameters: LocalizationParameters?
+            
+            public let returnUrl: String
 
             /// Initializes an instance of `Configuration`
             ///
             /// - Parameters:
             ///   - style: The Component UI style.
             ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
-            public init(style: AwaitComponentStyle = .init(),
-                        localizationParameters: LocalizationParameters? = nil) {
+            public init(
+                style: AwaitComponentStyle = .init(),
+                returnUrl: String,
+                localizationParameters: LocalizationParameters? = nil
+            ) {
                 self.style = style
                 self.localizationParameters = localizationParameters
+                self.returnUrl = returnUrl
             }
         }
 
@@ -55,8 +59,10 @@ import Foundation
         ///
         /// - Parameter context: The context object for this component.
         /// - Parameter configuration: The TwintSDK component configurations.
-        public init(context: AdyenContext,
-                    configuration: Configuration = .init()) {
+        public init(
+            context: AdyenContext,
+            configuration: Configuration
+        ) {
             self.context = context
             self.configuration = configuration
         }
@@ -84,7 +90,7 @@ import Foundation
 
         private func invokeTwintAppWithCode(app: TWAppConfiguration, code: String) {
 
-            let error = Twint.pay(withCode: code, appConfiguration: app, callback: callback)
+            let error = Twint.pay(withCode: code, appConfiguration: app, callback: configuration.returnUrl)
             if let error {
                 AdyenAssertion.assertionFailure(message: error.localizedDescription)
             }

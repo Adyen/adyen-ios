@@ -65,18 +65,34 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
             }
         }
         
+        public var twint: Twint?
+        
+        public struct Twint {
+            
+            public var returnUrl: String
+            
+            public init(returnUrl: String) {
+                self.returnUrl = returnUrl
+            }
+        }
+        
         /// Initializes a new instance
         ///
         /// - Parameters:
         ///   - localizationParameters: Localization parameters.
         ///   - style: The UI style configurations.
         ///   - threeDS: Three DS configurations
-        public init(localizationParameters: LocalizationParameters? = nil,
-                    style: ActionComponentStyle = .init(),
-                    threeDS: AdyenActionComponent.Configuration.ThreeDS = .init()) {
+        ///   - twint: Twint configurations
+        public init(
+            localizationParameters: LocalizationParameters? = nil,
+            style: ActionComponentStyle = .init(),
+            threeDS: AdyenActionComponent.Configuration.ThreeDS = .init(),
+            twint: Twint? = nil
+        ) {
             self.localizationParameters = localizationParameters
             self.style = style
             self.threeDS = threeDS
+            self.twint = twint
         }
     }
 
@@ -199,16 +215,26 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
 
     #if canImport(TwintSDK)
         private func handle(_ action: TwintSDKAction) {
-            let component = TwintSDKActionComponent(context: context)
-            component.configuration.style = configuration.style.awaitComponentStyle
+            guard let twintConfiguration = configuration.twint else {
+                AdyenAssertion.assertionFailure(
+                    message: "Twint action configuration instance must not be nil in order to use AdyenTwint")
+                return
+            }
+            
+            let component = TwintSDKActionComponent(
+                context: context,
+                configuration: .init(
+                    style: configuration.style.awaitComponentStyle,
+                    returnUrl: twintConfiguration.returnUrl,
+                    localizationParameters: configuration.localizationParameters
+                )
+            )
             component._isDropIn = _isDropIn
             component.delegate = delegate
             component.presentationDelegate = presentationDelegate
-            component.configuration.localizationParameters = configuration.localizationParameters
 
             component.handle(action)
             currentActionComponent = component
-
         }
     #endif
 
