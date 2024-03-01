@@ -67,15 +67,17 @@ import Foundation
         public func handle(_ action: TwintSDKAction) {
             AdyenAssertion.assert(message: "presentationDelegate is nil", condition: presentationDelegate == nil)
             Twint.fetchInstalledAppConfigurations { [weak self] installedApps in
-                if installedApps?.count == 0 {
-                    self?.handleShowError("No or an outdated version of TWINT is installed on this device. Please update or install the TWINT app.")
-                } else if installedApps?.count == 1 {
-                    guard let installedApps else {
-                        return
-                    }
-                    self?.invokeTwintAppWithCode(app: installedApps[0], code: action.sdkData.token)
+                guard let self else { return }
+                
+                guard let installedApps, let firstApp = installedApps.first else {
+                    self.handleShowError("No or an outdated version of TWINT is installed on this device. Please update or install the TWINT app.")
+                    return
+                }
+                
+                if installedApps.count > 1 {
+                    self.presentAppChooser(installedApps: installedApps, code: action.sdkData.token)
                 } else {
-                    self?.presentAppChooser(installedApps: installedApps ?? [], code: action.sdkData.token)
+                    self.invokeTwintAppWithCode(app: firstApp, code: action.sdkData.token)
                 }
             }
         }
@@ -89,12 +91,14 @@ import Foundation
         }
 
         private func presentAppChooser(installedApps: [TWAppConfiguration], code: String) {
-            let appChooserViewController = Twint.controller(for: installedApps) { selectedApp in
-                self.invokeTwintAppWithCode(app: selectedApp ?? installedApps[0],
+            let appChooserViewController = Twint.controller(for: installedApps) { [weak self] selectedApp in
+                self?.invokeTwintAppWithCode(app: selectedApp ?? installedApps[0],
                                             code: code)
-            } cancelHandler: {
+            } cancelHandler: { [weak self] in
+                guard let self else { return }
                 self.delegate?.didFail(with: ComponentError.cancelled, from: self)
             }
+            
             if let viewcontroller = appChooserViewController, let delegate = presentationDelegate {
                 present(viewcontroller, presentationDelegate: delegate)
             }
