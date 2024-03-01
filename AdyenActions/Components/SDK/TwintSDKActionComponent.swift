@@ -93,7 +93,7 @@ import Foundation
         private func presentAppChooser(installedApps: [TWAppConfiguration], code: String) {
             let appChooserViewController = Twint.controller(for: installedApps) { [weak self] selectedApp in
                 self?.invokeTwintAppWithCode(app: selectedApp ?? installedApps[0],
-                                            code: code)
+                                             code: code)
             } cancelHandler: { [weak self] in
                 guard let self else { return }
                 self.delegate?.didFail(with: ComponentError.cancelled, from: self)
@@ -111,6 +111,7 @@ import Foundation
                 viewController: viewController,
                 navBarType: .custom(toolBar)
             )
+            presentableComponent.requiresModalPresentation = false
             toolBar.isHidden = true
             presentationDelegate.present(component: presentableComponent)
         }
@@ -121,10 +122,15 @@ import Foundation
                 message: error,
                 preferredStyle: .alert
             )
-            alert.addAction(.init(
-                title: localizedString(.dismissButton, configuration.localizationParameters),
-                style: .default
-            )
+            alert.addAction(
+                .init(
+                    title: localizedString(.dismissButton, configuration.localizationParameters),
+                    style: .default, 
+                    handler: { _ in
+                        // TODO: Is this the right thing to do here? - we have to let drop-in know to hide the spinner without dismissing drop-in
+                        self.delegate?.didFail(with: ComponentError.cancelled, from: self)
+                    }
+                )
             )
             if let presentationDelegate {
                 self.present(alert, presentationDelegate: presentationDelegate)
