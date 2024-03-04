@@ -201,6 +201,7 @@ public final class DropInComponent: NSObject,
         handler.presentationDelegate = self
         handler.configuration.localizationParameters = configuration.localizationParameters
         handler.configuration.threeDS = configuration.actionComponent.threeDS
+        handler.configuration.twint = configuration.actionComponent.twint
         return handler
     }()
     
