@@ -54,6 +54,8 @@ import Foundation
 
         /// The twint component configurations.
         public var configuration: Configuration
+        
+        private let twint: Twint
 
         /// Initializes the `TwintSDKActionComponent`.
         ///
@@ -65,6 +67,17 @@ import Foundation
         ) {
             self.context = context
             self.configuration = configuration
+            self.twint = Twint()
+        }
+        
+        internal init(
+            context: AdyenContext,
+            configuration: Configuration,
+            twint: Twint
+        ) {
+            self.context = context
+            self.configuration = configuration
+            self.twint = twint
         }
 
         /// Handles TwintSDK action.
@@ -72,10 +85,10 @@ import Foundation
         /// - Parameter action: The Twint SDK action object.
         public func handle(_ action: TwintSDKAction) {
             AdyenAssertion.assert(message: "presentationDelegate is nil", condition: presentationDelegate == nil)
-            Twint.fetchInstalledAppConfigurations { [weak self] installedApps in
+            twint.fetchInstalledAppConfigurations { [weak self] installedApps in
                 guard let self else { return }
                 
-                guard let installedApps, let firstApp = installedApps.first else {
+                guard let firstApp = installedApps.first else {
                     self.handleShowError("No or an outdated version of TWINT is installed on this device. Please update or install the TWINT app.")
                     return
                 }
@@ -90,20 +103,29 @@ import Foundation
 
         private func invokeTwintAppWithCode(app: TWAppConfiguration, code: String) {
 
-            let error = Twint.pay(withCode: code, appConfiguration: app, callback: configuration.returnUrl)
+            let error = twint.pay(withCode: code, appConfiguration: app, callback: configuration.returnUrl)
             if let error {
                 AdyenAssertion.assertionFailure(message: error.localizedDescription)
             }
         }
 
         private func presentAppChooser(installedApps: [TWAppConfiguration], code: String) {
-            let appChooserViewController = Twint.controller(for: installedApps) { [weak self] selectedApp in
-                self?.invokeTwintAppWithCode(app: selectedApp ?? installedApps[0],
-                                             code: code)
-            } cancelHandler: { [weak self] in
-                guard let self else { return }
-                self.delegate?.didFail(with: ComponentError.cancelled, from: self)
-            }
+            let appChooserViewController = twint.controller(
+                for: installedApps,
+                selectionHandler: { [weak self] in
+                    self?.invokeTwintAppWithCode(
+                        app: $0 ?? installedApps[0],
+                        code: code
+                    )
+                },
+                cancelHandler: { [weak self] in
+                    guard let self else { return }
+                    self.delegate?.didFail(
+                        with: ComponentError.cancelled,
+                        from: self
+                    )
+                }
+            )
             
             if let viewController = appChooserViewController, let delegate = presentationDelegate {
                 present(viewController, presentationDelegate: delegate)
@@ -131,9 +153,8 @@ import Foundation
             alert.addAction(
                 .init(
                     title: localizedString(.dismissButton, configuration.localizationParameters),
-                    style: .default, 
+                    style: .default,
                     handler: { _ in
-                        // TODO: Is this the right thing to do here? - we have to let drop-in know to hide the spinner without dismissing drop-in
                         self.delegate?.didFail(with: ComponentError.cancelled, from: self)
                     }
                 )
