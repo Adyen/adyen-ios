@@ -177,6 +177,7 @@
 		81825CC42AC59C6C00F91912 /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CC32AC59C6C00F91912 /* XCTestCase+Wait.swift */; };
 		81825CC52AC59C6C00F91912 /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CC32AC59C6C00F91912 /* XCTestCase+Wait.swift */; };
 		8182AAB72B95D3560087568E /* TwintConforming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8182AAB62B95D3560087568E /* TwintConforming.swift */; };
+		8182AAB92B95FEA10087568E /* TwintSDKActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8182AAB82B95FEA10087568E /* TwintSDKActionTests.swift */; };
 		81881BCE2B1A0A510020E3F2 /* AnyPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81881BCD2B1A0A510020E3F2 /* AnyPaymentMethod.swift */; };
 		81896E852A4DB5F300C532CA /* SearchViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81896E842A4DB5F300C532CA /* SearchViewControllerTests.swift */; };
 		819064F12B90DB90007A8E37 /* AdyenTwint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */; platformFilter = ios; };
@@ -1494,6 +1495,7 @@
 		81825CC02AC59C6400F91912 /* XCTestCase+RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+RootViewController.swift"; sourceTree = "<group>"; };
 		81825CC32AC59C6C00F91912 /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
 		8182AAB62B95D3560087568E /* TwintConforming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwintConforming.swift; sourceTree = "<group>"; };
+		8182AAB82B95FEA10087568E /* TwintSDKActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwintSDKActionTests.swift; sourceTree = "<group>"; };
 		81881BCD2B1A0A510020E3F2 /* AnyPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyPaymentMethod.swift; sourceTree = "<group>"; };
 		81896E842A4DB5F300C532CA /* SearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerTests.swift; sourceTree = "<group>"; };
 		8191838D2A53062F008EB61A /* FormAddressItem+Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormAddressItem+Configuration.swift"; sourceTree = "<group>"; };
@@ -4048,6 +4050,7 @@
 			children = (
 				F919DFA124ED599D0027976E /* AdyenActionComponentTests.swift */,
 				F9AC61C1243751A70062A00D /* ActionComponentDelegateMock.swift */,
+				8182AAB82B95FEA10087568E /* TwintSDKActionTests.swift */,
 			);
 			path = ActionComponent;
 			sourceTree = "<group>";
@@ -6994,6 +6997,7 @@
 				81825CB82AC59C3300F91912 /* UIView+Search.swift in Sources */,
 				C981254E2851E9AF006D1374 /* PaymentComponentSubject.swift in Sources */,
 				81A48DC62A5800EA00242341 /* AddressLookupViewControllerTests.swift in Sources */,
+				8182AAB92B95FEA10087568E /* TwintSDKActionTests.swift in Sources */,
 				F96F44E123BF5C2000871C1F /* LocalizationTests.swift in Sources */,
 				F9D5750E237475DB009C18B5 /* CardEncryptorCardTests.swift in Sources */,
 				F9C5F0DD25CAB8FC005A6E54 /* VoucherComponentTests.swift in Sources */,
