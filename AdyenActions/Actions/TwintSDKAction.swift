@@ -20,5 +20,31 @@ public final class TwintSDKAction: Decodable {
 
     // The payment method subtype
     public let type: String
-
+    
+    enum CodingKeys: CodingKey {
+        case sdkData
+        case paymentData
+        case paymentMethodType
+        case type
+    }
+    
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.sdkData = try container.decode(TwintSDKData.self, forKey: .sdkData)
+        self.paymentData = try container.decode(String.self, forKey: .paymentData)
+        self.paymentMethodType = try container.decode(String.self, forKey: .paymentMethodType)
+        self.type = try container.decode(String.self, forKey: .type)
+    }
+    
+    internal init(
+        sdkData: TwintSDKData,
+        paymentData: String,
+        paymentMethodType: String,
+        type: String
+    ) {
+        self.sdkData = sdkData
+        self.paymentData = paymentData
+        self.paymentMethodType = paymentMethodType
+        self.type = type
+    }
 }

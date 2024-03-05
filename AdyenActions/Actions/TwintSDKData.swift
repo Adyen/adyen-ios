@@ -12,13 +12,16 @@ public struct TwintSDKData: Decodable {
     /// SDK token.
     public let token: String
 
+    private enum CodingKeys: String, CodingKey {
+        case token
+    }
+    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         token = try container.decode(String.self, forKey: .token)
     }
 
-    private enum CodingKeys: String, CodingKey {
-        case token
+    internal init(token: String) {
+        self.token = token
     }
-
 }
