@@ -5,35 +5,12 @@
 //
 
 import Foundation
-#if canImport(TwintSDK)
-    import TwintSDK
-#endif
+@testable @_spi(AdyenInternal) import Adyen
+@testable import AdyenActions
 
 #if canImport(TwintSDK)
-    extension Twint {
-        @objc func fetchInstalledAppConfigurations(completion: @escaping ([TWAppConfiguration]) -> Void) {
-            Twint.fetchInstalledAppConfigurations { configurations in
-                completion(configurations ?? [])
-            }
-        }
-        
-        @objc func pay(withCode code: String, appConfiguration: TWAppConfiguration, callback: String) -> Error? {
-            Twint.pay(withCode: code, appConfiguration: appConfiguration, callback: callback)
-        }
-        
-        @objc func controller(
-            for installedAppConfigurations: [TWAppConfiguration],
-            selectionHandler: @escaping (TWAppConfiguration?) -> Void,
-            cancelHandler: @escaping () -> Void
-        ) -> UIAlertController? {
-            Twint.controller(
-                for: installedAppConfigurations.map { $0 },
-                selectedConfigurationHandler: { selectionHandler($0) },
-                cancelHandler: { cancelHandler() }
-            )
-        }
-    }
-#endif
+
+import TwintSDK
 
 internal class TwintSpy: Twint {
     
@@ -88,3 +65,5 @@ internal class TwintSpy: Twint {
     }
     
 }
+
+#endif
