@@ -229,10 +229,6 @@ final class TwintSDKActionTests: XCTestCase {
         wait(for: [cancelExpectation], timeout: 1)
     }
     
-    func testPayError() throws {
-        // TODO: handlePay returns an error
-    }
-    
     func testSuccessFlow() throws {
         
         let fetchBlockExpectation = expectation(description: "Fetch was called")
@@ -312,6 +308,15 @@ final class TwintSDKActionTests: XCTestCase {
             timeout: 1,
             enforceOrder: true
         )
+    }
+    
+    
+    func testPayError() throws {
+        // TODO: handlePay returns an error
+    }
+    
+    func testFailureFlow() throws {
+        // TODO: responseHandler returns an !B_SUCCESS error
     }
 }
 
