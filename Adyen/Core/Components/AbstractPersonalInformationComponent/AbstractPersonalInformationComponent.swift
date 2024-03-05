@@ -262,7 +262,10 @@ extension AbstractPersonalInformationComponent: ViewControllerDelegate {
     // MARK: - ViewControllerDelegate
 
     public func viewWillAppear(viewController: UIViewController) {
-        sendTelemetryEvent()
         populateFields()
+    }
+    
+    public func viewDidLoad(viewController: UIViewController) {
+        sendInitialAnalytics()
     }
 }

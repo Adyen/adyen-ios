@@ -253,9 +253,4 @@ extension CashAppPayComponent: TrackableComponent {}
 
 @available(iOS 13.0, *)
 @_spi(AdyenInternal)
-extension CashAppPayComponent: ViewControllerDelegate {
-
-    public func viewWillAppear(viewController: UIViewController) {
-        sendTelemetryEvent()
-    }
-}
+extension CashAppPayComponent: ViewControllerDelegate {}

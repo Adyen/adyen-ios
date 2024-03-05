@@ -114,7 +114,7 @@ class MBWayComponentTests: XCTestCase {
         XCTAssertTrue(phoneNumber.isEmpty)
     }
 
-    func testViewWillAppearShouldSendTelemetryEvent() throws {
+    func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
@@ -123,10 +123,10 @@ class MBWayComponentTests: XCTestCase {
                                  configuration: MBWayComponent.Configuration())
 
         // When
-        sut.viewWillAppear(viewController: sut.viewController)
+        sut.viewDidLoad(viewController: sut.viewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
     }
 
     // MARK: - Private

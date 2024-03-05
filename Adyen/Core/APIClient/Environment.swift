@@ -59,3 +59,6 @@ public struct Environment: AnyAPIEnvironment {
     }
 
 }
+
+@_spi(AdyenInternal)
+extension Environment: Equatable {}

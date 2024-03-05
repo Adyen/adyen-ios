@@ -193,3 +193,4 @@ whiteList:
   - alipay
   - twint
   - xcframework
+  - checkoutanalytics

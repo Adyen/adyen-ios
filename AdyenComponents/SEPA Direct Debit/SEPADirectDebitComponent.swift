@@ -140,9 +140,4 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
 extension SEPADirectDebitComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)
-extension SEPADirectDebitComponent: ViewControllerDelegate {
-
-    public func viewWillAppear(viewController: UIViewController) {
-        sendTelemetryEvent()
-    }
-}
+extension SEPADirectDebitComponent: ViewControllerDelegate {}
