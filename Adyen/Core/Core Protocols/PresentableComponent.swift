@@ -59,18 +59,3 @@ public extension PresentableComponent {
     var navBarType: NavigationBarType { .regular }
     
 }
-
-@_spi(AdyenInternal)
-public protocol TrackableComponent: Component {
-
-    func sendTelemetryEvent()
-}
-
-@_spi(AdyenInternal)
-extension TrackableComponent where Self: PaymentMethodAware {
-
-    public func sendTelemetryEvent() {
-        let flavor: TelemetryFlavor = _isDropIn ? .dropInComponent : .components(type: paymentMethod.type)
-        context.analyticsProvider.sendTelemetryEvent(flavor: flavor)
-    }
-}

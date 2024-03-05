@@ -6,6 +6,7 @@
 
 @testable @_spi(AdyenInternal) import Adyen
 @testable import AdyenEncryption
+@testable import AdyenNetworking
 import XCTest
 
 class AdyenContextTests: XCTestCase {
@@ -21,10 +22,42 @@ class AdyenContextTests: XCTestCase {
             payment: .init(amount: oneEUR, countryCode: "NL")
         )
         
-        XCTAssertEqual(context.analyticsProvider.additionalFields?().amount, oneEUR)
-        
+        XCTAssertEqual(context.payment?.amount, oneEUR)
         context.update(payment: Payment(amount: twoEUR, countryCode: "NL"))
-        
-        XCTAssertEqual(context.analyticsProvider.additionalFields?().amount, twoEUR)
+        XCTAssertEqual(context.payment?.amount, twoEUR)
     }
+    
+    func testPublicInit() {
+        let context = AdyenContext(apiContext: Dummy.apiContext, payment: Dummy.payment)
+        
+        XCTAssertEqual(context.payment?.amount, Dummy.payment.amount)
+        XCTAssertEqual(context.apiContext.clientKey, Dummy.apiContext.clientKey)
+    }
+    
+    func testInternalInit() {
+        let context = AdyenContext(apiContext: Dummy.apiContext, payment: Dummy.payment, analyticsProvider: AnalyticsProviderMock())
+        
+        XCTAssertEqual(context.payment?.amount, Dummy.payment.amount)
+        XCTAssertEqual(context.apiContext.clientKey, Dummy.apiContext.clientKey)
+        XCTAssertNotNil(context.analyticsProvider)
+    }
+    
+    func testInitWithRegularEnvironmentShouldHaveAnalyticsProvider() {
+        let context = AdyenContext(apiContext: Dummy.apiContext, payment: Dummy.payment)
+        
+        XCTAssertNotNil(context.analyticsProvider)
+    }
+    
+    func testInitWithDifferentEnvironmentShouldNotHaveAnalyticsProvider() {
+        let apiContext = try! APIContext(environment: TestEnvironment.test, clientKey: "local_DUMMYKEYFORTESTING")
+        
+        let context = AdyenContext(apiContext: apiContext, payment: Dummy.payment)
+        XCTAssertNil(context.analyticsProvider)
+    }
+}
+
+enum TestEnvironment: AnyAPIEnvironment {
+    case test
+    
+    var baseURL: URL { URL(string: "test")! }
 }

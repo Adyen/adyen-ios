@@ -21,7 +21,7 @@ class SessionTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
-        analyticsProviderMock.underlyingCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
+        analyticsProviderMock._checkoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
         context = Dummy.context(with: analyticsProviderMock)
     }
 
@@ -70,6 +70,7 @@ class SessionTests: XCTestCase {
                 XCTAssertEqual(session.sessionContext.paymentMethods, expectedPaymentMethods)
                 XCTAssertEqual(session.sessionContext.amount, .init(value: 220, currencyCode: "USD"))
                 XCTAssertFalse(session.sessionContext.configuration.enableStoreDetails)
+                XCTAssertEqual(AnalyticsForSession.sessionId, "session_id")
             }
             expectation.fulfill()
         }
@@ -107,7 +108,7 @@ class SessionTests: XCTestCase {
 
     func testDidSubmitWithCheckoutAttemptIdNonNilShouldIncludeCheckoutAttemptIdInPaymentComponentData() throws {
         // Given
-        let expectedCheckoutAttemptId = try XCTUnwrap(analyticsProviderMock.underlyingCheckoutAttemptId)
+        let expectedCheckoutAttemptId = try XCTUnwrap(analyticsProviderMock._checkoutAttemptId)
 
         let sessionAdvancedHandlerMock = SessionAdvancedHandlerMock()
         let sessionDelegateMock = SessionDelegateMock()
@@ -135,7 +136,7 @@ class SessionTests: XCTestCase {
 
     func testDidSubmitWithCheckoutAttemptIdNilShouldNotIncludeCheckoutAttemptIdInPaymentComponentData() throws {
         // Given
-        analyticsProviderMock.underlyingCheckoutAttemptId = nil
+        analyticsProviderMock._checkoutAttemptId = nil
 
         let sessionAdvancedHandlerMock = SessionAdvancedHandlerMock()
         let sessionDelegateMock = SessionDelegateMock()

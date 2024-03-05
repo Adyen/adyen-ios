@@ -21,8 +21,7 @@ import UIKit
 extension DropInComponent: PaymentMethodListComponentDelegate {
 
     internal func didLoad(_ paymentMethodListComponent: PaymentMethodListComponent) {
-        let paymentMethodTypes = paymentMethods.regular.map(\.type.rawValue)
-        context.analyticsProvider.sendTelemetryEvent(flavor: .dropIn(paymentMethods: paymentMethodTypes))
+        sendInitialAnalytics()
     }
     
     internal func didSelect(_ component: PaymentComponent,
@@ -51,10 +50,8 @@ extension DropInComponent: PaymentComponentDelegate {
     
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         paymentInProgress = true
-        /// try to fetch the fetchCheckoutAttemptId to get cached if its not already cached
-        component.context.analyticsProvider.fetchAndCacheCheckoutAttemptIdIfNeeded()
         
-        let updatedData = data.replacing(checkoutAttemptId: component.context.analyticsProvider.checkoutAttemptId)
+        let updatedData = data.replacing(checkoutAttemptId: component.context.analyticsProvider?.checkoutAttemptId)
 
         guard updatedData.browserInfo == nil else {
             self.delegate?.didSubmit(updatedData, from: component, in: self)
@@ -156,5 +153,13 @@ extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
         })
         navigationController.present(root: newRoot)
         rootComponent = newRoot
+    }
+}
+
+@_spi(AdyenInternal)
+extension DropInComponent: TrackableComponent {
+    public var analyticsFlavor: AnalyticsFlavor {
+        let paymentMethodTypes = paymentMethods.regular.map(\.type.rawValue)
+        return .dropIn(paymentMethods: paymentMethodTypes)
     }
 }

@@ -120,10 +120,4 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
 extension BLIKComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)
-extension BLIKComponent: ViewControllerDelegate {
-    // MARK: - ViewControllerDelegate
-
-    public func viewWillAppear(viewController: UIViewController) {
-        sendTelemetryEvent()
-    }
-}
+extension BLIKComponent: ViewControllerDelegate {}

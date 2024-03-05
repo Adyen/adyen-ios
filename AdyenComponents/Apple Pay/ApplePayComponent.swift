@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -83,7 +83,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     }
 
     public func didFinalize(with success: Bool, completion: (() -> Void)?) {
-        if case let .paid(paymentAuthorizationCompletion) = state {
+        if case let .submitted(paymentAuthorizationCompletion) = state {
             state = .finalized(completion)
             paymentAuthorizationCompletion(success ? .success : .failure)
         } else {
@@ -120,7 +120,7 @@ extension ApplePayComponent {
 
     internal enum State {
         case initial
-        case paid((PKPaymentAuthorizationStatus) -> Void)
+        case submitted((PKPaymentAuthorizationStatus) -> Void)
         case finalized((() -> Void)?)
     }
 
@@ -130,12 +130,4 @@ extension ApplePayComponent {
 extension ApplePayComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)
-extension ApplePayComponent: ViewControllerDelegate {
-    public func viewDidLoad(viewController: UIViewController) { /* Empty implementation */ }
-
-    public func viewDidAppear(viewController: UIViewController) { /* Empty implementation */ }
-
-    public func viewWillAppear(viewController: UIViewController) {
-        sendTelemetryEvent()
-    }
-}
+extension ApplePayComponent: ViewControllerDelegate {}

@@ -182,7 +182,7 @@ class QiwiWalletComponentTests: XCTestCase {
 
     }
 
-    func testViewWillAppearShouldSendTelemetryEvent() throws {
+    func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
@@ -193,9 +193,9 @@ class QiwiWalletComponentTests: XCTestCase {
                                       configuration: QiwiWalletComponent.Configuration())
 
         // When
-        sut.viewWillAppear(viewController: sut.viewController)
+        sut.viewDidLoad(viewController: sut.viewController)
 
         // Then
-        XCTAssertEqual(analyticsProviderMock.sendTelemetryEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
     }
 }

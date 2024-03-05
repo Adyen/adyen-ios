@@ -11,7 +11,7 @@ import UIKit
 ///
 /// Used to e.g. override the version + platform from within the Flutter SDK
 @_spi(AdyenInternal)
-public struct TelemetryContext {
+public struct AnalyticsContext {
     
     internal let version: String
     internal let platform: Platform
@@ -26,7 +26,7 @@ public struct TelemetryContext {
 }
 
 @_spi(AdyenInternal)
-public extension TelemetryContext {
+public extension AnalyticsContext {
 
     enum Platform: String {
         case iOS = "ios"
@@ -35,7 +35,7 @@ public extension TelemetryContext {
     }
 }
 
-internal struct TelemetryData: Encodable {
+internal struct AnalyticsData: Encodable {
 
     // MARK: - Properties
 
@@ -64,6 +64,8 @@ internal struct TelemetryData: Encodable {
             return identifier + String(UnicodeScalar(UInt8(value)))
         }
     }()
+    
+    internal let deviceModel = UIDevice.current.model
 
     internal let systemVersion = UIDevice.current.systemVersion
 
@@ -79,19 +81,20 @@ internal struct TelemetryData: Encodable {
 
     internal var amount: Amount?
     
+    internal var sessionId: String?
+    
     internal var paymentMethods: [String] = []
 
     internal let component: String
 
     // MARK: - Initializers
 
-    internal init(
-        flavor: TelemetryFlavor,
-        amount: Amount?,
-        context: TelemetryContext
-    ) {
+    internal init(flavor: AnalyticsFlavor,
+                  additionalFields: AdditionalAnalyticsFields?,
+                  context: AnalyticsContext) {
         self.flavor = flavor.value
-        self.amount = amount
+        self.amount = additionalFields?.amount
+        self.sessionId = additionalFields?.sessionId
         
         self.version = context.version
         self.platform = context.platform.rawValue
@@ -102,8 +105,6 @@ internal struct TelemetryData: Encodable {
             self.component = type
         case let .components(type):
             self.component = type.rawValue
-        default:
-            self.component = ""
         }
     }
 }

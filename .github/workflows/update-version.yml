@@ -26,7 +26,7 @@ jobs:
       run: |
         Scripts/increment_version.sh ${{ github.event.inputs.newVersion }}
     - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v5
+      uses: peter-evans/create-pull-request@v6
       with:
         delete-branch: true
         branch: update-version-github-action

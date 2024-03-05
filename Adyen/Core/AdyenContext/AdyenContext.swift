@@ -19,7 +19,7 @@ public final class AdyenContext: PaymentAware {
     public private(set) var payment: Payment?
 
     @_spi(AdyenInternal)
-    public let analyticsProvider: AnalyticsProviderProtocol
+    public let analyticsProvider: AnalyticsProviderProtocol?
 
     // MARK: - Initializers
 
@@ -30,28 +30,28 @@ public final class AdyenContext: PaymentAware {
     ///   - payment: The payment information.
     public convenience init(apiContext: APIContext, payment: Payment?, analyticsConfiguration: AnalyticsConfiguration = .init()) {
         
-        let analyticsProvider = AnalyticsProvider(
-            apiClient: APIClient(apiContext: apiContext),
-            configuration: analyticsConfiguration
-        )
+        var analyticsProvider: AnalyticsProviderProtocol?
+        if let analyticsEnvironment = (apiContext.environment as? Environment)?.toAnalyticsEnvironment(),
+            let analyticsApiContext = try? APIContext(environment: analyticsEnvironment,
+                                                      clientKey: apiContext.clientKey) {
+            
+            analyticsProvider = AnalyticsProvider(
+                apiClient: APIClient(apiContext: analyticsApiContext),
+                configuration: analyticsConfiguration
+            )
+        }
         
         self.init(
             apiContext: apiContext,
             payment: payment,
             analyticsProvider: analyticsProvider
         )
-        
-        analyticsProvider.additionalFields = { [weak self] in
-            .init(
-                amount: self?.payment?.amount
-            )
-        }
     }
 
     /// Internal init for testing only
     internal init(apiContext: APIContext,
                   payment: Payment?,
-                  analyticsProvider: AnalyticsProviderProtocol) {
+                  analyticsProvider: AnalyticsProviderProtocol?) {
         self.apiContext = apiContext
         self.analyticsProvider = analyticsProvider
         self.payment = payment
