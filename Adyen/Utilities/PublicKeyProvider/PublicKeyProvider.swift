@@ -75,7 +75,10 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
             cachedPublicKey = response.cardPublicKey
             completion(.success(response.cardPublicKey))
         case let .failure(error):
-            completion(.failure(Error.invalidClientKey))
+            if error is DecodingError {
+                completion(.failure(Error.invalidClientKey))
+            }
+            completion(.failure(error))
         }
     }
 
