@@ -36,21 +36,27 @@ import Foundation
             /// The localization parameters, leave it nil to use the default parameters.
             public var localizationParameters: LocalizationParameters?
             
-            public let returnUrl: String
+            /// The return url scheme
+            ///
+            /// - Important: This value is  required to only provide the scheme, without a host/path/.... (e.g. "my-app", not a url "my-app://...")
+            public let returnUrlScheme: String
 
             /// Initializes an instance of `Configuration`
             ///
             /// - Parameters:
             ///   - style: The Component UI style.
+            ///   - returnUrlScheme: The url scheme of the app
             ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
+            ///
+            /// - Important: This value of ``returnUrlScheme`` is  required to only provide the scheme, without a host/path/... (e.g. "my-app", not a url "my-app://...")
             public init(
                 style: AwaitComponentStyle = .init(),
-                returnUrl: String,
+                returnUrlScheme: String,
                 localizationParameters: LocalizationParameters? = nil
             ) {
                 self.style = style
                 self.localizationParameters = localizationParameters
-                self.returnUrl = returnUrl
+                self.returnUrlScheme = returnUrlScheme
             }
         }
 
@@ -108,7 +114,7 @@ import Foundation
             let error = twint.pay(
                 withCode: action.sdkData.token,
                 appConfiguration: app,
-                callback: configuration.returnUrl
+                callback: configuration.returnUrlScheme
             )
             
             if let error {

@@ -69,10 +69,10 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         
         public struct Twint {
             
-            public var returnUrl: String
+            public var returnUrlScheme: String
             
-            public init(returnUrl: String) {
-                self.returnUrl = returnUrl
+            public init(returnUrlScheme: String) {
+                self.returnUrlScheme = returnUrlScheme
             }
         }
         
@@ -225,7 +225,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
                 context: context,
                 configuration: .init(
                     style: configuration.style.awaitComponentStyle,
-                    returnUrl: twintConfiguration.returnUrl,
+                    returnUrlScheme: twintConfiguration.returnUrlScheme,
                     localizationParameters: configuration.localizationParameters
                 )
             )
