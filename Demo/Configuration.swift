@@ -250,7 +250,7 @@ internal struct DemoAppSettings: Codable {
         if dropInSettings.cashAppPayEnabled {
             dropInConfig.cashAppPay = .init(redirectURL: ConfigurationConstants.returnUrl)
         }
-        dropInConfig.actionComponent.twint = .init(returnUrlScheme: ConfigurationConstants.returnUrl.scheme!)
+        dropInConfig.actionComponent.twint = .init(callbackAppScheme: ConfigurationConstants.returnUrl.scheme!)
 
         return dropInConfig
     }

@@ -48,7 +48,7 @@ extension InitialDataFlowProtocol {
                     requestorAppURL: ConfigurationConstants.returnUrl,
                     delegateAuthentication: ConfigurationConstants.delegatedAuthenticationConfigurations
                 ),
-                twint: .init(returnUrlScheme: ConfigurationConstants.returnUrl.scheme!)
+                twint: .init(callbackAppScheme: ConfigurationConstants.returnUrl.scheme!)
             )
         )
         return configuration
