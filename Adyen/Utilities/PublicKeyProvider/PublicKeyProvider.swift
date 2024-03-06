@@ -75,7 +75,19 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
             cachedPublicKey = response.cardPublicKey
             completion(.success(response.cardPublicKey))
         case let .failure(error):
+            if error is DecodingError {
+                // Disclaimer: This error check is not 100% reliable. Need to improve the endpoint. 
+                return completion(.failure(Error.invalidClientKey))
+            }
             completion(.failure(error))
+        }
+    }
+
+    public enum Error: Swift.Error, LocalizedError {
+        case invalidClientKey
+
+        public var errorDescription: String? {
+            return "Client key not found on the selected environment."
         }
     }
 }
