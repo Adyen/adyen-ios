@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,9 +10,6 @@ import AdyenActions
     import PayKit
 #endif
 import UIKit
-#if canImport(TwintSDK)
-    import TwintSDK
-#endif
 
 @main
 internal final class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -38,37 +35,14 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     internal func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        if RedirectComponent.applicationDidOpen(from: url) {
-#if canImport(PayKit)
-            NotificationCenter.default.post(
-                name: CashAppPay.RedirectNotification,
-                object: nil,
-                userInfo: [UIApplication.LaunchOptionsKey.url: url]
-            )
-#endif
-        } else {
-#if canImport(TwintSDK)
-            let handled = Twint.handleOpen(url) { [weak self] error in
-                if let error = error as? NSError {
-                    if error.code == TWErrorCode.B_SUCCESS.rawValue {
-                        self?.handlePaymentSuccessful()
-
-                    } else {
-                        self?.handlePaymentFailure(error: error)
-                    }
-                }
-            }
-            return handled
-#endif
-        }
+        RedirectComponent.applicationDidOpen(from: url)
+        
+        NotificationCenter.default.post(
+            name: CashAppPay.RedirectNotification,
+            object: nil,
+            userInfo: [UIApplication.LaunchOptionsKey.url: url]
+        )
+        
         return true
-    }
-
-    private func handlePaymentSuccessful() {
-        print("payment successful")
-    }
-
-    private func handlePaymentFailure(error: NSError) {
-        print("payment Failure")
     }
 }

@@ -28,18 +28,26 @@ internal class TwintSpy: Twint {
         _ cancelHandler: @escaping () -> Void
     ) -> UIAlertController?
     
+    internal typealias HandleOpenBlock = (
+        _ url: URL,
+        _ responseHandler: @escaping ((any Error)?) -> Void
+    ) -> Bool
+    
     internal var handleFetchInstalledAppConfigurations: HandleFetchBlock
     internal var handlePay: HandlePayBlock
     internal var handleController: HandleControllerBlock
+    internal var handleOpenUrl: HandleOpenBlock
     
     internal init(
         handleFetchInstalledAppConfigurations: @escaping HandleFetchBlock,
         handlePay: @escaping HandlePayBlock,
-        handleController: @escaping HandleControllerBlock
+        handleController: @escaping HandleControllerBlock,
+        handleOpenUrl: @escaping HandleOpenBlock
     ) {
         self.handleFetchInstalledAppConfigurations = handleFetchInstalledAppConfigurations
         self.handlePay = handlePay
         self.handleController = handleController
+        self.handleOpenUrl = handleOpenUrl
     }
     
     @objc override internal func fetchInstalledAppConfigurations(
@@ -64,6 +72,9 @@ internal class TwintSpy: Twint {
         handleController(installedAppConfigurations, selectionHandler, cancelHandler)
     }
     
+    @objc override func handleOpen(_ url: URL, responseHandler: @escaping ((any Error)?) -> Void) -> Bool {
+        handleOpenUrl(url, responseHandler)
+    }
 }
 
 #endif

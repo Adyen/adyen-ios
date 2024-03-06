@@ -11,6 +11,8 @@ import Foundation
 #endif
 
 #if canImport(TwintSDK)
+    struct TwintActionDetails: AdditionalDetails {}
+
     /// A component that handles Twint SDK action's.
     public final class TwintSDKActionComponent: ActionComponent {
 
@@ -94,28 +96,40 @@ import Foundation
                 }
                 
                 if installedApps.count > 1 {
-                    self.presentAppChooser(installedApps: installedApps, code: action.sdkData.token)
+                    self.presentAppChooser(for: installedApps, action: action)
                 } else {
-                    self.invokeTwintAppWithCode(app: firstApp, code: action.sdkData.token)
+                    self.invokeTwint(app: firstApp, action: action)
                 }
             }
         }
 
-        private func invokeTwintAppWithCode(app: TWAppConfiguration, code: String) {
+        private func invokeTwint(app: TWAppConfiguration, action: TwintSDKAction) {
 
-            let error = twint.pay(withCode: code, appConfiguration: app, callback: configuration.returnUrl)
+            let error = twint.pay(
+                withCode: action.sdkData.token,
+                appConfiguration: app,
+                callback: configuration.returnUrl
+            )
+            
             if let error {
-                AdyenAssertion.assertionFailure(message: error.localizedDescription)
+                handleShowError(error.localizedDescription)
+                return
+            }
+            
+            RedirectListener.registerForURL { [weak self] url in
+                self?.twint.handleOpen(url) { [weak self] error in
+                    self?.handlePaymentResult(error: error, action: action)
+                }
             }
         }
 
-        private func presentAppChooser(installedApps: [TWAppConfiguration], code: String) {
+        private func presentAppChooser(for installedApps: [TWAppConfiguration], action: TwintSDKAction) {
             let appChooserViewController = twint.controller(
                 for: installedApps,
                 selectionHandler: { [weak self] in
-                    self?.invokeTwintAppWithCode(
+                    self?.invokeTwint(
                         app: $0 ?? installedApps[0],
-                        code: code
+                        action: action
                     )
                 },
                 cancelHandler: { [weak self] in
@@ -130,6 +144,22 @@ import Foundation
             if let viewController = appChooserViewController, let delegate = presentationDelegate {
                 present(viewController, presentationDelegate: delegate)
             }
+        }
+        
+        private func handlePaymentResult(error: Error?, action: TwintSDKAction) {
+            guard let delegate else { return }
+            
+            if let error, (error as NSError).code != TWErrorCode.B_SUCCESS.rawValue {
+                delegate.didFail(with: error, from: self)
+                return
+            }
+            
+            let data = ActionComponentData(
+                details: TwintActionDetails(),
+                paymentData: action.paymentData
+            )
+            
+            delegate.didProvide(data, from: self)
         }
 
         private func present(_ viewController: UIViewController, presentationDelegate: PresentationDelegate) {

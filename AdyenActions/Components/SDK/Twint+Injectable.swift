@@ -32,5 +32,12 @@ import Foundation
                 cancelHandler: { cancelHandler() }
             )
         }
+        
+        @discardableResult @objc func handleOpen(
+            _ url: URL,
+            responseHandler: @escaping (Error?) -> Void
+        ) -> Bool {
+            Twint.handleOpen(url, withResponseHandler: responseHandler)
+        }
     }
 #endif
