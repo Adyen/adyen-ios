@@ -35,15 +35,14 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     internal func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        if RedirectComponent.applicationDidOpen(from: url) {
-            #if canImport(PayKit)
-                NotificationCenter.default.post(
-                    name: CashAppPay.RedirectNotification,
-                    object: nil,
-                    userInfo: [UIApplication.LaunchOptionsKey.url: url]
-                )
-            #endif
-        }
+        RedirectComponent.applicationDidOpen(from: url)
+        
+        NotificationCenter.default.post(
+            name: CashAppPay.RedirectNotification,
+            object: nil,
+            userInfo: [UIApplication.LaunchOptionsKey.url: url]
+        )
+        
         return true
     }
 }
