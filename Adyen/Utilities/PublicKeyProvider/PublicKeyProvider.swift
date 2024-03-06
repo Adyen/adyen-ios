@@ -76,7 +76,8 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
             completion(.success(response.cardPublicKey))
         case let .failure(error):
             if error is DecodingError {
-                completion(.failure(Error.invalidClientKey))
+                // Disclaimer: This error check is not 100% reliable. Need to improve the endpoint. 
+                return completion(.failure(Error.invalidClientKey))
             }
             completion(.failure(error))
         }
