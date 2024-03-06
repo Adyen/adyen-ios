@@ -69,10 +69,17 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         
         public struct Twint {
             
-            public var returnUrlScheme: String
+            // TODO: Add documentation
+            public let returnUrlScheme: String
             
             public init(returnUrlScheme: String) {
-                self.returnUrlScheme = returnUrlScheme
+                guard let url = URL(string: returnUrlScheme), let scheme = url.scheme, scheme == returnUrlScheme else {
+                    assertionFailure("Provided url scheme is not a scheme")
+                    self.returnUrlScheme = returnUrlScheme
+                    return
+                }
+                
+                self.returnUrlScheme = scheme
             }
         }
         

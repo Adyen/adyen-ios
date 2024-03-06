@@ -14,7 +14,7 @@ import TwintSDK
 
 #if canImport(TwintSDK)
 
-private extension TWAppConfiguration {
+extension TWAppConfiguration {
     static var dummy: TWAppConfiguration {
         let twintAppConfiguration = TWAppConfiguration()
         twintAppConfiguration.appDisplayName = "Test App"
@@ -23,13 +23,13 @@ private extension TWAppConfiguration {
     }
 }
 
-private extension TwintSDKActionComponent.Configuration {
+extension TwintSDKActionComponent.Configuration {
     static var dummy: Self {
-        .init(returnUrl: "ui-host://")
+        .init(returnUrlScheme: "ui-host")
     }
 }
 
-private extension TwintSDKAction {
+extension TwintSDKAction {
     static var dummy: TwintSDKAction {
         .init(
             sdkData: .init(token: "token"),
@@ -41,7 +41,7 @@ private extension TwintSDKAction {
 }
 
 final class TwintSDKActionTests: XCTestCase {
-
+    
     func testNoAppFound() throws {
         
         let fetchBlockExpectation = expectation(description: "Fetch was called")
@@ -120,18 +120,10 @@ final class TwintSDKActionTests: XCTestCase {
             return false
         }
 
-        let twintActionComponent = TwintSDKActionComponent(
-            context: Dummy.context,
-            configuration: .dummy,
-            twint: twintSpy
+        let twintActionComponent = Self.actionComponent(
+            with: twintSpy,
+            presentationDelegate: Self.failingPresentationDelegateMock()
         )
-        
-        let presentationDelegateMock = PresentationDelegateMock()
-        presentationDelegateMock.doPresent = { component in
-            XCTFail("Nothing should have been displayed")
-        }
-        
-        twintActionComponent.presentationDelegate = presentationDelegateMock
 
         // When
         
@@ -228,88 +220,6 @@ final class TwintSDKActionTests: XCTestCase {
         
         wait(for: [cancelExpectation], timeout: 1)
     }
-    
-    func testSuccessFlow() throws {
-        
-        let fetchBlockExpectation = expectation(description: "Fetch was called")
-        let payBlockExpectation = expectation(description: "Pay was called")
-        let handleOpenBlockExpectation = expectation(description: "Handle open was called")
-        let handleOnDidProvideExpectation = expectation(description: "delegate.onDidProvide was called")
-        let expectedRedirectUrl = URL(string: "ui-host://payment")!
-        
-        var twintResponseHandler: ((Error?) -> Void)? = nil
-        
-        let twintSpy = TwintSpy { configurationsBlock in
-            fetchBlockExpectation.fulfill()
-            configurationsBlock([.dummy])
-        } handlePay: { code, appConfiguration, callbackAppScheme in
-            payBlockExpectation.fulfill()
-            return nil
-        } handleController: { installedAppConfigurations, selectionHandler, cancelHandler in
-            XCTFail("Twint controller should not have been shown")
-            return nil
-        } handleOpenUrl: { url, responseHandler in
-            XCTAssertEqual(url, expectedRedirectUrl)
-            twintResponseHandler = responseHandler
-            handleOpenBlockExpectation.fulfill()
-            return true
-        }
-
-        let twintActionComponent = TwintSDKActionComponent(
-            context: Dummy.context,
-            configuration: .dummy,
-            twint: twintSpy
-        )
-        
-        let presentationDelegateMock = PresentationDelegateMock()
-        presentationDelegateMock.doPresent = { component in
-            XCTFail("Nothing should have been displayed")
-        }
-        
-        twintActionComponent.presentationDelegate = presentationDelegateMock
-
-        // When
-        
-        twintActionComponent.handle(.dummy)
-        
-        // Then
-        
-        wait(
-            for: [fetchBlockExpectation, payBlockExpectation],
-            timeout: 1,
-            enforceOrder: true
-        )
-        
-        _ = try RedirectListener.applicationDidOpen(from: expectedRedirectUrl)
-        
-        wait(
-            for: [handleOpenBlockExpectation],
-            timeout: 1,
-            enforceOrder: true
-        )
-        
-        let actonComponentDelegateMock = ActionComponentDelegateMock()
-        actonComponentDelegateMock.onDidFail = { error, component in
-            XCTFail("delegate.onDidFail should not have been called")
-        }
-        actonComponentDelegateMock.onDidProvide = { data, component in
-            XCTAssertTrue(data.details is TwintActionDetails)
-            XCTAssertEqual(data.paymentData, TwintSDKAction.dummy.paymentData)
-            handleOnDidProvideExpectation.fulfill()
-        }
-        
-        twintActionComponent.delegate = actonComponentDelegateMock
-        
-        let responseHandler = try XCTUnwrap(twintResponseHandler)
-        responseHandler(NSError(domain: "", code: TWErrorCode.B_SUCCESS.rawValue))
-        
-        wait(
-            for: [handleOnDidProvideExpectation],
-            timeout: 1,
-            enforceOrder: true
-        )
-    }
-    
     
     func testPayError() throws {
         // TODO: handlePay returns an error
