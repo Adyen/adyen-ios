@@ -25,7 +25,7 @@ private extension TWAppConfiguration {
 
 private extension TwintSDKActionComponent.Configuration {
     static var dummy: Self {
-        .init(returnUrl: "ui-host://")
+        .init(callbackAppScheme: "ui-host")
     }
 }
 
@@ -110,7 +110,7 @@ final class TwintSDKActionTests: XCTestCase {
             XCTAssertEqual(code, TwintSDKAction.dummy.sdkData.token)
             XCTAssertEqual(appConfiguration.appDisplayName, TWAppConfiguration.dummy.appDisplayName)
             XCTAssertEqual(appConfiguration.appURLScheme, TWAppConfiguration.dummy.appURLScheme)
-            XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.returnUrl)
+            XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.callbackAppScheme)
             return nil
         } handleController: { installedAppConfigurations, selectionHandler, cancelHandler in
             XCTFail("Twint controller should not have been shown")
@@ -165,7 +165,7 @@ final class TwintSDKActionTests: XCTestCase {
             XCTAssertEqual(code, TwintSDKAction.dummy.sdkData.token)
             XCTAssertEqual(appConfiguration.appDisplayName, TWAppConfiguration.dummy.appDisplayName)
             XCTAssertEqual(appConfiguration.appURLScheme, TWAppConfiguration.dummy.appURLScheme)
-            XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.returnUrl)
+            XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.callbackAppScheme)
             return nil
         } handleController: { installedAppConfigurations, selectionHandler, cancelHandler in
             XCTAssertEqual(installedAppConfigurations, expectedAppConfigurations)
@@ -176,7 +176,7 @@ final class TwintSDKActionTests: XCTestCase {
             XCTFail("Handle open should not have been called")
             return false
         }
-
+        
         let twintActionComponent = TwintSDKActionComponent(
             context: Dummy.context,
             configuration: .dummy,
@@ -309,7 +309,6 @@ final class TwintSDKActionTests: XCTestCase {
             enforceOrder: true
         )
     }
-    
     
     func testPayError() throws {
         // TODO: handlePay returns an error

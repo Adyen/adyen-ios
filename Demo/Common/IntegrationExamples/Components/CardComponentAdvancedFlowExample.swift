@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -27,7 +27,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     private lazy var adyenActionComponent: AdyenActionComponent = {
         let handler = AdyenActionComponent(context: context)
         handler.configuration.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
-        handler.configuration.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
+        handler.configuration.threeDS.requestorAppURL = ConfigurationConstants.returnUrl
         handler.delegate = self
         handler.presentationDelegate = self
         return handler

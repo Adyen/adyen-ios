@@ -69,10 +69,31 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         
         public struct Twint {
             
-            public var returnUrl: String
+            /// The callback app scheme invoked once the Twint app is done with the payment
+            public var callbackAppScheme: String
             
-            public init(returnUrl: String) {
-                self.returnUrl = returnUrl
+            /// Initializes a new instance
+            ///
+            /// - Parameter callbackAppScheme: The callback app scheme invoked once the Twint app is done with the payment
+            ///
+            /// - Important: The value of ``callbackAppScheme`` is  required to only provide the scheme,
+            /// without a host/path/... (e.g. "my-app", not a url "my-app://...")
+            public init(callbackAppScheme: String) {
+                if !Self.isCallbackSchemeValid(callbackAppScheme) {
+                    assertionFailure("Format of provided callbackAppScheme '\(callbackAppScheme)' is incorrect.")
+                }
+                
+                self.callbackAppScheme = callbackAppScheme
+            }
+            
+            /// Validating whether or not the provided `callbackAppScheme` only contains a scheme
+            private static func isCallbackSchemeValid(_ callbackAppScheme: String) -> Bool {
+                if let url = URL(string: callbackAppScheme), url.scheme != nil {
+                    // If the scheme is not nil it means that more information than just the scheme was provided
+                    return false
+                }
+                
+                return true
             }
         }
         
@@ -225,7 +246,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
                 context: context,
                 configuration: .init(
                     style: configuration.style.awaitComponentStyle,
-                    returnUrl: twintConfiguration.returnUrl,
+                    callbackAppScheme: twintConfiguration.callbackAppScheme,
                     localizationParameters: configuration.localizationParameters
                 )
             )

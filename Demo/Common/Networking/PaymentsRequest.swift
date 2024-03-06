@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -55,7 +55,7 @@ internal struct PaymentsRequest: APIRequest {
         try container.encode("iOS", forKey: .channel)
         try container.encode(ConfigurationConstants.reference, forKey: .reference)
         try container.encode(currentConfiguration.countryCode, forKey: .countryCode)
-        try container.encode(ConfigurationConstants.returnUrl, forKey: .returnUrl)
+        try container.encode(ConfigurationConstants.returnUrl.absoluteString, forKey: .returnUrl)
         try container.encode(ConfigurationConstants.shopperReference, forKey: .shopperReference)
         try container.encode(ConfigurationConstants.additionalData, forKey: .additionalData)
         try container.encode(currentConfiguration.merchantAccount, forKey: .merchantAccount)
