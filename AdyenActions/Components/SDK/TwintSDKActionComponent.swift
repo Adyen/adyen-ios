@@ -11,7 +11,7 @@ import Foundation
 #endif
 
 #if canImport(TwintSDK)
-    struct TwintActionDetails: AdditionalDetails {}
+    internal struct TwintActionDetails: AdditionalDetails {}
 
     /// A component that handles Twint SDK action's.
     public final class TwintSDKActionComponent: ActionComponent {
@@ -38,7 +38,8 @@ import Foundation
             
             /// The callback app scheme invoked once the Twint app is done with the payment
             ///
-            /// - Important: This value is  required to only provide the scheme, without a host/path/.... (e.g. "my-app", not a url "my-app://...")
+            /// - Important: This value is  required to only provide the scheme,
+            /// without a host/path/.... (e.g. "my-app", not a url "my-app://...")
             public let callbackAppScheme: String
 
             /// Initializes an instance of `Configuration`
@@ -48,7 +49,8 @@ import Foundation
             ///   - callbackAppScheme: The callback app scheme invoked once the Twint app is done with the payment
             ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
             ///
-            /// - Important: The value of ``callbackAppScheme`` is  required to only provide the scheme, without a host/path/... (e.g. "my-app", not a url "my-app://...")
+            /// - Important: The value of ``callbackAppScheme`` is  required to only provide the scheme,
+            /// without a host/path/... (e.g. "my-app", not a url "my-app://...")
             public init(
                 style: AwaitComponentStyle = .init(),
                 callbackAppScheme: String,

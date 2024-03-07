@@ -16,30 +16,65 @@ import TwintSDK
 
 extension TwintSDKActionTests {
     
-    /// ActionComponentDelegateMock that fails when `onDidFail` is called
-    private static func actonComponentDelegateMock(
-        onProvide: @escaping (ActionComponentData) -> Void
-    ) -> ActionComponentDelegateMock {
+    func testSuccessFlow() throws {
         
-        let actonComponentDelegateMock = ActionComponentDelegateMock()
-        actonComponentDelegateMock.onDidFail = { error, component in
-            XCTFail("delegate.onDidFail should not have been called")
-        }
-        actonComponentDelegateMock.onDidProvide = { data, component in
-            XCTAssertTrue(data.details is TwintActionDetails)
-            XCTAssertEqual(data.paymentData, TwintSDKAction.dummy.paymentData)
-            onProvide(data)
+        let expectedError = TWErrorCode.B_SUCCESS
+        let handleOnDidProvideExpectation = expectation(description: "delegate.onDidProvide was called")
+        
+        let delegate = Self.successFlowActionComponentDelegateMock {
+            XCTAssertTrue($0.details is TwintActionDetails)
+            XCTAssertEqual($0.paymentData, TwintSDKAction.dummy.paymentData)
+            handleOnDidProvideExpectation.fulfill()
         }
         
-        return actonComponentDelegateMock
+        try singleAppFlow(
+            delegate: delegate,
+            expectedTwintError: expectedError
+        )
+        
+        wait(
+            for: [handleOnDidProvideExpectation],
+            timeout: 1,
+            enforceOrder: true
+        )
     }
     
-    func testSuccessFlow() throws {
+    func testFailureFlow() throws {
+        
+        let expectedError = TWErrorCode.B_ERROR
+        let handleOnDidProvideExpectation = expectation(description: "delegate.onDidProvide was called")
+        
+        let delegate = Self.failureFlowActionComponentDelegateMock {
+            let errorCode = ($0 as NSError).code
+            XCTAssertEqual(errorCode, expectedError.rawValue)
+            handleOnDidProvideExpectation.fulfill()
+        }
+        
+        try singleAppFlow(
+            delegate: delegate,
+            expectedTwintError: expectedError
+        )
+        
+        wait(
+            for: [handleOnDidProvideExpectation],
+            timeout: 1,
+            enforceOrder: true
+        )
+    }
+}
+
+// MARK: - Flow
+
+private extension TwintSDKActionTests {
+    
+    func singleAppFlow(
+        delegate: ActionComponentDelegate,
+        expectedTwintError: TWErrorCode
+    ) throws {
         
         let fetchBlockExpectation = expectation(description: "Fetch was called")
         let payBlockExpectation = expectation(description: "Pay was called")
         let handleOpenBlockExpectation = expectation(description: "Handle open was called")
-        let handleOnDidProvideExpectation = expectation(description: "delegate.onDidProvide was called")
         let expectedRedirectUrl = URL(string: "ui-host://payment")!
         
         var twintResponseHandler: ((Error?) -> Void)? = nil
@@ -59,10 +94,13 @@ extension TwintSDKActionTests {
             handleOpenBlockExpectation.fulfill()
             return true
         }
+        
+        let presentationDelegate = Self.failingPresentationDelegateMock()
 
         let twintActionComponent = Self.actionComponent(
             with: twintSpy,
-            presentationDelegate: Self.failingPresentationDelegateMock()
+            presentationDelegate: presentationDelegate,
+            delegate: delegate
         )
 
         // When
@@ -77,7 +115,7 @@ extension TwintSDKActionTests {
             enforceOrder: true
         )
         
-        _ = try RedirectListener.applicationDidOpen(from: expectedRedirectUrl)
+        try XCTAssertTrue(RedirectListener.applicationDidOpen(from: expectedRedirectUrl))
         
         wait(
             for: [handleOpenBlockExpectation],
@@ -85,13 +123,7 @@ extension TwintSDKActionTests {
         )
         
         let responseHandler = try XCTUnwrap(twintResponseHandler)
-        responseHandler(NSError(domain: "", code: TWErrorCode.B_SUCCESS.rawValue))
-        
-        wait(
-            for: [handleOnDidProvideExpectation],
-            timeout: 1,
-            enforceOrder: true
-        )
+        responseHandler(NSError(domain: "", code: expectedTwintError.rawValue))
     }
 }
 

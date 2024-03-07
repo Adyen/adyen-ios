@@ -21,7 +21,7 @@ public final class TwintSDKAction: Decodable {
     // The payment method subtype
     public let type: String
     
-    enum CodingKeys: CodingKey {
+    internal enum CodingKeys: CodingKey {
         case sdkData
         case paymentData
         case paymentMethodType

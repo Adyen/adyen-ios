@@ -8,7 +8,59 @@ import XCTest
 @testable @_spi(AdyenInternal) import Adyen
 @testable @_spi(AdyenInternal) import AdyenActions
 
+#if canImport(TwintSDK)
+import TwintSDK
+#endif
+
+#if canImport(TwintSDK)
+
+extension TWAppConfiguration {
+    static var dummy: TWAppConfiguration {
+        let twintAppConfiguration = TWAppConfiguration()
+        twintAppConfiguration.appDisplayName = "Test App"
+        twintAppConfiguration.appURLScheme = "scheme://"
+        return twintAppConfiguration
+    }
+}
+
+extension TwintSDKActionComponent.Configuration {
+    static var dummy: Self {
+        .init(callbackAppScheme: "ui-host")
+    }
+}
+
+extension TwintSDKAction {
+    static var dummy: TwintSDKAction {
+        .init(
+            sdkData: .init(token: "token"),
+            paymentData: "paymentData",
+            paymentMethodType: "paymentMethodType",
+            type: "type"
+        )
+    }
+}
+
 extension TwintSDKActionTests {
+    
+    static func actionComponent(
+        with twintSpy: TwintSpy,
+        presentationDelegate: PresentationDelegate?,
+        delegate: ActionComponentDelegate?
+    ) -> TwintSDKActionComponent {
+        
+        let component = TwintSDKActionComponent(
+            context: Dummy.context,
+            configuration: .dummy,
+            twint: twintSpy
+        )
+        
+        component.presentationDelegate = presentationDelegate
+        component.delegate = delegate
+        
+        return component
+    }
+    
+    // MARK: PresentationDelegateMock
     
     /// PresentationDelegateMock that fails when `doPresent` is called
     static func failingPresentationDelegateMock() -> PresentationDelegateMock {
@@ -19,19 +71,37 @@ extension TwintSDKActionTests {
         return presentationDelegateMock
     }
     
-    static func actionComponent(
-        with twintSpy: TwintSpy,
-        presentationDelegate: PresentationDelegate?
-    ) -> TwintSDKActionComponent {
+    /// ActionComponentDelegateMock that fails when `onDidFail` is called
+    static func successFlowActionComponentDelegateMock(
+        onProvide: @escaping (ActionComponentData) -> Void
+    ) -> ActionComponentDelegateMock {
         
-        let component = TwintSDKActionComponent(
-            context: Dummy.context,
-            configuration: .dummy,
-            twint: twintSpy
-        )
+        let actonComponentDelegateMock = ActionComponentDelegateMock()
+        actonComponentDelegateMock.onDidFail = { error, component in
+            XCTFail("delegate.onDidFail should not have been called")
+        }
+        actonComponentDelegateMock.onDidProvide = { data, component in
+            onProvide(data)
+        }
         
-        component.presentationDelegate = presentationDelegate
+        return actonComponentDelegateMock
+    }
+    
+    /// ActionComponentDelegateMock that fails when `onDidFail` is called
+    static func failureFlowActionComponentDelegateMock(
+        onDidFail: @escaping (Error) -> Void
+    ) -> ActionComponentDelegateMock {
         
-        return component
+        let actonComponentDelegateMock = ActionComponentDelegateMock()
+        actonComponentDelegateMock.onDidFail = { error, component in
+            onDidFail(error)
+        }
+        actonComponentDelegateMock.onDidProvide = { data, component in
+            XCTFail("delegate.onDidProvide should not have been called")
+        }
+        
+        return actonComponentDelegateMock
     }
 }
+
+#endif

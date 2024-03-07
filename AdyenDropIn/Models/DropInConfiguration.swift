@@ -87,7 +87,7 @@ public extension DropInComponent {
         public var threeDS: AdyenActionComponent.Configuration.ThreeDS = .init()
         
         /// Twint configurations
-        public var twint: AdyenActionComponent.Configuration.Twint? = nil
+        public var twint: AdyenActionComponent.Configuration.Twint?
     }
 
     /// Boleto component configuration.
