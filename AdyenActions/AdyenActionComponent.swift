@@ -69,17 +69,31 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         
         public struct Twint {
             
-            // TODO: Add documentation
-            public let returnUrlScheme: String
+            /// The callback app scheme invoked once the Twint app is done with the payment
+            public var callbackAppScheme: String
             
-            public init(returnUrlScheme: String) {
-                guard let url = URL(string: returnUrlScheme), let scheme = url.scheme, scheme == returnUrlScheme else {
-                    assertionFailure("Provided url scheme is not a scheme")
-                    self.returnUrlScheme = returnUrlScheme
-                    return
+            /// Initializes a new instance
+            ///
+            /// - Parameter callbackAppScheme: The callback app scheme invoked once the Twint app is done with the payment
+            ///
+            /// - Important: The value of ``callbackAppScheme`` is  required to only provide the scheme,
+            /// without a host/path/... (e.g. "my-app", not a url "my-app://...")
+            public init(callbackAppScheme: String) {
+                if !Self.isCallbackSchemeValid(callbackAppScheme) {
+                    assertionFailure("Format of provided callbackAppScheme '\(callbackAppScheme)' is incorrect.")
                 }
                 
-                self.returnUrlScheme = scheme
+                self.callbackAppScheme = callbackAppScheme
+            }
+            
+            /// Validating whether or not the provided `callbackAppScheme` only contains a scheme
+            private static func isCallbackSchemeValid(_ callbackAppScheme: String) -> Bool {
+                if let url = URL(string: callbackAppScheme), url.scheme != nil {
+                    // If the scheme is not nil it means that more information than just the scheme was provided
+                    return false
+                }
+                
+                return true
             }
         }
         
@@ -232,7 +246,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
                 context: context,
                 configuration: .init(
                     style: configuration.style.awaitComponentStyle,
-                    returnUrlScheme: twintConfiguration.returnUrlScheme,
+                    callbackAppScheme: twintConfiguration.callbackAppScheme,
                     localizationParameters: configuration.localizationParameters
                 )
             )

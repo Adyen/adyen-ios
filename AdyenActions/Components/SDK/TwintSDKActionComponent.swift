@@ -36,27 +36,27 @@ import Foundation
             /// The localization parameters, leave it nil to use the default parameters.
             public var localizationParameters: LocalizationParameters?
             
-            /// The return url scheme
+            /// The callback app scheme invoked once the Twint app is done with the payment
             ///
             /// - Important: This value is  required to only provide the scheme, without a host/path/.... (e.g. "my-app", not a url "my-app://...")
-            public let returnUrlScheme: String
+            public let callbackAppScheme: String
 
             /// Initializes an instance of `Configuration`
             ///
             /// - Parameters:
             ///   - style: The Component UI style.
-            ///   - returnUrlScheme: The url scheme of the app
+            ///   - callbackAppScheme: The callback app scheme invoked once the Twint app is done with the payment
             ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
             ///
-            /// - Important: This value of ``returnUrlScheme`` is  required to only provide the scheme, without a host/path/... (e.g. "my-app", not a url "my-app://...")
+            /// - Important: The value of ``callbackAppScheme`` is  required to only provide the scheme, without a host/path/... (e.g. "my-app", not a url "my-app://...")
             public init(
                 style: AwaitComponentStyle = .init(),
-                returnUrlScheme: String,
+                callbackAppScheme: String,
                 localizationParameters: LocalizationParameters? = nil
             ) {
                 self.style = style
                 self.localizationParameters = localizationParameters
-                self.returnUrlScheme = returnUrlScheme
+                self.callbackAppScheme = callbackAppScheme
             }
         }
 
@@ -114,7 +114,7 @@ import Foundation
             let error = twint.pay(
                 withCode: action.sdkData.token,
                 appConfiguration: app,
-                callback: configuration.returnUrlScheme
+                callback: configuration.callbackAppScheme
             )
             
             if let error {

@@ -14,32 +14,6 @@ import TwintSDK
 
 #if canImport(TwintSDK)
 
-extension TWAppConfiguration {
-    static var dummy: TWAppConfiguration {
-        let twintAppConfiguration = TWAppConfiguration()
-        twintAppConfiguration.appDisplayName = "Test App"
-        twintAppConfiguration.appURLScheme = "scheme://"
-        return twintAppConfiguration
-    }
-}
-
-extension TwintSDKActionComponent.Configuration {
-    static var dummy: Self {
-        .init(returnUrlScheme: "ui-host")
-    }
-}
-
-extension TwintSDKAction {
-    static var dummy: TwintSDKAction {
-        .init(
-            sdkData: .init(token: "token"),
-            paymentData: "paymentData",
-            paymentMethodType: "paymentMethodType",
-            type: "type"
-        )
-    }
-}
-
 final class TwintSDKActionTests: XCTestCase {
     
     func testNoAppFound() throws {
@@ -110,7 +84,7 @@ final class TwintSDKActionTests: XCTestCase {
             XCTAssertEqual(code, TwintSDKAction.dummy.sdkData.token)
             XCTAssertEqual(appConfiguration.appDisplayName, TWAppConfiguration.dummy.appDisplayName)
             XCTAssertEqual(appConfiguration.appURLScheme, TWAppConfiguration.dummy.appURLScheme)
-            XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.returnUrl)
+            XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.callbackAppScheme)
             return nil
         } handleController: { installedAppConfigurations, selectionHandler, cancelHandler in
             XCTFail("Twint controller should not have been shown")
@@ -122,7 +96,8 @@ final class TwintSDKActionTests: XCTestCase {
 
         let twintActionComponent = Self.actionComponent(
             with: twintSpy,
-            presentationDelegate: Self.failingPresentationDelegateMock()
+            presentationDelegate: Self.failingPresentationDelegateMock(),
+            delegate: nil
         )
 
         // When
@@ -157,7 +132,7 @@ final class TwintSDKActionTests: XCTestCase {
             XCTAssertEqual(code, TwintSDKAction.dummy.sdkData.token)
             XCTAssertEqual(appConfiguration.appDisplayName, TWAppConfiguration.dummy.appDisplayName)
             XCTAssertEqual(appConfiguration.appURLScheme, TWAppConfiguration.dummy.appURLScheme)
-            XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.returnUrl)
+            XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.callbackAppScheme)
             return nil
         } handleController: { installedAppConfigurations, selectionHandler, cancelHandler in
             XCTAssertEqual(installedAppConfigurations, expectedAppConfigurations)
@@ -168,7 +143,7 @@ final class TwintSDKActionTests: XCTestCase {
             XCTFail("Handle open should not have been called")
             return false
         }
-
+        
         let twintActionComponent = TwintSDKActionComponent(
             context: Dummy.context,
             configuration: .dummy,
