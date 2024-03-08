@@ -14,40 +14,50 @@ import TwintSDK
 
 #if canImport(TwintSDK)
 
-private extension TWAppConfiguration {
-    static var dummy: TWAppConfiguration {
-        let twintAppConfiguration = TWAppConfiguration()
-        twintAppConfiguration.appDisplayName = "Test App"
-        twintAppConfiguration.appURLScheme = "scheme://"
-        return twintAppConfiguration
-    }
-}
-
-private extension TwintSDKActionComponent.Configuration {
-    static var dummy: Self {
-        .init(callbackAppScheme: "ui-host")
-    }
-}
-
-private extension TwintSDKAction {
-    static var dummy: TwintSDKAction {
-        .init(
-            sdkData: .init(token: "token"),
-            paymentData: "paymentData",
-            paymentMethodType: "paymentMethodType",
-            type: "type"
-        )
-    }
-}
-
 final class TwintSDKActionTests: XCTestCase {
-
+    
+    override func tearDownWithError() throws {
+        AdyenAssertion.listener = nil
+    }
+    
+    func testConfiguration() throws {
+        
+        let validSchemes = [
+            "scheme"
+        ]
+        
+        let invalidSchemes = [
+            "scheme:",
+            "scheme://",
+            "scheme://host"
+        ]
+        
+        // Valid Configuration
+        
+        validSchemes.forEach { scheme in
+            AdyenAssertion.listener = { message in
+                XCTFail("No assertion should have been raised")
+            }
+            
+            let _ = AdyenActionComponent.Configuration.Twint(callbackAppScheme: scheme)
+        }
+        
+        // Invalid Configuration
+        
+        invalidSchemes.forEach { scheme in
+            AdyenAssertion.listener = { message in
+                XCTAssertEqual(message, "Format of provided callbackAppScheme '\(scheme)' is incorrect.")
+            }
+            
+            let _ = AdyenActionComponent.Configuration.Twint(callbackAppScheme: scheme)
+        }
+    }
+    
     func testNoAppFound() throws {
         
         let fetchBlockExpectation = expectation(description: "Fetch was called")
         let noAppFoundAlertExpectation = expectation(description: "No app found alert was shown")
         
-        // TODO: Get the message from the localizations
         let expectedAlertMessage = "No or an outdated version of TWINT is installed on this device. Please update or install the TWINT app."
         
         let twintSpy = TwintSpy { configurationsBlock in
@@ -119,19 +129,14 @@ final class TwintSDKActionTests: XCTestCase {
             XCTFail("Handle open should not have been called")
             return false
         }
+        
+        let presentationDelegate = Self.failingPresentationDelegateMock()
 
-        let twintActionComponent = TwintSDKActionComponent(
-            context: Dummy.context,
-            configuration: .dummy,
-            twint: twintSpy
+        let twintActionComponent = Self.actionComponent(
+            with: twintSpy,
+            presentationDelegate: presentationDelegate,
+            delegate: nil
         )
-        
-        let presentationDelegateMock = PresentationDelegateMock()
-        presentationDelegateMock.doPresent = { component in
-            XCTFail("Nothing should have been displayed")
-        }
-        
-        twintActionComponent.presentationDelegate = presentationDelegateMock
 
         // When
         
@@ -186,7 +191,7 @@ final class TwintSDKActionTests: XCTestCase {
         let presentationDelegateMock = PresentationDelegateMock()
         presentationDelegateMock.doPresent = { component in
             let alertController = try XCTUnwrap(component.viewController as? UIAlertController)
-            XCTAssertEqual(alertController, expectedAppPicker)
+            XCTAssertTrue(alertController === expectedAppPicker)
             pickerExpectation.fulfill()
         }
         
@@ -229,44 +234,40 @@ final class TwintSDKActionTests: XCTestCase {
         wait(for: [cancelExpectation], timeout: 1)
     }
     
-    func testSuccessFlow() throws {
+    func testPayError() throws {
         
         let fetchBlockExpectation = expectation(description: "Fetch was called")
         let payBlockExpectation = expectation(description: "Pay was called")
-        let handleOpenBlockExpectation = expectation(description: "Handle open was called")
-        let handleOnDidProvideExpectation = expectation(description: "delegate.onDidProvide was called")
-        let expectedRedirectUrl = URL(string: "ui-host://payment")!
+        let alertExpectation = expectation(description: "Alert was shown")
         
-        var twintResponseHandler: ((Error?) -> Void)? = nil
+        let expectedAlertMessage = "Error Message"
         
         let twintSpy = TwintSpy { configurationsBlock in
             fetchBlockExpectation.fulfill()
             configurationsBlock([.dummy])
         } handlePay: { code, appConfiguration, callbackAppScheme in
             payBlockExpectation.fulfill()
-            return nil
+            return MockError(errorDescription: expectedAlertMessage)
         } handleController: { installedAppConfigurations, selectionHandler, cancelHandler in
             XCTFail("Twint controller should not have been shown")
             return nil
         } handleOpenUrl: { url, responseHandler in
-            XCTAssertEqual(url, expectedRedirectUrl)
-            twintResponseHandler = responseHandler
-            handleOpenBlockExpectation.fulfill()
-            return true
+            XCTFail("Handle open should not have been called")
+            return false
         }
 
-        let twintActionComponent = TwintSDKActionComponent(
-            context: Dummy.context,
-            configuration: .dummy,
-            twint: twintSpy
-        )
-        
-        let presentationDelegateMock = PresentationDelegateMock()
-        presentationDelegateMock.doPresent = { component in
-            XCTFail("Nothing should have been displayed")
+        let presentationDelegate = PresentationDelegateMock()
+        presentationDelegate.doPresent = { component in
+            let alertController = try XCTUnwrap(component.viewController as? UIAlertController)
+            XCTAssertEqual(alertController.message, expectedAlertMessage)
+            alertExpectation.fulfill()
         }
         
-        twintActionComponent.presentationDelegate = presentationDelegateMock
+        let twintActionComponent = Self.actionComponent(
+            with: twintSpy,
+            presentationDelegate: presentationDelegate,
+            delegate: nil
+        )
 
         // When
         
@@ -275,47 +276,10 @@ final class TwintSDKActionTests: XCTestCase {
         // Then
         
         wait(
-            for: [fetchBlockExpectation, payBlockExpectation],
+            for: [fetchBlockExpectation, payBlockExpectation, alertExpectation],
             timeout: 1,
             enforceOrder: true
         )
-        
-        _ = try RedirectListener.applicationDidOpen(from: expectedRedirectUrl)
-        
-        wait(
-            for: [handleOpenBlockExpectation],
-            timeout: 1,
-            enforceOrder: true
-        )
-        
-        let actonComponentDelegateMock = ActionComponentDelegateMock()
-        actonComponentDelegateMock.onDidFail = { error, component in
-            XCTFail("delegate.onDidFail should not have been called")
-        }
-        actonComponentDelegateMock.onDidProvide = { data, component in
-            XCTAssertTrue(data.details is TwintActionDetails)
-            XCTAssertEqual(data.paymentData, TwintSDKAction.dummy.paymentData)
-            handleOnDidProvideExpectation.fulfill()
-        }
-        
-        twintActionComponent.delegate = actonComponentDelegateMock
-        
-        let responseHandler = try XCTUnwrap(twintResponseHandler)
-        responseHandler(NSError(domain: "", code: TWErrorCode.B_SUCCESS.rawValue))
-        
-        wait(
-            for: [handleOnDidProvideExpectation],
-            timeout: 1,
-            enforceOrder: true
-        )
-    }
-    
-    func testPayError() throws {
-        // TODO: handlePay returns an error
-    }
-    
-    func testFailureFlow() throws {
-        // TODO: responseHandler returns an !B_SUCCESS error
     }
 }
 

@@ -24,10 +24,12 @@ public enum SDKAction: Decodable {
         switch type {
         case .weChatPay:
             self = try .weChatPay(WeChatPaySDKAction(from: decoder))
+        // swiftlint:disable switch_case_alignment
         #if canImport(TwintSDK)
             case .twint:
                 self = try .twint(TwintSDKAction(from: decoder))
         #endif
+            // swiftlint:enable switch_case_alignment
         }
     }
     

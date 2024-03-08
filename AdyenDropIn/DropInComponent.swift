@@ -238,10 +238,12 @@ public final class DropInComponent: NSObject,
             navigationController.present(asModal: component)
         case let component as InstantPaymentComponent:
             component.initiatePayment()
+        // swiftlint:disable switch_case_alignment
         #if canImport(AdyenTwint)
             case let component as TwintComponent:
                 component.initiatePayment()
         #endif
+        // swiftlint:enable switch_case_alignment
         default:
             break
         }

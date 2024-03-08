@@ -80,7 +80,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
             /// without a host/path/... (e.g. "my-app", not a url "my-app://...")
             public init(callbackAppScheme: String) {
                 if !Self.isCallbackSchemeValid(callbackAppScheme) {
-                    assertionFailure("Format of provided callbackAppScheme '\(callbackAppScheme)' is incorrect.")
+                    AdyenAssertion.assertionFailure(message: "Format of provided callbackAppScheme '\(callbackAppScheme)' is incorrect.")
                 }
                 
                 self.callbackAppScheme = callbackAppScheme
@@ -213,10 +213,12 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         switch sdkAction {
         case let .weChatPay(weChatPaySDKAction):
             handle(weChatPaySDKAction)
+        // swiftlint:disable switch_case_alignment
         #if canImport(TwintSDK)
             case let .twint(twintSDKAction):
                 handle(twintSDKAction)
         #endif
+            // swiftlint:enable switch_case_alignment
         }
     }
     
