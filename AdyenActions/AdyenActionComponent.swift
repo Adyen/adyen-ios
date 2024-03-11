@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -154,8 +154,8 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
                                                                     requestorAppURL: configuration.threeDS.requestorAppURL,
                                                                     delegateAuthentication: configuration.threeDS.delegateAuthentication)
         let component = ThreeDS2Component(context: context,
-                                          configuration: threeDS2Configuration,
-                                          presentationDelegate: presentationDelegate)
+                                          configuration: threeDS2Configuration)
+        component.presentationDelegate = presentationDelegate
         component._isDropIn = _isDropIn
         component.delegate = delegate
 
