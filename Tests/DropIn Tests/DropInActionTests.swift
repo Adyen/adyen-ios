@@ -30,23 +30,18 @@ class DropInActionsTests: XCTestCase {
         let config = DropInComponent.Configuration()
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymentMethods,
-                              context: context,
-                              configuration: config)
-
-        let waitExpectation = expectation(description: "Expect SafariViewController to open")
+        let sut = DropInComponent(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: config
+        )
         
         presentOnRoot(sut.viewController) {
             let action = Action.redirect(RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data"))
-            self.sut.handle(action)
-
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
-                XCTAssertNotNil(self.sut.viewController.adyen.topPresenter as? SFSafariViewController)
-                waitExpectation.fulfill()
-            }
+            sut.handle(action)
         }
 
-        waitForExpectations(timeout: 15, handler: nil)
+        wait(until: { sut.viewController.adyen.topPresenter is SFSafariViewController })
     }
 
     func testOpenExternalApp() {
