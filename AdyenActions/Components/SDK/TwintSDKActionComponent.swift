@@ -99,7 +99,11 @@ import Foundation
                 guard let self else { return }
                 
                 guard let firstApp = installedApps.first else {
-                    self.handleShowError("No or an outdated version of TWINT is installed on this device. Please update or install the TWINT app.")
+                    let errorMessage = localizedString(
+                        LocalizationKey.twintNoAppsInstalledMessage,
+                        configuration.localizationParameters
+                    )
+                    self.handleShowError(errorMessage)
                     return
                 }
                 
@@ -171,14 +175,11 @@ import Foundation
         }
 
         private func present(_ viewController: UIViewController, presentationDelegate: PresentationDelegate) {
-            let toolBar = CancellingToolBar(title: nil, style: NavigationStyle())
             let presentableComponent = PresentableComponentWrapper(
                 component: self,
-                viewController: viewController,
-                navBarType: .custom(toolBar)
+                viewController: viewController
             )
             presentableComponent.requiresModalPresentation = false
-            toolBar.isHidden = true
             presentationDelegate.present(component: presentableComponent)
         }
 
