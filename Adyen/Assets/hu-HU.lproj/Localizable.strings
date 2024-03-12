@@ -181,6 +181,7 @@
 "adyen.UPI.QRCodeInstructions" = "A fizetés befejezéséhez készítsen képernyőképet és töltse fel az UPI-alkalmazásban, vagy a kívánt UPI-alkalmazással olvassa be a QR-kódot.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "Az eszközről hiányzik a TWINT, vagy egy elavult verziója van telepítve. Frissítse vagy telepítse a TWINT alkalmazást.";
 "adyen.threeds2.DA.registration.title" = "Biztonságos és gyors fizetés!";
 "adyen.threeds2.DA.registration.description" = "Biometrikus adataival legközelebb gyorsabban fizethet ezen az eszközön.";
 "adyen.threeds2.DA.registration.positiveButton" = "Gyors fizetés engedélyezése";
