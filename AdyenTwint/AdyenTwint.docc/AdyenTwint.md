@@ -1,10 +1,10 @@
 # ``AdyenTwint``
 
-This module is used for supporting the Twint payment method through app via the `TwintComponent`. In order to support Twint payment via the Twint App, make sure to include this module in your application.
+This module is used for supporting the Twint payment method through the native Twint SDK via the `TwintComponent`. In order to support Twint payments via the native flow, make sure to include this module in your application.
 
 ## Overview
 
-The flow for Twint via App starts with the `TwintComponent`. After pressing the button on the component, `TwintComponent` makes a `/payments` call with `subtype: sdk` and trigger the flow with retrieving the code through `ActionComponent`.
+The flow for Twint via the native SDK starts with the `TwintComponent`. After pressing the button on the component, `TwintComponent` makes a `/payments` call with `subtype: sdk` and trigger the flow with retrieving the code through `ActionComponent`.
 
 Your app will show the app chooser if you have installed more than one Twint app on your device, otherwise it will redirect to the single Twint app which is installed on your device or show error in case no apps installed.
 
@@ -45,11 +45,13 @@ componentConfig.actionComponent.twint = .init(callbackAppScheme: yourReturnURLSc
 
 ### Note:
 
-1. Your app should implement the callback in the `AppDelegate.m` by adding below method.
+1. Your app should call the `RedirectComponent` in the `AppDelegate` by adding below method.
 
 ```
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
+    RedirectComponent.applicationDidOpen(from: url)
+    return true
+}
 ```
 
 2. Your app needs to register all apps that will be opened by your app.To do
