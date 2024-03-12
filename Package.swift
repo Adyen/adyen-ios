@@ -123,8 +123,7 @@ let package = Package(
             exclude: [
                 "Info.plist",
                 "Utilities/Non SPM Bundle Extension" // This is to exclude `BundleExtension.swift` file, since swift packages has different code to access internal resources.
-            ],
-	    resources: [.process("PrivacyInfo.xcprivacy")]
+            ]
         ),
         .target(
             name: "AdyenCard",
@@ -136,8 +135,7 @@ let package = Package(
             exclude: [
                 "Info.plist",
                 "Utilities/Non SPM Bundle Extension" // This is to exclude `BundleExtension.swift` file, since swift packages has different code to access internal resources.
-            ],
-	    resources: [.process("PrivacyInfo.xcprivacy")]
+            ]
         ),
         .target(
             name: "AdyenComponents",
@@ -146,8 +144,7 @@ let package = Package(
                 .target(name: "AdyenEncryption")
             ],
             path: "AdyenComponents",
-            exclude: ["Info.plist"],
-	    resources: [.process("PrivacyInfo.xcprivacy")]
+            exclude: ["Info.plist"]
         ),
         .target(
             name: "AdyenSession",
@@ -155,8 +152,7 @@ let package = Package(
                 .target(name: "Adyen"),
                 .target(name: "AdyenActions")
             ],
-            path: "AdyenSession",
-	    resources: [.process("PrivacyInfo.xcprivacy")]
+            path: "AdyenSession"
         ),
         .target(
             name: "AdyenDropIn",
@@ -166,8 +162,7 @@ let package = Package(
                 .target(name: "AdyenActions")
             ],
             path: "AdyenDropIn",
-            exclude: ["Info.plist"],
-	    resources: [.process("PrivacyInfo.xcprivacy")]
+            exclude: ["Info.plist"]
         ),
         .target(
             name: "AdyenWeChatPay",
