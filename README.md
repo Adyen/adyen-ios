@@ -74,6 +74,7 @@ You can add all modules or select individual modules to add to your integration.
 * `AdyenEncryption`: encryption.
 * `AdyenWeChatPay`: WeChat Pay component.
 * `AdyenWeChatPayInternal`: WeChat Pay component.
+* `AdyenTwint`: Twint component.
 * `AdyenSwiftUI`: SwiftUI apps specific module.
 
 :warning: _`AdyenWeChatPay` and `AdyenWeChatPayInternal` modules doesn't support any simulators and can only be tested on a real device._
@@ -88,6 +89,7 @@ https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_y
 
 You can add all modules or select individual modules to add to your integration.
 The `AdyenWeChatPay` module needs to be explicitly added to support WeChat Pay.
+The `AdyenTwint` module needs to be explicitly added to support Twint native flow.
 The `AdyenSwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers.
 
 * `AdyenDropIn`: all modules except `AdyenWeChatPay`.
@@ -97,6 +99,7 @@ The `AdyenSwiftUI` module needs to be explicitly added to use the SwiftUI specif
 * `AdyenActions`:  action components.
 * `AdyenEncryption`: encryption.
 * `AdyenWeChatPay`: WeChat Pay component.
+* `AdyenTwint`: Twint component.
 * `AdyenSwiftUI`: SwiftUI apps specific module.
 
 :warning: _Swift Package Manager for Xcode 12.0 and 12.1 has a [know issue](https://bugs.swift.org/browse/SR-13343) when it comes to importing a dependency that in turn depend on a binary dependencies. A workaround is described [here](https://forums.swift.org/t/swiftpm-binarytarget-dependency-and-code-signing/38953)._
@@ -272,6 +275,7 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - [UPI Component][reference.UPIComponent]
 - [QRCode Component][reference.QRCodeActionComponent]
 - [Cash App Pay Component][reference.CashAppPayComponent]
+- [Twint Component][reference.TwintComponent]
 
 
 ## Customization
@@ -362,5 +366,6 @@ This repository is open source and available under the MIT license. For more inf
 [reference.UPIComponent]:  https://adyen.github.io/adyen-ios/5.6.0/documentation/adyen/upicomponent
 [reference.QRCodeActionComponent]:  https://adyen.github.io/adyen-ios/5.6.0/documentation/adyen/qrcodeactioncomponent
 [reference.CashAppPayComponent]:  https://adyen.github.io/adyen-ios/5.6.0/documentation/adyen/cashAppPayComponent
+[reference.TwintComponent]:  https://adyen.github.io/adyen-ios/5.6.0/documentation/adyen/TwintComponent
 
 [apiExplorer.sessions]: https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/sessions
