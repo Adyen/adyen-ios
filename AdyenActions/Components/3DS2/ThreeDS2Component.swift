@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -22,7 +22,7 @@ public final class ThreeDS2Component: ActionComponent {
     /// The delegate of the component.
     public weak var delegate: ActionComponentDelegate?
 
-    /// Delegates `PresentableComponent`'s presentation.
+    /// Delegates `PresentableComponent`'s presentation.  This property must be set if you wish to use delegated authentication.
     public weak var presentationDelegate: PresentationDelegate?
     
     /// Three DS2 component configurations.
@@ -106,13 +106,10 @@ public final class ThreeDS2Component: ActionComponent {
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component's configuration.
-    /// - Parameter presentationDelegate: Delegates `PresentableComponent`'s presentation.
     public init(context: AdyenContext,
-                configuration: Configuration = Configuration(),
-                presentationDelegate: PresentationDelegate?) {
+                configuration: Configuration = Configuration()) {
         self.context = context
         self.configuration = configuration
-        self.presentationDelegate = presentationDelegate
 
         self.updateConfiguration()
     }
@@ -129,11 +126,9 @@ public final class ThreeDS2Component: ActionComponent {
                               threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
                               threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
                               redirectComponent: AnyRedirectComponent,
-                              configuration: Configuration = Configuration(),
-                              presentationDelegate: PresentationDelegate?) {
+                              configuration: Configuration = Configuration()) {
         self.init(context: context,
-                  configuration: configuration,
-                  presentationDelegate: presentationDelegate)
+                  configuration: configuration)
         self.threeDS2CompactFlowHandler = threeDS2CompactFlowHandler
         self.threeDS2ClassicFlowHandler = threeDS2ClassicFlowHandler
         self.redirectComponent = redirectComponent
