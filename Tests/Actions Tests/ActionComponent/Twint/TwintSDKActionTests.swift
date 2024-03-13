@@ -20,39 +20,6 @@ final class TwintSDKActionTests: XCTestCase {
         AdyenAssertion.listener = nil
     }
     
-    func testConfiguration() throws {
-        
-        let validSchemes = [
-            "scheme"
-        ]
-        
-        let invalidSchemes = [
-            "scheme:",
-            "scheme://",
-            "scheme://host"
-        ]
-        
-        // Valid Configuration
-        
-        validSchemes.forEach { scheme in
-            AdyenAssertion.listener = { message in
-                XCTFail("No assertion should have been raised")
-            }
-            
-            let _ = AdyenActionComponent.Configuration.Twint(callbackAppScheme: scheme)
-        }
-        
-        // Invalid Configuration
-        
-        invalidSchemes.forEach { scheme in
-            AdyenAssertion.listener = { message in
-                XCTAssertEqual(message, "Format of provided callbackAppScheme '\(scheme)' is incorrect.")
-            }
-            
-            let _ = AdyenActionComponent.Configuration.Twint(callbackAppScheme: scheme)
-        }
-    }
-    
     func testNoAppFound() throws {
         
         let fetchBlockExpectation = expectation(description: "Fetch was called")

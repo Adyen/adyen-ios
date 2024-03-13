@@ -13,31 +13,24 @@ import TwintSDK
 
 public final class TwintComponent: PaymentComponent {
 
+    /// Configuration for Twint Component.
+    public typealias Configuration = BasicComponentConfiguration
+    
     /// The context object for this component.
     @_spi(AdyenInternal)
-    public var context: AdyenContext
+    public let context: AdyenContext
 
     /// The payment method object for this component.
-    public var paymentMethod: PaymentMethod { twintPaymentMethod }
-
-    private let twintPaymentMethod: TwintPaymentMethod
-
-    public var requiresModalPresentation: Bool = true
+    public let paymentMethod: PaymentMethod
 
     /// The ready to submit payment data.
     public let paymentData: PaymentComponentData
-
-    /// Configuration for Twint Component.
-    public typealias Configuration = BasicComponentConfiguration
 
     /// Component's configuration
     public var configuration: Configuration
 
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
-
-    // List of installed Twint apps on the device
-    private let installedApps: [TWAppConfiguration] = []
 
     /// Initializes the Twint component.
     ///
@@ -47,11 +40,11 @@ public final class TwintComponent: PaymentComponent {
     public init(paymentMethod: TwintPaymentMethod,
                 context: AdyenContext,
                 configuration: Configuration = .init()) {
-        self.twintPaymentMethod = paymentMethod
+        self.paymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
 
-        let details = TwintDetails(type: twintPaymentMethod,
+        let details = TwintDetails(type: paymentMethod,
                                    subType: "sdk")
         self.paymentData = PaymentComponentData(paymentMethodDetails: details,
                                                 amount: context.payment?.amount,
