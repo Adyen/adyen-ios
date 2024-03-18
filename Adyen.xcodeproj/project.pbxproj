@@ -212,6 +212,12 @@
 		81C5D0CE2AC4170A002E918F /* IssuerListComponentExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C5D0CC2AC4170A002E918F /* IssuerListComponentExample.swift */; };
 		81C5D0D02AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C5D0CF2AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift */; };
 		81C5D0D12AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C5D0CF2AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift */; };
+		81C78FC42B98B211005345D9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 818E7BBE2B989ACE00A432EE /* PrivacyInfo.xcprivacy */; };
+		81C78FC52B98B216005345D9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 818E7BBE2B989ACE00A432EE /* PrivacyInfo.xcprivacy */; };
+		81C78FC62B98B21A005345D9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 818E7BBE2B989ACE00A432EE /* PrivacyInfo.xcprivacy */; };
+		81C78FC72B98B21E005345D9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 818E7BBE2B989ACE00A432EE /* PrivacyInfo.xcprivacy */; };
+		81C78FC82B98B221005345D9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 818E7BBE2B989ACE00A432EE /* PrivacyInfo.xcprivacy */; };
+		81C78FC92B98B224005345D9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 818E7BBE2B989ACE00A432EE /* PrivacyInfo.xcprivacy */; };
 		81D8E2E92A5C06AC00BC12FD /* KeyboardObserverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D8E2E82A5C06AC00BC12FD /* KeyboardObserverTests.swift */; };
 		81DC5A512A73C52500DBF2D1 /* AdyenContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DC5A502A73C52500DBF2D1 /* AdyenContextTests.swift */; };
 		81DC5A552A77ED0400DBF2D1 /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = 81DC5A542A77ED0400DBF2D1 /* Adyen3DS2 */; };
@@ -1429,6 +1435,7 @@
 		81825CC32AC59C6C00F91912 /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
 		81881BCD2B1A0A510020E3F2 /* AnyPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyPaymentMethod.swift; sourceTree = "<group>"; };
 		81896E842A4DB5F300C532CA /* SearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerTests.swift; sourceTree = "<group>"; };
+		818E7BBE2B989ACE00A432EE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		8191838D2A53062F008EB61A /* FormAddressItem+Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormAddressItem+Configuration.swift"; sourceTree = "<group>"; };
 		819CC3332B14C53200D2EEE9 /* PaymentMethods+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaymentMethods+Equatable.swift"; sourceTree = "<group>"; };
 		81A2E3BD2A5C453200CF5F9C /* LinkTextViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkTextViewTests.swift; sourceTree = "<group>"; };
@@ -3450,6 +3457,7 @@
 				F9A1B477283B689F005F3145 /* Adyen.docc */,
 				F94B870925EFB71100D270A6 /* MIGRATION.md */,
 				E27B8EAD22B79CD20075BB6A /* README.md */,
+				818E7BBE2B989ACE00A432EE /* PrivacyInfo.xcprivacy */,
 				E2C0E03522097917008616F6 /* Adyen */,
 				F95899C725FA524100E4113F /* AdyenSwiftUI */,
 				F92326AD25A3669E002C5BC4 /* AdyenEncryption */,
@@ -5937,6 +5945,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81C78FC42B98B211005345D9 /* PrivacyInfo.xcprivacy in Resources */,
 				F94343E623FFD9A400AADF5F /* AdyenAssets.xcassets in Resources */,
 				E90934A72297E7C800C9F04B /* Localizable.strings in Resources */,
 			);
@@ -5956,6 +5965,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81C78FC62B98B21A005345D9 /* PrivacyInfo.xcprivacy in Resources */,
 				E76EC685241127CE009C6E2F /* AdyenCardAssets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5979,6 +5989,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81C78FC92B98B224005345D9 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5986,6 +5997,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81C78FC72B98B21E005345D9 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5993,6 +6005,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81C78FC52B98B216005345D9 /* PrivacyInfo.xcprivacy in Resources */,
 				F917603E25949C2300D653BE /* AdyenActionsAssets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6008,6 +6021,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81C78FC82B98B221005345D9 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

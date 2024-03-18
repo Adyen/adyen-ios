@@ -99,7 +99,8 @@ Pod::Spec.new do |s|
     plugin.resource_bundles = {
         'Adyen' => [
             'Adyen/Assets/**/*.strings',
-            'Adyen/Assets/**/*.xcassets'
+            'Adyen/Assets/**/*.xcassets',
+            'PrivacyInfo.xcprivacy'
         ]
     }
   end
