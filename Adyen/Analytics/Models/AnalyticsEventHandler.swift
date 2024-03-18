@@ -7,12 +7,20 @@
 import Foundation
 import AdyenNetworking
 
+internal protocol AnyAnalyticsEventHandler {
+    func add(info: AnalyticsEventInfo)
+    
+    func add(log: AnalyticsEventLog)
+    
+    func add(error: AnalyticsEventError)
+}
+
 /// Handles accumulating and sending of events in a thread safe manner.
 /// Events are sent either in an interval or immediately when an error/log event is received.
-internal class AnalyticsEventHandler {
+internal class AnalyticsEventHandler: AnyAnalyticsEventHandler {
     
     private enum Constants {
-        static let batchInterval: TimeInterval = 15
+        static let batchInterval: TimeInterval = 10
         static let infoLimit = 50
         static let logLimit = 5
         static let errorLimit = 5
@@ -29,10 +37,9 @@ internal class AnalyticsEventHandler {
     private let apiClient: APIClientProtocol
     private var checkoutAttemptId: String?
     
-    internal init(apiClient: APIClientProtocol) {
+    internal init(apiClient: APIClientProtocol, batchInterval: TimeInterval = Constants.batchInterval) {
         self.apiClient = apiClient
         self.queue = DispatchQueue(label: Constants.queueLabel, attributes: .concurrent)
-        self.startNextTimer()
     }
     
     deinit {
@@ -45,6 +52,7 @@ internal class AnalyticsEventHandler {
         // The event handler needs to be alive beforehand to start accumulating events
         // but can't send events without attempt id so it should be set when fetched
         self.checkoutAttemptId = checkoutAttemptId
+        self.startNextTimer()
     }
     
     // MARK: - Event handling
@@ -97,7 +105,7 @@ internal class AnalyticsEventHandler {
     // MARK: - Private
     
     /// Checks the event arrays safely and creates the request with them if there is any to send.
-    private func requestWithAllEvents() -> AnalyticsRequest? {
+    internal func requestWithAllEvents() -> AnalyticsRequest? {
         guard let checkoutAttemptId else { return nil }
         
         return queue.sync {
