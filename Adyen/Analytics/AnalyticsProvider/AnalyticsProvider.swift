@@ -7,67 +7,67 @@
 import AdyenNetworking
 import Foundation
 
-/// A configuration object that defines the behavior for the analytics.
-public struct AnalyticsConfiguration {
-
-    // MARK: - Properties
-
-    /// A Boolean value that determines whether analytics is enabled.
-    public var isEnabled = true
-    
-    @_spi(AdyenInternal)
-    public var context: AnalyticsContext = .init()
-
-    // MARK: - Initializers
-    
-    /// Initializes a new instance of `AnalyticsConfiguration`
-    public init() { /* Empty implementation */ }
-}
-
-@_spi(AdyenInternal)
-/// Additional fields to be provided with an ``InitialAnalyticsRequest``
-public struct AdditionalAnalyticsFields {
-    /// The amount of the payment
-    public let amount: Amount?
-    
-    public let sessionId: String?
-    
-    public init(amount: Amount?, sessionId: String?) {
-        self.amount = amount
-        self.sessionId = sessionId
-    }
-}
-
 @_spi(AdyenInternal)
 public protocol AnalyticsProviderProtocol {
+    
+    var checkoutAttemptId: String? { get }
     
     /// Sends the initial data and retrieves the checkout attempt id as a response.
     func sendInitialAnalytics(with flavor: AnalyticsFlavor, additionalFields: AdditionalAnalyticsFields?)
     
-    var checkoutAttemptId: String? { get }
+    /// Adds an info event to be sent.
+    func add(info: AnalyticsEventInfo)
+    
+    /// Adds a log event to be sent.
+    func add(log: AnalyticsEventLog)
+    
+    /// Adds an error event to be sent.
+    func add(error: AnalyticsEventError)
 }
 
 internal final class AnalyticsProvider: AnalyticsProviderProtocol {
+    
+    private enum Constants {
+        static let batchInterval: TimeInterval = 10
+        static let infoLimit = 50
+        static let logLimit = 5
+        static let errorLimit = 5
+    }
 
     // MARK: - Properties
 
     internal let apiClient: APIClientProtocol
     internal let configuration: AnalyticsConfiguration
     internal private(set) var checkoutAttemptId: String?
+    internal let eventDataSource: AnyAnalyticsEventDataSource
+    
     private let uniqueAssetAPIClient: UniqueAssetAPIClient<InitialAnalyticsResponse>
+    
+    private var batchTimer: Timer?
+    private let batchInterval: TimeInterval
 
     // MARK: - Initializers
 
     internal init(
         apiClient: APIClientProtocol,
-        configuration: AnalyticsConfiguration
+        configuration: AnalyticsConfiguration,
+        eventDataSource: AnyAnalyticsEventDataSource,
+        batchInterval: TimeInterval = Constants.batchInterval
     ) {
         self.apiClient = apiClient
         self.configuration = configuration
         self.uniqueAssetAPIClient = UniqueAssetAPIClient<InitialAnalyticsResponse>(apiClient: apiClient)
+        self.eventDataSource = eventDataSource
+        self.batchInterval = batchInterval
+        startNextTimer()
+    }
+    
+    deinit {
+        // attempt to send remaining events on deallocation
+        sendEventsIfNeeded()
     }
 
-    // MARK: - Internal
+    // MARK: - AnalyticsProviderProtocol
 
     internal func sendInitialAnalytics(with flavor: AnalyticsFlavor, additionalFields: AdditionalAnalyticsFields?) {
         guard configuration.isEnabled else {
@@ -86,12 +86,65 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
         }
     }
     
+    internal func add(info: AnalyticsEventInfo) {
+        eventDataSource.add(info: info)
+    }
+    
+    internal func add(log: AnalyticsEventLog) {
+        eventDataSource.add(log: log)
+        sendEventsIfNeeded()
+    }
+    
+    internal func add(error: AnalyticsEventError) {
+        eventDataSource.add(error: error)
+        sendEventsIfNeeded()
+    }
+    
+    internal func sendEventsIfNeeded() {
+        guard let request = requestWithAllEvents() else { return }
+        
+        apiClient.perform(request) { [weak self] result in
+            guard let self else { return }
+            // clear the current events on successful send
+            switch result {
+            case .success:
+                self.eventDataSource.removeAllEvents()
+                self.startNextTimer()
+            case .failure:
+                break
+            }
+        }
+    }
+    
+    // MARK: - Private
+    
+    /// Checks the event arrays safely and creates the request with them if there is any to send.
+    private func requestWithAllEvents() -> AnalyticsRequest? {
+        guard let checkoutAttemptId,
+              let events = eventDataSource.wrappedEvents() else { return nil }
+        
+        // as per this call's limitation, we only send up to the
+        // limit of each event and discard the older ones
+        var request = AnalyticsRequest(checkoutAttemptId: checkoutAttemptId)
+        request.infos = events.infos.suffix(Constants.infoLimit)
+        request.logs = events.logs.suffix(Constants.logLimit)
+        request.errors = events.errors.suffix(Constants.errorLimit)
+        return request
+    }
+    
     private func saveCheckoutAttemptId(from result: Result<InitialAnalyticsResponse, Error>) {
         switch result {
         case let .success(response):
             checkoutAttemptId = response.checkoutAttemptId
         case .failure:
             checkoutAttemptId = nil
+        }
+    }
+    
+    private func startNextTimer() {
+        batchTimer?.invalidate()
+        batchTimer = Timer.scheduledTimer(withTimeInterval: batchInterval, repeats: true) { [weak self] _ in
+            self?.sendEventsIfNeeded()
         }
     }
 }

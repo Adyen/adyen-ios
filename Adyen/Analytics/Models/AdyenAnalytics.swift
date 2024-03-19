@@ -52,3 +52,34 @@ public enum AnalyticsEventTarget: String, Encodable {
     case issuerList = "list"
     case listSearch = "list_search"
 }
+
+/// A configuration object that defines the behavior for the analytics.
+public struct AnalyticsConfiguration {
+
+    // MARK: - Properties
+
+    /// A Boolean value that determines whether analytics is enabled.
+    public var isEnabled = true
+    
+    @_spi(AdyenInternal)
+    public var context: AnalyticsContext = .init()
+
+    // MARK: - Initializers
+    
+    /// Initializes a new instance of `AnalyticsConfiguration`
+    public init() { /* Empty implementation */ }
+}
+
+@_spi(AdyenInternal)
+/// Additional fields to be provided with an ``InitialAnalyticsRequest``
+public struct AdditionalAnalyticsFields {
+    /// The amount of the payment
+    public let amount: Amount?
+    
+    public let sessionId: String?
+    
+    public init(amount: Amount?, sessionId: String?) {
+        self.amount = amount
+        self.sessionId = sessionId
+    }
+}

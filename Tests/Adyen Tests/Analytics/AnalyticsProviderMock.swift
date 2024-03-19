@@ -26,4 +26,19 @@ class AnalyticsProviderMock: AnalyticsProviderProtocol {
     var initialEventCalled: Bool {
         initialEventCallsCount > 0
     }
+    
+    var infoCount = 0
+    func add(info: Adyen.AnalyticsEventInfo) {
+        infoCount += 1
+    }
+    
+    var logCount = 0
+    func add(log: Adyen.AnalyticsEventLog) {
+        logCount += 1
+    }
+    
+    var errorCount = 0
+    func add(error: Adyen.AnalyticsEventError) {
+        errorCount += 1
+    }
 }
