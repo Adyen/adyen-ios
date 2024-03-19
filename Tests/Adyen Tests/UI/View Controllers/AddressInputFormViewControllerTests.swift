@@ -207,7 +207,6 @@ class AddressInputFormViewControllerTests: XCTestCase {
         let viewController = AddressInputFormViewController(
             viewModel: self.viewModel(
                 initialCountry: "CA",
-                prefillAddress: nil,
                 searchHandler: { currentInput in
                     XCTAssertEqual(currentInput, .init(country: "CA"))
                     searchExpectation.fulfill()
@@ -229,9 +228,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         
         let viewController = AddressInputFormViewController(
             viewModel: self.viewModel(
-                initialCountry: "NL",
-                prefillAddress: nil,
-                searchHandler: nil
+                initialCountry: "NL"
             )
         )
         
@@ -248,8 +245,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         let viewController = AddressInputFormViewController(
             viewModel: self.viewModel(
                 initialCountry: "NL",
-                prefillAddress: .init(country: "US"),
-                searchHandler: nil
+                prefillAddress: .init(country: "US")
             )
         )
 
@@ -276,8 +272,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         let viewController = AddressInputFormViewController(
             viewModel: self.viewModel(
                 initialCountry: "NL",
-                prefillAddress: .init(country: "NL", street: "Singel"),
-                searchHandler: nil
+                prefillAddress: .init(country: "NL", street: "Singel")
             )
         )
         
@@ -294,8 +289,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         let viewController = AddressInputFormViewController(
             viewModel: self.viewModel(
                 initialCountry: "NL",
-                prefillAddress: .init(country: "NL", street: "Singel"),
-                searchHandler: nil
+                prefillAddress: .init(country: "NL", street: "Singel")
             )
         )
         
@@ -307,19 +301,69 @@ class AddressInputFormViewControllerTests: XCTestCase {
             ""
         )
     }
+    
+    func test_countryFlags_showByDefault() throws {
+        
+        var style = FormComponentStyle(tintColor: .blue)
+        
+        let viewController = AddressInputFormViewController(
+            viewModel: self.viewModel(style: style)
+        )
+        
+        let pickerSearchViewController = try presentCountryPicker(for: viewController)
+        let firstListItem = try firstListItem(from: pickerSearchViewController)
+        XCTAssertNil(firstListItem.icon)
+        XCTAssertEqual(firstListItem.title, "Afghanistan")
+        XCTAssertEqual(firstListItem.subtitle, "🇦🇫 AF")
+    }
+    
+    func test_countryFlags_dontNotShowIfConfigured() throws {
+        
+        var style = FormComponentStyle(tintColor: .blue)
+        style.addressStyle.showCountryFlags = false
+        
+        let viewController = AddressInputFormViewController(
+            viewModel: self.viewModel(style: style)
+        )
+        
+        let pickerSearchViewController = try presentCountryPicker(for: viewController)
+        let firstListItem = try firstListItem(from: pickerSearchViewController)
+        XCTAssertNil(firstListItem.icon)
+        XCTAssertEqual(firstListItem.title, "Afghanistan")
+        XCTAssertEqual(firstListItem.subtitle, "AF")
+    }
 }
 
 private extension AddressInputFormViewControllerTests {
     
+    func presentCountryPicker(
+        for viewController: AddressInputFormViewController
+    ) throws -> FormPickerSearchViewController {
+        setupRootViewController(viewController)
+        let view: UIView = viewController.view
+        let countryItemView: FormPickerItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.country"))
+        countryItemView.item.selectionHandler()
+        return try waitUntilTopPresenter(isOfType: FormPickerSearchViewController.self)
+    }
+    
+    func firstListItem(from pickerSearchViewController: FormPickerSearchViewController) throws -> ListItem {
+        let searchViewController = try XCTUnwrap(pickerSearchViewController.viewControllers.first as? SearchViewController)
+        let resultsList = searchViewController.resultsListViewController
+        wait { resultsList.viewIfLoaded?.window != nil }
+        let firstCell = try XCTUnwrap(resultsList.tableView.visibleCells.first as? ListCell)
+        return try XCTUnwrap(firstCell.item)
+    }
+    
     func viewModel(
-        initialCountry: String,
-        prefillAddress: PostalAddress?,
-        searchHandler: AddressInputFormViewController.ShowSearchHandler?
+        initialCountry: String = "NL",
+        prefillAddress: PostalAddress? = nil,
+        style: FormComponentStyle = .init(),
+        searchHandler: AddressInputFormViewController.ShowSearchHandler? = nil
     ) -> AddressInputFormViewController.ViewModel {
         
         .init(
             for: .billing,
-            style: .init(),
+            style: style,
             localizationParameters: nil,
             initialCountry: initialCountry,
             prefillAddress: prefillAddress,
