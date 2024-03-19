@@ -67,6 +67,7 @@
 		5AF730EA2667C3F10091C573 /* APIContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF730E92667C3F10091C573 /* APIContextTests.swift */; };
 		5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF8CD4C26691D3A00102339 /* Dummy.swift */; };
 		8140A3782A332DCA00896403 /* AdyenSdkVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8140A3772A332DCA00896403 /* AdyenSdkVersion.swift */; };
+		81CB2D772BA9D04500F72E2D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 81CB2D762BA9CFE400F72E2D /* PrivacyInfo.xcprivacy */; };
 		A009837D279859DC007E68C4 /* ACHDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */; };
 		A009837F27986B50007E68C4 /* BankDetailsEncryptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */; };
 		A0113D9B2763887800AD395C /* ActionNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0113D9A2763887800AD395C /* ActionNavigationBar.swift */; };
@@ -1008,6 +1009,7 @@
 		5AF730E92667C3F10091C573 /* APIContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContextTests.swift; sourceTree = "<group>"; };
 		5AF8CD4C26691D3A00102339 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		8140A3772A332DCA00896403 /* AdyenSdkVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenSdkVersion.swift; sourceTree = "<group>"; };
+		81CB2D762BA9CFE400F72E2D /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankDetailsEncryptorTests.swift; sourceTree = "<group>"; };
 		A0113D9A2763887800AD395C /* ActionNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionNavigationBar.swift; sourceTree = "<group>"; };
@@ -2349,6 +2351,7 @@
 				F94B870925EFB71100D270A6 /* MIGRATION.md */,
 				E27B8EAD22B79CD20075BB6A /* README.md */,
 				E2289B3A23D04B57002844BF /* .jazzy.yaml */,
+				81CB2D762BA9CFE400F72E2D /* PrivacyInfo.xcprivacy */,
 				E2C0E03522097917008616F6 /* Adyen */,
 				F95899C725FA524100E4113F /* AdyenSwiftUI */,
 				F92326AD25A3669E002C5BC4 /* AdyenEncryption */,
@@ -4442,6 +4445,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81CB2D772BA9D04500F72E2D /* PrivacyInfo.xcprivacy in Resources */,
 				F94343E623FFD9A400AADF5F /* AdyenAssets.xcassets in Resources */,
 				E90934A72297E7C800C9F04B /* Localizable.strings in Resources */,
 			);
