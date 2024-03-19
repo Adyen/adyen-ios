@@ -9,6 +9,22 @@ import XCTest
 
 class FormAddressPickerItemTests: XCTestCase {
     
+    func test_addressStyle_reflectsComponentStyleChanges() {
+        
+        var style = FormComponentStyle()
+        XCTAssertEqual(style.addressStyle.title, style.sectionHeader)
+        XCTAssertEqual(style.addressStyle.textField.title, style.textField.title)
+        
+        let expectedSectonHeaderStyle = TextStyle(font: .systemFont(ofSize: 200), color: .yellow)
+        let expectedTextFieldStyle = FormTextItemStyle(tintColor: .green)
+        
+        style.sectionHeader = expectedSectonHeaderStyle
+        style.textField = expectedTextFieldStyle
+        
+        XCTAssertEqual(style.addressStyle.title, expectedSectonHeaderStyle)
+        XCTAssertEqual(style.addressStyle.textField.title, expectedTextFieldStyle.title)
+    }
+    
     func testEmptyPrefillAddress() {
         
         let addressLookupItem = FormAddressPickerItem(
