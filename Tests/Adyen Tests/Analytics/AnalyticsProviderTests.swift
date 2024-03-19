@@ -232,11 +232,15 @@ class AnalyticsProviderTests: XCTestCase {
         let expectation = expectation(description: "should not be called")
         expectation.isInverted = true
         
-        apiClient.onExecute = { _ in
-            expectation.fulfill()
+        apiClient.onExecute = { request in
+            if request is AnalyticsRequest {
+                expectation.fulfill()
+            }
         }
         
         sut.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
+        wait(for: .milliseconds(100))
+        
         sut.sendEventsIfNeeded()
         
         wait(for: [expectation], timeout: 0.1)
