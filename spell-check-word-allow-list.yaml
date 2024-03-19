@@ -192,3 +192,5 @@ whiteList:
   - bizum
   - alipay
   - checkoutanalytics
+  - xcprivacy
+
