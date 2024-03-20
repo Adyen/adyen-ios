@@ -35,7 +35,7 @@ public final class AdyenContext: PaymentAware {
             let analyticsApiContext = try? APIContext(environment: analyticsEnvironment,
                                                       clientKey: apiContext.clientKey) {
             let eventDataSource = AnalyticsEventDataSource()
-            let syncEventDataSource = SyncAnalyticsEventDataSource(dataSource: eventDataSource)
+            let syncEventDataSource = ThreadSafeAnalyticsEventDataSource(dataSource: eventDataSource)
             
             analyticsProvider = AnalyticsProvider(
                 apiClient: APIClient(apiContext: analyticsApiContext),

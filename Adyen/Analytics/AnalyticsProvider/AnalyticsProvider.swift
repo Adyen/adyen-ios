@@ -64,6 +64,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     
     deinit {
         // attempt to send remaining events on deallocation
+        batchTimer?.invalidate()
         sendEventsIfNeeded()
     }
 
@@ -121,7 +122,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     /// Checks the event arrays safely and creates the request with them if there is any to send.
     private func requestWithAllEvents() -> AnalyticsRequest? {
         guard let checkoutAttemptId,
-              let events = eventDataSource.wrappedEvents() else { return nil }
+              let events = eventDataSource.allEvents() else { return nil }
         
         // as per this call's limitation, we only send up to the
         // limit of each event and discard the older ones

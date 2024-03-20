@@ -27,16 +27,6 @@ public protocol AnalyticsEvent: Encodable {
 }
 
 @_spi(AdyenInternal)
-public extension AnalyticsEvent {
-    
-    var timestamp: TimeInterval {
-        Date().timeIntervalSince1970
-    }
-    
-    var id: String { UUID().uuidString }
-}
-
-@_spi(AdyenInternal)
 public enum AnalyticsEventTarget: String, Encodable {
     case cardNumber = "card_number"
     case expiryDate = "expiry_date"

@@ -10,9 +10,9 @@ import AdyenNetworking
 /// Handles adding/removing events
 internal class AnalyticsEventDataSource: AnyAnalyticsEventDataSource {
     
-    private(set) internal var infos: [AnalyticsEventInfo] = []
-    private(set) internal var logs: [AnalyticsEventLog] = []
-    private(set) internal var errors: [AnalyticsEventError] = []
+    private var infos: [AnalyticsEventInfo] = []
+    private var logs: [AnalyticsEventLog] = []
+    private var errors: [AnalyticsEventError] = []
     
     // MARK: - AnyAnalyticsEventDataSource
     
@@ -34,7 +34,7 @@ internal class AnalyticsEventDataSource: AnyAnalyticsEventDataSource {
         errors = []
     }
     
-    internal func wrappedEvents() -> AnalyticsEventWrapper? {
+    internal func allEvents() -> AnalyticsEventWrapper? {
         if infos.isEmpty && logs.isEmpty && errors.isEmpty {
             return nil
         }

@@ -22,53 +22,47 @@ final class AnalyticsEventDataSourceTests: XCTestCase {
     }
 
     func testAddingInfo() {
-        XCTAssertEqual(sut.infos.count, 0)
+        XCTAssertNil(sut.allEvents())
         
         sut.add(info: AnalyticsEventInfo(component: "test", type: .rendered))
-        XCTAssertEqual(sut.infos.count, 1)
-        XCTAssertEqual(sut.wrappedEvents()?.infos.count, 1)
+        XCTAssertEqual(sut.allEvents()?.infos.count, 1)
         
         sut.add(info: AnalyticsEventInfo(component: "test", type: .rendered))
-        XCTAssertEqual(sut.infos.count, 2)
-        XCTAssertEqual(sut.wrappedEvents()?.infos.count, 2)
+        XCTAssertEqual(sut.allEvents()?.infos.count, 2)
     }
     
     func testAddingLog() {
-        XCTAssertEqual(sut.logs.count, 0)
+        XCTAssertNil(sut.allEvents())
         
         sut.add(log: AnalyticsEventLog(component: "card", type: .action, subType: .redirect))
-        XCTAssertEqual(sut.logs.count, 1)
-        XCTAssertEqual(sut.wrappedEvents()?.logs.count, 1)
+        XCTAssertEqual(sut.allEvents()?.logs.count, 1)
         
         sut.add(log: AnalyticsEventLog(component: "card", type: .action, subType: .redirect))
-        XCTAssertEqual(sut.logs.count, 2)
-        XCTAssertEqual(sut.wrappedEvents()?.logs.count, 2)
+        XCTAssertEqual(sut.allEvents()?.logs.count, 2)
     }
     
     func testAddingError() {
-        XCTAssertEqual(sut.errors.count, 0)
+        XCTAssertNil(sut.allEvents())
         
         sut.add(error: AnalyticsEventError(component: "card", type: .internal))
-        XCTAssertEqual(sut.errors.count, 1)
-        XCTAssertEqual(sut.wrappedEvents()?.errors.count, 1)
+        XCTAssertEqual(sut.allEvents()?.errors.count, 1)
         
         sut.add(error: AnalyticsEventError(component: "card", type: .internal))
-        XCTAssertEqual(sut.errors.count, 2)
-        XCTAssertEqual(sut.wrappedEvents()?.errors.count, 2)
+        XCTAssertEqual(sut.allEvents()?.errors.count, 2)
     }
     
     func testRemoveEvents() {
-        XCTAssertNil(sut.wrappedEvents())
+        XCTAssertNil(sut.allEvents())
         
         sut.add(info: AnalyticsEventInfo(component: "test", type: .rendered))
         sut.add(log: AnalyticsEventLog(component: "card", type: .action, subType: .redirect))
         sut.add(error: AnalyticsEventError(component: "card", type: .internal))
         
-        XCTAssertNotNil(sut.wrappedEvents())
+        XCTAssertNotNil(sut.allEvents())
         
         sut.removeAllEvents()
         
-        XCTAssertNil(sut.wrappedEvents())
+        XCTAssertNil(sut.allEvents())
     }
 
 }

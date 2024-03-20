@@ -14,7 +14,7 @@ internal protocol AnyAnalyticsEventDataSource {
     
     func removeAllEvents()
     
-    func wrappedEvents() -> AnalyticsEventWrapper?
+    func allEvents() -> AnalyticsEventWrapper?
 }
 
 internal struct AnalyticsEventWrapper {
@@ -24,7 +24,7 @@ internal struct AnalyticsEventWrapper {
 }
 
 /// Composes handling of events in a thread safe manner.
-internal final class SyncAnalyticsEventDataSource: AnyAnalyticsEventDataSource {
+internal final class ThreadSafeAnalyticsEventDataSource: AnyAnalyticsEventDataSource {
     
     private enum Constants {
         static let queueLabel = "com.adyen.analytics.queue"
@@ -64,9 +64,9 @@ internal final class SyncAnalyticsEventDataSource: AnyAnalyticsEventDataSource {
         }
     }
     
-    internal func wrappedEvents() -> AnalyticsEventWrapper? {
+    internal func allEvents() -> AnalyticsEventWrapper? {
         return queue.sync {
-            dataSource.wrappedEvents()
+            dataSource.allEvents()
         }
     }
 }
