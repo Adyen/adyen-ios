@@ -1,7 +1,6 @@
 name: Generate Snapshots
-
+on: [workflow_dispatch]
 jobs:
-
   Generate:
     runs-on: macos-13
     steps:
