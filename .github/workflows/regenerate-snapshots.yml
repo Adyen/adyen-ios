@@ -1,4 +1,4 @@
-name: Generate Snapshots
+name: 🤳 Generate Snapshots
 on: [workflow_dispatch]
 jobs:
   Generate:
