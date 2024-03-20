@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -108,7 +108,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         return FormRegionPickerItem(
             preselectedRegion: defaultCountry,
             selectableRegions: countries,
-            shouldShowCountryFlags: true,
+            shouldShowCountryFlags: configuration.style.showCountryFlags,
             validationFailureMessage: localizedString(
                 .countryFieldInvalid,
                 configuration.localizationParameters
