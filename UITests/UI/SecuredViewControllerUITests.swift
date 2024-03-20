@@ -36,16 +36,14 @@ class SecuredViewControllerUITests: XCTestCase {
             wait { sut.view.subviews.contains(where: { $0 is UIVisualEffectView }) }
             verifyViewControllerImage(
                 matching: sut,
-                named: "secured-view-controller-blurred",
-                drawHierarchyInKeyWindow: true // Allows capturing the blur
+                named: "secured-view-controller-blurred"
             )
             
             NotificationCenter.default.post(name: UIApplication.didBecomeActiveNotification, object: nil)
             wait { !sut.view.subviews.contains(where: { $0 is UIVisualEffectView }) }
             verifyViewControllerImage(
                 matching: sut,
-                named: "secured-view-controller-unblurred",
-                drawHierarchyInKeyWindow: true // Allows capturing the blur
+                named: "secured-view-controller-unblurred"
             )
         }
     }
