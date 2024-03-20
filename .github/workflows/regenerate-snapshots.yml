@@ -26,6 +26,6 @@ jobs:
         delete-branch: true
         branch: update-docs-github-action
         commit-message: "`chore` Generated Snapshots"
-        title: `chore` Generate Snapshots
-        body: Regenerate snapshots.
+        title: "`chore` Generate Snapshots"
+        body: "Regenerate snapshots"
         token: ${{ secrets.GITHUB_TOKEN }}
