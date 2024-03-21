@@ -46,9 +46,9 @@ jobs:
 
   code_coverage:
       runs-on: macos-13-xlarge # Apple Silicon Runner
+      needs: build
       steps:
         - name: Code Coverage
-          needs: build
           run: |
             slather coverage --sonarqube-xml ${params} ${project}
           env:
@@ -70,9 +70,9 @@ jobs:
         
   lint:
       runs-on: macos-13-xlarge # Apple Silicon Runner
+      needs: build
       steps:
         - name: SwiftLint
-          needs: build
           run: |
             brew install swiftlint
             fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
