@@ -46,34 +46,36 @@ jobs:
 
   code_coverage:
       runs-on: macos-13-xlarge # Apple Silicon Runner
-      name: Code Coverage
-      needs: build
-      run: |
-        slather coverage --sonarqube-xml ${params} ${project}
-      env:
-        project: 'Adyen.xcodeproj'
-        params: '
-        --build-directory ./DerivedData
-        --output-directory ./reports
-        --scheme AdyenUIHost
-        --binary-basename Adyen
-        --binary-basename AdyenCard
-        --binary-basename AdyenDropIn
-        --binary-basename AdyenWeChatPay
-        --binary-basename AdyenComponents
-        --binary-basename AdyenSession
-        --binary-basename AdyenEncryption
-        --binary-basename AdyenActions
-        --binary-basename AdyenCashAppPay
-        --binary-basename AdyenSwiftUI'
+      steps:
+        - name: Code Coverage
+          needs: build
+          run: |
+            slather coverage --sonarqube-xml ${params} ${project}
+          env:
+            project: 'Adyen.xcodeproj'
+            params: '
+            --build-directory ./DerivedData
+            --output-directory ./reports
+            --scheme AdyenUIHost
+            --binary-basename Adyen
+            --binary-basename AdyenCard
+            --binary-basename AdyenDropIn
+            --binary-basename AdyenWeChatPay
+            --binary-basename AdyenComponents
+            --binary-basename AdyenSession
+            --binary-basename AdyenEncryption
+            --binary-basename AdyenActions
+            --binary-basename AdyenCashAppPay
+            --binary-basename AdyenSwiftUI'
         
   lint:
       runs-on: macos-13-xlarge # Apple Silicon Runner
-      name: SwiftLint
-      needs: build
-      run: |
-        brew install swiftlint
-        fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
+      steps:
+        - name: SwiftLint
+          needs: build
+          run: |
+            brew install swiftlint
+            fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
 
   sonar_cloud:
       name: Sonar Cloud
