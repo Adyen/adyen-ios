@@ -5,37 +5,95 @@ on:
         branches:
           - '**'
 jobs:
-  Generate:
-    runs-on: macos-13-xlarge
+  generate_snapshots:
+    runs-on: ${{ matrix.os }}
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - version: '17.2'
+          runtime: 'iOS-17-2'
+          device: 'iPhone 14 Pro'
+          os: 'macos-13-xlarge'
+          xcode_version: '15.1'
+        
+        - version: '16.4'
+          runtime: 'iOS-16-4'
+          device: 'iPhone 14'
+          displayname: 'iPhone-14'
+          os: 'macos-13-xl'
+          xcode_version: '14.3'
+        
+        - version: '15.0'
+          runtime: 'iOS-15-0'
+          device: 'iPhone 13'
+          displayname: 'iPhone-13'
+          os: 'macos-12-xl'
+          xcode_version: '13.1'
+        
+        - version: '14.2'
+          device: 'iPhone 12'
+          displayname: 'iPhone-12'
+          runtime: 'iOS-14-2'
+          os: 'macos-12-xl'
+          xcode_version: '13.1'
+          
+        - version: '13.7'
+          runtime: 'iOS-13-7'
+          device: 'iPhone 11'
+          displayname: 'iPhone-11'
+          os: 'macos-12-xl'
+          xcode_version: '13.1'
     
     steps:
     - uses: actions/checkout@v4
     - uses: n1hility/cancel-previous-runs@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Select latest Xcode
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: '15.1'
-
+        
     - name: Clear existing Snapshots
       run: |
         find ./UITests -name "__Snapshots__" -exec rm -rf {} +
-    - name: Generate Snapshots
+        
+    - name: Select Xcode ${{ matrix.xcode_version }}
       run: |
-        xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "name=iPhone 15 Pro,OS=17.2" -destination "name=iPad Pro (12.9-inch) (6th generation),OS=17.2"| xcpretty --utf --color
+        ls /Applications/Xcode_*.app
+        sudo xcode-select -s /Applications/Xcode_${xcode_version}.app/Contents/Developer
+      env:
+        xcode_version: ${{ matrix.xcode_version }}
+
+    - name: Download simulator if needed (${{ matrix.version }})
+      run: |
+        xcversion simulators --install="iOS ${version}"
+      env:
+        version: ${{ matrix.version }}
+        
+    - name: Create simulator ${{ matrix.version }}
+      run: |
+        xcrun simctl list devices ${version}
+        xcrun simctl create ${displayname} "${device}" "com.apple.CoreSimulator.SimRuntime.${runtime}"
+      env:
+        version: ${{ matrix.version }}
+        displayname: ${{ matrix.displayname }}
+        device: ${{ matrix.device }}
+        runtime: ${{ matrix.runtime }}
+        
+    - name: Generate Snapshots ${{ matrix.version }}
+      run: |
+        xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty --utf --color
       env:
         project: 'Adyen.xcodeproj'
         params: '-skipPackagePluginValidation'
         scheme: 'GenerateSnapshots'
+        destination: "OS=${{ matrix.version }},name=${{ matrix.displayname }}"
         
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v6
       with:
         delete-branch: true
         branch: update-snapshots-github-action
-        commit-message: "`chore` Generated Snapshots"
-        title: "`chore` Generate Snapshots"
+        commit-message: "🤖 Generated Snapshots"
+        title: "🤖 Generate Snapshots"
         body: "Regenerate snapshots"
         token: ${{ secrets.GITHUB_TOKEN }}

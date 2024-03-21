@@ -9,7 +9,10 @@ on:
       - develop
       
 jobs:
+
   build:
+    env:
+      sonarToken: ${{ secrets.SONAR_TOKEN }}
     runs-on: macos-13-xlarge # Apple Silicon Runner
 
     steps:
@@ -25,6 +28,7 @@ jobs:
 
     - name: Install Tools
       run: |
+        brew install sonar-scanner
         gem install slather
 
     - name: Validate 3DS2 SDK version
@@ -44,41 +48,35 @@ jobs:
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
         scheme: 'AdyenUIHost'
 
-  code_coverage:
-      runs-on: macos-13-xlarge # Apple Silicon Runner
-      needs: build
-      steps:
-        - name: Code Coverage
-          run: |
-            slather coverage --sonarqube-xml ${params} ${project}
-          env:
-            project: 'Adyen.xcodeproj'
-            params: '
-            --build-directory ./DerivedData
-            --output-directory ./reports
-            --scheme AdyenUIHost
-            --binary-basename Adyen
-            --binary-basename AdyenCard
-            --binary-basename AdyenDropIn
-            --binary-basename AdyenWeChatPay
-            --binary-basename AdyenComponents
-            --binary-basename AdyenSession
-            --binary-basename AdyenEncryption
-            --binary-basename AdyenActions
-            --binary-basename AdyenCashAppPay
-            --binary-basename AdyenSwiftUI'
-        
-  lint:
-      runs-on: macos-13-xlarge # Apple Silicon Runner
-      needs: build
-      steps:
-        - name: SwiftLint
-          run: |
-            brew install swiftlint
-            fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
+    - name: Code Coverage
+      run: |
+        slather coverage --sonarqube-xml ${params} ${project}
+      env:
+        project: 'Adyen.xcodeproj'
+        params: '
+        --build-directory ./DerivedData
+        --output-directory ./reports
+        --scheme AdyenUIHost
+        --binary-basename Adyen
+        --binary-basename AdyenCard
+        --binary-basename AdyenDropIn
+        --binary-basename AdyenWeChatPay
+        --binary-basename AdyenComponents
+        --binary-basename AdyenSession
+        --binary-basename AdyenEncryption
+        --binary-basename AdyenActions
+        --binary-basename AdyenCashAppPay
+        --binary-basename AdyenSwiftUI'
 
-  sonar_cloud:
-      name: Sonar Cloud
-      needs: code_coverage
-      uses: ./.github/workflows/run_sonar_cloud.yml
-      secrets: inherit
+    - name: SwiftLint
+      run: |
+        brew install swiftlint
+        fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
+
+    - name: Run Sonar
+      if: ${{ env.sonarToken != 0 }}
+      run: |
+        git fetch --unshallow --no-tags
+        sonar-scanner -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
