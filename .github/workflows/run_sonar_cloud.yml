@@ -1,7 +1,8 @@
 name: SonarCloud
 
 on:
-  workflow_dispatch:
+  workflow_dispatch
+  workflow_call
       
 jobs:
   sonar_cloud:
