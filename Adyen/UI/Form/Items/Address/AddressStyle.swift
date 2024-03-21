@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -30,6 +30,9 @@ public struct AddressStyle: FormValueItemStyle {
 
     /// The color of form view item's separator line.
     public var separatorColor: UIColor? { textField.separatorColor }
+    
+    /// Whether or not to show country flags in the country picker
+    public var showCountryFlags: Bool = true
     
     /// Initializes the form address item configuration.
     /// - Parameters:
