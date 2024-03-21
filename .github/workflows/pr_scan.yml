@@ -9,10 +9,7 @@ on:
       - develop
       
 jobs:
-
   build:
-    env:
-      sonarToken: ${{ secrets.SONAR_TOKEN }}
     runs-on: macos-13-xlarge # Apple Silicon Runner
 
     steps:
@@ -28,7 +25,6 @@ jobs:
 
     - name: Install Tools
       run: |
-        brew install sonar-scanner
         gem install slather
 
     - name: Validate 3DS2 SDK version
@@ -73,10 +69,7 @@ jobs:
         brew install swiftlint
         fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
 
-    - name: Run Sonar
-      if: ${{ env.sonarToken != 0 }}
-      run: |
-        git fetch --unshallow --no-tags
-        sonar-scanner -Dsonar.token=${{ secrets.SONAR_TOKEN }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  sonar_cloud:
+     name: SonarCloud
+     uses: ./.github/workflows/run_sonar_cloud.yml
+     secrets: inherit
