@@ -96,7 +96,7 @@ final class BoletoComponentUITests: XCTestCase {
                                   configuration: mockConfiguration)
         sut.delegate = mockDelegate
         
-        presentOnRoot(sut.viewController)
+        setupRootViewController(sut.viewController)
 
         let dummyExpectation = XCTestExpectation(description: "Dummy Expectation")
         
