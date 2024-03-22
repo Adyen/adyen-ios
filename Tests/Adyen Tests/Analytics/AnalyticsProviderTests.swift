@@ -267,9 +267,11 @@ class AnalyticsProviderTests: XCTestCase {
         sut.add(info: infoEvent)
         
         let shouldSendExpectation = expectation(description: "send event is called")
+        let expectedId = infoEvent.id
         apiClient.onExecute = { request in
-            if let analyticsRequest = request as? AnalyticsRequest {
-                XCTAssertEqual(analyticsRequest.infos.first?.id, infoEvent.id)
+            if let analyticsRequest = request as? AnalyticsRequest,
+                let capturedId = analyticsRequest.infos.first?.id {
+                XCTAssertEqual(capturedId, expectedId, "Expected event ID does not match the sent event id")
                 shouldSendExpectation.fulfill()
             }
         }
