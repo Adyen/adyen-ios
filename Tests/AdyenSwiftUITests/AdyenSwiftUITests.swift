@@ -48,10 +48,10 @@ class AdyenSwiftUITests: XCTestCase {
     }
 
     private func wait(for elements: [XCUIElement]) {
-        elements.forEach {
+        for element in elements {
             let predicate = NSPredicate(format: "exists == 1")
 
-            expectation(for: predicate, evaluatedWith: $0, handler: nil)
+            expectation(for: predicate, evaluatedWith: element, handler: nil)
         }
         waitForExpectations(timeout: 20, handler: nil)
     }

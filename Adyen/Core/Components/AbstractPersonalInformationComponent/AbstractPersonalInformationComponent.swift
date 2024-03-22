@@ -72,7 +72,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
 
     /// :nodoc:
     private func build(_ formViewController: FormViewController) {
-        configuration.fields.forEach { field in
+        for field in configuration.fields {
             self.add(field, into: formViewController)
         }
         formViewController.append(FormSpacerItem())

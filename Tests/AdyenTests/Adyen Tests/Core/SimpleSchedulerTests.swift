@@ -20,7 +20,7 @@ class SimpleSchedulerTests: XCTestCase {
 
         let sut = SimpleScheduler(maximumCount: 100)
 
-        (0...99).forEach { counter in
+        for counter in 0...99 {
             XCTAssertFalse(sut.schedule(counter, closure: closureToSchedule))
         }
 
