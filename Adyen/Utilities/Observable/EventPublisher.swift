@@ -42,7 +42,7 @@ public extension EventPublisher {
     ///
     /// - Parameter event: The event to publish.
     func publish(_ event: Event) {
-        for (_, eventHandler) in eventHandlers {
+        eventHandlers.forEach { _, eventHandler in
             eventHandler(event)
         }
     }

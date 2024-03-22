@@ -65,7 +65,7 @@ class CardTypeDetectorTests: XCTestCase {
     private func assert(cardNumbers: [String], with type: CardType?) {
         let toDetect: [CardType] = type != nil ? [type!] : []
         
-        for cardNumber in cardNumbers {
+        cardNumbers.forEach { cardNumber in
             XCTAssertEqual(toDetect.adyen.type(forCardNumber: cardNumber), toDetect.first)
             XCTAssertEqual(toDetect.adyen.types(forCardNumber: cardNumber), toDetect)
         }

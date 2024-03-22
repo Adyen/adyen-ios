@@ -12,11 +12,11 @@ class IBANValidatorTests: XCTestCase {
     func testValidation() {
         let validator = IBANValidator()
         
-        for iban in validIBANs {
+        validIBANs.forEach { iban in
             XCTAssertTrue(validator.isValid(iban), "\(iban) is not valid.")
         }
         
-        for iban in invalidIBANs {
+        invalidIBANs.forEach { iban in
             XCTAssertFalse(validator.isValid(iban), "\(iban) is valid.")
         }
     }

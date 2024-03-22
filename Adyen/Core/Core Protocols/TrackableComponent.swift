@@ -36,7 +36,7 @@ extension TrackableComponent {
         let amount = context.payment?.amount
         let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AnalyticsForSession.sessionId)
         context.analyticsProvider?.sendInitialAnalytics(with: analyticsFlavor,
-                                                        additionalFields: additionalFields)
+                                                         additionalFields: additionalFields)
     }
 }
 

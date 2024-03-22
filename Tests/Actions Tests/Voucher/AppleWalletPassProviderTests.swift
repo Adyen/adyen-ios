@@ -36,7 +36,7 @@ class AppleWalletPassProviderTests: XCTestCase {
 
         let fetchExpectation = expectation(description: "PublicKeyProvider.fetch() completion handler must be called.")
         fetchExpectation.expectedFulfillmentCount = 10
-        for _ in 0...9 {
+        (0...9).forEach { _ in
             sut.provide(with: "token") { result in
                 switch result {
                 case let .success(data):

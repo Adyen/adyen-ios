@@ -76,7 +76,7 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
             completion(.success(response.cardPublicKey))
         case let .failure(error):
             if error is DecodingError {
-                // Disclaimer: This error check is not 100% reliable. Need to improve the endpoint.
+                // Disclaimer: This error check is not 100% reliable. Need to improve the endpoint. 
                 return completion(.failure(Error.invalidClientKey))
             }
             completion(.failure(error))
@@ -87,7 +87,7 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
         case invalidClientKey
 
         public var errorDescription: String? {
-            "Client key not found on the selected environment."
+            return "Client key not found on the selected environment."
         }
     }
 }
