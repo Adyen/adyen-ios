@@ -10,8 +10,8 @@ import Foundation
 internal class ObservationManager {
     
     deinit {
-        observations.forEach {
-            $0.unobserveHandler()
+        for observation in observations {
+            observation.unobserveHandler()
         }
     }
     

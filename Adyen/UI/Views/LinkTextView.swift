@@ -60,7 +60,7 @@ public class LinkTextView: UITextView {
             attributes: attributes
         )
         
-        text.adyen.linkRanges.enumerated().forEach { index, range in
+        for (index, range) in text.adyen.linkRanges.enumerated() {
             attributedString.addAttribute(.link, value: "\(index)", range: range)
         }
         

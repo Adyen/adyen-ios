@@ -65,9 +65,9 @@ internal class VoucherCardView: UIView {
 
     private func updateLayout() {
         containerLayer.frame = containerLayerFrame
-        shadowsLayer.forEach {
-            $0.frame = shadowLayersFrame
-            $0.shadowPath = UIBezierPath(roundedRect: CGRect(origin: .zero, size: containerLayerFrame.size), cornerRadius: 12).cgPath
+        for item in shadowsLayer {
+            item.frame = shadowLayersFrame
+            item.shadowPath = UIBezierPath(roundedRect: CGRect(origin: .zero, size: containerLayerFrame.size), cornerRadius: 12).cgPath
         }
 
         drawCardCutOut()

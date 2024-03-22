@@ -168,7 +168,7 @@ public extension AdyenScope where Base == String {
             let regex = try NSRegularExpression(pattern: pattern, options: NSRegularExpression.Options.caseInsensitive)
             let matches = regex.matches(in: base, options: [], range: NSRange(base.startIndex..., in: base))
 
-            matches.forEach { match in
+            for match in matches {
                 let range = match.range(at: 0)
                 ranges.append(range)
             }

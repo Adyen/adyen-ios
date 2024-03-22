@@ -68,7 +68,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     // MARK: - Private
 
     private func build(_ formViewController: FormViewController) {
-        fields.forEach { field in
+        for field in fields {
             self.add(field, into: formViewController)
         }
         formViewController.append(FormSpacerItem())
