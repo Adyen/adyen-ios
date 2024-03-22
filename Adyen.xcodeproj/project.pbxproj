@@ -185,6 +185,7 @@
 		81B8119B2BADB9CC00AE7402 /* NetworkImageView+Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B8119A2BADB9CC00AE7402 /* NetworkImageView+Provider.swift */; };
 		81B8119D2BADBB3000AE7402 /* NetworkImageView+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B8119C2BADBB3000AE7402 /* NetworkImageView+Dependency.swift */; };
 		81B811A12BADC23900AE7402 /* MockNetworkImageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B8119F2BADC21C00AE7402 /* MockNetworkImageProvider.swift */; };
+		81B811A22BADC63700AE7402 /* MockNetworkImageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B8119F2BADC21C00AE7402 /* MockNetworkImageProvider.swift */; };
 		81BA08372A49C93100308160 /* FormSelectableValueItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08362A49C93100308160 /* FormSelectableValueItemView.swift */; };
 		81BA08392A49C95700308160 /* FormSelectableValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08382A49C95700308160 /* FormSelectableValueItem.swift */; };
 		81BA083F2A4AD96900308160 /* FormValidatableValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA083E2A4AD96900308160 /* FormValidatableValueItem.swift */; };
@@ -6408,6 +6409,7 @@
 				81DF940A2BAAD8EB0001DCBC /* MBWayComponentUITests.swift in Sources */,
 				81DF940B2BAAD8EB0001DCBC /* AtomeComponentUITests.swift in Sources */,
 				81DF940C2BAAD8EB0001DCBC /* XCTestCase+FirstResponder.swift in Sources */,
+				81B811A22BADC63700AE7402 /* MockNetworkImageProvider.swift in Sources */,
 				81DF940D2BAAD8EB0001DCBC /* OnlineBankingComponentUITests.swift in Sources */,
 				81DF940E2BAAD8EB0001DCBC /* SecuredViewControllerUITests.swift in Sources */,
 				81DF940F2BAAD8EB0001DCBC /* (null) in Sources */,

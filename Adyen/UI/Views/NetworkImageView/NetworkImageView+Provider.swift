@@ -47,9 +47,9 @@ internal class AdyenNetworkImageProvider: AdyenNetworkImageProviding {
         
         var task: URLSessionDataTask?
         task = session.dataTask(with: urlRequest) { [weak self] data, response, _ in
-            guard let self, task === dataTask else { return }
+            guard let self, task === self.dataTask else { return }
             
-            defer { dataTask = nil }
+            defer { self.dataTask = nil }
             completion(image(from: response, data: data))
         }
         task?.resume()
