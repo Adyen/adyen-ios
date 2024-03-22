@@ -50,7 +50,7 @@ internal class AdyenNetworkImageProvider: AdyenNetworkImageProviding {
             guard let self, task === self.dataTask else { return }
             
             defer { self.dataTask = nil }
-            completion(image(from: response, data: data))
+            completion(self.image(from: response, data: data))
         }
         task?.resume()
         

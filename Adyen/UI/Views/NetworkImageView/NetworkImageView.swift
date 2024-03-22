@@ -48,7 +48,7 @@ open class NetworkImageView: UIImageView {
     private func loadImage(from url: URL, ignoreCurrentRequest: Bool = false) {
         networkImageProvider.loadImage(from: url) { [weak self] image in
             guard let self, let image else { return }
-            setImage(image)
+            self.setImage(image)
         }
     }
 }
