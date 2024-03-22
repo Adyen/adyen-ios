@@ -21,7 +21,11 @@ class AnalyticsEventTests: XCTestCase {
         let checkoutAttemptIdResponse = InitialAnalyticsResponse(checkoutAttemptId: "checkoutAttempId1")
         let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
         apiClient.mockedResults = [checkoutAttemptIdResult]
-        sut = AnalyticsProvider(apiClient: apiClient, configuration: .init())
+        sut = AnalyticsProvider(
+            apiClient: apiClient,
+            configuration: .init(),
+            eventDataSource: AnalyticsEventDataSource()
+        )
     }
 
     override func tearDownWithError() throws {
@@ -38,7 +42,11 @@ class AnalyticsEventTests: XCTestCase {
         // Given
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = false
-        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
+        sut = AnalyticsProvider(
+            apiClient: apiClient,
+            configuration: analyticsConfiguration,
+            eventDataSource: AnalyticsEventDataSource()
+        )
 
         let expectedRequestCalls = 0
 
@@ -53,7 +61,11 @@ class AnalyticsEventTests: XCTestCase {
     func testSendInitialEventGivenEnabledAndFlavorIsComponentsShouldSendInitialRequest() throws {
         // Given
         let analyticsConfiguration = AnalyticsConfiguration()
-        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
+        sut = AnalyticsProvider(
+            apiClient: apiClient,
+            configuration: analyticsConfiguration,
+            eventDataSource: AnalyticsEventDataSource()
+        )
 
         let flavor: AnalyticsFlavor = .components(type: .affirm)
         let expectedRequestCalls = 1
@@ -73,7 +85,11 @@ class AnalyticsEventTests: XCTestCase {
     func testSendInitialEventGivenEnabledAndFlavorIsDropInShouldSendInitialRequest() throws {
         // Given
         let analyticsConfiguration = AnalyticsConfiguration()
-        sut = AnalyticsProvider(apiClient: apiClient, configuration: analyticsConfiguration)
+        sut = AnalyticsProvider(
+            apiClient: apiClient,
+            configuration: analyticsConfiguration,
+            eventDataSource: AnalyticsEventDataSource()
+        )
 
         let flavor: AnalyticsFlavor = .dropIn(paymentMethods: ["scheme", "paypal", "affirm"])
         let expectedRequestCalls = 1

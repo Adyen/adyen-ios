@@ -10,11 +10,16 @@ import Foundation
 /// Represents an info event  in the analytics scheme that can occur
 /// multiple times during the checkout flow, such as input field focus/unfocus etc.
 public struct AnalyticsEventInfo: AnalyticsEvent {
+    
+    public var id: String = UUID().uuidString
+    
+    public var timestamp: TimeInterval = Date().timeIntervalSince1970
+    
     public var component: String
     
     public var type: InfoType
     
-    public var target: String?
+    public var target: AnalyticsEventTarget?
     
     public var isStoredPaymentMethod: Bool?
     
