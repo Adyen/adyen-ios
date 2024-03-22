@@ -32,8 +32,8 @@ public final class AdyenContext: PaymentAware {
         
         var analyticsProvider: AnalyticsProviderProtocol?
         if let analyticsEnvironment = (apiContext.environment as? Environment)?.toAnalyticsEnvironment(),
-            let analyticsApiContext = try? APIContext(environment: analyticsEnvironment,
-                                                      clientKey: apiContext.clientKey) {
+           let analyticsApiContext = try? APIContext(environment: analyticsEnvironment,
+                                                     clientKey: apiContext.clientKey) {
             
             analyticsProvider = AnalyticsProvider(
                 apiClient: APIClient(apiContext: analyticsApiContext),
