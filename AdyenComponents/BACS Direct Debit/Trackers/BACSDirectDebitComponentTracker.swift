@@ -38,7 +38,7 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
         let amount = context.payment?.amount
         let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AnalyticsForSession.sessionId)
         context.analyticsProvider?.sendInitialAnalytics(with: flavor,
-                                                         additionalFields: additionalFields)
+                                                        additionalFields: additionalFields)
     }
 
 }
