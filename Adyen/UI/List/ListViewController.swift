@@ -62,7 +62,7 @@ public final class ListViewController: UITableViewController {
         
         stopLoading()
 
-        for item in newSections.flatMap(\.items) {
+        newSections.flatMap(\.items).forEach { item in
             item.loadingHandler = { [weak self] in self?.handleItem($1, isLoading: $0) }
         }
     }

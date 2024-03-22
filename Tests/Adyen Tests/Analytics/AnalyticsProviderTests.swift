@@ -140,7 +140,7 @@ class AnalyticsProviderTests: XCTestCase {
         
         let apiClient = APIClientMock()
         apiClient.mockedResults = [
-            .success(InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptId))
+            .success(InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptId)),
         ]
         apiClient.onExecute = { request in
             if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {

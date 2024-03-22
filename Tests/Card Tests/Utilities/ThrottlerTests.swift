@@ -19,7 +19,7 @@ class ThrottlerTests: XCTestCase {
 
         var counter = 0
         
-        for index in 0..<triesCount {
+        (0..<triesCount).forEach { index in
             sut.throttle {
                 
                 counter += 1

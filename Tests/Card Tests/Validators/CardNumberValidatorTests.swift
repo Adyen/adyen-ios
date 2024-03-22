@@ -12,7 +12,7 @@ class CardNumberValidatorTests: XCTestCase {
     func testValidCards() {
         let validator = CardNumberValidator(isLuhnCheckEnabled: true, isEnteredBrandSupported: true)
         
-        for cardNumber in CardNumbers.valid {
+        CardNumbers.valid.forEach { cardNumber in
             XCTAssertTrue(validator.isValid(cardNumber))
         }
     }
@@ -20,7 +20,7 @@ class CardNumberValidatorTests: XCTestCase {
     func testInvalidCards() {
         let validator = CardNumberValidator(isLuhnCheckEnabled: true, isEnteredBrandSupported: true)
         
-        for cardNumber in CardNumbers.invalid {
+        CardNumbers.invalid.forEach { cardNumber in
             XCTAssertFalse(validator.isValid(cardNumber))
         }
     }
