@@ -182,6 +182,9 @@
 		81B001C62A56E9D40015BFA3 /* LinkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B001C52A56E9D40015BFA3 /* LinkTextView.swift */; };
 		81B505792A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B505782A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift */; };
 		81B5057A2A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B505782A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift */; };
+		81B8119B2BADB9CC00AE7402 /* NetworkImageView+Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B8119A2BADB9CC00AE7402 /* NetworkImageView+Provider.swift */; };
+		81B8119D2BADBB3000AE7402 /* NetworkImageView+Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B8119C2BADBB3000AE7402 /* NetworkImageView+Dependency.swift */; };
+		81B811A12BADC23900AE7402 /* MockNetworkImageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B8119F2BADC21C00AE7402 /* MockNetworkImageProvider.swift */; };
 		81BA08372A49C93100308160 /* FormSelectableValueItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08362A49C93100308160 /* FormSelectableValueItemView.swift */; };
 		81BA08392A49C95700308160 /* FormSelectableValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08382A49C95700308160 /* FormSelectableValueItem.swift */; };
 		81BA083F2A4AD96900308160 /* FormValidatableValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA083E2A4AD96900308160 /* FormValidatableValueItem.swift */; };
@@ -1493,6 +1496,9 @@
 		81B001C12A55C5C10015BFA3 /* UISearchBar+Prominent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Prominent.swift"; sourceTree = "<group>"; };
 		81B001C52A56E9D40015BFA3 /* LinkTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
 		81B505782A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+XCTest.swift"; sourceTree = "<group>"; };
+		81B8119A2BADB9CC00AE7402 /* NetworkImageView+Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkImageView+Provider.swift"; sourceTree = "<group>"; };
+		81B8119C2BADBB3000AE7402 /* NetworkImageView+Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkImageView+Dependency.swift"; sourceTree = "<group>"; };
+		81B8119F2BADC21C00AE7402 /* MockNetworkImageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNetworkImageProvider.swift; sourceTree = "<group>"; };
 		81BA08322A45D7C100308160 /* AddressInputFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInputFormViewController.swift; sourceTree = "<group>"; };
 		81BA08362A49C93100308160 /* FormSelectableValueItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableValueItemView.swift; sourceTree = "<group>"; };
 		81BA08382A49C95700308160 /* FormSelectableValueItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableValueItem.swift; sourceTree = "<group>"; };
@@ -2523,6 +2529,7 @@
 			isa = PBXGroup;
 			children = (
 				F9CCA3DD296ED1F400AD643D /* XCTestCase+SnapshotTesting.swift */,
+				81B8119F2BADC21C00AE7402 /* MockNetworkImageProvider.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -2762,6 +2769,16 @@
 				814276612A7145F50081E896 /* AddressInputFormViewController+ViewModel.swift */,
 			);
 			path = Form;
+			sourceTree = "<group>";
+		};
+		81B8119E2BADBB4200AE7402 /* NetworkImageView */ = {
+			isa = PBXGroup;
+			children = (
+				E28098C5220DCF3F0087928F /* NetworkImageView.swift */,
+				81B8119A2BADB9CC00AE7402 /* NetworkImageView+Provider.swift */,
+				81B8119C2BADBB3000AE7402 /* NetworkImageView+Dependency.swift */,
+			);
+			path = NetworkImageView;
 			sourceTree = "<group>";
 		};
 		81BA08422A4AF26600308160 /* Validatable */ = {
@@ -3566,7 +3583,7 @@
 				81BBB6732A82792100C1A04B /* UIView+Accessibility.swift */,
 				E2C0E0C0220D7E5E008616F6 /* SubmitButton.swift */,
 				81A2E3BF2A5C453F00CF5F9C /* LinkTextView.swift */,
-				E28098C5220DCF3F0087928F /* NetworkImageView.swift */,
+				81B8119E2BADBB4200AE7402 /* NetworkImageView */,
 				F95A788725C416A60032CF7E /* CopyLabelView.swift */,
 				F99D2F852665211600BB5B2F /* LoadingView.swift */,
 				81B001C52A56E9D40015BFA3 /* LinkTextView.swift */,
@@ -6689,6 +6706,7 @@
 				E76EC6972417F36A009C6E2F /* FormTextInputItemView.swift in Sources */,
 				E2C0E0B6220B08ED008616F6 /* FormView.swift in Sources */,
 				F957A9CE255051130099AD73 /* StoredPaymentMethodComponent.swift in Sources */,
+				81B8119B2BADB9CC00AE7402 /* NetworkImageView+Provider.swift in Sources */,
 				F9354BEF23A7C87600A6760B /* ImageStyle.swift in Sources */,
 				F9FE253B2625AED6001874BB /* PartialPaymentComponent.swift in Sources */,
 				81C4006D2A41A2BC007EC51C /* FormAddressPickerItemView.swift in Sources */,
@@ -6707,6 +6725,7 @@
 				E715A7342A1B96890047B87A /* UIApplicationHelpers.swift in Sources */,
 				A0DB486C2AFD0BEE00348C83 /* AnalyticsEventLog.swift in Sources */,
 				F926D53723F6A35700D058D3 /* NumericFormatter.swift in Sources */,
+				81B8119D2BADBB3000AE7402 /* NetworkImageView+Dependency.swift in Sources */,
 				A026C85127C4FE4700E6C34A /* BasicComponentConfiguration.swift in Sources */,
 				E7085B162628B29600D0153B /* FormPhoneExtensionPickerItemView.swift in Sources */,
 				81B001BA2A5471020015BFA3 /* AddressLookupSearchViewController+EmptyView.swift in Sources */,
@@ -7354,6 +7373,7 @@
 				00220958299E5B1D00B2BACD /* MBWayComponentUITests.swift in Sources */,
 				F9CCA3C4296ECB9900AD643D /* AtomeComponentUITests.swift in Sources */,
 				813BF1132B2365400096940E /* XCTestCase+FirstResponder.swift in Sources */,
+				81B811A12BADC23900AE7402 /* MockNetworkImageProvider.swift in Sources */,
 				F9CCA3C9296ECB9900AD643D /* OnlineBankingComponentUITests.swift in Sources */,
 				814044312B62BDBB00EB7FBA /* SecuredViewControllerUITests.swift in Sources */,
 				817F6D8C2B62A6110010D248 /* (null) in Sources */,

@@ -11,6 +11,14 @@ import XCTest
 
 class QRCodeActionComponentUITests: XCTestCase {
 
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.networkImageProviderType = MockAdyenNetworkImageProvider.self
+        } perform: {
+            super.run()
+        }
+    }
+    
     func testUIConfigurationForPromptPay() {
         lazy var method = InstantPaymentMethod(type: .other("promptpay"), name: "promptpay")
         let action = QRCodeAction(paymentMethodType: .promptPay, qrCodeData: "DummyData", paymentData: "DummyData")
@@ -235,7 +243,7 @@ class QRCodeActionComponentUITests: XCTestCase {
         style.logoCornerRounding = .fixed(10)
 
         style.backgroundColor = UIColor.Adyen.componentSeparator
-
+        
         let sut = QRCodeActionComponent(context: Dummy.context)
         sut.configuration.style = style
         let presentationDelegate = PresentationDelegateMock()
