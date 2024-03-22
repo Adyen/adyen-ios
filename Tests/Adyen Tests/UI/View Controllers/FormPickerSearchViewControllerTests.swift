@@ -82,13 +82,13 @@ class FormPickerSearchViewControllerTests: XCTestCase {
             "Identifier"
         ]
         
-        searchTerms.forEach {
+        for searchTerm in searchTerms {
             
             // When
             
             searchViewController.searchBar.delegate?.searchBar?(
                 searchViewController.searchBar,
-                textDidChange: $0
+                textDidChange: searchTerm
             )
             
             // Then
@@ -120,18 +120,18 @@ class FormPickerSearchViewControllerTests: XCTestCase {
             "Ola"
         ]
         
-        searchTerms.forEach {
+        for searchTerm in searchTerms {
             
             // When
             
             searchViewController.searchBar.delegate?.searchBar?(
                 searchViewController.searchBar,
-                textDidChange: $0
+                textDidChange: searchTerm
             )
             
             // Then
             
-            XCTAssertEqual(searchViewController.viewModel.interfaceState.emptyStateSearchTerm, $0)
+            XCTAssertEqual(searchViewController.viewModel.interfaceState.emptyStateSearchTerm, searchTerm)
         }
     }
 }

@@ -109,7 +109,7 @@ class SelfRetainingAPIClientTests: XCTestCase {
                                                       completion: @escaping (Result<R.ResponseType, Error>) -> Void) {
         let sut = SelfRetainingAPIClient(apiClient: apiClient)
         sut.onDeinit = onDeinit
-        (1...count).forEach { _ in
+        for _ in 1...count {
             sut.perform(request, completionHandler: completion)
         }
     }
