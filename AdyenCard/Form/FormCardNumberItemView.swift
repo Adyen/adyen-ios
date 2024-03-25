@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -87,10 +87,10 @@ extension FormCardNumberItemView {
         }()
         
         /// First view to display the current brand or the placeholder image.
-        internal private(set) lazy var primaryLogoView: NetworkImageView = createEmptyImageView()
+        internal private(set) lazy var primaryLogoView: UIImageView = createEmptyImageView()
         
         /// View to display the second brand for dual-branded cards. Hidden otherwise.
-        internal private(set) lazy var secondaryLogoView: NetworkImageView = {
+        internal private(set) lazy var secondaryLogoView: UIImageView = {
             let imageView = createEmptyImageView()
             imageView.isHidden = true
             return imageView
@@ -104,9 +104,17 @@ extension FormCardNumberItemView {
         
         private let unselectedViewAlpha: CGFloat = 0.3
         
-        internal init(style: ImageStyle, onBrandSelection: @escaping ((Int) -> Void)) {
+        private let imageLoader: ImageLoading
+        
+        internal init(
+            style: ImageStyle,
+            imageLoader: ImageLoading = ImageLoaderProvider.imageLoader(),
+            onBrandSelection: @escaping ((Int) -> Void)
+        ) {
             self.style = style
             self.onBrandSelection = onBrandSelection
+            self.imageLoader = imageLoader
+            
             super.init(frame: .zero)
             addSubview(stackView)
             stackView.adyen.anchor(inside: self)
@@ -134,7 +142,11 @@ extension FormCardNumberItemView {
         private func setupLogoViews(from logos: [FormCardLogosItem.CardTypeLogo]) {
             guard let firstLogo = logos.first else { return }
             
-            primaryLogoView.imageURL = firstLogo.url
+            primaryLogoView.load(
+                url: firstLogo.url,
+                using: imageLoader,
+                placeholder: Constant.placeholderImage
+            )
             primaryLogoView.alpha = selectedViewAlpha
             primaryLogoView.accessibilityValue = firstLogo.type.name
             primaryLogoView.isAccessibilityElement = true
@@ -142,7 +154,11 @@ extension FormCardNumberItemView {
             // dual branded. allow selection but initially neither is selected
             if let secondLogo = logos.adyen[safeIndex: 1] {
                 primaryLogoView.alpha = unselectedViewAlpha
-                secondaryLogoView.imageURL = secondLogo.url
+                secondaryLogoView.load(
+                    url: secondLogo.url,
+                    using: imageLoader,
+                    placeholder: Constant.placeholderImage
+                )
                 secondaryLogoView.alpha = unselectedViewAlpha
                 secondaryLogoView.accessibilityValue = secondLogo.type.name
                 secondaryLogoView.isHidden = false
@@ -173,18 +189,18 @@ extension FormCardNumberItemView {
         }
         
         private func resetLogos() {
-            primaryLogoView.imageURL = nil
+            primaryLogoView.image = Constant.placeholderImage
             primaryLogoView.alpha = selectedViewAlpha
             primaryLogoView.removeGestureRecognizer(primaryGestureRecognizer)
-            secondaryLogoView.imageURL = nil
+            secondaryLogoView.image = Constant.placeholderImage
             secondaryLogoView.isHidden = true
             secondaryLogoView.alpha = unselectedViewAlpha
             secondaryLogoView.removeGestureRecognizer(secondaryGestureRecognizer)
         }
         
-        private func createEmptyImageView() -> NetworkImageView {
-            let imageView = NetworkImageView()
-            imageView.placeholderImage = Constant.placeholderImage
+        private func createEmptyImageView() -> UIImageView {
+            let imageView = UIImageView()
+            imageView.image = Constant.placeholderImage
             imageView.adyen.round(using: style.cornerRounding)
             imageView.layer.masksToBounds = style.clipsToBounds
             imageView.layer.borderWidth = style.borderWidth

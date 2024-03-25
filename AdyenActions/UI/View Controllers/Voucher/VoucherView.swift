@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -122,8 +122,8 @@ internal final class VoucherView: UIView, Localizable {
         return stackView
     }()
     
-    internal lazy var logo: NetworkImageView = {
-        let logo = NetworkImageView()
+    internal lazy var logo: UIImageView = {
+        let logo = UIImageView()
         let logoSize = CGSize(width: 77.0, height: 50.0)
         logo.contentMode = .scaleAspectFit
         logo.clipsToBounds = true
@@ -133,7 +133,10 @@ internal final class VoucherView: UIView, Localizable {
         logo.heightAnchor.constraint(equalToConstant: logoSize.height).isActive = true
         logo.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "logo")
         
-        logo.imageURL = model.logoUrl
+        logo.load(
+            url: model.logoUrl,
+            using: model.imageLoader
+        )
         
         return logo
     }()

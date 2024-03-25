@@ -101,28 +101,40 @@ class VoucherViewTests: XCTestCase {
     }
     
     func testModel() throws {
+        let imageLoader = ImageLoaderMock()
+        let imageLoadingExpectation = expectation(description: "ImageLoader.load was called")
+        
         let mockModel = getMockModel(
             action: action,
             mainButtonType: .save,
-            style: getMockStyle()
+            style: getMockStyle(),
+            imageLoader: imageLoader
         )
+        
+        imageLoader.imageProvider = { url in
+            imageLoadingExpectation.fulfill()
+            XCTAssertEqual(url, mockModel.logoUrl)
+            return nil
+        }
         
         let sut = try getSut(model: mockModel)
         
         let amountLabel: UILabel? = sut.findView(by: "amountLabel")
         let currencyLabel: UILabel? = sut.findView(by: "currencyLabel")
-        let logo: NetworkImageView? = sut.findView(by: "logo")
+        let logo: UIImageView? = sut.findView(by: "logo")
         
         XCTAssertEqual(amountLabel?.text, mockModel.amount)
         XCTAssertEqual(currencyLabel?.text, mockModel.currency)
-        XCTAssertEqual(logo?.imageURL, mockModel.logoUrl)
+        
+        wait(for: [imageLoadingExpectation], timeout: 0.1)
     }
     
     func testCopyCodeAnimation() throws {
         let mockModel = getMockModel(
             action: action,
             mainButtonType: .save,
-            style: getMockStyle()
+            style: getMockStyle(),
+            imageLoader: ImageLoaderMock()
         )
         
         let sut = try getSut(model: mockModel)
@@ -152,7 +164,8 @@ class VoucherViewTests: XCTestCase {
     func getMockModel(
         action: VoucherAction,
         mainButtonType: VoucherView.Model.Button,
-        style: VoucherView.Model.Style
+        style: VoucherView.Model.Style,
+        imageLoader: ImageLoading = ImageLoaderMock()
     ) -> VoucherView.Model {
         VoucherView.Model(
             action: action,
@@ -164,7 +177,8 @@ class VoucherViewTests: XCTestCase {
             secondaryButtonTitle: "Secondary Button",
             codeConfirmationTitle: "Code Copied!",
             mainButtonType: mainButtonType,
-            style: style
+            style: style,
+            imageLoader: imageLoader
         )
     }
     

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -27,9 +27,8 @@ internal final class DocumentActionView: UIView {
         return stackView
     }()
     
-    internal lazy var imageView: NetworkImageView = {
-        let imageView = NetworkImageView()
-        imageView.imageURL = viewModel.logoURL
+    internal lazy var imageView: UIImageView = {
+        let imageView = UIImageView()
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "icon")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.widthAnchor.constraint(equalToConstant: 80).isActive = true
@@ -75,11 +74,20 @@ internal final class DocumentActionView: UIView {
     /// The UI style.
     private let style: DocumentComponentStyle
     
-    internal init(viewModel: DocumentActionViewModel, style: DocumentComponentStyle) {
+    internal init(
+        viewModel: DocumentActionViewModel,
+        style: DocumentComponentStyle,
+        imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
+    ) {
         self.viewModel = viewModel
         self.style = style
         super.init(frame: .zero)
         configureViews()
+        
+        imageView.load(
+            url: viewModel.logoURL,
+            using: imageLoader
+        )
     }
     
     @available(*, unavailable)
