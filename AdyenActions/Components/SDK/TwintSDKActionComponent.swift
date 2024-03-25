@@ -100,7 +100,7 @@ import Foundation
                 
                 guard let firstApp = installedApps.first else {
                     let errorMessage = localizedString(
-                        LocalizationKey.twintNoAppsInstalledMessage,
+                        .twintNoAppsInstalledMessage,
                         configuration.localizationParameters
                     )
                     self.handleShowError(errorMessage)
