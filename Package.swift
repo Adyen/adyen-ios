@@ -63,7 +63,7 @@ let package = Package(
         .package(
             name: "Adyen3DS2",
             url: "https://github.com/Adyen/adyen-3ds2-ios",
-            .exact(Version(2, 3, 3))
+            .exact(Version(2, 4, 1))
         ),
         .package(
             name: "AdyenAuthentication",
@@ -96,7 +96,8 @@ let package = Package(
             exclude: [
                 "Info.plist",
                 "Utilities/Non SPM Bundle Extension" // This is to exclude `BundleExtension.swift` file, since swift packages has different code to access internal resources.
-            ]
+            ],
+            resources: [.process("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "AdyenEncryption",

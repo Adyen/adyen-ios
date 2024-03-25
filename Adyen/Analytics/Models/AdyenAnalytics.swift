@@ -22,12 +22,54 @@ public protocol AnalyticsEvent: Encodable {
     var timestamp: TimeInterval { get }
     
     var component: String { get }
+    
+    var id: String { get }
 }
 
 @_spi(AdyenInternal)
-public extension AnalyticsEvent {
+public enum AnalyticsEventTarget: String, Encodable {
+    case cardNumber = "card_number"
+    case expiryDate = "expiry_date"
+    case securityCode = "security_code"
+    case holderName = "holder_name"
+    case dualBrand
+    case boletoSocialSecurityNumber = "social_security_number"
+    case taxNumber = "tax_number"
+    case addressStreet = "street"
+    case addressHouseNumber = "house_number_or_name"
+    case addressCity = "city"
+    case addressPostalCode = "postal_code"
+    case issuerList = "list"
+    case listSearch = "list_search"
+}
+
+/// A configuration object that defines the behavior for the analytics.
+public struct AnalyticsConfiguration {
+
+    // MARK: - Properties
+
+    /// A Boolean value that determines whether analytics is enabled.
+    public var isEnabled = true
     
-    var timestamp: TimeInterval {
-        Date().timeIntervalSince1970
+    @_spi(AdyenInternal)
+    public var context: AnalyticsContext = .init()
+
+    // MARK: - Initializers
+    
+    /// Initializes a new instance of `AnalyticsConfiguration`
+    public init() { /* Empty implementation */ }
+}
+
+@_spi(AdyenInternal)
+/// Additional fields to be provided with an ``InitialAnalyticsRequest``
+public struct AdditionalAnalyticsFields {
+    /// The amount of the payment
+    public let amount: Amount?
+    
+    public let sessionId: String?
+    
+    public init(amount: Amount?, sessionId: String?) {
+        self.amount = amount
+        self.sessionId = sessionId
     }
 }

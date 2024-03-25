@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -32,6 +32,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var cashAppPayEnabled: Bool = false
     @Published internal var installmentsEnabled: Bool = false
     @Published internal var showInstallmentAmount: Bool = false
+    @Published internal var showCountryFlags: Bool = true
 
     private let onDone: (DemoAppSettings) -> Void
     private let configuration: DemoAppSettings
@@ -68,6 +69,7 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.cashAppPayEnabled = configuration.dropInSettings.cashAppPayEnabled
         self.installmentsEnabled = configuration.cardSettings.enableInstallments
         self.showInstallmentAmount = configuration.cardSettings.showsInstallmentAmount
+        self.showCountryFlags = configuration.cardConfiguration.style.addressStyle.showCountryFlags
     }
     
     internal func doneTapped() {
@@ -84,7 +86,8 @@ internal final class ConfigurationViewModel: ObservableObject {
             value: Int(value) ?? configuration.value,
             currencyCode: currencyCode,
             apiVersion: Int(apiVersion) ?? configuration.apiVersion,
-            merchantAccount: merchantAccount, cardSettings: CardSettings(
+            merchantAccount: merchantAccount,
+            cardSettings: CardSettings(
                 showsHolderNameField: showsHolderNameField,
                 showsStorePaymentMethodField: showsStorePaymentMethodField,
                 showsStoredCardSecurityCodeField: showsStoredCardSecurityCodeField,
@@ -93,7 +96,8 @@ internal final class ConfigurationViewModel: ObservableObject {
                 socialSecurityNumberMode: socialSecurityNumberMode,
                 koreanAuthenticationMode: koreanAuthenticationMode,
                 enableInstallments: installmentsEnabled,
-                showsInstallmentAmount: showInstallmentAmount
+                showsInstallmentAmount: showInstallmentAmount,
+                showsCountryFlags: showCountryFlags
             ),
             dropInSettings: DropInSettings(allowDisablingStoredPaymentMethods: allowDisablingStoredPaymentMethods,
                                            allowsSkippingPaymentList: allowsSkippingPaymentList,

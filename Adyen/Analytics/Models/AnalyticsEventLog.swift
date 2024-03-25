@@ -10,13 +10,17 @@ import Foundation
 /// A log in the analytics scheme represents important checkpoints such as the pay button press, 3ds challenge etc.
 public struct AnalyticsEventLog: AnalyticsEvent {
     
+    public var id: String = UUID().uuidString
+    
+    public var timestamp: TimeInterval = Date().timeIntervalSince1970
+    
     public var component: String
     
     public var type: LogType
     
     public var subType: LogSubType
     
-    public var target: String
+    public var target: AnalyticsEventTarget?
     
     public var message: String?
     

@@ -194,3 +194,4 @@ whiteList:
   - twint
   - xcframework
   - checkoutanalytics
+  - xcprivacy
