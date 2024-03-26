@@ -139,6 +139,7 @@ cp "../Tests/Helpers/PaymentMethods+Equatable.swift" Tests/PaymentMethods+Equata
 cp "../Tests/Adyen Tests/Analytics/AnalyticsProviderMock.swift" Tests/AnalyticsProviderMock.swift
 cp "../Tests/DummyData/Dummy.swift" Tests/Dummy.swift
 cp "../Demo/Common/Utils/APIClientMock.swift" Tests/APIClientMock.swift
+cp "../Tests/Adyen Tests/Mocks/ImageLoaderMock.swift" Tests/ImageLoaderMock.swift
 cp -a "../Demo/Common" Source/
 cp -a "../Demo/UIKit" Source/
 cp "../Demo/Configuration.swift" Source/Configuration.swift
