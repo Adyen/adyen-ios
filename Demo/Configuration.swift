@@ -100,6 +100,7 @@ internal struct CardSettings: Codable {
     internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
     internal var enableInstallments = false
     internal var showsInstallmentAmount = false
+    internal var showsCountryFlags = true
     
     internal enum AddressFormType: String, Codable, CaseIterable {
         case lookup
@@ -175,7 +176,8 @@ internal struct DemoAppSettings: Codable {
                                                            socialSecurityNumberMode: .auto,
                                                            koreanAuthenticationMode: .auto,
                                                            enableInstallments: false,
-                                                           showsInstallmentAmount: false)
+                                                           showsInstallmentAmount: false,
+                                                           showsCountryFlags: true)
 
     internal static let defaultDropInSettings = DropInSettings(allowDisablingStoredPaymentMethods: false,
                                                                allowsSkippingPaymentList: false,
@@ -212,8 +214,12 @@ internal struct DemoAppSettings: Codable {
 
         var billingAddressConfig = BillingAddressConfiguration()
         billingAddressConfig.mode = cardComponentAddressFormType(from: cardSettings.addressMode)
+        
+        var style = FormComponentStyle()
+        style.addressStyle.showCountryFlags = cardSettings.showsCountryFlags
 
-        return .init(showsHolderNameField: cardSettings.showsHolderNameField,
+        return .init(style: style,
+                     showsHolderNameField: cardSettings.showsHolderNameField,
                      showsStorePaymentMethodField: cardSettings.showsStorePaymentMethodField,
                      showsSecurityCodeField: cardSettings.showsSecurityCodeField,
                      koreanAuthenticationMode: cardSettings.koreanAuthenticationMode,
@@ -242,8 +248,14 @@ internal struct DemoAppSettings: Codable {
     }
 
     internal var dropInConfiguration: DropInComponent.Configuration {
-        let dropInConfig = DropInComponent.Configuration(allowsSkippingPaymentList: dropInSettings.allowsSkippingPaymentList,
-                                                         allowPreselectedPaymentView: dropInSettings.allowPreselectedPaymentView)
+        var style = DropInComponent.Style()
+        style.formComponent.addressStyle.showCountryFlags = cardSettings.showsCountryFlags
+        
+        let dropInConfig = DropInComponent.Configuration(
+            style: style,
+            allowsSkippingPaymentList: dropInSettings.allowsSkippingPaymentList,
+            allowPreselectedPaymentView: dropInSettings.allowPreselectedPaymentView
+        )
 
         dropInConfig.paymentMethodsList.allowDisablingStoredPaymentMethods = dropInSettings.allowDisablingStoredPaymentMethods
         if dropInSettings.cashAppPayEnabled {
