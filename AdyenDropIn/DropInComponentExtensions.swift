@@ -22,6 +22,7 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
 
     internal func didLoad(_ paymentMethodListComponent: PaymentMethodListComponent) {
         sendInitialAnalytics()
+        sendDidLoadEvent()
     }
     
     internal func didSelect(_ component: PaymentComponent,

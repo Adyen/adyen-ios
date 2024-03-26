@@ -267,5 +267,6 @@ extension AbstractPersonalInformationComponent: ViewControllerDelegate {
     
     public func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
+        sendDidLoadEvent()
     }
 }

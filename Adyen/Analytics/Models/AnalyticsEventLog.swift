@@ -41,9 +41,9 @@ public struct AnalyticsEventLog: AnalyticsEvent {
         case sdk = "Sdk"
     }
     
-    public init(component: String, type: LogType, subtype: LogSubType) {
+    public init(component: String, type: LogType, subType: LogSubType) {
         self.component = component
         self.type = type
-        self.subType = subtype
+        self.subType = subType
     }
 }

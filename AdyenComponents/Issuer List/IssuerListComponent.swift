@@ -151,7 +151,6 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     private func sendSearchIssuerEvent() {
         var event = AnalyticsEventInfo(component: paymentMethod.type.rawValue, type: .input)
         event.target = .listSearch
-        print("sending search")
         context.analyticsProvider?.add(info: event)
     }
 }

@@ -31,6 +31,11 @@ class IssuerListComponentTests: XCTestCase {
 
     func testSelection() {
         // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+        
+        sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
+        
         let searchViewController = sut.viewController as! SearchViewController
         let listViewController = searchViewController.resultsListViewController
         let expectedIssuer = paymentMethod.issuers[0]
@@ -43,6 +48,8 @@ class IssuerListComponentTests: XCTestCase {
             XCTAssertTrue(paymentData.paymentMethod is IssuerListDetails)
             let details = paymentData.paymentMethod as! IssuerListDetails
             XCTAssertEqual(details.issuer, expectedIssuer.identifier)
+            
+            XCTAssertEqual(analyticsProviderMock.infoCount, 1)
 
             expectation.fulfill()
         }
@@ -53,6 +60,29 @@ class IssuerListComponentTests: XCTestCase {
         listViewController.tableView(listViewController.tableView, didSelectRowAt: .init(item: 0, section: 0))
 
         waitForExpectations(timeout: 10)
+    }
+    
+    func testSearch() {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+        
+        sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
+        
+        let searchViewController = sut.viewController as! SearchViewController
+        let listViewController = searchViewController.resultsListViewController
+        
+        setupRootViewController(searchViewController)
+        
+        searchViewController.searchBar(searchViewController.searchBar, textDidChange: "3")
+        XCTAssertFalse(listViewController.view.isHidden)
+        XCTAssertEqual(analyticsProviderMock.infoCount, 1)
+        
+        searchViewController.searchBar(searchViewController.searchBar, textDidChange: "34")
+        wait(for: .seconds(1))
+        
+        XCTAssertTrue(listViewController.view.isHidden)
+        XCTAssertEqual(analyticsProviderMock.infoCount, 2)
     }
 
     func testViewDidLoadShouldSendInitialCall() throws {
@@ -68,5 +98,6 @@ class IssuerListComponentTests: XCTestCase {
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.infoCount, 1)
     }
 }

@@ -398,6 +398,7 @@ class ApplePayComponentTest: XCTestCase {
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.infoCount, 1)
     }
     
     private func getRandomContactFieldSet() -> Set<PKContactField> {

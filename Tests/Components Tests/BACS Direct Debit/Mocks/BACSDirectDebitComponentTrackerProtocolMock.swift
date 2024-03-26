@@ -19,4 +19,9 @@ class BACSDirectDebitComponentTrackerProtocolMock: BACSDirectDebitComponentTrack
     func sendInitialAnalytics() {
         initialEventCallsCount += 1
     }
+    
+    var didLoadEventCallsCount = 0
+    func sendDidLoadEvent() {
+        didLoadEventCallsCount += 1
+    }
 }
