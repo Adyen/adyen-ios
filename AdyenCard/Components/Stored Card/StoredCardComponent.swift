@@ -38,6 +38,7 @@ internal final class StoredCardComponent: PaymentComponent, PaymentAware, Presen
     
     internal lazy var storedCardAlertManager: StoredCardAlertManager = {
         sendInitialAnalytics()
+        sendDidLoadEvent()
         
         let manager = StoredCardAlertManager(paymentMethod: storedCardPaymentMethod,
                                              context: context,

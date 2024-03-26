@@ -162,4 +162,9 @@ extension DropInComponent: TrackableComponent {
         let paymentMethodTypes = paymentMethods.regular.map(\.type.rawValue)
         return .dropIn(paymentMethods: paymentMethodTypes)
     }
+    
+    public func sendDidLoadEvent() {
+        let infoEvent = AnalyticsEventInfo(component: "dropin", type: .rendered)
+        context.analyticsProvider?.add(info: infoEvent)
+    }
 }

@@ -12,7 +12,7 @@ public struct AnalyticsEventLog: AnalyticsEvent {
     
     public var id: String = UUID().uuidString
     
-    public var timestamp: TimeInterval = Date().timeIntervalSince1970
+    public var timestamp = Int(Date().timeIntervalSince1970)
     
     public var component: String
     
@@ -39,5 +39,11 @@ public struct AnalyticsEventLog: AnalyticsEvent {
         case qrCode = "QrCode"
         case bankTransfer = "BankTransfer"
         case sdk = "Sdk"
+    }
+    
+    public init(component: String, type: LogType, subtype: LogSubType) {
+        self.component = component
+        self.type = type
+        self.subType = subtype
     }
 }

@@ -19,7 +19,7 @@ public final class AnalyticsForSession {
 @_spi(AdyenInternal)
 /// A protocol that defines the events that can occur under Checkout Analytics.
 public protocol AnalyticsEvent: Encodable {
-    var timestamp: TimeInterval { get }
+    var timestamp: Int { get }
     
     var component: String { get }
     

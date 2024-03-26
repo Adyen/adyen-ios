@@ -128,6 +128,8 @@ public class CardComponent: PresentableComponent,
     public var requiresModalPresentation: Bool { storedCardComponent?.requiresModalPresentation ?? true }
     
     public func stopLoading() {
+        // don't access cardViewController when it's storedCardComponent
+        guard storedCardComponent == nil else { return }
         cardViewController.stopLoading()
     }
     
