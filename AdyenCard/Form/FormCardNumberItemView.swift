@@ -22,7 +22,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         textField.textContentType = .creditCardNumber
         textField.returnKeyType = .default
         textField.allowsEditingActions = false
-        
+
         observe(item.$initialBrand) { [weak self] _ in
             guard let self else { return }
             self.updateValidationStatus(forced: true)

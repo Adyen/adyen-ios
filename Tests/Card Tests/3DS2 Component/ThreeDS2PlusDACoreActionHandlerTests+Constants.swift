@@ -6,6 +6,7 @@
 
 import Foundation
 
+@available(iOS 14.0, *)
 extension ThreeDS2PlusDACoreActionHandlerTests {
     
     var sdkPublicKey: String {

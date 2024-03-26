@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -55,7 +55,7 @@ public struct ThreeDSResult: Decodable {
                                  transStatus: oldPayload.transStatus)
         return try .init(payload: AdyenCoder.encode(newPayload).base64EncodedString())
     }
-
+    
     internal init(authenticated: Bool, authorizationToken: String?) throws {
         var payloadJson = ["transStatus": authenticated ? "Y" : "N"]
 

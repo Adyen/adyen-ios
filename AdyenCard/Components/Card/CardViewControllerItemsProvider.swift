@@ -108,7 +108,7 @@ extension CardViewController {
                                                         localizationParameters: localizationParameters)
             expiryDateItem.localizationParameters = localizationParameters
             expiryDateItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "expiryDateItem")
-
+            
             return expiryDateItem
         }()
 

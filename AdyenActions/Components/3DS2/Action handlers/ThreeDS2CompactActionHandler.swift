@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -42,16 +42,20 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     /// - Parameter fingerprintSubmitter: The fingerprint submitter.
     /// - Parameter service: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
+    /// - Parameter delegatedAuthenticationConfiguration: The delegated authentication configuration.
+    /// - Parameter presentationDelegate: The presentation delegate
     internal init(context: AdyenContext,
                   fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter? = nil,
                   service: AnyADYService = ADYServiceAdapter(),
                   appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
                   coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
-                  delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil) {
+                  delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil,
+                  presentationDelegate: PresentationDelegate?) {
         self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
             context: context,
             appearanceConfiguration: appearanceConfiguration,
-            delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
+            delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration,
+            presentationDelegate: presentationDelegate
         )
         self.fingerprintSubmitter = fingerprintSubmitter ?? ThreeDS2FingerprintSubmitter(apiContext: context.apiContext)
         self.coreActionHandler.service = service
