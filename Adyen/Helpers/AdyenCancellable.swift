@@ -13,7 +13,7 @@ public protocol AdyenCancellable {
 
 /// Indicates whether or not a task should be cancelled
 @_spi(AdyenInternal)
-public class AdyenCancelation: AdyenCancellable {
+public class AdyenCancellation: AdyenCancellable {
     public private(set) var isCancelled: Bool = false
     public func cancel() {
         isCancelled = true
@@ -22,7 +22,7 @@ public class AdyenCancelation: AdyenCancellable {
     
     private let onCancellation: () -> Void
     
-    init(onCancellation: @escaping () -> Void) {
+    internal init(onCancellation: @escaping () -> Void) {
         self.onCancellation = onCancellation
     }
 }

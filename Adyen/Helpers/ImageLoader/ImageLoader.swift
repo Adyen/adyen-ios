@@ -13,21 +13,6 @@ public protocol ImageLoading {
 }
 
 @_spi(AdyenInternal)
-public extension UIImageView {
-    @discardableResult
-    func load(url: URL, using imageLoader: ImageLoading, placeholder: UIImage? = nil) -> AdyenCancellable {
-        imageLoader.load(url: url) { [weak self] image in
-            guard let image else {
-                self?.image = placeholder
-                return
-            }
-            
-            self?.image = image
-        }
-    }
-}
-
-@_spi(AdyenInternal)
 public final class ImageLoader: ImageLoading {
     
     private let urlSession: URLSession
@@ -39,7 +24,7 @@ public final class ImageLoader: ImageLoading {
     @discardableResult
     public func load(url: URL, completion: @escaping ((UIImage?) -> Void)) -> AdyenCancellable {
         var urlSessionTask: URLSessionTask?
-        let cancellation = AdyenCancelation { urlSessionTask?.cancel() }
+        let cancellation = AdyenCancellation { urlSessionTask?.cancel() }
         
         urlSessionTask = urlSession.dataTask(with: url) { [weak self] data, _, _ in
             guard !cancellation.isCancelled else { return }
