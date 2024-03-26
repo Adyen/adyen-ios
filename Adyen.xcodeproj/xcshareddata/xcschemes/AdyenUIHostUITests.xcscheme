@@ -26,7 +26,9 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "NO">
+      shouldUseLaunchSchemeArgsEnv = "NO"
+      language = "en-US"
+      region = "US">
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
@@ -36,13 +38,6 @@
             ReferencedContainer = "container:Adyen.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "UPDATE_SNAPSHOTS"
-            value = "$(UPDATE_SNAPSHOTS)"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -73,15 +68,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F9CCA3B4296ECB3E00AD643D"
-            BuildableName = "AdyenUIHostUITests.xctest"
-            BlueprintName = "AdyenUIHostUITests"
-            ReferencedContainer = "container:Adyen.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

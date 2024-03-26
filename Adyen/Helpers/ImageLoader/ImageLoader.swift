@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
+import UIKit
 
 @_spi(AdyenInternal)
 public protocol ImageLoading {
@@ -23,6 +23,10 @@ public final class ImageLoader: ImageLoading {
     
     @discardableResult
     public func load(url: URL, completion: @escaping ((UIImage?) -> Void)) -> AdyenCancellable {
+        if CommandLine.arguments.contains("-UITests") {
+            AdyenAssertion.assertionFailure(message: "NONONO")
+        }
+        
         var urlSessionTask: URLSessionTask?
         let cancellation = AdyenCancellation { urlSessionTask?.cancel() }
         
