@@ -12,6 +12,14 @@ import XCTest
 
 final class ListViewControllerUITests: XCTestCase {
 
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     func testUIConfiguration() throws {
         var listComponentStyle = ListComponentStyle()
         listComponentStyle.backgroundColor = .red

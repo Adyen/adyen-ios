@@ -11,6 +11,14 @@ import XCTest
 
 class AddressInputFormViewControllerTests: XCTestCase {
     
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     func testAddressNL() throws {
         // Given
         let viewController = AddressInputFormViewController(

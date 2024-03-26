@@ -9,6 +9,14 @@ import XCTest
 
 class AddressLookupViewControllerTests: XCTestCase {
     
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     func testViewControllerBinding() {
         
         // Given

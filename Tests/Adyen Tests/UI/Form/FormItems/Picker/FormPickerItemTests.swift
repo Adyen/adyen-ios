@@ -9,6 +9,14 @@ import XCTest
 
 class FormPickerItemTests: XCTestCase {
     
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     func testPresentation() throws {
         
         let presentViewControllerExpectation = expectation(description: "presenter.presentViewController was called")
