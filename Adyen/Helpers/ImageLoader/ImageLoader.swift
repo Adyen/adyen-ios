@@ -23,10 +23,6 @@ public final class ImageLoader: ImageLoading {
     
     @discardableResult
     public func load(url: URL, completion: @escaping ((UIImage?) -> Void)) -> AdyenCancellable {
-        if CommandLine.arguments.contains("-UITests") {
-            AdyenAssertion.assertionFailure(message: "NONONO")
-        }
-        
         var urlSessionTask: URLSessionTask?
         let cancellation = AdyenCancellation { urlSessionTask?.cancel() }
         
