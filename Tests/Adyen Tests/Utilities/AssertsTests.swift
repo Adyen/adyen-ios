@@ -13,6 +13,14 @@ class AssertsTests: XCTestCase {
 
     var context: AdyenContext!
 
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     override func setUpWithError() throws {
         try super.setUpWithError()
         context = Dummy.context

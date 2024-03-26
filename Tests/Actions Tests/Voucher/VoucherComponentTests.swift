@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenActions
 import UIKit
 import XCTest
@@ -15,6 +15,14 @@ class VoucherComponentTests: XCTestCase {
 
     var presentationDelegate: PresentationDelegateMock!
 
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     override func setUp() {
         super.setUp()
         presentationDelegate = PresentationDelegateMock()

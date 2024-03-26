@@ -15,6 +15,14 @@ class DocumentComponentTests: XCTestCase {
     
     let action: DocumentAction = .init(downloadUrl: URL(string: "www.adyen.com")!, paymentMethodType: .bacs)
     
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     func testUI() {
         let style = DocumentComponentStyle()
         let sut = DocumentComponent(context: Dummy.context)

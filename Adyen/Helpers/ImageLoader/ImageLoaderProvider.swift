@@ -9,13 +9,9 @@ import Foundation
 @_spi(AdyenInternal)
 public final class ImageLoaderProvider {
     
-    internal static let shared: ImageLoaderProvider = .init()
-    
-    private init() {}
-    
-    internal var underlyingImageLoader: ImageLoading = ImageLoader()
+    @AdyenDependency(\.imageLoader) private static var underlyingImageLoader
     
     public static func imageLoader() -> ImageLoading {
-        shared.underlyingImageLoader
+        underlyingImageLoader
     }
 }

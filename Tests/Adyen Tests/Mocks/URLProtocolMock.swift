@@ -7,27 +7,6 @@
 import Foundation
 import UIKit
 
-// MARK: - Empty
-
-class EmptyResponseURLProtocolMock: URLProtocol {
-    
-    override class func canInit(with request: URLRequest) -> Bool {
-        return true
-    }
-    
-    override class func canonicalRequest(for request: URLRequest) -> URLRequest {
-        return request
-    }
-    
-    override func startLoading() {
-        client?.urlProtocol(self, didReceive: .init(), cacheStoragePolicy: .notAllowed)
-        client?.urlProtocol(self, didLoad: Data())
-        client?.urlProtocolDidFinishLoading(self)
-    }
-    
-    override func stopLoading() {}
-}
-
 // MARK: - Image
 
 class ImageResponseURLProtocolMock: URLProtocol {

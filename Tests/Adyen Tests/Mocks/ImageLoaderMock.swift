@@ -21,22 +21,3 @@ class ImageLoaderMock: ImageLoading {
         return cancellable
     }
 }
-
-extension String {
-
-    func generateImage() -> UIImage? {
-        let string = self as NSString
-        let size = string.size()
-
-        return UIGraphicsImageRenderer(size: size).image { context in
-            UIColor.white.setFill()
-            context.fill(.init(origin: .zero, size: size))
-
-            string.draw(
-                with: .init(origin: .zero, size: size),
-                options: [.usesLineFragmentOrigin],
-                context: nil
-            )
-        }
-    }
-}

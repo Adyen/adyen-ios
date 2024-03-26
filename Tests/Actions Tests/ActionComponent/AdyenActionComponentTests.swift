@@ -73,6 +73,14 @@ class AdyenActionComponentTests: XCTestCase {
         "url": "https://adyen.com"
     }
     """
+    
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
 
     func testRedirectToHttpWebLink() throws {
         let sut = AdyenActionComponent(context: Dummy.context)

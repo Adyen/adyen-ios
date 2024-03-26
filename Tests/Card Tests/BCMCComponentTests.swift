@@ -16,6 +16,14 @@ class BCMCComponentTests: XCTestCase {
     var context: AdyenContext!
     var delegate: PaymentComponentDelegateMock!
 
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     override func setUpWithError() throws {
         try super.setUpWithError()
         context = Dummy.context
