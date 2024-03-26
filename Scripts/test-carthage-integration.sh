@@ -140,6 +140,7 @@ cp "../Tests/Adyen Tests/Analytics/AnalyticsProviderMock.swift" Tests/AnalyticsP
 cp "../Tests/DummyData/Dummy.swift" Tests/Dummy.swift
 cp "../Demo/Common/Utils/APIClientMock.swift" Tests/APIClientMock.swift
 cp "../Tests/Adyen Tests/Mocks/ImageLoaderMock.swift" Tests/ImageLoaderMock.swift
+cp "../Tests/Helpers/String+UIImage.swift" Tests/String+UIImage.swift
 cp -a "../Demo/Common" Source/
 cp -a "../Demo/UIKit" Source/
 cp "../Demo/Configuration.swift" Source/Configuration.swift
