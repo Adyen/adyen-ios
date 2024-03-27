@@ -5527,7 +5527,8 @@
 				E2C0E07A220B0399008616F6 /* Frameworks */,
 				E2C0E07B220B0399008616F6 /* Resources */,
 				E2C0E0A8220B0827008616F6 /* Embed Frameworks */,
-				F9A4A304237323EE00D774E8 /* Format and lint */,
+				F9A4A304237323EE00D774E8 /* SwiftFormat */,
+				B64285622BB45D4A005C88C7 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -5704,7 +5705,8 @@
 				F95B6D922527454E002C9062 /* Frameworks */,
 				F95B6D932527454E002C9062 /* Resources */,
 				F95B6DC52527565C002C9062 /* Embed Frameworks */,
-				F95B6DD2252B1F6A002C9062 /* Format and lint */,
+				F95B6DD2252B1F6A002C9062 /* SwiftFormat */,
+				B64285632BB4682A005C88C7 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -6074,6 +6076,44 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		B64285622BB45D4A005C88C7 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
+		};
+		B64285632BB4682A005C88C7 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ -f $SRCROOT/Internal/swiftlint ]; then\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
+		};
 		C96A8E2C26CA801E000BB8C6 /* Update Localization strings files */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -6114,7 +6154,7 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ -f $SRCROOT/Internal/post-commit ]; then\n   $SRCROOT/Internal/post-commit\nfi\n";
 		};
-		F95B6DD2252B1F6A002C9062 /* Format and lint */ = {
+		F95B6DD2252B1F6A002C9062 /* SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -6123,14 +6163,14 @@
 			);
 			inputPaths = (
 			);
-			name = "Format and lint";
+			name = SwiftFormat;
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "swiftformatPath=/usr/local/adyen/bin/swiftformat\n\nif [ ! -f $swiftformatPath ]; then\n  echo \"swiftformat CLI is not installed on your machine at $swiftformatPath, please contact IS to install it for you at /usr/local/adyen/bin/ .\"\n  exit 1\nfi\n   \n$swiftformatPath .\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
+			shellScript = "swiftformatPath=/usr/local/adyen/bin/swiftformat\n\nif [ ! -f $swiftformatPath ]; then\n  echo \"swiftformat CLI is not installed on your machine at $swiftformatPath, please contact IS to install it for you at /usr/local/adyen/bin/ .\"\n  exit 1\nfi\n   \n$swiftformatPath $SRCROOT\n";
 		};
 		F9615FBC252DE30B00FA8EDD /* AdyenSwiftUI configuration */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6172,7 +6212,7 @@
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/bash\n\nif [ ! -f $SRCROOT/Internal/generate_localization_keys.swift ]; then\n   exit 0\nfi\n\nif [ ! -z $(git diff HEAD --name-only $SCRIPT_INPUT_FILE_0) ]\nthen\n    echo \"Detected changes in Localizable.strings. Generating new LocalizationKey.swift\"\n    swift $SRCROOT/Internal/generate_localization_keys.swift $SCRIPT_INPUT_FILE_0 $SCRIPT_OUTPUT_FILE_0\nfi\n";
 		};
-		F9A4A304237323EE00D774E8 /* Format and lint */ = {
+		F9A4A304237323EE00D774E8 /* SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -6182,14 +6222,14 @@
 			);
 			inputPaths = (
 			);
-			name = "Format and lint";
+			name = SwiftFormat;
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "swiftformatPath=/usr/local/adyen/bin/swiftformat\n\nif [ ! -f $swiftformatPath ]; then\n  echo \"swiftformat CLI is not installed on your machine at $swiftformatPath, please contact IS to install it for you at /usr/local/adyen/bin/ .\"\n  exit 1\nfi\n   \n$swiftformatPath .\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
+			shellScript = "swiftformatPath=/usr/local/adyen/bin/swiftformat\n\nif [ ! -f $swiftformatPath ]; then\n  echo \"swiftformat CLI is not installed on your machine at $swiftformatPath, please contact IS to install it for you at /usr/local/adyen/bin/ .\"\n  exit 1\nfi\n   \n$swiftformatPath $SRCROOT\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
