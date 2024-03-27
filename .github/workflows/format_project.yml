@@ -1,10 +1,9 @@
 name: Format project
 on: [workflow_dispatch]
+env:
+  SWIFT-FORMAT-VERSION: "0.53.5"
 jobs:
-
   Update:
-    env:
-      swiftFormatVersion: "0.53.5"
     runs-on: macos-12
     steps:
     - uses: actions/checkout@v4
@@ -21,7 +20,7 @@ jobs:
 
     - name: Format project
       run: |
-        brew install swiftformat@${{ env.swiftFormatVersion }}
+        brew install swiftformat@$SWIFT-FORMAT-VERSION
         swiftformat .
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v6
