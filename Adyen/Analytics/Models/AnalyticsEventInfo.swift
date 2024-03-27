@@ -37,7 +37,6 @@ public struct AnalyticsEventInfo: AnalyticsEvent {
         case unfocus = "Unfocus"
         case validationError = "ValidationError"
         case rendered = "Rendered"
-        case displayed = "Displayed"
         case input = "Input"
     }
     
