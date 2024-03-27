@@ -1,7 +1,7 @@
 name: Format project
 on: [workflow_dispatch]
 env:
-  swiftFormatVersion: "0.53.5"
+  swiftFormatVersion: 0.53.5
 jobs:
   Update:
     runs-on: macos-12
