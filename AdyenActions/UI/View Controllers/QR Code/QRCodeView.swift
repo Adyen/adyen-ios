@@ -23,6 +23,8 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     
     public var localizationParameters: LocalizationParameters?
     
+    private var imageLoadingTask: AdyenCancellable?
+    
     internal init(model: Model) {
         self.model = model
         super.init(frame: .zero)
@@ -166,12 +168,6 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         logo.widthAnchor.constraint(equalToConstant: logoSize.width).isActive = true
         logo.heightAnchor.constraint(equalToConstant: logoSize.height).isActive = true
         logo.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "logo")
-        
-        logo.load(
-            url: model.logoUrl,
-            using: model.imageLoader
-        )
-        
         return logo
     }()
     
@@ -238,5 +234,17 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     @objc private func copyCode() {
         delegate?.copyToPasteboard(with: model.action)
     }
-
+    
+    override public func didMoveToWindow() {
+        super.didMoveToWindow()
+        updateIcon()
+    }
+    
+    private func updateIcon() {
+        if window != nil {
+            imageLoadingTask = logo.load(url: model.logoUrl, using: model.imageLoader)
+        } else {
+            imageLoadingTask = nil
+        }
+    }
 }

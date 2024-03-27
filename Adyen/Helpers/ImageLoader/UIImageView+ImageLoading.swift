@@ -9,14 +9,18 @@ import UIKit
 @_spi(AdyenInternal)
 public extension UIImageView {
     @discardableResult
-    func load(url: URL, using imageLoader: ImageLoading, placeholder: UIImage? = nil) -> AdyenCancellable {
-        imageLoader.load(url: url) { [weak self] image in
-            guard let image else {
-                self?.image = placeholder
-                return
-            }
-
-            self?.image = image
+    func load(
+        url: URL,
+        using imageLoader: ImageLoading,
+        placeholder: UIImage? = nil
+    ) -> AdyenCancellable {
+        
+        if let placeholder {
+            self.image = placeholder
+        }
+        
+        return imageLoader.load(url: url) { [weak self] image in
+            self?.image = image ?? placeholder
         }
     }
 }

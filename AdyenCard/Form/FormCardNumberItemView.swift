@@ -104,7 +104,10 @@ extension FormCardNumberItemView {
         
         private let unselectedViewAlpha: CGFloat = 0.3
         
+        private var primaryLogoUrl: URL?
+        private var secondaryLogoUrl: URL?
         private let imageLoader: ImageLoading
+        private var imageLoadingTasks = [AdyenCancellable]()
         
         internal init(
             style: ImageStyle,
@@ -141,24 +144,19 @@ extension FormCardNumberItemView {
         
         private func setupLogoViews(from logos: [FormCardLogosItem.CardTypeLogo]) {
             guard let firstLogo = logos.first else { return }
+            let secondLogo = logos.adyen[safeIndex: 1]
             
-            primaryLogoView.load(
-                url: firstLogo.url,
-                using: imageLoader,
-                placeholder: Constant.placeholderImage
-            )
+            primaryLogoUrl = firstLogo.url
+            secondaryLogoUrl = secondLogo?.url
+            
             primaryLogoView.alpha = selectedViewAlpha
             primaryLogoView.accessibilityValue = firstLogo.type.name
             primaryLogoView.isAccessibilityElement = true
             
             // dual branded. allow selection but initially neither is selected
-            if let secondLogo = logos.adyen[safeIndex: 1] {
+            if let secondLogo {
                 primaryLogoView.alpha = unselectedViewAlpha
-                secondaryLogoView.load(
-                    url: secondLogo.url,
-                    using: imageLoader,
-                    placeholder: Constant.placeholderImage
-                )
+                
                 secondaryLogoView.alpha = unselectedViewAlpha
                 secondaryLogoView.accessibilityValue = secondLogo.type.name
                 secondaryLogoView.isHidden = false
@@ -170,6 +168,8 @@ extension FormCardNumberItemView {
             secondaryLogoView.isAccessibilityElement = !secondaryLogoView.isHidden
             
             updateAccessibilityValues()
+            
+            updateLogos()
         }
         
         @objc private func primaryLogoTapped() {
@@ -223,6 +223,37 @@ extension FormCardNumberItemView {
             
             primaryLogoView.accessibilityMarkAsSelected(primaryLogoView.alpha == selectedViewAlpha)
             secondaryLogoView.accessibilityMarkAsSelected(secondaryLogoView.alpha == selectedViewAlpha)
+        }
+        
+        override public func didMoveToWindow() {
+            super.didMoveToWindow()
+            updateLogos()
+        }
+        
+        private func updateLogos() {
+            imageLoadingTasks.forEach { $0.cancel() }
+            
+            guard let primaryLogoUrl, window != nil else { return }
+            
+            var imageLoadingTasks = [
+                primaryLogoView.load(
+                    url: primaryLogoUrl,
+                    using: imageLoader,
+                    placeholder: Constant.placeholderImage
+                )
+            ]
+            
+            if let secondaryLogoUrl {
+                imageLoadingTasks.append(
+                    secondaryLogoView.load(
+                        url: secondaryLogoUrl,
+                        using: imageLoader,
+                        placeholder: Constant.placeholderImage
+                    )
+                )
+            }
+            
+            self.imageLoadingTasks = imageLoadingTasks
         }
     }
 }

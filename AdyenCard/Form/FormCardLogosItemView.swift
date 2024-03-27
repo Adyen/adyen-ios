@@ -90,6 +90,8 @@ extension FormCardLogosItemView {
         
         private lazy var cardTypeImageView = UIImageView()
         
+        private var imageUrl: URL?
+        private var imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
         private var imageLoadingTask: AdyenCancellable? {
             willSet { imageLoadingTask?.cancel() }
         }
@@ -106,10 +108,8 @@ extension FormCardLogosItemView {
         }
         
         internal func update(imageUrl: URL, altText: String, style: ImageStyle, imageLoader: ImageLoading) {
-            imageLoadingTask = cardTypeImageView.load(
-                url: imageUrl,
-                using: imageLoader
-            )
+            self.imageUrl = imageUrl
+            self.imageLoader = imageLoader
             
             cardTypeImageView.isAccessibilityElement = true
             cardTypeImageView.accessibilityValue = altText
@@ -120,7 +120,21 @@ extension FormCardLogosItemView {
             cardTypeImageView.layer.borderColor = style.borderColor?.cgColor
             cardTypeImageView.backgroundColor = style.backgroundColor
             cardTypeImageView.adyen.round(using: style.cornerRounding)
+            
+            updateIcon()
         }
         
+        override public func didMoveToWindow() {
+            super.didMoveToWindow()
+            updateIcon()
+        }
+        
+        private func updateIcon() {
+            if let imageUrl, window != nil {
+                imageLoadingTask = cardTypeImageView.load(url: imageUrl, using: imageLoader)
+            } else {
+                imageLoadingTask = nil
+            }
+        }
     }
 }

@@ -73,13 +73,21 @@ public final class ListItemView: UIView, AnyFormItemView {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "trailingTextLabel")
         }
         
-        if let iconUrl = item?.icon?.url {
+        imageView.isHidden = item?.icon == nil
+        updateIcon()
+    }
+    
+    override public func didMoveToWindow() {
+        super.didMoveToWindow()
+        updateIcon()
+    }
+    
+    private func updateIcon() {
+        if let iconUrl = item?.icon?.url, window != nil {
             imageLoadingTask = imageView.load(url: iconUrl, using: imageLoader)
         } else {
             imageLoadingTask = nil
         }
-        
-        imageView.isHidden = item?.icon == nil
     }
     
     private func updateImageView(style: ListItemStyle) {
