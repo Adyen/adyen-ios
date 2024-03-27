@@ -33,7 +33,7 @@ class AnalyticsProviderTests: XCTestCase {
         analyticsConfiguration.isEnabled = true
 
         let apiClient = APIClientMock()
-        let sut = AnalyticsProvider(apiClient: apiClient, 
+        let sut = AnalyticsProvider(apiClient: apiClient,
                                     configuration: analyticsConfiguration,
                                     eventDataSource: eventDataSource)
 
@@ -270,7 +270,7 @@ class AnalyticsProviderTests: XCTestCase {
         let expectedId = infoEvent.id
         apiClient.onExecute = { request in
             if let analyticsRequest = request as? AnalyticsRequest,
-                let capturedId = analyticsRequest.infos.first?.id {
+               let capturedId = analyticsRequest.infos.first?.id {
                 XCTAssertEqual(capturedId, expectedId, "Expected event ID does not match the sent event id")
                 shouldSendExpectation.fulfill()
             }
@@ -283,8 +283,8 @@ class AnalyticsProviderTests: XCTestCase {
     func testDeinitShouldAttemptToSendEvents() {
         let apiClient = APIClientMock()
         var sut: AnalyticsProvider? = AnalyticsProvider(apiClient: apiClient,
-                                    configuration: AnalyticsConfiguration(),
-                                    eventDataSource: eventDataSource)
+                                                        configuration: AnalyticsConfiguration(),
+                                                        eventDataSource: eventDataSource)
 
         let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)

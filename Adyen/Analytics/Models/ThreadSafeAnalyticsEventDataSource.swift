@@ -65,7 +65,7 @@ internal final class ThreadSafeAnalyticsEventDataSource: AnyAnalyticsEventDataSo
     }
     
     internal func allEvents() -> AnalyticsEventWrapper? {
-        return queue.sync {
+        queue.sync {
             dataSource.allEvents()
         }
     }

@@ -59,7 +59,7 @@ public final class AdyenContext: PaymentAware {
     private static func createAnalyticsProvider(apiContext: APIContext, analyticsConfiguration: AnalyticsConfiguration) -> AnalyticsProviderProtocol? {
         guard
             let analyticsEnvironment = (apiContext.environment as? Environment)?.toAnalyticsEnvironment(),
-            let analyticsApiContext = try? APIContext(environment: analyticsEnvironment, 
+            let analyticsApiContext = try? APIContext(environment: analyticsEnvironment,
                                                       clientKey: apiContext.clientKey)
         else { return nil }
         
