@@ -6389,7 +6389,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh \"$SRCROOT/Demo\"\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/Demo\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
+			shellScript = "swiftformatPath=/usr/local/adyen/bin/swiftformat\n\nif [ ! -f $swiftformatPath ]; then\n  echo \"swiftformat CLI is not installed on your machine at $swiftformatPath, please contact IS to install it for you at /usr/local/adyen/bin/ .\"\n  exit 1\nfi\n   \n$swiftformatPath .\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/Demo\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
