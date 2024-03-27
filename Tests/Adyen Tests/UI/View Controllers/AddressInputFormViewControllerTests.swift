@@ -302,28 +302,10 @@ class AddressInputFormViewControllerTests: XCTestCase {
         )
     }
     
-    func test_countryFlags_showByDefault() throws {
-        
-        var style = FormComponentStyle(tintColor: .blue)
+    func test_itemSetup() throws {
         
         let viewController = AddressInputFormViewController(
-            viewModel: self.viewModel(style: style)
-        )
-        
-        let pickerSearchViewController = try presentCountryPicker(for: viewController)
-        let firstListItem = try firstListItem(from: pickerSearchViewController)
-        XCTAssertNil(firstListItem.icon)
-        XCTAssertEqual(firstListItem.title, "Afghanistan")
-        XCTAssertEqual(firstListItem.subtitle, "🇦🇫 AF")
-    }
-    
-    func test_countryFlags_dontNotShowIfConfigured() throws {
-        
-        var style = FormComponentStyle(tintColor: .blue)
-        style.addressStyle.showCountryFlags = false
-        
-        let viewController = AddressInputFormViewController(
-            viewModel: self.viewModel(style: style)
+            viewModel: self.viewModel()
         )
         
         let pickerSearchViewController = try presentCountryPicker(for: viewController)
