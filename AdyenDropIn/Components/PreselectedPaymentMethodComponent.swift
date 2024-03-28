@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -20,10 +20,10 @@ internal protocol PreselectedPaymentMethodComponentDelegate: AnyObject {
 
 /// A component that presents a single preselected payment method and option to open more payment methods.
 internal final class PreselectedPaymentMethodComponent: ComponentLoader,
-                                                        PresentableComponent,
-                                                        PaymentMethodAware,
-                                                        Localizable,
-                                                        Cancellable {
+    PresentableComponent,
+    PaymentMethodAware,
+    Localizable,
+    Cancellable {
     
     private let title: String
     private let defaultComponent: PaymentComponent
@@ -46,12 +46,10 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     /// Call back when the list is dismissed.
     internal var onCancel: (() -> Void)?
     
-    /// Initializes the list component.
-    ///
-    /// - Parameter components: The components to display in the list.
-    /// - Parameter style: The component's UI style.
+    /// Initializes the pre selected payment component.
     /// - Parameter component: The pre-selected component.
     /// - Parameter title: The title.
+    /// - Parameter style: The component's UI style.
     /// - Parameter listItemStyle: The list item UI style.
     internal init(component: PaymentComponent,
                   title: String,

@@ -1,9 +1,7 @@
 //
-//  XCTestCase+SnapshotTesting.swift
-//  AdyenUIHostUITests
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Mohamed Eldoheiri on 11/01/2023.
-//  Copyright © 2023 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import SnapshotTesting

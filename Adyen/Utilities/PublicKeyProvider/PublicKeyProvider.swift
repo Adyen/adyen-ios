@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -76,7 +76,7 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
             completion(.success(response.cardPublicKey))
         case let .failure(error):
             if error is DecodingError {
-                // Disclaimer: This error check is not 100% reliable. Need to improve the endpoint. 
+                // Disclaimer: This error check is not 100% reliable. Need to improve the endpoint.
                 return completion(.failure(Error.invalidClientKey))
             }
             completion(.failure(error))
@@ -87,7 +87,7 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
         case invalidClientKey
 
         public var errorDescription: String? {
-            return "Client key not found on the selected environment."
+            "Client key not found on the selected environment."
         }
     }
 }

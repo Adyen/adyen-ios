@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 import AdyenActions
 import AdyenComponents
 import AdyenEncryption
@@ -22,11 +22,19 @@ enum Dummy: Error {
     internal static let apiContext = try! APIContext(environment: Environment.test, clientKey: "local_DUMMYKEYFORTESTING")
 
     internal static var context: AdyenContext {
-        AdyenContext(apiContext: apiContext, payment: payment)
+        AdyenContext(
+            apiContext: apiContext,
+            payment: payment,
+            analyticsProvider: AnalyticsProviderMock()
+        )
     }
 
     internal static func context(with payment: Payment?) -> AdyenContext {
-        AdyenContext(apiContext: apiContext, payment: payment)
+        AdyenContext(
+            apiContext: apiContext,
+            payment: payment,
+            analyticsProvider: AnalyticsProviderMock()
+        )
     }
 
     internal static let visaCard = Card(number: "4917 6100 0000 0000",

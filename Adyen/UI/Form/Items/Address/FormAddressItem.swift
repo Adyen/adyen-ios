@@ -14,7 +14,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     private var context: AddressViewModelBuilderContext {
         didSet {
-            reloadFields()
+            self.reloadFields()
         }
     }
     

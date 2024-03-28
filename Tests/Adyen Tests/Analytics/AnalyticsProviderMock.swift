@@ -1,9 +1,7 @@
 //
-//  AnalyticsProviderMock.swift
-//  AdyenUIHost
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Naufal Aros on 4/11/22.
-//  Copyright © 2022 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
@@ -25,5 +23,20 @@ class AnalyticsProviderMock: AnalyticsProviderProtocol {
     var initialEventCallsCount = 0
     var initialEventCalled: Bool {
         initialEventCallsCount > 0
+    }
+    
+    var infoCount = 0
+    func add(info: Adyen.AnalyticsEventInfo) {
+        infoCount += 1
+    }
+    
+    var logCount = 0
+    func add(log: Adyen.AnalyticsEventLog) {
+        logCount += 1
+    }
+    
+    var errorCount = 0
+    func add(error: Adyen.AnalyticsEventError) {
+        errorCount += 1
     }
 }

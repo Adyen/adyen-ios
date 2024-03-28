@@ -1,9 +1,7 @@
 //
-//  GiftCardComponentTests.swift
-//  AdyenUIKitTests
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Mohamed Eldoheiri on 4/22/21.
-//  Copyright © 2021 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 @_spi(AdyenInternal) @testable import Adyen
@@ -576,6 +574,7 @@ class GiftCardComponentTests: XCTestCase {
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.infoCount, 1)
     }
     
     func testGiftCardHidingSecurityCodeItemView() throws {
