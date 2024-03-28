@@ -149,6 +149,7 @@ import XCTest
 
             // Then
             XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
+            XCTAssertEqual(analyticsProviderMock.infoCount, 1)
         }
         
         func testComponent_ShouldPaymentMethodTypeBeCashAppPay() throws {

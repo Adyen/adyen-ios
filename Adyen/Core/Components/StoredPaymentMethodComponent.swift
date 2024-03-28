@@ -43,6 +43,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
 
     public lazy var viewController: UIViewController = {
         sendInitialAnalytics()
+        sendDidLoadEvent()
 
         let localizationParameters = configuration.localizationParameters
         let displayInformation = storedPaymentMethod.displayInformation(using: localizationParameters)

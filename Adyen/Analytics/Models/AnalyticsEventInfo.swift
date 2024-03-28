@@ -13,7 +13,7 @@ public struct AnalyticsEventInfo: AnalyticsEvent {
     
     public var id: String = UUID().uuidString
     
-    public var timestamp: TimeInterval = Date().timeIntervalSince1970
+    public var timestamp = Int(Date().timeIntervalSince1970)
     
     public var component: String
     
@@ -25,6 +25,8 @@ public struct AnalyticsEventInfo: AnalyticsEvent {
     
     public var brand: String?
     
+    public var issuer: String?
+    
     public var validationErrorCode: String?
     
     public var validationErrorMessage: String?
@@ -35,5 +37,11 @@ public struct AnalyticsEventInfo: AnalyticsEvent {
         case unfocus = "Unfocus"
         case validationError = "ValidationError"
         case rendered = "Rendered"
+        case input = "Input"
+    }
+    
+    public init(component: String, type: InfoType) {
+        self.component = component
+        self.type = type
     }
 }

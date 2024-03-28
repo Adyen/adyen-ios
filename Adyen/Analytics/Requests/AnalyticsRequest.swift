@@ -7,11 +7,9 @@
 import AdyenNetworking
 import Foundation
 
-internal struct AnalyticsResponse: Response { /* Empty response */ }
-
 internal struct AnalyticsRequest: APIRequest {
     
-    internal typealias ResponseType = AnalyticsResponse
+    internal typealias ResponseType = EmptyResponse
 
     internal let path: String
     
@@ -25,18 +23,22 @@ internal struct AnalyticsRequest: APIRequest {
     
     internal var channel: String = "iOS"
     
+    internal var platform: String
+    
     internal var infos: [AnalyticsEventInfo] = []
     
     internal var logs: [AnalyticsEventLog] = []
     
     internal var errors: [AnalyticsEventError] = []
     
-    internal init(checkoutAttemptId: String) {
+    internal init(checkoutAttemptId: String, platform: String) {
         self.path = "checkoutanalytics/v3/analytics/\(checkoutAttemptId)"
+        self.platform = platform
     }
     
     private enum CodingKeys: String, CodingKey {
         case channel
+        case platform
         case infos = "info"
         case logs
         case errors

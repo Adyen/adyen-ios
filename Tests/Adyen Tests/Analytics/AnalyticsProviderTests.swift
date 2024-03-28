@@ -174,7 +174,7 @@ class AnalyticsProviderTests: XCTestCase {
             if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
                 XCTAssertNil(initialAnalyticsdRequest.amount)
                 XCTAssertEqual(initialAnalyticsdRequest.version, adyenSdkVersion)
-                XCTAssertEqual(initialAnalyticsdRequest.platform, "ios")
+                XCTAssertEqual(initialAnalyticsdRequest.platform, "iOS")
                 analyticsExpectation.fulfill()
             }
         }
@@ -198,7 +198,7 @@ class AnalyticsProviderTests: XCTestCase {
                                     configuration: AnalyticsConfiguration(),
                                     eventDataSource: eventDataSource)
         
-        let analyticsResponse = AnalyticsResponse()
+        let analyticsResponse = EmptyResponse()
         let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
         
         apiClient.mockedResults = [analyticsResult]
@@ -224,7 +224,7 @@ class AnalyticsProviderTests: XCTestCase {
         let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         
-        let analyticsResponse = AnalyticsResponse()
+        let analyticsResponse = EmptyResponse()
         let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
         
         apiClient.mockedResults = [checkoutAttemptIdResult, analyticsResult]
@@ -255,7 +255,7 @@ class AnalyticsProviderTests: XCTestCase {
         let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         
-        let analyticsResponse = AnalyticsResponse()
+        let analyticsResponse = EmptyResponse()
         let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
         
         apiClient.mockedResults = [checkoutAttemptIdResult, analyticsResult]
@@ -289,7 +289,7 @@ class AnalyticsProviderTests: XCTestCase {
         let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         
-        let analyticsResponse = AnalyticsResponse()
+        let analyticsResponse = EmptyResponse()
         let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
         
         apiClient.mockedResults = [checkoutAttemptIdResult, analyticsResult]
@@ -323,7 +323,7 @@ class AnalyticsProviderTests: XCTestCase {
         let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         
-        let analyticsResponse = AnalyticsResponse()
+        let analyticsResponse = EmptyResponse()
         let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
         
         apiClient.mockedResults = [checkoutAttemptIdResult, analyticsResult]
@@ -352,7 +352,7 @@ class AnalyticsProviderTests: XCTestCase {
         let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         
-        let analyticsResponse = AnalyticsResponse()
+        let analyticsResponse = EmptyResponse()
         let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
         
         apiClient.mockedResults = [checkoutAttemptIdResult, analyticsResult]
@@ -384,7 +384,7 @@ class AnalyticsProviderTests: XCTestCase {
         let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         
-        let analyticsResponse = AnalyticsResponse()
+        let analyticsResponse = EmptyResponse()
         let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
         
         apiClient.mockedResults = [checkoutAttemptIdResult, analyticsResult]
