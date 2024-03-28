@@ -12,7 +12,7 @@ class ImageLoaderMock: ImageLoading {
         url.absoluteString.generateImage()
     }
     
-    var cancellable: AdyenCancellable = CancellableMock(onCancelHandler: { })
+    var cancellable: AdyenCancellable = CancellableMock(onCancelHandler: {})
     
     func load(url: URL, completion: @escaping ((UIImage?) -> Void)) -> any AdyenCancellable {
         DispatchQueue.main.async {

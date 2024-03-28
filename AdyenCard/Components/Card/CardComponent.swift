@@ -75,7 +75,7 @@ public class CardComponent: PresentableComponent,
     
     /// Determines whether the storedCardComponent is active
     private var isStoredCardComponentActive: Bool {
-        return storedCardComponent != nil
+        storedCardComponent != nil
     }
     
     /// Initializes the card component.
