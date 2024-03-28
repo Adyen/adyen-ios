@@ -10,11 +10,17 @@ import UIKit
 /// Displays a list item.
 @_spi(AdyenInternal)
 public final class ListItemView: UIView, AnyFormItemView {
+    private let imageLoader: ImageLoading
+    private var imageLoadingTask: AdyenCancellable? {
+        willSet { imageLoadingTask?.cancel() }
+    }
     
     public var childItemViews: [AnyFormItemView] = []
     
     /// Initializes the list item view.
-    public init() {
+    public init(imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()) {
+        self.imageLoader = imageLoader
+        
         super.init(frame: .zero)
         
         addSubview(contentStackView)
@@ -67,8 +73,21 @@ public final class ListItemView: UIView, AnyFormItemView {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "trailingTextLabel")
         }
         
-        imageView.imageURL = item?.icon?.url
         imageView.isHidden = item?.icon == nil
+        updateIcon()
+    }
+    
+    override public func didMoveToWindow() {
+        super.didMoveToWindow()
+        updateIcon()
+    }
+    
+    private func updateIcon() {
+        if let iconUrl = item?.icon?.url, window != nil {
+            imageLoadingTask = imageView.load(url: iconUrl, using: imageLoader)
+        } else {
+            imageLoadingTask = nil
+        }
     }
     
     private func updateImageView(style: ListItemStyle) {
@@ -85,11 +104,10 @@ public final class ListItemView: UIView, AnyFormItemView {
     
     // MARK: - Image View
     
-    private lazy var imageView: NetworkImageView = {
-        let imageView = NetworkImageView()
+    private lazy var imageView: UIImageView = {
+        let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.preservesSuperviewLayoutMargins = true
-        
         return imageView
     }()
     

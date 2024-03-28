@@ -31,6 +31,8 @@ extension VoucherView {
         
         internal let style: Style
         
+        internal let imageLoader: ImageLoading
+        
         internal struct Style {
             
             internal let editButton: ButtonStyle

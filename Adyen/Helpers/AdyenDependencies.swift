@@ -19,7 +19,15 @@ public struct AdyenDependencyValues {
     /// A subscript for updating the `currentValue` of `AdyenDependencyKey` instances.
     public subscript<K>(key: K.Type) -> K.Value where K: AdyenDependencyKey {
         get {
-            (storage[ObjectIdentifier(key)] as? K.Value) ?? key.liveValue
+            let override = (storage[ObjectIdentifier(key)] as? K.Value)
+            
+#if canImport(XCTest)
+            if override != nil {
+                print("No test value override provided for \(key)")
+            }
+#endif
+            
+            return override ?? key.liveValue
         }
         set {
             storage[ObjectIdentifier(key)] = newValue
