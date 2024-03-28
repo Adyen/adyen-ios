@@ -184,8 +184,6 @@
 		81B001C62A56E9D40015BFA3 /* LinkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B001C52A56E9D40015BFA3 /* LinkTextView.swift */; };
 		81B505792A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B505782A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift */; };
 		81B5057A2A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B505782A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift */; };
-		81B811A12BADC23900AE7402 /* MockNetworkImageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B8119F2BADC21C00AE7402 /* MockNetworkImageProvider.swift */; };
-		81B811A22BADC63700AE7402 /* MockNetworkImageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B8119F2BADC21C00AE7402 /* MockNetworkImageProvider.swift */; };
 		81BA08372A49C93100308160 /* FormSelectableValueItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08362A49C93100308160 /* FormSelectableValueItemView.swift */; };
 		81BA08392A49C95700308160 /* FormSelectableValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA08382A49C95700308160 /* FormSelectableValueItem.swift */; };
 		81BA083F2A4AD96900308160 /* FormValidatableValueItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA083E2A4AD96900308160 /* FormValidatableValueItem.swift */; };
@@ -1511,7 +1509,6 @@
 		81B001C12A55C5C10015BFA3 /* UISearchBar+Prominent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Prominent.swift"; sourceTree = "<group>"; };
 		81B001C52A56E9D40015BFA3 /* LinkTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
 		81B505782A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+XCTest.swift"; sourceTree = "<group>"; };
-		81B8119F2BADC21C00AE7402 /* MockNetworkImageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNetworkImageProvider.swift; sourceTree = "<group>"; };
 		81BA08322A45D7C100308160 /* AddressInputFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInputFormViewController.swift; sourceTree = "<group>"; };
 		81BA08362A49C93100308160 /* FormSelectableValueItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableValueItemView.swift; sourceTree = "<group>"; };
 		81BA08382A49C95700308160 /* FormSelectableValueItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableValueItem.swift; sourceTree = "<group>"; };
@@ -2553,7 +2550,6 @@
 			isa = PBXGroup;
 			children = (
 				F9CCA3DD296ED1F400AD643D /* XCTestCase+SnapshotTesting.swift */,
-				81B8119F2BADC21C00AE7402 /* MockNetworkImageProvider.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -6290,7 +6286,6 @@
 				81DF940A2BAAD8EB0001DCBC /* MBWayComponentUITests.swift in Sources */,
 				81DF940B2BAAD8EB0001DCBC /* AtomeComponentUITests.swift in Sources */,
 				81DF940C2BAAD8EB0001DCBC /* XCTestCase+FirstResponder.swift in Sources */,
-				81B811A22BADC63700AE7402 /* MockNetworkImageProvider.swift in Sources */,
 				81DF940D2BAAD8EB0001DCBC /* OnlineBankingComponentUITests.swift in Sources */,
 				81DF940E2BAAD8EB0001DCBC /* SecuredViewControllerUITests.swift in Sources */,
 				81DF940F2BAAD8EB0001DCBC /* (null) in Sources */,
@@ -7266,7 +7261,6 @@
 				00220958299E5B1D00B2BACD /* MBWayComponentUITests.swift in Sources */,
 				F9CCA3C4296ECB9900AD643D /* AtomeComponentUITests.swift in Sources */,
 				813BF1132B2365400096940E /* XCTestCase+FirstResponder.swift in Sources */,
-				81B811A12BADC23900AE7402 /* MockNetworkImageProvider.swift in Sources */,
 				F9CCA3C9296ECB9900AD643D /* OnlineBankingComponentUITests.swift in Sources */,
 				814044312B62BDBB00EB7FBA /* SecuredViewControllerUITests.swift in Sources */,
 				817F6D8C2B62A6110010D248 /* (null) in Sources */,
