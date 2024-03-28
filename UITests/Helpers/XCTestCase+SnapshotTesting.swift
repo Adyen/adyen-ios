@@ -80,7 +80,9 @@ extension XCTestCase {
         let simulatorName = ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "Unknown_Simulator"
         let systemName = UIDevice.current.systemName
         let versionName = UIDevice.current.systemVersion
-        return "\(callingFunction)-\(simulatorName)-\(systemName)_\(versionName)"
+        let locale = Locale.current.identifier
+        let language = Locale.current.language.languageCode
+        return "\(callingFunction)-\(simulatorName)-\(systemName)_\(versionName)-\(locale)-\(language ?? "-")"
     }
     
     func snapshotConfiguration() -> Snapshotting<UIViewController, UIImage> {
