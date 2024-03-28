@@ -16,6 +16,9 @@ public protocol TrackableComponent: Component {
     
     /// Sends the initial data and retrieves the checkout attempt id
     func sendInitialAnalytics()
+    
+    /// Sends the rendering event of the component
+    func sendDidLoadEvent()
 }
 
 @_spi(AdyenInternal)
@@ -23,6 +26,7 @@ extension TrackableComponent where Self: ViewControllerDelegate {
     
     public func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
+        sendDidLoadEvent()
     }
 }
 
@@ -45,5 +49,12 @@ extension TrackableComponent where Self: PaymentMethodAware {
     
     public var analyticsFlavor: AnalyticsFlavor {
         .components(type: paymentMethod.type)
+    }
+    
+    public func sendDidLoadEvent() {
+        var infoEvent = AnalyticsEventInfo(component: paymentMethod.type.rawValue, type: .rendered)
+        infoEvent.isStoredPaymentMethod = (paymentMethod is StoredPaymentMethod) ? true : nil
+        infoEvent.brand = (paymentMethod as? StoredCardPaymentMethod)?.brand.rawValue
+        context.analyticsProvider?.add(info: infoEvent)
     }
 }

@@ -1,9 +1,7 @@
 //
-//  BasicPersonalInfoFormComponentTests.swift
-//  AdyenUIKitTests
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Mohamed Eldoheiri on 3/18/21.
-//  Copyright © 2021 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 @_spi(AdyenInternal) @testable import Adyen

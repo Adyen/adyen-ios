@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -43,6 +43,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
 
     public lazy var viewController: UIViewController = {
         sendInitialAnalytics()
+        sendDidLoadEvent()
 
         let localizationParameters = configuration.localizationParameters
         let displayInformation = storedPaymentMethod.displayInformation(using: localizationParameters)

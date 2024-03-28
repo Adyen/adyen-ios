@@ -1,9 +1,7 @@
 //
-//  SessionTests.swift
-//  AdyenUIKitTests
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Mohamed Eldoheiri on 3/8/22.
-//  Copyright © 2022 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 @testable import AdyenSession

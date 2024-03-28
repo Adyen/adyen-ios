@@ -1,9 +1,7 @@
 //
-//  AnyThreeDS2FingerprintSubmitterMock.swift
-//  AdyenTests
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Mohamed Eldoheiri on 11/4/20.
-//  Copyright © 2020 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 @_spi(AdyenInternal) @testable import AdyenActions

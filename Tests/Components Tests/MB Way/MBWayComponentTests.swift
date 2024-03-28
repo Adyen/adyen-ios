@@ -1,9 +1,7 @@
 //
-//  MBWayComponentTests.swift
-//  AdyenTests
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Mohamed Eldoheiri on 7/31/20.
-//  Copyright © 2020 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 @_spi(AdyenInternal) @testable import Adyen
@@ -127,6 +125,7 @@ class MBWayComponentTests: XCTestCase {
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.infoCount, 1)
     }
 
     // MARK: - Private
