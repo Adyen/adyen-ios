@@ -1,0 +1,28 @@
+{
+  "configurations" : [
+    {
+      "id" : "037AE7EE-8870-4A5E-B800-F665F08F3485",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "commandLineArgumentEntries" : [
+      {
+        "argument" : "-GenerateSnapshots"
+      }
+    ]
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Adyen.xcodeproj",
+        "identifier" : "81DF94042BAAD8EB0001DCBC",
+        "name" : "GenerateSnapshots"
+      }
+    }
+  ],
+  "version" : 1
+}
