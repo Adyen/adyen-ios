@@ -108,7 +108,6 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         return FormRegionPickerItem(
             preselectedRegion: defaultCountry,
             selectableRegions: countries,
-            shouldShowCountryFlags: configuration.style.showCountryFlags,
             validationFailureMessage: localizedString(
                 .countryFieldInvalid,
                 configuration.localizationParameters
@@ -188,7 +187,6 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         let item = FormRegionPickerItem(
             preselectedRegion: defaultRegion,
             selectableRegions: subRegions,
-            shouldShowCountryFlags: false,
             validationFailureMessage: validationMessage,
             title: itemTitle,
             placeholder: itemTitle,

@@ -10,11 +10,15 @@ import UIKit
 /// A control to select a phone extension from a list.
 internal final class PhoneExtensionInputControl: BasePickerInputControl {
 
-    /// The country flag view.
-    internal lazy var flagView = UILabel()
+    /// The country code view.
+    internal lazy var countryCodeLabel: UILabel = {
+        let label = UILabel()
+        label.adyen.apply(style)
+        return label
+    }()
 
     override internal func setupView() {
-        let stackView = UIStackView(arrangedSubviews: [flagView, chevronView, valueLabel])
+        let stackView = UIStackView(arrangedSubviews: [countryCodeLabel, chevronView, valueLabel])
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .fillProportionally
