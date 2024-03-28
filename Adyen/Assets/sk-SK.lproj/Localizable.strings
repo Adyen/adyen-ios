@@ -181,6 +181,7 @@
 "adyen.UPI.QRCodeInstructions" = "Urobte snímku obrazovky, ktorú nahrajte do aplikácie UPI, alebo naskenujte kód QR pomocou preferovanej aplikácie UPI a dokončite platbu.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "V tomto zariadení nie je nainštalovaná aplikácia TWINT, alebo je verzia aplikácie TWINT zastaraná. Prosím, aktualizujte si alebo si nainštalujte aplikáciu TWINT.";
 "adyen.threeds2.DA.registration.title" = "Bezpečná a rýchla platba!";
 "adyen.threeds2.DA.registration.description" = "Nabudúce môžete v tomto zariadení zaplatiť rýchlejšie pomocou biometrických údajov.";
 "adyen.threeds2.DA.registration.positiveButton" = "Aktivovať rýchlu platbu";

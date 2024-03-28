@@ -50,6 +50,10 @@ let package = Package(
             name: "AdyenCashAppPay",
             targets: ["AdyenCashAppPay"]
         ),
+	.library(
+            name: "AdyenTwint",
+            targets: ["AdyenTwint"]
+        ),
         .library(
             name: "AdyenDelegatedAuthentication",
             targets: ["AdyenDelegatedAuthentication"]
@@ -181,6 +185,19 @@ let package = Package(
             ],
             path: "AdyenCashAppPay"
         ),
+	 .target(
+            name: "AdyenTwint",
+            dependencies: [
+                .target(name: "Adyen"),
+		.target(name: "AdyenActions"),
+		.target(name: "TwintSDK")
+            ],
+            path: "AdyenTwint"
+        ),
+        .binaryTarget(
+            name: "TwintSDK",
+            path: "XCFramework/Dynamic/TwintSDK.xcframework"
+	),
         .target(
             name: "AdyenDelegatedAuthentication",
             dependencies: [

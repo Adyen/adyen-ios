@@ -65,18 +65,55 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
             }
         }
         
+        public var twint: Twint?
+        
+        public struct Twint {
+            
+            /// The callback app scheme invoked once the Twint app is done with the payment
+            public var callbackAppScheme: String
+            
+            /// Initializes a new instance
+            ///
+            /// - Parameter callbackAppScheme: The callback app scheme invoked once the Twint app is done with the payment
+            ///
+            /// - Important: The value of ``callbackAppScheme`` is  required to only provide the scheme,
+            /// without a host/path/... (e.g. "my-app", not a url "my-app://...")
+            public init(callbackAppScheme: String) {
+                if !Self.isCallbackSchemeValid(callbackAppScheme) {
+                    AdyenAssertion.assertionFailure(message: "Format of provided callbackAppScheme '\(callbackAppScheme)' is incorrect.")
+                }
+                
+                self.callbackAppScheme = callbackAppScheme
+            }
+            
+            /// Validating whether or not the provided `callbackAppScheme` only contains a scheme
+            private static func isCallbackSchemeValid(_ callbackAppScheme: String) -> Bool {
+                if let url = URL(string: callbackAppScheme), url.scheme != nil {
+                    // If the scheme is not nil it means that more information than just the scheme was provided
+                    return false
+                }
+                
+                return true
+            }
+        }
+        
         /// Initializes a new instance
         ///
         /// - Parameters:
         ///   - localizationParameters: Localization parameters.
         ///   - style: The UI style configurations.
         ///   - threeDS: Three DS configurations
-        public init(localizationParameters: LocalizationParameters? = nil,
-                    style: ActionComponentStyle = .init(),
-                    threeDS: AdyenActionComponent.Configuration.ThreeDS = .init()) {
+        ///   - twint: Twint configurations
+        public init(
+            localizationParameters: LocalizationParameters? = nil,
+            style: ActionComponentStyle = .init(),
+            threeDS: AdyenActionComponent.Configuration.ThreeDS = .init(),
+            twint: Twint? = nil
+        ) {
             self.localizationParameters = localizationParameters
             self.style = style
             self.threeDS = threeDS
+            self.twint = twint
         }
     }
 
@@ -176,6 +213,12 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         switch sdkAction {
         case let .weChatPay(weChatPaySDKAction):
             handle(weChatPaySDKAction)
+        // swiftlint:disable switch_case_alignment
+        #if canImport(TwintSDK)
+            case let .twint(twintSDKAction):
+                handle(twintSDKAction)
+        #endif
+            // swiftlint:enable switch_case_alignment
         }
     }
     
@@ -192,7 +235,32 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         
         currentActionComponent = weChatPaySDKActionComponent
     }
-    
+
+    #if canImport(TwintSDK)
+        private func handle(_ action: TwintSDKAction) {
+            guard let twintConfiguration = configuration.twint else {
+                AdyenAssertion.assertionFailure(
+                    message: "Twint action configuration instance must not be nil in order to use AdyenTwint")
+                return
+            }
+            
+            let component = TwintSDKActionComponent(
+                context: context,
+                configuration: .init(
+                    style: configuration.style.awaitComponentStyle,
+                    callbackAppScheme: twintConfiguration.callbackAppScheme,
+                    localizationParameters: configuration.localizationParameters
+                )
+            )
+            component._isDropIn = _isDropIn
+            component.delegate = delegate
+            component.presentationDelegate = presentationDelegate
+
+            component.handle(action)
+            currentActionComponent = component
+        }
+    #endif
+
     private func handle(_ action: AwaitAction) {
         let component = AwaitComponent(context: context)
         component.configuration.style = configuration.style.awaitComponentStyle

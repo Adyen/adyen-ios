@@ -17,6 +17,9 @@
 #if canImport(AdyenCashAppPay)
     import AdyenCashAppPay
 #endif
+#if canImport(AdyenTwint)
+    import AdyenTwint
+#endif
 import Foundation
 
 extension ComponentManager: PaymentComponentBuilder {
@@ -175,7 +178,17 @@ extension ComponentManager: PaymentComponentBuilder {
                      context: context,
                      configuration: .init(style: configuration.style.formComponent))
     }
-    
+
+    internal func build(paymentMethod: TwintPaymentMethod) -> PaymentComponent? {
+#if canImport(AdyenTwint)
+        TwintComponent(paymentMethod: paymentMethod,
+                       context: context,
+                       configuration: .init(style: configuration.style.formComponent))
+#else
+        return nil
+#endif
+    }
+
     internal func build(paymentMethod: CashAppPayPaymentMethod) -> PaymentComponent? {
         #if canImport(PayKit)
             guard let cashAppPayDropInConfig = configuration.cashAppPay else {

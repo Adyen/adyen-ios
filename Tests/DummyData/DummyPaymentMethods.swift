@@ -554,3 +554,8 @@ let bizum: [String: Any] = [
     "type": "bizum",
     "name": "Bizum"
 ]
+
+let twint = [
+    "name": "Twint",
+    "type": "twint"
+]

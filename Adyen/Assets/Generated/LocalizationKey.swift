@@ -374,6 +374,8 @@ public struct LocalizationKey {
     public static let cashAppPayTitle = LocalizationKey(key: "adyen.cashAppPay.title")
     /// Cashtag
     public static let cashAppPayCashtag = LocalizationKey(key: "adyen.cashAppPay.cashtag")
+    /// No or an outdated version of TWINT is installed on this device. Please update or install the TWINT app.
+    public static let twintNoAppsInstalledMessage = LocalizationKey(key: "adyen.twint.noAppsInstalled.message")
     /// Safe and swift checkout!
     public static let threeds2DARegistrationTitle = LocalizationKey(key: "adyen.threeds2.DA.registration.title")
     /// You can check out faster next time on this device using your biometrics.

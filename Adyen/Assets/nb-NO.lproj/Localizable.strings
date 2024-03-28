@@ -181,6 +181,7 @@
 "adyen.UPI.QRCodeInstructions" = "Ta et skjermbilde for opplasting i UPI-appen, eller skann QR-koden for å bruke din foretrukne UPI-app til å fullføre betalingen.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "Du har enten ingen eller en utdatert versjon av TWINT på denne enheten. Du må enten oppdatere eller installere TWINT-appen.";
 "adyen.threeds2.DA.registration.title" = "Rask og sikker betaling!";
 "adyen.threeds2.DA.registration.description" = "Du kan betale raskere neste gang på denne enheten ved hjelp av biometrien din.";
 "adyen.threeds2.DA.registration.positiveButton" = "Aktiver rask betaling";

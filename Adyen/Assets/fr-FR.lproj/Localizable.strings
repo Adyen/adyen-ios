@@ -181,6 +181,7 @@
 "adyen.UPI.QRCodeInstructions" = "Effectuez une capture d'écran afin de l'importer dans l'application UPI ou scannez le code QR à l'aide de votre application UPI préférée pour procéder au paiement.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "Aucune version de TWINT n'est installée sur cet appareil, ou celle-ci est obsolète. Veuillez mettre à jour ou installer l'application TWINT.";
 "adyen.threeds2.DA.registration.title" = "Payez rapidement et en toute sécurité !";
 "adyen.threeds2.DA.registration.description" = "Vous pourrez payer plus rapidement la prochaine fois sur cet appareil à l'aide de vos données biométriques.";
 "adyen.threeds2.DA.registration.positiveButton" = "Activer le paiement rapide";

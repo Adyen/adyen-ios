@@ -1,0 +1,6 @@
+framework module TwintSDK {
+  umbrella header "TwintSDK.h"
+
+  export *
+  module * { export * }
+}

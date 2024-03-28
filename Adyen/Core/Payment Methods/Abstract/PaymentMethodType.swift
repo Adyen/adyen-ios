@@ -60,6 +60,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     case upi
     case cashAppPay
     case bizum
+    case twint
     case other(String)
     
     // swiftlint:disable cyclomatic_complexity function_body_length
@@ -119,6 +120,8 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case "upi": self = .upi
         case "cashapp": self = .cashAppPay
         case "bizum": self = .bizum
+        case "twint": self = .twint
+
         default: self = .other(rawValue)
         }
     }
@@ -177,6 +180,8 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case .upi: return "upi"
         case .cashAppPay: return "cashapp"
         case .bizum: return "bizum"
+        case .twint: return "twint"
+
         case let .other(value): return value
         }
     }
@@ -242,6 +247,8 @@ extension PaymentMethodType {
         case .upi: return "UPI"
         case .cashAppPay: return "cash app"
         case .bizum: return "bizum"
+        case .twint: return "twint"
+    
         case let .other(name): return name.replacingOccurrences(of: "_", with: " ")
         }
     }

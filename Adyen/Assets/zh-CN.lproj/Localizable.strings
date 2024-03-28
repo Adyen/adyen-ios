@@ -176,6 +176,7 @@
 "adyen.upi.vpaWaitingMessage" = "打开您的 UPI 应用以确认付款";
 "adyen.QRCode.generateQRCode" = "生成二维码";
 "adyen.UPI.QRCodeInstructions" = "截取屏幕截图以上传到 UPI 应用，或者使用您首选的 UPI 应用扫描二维码以完成付款。";
+"adyen.twint.noAppsInstalled.message" = "此设备上未安装 TWINT 或安装的 TWINT 版本已过期。请更新或安装 TWINT 应用。";
 "adyen.threeds2.DA.registration.title" = "安全快捷结账！";
 "adyen.threeds2.DA.registration.description" = "下次您可以使用生物识别技术在此设备上更快地结账。";
 "adyen.threeds2.DA.registration.positiveButton" = "启用快捷结账";

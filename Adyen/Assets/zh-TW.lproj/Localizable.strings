@@ -175,6 +175,7 @@
 "adyen.upi.vpaWaitingMessage" = "開啟您的 UPI 應用程式以確認付款";
 "adyen.QRCode.generateQRCode" = "產生 QR 代碼";
 "adyen.UPI.QRCodeInstructions" = "擷取螢幕畫面並上傳到 UPI 應用程式，或使用偏好的 UPI 應用程式掃描 QR 代碼以完成付款。";
+"adyen.twint.noAppsInstalled.message" = "這個裝置並未安裝 TWINT 的應用程式，或是可能安裝到了舊版的 TWINT 應用程式。 請更新或安裝 TWINT 的應用程式。";
 "adyen.threeds2.DA.registration.title" = "安全快捷的結帳！";
 "adyen.threeds2.DA.registration.description" = "下次您可以使用生物特徵辨識功能，在此裝置上更快結帳。";
 "adyen.threeds2.DA.registration.positiveButton" = "啟用快捷結帳";

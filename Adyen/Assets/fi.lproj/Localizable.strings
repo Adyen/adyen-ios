@@ -181,6 +181,7 @@
 "adyen.UPI.QRCodeInstructions" = "Suorita maksu ottamalla kuvakaappaus, jonka voit ladata UPI-sovellukseen, tai skannaamalla QR-koodi haluamallasi UPI-sovelluksella.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "Laitteeseen ei ole asennettu TWINT-sovellusta tai laitteessa on sen vanhentunut versio. Päivitä tai asenna TWINT-sovellus.";
 "adyen.threeds2.DA.registration.title" = "Turvallinen ja nopea kassa!";
 "adyen.threeds2.DA.registration.description" = "Voit maksaa tällä laitteella nopeammin ensi kerralla käyttämällä biometrisiä tietojasi.";
 "adyen.threeds2.DA.registration.positiveButton" = "Ota käyttöön nopea kassa";

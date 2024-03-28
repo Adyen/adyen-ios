@@ -191,6 +191,7 @@ whiteList:
   - mapkit
   - bizum
   - alipay
+  - twint
+  - xcframework
   - checkoutanalytics
   - xcprivacy
-

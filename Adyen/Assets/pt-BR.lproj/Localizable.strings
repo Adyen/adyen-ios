@@ -181,6 +181,7 @@
 "adyen.UPI.QRCodeInstructions" = "Faça uma captura de tela para carregar no aplicativo de UPI ou escaneie o QR code usando o aplicativo UPI de sua preferência para concluir o pagamento.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "Este aparelho não tem nenhuma versão do TWINT instalada, ou a versão está desatualizada. Atualize ou instale o app TWINT.";
 "adyen.threeds2.DA.registration.title" = "Checkout rápido e seguro!";
 "adyen.threeds2.DA.registration.description" = "Seu checkout neste dispositivo pode ser mais rápido na próxima vez com o uso da biometria.";
 "adyen.threeds2.DA.registration.positiveButton" = "Habilitar checkout rápido";

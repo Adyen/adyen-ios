@@ -10,6 +10,10 @@ import AdyenWeChatPay
 import SafariServices
 import XCTest
 
+#if canImport(AdyenTwint)
+import AdyenTwint
+#endif
+
 class AdyenActionComponentTests: XCTestCase {
 
     let weChatActionResponse = """
@@ -73,6 +77,17 @@ class AdyenActionComponentTests: XCTestCase {
         "url": "https://adyen.com"
     }
     """
+    
+    let twintAction = """
+    {
+        "paymentMethodType": "twint",
+        "paymentData": "",
+        "type": "sdk",
+        "sdkData": {
+            "token": ""
+        }
+    }
+    """
 
     func testRedirectToHttpWebLink() throws {
         let sut = AdyenActionComponent(context: Dummy.context)
@@ -111,7 +126,7 @@ class AdyenActionComponentTests: XCTestCase {
         waitForExpectations(timeout: 100, handler: nil)
     }
 
-    func testWeChatAction() {
+    func testWeChatAction() throws {
         let sut = AdyenActionComponent(context: Dummy.context)
 
         let expectation = expectation(description: "Assertion Expectation")
@@ -122,15 +137,15 @@ class AdyenActionComponentTests: XCTestCase {
             expectation.fulfill()
         }
 
-        let sdkAction = try! JSONDecoder().decode(SDKAction.self, from: weChatActionResponse.data(using: .utf8)!)
+        let sdkAction = try JSONDecoder().decode(SDKAction.self, from: weChatActionResponse.data(using: .utf8)!)
         sut.handle(Action.sdk(sdkAction))
 
         waitForExpectations(timeout: 15, handler: nil)
     }
 
-    func test3DSAction() {
+    func test3DSAction() throws {
         let sut = AdyenActionComponent(context: Dummy.context)
-        let action = try! JSONDecoder().decode(ThreeDS2Action.self, from: threeDSFingerprintAction.data(using: .utf8)!)
+        let action = try JSONDecoder().decode(ThreeDS2Action.self, from: threeDSFingerprintAction.data(using: .utf8)!)
         sut.handle(Action.threeDS2(action))
 
         wait { sut.currentActionComponent is ThreeDS2Component }
@@ -140,7 +155,7 @@ class AdyenActionComponentTests: XCTestCase {
         let sut = AdyenActionComponent(context: Dummy.context)
         sut.presentationDelegate = try UIViewController.topPresenter()
         
-        let action = try! JSONDecoder().decode(VoucherAction.self, from: voucherAction.data(using: .utf8)!)
+        let action = try JSONDecoder().decode(VoucherAction.self, from: voucherAction.data(using: .utf8)!)
         sut.handle(Action.voucher(action))
         
         let waitExpectation = expectation(description: "Expect VoucherViewController to be presented")
@@ -161,7 +176,7 @@ class AdyenActionComponentTests: XCTestCase {
         let sut = AdyenActionComponent(context: Dummy.context)
         sut.presentationDelegate = try UIViewController.topPresenter()
         
-        let action = try! JSONDecoder().decode(QRCodeAction.self, from: qrAction.data(using: .utf8)!)
+        let action = try JSONDecoder().decode(QRCodeAction.self, from: qrAction.data(using: .utf8)!)
         sut.handle(Action.qrCode(action))
         
         try waitUntilTopPresenter(isOfType: QRCodeViewController.self)
@@ -172,10 +187,71 @@ class AdyenActionComponentTests: XCTestCase {
         let sut = AdyenActionComponent(context: Dummy.context)
         sut.presentationDelegate = try UIViewController.topPresenter()
         
-        let action = try! JSONDecoder().decode(DocumentAction.self, from: documentAction.data(using: .utf8)!)
+        let action = try JSONDecoder().decode(DocumentAction.self, from: documentAction.data(using: .utf8)!)
         sut.handle(Action.document(action))
         
         let documentViewController = try waitUntilTopPresenter(isOfType: ADYViewController.self)
         XCTAssertNotNil(documentViewController.view as? DocumentActionView)
+    }
+    
+    func testTwintAction() throws {
+        
+        let sut = AdyenActionComponent(context: Dummy.context)
+        sut.presentationDelegate = try UIViewController.topPresenter()
+        
+        let assertionExpectation = expectation(description: "Should Assert if no Twint configuration is provided")
+        AdyenAssertion.listener = { assertion in
+            XCTAssertEqual(assertion, "Twint action configuration instance must not be nil in order to use AdyenTwint")
+            assertionExpectation.fulfill()
+        }
+        
+        let action = try JSONDecoder().decode(TwintSDKAction.self, from: twintAction.data(using: .utf8)!)
+        sut.handle(Action.sdk(.twint(action)))
+        
+        wait(for: [assertionExpectation], timeout: 0.1)
+        
+        AdyenAssertion.listener = nil
+        
+        let expectedCallbackAppScheme = "ui-host"
+        sut.configuration.twint = .init(callbackAppScheme: expectedCallbackAppScheme)
+        sut.handle(Action.sdk(.twint(action)))
+        
+        #if canImport(AdyenTwint)
+        let twintComponent = try XCTUnwrap(sut.currentActionComponent as? TwintSDKActionComponent)
+        XCTAssertEqual(twintComponent.configuration.callbackAppScheme, expectedCallbackAppScheme)
+        #endif
+    }
+    
+    func testTwintActionConfiguration() throws {
+        
+        let validSchemes = [
+            "scheme"
+        ]
+        
+        let invalidSchemes = [
+            "scheme:",
+            "scheme://",
+            "scheme://host"
+        ]
+        
+        // Valid Configuration
+        
+        validSchemes.forEach { scheme in
+            AdyenAssertion.listener = { message in
+                XCTFail("No assertion should have been raised")
+            }
+            
+            let _ = AdyenActionComponent.Configuration.Twint(callbackAppScheme: scheme)
+        }
+        
+        // Invalid Configuration
+        
+        invalidSchemes.forEach { scheme in
+            AdyenAssertion.listener = { message in
+                XCTAssertEqual(message, "Format of provided callbackAppScheme '\(scheme)' is incorrect.")
+            }
+            
+            let _ = AdyenActionComponent.Configuration.Twint(callbackAppScheme: scheme)
+        }
     }
 }
