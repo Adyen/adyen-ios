@@ -15,6 +15,14 @@ class PaymentMethodListComponentTests: XCTestCase {
     lazy var storedComponent = PaymentComponentMock(paymentMethod: method1)
     lazy var regularComponent = PaymentComponentMock(paymentMethod: method2)
 
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     func testRequiresKeyboardInput() {
         let section = ComponentsSection(components: [storedComponent])
         let sectionedComponents = [section]

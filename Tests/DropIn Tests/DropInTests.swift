@@ -125,6 +125,7 @@ class DropInTests: XCTestCase {
     override func run() {
         AdyenDependencyValues.runTestWithValues {
             $0.openAppDetector = MockOpenExternalAppDetector(didOpenExternalApp: false)
+            $0.imageLoader = ImageLoaderMock()
         } perform: {
             super.run()
         }

@@ -14,7 +14,15 @@ class FormCardNumberItemViewTests: XCTestCase {
     var sut: FormCardNumberItemView!
     var validator: ValidatorMock!
     
-    private static let url = URL(string: "https:google.com")!
+    private static let url = URL(string: "https://google.com")!
+    
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
     
     override func setUp() {
         item = FormCardNumberItem(cardTypeLogos: [.init(url: Self.url, type: .visa),

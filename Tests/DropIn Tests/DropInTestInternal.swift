@@ -10,6 +10,14 @@ import XCTest
 
 class DropInInternalTests: XCTestCase {
 
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     func testFinaliseIfNeededSelectedComponent() throws {
         let config = DropInComponent.Configuration()
 

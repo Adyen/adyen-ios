@@ -11,6 +11,14 @@ import XCTest
 
 class QRCodeActionComponentUITests: XCTestCase {
 
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     func testUIConfigurationForPromptPay() {
         lazy var method = InstantPaymentMethod(type: .other("promptpay"), name: "promptpay")
         let action = QRCodeAction(paymentMethodType: .promptPay, qrCodeData: "DummyData", paymentData: "DummyData")

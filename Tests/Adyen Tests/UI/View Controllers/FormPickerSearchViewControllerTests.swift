@@ -28,6 +28,14 @@ extension SearchViewController.InterfaceState {
 
 class FormPickerSearchViewControllerTests: XCTestCase {
     
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     func testSetup() throws {
         
         let option: FormPickerElement = .init(identifier: "Identifier", title: "Title", subtitle: "Subtitle")

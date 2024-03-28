@@ -13,6 +13,14 @@ import XCTest
 
 class SecuredViewControllerUITests: XCTestCase {
     
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     func testBlur() throws {
         struct DummyStyle: ViewStyle {
             var backgroundColor: UIColor

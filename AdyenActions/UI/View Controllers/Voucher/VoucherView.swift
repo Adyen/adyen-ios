@@ -29,6 +29,8 @@ internal final class VoucherView: UIView, Localizable {
     
     private lazy var loadingView = LoadingView(contentView: containerView)
     
+    private var imageLoadingTask: AdyenCancellable?
+    
     internal init(model: Model) {
         self.model = model
 
@@ -122,8 +124,8 @@ internal final class VoucherView: UIView, Localizable {
         return stackView
     }()
     
-    internal lazy var logo: NetworkImageView = {
-        let logo = NetworkImageView()
+    internal lazy var logo: UIImageView = {
+        let logo = UIImageView()
         let logoSize = CGSize(width: 77.0, height: 50.0)
         logo.contentMode = .scaleAspectFit
         logo.clipsToBounds = true
@@ -132,9 +134,6 @@ internal final class VoucherView: UIView, Localizable {
         logo.widthAnchor.constraint(equalToConstant: logoSize.width).isActive = true
         logo.heightAnchor.constraint(equalToConstant: logoSize.height).isActive = true
         logo.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "logo")
-        
-        logo.imageURL = model.logoUrl
-        
         return logo
     }()
     
@@ -248,4 +247,16 @@ internal final class VoucherView: UIView, Localizable {
         )
     }
     
+    override public func didMoveToWindow() {
+        super.didMoveToWindow()
+        updateLogo()
+    }
+    
+    private func updateLogo() {
+        if window != nil {
+            imageLoadingTask = logo.load(url: model.logoUrl, using: model.imageLoader)
+        } else {
+            imageLoadingTask = nil
+        }
+    }
 }

@@ -31,6 +31,14 @@ class SearchViewControllerTests: XCTestCase {
     var viewController: SearchViewController!
     var emptyView: DummyEmptyView!
     
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     override func setUp() {
         super.setUp()
         
