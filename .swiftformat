@@ -4,3 +4,4 @@
 --ranges nospace
 --trimwhitespace nonblank-lines
 --decimalgrouping none
+--header "\nCopyright (c) {created.year} Adyen N.V.\n\nThis file is open source and available under the MIT license. See the LICENSE file for more info.\n"

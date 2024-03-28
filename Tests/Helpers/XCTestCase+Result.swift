@@ -1,9 +1,7 @@
 //
-//  XCTestCase+Result.swift
-//  AdyenSession
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Eren Besel on 3/15/22.
-//  Copyright © 2022 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
