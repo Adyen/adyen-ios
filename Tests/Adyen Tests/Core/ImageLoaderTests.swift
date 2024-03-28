@@ -9,7 +9,7 @@ import XCTest
 
 class ImageLoaderTests: XCTestCase {
     
-    private let dummyImageUrl: URL = URL(string: "https://adyen.com")!
+    private let dummyImageUrl: URL = .init(string: "https://adyen.com")!
     
     func test_instantiatingImageLoader_doesNotHaveAnySideEffects() {
         

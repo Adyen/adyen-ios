@@ -21,11 +21,11 @@ public struct AdyenDependencyValues {
         get {
             let override = (storage[ObjectIdentifier(key)] as? K.Value)
             
-#if canImport(XCTest)
-            if override != nil {
-                print("No test value override provided for \(key)")
-            }
-#endif
+            #if canImport(XCTest)
+                if override != nil {
+                    print("No test value override provided for \(key)")
+                }
+            #endif
             
             return override ?? key.liveValue
         }
