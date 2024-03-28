@@ -22,6 +22,7 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
 
     internal func didLoad(_ paymentMethodListComponent: PaymentMethodListComponent) {
         sendInitialAnalytics()
+        sendDidLoadEvent()
     }
     
     internal func didSelect(_ component: PaymentComponent,
@@ -161,5 +162,10 @@ extension DropInComponent: TrackableComponent {
     public var analyticsFlavor: AnalyticsFlavor {
         let paymentMethodTypes = paymentMethods.regular.map(\.type.rawValue)
         return .dropIn(paymentMethods: paymentMethodTypes)
+    }
+    
+    public func sendDidLoadEvent() {
+        let infoEvent = AnalyticsEventInfo(component: "dropin", type: .rendered)
+        context.analyticsProvider?.add(info: infoEvent)
     }
 }

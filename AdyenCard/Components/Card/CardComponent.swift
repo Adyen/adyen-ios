@@ -73,6 +73,11 @@ public class CardComponent: PresentableComponent,
         }
     }
     
+    /// Determines whether the storedCardComponent is active
+    private var isStoredCardComponentActive: Bool {
+        return storedCardComponent != nil
+    }
+    
     /// Initializes the card component.
     ///
     /// - Parameters:
@@ -128,6 +133,11 @@ public class CardComponent: PresentableComponent,
     public var requiresModalPresentation: Bool { storedCardComponent?.requiresModalPresentation ?? true }
     
     public func stopLoading() {
+        // since storedCardComponent is instantiated through this class
+        // cardViewController should not be accessed when it's the storedCardComponent
+        // we should separate stored card component logic into its own
+        if isStoredCardComponentActive { return }
+        
         cardViewController.stopLoading()
     }
     

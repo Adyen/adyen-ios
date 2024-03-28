@@ -530,6 +530,7 @@ class BCMCComponentTests: XCTestCase {
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.infoCount, 1)
     }
     
     func fillCard(on view: UIView, with card: Card, simulateKeyStrokes: Bool = false) {

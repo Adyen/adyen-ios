@@ -46,12 +46,10 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     /// Call back when the list is dismissed.
     internal var onCancel: (() -> Void)?
     
-    /// Initializes the list component.
-    ///
-    /// - Parameter components: The components to display in the list.
-    /// - Parameter style: The component's UI style.
+    /// Initializes the pre selected payment component.
     /// - Parameter component: The pre-selected component.
     /// - Parameter title: The title.
+    /// - Parameter style: The component's UI style.
     /// - Parameter listItemStyle: The list item UI style.
     internal init(component: PaymentComponent,
                   title: String,

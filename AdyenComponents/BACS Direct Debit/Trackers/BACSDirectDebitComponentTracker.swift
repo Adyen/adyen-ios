@@ -9,6 +9,7 @@ import Foundation
 
 internal protocol BACSDirectDebitComponentTrackerProtocol: AnyObject {
     func sendInitialAnalytics()
+    func sendDidLoadEvent()
 }
 
 internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerProtocol {
@@ -39,6 +40,11 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
         let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AnalyticsForSession.sessionId)
         context.analyticsProvider?.sendInitialAnalytics(with: flavor,
                                                         additionalFields: additionalFields)
+    }
+    
+    internal func sendDidLoadEvent() {
+        let infoEvent = AnalyticsEventInfo(component: paymentMethod.type.rawValue, type: .rendered)
+        context.analyticsProvider?.add(info: infoEvent)
     }
 
 }

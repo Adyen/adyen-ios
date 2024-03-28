@@ -67,6 +67,7 @@ extension CardComponent: ViewControllerDelegate {
 
     public func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
+        sendDidLoadEvent()
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
     }

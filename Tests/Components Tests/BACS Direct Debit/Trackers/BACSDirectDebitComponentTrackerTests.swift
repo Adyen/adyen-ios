@@ -38,4 +38,10 @@ class BACSDirectDebitComponentTrackerTests: XCTestCase {
         // Then
         XCTAssertEqual(analyticsProvider.initialEventCallsCount, 1)
     }
+    
+    func testSendRenderEventShouldAddInfoCount() {
+        sut.sendDidLoadEvent()
+        
+        XCTAssertEqual(analyticsProvider.infoCount, 1)
+    }
 }

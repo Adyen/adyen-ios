@@ -57,6 +57,7 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
 
     internal func viewDidLoad() {
         tracker.sendInitialAnalytics()
+        tracker.sendDidLoadEvent()
         createItems()
         setupView()
     }

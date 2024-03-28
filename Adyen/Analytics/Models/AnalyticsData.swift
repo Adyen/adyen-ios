@@ -29,7 +29,7 @@ public struct AnalyticsContext {
 public extension AnalyticsContext {
 
     enum Platform: String {
-        case iOS = "ios"
+        case iOS = "iOS"
         case reactNative = "react-native"
         case flutter
     }
