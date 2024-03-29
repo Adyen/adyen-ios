@@ -192,11 +192,25 @@ public class CardComponent: PresentableComponent,
         formViewController.delegate = self
         formViewController.cardDelegate = self
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
+        
+        formViewController.items.onDidTriggerEvent = { [weak self] (infoType, target) in
+            self?.sendInfoEvent(of: infoType, target: target)
+        }
+        
         return formViewController
     }()
     
     private let panThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
     private let binThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
+    
+    private func sendInfoEvent(of type: AnalyticsEventInfo.InfoType, target: AnalyticsEventTarget) {
+        var infoEvent = AnalyticsEventInfo(
+            component: paymentMethod.type.rawValue,
+            type: type
+        )
+        infoEvent.target = target
+//        context.analyticsProvider?.add(info: infoEvent)
+    }
 }
 
 extension CardComponent: CardViewControllerDelegate {

@@ -39,6 +39,12 @@ open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFor
     
     /// Determines whether the validation can occur while editing is active.
     public var allowsValidationWhileEditing: Bool = false
+    
+    /// Closure that is called when the view of this item begins editing..
+    public var onDidBeginEditing: (() -> Void)?
+    
+    /// Closure that is called when the view of this item ends editing.
+    public var onDidEndEditing: (() -> Void)?
 
     public init(style: FormTextItemStyle) {
         super.init(value: "", style: style)
