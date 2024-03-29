@@ -27,9 +27,8 @@ internal final class DocumentActionView: UIView {
         return stackView
     }()
     
-    internal lazy var imageView: NetworkImageView = {
-        let imageView = NetworkImageView()
-        imageView.imageURL = viewModel.logoURL
+    internal lazy var imageView: UIImageView = {
+        let imageView = UIImageView()
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "icon")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.widthAnchor.constraint(equalToConstant: 80).isActive = true
@@ -72,11 +71,19 @@ internal final class DocumentActionView: UIView {
     /// The view model.
     private let viewModel: DocumentActionViewModel
     
+    private let imageLoader: ImageLoading
+    private var imageLoadingTask: AdyenCancellable?
+    
     /// The UI style.
     private let style: DocumentComponentStyle
     
-    internal init(viewModel: DocumentActionViewModel, style: DocumentComponentStyle) {
+    internal init(
+        viewModel: DocumentActionViewModel,
+        style: DocumentComponentStyle,
+        imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
+    ) {
         self.viewModel = viewModel
+        self.imageLoader = imageLoader
         self.style = style
         super.init(frame: .zero)
         configureViews()
@@ -99,5 +106,18 @@ internal final class DocumentActionView: UIView {
     
     @objc private func onMainButtonTap() {
         delegate?.mainButtonTap(sourceView: mainButton, downloadable: viewModel.action)
+    }
+    
+    override public func didMoveToWindow() {
+        super.didMoveToWindow()
+        updateLogo()
+    }
+    
+    private func updateLogo() {
+        if window != nil {
+            imageLoadingTask = imageView.load(url: viewModel.logoURL, using: imageLoader)
+        } else {
+            imageLoadingTask = nil
+        }
     }
 }
