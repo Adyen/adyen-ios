@@ -87,6 +87,6 @@ extension XCTestCase {
     func snapshotConfiguration() -> Snapshotting<UIViewController, UIImage> {
         let precision: Float = 0.98
         
-        return .image(perceptualPrecision: precision)
+        return .image(drawHierarchyInKeyWindow: true, perceptualPrecision: precision)
     }
 }
