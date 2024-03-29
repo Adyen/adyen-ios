@@ -207,6 +207,7 @@
 		81BDD6DF2B21CF510022250E /* AdyenWeChatPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		81BDD6E32B21CF5C0022250E /* AdyenWeChatPayInternal in Frameworks */ = {isa = PBXBuildFile; productRef = 81BDD6E22B21CF5C0022250E /* AdyenWeChatPayInternal */; };
 		81BE48352BB6D03F003A51F6 /* ImageLoaderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FC2C8C2BB18D0A007F1316 /* ImageLoaderMock.swift */; };
+		81BE48362BB6D1BE003A51F6 /* String+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8107F4832BB1CE8A007745FC /* String+UIImage.swift */; };
 		81C400642A3B0C58007EC51C /* FormSearchButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C400632A3B0C58007EC51C /* FormSearchButtonItem.swift */; };
 		81C400672A3B0D8F007EC51C /* FormSearchButtonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C400662A3B0D8F007EC51C /* FormSearchButtonItemView.swift */; };
 		81C4006B2A40A526007EC51C /* FormAddressPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C4006A2A40A526007EC51C /* FormAddressPickerItem.swift */; };
@@ -6302,6 +6303,7 @@
 				81DF94192BAAD8EB0001DCBC /* DokuComponentUITests.swift in Sources */,
 				81DF941A2BAAD8EB0001DCBC /* IssuerListComponentUITests.swift in Sources */,
 				81DF941B2BAAD8EB0001DCBC /* AffirmComponentUITests.swift in Sources */,
+				81BE48362BB6D1BE003A51F6 /* String+UIImage.swift in Sources */,
 				81DF941C2BAAD8EB0001DCBC /* XCTestCase+FormAddressItem.swift in Sources */,
 				81BE48352BB6D03F003A51F6 /* ImageLoaderMock.swift in Sources */,
 				81DF941D2BAAD8EB0001DCBC /* BoletoComponentUITests.swift in Sources */,
