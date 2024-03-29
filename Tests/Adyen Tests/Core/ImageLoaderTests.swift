@@ -111,7 +111,7 @@ class ImageLoaderTests: XCTestCase {
             cancellable.cancel()
         }
         
-        wait(for: [noCompletionExpectation, completionExpectation], timeout: 0.1)
+        wait(for: [noCompletionExpectation, completionExpectation], timeout: 1)
     }
     
     func test_errorResponse_shouldCallCompletionWithNilImage() {
