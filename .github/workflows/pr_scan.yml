@@ -20,6 +20,11 @@ jobs:
     - uses: n1hility/cancel-previous-runs@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Validate Versions
+      run: |
+        Scripts/validate-3ds2-SDK-version.sh
+        Scripts/validate-Adyen-SDK-version.sh
 
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
@@ -30,47 +35,15 @@ jobs:
       run: |
         brew install sonar-scanner
         gem install slather
-
-    - name: ✅ Validate 3DS2 SDK version
-      run: |
-        Scripts/validate-3ds2-SDK-version.sh
         
-    - name: ✅ Validate Adyen SDK version
-      run: |
-        Scripts/validate-Adyen-SDK-version.sh
-
     - name: 👷 Clean Build
       run: |
         xcodebuild -version
-        xcodebuild clean build -project "${project}" -scheme "${scheme}" ${params} -destination "name=iPhone 15 Pro,OS=17.2" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "name=iPhone 15 Pro,OS=17.2" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -skipPackagePluginValidation'
+        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
         scheme: 'AdyenUIHost'
-        
-    - name: 🤖 Unit Tests
-      run: |
-        xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "name=iPhone 15 Pro,OS=17.2" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
-      env:
-        project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
-        scheme: 'AdyenUIKitTests'
-        
-    - name: 🤳 Snapshot Tests 🇺🇸
-      run: |
-        xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "name=iPhone 15 Pro,OS=17.2" -testLanguage en -testRegion en_US | xcpretty --utf --color && exit ${PIPESTATUS[0]}
-      env:
-        project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
-        scheme: 'AdyenUIHostUITests'
-    
-    - name: 🤳 Snapshot Tests 🇩🇪
-      run: |
-        xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "name=iPhone 15 Pro,OS=17.2" -testLanguage de -testRegion de_DE | xcpretty --utf --color && exit ${PIPESTATUS[0]}
-      env:
-        project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
-        scheme: 'AdyenUIHostUITests'
 
     - name: 📈 Code Coverage
       run: |
