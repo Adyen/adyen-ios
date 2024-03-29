@@ -22,7 +22,7 @@ jobs:
         find ./UITests -name "__Snapshots__" -exec rm -rf {} +
     - name: Generate Snapshots
       run: |
-        xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "name=iPhone 15 Pro,OS=17.2" | xcpretty --utf --color
+        xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "name=iPhone 15 Pro,OS=17.2" -testLanguage en -testRegion en_US | xcpretty --utf --color
         xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "name=iPhone 15 Pro,OS=17.2" -testLanguage de -testRegion de_DE | xcpretty --utf --color
       env:
         project: 'Adyen.xcodeproj'

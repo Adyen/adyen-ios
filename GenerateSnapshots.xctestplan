@@ -2,9 +2,18 @@
   "configurations" : [
     {
       "id" : "037AE7EE-8870-4A5E-B800-F665F08F3485",
-      "name" : "Test Scheme Action",
+      "name" : "en_US Snapshots",
       "options" : {
-
+        "language" : "en",
+        "region" : "US"
+      }
+    },
+    {
+      "id" : "05301771-46E3-4D5D-8301-E8D88941790F",
+      "name" : "de_DE Snapshots",
+      "options" : {
+        "language" : "de",
+        "region" : "DE"
       }
     }
   ],
@@ -13,7 +22,9 @@
       {
         "argument" : "-GenerateSnapshots"
       }
-    ]
+    ],
+    "preferredScreenCaptureFormat" : "screenshot",
+    "uiTestingScreenshotsLifetime" : "keepNever"
   },
   "testTargets" : [
     {

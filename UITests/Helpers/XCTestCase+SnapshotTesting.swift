@@ -81,8 +81,7 @@ extension XCTestCase {
         let systemName = UIDevice.current.systemName
         let versionName = UIDevice.current.systemVersion
         let locale = Locale.current.identifier
-        let language = Locale.current.language.languageCode
-        return "\(callingFunction)-\(simulatorName)-\(systemName)_\(versionName)-\(locale)-\(language ?? "-")"
+        return "\(callingFunction)-\(simulatorName)-\(systemName)_\(versionName)-\(locale)"
     }
     
     func snapshotConfiguration() -> Snapshotting<UIViewController, UIImage> {
