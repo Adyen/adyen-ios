@@ -1491,9 +1491,9 @@
 		81825CC32AC59C6C00F91912 /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
 		81881BCD2B1A0A510020E3F2 /* AnyPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyPaymentMethod.swift; sourceTree = "<group>"; };
 		81896E842A4DB5F300C532CA /* SearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerTests.swift; sourceTree = "<group>"; };
-		818B03C22BB6F5E900732C35 /* AdyenUIHostTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = AdyenUIHostTests.xctestplan; sourceTree = "<group>"; };
-		818B03C42BB6F86600732C35 /* AdyenUIKitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = AdyenUIKitTests.xctestplan; sourceTree = "<group>"; };
-		818B03C52BB6F88100732C35 /* AdyenUIHostUITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = AdyenUIHostUITests.xctestplan; sourceTree = "<group>"; };
+		818B03C22BB6F5E900732C35 /* AllTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = AllTests.xctestplan; sourceTree = "<group>"; };
+		818B03C42BB6F86600732C35 /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
+		818B03C52BB6F88100732C35 /* SnapshotTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = SnapshotTests.xctestplan; sourceTree = "<group>"; };
 		818E7BBE2B989ACE00A432EE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		8191838D2A53062F008EB61A /* FormAddressItem+Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormAddressItem+Configuration.swift"; sourceTree = "<group>"; };
 		819CC3332B14C53200D2EEE9 /* PaymentMethods+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaymentMethods+Equatable.swift"; sourceTree = "<group>"; };
@@ -2746,10 +2746,10 @@
 		818B03C32BB6F74700732C35 /* TestPlans */ = {
 			isa = PBXGroup;
 			children = (
+				818B03C22BB6F5E900732C35 /* AllTests.xctestplan */,
+				818B03C42BB6F86600732C35 /* UnitTests.xctestplan */,
+				818B03C52BB6F88100732C35 /* SnapshotTests.xctestplan */,
 				81DF942F2BAAD9A20001DCBC /* GenerateSnapshots.xctestplan */,
-				818B03C22BB6F5E900732C35 /* AdyenUIHostTests.xctestplan */,
-				818B03C42BB6F86600732C35 /* AdyenUIKitTests.xctestplan */,
-				818B03C52BB6F88100732C35 /* AdyenUIHostUITests.xctestplan */,
 			);
 			path = TestPlans;
 			sourceTree = "<group>";

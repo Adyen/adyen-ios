@@ -38,7 +38,7 @@
       </MacroExpansion>
       <TestPlans>
          <TestPlanReference
-            reference = "container:TestPlans/AdyenUIHostUITests.xctestplan"
+            reference = "container:TestPlans/SnapshotTests.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>

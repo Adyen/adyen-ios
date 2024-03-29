@@ -35,7 +35,7 @@
       </CommandLineArguments>
       <TestPlans>
          <TestPlanReference
-            reference = "container:TestPlans/AdyenUIKitTests.xctestplan"
+            reference = "container:TestPlans/UnitTests.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
