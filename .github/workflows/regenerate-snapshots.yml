@@ -1,9 +1,6 @@
 name: 🤳 Generate Snapshots
 on:
     workflow_dispatch:
-    push: # Remove the push part again
-        branches:
-          - '**'
           
 jobs:
   Generate:
