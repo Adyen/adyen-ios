@@ -26,29 +26,29 @@ jobs:
       with:
         xcode-version: '15.1'
 
-    - name: Install Tools
+    - name: 🛠️ Install Tools
       run: |
         brew install sonar-scanner
         gem install slather
 
-    - name: Validate 3DS2 SDK version
+    - name: ✅ Validate 3DS2 SDK version
       run: |
         Scripts/validate-3ds2-SDK-version.sh
         
-    - name: Validate Adyen SDK version
+    - name: ✅ Validate Adyen SDK version
       run: |
         Scripts/validate-Adyen-SDK-version.sh
 
-    - name: Clean Build
+    - name: 👷 Clean Build
       run: |
         xcodebuild -version
         xcodebuild clean build -project "${project}" -scheme "${scheme}" ${params} -destination "name=iPhone 15 Pro,OS=17.2" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
+        params: '-derivedDataPath ./DerivedData -skipPackagePluginValidation'
         scheme: 'AdyenUIHost'
         
-    - name: Unittests
+    - name: 🤖 Unit Tests
       run: |
         xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "name=iPhone 15 Pro,OS=17.2" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
@@ -56,7 +56,7 @@ jobs:
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
         scheme: 'AdyenUIKitTests'
         
-    - name: Snapshot Test en_US
+    - name: 🤳 Snapshot Tests 🇺🇸
       run: |
         xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "name=iPhone 15 Pro,OS=17.2" -testLanguage en -testRegion en_US | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
@@ -64,7 +64,7 @@ jobs:
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
         scheme: 'AdyenUIHostUITests'
     
-    - name: Snapshot Test de_DE
+    - name: 🤳 Snapshot Tests 🇩🇪
       run: |
         xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "name=iPhone 15 Pro,OS=17.2" -testLanguage de -testRegion de_DE | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
@@ -72,7 +72,7 @@ jobs:
         params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
         scheme: 'AdyenUIHostUITests'
 
-    - name: Code Coverage
+    - name: 📈 Code Coverage
       run: |
         slather coverage --sonarqube-xml ${params} ${project}
       env:
@@ -92,12 +92,12 @@ jobs:
         --binary-basename AdyenCashAppPay
         --binary-basename AdyenSwiftUI'
 
-    - name: SwiftLint
+    - name: 🧼 SwiftLint
       run: |
         brew install swiftlint
         fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
 
-    - name: Run Sonar
+    - name: 📡 Run Sonar
       if: ${{ env.sonarToken != 0 }}
       run: |
         git fetch --unshallow --no-tags
