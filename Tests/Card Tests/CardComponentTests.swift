@@ -44,6 +44,14 @@ class CardComponentTests: XCTestCase {
         )
     }
     
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     func testRequiresKeyboardInput() {
         let sut = CardComponent(
             paymentMethod: method,

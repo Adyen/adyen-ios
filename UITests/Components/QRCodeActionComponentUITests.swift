@@ -13,7 +13,7 @@ class QRCodeActionComponentUITests: XCTestCase {
 
     override func run() {
         AdyenDependencyValues.runTestWithValues {
-            $0.networkImageProviderType = MockAdyenNetworkImageProvider.self
+            $0.imageLoader = ImageLoaderMock()
         } perform: {
             super.run()
         }

@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) import AdyenActions
 import AdyenDropIn
 import SafariServices
@@ -15,6 +15,14 @@ class DropInActionsTests: XCTestCase {
     var context: AdyenContext!
     var sut: DropInComponent!
 
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     override func setUpWithError() throws {
         try super.setUpWithError()
         context = Dummy.context

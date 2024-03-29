@@ -32,6 +32,14 @@ class PreselectedPaymentComponentTests: XCTestCase {
     var component: StoredPaymentMethodComponent!
     var delegate: PreselectedPaymentComponentDelegateMock!
     
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     override func setUp() {
         component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), context: Dummy.context)
         sut = PreselectedPaymentMethodComponent(component: component,
