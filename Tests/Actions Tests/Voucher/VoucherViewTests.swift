@@ -121,7 +121,7 @@ class VoucherViewTests: XCTestCase {
         
         let amountLabel: UILabel? = sut.findView(by: "amountLabel")
         let currencyLabel: UILabel? = sut.findView(by: "currencyLabel")
-        let logo: UIImageView? = sut.findView(by: "logo")
+        XCTAssertNotNil(sut.findView(by: "logo"))
         
         XCTAssertEqual(amountLabel?.text, mockModel.amount)
         XCTAssertEqual(currencyLabel?.text, mockModel.currency)

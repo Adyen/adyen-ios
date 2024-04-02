@@ -312,7 +312,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
     
     func test_countryFlags_showByDefault() throws {
         
-        var style = FormComponentStyle(tintColor: .blue)
+        let style = FormComponentStyle(tintColor: .blue)
         
         let viewController = AddressInputFormViewController(
             viewModel: self.viewModel(style: style)

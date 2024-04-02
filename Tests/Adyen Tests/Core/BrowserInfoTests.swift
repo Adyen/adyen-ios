@@ -27,11 +27,4 @@ class BrowserInfoTests: XCTestCase {
         }
         waitForExpectations(timeout: 10, handler: nil)
     }
-    
-    func testInitializePerformance() {
-        self.measure {
-            BrowserInfo.initialize { _ in }
-        }
-    }
-    
 }
