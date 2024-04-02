@@ -15,6 +15,7 @@ jobs:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
       destination: "name=iPhone 15 Pro,OS=17.2"
       project: "Adyen.xcodeproj"
+      params: "-derivedDataPath ./DerivedData -skipPackagePluginValidation"
     runs-on: macos-13-xlarge # Apple Silicon Runner
 
     steps:
@@ -41,23 +42,23 @@ jobs:
     - name: 👷 Clean Build
       run: |
         xcodebuild -version
-        xcodebuild clean build -project "${env.project}" -scheme "${scheme}" ${params} -destination ${env.destination} | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild clean build -project "${{env.project}}" -scheme "${scheme}" ${params} -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
-        params: '-derivedDataPath ./DerivedData -skipPackagePluginValidation'
+        params: '${{env.params}}'
         scheme: 'AdyenUIHost'
         
     - name: 🧪 Unit Tests
       run: |
-        xcodebuild test -project "${env.project}" -scheme "${scheme}" ${params} -destination ${env.destination} | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild test -project "${{env.project}}" -scheme "${scheme}" ${params} -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
-        params: '-derivedDataPath ./DerivedData -skipPackagePluginValidation -enableCodeCoverage YES'
+        params: '${{env.params}} -enableCodeCoverage YES'
         scheme: 'AdyenUIKitTests'
         
     - name: 📸 Snapshot Tests
       run: |
-        xcodebuild test -project "${env.project}" -scheme "${scheme}" ${params} -destination ${env.destination} | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild test -project "${{env.project}}" -scheme "${scheme}" ${params} -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
-        params: '-derivedDataPath ./DerivedData -skipPackagePluginValidation -enableCodeCoverage YES'
+        params: '${{env.params}} -enableCodeCoverage YES'
         scheme: 'AdyenUIHostUITests'
 
     - name: 📈 Code Coverage
