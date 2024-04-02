@@ -12,15 +12,22 @@ extension XCTestCase {
     
     static var shouldRecordSnapshots: Bool { CommandLine.arguments.contains("-GenerateSnapshots") }
     
-    func assertViewControllerImage(matching viewController: @autoclosure () throws -> UIViewController,
-                                   named name: String,
-                                   file: StaticString = #file,
-                                   caller: String = #function,
-                                   line: UInt = #line) {
+    enum SnapshotPrecision: Float {
+        case `default` = 0.98
+        case blurredContent = 0.97
+    }
+    
+    func assertViewControllerImage(
+        matching viewController: @autoclosure () throws -> UIViewController,
+        named name: String,
+        file: StaticString = #file,
+        caller: String = #function,
+        line: UInt = #line
+    ) {
         
         try SnapshotTesting.assertSnapshot(
             matching: viewController(),
-            as: snapshotConfiguration(),
+            as: snapshotConfiguration(precision: .default),
             named: name,
             record: XCTestCase.shouldRecordSnapshots,
             file: file,
@@ -32,13 +39,15 @@ extension XCTestCase {
     /// Verifies whether or not the snapshot of the view controller matches the previously recorded snapshot
     ///
     /// Multiple verification snapshots are taken within the timeout and compared with the reference snapshot
-    func verifyViewControllerImage(matching viewController: @autoclosure () throws -> UIViewController,
-                                   named name: String,
-                                   record: Bool = false,
-                                   timeout: TimeInterval = 120,
-                                   file: StaticString = #file,
-                                   caller: String = #function,
-                                   line: UInt = #line) {
+    func verifyViewControllerImage(
+        matching viewController: @autoclosure () throws -> UIViewController,
+        named name: String,
+        precision: SnapshotPrecision = .default,
+        timeout: TimeInterval = 60,
+        file: StaticString = #file,
+        caller: String = #function,
+        line: UInt = #line
+    ) {
         
         if XCTestCase.shouldRecordSnapshots {
             // We're recording so we assert immediately
@@ -58,7 +67,7 @@ extension XCTestCase {
             until: {
                 let failure = try! verifySnapshot(
                     of: viewController(),
-                    as: snapshotConfiguration(),
+                    as: snapshotConfiguration(precision: precision),
                     named: name,
                     file: file,
                     testName: testName(for: caller),
@@ -84,9 +93,10 @@ extension XCTestCase {
         return "\(callingFunction)-\(simulatorName)-\(systemName)_\(versionName)-\(locale)"
     }
     
-    func snapshotConfiguration() -> Snapshotting<UIViewController, UIImage> {
-        let precision: Float = 0.98
-        
-        return .image(drawHierarchyInKeyWindow: true, perceptualPrecision: precision)
+    func snapshotConfiguration(precision: SnapshotPrecision) -> Snapshotting<UIViewController, UIImage> {
+        .image(
+            drawHierarchyInKeyWindow: true,
+            perceptualPrecision: precision.rawValue
+        )
     }
 }

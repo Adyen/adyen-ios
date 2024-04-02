@@ -1,4 +1,4 @@
-name: 🤳 Generate Snapshots
+name: 📸 Generate Snapshots
 on:
     workflow_dispatch:
           
@@ -12,15 +12,15 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Select latest Xcode
+    - name: 🔨 Select Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
         xcode-version: '15.1'
 
-    - name: Clear existing Snapshots
+    - name: 🧹 Clear existing Snapshots
       run: |
         find ./UITests -name "__Snapshots__" -exec rm -rf {} +
-    - name: Generate Snapshots
+    - name: 📸 Generate Snapshots
       run: |
         xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "name=iPhone 15 Pro,OS=17.2" | xcpretty --utf --color
       env:
@@ -28,7 +28,7 @@ jobs:
         params: '-skipPackagePluginValidation'
         scheme: 'GenerateSnapshots'
         
-    - name: Create Pull Request
+    - name: 🚀 Create Pull Request
       uses: peter-evans/create-pull-request@v6
       with:
         delete-branch: true
