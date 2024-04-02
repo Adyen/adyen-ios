@@ -21,8 +21,8 @@
 Adyen iOS provides you with the building blocks to create a checkout experience for your shoppers, allowing them to pay using the payment method of their choice.
 
 You can integrate with Adyen iOS in two ways:
-* [iOS Drop-in](https://docs.adyen.com/online-payments/ios/drop-in): an all-in-one solution, the quickest way to accept payments on your iOS app.
-* [iOS Components](https://docs.adyen.com/online-payments/ios/components): one Component per payment method and combine with your own payments flow.
+* [iOS Drop-in](https://docs.adyen.com/online-payments/build-your-integration/?platform=iOS&integration=Drop-in): an all-in-one solution, the quickest way to accept payments on your iOS app.
+* [iOS Components](https://docs.adyen.com/online-payments/build-your-integration/?platform=iOS&integration=Components): one Component per payment method and combine with your own payments flow.
 
 
 ## Installation
@@ -310,7 +310,7 @@ A full list of customization options can be found in the [API Reference][referen
 
 ## See also
 
-* [Complete Documentation](https://docs.adyen.com/developers/checkout/ios)
+* [Complete Documentation](https://docs.adyen.com/online-payments/build-your-integration/?platform=iOS)
 
 * [Components API Reference][reference]
 
