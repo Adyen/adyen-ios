@@ -13,6 +13,8 @@ jobs:
   build:
     env:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
+      destination: "name=iPhone 15 Pro,OS=17.2"
+      project: "Adyen.xcodeproj"
     runs-on: macos-13-xlarge # Apple Silicon Runner
 
     steps:
@@ -36,14 +38,27 @@ jobs:
         brew install sonar-scanner
         gem install slather
         
-    - name: 👷 Clean Test
+    - name: 👷 Clean Build
       run: |
         xcodebuild -version
-        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "name=iPhone 15 Pro,OS=17.2" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild clean build -project "${env.project}" -scheme "${scheme}" ${params} -destination ${env.destination} | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
-        project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
+        params: '-derivedDataPath ./DerivedData -skipPackagePluginValidation'
         scheme: 'AdyenUIHost'
+        
+    - name: 🧪 Unit Tests
+      run: |
+        xcodebuild test -project "${env.project}" -scheme "${scheme}" ${params} -destination ${env.destination} | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+      env:
+        params: '-derivedDataPath ./DerivedData -skipPackagePluginValidation -enableCodeCoverage YES'
+        scheme: 'AdyenUIKitTests'
+        
+    - name: 📸 Snapshot Tests
+      run: |
+        xcodebuild test -project "${env.project}" -scheme "${scheme}" ${params} -destination ${env.destination} | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+      env:
+        params: '-derivedDataPath ./DerivedData -skipPackagePluginValidation -enableCodeCoverage YES'
+        scheme: 'AdyenUIHostUITests'
 
     - name: 📈 Code Coverage
       run: |
