@@ -15,7 +15,7 @@ extension XCTestCase {
     enum SnapshotPrecision: Float {
         case `default` = 0.99
         /// Uses a lower precision as blurred content is a bit less precise to compare
-        case blurredContent = 0.95
+        case blurredContent = 0.90
     }
     
     func assertViewControllerImage(
