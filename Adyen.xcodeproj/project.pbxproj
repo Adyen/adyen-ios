@@ -6,21 +6,6 @@
 	objectVersion = 54;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		C96A8E2826CA800A000BB8C6 /* Localization */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = C96A8E2B26CA800A000BB8C6 /* Build configuration list for PBXAggregateTarget "Localization" */;
-			buildPhases = (
-				C96A8E2C26CA801E000BB8C6 /* Update Localization strings files */,
-				F986B551285B4208002A471C /* Update the LocalizationKey.swift file */,
-			);
-			dependencies = (
-			);
-			name = Localization;
-			productName = Localization;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		001BFF422A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */; };
 		001BFF432A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */; };
@@ -5815,9 +5800,6 @@
 					A04F8C1D29E5950100F3F62B = {
 						CreatedOnToolsVersion = 14.3;
 					};
-					C96A8E2826CA800A000BB8C6 = {
-						CreatedOnToolsVersion = 12.5;
-					};
 					E2C0E03222097917008616F6 = {
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1020;
@@ -5934,7 +5916,6 @@
 				F9620D8123C73B0D005209FC /* AdyenWeChatPay */,
 				A04F8C1D29E5950100F3F62B /* AdyenCashAppPay */,
 				F94D65D82B0364AF0095D61E /* AdyenDelegatedAuthentication */,
-				C96A8E2826CA800A000BB8C6 /* Localization */,
 				E2C0E03B22097917008616F6 /* AdyenUIKitTests */,
 				F9615FAE252DDA4800FA8EDD /* AdyenSwiftUITests */,
 				F9CCA3B4296ECB3E00AD643D /* AdyenUIHostUITests */,
@@ -6102,27 +6083,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh \"$SRCROOT/$TARGETNAME\"\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/$TARGETNAME\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
-		};
-		C96A8E2C26CA801E000BB8C6 /* Update Localization strings files */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"",
-			);
-			name = "Update Localization strings files";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\nif [ ! -f $SRCROOT/Internal/localization.sh ]; then\n   exit 0\nfi\n\n$SRCROOT/Internal/localization.sh\n";
 		};
 		E7388FC1260B68C400291DE7 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6293,27 +6253,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ -f $SRCROOT/Internal/format.sh ]; then\n   $SRCROOT/Internal/format.sh \"$SRCROOT/$TARGETNAME\"\nfi\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   cd \"$SRCROOT/$TARGETNAME\"\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
-		};
-		F986B551285B4208002A471C /* Update the LocalizationKey.swift file */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Adyen/Assets/en-US.lproj/Localizable.strings",
-			);
-			name = "Update the LocalizationKey.swift file";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(SRCROOT)/Adyen/Assets/Generated/LocalizationKey.swift",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\nif [ ! -f $SRCROOT/Internal/generate_localization_keys.swift ]; then\n   exit 0\nfi\n\nif [ ! -z $(git diff HEAD --name-only $SCRIPT_INPUT_FILE_0) ]\nthen\n    echo \"Detected changes in Localizable.strings. Generating new LocalizationKey.swift\"\n    swift $SRCROOT/Internal/generate_localization_keys.swift $SCRIPT_INPUT_FILE_0 $SCRIPT_OUTPUT_FILE_0\nfi\n";
 		};
 		F9A4A3012373235800D774E8 /* Format and lint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -7703,28 +7642,6 @@
 			};
 			name = Release;
 		};
-		C96A8E2926CA800A000BB8C6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
-				MARKETING_VERSION = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 6;
-			};
-			name = Debug;
-		};
-		C96A8E2A26CA800A000BB8C6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
-				MARKETING_VERSION = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 6;
-			};
-			name = Release;
-		};
 		E2C0E04522097917008616F6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -8773,15 +8690,6 @@
 			buildConfigurations = (
 				A04F8C2829E5950200F3F62B /* Debug */,
 				A04F8C2929E5950200F3F62B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C96A8E2B26CA800A000BB8C6 /* Build configuration list for PBXAggregateTarget "Localization" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C96A8E2926CA800A000BB8C6 /* Debug */,
-				C96A8E2A26CA800A000BB8C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
