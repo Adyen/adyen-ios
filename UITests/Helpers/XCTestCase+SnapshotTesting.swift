@@ -13,8 +13,9 @@ extension XCTestCase {
     static var shouldRecordSnapshots: Bool { CommandLine.arguments.contains("-GenerateSnapshots") }
     
     enum SnapshotPrecision: Float {
-        case `default` = 0.98
-        case blurredContent = 0.97
+        case `default` = 0.99
+        /// Uses a lower precision as blurred content is a bit less precise to compare
+        case blurredContent = 0.95
     }
     
     func assertViewControllerImage(
