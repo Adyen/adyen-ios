@@ -72,11 +72,6 @@ let package = Package(
             .exact(Version(2, 0, 0))
         ),
         .package(
-            name: "AdyenWeChatPayInternal",
-            url: "https://github.com/Adyen/adyen-wechatpay-ios",
-            .exact(Version(2, 1, 0))
-        ),
-        .package(
             name: "PayKit",
             url: "https://github.com/cashapp/cash-app-pay-ios-sdk",
             .exact(Version(0, 5, 1))
@@ -167,11 +162,15 @@ let package = Package(
         .target(
             name: "AdyenWeChatPay",
             dependencies: [
-                .product(name: "AdyenWeChatPayInternal", package: "AdyenWeChatPayInternal"),
-                .target(name: "AdyenActions")
+                .target(name: "AdyenActions"),
+                .target(name: "WeChatPaySDK")
             ],
             path: "AdyenWeChatPay/WeChatPayActionComponent"
         ),
+	 .binaryTarget(
+            name: "WeChatPaySDK",
+            path: "XCFramework/WeChatPay/WechatOpenSDK-XCFramework.xcframework"
+	),
         .target(
             name: "AdyenCashAppPay",
             dependencies: [
