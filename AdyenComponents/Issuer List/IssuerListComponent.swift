@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,6 +11,10 @@ import UIKit
 /// A generic component for "issuer-based" payment methods, such as iDEAL and MOLPay.
 /// This component will provide a list in which the user can select their issuer.
 public final class IssuerListComponent: PaymentComponent, PaymentAware, PresentableComponent, LoadingComponent {
+    
+    private enum Constants {
+        static let searchDelay: TimeInterval = 1
+    }
     
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -29,6 +33,8 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     
     /// The title of the view controller
     private let title: String
+    
+    private let searchThrottler = Throttler(minimumDelay: Constants.searchDelay)
     
     /// Initializes the issuer list component.
     ///
@@ -85,6 +91,9 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
 
     private func listItems(for searchText: String) -> [ListItem] {
         let issuers = filteredIssuers(for: searchText)
+        searchThrottler.throttle { [weak self] in
+            self?.sendSearchIssuerEvent()
+        }
         return listItems(from: issuers)
     }
 
@@ -124,10 +133,25 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
                                                        amount: self.payment?.amount,
                                                        order: self.order))
                 
+                self.sendIssuerSelectedEvent(issuer)
+                
                 listItem.startLoading()
             }
             return listItem
         }
+    }
+    
+    private func sendIssuerSelectedEvent(_ issuer: Issuer) {
+        var event = AnalyticsEventInfo(component: paymentMethod.type.rawValue, type: .selected)
+        event.issuer = issuer.name
+        event.target = .issuerList
+        context.analyticsProvider?.add(info: event)
+    }
+    
+    private func sendSearchIssuerEvent() {
+        var event = AnalyticsEventInfo(component: paymentMethod.type.rawValue, type: .input)
+        event.target = .listSearch
+        context.analyticsProvider?.add(info: event)
     }
 }
 

@@ -1,9 +1,7 @@
 //
-//  ThreeDS2PlusDACoreActionHandlerTests.swift
-//  AdyenUIKitTests
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Mohamed Eldoheiri on 12/09/2022.
-//  Copyright © 2022 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import XCTest
