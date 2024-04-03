@@ -187,11 +187,11 @@ public struct LocalizationKey {
     public static let deliveryAddressSectionTitle = LocalizationKey(key: "adyen.deliveryAddressSection.title")
     /// Your delivery address
     public static let deliveryAddressPlaceholder = LocalizationKey(key: "adyen.deliveryAddress.placeholder")
-    /// Country
+    /// Country/Region
     public static let countryFieldTitle = LocalizationKey(key: "adyen.countryField.title")
-    /// Country
+    /// Country/Region
     public static let countryFieldPlaceholder = LocalizationKey(key: "adyen.countryField.placeholder")
-    /// Invalid country
+    /// Invalid country/region
     public static let countryFieldInvalid = LocalizationKey(key: "adyen.countryField.invalid")
     /// Address
     public static let addressFieldTitle = LocalizationKey(key: "adyen.addressField.title")
@@ -375,6 +375,8 @@ public struct LocalizationKey {
     public static let cashAppPayTitle = LocalizationKey(key: "adyen.cashAppPay.title")
     /// Cashtag
     public static let cashAppPayCashtag = LocalizationKey(key: "adyen.cashAppPay.cashtag")
+    /// No or an outdated version of TWINT is installed on this device. Please update or install the TWINT app.
+    public static let twintNoAppsInstalledMessage = LocalizationKey(key: "adyen.twint.noAppsInstalled.message")
     /// Safe and swift checkout!
     public static let threeds2DARegistrationTitle = LocalizationKey(key: "adyen.threeds2.DA.registration.title")
     /// You can check out faster next time on this device using your biometrics.
@@ -436,5 +438,4 @@ public struct LocalizationKey {
     }
 
 }
-
 // swiftlint:enable all
