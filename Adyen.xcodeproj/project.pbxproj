@@ -57,6 +57,8 @@
 		00A25E602A404342001B32B6 /* AdyenSdkVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5F2A404342001B32B6 /* AdyenSdkVersion.swift */; };
 		00C3DB0E2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */; };
 		00C3DB0F2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */; };
+		00CC972B2BBD814E00466E95 /* WechatOpenSDK-XCFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00CC972A2BBD814E00466E95 /* WechatOpenSDK-XCFramework.xcframework */; };
+		00CC972C2BBD81D300466E95 /* WechatOpenSDK-XCFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00CC972A2BBD814E00466E95 /* WechatOpenSDK-XCFramework.xcframework */; };
 		00D5B8662A4C63FE003CFCD0 /* CardComponentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */; };
 		00D5B8672A4C63FE003CFCD0 /* CardComponentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */; };
 		00EA4ED4280412140053D938 /* DefaultAddressViewModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */; };
@@ -1406,6 +1408,7 @@
 		00A25E5C2A404303001B32B6 /* ComponentCreationError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentCreationError.swift; sourceTree = "<group>"; };
 		00A25E5F2A404342001B32B6 /* AdyenSdkVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdyenSdkVersion.swift; sourceTree = "<group>"; };
 		00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsSettingsView.swift; sourceTree = "<group>"; };
+		00CC972A2BBD814E00466E95 /* WechatOpenSDK-XCFramework.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "WechatOpenSDK-XCFramework.xcframework"; sourceTree = "<group>"; };
 		00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentSettingsView.swift; sourceTree = "<group>"; };
 		00EA4ED3280412140053D938 /* DefaultAddressViewModelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAddressViewModelBuilder.swift; sourceTree = "<group>"; };
 		00EA4ED52804124C0053D938 /* AtomeAddressViewModelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeAddressViewModelBuilder.swift; sourceTree = "<group>"; };
@@ -2334,6 +2337,7 @@
 			files = (
 				E72375DD27AABF450020DCF9 /* AdyenWeChatPayInternal in Frameworks */,
 				E72375D827AABF400020DCF9 /* AdyenWeChatPay.framework in Frameworks */,
+				00CC972B2BBD814E00466E95 /* WechatOpenSDK-XCFramework.xcframework in Frameworks */,
 				F9237D3428CA1E7C004F9929 /* Adyen3DS2 in Frameworks */,
 				8169B9EC2A0506CC00AAC9F8 /* Adyen.framework in Frameworks */,
 				F9175EEE2593955C00D653BE /* AdyenComponents.framework in Frameworks */,
@@ -2441,6 +2445,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00CC972C2BBD81D300466E95 /* WechatOpenSDK-XCFramework.xcframework in Frameworks */,
 				E72375D327AAB90D0020DCF9 /* AdyenActions.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3684,6 +3689,7 @@
 		E2D12C01221ECBB000EF682F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				00CC972A2BBD814E00466E95 /* WechatOpenSDK-XCFramework.xcframework */,
 				F9A2D01125DBF104008944BE /* PassKit.framework */,
 				F9789C6B23F18069000B4B2B /* Security.framework */,
 				F9789C6923F18057000B4B2B /* CoreGraphics.framework */,

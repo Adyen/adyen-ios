@@ -167,10 +167,10 @@ let package = Package(
             ],
             path: "AdyenWeChatPay/WeChatPayActionComponent"
         ),
-	 .binaryTarget(
+        .binaryTarget(
             name: "WeChatPaySDK",
             path: "XCFramework/WeChatPay/WechatOpenSDK-XCFramework.xcframework"
-	),
+        ),
         .target(
             name: "AdyenCashAppPay",
             dependencies: [
