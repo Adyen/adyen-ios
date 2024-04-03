@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -42,6 +42,14 @@ class CardComponentTests: XCTestCase {
             expiryYear: "22",
             holderName: "holderName"
         )
+    }
+    
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
     }
     
     func testRequiresKeyboardInput() {
@@ -1973,6 +1981,7 @@ class CardComponentTests: XCTestCase {
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.infoCount, 1)
 
     }
 

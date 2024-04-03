@@ -1,9 +1,7 @@
 //
-//  DokuComponentTests.swift
-//  AdyenUIKitTests
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Mohamed Eldoheiri on 1/25/21.
-//  Copyright © 2021 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 @_spi(AdyenInternal) @testable import Adyen
@@ -164,6 +162,7 @@ class DokuComponentTests: XCTestCase {
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.infoCount, 1)
     }
 
     // MARK: - Private

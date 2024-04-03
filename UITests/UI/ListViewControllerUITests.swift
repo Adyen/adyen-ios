@@ -1,9 +1,7 @@
 //
-//  ListViewControllerUITests.swift
-//  AdyenUIHostUITests
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Mohamed Eldoheiri on 11/01/2023.
-//  Copyright © 2023 Adyen. All rights reserved.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 @_spi(AdyenInternal) @testable import Adyen
@@ -12,6 +10,14 @@ import XCTest
 
 final class ListViewControllerUITests: XCTestCase {
 
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     func testUIConfiguration() throws {
         var listComponentStyle = ListComponentStyle()
         listComponentStyle.backgroundColor = .red
@@ -60,8 +66,10 @@ final class ListViewControllerUITests: XCTestCase {
                                    items: [item21, item22])
         
         sut.reload(newSections: [section1, section2])
-        assertViewControllerImage(matching: sut, named: "listViewController_UI_Configuration")
         
+        setupRootViewController(sut)
+        
+        assertViewControllerImage(matching: sut, named: "listViewController_UI_Configuration")
     }
 
 }

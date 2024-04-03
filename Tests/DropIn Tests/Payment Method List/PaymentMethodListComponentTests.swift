@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,6 +15,14 @@ class PaymentMethodListComponentTests: XCTestCase {
     lazy var storedComponent = PaymentComponentMock(paymentMethod: method1)
     lazy var regularComponent = PaymentComponentMock(paymentMethod: method2)
 
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
+    
     func testRequiresKeyboardInput() {
         let section = ComponentsSection(components: [storedComponent])
         let sectionedComponents = [section]
