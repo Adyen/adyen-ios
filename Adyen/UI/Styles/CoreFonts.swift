@@ -7,8 +7,7 @@
 import Foundation
 import UIKit
 
-@_spi(AdyenInternal)
-extension UIFont {
+package extension UIFont {
     
     internal enum AdyenCore {
         

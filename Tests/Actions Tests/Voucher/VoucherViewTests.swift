@@ -5,7 +5,7 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) @testable import AdyenActions
+@testable import AdyenActions
 import PassKit
 import UIKit
 import XCTest

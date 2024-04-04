@@ -5,7 +5,7 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) @testable import AdyenActions
+@testable import AdyenActions
 import XCTest
 
 class MultibancoShareableVoucherViewProviderTests: XCTestCase {

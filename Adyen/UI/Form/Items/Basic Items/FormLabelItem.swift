@@ -8,8 +8,7 @@ import Foundation
 import UIKit
 
 /// Simple form item that represent a single UILabel element.
-@_spi(AdyenInternal)
-public class FormLabelItem: FormItem {
+package class FormLabelItem: FormItem {
     public var subitems: [FormItem] = []
 
     public init(text: String, style: TextStyle, identifier: String? = nil) {

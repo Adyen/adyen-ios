@@ -71,9 +71,7 @@ public extension Amount {
     }
     
     /// Returns a formatted representation of the amount, split in two components
-    ///
-    @_spi(AdyenInternal)
-    var formattedComponents: AmountComponents {
+    package var formattedComponents: AmountComponents {
         AmountComponents(amount: self)
     }
 
@@ -109,8 +107,7 @@ extension Amount: Comparable {
 
 }
 
-@_spi(AdyenInternal)
-public struct AmountComponents {
+package struct AmountComponents {
     
     fileprivate init(amount: Amount) {
         if let comps = Self.extractAmountComponents(from: amount.formatted) {

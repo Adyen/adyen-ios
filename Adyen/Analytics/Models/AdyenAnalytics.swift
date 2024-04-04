@@ -6,9 +6,8 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
 /// Used as a singleton to update the sessionId
-public final class AnalyticsForSession {
+package final class AnalyticsForSession {
     
     /// Needed to be able to determine if using session
     public static var sessionId: String?

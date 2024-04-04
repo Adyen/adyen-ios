@@ -7,8 +7,7 @@
 import UIKit
 
 /// `ADYViewController` serves as a height-aware `UIViewController`
-@_spi(AdyenInternal)
-public final class ADYViewController: UIViewController {
+package final class ADYViewController: UIViewController {
     
     private let contentView: UIView
     

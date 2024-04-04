@@ -4,12 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import AdyenSession
-import XCTest
-@_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenActions
+@testable import Adyen
+@testable import AdyenActions
 import AdyenComponents
 import AdyenDropIn
+@testable import AdyenSession
+import XCTest
 
 class SessionTests: XCTestCase {
 

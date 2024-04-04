@@ -7,8 +7,7 @@
 import UIKit
 
 /// A cell in a ListViewController.
-@_spi(AdyenInternal)
-public final class ListCell: UITableViewCell {
+package final class ListCell: UITableViewCell {
     
     override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

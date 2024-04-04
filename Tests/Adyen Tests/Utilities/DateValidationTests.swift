@@ -6,7 +6,7 @@
 
 import Foundation
 
-@_spi(AdyenInternal) @testable import Adyen
+@testable import Adyen
 import XCTest
 
 class DateValidationTests: XCTestCase {

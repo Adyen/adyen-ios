@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+@testable import Adyen
 import Foundation
 import XCTest
-@_spi(AdyenInternal) @testable import Adyen
 
 extension XCTestCase {
     

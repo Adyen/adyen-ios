@@ -8,8 +8,7 @@ import AdyenNetworking
 import Foundation
 
 /// Represents the payment status code.
-@_spi(AdyenInternal)
-public enum PaymentResultCode: String, Decodable {
+package enum PaymentResultCode: String, Decodable {
     case authorised
     case refused
     case pending
@@ -29,6 +28,6 @@ public struct PaymentStatusResponse: Response {
     public let payload: String
     
     /// The payment status.
-    public let resultCode: PaymentResultCode
+    package let resultCode: PaymentResultCode
     
 }

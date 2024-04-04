@@ -115,8 +115,7 @@ private func attempt(_ input: LocalizationInput) -> String? {
     return nil
 }
 
-@_spi(AdyenInternal)
-public enum PaymentStyle {
+package enum PaymentStyle {
     case needsRedirectToThirdParty(String)
 
     case immediate
@@ -128,10 +127,9 @@ public enum PaymentStyle {
 /// - Parameter amount: The amount to include in the submit button title.
 /// - Parameter paymentMethodName: The payment method name.
 /// - Parameter parameters: The localization parameters.
-@_spi(AdyenInternal)
-public func localizedSubmitButtonTitle(with amount: Amount?,
-                                       style: PaymentStyle,
-                                       _ parameters: LocalizationParameters?) -> String {
+package func localizedSubmitButtonTitle(with amount: Amount?,
+                                        style: PaymentStyle,
+                                        _ parameters: LocalizationParameters?) -> String {
     guard let amount else {
         return localizedString(.submitButton, parameters)
     }

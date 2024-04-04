@@ -6,10 +6,10 @@
 
 import Foundation
 
-import XCTest
-@_spi(AdyenInternal) @testable import Adyen
+@testable import Adyen
 @testable import AdyenCard
 @testable import AdyenComponents
+import XCTest
 
 class SecuredViewControllerUITests: XCTestCase {
     

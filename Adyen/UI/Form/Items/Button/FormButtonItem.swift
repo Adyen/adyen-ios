@@ -7,8 +7,7 @@
 import Foundation
 
 /// A form item that represents a single button with a spinner.
-@_spi(AdyenInternal)
-public final class FormButtonItem: FormItem {
+package final class FormButtonItem: FormItem {
 
     public var subitems: [FormItem] = []
     

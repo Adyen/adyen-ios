@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
 @_spi(AdyenInternal) @testable import Adyen
+import Foundation
 
 class AnalyticsProviderMock: AnalyticsProviderProtocol {
     
