@@ -64,6 +64,8 @@ extension XCTestCase {
             return
         }
         
+        let testName = testName(for: caller)
+        
         wait(
             until: {
                 let failure = try! verifySnapshot(
@@ -71,14 +73,14 @@ extension XCTestCase {
                     as: snapshotConfiguration(precision: precision),
                     named: name,
                     file: file,
-                    testName: testName(for: caller),
+                    testName: testName,
                     line: line
                 )
                 return failure == nil
             },
             timeout: timeout,
             retryInterval: .seconds(1),
-            message: "Snapshot did not match reference (Timeout: \(timeout)s)"
+            message: "Snapshot did not match reference (Timeout: \(timeout)s) - \(testName)"
         )
     }
     
