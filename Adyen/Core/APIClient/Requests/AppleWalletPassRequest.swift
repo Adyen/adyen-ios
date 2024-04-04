@@ -7,8 +7,7 @@
 import AdyenNetworking
 import Foundation
 
-@_spi(AdyenInternal)
-public struct AppleWalletPassRequest: APIRequest {
+package struct AppleWalletPassRequest: APIRequest {
 
     public typealias ResponseType = AppleWalletPassResponse
 

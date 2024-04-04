@@ -21,8 +21,7 @@ package enum PaymentResultCode: String, Decodable {
 }
 
 /// Represents a payment status response.
-@_spi(AdyenInternal)
-public struct PaymentStatusResponse: Response {
+package struct PaymentStatusResponse: Response {
     
     /// The payload.
     public let payload: String

@@ -80,7 +80,7 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
 
     /// The main control of the picker element that
     /// handles displaying the selected value and triggering the picker view.
-    public lazy var inputControl: PickerTextInputControl = {
+    package lazy var inputControl: PickerTextInputControl = {
         let view = createInputControl()
         view.showChevron = item.selectableValues.count > 1
         view.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "inputControl") }

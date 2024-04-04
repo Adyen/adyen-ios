@@ -7,7 +7,6 @@
 import Foundation
 import UIKit
 
-@_spi(AdyenInternal)
 extension UIView {
     
     /// Attaches top, bottom, left and right anchors of this view to the corresponding anchors inside the specified view.

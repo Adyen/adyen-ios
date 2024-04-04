@@ -7,8 +7,7 @@
 import AdyenNetworking
 import Foundation
 
-@_spi(AdyenInternal)
-public struct ClientKeyRequest: APIRequest {
+package struct ClientKeyRequest: APIRequest {
     
     public typealias ResponseType = ClientKeyResponse
     

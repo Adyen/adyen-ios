@@ -8,8 +8,7 @@ import AdyenNetworking
 import Foundation
 
 /// Represents a payment status request.
-@_spi(AdyenInternal)
-public struct PaymentStatusRequest: APIRequest {
+package struct PaymentStatusRequest: APIRequest {
     
     public typealias ResponseType = PaymentStatusResponse
     
