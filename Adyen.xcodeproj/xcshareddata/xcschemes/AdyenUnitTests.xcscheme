@@ -13,7 +13,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:AdyenUnitTests/AdyenUnitTests.xctestplan"
+            reference = "container:TestPlans/AdyenUnitTests.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
