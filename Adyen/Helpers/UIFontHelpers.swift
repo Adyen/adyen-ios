@@ -8,12 +8,10 @@ import AdyenNetworking
 import UIKit
 
 /// So that any `UIView` instance will inherit the `adyen` scope.
-@_spi(AdyenInternal)
 extension UIFont: AdyenCompatible {}
 
 /// Adds helper functionality to any `UIViewController` instance through the `adyen` property.
-@_spi(AdyenInternal)
-public extension AdyenScope where Base: UIFont {
+package extension AdyenScope where Base: UIFont {
     
     /// Get new instance of `UIFont` with the same familyName and pointSize, but specified weight.
     /// - Parameter weight: The desired font's weight.

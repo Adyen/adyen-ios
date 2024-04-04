@@ -12,8 +12,7 @@ import Foundation
 extension Array: AdyenCompatible {}
 
 /// Adds helper functionality to any `[CardType]` instance through the `adyen` property.
-@_spi(AdyenInternal)
-public extension AdyenScope where Base == [CardType] {
+package extension AdyenScope where Base == [CardType] {
     
     /// Detects the type for a given card number.
     /// The card type detections are always estimations, as a card type

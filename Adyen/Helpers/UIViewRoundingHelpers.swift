@@ -8,8 +8,7 @@ import AdyenNetworking
 import UIKit
 
 /// Adds helper functionality to any `UIViewController` instance through the `adyen` property.
-@_spi(AdyenInternal)
-public extension AdyenScope where Base: UIView {
+package extension AdyenScope where Base: UIView {
     
     /// Apply a BezierPath mask in shape of a rounded rectangular path.
     /// - Parameters:

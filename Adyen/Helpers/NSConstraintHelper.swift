@@ -11,11 +11,10 @@ import UIKit
 extension NSLayoutConstraint: AdyenCompatible {}
 
 /// Adds helper functionality to any `NSLayoutConstraint` instance through the `adyen` property.
-@_spi(AdyenInternal)
-extension AdyenScope where Base: NSLayoutConstraint {
+package extension AdyenScope where Base: NSLayoutConstraint {
 
     /// Apply `priority` to this instance of `NSLayoutConstraint`
-    public func with(priority: UILayoutPriority) -> NSLayoutConstraint {
+    func with(priority: UILayoutPriority) -> NSLayoutConstraint {
         base.priority = priority
         return base
     }

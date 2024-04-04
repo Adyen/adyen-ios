@@ -7,20 +7,19 @@
 import AdyenNetworking
 import UIKit
 
-@_spi(AdyenInternal)
-extension UIImageView {
+package extension UIImageView {
     
     /// Initializes UIImageView with given `ImageStyle`
     /// Sets `translatesAutoresizingMaskIntoConstraints` to `false`
     /// - Parameter style: `ImageStyle` to be applied
-    public convenience init(style: ImageStyle) {
+    convenience init(style: ImageStyle) {
         self.init()
         translatesAutoresizingMaskIntoConstraints = false
         adyen.apply(style)
     }
 }
 
-public extension AdyenScope where Base: UIImageView {
+package extension AdyenScope where Base: UIImageView {
     
     /// Applies given `ImageStyle` to the UIImageView
     /// Sets `translatesAutoresizingMaskIntoConstraints` to `false`

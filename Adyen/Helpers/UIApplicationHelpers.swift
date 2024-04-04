@@ -6,7 +6,7 @@
 
 import UIKit
 
-public extension AdyenScope where Base: UIApplication {
+package extension AdyenScope where Base: UIApplication {
     var mainKeyWindow: UIWindow? {
         if #available(iOS 13, *) {
             return base.connectedScenes

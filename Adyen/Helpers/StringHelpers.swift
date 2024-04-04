@@ -7,7 +7,6 @@
 import AdyenNetworking
 import Foundation
 
-@_spi(AdyenInternal)
 extension String: AdyenCompatible {
 
     public enum Adyen {
@@ -16,11 +15,9 @@ extension String: AdyenCompatible {
     }
 }
 
-@_spi(AdyenInternal)
 extension Optional: AdyenCompatible {}
 
-@_spi(AdyenInternal)
-public extension AdyenScope where Base == String? {
+package extension AdyenScope where Base == String? {
 
     /// Returns true if optional string is null or not empty.
     var isNullOrEmpty: Bool {
@@ -35,8 +32,7 @@ public extension AdyenScope where Base == String? {
 
 }
 
-@_spi(AdyenInternal)
-public extension AdyenScope where Base == String {
+package extension AdyenScope where Base == String {
 
     /// Returns nil string is empty or actual value.
     var nilIfEmpty: String? {

@@ -7,14 +7,13 @@
 import AdyenNetworking
 import UIKit
 
-@_spi(AdyenInternal)
-extension UILabel {
+package extension UILabel {
     
     /// Initializes UILabel with given `TextStyle`
     /// Sets `translatesAutoresizingMaskIntoConstraints` to `false`
     /// Sets `adjustsFontForContentSizeCategory` to `true`
     /// - Parameter style: `TextStyle` to be applied
-    public convenience init(style: TextStyle) {
+    convenience init(style: TextStyle) {
         self.init()
         translatesAutoresizingMaskIntoConstraints = false
         adyen.apply(style)
@@ -22,7 +21,7 @@ extension UILabel {
     
 }
 
-public extension AdyenScope where Base: UILabel {
+package extension AdyenScope where Base: UILabel {
     
     /// Applies given `TextStyle` to the UILabel
     /// Sets `adjustsFontForContentSizeCategory` to `true`

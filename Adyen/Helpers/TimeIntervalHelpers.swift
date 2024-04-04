@@ -12,8 +12,7 @@ import Foundation
 extension TimeInterval: AdyenCompatible {}
 
 /// Adds helper functionality to any `TimeInterval` instance through the `adyen` property.
-@_spi(AdyenInternal)
-public extension AdyenScope where Base == TimeInterval {
+package extension AdyenScope where Base == TimeInterval {
     
     /// Transform `TimeInterval` to a `String` with either "MM:SS" or "HH:MM:SS" depending
     /// on whether number of full hours is bigger than 0

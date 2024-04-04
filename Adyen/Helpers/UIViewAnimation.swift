@@ -85,14 +85,13 @@ public final class SpringAnimationContext: AnimationContext {
     }
 }
 
-@_spi(AdyenInternal)
-extension AdyenScope where Base: UIView {
+package extension AdyenScope where Base: UIView {
     
-    public func cancelAnimations(with key: String) {
+    func cancelAnimations(with key: String) {
         base.animations.removeAll { $0.animationKey == key }
     }
     
-    public func animate(context: AnimationContext) {
+    func animate(context: AnimationContext) {
         base.animations.append(context)
         
         if base.animations.count == 1 {

@@ -12,11 +12,10 @@ import UIKit
 extension Bundle: AdyenCompatible {}
 
 /// Adds helper functionality to any `Bundle` instance through the `adyen` property.
-@_spi(AdyenInternal)
-extension AdyenScope where Base: Bundle {
+package extension AdyenScope where Base: Bundle {
     
     /// Enables any `Bundle` instance to check whether a certain scheme is configured in the Info.plist or not.
-    public func isSchemeConfigured(_ scheme: String) -> Bool {
+    func isSchemeConfigured(_ scheme: String) -> Bool {
         guard let configuredSchemes = base.object(forInfoDictionaryKey: "LSApplicationQueriesSchemes") as? [String] else {
             return false
         }

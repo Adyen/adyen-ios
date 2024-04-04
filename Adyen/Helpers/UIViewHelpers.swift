@@ -8,11 +8,10 @@ import AdyenNetworking
 import UIKit
 
 /// Adds helper functionality to any `UIView` instance through the `adyen` property.
-@_spi(AdyenInternal)
-extension AdyenScope where Base: UIView {
+package extension AdyenScope where Base: UIView {
     
     @discardableResult
-    public func snapShot(forceRedraw: Bool = false) -> UIImage? {
+    func snapShot(forceRedraw: Bool = false) -> UIImage? {
         if forceRedraw {
             snapShot(forceRedraw: false)
         }
@@ -26,9 +25,9 @@ extension AdyenScope where Base: UIView {
         return image
     }
     
-    public func hide(animationKey: String,
-                     hidden: Bool,
-                     animated: Bool) {
+    func hide(animationKey: String,
+              hidden: Bool,
+              animated: Bool) {
         if animated {
             hideWithAnimation(animationKey: animationKey,
                               hidden)
@@ -66,7 +65,7 @@ extension AdyenScope where Base: UIView {
         base.adyen.updatePreferredContentSize()
     }
 
-    public var minimalSize: CGSize {
+    var minimalSize: CGSize {
         let targetSize = CGSize(width: Dimensions.expectedWidth(for: base.window),
                                 height: UIView.layoutFittingCompressedSize.height)
         return base.systemLayoutSizeFitting(targetSize,

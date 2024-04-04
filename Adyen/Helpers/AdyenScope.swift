@@ -7,8 +7,7 @@
 import Foundation
 
 /// A wrapper around a base instance, to enable scoped system types extensions without conflict with the host app code.
-@_spi(AdyenInternal)
-public struct AdyenScope<Base> {
+package struct AdyenScope<Base> {
     
     public let base: Base
     
@@ -18,8 +17,7 @@ public struct AdyenScope<Base> {
 }
 
 /// Describes a type that needs scoped extension.
-@_spi(AdyenInternal)
-public protocol AdyenCompatible {
+package protocol AdyenCompatible {
     
     associatedtype AdyenBase
     
@@ -28,8 +26,7 @@ public protocol AdyenCompatible {
 
 /// Provides default implementation of the `adyen` property,
 /// to enable any conforming type to inherit the `adyen` scope.
-@_spi(AdyenInternal)
-public extension AdyenCompatible {
+package extension AdyenCompatible {
     
     var adyen: AdyenScope<Self> {
         AdyenScope(base: self)
