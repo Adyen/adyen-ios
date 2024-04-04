@@ -7,5 +7,4 @@
 import AdyenNetworking
 import Foundation
 
-@_spi(AdyenInternal)
-public protocol APIRequest: Request where ErrorResponseType == APIError {}
+package protocol APIRequest: Request where ErrorResponseType == APIError {}

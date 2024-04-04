@@ -140,8 +140,7 @@ public struct ApplePayPayment {
 
 extension ApplePayPayment {
 
-    @_spi(AdyenInternal)
-    public var amount: Amount {
+    package var amount: Amount {
         Amount(value: amountMinorUnits, currencyCode: currencyCode)
     }
 

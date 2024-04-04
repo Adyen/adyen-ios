@@ -15,8 +15,7 @@ public protocol FormItemInjector {
 }
 
 /// Injects a custom `FormItem` into a `FormViewController`.
-@_spi(AdyenInternal)
-public struct CustomFormItemInjector<T: FormItem>: FormItemInjector {
+package struct CustomFormItemInjector<T: FormItem>: FormItemInjector {
     
     private let item: T
     

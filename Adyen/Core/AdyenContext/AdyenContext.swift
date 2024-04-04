@@ -18,8 +18,7 @@ public final class AdyenContext: PaymentAware {
     /// The payment information.
     public private(set) var payment: Payment?
     
-    @_spi(AdyenInternal)
-    public let analyticsProvider: AnalyticsProviderProtocol?
+    package let analyticsProvider: AnalyticsProviderProtocol?
     
     // MARK: - Initializers
     
@@ -51,8 +50,7 @@ public final class AdyenContext: PaymentAware {
         self.payment = payment
     }
     
-    @_spi(AdyenInternal)
-    public func update(payment: Payment?) {
+    package func update(payment: Payment?) {
         self.payment = payment
     }
     

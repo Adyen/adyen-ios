@@ -37,16 +37,16 @@ public struct AddressViewModel {
     internal var labels: [AddressField: LocalizationKey]
     internal var placeholder: [AddressField: LocalizationKey]
 
-    @_spi(AdyenInternal)
-    public var optionalFields: [AddressField]
+    package var optionalFields: [AddressField]
 
-    @_spi(AdyenInternal)
-    public var scheme: [AddressFormScheme]
+    package var scheme: [AddressFormScheme]
 
-    public init(labels: [AddressField: LocalizationKey],
-                placeholder: [AddressField: LocalizationKey],
-                optionalFields: [AddressField],
-                scheme: [AddressFormScheme]) {
+    package init(
+        labels: [AddressField: LocalizationKey],
+        placeholder: [AddressField: LocalizationKey],
+        optionalFields: [AddressField],
+        scheme: [AddressFormScheme]
+    ) {
         self.labels = labels
         self.placeholder = placeholder
         self.optionalFields = optionalFields
@@ -55,8 +55,7 @@ public struct AddressViewModel {
 
 }
 
-@_spi(AdyenInternal)
-public extension AddressViewModel {
+package extension AddressViewModel {
     
     /// Returns all fields that are not specified as `optionalFields`
     var requiredFields: Set<AddressField> {

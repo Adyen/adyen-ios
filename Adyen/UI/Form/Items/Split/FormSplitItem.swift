@@ -7,8 +7,7 @@
 import Foundation
 
 /// A form item in which two items are shown side-by-side horizontally.
-@_spi(AdyenInternal)
-public final class FormSplitItem: FormItem {
+package final class FormSplitItem: FormItem {
 
     internal var leftItem: FormItem
 

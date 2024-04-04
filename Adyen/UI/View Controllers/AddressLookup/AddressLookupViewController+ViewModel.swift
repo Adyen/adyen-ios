@@ -6,7 +6,7 @@
 
 import UIKit
 
-public extension AddressLookupViewController {
+package extension AddressLookupViewController {
     
     /// Defining the currently active screen
     internal enum InterfaceState: Equatable {

@@ -7,8 +7,7 @@
 import UIKit
 
 /// A ``FormViewController`` with a ``FormAddressItem`` and optional ``FormSearchButtonItem``
-@_spi(AdyenInternal)
-public class AddressInputFormViewController: FormViewController {
+package class AddressInputFormViewController: FormViewController {
     
     private let viewModel: ViewModel
     

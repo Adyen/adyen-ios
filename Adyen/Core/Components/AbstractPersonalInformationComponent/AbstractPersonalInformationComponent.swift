@@ -28,8 +28,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
 
     public let requiresModalPresentation: Bool = true
 
-    @_spi(AdyenInternal)
-    public var configuration: Configuration
+    package var configuration: Configuration
     
     private let fields: [PersonalInformation]
 
@@ -138,8 +137,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return injector
     }()
 
-    @_spi(AdyenInternal)
-    public var emailItem: FormTextInputItem? { emailItemInjector?.item }
+    package var emailItem: FormTextInputItem? { emailItemInjector?.item }
     
     internal lazy var addressItemInjector: AddressFormItemInjector? = {
         guard fields.contains(.address) else { return nil }
@@ -154,8 +152,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
                                        addressType: .billing)
     }()
     
-    @_spi(AdyenInternal)
-    public var addressItem: FormAddressPickerItem? { addressItemInjector?.item }
+    package var addressItem: FormAddressPickerItem? { addressItemInjector?.item }
     
     internal lazy var deliveryAddressItemInjector: AddressFormItemInjector? = {
         guard fields.contains(.deliveryAddress) else { return nil }
@@ -170,8 +167,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
                                        addressType: .delivery)
     }()
     
-    @_spi(AdyenInternal)
-    public var deliveryAddressItem: FormAddressPickerItem? { deliveryAddressItemInjector?.item }
+    package var deliveryAddressItem: FormAddressPickerItem? { deliveryAddressItemInjector?.item }
 
     internal lazy var phoneItemInjector: PhoneFormItemInjector? = {
         guard fields.contains(.phone) else { return nil }
@@ -184,8 +180,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return injector
     }()
 
-    @_spi(AdyenInternal)
-    public var phoneItem: FormPhoneNumberItem? { phoneItemInjector?.item }
+    package var phoneItem: FormPhoneNumberItem? { phoneItemInjector?.item }
 
     private lazy var selectableValues: [PhoneExtensionPickerItem] = phoneExtensions().map {
         PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0)
@@ -226,8 +221,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         payment?.countryCode ?? Locale.current.regionCode ?? "US"
     }
     
-    @_spi(AdyenInternal)
-    public func showValidation() {
+    package func showValidation() {
         formViewController.showValidation()
     }
 
@@ -245,7 +239,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     }
 }
 
-@_spi(AdyenInternal)
 extension AbstractPersonalInformationComponent: ViewControllerPresenter {
     
     public func presentViewController(_ viewController: UIViewController, animated: Bool) {
@@ -257,7 +250,6 @@ extension AbstractPersonalInformationComponent: ViewControllerPresenter {
     }
 }
 
-@_spi(AdyenInternal)
 extension AbstractPersonalInformationComponent: ViewControllerDelegate {
     // MARK: - ViewControllerDelegate
 

@@ -6,8 +6,7 @@
 
 import UIKit
 
-@_spi(AdyenInternal)
-public final class FormPickerSearchViewController: UINavigationController {
+package final class FormPickerSearchViewController: UINavigationController {
     
     public init(
         localizationParameters: LocalizationParameters? = nil,

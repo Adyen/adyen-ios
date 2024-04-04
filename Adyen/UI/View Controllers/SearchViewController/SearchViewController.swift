@@ -8,8 +8,7 @@ import UIKit
 
 /// Protocol specifying the interface of a view that is shown
 /// when the results of the ``SearchViewController`` are empty.
-@_spi(AdyenInternal)
-public protocol SearchResultsEmptyView: UIView {
+package protocol SearchResultsEmptyView: UIView {
     /// The searchTerm that caused the search results to be empty
     ///
     /// Use this value to update your messaging
@@ -17,8 +16,7 @@ public protocol SearchResultsEmptyView: UIView {
 }
 
 /// A view controller that shows search results in a ``ListViewController``
-@_spi(AdyenInternal)
-public class SearchViewController: UIViewController, AdyenObserver {
+package class SearchViewController: UIViewController, AdyenObserver {
     
     internal lazy var keyboardObserver = KeyboardObserver()
     private var emptyViewBottomConstraint: NSLayoutConstraint?

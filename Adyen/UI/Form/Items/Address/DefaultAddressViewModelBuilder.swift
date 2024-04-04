@@ -17,14 +17,12 @@ public protocol AddressViewModelBuilder {
     func build(context: AddressViewModelBuilderContext) -> AddressViewModel
 }
 
-@_spi(AdyenInternal)
-public struct DefaultAddressViewModelBuilder: AddressViewModelBuilder {
+package struct DefaultAddressViewModelBuilder: AddressViewModelBuilder {
 
     public init() {}
 
     // swiftlint:disable function_body_length
-    @_spi(AdyenInternal)
-    public func build(context: AddressViewModelBuilderContext) -> AddressViewModel {
+    package func build(context: AddressViewModelBuilderContext) -> AddressViewModel {
         var viewModel = AddressViewModel(labels: [.city: .cityFieldTitle,
                                                   .houseNumberOrName: .houseNumberFieldTitle,
                                                   .street: .streetFieldTitle,

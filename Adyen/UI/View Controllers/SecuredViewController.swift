@@ -9,8 +9,7 @@ import UIKit
 
 /// A View Controller wrapper to blur its content when going into the background.
 /// Used to wrap view controllers that contain sensitive user info.
-@_spi(AdyenInternal)
-public final class SecuredViewController<ChildViewController: UIViewController>: UIViewController {
+package final class SecuredViewController<ChildViewController: UIViewController>: UIViewController {
 
     private let notificationCenter = NotificationCenter.default
 

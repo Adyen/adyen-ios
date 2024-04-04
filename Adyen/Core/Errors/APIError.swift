@@ -8,8 +8,7 @@ import AdyenNetworking
 import Foundation
 
 /// Represents an API error object.
-@_spi(AdyenInternal)
-public struct APIError: ErrorResponse, LocalizedError {
+package struct APIError: ErrorResponse, LocalizedError {
     
     /// The status.
     public let status: Int?

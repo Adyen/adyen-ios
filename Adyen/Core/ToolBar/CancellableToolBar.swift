@@ -6,8 +6,7 @@
 
 import UIKit
 
-@_spi(AdyenInternal)
-public final class CancellingToolBar: ModalToolbar {
+package final class CancellingToolBar: ModalToolbar {
 
     private let style: NavigationStyle
     private let title: String?

@@ -27,8 +27,11 @@ private struct LocalizationInput {
 ///   - parameters: The localization parameters.
 ///   - arguments: The arguments to substitute in the templated localized string.
 /// - Returns: The localized string for the given key, or the key itself if the localized string could not be found.
-@_spi(AdyenInternal)
-public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
+package func localizedString(
+    _ key: LocalizationKey,
+    _ parameters: LocalizationParameters?,
+    _ arguments: CVarArg...
+) -> String {
     var translationAttempt: String?
 
     switch parameters?.mode {

@@ -20,20 +20,16 @@ public struct DisplayInformation: Equatable {
     public let subtitle: String?
 
     /// The name of the logo resource.
-    @_spi(AdyenInternal)
-    public let logoName: String
+    package let logoName: String
 
     /// The trailing disclosure text.
-    @_spi(AdyenInternal)
-    public let disclosureText: String?
+    package let disclosureText: String?
 
     /// The footnote if any.
-    @_spi(AdyenInternal)
-    public let footnoteText: String?
+    package let footnoteText: String?
     
     /// An optional custom `accessibilityLabel` to use.
-    @_spi(AdyenInternal)
-    public let accessibilityLabel: String?
+    package let accessibilityLabel: String?
 
     /// Initializes a`DisplayInformation`.
     ///

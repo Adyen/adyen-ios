@@ -7,8 +7,7 @@
 import Foundation
 
 /// A full address form, suitable for all countries.
-@_spi(AdyenInternal)
-public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, AdyenObserver, CompoundFormItem, Hidable {
+package final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, AdyenObserver, CompoundFormItem, Hidable {
     
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
@@ -50,8 +49,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     private weak var presenter: ViewControllerPresenter?
     
-    @_spi(AdyenInternal)
-    public private(set) var addressViewModel: AddressViewModel
+    package private(set) var addressViewModel: AddressViewModel
 
     override public var title: String? {
         didSet {
@@ -65,11 +63,13 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     ///   - configuration: The configuration of the FormAddressItem
     ///   - identifier: The item identifier
     ///   - addressViewModelBuilder: The Address view model builder
-    public init(initialCountry: String,
-                configuration: Configuration,
-                identifier: String? = nil,
-                presenter: ViewControllerPresenter?,
-                addressViewModelBuilder: AddressViewModelBuilder) {
+    package init(
+        initialCountry: String,
+        configuration: Configuration,
+        identifier: String? = nil,
+        presenter: ViewControllerPresenter?,
+        addressViewModelBuilder: AddressViewModelBuilder
+    ) {
         self.initialCountry = initialCountry
         self.configuration = configuration
         self.presenter = presenter

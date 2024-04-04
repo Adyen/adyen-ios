@@ -21,10 +21,9 @@ public protocol TrackableComponent: Component {
     func sendDidLoadEvent()
 }
 
-@_spi(AdyenInternal)
-extension TrackableComponent where Self: ViewControllerDelegate {
+package extension TrackableComponent where Self: ViewControllerDelegate {
     
-    public func viewDidLoad(viewController: UIViewController) {
+    func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
         sendDidLoadEvent()
     }

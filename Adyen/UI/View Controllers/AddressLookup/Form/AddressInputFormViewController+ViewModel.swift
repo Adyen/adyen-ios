@@ -40,7 +40,7 @@ extension AddressInputFormViewController {
         ///   - handleShowSearch: An optional closure that handles showing search - if provided, a search bar is shown
         ///   - completionHandler: A closure that takes an optional address.
         ///    It's the presenters responsibility to dismiss the viewController.
-        public init(
+        package init(
             for addressType: FormAddressPickerItem.AddressType,
             style: FormComponentStyle,
             localizationParameters: LocalizationParameters?,

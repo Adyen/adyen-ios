@@ -15,11 +15,9 @@ public struct Environment: AnyAPIEnvironment {
     /// Adyen's test environment.
     public static let test = Environment(baseURL: URL(string: "https://checkoutshopper-test.adyen.com/")!)
     
-    @_spi(AdyenInternal)
-    public static let beta = Environment(baseURL: URL(string: "https://checkoutshopper-beta.adyen.com/")!)
+    package static let beta = Environment(baseURL: URL(string: "https://checkoutshopper-beta.adyen.com/")!)
     
-    @_spi(AdyenInternal)
-    public static let local = Environment(baseURL: URL(string: "http://localhost:8080/")!)
+    package static let local = Environment(baseURL: URL(string: "http://localhost:8080/")!)
 
     /// Adyen's default live environment.
     @available(*, deprecated, message:
@@ -45,8 +43,7 @@ public struct Environment: AnyAPIEnvironment {
     public static let liveIndia = Environment(baseURL: URL(string: "https://checkoutshopper-live-in.adyen.com/")!)
     
     /// Determines if the environment is one of Adyen's live environments.
-    @_spi(AdyenInternal)
-    public var isLive: Bool {
+    package var isLive: Bool {
         baseURL.absoluteString.hasPrefix("https://checkoutshopper-live")
     }
 

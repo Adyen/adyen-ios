@@ -7,8 +7,7 @@
 import UIKit
 
 /// Displays a list from which items can be selected.
-@_spi(AdyenInternal)
-public final class ListViewController: UITableViewController {
+package final class ListViewController: UITableViewController {
     
     /// Indicates the list view controller UI style.
     public let style: ViewStyle

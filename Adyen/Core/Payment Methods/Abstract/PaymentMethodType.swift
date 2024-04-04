@@ -187,8 +187,7 @@ extension PaymentMethodType {
     /// The brand name of the card type
     ///
     /// - Warning: Currently only intended to be used as `accessibilityLabel` as it's not localized
-    @_spi(AdyenInternal)
-    public var name: String {
+    package var name: String {
         switch self {
         case .card: return "card payment"
         case .scheme: return "scheme"

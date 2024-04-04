@@ -6,8 +6,7 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public extension FormAddressItem {
+package extension FormAddressItem {
     
     /// The configuration of the form address item
     struct Configuration {

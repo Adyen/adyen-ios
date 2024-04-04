@@ -7,8 +7,7 @@
 import Foundation
 import UIKit
 
-@_spi(AdyenInternal)
-public final class LoadingView: UIControl {
+package final class LoadingView: UIControl {
 
     private lazy var activityIndicatorView: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView(style: activityIndicatorStyle)

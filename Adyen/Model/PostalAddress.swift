@@ -110,8 +110,7 @@ public struct PostalAddress: Equatable, Encodable {
 extension PostalAddress {
     
     /// Multi line mailing address
-    @_spi(AdyenInternal)
-    public func formatted(using localizationParameters: LocalizationParameters?) -> String {
+    package func formatted(using localizationParameters: LocalizationParameters?) -> String {
         let address = CNMutablePostalAddress()
         city.map { address.city = $0 }
         country.map {
@@ -127,8 +126,7 @@ extension PostalAddress {
         return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
     }
     
-    @_spi(AdyenInternal)
-    public var formattedStreet: String {
+    package var formattedStreet: String {
         let address = CNMutablePostalAddress()
         address.street = [street, houseNumberOrName, apartment]
             .compactMap { $0 }
@@ -138,8 +136,7 @@ extension PostalAddress {
             .replacingOccurrences(of: "\n", with: ", ")
     }
     
-    @_spi(AdyenInternal)
-    public func formattedLocation(using localizationParameters: LocalizationParameters?) -> String {
+    package func formattedLocation(using localizationParameters: LocalizationParameters?) -> String {
         let address = CNMutablePostalAddress()
         city.map { address.city = $0 }
         country.map {

@@ -11,111 +11,93 @@ import Foundation
 public struct FormItemViewBuilder {
     
     /// Builds `FormToggleItemView` from `FormToggleItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormToggleItem) -> FormItemView<FormToggleItem> {
+    package func build(with item: FormToggleItem) -> FormItemView<FormToggleItem> {
         FormToggleItemView(item: item)
     }
     
     /// Builds `FormSplitItemView` from `FormSplitItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormSplitItem) -> FormItemView<FormSplitItem> {
+    package func build(with item: FormSplitItem) -> FormItemView<FormSplitItem> {
         FormSplitItemView(item: item)
     }
     
     /// Builds `PhoneNumberItemView` from `PhoneNumberItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormPhoneNumberItem) -> FormItemView<FormPhoneNumberItem> {
+    package func build(with item: FormPhoneNumberItem) -> FormItemView<FormPhoneNumberItem> {
         FormPhoneNumberItemView(item: item)
     }
     
     /// Builds `FormPhoneExtensionPickerItemView` from `FormPhoneExtensionPickerItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormPhoneExtensionPickerItem) -> BaseFormPickerItemView<PhoneExtension> {
+    package func build(with item: FormPhoneExtensionPickerItem) -> BaseFormPickerItemView<PhoneExtension> {
         FormPhoneExtensionPickerItemView(item: item)
     }
 
     /// Builds `FormIssuerPickerItemView` from `FormIssuerPickerItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormIssuersPickerItem) -> BaseFormPickerItemView<Issuer> {
+    package func build(with item: FormIssuersPickerItem) -> BaseFormPickerItemView<Issuer> {
         FormIssuersPickerItemView(item: item)
     }
 
     /// Builds `FormTextInputItemView` from `FormTextInputItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormTextInputItem) -> FormItemView<FormTextInputItem> {
+    package func build(with item: FormTextInputItem) -> FormItemView<FormTextInputItem> {
         FormTextInputItemView(item: item)
     }
     
     /// Builds `ListItemView` from `ListItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: ListItem) -> ListItemView {
+    package func build(with item: ListItem) -> ListItemView {
         let listView = ListItemView()
         listView.item = item
         return listView
     }
     
     /// Builds `FormButtonItemView` from `FormButtonItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormButtonItem) -> FormItemView<FormButtonItem> {
+    package func build(with item: FormButtonItem) -> FormItemView<FormButtonItem> {
         FormButtonItemView(item: item)
     }
     
     /// Builds `FormImageView` from `FormImageItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormImageItem) -> FormItemView<FormImageItem> {
+    package func build(with item: FormImageItem) -> FormItemView<FormImageItem> {
         FormImageView(item: item)
     }
 
     /// Builds `FormSeparatorItemView` from `FormSeparatorItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormSeparatorItem) -> FormItemView<FormSeparatorItem> {
+    package func build(with item: FormSeparatorItem) -> FormItemView<FormSeparatorItem> {
         FormSeparatorItemView(item: item)
     }
 
     /// Builds `FormErrorItemView` from `FormErrorItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormErrorItem) -> FormItemView<FormErrorItem> {
+    package func build(with item: FormErrorItem) -> FormItemView<FormErrorItem> {
         FormErrorItemView(item: item)
     }
     
     /// Builds `FormVerticalStackItemView` from `FormAddressItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormAddressItem) -> FormItemView<FormAddressItem> {
+    package func build(with item: FormAddressItem) -> FormItemView<FormAddressItem> {
         FormVerticalStackItemView(item: item)
     }
 
     /// Builds `FormSpacerItemView` from `FormSpacerItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormSpacerItem) -> FormItemView<FormSpacerItem> {
+    package func build(with item: FormSpacerItem) -> FormItemView<FormSpacerItem> {
         FormSpacerItemView(item: item)
     }
     
     /// Builds `FormTextItemView` from `FormPostalCodeItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormPostalCodeItem) -> FormItemView<FormPostalCodeItem> {
+    package func build(with item: FormPostalCodeItem) -> FormItemView<FormPostalCodeItem> {
         FormTextItemView(item: item)
     }
     
     /// Builds `FormSearchButtonItemView` from `FormSearchButtonItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormSearchButtonItem) -> FormItemView<FormSearchButtonItem> {
+    package func build(with item: FormSearchButtonItem) -> FormItemView<FormSearchButtonItem> {
         FormSearchButtonItemView(item: item)
     }
     
     /// Builds `FormAddressPickerItemView` from `FormAddressPickerItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormAddressPickerItem) -> FormItemView<FormAddressPickerItem> {
+    package func build(with item: FormAddressPickerItem) -> FormItemView<FormAddressPickerItem> {
         FormAddressPickerItemView(item: item)
     }
     
     /// Builds `FormPickerItemView` from `FormPickerItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormPickerItem) -> FormItemView<FormPickerItem> {
+    package func build(with item: FormPickerItem) -> FormItemView<FormPickerItem> {
         FormPickerItemView(item: item)
     }
 
-    @_spi(AdyenInternal)
-    public static func build(_ item: FormItem) -> AnyFormItemView {
+    package static func build(_ item: FormItem) -> AnyFormItemView {
         let itemView = item.build(with: FormItemViewBuilder())
         itemView.accessibilityIdentifier = item.identifier
         return itemView

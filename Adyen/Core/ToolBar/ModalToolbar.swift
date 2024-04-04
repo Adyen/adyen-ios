@@ -6,8 +6,7 @@
 
 import UIKit
 
-@_spi(AdyenInternal)
-public class ModalToolbar: UIView, AnyNavigationBar {
+package class ModalToolbar: UIView, AnyNavigationBar {
     private let style: NavigationStyle
     public var onCancelHandler: (() -> Void)?
     private let title: String?

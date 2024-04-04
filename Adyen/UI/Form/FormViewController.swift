@@ -22,7 +22,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     public let style: ViewStyle
 
     /// Delegate to handle different viewController events.
-    public weak var delegate: ViewControllerDelegate?
+    package weak var delegate: ViewControllerDelegate?
     
     internal lazy var keyboardObserver = KeyboardObserver()
 
@@ -123,8 +123,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     ///
     /// - Parameters:
     ///   - item: The item to append.
-    @_spi(AdyenInternal)
-    public func append(_ item: some FormItem) {
+    package func append(_ item: some FormItem) {
         let itemView = itemManager.append(item)
         observerVisibility(of: item, and: itemView)
         itemView.applyTextDelegateIfNeeded(delegate: self)
@@ -170,8 +169,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
         return false
     }
 
-    @_spi(AdyenInternal)
-    public func showValidation() {
+    package func showValidation() {
         let validatableItemViews = itemManager.flatItemViews
             .compactMap { $0 as? AnyFormValidatableValueItemView }
         

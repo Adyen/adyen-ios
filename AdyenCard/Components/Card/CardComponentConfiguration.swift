@@ -35,8 +35,7 @@ public struct BillingAddressConfiguration {
         case optionalForCardTypes(Set<CardType>)
     }
     
-    @_spi(AdyenInternal)
-    public func isOptional(for cardTypes: [CardType]) -> Bool {
+    package func isOptional(for cardTypes: [CardType]) -> Bool {
         switch requirementPolicy {
         case .required:
             return false

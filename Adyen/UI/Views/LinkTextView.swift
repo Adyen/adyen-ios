@@ -9,8 +9,7 @@ import UIKit
 /// A text view that easily makes links - delimited with a `linkRangeDelimiter` - selectable
 ///
 /// Use ``update(text:style:linkRangeDelimiter:)`` to update the content
-@_spi(AdyenInternal)
-public class LinkTextView: UITextView {
+package class LinkTextView: UITextView {
     
     private let linkSelectionHandler: (_ linkIndex: Int) -> Void
     

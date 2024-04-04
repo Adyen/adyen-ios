@@ -6,8 +6,7 @@
 
 import UIKit
 
-@_spi(AdyenInternal)
-public protocol ViewControllerPresenter: AnyObject {
+package protocol ViewControllerPresenter: AnyObject {
     
     func presentViewController(_ viewController: UIViewController, animated: Bool)
     func dismissViewController(animated: Bool)
@@ -29,8 +28,7 @@ extension UIViewController: ViewControllerPresenter {
 /// It conforms to ``ViewControllerPresenter`` itself and forwards all ``ViewControllerPresenter`` calls to the reference.
 ///
 /// To be used in places where a non optional presenter is required (e.g. to instantiate a different object)
-@_spi(AdyenInternal)
-public class WeakReferenceViewControllerPresenter: ViewControllerPresenter {
+package class WeakReferenceViewControllerPresenter: ViewControllerPresenter {
     
     private weak var presenter: ViewControllerPresenter?
     

@@ -8,8 +8,7 @@ import Foundation
 import UIKit
 
 /// A component that wraps any `Component` to make it a `PresentableComponent`.
-@_spi(AdyenInternal)
-public final class PresentableComponentWrapper: PresentableComponent,
+package final class PresentableComponentWrapper: PresentableComponent,
     Cancellable,
     FinalizableComponent,
     LoadingComponent {
@@ -26,8 +25,7 @@ public final class PresentableComponentWrapper: PresentableComponent,
     
     public let requiresModalPresentation: Bool = true
     
-    @_spi(AdyenInternal)
-    public var navBarType: NavigationBarType
+    package var navBarType: NavigationBarType
     
     /// Initializes the wrapper component.
     ///

@@ -8,8 +8,7 @@ import UIKit
 
 /// A view controller that allows looking up of addresses via a search term
 /// and also allows manual input of an address
-@_spi(AdyenInternal)
-public class AddressLookupViewController: UINavigationController, AdyenObserver {
+package class AddressLookupViewController: UINavigationController, AdyenObserver {
     
     internal private(set) var viewModel: ViewModel
     
