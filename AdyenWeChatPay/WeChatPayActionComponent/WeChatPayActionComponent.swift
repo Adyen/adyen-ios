@@ -5,10 +5,10 @@
 //
 
 #if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
+    import AdyenActions
 #endif
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import Foundation
 
 #if !targetEnvironment(simulator) && canImport(AdyenWeChatPayInternal)

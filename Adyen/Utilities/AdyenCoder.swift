@@ -7,8 +7,7 @@
 import Foundation
 
 /// An object that provides helper functions for coding and decoding responses.
-@_spi(AdyenInternal)
-public enum AdyenCoder {
+package enum AdyenCoder {
     
     // MARK: - Decoding
     

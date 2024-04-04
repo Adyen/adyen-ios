@@ -7,8 +7,7 @@
 import UIKit
 
 /// Observe changes to the keyboard frames to update the UI accordingly
-@_spi(AdyenInternal)
-public class KeyboardObserver {
+package class KeyboardObserver {
     
     /// The observable keyboard rect
     @AdyenObservable(CGRect.zero)

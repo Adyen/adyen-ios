@@ -9,10 +9,10 @@
     import AdyenComponents
 #endif
 #if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
+    import AdyenActions
 #endif
 #if canImport(AdyenCard)
-    @_spi(AdyenInternal) import AdyenCard
+    import AdyenCard
 #endif
 import AdyenNetworking
 import UIKit

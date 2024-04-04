@@ -10,8 +10,7 @@ private enum AssociatedKeys {
     internal static var animations: Void?
 }
 
-@_spi(AdyenInternal)
-public class AnimationContext: NSObject {
+package class AnimationContext: NSObject {
     fileprivate let animationKey: String
     
     fileprivate let duration: TimeInterval
@@ -39,8 +38,7 @@ public class AnimationContext: NSObject {
     }
 }
 
-@_spi(AdyenInternal)
-public final class KeyFrameAnimationContext: AnimationContext {
+package final class KeyFrameAnimationContext: AnimationContext {
     
     fileprivate let keyFrameOptions: UIView.KeyframeAnimationOptions
     
@@ -60,8 +58,7 @@ public final class KeyFrameAnimationContext: AnimationContext {
     }
 }
 
-@_spi(AdyenInternal)
-public final class SpringAnimationContext: AnimationContext {
+package final class SpringAnimationContext: AnimationContext {
 
     fileprivate let dampingRatio: CGFloat
     fileprivate let velocity: CGFloat

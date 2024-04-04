@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
-@_spi(AdyenInternal) import AdyenActions
+import Adyen
+import AdyenActions
 import AdyenComponents
 import AdyenDropIn
 import AdyenSession

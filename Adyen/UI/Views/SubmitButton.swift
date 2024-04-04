@@ -7,8 +7,7 @@
 import UIKit
 
 /// A rounded submit button used to submit details.
-@_spi(AdyenInternal)
-public final class SubmitButton: UIControl {
+package final class SubmitButton: UIControl {
     
     private let style: ButtonStyle
     

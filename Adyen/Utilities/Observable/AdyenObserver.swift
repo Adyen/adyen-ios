@@ -9,8 +9,7 @@ import Foundation
 /// Conforming to the Observer protocol will make the observe and binding functions available for use.
 public protocol AdyenObserver: AnyObject {}
 
-@_spi(AdyenInternal)
-public extension AdyenObserver {
+package extension AdyenObserver {
     
     /// Observes an event publisher for events.
     ///

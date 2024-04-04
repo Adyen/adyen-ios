@@ -7,8 +7,7 @@
 import Foundation
 import UIKit
 
-@_spi(AdyenInternal)
-public enum Dimensions {
+package enum Dimensions {
 
     public static var leastPresentableScale: CGFloat = 0.25
 

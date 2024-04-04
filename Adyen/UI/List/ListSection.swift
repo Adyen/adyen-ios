@@ -14,8 +14,7 @@ public enum EditingStyle {
 }
 
 /// A section of items in a ListViewController.
-@_spi(AdyenInternal)
-public struct ListSection: Hashable {
+package struct ListSection: Hashable {
     
     /// The title of the section.
     public let header: ListSectionHeader?
@@ -67,8 +66,7 @@ public struct ListSection: Hashable {
 }
 
 /// A list section header.
-@_spi(AdyenInternal)
-public struct ListSectionHeader: Hashable {
+package struct ListSectionHeader: Hashable {
 
     /// The header title.
     public var title: String

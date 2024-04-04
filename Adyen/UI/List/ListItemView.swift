@@ -18,7 +18,7 @@ public final class ListItemView: UIView, AnyFormItemView {
     public var childItemViews: [AnyFormItemView] = []
     
     /// Initializes the list item view.
-    public init(imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()) {
+    package init(imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()) {
         self.imageLoader = imageLoader
         
         super.init(frame: .zero)

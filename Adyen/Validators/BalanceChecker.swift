@@ -6,8 +6,7 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public struct BalanceChecker {
+package struct BalanceChecker {
 
     /// Indicates balance related errors.
     public enum Error: LocalizedError {

@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@testable @_spi(AdyenInternal) import AdyenCard
+@testable import AdyenCard
 import XCTest
 
 class CardSecurityCodeValidatorTests: XCTestCase {

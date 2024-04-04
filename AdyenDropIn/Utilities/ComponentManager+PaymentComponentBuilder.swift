@@ -6,13 +6,13 @@
 
 @_spi(AdyenInternal) import Adyen
 #if canImport(AdyenCard)
-    @_spi(AdyenInternal) import AdyenCard
+    import AdyenCard
 #endif
 #if canImport(AdyenComponents)
     @_spi(AdyenInternal) import AdyenComponents
 #endif
 #if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
+    import AdyenActions
 #endif
 #if canImport(AdyenCashAppPay)
     import AdyenCashAppPay

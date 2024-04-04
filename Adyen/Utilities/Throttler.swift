@@ -7,8 +7,7 @@
 import Foundation
 
 // Throttles come code execution.
-@_spi(AdyenInternal)
-public final class Throttler {
+package final class Throttler {
     
     private var workItem = DispatchWorkItem(block: { /* first work item is idle */ })
     private let queue: DispatchQueue

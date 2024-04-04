@@ -6,8 +6,7 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public final class ImageLoaderProvider {
+package enum ImageLoaderProvider {
     
     @AdyenDependency(\.imageLoader) private static var underlyingImageLoader
     

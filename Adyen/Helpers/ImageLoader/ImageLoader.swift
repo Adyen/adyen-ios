@@ -6,14 +6,12 @@
 
 import UIKit
 
-@_spi(AdyenInternal)
-public protocol ImageLoading {
+package protocol ImageLoading {
     @discardableResult
     func load(url: URL, completion: @escaping ((UIImage?) -> Void)) -> AdyenCancellable
 }
 
-@_spi(AdyenInternal)
-public final class ImageLoader: ImageLoading {
+package final class ImageLoader: ImageLoading {
     
     internal let urlSession: URLSession
     

@@ -7,8 +7,7 @@
 import Foundation
 
 /// Provides access to injected dependencies.
-@_spi(AdyenInternal)
-public struct AdyenDependencyValues {
+package struct AdyenDependencyValues {
     
     /// The currently injected values
     fileprivate static var current = AdyenDependencyValues()
@@ -68,9 +67,8 @@ public struct AdyenDependencyValues {
 
 // MARK: - Property wrapper
 
-@_spi(AdyenInternal)
 @propertyWrapper
-public struct AdyenDependency<T> {
+package struct AdyenDependency<T> {
     private let keyPath: KeyPath<AdyenDependencyValues, T>
     public var wrappedValue: T { AdyenDependencyValues.current[keyPath] }
     
@@ -81,8 +79,7 @@ public struct AdyenDependency<T> {
 
 // MARK: - DependencyKey Protocol
 
-@_spi(AdyenInternal)
-public protocol AdyenDependencyKey {
+package protocol AdyenDependencyKey {
     associatedtype Value
     static var liveValue: Self.Value { get }
 }

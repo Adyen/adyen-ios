@@ -8,14 +8,13 @@ import Foundation
 
 /// This is excluded from the Swift Package, since swift packages has different code to access internal resources.
 /// The Bundle extension in `BundleSPMExtension.swift` is used instead.
-@_spi(AdyenInternal)
-extension Bundle {
+package extension Bundle {
 
     /// The main bundle of the framework.
     internal static let core: Bundle = .init(for: FormView.self)
 
     /// The bundle in which the framework's resources are located.
-    public static let coreInternalResources: Bundle = {
+    static let coreInternalResources: Bundle = {
         let url = core.url(forResource: "Adyen", withExtension: "bundle")
         let bundle = url.flatMap { Bundle(url: $0) }
         return bundle ?? core

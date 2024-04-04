@@ -8,15 +8,13 @@ import Foundation
 import UIKit
 
 /// Handles opening third party apps.
-@_spi(AdyenInternal)
-public protocol AnyAppLauncher {
+package protocol AnyAppLauncher {
     func openCustomSchemeUrl(_ url: URL, completion: ((Bool) -> Void)?)
     func openUniversalAppUrl(_ url: URL, completion: ((Bool) -> Void)?)
 }
 
 /// Handles opening third party apps.
-@_spi(AdyenInternal)
-public struct AppLauncher: AnyAppLauncher {
+package struct AppLauncher: AnyAppLauncher {
 
     public init() { /* Empty initializer */ }
     

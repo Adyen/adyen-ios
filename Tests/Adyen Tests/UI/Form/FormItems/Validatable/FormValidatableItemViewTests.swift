@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) import AdyenCard
+import AdyenCard
 import XCTest
 
 private class FormValidatableValueItemMock: FormValidatableValueItem<String> {

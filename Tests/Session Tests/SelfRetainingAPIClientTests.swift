@@ -4,10 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import AdyenNetworking
 @testable import AdyenSession
 import XCTest
-@_spi(AdyenInternal) import Adyen
 
 extension SessionSetupResponse: Equatable {
     public static func == (lhs: SessionSetupResponse, rhs: SessionSetupResponse) -> Bool {
