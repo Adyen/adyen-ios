@@ -141,6 +141,8 @@ cp "../Tests/DummyData/Dummy.swift" Tests/Dummy.swift
 cp "../AdyenUnitTests/APIClientMock.swift" Tests/APIClientMock.swift
 cp "../Tests/Adyen Tests/Mocks/ImageLoaderMock.swift" Tests/ImageLoaderMock.swift
 cp "../Tests/Helpers/String+UIImage.swift" Tests/String+UIImage.swift
+
+cp "../AdyenUnitTests/APIClientMock.swift" Source/APIClientMock.swift
 cp -a "../Demo/Common" Source/
 cp -a "../Demo/UIKit" Source/
 cp "../Demo/Configuration.swift" Source/Configuration.swift
