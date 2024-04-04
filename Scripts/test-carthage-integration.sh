@@ -136,9 +136,9 @@ cp "../Tests/Helpers/XCTestCase+RootViewController.swift" Tests/XCTestCase+RootV
 cp "../Tests/Helpers/XCTestCase+Wait.swift" Tests/XCTestCase+Wait.swift
 cp "../Tests/Helpers/UIViewController+Search.swift" Tests/UIViewController+Search.swift
 cp "../Tests/Helpers/PaymentMethods+Equatable.swift" Tests/PaymentMethods+Equatable.swift
-cp "../Tests/Adyen Tests/Analytics/AnalyticsProviderMock.swift" Tests/AnalyticsProviderMock.swift
+cp "../AdyenUnitTests/Analytics/AnalyticsProviderMock.swift" Tests/AnalyticsProviderMock.swift
 cp "../Tests/DummyData/Dummy.swift" Tests/Dummy.swift
-cp "../Demo/Common/Utils/APIClientMock.swift" Tests/APIClientMock.swift
+cp "../AdyenUnitTests/APIClientMock.swift" Tests/APIClientMock.swift
 cp "../Tests/Adyen Tests/Mocks/ImageLoaderMock.swift" Tests/ImageLoaderMock.swift
 cp "../Tests/Helpers/String+UIImage.swift" Tests/String+UIImage.swift
 cp -a "../Demo/Common" Source/
