@@ -1,0 +1,39 @@
+{
+  "configurations" : [
+    {
+      "id" : "037AE7EE-8870-4A5E-B800-F665F08F3485",
+      "name" : "🇺🇸",
+      "options" : {
+        "language" : "en",
+        "region" : "US"
+      }
+    },
+    {
+      "id" : "05301771-46E3-4D5D-8301-E8D88941790F",
+      "name" : "🇩🇪",
+      "options" : {
+        "language" : "de",
+        "region" : "DE"
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "commandLineArgumentEntries" : [
+      {
+        "argument" : "-GenerateSnapshots"
+      }
+    ],
+    "preferredScreenCaptureFormat" : "screenshot",
+    "uiTestingScreenshotsLifetime" : "keepNever"
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Adyen.xcodeproj",
+        "identifier" : "81DF94042BAAD8EB0001DCBC",
+        "name" : "GenerateSnapshots"
+      }
+    }
+  ],
+  "version" : 1
+}

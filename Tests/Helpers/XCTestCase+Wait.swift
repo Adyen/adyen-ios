@@ -33,7 +33,7 @@ extension XCTestCase {
     ///   - message: an optional message on failure
     func wait(
         until expectation: () -> Bool,
-        timeout: TimeInterval = 120,
+        timeout: TimeInterval = 60,
         retryInterval: DispatchTimeInterval = .seconds(1),
         message: String? = nil
     ) {
@@ -63,7 +63,7 @@ extension XCTestCase {
         until target: Target,
         at keyPath: KeyPath<Target, Value>,
         is expectedValue: Value,
-        timeout: TimeInterval = 120,
+        timeout: TimeInterval = 60,
         line: Int = #line
     ) {
         wait(

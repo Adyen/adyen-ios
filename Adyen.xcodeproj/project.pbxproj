@@ -1522,6 +1522,9 @@
 		81825CC32AC59C6C00F91912 /* XCTestCase+Wait+UIKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait+UIKit.swift"; sourceTree = "<group>"; };
 		81881BCD2B1A0A510020E3F2 /* AnyPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyPaymentMethod.swift; sourceTree = "<group>"; };
 		81896E842A4DB5F300C532CA /* SearchViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerTests.swift; sourceTree = "<group>"; };
+		818B03C22BB6F5E900732C35 /* AllTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = AllTests.xctestplan; sourceTree = "<group>"; };
+		818B03C42BB6F86600732C35 /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
+		818B03C52BB6F88100732C35 /* SnapshotTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = SnapshotTests.xctestplan; sourceTree = "<group>"; };
 		818E7BBE2B989ACE00A432EE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		8191838D2A53062F008EB61A /* FormAddressItem+Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormAddressItem+Configuration.swift"; sourceTree = "<group>"; };
 		819CC3332B14C53200D2EEE9 /* PaymentMethods+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaymentMethods+Equatable.swift"; sourceTree = "<group>"; };
@@ -2783,6 +2786,17 @@
 			path = Picker;
 			sourceTree = "<group>";
 		};
+		818B03C32BB6F74700732C35 /* TestPlans */ = {
+			isa = PBXGroup;
+			children = (
+				818B03C22BB6F5E900732C35 /* AllTests.xctestplan */,
+				818B03C42BB6F86600732C35 /* UnitTests.xctestplan */,
+				818B03C52BB6F88100732C35 /* SnapshotTests.xctestplan */,
+				81DF942F2BAAD9A20001DCBC /* GenerateSnapshots.xctestplan */,
+			);
+			path = TestPlans;
+			sourceTree = "<group>";
+		};
 		81A2E3BC2A5C452600CF5F9C /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -3550,11 +3564,11 @@
 		E2C0E02922097916008616F6 = {
 			isa = PBXGroup;
 			children = (
-				81DF942F2BAAD9A20001DCBC /* GenerateSnapshots.xctestplan */,
 				F9A1B477283B689F005F3145 /* Adyen.docc */,
 				F94B870925EFB71100D270A6 /* MIGRATION.md */,
 				E27B8EAD22B79CD20075BB6A /* README.md */,
 				818E7BBE2B989ACE00A432EE /* PrivacyInfo.xcprivacy */,
+				818B03C32BB6F74700732C35 /* TestPlans */,
 				E2C0E03522097917008616F6 /* Adyen */,
 				F95899C725FA524100E4113F /* AdyenSwiftUI */,
 				F92326AD25A3669E002C5BC4 /* AdyenEncryption */,

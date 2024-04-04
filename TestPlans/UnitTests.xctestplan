@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "2766481D-AC83-4B72-8EA7-52DABA1A8C91",
+      "name" : "Default",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "commandLineArgumentEntries" : [
+      {
+        "argument" : "-UITests"
+      }
+    ]
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Adyen.xcodeproj",
+        "identifier" : "E2C0E03B22097917008616F6",
+        "name" : "AdyenUIKitTests"
+      }
+    }
+  ],
+  "version" : 1
+}
