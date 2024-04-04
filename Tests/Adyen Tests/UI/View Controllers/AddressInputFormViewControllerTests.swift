@@ -43,7 +43,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
 
         XCTAssertNil(view.findView(by: "AddressInputFormViewController.addressItem.title"))
         
-        XCTAssertEqual(countryItemView.titleLabel.text, "Country")
+        XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
         XCTAssertEqual(countryItemView.item.value!.title, "Netherlands")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "House number")
         XCTAssertEqual(addressItemView.titleLabel.text, "Street")
@@ -99,7 +99,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertNil(searchItemView)
         XCTAssertNil(apartmentSuiteItemView)
 
-        XCTAssertEqual(countryItemView.titleLabel.text, "Country")
+        XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
         XCTAssertEqual(countryItemView.item.value!.title, "United States")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "Apartment / Suite (optional)")
         XCTAssertEqual(addressItemView.titleLabel.text, "Address")
@@ -145,7 +145,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         let postalCodeItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.postalCode"))
 
         XCTAssertNil(apartmentSuiteItemView)
-        XCTAssertEqual(countryItemView.titleLabel.text, "Country")
+        XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
         XCTAssertEqual(countryItemView.item.value!.title, "United Kingdom")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "House number")
         XCTAssertEqual(addressItemView.titleLabel.text, "Street")
@@ -179,7 +179,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
 
         XCTAssertNil(apartmentSuiteItemView)
 
-        XCTAssertEqual(countryItemView.titleLabel.text, "Country")
+        XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
         XCTAssertEqual(countryItemView.item.value!.title, "Canada")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "Apartment / Suite (optional)")
         XCTAssertEqual(addressItemView.titleLabel.text, "Address")
@@ -198,7 +198,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         provinceOrTerritoryItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.stateOrProvince"))
         postalCodeItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.postalCode"))
 
-        XCTAssertEqual(countryItemView.titleLabel.text, "Country")
+        XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
         XCTAssertEqual(countryItemView.item.value!.title, "Brazil")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "House number")
         XCTAssertEqual(addressItemView.titleLabel.text, "Street")
@@ -310,28 +310,10 @@ class AddressInputFormViewControllerTests: XCTestCase {
         )
     }
     
-    func test_countryFlags_showByDefault() throws {
-        
-        let style = FormComponentStyle(tintColor: .blue)
+    func test_itemSetup() throws {
         
         let viewController = AddressInputFormViewController(
-            viewModel: self.viewModel(style: style)
-        )
-        
-        let pickerSearchViewController = try presentCountryPicker(for: viewController)
-        let firstListItem = try firstListItem(from: pickerSearchViewController)
-        XCTAssertNil(firstListItem.icon)
-        XCTAssertEqual(firstListItem.title, "Afghanistan")
-        XCTAssertEqual(firstListItem.subtitle, "🇦🇫 AF")
-    }
-    
-    func test_countryFlags_dontNotShowIfConfigured() throws {
-        
-        var style = FormComponentStyle(tintColor: .blue)
-        style.addressStyle.showCountryFlags = false
-        
-        let viewController = AddressInputFormViewController(
-            viewModel: self.viewModel(style: style)
+            viewModel: self.viewModel()
         )
         
         let pickerSearchViewController = try presentCountryPicker(for: viewController)

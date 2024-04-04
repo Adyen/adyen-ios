@@ -43,9 +43,6 @@ internal struct CardSettingsView: View {
                             Text("Installment Amount")
                         }
                     }
-                    Toggle(isOn: $viewModel.showCountryFlags) {
-                        Text("Show country flags")
-                    }
                 }
                 Section(header: Text("Input Modes")) {
                     Picker("Billing Address mode", selection: $viewModel.addressMode) {
