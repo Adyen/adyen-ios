@@ -87,9 +87,9 @@
 "adyen.billingAddress.placeholder" = "Din faktureringsadresse";
 "adyen.deliveryAddressSection.title" = "Leveringsadresse";
 "adyen.deliveryAddress.placeholder" = "Din leveringsadresse";
-"adyen.countryField.title" = "Land";
-"adyen.countryField.placeholder" = "Land";
-"adyen.countryField.invalid" = "Ugyldigt land";
+"adyen.countryField.title" = "Land/region";
+"adyen.countryField.placeholder" = "Land/region";
+"adyen.countryField.invalid" = "Ugyldigt land/region";
 "adyen.addressField.title" = "Adresse";
 "adyen.addressField.placeholder" = "Adresse";
 "adyen.streetField.title" = "Gade";
@@ -181,6 +181,7 @@
 "adyen.UPI.QRCodeInstructions" = "Tag et skærmbillede, som du kan uploade i UPI-appen, eller scan QR-koden med din foretrukne UPI-app for at gennemføre betalingen.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "Ingen eller en forældet version af TWINT er installeret på denne enhed. Opdater eller installer TWINT-appen.";
 "adyen.threeds2.DA.registration.title" = "Sikker og hurtig betaling!";
 "adyen.threeds2.DA.registration.description" = "Du kan betale hurtigere næste gang på denne enhed med dine biometriske data.";
 "adyen.threeds2.DA.registration.positiveButton" = "Aktivér hurtig betaling";
