@@ -46,12 +46,22 @@ open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFor
     /// Closure that is called when the view of this item ends editing.
     public var onDidEndEditing: (() -> Void)?
 
+    /// Closure that is triggered when there is a validation error.
+    public var onDidShowValidationError: ((ValidationError) -> Void)?
+
     public init(style: FormTextItemStyle) {
         super.init(value: "", style: style)
     }
 
     override public func isValid() -> Bool {
-        validator?.isValid(value) ?? true
+        if let statusValidator = validator as? StatusValidator {
+            let validationStatus = statusValidator.validate(value)
+            if case let .invalid(validationError) = validationStatus {
+                onDidShowValidationError?(validationError)
+            }
+            return validationStatus.isValid
+        }
+        return validator?.isValid(value) ?? true
     }
     
     /// The formatted text value.

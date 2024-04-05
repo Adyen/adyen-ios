@@ -119,6 +119,10 @@ extension CardViewController {
                 self?.triggerInfoEvent(of: .unfocus, target: .cardNumber)
             }
             
+            item.numberItem.onDidShowValidationError = { error in
+                
+            }
+
             return item
         }()
 

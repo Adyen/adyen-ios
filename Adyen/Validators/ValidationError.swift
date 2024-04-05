@@ -9,7 +9,7 @@ import Foundation
 @_spi(AdyenInternal)
 public enum ValidationStatus {
     case valid
-    case invalid(ValidationError?)
+    case invalid(ValidationError)
     
     public var isValid: Bool {
         switch self {
