@@ -63,7 +63,10 @@ jobs:
 
     - name: 📈 Code Coverage
       run: |
-        slather coverage --sonarqube-xml ${params} ${{env.project}}
+        echo "- Derived Data -"
+        ls -la ./DerivedData
+        echo "- Slather -"
+        slather coverage --verbose --sonarqube-xml ${params} ${{env.project}}
       env:
         params: '
         --build-directory ./DerivedData
