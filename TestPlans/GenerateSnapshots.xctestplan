@@ -21,6 +21,9 @@
     "commandLineArgumentEntries" : [
       {
         "argument" : "-GenerateSnapshots"
+      },
+      {
+        "argument" : "-UITests"
       }
     ],
     "preferredScreenCaptureFormat" : "screenshot",
