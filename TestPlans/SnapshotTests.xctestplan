@@ -18,7 +18,11 @@
     }
   ],
   "defaultOptions" : {
-    "codeCoverage" : false,
+    "commandLineArgumentEntries" : [
+      {
+        "argument" : "-UITests"
+      }
+    ],
     "targetForVariableExpansion" : {
       "containerPath" : "container:Adyen.xcodeproj",
       "identifier" : "F9CCA3B4296ECB3E00AD643D",
