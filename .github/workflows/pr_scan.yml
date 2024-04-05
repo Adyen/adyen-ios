@@ -63,9 +63,8 @@ jobs:
 
     - name: 📈 Code Coverage
       run: |
-        slather coverage --sonarqube-xml ${params} ${project}
+        slather coverage --sonarqube-xml ${params} ${{env.project}}
       env:
-        project: 'Adyen.xcodeproj'
         params: '
         --build-directory ./DerivedData
         --output-directory ./reports
