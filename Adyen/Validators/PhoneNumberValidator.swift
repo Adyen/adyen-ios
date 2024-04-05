@@ -7,6 +7,7 @@
 import Foundation
 
 /// Validates a phone number.
+@_spi(AdyenInternal)
 public final class PhoneNumberValidator: RegularExpressionValidator {
     
     public init() {

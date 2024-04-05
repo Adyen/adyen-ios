@@ -7,6 +7,7 @@
 import Foundation
 
 /// A generic validator that validates the length of a string.
+@_spi(AdyenInternal)
 open class LengthValidator: Validator {
     
     /// The minimum length of the string.

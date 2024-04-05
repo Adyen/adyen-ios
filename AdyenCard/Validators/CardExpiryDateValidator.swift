@@ -10,6 +10,7 @@ import Foundation
 /// Validates a card's expiration date.
 /// The input is expected to be sanitized as "MMYY".
 /// Validation will fail when the format is invalid or the date is in the past.
+@_spi(AdyenInternal)
 public final class CardExpiryDateValidator: Validator {
     
     private let referenceDate: Date

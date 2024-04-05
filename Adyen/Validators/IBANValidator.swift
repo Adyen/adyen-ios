@@ -8,6 +8,7 @@ import Foundation
 
 /// Validates an IBAN (International Bank Account Number).
 /// The input is expected to be sanitized.
+@_spi(AdyenInternal)
 public final class IBANValidator: Validator {
     
     public init() {}
