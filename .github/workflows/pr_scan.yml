@@ -64,7 +64,7 @@ jobs:
     - name: 📈 Code Coverage
       run: |
         echo "- Derived Data -"
-        ls -la ./DerivedData
+        ls -la ./DerivedData/Logs/Test
         echo "- Slather -"
         slather coverage --sonarqube-xml ${params} ${{env.project}}
       env:
@@ -81,8 +81,7 @@ jobs:
         --binary-basename AdyenEncryption
         --binary-basename AdyenActions
         --binary-basename AdyenCashAppPay
-        --binary-basename AdyenSwiftUI
-        --binary-basename AdyenDelegatedAuthentication'
+        --binary-basename AdyenSwiftUI'
 
     - name: 🧼 SwiftLint
       run: |
