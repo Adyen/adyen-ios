@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,7 +14,15 @@ class FormCardNumberItemViewTests: XCTestCase {
     var sut: FormCardNumberItemView!
     var validator: ValidatorMock!
     
-    private static let url = URL(string: "https:google.com")!
+    private static let url = URL(string: "https://google.com")!
+    
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
     
     override func setUp() {
         item = FormCardNumberItem(cardTypeLogos: [.init(url: Self.url, type: .visa),

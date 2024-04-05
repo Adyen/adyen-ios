@@ -13,6 +13,9 @@ jobs:
   build:
     env:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
+      destination: "name=iPhone 15 Pro,OS=17.2"
+      project: "Adyen.xcodeproj"
+      params: "-derivedDataPath ./DerivedData -skipPackagePluginValidation"
     runs-on: macos-13-xlarge # Apple Silicon Runner
 
     steps:
@@ -20,36 +23,45 @@ jobs:
     - uses: n1hility/cancel-previous-runs@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Validate Versions
+      run: |
+        Scripts/validate-3ds2-SDK-version.sh
+        Scripts/validate-Adyen-SDK-version.sh
 
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
         xcode-version: '15.1'
 
-    - name: Install Tools
+    - name: 🛠️ Install Tools
       run: |
         brew install sonar-scanner
         gem install slather
-
-    - name: Validate 3DS2 SDK version
-      run: |
-        Scripts/validate-3ds2-SDK-version.sh
         
-    - name: Validate Adyen SDK version
-      run: |
-        Scripts/validate-Adyen-SDK-version.sh
-
-    - name: Clean Build and Test
+    - name: 👷 Clean Build
       run: |
         xcodebuild -version
-        xcodebuild clean build test -project "${project}" -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild clean build -project "${{env.project}}" -scheme "${scheme}" ${params} -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
-        project: 'Adyen.xcodeproj'
-        params: '-derivedDataPath ./DerivedData -enableCodeCoverage YES -skipPackagePluginValidation'
+        params: '${{env.params}}'
         scheme: 'AdyenUIHost'
-        destination: 'name=iPhone 14,OS=17.2'
+        
+    - name: 🧪 Unit Tests
+      run: |
+        xcodebuild test -project "${{env.project}}" -scheme "${scheme}" ${params} -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+      env:
+        params: '${{env.params}} -enableCodeCoverage YES'
+        scheme: 'AdyenUIKitTests'
+        
+    - name: 📸 Snapshot Tests
+      run: |
+        xcodebuild test -project "${{env.project}}" -scheme "${scheme}" ${params} -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+      env:
+        params: '${{env.params}} -enableCodeCoverage YES'
+        scheme: 'AdyenUIHostUITests'
 
-    - name: Code Coverage
+    - name: 📈 Code Coverage
       run: |
         slather coverage --sonarqube-xml ${params} ${project}
       env:
@@ -69,12 +81,12 @@ jobs:
         --binary-basename AdyenCashAppPay
         --binary-basename AdyenSwiftUI'
 
-    - name: SwiftLint
+    - name: 🧼 SwiftLint
       run: |
         brew install swiftlint
         fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
 
-    - name: Run Sonar
+    - name: 📡 Run Sonar
       if: ${{ env.sonarToken != 0 }}
       run: |
         git fetch --unshallow --no-tags

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -75,7 +75,7 @@ public class CardComponent: PresentableComponent,
     
     /// Determines whether the storedCardComponent is active
     private var isStoredCardComponentActive: Bool {
-        return storedCardComponent != nil
+        storedCardComponent != nil
     }
     
     /// Initializes the card component.

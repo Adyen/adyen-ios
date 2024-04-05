@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -58,10 +58,10 @@ class BoletoComponentTests: XCTestCase {
         
         setupRootViewController(viewController)
         
-        let firstNameField: UITextField? = viewController.view.findView(by: "firstNameItem.textField") as? UITextField
-        let lastNameField: UITextField? = viewController.view.findView(by: "lastNameItem.textField") as? UITextField
-        let socialSecurityNumberField: UITextField? = viewController.view.findView(by: "socialSecurityNumberItem.textField") as? UITextField
-        let emailField: UITextField? = viewController.view.findView(by: "emailItem.textField") as? UITextField
+        XCTAssertNotNil(viewController.view.findView(by: "firstNameItem.textField") as? UITextField)
+        XCTAssertNotNil(viewController.view.findView(by: "lastNameItem.textField") as? UITextField)
+        XCTAssertNotNil(viewController.view.findView(by: "socialSecurityNumberItem.textField") as? UITextField)
+        XCTAssertNotNil(viewController.view.findView(by: "emailItem.textField") as? UITextField)
 
         let addressField: FormAddressPickerItemView = try XCTUnwrap(viewController.view.findView(by: "addressItem"))
         XCTAssertNil(addressField.item.value)

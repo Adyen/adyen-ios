@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
 import AdyenNetworking
+import Foundation
 
 /// Handles adding/removing events
 internal class AnalyticsEventDataSource: AnyAnalyticsEventDataSource {
@@ -35,7 +35,7 @@ internal class AnalyticsEventDataSource: AnyAnalyticsEventDataSource {
     }
     
     internal func allEvents() -> AnalyticsEventWrapper? {
-        if infos.isEmpty && logs.isEmpty && errors.isEmpty {
+        if infos.isEmpty, logs.isEmpty, errors.isEmpty {
             return nil
         }
         return AnalyticsEventWrapper(infos: infos,

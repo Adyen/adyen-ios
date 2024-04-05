@@ -8,12 +8,14 @@ opt_in_rules:
 
 excluded:
   - Tests
+  - UITests
   - Internal
   - Docs
   - Demo
   - Package.swift
   - DerivedData
   - Carthage
+  - TempProject
 
 line_length:
   ignores_function_declarations: true

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -31,6 +31,14 @@ class PreselectedPaymentComponentTests: XCTestCase {
     var sut: PreselectedPaymentMethodComponent!
     var component: StoredPaymentMethodComponent!
     var delegate: PreselectedPaymentComponentDelegateMock!
+    
+    override func run() {
+        AdyenDependencyValues.runTestWithValues {
+            $0.imageLoader = ImageLoaderMock()
+        } perform: {
+            super.run()
+        }
+    }
     
     override func setUp() {
         component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), context: Dummy.context)

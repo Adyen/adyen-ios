@@ -87,9 +87,9 @@
 "adyen.billingAddress.placeholder" = "عنوانك الخاص بإرسال الفواتير";
 "adyen.deliveryAddressSection.title" = "عنوان التسليم";
 "adyen.deliveryAddress.placeholder" = "عنوان التسليم الخاص بك";
-"adyen.countryField.title" = "البلد";
-"adyen.countryField.placeholder" = "البلد";
-"adyen.countryField.invalid" = "بلد غير صحيح";
+"adyen.countryField.title" = "البلد/المنطقة";
+"adyen.countryField.placeholder" = "البلد/المنطقة";
+"adyen.countryField.invalid" = "بلد/منطقة غير صحيحة";
 "adyen.addressField.title" = "العنوان";
 "adyen.addressField.placeholder" = "العنوان";
 "adyen.streetField.title" = "الشارع";
@@ -181,6 +181,7 @@
 "adyen.UPI.QRCodeInstructions" = "التقط لقطة شاشة لتحميلها في تطبيق UPI أو امسح رمز الاستجابة السريعة باستخدام تطبيق UPI الذي تُفضله لإتمام الدفع.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "لم يتم تثبيت أي إصدار من TWINT على هذا الجهاز أو الإصدار قديم. يُرجى تحديث أو تثبيت تطبيق TWINT.";
 "adyen.threeds2.DA.registration.title" = "الدفع الآمن والسريع";
 "adyen.threeds2.DA.registration.description" = "يمكنك الدفع بشكل أسرع في المرة القادمة على هذا الجهاز باستخدام مقاييسك الحيوية.";
 "adyen.threeds2.DA.registration.positiveButton" = "تمكين الدفع السريع";
