@@ -1968,23 +1968,6 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testViewDidLoadShouldSendInitialCall() throws {
-        // Given
-        let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(with: analyticsProviderMock)
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: CardComponent.Configuration())
-
-        // When
-        sut.viewDidLoad(viewController: sut.cardViewController)
-
-        // Then
-        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
-        XCTAssertEqual(analyticsProviderMock.infoCount, 1)
-
-    }
-
     func testCardHolderNameValidatorWithEmptyName() {
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true

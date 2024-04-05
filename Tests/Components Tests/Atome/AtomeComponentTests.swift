@@ -92,7 +92,9 @@ class AtomeComponentTests: XCTestCase {
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
-        XCTAssertEqual(analyticsProviderMock.infoCount, 1)
+        XCTAssertEqual(analyticsProviderMock.infos.count, 1)
+        let infoType = analyticsProviderMock.infos.first?.type
+        XCTAssertEqual(infoType, .rendered)
     }
 
 }

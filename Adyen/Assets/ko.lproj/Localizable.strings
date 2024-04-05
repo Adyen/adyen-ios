@@ -87,9 +87,9 @@
 "adyen.billingAddress.placeholder" = "청구 주소";
 "adyen.deliveryAddressSection.title" = "배송 주소";
 "adyen.deliveryAddress.placeholder" = "배송 주소";
-"adyen.countryField.title" = "국가";
-"adyen.countryField.placeholder" = "국가";
-"adyen.countryField.invalid" = "잘못된 국가";
+"adyen.countryField.title" = "국가/지역";
+"adyen.countryField.placeholder" = "국가/지역";
+"adyen.countryField.invalid" = "유효하지 않은 국가/지역";
 "adyen.addressField.title" = "주소";
 "adyen.addressField.placeholder" = "주소";
 "adyen.streetField.title" = "도로명";
@@ -181,6 +181,7 @@
 "adyen.UPI.QRCodeInstructions" = "스크린샷을 찍어서 UPI 앱에 업로드하거나 즐겨 쓰는 UPI 앱에서 QR 코드를 스캔하여 결제하세요.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "이 기기에 TWINT가 설치되어 있지 않거나 오래된 버전이 설치되어 있습니다. TWINT 앱을 업데이트하거나 설치해 주세요.";
 "adyen.threeds2.DA.registration.title" = "안전하고 신속한 결제!";
 "adyen.threeds2.DA.registration.description" = "다음 번에 이 장치에서 생체 인식을 사용하여 결제 속도를 높일 수 있습니다.";
 "adyen.threeds2.DA.registration.positiveButton" = "빠른 결제 활성화";

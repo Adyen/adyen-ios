@@ -38,16 +38,6 @@ public extension AdyenScope where Base == String? {
 @_spi(AdyenInternal)
 public extension AdyenScope where Base == String {
 
-    /// Return flag emoji if string is a country code; otherwise returns empty string.
-    var countryFlag: String? {
-        guard CountryCodeValidator().isValid(base) else { return nil }
-        let baseIndex = 127397
-        let unicodeScalarValue = base.utf16
-            .compactMap { UnicodeScalar(baseIndex + Int($0)) }
-            .reduce(into: String.UnicodeScalarView()) { result, scalar in result.append(scalar) }
-        return String(unicodeScalarValue)
-    }
-
     /// Returns nil string is empty or actual value.
     var nilIfEmpty: String? {
         base.isEmpty ? nil : base

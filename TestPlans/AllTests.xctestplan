@@ -1,0 +1,68 @@
+{
+  "configurations" : [
+    {
+      "id" : "CA0AA26C-B8DC-4194-9E01-42C1D3963FC8",
+      "name" : "Unit Tests",
+      "options" : {
+        "language" : "en",
+        "region" : "US",
+        "targetForVariableExpansion" : {
+          "containerPath" : "container:Adyen.xcodeproj",
+          "identifier" : "E2C0E03B22097917008616F6",
+          "name" : "AdyenUIKitTests"
+        }
+      }
+    },
+    {
+      "id" : "C0771AB2-8CA8-4B24-92B7-9A5AC150CBF7",
+      "name" : "Snapshot Tests 🇺🇸",
+      "options" : {
+        "language" : "en",
+        "region" : "US",
+        "targetForVariableExpansion" : {
+          "containerPath" : "container:Adyen.xcodeproj",
+          "identifier" : "F9CCA3B4296ECB3E00AD643D",
+          "name" : "AdyenUIHostUITests"
+        }
+      }
+    },
+    {
+      "id" : "6C1A41CB-A900-46D7-8D7F-1FCA8D7189F7",
+      "name" : "Snapshot Tests 🇩🇪",
+      "options" : {
+        "language" : "de",
+        "region" : "DE",
+        "targetForVariableExpansion" : {
+          "containerPath" : "container:Adyen.xcodeproj",
+          "identifier" : "F9CCA3B4296ECB3E00AD643D",
+          "name" : "AdyenUIHostUITests"
+        }
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "commandLineArgumentEntries" : [
+      {
+        "argument" : "-UITests"
+      }
+    ],
+    "uiTestingScreenshotsLifetime" : "keepNever"
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Adyen.xcodeproj",
+        "identifier" : "F9CCA3B4296ECB3E00AD643D",
+        "name" : "AdyenUIHostUITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Adyen.xcodeproj",
+        "identifier" : "E2C0E03B22097917008616F6",
+        "name" : "AdyenUIKitTests"
+      }
+    }
+  ],
+  "version" : 1
+}

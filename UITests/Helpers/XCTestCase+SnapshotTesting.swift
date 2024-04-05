@@ -12,15 +12,23 @@ extension XCTestCase {
     
     static var shouldRecordSnapshots: Bool { CommandLine.arguments.contains("-GenerateSnapshots") }
     
-    func assertViewControllerImage(matching viewController: @autoclosure () throws -> UIViewController,
-                                   named name: String,
-                                   file: StaticString = #file,
-                                   caller: String = #function,
-                                   line: UInt = #line) {
+    enum SnapshotPrecision: Float {
+        case `default` = 1.0
+        /// Uses a lower precision as blurred content is a bit less precise to compare
+        case blurredContent = 0.95
+    }
+    
+    func assertViewControllerImage(
+        matching viewController: @autoclosure () throws -> UIViewController,
+        named name: String,
+        file: StaticString = #file,
+        caller: String = #function,
+        line: UInt = #line
+    ) {
         
         try SnapshotTesting.assertSnapshot(
             matching: viewController(),
-            as: snapshotConfiguration(),
+            as: snapshotConfiguration(precision: .default),
             named: name,
             record: XCTestCase.shouldRecordSnapshots,
             file: file,
@@ -32,13 +40,15 @@ extension XCTestCase {
     /// Verifies whether or not the snapshot of the view controller matches the previously recorded snapshot
     ///
     /// Multiple verification snapshots are taken within the timeout and compared with the reference snapshot
-    func verifyViewControllerImage(matching viewController: @autoclosure () throws -> UIViewController,
-                                   named name: String,
-                                   record: Bool = false,
-                                   timeout: TimeInterval = 120,
-                                   file: StaticString = #file,
-                                   caller: String = #function,
-                                   line: UInt = #line) {
+    func verifyViewControllerImage(
+        matching viewController: @autoclosure () throws -> UIViewController,
+        named name: String,
+        precision: SnapshotPrecision = .default,
+        timeout: TimeInterval = 60,
+        file: StaticString = #file,
+        caller: String = #function,
+        line: UInt = #line
+    ) {
         
         if XCTestCase.shouldRecordSnapshots {
             // We're recording so we assert immediately
@@ -54,21 +64,23 @@ extension XCTestCase {
             return
         }
         
+        let testName = testName(for: caller)
+        
         wait(
             until: {
                 let failure = try! verifySnapshot(
                     of: viewController(),
-                    as: snapshotConfiguration(),
+                    as: snapshotConfiguration(precision: precision),
                     named: name,
                     file: file,
-                    testName: testName(for: caller),
+                    testName: testName,
                     line: line
                 )
                 return failure == nil
             },
             timeout: timeout,
             retryInterval: .seconds(1),
-            message: "Snapshot did not match reference (Timeout: \(timeout)s)"
+            message: "Snapshot did not match reference (Timeout: \(timeout)s) - \(testName)"
         )
     }
     
@@ -80,12 +92,14 @@ extension XCTestCase {
         let simulatorName = ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "Unknown_Simulator"
         let systemName = UIDevice.current.systemName
         let versionName = UIDevice.current.systemVersion
-        return "\(callingFunction)-\(simulatorName)-\(systemName)_\(versionName)"
+        let locale = Locale.current.identifier
+        return "\(callingFunction)-\(simulatorName)-\(systemName)_\(versionName)-\(locale)"
     }
     
-    func snapshotConfiguration() -> Snapshotting<UIViewController, UIImage> {
-        let precision: Float = 0.98
-        
-        return .image(perceptualPrecision: precision)
+    func snapshotConfiguration(precision: SnapshotPrecision) -> Snapshotting<UIViewController, UIImage> {
+        .image(
+            drawHierarchyInKeyWindow: true,
+            perceptualPrecision: precision.rawValue
+        )
     }
 }

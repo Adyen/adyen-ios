@@ -87,9 +87,9 @@
 "adyen.billingAddress.placeholder" = "Az Ön számlázási címe";
 "adyen.deliveryAddressSection.title" = "Szállítási cím";
 "adyen.deliveryAddress.placeholder" = "Az Ön szállítási címe";
-"adyen.countryField.title" = "Ország";
-"adyen.countryField.placeholder" = "Ország";
-"adyen.countryField.invalid" = "Érvénytelen ország";
+"adyen.countryField.title" = "Ország/régió";
+"adyen.countryField.placeholder" = "Ország/régió";
+"adyen.countryField.invalid" = "Érvénytelen ország/régió";
 "adyen.addressField.title" = "Cím";
 "adyen.addressField.placeholder" = "Cím";
 "adyen.streetField.title" = "Utca";
@@ -181,6 +181,7 @@
 "adyen.UPI.QRCodeInstructions" = "A fizetés befejezéséhez készítsen képernyőképet és töltse fel az UPI-alkalmazásban, vagy a kívánt UPI-alkalmazással olvassa be a QR-kódot.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "Az eszközről hiányzik a TWINT, vagy egy elavult verziója van telepítve. Frissítse vagy telepítse a TWINT alkalmazást.";
 "adyen.threeds2.DA.registration.title" = "Biztonságos és gyors fizetés!";
 "adyen.threeds2.DA.registration.description" = "Biometrikus adataival legközelebb gyorsabban fizethet ezen az eszközön.";
 "adyen.threeds2.DA.registration.positiveButton" = "Gyors fizetés engedélyezése";

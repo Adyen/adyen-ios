@@ -35,6 +35,7 @@ public enum AnalyticsEventTarget: String, Encodable {
     case dualBrand
     case boletoSocialSecurityNumber = "social_security_number"
     case taxNumber = "tax_number"
+    case authPassWord = "password"
     case addressStreet = "street"
     case addressHouseNumber = "house_number_or_name"
     case addressCity = "city"
