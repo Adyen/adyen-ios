@@ -63,9 +63,11 @@ jobs:
 
     - name: 📈 Code Coverage
       run: |
-        slather coverage --sonarqube-xml ${params} ${project}
+        echo "- Derived Data -"
+        ls -la ./DerivedData
+        echo "- Slather -"
+        slather coverage --sonarqube-xml ${params} ${{env.project}}
       env:
-        project: 'Adyen.xcodeproj'
         params: '
         --build-directory ./DerivedData
         --output-directory ./reports
@@ -79,7 +81,8 @@ jobs:
         --binary-basename AdyenEncryption
         --binary-basename AdyenActions
         --binary-basename AdyenCashAppPay
-        --binary-basename AdyenSwiftUI'
+        --binary-basename AdyenSwiftUI
+        --binary-basename AdyenDelegatedAuthentication'
 
     - name: 🧼 SwiftLint
       run: |
