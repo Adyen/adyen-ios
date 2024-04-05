@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
 import XCTest
 
@@ -46,6 +46,8 @@ class BACSDirectDebitComponentTrackerTests: XCTestCase {
     func testSendRenderEventShouldAddInfoCount() {
         sut.sendDidLoadEvent()
         
-        XCTAssertEqual(analyticsProvider.infoCount, 1)
+        XCTAssertEqual(analyticsProvider.infos.count, 1)
+        let infoType = analyticsProvider.infos.first?.type
+        XCTAssertEqual(infoType, .rendered)
     }
 }

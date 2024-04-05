@@ -193,7 +193,7 @@ public class CardComponent: PresentableComponent,
         formViewController.cardDelegate = self
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         
-        formViewController.items.onDidTriggerEvent = { [weak self] (infoType, target) in
+        formViewController.items.onDidTriggerEvent = { [weak self] infoType, target in
             self?.sendInfoEvent(of: infoType, target: target)
         }
         
@@ -209,7 +209,7 @@ public class CardComponent: PresentableComponent,
             type: type
         )
         infoEvent.target = target
-//        context.analyticsProvider?.add(info: infoEvent)
+        context.analyticsProvider?.add(info: infoEvent)
     }
 }
 

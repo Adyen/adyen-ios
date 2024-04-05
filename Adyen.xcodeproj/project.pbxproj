@@ -336,6 +336,7 @@
 		A09FB2EB2B8399B700270D51 /* TrackableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09FB2EA2B8399B700270D51 /* TrackableComponent.swift */; };
 		A09FB2ED2B86051000270D51 /* AnalyticsEventDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09FB2EC2B86051000270D51 /* AnalyticsEventDataSource.swift */; };
 		A0B180312A2DE445003C608E /* MealVoucherDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B180302A2DE445003C608E /* MealVoucherDetails.swift */; };
+		A0B4B9B12BC027DE00C99926 /* CardComponentEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B4B9B02BC027DE00C99926 /* CardComponentEventTests.swift */; };
 		A0BC64E628F062E400CED2A1 /* AdyenSessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BC64E528F062E400CED2A1 /* AdyenSessionAware.swift */; };
 		A0C9B59B288AE34600D6BDAB /* InstallmentOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41E5526CBCA6E0089AD6C /* InstallmentOptions.swift */; };
 		A0D48FB827109B0200C0B82C /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */; };
@@ -1605,6 +1606,7 @@
 		A09FB2EA2B8399B700270D51 /* TrackableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackableComponent.swift; sourceTree = "<group>"; };
 		A09FB2EC2B86051000270D51 /* AnalyticsEventDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEventDataSource.swift; sourceTree = "<group>"; };
 		A0B180302A2DE445003C608E /* MealVoucherDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealVoucherDetails.swift; sourceTree = "<group>"; };
+		A0B4B9B02BC027DE00C99926 /* CardComponentEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentEventTests.swift; sourceTree = "<group>"; };
 		A0BC64E528F062E400CED2A1 /* AdyenSessionAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenSessionAware.swift; sourceTree = "<group>"; };
 		A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayHelpers.swift; sourceTree = "<group>"; };
 		A0DB48652AFD020400348C83 /* AnalyticsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsRequest.swift; sourceTree = "<group>"; };
@@ -4332,6 +4334,7 @@
 				E9E3DAC7221EDDAF00697074 /* CardNumbers.swift */,
 				F9D57534238291A1009C18B5 /* BCMCComponentTests.swift */,
 				F9EDB78C2395643A00CFB3C9 /* CardComponentTests.swift */,
+				A0B4B9B02BC027DE00C99926 /* CardComponentEventTests.swift */,
 				F924C071246BEEF0006DDAB8 /* CardDetailsTests.swift */,
 				F9EDB78E23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift */,
 				F919DF9F24EABCC10027976E /* StoredCardComponentTests.swift */,
@@ -6716,6 +6719,7 @@
 				A07355D7276B350F00530562 /* DocumentActionViewDelegateMock.swift in Sources */,
 				F99F085A2383EAC800EBB948 /* FormatterMock.swift in Sources */,
 				F91760A72594C5DF00D653BE /* AssetsAccessTests.swift in Sources */,
+				A0B4B9B12BC027DE00C99926 /* CardComponentEventTests.swift in Sources */,
 				5A22C279262D688600F12D97 /* QRCodeActionComponentTests.swift in Sources */,
 				8149CCB62B0B855F007235E2 /* ThreeDS2PlusDACoreActionHandlerTests+Constants.swift in Sources */,
 				F9639B4724E283060073F38A /* BackoffSchedulerTests.swift in Sources */,

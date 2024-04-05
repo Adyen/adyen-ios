@@ -57,7 +57,9 @@ class IssuerListComponentTests: XCTestCase {
             let details = paymentData.paymentMethod as! IssuerListDetails
             XCTAssertEqual(details.issuer, expectedIssuer.identifier)
             
-            XCTAssertEqual(analyticsProviderMock.infoCount, 1)
+            XCTAssertEqual(analyticsProviderMock.infos.count, 1)
+            let infoType = analyticsProviderMock.infos.first?.type
+            XCTAssertEqual(infoType, .rendered)
 
             expectation.fulfill()
         }
@@ -84,16 +86,16 @@ class IssuerListComponentTests: XCTestCase {
         
         searchViewController.searchBar(searchViewController.searchBar, textDidChange: "3")
         XCTAssertFalse(listViewController.view.isHidden)
-        XCTAssertEqual(analyticsProviderMock.infoCount, 1)
+        XCTAssertEqual(analyticsProviderMock.infos.count, 1)
         
         searchViewController.searchBar(searchViewController.searchBar, textDidChange: "34")
         // should not change before throttle delay passes
-        XCTAssertEqual(analyticsProviderMock.infoCount, 1)
+        XCTAssertEqual(analyticsProviderMock.infos.count, 1)
         wait(for: .seconds(1))
         
         // should update after throttle delay
         XCTAssertTrue(listViewController.view.isHidden)
-        XCTAssertEqual(analyticsProviderMock.infoCount, 2)
+        XCTAssertEqual(analyticsProviderMock.infos.count, 2)
     }
 
     func test_ViewDidLoad_ShouldSend_InitialCall() throws {
@@ -109,6 +111,6 @@ class IssuerListComponentTests: XCTestCase {
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
-        XCTAssertEqual(analyticsProviderMock.infoCount, 1)
+        XCTAssertEqual(analyticsProviderMock.infos.count, 1)
     }
 }
