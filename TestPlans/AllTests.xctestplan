@@ -4,9 +4,6 @@
       "id" : "CA0AA26C-B8DC-4194-9E01-42C1D3963FC8",
       "name" : "Unit Tests",
       "options" : {
-        "commandLineArgumentEntries" : [
-
-        ],
         "language" : "en",
         "region" : "US",
         "targetForVariableExpansion" : {
@@ -20,11 +17,6 @@
       "id" : "C0771AB2-8CA8-4B24-92B7-9A5AC150CBF7",
       "name" : "Snapshot Tests 🇺🇸",
       "options" : {
-        "commandLineArgumentEntries" : [
-          {
-            "argument" : "-UITests"
-          }
-        ],
         "language" : "en",
         "region" : "US",
         "targetForVariableExpansion" : {
@@ -38,11 +30,6 @@
       "id" : "6C1A41CB-A900-46D7-8D7F-1FCA8D7189F7",
       "name" : "Snapshot Tests 🇩🇪",
       "options" : {
-        "commandLineArgumentEntries" : [
-          {
-            "argument" : "-UITests"
-          }
-        ],
         "language" : "de",
         "region" : "DE",
         "targetForVariableExpansion" : {
@@ -55,7 +42,9 @@
   ],
   "defaultOptions" : {
     "commandLineArgumentEntries" : [
-
+      {
+        "argument" : "-UITests"
+      }
     ],
     "uiTestingScreenshotsLifetime" : "keepNever"
   },
