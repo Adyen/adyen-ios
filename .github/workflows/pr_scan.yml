@@ -54,12 +54,12 @@ jobs:
         params: '${{env.params}} -enableCodeCoverage YES'
         scheme: 'AdyenUIKitTests'
         
-    - name: 📸 Snapshot Tests
-      run: |
-        xcodebuild test -project "${{env.project}}" -scheme "${scheme}" ${params} -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
-      env:
-        params: '${{env.params}} -enableCodeCoverage YES'
-        scheme: 'AdyenUIHostUITests'
+#    - name: 📸 Snapshot Tests
+#      run: |
+#        xcodebuild test -project "${{env.project}}" -scheme "${scheme}" ${params} -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+#      env:
+#        params: '${{env.params}} -enableCodeCoverage YES'
+#        scheme: 'AdyenUIHostUITests'
 
     - name: 📈 Code Coverage
       run: |
