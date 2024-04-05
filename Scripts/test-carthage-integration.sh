@@ -134,6 +134,7 @@ cp "../Tests/Card Tests/3DS2 Component/AuthenticationServiceMock.swift" Tests/Au
 cp "../Tests/Card Tests/3DS2 Component/ThreeDSResultExtension.swift" Tests/ThreeDSResultExtension.swift
 cp "../Tests/Helpers/XCTestCase+RootViewController.swift" Tests/XCTestCase+RootViewController.swift
 cp "../Tests/Helpers/XCTestCase+Wait.swift" Tests/XCTestCase+Wait.swift
+cp "../Tests/Helpers/XCTestCase+Wait+UIKit.swift" Tests/XCTestCase+Wait+UIKit.swift
 cp "../Tests/Helpers/UIViewController+Search.swift" Tests/UIViewController+Search.swift
 cp "../Tests/Helpers/PaymentMethods+Equatable.swift" Tests/PaymentMethods+Equatable.swift
 cp "../AdyenUnitTests/Analytics/AnalyticsProviderMock.swift" Tests/AnalyticsProviderMock.swift
