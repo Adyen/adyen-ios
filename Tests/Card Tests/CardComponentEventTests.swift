@@ -125,6 +125,19 @@ final class CardComponentEventTests: XCTestCase {
                         analyticsProviderMock: analyticsProviderMock)
     }
     
+    func testPostalCodeFocusEvents() throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        var config = CardComponent.Configuration()
+        config.billingAddress.mode = .postalCode
+        let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
+        
+        let postalCodeItemView: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.postalCodeItem"))
+        
+        testFocusEvents(for: postalCodeItemView,
+                        target: .addressPostalCode,
+                        analyticsProviderMock: analyticsProviderMock)
+    }
+    
     private func testFocusEvents(
         for field: FormTextItemView<some FormTextItem>,
         target: AnalyticsEventTarget,
