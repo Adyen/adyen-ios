@@ -4,6 +4,9 @@
       "id" : "CA0AA26C-B8DC-4194-9E01-42C1D3963FC8",
       "name" : "Unit Tests",
       "options" : {
+        "commandLineArgumentEntries" : [
+
+        ],
         "language" : "en",
         "region" : "US",
         "targetForVariableExpansion" : {
@@ -53,14 +56,14 @@
       "target" : {
         "containerPath" : "container:Adyen.xcodeproj",
         "identifier" : "B62D48AB2BBE8D79001EF01A",
-        "name" : "AdyenUnitTests"
+        "name" : "UnitTests"
       }
     },
     {
       "target" : {
         "containerPath" : "container:Adyen.xcodeproj",
         "identifier" : "E2C0E03B22097917008616F6",
-        "name" : "AdyenUIKitTests"
+        "name" : "IntegrationUIKitTests"
       }
     },
     {
