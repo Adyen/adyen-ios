@@ -45,7 +45,7 @@
       </CommandLineArguments>
       <TestPlans>
          <TestPlanReference
-            reference = "container:TestPlans/AdyenUIHost.xctestplan"
+            reference = "container:TestPlans/IntegrationTests.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
@@ -55,8 +55,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E2C0E03B22097917008616F6"
-               BuildableName = "AdyenUIKitTests.xctest"
-               BlueprintName = "AdyenUIKitTests"
+               BuildableName = "IntegrationUIKitTests.xctest"
+               BlueprintName = "IntegrationUIKitTests"
                ReferencedContainer = "container:Adyen.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -65,8 +65,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F9CCA3B4296ECB3E00AD643D"
-               BuildableName = "AdyenUIHostUITests.xctest"
-               BlueprintName = "AdyenUIHostUITests"
+               BuildableName = "SnapshotsTests.xctest"
+               BlueprintName = "SnapshotsTests"
                ReferencedContainer = "container:Adyen.xcodeproj">
             </BuildableReference>
          </TestableReference>

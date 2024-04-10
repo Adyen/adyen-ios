@@ -29,20 +29,6 @@
         "identifier" : "E2C0E03B22097917008616F6",
         "name" : "AdyenUIKitTests"
       }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:Adyen.xcodeproj",
-        "identifier" : "F9CCA3B4296ECB3E00AD643D",
-        "name" : "AdyenUIHostUITests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:Adyen.xcodeproj",
-        "identifier" : "B62D48AB2BBE8D79001EF01A",
-        "name" : "AdyenUnitTests"
-      }
     }
   ],
   "version" : 1

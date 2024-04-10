@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E2C0E03B22097917008616F6"
-               BuildableName = "AdyenUIKitTests.xctest"
-               BlueprintName = "AdyenUIKitTests"
+               BuildableName = "IntegrationUIKitTests.xctest"
+               BlueprintName = "IntegrationUIKitTests"
                ReferencedContainer = "container:Adyen.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -26,27 +26,22 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "NO">
+      shouldUseLaunchSchemeArgsEnv = "NO"
+      shouldAutocreateTestPlan = "YES">
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-UITests"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
-      <TestPlans>
-         <TestPlanReference
-            reference = "container:TestPlans/UnitTests.xctestplan"
-            default = "YES">
-         </TestPlanReference>
-      </TestPlans>
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E2C0E03B22097917008616F6"
-               BuildableName = "AdyenUIKitTests.xctest"
-               BlueprintName = "AdyenUIKitTests"
+               BuildableName = "IntegrationUIKitTests.xctest"
+               BlueprintName = "IntegrationUIKitTests"
                ReferencedContainer = "container:Adyen.xcodeproj">
             </BuildableReference>
          </TestableReference>
