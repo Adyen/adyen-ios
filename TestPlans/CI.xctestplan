@@ -4,9 +4,6 @@
       "id" : "CA0AA26C-B8DC-4194-9E01-42C1D3963FC8",
       "name" : "Unit Tests",
       "options" : {
-        "commandLineArgumentEntries" : [
-
-        ],
         "language" : "en",
         "region" : "US",
         "targetForVariableExpansion" : {
