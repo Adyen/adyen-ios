@@ -45,7 +45,7 @@
       </CommandLineArguments>
       <TestPlans>
          <TestPlanReference
-            reference = "container:TestPlans/AllTests.xctestplan"
+            reference = "container:TestPlans/AdyenUIHost.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
