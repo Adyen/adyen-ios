@@ -72,7 +72,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(paymentMethod: method,
                                 context: context,
                                 configuration: configuration)
-        var items = sut.cardViewController.items
+        let items = sut.cardViewController.items
 
         XCTAssertEqual(items.expiryDateItem.title, localizedString(.cardExpiryItemTitle, nil))
         XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(.cardExpiryItemPlaceholder, sut.configuration.localizationParameters))
@@ -100,7 +100,7 @@ class CardComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
 
-        var items = sut.cardViewController.items
+        let items = sut.cardViewController.items
         XCTAssertEqual(items.expiryDateItem.title, localizedString(.cardExpiryItemTitle, nil))
         XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(LocalizationKey(key: "adyen_card_expiryItem_placeholder"), sut.configuration.localizationParameters))
         XCTAssertEqual(items.expiryDateItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_expiryItem_invalid"), sut.configuration.localizationParameters))
@@ -1977,7 +1977,7 @@ class CardComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
 
-        var items = sut.cardViewController.items
+        let items = sut.cardViewController.items
         XCTAssertFalse(items.holderNameItem.isValid())
     }
 
@@ -1993,7 +1993,7 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration)
 
         // Then
-        var items = sut.cardViewController.items
+        let items = sut.cardViewController.items
         XCTAssertEqual(items.button.title, "Pay US$12,345.67")
     }
 
@@ -2009,7 +2009,7 @@ class CardComponentTests: XCTestCase {
                                 configuration: configuration)
 
         // Then
-        var items = sut.cardViewController.items
+        let items = sut.cardViewController.items
         XCTAssertEqual(items.button.title, "Заплатить 12 345,67 $")
     }
 
@@ -2022,7 +2022,7 @@ class CardComponentTests: XCTestCase {
                                 context: context,
                                 configuration: configuration)
 
-        var items = sut.cardViewController.items
+        let items = sut.cardViewController.items
         items.holderNameItem.value = "A"
         XCTAssertTrue(items.holderNameItem.isValid())
     }

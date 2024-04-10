@@ -193,8 +193,8 @@ public class CardComponent: PresentableComponent,
         formViewController.cardDelegate = self
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         
-        formViewController.items.onDidTriggerEvent = { [weak self] infoType, target in
-            self?.sendInfoEvent(of: infoType, target: target)
+        formViewController.items.onDidTriggerInfoEvent = { [weak self] infoEventData in
+            self?.sendInfoEvent(with: infoEventData)
         }
         
         return formViewController
@@ -203,12 +203,16 @@ public class CardComponent: PresentableComponent,
     private let panThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
     private let binThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
     
-    private func sendInfoEvent(of type: AnalyticsEventInfo.InfoType, target: AnalyticsEventTarget) {
+    private func sendInfoEvent(with data: CardViewController.InfoEventData) {
         var infoEvent = AnalyticsEventInfo(
             component: paymentMethod.type.rawValue,
-            type: type
+            type: data.type
         )
-        infoEvent.target = target
+        infoEvent.target = data.target
+        if let errorCode = data.error?.analyticsErrorCode {
+            infoEvent.validationErrorCode = String(errorCode)
+        }
+        infoEvent.validationErrorMessage = data.error?.analyticsErrorMessage
         context.analyticsProvider?.add(info: infoEvent)
     }
 }

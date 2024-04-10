@@ -19,6 +19,16 @@ public enum ValidationStatus {
             return false
         }
     }
+    
+    /// Convenience access to the validation error if invalid.
+    public var validationError: ValidationError? {
+        switch self {
+        case .valid:
+            return nil
+        case let .invalid(validationError):
+            return validationError
+        }
+    }
 }
 
 /// Protocol that defines the interface for validation errors.
@@ -35,6 +45,3 @@ public protocol AnalyticsValidationError: ValidationError {
     /// Message describing the error for analytics.
     var analyticsErrorMessage: String { get }
 }
-
-@_spi(AdyenInternal)
-public struct GenericValidationError: ValidationError {}

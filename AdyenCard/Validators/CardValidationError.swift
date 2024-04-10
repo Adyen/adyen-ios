@@ -7,7 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 
-internal enum CardValidationError: AnalyticsValidationError {
+internal enum CardValidationError: String, AnalyticsValidationError {
     
     /// Card number is not filled.
     case cardNumberEmpty
@@ -33,6 +33,12 @@ internal enum CardValidationError: AnalyticsValidationError {
     /// Expiry date too far into the future.
     case expiryDateTooFar
     
+    /// Security code is not filled.
+    case securityCodeEmpty
+    
+    /// Security code is partially filled.
+    case securityCodePartial
+    
     internal var analyticsErrorCode: Int {
         switch self {
         case .cardNumberEmpty:
@@ -51,19 +57,23 @@ internal enum CardValidationError: AnalyticsValidationError {
             return 912
         case .expiryDateTooFar:
             return 913
+        case .securityCodeEmpty:
+            return 920
+        case .securityCodePartial:
+            return 921
         }
     }
     
-    var analyticsErrorMessage: String {
+    internal var analyticsErrorMessage: String {
         switch self {
         case .cardNumberEmpty:
-            return "Empty card number field"
+            return "Empty card number field."
         case .cardNumberPartial:
-            return "Card number has only been partially filled"
+            return "Card number has only been partially filled."
         case .cardLuhCheckFailed:
-            return "Luhn check failed"
+            return "Luhn check failed."
         case .cardUnsupported:
-            return "Unsupported card in binlookup"
+            return "Unsupported card in binlookup."
         case .expiryDateEmpty:
             return "Empty expiry date field."
         case .expiryDatePartial:
@@ -72,6 +82,10 @@ internal enum CardValidationError: AnalyticsValidationError {
             return "Card expired (expiry date too far in the past)."
         case .expiryDateTooFar:
             return "Expiry date too far in the future."
+        case .securityCodeEmpty:
+            return "Empty security code field."
+        case .securityCodePartial:
+            return "Security code field has only been partially filled."
         }
     }
 }
