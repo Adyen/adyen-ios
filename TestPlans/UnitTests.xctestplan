@@ -1,12 +1,6 @@
 {
   "configurations" : [
-    {
-      "id" : "E2D58253-EFBC-4C8A-9AE0-A4E32379C19D",
-      "name" : "Test Scheme Action",
-      "options" : {
 
-      }
-    }
   ],
   "defaultOptions" : {
     "language" : "en",
@@ -18,7 +12,7 @@
       "target" : {
         "containerPath" : "container:Adyen.xcodeproj",
         "identifier" : "B62D48AB2BBE8D79001EF01A",
-        "name" : "AdyenUnitTests"
+        "name" : "UnitTests"
       }
     }
   ],
