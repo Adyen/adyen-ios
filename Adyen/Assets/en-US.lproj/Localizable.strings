@@ -87,9 +87,9 @@
 "adyen.billingAddress.placeholder" = "Your billing address";
 "adyen.deliveryAddressSection.title" = "Delivery Address";
 "adyen.deliveryAddress.placeholder" = "Your delivery address";
-"adyen.countryField.title" = "Country";
-"adyen.countryField.placeholder" = "Country";
-"adyen.countryField.invalid" = "Invalid country";
+"adyen.countryField.title" = "Country/Region";
+"adyen.countryField.placeholder" = "Country/Region";
+"adyen.countryField.invalid" = "Invalid country/region";
 "adyen.addressField.title" = "Address";
 "adyen.addressField.placeholder" = "Address";
 "adyen.streetField.title" = "Street";
@@ -181,6 +181,7 @@
 "adyen.UPI.QRCodeInstructions" = "Take a screenshot to upload in the UPI app or scan the QR code using your preferred UPI app to complete the payment.";
 "adyen.cashAppPay.title" = "Cash App Pay";
 "adyen.cashAppPay.cashtag" = "Cashtag";
+"adyen.twint.noAppsInstalled.message" = "No or an outdated version of TWINT is installed on this device. Please update or install the TWINT app.";
 "adyen.threeds2.DA.registration.title" = "Safe and swift checkout!";
 "adyen.threeds2.DA.registration.description" = "You can check out faster next time on this device using your biometrics.";
 "adyen.threeds2.DA.registration.positiveButton" = "Enable swift checkout";

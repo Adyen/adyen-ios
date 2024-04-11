@@ -46,7 +46,11 @@ public enum PhoneNumberPaymentMethod {
         case .mbWay:
             return ["PT", "ES"]
         case .generic:
-            return Array(allCountriesPhoneExtensions.keys).sorted()
+            return Array(allCountriesPhoneExtensions.keys).sorted { lhs, rhs in
+                let localizedLhs = Locale.current.localizedString(forRegionCode: lhs) ?? lhs
+                let localizedRhs = Locale.current.localizedString(forRegionCode: rhs) ?? rhs
+                return localizedLhs < localizedRhs
+            }
         }
     }
 }

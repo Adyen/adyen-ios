@@ -113,8 +113,8 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         expirationLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             expirationLabel.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 13.0),
-            expirationLabel.heightAnchor.constraint(equalToConstant: 20.0),
-            expirationLabel.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor)
+            expirationLabel.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 16),
+            expirationLabel.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -16)
         ])
     }
     
