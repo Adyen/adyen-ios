@@ -49,24 +49,24 @@ jobs:
         
     - name: 🧪 Tests
       run: |
-        xcodebuild test \
-          -project "${{env.project}}" \
-          -scheme "${scheme}" \
-          -testPlan "${testPlan}" \
-          -enableCodeCoverage YES \
-          -resultBundlePath "${resultPath}" \
-          ${params} \
+        xcodebuild test 
+          -project "${{env.project}}" 
+          -scheme "${scheme}" 
+          -testPlan "${testPlan}" 
+          -enableCodeCoverage YES 
+          -resultBundlePath "${resultPath}" 
+          ${params} 
           -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         params: '${{env.params}}'
         scheme: 'AdyenUIHost'
         testPlan: 'CI'
-        resultPath: '$PWD/build_result/Test-CI-Result.xcresult'
+        resultPath: 'Test-CI-Result.xcresult'
         
-    - name: Prepare coverage reports
+    - name: 🍛 Prepare coverage reports
       run: |
-        bash xccov-to-sonarqube-generic.sh $PWD/build_result/Test-CI-Result.xcresult/ > sonarqube-coverage-CI.xml
-        xcrun xccov view --report --json $PWD/build_result/Test-CI-Result.xcresult/ > $PWD/build_result/coverage-CI.json
+        bash xccov-to-sonarqube-generic.sh Test-CI-Result.xcresult/ > sonarqube-coverage-CI.xml
+        xcrun xccov view --report --json Test-CI-Result.xcresult/ > coverage-CI.json
         mv $PWD/build_result/coverage-CI.json coverage-CI.json
         sed "s#$PWD/##g" sonarqube-coverage-CI.xml > sonarqube_updated_CI.xml
         
