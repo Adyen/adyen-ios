@@ -13,7 +13,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:TestPlans/AdyenUnitTests.xctestplan"
+            reference = "container:TestPlans/UnitTests.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
@@ -24,8 +24,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B62D48AB2BBE8D79001EF01A"
-               BuildableName = "AdyenUnitTests.xctest"
-               BlueprintName = "AdyenUnitTests"
+               BuildableName = "UnitTests.xctest"
+               BlueprintName = "UnitTests"
                ReferencedContainer = "container:Adyen.xcodeproj">
             </BuildableReference>
          </TestableReference>
