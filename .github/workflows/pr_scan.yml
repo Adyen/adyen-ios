@@ -61,27 +61,15 @@ jobs:
         params: '${{env.params}}'
         scheme: 'AdyenUIHost'
         testPlan: 'CI'
-        resultPath: '$PWD/gitlab_build_result/Test-CI-Result.xcresult'
+        resultPath: '$PWD/build_result/Test-CI-Result.xcresult'
         
-    - name: 📈 Code Coverage
+    - name: Prepare coverage reports
       run: |
-        slather coverage --sonarqube-xml ${params} ${{env.project}}
-      env:
-        params: '
-        --build-directory ./DerivedData
-        --output-directory ./reports
-        --scheme AdyenUIHost
-        --binary-basename Adyen
-        --binary-basename AdyenCard
-        --binary-basename AdyenDropIn
-        --binary-basename AdyenWeChatPay
-        --binary-basename AdyenComponents
-        --binary-basename AdyenSession
-        --binary-basename AdyenEncryption
-        --binary-basename AdyenActions
-        --binary-basename AdyenCashAppPay
-        --binary-basename AdyenSwiftUI'
-
+        bash xccov-to-sonarqube-generic.sh $PWD/build_result/Test-CI-Result.xcresult/ > sonarqube-coverage-CI.xml
+        xcrun xccov view --report --json $PWD/build_result/Test-CI-Result.xcresult/ > $PWD/build_result/coverage-CI.json
+        mv $PWD/build_result/coverage-CI.json coverage-CI.json
+        sed "s#$PWD/##g" sonarqube-coverage-CI.xml > sonarqube_updated_CI.xml
+        
     - name: 🧼 SwiftLint
       run: |
         brew install swiftlint
@@ -91,6 +79,6 @@ jobs:
       if: ${{ env.sonarToken != 0 }}
       run: |
         git fetch --unshallow --no-tags
-        sonar-scanner -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+        sonar-scanner -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.coverageReportPaths=sonarqube_updated_CI.xml
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
