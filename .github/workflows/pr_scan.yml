@@ -49,11 +49,19 @@ jobs:
         
     - name: 🧪 Tests
       run: |
-        xcodebuild test -project "${{env.project}}" -scheme "${scheme}" -testPlan "${testPlan}" ${params} -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild test \
+          -project "${{env.project}}" \
+          -scheme "${scheme}" \
+          -testPlan "${testPlan}" \
+          -enableCodeCoverage YES \
+          -resultBundlePath "${resultPath}"
+          ${params} \
+          -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
-        params: '${{env.params}} -enableCodeCoverage YES'
+        params: '${{env.params}}'
         scheme: 'AdyenUIHost'
         testPlan: 'CI'
+        resultPath: '$PWD/gitlab_build_result/Test-CI-Result.xcresult'
         
     - name: 📈 Code Coverage
       run: |
