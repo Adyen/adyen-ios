@@ -1,26 +1,18 @@
 {
   "configurations" : [
-    {
-      "id" : "2766481D-AC83-4B72-8EA7-52DABA1A8C91",
-      "name" : "Default",
-      "options" : {
 
-      }
-    }
   ],
   "defaultOptions" : {
-    "commandLineArgumentEntries" : [
-      {
-        "argument" : "-UITests"
-      }
-    ]
+    "language" : "en",
+    "region" : "US"
   },
   "testTargets" : [
     {
+      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:Adyen.xcodeproj",
-        "identifier" : "E2C0E03B22097917008616F6",
-        "name" : "AdyenUIKitTests"
+        "identifier" : "B62D48AB2BBE8D79001EF01A",
+        "name" : "UnitTests"
       }
     }
   ],
