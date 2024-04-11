@@ -9,7 +9,7 @@ import UIKit
 
 extension CardViewController {
 
-    internal struct ItemsProvider {
+    internal class ItemsProvider {
 
         private let formStyle: FormComponentStyle
 
@@ -32,6 +32,9 @@ extension CardViewController {
         private let presenter: WeakReferenceViewControllerPresenter
         
         private let addressMode: CardComponent.AddressFormType
+        
+        /// Closure that is called when an event is triggered via the field items.
+        internal var onDidTriggerEvent: ((AnalyticsEventInfo.InfoType, AnalyticsEventTarget) -> Void)?
 
         internal init(
             formStyle: FormComponentStyle,
@@ -91,6 +94,14 @@ extension CardViewController {
         internal lazy var postalCodeItem: FormPostalCodeItem = {
             let zipCodeItem = FormPostalCodeItem(style: formStyle.textField, localizationParameters: localizationParameters)
             zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "postalCodeItem")
+            
+            zipCodeItem.onDidBeginEditing = { [weak self] in
+                self?.triggerInfoEvent(of: .focus, target: .addressPostalCode)
+            }
+            zipCodeItem.onDidEndEditing = { [weak self] in
+                self?.triggerInfoEvent(of: .unfocus, target: .addressPostalCode)
+            }
+            
             return zipCodeItem
         }()
 
@@ -100,6 +111,14 @@ extension CardViewController {
                                                    style: formStyle.textField,
                                                    localizationParameters: localizationParameters)
             item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "numberContainerItem")
+            
+            item.numberItem.onDidBeginEditing = { [weak self] in
+                self?.triggerInfoEvent(of: .focus, target: .cardNumber)
+            }
+            item.numberItem.onDidEndEditing = { [weak self] in
+                self?.triggerInfoEvent(of: .unfocus, target: .cardNumber)
+            }
+            
             return item
         }()
 
@@ -108,7 +127,14 @@ extension CardViewController {
                                                         localizationParameters: localizationParameters)
             expiryDateItem.localizationParameters = localizationParameters
             expiryDateItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "expiryDateItem")
-
+            
+            expiryDateItem.onDidBeginEditing = { [weak self] in
+                self?.triggerInfoEvent(of: .focus, target: .expiryDate)
+            }
+            expiryDateItem.onDidEndEditing = {
+                self.triggerInfoEvent(of: .unfocus, target: .expiryDate)
+            }
+            
             return expiryDateItem
         }()
 
@@ -117,6 +143,14 @@ extension CardViewController {
                                                             localizationParameters: localizationParameters)
             securityCodeItem.localizationParameters = localizationParameters
             securityCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "securityCodeItem")
+            
+            securityCodeItem.onDidBeginEditing = { [weak self] in
+                self?.triggerInfoEvent(of: .focus, target: .securityCode)
+            }
+            securityCodeItem.onDidEndEditing = { [weak self] in
+                self?.triggerInfoEvent(of: .unfocus, target: .securityCode)
+            }
+            
             return securityCodeItem
         }()
 
@@ -129,6 +163,14 @@ extension CardViewController {
             holderNameItem.autocapitalizationType = .words
             holderNameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "holderNameItem")
             holderNameItem.contentType = .name
+            
+            holderNameItem.onDidBeginEditing = { [weak self] in
+                self?.triggerInfoEvent(of: .focus, target: .holderName)
+            }
+            holderNameItem.onDidEndEditing = { [weak self] in
+                self?.triggerInfoEvent(of: .unfocus, target: .holderName)
+            }
+            
             return holderNameItem
         }()
 
@@ -145,6 +187,13 @@ extension CardViewController {
             additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthCodeItem")
             additionalItem.keyboardType = .numberPad
             additionalItem.isVisible = configuration.koreanAuthenticationMode == .show
+            
+            additionalItem.onDidBeginEditing = { [weak self] in
+                self?.triggerInfoEvent(of: .focus, target: .taxNumber)
+            }
+            additionalItem.onDidEndEditing = {
+                self.triggerInfoEvent(of: .unfocus, target: .taxNumber)
+            }
 
             return additionalItem
         }()
@@ -159,6 +208,13 @@ extension CardViewController {
             additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthPasswordItem")
             additionalItem.keyboardType = .numberPad
             additionalItem.isVisible = configuration.koreanAuthenticationMode == .show
+            
+            additionalItem.onDidBeginEditing = { [weak self] in
+                self?.triggerInfoEvent(of: .focus, target: .authPassWord)
+            }
+            additionalItem.onDidEndEditing = { [weak self] in
+                self?.triggerInfoEvent(of: .unfocus, target: .authPassWord)
+            }
 
             return additionalItem
         }()
@@ -174,6 +230,14 @@ extension CardViewController {
             securityNumberItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "socialSecurityNumberItem")
             securityNumberItem.keyboardType = .numberPad
             securityNumberItem.isVisible = configuration.socialSecurityNumberMode == .show
+            
+            securityNumberItem.onDidBeginEditing = { [weak self] in
+                self?.triggerInfoEvent(of: .focus, target: .boletoSocialSecurityNumber)
+            }
+            securityNumberItem.onDidEndEditing = { [weak self] in
+                self?.triggerInfoEvent(of: .unfocus, target: .boletoSocialSecurityNumber)
+            }
+            
             return securityNumberItem
         }()
 
@@ -204,6 +268,14 @@ extension CardViewController {
                                                     localizationParameters)
             return item
         }()
+        
+        private func triggerInfoEvent(
+            of type: AnalyticsEventInfo.InfoType,
+            target: AnalyticsEventTarget,
+            message: String? = nil
+        ) {
+            onDidTriggerEvent?(type, target)
+        }
 
     }
 

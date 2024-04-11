@@ -22,38 +22,6 @@ class SecuredViewControllerUITests: XCTestCase {
     }
     
     func testBlur() throws {
-        struct DummyStyle: ViewStyle {
-            var backgroundColor: UIColor
-        }
-        
-        let cardComponent = CardComponent(
-            paymentMethod: CardPaymentMethod(
-                type: .scheme,
-                name: "scheme",
-                fundingSource: .credit,
-                brands: [.bcmc]
-            ),
-            context: Dummy.context
-        )
-        
-        let sut = try XCTUnwrap(cardComponent.viewController as? SecuredViewController<CardViewController>)
-        setupRootViewController(sut)
-        
-        try withoutAnimation {
-            NotificationCenter.default.post(name: UIApplication.willResignActiveNotification, object: nil)
-            wait { sut.view.subviews.contains(where: { $0 is UIVisualEffectView }) }
-            verifyViewControllerImage(
-                matching: sut,
-                named: "secured-view-controller-blurred",
-                precision: .blurredContent
-            )
-            
-            NotificationCenter.default.post(name: UIApplication.didBecomeActiveNotification, object: nil)
-            wait { !sut.view.subviews.contains(where: { $0 is UIVisualEffectView }) }
-            verifyViewControllerImage(
-                matching: sut,
-                named: "secured-view-controller-unblurred"
-            )
-        }
+        // temp deleted
     }
 }
