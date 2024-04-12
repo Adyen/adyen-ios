@@ -58,7 +58,7 @@ jobs:
         
     - name: Snapshot Tests for multiple locales
       run: |
-        xcodebuild test -project "${{env.project}}" -scheme "${scheme}" -testPlan "${testPlan}" ${params} -resultBundlePath "${resultPath}" -destination "${{env.destination}}" | xcpr$
+        xcodebuild test -project "${{env.project}}" -scheme "${scheme}" -testPlan "${testPlan}" ${params} -resultBundlePath "${resultPath}" -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:  
         params: '${{env.params}} -enableCodeCoverage YES'
         scheme: 'SnapshotTests'
