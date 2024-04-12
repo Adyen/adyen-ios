@@ -67,7 +67,7 @@ jobs:
       run: |
         bash xccov-to-sonarqube-generic.sh Test-CI-Result.xcresult/ > sonarqube-coverage-CI.xml
         xcrun xccov view --report --json Test-CI-Result.xcresult/ > coverage-CI.json
-        mv $PWD/build_result/coverage-CI.json coverage-CI.json
+        mv coverage-CI.json coverage-CI.json
         sed "s#$PWD/##g" sonarqube-coverage-CI.xml > sonarqube_updated_CI.xml
         
     - name: 🧼 SwiftLint
