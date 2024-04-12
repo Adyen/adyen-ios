@@ -37,7 +37,6 @@ jobs:
     - name: 🛠️ Install Tools
       run: |
         brew install sonar-scanner
-        gem install slather
         
     - name: 👷 Clean Build
       run: |
