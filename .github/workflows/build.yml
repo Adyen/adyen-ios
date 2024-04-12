@@ -85,6 +85,6 @@ jobs:
       env:
         project: 'Adyen.xcodeproj'
         params: "-skipPackagePluginValidation"
-        scheme: 'AdyenUIKitTests'
+        scheme: 'IntegrationUIKitTests'
         destination: "OS=${{ matrix.version }},name=${{ matrix.displayname }}"
 
