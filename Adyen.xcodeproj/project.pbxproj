@@ -276,6 +276,7 @@
 		81FC2C942BB19920007F1316 /* ImageLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FC2C922BB198AB007F1316 /* ImageLoaderTests.swift */; };
 		81FC2C982BB1BB68007F1316 /* URLProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FC2C962BB1B9F3007F1316 /* URLProtocolMock.swift */; };
 		81FC2C992BB1BB69007F1316 /* URLProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FC2C962BB1B9F3007F1316 /* URLProtocolMock.swift */; };
+		A001676A2BC9567B0099A6AE /* AnalyticsValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00167692BC9567B0099A6AE /* AnalyticsValidationError.swift */; };
 		A009837D279859DC007E68C4 /* ACHDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */; };
 		A009837F27986B50007E68C4 /* BankDetailsEncryptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */; };
 		A0113D9B2763887800AD395C /* ActionNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0113D9A2763887800AD395C /* ActionNavigationBar.swift */; };
@@ -1585,6 +1586,7 @@
 		81FC2C902BB19872007F1316 /* CancellableMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellableMock.swift; sourceTree = "<group>"; };
 		81FC2C922BB198AB007F1316 /* ImageLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoaderTests.swift; sourceTree = "<group>"; };
 		81FC2C962BB1B9F3007F1316 /* URLProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLProtocolMock.swift; sourceTree = "<group>"; };
+		A00167692BC9567B0099A6AE /* AnalyticsValidationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsValidationError.swift; sourceTree = "<group>"; };
 		A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankDetailsEncryptorTests.swift; sourceTree = "<group>"; };
 		A0113D9A2763887800AD395C /* ActionNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionNavigationBar.swift; sourceTree = "<group>"; };
@@ -3255,6 +3257,7 @@
 				A0DB486D2AFD0BFC00348C83 /* AnalyticsEventError.swift */,
 				A09FB2EC2B86051000270D51 /* AnalyticsEventDataSource.swift */,
 				A01DFBBE2BA887BF00205881 /* ThreadSafeAnalyticsEventDataSource.swift */,
+				A00167692BC9567B0099A6AE /* AnalyticsValidationError.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -6540,6 +6543,7 @@
 				E2028F5C2227F1930007FF8B /* Details.swift in Sources */,
 				5A988BF6265675ED0007F4C0 /* BoletoPaymentMethod.swift in Sources */,
 				F97FA030264B1367004AFD0C /* ListSectionFooterStyle.swift in Sources */,
+				A001676A2BC9567B0099A6AE /* AnalyticsValidationError.swift in Sources */,
 				A0BC64E628F062E400CED2A1 /* AdyenSessionAware.swift in Sources */,
 				0067E73D29658CB6005B8D76 /* FormImageItem.swift in Sources */,
 				E7D5311524462D87000046B4 /* FormButtonItem.swift in Sources */,

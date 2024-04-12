@@ -34,14 +34,3 @@ public enum ValidationStatus {
 /// Protocol that defines the interface for validation errors.
 @_spi(AdyenInternal)
 public protocol ValidationError: LocalizedError {}
-
-/// Protocol created spefically for analytics related validation error.
-@_spi(AdyenInternal)
-public protocol AnalyticsValidationError: ValidationError {
-    
-    /// Code of the error for analytics.
-    var analyticsErrorCode: Int { get }
-    
-    /// Message describing the error for analytics.
-    var analyticsErrorMessage: String { get }
-}

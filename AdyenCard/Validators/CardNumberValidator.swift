@@ -14,6 +14,7 @@ public final class CardNumberValidator: StatusValidator {
     
     private enum Constants {
         static let maxPanLength = 19
+        static let minLength = 12
     }
     
     /// Indicates whether to validate for luhn check
@@ -50,7 +51,7 @@ public final class CardNumberValidator: StatusValidator {
             return .invalid(CardValidationError.cardNumberEmpty)
         }
         
-        if value.count < 12 {
+        if value.count < Constants.minLength {
             return .invalid(CardValidationError.cardNumberPartial)
         }
         
