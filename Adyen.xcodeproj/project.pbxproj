@@ -360,6 +360,7 @@
 		B62D48C72BBE8F46001EF01A /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */; };
 		B62D48C82BBE8F47001EF01A /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */; };
 		B6D807FF2BC9252B00F3F5EB /* DummyAnalyticsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D807FE2BC9252B00F3F5EB /* DummyAnalyticsProvider.swift */; };
+		B6D808022BC9310500F3F5EB /* DummyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D808002BC930E300F3F5EB /* DummyTest.swift */; };
 		B6EE0F382BBE9C4500B9810D /* APIClientHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C560525EE8C8D00B57758 /* APIClientHelper.swift */; };
 		B6EE0F392BBE9C4500B9810D /* APIClientHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C560525EE8C8D00B57758 /* APIClientHelper.swift */; };
 		B6EE0F3A2BBEA2A800B9810D /* APIClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E757F02525D2ED4C007C813D /* APIClientMock.swift */; };
@@ -1657,6 +1658,7 @@
 		B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
 		B62D48CA2BBE9059001EF01A /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
 		B6D807FE2BC9252B00F3F5EB /* DummyAnalyticsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyAnalyticsProvider.swift; sourceTree = "<group>"; };
+		B6D808002BC930E300F3F5EB /* DummyTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyTest.swift; sourceTree = "<group>"; };
 		B6EE0F432BBEBFD000B9810D /* IntegrationTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = IntegrationTests.xctestplan; sourceTree = "<group>"; };
 		C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormViewController+ViewProtocol.swift"; sourceTree = "<group>"; };
 		C90D26B1275900B9001A488F /* BACSInputFormViewProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewProtocolMock.swift; sourceTree = "<group>"; };
@@ -3014,6 +3016,7 @@
 			children = (
 				E757F02525D2ED4C007C813D /* APIClientMock.swift */,
 				C9C0005A280468B800CE2EEC /* Analytics */,
+				B6D808002BC930E300F3F5EB /* DummyTest.swift */,
 			);
 			path = AdyenUnitTests;
 			sourceTree = "<group>";
@@ -6440,6 +6443,7 @@
 				B62D48C02BBE8DF5001EF01A /* APIClientMock.swift in Sources */,
 				B62D48B32BBE8DBE001EF01A /* AnalyticsEventDataSourceTests.swift in Sources */,
 				B62D48B52BBE8DBE001EF01A /* AnalyticsEventTests.swift in Sources */,
+				B6D808022BC9310500F3F5EB /* DummyTest.swift in Sources */,
 				B62D48C42BBE8F25001EF01A /* XCTestCase+Wait.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
