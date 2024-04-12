@@ -359,6 +359,7 @@
 		B62D48C62BBE8F45001EF01A /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */; };
 		B62D48C72BBE8F46001EF01A /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */; };
 		B62D48C82BBE8F47001EF01A /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */; };
+		B6D807FD2BC9245700F3F5EB /* DummyAnalyticsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D807FC2BC9245700F3F5EB /* DummyAnalyticsProvider.swift */; };
 		B6EE0F382BBE9C4500B9810D /* APIClientHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C560525EE8C8D00B57758 /* APIClientHelper.swift */; };
 		B6EE0F392BBE9C4500B9810D /* APIClientHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C560525EE8C8D00B57758 /* APIClientHelper.swift */; };
 		B6EE0F3A2BBEA2A800B9810D /* APIClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E757F02525D2ED4C007C813D /* APIClientMock.swift */; };
@@ -1655,6 +1656,7 @@
 		B62D48AC2BBE8D79001EF01A /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
 		B62D48CA2BBE9059001EF01A /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
+		B6D807FC2BC9245700F3F5EB /* DummyAnalyticsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyAnalyticsProvider.swift; sourceTree = "<group>"; };
 		B6EE0F432BBEBFD000B9810D /* IntegrationTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = IntegrationTests.xctestplan; sourceTree = "<group>"; };
 		C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormViewController+ViewProtocol.swift"; sourceTree = "<group>"; };
 		C90D26B1275900B9001A488F /* BACSInputFormViewProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewProtocolMock.swift; sourceTree = "<group>"; };
@@ -3131,6 +3133,7 @@
 			isa = PBXGroup;
 			children = (
 				C94632BD27BA6985003DD81F /* AnalyticsProvider.swift */,
+				B6D807FC2BC9245700F3F5EB /* DummyAnalyticsProvider.swift */,
 				C9B6683427C7CB7A006950B9 /* AnalyticsFlavor.swift */,
 			);
 			path = AnalyticsProvider;
@@ -6673,6 +6676,7 @@
 				00EACBBA28737E540082B360 /* FormIssuersPickerItemView.swift in Sources */,
 				E270FDE9225CC4B1006C2CD0 /* ObservationManager.swift in Sources */,
 				81B001C22A55C5C10015BFA3 /* UISearchBar+Prominent.swift in Sources */,
+				B6D807FD2BC9245700F3F5EB /* DummyAnalyticsProvider.swift in Sources */,
 				F99D453E2627165400880D72 /* FormErrorItem.swift in Sources */,
 				E2D12BF1221D561600EF682F /* FormValueItemView.swift in Sources */,
 				F9639B3B24E14A940073F38A /* APIError.swift in Sources */,
