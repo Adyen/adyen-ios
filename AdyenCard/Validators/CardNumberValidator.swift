@@ -56,7 +56,7 @@ public final class CardNumberValidator: StatusValidator {
         }
         
         if isLuhnCheckEnabled, !luhnCheck(value) {
-            return .invalid(CardValidationError.cardLuhCheckFailed)
+            return .invalid(CardValidationError.cardLuhnCheckFailed)
         }
         
         return .valid

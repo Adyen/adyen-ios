@@ -90,7 +90,7 @@ class CardNumberValidatorTests: XCTestCase {
         XCTAssertNotNil(error)
         
         let validationError = error as? CardValidationError
-        XCTAssertEqual(validationError, CardValidationError.cardLuhCheckFailed)
+        XCTAssertEqual(validationError, CardValidationError.cardLuhnCheckFailed)
     }
     
     func testValidCardLuhnCheckDisabled() {

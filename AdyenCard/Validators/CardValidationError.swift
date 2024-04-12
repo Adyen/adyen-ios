@@ -16,7 +16,7 @@ internal enum CardValidationError: String, AnalyticsValidationError {
     case cardNumberPartial
     
     /// Luhn check for the card bin failed.
-    case cardLuhCheckFailed
+    case cardLuhnCheckFailed
     
     /// Card brand is not supported.
     case cardUnsupported
@@ -45,7 +45,7 @@ internal enum CardValidationError: String, AnalyticsValidationError {
             return 900
         case .cardNumberPartial:
             return 901
-        case .cardLuhCheckFailed:
+        case .cardLuhnCheckFailed:
             return 902
         case .cardUnsupported:
             return 903
@@ -70,7 +70,7 @@ internal enum CardValidationError: String, AnalyticsValidationError {
             return "Empty card number field."
         case .cardNumberPartial:
             return "Card number has only been partially filled."
-        case .cardLuhCheckFailed:
+        case .cardLuhnCheckFailed:
             return "Luhn check failed."
         case .cardUnsupported:
             return "Unsupported card in binlookup."
