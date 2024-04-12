@@ -64,9 +64,9 @@ jobs:
 
     - name: 🌇 Snapshot Tests
       run: |
-        xcodebuild test \     
+        xcodebuild test \
           -project "${{env.project}}" \
-          -scheme "${scheme}" \   
+          -scheme "${scheme}" \
           -testPlan "${testPlan}" \
           -enableCodeCoverage YES \
           -resultBundlePath "${resultPath}" \
