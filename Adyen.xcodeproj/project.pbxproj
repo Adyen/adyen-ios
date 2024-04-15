@@ -3634,6 +3634,7 @@
 				A04F8C1F29E5950100F3F62B /* AdyenCashAppPay */,
 				E7E58BF725ADDF8400E869F9 /* Demo */,
 				B62D48AD2BBE8D79001EF01A /* AdyenUnitTests */,
+				F9615FB0252DDA4800FA8EDD /* AdyenUITests */,
 				E7E58BF825ADDFA000E869F9 /* AdyenIntegrationTests */,
 				007D790A2812C81400382D31 /* SnapshotTests */,
 				F94D65DA2B0364AF0095D61E /* AdyenDelegatedAuthentication */,
@@ -4225,7 +4226,6 @@
 				E2C0E04322097917008616F6 /* Info.plist */,
 				B6D8083F2BCD29CE00F3F5EB /* Localization */,
 				F967581327D25B0200A16FB6 /* Session Tests */,
-				F9615FB0252DDA4800FA8EDD /* SwiftUI */,
 				F99F085B2383EBFF00EBB948 /* UIKit */,
 			);
 			path = AdyenIntegrationTests;
@@ -4929,13 +4929,13 @@
 			path = "Apple Pay";
 			sourceTree = "<group>";
 		};
-		F9615FB0252DDA4800FA8EDD /* SwiftUI */ = {
+		F9615FB0252DDA4800FA8EDD /* AdyenUITests */ = {
 			isa = PBXGroup;
 			children = (
 				F9615FB1252DDA4800FA8EDD /* AdyenSwiftUITests.swift */,
 				F9615FB3252DDA4800FA8EDD /* Info.plist */,
 			);
-			path = SwiftUI;
+			path = AdyenUITests;
 			sourceTree = "<group>";
 		};
 		F9615FC5252F49A400FA8EDD /* Common */ = {
