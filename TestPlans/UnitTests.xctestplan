@@ -9,6 +9,11 @@
     }
   ],
   "defaultOptions" : {
+    "commandLineArgumentEntries" : [
+      {
+        "argument" : "-UITests"
+      }
+    ],
     "language" : "en",
     "region" : "US"
   },
