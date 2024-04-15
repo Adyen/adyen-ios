@@ -4213,16 +4213,16 @@
 		E7E58BF825ADDFA000E869F9 /* AdyenIntegrationTests */ = {
 			isa = PBXGroup;
 			children = (
-				B6D8083F2BCD29CE00F3F5EB /* Localization */,
-				F99F085B2383EBFF00EBB948 /* UIKit */,
-				F9615FB0252DDA4800FA8EDD /* SwiftUI */,
 				E7975F932880238800A12C40 /* Actions Tests */,
 				E9E3DAB0221D79A800697074 /* Card Tests */,
 				E97B9717229D533B00505476 /* Components Tests */,
 				E759E1F325CB371800B1F8DC /* DropIn Tests */,
-				F967581327D25B0200A16FB6 /* Session Tests */,
 				C92F6DBF26B0297A004BD516 /* Helpers */,
 				E2C0E04322097917008616F6 /* Info.plist */,
+				B6D8083F2BCD29CE00F3F5EB /* Localization */,
+				F967581327D25B0200A16FB6 /* Session Tests */,
+				F9615FB0252DDA4800FA8EDD /* SwiftUI */,
+				F99F085B2383EBFF00EBB948 /* UIKit */,
 			);
 			path = AdyenIntegrationTests;
 			sourceTree = "<group>";
@@ -8138,7 +8138,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CURRENT_PROJECT_VERSION = 17;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = Tests/Info.plist;
+				INFOPLIST_FILE = AdyenIntegrationTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -8159,7 +8159,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CURRENT_PROJECT_VERSION = 17;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = Tests/Info.plist;
+				INFOPLIST_FILE = AdyenIntegrationTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -8810,7 +8810,7 @@
 				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Tests/AdyenSwiftUI Tests/Info.plist";
+				INFOPLIST_FILE = AdyenIntegrationTests/SwiftUI/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -8835,7 +8835,7 @@
 				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "Tests/AdyenSwiftUI Tests/Info.plist";
+				INFOPLIST_FILE = AdyenIntegrationTests/SwiftUI/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
