@@ -32,13 +32,6 @@
         "identifier" : "E2C0E03B22097917008616F6",
         "name" : "IntegrationUIKitTests"
       }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:Adyen.xcodeproj",
-        "identifier" : "F9CCA3B4296ECB3E00AD643D",
-        "name" : "SnapshotsTests"
-      }
     }
   ],
   "version" : 1
