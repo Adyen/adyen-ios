@@ -136,7 +136,7 @@ cp "../AdyenIntegrationTests/Helpers/XCTestCase+RootViewController.swift" Tests/
 cp "../AdyenIntegrationTests/Helpers/XCTestCase+Wait.swift" Tests/XCTestCase+Wait.swift
 cp "../AdyenIntegrationTests/Helpers/XCTestCase+Wait+UIKit.swift" Tests/XCTestCase+Wait+UIKit.swift
 cp "../AdyenIntegrationTests/Helpers/UIViewController+Search.swift" Tests/UIViewController+Search.swift
-cp "../AdyenIntegrationTests/Helpers/PaymentMethods+Equatable.swift" Tests/PaymentMethods+Equatable.swift
+cp "../AdyenUnitTests/Helpers/PaymentMethods+Equatable.swift" Tests/PaymentMethods+Equatable.swift
 cp "../AdyenUnitTests/Analytics/AnalyticsProviderMock.swift" Tests/AnalyticsProviderMock.swift
 cp "../AdyenUnitTests/Mocks/DummyData/Dummy.swift" Tests/Dummy.swift
 cp "../AdyenUnitTests/APIClientMock.swift" Tests/APIClientMock.swift
