@@ -3142,7 +3142,7 @@
 			path = DummyData;
 			sourceTree = "<group>";
 		};
-		C92F6DBF26B0297A004BD516 /* Helpers+UIKit */ = {
+		C92F6DBF26B0297A004BD516 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				81825CB72AC59C3300F91912 /* UIView+Search.swift */,
@@ -3155,7 +3155,7 @@
 				5A56E15426B6DEF800744CA0 /* XCTestCase+Style.swift */,
 				81B505782A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift */,
 			);
-			path = "Helpers+UIKit";
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		C933801C276A06C7005B66CD /* Trackers */ = {
@@ -3630,7 +3630,7 @@
 				A04F8C1F29E5950100F3F62B /* AdyenCashAppPay */,
 				E7E58BF725ADDF8400E869F9 /* Demo */,
 				B62D48AD2BBE8D79001EF01A /* AdyenUnitTests */,
-				E7E58BF825ADDFA000E869F9 /* Tests */,
+				E7E58BF825ADDFA000E869F9 /* AdyenIntegrationTests */,
 				007D790A2812C81400382D31 /* SnapshotTests */,
 				F94D65DA2B0364AF0095D61E /* AdyenDelegatedAuthentication */,
 				E2C0E03422097917008616F6 /* Products */,
@@ -4210,7 +4210,7 @@
 			path = Demo;
 			sourceTree = "<group>";
 		};
-		E7E58BF825ADDFA000E869F9 /* Tests */ = {
+		E7E58BF825ADDFA000E869F9 /* AdyenIntegrationTests */ = {
 			isa = PBXGroup;
 			children = (
 				B6D8083F2BCD29CE00F3F5EB /* Localization */,
@@ -4221,10 +4221,10 @@
 				E97B9717229D533B00505476 /* Components Tests */,
 				E759E1F325CB371800B1F8DC /* DropIn Tests */,
 				F967581327D25B0200A16FB6 /* Session Tests */,
-				C92F6DBF26B0297A004BD516 /* Helpers+UIKit */,
+				C92F6DBF26B0297A004BD516 /* Helpers */,
 				E2C0E04322097917008616F6 /* Info.plist */,
 			);
-			path = Tests;
+			path = AdyenIntegrationTests;
 			sourceTree = "<group>";
 		};
 		E7E8343A24F3C7ED00EC3844 /* Mocks */ = {
