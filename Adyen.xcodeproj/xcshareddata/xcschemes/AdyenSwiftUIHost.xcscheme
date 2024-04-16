@@ -40,8 +40,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F9615FAE252DDA4800FA8EDD"
-               BuildableName = "IntegrationSwiftUITests.xctest"
-               BlueprintName = "IntegrationSwiftUITests"
+               BuildableName = "SwiftUI-UITests.xctest"
+               BlueprintName = "SwiftUI-UITests"
                ReferencedContainer = "container:Adyen.xcodeproj">
             </BuildableReference>
          </TestableReference>
