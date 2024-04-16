@@ -9,7 +9,7 @@ opt_in_rules:
 excluded:
   - AdyenUnitTests
   - AdyenIntegrationTests
-  - UITests
+  - AdyenUITests
   - SnapshotTests
   - Internal
   - Docs

@@ -1681,6 +1681,8 @@
 		B62D48AC2BBE8D79001EF01A /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
 		B62D48CA2BBE9059001EF01A /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
+		B6D808532BCD52CB00F3F5EB /* UITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = UITests.xctestplan; path = TestPlans/UITests.xctestplan; sourceTree = "<group>"; };
+		B6D808542BCD533000F3F5EB /* UITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UITests.xctestplan; sourceTree = "<group>"; };
 		B6EE0F432BBEBFD000B9810D /* IntegrationTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = IntegrationTests.xctestplan; sourceTree = "<group>"; };
 		C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormViewController+ViewProtocol.swift"; sourceTree = "<group>"; };
 		C90D26B1275900B9001A488F /* BACSInputFormViewProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewProtocolMock.swift; sourceTree = "<group>"; };
@@ -2109,7 +2111,7 @@
 		F95D76142565449A0088A353 /* AdyenTestsCustomSeparator.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = AdyenTestsCustomSeparator.strings; sourceTree = "<group>"; };
 		F95D761C256544B10088A353 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		F960FB082371823A00AEF74B /* ApplePayComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayComponentTests.swift; sourceTree = "<group>"; };
-		F9615FAF252DDA4800FA8EDD /* IntegrationSwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntegrationSwiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9615FAF252DDA4800FA8EDD /* SwiftUI-UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftUI-UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9615FB1252DDA4800FA8EDD /* AdyenSwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenSwiftUITests.swift; sourceTree = "<group>"; };
 		F9615FB3252DDA4800FA8EDD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F9615FBF252F076A00FA8EDD /* payment_methods_response.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = payment_methods_response.json; sourceTree = "<group>"; };
@@ -2818,6 +2820,7 @@
 				B62D48CA2BBE9059001EF01A /* UnitTests.xctestplan */,
 				B6EE0F432BBEBFD000B9810D /* IntegrationTests.xctestplan */,
 				818B03C52BB6F88100732C35 /* SnapshotTests.xctestplan */,
+				B6D808542BCD533000F3F5EB /* UITests.xctestplan */,
 				818B03C22BB6F5E900732C35 /* CI.xctestplan */,
 				81DF942F2BAAD9A20001DCBC /* GenerateSnapshots.xctestplan */,
 			);
@@ -3613,6 +3616,7 @@
 		E2C0E02922097916008616F6 = {
 			isa = PBXGroup;
 			children = (
+				B6D808532BCD52CB00F3F5EB /* UITests.xctestplan */,
 				F9A1B477283B689F005F3145 /* Adyen.docc */,
 				F94B870925EFB71100D270A6 /* MIGRATION.md */,
 				E27B8EAD22B79CD20075BB6A /* README.md */,
@@ -3630,6 +3634,7 @@
 				A04F8C1F29E5950100F3F62B /* AdyenCashAppPay */,
 				E7E58BF725ADDF8400E869F9 /* Demo */,
 				B62D48AD2BBE8D79001EF01A /* AdyenUnitTests */,
+				F9615FB0252DDA4800FA8EDD /* AdyenUITests */,
 				E7E58BF825ADDFA000E869F9 /* AdyenIntegrationTests */,
 				007D790A2812C81400382D31 /* SnapshotTests */,
 				F94D65DA2B0364AF0095D61E /* AdyenDelegatedAuthentication */,
@@ -3649,7 +3654,7 @@
 				E9B36CAB2243B2FE00EAA368 /* AdyenDropIn.framework */,
 				F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */,
 				F95B6D952527454E002C9062 /* AdyenSwiftUIHost.app */,
-				F9615FAF252DDA4800FA8EDD /* IntegrationSwiftUITests.xctest */,
+				F9615FAF252DDA4800FA8EDD /* SwiftUI-UITests.xctest */,
 				F9175E55259393E800D653BE /* AdyenComponents.framework */,
 				F9175F8C2594986900D653BE /* AdyenActions.framework */,
 				F92326AC25A3669E002C5BC4 /* AdyenEncryption.framework */,
@@ -4221,7 +4226,6 @@
 				E2C0E04322097917008616F6 /* Info.plist */,
 				B6D8083F2BCD29CE00F3F5EB /* Localization */,
 				F967581327D25B0200A16FB6 /* Session Tests */,
-				F9615FB0252DDA4800FA8EDD /* SwiftUI */,
 				F99F085B2383EBFF00EBB948 /* UIKit */,
 			);
 			path = AdyenIntegrationTests;
@@ -4925,13 +4929,13 @@
 			path = "Apple Pay";
 			sourceTree = "<group>";
 		};
-		F9615FB0252DDA4800FA8EDD /* SwiftUI */ = {
+		F9615FB0252DDA4800FA8EDD /* AdyenUITests */ = {
 			isa = PBXGroup;
 			children = (
 				F9615FB1252DDA4800FA8EDD /* AdyenSwiftUITests.swift */,
 				F9615FB3252DDA4800FA8EDD /* Info.plist */,
 			);
-			path = SwiftUI;
+			path = AdyenUITests;
 			sourceTree = "<group>";
 		};
 		F9615FC5252F49A400FA8EDD /* Common */ = {
@@ -5885,9 +5889,9 @@
 			productReference = F95B6D952527454E002C9062 /* AdyenSwiftUIHost.app */;
 			productType = "com.apple.product-type.application";
 		};
-		F9615FAE252DDA4800FA8EDD /* IntegrationSwiftUITests */ = {
+		F9615FAE252DDA4800FA8EDD /* SwiftUI-UITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F9615FB6252DDA4800FA8EDD /* Build configuration list for PBXNativeTarget "IntegrationSwiftUITests" */;
+			buildConfigurationList = F9615FB6252DDA4800FA8EDD /* Build configuration list for PBXNativeTarget "SwiftUI-UITests" */;
 			buildPhases = (
 				F9615FAB252DDA4800FA8EDD /* Sources */,
 				F9615FAC252DDA4800FA8EDD /* Frameworks */,
@@ -5899,9 +5903,9 @@
 				F9615FB5252DDA4800FA8EDD /* PBXTargetDependency */,
 				F9615FBA252DDA5B00FA8EDD /* PBXTargetDependency */,
 			);
-			name = IntegrationSwiftUITests;
+			name = "SwiftUI-UITests";
 			productName = AdyenSwiftUITests;
-			productReference = F9615FAF252DDA4800FA8EDD /* IntegrationSwiftUITests.xctest */;
+			productReference = F9615FAF252DDA4800FA8EDD /* SwiftUI-UITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 		F9620D8123C73B0D005209FC /* AdyenWeChatPay */ = {
@@ -6084,7 +6088,7 @@
 				C96A8E2826CA800A000BB8C6 /* Localization */,
 				B62D48AB2BBE8D79001EF01A /* UnitTests */,
 				E2C0E03B22097917008616F6 /* IntegrationUIKitTests */,
-				F9615FAE252DDA4800FA8EDD /* IntegrationSwiftUITests */,
+				F9615FAE252DDA4800FA8EDD /* SwiftUI-UITests */,
 				F9CCA3B4296ECB3E00AD643D /* SnapshotsTests */,
 				81DF94042BAAD8EB0001DCBC /* GenerateSnapshots */,
 			);
@@ -8810,7 +8814,7 @@
 				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = AdyenIntegrationTests/SwiftUI/Info.plist;
+				INFOPLIST_FILE = AdyenUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -8835,7 +8839,7 @@
 				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = AdyenIntegrationTests/SwiftUI/Info.plist;
+				INFOPLIST_FILE = AdyenUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -9138,7 +9142,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F9615FB6252DDA4800FA8EDD /* Build configuration list for PBXNativeTarget "IntegrationSwiftUITests" */ = {
+		F9615FB6252DDA4800FA8EDD /* Build configuration list for PBXNativeTarget "SwiftUI-UITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F9615FB7252DDA4800FA8EDD /* Debug */,
