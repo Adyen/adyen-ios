@@ -7,6 +7,7 @@
 import Foundation
 
 /// Validates a value.
+@_spi(AdyenInternal)
 public protocol Validator {
     
     /// Returns a boolean value indicating if the given value is valid.
@@ -20,15 +21,25 @@ public protocol Validator {
     /// - Parameter value: The value for which to determine the maximum length.
     /// - Returns: The maximum length for the given value.
     func maximumLength(for value: String) -> Int
+}
+
+@_spi(AdyenInternal)
+public protocol StatusValidator: Validator {
     
+    /// Validates the value and returns the result.
+    /// - Parameter value: The value to validate.
+    /// - Returns: A `ValidationStatus` indicating the result.
+    func validate(_ value: String) -> ValidationStatus
 }
 
 /// Defines the `||` operator for two `Validator` operands.
+@_spi(AdyenInternal)
 public func || (lhs: Validator, rhs: Validator) -> Validator {
     ORValidator(lhs: lhs, rhs: rhs)
 }
 
 /// Defines the `&&` operator for two `Validator` operands.
+@_spi(AdyenInternal)
 public func && (lhs: Validator, rhs: Validator) -> Validator {
     ANDValidator(lhs: lhs, rhs: rhs)
 }

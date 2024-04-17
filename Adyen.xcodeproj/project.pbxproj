@@ -254,12 +254,15 @@
 		81FC2C912BB19872007F1316 /* CancellableMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FC2C902BB19872007F1316 /* CancellableMock.swift */; };
 		81FC2C982BB1BB68007F1316 /* URLProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FC2C962BB1B9F3007F1316 /* URLProtocolMock.swift */; };
 		81FC2C992BB1BB69007F1316 /* URLProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FC2C962BB1B9F3007F1316 /* URLProtocolMock.swift */; };
+		A001676A2BC9567B0099A6AE /* AnalyticsValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00167692BC9567B0099A6AE /* AnalyticsValidationError.swift */; };
 		A009837D279859DC007E68C4 /* ACHDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */; };
 		A0113D9B2763887800AD395C /* ActionNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0113D9A2763887800AD395C /* ActionNavigationBar.swift */; };
 		A013F98126AFF72D00602633 /* BrazilSocialSecurityNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */; };
 		A018094826FDD345003A8DE3 /* FormCardNumberContainerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A018094726FDD345003A8DE3 /* FormCardNumberContainerItem.swift */; };
 		A01DCF0B26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01DCF0A26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift */; };
 		A01DFBBF2BA887BF00205881 /* ThreadSafeAnalyticsEventDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01DFBBE2BA887BF00205881 /* ThreadSafeAnalyticsEventDataSource.swift */; };
+		A01DFBC52BB6F9FA00205881 /* ValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01DFBC42BB6F9FA00205881 /* ValidationError.swift */; };
+		A01DFBC72BB6FBF800205881 /* CardValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01DFBC62BB6FBF800205881 /* CardValidationError.swift */; };
 		A020EC4829E6EC4B0050B2FE /* AdyenCashAppPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A04F8C1E29E5950100F3F62B /* AdyenCashAppPay.framework */; };
 		A020EC4929E6EC4B0050B2FE /* AdyenCashAppPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A04F8C1E29E5950100F3F62B /* AdyenCashAppPay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A020EC4F29E6ECBD0050B2FE /* PayKit in Frameworks */ = {isa = PBXBuildFile; productRef = A020EC4E29E6ECBD0050B2FE /* PayKit */; };
@@ -1575,6 +1578,7 @@
 		81FC2C902BB19872007F1316 /* CancellableMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellableMock.swift; sourceTree = "<group>"; };
 		81FC2C922BB198AB007F1316 /* ImageLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoaderTests.swift; sourceTree = "<group>"; };
 		81FC2C962BB1B9F3007F1316 /* URLProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLProtocolMock.swift; sourceTree = "<group>"; };
+		A00167692BC9567B0099A6AE /* AnalyticsValidationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsValidationError.swift; sourceTree = "<group>"; };
 		A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankDetailsEncryptorTests.swift; sourceTree = "<group>"; };
 		A0113D9A2763887800AD395C /* ActionNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionNavigationBar.swift; sourceTree = "<group>"; };
@@ -1582,6 +1586,8 @@
 		A01D775529B250C10075BD70 /* CashAppPayDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPayDetails.swift; sourceTree = "<group>"; };
 		A01DCF0A26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardExpiryDateItem.swift; sourceTree = "<group>"; };
 		A01DFBBE2BA887BF00205881 /* ThreadSafeAnalyticsEventDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadSafeAnalyticsEventDataSource.swift; sourceTree = "<group>"; };
+		A01DFBC42BB6F9FA00205881 /* ValidationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationError.swift; sourceTree = "<group>"; };
+		A01DFBC62BB6FBF800205881 /* CardValidationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardValidationError.swift; sourceTree = "<group>"; };
 		A020EC5929ED33F90050B2FE /* CashAppPayComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPayComponentTests.swift; sourceTree = "<group>"; };
 		A023A9B328103C2D004FDCA4 /* session_response.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = session_response.json; sourceTree = "<group>"; };
 		A026C85027C4FE4700E6C34A /* BasicComponentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicComponentConfiguration.swift; sourceTree = "<group>"; };
@@ -3267,6 +3273,7 @@
 				A0DB486D2AFD0BFC00348C83 /* AnalyticsEventError.swift */,
 				A09FB2EC2B86051000270D51 /* AnalyticsEventDataSource.swift */,
 				A01DFBBE2BA887BF00205881 /* ThreadSafeAnalyticsEventDataSource.swift */,
+				A00167692BC9567B0099A6AE /* AnalyticsValidationError.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4351,6 +4358,7 @@
 				E9E3DACC221EEAB200697074 /* CardSecurityCodeValidator.swift */,
 				E9E3DAD0221EEE2100697074 /* CardExpiryDateValidator.swift */,
 				F9D5751123756BD0009C18B5 /* CardPublicKeyValidator.swift */,
+				A01DFBC62BB6FBF800205881 /* CardValidationError.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -4699,6 +4707,7 @@
 				E702BDA4260108A700280682 /* ClientKeyValidator.swift */,
 				F9838D442631AD3700963483 /* BalanceChecker.swift */,
 				E755BF7126B40C90007AAB25 /* DateValidator.swift */,
+				A01DFBC42BB6F9FA00205881 /* ValidationError.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -6489,6 +6498,7 @@
 				E2028F5C2227F1930007FF8B /* Details.swift in Sources */,
 				5A988BF6265675ED0007F4C0 /* BoletoPaymentMethod.swift in Sources */,
 				F97FA030264B1367004AFD0C /* ListSectionFooterStyle.swift in Sources */,
+				A001676A2BC9567B0099A6AE /* AnalyticsValidationError.swift in Sources */,
 				A0BC64E628F062E400CED2A1 /* AdyenSessionAware.swift in Sources */,
 				0067E73D29658CB6005B8D76 /* FormImageItem.swift in Sources */,
 				E7D5311524462D87000046B4 /* FormButtonItem.swift in Sources */,
@@ -6511,6 +6521,7 @@
 				F96757BF27CF690600A16FB6 /* PartialPaymentError.swift in Sources */,
 				E7085B122628B29600D0153B /* BasePickerInputControl.swift in Sources */,
 				E700A72D2549E2F00012B64C /* BLIKPaymentMethod.swift in Sources */,
+				A01DFBC52BB6F9FA00205881 /* ValidationError.swift in Sources */,
 				E7085CB7262DE14A00D0153B /* AddressStyle.swift in Sources */,
 				81B001BC2A55B4040015BFA3 /* AddressLookupSearchViewController.swift in Sources */,
 				813EF9EC2A5FE48A00C65D15 /* FormPickerSearchViewController+EmptyView+Style.swift in Sources */,
@@ -6930,6 +6941,7 @@
 				E76CAC4E26BC0CC200117953 /* CardViewControllerItemsProvider.swift in Sources */,
 				E76EC680241125E0009C6E2F /* FormCardSecurityCodeItem.swift in Sources */,
 				E7166A5624EAD99F007CCDEF /* BinInfoProvider.swift in Sources */,
+				A01DFBC72BB6FBF800205881 /* CardValidationError.swift in Sources */,
 				E2028F5E222805E20007FF8B /* CardDetails.swift in Sources */,
 				F96A2882265F9C2B00E718BD /* GiftCardComponent+Extensions.swift in Sources */,
 				E9E3DAD1221EEE2100697074 /* CardExpiryDateValidator.swift in Sources */,

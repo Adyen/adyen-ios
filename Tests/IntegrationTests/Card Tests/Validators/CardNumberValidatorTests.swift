@@ -5,6 +5,7 @@
 //
 
 @testable @_spi(AdyenInternal) import AdyenCard
+@_spi(AdyenInternal) @testable import Adyen
 import XCTest
 
 class CardNumberValidatorTests: XCTestCase {
@@ -14,6 +15,7 @@ class CardNumberValidatorTests: XCTestCase {
         
         CardNumbers.valid.forEach { cardNumber in
             XCTAssertTrue(validator.isValid(cardNumber))
+            XCTAssertTrue(validator.validate(cardNumber).isValid)
         }
     }
     
@@ -49,5 +51,51 @@ class CardNumberValidatorTests: XCTestCase {
         XCTAssertTrue(validator.isValid("370000000000000"))
         XCTAssertFalse(validator.isValid("37000000000"))
         XCTAssertFalse(validator.isValid("0"))
+    }
+    
+    func testUnsupportedValidationError() {
+        let validator = CardNumberValidator(isLuhnCheckEnabled: true, isEnteredBrandSupported: false)
+        let status = validator.validate("411111")
+        let error = status.validationError
+        XCTAssertNotNil(error)
+        
+        let validationError = error as? CardValidationError
+        XCTAssertEqual(validationError, CardValidationError.cardUnsupported)
+    }
+    
+    func testEmptyValidationError() {
+        let validator = CardNumberValidator(isLuhnCheckEnabled: true, isEnteredBrandSupported: true)
+        let status = validator.validate("")
+        let error = status.validationError
+        XCTAssertNotNil(error)
+        
+        let validationError = error as? CardValidationError
+        XCTAssertEqual(validationError, CardValidationError.cardNumberEmpty)
+    }
+    
+    func testPartialEmptyValidationError() {
+        let validator = CardNumberValidator(isLuhnCheckEnabled: true, isEnteredBrandSupported: true)
+        let status = validator.validate("4111")
+        let error = status.validationError
+        XCTAssertNotNil(error)
+        
+        let validationError = error as? CardValidationError
+        XCTAssertEqual(validationError, CardValidationError.cardNumberPartial)
+    }
+    
+    func testLuhnCheckValidationError() {
+        let validator = CardNumberValidator(isLuhnCheckEnabled: true, isEnteredBrandSupported: true)
+        let status = validator.validate("1111111111111")
+        let error = status.validationError
+        XCTAssertNotNil(error)
+        
+        let validationError = error as? CardValidationError
+        XCTAssertEqual(validationError, CardValidationError.cardLuhnCheckFailed)
+    }
+    
+    func testValidCardLuhnCheckDisabled() {
+        let validator = CardNumberValidator(isLuhnCheckEnabled: false, isEnteredBrandSupported: true)
+        let status = validator.validate("4111111111111112")
+        XCTAssertTrue(status.isValid)
     }
 }

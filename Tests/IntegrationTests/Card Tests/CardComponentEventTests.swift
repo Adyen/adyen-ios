@@ -50,6 +50,23 @@ final class CardComponentEventTests: XCTestCase {
                         target: .cardNumber,
                         analyticsProviderMock: analyticsProviderMock)
     }
+    
+    func testCardNumberValidationEvents() throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = makeSUT(analyticsProviderMock: analyticsProviderMock)
+
+        let cardNumberItemView: FormTextItemView<FormCardNumberItem> = try XCTUnwrap(
+            sut.cardViewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
+        )
+        
+        populate(textItemView: cardNumberItemView, with: "4444")
+        cardNumberItemView.textFieldDidEndEditing(cardNumberItemView.textField)
+        
+        let validationEvent = analyticsProviderMock.infos[2]
+        
+        XCTAssertEqual(validationEvent.type, .validationError)
+        XCTAssertEqual(validationEvent.target, .cardNumber)
+    }
 
     func testExpiryDateFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
@@ -163,8 +180,7 @@ final class CardComponentEventTests: XCTestCase {
         let cardComponent = CardComponent(paymentMethod: method,
                                           context: context,
                                           configuration: configuration)
-        
-        setupRootViewController(cardComponent.viewController)
+        cardComponent.viewController.loadViewIfNeeded()
         
         return cardComponent
     }

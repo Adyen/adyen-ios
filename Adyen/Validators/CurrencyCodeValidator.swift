@@ -7,6 +7,7 @@
 import Foundation
 
 /// Validates three-character ISO standard 4217 currency codes.
+@_spi(AdyenInternal)
 public struct CurrencyCodeValidator: Validator {
 
     private static let allCurrencyCodes = Set(Locale.isoCurrencyCodes)
