@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "1420"
-   version = "1.3">
+   version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -11,14 +11,20 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
+      <TestPlans>
+         <TestPlanReference
+            reference = "container:TestPlans/UITests.xctestplan"
+            default = "YES">
+         </TestPlanReference>
+      </TestPlans>
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F9615FAE252DDA4800FA8EDD"
-               BuildableName = "IntegrationSwiftUITests.xctest"
-               BlueprintName = "IntegrationSwiftUITests"
+               BuildableName = "SwiftUI-UITests.xctest"
+               BlueprintName = "SwiftUI-UITests"
                ReferencedContainer = "container:Adyen.xcodeproj">
             </BuildableReference>
          </TestableReference>

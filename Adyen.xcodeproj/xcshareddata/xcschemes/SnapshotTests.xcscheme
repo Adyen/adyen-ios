@@ -72,6 +72,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "F9CCA3B4296ECB3E00AD643D"
+            BuildableName = "SnapshotsTests.xctest"
+            BlueprintName = "SnapshotsTests"
+            ReferencedContainer = "container:Adyen.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

@@ -5,6 +5,7 @@
 //
 
 import Foundation
+@_spi(AdyenInternal) @testable import Adyen
 
 class CancellableMock: AdyenCancellable {
     

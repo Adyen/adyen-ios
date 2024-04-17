@@ -36,8 +36,8 @@
     {
       "target" : {
         "containerPath" : "container:Adyen.xcodeproj",
-        "identifier" : "F9CCA3B4296ECB3E00AD643D",
-        "name" : "SnapshotsTests"
+        "identifier" : "F9615FAE252DDA4800FA8EDD",
+        "name" : "SwiftUI-UITests"
       }
     }
   ],

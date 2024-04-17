@@ -39,3 +39,12 @@ class BackoffSchedulerTests: XCTestCase {
     }
 
 }
+
+private struct IntervalCalculatorMock: IntervalCalculator {
+
+    var getInterval: (_ counter: UInt) -> DispatchTimeInterval
+
+    func interval(for counter: UInt) -> DispatchTimeInterval {
+        getInterval(counter)
+    }
+}

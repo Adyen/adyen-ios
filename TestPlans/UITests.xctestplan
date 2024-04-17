@@ -1,7 +1,7 @@
 {
   "configurations" : [
     {
-      "id" : "CF3792AA-8226-4B5E-877E-FDF4C3AC8B9E",
+      "id" : "C36793B0-7812-4DCD-AF24-8807D75085D1",
       "name" : "Configuration 1",
       "options" : {
 
@@ -9,6 +9,7 @@
     }
   ],
   "defaultOptions" : {
+    "codeCoverage" : false,
     "commandLineArgumentEntries" : [
       {
         "argument" : "-UITests"
@@ -19,11 +20,10 @@
   },
   "testTargets" : [
     {
-      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:Adyen.xcodeproj",
-        "identifier" : "B62D48AB2BBE8D79001EF01A",
-        "name" : "UnitTests"
+        "identifier" : "F9615FAE252DDA4800FA8EDD",
+        "name" : "SwiftUI-UITests"
       }
     }
   ],
