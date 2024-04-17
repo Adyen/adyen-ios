@@ -7,10 +7,7 @@ opt_in_rules:
   - explicit_acl
 
 excluded:
-  - AdyenUnitTests
-  - AdyenIntegrationTests
-  - AdyenUITests
-  - SnapshotTests
+  - Tests
   - Internal
   - Docs
   - Demo

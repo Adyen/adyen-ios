@@ -124,26 +124,25 @@ schemes:
 
 mkdir -p Tests
 mkdir -p Source
-cp "../AdyenIntegrationTests/DropIn Tests/DropInTests.swift" Tests/DropInTests.swift
-cp "../AdyenIntegrationTests/DropIn Tests/DropInDelegateMock.swift" Tests/DropInDelegateMock.swift
-cp "../AdyenIntegrationTests/Card Tests/Mocks/OpenExternalAppDetector+Mock.swift" Tests/OpenExternalAppDetector+Mock.swift
-cp "../AdyenIntegrationTests/Card Tests/3DS2 Component/ThreeDS2PlusDACoreActionHandlerTests.swift" Tests/ThreeDS2PlusDACoreActionHandlerTests.swift
-cp "../AdyenIntegrationTests/Card Tests/3DS2 Component/ThreeDS2PlusDACoreActionHandlerTests+Constants.swift" Tests/ThreeDS2PlusDACoreActionHandlerTests+Constants.swift
-cp "../AdyenIntegrationTests/Card Tests/3DS2 Component/AnyADYServiceMock.swift" Tests/AnyADYServiceMock.swift
-cp "../AdyenIntegrationTests/Card Tests/3DS2 Component/AuthenticationServiceMock.swift" Tests/AuthenticationServiceMock.swift
-cp "../AdyenIntegrationTests/Card Tests/3DS2 Component/ThreeDSResultExtension.swift" Tests/ThreeDSResultExtension.swift
-cp "../AdyenIntegrationTests/Helpers/XCTestCase+RootViewController.swift" Tests/XCTestCase+RootViewController.swift
-cp "../AdyenIntegrationTests/Helpers/XCTestCase+Wait.swift" Tests/XCTestCase+Wait.swift
-cp "../AdyenIntegrationTests/Helpers/XCTestCase+Wait+UIKit.swift" Tests/XCTestCase+Wait+UIKit.swift
-cp "../AdyenIntegrationTests/Helpers/UIViewController+Search.swift" Tests/UIViewController+Search.swift
-cp "../AdyenUnitTests/Helpers/PaymentMethods+Equatable.swift" Tests/PaymentMethods+Equatable.swift
-cp "../AdyenUnitTests/Analytics/AnalyticsProviderMock.swift" Tests/AnalyticsProviderMock.swift
-cp "../AdyenUnitTests/Mocks/DummyData/Dummy.swift" Tests/Dummy.swift
-cp "../AdyenUnitTests/APIClientMock.swift" Tests/APIClientMock.swift
-cp "../AdyenUnitTests/Mocks/ImageLoaderMock.swift" Tests/ImageLoaderMock.swift
-cp "../AdyenUnitTests/Helpers/String+UIImage.swift" Tests/String+UIImage.swift
-
-cp "../AdyenUnitTests/APIClientMock.swift" Source/APIClientMock.swift
+cp "../Tests/IntegrationTests/DropIn Tests/DropInTests.swift" Tests/DropInTests.swift
+cp "../Tests/IntegrationTests/DropIn Tests/DropInDelegateMock.swift" Tests/DropInDelegateMock.swift
+cp "../Tests/IntegrationTests/Card Tests/Mocks/OpenExternalAppDetector+Mock.swift" Tests/OpenExternalAppDetector+Mock.swift
+cp "../Tests/IntegrationTests/Card Tests/3DS2 Component/ThreeDS2PlusDACoreActionHandlerTests.swift" Tests/ThreeDS2PlusDACoreActionHandlerTests.swift
+cp "../Tests/IntegrationTests/Card Tests/3DS2 Component/ThreeDS2PlusDACoreActionHandlerTests+Constants.swift" Tests/ThreeDS2PlusDACoreActionHandlerTests+Constants.swift
+cp "../Tests/IntegrationTests/Card Tests/3DS2 Component/AnyADYServiceMock.swift" Tests/AnyADYServiceMock.swift
+cp "../Tests/IntegrationTests/Card Tests/3DS2 Component/AuthenticationServiceMock.swift" Tests/AuthenticationServiceMock.swift
+cp "../Tests/IntegrationTests/Card Tests/3DS2 Component/ThreeDSResultExtension.swift" Tests/ThreeDSResultExtension.swift
+cp "../Tests/IntegrationTests/Helpers/XCTestCase+RootViewController.swift" Tests/XCTestCase+RootViewController.swift
+cp "../Tests/IntegrationTests/Helpers/XCTestCase+Wait.swift" Tests/XCTestCase+Wait.swift
+cp "../Tests/IntegrationTests/Helpers/XCTestCase+Wait+UIKit.swift" Tests/XCTestCase+Wait+UIKit.swift
+cp "../Tests/IntegrationTests/Helpers/UIViewController+Search.swift" Tests/UIViewController+Search.swift
+cp "../Tests/UnitTests/Helpers/PaymentMethods+Equatable.swift" Tests/PaymentMethods+Equatable.swift
+cp "../Tests/UnitTests/Analytics/AnalyticsProviderMock.swift" Tests/AnalyticsProviderMock.swift
+cp "../Tests/UnitTests/Mocks/DummyData/Dummy.swift" Tests/Dummy.swift
+cp "../Tests/UnitTests/APIClientMock.swift" Tests/APIClientMock.swift
+cp "../Tests/UnitTests/Mocks/ImageLoaderMock.swift" Tests/ImageLoaderMock.swift
+cp "../Tests/UnitTests/Helpers/String+UIImage.swift" Tests/String+UIImage.swift
+cp "../Tests/UnitTests/APIClientMock.swift" Source/APIClientMock.swift
 cp -a "../Demo/Common" Source/
 cp -a "../Demo/UIKit" Source/
 cp "../Demo/Configuration.swift" Source/Configuration.swift

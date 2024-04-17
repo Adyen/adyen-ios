@@ -32,13 +32,6 @@
         "identifier" : "E2C0E03B22097917008616F6",
         "name" : "IntegrationUIKitTests"
       }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:Adyen.xcodeproj",
-        "identifier" : "F9615FAE252DDA4800FA8EDD",
-        "name" : "SwiftUI-UITests"
-      }
     }
   ],
   "version" : 1
