@@ -16,7 +16,7 @@ jobs:
   generate-release-notes:
     name: 📝 Generate Release Notes
     runs-on: macos-latest
-    uses: ./.github/workflows/get_release_notes
+    uses: generate-release-notes: ./.github/workflows/get_release_notes.yml
     
   pre-release:
     name: 🎬 Pre-Release
