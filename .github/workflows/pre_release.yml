@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: 🐣 Get Release Notes
         id: get_release_notes
-        uses: pre-release: ./.github/workflows/get_release_notes
+        uses: pre-release: ./.github/workflows/get_release_notes.yml
         
       - name: 🆕 Create Pull Request
         uses: peter-evans/create-pull-request@v6
