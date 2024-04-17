@@ -45,11 +45,14 @@
       </CommandLineArguments>
       <TestPlans>
          <TestPlanReference
-            reference = "container:TestPlans/IntegrationTests.xctestplan"
-            default = "YES">
+            reference = "container:Tests/TestPlans/CI.xctestplan">
          </TestPlanReference>
          <TestPlanReference
-            reference = "container:TestPlans/CI.xctestplan">
+            reference = "container:Tests/TestPlans/IntegrationTests.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:Tests/TestPlans/UnitTests.xctestplan"
+            default = "YES">
          </TestPlanReference>
       </TestPlans>
       <Testables>

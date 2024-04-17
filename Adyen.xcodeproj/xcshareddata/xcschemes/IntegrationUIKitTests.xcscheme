@@ -35,7 +35,7 @@
       </CommandLineArguments>
       <TestPlans>
          <TestPlanReference
-            reference = "container:TestPlans/IntegrationTests.xctestplan"
+            reference = "container:Tests/TestPlans/IntegrationTests.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
