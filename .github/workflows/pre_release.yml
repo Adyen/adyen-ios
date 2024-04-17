@@ -1,0 +1,27 @@
+# This workflow will public Cocoapods and Docs
+
+name: Pre Release Workflow
+on:
+  workflow_dispatch:
+    inputs:
+      latestVersion:
+        description: 'Define the version of the SDK'
+        required: true
+
+jobs:
+  pre-release:
+    name: 🎬 Pre-Release
+    runs-on: macos-latest
+    steps:
+      - name: 🐣 Get Release Notes
+        uses: ./.github/workflows/get_release_notes.yml
+        
+      - name: 🆕 Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          delete-branch: true
+          branch: pre-release
+          commit-message: "pre-release: ${{ github.event.inputs.latestVersion }}"
+          title: Pre Release Tasks
+          body: ${{ GITHUB_OUTPUT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
