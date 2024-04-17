@@ -54,6 +54,11 @@ open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFor
         validator?.isValid(value) ?? true
     }
     
+    override public func validationStatus() -> ValidationStatus? {
+        guard let statusValidator = validator as? StatusValidator else { return nil }
+        return statusValidator.validate(value)
+    }
+    
     /// The formatted text value.
     @AdyenObservable("") internal var formattedValue: String
 

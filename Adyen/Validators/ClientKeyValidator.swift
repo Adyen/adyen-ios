@@ -22,6 +22,7 @@ public enum ClientKeyError: Error, LocalizedError {
 }
 
 /// Validates a client key https://docs.adyen.com/user-management/client-side-authentication
+@_spi(AdyenInternal)
 public final class ClientKeyValidator: RegularExpressionValidator {
 
     public init() {
