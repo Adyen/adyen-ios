@@ -55,11 +55,9 @@ jobs:
              fi
           done
           if [ ! -z "$OUTPUT" ]; then
-             # IFS="" echo "$OUTPUT"
-             # IFS="" echo "$OUTPUT" >> $GITHUB_STEP_SUMMARY
-             # Base64 encode the string
-             ENCODED_OUTPUT=$(echo -n "$OUTPUT" | base64)
-             echo "notes='$ENCODED_OUTPUT'" >> $GITHUB_OUTPUT
+             IFS="" echo "$OUTPUT"
+             IFS="" echo "$OUTPUT" >> $GITHUB_STEP_SUMMARY
+             echo "notes=HELLO" >> $GITHUB_OUTPUT
           fi
         env:
           ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}
