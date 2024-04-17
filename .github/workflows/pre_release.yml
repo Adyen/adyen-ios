@@ -1,17 +1,22 @@
 # This workflow will public Cocoapods and Docs
 
-name: Pre Release Workflow
+name: 🆕 Pre Release
 on:
   workflow_dispatch:
     inputs:
-      latestVersion:
+      sdkVersion:
         description: 'Define the version of the SDK'
         required: true
+  push:
+    branches:
+      - 'pre-release-workflow'
+    
 
 jobs:
   pre-release:
     name: 🎬 Pre-Release
     runs-on: macos-latest
+      
     steps:
       - name: 🐣 Get Release Notes
         uses: ./.github/workflows/get_release_notes.yml
