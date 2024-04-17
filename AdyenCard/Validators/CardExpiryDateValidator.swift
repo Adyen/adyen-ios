@@ -13,6 +13,14 @@ import Foundation
 @_spi(AdyenInternal)
 public final class CardExpiryDateValidator: StatusValidator {
     
+    private enum Constants {
+        static let maxYearsDifference = 30
+        static let firstMonth = 1
+        static let lastMonth = 12
+        static let minMonthDifference = -3
+        static let twentiethCenturyPrefix = "20"
+    }
+    
     private let referenceDate: Date
     
     private static let maxYearsDifference: Int = 30
@@ -38,11 +46,11 @@ public final class CardExpiryDateValidator: StatusValidator {
             return .invalid(CardValidationError.expiryDatePartial)
         }
         
-        guard let year = Int("20" + value.adyen[2...3]) else {
+        guard let year = Int(Constants.twentiethCenturyPrefix + value.adyen[2...3]) else {
             return .invalid(CardValidationError.expiryDatePartial)
         }
         
-        guard (month >= 1 && month <= 12) || value.count < 2 else {
+        guard (month >= Constants.firstMonth && month <= Constants.lastMonth) || value.count < 2 else {
             return .invalid(CardValidationError.expiryDatePartial)
         }
         
@@ -63,7 +71,7 @@ public final class CardExpiryDateValidator: StatusValidator {
             return .invalid(CardValidationError.expiryDateTooFar)
         }
         
-        guard monthDiff > -3 else {
+        guard monthDiff > Constants.minMonthDifference else {
             return .invalid(CardValidationError.cardExpired)
         }
         
