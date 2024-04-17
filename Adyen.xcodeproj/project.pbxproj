@@ -107,7 +107,6 @@
 		5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF8CD4C26691D3A00102339 /* Dummy.swift */; };
 		8100F2BD2A4C3407008C09E7 /* FormValidatableItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8100F2BC2A4C3407008C09E7 /* FormValidatableItemViewTests.swift */; };
 		8100F2C02A4C37E4008C09E7 /* FormSelectableItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8100F2BF2A4C37E3008C09E7 /* FormSelectableItemViewTests.swift */; };
-		81066F382BCFE82D000E757B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E2C0E04322097917008616F6 /* Info.plist */; };
 		8107F4852BB1CE96007745FC /* String+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8107F4832BB1CE8A007745FC /* String+UIImage.swift */; };
 		8107F4862BB1CE97007745FC /* String+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8107F4832BB1CE8A007745FC /* String+UIImage.swift */; };
 		8108315D2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8108315C2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift */; };
@@ -5630,12 +5629,12 @@
 			buildConfigurationList = E2C0E08E220B039B008616F6 /* Build configuration list for PBXNativeTarget "AdyenUIHost" */;
 			buildPhases = (
 				F91664F123E42D2D00C10738 /* AdyenUIHost configuration */,
+				F9A4A304237323EE00D774E8 /* SwiftFormat */,
+				B64285622BB45D4A005C88C7 /* SwiftLint */,
 				E2C0E079220B0399008616F6 /* Sources */,
 				E2C0E07A220B0399008616F6 /* Frameworks */,
 				E2C0E07B220B0399008616F6 /* Resources */,
 				E2C0E0A8220B0827008616F6 /* Embed Frameworks */,
-				F9A4A304237323EE00D774E8 /* SwiftFormat */,
-				B64285622BB45D4A005C88C7 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -5808,12 +5807,12 @@
 			buildConfigurationList = F95B6DA825274551002C9062 /* Build configuration list for PBXNativeTarget "AdyenSwiftUIHost" */;
 			buildPhases = (
 				F9615FBC252DE30B00FA8EDD /* AdyenSwiftUI configuration */,
+				F95B6DD2252B1F6A002C9062 /* SwiftFormat */,
+				B64285632BB4682A005C88C7 /* SwiftLint */,
 				F95B6D912527454E002C9062 /* Sources */,
 				F95B6D922527454E002C9062 /* Frameworks */,
 				F95B6D932527454E002C9062 /* Resources */,
 				F95B6DC52527565C002C9062 /* Embed Frameworks */,
-				F95B6DD2252B1F6A002C9062 /* SwiftFormat */,
-				B64285632BB4682A005C88C7 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -6054,7 +6053,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81066F382BCFE82D000E757B /* Info.plist in Resources */,
 				B6D808422BCD29E500F3F5EB /* AdyenTests.strings in Resources */,
 				B6D808432BCD29E500F3F5EB /* Localizable.strings in Resources */,
 				B6D808412BCD29E500F3F5EB /* AdyenTestsCustomSeparator.strings in Resources */,
@@ -7740,6 +7738,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2NYSS5932;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -7765,6 +7764,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = B2NYSS5932;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -7977,6 +7977,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CURRENT_PROJECT_VERSION = 17;
+				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/IntegrationTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -7998,6 +7999,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CURRENT_PROJECT_VERSION = 17;
+				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/IntegrationTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;

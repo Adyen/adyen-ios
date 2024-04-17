@@ -60,16 +60,6 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E2C0E03B22097917008616F6"
-               BuildableName = "IntegrationUIKitTests.xctest"
-               BlueprintName = "IntegrationUIKitTests"
-               ReferencedContainer = "container:Adyen.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "F9CCA3B4296ECB3E00AD643D"
                BuildableName = "SnapshotsTests.xctest"
                BlueprintName = "SnapshotsTests"
