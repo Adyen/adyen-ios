@@ -14,6 +14,7 @@ on:
 
 jobs:
   generate-release-notes:
+    name: 📝 Generate Release Notes
     uses: ./.github/workflows/get_release_notes.yml
     
   pre-release:
@@ -29,5 +30,5 @@ jobs:
           branch: pre-release
           commit-message: "pre-release: ${{ github.event.inputs.sdkVersion }}"
           title: Pre Release Tasks
-          body: "Hello World" # ${{ generate-release-notes.outputs.notes }}
+          body: ${{ needs.generate-release-notes.outputs.notes }}
           token: ${{ secrets.GITHUB_TOKEN }}

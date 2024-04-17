@@ -55,8 +55,8 @@ jobs:
              fi
           done
           if [ ! -z "$OUTPUT" ]; then
-             IFS="" echo "$OUTPUT" 
-             IFS="" echo "$OUTPUT" >> $GITHUB_STEP_SUMMARY
+             # IFS="" echo "$OUTPUT" 
+             # IFS="" echo "$OUTPUT" >> $GITHUB_STEP_SUMMARY
              echo "notes=$OUTPUT" >> $GITHUB_OUTPUT
           fi
         env:
