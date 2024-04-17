@@ -37,12 +37,15 @@ public final class CardExpiryDateValidator: StatusValidator {
         guard let month = Int(value.adyen[0...1]) else {
             return .invalid(CardValidationError.expiryDatePartial)
         }
+        
         guard let year = Int("20" + value.adyen[2...3]) else {
             return .invalid(CardValidationError.expiryDatePartial)
         }
+        
         guard (month >= 1 && month <= 12) || value.count < 2 else {
             return .invalid(CardValidationError.expiryDatePartial)
         }
+        
         guard let expiryDate = calculateExpiryDate(fromYear: year, month: month) else {
             return .invalid(CardValidationError.expiryDatePartial)
         }
@@ -56,7 +59,7 @@ public final class CardExpiryDateValidator: StatusValidator {
             return .invalid(CardValidationError.cardExpired)
         }
         
-        guard (0...Self.maxYearsDifference).contains(yearDiff) else {
+        guard yearDiff <= Self.maxYearsDifference else {
             return .invalid(CardValidationError.expiryDateTooFar)
         }
         
