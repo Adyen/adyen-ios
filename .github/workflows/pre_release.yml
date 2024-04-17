@@ -29,5 +29,5 @@ jobs:
           branch: pre-release
           commit-message: "pre-release: ${{ github.event.inputs.sdkVersion }}"
           title: Pre Release Tasks
-          body: ${{ generate-release-notes.outputs.notes }}
+          body: "Hello World" # ${{ generate-release-notes.outputs.notes }}
           token: ${{ secrets.GITHUB_TOKEN }}
