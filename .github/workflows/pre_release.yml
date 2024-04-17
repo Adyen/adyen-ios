@@ -26,7 +26,7 @@ jobs:
         with:
           delete-branch: true
           branch: pre-release
-          commit-message: "pre-release: ${{ github.event.inputs.latestVersion }}"
+          commit-message: "pre-release: ${{ github.event.inputs.sdkVersion }}"
           title: Pre Release Tasks
-          body: ${{ GITHUB_OUTPUT }}
+          body: $GITHUB_OUTPUT
           token: ${{ secrets.GITHUB_TOKEN }}
