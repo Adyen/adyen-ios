@@ -1,8 +1,17 @@
 name: Get Release notes
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+  workflow_call:
+    outputs:
+      release-notes:
+        description: "The generated release notes"
+        value: ${{ jobs.release_notes.outputs.notes }}
+  
 jobs:
   release_notes:
     runs-on: ubuntu-latest
+    outputs:
+      notes: ${{ steps.generate_release_notes.outputs.notes }}
     steps:
       - name: Fetch repo
         uses: actions/checkout@v4
@@ -23,6 +32,7 @@ jobs:
         env:
           PROJECT_ROOT: ${{ github.workspace }}
       - name: Generate release notes
+        id: generate_release_notes
         run: |
           LATEST_TAG=$(git describe --tags --abbrev=0)
           NUMBER_OF_COMMITS_SINCE_LAST_RELEASE=$(git log --oneline $LATEST_TAG..HEAD | wc -l | sed 's/^ *//g' | sed 's/ *$//g')
@@ -47,6 +57,7 @@ jobs:
           if [ ! -z "$OUTPUT" ]; then
              IFS="" echo "$OUTPUT" 
              IFS="" echo "$OUTPUT" >> $GITHUB_STEP_SUMMARY
+             echo "notes=$OUTPUT" >> $GITHUB_OUTPUT
           fi
         env:
           ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}

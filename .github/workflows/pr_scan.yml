@@ -2,8 +2,8 @@ name: Scan PR
 
 on:
   workflow_dispatch:
-  pull_request:
-    types: [opened, synchronize, reopened]
+#  pull_request:
+#    types: [opened, synchronize, reopened]
   push:
     branches:
       - develop

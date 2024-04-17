@@ -19,6 +19,7 @@ jobs:
       
     steps:
       - name: 🐣 Get Release Notes
+        id: get_release_notes
         uses: ./.github/workflows/get_release_notes.yml
         
       - name: 🆕 Create Pull Request
@@ -28,5 +29,5 @@ jobs:
           branch: pre-release
           commit-message: "pre-release: ${{ github.event.inputs.sdkVersion }}"
           title: Pre Release Tasks
-          body: $GITHUB_OUTPUT
+          body: ${{ steps.get_release_notes.outputs.notes }}
           token: ${{ secrets.GITHUB_TOKEN }}
