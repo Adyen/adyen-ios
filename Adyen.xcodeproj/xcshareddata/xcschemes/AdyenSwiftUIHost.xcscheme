@@ -35,16 +35,6 @@
          </CommandLineArgument>
       </CommandLineArguments>
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F9615FAE252DDA4800FA8EDD"
-               BuildableName = "SwiftUI-UITests.xctest"
-               BlueprintName = "SwiftUI-UITests"
-               ReferencedContainer = "container:Adyen.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
