@@ -34,6 +34,7 @@
       }
     },
     {
+      "enabled" : false,
       "target" : {
         "containerPath" : "container:Adyen.xcodeproj",
         "identifier" : "F9615FAE252DDA4800FA8EDD",

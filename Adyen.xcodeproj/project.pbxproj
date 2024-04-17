@@ -1681,7 +1681,6 @@
 		B62D48AC2BBE8D79001EF01A /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
 		B62D48CA2BBE9059001EF01A /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
-		B6D808532BCD52CB00F3F5EB /* UITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = UITests.xctestplan; path = TestPlans/UITests.xctestplan; sourceTree = "<group>"; };
 		B6D808542BCD533000F3F5EB /* UITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UITests.xctestplan; sourceTree = "<group>"; };
 		B6EE0F432BBEBFD000B9810D /* IntegrationTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = IntegrationTests.xctestplan; sourceTree = "<group>"; };
 		C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormViewController+ViewProtocol.swift"; sourceTree = "<group>"; };
@@ -3616,7 +3615,6 @@
 		E2C0E02922097916008616F6 = {
 			isa = PBXGroup;
 			children = (
-				B6D808532BCD52CB00F3F5EB /* UITests.xctestplan */,
 				F9A1B477283B689F005F3145 /* Adyen.docc */,
 				F94B870925EFB71100D270A6 /* MIGRATION.md */,
 				E27B8EAD22B79CD20075BB6A /* README.md */,
