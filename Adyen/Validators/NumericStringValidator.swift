@@ -10,7 +10,7 @@ import Foundation
 @_spi(AdyenInternal)
 open class NumericStringValidator: LengthValidator {
     
-    override public func isValid(_ value: String) -> Bool {
+    override open func isValid(_ value: String) -> Bool {
         guard super.isValid(value) else { return false }
         return !value.contains(where: { !$0.isNumber || !$0.isASCII })
     }

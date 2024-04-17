@@ -11,7 +11,7 @@ import Foundation
 /// The input is expected to be sanitized as "MMYY".
 /// Validation will fail when the format is invalid or the date is in the past.
 @_spi(AdyenInternal)
-public final class CardExpiryDateValidator: Validator {
+public final class CardExpiryDateValidator: StatusValidator {
     
     private let referenceDate: Date
     
@@ -25,23 +25,50 @@ public final class CardExpiryDateValidator: Validator {
         self.referenceDate = referenceDate
     }
     
-    public func isValid(_ string: String) -> Bool {
-        guard string.count == maximumLength(for: string) else { return false }
+    public func validate(_ value: String) -> ValidationStatus {
+        guard !value.isEmpty else {
+            return .invalid(CardValidationError.expiryDateEmpty)
+        }
         
-        guard let month = Int(string.adyen[0...1]) else { return false }
-        guard let year = Int("20" + string.adyen[2...3]) else { return false }
+        guard value.count == maximumLength(for: value) else {
+            return .invalid(CardValidationError.expiryDatePartial)
+        }
         
-        guard (month >= 1 && month <= 12) || string.count < 2 else { return false }
-        guard let expiryDate = calculateExpiryDate(fromYear: year, month: month) else { return false }
+        guard let month = Int(value.adyen[0...1]) else {
+            return .invalid(CardValidationError.expiryDatePartial)
+        }
+        guard let year = Int("20" + value.adyen[2...3]) else {
+            return .invalid(CardValidationError.expiryDatePartial)
+        }
+        guard (month >= 1 && month <= 12) || value.count < 2 else {
+            return .invalid(CardValidationError.expiryDatePartial)
+        }
+        guard let expiryDate = calculateExpiryDate(fromYear: year, month: month) else {
+            return .invalid(CardValidationError.expiryDatePartial)
+        }
         
         let diffComponents = calendar.dateComponents([.month, .year], from: referenceDate, to: expiryDate)
         
         let monthDiff = diffComponents.month ?? 0
         let yearDiff = diffComponents.year ?? 0
         
-        guard (0...Self.maxYearsDifference).contains(yearDiff), monthDiff > -3 else { return false }
+        guard yearDiff >= 0 else {
+            return .invalid(CardValidationError.cardExpired)
+        }
         
-        return true
+        guard (0...Self.maxYearsDifference).contains(yearDiff) else {
+            return .invalid(CardValidationError.expiryDateTooFar)
+        }
+        
+        guard monthDiff > -3 else {
+            return .invalid(CardValidationError.cardExpired)
+        }
+        
+        return .valid
+    }
+    
+    public func isValid(_ string: String) -> Bool {
+        validate(string).isValid
     }
     
     private var calendar: Calendar { Calendar(identifier: .gregorian) }

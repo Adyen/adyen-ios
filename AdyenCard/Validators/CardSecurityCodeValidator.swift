@@ -9,7 +9,7 @@ import Foundation
 
 /// Validates a card's security code.
 @_spi(AdyenInternal)
-public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObserver {
+public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObserver, StatusValidator {
     
     /// Initiate new instance of CardSecurityCodeValidator
     public init() {
@@ -40,6 +40,22 @@ public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObser
         let length = cardType == .americanExpress ? 4 : 3
         maximumLength = length
         minimumLength = length
+    }
+    
+    public func validate(_ value: String) -> ValidationStatus {
+        if super.isValid(value) {
+            return .valid
+        }
+        
+        if value.isEmpty {
+            return .invalid(CardValidationError.securityCodeEmpty)
+        }
+        
+        return .invalid(CardValidationError.securityCodePartial)
+    }
+    
+    override public func isValid(_ value: String) -> Bool {
+        validate(value).isValid
     }
     
 }
