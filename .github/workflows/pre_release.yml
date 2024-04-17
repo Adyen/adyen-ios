@@ -14,7 +14,7 @@ on:
 
 jobs:
   generate-release-notes:
-    uses: generate-release-notes: ./.github/workflows/get_release_notes.yml
+    uses: ./.github/workflows/get_release_notes.yml
     
   pre-release:
     name: 🎬 Pre-Release
