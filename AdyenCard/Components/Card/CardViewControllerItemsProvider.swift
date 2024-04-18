@@ -8,8 +8,14 @@
 import UIKit
 
 extension CardViewController {
+    
+    internal struct InfoEventData {
+        internal let type: AnalyticsEventInfo.InfoType
+        internal let target: AnalyticsEventTarget
+        internal let error: AnalyticsValidationError?
+    }
 
-    internal struct ItemsProvider {
+    internal final class ItemsProvider {
 
         private let formStyle: FormComponentStyle
 
@@ -32,6 +38,9 @@ extension CardViewController {
         private let presenter: WeakReferenceViewControllerPresenter
         
         private let addressMode: CardComponent.AddressFormType
+        
+        /// Closure that is called when an event is triggered via the field items.
+        internal var onDidTriggerInfoEvent: ((InfoEventData) -> Void)?
 
         internal init(
             formStyle: FormComponentStyle,
@@ -91,6 +100,9 @@ extension CardViewController {
         internal lazy var postalCodeItem: FormPostalCodeItem = {
             let zipCodeItem = FormPostalCodeItem(style: formStyle.textField, localizationParameters: localizationParameters)
             zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "postalCodeItem")
+            
+            setupEventTriggers(for: zipCodeItem, target: .addressPostalCode)
+            
             return zipCodeItem
         }()
 
@@ -100,6 +112,9 @@ extension CardViewController {
                                                    style: formStyle.textField,
                                                    localizationParameters: localizationParameters)
             item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "numberContainerItem")
+            
+            setupEventTriggers(for: item.numberItem, target: .cardNumber)
+
             return item
         }()
 
@@ -108,7 +123,9 @@ extension CardViewController {
                                                         localizationParameters: localizationParameters)
             expiryDateItem.localizationParameters = localizationParameters
             expiryDateItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "expiryDateItem")
-
+            
+            setupEventTriggers(for: expiryDateItem, target: .expiryDate)
+            
             return expiryDateItem
         }()
 
@@ -117,6 +134,9 @@ extension CardViewController {
                                                             localizationParameters: localizationParameters)
             securityCodeItem.localizationParameters = localizationParameters
             securityCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "securityCodeItem")
+            
+            setupEventTriggers(for: securityCodeItem, target: .securityCode)
+            
             return securityCodeItem
         }()
 
@@ -129,6 +149,9 @@ extension CardViewController {
             holderNameItem.autocapitalizationType = .words
             holderNameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "holderNameItem")
             holderNameItem.contentType = .name
+            
+            setupEventTriggers(for: holderNameItem, target: .holderName)
+            
             return holderNameItem
         }()
 
@@ -145,6 +168,8 @@ extension CardViewController {
             additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthCodeItem")
             additionalItem.keyboardType = .numberPad
             additionalItem.isVisible = configuration.koreanAuthenticationMode == .show
+            
+            setupEventTriggers(for: additionalItem, target: .taxNumber)
 
             return additionalItem
         }()
@@ -159,6 +184,8 @@ extension CardViewController {
             additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthPasswordItem")
             additionalItem.keyboardType = .numberPad
             additionalItem.isVisible = configuration.koreanAuthenticationMode == .show
+            
+            setupEventTriggers(for: additionalItem, target: .authPassWord)
 
             return additionalItem
         }()
@@ -174,6 +201,9 @@ extension CardViewController {
             securityNumberItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "socialSecurityNumberItem")
             securityNumberItem.keyboardType = .numberPad
             securityNumberItem.isVisible = configuration.socialSecurityNumberMode == .show
+            
+            setupEventTriggers(for: securityNumberItem, target: .boletoSocialSecurityNumber)
+            
             return securityNumberItem
         }()
 
@@ -204,6 +234,33 @@ extension CardViewController {
                                                     localizationParameters)
             return item
         }()
+        
+        private func setupEventTriggers(for item: FormTextItem, target: AnalyticsEventTarget) {
+            item.onDidBeginEditing = { [weak self] in
+                self?.triggerInfoEvent(of: .focus, target: target)
+            }
+            
+            item.onDidEndEditing = { [weak self] in
+                self?.triggerInfoEvent(of: .unfocus, target: target)
+            }
+            
+            item.onDidShowValidationError = { [weak self] error in
+                self?.triggerInfoEvent(
+                    of: .validationError,
+                    target: target,
+                    error: error as? AnalyticsValidationError
+                )
+            }
+        }
+        
+        private func triggerInfoEvent(of type: AnalyticsEventInfo.InfoType, target: AnalyticsEventTarget, error: AnalyticsValidationError? = nil) {
+            let infoEventData = InfoEventData(
+                type: type,
+                target: target,
+                error: error
+            )
+            onDidTriggerInfoEvent?(infoEventData)
+        }
 
     }
 

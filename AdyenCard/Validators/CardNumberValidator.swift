@@ -9,10 +9,12 @@ import Foundation
 
 /// Validates a card's number.
 /// The input is expected to be sanitized.
-public final class CardNumberValidator: Validator {
+@_spi(AdyenInternal)
+public final class CardNumberValidator: StatusValidator {
     
     private enum Constants {
         static let maxPanLength = 19
+        static let minLength = 12
     }
     
     /// Indicates whether to validate for luhn check
@@ -38,12 +40,30 @@ public final class CardNumberValidator: Validator {
         self.panLength = panLength
     }
     
-    public func isValid(_ value: String) -> Bool {
-        guard isEnteredBrandSupported else { return false }
-        let minimumValidCardLength = 12
-        let isValid = value.count >= minimumValidCardLength && (!isLuhnCheckEnabled || luhnCheck(value))
+    public func validate(_ value: String) -> ValidationStatus {
+        // order of checks are important to return the correct error.
         
-        return isValid
+        if !isEnteredBrandSupported {
+            return .invalid(CardValidationError.cardUnsupported)
+        }
+        
+        if value.isEmpty {
+            return .invalid(CardValidationError.cardNumberEmpty)
+        }
+        
+        if value.count < Constants.minLength {
+            return .invalid(CardValidationError.cardNumberPartial)
+        }
+        
+        if isLuhnCheckEnabled, !luhnCheck(value) {
+            return .invalid(CardValidationError.cardLuhnCheckFailed)
+        }
+        
+        return .valid
+    }
+    
+    public func isValid(_ value: String) -> Bool {
+        validate(value).isValid
     }
     
     public func maximumLength(for value: String) -> Int {

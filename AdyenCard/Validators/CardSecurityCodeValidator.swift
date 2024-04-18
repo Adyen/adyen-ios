@@ -8,6 +8,7 @@
 import Foundation
 
 /// Validates a card's security code.
+@_spi(AdyenInternal)
 public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObserver {
     
     /// Initiate new instance of CardSecurityCodeValidator

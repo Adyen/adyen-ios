@@ -37,7 +37,6 @@ jobs:
     - name: 🛠️ Install Tools
       run: |
         brew install sonar-scanner
-        gem install slather
         
     - name: 👷 Clean Build
       run: |
@@ -47,48 +46,55 @@ jobs:
         params: '${{env.params}}'
         scheme: 'AdyenUIHost'
         
-    - name: 🧪 Unit Tests
+    - name: 🧪 Unit + Integration Tests
       run: |
-        xcodebuild test -project "${{env.project}}" -scheme "${scheme}" ${params} -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild test \
+          -project "${{env.project}}" \
+          -scheme "${scheme}" \
+          -testPlan "${testPlan}" \
+          -enableCodeCoverage YES \
+          -resultBundlePath "${resultPath}" \
+          ${params} \
+          -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
-        params: '${{env.params}} -enableCodeCoverage YES'
-        scheme: 'AdyenUIKitTests'
+        params: '${{env.params}}'
+        scheme: 'AdyenUIHost'
+        testPlan: 'CI'
+        resultPath: 'Test-CI-Result.xcresult'
+
+    - name: 🌇 Snapshot Tests
+      run: |
+        xcodebuild test \
+          -project "${{env.project}}" \
+          -scheme "${scheme}" \
+          -testPlan "${testPlan}" \
+          -enableCodeCoverage YES \
+          -resultBundlePath "${resultPath}" \
+          ${params} \
+          -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+      env:
+        params: '${{env.params}}'
+        scheme: 'SnapshotTests'
+        testPlan: 'SnapshotTests'
+        resultPath: 'Test-Snapshots-Result.xcresult'
+
         
-    - name: 📸 Snapshot Tests
+    - name: 🍛 Prepare coverage reports
       run: |
-        xcodebuild test -project "${{env.project}}" -scheme "${scheme}" ${params} -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
-      env:
-        params: '${{env.params}} -enableCodeCoverage YES'
-        scheme: 'AdyenUIHostUITests'
-
-    - name: 📈 Code Coverage
-      run: |
-        slather coverage --sonarqube-xml ${params} ${{env.project}}
-      env:
-        params: '
-        --build-directory ./DerivedData
-        --output-directory ./reports
-        --scheme AdyenUIHost
-        --binary-basename Adyen
-        --binary-basename AdyenCard
-        --binary-basename AdyenDropIn
-        --binary-basename AdyenWeChatPay
-        --binary-basename AdyenComponents
-        --binary-basename AdyenSession
-        --binary-basename AdyenEncryption
-        --binary-basename AdyenActions
-        --binary-basename AdyenCashAppPay
-        --binary-basename AdyenSwiftUI'
-
+        bash Scripts/xccov-to-sonarqube-generic.sh Test-Snapshots-Result.xcresult/ > sonarqube-coverage-snapshots.xml
+        sed "s#$PWD/##g" sonarqube-coverage-snapshots.xml > sonarqube_updated_snapshots.xml
+        bash Scripts/xccov-to-sonarqube-generic.sh Test-CI-Result.xcresult/ > sonarqube-coverage-ci.xml
+        sed "s#$PWD/##g" sonarqube-coverage-ci.xml > sonarqube_updated_ci.xml
+        
     - name: 🧼 SwiftLint
       run: |
         brew install swiftlint
-        fastlane run swiftlint output_file:"./reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
+        fastlane run swiftlint output_file:"reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
 
     - name: 📡 Run Sonar
       if: ${{ env.sonarToken != 0 }}
       run: |
         git fetch --unshallow --no-tags
-        sonar-scanner -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+        sonar-scanner -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.coverageReportPaths=sonarqube_updated_CI.xml,sonarqube_updated_snapshots.xml
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

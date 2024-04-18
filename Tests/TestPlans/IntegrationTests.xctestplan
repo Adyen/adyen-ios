@@ -1,0 +1,35 @@
+{
+  "configurations" : [
+    {
+      "id" : "8F2CA2B9-5865-41A5-BC75-4D3A8148D2A5",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "commandLineArgumentEntries" : [
+      {
+        "argument" : "-UITests"
+      }
+    ],
+    "language" : "en",
+    "region" : "US",
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Adyen.xcodeproj",
+      "identifier" : "E2C0E07C220B0399008616F6",
+      "name" : "AdyenUIHost"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Adyen.xcodeproj",
+        "identifier" : "E2C0E03B22097917008616F6",
+        "name" : "IntegrationUIKitTests"
+      }
+    }
+  ],
+  "version" : 1
+}
