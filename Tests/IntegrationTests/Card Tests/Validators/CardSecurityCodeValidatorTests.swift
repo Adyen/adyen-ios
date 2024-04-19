@@ -31,4 +31,42 @@ class CardSecurityCodeValidatorTests: XCTestCase {
         XCTAssertFalse(validator.isValid("12345"))
     }
     
+    func testEmptyInvalidStatus() {
+        let validator = CardSecurityCodeValidator()
+        let status = validator.validate("")
+        
+        XCTAssertNotNil(status.validationError)
+        let validationError = status.validationError as? CardValidationError
+        XCTAssertEqual(validationError, .securityCodeEmpty)
+    }
+    
+    func testPartialInvalidStatus() {
+        let validator = CardSecurityCodeValidator()
+        let status = validator.validate("12")
+        
+        XCTAssertNotNil(status.validationError)
+        let validationError = status.validationError as? CardValidationError
+        XCTAssertEqual(validationError, .securityCodePartial)
+    }
+    
+    func testValidStatusRegular() {
+        let validator = CardSecurityCodeValidator()
+        let status = validator.validate("123")
+        
+        XCTAssertNil(status.validationError)
+        XCTAssertTrue(status.isValid)
+    }
+    
+    func testValidStatusAmex() {
+        let validator = CardSecurityCodeValidator(cardType: .americanExpress)
+        let invalidStatus = validator.validate("123")
+        
+        XCTAssertNotNil(invalidStatus.validationError)
+        XCTAssertFalse(invalidStatus.isValid)
+        
+        let validStatus = validator.validate("1234")
+        XCTAssertNil(validStatus.validationError)
+        XCTAssertTrue(validStatus.isValid)
+    }
+    
 }
