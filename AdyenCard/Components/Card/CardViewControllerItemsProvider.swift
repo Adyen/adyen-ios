@@ -192,7 +192,7 @@ extension CardViewController {
             securityNumberItem.title = localizedString(.boletoSocialSecurityNumber, localizationParameters)
             securityNumberItem.placeholder = localizedString(.cardBrazilSSNPlaceholder, localizationParameters)
             securityNumberItem.formatter = BrazilSocialSecurityNumberFormatter()
-            securityNumberItem.validator = NumericStringValidator(exactLength: 11) || NumericStringValidator(exactLength: 14)
+            securityNumberItem.validator = BrazilSocialSecurityNumberValidator()
             securityNumberItem.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
             securityNumberItem.autocapitalizationType = .none
             securityNumberItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "socialSecurityNumberItem")

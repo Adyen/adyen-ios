@@ -42,9 +42,6 @@ internal enum CardValidationError: String, AnalyticsValidationError {
     /// Holder name is not filled.
     case holderNameEmpty
     
-    /// Social security number for Brazil is not filled.
-    case boletoSocialSecurityNumberEmpty
-    
     /// KCP password is not filled.
     case kcpPasswordEmpty
     
@@ -81,8 +78,6 @@ internal enum CardValidationError: String, AnalyticsValidationError {
             return 921
         case .holderNameEmpty:
             return 925
-        case .boletoSocialSecurityNumberEmpty:
-            return 926
         case .kcpPasswordEmpty:
             return 940
         case .kcpPasswordPartial:
@@ -90,7 +85,7 @@ internal enum CardValidationError: String, AnalyticsValidationError {
         case .kcpFieldEmpty:
             return 942
         case .kcpFieldPartial:
-            return 942
+            return 943
         }
     }
     
@@ -118,8 +113,6 @@ internal enum CardValidationError: String, AnalyticsValidationError {
             return "Security code field has only been partially filled."
         case .holderNameEmpty:
             return "Empty holder name."
-        case .boletoSocialSecurityNumberEmpty:
-            return "Empty social security number field."
         case .kcpPasswordEmpty:
             return "Empty KCP password field."
         case .kcpPasswordPartial:

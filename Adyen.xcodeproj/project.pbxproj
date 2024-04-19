@@ -259,6 +259,8 @@
 		A00167712BD125A30099A6AE /* CardHolderNameValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A001676F2BD124A10099A6AE /* CardHolderNameValidatorTests.swift */; };
 		A00167732BD15A390099A6AE /* CardKCPValidators.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00167722BD15A390099A6AE /* CardKCPValidators.swift */; };
 		A00167752BD164A20099A6AE /* CardKCPValidatorsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00167742BD164A20099A6AE /* CardKCPValidatorsTests.swift */; };
+		A00167792BD274E40099A6AE /* BrazilSocialSecurityNumberValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00167782BD274E40099A6AE /* BrazilSocialSecurityNumberValidator.swift */; };
+		A001677B2BD278410099A6AE /* BrazilSocialSecurityNumberValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A001677A2BD278410099A6AE /* BrazilSocialSecurityNumberValidatorTests.swift */; };
 		A009837D279859DC007E68C4 /* ACHDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */; };
 		A0113D9B2763887800AD395C /* ActionNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0113D9A2763887800AD395C /* ActionNavigationBar.swift */; };
 		A013F98126AFF72D00602633 /* BrazilSocialSecurityNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */; };
@@ -318,6 +320,9 @@
 		A0B180312A2DE445003C608E /* MealVoucherDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B180302A2DE445003C608E /* MealVoucherDetails.swift */; };
 		A0B4B9B12BC027DE00C99926 /* CardComponentEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B4B9B02BC027DE00C99926 /* CardComponentEventTests.swift */; };
 		A0BC64E628F062E400CED2A1 /* AdyenSessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BC64E528F062E400CED2A1 /* AdyenSessionAware.swift */; };
+		A0BDF3EE2BD285E5001FF7E5 /* PostalCodeValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BDF3ED2BD285E5001FF7E5 /* PostalCodeValidator.swift */; };
+		A0BDF3F02BD28817001FF7E5 /* AddressAnalyticsValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BDF3EF2BD28817001FF7E5 /* AddressAnalyticsValidationError.swift */; };
+		A0BDF3F22BD29E69001FF7E5 /* PostalCodeValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BDF3F12BD29E69001FF7E5 /* PostalCodeValidatorTests.swift */; };
 		A0C9B59B288AE34600D6BDAB /* InstallmentOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41E5526CBCA6E0089AD6C /* InstallmentOptions.swift */; };
 		A0D48FB827109B0200C0B82C /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */; };
 		A0DB48662AFD020400348C83 /* AnalyticsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB48652AFD020400348C83 /* AnalyticsRequest.swift */; };
@@ -1587,6 +1592,8 @@
 		A001676F2BD124A10099A6AE /* CardHolderNameValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardHolderNameValidatorTests.swift; sourceTree = "<group>"; };
 		A00167722BD15A390099A6AE /* CardKCPValidators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardKCPValidators.swift; sourceTree = "<group>"; };
 		A00167742BD164A20099A6AE /* CardKCPValidatorsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardKCPValidatorsTests.swift; sourceTree = "<group>"; };
+		A00167782BD274E40099A6AE /* BrazilSocialSecurityNumberValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberValidator.swift; sourceTree = "<group>"; };
+		A001677A2BD278410099A6AE /* BrazilSocialSecurityNumberValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberValidatorTests.swift; sourceTree = "<group>"; };
 		A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankDetailsEncryptorTests.swift; sourceTree = "<group>"; };
 		A0113D9A2763887800AD395C /* ActionNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionNavigationBar.swift; sourceTree = "<group>"; };
@@ -1644,6 +1651,9 @@
 		A0B180302A2DE445003C608E /* MealVoucherDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealVoucherDetails.swift; sourceTree = "<group>"; };
 		A0B4B9B02BC027DE00C99926 /* CardComponentEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentEventTests.swift; sourceTree = "<group>"; };
 		A0BC64E528F062E400CED2A1 /* AdyenSessionAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenSessionAware.swift; sourceTree = "<group>"; };
+		A0BDF3ED2BD285E5001FF7E5 /* PostalCodeValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostalCodeValidator.swift; sourceTree = "<group>"; };
+		A0BDF3EF2BD28817001FF7E5 /* AddressAnalyticsValidationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressAnalyticsValidationError.swift; sourceTree = "<group>"; };
+		A0BDF3F12BD29E69001FF7E5 /* PostalCodeValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostalCodeValidatorTests.swift; sourceTree = "<group>"; };
 		A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayHelpers.swift; sourceTree = "<group>"; };
 		A0DB48652AFD020400348C83 /* AnalyticsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsRequest.swift; sourceTree = "<group>"; };
 		A0DB48672AFD068400348C83 /* AdyenAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenAnalytics.swift; sourceTree = "<group>"; };
@@ -4442,6 +4452,8 @@
 				F95B6D8F25231880002C9062 /* PhoneNumberValidatorTests.swift */,
 				A001676F2BD124A10099A6AE /* CardHolderNameValidatorTests.swift */,
 				A00167742BD164A20099A6AE /* CardKCPValidatorsTests.swift */,
+				A001677A2BD278410099A6AE /* BrazilSocialSecurityNumberValidatorTests.swift */,
+				A0BDF3F12BD29E69001FF7E5 /* PostalCodeValidatorTests.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -4708,6 +4720,8 @@
 			isa = PBXGroup;
 			children = (
 				E216D3CC221AFBB90013CBCF /* Validator.swift */,
+				A01DFBC42BB6F9FA00205881 /* ValidationError.swift */,
+				A0BDF3EF2BD28817001FF7E5 /* AddressAnalyticsValidationError.swift */,
 				E2B3179F2265BB0B00C1BB30 /* LengthValidator.swift */,
 				E216D3C8221AFB830013CBCF /* IBANValidator.swift */,
 				F926D53223F5A5D000D058D3 /* NumericStringValidator.swift */,
@@ -4719,7 +4733,8 @@
 				E702BDA4260108A700280682 /* ClientKeyValidator.swift */,
 				F9838D442631AD3700963483 /* BalanceChecker.swift */,
 				E755BF7126B40C90007AAB25 /* DateValidator.swift */,
-				A01DFBC42BB6F9FA00205881 /* ValidationError.swift */,
+				A00167782BD274E40099A6AE /* BrazilSocialSecurityNumberValidator.swift */,
+				A0BDF3ED2BD285E5001FF7E5 /* PostalCodeValidator.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -6434,6 +6449,7 @@
 				81F1EBA42AD97095002AA93F /* ListItem.swift in Sources */,
 				F9FE252F2625AE8C001874BB /* PartialPaymentDelegate.swift in Sources */,
 				A02AF3DF274FB30200E1636C /* ApplePayStyle.swift in Sources */,
+				A0BDF3F02BD28817001FF7E5 /* AddressAnalyticsValidationError.swift in Sources */,
 				E9AFF887224E5872005A0D8D /* PresentableComponent.swift in Sources */,
 				E90933FF228AFC6600C9F04B /* Environment.swift in Sources */,
 				E2D12C09221ED16600EF682F /* FormToggleItemView.swift in Sources */,
@@ -6466,6 +6482,7 @@
 				E2C0E0BA220B2966008616F6 /* FormTextItemView.swift in Sources */,
 				813EF9E42A5DAB7600C65D15 /* FormRegionPickerItem.swift in Sources */,
 				E97B972322B238C400505476 /* Analytics.swift in Sources */,
+				A0BDF3EE2BD285E5001FF7E5 /* PostalCodeValidator.swift in Sources */,
 				81FC2C8B2BB17EBD007F1316 /* ImageLoaderProvider.swift in Sources */,
 				F95B6D8C252316DA002C9062 /* PhoneNumberValidator.swift in Sources */,
 				C9B6683927C903FE006950B9 /* AdyenContext.swift in Sources */,
@@ -6675,6 +6692,7 @@
 				F92CBA092812CB0D00367820 /* CardType.swift in Sources */,
 				81C4006B2A40A526007EC51C /* FormAddressPickerItem.swift in Sources */,
 				81129AE62A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift in Sources */,
+				A00167792BD274E40099A6AE /* BrazilSocialSecurityNumberValidator.swift in Sources */,
 				E2C0E0C1220D7E5E008616F6 /* SubmitButton.swift in Sources */,
 				E216D3C9221AFB830013CBCF /* IBANValidator.swift in Sources */,
 				E76EC6972417F36A009C6E2F /* FormTextInputItemView.swift in Sources */,
@@ -6741,6 +6759,7 @@
 				C9BB460927622F4100E6730B /* BACSConfirmationPresenterTests.swift in Sources */,
 				C96688BF26A6FC1C00DC7297 /* AffirmComponentTests.swift in Sources */,
 				81FC2C8F2BB18F0F007F1316 /* ImageLoaderMock.swift in Sources */,
+				A0BDF3F22BD29E69001FF7E5 /* PostalCodeValidatorTests.swift in Sources */,
 				F957AA722552DBC80099AD73 /* AnyRedirectComponentMock.swift in Sources */,
 				F9EDB79A239664B500CFB3C9 /* StoredPaymentMethodComponentTests.swift in Sources */,
 				F9EDB7982396643A00CFB3C9 /* CardPaymentMethodMock.swift in Sources */,
@@ -6834,6 +6853,7 @@
 				E773EA3A25221C4600119499 /* ThrottlerTests.swift in Sources */,
 				F97842D926C3D55200677458 /* OXXOShareableVoucherViewProviderTests.swift in Sources */,
 				F9838CCC26315E6E00963483 /* PartialPaymentDelegateMock.swift in Sources */,
+				A001677B2BD278410099A6AE /* BrazilSocialSecurityNumberValidatorTests.swift in Sources */,
 				C978F5EF2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift in Sources */,
 				F9E4725F28CF1A2100FF9550 /* ThreeDS2PlusDACoreActionHandlerTests.swift in Sources */,
 				A05D7212276A28EE0087F3E9 /* DocumentComponentTests.swift in Sources */,

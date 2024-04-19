@@ -223,6 +223,40 @@ final class CardComponentEventTests: XCTestCase {
         )
     }
     
+    func testSocialSecurityValidationEvent() throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        var config = CardComponent.Configuration()
+        config.socialSecurityNumberMode = .show
+        let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
+        
+        let socialSecurityItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem"))
+        
+        socialSecurityItemView.textField.text = "124467"
+        
+        testValidationEvent(
+            for: socialSecurityItemView,
+            target: .boletoSocialSecurityNumber,
+            analyticsProviderMock: analyticsProviderMock
+        )
+    }
+    
+    func testPostalCodeValidationEvent() throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        var config = CardComponent.Configuration()
+        config.billingAddress.mode = .postalCode
+        let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
+        
+        let postalCodeItemView: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.postalCodeItem"))
+        
+        postalCodeItemView.textField.text = "A"
+        
+        testValidationEvent(
+            for: postalCodeItemView,
+            target: .addressPostalCode,
+            analyticsProviderMock: analyticsProviderMock
+        )
+    }
+    
     private func testFocusEvents(
         for field: FormTextItemView<some FormTextItem>,
         target: AnalyticsEventTarget,
