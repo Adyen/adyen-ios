@@ -43,12 +43,12 @@ public final class CardNumberValidator: StatusValidator {
     public func validate(_ value: String) -> ValidationStatus {
         // order of checks are important to return the correct error.
         
-        if !isEnteredBrandSupported {
-            return .invalid(CardValidationError.cardUnsupported)
-        }
-        
         if value.isEmpty {
             return .invalid(CardValidationError.cardNumberEmpty)
+        }
+        
+        if !isEnteredBrandSupported {
+            return .invalid(CardValidationError.cardUnsupported)
         }
         
         if value.count < Constants.minLength {

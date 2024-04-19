@@ -23,8 +23,6 @@ public final class CardExpiryDateValidator: StatusValidator {
     
     private let referenceDate: Date
     
-    private static let maxYearsDifference: Int = 30
-    
     public init() {
         self.referenceDate = Date()
     }
@@ -67,7 +65,7 @@ public final class CardExpiryDateValidator: StatusValidator {
             return .invalid(CardValidationError.cardExpired)
         }
         
-        guard yearDiff <= Self.maxYearsDifference else {
+        guard yearDiff <= Constants.maxYearsDifference else {
             return .invalid(CardValidationError.expiryDateTooFar)
         }
         

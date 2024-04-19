@@ -88,28 +88,28 @@ final class CardComponentEventTests: XCTestCase {
                         analyticsProviderMock: analyticsProviderMock)
     }
 
-    func testAuthItemFocusEvents() throws {
+    func testKCPFieldFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardComponent.Configuration()
         config.koreanAuthenticationMode = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
-        let authItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.additionalAuthCodeItem"))
+        let kcpItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.additionalAuthCodeItem"))
 
-        testFocusEvents(for: authItemView,
+        testFocusEvents(for: kcpItemView,
                         target: .taxNumber,
                         analyticsProviderMock: analyticsProviderMock)
     }
 
-    func testAuthPasswordFocusEvents() throws {
+    func testKCPPasswordFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardComponent.Configuration()
         config.koreanAuthenticationMode = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
-        let authPasswordItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.additionalAuthPasswordItem"))
+        let kcpPasswordItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.additionalAuthPasswordItem"))
 
-        testFocusEvents(for: authPasswordItemView,
+        testFocusEvents(for: kcpPasswordItemView,
                         target: .authPassWord,
                         analyticsProviderMock: analyticsProviderMock)
     }
@@ -150,23 +150,22 @@ final class CardComponentEventTests: XCTestCase {
             sut.cardViewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         )
         
-        populate(textItemView: cardNumberItemView, with: "4444")
-        cardNumberItemView.textFieldDidEndEditing(cardNumberItemView.textField)
+        cardNumberItemView.textField.text = "4444"
         
-        // 0th element is render, 1st is card number field becoming active by default
-        let validationEvent = analyticsProviderMock.infos[2]
-        
-        XCTAssertEqual(validationEvent.type, .validationError)
-        XCTAssertEqual(validationEvent.target, .cardNumber)
+        testValidationEvent(
+            for: cardNumberItemView,
+            target: .cardNumber,
+            analyticsProviderMock: analyticsProviderMock
+        )
     }
     
-    func testExpiryValidationEvent() throws {
+    func testExpiryDateValidationEvent() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = makeSUT(analyticsProviderMock: analyticsProviderMock)
 
         let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem"))
         
-        populate(textItemView: expiryDateItemView, with: "1")
+        expiryDateItemView.textField.text = "1"
         
         testValidationEvent(
             for: expiryDateItemView,
@@ -181,11 +180,45 @@ final class CardComponentEventTests: XCTestCase {
 
         let securityCodeItemView: FormCardSecurityCodeItemView = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
         
-        populate(textItemView: securityCodeItemView, with: "22")
+        securityCodeItemView.textField.text = "22"
         
         testValidationEvent(
             for: securityCodeItemView,
             target: .securityCode,
+            analyticsProviderMock: analyticsProviderMock
+        )
+    }
+    
+    func testKCPFieldValidationEvent() throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        var config = CardComponent.Configuration()
+        config.koreanAuthenticationMode = .show
+        let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
+
+        let kcpItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.additionalAuthCodeItem"))
+        
+        kcpItemView.textField.text = "3456"
+        
+        testValidationEvent(
+            for: kcpItemView,
+            target: .taxNumber,
+            analyticsProviderMock: analyticsProviderMock
+        )
+    }
+    
+    func testKCPPasswordValidationEvent() throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        var config = CardComponent.Configuration()
+        config.koreanAuthenticationMode = .show
+        let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
+
+        let kcpPasswordItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.additionalAuthPasswordItem"))
+        
+        kcpPasswordItemView.textField.text = "1"
+        
+        testValidationEvent(
+            for: kcpPasswordItemView,
+            target: .authPassWord,
             analyticsProviderMock: analyticsProviderMock
         )
     }
@@ -215,10 +248,11 @@ final class CardComponentEventTests: XCTestCase {
         target: AnalyticsEventTarget,
         analyticsProviderMock: AnalyticsProviderMock
     ) {
-        field.textFieldDidEndEditing(field.textField)
+        analyticsProviderMock.clearAll()
         
-        // 0th element is render
-        let validationEvent = analyticsProviderMock.infos[1]
+        field.textField.sendActions(for: .editingChanged)
+        
+        let validationEvent = analyticsProviderMock.infos[0]
         
         XCTAssertEqual(validationEvent.type, .validationError)
         XCTAssertEqual(validationEvent.target, target)

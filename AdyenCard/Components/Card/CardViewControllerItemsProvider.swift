@@ -144,7 +144,7 @@ extension CardViewController {
             let holderNameItem = FormTextInputItem(style: formStyle.textField)
             holderNameItem.title = localizedString(.cardNameItemTitle, localizationParameters)
             holderNameItem.placeholder = localizedString(.cardNameItemPlaceholder, localizationParameters)
-            holderNameItem.validator = LengthValidator(minimumLength: 1)
+            holderNameItem.validator = CardHolderNameValidator()
             holderNameItem.validationFailureMessage = localizedString(.cardNameItemInvalid, localizationParameters)
             holderNameItem.autocapitalizationType = .words
             holderNameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "holderNameItem")
@@ -156,13 +156,10 @@ extension CardViewController {
         }()
 
         internal lazy var additionalAuthCodeItem: FormTextInputItem = {
-            // Validates birthdate (YYMMDD) or the Corporate registration number (10 digits)
-            let kcpValidator = NumericStringValidator(exactLength: 10) || DateValidator(format: DateValidator.Format.kcpFormat)
-
             var additionalItem = FormTextInputItem(style: formStyle.textField)
             additionalItem.title = localizedString(.cardTaxNumberLabelShort, localizationParameters)
             additionalItem.placeholder = localizedString(.cardTaxNumberPlaceholder, localizationParameters)
-            additionalItem.validator = kcpValidator
+            additionalItem.validator = CardKCPFieldValidator()
             additionalItem.validationFailureMessage = localizedString(.cardTaxNumberInvalid, localizationParameters)
             additionalItem.autocapitalizationType = .none
             additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthCodeItem")
@@ -178,7 +175,7 @@ extension CardViewController {
             var additionalItem = FormTextInputItem(style: formStyle.textField)
             additionalItem.title = localizedString(.cardEncryptedPasswordLabel, localizationParameters)
             additionalItem.placeholder = localizedString(.cardEncryptedPasswordPlaceholder, localizationParameters)
-            additionalItem.validator = LengthValidator(exactLength: 2)
+            additionalItem.validator = CardKCPPasswordValidator()
             additionalItem.validationFailureMessage = localizedString(.cardEncryptedPasswordInvalid, localizationParameters)
             additionalItem.autocapitalizationType = .none
             additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthPasswordItem")

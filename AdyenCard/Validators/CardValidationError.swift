@@ -39,6 +39,24 @@ internal enum CardValidationError: String, AnalyticsValidationError {
     /// Security code is partially filled.
     case securityCodePartial
     
+    /// Holder name is not filled.
+    case holderNameEmpty
+    
+    /// Social security number for Brazil is not filled.
+    case boletoSocialSecurityNumberEmpty
+    
+    /// KCP password is not filled.
+    case kcpPasswordEmpty
+    
+    /// KCP password is partially filled.
+    case kcpPasswordPartial
+    
+    /// KCP birthdate or corporate number is not filled.
+    case kcpFieldEmpty
+    
+    /// KCP birthdate or corporate number is partially filled.
+    case kcpFieldPartial
+    
     internal var analyticsErrorCode: Int {
         switch self {
         case .cardNumberEmpty:
@@ -61,6 +79,18 @@ internal enum CardValidationError: String, AnalyticsValidationError {
             return 920
         case .securityCodePartial:
             return 921
+        case .holderNameEmpty:
+            return 925
+        case .boletoSocialSecurityNumberEmpty:
+            return 926
+        case .kcpPasswordEmpty:
+            return 940
+        case .kcpPasswordPartial:
+            return 941
+        case .kcpFieldEmpty:
+            return 942
+        case .kcpFieldPartial:
+            return 942
         }
     }
     
@@ -86,6 +116,18 @@ internal enum CardValidationError: String, AnalyticsValidationError {
             return "Empty security code field."
         case .securityCodePartial:
             return "Security code field has only been partially filled."
+        case .holderNameEmpty:
+            return "Empty holder name."
+        case .boletoSocialSecurityNumberEmpty:
+            return "Empty social security number field."
+        case .kcpPasswordEmpty:
+            return "Empty KCP password field."
+        case .kcpPasswordPartial:
+            return "KCP password has only been partially filled."
+        case .kcpFieldEmpty:
+            return "Empty KCP birthdate or corporate registration number."
+        case .kcpFieldPartial:
+            return "KCP birthdate or corporate registration number has only been partially filled."
         }
     }
 }
