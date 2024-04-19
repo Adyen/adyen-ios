@@ -11,12 +11,16 @@ import Foundation
 @_spi(AdyenInternal)
 public final class CardKCPFieldValidator: CombinedValidator, StatusValidator {
     
+    private enum Constants {
+        static let exactLength = 10
+    }
+    
     public let firstValidator: Validator
     
     public let secondValidator: Validator
     
     public init() {
-        self.firstValidator = NumericStringValidator(exactLength: 10)
+        self.firstValidator = NumericStringValidator(exactLength: Constants.exactLength)
         self.secondValidator = DateValidator(format: DateValidator.Format.kcpFormat)
     }
     
