@@ -13,7 +13,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:TestPlans/GenerateSnapshots.xctestplan"
+            reference = "container:Tests/TestPlans/GenerateSnapshots.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
