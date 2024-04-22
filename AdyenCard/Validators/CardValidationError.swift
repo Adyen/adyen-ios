@@ -57,35 +57,35 @@ internal enum CardValidationError: String, AnalyticsValidationError {
     internal var analyticsErrorCode: Int {
         switch self {
         case .cardNumberEmpty:
-            return 900
+            return AnalyticsConstants.ValidationErrorCodes.cardNumberEmpty
         case .cardNumberPartial:
-            return 901
+            return AnalyticsConstants.ValidationErrorCodes.cardNumberPartial
         case .cardLuhnCheckFailed:
-            return 902
+            return AnalyticsConstants.ValidationErrorCodes.cardLuhnCheckFailed
         case .cardUnsupported:
-            return 903
+            return AnalyticsConstants.ValidationErrorCodes.cardUnsupported
         case .expiryDateEmpty:
-            return 910
+            return AnalyticsConstants.ValidationErrorCodes.expiryDateEmpty
         case .expiryDatePartial:
-            return 911
+            return AnalyticsConstants.ValidationErrorCodes.expiryDatePartial
         case .cardExpired:
-            return 912
+            return AnalyticsConstants.ValidationErrorCodes.cardExpired
         case .expiryDateTooFar:
-            return 913
+            return AnalyticsConstants.ValidationErrorCodes.expiryDateTooFar
         case .securityCodeEmpty:
-            return 920
+            return AnalyticsConstants.ValidationErrorCodes.securityCodeEmpty
         case .securityCodePartial:
-            return 921
+            return AnalyticsConstants.ValidationErrorCodes.securityCodePartial
         case .holderNameEmpty:
-            return 925
+            return AnalyticsConstants.ValidationErrorCodes.holderNameEmpty
         case .kcpPasswordEmpty:
-            return 940
+            return AnalyticsConstants.ValidationErrorCodes.kcpPasswordEmpty
         case .kcpPasswordPartial:
-            return 941
+            return AnalyticsConstants.ValidationErrorCodes.kcpPasswordPartial
         case .kcpFieldEmpty:
-            return 942
+            return AnalyticsConstants.ValidationErrorCodes.kcpFieldEmpty
         case .kcpFieldPartial:
-            return 943
+            return AnalyticsConstants.ValidationErrorCodes.kcpFieldPartial
         }
     }
     

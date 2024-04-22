@@ -323,6 +323,7 @@
 		A0BDF3EE2BD285E5001FF7E5 /* PostalCodeValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BDF3ED2BD285E5001FF7E5 /* PostalCodeValidator.swift */; };
 		A0BDF3F02BD28817001FF7E5 /* AddressAnalyticsValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BDF3EF2BD28817001FF7E5 /* AddressAnalyticsValidationError.swift */; };
 		A0BDF3F22BD29E69001FF7E5 /* PostalCodeValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BDF3F12BD29E69001FF7E5 /* PostalCodeValidatorTests.swift */; };
+		A0BDF3F42BD6A82C001FF7E5 /* AnalyticsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BDF3F32BD6A82C001FF7E5 /* AnalyticsConstants.swift */; };
 		A0C9B59B288AE34600D6BDAB /* InstallmentOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41E5526CBCA6E0089AD6C /* InstallmentOptions.swift */; };
 		A0D48FB827109B0200C0B82C /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */; };
 		A0DB48662AFD020400348C83 /* AnalyticsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB48652AFD020400348C83 /* AnalyticsRequest.swift */; };
@@ -1654,6 +1655,7 @@
 		A0BDF3ED2BD285E5001FF7E5 /* PostalCodeValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostalCodeValidator.swift; sourceTree = "<group>"; };
 		A0BDF3EF2BD28817001FF7E5 /* AddressAnalyticsValidationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressAnalyticsValidationError.swift; sourceTree = "<group>"; };
 		A0BDF3F12BD29E69001FF7E5 /* PostalCodeValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostalCodeValidatorTests.swift; sourceTree = "<group>"; };
+		A0BDF3F32BD6A82C001FF7E5 /* AnalyticsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsConstants.swift; sourceTree = "<group>"; };
 		A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayHelpers.swift; sourceTree = "<group>"; };
 		A0DB48652AFD020400348C83 /* AnalyticsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsRequest.swift; sourceTree = "<group>"; };
 		A0DB48672AFD068400348C83 /* AdyenAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenAnalytics.swift; sourceTree = "<group>"; };
@@ -3292,6 +3294,7 @@
 				A09FB2EC2B86051000270D51 /* AnalyticsEventDataSource.swift */,
 				A01DFBBE2BA887BF00205881 /* ThreadSafeAnalyticsEventDataSource.swift */,
 				A00167692BC9567B0099A6AE /* AnalyticsValidationError.swift */,
+				A0BDF3F32BD6A82C001FF7E5 /* AnalyticsConstants.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -6658,6 +6661,7 @@
 				A06B7AA72A274A83008FC09D /* ResultHelpers.swift in Sources */,
 				F97C857725C1D5BA00D7F85C /* UIViewHelpers.swift in Sources */,
 				E95E24C022C2593900973184 /* ApplePayPaymentMethod.swift in Sources */,
+				A0BDF3F42BD6A82C001FF7E5 /* AnalyticsConstants.swift in Sources */,
 				F9A6C4D12657B0D700D8CD3E /* FormSpacerItemView.swift in Sources */,
 				E24FED0822704C9800A65122 /* ComponentError.swift in Sources */,
 				C94632BE27BA6985003DD81F /* AnalyticsProvider.swift in Sources */,

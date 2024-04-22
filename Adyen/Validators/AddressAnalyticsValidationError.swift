@@ -18,9 +18,9 @@ public enum AddressAnalyticsValidationError: AnalyticsValidationError {
     public var analyticsErrorCode: Int {
         switch self {
         case .postalCodeEmpty:
-            return 934
+            return AnalyticsConstants.ValidationErrorCodes.postalCodeEmpty
         case .postalCodePartial:
-            return 935
+            return AnalyticsConstants.ValidationErrorCodes.postalCodePartial
         }
     }
     

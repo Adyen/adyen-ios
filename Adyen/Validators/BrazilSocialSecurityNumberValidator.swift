@@ -53,9 +53,9 @@ internal enum BrazilAnalyticsValidationError: String, AnalyticsValidationError {
     internal var analyticsErrorCode: Int {
         switch self {
         case .socialSecurityNumberEmpty:
-            return 926
+            return AnalyticsConstants.ValidationErrorCodes.brazilSSNEmpty
         case .socialSecurityNumberPartial:
-            return 927
+            return AnalyticsConstants.ValidationErrorCodes.brazilSSNPartial
         }
     }
     
