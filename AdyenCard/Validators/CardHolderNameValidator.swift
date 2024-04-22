@@ -18,7 +18,7 @@ public final class CardHolderNameValidator: StatusValidator {
         .max
     }
     
-    public func validate(_ value: String) -> Adyen.ValidationStatus {
+    public func validate(_ value: String) -> ValidationStatus {
         if value.isEmpty {
             return .invalid(CardValidationError.holderNameEmpty)
         }

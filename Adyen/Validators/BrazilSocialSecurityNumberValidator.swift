@@ -23,7 +23,7 @@ public final class BrazilSocialSecurityNumberValidator: CombinedValidator, Statu
         self.secondValidator = NumericStringValidator(exactLength: Constants.secondMaxLength)
     }
     
-    public func validate(_ value: String) -> Adyen.ValidationStatus {
+    public func validate(_ value: String) -> ValidationStatus {
         if value.isEmpty {
             return .invalid(BrazilAnalyticsValidationError.socialSecurityNumberEmpty)
         }

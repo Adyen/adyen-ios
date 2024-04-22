@@ -24,7 +24,7 @@ public final class CardKCPFieldValidator: CombinedValidator, StatusValidator {
         self.secondValidator = DateValidator(format: DateValidator.Format.kcpFormat)
     }
     
-    public func validate(_ value: String) -> Adyen.ValidationStatus {
+    public func validate(_ value: String) -> ValidationStatus {
         if value.isEmpty {
             return .invalid(CardValidationError.kcpFieldEmpty)
         }
@@ -55,7 +55,7 @@ public final class CardKCPPasswordValidator: LengthValidator, StatusValidator {
         super.init(exactLength: Constants.exactLength)
     }
     
-    public func validate(_ value: String) -> Adyen.ValidationStatus {
+    public func validate(_ value: String) -> ValidationStatus {
         if super.isValid(value) {
             return .valid
         }

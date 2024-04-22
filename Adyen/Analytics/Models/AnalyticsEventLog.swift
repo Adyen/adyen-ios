@@ -18,7 +18,7 @@ public struct AnalyticsEventLog: AnalyticsEvent {
     
     public var type: LogType
     
-    public var subType: LogSubType
+    public var subType: LogSubType?
     
     public var target: AnalyticsEventTarget?
     
@@ -41,7 +41,7 @@ public struct AnalyticsEventLog: AnalyticsEvent {
         case sdk = "Sdk"
     }
     
-    public init(component: String, type: LogType, subType: LogSubType) {
+    public init(component: String, type: LogType, subType: LogSubType? = nil) {
         self.component = component
         self.type = type
         self.subType = subType
