@@ -140,6 +140,26 @@ final class CardComponentEventTests: XCTestCase {
                         analyticsProviderMock: analyticsProviderMock)
     }
     
+    private func testFocusEvents(
+        for field: FormTextItemView<some FormTextItem>,
+        target: AnalyticsEventTarget,
+        analyticsProviderMock: AnalyticsProviderMock
+    ) {
+        analyticsProviderMock.clearAll()
+        
+        field.textFieldDidBeginEditing(field.textField)
+        field.textFieldDidEndEditing(field.textField)
+        
+        let firstInfoEvent = analyticsProviderMock.infos[0]
+        let secondInfoEvent = analyticsProviderMock.infos[1]
+        
+        XCTAssertEqual(firstInfoEvent.type, .focus)
+        XCTAssertEqual(firstInfoEvent.target, target)
+        
+        XCTAssertEqual(secondInfoEvent.type, .unfocus)
+        XCTAssertEqual(secondInfoEvent.target, target)
+    }
+    
     private func makeSUT(with configuration: CardComponent.Configuration = .init(), analyticsProviderMock: AnalyticsProviderMock) -> CardComponent {
         let context = Dummy.context(with: analyticsProviderMock)
         let cardComponent = CardComponent(paymentMethod: method,
