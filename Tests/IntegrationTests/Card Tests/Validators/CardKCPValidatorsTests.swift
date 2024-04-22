@@ -43,6 +43,7 @@ final class CardKCPValidatorsTests: XCTestCase {
         XCTAssertNotNil(status.validationError)
         let validationError = status.validationError as? CardValidationError
         XCTAssertEqual(validationError, .kcpFieldEmpty)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.kcpFieldEmpty)
     }
     
     func testPartialInvalidField() {
@@ -60,6 +61,7 @@ final class CardKCPValidatorsTests: XCTestCase {
         status = validator.validate("123456789012")
         validationError = status.validationError as? CardValidationError
         XCTAssertEqual(validationError, .kcpFieldPartial)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.kcpFieldPartial)
     }
     
     func testValidPassword() {
@@ -81,6 +83,7 @@ final class CardKCPValidatorsTests: XCTestCase {
         XCTAssertNotNil(status.validationError)
         let validationError = status.validationError as? CardValidationError
         XCTAssertEqual(validationError, .kcpPasswordEmpty)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.kcpPasswordEmpty)
     }
     
     func testPartialInvalidPassword() {
@@ -90,6 +93,7 @@ final class CardKCPValidatorsTests: XCTestCase {
         XCTAssertNotNil(status.validationError)
         let validationError = status.validationError as? CardValidationError
         XCTAssertEqual(validationError, .kcpPasswordPartial)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.kcpPasswordPartial)
     }
 
 }

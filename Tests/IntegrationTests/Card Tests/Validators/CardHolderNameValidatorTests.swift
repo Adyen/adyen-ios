@@ -35,6 +35,7 @@ final class CardHolderNameValidatorTests: XCTestCase {
         
         let validationError = status.validationError as? CardValidationError
         XCTAssertEqual(validationError, .holderNameEmpty)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.holderNameEmpty)
     }
 
 }

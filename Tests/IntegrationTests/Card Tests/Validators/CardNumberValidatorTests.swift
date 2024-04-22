@@ -61,6 +61,7 @@ class CardNumberValidatorTests: XCTestCase {
         
         let validationError = error as? CardValidationError
         XCTAssertEqual(validationError, CardValidationError.cardUnsupported)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.cardUnsupported)
     }
     
     func testEmptyValidationError() {
@@ -71,6 +72,7 @@ class CardNumberValidatorTests: XCTestCase {
         
         let validationError = error as? CardValidationError
         XCTAssertEqual(validationError, CardValidationError.cardNumberEmpty)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.cardNumberEmpty)
     }
     
     func testPartialEmptyValidationError() {
@@ -81,6 +83,7 @@ class CardNumberValidatorTests: XCTestCase {
         
         let validationError = error as? CardValidationError
         XCTAssertEqual(validationError, CardValidationError.cardNumberPartial)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.cardNumberPartial)
     }
     
     func testLuhnCheckValidationError() {
@@ -91,6 +94,7 @@ class CardNumberValidatorTests: XCTestCase {
         
         let validationError = error as? CardValidationError
         XCTAssertEqual(validationError, CardValidationError.cardLuhnCheckFailed)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.cardLuhnCheckFailed)
     }
     
     func testValidCardLuhnCheckDisabled() {

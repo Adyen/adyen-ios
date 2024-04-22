@@ -30,6 +30,7 @@ final class PostalCodeValidatorTests: XCTestCase {
         XCTAssertNotNil(status.validationError)
         let validationError = status.validationError as? AddressAnalyticsValidationError
         XCTAssertEqual(validationError, .postalCodeEmpty)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.postalCodeEmpty)
     }
     
     func testPartialInvalidCodes() {
@@ -44,6 +45,7 @@ final class PostalCodeValidatorTests: XCTestCase {
         XCTAssertNotNil(status.validationError)
         validationError = status.validationError as? AddressAnalyticsValidationError
         XCTAssertEqual(validationError, .postalCodePartial)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.postalCodePartial)
     }
 
 }

@@ -29,6 +29,7 @@ final class BrazilSocialSecurityNumberValidatorTests: XCTestCase {
         XCTAssertNotNil(status.validationError)
         let validationError = status.validationError as? BrazilAnalyticsValidationError
         XCTAssertEqual(validationError, .socialSecurityNumberEmpty)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.brazilSSNEmpty)
     }
     
     func testPartialInvalidNumber() {
@@ -42,6 +43,7 @@ final class BrazilSocialSecurityNumberValidatorTests: XCTestCase {
         status = validator.validate("1234567895612")
         validationError = status.validationError as? BrazilAnalyticsValidationError
         XCTAssertEqual(validationError, .socialSecurityNumberPartial)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.brazilSSNPartial)
     }
 
 }
