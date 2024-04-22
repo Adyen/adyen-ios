@@ -71,11 +71,10 @@ jobs:
           -enableCodeCoverage YES \
           -resultBundlePath "${resultPath}" \
           ${params} \
-          ${destination} | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+          -destination "name=iPhone 15 Pro,OS=17.2" -destination "name=iPad (10th generation),OS=17.2" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         params: '${{env.params}}'
         scheme: 'SnapshotTests'
-        destination: '-destination "${{env.destination}}" -destination "name=iPad (10th generation),OS=17.2"'
         testPlan: 'SnapshotTests'
         resultPath: 'Test-Snapshots-Result.xcresult'
 
