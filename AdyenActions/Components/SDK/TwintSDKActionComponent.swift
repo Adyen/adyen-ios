@@ -27,6 +27,10 @@ import Foundation
 
         public let requiresModalPresentation: Bool = false
 
+        private let pollingComponentBuilder: AnyPollingHandlerProvider?
+
+        private var pollingComponent: AnyPollingHandler?
+
         /// The TwintSDK component configurations.
         public struct Configuration {
 
@@ -35,7 +39,7 @@ import Foundation
 
             /// The localization parameters, leave it nil to use the default parameters.
             public var localizationParameters: LocalizationParameters?
-            
+
             /// The callback app scheme invoked once the Twint app is done with the payment
             ///
             /// - Important: This value is  required to only provide the scheme,
@@ -64,7 +68,7 @@ import Foundation
 
         /// The twint component configurations.
         public var configuration: Configuration
-        
+
         private let twint: Twint
 
         /// Initializes the `TwintSDKActionComponent`.
@@ -78,16 +82,19 @@ import Foundation
             self.context = context
             self.configuration = configuration
             self.twint = Twint()
+            self.pollingComponentBuilder = PollingHandlerProvider(context: context)
         }
-        
+
         internal init(
             context: AdyenContext,
             configuration: Configuration,
-            twint: Twint
+            twint: Twint,
+            pollingComponentBuilder: AnyPollingHandlerProvider? = nil
         ) {
             self.context = context
             self.configuration = configuration
             self.twint = twint
+            self.pollingComponentBuilder = pollingComponentBuilder
         }
 
         /// Handles TwintSDK action.
@@ -97,7 +104,7 @@ import Foundation
             AdyenAssertion.assert(message: "presentationDelegate is nil", condition: presentationDelegate == nil)
             twint.fetchInstalledAppConfigurations { [weak self] installedApps in
                 guard let self else { return }
-                
+
                 guard let firstApp = installedApps.first else {
                     let errorMessage = localizedString(
                         .twintNoAppsInstalledMessage,
@@ -106,7 +113,7 @@ import Foundation
                     self.handleShowError(errorMessage)
                     return
                 }
-                
+
                 if installedApps.count > 1 {
                     self.presentAppChooser(for: installedApps, action: action)
                 } else {
@@ -122,12 +129,12 @@ import Foundation
                 appConfiguration: app,
                 callback: configuration.callbackAppScheme
             )
-            
+
             if let error {
                 handleShowError(error.localizedDescription)
                 return
             }
-            
+
             RedirectListener.registerForURL { [weak self] url in
                 self?.twint.handleOpen(url) { [weak self] error in
                     self?.handlePaymentResult(error: error, action: action)
@@ -152,26 +159,26 @@ import Foundation
                     )
                 }
             )
-            
+
             if let viewController = appChooserViewController, let delegate = presentationDelegate {
                 present(viewController, presentationDelegate: delegate)
             }
         }
-        
+
         private func handlePaymentResult(error: Error?, action: TwintSDKAction) {
             guard let delegate else { return }
-            
+
             if let error, (error as NSError).code != TWErrorCode.B_SUCCESS.rawValue {
                 delegate.didFail(with: error, from: self)
                 return
             }
-            
-            let data = ActionComponentData(
-                details: TwintActionDetails(),
-                paymentData: action.paymentData
-            )
-            
-            delegate.didProvide(data, from: self)
+            startPolling(action)
+        }
+
+        private func startPolling(_ action: TwintSDKAction) {
+            pollingComponent = pollingComponentBuilder?.handler(for: AwaitPaymentMethod(rawValue: action.paymentMethodType) ?? .twint)
+            pollingComponent?.delegate = self
+            pollingComponent?.handle(action)
         }
 
         private func present(_ viewController: UIViewController, presentationDelegate: PresentationDelegate) {
@@ -202,5 +209,26 @@ import Foundation
                 self.present(alert, presentationDelegate: presentationDelegate)
             }
         }
+
+        fileprivate func cleanup() {
+            pollingComponent?.didCancel()
+        }
+    }
+
+    @_spi(AdyenInternal)
+    extension TwintSDKActionComponent: ActionComponentDelegate {
+
+        public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
+            cleanup()
+            delegate?.didProvide(data, from: self)
+        }
+
+        public func didComplete(from component: ActionComponent) {}
+
+        public func didFail(with error: Error, from component: ActionComponent) {
+            cleanup()
+            delegate?.didFail(with: error, from: self)
+        }
+
     }
 #endif
