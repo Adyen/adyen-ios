@@ -13,7 +13,7 @@ on:
 jobs:
 
   carthage:
-    runs-on: macos-14-xl
+    runs-on: macos-13-xlarge
     steps:
     - uses: actions/checkout@v4
     - uses: n1hility/cancel-previous-runs@v3
