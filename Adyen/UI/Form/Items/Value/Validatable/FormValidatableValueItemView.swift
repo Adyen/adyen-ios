@@ -101,16 +101,14 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         }
     }
     
-    private func hideAlertLabel(_ hidden: Bool, animated: Bool = true) {
-        guard hidden || alertLabel.text != nil else { return }
-        if !hidden {
+    private func hideAlertLabel(_ shouldHide: Bool, animated: Bool = true) {
+        guard shouldHide || alertLabel.text != nil else { return }
+        if !shouldHide {
             triggerValidationErrorIfNeeded()
         }
-        alertLabel.adyen.hide(animationKey: "hide_alertLabel", hidden: hidden, animated: animated)
+        alertLabel.adyen.hide(animationKey: "hide_alertLabel", hidden: shouldHide, animated: animated)
     }
     
-    // this function can be used to populate the alert label with the correct invalid message
-    // when we improve validation texts for all fields
     private func triggerValidationErrorIfNeeded() {
         guard let validationStatus = item.validationStatus(),
               let error = validationStatus.validationError else { return }

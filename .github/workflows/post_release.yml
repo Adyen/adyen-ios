@@ -8,19 +8,13 @@ on:
 
 jobs:
   publish-cocoapods:
-    name: Publish Cocoapods
-    runs-on: macos-latest
-    steps:
-    - uses: ./.github/workflows/publich_podspec.yml 
+    name: 🥜 Publish Cocoapods
+    uses: ./.github/workflows/publich_podspec.yml
 
   publish-docs:
-    name: Publish Docs
-    runs-on: macos-latest
-    steps:
-    - uses: ./.github/workflows/deploy-docs.yml
+    name: 📝 Publish Docs
+    uses: ./.github/workflows/deploy-docs.yml
 
   publish-app:
-    name: Publish Test App
-    runs-on: macos-latest
-    steps:
-    - uses: ./.github/workflows/publish-demo-app.yml
+    name: 🚀 Publish Test App
+    uses: ./.github/workflows/publish-demo-app.yml
