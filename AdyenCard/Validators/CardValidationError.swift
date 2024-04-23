@@ -39,28 +39,53 @@ internal enum CardValidationError: String, AnalyticsValidationError {
     /// Security code is partially filled.
     case securityCodePartial
     
+    /// Holder name is not filled.
+    case holderNameEmpty
+    
+    /// KCP password is not filled.
+    case kcpPasswordEmpty
+    
+    /// KCP password is partially filled.
+    case kcpPasswordPartial
+    
+    /// KCP birthdate or corporate number is not filled.
+    case kcpFieldEmpty
+    
+    /// KCP birthdate or corporate number is partially filled.
+    case kcpFieldPartial
+    
     internal var analyticsErrorCode: Int {
         switch self {
         case .cardNumberEmpty:
-            return 900
+            return AnalyticsConstants.ValidationErrorCodes.cardNumberEmpty
         case .cardNumberPartial:
-            return 901
+            return AnalyticsConstants.ValidationErrorCodes.cardNumberPartial
         case .cardLuhnCheckFailed:
-            return 902
+            return AnalyticsConstants.ValidationErrorCodes.cardLuhnCheckFailed
         case .cardUnsupported:
-            return 903
+            return AnalyticsConstants.ValidationErrorCodes.cardUnsupported
         case .expiryDateEmpty:
-            return 910
+            return AnalyticsConstants.ValidationErrorCodes.expiryDateEmpty
         case .expiryDatePartial:
-            return 911
+            return AnalyticsConstants.ValidationErrorCodes.expiryDatePartial
         case .cardExpired:
-            return 912
+            return AnalyticsConstants.ValidationErrorCodes.cardExpired
         case .expiryDateTooFar:
-            return 913
+            return AnalyticsConstants.ValidationErrorCodes.expiryDateTooFar
         case .securityCodeEmpty:
-            return 920
+            return AnalyticsConstants.ValidationErrorCodes.securityCodeEmpty
         case .securityCodePartial:
-            return 921
+            return AnalyticsConstants.ValidationErrorCodes.securityCodePartial
+        case .holderNameEmpty:
+            return AnalyticsConstants.ValidationErrorCodes.holderNameEmpty
+        case .kcpPasswordEmpty:
+            return AnalyticsConstants.ValidationErrorCodes.kcpPasswordEmpty
+        case .kcpPasswordPartial:
+            return AnalyticsConstants.ValidationErrorCodes.kcpPasswordPartial
+        case .kcpFieldEmpty:
+            return AnalyticsConstants.ValidationErrorCodes.kcpFieldEmpty
+        case .kcpFieldPartial:
+            return AnalyticsConstants.ValidationErrorCodes.kcpFieldPartial
         }
     }
     
@@ -86,6 +111,16 @@ internal enum CardValidationError: String, AnalyticsValidationError {
             return "Empty security code field."
         case .securityCodePartial:
             return "Security code field has only been partially filled."
+        case .holderNameEmpty:
+            return "Empty holder name."
+        case .kcpPasswordEmpty:
+            return "Empty KCP password field."
+        case .kcpPasswordPartial:
+            return "KCP password has only been partially filled."
+        case .kcpFieldEmpty:
+            return "Empty KCP birthdate or corporate registration number."
+        case .kcpFieldPartial:
+            return "KCP birthdate or corporate registration number has only been partially filled."
         }
     }
 }

@@ -74,6 +74,7 @@ class CardExpiryDateValidatorTests: XCTestCase {
         XCTAssertNotNil(status.validationError)
         let validationError = status.validationError as? CardValidationError
         XCTAssertEqual(validationError, .expiryDateEmpty)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.expiryDateEmpty)
     }
     
     func testExpiredStatus() {
@@ -87,6 +88,7 @@ class CardExpiryDateValidatorTests: XCTestCase {
         status = validator.validate("1209")
         validationError = status.validationError as? CardValidationError
         XCTAssertEqual(validationError, .cardExpired)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.cardExpired)
     }
     
     func testExpiryDateTooFarInFuture() {
@@ -96,6 +98,7 @@ class CardExpiryDateValidatorTests: XCTestCase {
         XCTAssertNotNil(status.validationError)
         let validationError = status.validationError as? CardValidationError
         XCTAssertEqual(validationError, .expiryDateTooFar)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.expiryDateTooFar)
     }
     
     func testPartialInvalidStatuses() {
@@ -116,6 +119,7 @@ class CardExpiryDateValidatorTests: XCTestCase {
         XCTAssertNotNil(status.validationError)
         let validationError = status.validationError as? CardValidationError
         XCTAssertEqual(validationError, .expiryDatePartial)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.expiryDatePartial)
     }
     
 }

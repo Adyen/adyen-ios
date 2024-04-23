@@ -61,6 +61,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     }
 
     override public func reset() {
+        textField.text = ""
         item.value = ""
         resetValidationStatus()
     }
