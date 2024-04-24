@@ -144,7 +144,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                                                       acsReferenceNumber: token.acsReferenceNumber,
                                                       acsSignedContent: token.acsSignedContent)
 
-        transaction.performChallenge(with: challengeParameters, presenterViewController: getPresenterViewController()) { result in
+        transaction.performChallenge(challengeParameters: challengeParameters, presenterViewController: getPresenterViewController()) { result in
             switch result {
             case let .success(success):
                 self.didFinish(with: success,
