@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen3DS2
+import Adyen3DS2_Swift
 @_spi(AdyenInternal) @testable import AdyenActions
 import Foundation
 

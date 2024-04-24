@@ -6,7 +6,7 @@
 
 #if canImport(AdyenAuthentication)
     @_spi(AdyenInternal) import Adyen
-    import Adyen3DS2
+    import Adyen3DS2_Swift
     import AdyenAuthentication
     import Foundation
     import UIKit

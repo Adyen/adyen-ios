@@ -5,7 +5,7 @@
 //
 
 import Adyen
-import Adyen3DS2
+import Adyen3DS2_Swift
 import Foundation
 
 internal extension ThreeDS2Component {
@@ -34,11 +34,11 @@ internal extension ThreeDS2Component {
     
 }
 
-internal extension ADYChallengeParameters {
+internal extension ChallengeParameters {
     
     // swiftlint:disable:next explicit_acl
-    convenience init(challengeToken: ThreeDS2Component.ChallengeToken,
-                     threeDSRequestorAppURL: URL?) {
+    init(challengeToken: ThreeDS2Component.ChallengeToken,
+         threeDSRequestorAppURL: URL?) {
         self.init(serverTransactionIdentifier: challengeToken.serverTransactionIdentifier,
                   threeDSRequestorAppURL: threeDSRequestorAppURL,
                   acsTransactionIdentifier: challengeToken.acsTransactionIdentifier,

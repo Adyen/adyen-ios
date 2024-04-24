@@ -4,25 +4,27 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen3DS2
+import Adyen3DS2_Swift
 import Foundation
+import UIKit
 
 internal protocol AnyADYTransaction {
+    var authenticationParameters: AnyAuthenticationRequestParameters { get throws }
 
-    var authenticationParameters: AnyAuthenticationRequestParameters { get }
-
-    func performChallenge(with parameters: ADYChallengeParameters, completionHandler: @escaping (AnyChallengeResult?, Error?) -> Void)
+    func performChallenge(with challengeParameters: ChallengeParameters,
+                          presenterViewController: UIViewController,
+                          completion: @Sendable @escaping (Result<ChallengeResult, Error>) -> Void)
 }
 
-extension ADYTransaction: AnyADYTransaction {
-
-    internal var authenticationParameters: AnyAuthenticationRequestParameters { authenticationRequestParameters }
-
-    internal func performChallenge(with parameters: ADYChallengeParameters,
-                                   completionHandler: @escaping (AnyChallengeResult?, Error?) -> Void) {
-        performChallenge(with: parameters,
-                         completionHandler: { (result: ADYChallengeResult?, error: Error?) in
-                             completionHandler(result, error)
-                         })
+extension Adyen3DS2_Swift.Transaction: AnyADYTransaction {
+    func performChallenge(with challengeParameters: Adyen3DS2_Swift.ChallengeParameters, presenterViewController: UIViewController, completion: @escaping @Sendable (Result<Adyen3DS2_Swift.ChallengeResult, any Error>) -> Void) {
+        self.performChallenge(with: challengeParameters, presenterViewController: presenterViewController, completion: completion)
     }
+    
+    var authenticationParameters: any AnyAuthenticationRequestParameters {
+        get throws {
+            try self.authenticationRequestParameters
+        }
+    }
+    
 }

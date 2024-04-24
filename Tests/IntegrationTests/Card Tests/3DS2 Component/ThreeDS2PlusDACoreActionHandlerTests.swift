@@ -8,7 +8,7 @@ import XCTest
 
 #if canImport(AdyenAuthentication)
     @_spi(AdyenInternal) @testable import Adyen
-    import Adyen3DS2
+    import Adyen3DS2_Swift
     @_spi(AdyenInternal) @testable import AdyenActions
     import AdyenAuthentication
     import Foundation

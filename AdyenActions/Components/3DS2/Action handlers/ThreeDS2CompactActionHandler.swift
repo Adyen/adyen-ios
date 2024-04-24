@@ -5,8 +5,19 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import Adyen3DS2
+import Adyen3DS2_Swift
 import Foundation
+
+// TODO: Robert: Create the public interface as for the Objective C SDK.
+public class ADYAppearanceConfiguration {
+    public init() {}
+    
+    @MainActor
+    var appearanceConfiguration: Adyen3DS2_Swift.AppearanceConfiguration {
+        // TODO: Robert:
+        .init()
+    }
+}
 
 /// Handles the 3D Secure 2 fingerprint and challenge in one call using a `fingerprintSubmitter`.
 internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, ComponentWrapper {

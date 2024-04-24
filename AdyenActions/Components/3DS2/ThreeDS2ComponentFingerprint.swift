@@ -5,7 +5,7 @@
 //
 
 import Adyen
-import Adyen3DS2
+import Adyen3DS2_Swift
 import Foundation
 
 internal extension ThreeDS2Component {

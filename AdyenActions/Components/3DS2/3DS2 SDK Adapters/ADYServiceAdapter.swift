@@ -4,37 +4,47 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen3DS2
+import Adyen3DS2_Swift
 import Foundation
 @_spi(AdyenInternal) import Adyen
 
 internal protocol AnyADYService {
-    func service(with parameters: ADYServiceParameters,
-                 appearanceConfiguration: ADYAppearanceConfiguration,
-                 completionHandler: @escaping (_ service: AnyADYService) -> Void)
-
-    func transaction(withMessageVersion: String) throws -> AnyADYTransaction
+    func transaction(withMessageVersion: String,
+                     parameters: ServiceParameters,
+                     appearanceConfiguration: ADYAppearanceConfiguration,
+                     completionHandler: @escaping (Result<AnyADYTransaction, Error>) -> Void)
 }
 
 internal final class ADYServiceAdapter: AnyADYService {
-
-    private var service: ADYService?
-
-    internal func service(with parameters: ADYServiceParameters,
-                          appearanceConfiguration: ADYAppearanceConfiguration,
-                          completionHandler: @escaping (AnyADYService) -> Void) {
-        ADYService.service(with: parameters, appearanceConfiguration: appearanceConfiguration) { [weak self] service in
-            guard let self else { return }
-            self.service = service
-            completionHandler(self)
+    var transaction: Transaction?
+    @MainActor func transaction(withMessageVersion: String,
+                                parameters: Adyen3DS2_Swift.ServiceParameters,
+                                appearanceConfiguration: ADYAppearanceConfiguration,
+                                completionHandler: @escaping (Result<AnyADYTransaction, Error>) -> Void) {
+        let appearance = appearanceConfiguration
+        
+        guard let messageVersion = MessageVersion(rawValue: withMessageVersion) else {
+            fatalError("Unsupported message version")
         }
-    }
-
-    internal func transaction(withMessageVersion: String) throws -> AnyADYTransaction {
-        guard let service else {
-            throw UnknownError(errorDescription: "ADYService is nil.")
+        
+        Transaction.initialize(serviceParameters: parameters,
+                               messageVersion: messageVersion,
+                               securityDelegate: self,
+                               appearanceConfiguration: appearance.appearanceConfiguration) { @MainActor result in
+            switch result {
+            case let .success(transaction):
+                self.transaction = transaction
+                completionHandler(.success(transaction))
+            case let .failure(error):
+                completionHandler(.failure(error))
+            }
         }
-        return try service.transaction(withMessageVersion: withMessageVersion)
     }
     
+}
+
+extension ADYServiceAdapter: SecurityWarningsDelegate {
+    internal func securityWarningsFound(_ warnings: [Adyen3DS2_Swift.Warning]) {
+        Swift.print("\(#function): warnings:\(warnings)")
+    }
 }
