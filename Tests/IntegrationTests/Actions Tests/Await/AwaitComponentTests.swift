@@ -119,8 +119,7 @@ class AwaitComponentTests: XCTestCase {
             
             XCTAssertNotNil(component.viewController as? AwaitViewController)
             let viewController = component.viewController as! AwaitViewController
-
-            self.setupRootViewController(viewController)
+            viewController.loadViewIfNeeded()
 
             let view = viewController.awaitView
 
