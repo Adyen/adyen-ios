@@ -247,16 +247,17 @@ internal final class VoucherView: UIView, Localizable {
         )
     }
     
-    override public func didMoveToWindow() {
-        super.didMoveToWindow()
+    override public func didMoveToSuperview() {
+        super.didMoveToSuperview()
         updateLogo()
     }
     
     private func updateLogo() {
-        if window != nil {
-            imageLoadingTask = logo.load(url: model.logoUrl, using: model.imageLoader)
-        } else {
+        if superview == nil {
+            imageLoadingTask?.cancel()
             imageLoadingTask = nil
+        } else {
+            imageLoadingTask = logo.load(url: model.logoUrl, using: model.imageLoader)
         }
     }
 }
