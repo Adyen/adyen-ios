@@ -11,8 +11,6 @@ import Foundation
 #endif
 
 #if canImport(TwintSDK)
-    internal struct TwintActionDetails: AdditionalDetails {}
-
     /// A component that handles Twint SDK action's.
     public final class TwintSDKActionComponent: ActionComponent {
 

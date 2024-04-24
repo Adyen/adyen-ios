@@ -42,17 +42,40 @@ extension TwintSDKAction {
 
 extension TwintSDKActionTests {
     
+    struct PollingError: Error {}
+    
     static func actionComponent(
         with twintSpy: TwintSpy,
         presentationDelegate: PresentationDelegate?,
-        delegate: ActionComponentDelegate?
+        delegate: ActionComponentDelegate?,
+        shouldFailPolling: Bool = false
     ) -> TwintSDKActionComponent {
+        
+        let pollingHandler = PollingHandlerMock()
+        let pollingBuilder = AwaitActionHandlerProviderMock { _ in
+            pollingHandler
+        } onQRHandler: { _ in
+            XCTFail("onQRHandler should not have been called")
+            return PollingHandlerMock()
+        }
         
         let component = TwintSDKActionComponent(
             context: Dummy.context,
             configuration: .dummy,
-            twint: twintSpy
+            twint: twintSpy,
+            pollingComponentBuilder: pollingBuilder
         )
+        
+        pollingHandler.onHandle = { action in
+            let additionalDetails = AwaitActionDetails(payload: "payload")
+            let actionData = ActionComponentData(details: additionalDetails, paymentData: action.paymentData)
+            
+            if shouldFailPolling {
+                pollingHandler.delegate?.didFail(with: PollingError(), from: component)
+            } else {
+                pollingHandler.delegate?.didProvide(actionData, from: component)
+            }
+        }
         
         component.presentationDelegate = presentationDelegate
         component.delegate = delegate
