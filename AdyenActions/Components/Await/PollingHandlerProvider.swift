@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -41,7 +41,7 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
 
     internal func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler {
         switch paymentMethodType {
-        case .mbway, .blik, .upicollect:
+        case .mbway, .blik, .upicollect, .twint:
             return createPollingComponent()
         }
     }
@@ -52,7 +52,7 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
             return createPollingComponent()
         }
     }
-    
+
     private func createPollingComponent() -> AnyPollingHandler {
         PollingComponent(context: context,
                          apiClient: apiClient)

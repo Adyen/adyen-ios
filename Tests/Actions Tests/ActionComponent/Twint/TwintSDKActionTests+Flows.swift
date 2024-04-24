@@ -16,13 +16,13 @@ import TwintSDK
 
 extension TwintSDKActionTests {
     
-    func testSuccessFlow() throws {
+    func test_twintInteraction_succeeded() throws {
         
         let expectedError = TWErrorCode.B_SUCCESS
         let handleOnDidProvideExpectation = expectation(description: "delegate.onDidProvide was called")
         
         let delegate = Self.successFlowActionComponentDelegateMock {
-            XCTAssertTrue($0.details is TwintActionDetails)
+            XCTAssertTrue($0.details is AwaitActionDetails)
             XCTAssertEqual($0.paymentData, TwintSDKAction.dummy.paymentData)
             handleOnDidProvideExpectation.fulfill()
         }
@@ -39,7 +39,7 @@ extension TwintSDKActionTests {
         )
     }
     
-    func testFailureFlow() throws {
+    func test_twintInteraction_failed() throws {
         
         let expectedError = TWErrorCode.B_ERROR
         let handleOnDidProvideExpectation = expectation(description: "delegate.onDidProvide was called")
@@ -61,6 +61,29 @@ extension TwintSDKActionTests {
             enforceOrder: true
         )
     }
+    
+    func test_twintInteractionSucceeded_pollingFailed() throws {
+        
+        let expectedError = TWErrorCode.B_SUCCESS
+        let handleOnDidProvideExpectation = expectation(description: "delegate.onDidProvide was called")
+        
+        let delegate = Self.failureFlowActionComponentDelegateMock {
+            XCTAssertTrue($0 is TwintSDKActionTests.PollingError)
+            handleOnDidProvideExpectation.fulfill()
+        }
+        
+        try singleAppFlow(
+            delegate: delegate,
+            expectedTwintError: expectedError,
+            shouldFailPolling: true
+        )
+        
+        wait(
+            for: [handleOnDidProvideExpectation],
+            timeout: 1,
+            enforceOrder: true
+        )
+    }
 }
 
 // MARK: - Flow
@@ -69,7 +92,8 @@ private extension TwintSDKActionTests {
     
     func singleAppFlow(
         delegate: ActionComponentDelegate,
-        expectedTwintError: TWErrorCode
+        expectedTwintError: TWErrorCode,
+        shouldFailPolling: Bool = false
     ) throws {
         
         let fetchBlockExpectation = expectation(description: "Fetch was called")
@@ -100,7 +124,8 @@ private extension TwintSDKActionTests {
         let twintActionComponent = Self.actionComponent(
             with: twintSpy,
             presentationDelegate: presentationDelegate,
-            delegate: delegate
+            delegate: delegate,
+            shouldFailPolling: shouldFailPolling
         )
 
         // When
