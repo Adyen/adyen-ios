@@ -56,7 +56,7 @@ pod 'Adyen/WeChatPay'     // WeChat Pay Component.
 pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
 ```
 
-:warning: _`Adyen/AdyenWeChatPay` and `AdyenWeChatPayInternal` modules doesn't support any simulators and can only be tested on a real device._
+:warning: _`Adyen/AdyenWeChatPay` doesn't support any simulators and can only be tested on a real device._
 
 ### Carthage
 
@@ -73,10 +73,9 @@ You can add all modules or select individual modules to add to your integration.
 * `AdyenActions`:  action components.
 * `AdyenEncryption`: encryption.
 * `AdyenWeChatPay`: WeChat Pay component.
-* `AdyenWeChatPayInternal`: WeChat Pay component.
 * `AdyenSwiftUI`: SwiftUI apps specific module.
 
-:warning: _`AdyenWeChatPay` and `AdyenWeChatPayInternal` modules doesn't support any simulators and can only be tested on a real device._
+:warning: _`AdyenWeChatPay` doesn't support any simulators and can only be tested on a real device._
 
 ### Swift Package Manager
 

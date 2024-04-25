@@ -5,6 +5,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <WXApi.h>
 
 //! Project version number for AdyenWeChatPay.
 FOUNDATION_EXPORT double AdyenWeChatPayVersionNumber;

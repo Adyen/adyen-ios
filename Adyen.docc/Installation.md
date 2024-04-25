@@ -70,9 +70,8 @@ Adyen Components for iOS are available through either CocoaPods, Carthage or Swi
         * `AdyenActions`:  action components.
         * `AdyenEncryption`: encryption.
         * `AdyenWeChatPay`: WeChat Pay component.
-        * `AdyenWeChatPayInternal`: WeChat Pay component.
         * `AdyenSwiftUI`: SwiftUI apps specific module.
     }
 }
 
-> note: `AdyenWeChatPay` and `AdyenWeChatPayInternal` modules don't support any simulators and can only be tested on a real device.
+> note: `AdyenWeChatPay` doesn't support any simulators and can only be tested on a real device.

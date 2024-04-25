@@ -11,9 +11,7 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 
-#if !targetEnvironment(simulator) && canImport(AdyenWeChatPayInternal)
-
-    import AdyenWeChatPayInternal
+#if !targetEnvironment(simulator)
 
     /// Action component to handle WeChat Pay SDK action.
     public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
