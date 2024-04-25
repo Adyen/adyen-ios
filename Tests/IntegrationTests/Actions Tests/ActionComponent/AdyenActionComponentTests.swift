@@ -11,7 +11,7 @@ import SafariServices
 import XCTest
 
 #if canImport(AdyenTwint)
-import AdyenTwint
+    import AdyenTwint
 #endif
 
 class AdyenActionComponentTests: XCTestCase {
@@ -225,8 +225,8 @@ class AdyenActionComponentTests: XCTestCase {
         sut.handle(Action.sdk(.twint(action)))
         
         #if canImport(AdyenTwint)
-        let twintComponent = try XCTUnwrap(sut.currentActionComponent as? TwintSDKActionComponent)
-        XCTAssertEqual(twintComponent.configuration.callbackAppScheme, expectedCallbackAppScheme)
+            let twintComponent = try XCTUnwrap(sut.currentActionComponent as? TwintSDKActionComponent)
+            XCTAssertEqual(twintComponent.configuration.callbackAppScheme, expectedCallbackAppScheme)
         #endif
     }
     
