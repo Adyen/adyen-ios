@@ -30,9 +30,7 @@ internal final class VoucherView: UIView, Localizable {
     private lazy var loadingView = LoadingView(contentView: containerView)
     
     private var imageLoadingTask: AdyenCancellable? {
-        didSet {
-            oldValue?.cancel()
-        }
+        willSet { imageLoadingTask?.cancel() }
     }
     
     internal init(model: Model) {
