@@ -134,6 +134,7 @@
 		81633B1F2BDA823B00FDAFE7 /* AdyenWeChatPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		81633B202BDA824600FDAFE7 /* AdyenWeChatPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; };
 		81633B212BDA824600FDAFE7 /* AdyenWeChatPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		81633B252BDA89C400FDAFE7 /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = 81633B242BDA89C400FDAFE7 /* Adyen3DS2 */; };
 		8169B9EC2A0506CC00AAC9F8 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
 		817F6D8C2B62A6110010D248 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		81825CB82AC59C3300F91912 /* UIView+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CB72AC59C3300F91912 /* UIView+Search.swift */; };
@@ -2427,6 +2428,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81633B252BDA89C400FDAFE7 /* Adyen3DS2 in Frameworks */,
 				F9175F9E259498C300D653BE /* Adyen.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5751,6 +5753,7 @@
 			);
 			name = AdyenActions;
 			packageProductDependencies = (
+				81633B242BDA89C400FDAFE7 /* Adyen3DS2 */,
 			);
 			productName = AdyenActions;
 			productReference = F9175F8C2594986900D653BE /* AdyenActions.framework */;
@@ -9035,6 +9038,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		81633B242BDA89C400FDAFE7 /* Adyen3DS2 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F9237D3228CA1E7C004F9929 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios" */;
+			productName = Adyen3DS2;
+		};
 		81BDD6CD2B21CE6C0022250E /* AdyenAuthentication */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F94D65E42B0365C30095D61E /* XCRemoteSwiftPackageReference "adyen-authentication-ios" */;
