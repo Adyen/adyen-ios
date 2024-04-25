@@ -4,7 +4,7 @@ on: [workflow_dispatch]
 jobs:
 
   Deploy:
-    runs-on: macos-12
+    runs-on: macos-13
     steps:
     - uses: actions/checkout@v4
     - uses: n1hility/cancel-previous-runs@v3
@@ -21,14 +21,14 @@ jobs:
       id: get-current-marketing-version
 
     - name: Deploy to current version 🚀
-      uses: peaceiris/actions-gh-pages@v3
+      uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs/html
         destination_dir: ./${{ steps.get-current-marketing-version.outputs.MARKETING_VERSION }}
         
     - name: Deploy to root 🚀
-      uses: peaceiris/actions-gh-pages@v3
+      uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs/redirect

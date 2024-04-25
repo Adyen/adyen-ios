@@ -186,11 +186,11 @@ public struct LocalizationKey {
     public static let deliveryAddressSectionTitle = LocalizationKey(key: "adyen.deliveryAddressSection.title")
     /// Your delivery address
     public static let deliveryAddressPlaceholder = LocalizationKey(key: "adyen.deliveryAddress.placeholder")
-    /// Country
+    /// Country/Region
     public static let countryFieldTitle = LocalizationKey(key: "adyen.countryField.title")
-    /// Country
+    /// Country/Region
     public static let countryFieldPlaceholder = LocalizationKey(key: "adyen.countryField.placeholder")
-    /// Invalid country
+    /// Invalid country/region
     public static let countryFieldInvalid = LocalizationKey(key: "adyen.countryField.invalid")
     /// Address
     public static let addressFieldTitle = LocalizationKey(key: "adyen.addressField.title")

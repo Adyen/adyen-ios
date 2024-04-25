@@ -174,8 +174,8 @@ public final class DropInComponent: NSObject,
     
     internal lazy var rootComponent: PresentableComponent = {
         if configuration.allowPreselectedPaymentView,
-           let preselectedComponents = componentManager.storedComponents.first {
-            return preselectedPaymentMethodComponent(for: preselectedComponents, onCancel: nil)
+           let preselectedComponent = componentManager.storedComponents.first {
+            return preselectedPaymentMethodComponent(for: preselectedComponent, onCancel: nil)
         } else if configuration.allowsSkippingPaymentList,
                   let singleRegularComponent = componentManager.singleRegularComponent {
             setNecessaryDelegates(on: singleRegularComponent)

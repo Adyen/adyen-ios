@@ -87,9 +87,9 @@
 "adyen.billingAddress.placeholder" = "Η διεύθυνση τιμολόγησής σας";
 "adyen.deliveryAddressSection.title" = "Διεύθυνση παράδοσης";
 "adyen.deliveryAddress.placeholder" = "Η διεύθυνση παράδοσής σας";
-"adyen.countryField.title" = "Χώρα";
-"adyen.countryField.placeholder" = "Χώρα";
-"adyen.countryField.invalid" = "Μη έγκυρη χώρα";
+"adyen.countryField.title" = "Χώρα/Περιοχή";
+"adyen.countryField.placeholder" = "Χώρα/Περιοχή";
+"adyen.countryField.invalid" = "Μη έγκυρη χώρα/περιοχή";
 "adyen.addressField.title" = "Διεύθυνση";
 "adyen.addressField.placeholder" = "Διεύθυνση";
 "adyen.streetField.title" = "Οδός";

@@ -87,9 +87,9 @@
 "adyen.billingAddress.placeholder" = "Vaše fakturační adresa";
 "adyen.deliveryAddressSection.title" = "Dodací adresa";
 "adyen.deliveryAddress.placeholder" = "Vaše doručovací adresa";
-"adyen.countryField.title" = "Země";
-"adyen.countryField.placeholder" = "Země";
-"adyen.countryField.invalid" = "Neplatná země";
+"adyen.countryField.title" = "Země/region";
+"adyen.countryField.placeholder" = "Země/region";
+"adyen.countryField.invalid" = "Chybně zadaná země/region";
 "adyen.addressField.title" = "Adresa";
 "adyen.addressField.placeholder" = "Adresa";
 "adyen.streetField.title" = "Ulice";

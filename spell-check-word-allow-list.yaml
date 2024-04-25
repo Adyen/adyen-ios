@@ -195,3 +195,6 @@ whiteList:
   - xcframework
   - checkoutanalytics
   - xcprivacy
+  - twint
+  - xcframework
+  - wechat

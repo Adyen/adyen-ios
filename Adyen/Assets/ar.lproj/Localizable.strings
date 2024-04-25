@@ -87,9 +87,9 @@
 "adyen.billingAddress.placeholder" = "عنوانك الخاص بإرسال الفواتير";
 "adyen.deliveryAddressSection.title" = "عنوان التسليم";
 "adyen.deliveryAddress.placeholder" = "عنوان التسليم الخاص بك";
-"adyen.countryField.title" = "البلد";
-"adyen.countryField.placeholder" = "البلد";
-"adyen.countryField.invalid" = "بلد غير صحيح";
+"adyen.countryField.title" = "البلد/المنطقة";
+"adyen.countryField.placeholder" = "البلد/المنطقة";
+"adyen.countryField.invalid" = "بلد/منطقة غير صحيحة";
 "adyen.addressField.title" = "العنوان";
 "adyen.addressField.placeholder" = "العنوان";
 "adyen.streetField.title" = "الشارع";

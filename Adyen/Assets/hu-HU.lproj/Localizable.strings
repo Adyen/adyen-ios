@@ -87,9 +87,9 @@
 "adyen.billingAddress.placeholder" = "Az Ön számlázási címe";
 "adyen.deliveryAddressSection.title" = "Szállítási cím";
 "adyen.deliveryAddress.placeholder" = "Az Ön szállítási címe";
-"adyen.countryField.title" = "Ország";
-"adyen.countryField.placeholder" = "Ország";
-"adyen.countryField.invalid" = "Érvénytelen ország";
+"adyen.countryField.title" = "Ország/régió";
+"adyen.countryField.placeholder" = "Ország/régió";
+"adyen.countryField.invalid" = "Érvénytelen ország/régió";
 "adyen.addressField.title" = "Cím";
 "adyen.addressField.placeholder" = "Cím";
 "adyen.streetField.title" = "Utca";

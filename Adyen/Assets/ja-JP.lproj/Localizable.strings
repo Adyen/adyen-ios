@@ -87,9 +87,9 @@
 "adyen.billingAddress.placeholder" = "ご請求先住所";
 "adyen.deliveryAddressSection.title" = "配送先住所";
 "adyen.deliveryAddress.placeholder" = "配送先住所";
-"adyen.countryField.title" = "国";
-"adyen.countryField.placeholder" = "国";
-"adyen.countryField.invalid" = "国名が正しくありません";
+"adyen.countryField.title" = "国/地域";
+"adyen.countryField.placeholder" = "国/地域";
+"adyen.countryField.invalid" = "国/地域が正しくありません";
 "adyen.addressField.title" = "住所";
 "adyen.addressField.placeholder" = "住所";
 "adyen.streetField.title" = "番地";

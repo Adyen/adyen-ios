@@ -87,9 +87,9 @@
 "adyen.billingAddress.placeholder" = "Ваш платежный адрес";
 "adyen.deliveryAddressSection.title" = "Адрес доставки";
 "adyen.deliveryAddress.placeholder" = "Ваш адрес доставки";
-"adyen.countryField.title" = "Страна";
-"adyen.countryField.placeholder" = "Страна";
-"adyen.countryField.invalid" = "Неправильная страна";
+"adyen.countryField.title" = "Страна/регион";
+"adyen.countryField.placeholder" = "Страна/регион";
+"adyen.countryField.invalid" = "Неправильная страна/регион";
 "adyen.addressField.title" = "Адрес";
 "adyen.addressField.placeholder" = "Адрес";
 "adyen.streetField.title" = "Улица";

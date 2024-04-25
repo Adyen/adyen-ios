@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -38,6 +38,7 @@ internal final class StoredCardComponent: PaymentComponent, PaymentAware, Presen
     
     internal lazy var storedCardAlertManager: StoredCardAlertManager = {
         sendInitialAnalytics()
+        sendDidLoadEvent()
         
         let manager = StoredCardAlertManager(paymentMethod: storedCardPaymentMethod,
                                              context: context,

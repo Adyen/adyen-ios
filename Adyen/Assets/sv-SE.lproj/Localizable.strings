@@ -87,9 +87,9 @@
 "adyen.billingAddress.placeholder" = "Din faktureringsadress";
 "adyen.deliveryAddressSection.title" = "Leveransadress";
 "adyen.deliveryAddress.placeholder" = "Din leveransadress";
-"adyen.countryField.title" = "Land";
-"adyen.countryField.placeholder" = "Land";
-"adyen.countryField.invalid" = "Ogiltigt land";
+"adyen.countryField.title" = "Land/region";
+"adyen.countryField.placeholder" = "Land/region";
+"adyen.countryField.invalid" = "Ogiltigt land/region";
 "adyen.addressField.title" = "Adress";
 "adyen.addressField.placeholder" = "Adress";
 "adyen.streetField.title" = "Gatuadress";

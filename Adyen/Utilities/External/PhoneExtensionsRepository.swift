@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -46,7 +46,11 @@ public enum PhoneNumberPaymentMethod {
         case .mbWay:
             return ["PT", "ES"]
         case .generic:
-            return Array(allCountriesPhoneExtensions.keys).sorted()
+            return Array(allCountriesPhoneExtensions.keys).sorted { lhs, rhs in
+                let localizedLhs = Locale.current.localizedString(forRegionCode: lhs) ?? lhs
+                let localizedRhs = Locale.current.localizedString(forRegionCode: rhs) ?? rhs
+                return localizedLhs < localizedRhs
+            }
         }
     }
 }

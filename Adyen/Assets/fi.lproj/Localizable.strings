@@ -87,9 +87,9 @@
 "adyen.billingAddress.placeholder" = "Laskutusosoitteesi";
 "adyen.deliveryAddressSection.title" = "Toimitusosoite";
 "adyen.deliveryAddress.placeholder" = "Toimitusosoitteesi";
-"adyen.countryField.title" = "Maa";
-"adyen.countryField.placeholder" = "Maa";
-"adyen.countryField.invalid" = "Virheellinen maa";
+"adyen.countryField.title" = "Maa/alue";
+"adyen.countryField.placeholder" = "Maa/alue";
+"adyen.countryField.invalid" = "Virheellinen maa/alue";
 "adyen.addressField.title" = "Osoite";
 "adyen.addressField.placeholder" = "Osoite";
 "adyen.streetField.title" = "Katu";

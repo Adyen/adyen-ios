@@ -87,9 +87,9 @@
 "adyen.billingAddress.placeholder" = "Uw factuuradres";
 "adyen.deliveryAddressSection.title" = "Bezorgadres";
 "adyen.deliveryAddress.placeholder" = "Uw bezorgadres";
-"adyen.countryField.title" = "Land";
-"adyen.countryField.placeholder" = "Land";
-"adyen.countryField.invalid" = "Ongeldig land";
+"adyen.countryField.title" = "Land/regio";
+"adyen.countryField.placeholder" = "Land/regio";
+"adyen.countryField.invalid" = "Ongeldig land/regio";
 "adyen.addressField.title" = "Adres";
 "adyen.addressField.placeholder" = "Adres";
 "adyen.streetField.title" = "Straatnaam";

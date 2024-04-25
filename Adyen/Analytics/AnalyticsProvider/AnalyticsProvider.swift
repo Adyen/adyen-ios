@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -126,7 +126,11 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
         
         // as per this call's limitation, we only send up to the
         // limit of each event and discard the older ones
-        var request = AnalyticsRequest(checkoutAttemptId: checkoutAttemptId)
+        let platform = configuration.context.platform.rawValue
+        var request = AnalyticsRequest(
+            checkoutAttemptId: checkoutAttemptId,
+            platform: platform
+        )
         request.infos = events.infos.suffix(Constants.infoLimit)
         request.logs = events.logs.suffix(Constants.logLimit)
         request.errors = events.errors.suffix(Constants.errorLimit)

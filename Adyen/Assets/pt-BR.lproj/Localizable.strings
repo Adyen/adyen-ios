@@ -87,9 +87,9 @@
 "adyen.billingAddress.placeholder" = "Endereço de cobrança";
 "adyen.deliveryAddressSection.title" = "Endereço de entrega";
 "adyen.deliveryAddress.placeholder" = "Seu endereço de entrega";
-"adyen.countryField.title" = "País";
-"adyen.countryField.placeholder" = "País";
-"adyen.countryField.invalid" = "País inválido";
+"adyen.countryField.title" = "País/região";
+"adyen.countryField.placeholder" = "País/região";
+"adyen.countryField.invalid" = "País/região inválido";
 "adyen.addressField.title" = "Endereço";
 "adyen.addressField.placeholder" = "Endereço";
 "adyen.streetField.title" = "Rua";

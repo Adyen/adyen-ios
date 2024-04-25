@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -39,6 +39,12 @@ open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFor
     
     /// Determines whether the validation can occur while editing is active.
     public var allowsValidationWhileEditing: Bool = false
+    
+    /// Closure that is called when the view of this item begins editing..
+    public var onDidBeginEditing: (() -> Void)?
+    
+    /// Closure that is called when the view of this item ends editing.
+    public var onDidEndEditing: (() -> Void)?
 
     public init(style: FormTextItemStyle) {
         super.init(value: "", style: style)
@@ -46,6 +52,11 @@ open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFor
 
     override public func isValid() -> Bool {
         validator?.isValid(value) ?? true
+    }
+    
+    override public func validationStatus() -> ValidationStatus? {
+        guard let statusValidator = validator as? StatusValidator else { return nil }
+        return statusValidator.validate(value)
     }
     
     /// The formatted text value.
