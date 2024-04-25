@@ -29,7 +29,11 @@ internal final class VoucherView: UIView, Localizable {
     
     private lazy var loadingView = LoadingView(contentView: containerView)
     
-    private var imageLoadingTask: AdyenCancellable?
+    private var imageLoadingTask: AdyenCancellable? {
+        didSet {
+            oldValue?.cancel()
+        }
+    }
     
     internal init(model: Model) {
         self.model = model
@@ -254,7 +258,6 @@ internal final class VoucherView: UIView, Localizable {
     
     private func updateLogo() {
         if superview == nil {
-            imageLoadingTask?.cancel()
             imageLoadingTask = nil
         } else {
             imageLoadingTask = logo.load(url: model.logoUrl, using: model.imageLoader)
