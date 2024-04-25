@@ -35,54 +35,57 @@ public protocol StatusValidator: Validator {
 /// Defines the `||` operator for two `Validator` operands.
 @_spi(AdyenInternal)
 public func || (lhs: Validator, rhs: Validator) -> Validator {
-    ORValidator(lhs: lhs, rhs: rhs)
+    ORValidator(firstValidator: lhs, secondValidator: rhs)
 }
 
 /// Defines the `&&` operator for two `Validator` operands.
 @_spi(AdyenInternal)
 public func && (lhs: Validator, rhs: Validator) -> Validator {
-    ANDValidator(lhs: lhs, rhs: rhs)
+    ANDValidator(firstValidator: lhs, secondValidator: rhs)
 }
 
 /// Interface to allow for two validators.
-internal protocol CombinedValidator: Validator {
-    var lhs: Validator { get }
-    var rhs: Validator { get }
+@_spi(AdyenInternal)
+public protocol CombinedValidator: Validator {
+    var firstValidator: Validator { get }
+    var secondValidator: Validator { get }
 }
 
 extension CombinedValidator {
     
-    internal func maximumLength(for value: String) -> Int {
-        max(lhs.maximumLength(for: value), rhs.maximumLength(for: value))
+    public func maximumLength(for value: String) -> Int {
+        max(firstValidator.maximumLength(for: value), secondValidator.maximumLength(for: value))
     }
 }
 
 /// A validator that is the logical `OR` combination of two `Validator` instances.
-internal final class ORValidator: CombinedValidator {
-    internal let lhs: Validator
-    internal let rhs: Validator
+@_spi(AdyenInternal)
+public final class ORValidator: CombinedValidator {
+    public let firstValidator: Validator
+    public let secondValidator: Validator
     
-    internal init(lhs: Validator, rhs: Validator) {
-        self.lhs = lhs
-        self.rhs = rhs
+    public init(firstValidator: Validator, secondValidator: Validator) {
+        self.firstValidator = firstValidator
+        self.secondValidator = secondValidator
     }
     
-    internal func isValid(_ value: String) -> Bool {
-        lhs.isValid(value) || rhs.isValid(value)
+    public func isValid(_ value: String) -> Bool {
+        firstValidator.isValid(value) || secondValidator.isValid(value)
     }
 }
 
 /// A validator that is the logical `AND` combination of two `Validator` instances.
-internal final class ANDValidator: CombinedValidator {
-    internal let lhs: Validator
-    internal let rhs: Validator
+@_spi(AdyenInternal)
+public final class ANDValidator: CombinedValidator {
+    public let firstValidator: Validator
+    public let secondValidator: Validator
     
-    internal init(lhs: Validator, rhs: Validator) {
-        self.lhs = lhs
-        self.rhs = rhs
+    public init(firstValidator: Validator, secondValidator: Validator) {
+        self.firstValidator = firstValidator
+        self.secondValidator = secondValidator
     }
     
-    internal func isValid(_ value: String) -> Bool {
-        lhs.isValid(value) && rhs.isValid(value)
+    public func isValid(_ value: String) -> Bool {
+        firstValidator.isValid(value) && secondValidator.isValid(value)
     }
 }

@@ -38,6 +38,7 @@ class CardSecurityCodeValidatorTests: XCTestCase {
         XCTAssertNotNil(status.validationError)
         let validationError = status.validationError as? CardValidationError
         XCTAssertEqual(validationError, .securityCodeEmpty)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.securityCodeEmpty)
     }
     
     func testPartialInvalidStatus() {
@@ -47,6 +48,7 @@ class CardSecurityCodeValidatorTests: XCTestCase {
         XCTAssertNotNil(status.validationError)
         let validationError = status.validationError as? CardValidationError
         XCTAssertEqual(validationError, .securityCodePartial)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.securityCodePartial)
     }
     
     func testValidStatusRegular() {
