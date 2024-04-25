@@ -4940,20 +4940,12 @@
 		F9620D8323C73B0D005209FC /* AdyenWeChatPay */ = {
 			isa = PBXGroup;
 			children = (
-				F9620D9B23C74412005209FC /* WeChatPayActionComponent */,
+				F9789C6D23F18EBD000B4B2B /* WeChatPayActionComponent.swift */,
+				F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */,
 				F9620D8423C73B0D005209FC /* AdyenWeChatPay.h */,
 				F9620D8523C73B0D005209FC /* Info.plist */,
 			);
 			path = AdyenWeChatPay;
-			sourceTree = "<group>";
-		};
-		F9620D9B23C74412005209FC /* WeChatPayActionComponent */ = {
-			isa = PBXGroup;
-			children = (
-				F9789C6D23F18EBD000B4B2B /* WeChatPayActionComponent.swift */,
-				F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */,
-			);
-			path = WeChatPayActionComponent;
 			sourceTree = "<group>";
 		};
 		F9639B1524DA90E50073F38A /* Await */ = {

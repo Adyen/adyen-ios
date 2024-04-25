@@ -165,7 +165,7 @@ let package = Package(
                 .target(name: "AdyenActions"),
                 .target(name: "WeChatPaySDK")
             ],
-            path: "AdyenWeChatPay/WeChatPayActionComponent"
+            path: "AdyenWeChatPay"
         ),
         .binaryTarget(
             name: "WeChatPaySDK",
