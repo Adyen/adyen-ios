@@ -169,7 +169,7 @@ let package = Package(
         ),
         .binaryTarget(
             name: "WeChatPaySDK",
-            path: "XCFramework/WeChatPay/WechatOpenSDK.xcframework"
+            path: "XCFramework/WeChatPay/WechatOpenSDK-XCFramework.xcframework"
         ),
         .target(
             name: "AdyenCashAppPay",

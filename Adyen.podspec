@@ -35,7 +35,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'WeChatPaySDK' do |plugin|
-    plugin.vendored_frameworks = 'XCFramework/WeChatPay/WechatOpenSDK.xcframework'
+    plugin.vendored_frameworks = 'XCFramework/WeChatPay/WechatOpenSDK-XCFramework.xcframework'
   end
 
   s.subspec 'CashAppPay' do |plugin|
