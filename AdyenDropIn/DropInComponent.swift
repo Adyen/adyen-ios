@@ -236,14 +236,8 @@ public final class DropInComponent: NSObject,
         switch component {
         case let component as PresentableComponent:
             navigationController.present(asModal: component)
-        case let component as InstantPaymentComponent:
+        case let component as PaymentInitiable:
             component.initiatePayment()
-        // swiftlint:disable switch_case_alignment
-        #if canImport(TwintSDK)
-            case let component as TwintComponent:
-                component.initiatePayment()
-        #endif
-        // swiftlint:enable switch_case_alignment
         default:
             break
         }

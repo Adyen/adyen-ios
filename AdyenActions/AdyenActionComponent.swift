@@ -10,20 +10,20 @@ import Foundation
 import UIKit
 
 /**
-  An action handler component to perform any supported action out of the box.
-
+ An action handler component to perform any supported action out of the box.
+ 
  - SeeAlso:
  [Implementation Reference](https://github.com/Adyen/adyen-ios#handling-an-action)
  */
 public final class AdyenActionComponent: ActionComponent, ActionHandlingComponent {
-
+    
     /// :nodoc:
     /// The context object for this component.
     public let context: AdyenContext
-
+    
     /// The object that acts as the delegate of the action component.
     public weak var delegate: ActionComponentDelegate?
-
+    
     /// The object that acts as the presentation delegate of the action component.
     public weak var presentationDelegate: PresentationDelegate?
     
@@ -116,7 +116,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
             self.twint = twint
         }
     }
-
+    
     internal var currentActionComponent: Component?
     
     /// Initializes a new instance of `AdyenActionComponent`
@@ -170,11 +170,11 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         
         component.handle(action)
     }
-
+    
     private func handle(_ action: ThreeDS2Action) {
         let component = createThreeDS2Component()
         currentActionComponent = component
-
+        
         component.handle(action)
     }
     
@@ -184,7 +184,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         
         component.handle(action)
     }
-
+    
     private func createThreeDS2Component() -> ThreeDS2Component {
         let threeDS2Configuration = ThreeDS2Component.Configuration(redirectComponentStyle: configuration.style.redirectComponentStyle,
                                                                     appearanceConfiguration: configuration.threeDS.appearanceConfiguration,
@@ -194,7 +194,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
-
+        
         return component
     }
     
@@ -208,17 +208,13 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         }
         threeDS2Component.handle(action)
     }
-
+    
     private func handle(_ sdkAction: SDKAction) {
         switch sdkAction {
         case let .weChatPay(weChatPaySDKAction):
             handle(weChatPaySDKAction)
-        // swiftlint:disable switch_case_alignment
-        #if canImport(TwintSDK)
-            case let .twint(twintSDKAction):
-                handle(twintSDKAction)
-        #endif
-            // swiftlint:enable switch_case_alignment
+        case let .twint(twintSDKAction):
+            handle(twintSDKAction)
         }
     }
     
@@ -235,15 +231,15 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         
         currentActionComponent = weChatPaySDKActionComponent
     }
-
-    #if canImport(TwintSDK)
-        private func handle(_ action: TwintSDKAction) {
+    
+    private func handle(_ action: TwintSDKAction) {
+        #if canImport(TwintSDK)
             guard let twintConfiguration = configuration.twint else {
                 AdyenAssertion.assertionFailure(
                     message: "Twint action configuration instance must not be nil in order to use AdyenTwint")
                 return
             }
-            
+        
             let component = TwintSDKActionComponent(
                 context: context,
                 configuration: .init(
@@ -255,12 +251,12 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
             component._isDropIn = _isDropIn
             component.delegate = delegate
             component.presentationDelegate = presentationDelegate
-
+        
             component.handle(action)
             currentActionComponent = component
-        }
-    #endif
-
+        #endif
+    }
+    
     private func handle(_ action: AwaitAction) {
         let component = AwaitComponent(context: context)
         component.configuration.style = configuration.style.awaitComponentStyle
@@ -280,11 +276,11 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
         component.configuration.localizationParameters = configuration.localizationParameters
-
+        
         component.handle(action)
         currentActionComponent = component
     }
-
+    
     private func handle(_ action: QRCodeAction) {
         let component = QRCodeActionComponent(context: context)
         component.configuration.style = configuration.style.qrCodeComponentStyle
@@ -292,11 +288,11 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
         component.configuration.localizationParameters = configuration.localizationParameters
-
+        
         component.handle(action)
         currentActionComponent = component
     }
-
+    
     private func handle(_ action: DocumentAction) {
         let component = DocumentComponent(context: context)
         component.configuration.style = configuration.style.documentActionComponentStyle

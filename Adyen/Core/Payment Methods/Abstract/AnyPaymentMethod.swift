@@ -39,9 +39,7 @@ internal enum AnyPaymentMethod: Codable {
     case onlineBanking(OnlineBankingPaymentMethod)
     case upi(UPIPaymentMethod)
     case cashAppPay(CashAppPayPaymentMethod)
-    #if canImport(TwintSDK)
-        case twint(TwintPaymentMethod)
-    #endif
+    case twint(TwintPaymentMethod)
 
     case none
     
@@ -78,11 +76,7 @@ internal enum AnyPaymentMethod: Codable {
         case let .onlineBanking(paymentMethod): return paymentMethod
         case let .upi(paymentMethod): return paymentMethod
         case let .cashAppPay(paymentMethod): return paymentMethod
-        // swiftlint:disable switch_case_alignment
-        #if canImport(TwintSDK)
-            case let .twint(paymentMethod): return paymentMethod
-        #endif
-        // swiftlint:enable switch_case_alignment
+        case let .twint(paymentMethod): return paymentMethod
         case .none: return nil
         }
     }

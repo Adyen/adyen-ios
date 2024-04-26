@@ -144,7 +144,8 @@ import Foundation
             let appChooserViewController = twint.controller(
                 for: installedApps,
                 selectionHandler: { [weak self] in
-                    self?.invokeTwint(
+                    guard let self else { return }
+                    self.invokeTwint(
                         app: $0 ?? installedApps[0],
                         action: action
                     )
@@ -166,6 +167,8 @@ import Foundation
         private func handlePaymentResult(error: Error?, action: TwintSDKAction) {
             guard let delegate else { return }
 
+            // Twint always returns an error (even if the call was successful)
+            // We have to treat the error as optional because of Obj-C
             if let error, (error as NSError).code != TWErrorCode.B_SUCCESS.rawValue {
                 delegate.didFail(with: error, from: self)
                 return
@@ -208,7 +211,7 @@ import Foundation
             }
         }
 
-        fileprivate func cleanup() {
+        private func cleanup() {
             pollingComponent?.didCancel()
         }
     }

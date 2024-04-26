@@ -27,7 +27,6 @@ private struct PaymentMethodField: Decodable {
     private enum CodingKeys: String, CodingKey {
         case key, type, isOptional = "optional"
     }
-    
 }
 
 internal enum AnyPaymentMethodDecoder {

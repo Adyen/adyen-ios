@@ -56,3 +56,6 @@ public final class TwintComponent: PaymentComponent {
         submit(data: paymentData)
     }
 }
+
+@_spi(AdyenInternal)
+extension TwintComponent: PaymentInitiable {}
