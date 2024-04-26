@@ -9,11 +9,16 @@ import Foundation
 /// Any object that is aware of `DelegatedAuthenticationData`.
 @_spi(AdyenInternal)
 public protocol DelegatedAuthenticationAware {
-    var delegatedAuthenticationData: DelegatedAuthenticationData? { get }
+    var delegatedAuthenticationData: DelegatedAuthenticationData { get }
+}
+
+public struct DelegatedAuthenticationData: Encodable {
+    let delegatedAuthenticationRequested = true
+    public init() {}
 }
 
 /// Delegated Authentication Data.
-public enum DelegatedAuthenticationData: Codable {
+public enum DelegatedAuthenticationDataa: Codable {
     
     /// Describes any error that occurs while decoding the `DelegatedAuthenticationData`.
     public enum DecodingError: LocalizedError {

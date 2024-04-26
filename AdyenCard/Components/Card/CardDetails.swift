@@ -63,7 +63,8 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
     public let selectedBrand: String?
     
     /// Delegated Authentication Data.
-    public let delegatedAuthenticationData: DelegatedAuthenticationData?
+    public let delegatedAuthenticationData: DelegatedAuthenticationData = .init()
+//    public let delegatedAuthenticationData: DelegatedAuthenticationData?
 
     /// Initializes the card payment details.
     ///
@@ -96,20 +97,20 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         self.taxNumber = kcpDetails?.taxNumber
         self.password = kcpDetails?.password
         self.socialSecurityNumber = socialSecurityNumber
-        self.delegatedAuthenticationData = delegatedAuthenticationData ?? Self.createDelegatedAuthenticationData()
+//        self.delegatedAuthenticationData = delegatedAuthenticationData ?? Self.createDelegatedAuthenticationData()
     }
     
-    private static func createDelegatedAuthenticationData() -> DelegatedAuthenticationData? {
-        #if canImport(AdyenAuthentication)
-            if #available(iOS 14.0, *) {
-                return (try? DeviceSupportChecker().checkSupport()).map { DelegatedAuthenticationData.sdkOutput($0) }
-            } else {
-                return nil
-            }
-        #else
-            return nil
-        #endif
-    }
+//    private static func createDelegatedAuthenticationData() -> DelegatedAuthenticationData? {
+//        #if canImport(AdyenAuthentication)
+//            if #available(iOS 14.0, *) {
+//                return (try? DeviceSupportChecker().checkSupport()).map { DelegatedAuthenticationData.sdkOutput($0) }
+//            } else {
+//                return nil
+//            }
+//        #else
+//            return nil
+//        #endif
+//    }
 
     /// Initializes the card payment details for a stored card payment method.
     ///
@@ -131,7 +132,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         self.password = nil
         self.socialSecurityNumber = nil
         self.selectedBrand = nil
-        self.delegatedAuthenticationData = nil
+//        self.delegatedAuthenticationData = nil
     }
 
     // MARK: - Encoding
