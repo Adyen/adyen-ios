@@ -13,8 +13,6 @@ import Foundation
 
 #if !targetEnvironment(simulator) && canImport(AdyenWeChatPay)
 
-    import AdyenWeChatPay
-
     /// Action component to handle WeChat Pay SDK action.
     public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
 
