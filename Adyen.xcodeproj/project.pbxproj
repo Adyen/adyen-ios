@@ -33,6 +33,7 @@
 		0058691928B6451000B65A19 /* QRCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691828B6451000B65A19 /* QRCodeViewModel.swift */; };
 		0058691C28B6457700B65A19 /* QRCodeActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691B28B6457700B65A19 /* QRCodeActionComponent.swift */; };
 		0058692528BE0FB700B65A19 /* QRCodeViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058692428BE0FB700B65A19 /* QRCodeViewDelegateMock.swift */; };
+		005DC32D2BDB976000D5591C /* AdyenWeChatPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0067E73D29658CB6005B8D76 /* FormImageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0067E73C29658CB6005B8D76 /* FormImageItem.swift */; };
 		0067E740296C161E005B8D76 /* UPIComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0067E73F296C161E005B8D76 /* UPIComponentTests.swift */; };
 		006DCC03295C3E930015EA79 /* SegmentedControlStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006DCC02295C3E930015EA79 /* SegmentedControlStyle.swift */; };
@@ -41,7 +42,6 @@
 		00A25E602A404342001B32B6 /* AdyenSdkVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5F2A404342001B32B6 /* AdyenSdkVersion.swift */; };
 		00C3DB0E2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */; };
 		00C3DB0F2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */; };
-		00CC97762BCEA6BA00466E95 /* WechatOpenSDK-XCFramework.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 00CC97742BCEA69600466E95 /* WechatOpenSDK-XCFramework.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		00CC97782BCEA6E700466E95 /* WechatOpenSDK-XCFramework.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 00CC97742BCEA69600466E95 /* WechatOpenSDK-XCFramework.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		00CC977A2BCEB66A00466E95 /* WechatOpenSDK-XCFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00CC97742BCEA69600466E95 /* WechatOpenSDK-XCFramework.xcframework */; };
 		00CC977B2BCEB67D00466E95 /* AdyenWeChatPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; platformFilter = ios; };
@@ -1342,7 +1342,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				00CC97762BCEA6BA00466E95 /* WechatOpenSDK-XCFramework.xcframework in Embed Frameworks */,
+				005DC32D2BDB976000D5591C /* AdyenWeChatPay.framework in Embed Frameworks */,
 				F9175EEF2593955D00D653BE /* AdyenComponents.framework in Embed Frameworks */,
 				F92327C525A46EF0002C5BC4 /* AdyenEncryption.framework in Embed Frameworks */,
 				F973A91A2791C3B0005AA753 /* AdyenActions.framework in Embed Frameworks */,
