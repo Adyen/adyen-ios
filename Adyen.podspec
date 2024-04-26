@@ -32,6 +32,7 @@ Pod::Spec.new do |s|
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/Actions'
     plugin.vendored_frameworks = 'XCFramework/WeChatPay/WechatOpenSDK-XCFramework.xcframework'
+    plugin.xcconfig = { 'SWIFT_OBJC_BRIDGING_HEADER' => '${POD_ROOT}/Adyen/WeChatPay/AdyenWeChatPay.h' }
   end
 
   s.subspec 'CashAppPay' do |plugin|
