@@ -13,3 +13,5 @@ FOUNDATION_EXPORT double AdyenWeChatPayVersionNumber;
 FOUNDATION_EXPORT const unsigned char AdyenWeChatPayVersionString[];
 
 @import Adyen;
+
+#import <WXApi.h>

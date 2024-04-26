@@ -31,10 +31,6 @@ Pod::Spec.new do |s|
     plugin.source_files = 'AdyenWeChatPay/**/*.swift'
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/Actions'
-    plugin.dependency 'Adyen/WeChatPaySDK'
-  end
-
-  s.subspec 'WeChatPaySDK' do |plugin|
     plugin.vendored_frameworks = 'XCFramework/WeChatPay/WechatOpenSDK-XCFramework.xcframework'
   end
 
