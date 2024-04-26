@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,7 +14,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     private var context: AddressViewModelBuilderContext {
         didSet {
-            reloadFields()
+            self.reloadFields()
         }
     }
     
@@ -108,7 +108,6 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         return FormRegionPickerItem(
             preselectedRegion: defaultCountry,
             selectableRegions: countries,
-            shouldShowCountryFlags: true,
             validationFailureMessage: localizedString(
                 .countryFieldInvalid,
                 configuration.localizationParameters
@@ -188,7 +187,6 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         let item = FormRegionPickerItem(
             preselectedRegion: defaultRegion,
             selectableRegions: subRegions,
-            shouldShowCountryFlags: false,
             validationFailureMessage: validationMessage,
             title: itemTitle,
             placeholder: itemTitle,

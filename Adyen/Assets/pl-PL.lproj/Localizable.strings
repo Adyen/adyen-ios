@@ -87,9 +87,9 @@
 "adyen.billingAddress.placeholder" = "Twój adres rozliczeniowy";
 "adyen.deliveryAddressSection.title" = "Adres dostawy";
 "adyen.deliveryAddress.placeholder" = "Adres dostawy";
-"adyen.countryField.title" = "Kraj";
-"adyen.countryField.placeholder" = "Kraj";
-"adyen.countryField.invalid" = "Nieprawidłowy kraj";
+"adyen.countryField.title" = "Kraj/Region";
+"adyen.countryField.placeholder" = "Kraj/Region";
+"adyen.countryField.invalid" = "Nieprawidłowy kraj/region";
 "adyen.addressField.title" = "Adres";
 "adyen.addressField.placeholder" = "Adres";
 "adyen.streetField.title" = "Ulica";
@@ -181,6 +181,7 @@
 "adyen.UPI.QRCodeInstructions" = "Zrób zrzut ekranu, aby przesłać go w aplikacji UPI lub zeskanuj kod QR za pomocą preferowanej aplikacji UPI, aby zakończyć płatność.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "Na tym urządzeniu nie ma żadnej wersji TWINT lub jest ona nieaktualna. Zaktualizuj lub zainstaluj aplikację TWINT.";
 "adyen.threeds2.DA.registration.title" = "Bezpieczna i szybka kasa!";
 "adyen.threeds2.DA.registration.description" = "Następnym razem na tym urządzeniu możesz dokończyć transakcję szybciej, korzystając ze swoich danych biometrycznych.";
 "adyen.threeds2.DA.registration.positiveButton" = "Włączenie szybkiej kasy";

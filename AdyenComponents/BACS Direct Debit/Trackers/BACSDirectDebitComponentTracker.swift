@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,6 +9,7 @@ import Foundation
 
 internal protocol BACSDirectDebitComponentTrackerProtocol: AnyObject {
     func sendInitialAnalytics()
+    func sendDidLoadEvent()
 }
 
 internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerProtocol {
@@ -38,7 +39,12 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
         let amount = context.payment?.amount
         let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AnalyticsForSession.sessionId)
         context.analyticsProvider?.sendInitialAnalytics(with: flavor,
-                                                         additionalFields: additionalFields)
+                                                        additionalFields: additionalFields)
+    }
+    
+    internal func sendDidLoadEvent() {
+        let infoEvent = AnalyticsEventInfo(component: paymentMethod.type.rawValue, type: .rendered)
+        context.analyticsProvider?.add(info: infoEvent)
     }
 
 }

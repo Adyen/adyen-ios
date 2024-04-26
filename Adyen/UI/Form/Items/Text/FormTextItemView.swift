@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -61,6 +61,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     }
 
     override public func reset() {
+        textField.text = ""
         item.value = ""
         resetValidationStatus()
     }
@@ -234,12 +235,14 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// Subclasses can override this method to stay notified when the text field resigns its first responder status.
     open func textFieldDidEndEditing(_ textField: UITextField) {
         isEditing = false
+        item.onDidEndEditing?()
     }
     
     /// This method hides validation accessories icons.
     /// Subclasses can override this method to stay notified when textField became the first responder.
     open func textFieldDidBeginEditing(_ textField: UITextField) {
         isEditing = true
+        item.onDidBeginEditing?()
     }
 
     override open func updateValidationStatus(forced: Bool = false) {

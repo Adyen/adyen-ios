@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,8 @@
 import Foundation
 
 /// Validates a card's security code.
-public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObserver {
+@_spi(AdyenInternal)
+public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObserver, StatusValidator {
     
     /// Initiate new instance of CardSecurityCodeValidator
     public init() {
@@ -39,6 +40,22 @@ public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObser
         let length = cardType == .americanExpress ? 4 : 3
         maximumLength = length
         minimumLength = length
+    }
+    
+    public func validate(_ value: String) -> ValidationStatus {
+        if super.isValid(value) {
+            return .valid
+        }
+        
+        if value.isEmpty {
+            return .invalid(CardValidationError.securityCodeEmpty)
+        }
+        
+        return .invalid(CardValidationError.securityCodePartial)
+    }
+    
+    override public func isValid(_ value: String) -> Bool {
+        validate(value).isValid
     }
     
 }

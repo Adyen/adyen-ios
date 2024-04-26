@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,6 +8,11 @@ import Foundation
 
 @_spi(AdyenInternal)
 public final class FormPostalCodeItem: FormTextItem {
+    
+    private enum Constants {
+        static let minLength = 2
+        static let maxLength = 30
+    }
     
     internal var localizationParameters: LocalizationParameters?
 
@@ -19,7 +24,7 @@ public final class FormPostalCodeItem: FormTextItem {
         
         title = localizedString(.postalCodeFieldTitle, localizationParameters)
         placeholder = localizedString(.postalCodeFieldPlaceholder, localizationParameters)
-        validator = LengthValidator(minimumLength: 2, maximumLength: 30)
+        validator = PostalCodeValidator(minimumLength: Constants.minLength, maximumLength: Constants.maxLength)
         validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
         contentType = .postalCode
     }
@@ -30,10 +35,10 @@ public final class FormPostalCodeItem: FormTextItem {
             title = localizedString(.postalCodeFieldTitle,
                                     localizationParameters) + " " + localizedString(.fieldTitleOptional,
                                                                                     localizationParameters)
-            validator = LengthValidator(minimumLength: 0, maximumLength: 30)
+            validator = PostalCodeValidator(minimumLength: 0, maximumLength: Constants.maxLength)
         } else {
             title = localizedString(.postalCodeFieldTitle, localizationParameters)
-            validator = LengthValidator(minimumLength: 2, maximumLength: 30)
+            validator = PostalCodeValidator(minimumLength: Constants.minLength, maximumLength: Constants.maxLength)
         }
     }
     

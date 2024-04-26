@@ -192,3 +192,7 @@ whiteList:
   - bizum
   - alipay
   - checkoutanalytics
+  - xcprivacy
+  - twint
+  - xcframework
+  - wechat

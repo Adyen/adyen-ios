@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,12 +13,22 @@ public struct FormComponentStyle: TintableStyle {
     public var backgroundColor = UIColor.Adyen.componentBackground
 
     /// The section header style.
-    public var sectionHeader = TextStyle(font: .preferredFont(forTextStyle: .headline),
-                                         color: UIColor.Adyen.componentLabel,
-                                         textAlignment: .natural)
+    public var sectionHeader = TextStyle(
+        font: .preferredFont(forTextStyle: .headline),
+        color: UIColor.Adyen.componentLabel,
+        textAlignment: .natural
+    ) {
+        didSet {
+            addressStyle.title = sectionHeader
+        }
+    }
     
     /// The text field style.
-    public var textField = FormTextItemStyle()
+    public var textField = FormTextItemStyle() {
+        didSet {
+            addressStyle.textField = textField
+        }
+    }
     
     /// The toggle style.
     public var toggle = FormToggleItemStyle()
@@ -54,10 +64,7 @@ public struct FormComponentStyle: TintableStyle {
     )
 
     /// The address style generated based on other field's value.
-    public var addressStyle: AddressStyle {
-        .init(title: sectionHeader,
-              textField: textField)
-    }
+    public var addressStyle: AddressStyle
 
     /// The error message indicator style.
     public var errorStyle = FormErrorItemStyle()
@@ -101,6 +108,7 @@ public struct FormComponentStyle: TintableStyle {
         self.secondaryButtonItem = secondaryButton
         self.hintLabel = helper
         self.sectionHeader = sectionHeader
+        self.addressStyle = .init(title: sectionHeader, textField: textField)
     }
     
     /// Initializes the Form UI style.
@@ -117,16 +125,20 @@ public struct FormComponentStyle: TintableStyle {
         self.toggle = toggle
         self.mainButtonItem = FormButtonItemStyle(button: mainButton)
         self.secondaryButtonItem = FormButtonItemStyle(button: secondaryButton)
+        self.addressStyle = .init(title: sectionHeader, textField: textField)
     }
     
     /// Initializes the form style with the default style and custom tint for all elements.
     /// - Parameter tintColor: The color for tinting buttons. textfields, icons and switches.
     public init(tintColor: UIColor) {
+        self.addressStyle = .init(title: sectionHeader, textField: textField)
         setTintColor(tintColor)
     }
     
     /// Initializes the form style with the default style.
-    public init() { /* public */ }
+    public init() {
+        self.addressStyle = .init(title: sectionHeader, textField: textField)
+    }
 
     private mutating func setTintColor(_ value: UIColor?) {
         guard let tintColor = value else { return }

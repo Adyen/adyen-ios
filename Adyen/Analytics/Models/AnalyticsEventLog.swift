@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,13 +10,17 @@ import Foundation
 /// A log in the analytics scheme represents important checkpoints such as the pay button press, 3ds challenge etc.
 public struct AnalyticsEventLog: AnalyticsEvent {
     
+    public var id: String = UUID().uuidString
+    
+    public var timestamp = Int(Date().timeIntervalSince1970)
+    
     public var component: String
     
     public var type: LogType
     
-    public var subType: LogSubType
+    public var subType: LogSubType?
     
-    public var target: String
+    public var target: AnalyticsEventTarget?
     
     public var message: String?
     
@@ -35,5 +39,11 @@ public struct AnalyticsEventLog: AnalyticsEvent {
         case qrCode = "QrCode"
         case bankTransfer = "BankTransfer"
         case sdk = "Sdk"
+    }
+    
+    public init(component: String, type: LogType, subType: LogSubType? = nil) {
+        self.component = component
+        self.type = type
+        self.subType = subType
     }
 }

@@ -59,7 +59,7 @@ let package = Package(
         .package(
             name: "Adyen3DS2",
             url: "https://github.com/Adyen/adyen-3ds2-ios",
-            .exact(Version(2, 3, 3))
+            .exact(Version(2, 4, 1))
         ),
         .package(
             name: "AdyenAuthentication",
@@ -70,11 +70,6 @@ let package = Package(
             name: "AdyenNetworking",
             url: "https://github.com/Adyen/adyen-networking-ios",
             .exact(Version(2, 0, 0))
-        ),
-        .package(
-            name: "AdyenWeChatPayInternal",
-            url: "https://github.com/Adyen/adyen-wechatpay-ios",
-            .exact(Version(2, 1, 0))
         ),
         .package(
             name: "PayKit",
@@ -92,7 +87,8 @@ let package = Package(
             exclude: [
                 "Info.plist",
                 "Utilities/Non SPM Bundle Extension" // This is to exclude `BundleExtension.swift` file, since swift packages has different code to access internal resources.
-            ]
+            ],
+            resources: [.process("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "AdyenEncryption",
@@ -166,10 +162,14 @@ let package = Package(
         .target(
             name: "AdyenWeChatPay",
             dependencies: [
-                .product(name: "AdyenWeChatPayInternal", package: "AdyenWeChatPayInternal"),
-                .target(name: "AdyenActions")
+                .target(name: "AdyenActions"),
+                .target(name: "WeChatPaySDK")
             ],
             path: "AdyenWeChatPay/WeChatPayActionComponent"
+        ),
+        .binaryTarget(
+            name: "WeChatPaySDK",
+            path: "XCFramework/WeChatPay/WechatOpenSDK-XCFramework.xcframework"
         ),
         .target(
             name: "AdyenCashAppPay",

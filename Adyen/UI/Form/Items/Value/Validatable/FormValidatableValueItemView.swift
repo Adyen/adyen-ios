@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -101,9 +101,19 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         }
     }
     
-    private func hideAlertLabel(_ hidden: Bool, animated: Bool = true) {
-        guard hidden || alertLabel.text != nil else { return }
-        alertLabel.adyen.hide(animationKey: "hide_alertLabel", hidden: hidden, animated: animated)
+    private func hideAlertLabel(_ shouldHide: Bool, animated: Bool = true) {
+        guard shouldHide || alertLabel.text != nil else { return }
+        if !shouldHide {
+            triggerValidationErrorIfNeeded()
+        }
+        alertLabel.adyen.hide(animationKey: "hide_alertLabel", hidden: shouldHide, animated: animated)
+    }
+    
+    private func triggerValidationErrorIfNeeded() {
+        guard window != nil,
+              let validationStatus = item.validationStatus(),
+              let error = validationStatus.validationError else { return }
+        item.onDidShowValidationError?(error)
     }
     
     internal func resetValidationStatus() {
