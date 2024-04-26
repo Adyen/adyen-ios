@@ -5,6 +5,7 @@
 //
 
 @testable @_spi(AdyenInternal) import AdyenCard
+@_spi(AdyenInternal) @testable import Adyen
 import XCTest
 
 class CardExpiryDateValidatorTests: XCTestCase {
@@ -64,6 +65,61 @@ class CardExpiryDateValidatorTests: XCTestCase {
         XCTAssertFalse(validator.isValid("1320"))
         XCTAssertFalse(validator.isValid("0020"))
         
+    }
+    
+    func testEmptyInvalidStatus() {
+        let validator = CardExpiryDateValidator(referenceDate: getReferenceDate())
+        let status = validator.validate("")
+        
+        XCTAssertNotNil(status.validationError)
+        let validationError = status.validationError as? CardValidationError
+        XCTAssertEqual(validationError, .expiryDateEmpty)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.expiryDateEmpty)
+    }
+    
+    func testExpiredStatus() {
+        let validator = CardExpiryDateValidator(referenceDate: getReferenceDate())
+        var status = validator.validate("1111")
+        
+        XCTAssertNotNil(status.validationError)
+        var validationError = status.validationError as? CardValidationError
+        XCTAssertEqual(validationError, .cardExpired)
+        
+        status = validator.validate("1209")
+        validationError = status.validationError as? CardValidationError
+        XCTAssertEqual(validationError, .cardExpired)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.cardExpired)
+    }
+    
+    func testExpiryDateTooFarInFuture() {
+        let validator = CardExpiryDateValidator(referenceDate: getReferenceDate())
+        let status = validator.validate("1160")
+        
+        XCTAssertNotNil(status.validationError)
+        let validationError = status.validationError as? CardValidationError
+        XCTAssertEqual(validationError, .expiryDateTooFar)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.expiryDateTooFar)
+    }
+    
+    func testPartialInvalidStatuses() {
+        testPartialInvalidstatus("1")
+        testPartialInvalidstatus("11")
+        testPartialInvalidstatus("0")
+        testPartialInvalidstatus("00")
+        testPartialInvalidstatus("223")
+        testPartialInvalidstatus("1430")
+        testPartialInvalidstatus("23ab")
+        testPartialInvalidstatus("0000")
+    }
+    
+    private func testPartialInvalidstatus(_ value: String) {
+        let validator = CardExpiryDateValidator(referenceDate: getReferenceDate())
+        let status = validator.validate(value)
+        
+        XCTAssertNotNil(status.validationError)
+        let validationError = status.validationError as? CardValidationError
+        XCTAssertEqual(validationError, .expiryDatePartial)
+        XCTAssertEqual(validationError?.analyticsErrorCode, AnalyticsConstants.ValidationErrorCodes.expiryDatePartial)
     }
     
 }
