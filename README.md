@@ -56,7 +56,7 @@ pod 'Adyen/WeChatPay'     // WeChat Pay Component.
 pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
 ```
 
-:warning: _`Adyen/AdyenWeChatPay` and `AdyenWeChatPayInternal` modules doesn't support any simulators and can only be tested on a real device._
+:warning: _`Adyen/AdyenWeChatPay` module doesn't support any simulators and can only be tested on a real device._
 
 ### Carthage
 
@@ -73,10 +73,10 @@ You can add all modules or select individual modules to add to your integration.
 * `AdyenActions`:  action components.
 * `AdyenEncryption`: encryption.
 * `AdyenWeChatPay`: WeChat Pay component.
-* `AdyenWeChatPayInternal`: WeChat Pay component.
+* `AdyenWeChatPay`: WeChat Pay component.
 * `AdyenSwiftUI`: SwiftUI apps specific module.
 
-:warning: _`AdyenWeChatPay` and `AdyenWeChatPayInternal` modules doesn't support any simulators and can only be tested on a real device._
+:warning: _`AdyenWeChatPay` and `AdyenWeChatPay` modules doesn't support any simulators and can only be tested on a real device._
 
 ### Swift Package Manager
 
@@ -101,7 +101,7 @@ The `AdyenSwiftUI` module needs to be explicitly added to use the SwiftUI specif
 
 :warning: _Swift Package Manager for Xcode 12.0 and 12.1 has a [know issue](https://bugs.swift.org/browse/SR-13343) when it comes to importing a dependency that in turn depend on a binary dependencies. A workaround is described [here](https://forums.swift.org/t/swiftpm-binarytarget-dependency-and-code-signing/38953)._
 
-:warning: _`AdyenWeChatPay` and `AdyenWeChatPayInternal` modules doesn't support any simulators and can only be tested on a real device._
+:warning: _`AdyenWeChatPay` and `AdyenWeChatPay` modules doesn't support any simulators and can only be tested on a real device._
 
 ## Drop-in
 
