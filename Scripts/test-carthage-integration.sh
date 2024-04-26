@@ -141,6 +141,7 @@ cp "../Tests/UnitTests/Analytics/AnalyticsProviderMock.swift" Tests/AnalyticsPro
 cp "../Tests/UnitTests/Mocks/DummyData/Dummy.swift" Tests/Dummy.swift
 cp "../Tests/UnitTests/APIClientMock.swift" Tests/APIClientMock.swift
 cp "../Tests/UnitTests/Mocks/ImageLoaderMock.swift" Tests/ImageLoaderMock.swift
+cp "../Tests/UnitTests/Mocks/CancellableMock.swift" Source/CancellableMock.swift
 cp "../Tests/UnitTests/Helpers/String+UIImage.swift" Tests/String+UIImage.swift
 cp "../Tests/UnitTests/APIClientMock.swift" Source/APIClientMock.swift
 cp -a "../Demo/Common" Source/
