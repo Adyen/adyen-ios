@@ -224,7 +224,7 @@ class AdyenActionComponentTests: XCTestCase {
         sut.configuration.twint = .init(callbackAppScheme: expectedCallbackAppScheme)
         sut.handle(Action.sdk(.twint(action)))
         
-        #if canImport(AdyenTwint)
+        #if canImport(TwintSDK)
             let twintComponent = try XCTUnwrap(sut.currentActionComponent as? TwintSDKActionComponent)
             XCTAssertEqual(twintComponent.configuration.callbackAppScheme, expectedCallbackAppScheme)
         #endif

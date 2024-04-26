@@ -239,7 +239,7 @@ public final class DropInComponent: NSObject,
         case let component as InstantPaymentComponent:
             component.initiatePayment()
         // swiftlint:disable switch_case_alignment
-        #if canImport(AdyenTwint)
+        #if canImport(TwintSDK)
             case let component as TwintComponent:
                 component.initiatePayment()
         #endif
