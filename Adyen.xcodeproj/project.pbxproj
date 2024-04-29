@@ -8933,8 +8933,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Adyen/adyen-wechatpay-ios";
 			requirement = {
-				branch = "add-privacy-manifest";
-				kind = branch;
+				kind = exactVersion;
+				version = 2.1.0;
 			};
 		};
 		F913B3EB26B7FAA8008F6CD2 /* XCRemoteSwiftPackageReference "adyen-networking-ios" */ = {
