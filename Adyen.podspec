@@ -31,8 +31,8 @@ Pod::Spec.new do |s|
     plugin.source_files = 'AdyenWeChatPay/**/*.swift'
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/Actions'
-    # plugin.dependency 'AdyenWeChatPayInternal', '2.1.0'
-    plugin.dependency 'AdyenWeChatPayInternal', :git => 'https://github.com/Adyen/adyen-wechatpay-ios.git', :branch => 'add-privacy-manifest'
+    plugin.dependency 'AdyenWeChatPayInternal', '2.1.0'
+    # plugin.dependency 'AdyenWeChatPayInternal', :git => 'https://github.com/Adyen/adyen-wechatpay-ios.git', :branch => 'add-privacy-manifest'
   end
 
   s.subspec 'CashAppPay' do |plugin|
