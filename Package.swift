@@ -189,8 +189,7 @@ let package = Package(
             name: "AdyenTwint",
             dependencies: [
                 .target(name: "Adyen"),
-                .target(name: "AdyenActions"),
-                .target(name: "TwintSDK")
+                .target(name: "AdyenActions")
             ],
             path: "AdyenTwint"
         ),
