@@ -134,6 +134,7 @@
 		8109FF502AD84498000748C8 /* MapkitAddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA3B372AD040D800F5719D /* MapkitAddressLookupProvider.swift */; };
 		81129AE62A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81129AE52A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift */; };
 		8122B9BD2B9A0FF3002FC4D6 /* ErrorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122B9BC2B9A0FF3002FC4D6 /* ErrorMock.swift */; };
+		8136619E2BE0F6F7009AA0CD /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = 8136619D2BE0F6F7009AA0CD /* Adyen3DS2 */; };
 		813BF1122B2365400096940E /* XCTestCase+FirstResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813BF1102B2364E00096940E /* XCTestCase+FirstResponder.swift */; };
 		813BF1132B2365400096940E /* XCTestCase+FirstResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813BF1102B2364E00096940E /* XCTestCase+FirstResponder.swift */; };
 		813EF9DE2A5DA0BC00C65D15 /* FormPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813EF9DD2A5DA0BC00C65D15 /* FormPickerItem.swift */; };
@@ -207,7 +208,6 @@
 		81BDD6DA2B21CF2C0022250E /* AdyenDelegatedAuthentication.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F94D65D92B0364AF0095D61E /* AdyenDelegatedAuthentication.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		81BDD6DD2B21CF480022250E /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A2D01125DBF104008944BE /* PassKit.framework */; };
 		81BDD6DE2B21CF510022250E /* AdyenWeChatPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; };
-		81BDD6DF2B21CF510022250E /* AdyenWeChatPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		81BDD6E32B21CF5C0022250E /* AdyenWeChatPayInternal in Frameworks */ = {isa = PBXBuildFile; productRef = 81BDD6E22B21CF5C0022250E /* AdyenWeChatPayInternal */; };
 		81BE48352BB6D03F003A51F6 /* ImageLoaderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FC2C8C2BB18D0A007F1316 /* ImageLoaderMock.swift */; };
 		81BE48362BB6D1BE003A51F6 /* String+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8107F4832BB1CE8A007745FC /* String+UIImage.swift */; };
@@ -914,6 +914,8 @@
 		F97842D526C2746500677458 /* OXXOVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97842D426C2746500677458 /* OXXOVoucherAction.swift */; };
 		F97842D726C2758E00677458 /* InstantPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97842D626C2758E00677458 /* InstantPaymentMethod.swift */; };
 		F97842D926C3D55200677458 /* OXXOShareableVoucherViewProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97842D826C3D55200677458 /* OXXOShareableVoucherViewProviderTests.swift */; };
+		F9789C6E23F18EBD000B4B2B /* WeChatPayActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C6D23F18EBD000B4B2B /* WeChatPayActionComponent.swift */; };
+		F9789C7523F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */; };
 		F97BC22C2667768B00F1D242 /* AppleWalletPassProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC22B2667768B00F1D242 /* AppleWalletPassProvider.swift */; };
 		F97BC2792668BEE200F1D242 /* AppleWalletError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2782668BEE200F1D242 /* AppleWalletError.swift */; };
 		F97BC2AD2668C63200F1D242 /* AppleWalletPassProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2AC2668C63200F1D242 /* AppleWalletPassProviderTests.swift */; };
@@ -1128,6 +1130,13 @@
 			remoteGlobalIDString = F9175F8B2594986900D653BE;
 			remoteInfo = AdyenActions;
 		};
+		8136619C2BE0F663009AA0CD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F9175F8B2594986900D653BE;
+			remoteInfo = AdyenActions;
+		};
 		819BFB3D2BDBED960018DC9B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
@@ -1176,13 +1185,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = F94D65D82B0364AF0095D61E;
 			remoteInfo = AdyenDelegatedAuthentication;
-		};
-		81BDD6E02B21CF510022250E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F9620D8123C73B0D005209FC;
-			remoteInfo = AdyenWeChatPay;
 		};
 		81DF94062BAAD8EB0001DCBC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1255,13 +1257,6 @@
 			remoteInfo = AdyenWeChatPay;
 		};
 		E72375DA27AABF400020DCF9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F9620D8123C73B0D005209FC;
-			remoteInfo = AdyenWeChatPay;
-		};
-		E74923522798160200DDF6E3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
 			proxyType = 1;
@@ -2551,6 +2546,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8136619E2BE0F6F7009AA0CD /* Adyen3DS2 in Frameworks */,
 				F9175F9E259498C300D653BE /* Adyen.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2607,6 +2603,14 @@
 				81BDD6DE2B21CF510022250E /* AdyenWeChatPay.framework in Frameworks */,
 				F95899D825FA526A00E4113F /* AdyenSwiftUI.framework in Frameworks */,
 				F92980BC27CE409D000CA5CA /* AdyenSession.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F9620D7F23C73B0D005209FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E72375D327AAB90D0020DCF9 /* AdyenActions.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3786,6 +3790,7 @@
 				E2C0E05F220982AE008616F6 /* AdyenCard.framework */,
 				E2C0E07D220B0399008616F6 /* AdyenUIHost.app */,
 				E9B36CAB2243B2FE00EAA368 /* AdyenDropIn.framework */,
+				F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */,
 				F95B6D952527454E002C9062 /* AdyenSwiftUIHost.app */,
 				F9175E55259393E800D653BE /* AdyenComponents.framework */,
 				F9175F8C2594986900D653BE /* AdyenActions.framework */,
@@ -5685,6 +5690,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F9620D7D23C73B0D005209FC /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9620D8623C73B0D005209FC /* AdyenWeChatPay.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -5935,6 +5948,7 @@
 			);
 			name = AdyenActions;
 			packageProductDependencies = (
+				8136619D2BE0F6F7009AA0CD /* Adyen3DS2 */,
 			);
 			productName = AdyenActions;
 			productReference = F9175F8C2594986900D653BE /* AdyenActions.framework */;
@@ -6370,6 +6384,13 @@
 				F94E37B82818138900617382 /* session_response.json in Resources */,
 				F95B6DA125274551002C9062 /* Preview Assets.xcassets in Resources */,
 				F95B6D9E25274551002C9062 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F9620D8023C73B0D005209FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7531,6 +7552,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F9620D7E23C73B0D005209FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9789C7523F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift in Sources */,
+				F9789C6E23F18EBD000B4B2B /* WeChatPayActionComponent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F9CCA3B1296ECB3E00AD643D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -7604,6 +7634,7 @@
 		};
 		819BFB3E2BDBED960018DC9B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			target = F9620D8123C73B0D005209FC /* AdyenWeChatPay */;
 			targetProxy = 819BFB3D2BDBED960018DC9B /* PBXContainerItemProxy */;
 		};
 		819BFB452BDBEEA10018DC9B /* PBXTargetDependency */ = {
@@ -7687,10 +7718,12 @@
 		};
 		E7095B1427AAA32B001C6B2C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			target = F9620D8123C73B0D005209FC /* AdyenWeChatPay */;
 			targetProxy = E7095B1327AAA32B001C6B2C /* PBXContainerItemProxy */;
 		};
 		E72375DB27AABF400020DCF9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			target = F9620D8123C73B0D005209FC /* AdyenWeChatPay */;
 			targetProxy = E72375DA27AABF400020DCF9 /* PBXContainerItemProxy */;
 		};
 		E97B971022980C8B00505476 /* PBXTargetDependency */ = {
@@ -7727,6 +7760,11 @@
 			isa = PBXTargetDependency;
 			target = E2C0E03222097917008616F6 /* Adyen */;
 			targetProxy = F9175F9C259498B400D653BE /* PBXContainerItemProxy */;
+		};
+		F9176007259499F900D653BE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F9175F8B2594986900D653BE /* AdyenActions */;
+			targetProxy = 8136619C2BE0F663009AA0CD /* PBXContainerItemProxy */;
 		};
 		F91761C125A30E1B00D653BE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -8979,7 +9017,7 @@
 			};
 			name = Release;
 		};
-F9620D8B23C73B0D005209FC /* Debug */ = {
+		F9620D8B23C73B0D005209FC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
@@ -9344,6 +9382,11 @@ F9620D8B23C73B0D005209FC /* Debug */ = {
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8136619D2BE0F6F7009AA0CD /* Adyen3DS2 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F9237D3228CA1E7C004F9929 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios" */;
+			productName = Adyen3DS2;
+		};
 		81B8036A2BE0E714003D037F /* AdyenWeChatPayInternal */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E72375CC27AAB7760020DCF9 /* XCRemoteSwiftPackageReference "adyen-wechatpay-ios" */;
