@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -18,7 +18,7 @@ internal final class FormPhoneExtensionPickerItemView: BaseFormPickerItemView<Ph
 
     override internal func updateSelection() {
         phoneExtensionInputControl.label = item.value.element.value
-        phoneExtensionInputControl.flagView.text = item.value.identifier.adyen.countryFlag
+        phoneExtensionInputControl.countryCodeLabel.text = item.value.identifier
     }
 
     override internal func initialize() {

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -29,7 +29,7 @@ public struct AnalyticsContext {
 public extension AnalyticsContext {
 
     enum Platform: String {
-        case iOS = "ios"
+        case iOS = "iOS"
         case reactNative = "react-native"
         case flutter
     }

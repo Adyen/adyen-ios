@@ -14,6 +14,7 @@ excluded:
   - Package.swift
   - DerivedData
   - Carthage
+  - TempProject
 
 line_length:
   ignores_function_declarations: true
@@ -22,3 +23,9 @@ line_length:
   
 file_length:
   warning: 500
+  
+variable_name:
+  min_length:
+    warning: 2
+  max_length:
+    warning: 40

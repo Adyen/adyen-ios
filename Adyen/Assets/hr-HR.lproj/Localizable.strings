@@ -87,9 +87,9 @@
 "adyen.billingAddress.placeholder" = "Vaša adresa za plaćanje";
 "adyen.deliveryAddressSection.title" = "Adresa za dostavu";
 "adyen.deliveryAddress.placeholder" = "Vaša adresa za dostavu";
-"adyen.countryField.title" = "Zemlja";
-"adyen.countryField.placeholder" = "Zemlja";
-"adyen.countryField.invalid" = "Nevažeća zemlja";
+"adyen.countryField.title" = "Zemlja/regija";
+"adyen.countryField.placeholder" = "Zemlja/regija";
+"adyen.countryField.invalid" = "Nevažeća zemlja/regija";
 "adyen.addressField.title" = "Adresa";
 "adyen.addressField.placeholder" = "Adresa";
 "adyen.streetField.title" = "Ulica";
@@ -181,6 +181,7 @@
 "adyen.UPI.QRCodeInstructions" = "Napravite snimku zaslona za prenošenje u aplikaciju UPI ili skenirajte kôd QR pomoću željene aplikacije UPI kako biste završili plaćanje.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "Na ovom uređaju nije instalirana niti jedna ili je instalirana zastarjela verzija aplikacije TWINT. Ažurirajte ili instalirajte aplikaciju TWINT.";
 "adyen.threeds2.DA.registration.title" = "Sigurna i brza naplata!";
 "adyen.threeds2.DA.registration.description" = "Sljedeći put na ovom uređaju možete brže završiti kupnju pomoću svojih biometrijskih podataka.";
 "adyen.threeds2.DA.registration.positiveButton" = "Omogući brzu naplatu";

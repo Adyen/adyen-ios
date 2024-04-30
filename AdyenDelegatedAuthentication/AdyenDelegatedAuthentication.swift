@@ -1,8 +1,7 @@
 //
-//  AdyenDelegatedAuthentication.swift
+// Copyright (c) 2024 Adyen N.V.
 //
-//
-//  Created by Mohamed Eldoheiri on 14/11/2023.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation

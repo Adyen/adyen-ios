@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -73,6 +73,11 @@ public class CardComponent: PresentableComponent,
         }
     }
     
+    /// Determines whether the storedCardComponent is active
+    private var isStoredCardComponentActive: Bool {
+        storedCardComponent != nil
+    }
+    
     /// Initializes the card component.
     ///
     /// - Parameters:
@@ -128,6 +133,11 @@ public class CardComponent: PresentableComponent,
     public var requiresModalPresentation: Bool { storedCardComponent?.requiresModalPresentation ?? true }
     
     public func stopLoading() {
+        // since storedCardComponent is instantiated through this class
+        // cardViewController should not be accessed when it's the storedCardComponent
+        // we should separate stored card component logic into its own
+        if isStoredCardComponentActive { return }
+        
         cardViewController.stopLoading()
     }
     
@@ -182,11 +192,29 @@ public class CardComponent: PresentableComponent,
         formViewController.delegate = self
         formViewController.cardDelegate = self
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
+        
+        formViewController.items.onDidTriggerInfoEvent = { [weak self] infoEventData in
+            self?.sendInfoEvent(with: infoEventData)
+        }
+        
         return formViewController
     }()
     
     private let panThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
     private let binThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
+    
+    private func sendInfoEvent(with data: CardViewController.InfoEventData) {
+        var infoEvent = AnalyticsEventInfo(
+            component: paymentMethod.type.rawValue,
+            type: data.type
+        )
+        infoEvent.target = data.target
+        if let errorCode = data.error?.analyticsErrorCode {
+            infoEvent.validationErrorCode = String(errorCode)
+        }
+        infoEvent.validationErrorMessage = data.error?.analyticsErrorMessage
+        context.analyticsProvider?.add(info: infoEvent)
+    }
 }
 
 extension CardComponent: CardViewControllerDelegate {

@@ -1,0 +1,39 @@
+name: 📸 Generate Snapshots
+on:
+    workflow_dispatch:
+          
+jobs:
+  Generate:
+    runs-on: macos-13-xlarge
+    
+    steps:
+    - uses: actions/checkout@v4
+    - uses: n1hility/cancel-previous-runs@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: 🔨 Select Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '15.1'
+
+    - name: 🧹 Clear existing Snapshots
+      run: |
+        find ./Tests/SnapshotTests -name "__Snapshots__" -exec rm -rf {} +
+    - name: 📸 Generate Snapshots
+      run: |
+        xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "name=iPhone 15 Pro,OS=17.2" -destination "name=iPad (10th generation),OS=17.2" | xcpretty --utf --color
+      env:
+        project: 'Adyen.xcodeproj'
+        params: '-skipPackagePluginValidation'
+        scheme: 'GenerateSnapshots'
+        
+    - name: 🚀 Create Pull Request
+      uses: peter-evans/create-pull-request@v6
+      with:
+        delete-branch: true
+        branch: update-snapshots-github-action
+        commit-message: "🤖 Generated Snapshots"
+        title: "🤖 Generate Snapshots"
+        body: "Regenerate snapshots"
+        token: ${{ secrets.GITHUB_TOKEN }}

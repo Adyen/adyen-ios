@@ -294,9 +294,8 @@ extension CardViewController {
     private var billingAddressItem: FormItem? {
         
         switch configuration.billingAddress.mode {
-        case let .lookup(provider):
+        case .lookup:
             return items.billingAddressPickerItem
-            
         case .full:
             return items.billingAddressPickerItem
             
