@@ -787,7 +787,7 @@
       "type" : "payu_IN_nb"
     },
     {
-        "appIds" : [
+        "apps" : [
             {
                 "id" : "bhim",
                 "name" : "BHIM"
