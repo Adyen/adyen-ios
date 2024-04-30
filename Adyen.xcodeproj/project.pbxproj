@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00050EFD2B0232D600A89EDC /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
 		001BFF422A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */; };
 		001BFF432A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */; };
 		00220955299B8B1C00B2BACD /* BLIKComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00220953299B885600B2BACD /* BLIKComponentUITests.swift */; };
@@ -1115,13 +1114,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 00E5D6502AF4E99A00CDE118;
 			remoteInfo = AdyenTwint;
-		};
-		810CF1322BDA5CE400208135 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E2C0E03222097917008616F6;
-			remoteInfo = Adyen;
 		};
 		810CF1342BDA5CE700208135 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2433,7 +2425,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00050EFD2B0232D600A89EDC /* Adyen.framework in Frameworks */,
 				81DC4D772BDBE8820048B9EF /* TwintSDK.xcframework in Frameworks */,
 				0042EBB52B7E640E001B1F6C /* AdyenActions.framework in Frameworks */,
 			);
@@ -5715,7 +5706,6 @@
 			);
 			dependencies = (
 				810CF1352BDA5CE700208135 /* PBXTargetDependency */,
-				810CF1332BDA5CE400208135 /* PBXTargetDependency */,
 			);
 			name = AdyenTwint;
 			productName = AdyenTwintSDK;
@@ -7621,11 +7611,6 @@
 			isa = PBXTargetDependency;
 			target = 00E5D6502AF4E99A00CDE118 /* AdyenTwint */;
 			targetProxy = 81088A212BDBACB7007FCDB9 /* PBXContainerItemProxy */;
-		};
-		810CF1332BDA5CE400208135 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E2C0E03222097917008616F6 /* Adyen */;
-			targetProxy = 810CF1322BDA5CE400208135 /* PBXContainerItemProxy */;
 		};
 		810CF1352BDA5CE700208135 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
