@@ -6031,6 +6031,27 @@
 			productReference = F95B6D952527454E002C9062 /* AdyenSwiftUIHost.app */;
 			productType = "com.apple.product-type.application";
 		};
+		F9620D8123C73B0D005209FC /* AdyenWeChatPay */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F9620D8D23C73B0D005209FC /* Build configuration list for PBXNativeTarget "AdyenWeChatPay" */;
+			buildPhases = (
+				F9620D7D23C73B0D005209FC /* Headers */,
+				F9620D7E23C73B0D005209FC /* Sources */,
+				F9620D7F23C73B0D005209FC /* Frameworks */,
+				F9620D8023C73B0D005209FC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F9176007259499F900D653BE /* PBXTargetDependency */,
+			);
+			name = AdyenWeChatPay;
+			packageProductDependencies = (
+			);
+			productName = AdyenWeChatPay;
+			productReference = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		F9CCA3B4296ECB3E00AD643D /* SnapshotsTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F9CCA3BB296ECB3E00AD643D /* Build configuration list for PBXNativeTarget "SnapshotsTests" */;
@@ -6176,6 +6197,7 @@
 				E9B36CAA2243B2FE00EAA368 /* AdyenDropIn */,
 				F92326AB25A3669E002C5BC4 /* AdyenEncryption */,
 				F95899C525FA524100E4113F /* AdyenSwiftUI */,
+				F9620D8123C73B0D005209FC /* AdyenWeChatPay */,
 				A04F8C1D29E5950100F3F62B /* AdyenCashAppPay */,
 				00E5D6502AF4E99A00CDE118 /* AdyenTwint */,
 				F94D65D82B0364AF0095D61E /* AdyenDelegatedAuthentication */,
@@ -8932,6 +8954,91 @@
 			};
 			name = Release;
 		};
+F9620D8B23C73B0D005209FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 17;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = B2NYSS5932;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 17;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = AdyenWeChatPay/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MARKETING_VERSION = "";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = (
+					"-Objc",
+					"-all_load",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenWeChatPay;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_INCLUDE_PATHS = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = Debug;
+		};
+		F9620D8C23C73B0D005209FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 17;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = B2NYSS5932;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 17;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = AdyenWeChatPay/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MARKETING_VERSION = "";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = (
+					"-Objc",
+					"-all_load",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenWeChatPay;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_INCLUDE_PATHS = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = Release;
+		};
 		F9CCA3BC296ECB3E00AD643D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -9128,6 +9235,15 @@
 			buildConfigurations = (
 				F95B6DA625274551002C9062 /* Debug */,
 				F95B6DA725274551002C9062 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F9620D8D23C73B0D005209FC /* Build configuration list for PBXNativeTarget "AdyenWeChatPay" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F9620D8B23C73B0D005209FC /* Debug */,
+				F9620D8C23C73B0D005209FC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
