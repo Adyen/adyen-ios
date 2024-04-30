@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F9620D8123C73B0D005209FC"
-               BuildableName = "AdyenWeChatPay"
+               BuildableName = "AdyenWeChatPay.framework"
                BlueprintName = "AdyenWeChatPay"
                ReferencedContainer = "container:Adyen.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F9620D8123C73B0D005209FC"
-            BuildableName = "AdyenWeChatPay"
+            BuildableName = "AdyenWeChatPay.framework"
             BlueprintName = "AdyenWeChatPay"
             ReferencedContainer = "container:Adyen.xcodeproj">
          </BuildableReference>
