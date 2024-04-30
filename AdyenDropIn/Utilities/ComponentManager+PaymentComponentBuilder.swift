@@ -180,7 +180,7 @@ extension ComponentManager: PaymentComponentBuilder {
     }
 
     internal func build(paymentMethod: TwintPaymentMethod) -> PaymentComponent? {
-        #if canImport(TwintSDK)
+        #if canImport(AdyenTwint)
             TwintComponent(paymentMethod: paymentMethod,
                            context: context,
                            configuration: .init(style: configuration.style.formComponent))
