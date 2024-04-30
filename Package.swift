@@ -52,7 +52,7 @@ let package = Package(
         ),
         .library(
             name: "AdyenTwint",
-            targets: ["AdyenTwint", "TwintSDK"]
+            targets: ["AdyenTwint"]
         ),
         .library(
             name: "AdyenDelegatedAuthentication",
@@ -190,6 +190,7 @@ let package = Package(
             dependencies: [
                 .target(name: "Adyen"),
                 .target(name: "AdyenActions")
+		.target(name: "TwintSDK")
             ],
             path: "AdyenTwint"
         ),
