@@ -151,7 +151,7 @@ cp "../Demo/Configuration.swift" Source/Configuration.swift
 xcodegen generate
 
 echo_header "Run Tests"
-xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 11" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | xcpretty && exit ${PIPESTATUS[0]}
+xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 15" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | xcpretty && exit ${PIPESTATUS[0]}
 
 if [ "$NEED_CLEANUP" == true ]
 then
