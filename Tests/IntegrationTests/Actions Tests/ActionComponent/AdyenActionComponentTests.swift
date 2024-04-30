@@ -6,7 +6,6 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenActions
-import AdyenWeChatPay
 import SafariServices
 import XCTest
 
