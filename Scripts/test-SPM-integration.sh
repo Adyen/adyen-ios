@@ -54,6 +54,7 @@ let package = Package(
 )
 " > Package.swift
 
+swift package reset
 swift package update
 
 # This is a hack to work around a bug with SPM
