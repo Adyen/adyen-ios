@@ -13,7 +13,7 @@ mkdir -p $PROJECT_NAME && cd $PROJECT_NAME
 swift package init
 
 # Create the Package.swift.
-echo "// swift-tools-version:5.7
+echo "// swift-tools-version:5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -61,17 +61,17 @@ swift package update
 swift package dump-pif > /dev/null || true
 xcodebuild clean -scheme TempProject -destination 'generic/platform=iOS' > /dev/null || true
 
-## Archive for generic iOS device
-#echo '############# Archive for generic iOS device ###############'
-#xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS' -skipPackagePluginValidation
+# Archive for generic iOS device
+echo '############# Archive for generic iOS device ###############'
+xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS' -skipPackagePluginValidation
 
 # Build for generic iOS device
 echo '############# Build for generic iOS device ###############'
 xcodebuild build -scheme TempProject -destination 'generic/platform=iOS' -skipPackagePluginValidation
 
-## Archive for x86_64 simulator
-#echo '############# Archive for x86_64 simulator ###############'
-#xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation
+# Archive for x86_64 simulator
+echo '############# Archive for x86_64 simulator ###############'
+xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation
 
 # Build for x86_64 simulator
 echo '############# Build for x86_64 simulator ###############'
