@@ -1,7 +1,10 @@
 # Localization
 
+Both the Drop-in and the Components offer a an option to customize the strings to match the tone of voice your app.
+
 By default, the SDK attempts to use a device's locale for translation of text and formatting of monetary values. If the preferred device's locales are not supported, the SDK falls back to the **en-US** locale.
-Localization only picks up locales that are listed in the `CFBundleLocalizations` property of your app's `Info.plist` file.
+
+> Note: Localization only picks up locales that are listed in the `CFBundleLocalizations` property of your app's `Info.plist` file.
 
 ## Overriding default formatting of monetary values 
 
@@ -11,7 +14,7 @@ To enforce your own formatting for monetary values, use the `locale` property on
 
 You can override strings for each key, and for each language and locale. 
 
-1. In Xcode, [create a new](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) or use your existing `Localizable.strings` file.
+1. In Xcode, [create a new](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) or use your existing `Localizable.strings` / `Localizable.xcstrings` file.
 
 For example, if your app uses English and Spanish, your project folder should have a `Localizable.strings` file for each locale:
 
@@ -33,6 +36,11 @@ For example, if you want to override the payment button text to **Subscribe for 
 "adyen.submitButton.formatted" = "Suscríbete por %@";
 ```
 
+> Important: If you are using multiple Adyen Components or Drop-In, all usages of that localization key get updated with the overridden value.
+
+> Tip: If you want to override the value for a key for a specific component you can use the `localizationParameters` to specify a custom localization file to get the values from as described below.
+
+
 ### Custom localization file name
 
 To use a custom localization file name, key format, or bundle, you must configure `LocalizationParameters`.
@@ -46,9 +54,11 @@ To use a custom localization file name, key format, or bundle, you must configur
 In the following example, the SDK looks for the key `adyen_submitButton_formatted` in the `YOUR_LOCALIZATION_FILE.strings` file in **CommonLibrary** bundle. 
 
 ```swift
-let parameters = LocalizationParameters(bundle: Bundle(for: MyCommonLibraryClass.type),
-                                        tableName: "YOUR_LOCALIZATION_FILE",
-                                        keySeparator: "_")
+let parameters = LocalizationParameters(
+    bundle: Bundle(for: MyCommonLibraryClass.type),
+    tableName: "YOUR_LOCALIZATION_FILE",
+    keySeparator: "_"
+)
 configuration.localizationParameters = parameters // Any Component.
 ```
 
@@ -96,4 +106,4 @@ If a locale you want isn't already available, you can add it:
 3. Add translations to [all keys](https://github.com/Adyen/adyen-ios/blob/develop/Adyen/Assets/en-US.lproj/Localizable.strings) in the file. 
 4. If necessary, configure the file name, bundle, and separator with [`LocalizationParameters`](https://github.com/Adyen/adyen-ios/blob/develop/Adyen.docc/Localization.md#custom-localization-file-name).
 
-> ⚠️ Custom locales cannot be [enforced](https://github.com/Adyen/adyen-ios/blob/develop/Adyen.docc/Localization.md#custom-localization-file-name). 
+> Important: Custom locales cannot be [enforced](https://github.com/Adyen/adyen-ios/blob/develop/Adyen.docc/Localization.md#custom-localization-file-name). 
