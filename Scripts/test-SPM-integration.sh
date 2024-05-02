@@ -75,6 +75,6 @@ xcodebuild clean build archive -scheme TempProject -destination 'generic/platfor
 echo '############# Build for x86_64 simulator ###############'
 xcodebuild build -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation -quiet
 
-# Archive for x86_64 simulator
-echo '############# Archive for x86_64 simulator ###############'
-xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation -quiet
+## Archive for x86_64 simulator
+#echo '############# Archive for x86_64 simulator ###############'
+#xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation -quiet
