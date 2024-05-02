@@ -1,6 +1,6 @@
 # Localization
 
-Both the Drop-in and the Components offer a an option to customize the strings to match the tone of voice your app.
+Both the Drop-in and the Components offer a an option to customize the strings to match the usecase / tone of voice your app.
 
 By default, the SDK attempts to use a device's locale for translation of text and formatting of monetary values. If the preferred device's locales are not supported, the SDK falls back to the **en-US** locale.
 
