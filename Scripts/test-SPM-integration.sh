@@ -12,7 +12,7 @@ cleanup() {
     cd ../
     rm -rf $PROJECT_NAME
 }
-trap cleanup ERR EXIT
+trap cleanup EXIT
 
 mkdir -p $PROJECT_NAME && cd $PROJECT_NAME
 
@@ -63,20 +63,18 @@ let package = Package(
 
 swift package update
 
-xcodebuild -resolvePackageDependencies
-
 # Build for generic iOS device
 echo '############# Build for generic iOS device ###############'
-xcodebuild build -scheme TempProject -destination 'generic/platform=iOS' -skipPackagePluginValidation
+xcodebuild build -scheme TempProject -destination 'generic/platform=iOS' -skipPackagePluginValidation -quiet
 
 # Archive for generic iOS device
 echo '############# Archive for generic iOS device ###############'
-xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS' -skipPackagePluginValidation
+xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS' -skipPackagePluginValidation -quiet
 
 # Build for x86_64 simulator
 echo '############# Build for x86_64 simulator ###############'
-xcodebuild build -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation
+xcodebuild build -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation -quiet
 
 # Archive for x86_64 simulator
 echo '############# Archive for x86_64 simulator ###############'
-xcodebuild archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation
+xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation -quiet
