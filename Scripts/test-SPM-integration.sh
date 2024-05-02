@@ -67,14 +67,14 @@ swift package update
 echo '############# Build for generic iOS device ###############'
 xcodebuild build -scheme TempProject -destination 'generic/platform=iOS' -skipPackagePluginValidation -quiet
 
-## Archive for generic iOS device
-#echo '############# Archive for generic iOS device ###############'
-#xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS' -skipPackagePluginValidation -quiet
+# Archive for generic iOS device
+echo '############# Archive for generic iOS device ###############'
+xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS' -skipPackagePluginValidation -quiet
 
 # Build for x86_64 simulator
 echo '############# Build for x86_64 simulator ###############'
 xcodebuild build -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation -quiet
 
-## Archive for x86_64 simulator
-#echo '############# Archive for x86_64 simulator ###############'
-#xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation -quiet
+# Archive for x86_64 simulator
+echo '############# Archive for x86_64 simulator ###############'
+xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation -quiet
