@@ -17,7 +17,7 @@ extension UIApplication: OpenExternalAppDetector {
     public func checkIfExternalAppDidOpen(_ completion: @escaping (Bool) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [weak self] in
             guard let self else { return }
-            completion(!self.applicationState.isInForeground)
+            completion(!self.applicationState.isActive)
         }
     }
 }
@@ -26,11 +26,11 @@ extension UIApplication: OpenExternalAppDetector {
 
 private extension UIApplication.State {
     
-    /// Whether or not the application is currently in foreground (`.active` or `.inactive`)
-    var isInForeground: Bool {
+    /// Whether or not the application is currently `.active`
+    var isActive: Bool {
         switch self {
-        case .active, .inactive: return true
-        case .background: return false
+        case .active: return true
+        case .background, .inactive: return false
         @unknown default: return false
         }
     }
