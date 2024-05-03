@@ -4,10 +4,6 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-#if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
-#endif
-
 @_spi(AdyenInternal) import Adyen
 import TwintSDK
 
