@@ -94,7 +94,8 @@ public final class UPIComponent: PaymentComponent,
 
     /// The upi selection segment control item to choose the upi flow.
     internal lazy var upiFlowSelectionItem: FormSegmentedControlItem = {
-        let item = FormSegmentedControlItem(items: ["Pay by any UPI app", "QR code"], style: configuration.style.segmentedControlStyle,
+        let item = FormSegmentedControlItem(items: ["Pay by any UPI app", "Other UPI options"],
+                                            style: configuration.style.segmentedControlStyle,
                                             identifier: ViewIdentifierBuilder.build(
                                                 scopeInstance: self,
                                                 postfix: ViewIdentifier.upiFlowSelectionItem
