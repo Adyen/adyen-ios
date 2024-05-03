@@ -24,7 +24,7 @@ public final class PresentableComponentWrapper: PresentableComponent,
     /// The wrapped component.
     public let component: Component
     
-    public let requiresModalPresentation: Bool = true
+    public var requiresModalPresentation: Bool = true
     
     @_spi(AdyenInternal)
     public var navBarType: NavigationBarType
