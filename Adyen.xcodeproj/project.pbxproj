@@ -110,7 +110,6 @@
 		8107F4852BB1CE96007745FC /* String+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8107F4832BB1CE8A007745FC /* String+UIImage.swift */; };
 		8107F4862BB1CE97007745FC /* String+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8107F4832BB1CE8A007745FC /* String+UIImage.swift */; };
 		8108315D2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8108315C2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift */; };
-		8109FF4C2AD5AD0C000748C8 /* OpenExternalAppDetector+DependencyKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8109FF4B2AD5AD0C000748C8 /* OpenExternalAppDetector+DependencyKey.swift */; };
 		8109FF4E2AD6D8A9000748C8 /* MockAddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8109FF4D2AD6D8A9000748C8 /* MockAddressLookupProvider.swift */; };
 		8109FF4F2AD84496000748C8 /* MapkitAddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA3B372AD040D800F5719D /* MapkitAddressLookupProvider.swift */; };
 		8109FF502AD84498000748C8 /* MapkitAddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA3B372AD040D800F5719D /* MapkitAddressLookupProvider.swift */; };
@@ -148,8 +147,6 @@
 		81A48DBB2A5709F600242341 /* DemoAddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A48DBA2A5709F600242341 /* DemoAddressLookupProvider.swift */; };
 		81A48DBC2A5709F600242341 /* DemoAddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A48DBA2A5709F600242341 /* DemoAddressLookupProvider.swift */; };
 		81A48DC62A5800EA00242341 /* AddressLookupViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A48DC32A58004A00242341 /* AddressLookupViewControllerTests.swift */; };
-		81A6B4E32AD53E3300A089A1 /* OpenExternalAppDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A6B4E22AD53E3300A089A1 /* OpenExternalAppDetector.swift */; };
-		81A6B4E72AD54F6C00A089A1 /* OpenExternalAppDetector+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A6B4E52AD54F4F00A089A1 /* OpenExternalAppDetector+Mock.swift */; };
 		81A6B4EB2AD5546500A089A1 /* AdyenDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A6B4EA2AD5546500A089A1 /* AdyenDependencies.swift */; };
 		81AA3B342ACD9CE800F5719D /* AddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA3B332ACD9CE800F5719D /* AddressLookupProvider.swift */; };
 		81AA3B362AD02EAE00F5719D /* AddressLookupSearchViewController+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA3B352AD02EAE00F5719D /* AddressLookupSearchViewController+ViewModel.swift */; };
@@ -1538,7 +1535,6 @@
 		81A48DBA2A5709F600242341 /* DemoAddressLookupProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAddressLookupProvider.swift; sourceTree = "<group>"; };
 		81A48DC32A58004A00242341 /* AddressLookupViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupViewControllerTests.swift; sourceTree = "<group>"; };
 		81A6B4E22AD53E3300A089A1 /* OpenExternalAppDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenExternalAppDetector.swift; sourceTree = "<group>"; };
-		81A6B4E52AD54F4F00A089A1 /* OpenExternalAppDetector+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenExternalAppDetector+Mock.swift"; sourceTree = "<group>"; };
 		81A6B4EA2AD5546500A089A1 /* AdyenDependencies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdyenDependencies.swift; sourceTree = "<group>"; };
 		81AA3B332ACD9CE800F5719D /* AddressLookupProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupProvider.swift; sourceTree = "<group>"; };
 		81AA3B352AD02EAE00F5719D /* AddressLookupSearchViewController+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressLookupSearchViewController+ViewModel.swift"; sourceTree = "<group>"; };
@@ -4212,7 +4208,6 @@
 		E7E8343A24F3C7ED00EC3844 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
-				81A6B4E52AD54F4F00A089A1 /* OpenExternalAppDetector+Mock.swift */,
 				E7E8343B24F3C81700EC3844 /* PublicKeyProviderMock.swift */,
 				E79A64802490D98F00368E9F /* CardComponentDelegateMock.swift */,
 				E773EA3B2523432B00119499 /* CardTypeProviderMock.swift */,
@@ -6925,7 +6920,6 @@
 				F9B997A425C8554F00891084 /* DokuVoucherUITests.swift in Sources */,
 				E9E3DAD3221EEFF700697074 /* CardExpiryDateValidatorTests.swift in Sources */,
 				E7D5311C2447065B000046B4 /* PreselectedPaymentComponentTests.swift in Sources */,
-				81A6B4E72AD54F6C00A089A1 /* OpenExternalAppDetector+Mock.swift in Sources */,
 				81BBB34F2A694C9300AF1F9E /* FormPickerItemTests.swift in Sources */,
 				F99F08662383F2D300EBB948 /* FormTextItemViewDelegateMock.swift in Sources */,
 				F926D55523FBF1A800D058D3 /* QiwiWalletComponentTests.swift in Sources */,
@@ -7122,7 +7116,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9175FD02594999600D653BE /* RedirectDetails.swift in Sources */,
-				81A6B4E32AD53E3300A089A1 /* OpenExternalAppDetector.swift in Sources */,
 				F9B018B8260A2DB2001F23FC /* EContextATMVoucherAction.swift in Sources */,
 				F97842D526C2746500677458 /* OXXOVoucherAction.swift in Sources */,
 				F917613625A30B5700D653BE /* ThreeDS2ComponentChallengeToken.swift in Sources */,
@@ -7172,7 +7165,6 @@
 				F97C850125C17CCD00D7F85C /* VoucherShareableViewProvider.swift in Sources */,
 				F9175FB42594996000D653BE /* ThreeDS2FingerprintAction.swift in Sources */,
 				5A22C2AD262EF99C00F12D97 /* ExpirationTimer.swift in Sources */,
-				8109FF4C2AD5AD0C000748C8 /* OpenExternalAppDetector+DependencyKey.swift in Sources */,
 				F91760822594B1F400D653BE /* AwaitComponentStyle.swift in Sources */,
 				F9175FCF2594999600D653BE /* RedirectListener.swift in Sources */,
 				F917618425A30B8500D653BE /* Submit3DS2FingerprintResponse.swift in Sources */,

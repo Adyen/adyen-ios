@@ -132,9 +132,11 @@ public final class RedirectComponent: ActionComponent {
     }
 
     private func openInAppBrowser(_ action: RedirectAction) {
-        let component = BrowserComponent(url: action.url,
-                                         context: context,
-                                         style: configuration.style)
+        let component = BrowserComponent(
+            url: action.url,
+            context: context,
+            style: configuration.style
+        )
         component.delegate = self
         browserComponent = component
         presentationDelegate?.present(component: component)

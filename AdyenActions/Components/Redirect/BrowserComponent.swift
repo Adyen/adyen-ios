@@ -15,78 +15,120 @@ internal protocol BrowserComponentDelegate: AnyObject {
 
 /// A component that opens a URL in web browsed and presents it.
 internal final class BrowserComponent: NSObject, PresentableComponent {
-
+    
     /// :nodoc
     internal let context: AdyenContext
-
+    
     private let url: URL
     private let style: RedirectComponentStyle?
+    private let localizationParameters: LocalizationParameters?
+    private let appLauncher: AnyAppLauncher
     private let componentName = "browser"
-
+    
+    internal var requiresModalPresentation: Bool { false }
+    
     internal lazy var viewController: UIViewController = {
-        let safariViewController = SFSafariViewController(url: url)
-        safariViewController.delegate = self
-        safariViewController.modalPresentationStyle = style?.modalPresentationStyle ?? .formSheet
-        safariViewController.presentationController?.delegate = self
-        safariViewController.dismissButtonStyle = .cancel
-
-        style.map {
-            safariViewController.preferredBarTintColor = $0.preferredBarTintColor
-            safariViewController.preferredControlTintColor = $0.preferredControlTintColor
-        }
-
-        return safariViewController
+        BrowserComponentViewController(
+            url: url,
+            localizationParameters: localizationParameters,
+            appLauncher: appLauncher,
+            delegate: delegate
+        )
     }()
     
     internal weak var delegate: BrowserComponentDelegate?
-    
-    @AdyenDependency(\.openAppDetector) private var openAppDetector
     
     /// Initializes the component.
     ///
     /// - Parameter url: The URL to where the user should be redirected
     /// - Parameter context: The context object for this component.
     /// - Parameter style: The component's UI style.
-    internal init(url: URL,
-                  context: AdyenContext,
-                  style: RedirectComponentStyle? = nil) {
+    internal init(
+        url: URL,
+        context: AdyenContext,
+        style: RedirectComponentStyle? = nil
+    ) {
         self.url = url
         self.context = context
         self.style = style
+        
+        // TODO: Pass LocalizationParamaters + AppLauncher!
+        self.localizationParameters = nil
+        self.appLauncher = AppLauncher()
+        
         super.init()
     }
-
-    /// This allows us to assume one of the following scenarios:
-    /// - SFSafariViewController deliberately closed by user and current app still in foreground;
-    /// - SFSafariViewController finished due to a successful redirect to an external app and current app no longer in foreground.
-    private func finish() {
-        openAppDetector.checkIfExternalAppDidOpen { didOpenExternalApp in
-            if didOpenExternalApp {
-                self.delegate?.didOpenExternalApplication()
-            } else {
-                self.delegate?.didCancel()
-            }
-        }
-    }
-
 }
 
-// MARK: - SFSafariViewControllerDelegate
-
-extension BrowserComponent: SFSafariViewControllerDelegate, UIAdaptivePresentationControllerDelegate {
+// TODO: Make this a custom ViewController - not a UIAlertController
+private class BrowserComponentViewController: UIAlertController {
     
-    /// Called when user clicks "Cancel" button or Safari redirects to other app.
-    internal func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        finish()
+    private let url: URL
+    private let localizationParameters: LocalizationParameters?
+    private let appLauncher: AnyAppLauncher
+    private weak var delegate: BrowserComponentDelegate?
+    
+    override var preferredStyle: UIAlertController.Style { .actionSheet }
+    
+    init(
+        url: URL,
+        localizationParameters: LocalizationParameters?,
+        appLauncher: AnyAppLauncher,
+        delegate: BrowserComponentDelegate?
+    ) {
+        self.url = url
+        self.localizationParameters = localizationParameters
+        self.appLauncher = appLauncher
+        self.delegate = delegate
+        
+        super.init(nibName: nil, bundle: nil)
+        
+        // TODO: Take the strings from the LocalizationParameters
+        self.title = "Payment in progress"
+        self.message = "Awaiting completion..."
+        
+        addAction(
+            .init(
+                title: localizedString(.cancelButton, localizationParameters),
+                style: .cancel,
+                handler: { _ in
+                    delegate?.didCancel()
+                }
+            )
+        )
+        
+        // TODO: Tapping a button dismisses the alert -> build a custom sheet that allows button presses without dismissal
+        
+//        addAction(
+//            .init(
+//                title: "Try again",
+//                style: .default,
+//                handler: { [weak self] _ in
+//                    self?.handleRetry()
+//                }
+//            )
+//        )
     }
-
-    /// Called when user drag VC down to dismiss.
-    internal func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        self.delegate?.didCancel()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        handleOpenUrl()
     }
-
-    /// Called when the user opens the current page in the default browser by tapping the toolbar button.
-    internal func safariViewControllerWillOpenInBrowser(_ controller: SFSafariViewController) {
-        self.delegate?.didOpenExternalApplication()
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func handleOpenUrl() {
+        appLauncher.openCustomSchemeUrl(url) { [weak self] _ in
+            // Could triggering `didOpenExternalApplication` multiple times cause issues?
+            self?.delegate?.didOpenExternalApplication()
+        }
+    }
+    
+    private func handleRetry() {
+        // Not triggering `didOpenExternalApplication` anymore
+        appLauncher.openCustomSchemeUrl(url) { _ in }
     }
 }
