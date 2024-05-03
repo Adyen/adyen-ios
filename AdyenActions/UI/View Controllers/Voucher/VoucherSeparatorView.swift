@@ -100,8 +100,8 @@ internal final class VoucherSeparatorView: UIView {
     private func buildSeparatorLines() {
         leftSeparatorLayer.backgroundColor = UIColor.Adyen.lightGray.cgColor
         rightSeparatorLayer.backgroundColor = UIColor.Adyen.lightGray.cgColor
-        leftSeparatorLayer.contentsScale = UIScreen.main.scale
-        rightSeparatorLayer.contentsScale = UIScreen.main.scale
+        leftSeparatorLayer.contentsScale = UITraitCollection.current.displayScale
+        rightSeparatorLayer.contentsScale = UITraitCollection.current.displayScale
         layer.addSublayer(leftSeparatorLayer)
         layer.addSublayer(rightSeparatorLayer)
         buildSeparatorTextLayer()
@@ -114,7 +114,7 @@ internal final class VoucherSeparatorView: UIView {
         separatorTextLayer.fontSize = style.font.pointSize
         separatorTextLayer.alignmentMode = style.textAlignment.adyen.caAlignmentMode
         separatorTextLayer.string = text
-        separatorTextLayer.contentsScale = UIScreen.main.scale
+        separatorTextLayer.contentsScale = UITraitCollection.current.displayScale
         layer.addSublayer(separatorTextLayer)
     }
 

@@ -37,7 +37,7 @@ internal final class FormSeparatorItemView: FormItemView<FormSeparatorItem> {
     
     private func configureConstraints() {
         separator.adyen.anchor(inside: self)
-        separator.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale).isActive = true
+        separator.heightAnchor.constraint(equalToConstant: 1 / UITraitCollection.current.displayScale).isActive = true
     }
     
 }

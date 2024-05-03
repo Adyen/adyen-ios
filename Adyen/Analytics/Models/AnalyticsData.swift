@@ -27,7 +27,7 @@ public struct AnalyticsContext {
 
 @_spi(AdyenInternal)
 public extension AnalyticsContext {
-
+    
     enum Platform: String {
         case iOS = "iOS"
         case reactNative = "react-native"
@@ -36,25 +36,25 @@ public extension AnalyticsContext {
 }
 
 internal struct AnalyticsData: Encodable {
-
+    
     // MARK: - Properties
-
+    
     /// The version of the SDK
     internal let version: String
-
+    
     internal let channel: String = "iOS"
     
     /// The platform the SDK is running on (e.g. ios, flutter, react-native)
     internal let platform: String
-
+    
     internal var locale: String {
         let languageCode = Locale.current.languageCode ?? ""
         let regionCode = Locale.current.regionCode ?? ""
         return "\(languageCode)_\(regionCode)"
     }
-
+    
     internal let userAgent: String? = nil
-
+    
     internal let deviceBrand: String = {
         var systemInfo = utsname()
         uname(&systemInfo)
@@ -66,29 +66,33 @@ internal struct AnalyticsData: Encodable {
     }()
     
     internal let deviceModel = UIDevice.current.model
-
+    
     internal let systemVersion = UIDevice.current.systemVersion
-
+    
     internal let referrer: String = Bundle.main.bundleIdentifier ?? ""
-
+    
     internal var screenWidth: Int {
-        Int(UIScreen.main.nativeBounds.width)
+        #if os(visionOS)
+            return 1000
+        #else
+            Int(UIScreen.main.nativeBounds.width)
+        #endif
     }
-
+    
     internal let containerWidth: Int? = nil
-
+    
     internal let flavor: String
-
+    
     internal var amount: Amount?
     
     internal var sessionId: String?
     
     internal var paymentMethods: [String] = []
-
+    
     internal let component: String
-
+    
     // MARK: - Initializers
-
+    
     internal init(flavor: AnalyticsFlavor,
                   additionalFields: AdditionalAnalyticsFields?,
                   context: AnalyticsContext) {
@@ -98,7 +102,7 @@ internal struct AnalyticsData: Encodable {
         
         self.version = context.version
         self.platform = context.platform.rawValue
-
+        
         switch flavor {
         case let .dropIn(type, paymentMethods):
             self.paymentMethods = paymentMethods

@@ -52,11 +52,15 @@ internal final class ComponentsView: UIView {
     
     private lazy var activityIndicator: UIActivityIndicatorView = {
         let activityIndicator: UIActivityIndicatorView
-        if #available(iOS 13.0, *) {
+        #if os(visionOS)
             activityIndicator = UIActivityIndicatorView(style: .large)
-        } else {
-            activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
-        }
+        #else
+            if #available(iOS 13.0, *) {
+                activityIndicator = UIActivityIndicatorView(style: .large)
+            } else {
+                activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+            }
+        #endif
         activityIndicator.hidesWhenStopped = true
         
         if #available(iOS 13.0, *) {

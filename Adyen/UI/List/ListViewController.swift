@@ -97,7 +97,9 @@ public final class ListViewController: UITableViewController {
         tableView.register(ListCell.self, forCellReuseIdentifier: dataSource.cellReuseIdentifier)
         tableView.register(ListHeaderView.self, forHeaderFooterViewReuseIdentifier: ListHeaderView.reuseIdentifier)
         tableView.dataSource = dataSource
-        tableView.keyboardDismissMode = .onDrag
+        #if !os(visionOS)
+            tableView.keyboardDismissMode = .onDrag
+        #endif
 
         delegate?.viewDidLoad(viewController: self)
     }

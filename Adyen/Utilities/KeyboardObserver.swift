@@ -15,7 +15,6 @@ public class KeyboardObserver {
     public private(set) var keyboardRect: CGRect
     
     public init() {
-        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handleKeyboardWillChangeFrameNotification),
                                                name: UIResponder.keyboardWillChangeFrameNotification,
@@ -24,11 +23,12 @@ public class KeyboardObserver {
     
     @objc
     private func handleKeyboardWillChangeFrameNotification(_ notification: Notification) {
+        #if !os(visionOS)
+            guard let bounds = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+                return self.keyboardRect = .zero
+            }
         
-        guard let bounds = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
-            return self.keyboardRect = .zero
-        }
-        
-        self.keyboardRect = bounds.intersection(UIScreen.main.bounds)
+            self.keyboardRect = bounds.intersection(UIScreen.main.bounds)
+        #endif
     }
 }

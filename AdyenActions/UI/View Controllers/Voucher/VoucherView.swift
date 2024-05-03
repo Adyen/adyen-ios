@@ -101,8 +101,13 @@ internal final class VoucherView: UIView, Localizable {
     }
     
     private func updateSpacerConstraints() {
-        spacerPortraitConstraint?.isActive = UIApplication.shared.statusBarOrientation.isPortrait
-        spacerLandscapeConstraint?.isActive = UIApplication.shared.statusBarOrientation.isPortrait == false
+        #if os(visionOS)
+            spacerPortraitConstraint?.isActive = true
+            spacerLandscapeConstraint?.isActive = false
+        #else
+            spacerPortraitConstraint?.isActive = UIApplication.shared.statusBarOrientation.isPortrait
+            spacerLandscapeConstraint?.isActive = UIApplication.shared.statusBarOrientation.isPortrait == false
+        #endif
     }
     
     private func mainButton(for type: Model.Button) -> UIControl {

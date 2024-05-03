@@ -73,8 +73,10 @@ internal final class ModalViewController: UIViewController {
         get {
             guard innerController.isViewLoaded else { return .zero }
             let innerSize = innerController.preferredContentSize
-            return CGSize(width: innerSize.width,
-                          height: navigationBarHeight + innerSize.height + (1.0 / UIScreen.main.scale))
+            return CGSize(
+                width: innerSize.width,
+                height: navigationBarHeight + innerSize.height + (1.0 / UITraitCollection.current.displayScale)
+            )
         }
         
         // swiftlint:disable:next unused_setter_value
@@ -146,7 +148,7 @@ internal final class ModalViewController: UIViewController {
     // MARK: - Private
     
     private func arrangeConstraints() {
-        let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
+        let separatorHeight: CGFloat = 1.0 / UITraitCollection.current.displayScale
         let toolbarHeight = navigationBarHeight - separatorHeight
 
         stackView.adyen.anchor(inside: view)

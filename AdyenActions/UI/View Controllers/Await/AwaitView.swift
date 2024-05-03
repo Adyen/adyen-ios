@@ -46,7 +46,11 @@ internal final class AwaitView: UIView {
     }()
     
     internal lazy var activityIndicatorView: UIActivityIndicatorView = {
-        let activityIndicatorView = UIActivityIndicatorView(style: .gray)
+        #if os(visionOS)
+            let activityIndicatorView = UIActivityIndicatorView(style: .medium)
+        #else
+            let activityIndicatorView = UIActivityIndicatorView(style: .gray)
+        #endif
         activityIndicatorView.color = style.spinnerTitle.color
         activityIndicatorView.backgroundColor = .clear
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false

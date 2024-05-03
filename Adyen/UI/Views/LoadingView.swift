@@ -9,7 +9,7 @@ import UIKit
 
 @_spi(AdyenInternal)
 public final class LoadingView: UIControl {
-
+    
     private lazy var activityIndicatorView: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView(style: activityIndicatorStyle)
         activityIndicatorView.backgroundColor = .clear
@@ -19,19 +19,23 @@ public final class LoadingView: UIControl {
     }()
     
     private var activityIndicatorStyle: UIActivityIndicatorView.Style {
-        if #available(iOS 13.0, *) {
+        #if os(visionOS)
             return .large
-        } else {
-            return .whiteLarge
-        }
+        #else
+            if #available(iOS 13.0, *) {
+                return .large
+            } else {
+                return .whiteLarge
+            }
+        #endif
     }
-
+    
     private let contentView: UIView
     
     public var disableUserInteractionWhileLoading: Bool = false
     
     public var spinnerAppearanceDelay: DispatchTimeInterval = .seconds(1)
-
+    
     public init(contentView: UIView) {
         self.contentView = contentView
         super.init(frame: .zero)
@@ -39,24 +43,24 @@ public final class LoadingView: UIControl {
         addSubview(contentView)
         addSubview(activityIndicatorView)
         contentView.adyen.anchor(inside: self)
-
+        
         NSLayoutConstraint.activate([
             activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
             activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
-
+    
     @available(*, unavailable)
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     /// Boolean value indicating whether an activity indicator should be shown.
     public var showsActivityIndicator: Bool {
         get {
             activityIndicatorView.isAnimating
         }
-
+        
         set {
             if newValue {
                 startAnimating(after: spinnerAppearanceDelay)

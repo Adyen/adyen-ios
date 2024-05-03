@@ -8,12 +8,18 @@ import UIKit
 
 public extension AdyenScope where Base: UIApplication {
     var mainKeyWindow: UIWindow? {
-        if #available(iOS 13, *) {
+        #if os(visionOS)
             return base.connectedScenes
                 .flatMap { ($0 as? UIWindowScene)?.windows ?? [] }
                 .first { $0.isKeyWindow }
-        } else {
-            return base.keyWindow
-        }
+        #else
+            if #available(iOS 13, *) {
+                return base.connectedScenes
+                    .flatMap { ($0 as? UIWindowScene)?.windows ?? [] }
+                    .first { $0.isKeyWindow }
+            } else {
+                return base.keyWindow
+            }
+        #endif
     }
 }
