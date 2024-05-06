@@ -141,6 +141,7 @@ cp "../Tests/UnitTests/Analytics/AnalyticsProviderMock.swift" Tests/AnalyticsPro
 cp "../Tests/UnitTests/Mocks/DummyData/Dummy.swift" Tests/Dummy.swift
 cp "../Tests/UnitTests/APIClientMock.swift" Tests/APIClientMock.swift
 cp "../Tests/UnitTests/Mocks/ImageLoaderMock.swift" Tests/ImageLoaderMock.swift
+cp "../Tests/UnitTests/Mocks/CancellableMock.swift" Tests/CancellableMock.swift
 cp "../Tests/UnitTests/Helpers/String+UIImage.swift" Tests/String+UIImage.swift
 cp "../Tests/UnitTests/APIClientMock.swift" Source/APIClientMock.swift
 cp -a "../Demo/Common" Source/
@@ -150,7 +151,7 @@ cp "../Demo/Configuration.swift" Source/Configuration.swift
 xcodegen generate
 
 echo_header "Run Tests"
-xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 11" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | xcpretty && exit ${PIPESTATUS[0]}
+xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 15" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | xcpretty && exit ${PIPESTATUS[0]}
 
 if [ "$NEED_CLEANUP" == true ]
 then
