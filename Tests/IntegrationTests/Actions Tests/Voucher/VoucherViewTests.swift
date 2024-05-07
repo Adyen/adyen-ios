@@ -151,12 +151,11 @@ class VoucherViewTests: XCTestCase {
     
     func getSut(model: VoucherView.Model) throws -> VoucherView {
         let sut = VoucherView(model: model)
+        sut.translatesAutoresizingMaskIntoConstraints = false
 
         let viewController = UIViewController()
-        viewController.view = sut
-        sut.frame = UIScreen.main.bounds
-
-        setupRootViewController(viewController)
+        viewController.view.addSubview(sut)
+        viewController.loadViewIfNeeded()
 
         return sut
     }
