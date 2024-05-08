@@ -12,26 +12,56 @@ class OpenExternalAppDetectorTests: XCTestCase {
     
     func test_didOpen_shouldRespectApplicationState() {
         
-        // If the app is in background during the check 
+        // If the app is in background during the check
         // -> an external app was opened
         verifyOpenExternalAppDetectionExpectation(
             applicationState: .background,
             didOpen: true
         )
         
-        // If the app is inactive during the check 
+        // If the app is inactive during the check
         // -> an action was triggered that rendered system ui over the current app which indicates that an external action was triggered
         verifyOpenExternalAppDetectionExpectation(
             applicationState: .inactive,
             didOpen: false
         )
         
-        // If the app is still in foreground during the check 
+        // If the app is still in foreground during the check
         // -> no external app was opened
         verifyOpenExternalAppDetectionExpectation(
             applicationState: .active,
             didOpen: false
         )
+    }
+    
+    func test_defaultDetectionDelay_shouldBeOneSecond() throws {
+        let openAppDetector = OpenExternalAppDetector()
+        let expectedDate = try XCTUnwrap(Calendar.current.date(byAdding: .second, value: 1, to: Date()))
+        
+        let didOpenExpectation = expectation(description: "checkIfExternalAppDidOpen is called")
+        
+        openAppDetector.checkIfExternalAppDidOpen { _ in
+            let comparisonResult = Calendar.current.compare(expectedDate, to: Date(), toGranularity: .second)
+            XCTAssertEqual(comparisonResult, .orderedSame)
+            didOpenExpectation.fulfill()
+        }
+        
+        wait(for: [didOpenExpectation], timeout: 1)
+    }
+    
+    func test_customDetectionDelay() throws {
+        let openAppDetector = OpenExternalAppDetector(detectionDelay: .seconds(0))
+        let expectedDate = Date()
+        
+        let didOpenExpectation = expectation(description: "checkIfExternalAppDidOpen is called")
+        
+        openAppDetector.checkIfExternalAppDidOpen { _ in
+            let comparisonResult = Calendar.current.compare(expectedDate, to: Date(), toGranularity: .second)
+            XCTAssertEqual(comparisonResult, .orderedSame)
+            didOpenExpectation.fulfill()
+        }
+        
+        wait(for: [didOpenExpectation], timeout: 1)
     }
 }
 
@@ -51,7 +81,11 @@ extension OpenExternalAppDetectorTests {
         
         let didOpenExpectation = expectation(description: "checkIfExternalAppDidOpen is called")
         
-        let openAppDetector = OpenExternalAppDetector(applicationStateProvider: provider)
+        let openAppDetector = OpenExternalAppDetector(
+            applicationStateProvider: provider,
+            detectionDelay: .nanoseconds(0)
+        )
+        
         openAppDetector.checkIfExternalAppDidOpen { didOpen in
             XCTAssertEqual(didOpen, expectedDidOpenOutput)
             didOpenExpectation.fulfill()

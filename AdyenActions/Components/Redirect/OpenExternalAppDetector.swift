@@ -41,15 +41,18 @@ internal protocol OpenExternalAppDetecting {
 internal struct OpenExternalAppDetector: OpenExternalAppDetecting {
     
     private let applicationStateProvider: ApplicationStateProviding
+    private let detectionDelay: DispatchTimeInterval
     
     internal init(
-        applicationStateProvider: ApplicationStateProviding = UIApplication.shared
+        applicationStateProvider: ApplicationStateProviding = UIApplication.shared,
+        detectionDelay: DispatchTimeInterval = .seconds(1)
     ) {
         self.applicationStateProvider = applicationStateProvider
+        self.detectionDelay = detectionDelay
     }
     
     public func checkIfExternalAppDidOpen(_ completion: @escaping (Bool) -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + detectionDelay) {
             completion(!applicationStateProvider.applicationState.isActive)
         }
     }
