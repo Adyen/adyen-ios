@@ -12,25 +12,25 @@ class OpenExternalAppDetectorTests: XCTestCase {
     
     func test_didOpen_shouldRespectApplicationState() {
         
-        // If the app is in background during the check
-        // -> an external app was opened
+        // If the app is (still) in foreground during the check
+        // -> no external app was opened
         verifyOpenExternalAppDetectionExpectation(
-            applicationState: .background,
-            didOpen: true
+            applicationState: .active,
+            didOpen: false
         )
         
         // If the app is inactive during the check
-        // -> an action was triggered that rendered system ui over the current app which indicates that an external action was triggered
+        // -> an external app was opened (the app changes to "inactive" before it goes into "background")
         verifyOpenExternalAppDetectionExpectation(
             applicationState: .inactive,
             didOpen: false
         )
         
-        // If the app is still in foreground during the check
-        // -> no external app was opened
+        // If the app is in background during the check
+        // -> an external app was opened
         verifyOpenExternalAppDetectionExpectation(
-            applicationState: .active,
-            didOpen: false
+            applicationState: .background,
+            didOpen: true
         )
     }
     
