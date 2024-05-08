@@ -16,14 +16,6 @@ internal protocol InitialDataFlowProtocol: AnyObject {
 
 extension InitialDataFlowProtocol {
 
-    internal var context: AdyenContext {
-        var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
-        return AdyenContext(apiContext: ConfigurationConstants.apiContext,
-                            payment: ConfigurationConstants.current.payment,
-                            analyticsConfiguration: analyticsConfiguration)
-    }
-
     internal func requestAdyenSessionConfiguration(completion: @escaping (Result<AdyenSession.Configuration, Error>) -> Void) {
         let request = SessionRequest()
         apiClient.perform(request) { [weak self] result in

@@ -19,6 +19,14 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
     internal var instantPaymentComponent: InstantPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
+    
+    internal var context: AdyenContext = {
+        var analyticsConfiguration = AnalyticsConfiguration()
+        analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
+        return AdyenContext(apiContext: ConfigurationConstants.apiContext,
+                            payment: ConfigurationConstants.current.payment,
+                            analyticsConfiguration: analyticsConfiguration)
+    }()
 
     // MARK: - Initializers
 

@@ -90,20 +90,15 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
             flavor: _isDropIn ? .dropin : .components,
             environment: context.apiContext.environment
         )
-        coreActionHandler.handle(challengeAction, event: event) { [weak self] result in
+        coreActionHandler.handle(challengeAction, event: event) { result in
             switch result {
             case let .success(result):
-                self?.handle(result, completionHandler: completionHandler)
+                let additionalDetails = ThreeDS2Details.challengeResult(result)
+                completionHandler(.success(.details(additionalDetails)))
             case let .failure(error):
                 completionHandler(.failure(error))
             }
         }
-    }
-
-    private func handle(_ threeDSResult: ThreeDSResult,
-                        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
-        let additionalDetails = ThreeDS2Details.challengeResult(threeDSResult)
-        completionHandler(.success(.details(additionalDetails)))
     }
 
     // MARK: - Private

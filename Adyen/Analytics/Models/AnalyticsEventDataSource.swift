@@ -10,37 +10,59 @@ import Foundation
 /// Handles adding/removing events
 internal class AnalyticsEventDataSource: AnyAnalyticsEventDataSource {
     
-    private var infos: [AnalyticsEventInfo] = []
-    private var logs: [AnalyticsEventLog] = []
-    private var errors: [AnalyticsEventError] = []
+    private var infoList: [AnalyticsEventInfo] = []
+    private var logList: [AnalyticsEventLog] = []
+    private var errorList: [AnalyticsEventError] = []
     
-    // MARK: - AnyAnalyticsEventDataSource
+    // MARK: - AnalyticsEventDataAddition
     
     internal func add(info: AnalyticsEventInfo) {
-        infos.append(info)
+        infoList.append(info)
     }
     
     internal func add(log: AnalyticsEventLog) {
-        logs.append(log)
+        logList.append(log)
     }
     
     internal func add(error: AnalyticsEventError) {
-        errors.append(error)
-    }
-    
-    internal func removeAllEvents() {
-        infos = []
-        logs = []
-        errors = []
+        errorList.append(error)
     }
     
     internal func allEvents() -> AnalyticsEventWrapper? {
-        if infos.isEmpty, logs.isEmpty, errors.isEmpty {
+        if infoList.isEmpty, logList.isEmpty, errorList.isEmpty {
             return nil
         }
-        return AnalyticsEventWrapper(infos: infos,
-                                     logs: logs,
-                                     errors: errors)
+        return AnalyticsEventWrapper(infos: infoList,
+                                     logs: logList,
+                                     errors: errorList)
     }
     
+    // MARK: - AnalyticsEventDataRemoval
+    
+    internal func removeAllEvents() {
+        infoList = []
+        logList = []
+        errorList = []
+    }
+    
+    internal func removeElements(matching collection: AnalyticsEventWrapper) {
+        remove(infos: collection.infos)
+        remove(logs: collection.logs)
+        remove(errors: collection.errors)
+    }
+    
+    private func remove(infos: [AnalyticsEventInfo]) {
+        let infoIds = infos.map(\.id)
+        infoList.removeAll { infoIds.contains($0.id) }
+    }
+    
+    private func remove(logs: [AnalyticsEventLog]) {
+        let logIds = logs.map(\.id)
+        logList.removeAll { logIds.contains($0.id) }
+    }
+    
+    private func remove(errors: [AnalyticsEventError]) {
+        let errorIds = errors.map(\.id)
+        errorList.removeAll { errorIds.contains($0.id) }
+    }
 }
