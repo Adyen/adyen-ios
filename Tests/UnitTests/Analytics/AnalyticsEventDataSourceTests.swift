@@ -77,7 +77,7 @@ final class AnalyticsEventDataSourceTests: XCTestCase {
         sut.add(error: error)
         
         let collection = AnalyticsEventWrapper(infos: [], logs: [log], errors: [error])
-        sut.removeElements(matching: collection)
+        sut.removeEvents(matching: collection)
         
         XCTAssertEqual(sut.allEvents()?.infos.count, 1)
         XCTAssertEqual(sut.allEvents()?.logs.count, 0)

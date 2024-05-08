@@ -45,7 +45,7 @@ internal class AnalyticsEventDataSource: AnyAnalyticsEventDataSource {
         errorList = []
     }
     
-    internal func removeElements(matching collection: AnalyticsEventWrapper) {
+    internal func removeEvents(matching collection: AnalyticsEventWrapper) {
         remove(infos: collection.infos)
         remove(logs: collection.logs)
         remove(errors: collection.errors)

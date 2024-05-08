@@ -152,7 +152,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
             logs: request.logs,
             errors: request.errors
         )
-        eventDataSource.removeElements(matching: collection)
+        eventDataSource.removeEvents(matching: collection)
     }
     
     private func startNextTimer() {

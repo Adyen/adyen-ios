@@ -19,7 +19,7 @@ internal protocol AnalyticsEventDataRemoval {
     func removeAllEvents()
     
     /// Removes events matching given collection.
-    func removeElements(matching collection: AnalyticsEventWrapper)
+    func removeEvents(matching collection: AnalyticsEventWrapper)
 }
 
 internal protocol AnyAnalyticsEventDataSource: AnalyticsEventDataAddition & AnalyticsEventDataRemoval {}
@@ -73,9 +73,9 @@ internal final class ThreadSafeAnalyticsEventDataSource: AnyAnalyticsEventDataSo
     
     // MARK: - AnalyticsEventDataRemoval
     
-    internal func removeElements(matching collection: AnalyticsEventWrapper) {
+    internal func removeEvents(matching collection: AnalyticsEventWrapper) {
         queue.sync(flags: .barrier) {
-            dataSource.removeElements(matching: collection)
+            dataSource.removeEvents(matching: collection)
         }
     }
     
