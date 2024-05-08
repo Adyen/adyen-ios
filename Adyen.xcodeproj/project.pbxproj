@@ -173,6 +173,7 @@
 		81A6B4E32AD53E3300A089A1 /* OpenExternalAppDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A6B4E22AD53E3300A089A1 /* OpenExternalAppDetector.swift */; };
 		81A6B4E72AD54F6C00A089A1 /* OpenExternalAppDetector+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A6B4E52AD54F4F00A089A1 /* OpenExternalAppDetector+Mock.swift */; };
 		81A6B4EB2AD5546500A089A1 /* AdyenDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A6B4EA2AD5546500A089A1 /* AdyenDependencies.swift */; };
+		81A91AB72BEBEA21001E00C8 /* OpenExternalAppDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A91AB62BEBEA21001E00C8 /* OpenExternalAppDetectorTests.swift */; };
 		81AA3B342ACD9CE800F5719D /* AddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA3B332ACD9CE800F5719D /* AddressLookupProvider.swift */; };
 		81AA3B362AD02EAE00F5719D /* AddressLookupSearchViewController+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA3B352AD02EAE00F5719D /* AddressLookupSearchViewController+ViewModel.swift */; };
 		81B001B12A543CFD0015BFA3 /* SearchViewController+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B001B02A543CFD0015BFA3 /* SearchViewController+ViewModel.swift */; };
@@ -1621,6 +1622,7 @@
 		81A6B4E22AD53E3300A089A1 /* OpenExternalAppDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenExternalAppDetector.swift; sourceTree = "<group>"; };
 		81A6B4E52AD54F4F00A089A1 /* OpenExternalAppDetector+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenExternalAppDetector+Mock.swift"; sourceTree = "<group>"; };
 		81A6B4EA2AD5546500A089A1 /* AdyenDependencies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdyenDependencies.swift; sourceTree = "<group>"; };
+		81A91AB62BEBEA21001E00C8 /* OpenExternalAppDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenExternalAppDetectorTests.swift; sourceTree = "<group>"; };
 		81AA3B332ACD9CE800F5719D /* AddressLookupProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupProvider.swift; sourceTree = "<group>"; };
 		81AA3B352AD02EAE00F5719D /* AddressLookupSearchViewController+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressLookupSearchViewController+ViewModel.swift"; sourceTree = "<group>"; };
 		81AA3B372AD040D800F5719D /* MapkitAddressLookupProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapkitAddressLookupProvider.swift; sourceTree = "<group>"; };
@@ -4444,6 +4446,7 @@
 				A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */,
 				81DC5A502A73C52500DBF2D1 /* AdyenContextTests.swift */,
 				81FC2C922BB198AB007F1316 /* ImageLoaderTests.swift */,
+				81A91AB62BEBEA21001E00C8 /* OpenExternalAppDetectorTests.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -6621,6 +6624,7 @@
 				B6D808252BCD155400F3F5EB /* String+UIImage.swift in Sources */,
 				B6D8081A2BCD151F00F3F5EB /* ImageLoaderMock.swift in Sources */,
 				B6D8082C2BCD176E00F3F5EB /* XCTestCase+Coder.swift in Sources */,
+				81A91AB72BEBEA21001E00C8 /* OpenExternalAppDetectorTests.swift in Sources */,
 				B6D808222BCD151F00F3F5EB /* PaymentComponentDelegateMock.swift in Sources */,
 				B6D808102BCD147D00F3F5EB /* BackoffSchedulerTests.swift in Sources */,
 				B6D808452BCD2B0600F3F5EB /* RSAOAEP256AlgorithmTests.swift in Sources */,
