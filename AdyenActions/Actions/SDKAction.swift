@@ -12,6 +12,9 @@ public enum SDKAction: Decodable {
     /// Indicates a WeChat Pay SDK action.
     case weChatPay(WeChatPaySDKAction)
     
+    /// Indicates a Twint SDK action.
+    case twint(TwintSDKAction)
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(SDKType.self, forKey: CodingKeys.type)
@@ -19,6 +22,8 @@ public enum SDKAction: Decodable {
         switch type {
         case .weChatPay:
             self = try .weChatPay(WeChatPaySDKAction(from: decoder))
+        case .twint:
+            self = try .twint(TwintSDKAction(from: decoder))
         }
     }
     
@@ -28,5 +33,6 @@ public enum SDKAction: Decodable {
     
     private enum SDKType: String, Decodable {
         case weChatPay = "wechatpaySDK"
+        case twint = "twint"
     }
 }

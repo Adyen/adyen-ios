@@ -37,9 +37,10 @@ extension InitialDataFlowProtocol {
             context: context,
             actionComponent: .init(
                 threeDS: .init(
-                    requestorAppURL: URL(string: ConfigurationConstants.returnUrl),
+                    requestorAppURL: ConfigurationConstants.returnUrl,
                     delegateAuthentication: ConfigurationConstants.delegatedAuthenticationConfigurations
-                )
+                ),
+                twint: .init(callbackAppScheme: ConfigurationConstants.returnUrl.scheme!)
             )
         )
         return configuration

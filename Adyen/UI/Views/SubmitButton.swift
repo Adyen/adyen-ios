@@ -27,6 +27,7 @@ public final class SubmitButton: UIControl {
         addSubview(titleLabel)
         
         backgroundColor = style.backgroundColor
+        self.adyen.round(using: style.cornerRounding)
         
         configureConstraints()
     }
