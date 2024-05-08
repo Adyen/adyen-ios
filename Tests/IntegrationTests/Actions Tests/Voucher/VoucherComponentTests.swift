@@ -105,7 +105,7 @@ class VoucherComponentTests: XCTestCase {
             let component = component as! PresentableComponentWrapper
             XCTAssert(component.component === sut)
             
-            setupRootViewController(component.viewController)
+            self.setupRootViewController(component.viewController)
             
             let view = sut.view
             

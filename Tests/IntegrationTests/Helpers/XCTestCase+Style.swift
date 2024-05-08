@@ -40,7 +40,7 @@ extension XCTestCase {
     /// - Parameters:
     ///   - submitButton: `SubmitButton` to check
     ///   - style: `ButtonStyle` that should be applied
-    func check(submitButton: SubmitButton, forStyle style: ButtonStyle) {
+    func check(submitButton: SubmitButton, forStyle style: ButtonStyle, file: StaticString = #file, line: UInt = #line) {
         check(label: submitButton.titleLabel, forStyle: style.title)
         XCTAssertEqual(submitButton.backgroundView.layer.borderColor, style.borderColor?.cgColor)
         XCTAssertEqual(submitButton.backgroundView.layer.borderWidth, style.borderWidth)
@@ -53,12 +53,17 @@ extension XCTestCase {
     /// - Parameters:
     ///   - layer: `CALayer` to check
     ///   - cornerRounding: `CornerRounding` that should be applied
-    func check(layer: CALayer, forCornerRounding cornerRounding: CornerRounding) {
+    func check(
+        layer: CALayer,
+        forCornerRounding cornerRounding: CornerRounding,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) {
         switch cornerRounding {
         case .none:
             break
         case let .fixed(radius):
-            XCTAssertEqual(layer.cornerRadius, radius)
+            XCTAssertEqual(layer.cornerRadius, radius, file: file, line: line)
         case let .percent(percent):
             let radius = min(layer.frame.width, layer.frame.height) * percent
             XCTAssertEqual(layer.cornerRadius, radius)
