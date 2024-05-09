@@ -100,6 +100,9 @@ internal final class ComponentsViewController: UIViewController {
             ],
             [
                 ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)
+            ],
+            [
+                ComponentsItem(title: "Configurable Pay Button", selectionHandler: presentCustomComponentView)
             ]
         ]
         
@@ -150,6 +153,12 @@ internal final class ComponentsViewController: UIViewController {
         } else {
             applePayComponentAdvancedFlowExample.start()
         }
+    }
+
+    internal func presentCustomComponentView() {
+        let viewController = CustomComponentViewController()
+        let navigationController = UINavigationController(rootViewController: viewController)
+        present(viewController: navigationController, completion: nil)
     }
 
 }

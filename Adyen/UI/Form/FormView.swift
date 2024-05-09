@@ -7,7 +7,7 @@
 import UIKit
 
 /// Displays a form for the user to enter details.
-internal final class FormView: UIScrollView {
+internal final class FormView: UIView {
 
     /// Initializes the form view.
     internal init() {
@@ -39,7 +39,7 @@ internal final class FormView: UIScrollView {
 
     // MARK: - Stack View
     
-    private lazy var stackView: UIStackView = {
+    lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .fill
