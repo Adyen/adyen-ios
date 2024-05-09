@@ -109,9 +109,9 @@ internal class VoucherCardView: UIView {
     private func buildContainerLayer() {
         containerLayer.lineWidth = 1
         containerLayer.masksToBounds = true
-        containerLayer.contentsScale = UITraitCollection.current.displayScale
+        containerLayer.contentsScale = CGFloat.displayScale
         containerLayer.shouldRasterize = true
-        containerLayer.rasterizationScale = UITraitCollection.current.displayScale
+        containerLayer.rasterizationScale = CGFloat.displayScale
 
         buildShadowLayers()
         layer.addSublayer(containerLayer)
@@ -122,7 +122,7 @@ internal class VoucherCardView: UIView {
         shadowLayer.shadowOffset = CGSize(width: 0, height: 2)
         shadowLayer.shadowOpacity = 0.08
         shadowLayer.shadowRadius = 4
-        shadowLayer.contentsScale = UITraitCollection.current.displayScale
+        shadowLayer.contentsScale = CGFloat.displayScale
         shadowsLayer.append(shadowLayer)
         layer.addSublayer(shadowLayer)
     }

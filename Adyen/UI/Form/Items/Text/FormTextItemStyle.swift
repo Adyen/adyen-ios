@@ -25,7 +25,7 @@ public struct FormTextItemStyle: FormValueItemStyle {
     
     /// The icons' style.
     public var icon = ImageStyle(borderColor: UIColor.Adyen.componentSeparator,
-                                 borderWidth: 1.0 / UITraitCollection.current.displayScale,
+                                 borderWidth: 1.0 / CGFloat.displayScale,
                                  cornerRadius: 4.0,
                                  clipsToBounds: true,
                                  contentMode: .scaleAspectFit)

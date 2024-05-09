@@ -27,7 +27,7 @@ public struct ListItemStyle: ViewStyle {
     
     /// The image style.
     public var image = ImageStyle(borderColor: UIColor.Adyen.componentSeparator,
-                                  borderWidth: 1.0 / UITraitCollection.current.displayScale,
+                                  borderWidth: 1.0 / CGFloat.displayScale,
                                   cornerRadius: 4.0,
                                   clipsToBounds: true,
                                   contentMode: .scaleAspectFit)

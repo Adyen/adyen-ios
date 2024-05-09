@@ -46,3 +46,19 @@ public protocol PreferredContentSizeConsumer {
 
     func willUpdatePreferredContentSize()
 }
+
+// TODO: Put this somewhere else
+@_spi(AdyenInternal)
+public extension CGFloat {
+    static var displayScale: CGFloat {
+        #if os(visionOS)
+            UITraitCollection.current.displayScale
+        #else
+            if #available(iOS 13.0, *) {
+                UITraitCollection.current.displayScale
+            } else {
+                UIScreen.main.scale
+            }
+        #endif
+    }
+}

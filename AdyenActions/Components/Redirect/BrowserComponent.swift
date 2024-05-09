@@ -37,7 +37,7 @@ import UIKit
                 safariViewController.preferredControlTintColor = $0.preferredControlTintColor
             }
 
-            UIViewController()
+            return safariViewController
         }()
     
         internal weak var delegate: BrowserComponentDelegate?
