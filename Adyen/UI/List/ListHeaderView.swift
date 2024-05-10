@@ -36,8 +36,11 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
     
     private func updateItem() {
         guard let item = headerItem else { return }
-        backgroundView?.backgroundColor = item.style.backgroundColor
-        contentView.backgroundColor = item.style.backgroundColor
+        
+        #if !os(visionOS)
+            backgroundView?.backgroundColor = item.style.backgroundColor
+            contentView.backgroundColor = item.style.backgroundColor
+        #endif
         titleLabel.adyen.apply(item.style.title)
         titleLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListHeaderView.\(item.title)",
                                                                          postfix: "titleLabel")

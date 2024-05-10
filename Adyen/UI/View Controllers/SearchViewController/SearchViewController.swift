@@ -74,7 +74,9 @@ public class SearchViewController: UIViewController, AdyenObserver {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = viewModel.style.backgroundColor
+        #if !os(visionOS)
+            view.backgroundColor = viewModel.style.backgroundColor
+        #endif
 
         view.addSubview(loadingView)
         

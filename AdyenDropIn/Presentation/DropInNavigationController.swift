@@ -60,10 +60,12 @@ internal final class DropInNavigationController: UINavigationController, Preferr
     // MARK: - Private
 
     internal func updateTopViewControllerIfNeeded(animated: Bool = true) {
-        guard let topViewController = topViewController as? WrapperViewController else { return }
+        #if !os(visionOS)
+            guard let topViewController = topViewController as? WrapperViewController else { return }
 
-        let frame = topViewController.requiresKeyboardInput ? keyboardObserver.keyboardRect : .zero
-        topViewController.updateFrame(keyboardRect: frame, animated: animated)
+            let frame = topViewController.requiresKeyboardInput ? keyboardObserver.keyboardRect : .zero
+            topViewController.updateFrame(keyboardRect: frame, animated: animated)
+        #endif
     }
     
     private func wrapInModalController(component: PresentableComponent, isRoot: Bool) -> WrapperViewController {
@@ -83,34 +85,41 @@ internal final class DropInNavigationController: UINavigationController, Preferr
         let rootContainer = wrapInModalController(component: component, isRoot: true)
         viewControllers = [rootContainer]
         
-        delegate = self
-        modalPresentationStyle = .custom
-        transitioningDelegate = self
+        #if !os(visionOS)
+            delegate = self
+            transitioningDelegate = self
+            modalPresentationStyle = .custom
+        #endif
+        
         navigationBar.isHidden = true
     }
 }
 
-extension DropInNavigationController: UINavigationControllerDelegate {
-    
-    internal func navigationController(_ navigationController: UINavigationController,
-                                       animationControllerFor operation: UINavigationController.Operation,
-                                       from fromVC: UIViewController,
-                                       to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        SlideInPresentationAnimator(duration: 0.6)
-    }
-    
-}
+#if !os(visionOS)
 
-extension DropInNavigationController: UIViewControllerTransitioningDelegate {
-
-    internal func presentationController(forPresented presented: UIViewController,
-                                         presenting: UIViewController?,
-                                         source: UIViewController) -> UIPresentationController? {
-        DimmingPresentationController(presented: presented,
-                                      presenting: presenting,
-                                      layoutDidChanged: { [weak self] in
-                                          self?.updateTopViewControllerIfNeeded(animated: false)
-                                      })
-    }
+    extension DropInNavigationController: UINavigationControllerDelegate {
     
-}
+        internal func navigationController(_ navigationController: UINavigationController,
+                                           animationControllerFor operation: UINavigationController.Operation,
+                                           from fromVC: UIViewController,
+                                           to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+            SlideInPresentationAnimator(duration: 0.6)
+        }
+    
+    }
+
+    extension DropInNavigationController: UIViewControllerTransitioningDelegate {
+
+        internal func presentationController(forPresented presented: UIViewController,
+                                             presenting: UIViewController?,
+                                             source: UIViewController) -> UIPresentationController? {
+            DimmingPresentationController(presented: presented,
+                                          presenting: presenting,
+                                          layoutDidChanged: { [weak self] in
+                                              self?.updateTopViewControllerIfNeeded(animated: false)
+                                          })
+        }
+    
+    }
+
+#endif

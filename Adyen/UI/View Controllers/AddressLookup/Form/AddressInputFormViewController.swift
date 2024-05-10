@@ -84,7 +84,9 @@ public class AddressInputFormViewController: FormViewController {
             addressViewModelBuilder: viewModel.addressViewModelBuilder
         )
         viewModel.prefillAddress.map { item.value = $0 }
-        item.style.backgroundColor = UIColor.Adyen.lightGray
+        #if !os(visionOS)
+            item.style.backgroundColor = UIColor.Adyen.lightGray
+        #endif
         item.title = nil
         return item
     }()

@@ -20,7 +20,9 @@ public extension UISearchBar {
         searchBar.placeholder = placeholder
         searchBar.isTranslucent = false
         searchBar.backgroundImage = UIImage()
-        searchBar.barTintColor = backgroundColor
+        #if !os(visionOS)
+            searchBar.barTintColor = backgroundColor
+        #endif
         searchBar.delegate = delegate
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         return searchBar

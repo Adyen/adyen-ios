@@ -8,24 +8,25 @@
 import SafariServices
 import UIKit
 
-#if !os(visionOS)
+internal protocol BrowserComponentDelegate: AnyObject {
+    func didCancel()
+    func didOpenExternalApplication()
+}
 
-    internal protocol BrowserComponentDelegate: AnyObject {
-        func didCancel()
-        func didOpenExternalApplication()
-    }
+/// A component that opens a URL in web browsed and presents it.
+internal final class BrowserComponent: NSObject, PresentableComponent {
 
-    /// A component that opens a URL in web browsed and presents it.
-    internal final class BrowserComponent: NSObject, PresentableComponent {
+    /// :nodoc
+    internal let context: AdyenContext
 
-        /// :nodoc
-        internal let context: AdyenContext
+    private let url: URL
+    private let style: RedirectComponentStyle?
+    private let componentName = "browser"
 
-        private let url: URL
-        private let style: RedirectComponentStyle?
-        private let componentName = "browser"
-
-        internal lazy var viewController: UIViewController = {
+    internal lazy var viewController: UIViewController = {
+        
+        #if !os(visionOS)
+        
             let safariViewController = SFSafariViewController(url: url)
             safariViewController.delegate = self
             safariViewController.modalPresentationStyle = style?.modalPresentationStyle ?? .formSheet
@@ -36,42 +37,57 @@ import UIKit
                 safariViewController.preferredBarTintColor = $0.preferredBarTintColor
                 safariViewController.preferredControlTintColor = $0.preferredControlTintColor
             }
-
+        
             return safariViewController
-        }()
-    
-        internal weak var delegate: BrowserComponentDelegate?
-    
-        @AdyenDependency(\.openAppDetector) private var openAppDetector
-    
-        /// Initializes the component.
-        ///
-        /// - Parameter url: The URL to where the user should be redirected
-        /// - Parameter context: The context object for this component.
-        /// - Parameter style: The component's UI style.
-        internal init(url: URL,
-                      context: AdyenContext,
-                      style: RedirectComponentStyle? = nil) {
-            self.url = url
-            self.context = context
-            self.style = style
-            super.init()
-        }
+        #else
+        
+            let alertController = UIAlertController(title: "Payment ongoing...", message: "Waiting for completion", preferredStyle: .alert)
+            alertController.addAction(.init(title: "Cancel", style: .cancel, handler: { [weak self] _ in
+                self?.delegate?.didCancel()
+            }))
+        
+            // TODO: Make injectable
+            AppLauncher().openCustomSchemeUrl(url, completion: nil)
+        
+            return alertController
+        
+        #endif
+    }()
 
-        /// This allows us to assume one of the following scenarios:
-        /// - SFSafariViewController deliberately closed by user and current app still in foreground;
-        /// - SFSafariViewController finished due to a successful redirect to an external app and current app no longer in foreground.
-        private func finish() {
-            openAppDetector.checkIfExternalAppDidOpen { didOpenExternalApp in
-                if didOpenExternalApp {
-                    self.delegate?.didOpenExternalApplication()
-                } else {
-                    self.delegate?.didCancel()
-                }
+    internal weak var delegate: BrowserComponentDelegate?
+
+    @AdyenDependency(\.openAppDetector) private var openAppDetector
+
+    /// Initializes the component.
+    ///
+    /// - Parameter url: The URL to where the user should be redirected
+    /// - Parameter context: The context object for this component.
+    /// - Parameter style: The component's UI style.
+    internal init(url: URL,
+                  context: AdyenContext,
+                  style: RedirectComponentStyle? = nil) {
+        self.url = url
+        self.context = context
+        self.style = style
+        super.init()
+    }
+
+    /// This allows us to assume one of the following scenarios:
+    /// - SFSafariViewController deliberately closed by user and current app still in foreground;
+    /// - SFSafariViewController finished due to a successful redirect to an external app and current app no longer in foreground.
+    private func finish() {
+        openAppDetector.checkIfExternalAppDidOpen { didOpenExternalApp in
+            if didOpenExternalApp {
+                self.delegate?.didOpenExternalApplication()
+            } else {
+                self.delegate?.didCancel()
             }
         }
-
     }
+
+}
+
+#if !os(visionOS)
 
     // MARK: - SFSafariViewControllerDelegate
 
@@ -92,5 +108,4 @@ import UIKit
             self.delegate?.didOpenExternalApplication()
         }
     }
-
 #endif

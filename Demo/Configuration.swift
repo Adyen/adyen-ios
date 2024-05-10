@@ -248,7 +248,7 @@ internal struct DemoAppSettings: Codable {
     }
 
     internal var dropInConfiguration: DropInComponent.Configuration {
-        let style = DropInComponent.Style()
+        let style = DropInComponent.Style(tintColor: .systemPink)
         
         let dropInConfig = DropInComponent.Configuration(
             style: style,

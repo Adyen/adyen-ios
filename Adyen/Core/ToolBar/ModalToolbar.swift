@@ -11,7 +11,12 @@ public class ModalToolbar: UIView, AnyNavigationBar {
     private let style: NavigationStyle
     public var onCancelHandler: (() -> Void)?
     private let title: String?
-    private let paddingWithMarginCorrection: CGFloat = 16
+    
+    #if os(visionOS)
+        private let paddingWithMarginCorrection: CGFloat = 32
+    #else
+        private let paddingWithMarginCorrection: CGFloat = 16
+    #endif
 
     public init(title: String?, style: NavigationStyle) {
         self.style = style
@@ -90,7 +95,9 @@ public class ModalToolbar: UIView, AnyNavigationBar {
     }
 
     private func setupStyle() {
-        backgroundColor = style.backgroundColor
+        #if !os(visionOS)
+            backgroundColor = style.backgroundColor
+        #endif
         cancelButton.tintColor = style.tintColor
         guard let title = titleLabel.text, !title.isEmpty else { return }
         titleLabel.attributedText = NSAttributedString(string: title,
@@ -162,7 +169,7 @@ public class ModalToolbar: UIView, AnyNavigationBar {
             button.setImage(image, for: .normal)
         default:
             if #available(iOS 13.0, *) {
-                button = UIButton(type: UIButton.ButtonType.close)
+                button = UIButton(type: .close)
                 button.widthAnchor.constraint(equalTo: button.heightAnchor).isActive = true
             } else {
                 return legacy()

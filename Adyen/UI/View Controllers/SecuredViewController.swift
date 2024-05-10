@@ -61,7 +61,9 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
     override public func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = style.backgroundColor
+        #if !os(visionOS)
+            view.backgroundColor = style.backgroundColor
+        #endif
         addChildViewController()
         listenToBackgroundNotifications()
 
@@ -113,7 +115,9 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
 
     private func addBlur() {
         view.addSubview(blurEffectView)
-        view.backgroundColor = .clear
+        #if !os(visionOS)
+            view.backgroundColor = .clear
+        #endif
 
         blurConstraints = blurEffectView.adyen.anchor(inside: view)
 
@@ -131,8 +135,9 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
                            }
                            self?.blurEffectView.removeFromSuperview()
                            self?.$blurEffectView.reset()
-
-                           self?.view.backgroundColor = self?.style.backgroundColor
+                           #if !os(visionOS)
+                               self?.view.backgroundColor = self?.style.backgroundColor
+                           #endif
                        })
     }
 }

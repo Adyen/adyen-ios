@@ -64,9 +64,7 @@ public final class RedirectComponent: ActionComponent {
         APIClient(apiContext: context.apiContext).retryAPIClient(with: SimpleScheduler(maximumCount: 2))
     }()
     
-    #if !os(visionOS)
-        private var browserComponent: BrowserComponent?
-    #endif
+    private var browserComponent: BrowserComponent?
     
     /// The component configurations.
     public var configuration: Configuration
@@ -134,17 +132,12 @@ public final class RedirectComponent: ActionComponent {
     }
 
     private func openInAppBrowser(_ action: RedirectAction) {
-        #if os(visionOS)
-            // We're opening the URL in the Safari app
-            appLauncher.openCustomSchemeUrl(action.url, completion: nil)
-        #else
-            let component = BrowserComponent(url: action.url,
-                                             context: context,
-                                             style: configuration.style)
-            component.delegate = self
-            browserComponent = component
-            presentationDelegate?.present(component: component)
-        #endif
+        let component = BrowserComponent(url: action.url,
+                                         context: context,
+                                         style: configuration.style)
+        component.delegate = self
+        browserComponent = component
+        presentationDelegate?.present(component: component)
     }
     
     // MARK: - Custom scheme link handling
@@ -202,24 +195,20 @@ public final class RedirectComponent: ActionComponent {
     
 }
 
-#if !os(visionOS)
+extension RedirectComponent: BrowserComponentDelegate {
 
-    extension RedirectComponent: BrowserComponentDelegate {
-
-        internal func didCancel() {
-            if browserComponent != nil {
-                browserComponent = nil
-                delegate?.didFail(with: ComponentError.cancelled, from: self)
-            }
+    internal func didCancel() {
+        if browserComponent != nil {
+            browserComponent = nil
+            delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
-
-        internal func didOpenExternalApplication() {
-            delegate?.didOpenExternalApplication(component: self)
-        }
-    
     }
 
-#endif
+    internal func didOpenExternalApplication() {
+        delegate?.didOpenExternalApplication(component: self)
+    }
+
+}
 
 @_spi(AdyenInternal)
 extension RedirectComponent: ActionComponentDelegate {

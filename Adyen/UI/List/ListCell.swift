@@ -31,7 +31,9 @@ public final class ListCell: UITableViewCell {
         didSet {
             itemView.item = item
             itemView.accessibilityIdentifier = item?.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "itemView") }
-            backgroundColor = item?.style.backgroundColor
+            #if !os(visionOS)
+                backgroundColor = item?.style.backgroundColor
+            #endif
             resetAccessoryView()
             
             accessibilityLabel = item?.accessibilityLabel

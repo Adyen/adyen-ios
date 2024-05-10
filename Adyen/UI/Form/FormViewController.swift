@@ -205,8 +205,10 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
 
     private func addFormView() {
         view.addSubview(formView)
-        view.backgroundColor = style.backgroundColor
-        formView.backgroundColor = style.backgroundColor
+        #if !os(visionOS)
+            view.backgroundColor = style.backgroundColor
+            formView.backgroundColor = style.backgroundColor
+        #endif
         formView.adyen.anchor(inside: view.safeAreaLayoutGuide)
     }
 

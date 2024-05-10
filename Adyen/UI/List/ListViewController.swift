@@ -85,9 +85,11 @@ public final class ListViewController: UITableViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = style.backgroundColor
-        tableView.backgroundColor = style.backgroundColor
-        tableView.backgroundView?.backgroundColor = style.backgroundColor
+        #if !os(visionOS)
+            view.backgroundColor = style.backgroundColor
+            tableView.backgroundColor = style.backgroundColor
+            tableView.backgroundView?.backgroundColor = style.backgroundColor
+        #endif
         tableView.isOpaque = false
         
         tableView.separatorColor = .clear

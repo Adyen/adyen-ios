@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "81A6DCB42BED5709005D2D13"
-               BuildableName = "AdyenVisionOSHost.app"
-               BlueprintName = "AdyenVisionOSHost"
+               BlueprintIdentifier = "00E5D6502AF4E99A00CDE118"
+               BuildableName = "AdyenTwint.framework"
+               BlueprintName = "AdyenTwint"
                ReferencedContainer = "container:Adyen.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -39,16 +39,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "81A6DCB42BED5709005D2D13"
-            BuildableName = "AdyenVisionOSHost.app"
-            BlueprintName = "AdyenVisionOSHost"
-            ReferencedContainer = "container:Adyen.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -56,16 +46,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "81A6DCB42BED5709005D2D13"
-            BuildableName = "AdyenVisionOSHost.app"
-            BlueprintName = "AdyenVisionOSHost"
+            BlueprintIdentifier = "00E5D6502AF4E99A00CDE118"
+            BuildableName = "AdyenTwint.framework"
+            BlueprintName = "AdyenTwint"
             ReferencedContainer = "container:Adyen.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

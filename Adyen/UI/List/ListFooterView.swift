@@ -18,7 +18,9 @@ internal final class ListFooterView: UIView {
 
         super.init(frame: .zero)
 
-        backgroundColor = style.backgroundColor
+        #if !os(visionOS)
+            backgroundColor = style.backgroundColor
+        #endif
         addSubview(stackView)
 
         stackView.adyen.anchor(inside: self)

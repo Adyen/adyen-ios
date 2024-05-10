@@ -13,7 +13,11 @@ extension UIFont {
     internal enum AdyenCore {
         
         internal static var barTitle: UIFont {
-            UIFont.preferredFont(forTextStyle: .title3).adyen.font(with: .semibold)
+            #if os(visionOS)
+                UIFont.preferredFont(forTextStyle: .title1).adyen.font(with: .semibold)
+            #else
+                UIFont.preferredFont(forTextStyle: .title3).adyen.font(with: .semibold)
+            #endif
         }
         
     }

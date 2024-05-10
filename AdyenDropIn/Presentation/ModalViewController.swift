@@ -58,7 +58,9 @@ internal final class ModalViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         addChildViewController()
-        view.backgroundColor = style.backgroundColor
+        #if !os(visionOS)
+            view.backgroundColor = style.backgroundColor
+        #endif
     }
 
     private func addChildViewController() {
