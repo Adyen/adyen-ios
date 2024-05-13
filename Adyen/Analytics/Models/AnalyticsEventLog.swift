@@ -39,9 +39,9 @@ public struct AnalyticsEventLog: AnalyticsEvent {
         case qrCode = "QrCode"
         case bankTransfer = "BankTransfer"
         case sdk = "Sdk"
-        case fingerPrintSent = "FingerprintDataSentMobile"
-        case fingerPrintComplete = "FingerprintCompleted"
-        case challengeSent = "ChallengeSentMobile"
+        case fingerprintSent = "FingerprintDataSentMobile"
+        case fingerprintComplete = "FingerprintCompleted"
+        case challengeDataSent = "ChallengeDataSentMobile"
         case challengeDisplayed = "ChallengeDisplayed"
         case challengeComplete = "ChallengeCompleted"
     }

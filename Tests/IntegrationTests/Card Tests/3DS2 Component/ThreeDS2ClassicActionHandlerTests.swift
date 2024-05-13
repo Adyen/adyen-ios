@@ -91,8 +91,8 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
                         let fingerprintSentEvent = analyticsProviderMock.logs[0]
                         let fingerprintCompleteEvent = analyticsProviderMock.logs[1]
                         
-                        XCTAssertEqual(fingerprintSentEvent.subType, .fingerPrintSent)
-                        XCTAssertEqual(fingerprintCompleteEvent.subType, .fingerPrintComplete)
+                        XCTAssertEqual(fingerprintSentEvent.subType, .fingerprintSent)
+                        XCTAssertEqual(fingerprintCompleteEvent.subType, .fingerprintComplete)
                     default:
                         XCTFail()
                     }
@@ -180,7 +180,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
                         let challengeDisplayedEvent = analyticsProviderMock.logs[1]
                         let challengeCompleteEvent = analyticsProviderMock.logs[2]
                         
-                        XCTAssertEqual(challengeSentEvent.subType, .challengeSent)
+                        XCTAssertEqual(challengeSentEvent.subType, .challengeDataSent)
                         XCTAssertEqual(challengeDisplayedEvent.subType, .challengeDisplayed)
                         XCTAssertEqual(challengeCompleteEvent.subType, .challengeComplete)
                     default:

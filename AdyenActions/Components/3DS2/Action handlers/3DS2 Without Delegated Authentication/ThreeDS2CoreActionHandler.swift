@@ -68,12 +68,12 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                          event: Analytics.Event,
                          completionHandler: @escaping (Result<String, Error>) -> Void) {
         Analytics.sendEvent(event)
-        sendFingerPrintEvent(.fingerPrintSent)
+        sendFingerPrintEvent(.fingerprintSent)
         
         createFingerprint(fingerprintAction) { [weak self] result in
             guard let self else { return }
             
-            self.sendFingerPrintEvent(.fingerPrintComplete)
+            self.sendFingerPrintEvent(.fingerprintComplete)
             
             switch result {
             case let .success(encodedFingerprint):
@@ -149,7 +149,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
 
         Analytics.sendEvent(event)
         
-        sendChallengeEvent(.challengeSent)
+        sendChallengeEvent(.challengeDataSent)
 
         let token: ThreeDS2Component.ChallengeToken
         do {
@@ -257,5 +257,4 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         )
         context.analyticsProvider?.add(log: logEvent)
     }
-
 }

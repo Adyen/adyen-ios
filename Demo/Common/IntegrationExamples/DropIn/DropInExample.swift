@@ -25,13 +25,7 @@ internal final class DropInExample: InitialDataFlowProtocol {
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     private lazy var palApiClient = ApiClientHelper.generatePalApiClient()
     
-    internal var context: AdyenContext = {
-        var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
-        return AdyenContext(apiContext: ConfigurationConstants.apiContext,
-                            payment: ConfigurationConstants.current.payment,
-                            analyticsConfiguration: analyticsConfiguration)
-    }()
+    internal lazy var context: AdyenContext = generateContext()
     
     // MARK: - Initializers
 

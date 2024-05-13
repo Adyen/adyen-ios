@@ -109,7 +109,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
             // clear the sent events on successful send
             switch result {
             case .success:
-                self.removeSentEvents(from: request)
+                self.removeEvents(sentBy: request)
                 self.startNextTimer()
             case .failure:
                 break
@@ -146,7 +146,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
         }
     }
     
-    private func removeSentEvents(from request: AnalyticsRequest) {
+    private func removeEvents(sentBy request: AnalyticsRequest) {
         let collection = AnalyticsEventWrapper(
             infos: request.infos,
             logs: request.logs,
