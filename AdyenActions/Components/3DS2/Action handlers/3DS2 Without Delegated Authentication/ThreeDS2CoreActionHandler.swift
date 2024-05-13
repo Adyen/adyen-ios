@@ -28,7 +28,7 @@ internal protocol AnyThreeDS2CoreActionHandler: Component {
 internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     private enum Constants {
         static let transStatusWhenError = "U"
-        static let fingerPrintEvent = "threeDS2Fingerprint"
+        static let fingerprintEvent = "threeDS2Fingerprint"
         static let challengeEvent = "threeDS2Challenge"
     }
     
@@ -242,7 +242,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     
     private func sendFingerPrintEvent(_ subtype: AnalyticsEventLog.LogSubType) {
         let logEvent = AnalyticsEventLog(
-            component: Constants.fingerPrintEvent,
+            component: Constants.fingerprintEvent,
             type: .threeDS2,
             subType: subtype
         )
