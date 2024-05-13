@@ -8,12 +8,12 @@
 import UIKit
 
 extension AdyenDependencyValues {
-    internal var openAppDetector: OpenExternalAppDetector {
+    internal var openAppDetector: OpenExternalAppDetecting {
         get { self[OpenExternalAppDetectorKey.self] }
         set { self[OpenExternalAppDetectorKey.self] = newValue }
     }
 }
 
 internal enum OpenExternalAppDetectorKey: AdyenDependencyKey {
-    internal static let liveValue: OpenExternalAppDetector = UIApplication.shared
+    internal static let liveValue: OpenExternalAppDetecting = OpenExternalAppDetector()
 }
