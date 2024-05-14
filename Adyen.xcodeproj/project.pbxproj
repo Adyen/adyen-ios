@@ -360,6 +360,8 @@
 		A0BDF3F02BD28817001FF7E5 /* AddressAnalyticsValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BDF3EF2BD28817001FF7E5 /* AddressAnalyticsValidationError.swift */; };
 		A0BDF3F22BD29E69001FF7E5 /* PostalCodeValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BDF3F12BD29E69001FF7E5 /* PostalCodeValidatorTests.swift */; };
 		A0BDF3F42BD6A82C001FF7E5 /* AnalyticsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BDF3F32BD6A82C001FF7E5 /* AnalyticsConstants.swift */; };
+		A0BDF3F72BEB9CCF001FF7E5 /* AnalyticsProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0005D280474DF00CE2EEC /* AnalyticsProviderTests.swift */; };
+		A0BDF3F82BEB9CF6001FF7E5 /* AnalyticsEventDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05A9B7D2B8F8DF300E5E178 /* AnalyticsEventDataSourceTests.swift */; };
 		A0C9B59B288AE34600D6BDAB /* InstallmentOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41E5526CBCA6E0089AD6C /* InstallmentOptions.swift */; };
 		A0D48FB827109B0200C0B82C /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */; };
 		A0DB48662AFD020400348C83 /* AnalyticsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB48652AFD020400348C83 /* AnalyticsRequest.swift */; };
@@ -374,10 +376,8 @@
 		A0F455A12968472B001742C7 /* PartialPaymentMethodDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F455A02968472B001742C7 /* PartialPaymentMethodDetails.swift */; };
 		A0FA143F26D65A5300627127 /* InstallmentPickerElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */; };
 		A0FA145726D65B6200627127 /* FormCardInstallmentsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA145626D65B6200627127 /* FormCardInstallmentsItemView.swift */; };
-		B62D48B32BBE8DBE001EF01A /* AnalyticsEventDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05A9B7D2B8F8DF300E5E178 /* AnalyticsEventDataSourceTests.swift */; };
 		B62D48B42BBE8DBE001EF01A /* AnalyticsFlavorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16AB280702B200534419 /* AnalyticsFlavorTests.swift */; };
 		B62D48B52BBE8DBE001EF01A /* AnalyticsEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16A928059A5A00534419 /* AnalyticsEventTests.swift */; };
-		B62D48B62BBE8DBE001EF01A /* AnalyticsProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0005D280474DF00CE2EEC /* AnalyticsProviderTests.swift */; };
 		B62D48B72BBE8DBE001EF01A /* AnalyticsProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0005B280468E100CE2EEC /* AnalyticsProviderMock.swift */; };
 		B62D48C02BBE8DF5001EF01A /* APIClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E757F02525D2ED4C007C813D /* APIClientMock.swift */; };
 		B62D48C42BBE8F25001EF01A /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */; };
@@ -6611,6 +6611,7 @@
 				B6D808282BCD166D00F3F5EB /* PostalAddressMocks.swift in Sources */,
 				B6D808232BCD151F00F3F5EB /* ActionHandlingComponentMock.swift in Sources */,
 				B6D8082D2BCD178B00F3F5EB /* XCTestCase+Result.swift in Sources */,
+				A0BDF3F82BEB9CF6001FF7E5 /* AnalyticsEventDataSourceTests.swift in Sources */,
 				B6D808362BCD1F8900F3F5EB /* PhoneExtensionsRepositoryTests.swift in Sources */,
 				B6D808122BCD147D00F3F5EB /* BrowserInfoTests.swift in Sources */,
 				B6D808032BCD140E00F3F5EB /* AssetsAccessTests.swift in Sources */,
@@ -6621,7 +6622,6 @@
 				B6D808382BCD1F8900F3F5EB /* AssertsTests.swift in Sources */,
 				B6D808392BCD1F8900F3F5EB /* LengthValidatorTests.swift in Sources */,
 				B6D808342BCD1F8900F3F5EB /* LazyOptionalTests.swift in Sources */,
-				B62D48B62BBE8DBE001EF01A /* AnalyticsProviderTests.swift in Sources */,
 				B6D808072BCD147600F3F5EB /* TimeIntervalExtensionsTests.swift in Sources */,
 				B6D808082BCD147600F3F5EB /* URLExtensionsTest.swift in Sources */,
 				B6D8080E2BCD147D00F3F5EB /* APIContextTests.swift in Sources */,
@@ -6632,6 +6632,7 @@
 				B6D808252BCD155400F3F5EB /* String+UIImage.swift in Sources */,
 				B6D8081A2BCD151F00F3F5EB /* ImageLoaderMock.swift in Sources */,
 				B6D8082C2BCD176E00F3F5EB /* XCTestCase+Coder.swift in Sources */,
+				A0BDF3F72BEB9CCF001FF7E5 /* AnalyticsProviderTests.swift in Sources */,
 				81A91AB72BEBEA21001E00C8 /* OpenExternalAppDetectorTests.swift in Sources */,
 				B6D808222BCD151F00F3F5EB /* PaymentComponentDelegateMock.swift in Sources */,
 				B6D808102BCD147D00F3F5EB /* BackoffSchedulerTests.swift in Sources */,
@@ -6639,7 +6640,6 @@
 				B6D8082F2BCD1F8900F3F5EB /* KeyboardObserverTests.swift in Sources */,
 				B6D8081F2BCD151F00F3F5EB /* FormatterMock.swift in Sources */,
 				B6D808322BCD1F8900F3F5EB /* BalanceCheckerTests.swift in Sources */,
-				B62D48B32BBE8DBE001EF01A /* AnalyticsEventDataSourceTests.swift in Sources */,
 				B6D808192BCD151F00F3F5EB /* PaymentMethodMock.swift in Sources */,
 				B6D808052BCD147600F3F5EB /* KeyedDecodingContainerExtensionsTests.swift in Sources */,
 				B6D808092BCD147600F3F5EB /* StringExtensionsTests.swift in Sources */,
@@ -8115,7 +8115,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = "";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -8141,7 +8141,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = "";
 				MTL_ENABLE_DEBUG_INFO = NO;

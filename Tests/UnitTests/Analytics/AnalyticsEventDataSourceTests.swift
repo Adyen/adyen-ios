@@ -64,5 +64,24 @@ final class AnalyticsEventDataSourceTests: XCTestCase {
         
         XCTAssertNil(sut.allEvents())
     }
+    
+    func testRemoveSpecificEvents() {
+        XCTAssertNil(sut.allEvents())
+        
+        let info = AnalyticsEventInfo(component: "test", type: .rendered)
+        let log = AnalyticsEventLog(component: "card", type: .action, subType: .redirect)
+        let error = AnalyticsEventError(component: "card", type: .internal)
+        
+        sut.add(info: info)
+        sut.add(log: log)
+        sut.add(error: error)
+        
+        let collection = AnalyticsEventWrapper(infos: [], logs: [log], errors: [error])
+        sut.removeEvents(matching: collection)
+        
+        XCTAssertEqual(sut.allEvents()?.infos.count, 1)
+        XCTAssertEqual(sut.allEvents()?.logs.count, 0)
+        XCTAssertEqual(sut.allEvents()?.errors.count, 0)
+    }
 
 }

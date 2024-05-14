@@ -106,10 +106,10 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
         
         apiClient.perform(request) { [weak self] result in
             guard let self else { return }
-            // clear the current events on successful send
+            // clear the sent events on successful send
             switch result {
             case .success:
-                self.eventDataSource.removeAllEvents()
+                self.removeEvents(sentBy: request)
                 self.startNextTimer()
             case .failure:
                 break
@@ -144,6 +144,15 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
         case .failure:
             checkoutAttemptId = nil
         }
+    }
+    
+    private func removeEvents(sentBy request: AnalyticsRequest) {
+        let collection = AnalyticsEventWrapper(
+            infos: request.infos,
+            logs: request.logs,
+            errors: request.errors
+        )
+        eventDataSource.removeEvents(matching: collection)
     }
     
     private func startNextTimer() {

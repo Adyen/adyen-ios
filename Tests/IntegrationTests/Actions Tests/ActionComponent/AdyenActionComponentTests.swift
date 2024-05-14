@@ -261,4 +261,70 @@ class AdyenActionComponentTests: XCTestCase {
             let _ = AdyenActionComponent.Configuration.Twint(callbackAppScheme: scheme)
         }
     }
+    
+    func testHandleRedirectEvent() {
+        let redirectAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data")
+        testEvent(for: Action.redirect(redirectAction))
+    }
+    
+    func testHandleAwaitActionEvent() {
+        let awaitAction = AwaitAction(paymentData: "SOME_DATA", paymentMethodType: .blik)
+        testEvent(for: Action.await(awaitAction))
+    }
+    
+    func testHandleSDKActionEvent() {
+        let sdkAction = try! JSONDecoder().decode(SDKAction.self, from: weChatActionResponse.data(using: .utf8)!)
+        testEvent(for: Action.sdk(sdkAction))
+    }
+    
+    func testHandleThreeDSEvent() {
+        let threeDSAction = try! JSONDecoder().decode(ThreeDS2Action.self, from: threeDSFingerprintAction.data(using: .utf8)!)
+        testEvent(for: Action.threeDS2(threeDSAction))
+    }
+    
+    func testHandleVoucherEvent() {
+        let voucherAction = try! JSONDecoder().decode(VoucherAction.self, from: voucherAction.data(using: .utf8)!)
+        testEvent(for: Action.voucher(voucherAction))
+    }
+    
+    func testQRCodeActionEvent() {
+        let qrCodeAction = try! JSONDecoder().decode(QRCodeAction.self, from: qrAction.data(using: .utf8)!)
+        testEvent(for: Action.qrCode(qrCodeAction))
+    }
+    
+    func testDocumentActionEvent() {
+        let documentAction = try! JSONDecoder().decode(DocumentAction.self, from: documentAction.data(using: .utf8)!)
+        testEvent(for: Action.document(documentAction))
+    }
+    
+    private func testEvent(for action: Action) {
+        
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = AdyenActionComponent(context: Dummy.context(with: analyticsProviderMock))
+        
+        sut.handle(action)
+        
+        let event = analyticsProviderMock.logs[0]
+        XCTAssertEqual(event.type, .action)
+        
+        switch action {
+        case .redirect:
+            XCTAssertEqual(event.component, "redirect")
+        case .sdk:
+            XCTAssertEqual(event.component, "sdk")
+        case .threeDS2Fingerprint:
+            XCTAssertEqual(event.component, "threeDS2Fingerprint")
+        case .threeDS2Challenge:
+            XCTAssertEqual(event.component, "threeDS2Challenge")
+        case .threeDS2:
+            XCTAssertEqual(event.component, "threeDS2")
+        case .await:
+            XCTAssertEqual(event.component, "await")
+        case .voucher, .document:
+            XCTAssertEqual(event.component, "voucher")
+        case .qrCode:
+            XCTAssertEqual(event.component, "qrCode")
+        }
+    }
+    
 }

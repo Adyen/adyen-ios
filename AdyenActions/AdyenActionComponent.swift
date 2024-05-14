@@ -136,6 +136,9 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     ///
     /// - Parameter action: The action to handle.
     public func handle(_ action: Action) {
+        
+        sendHandleEvent(for: action)
+        
         switch action {
         case let .redirect(redirectAction):
             handle(redirectAction)
@@ -156,6 +159,11 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         case let .document(documentAction):
             handle(documentAction)
         }
+    }
+    
+    private func sendHandleEvent(for action: Action) {
+        let logEvent = AnalyticsEventLog(component: action.analyticsType, type: .action)
+        context.analyticsProvider?.add(log: logEvent)
     }
     
     // MARK: - Private
@@ -303,5 +311,29 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         
         component.handle(action)
         currentActionComponent = component
+    }
+}
+
+private extension Action {
+    
+    var analyticsType: String {
+        switch self {
+        case .redirect:
+            return "redirect"
+        case .sdk:
+            return "sdk"
+        case .threeDS2Fingerprint:
+            return "threeDS2Fingerprint"
+        case .threeDS2Challenge:
+            return "threeDS2Challenge"
+        case .threeDS2:
+            return "threeDS2"
+        case .await:
+            return "await"
+        case .voucher, .document:
+            return "voucher"
+        case .qrCode:
+            return "qrCode"
+        }
     }
 }

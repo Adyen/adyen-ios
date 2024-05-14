@@ -19,6 +19,8 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
     internal weak var presenter: PresenterExampleProtocol?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
+    
+    internal lazy var context: AdyenContext = generateContext()
 
     // MARK: - Action Handling
 

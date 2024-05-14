@@ -12,17 +12,10 @@ internal protocol InitialDataFlowProtocol: AnyObject {
     var context: AdyenContext { get }
     var apiClient: APIClientProtocol { get }
     func requestAdyenSessionConfiguration(completion: @escaping (Result<AdyenSession.Configuration, Error>) -> Void)
+    func generateContext() -> AdyenContext
 }
 
 extension InitialDataFlowProtocol {
-
-    internal var context: AdyenContext {
-        var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
-        return AdyenContext(apiContext: ConfigurationConstants.apiContext,
-                            payment: ConfigurationConstants.current.payment,
-                            analyticsConfiguration: analyticsConfiguration)
-    }
 
     internal func requestAdyenSessionConfiguration(completion: @escaping (Result<AdyenSession.Configuration, Error>) -> Void) {
         let request = SessionRequest()
@@ -36,6 +29,14 @@ extension InitialDataFlowProtocol {
                 completion(.failure(error))
             }
         }
+    }
+    
+    func generateContext() -> AdyenContext {
+        var analyticsConfiguration = AnalyticsConfiguration()
+        analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
+        return AdyenContext(apiContext: ConfigurationConstants.apiContext,
+                            payment: ConfigurationConstants.current.payment,
+                            analyticsConfiguration: analyticsConfiguration)
     }
 
     private func initializeSession(with sessionId: String, data: String) -> AdyenSession.Configuration {
