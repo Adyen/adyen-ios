@@ -107,6 +107,10 @@ open class FormPickerItem: FormSelectableValueItem<FormPickerElement?> {
         return selectableValues.contains { $0.identifier == value.identifier }
     }
     
+    override public func validationStatus() -> ValidationStatus? {
+        nil
+    }
+    
     public func updateValidationFailureMessage() {
         AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
     }
