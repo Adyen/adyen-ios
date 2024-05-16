@@ -236,7 +236,6 @@
 		81DA70902BDA60F6006CE5D5 /* TwintComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DA708E2BDA60F6006CE5D5 /* TwintComponentTests.swift */; };
 		81DA70912BDA6120006CE5D5 /* PaymentMethods+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DA70802BDA5F66006CE5D5 /* PaymentMethods+Equatable.swift */; };
 		81DC4D772BDBE8820048B9EF /* TwintSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6602AF527C200CDE118 /* TwintSDK.xcframework */; };
-		81DC4D782BDBE8820048B9EF /* TwintSDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6602AF527C200CDE118 /* TwintSDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		81DC5A552A77ED0400DBF2D1 /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = 81DC5A542A77ED0400DBF2D1 /* Adyen3DS2 */; };
 		81DC5A592A79287400DBF2D1 /* AddressInputFormViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DC5A582A79287400DBF2D1 /* AddressInputFormViewControllerTests.swift */; };
 		81DC5A5D2A7BADB200DBF2D1 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DC5A5C2A7BADB200DBF2D1 /* EmptyStateView.swift */; };
@@ -1099,20 +1098,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		0042EBCE2B9081A6001B1F6C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 00E5D6502AF4E99A00CDE118;
-			remoteInfo = AdyenTwint;
-		};
-		810470792B2720DC0049B522 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 00E5D6502AF4E99A00CDE118;
-			remoteInfo = AdyenTwint;
-		};
 		81088A212BDBACB7007FCDB9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
@@ -1126,6 +1111,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = F9175F8B2594986900D653BE;
 			remoteInfo = AdyenActions;
+		};
+		8152A28F2BF5D0EF00AF957C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 00E5D6502AF4E99A00CDE118;
+			remoteInfo = AdyenTwint;
 		};
 		819BFB3D2BDBED960018DC9B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1245,20 +1237,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = E2C0E05E220982AE008616F6;
 			remoteInfo = AdyenCard;
-		};
-		E7095B1327AAA32B001C6B2C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F9620D8123C73B0D005209FC;
-			remoteInfo = AdyenWeChatPay;
-		};
-		E72375DA27AABF400020DCF9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F9620D8123C73B0D005209FC;
-			remoteInfo = AdyenWeChatPay;
 		};
 		E97B970F22980C8B00505476 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1407,13 +1385,6 @@
 			remoteGlobalIDString = F9175F8B2594986900D653BE;
 			remoteInfo = AdyenActions;
 		};
-		F973A91B2791C3B0005AA753 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F9175F8B2594986900D653BE;
-			remoteInfo = AdyenActions;
-		};
 		F9CCA3B9296ECB3E00AD643D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
@@ -1431,17 +1402,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		81DC4D792BDBE8820048B9EF /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				81DC4D782BDBE8820048B9EF /* TwintSDK.xcframework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E2C0E0A8220B0827008616F6 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -5711,7 +5671,6 @@
 				00E5D64D2AF4E99A00CDE118 /* Sources */,
 				00E5D64E2AF4E99A00CDE118 /* Frameworks */,
 				00E5D64F2AF4E99A00CDE118 /* Resources */,
-				81DC4D792BDBE8820048B9EF /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -5874,9 +5833,6 @@
 				E9B36CB12243B2FF00EAA368 /* PBXTargetDependency */,
 				F92327C725A46EF0002C5BC4 /* PBXTargetDependency */,
 				F973A9162791AA22005AA753 /* PBXTargetDependency */,
-				F973A91C2791C3B0005AA753 /* PBXTargetDependency */,
-				E7095B1427AAA32B001C6B2C /* PBXTargetDependency */,
-				E72375DB27AABF400020DCF9 /* PBXTargetDependency */,
 				F92980AB27CE2B33000CA5CA /* PBXTargetDependency */,
 				A020EC4B29E6EC4C0050B2FE /* PBXTargetDependency */,
 				F94D65EA2B036A450095D61E /* PBXTargetDependency */,
@@ -6048,6 +6004,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				8152A2902BF5D0EF00AF957C /* PBXTargetDependency */,
 				F95B6DBA2527549B002C9062 /* PBXTargetDependency */,
 				F95B6DBC2527549B002C9062 /* PBXTargetDependency */,
 				F9175EFA2593956300D653BE /* PBXTargetDependency */,
@@ -6058,8 +6015,6 @@
 				81BDD6D22B21CF100022250E /* PBXTargetDependency */,
 				81BDD6D82B21CF250022250E /* PBXTargetDependency */,
 				81BDD6DC2B21CF2C0022250E /* PBXTargetDependency */,
-				8104707A2B2720DC0049B522 /* PBXTargetDependency */,
-				0042EBCF2B9081A6001B1F6C /* PBXTargetDependency */,
 			);
 			name = AdyenSwiftUIHost;
 			packageProductDependencies = (
@@ -7609,20 +7564,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		0042EBCF2B9081A6001B1F6C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 00E5D6502AF4E99A00CDE118 /* AdyenTwint */;
-			targetProxy = 0042EBCE2B9081A6001B1F6C /* PBXContainerItemProxy */;
-		};
-		8104707A2B2720DC0049B522 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 00E5D6502AF4E99A00CDE118 /* AdyenTwint */;
-			targetProxy = 810470792B2720DC0049B522 /* PBXContainerItemProxy */;
-		};
 		81088A222BDBACB7007FCDB9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 00E5D6502AF4E99A00CDE118 /* AdyenTwint */;
 			targetProxy = 81088A212BDBACB7007FCDB9 /* PBXContainerItemProxy */;
+		};
+		8152A2902BF5D0EF00AF957C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 00E5D6502AF4E99A00CDE118 /* AdyenTwint */;
+			targetProxy = 8152A28F2BF5D0EF00AF957C /* PBXContainerItemProxy */;
 		};
 		819BFB3E2BDBED960018DC9B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -7713,16 +7663,6 @@
 			isa = PBXTargetDependency;
 			target = E2C0E05E220982AE008616F6 /* AdyenCard */;
 			targetProxy = E2C0E0AF220B0840008616F6 /* PBXContainerItemProxy */;
-		};
-		E7095B1427AAA32B001C6B2C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = F9620D8123C73B0D005209FC /* AdyenWeChatPay */;
-			targetProxy = E7095B1327AAA32B001C6B2C /* PBXContainerItemProxy */;
-		};
-		E72375DB27AABF400020DCF9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = F9620D8123C73B0D005209FC /* AdyenWeChatPay */;
-			targetProxy = E72375DA27AABF400020DCF9 /* PBXContainerItemProxy */;
 		};
 		E97B971022980C8B00505476 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -7836,11 +7776,6 @@
 			isa = PBXTargetDependency;
 			target = F9175F8B2594986900D653BE /* AdyenActions */;
 			targetProxy = F973A9152791AA22005AA753 /* PBXContainerItemProxy */;
-		};
-		F973A91C2791C3B0005AA753 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = F9175F8B2594986900D653BE /* AdyenActions */;
-			targetProxy = F973A91B2791C3B0005AA753 /* PBXContainerItemProxy */;
 		};
 		F9CCA3BA296ECB3E00AD643D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
