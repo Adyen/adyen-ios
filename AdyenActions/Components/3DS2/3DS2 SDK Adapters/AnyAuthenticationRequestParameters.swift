@@ -5,6 +5,7 @@
 //
 
 import Adyen3DS2
+import Adyen3DS2_Swift
 import Foundation
 
 internal protocol AnyAuthenticationRequestParameters {
@@ -19,7 +20,8 @@ internal protocol AnyAuthenticationRequestParameters {
 
     var sdkEphemeralPublicKey: String { get }
 
-    var messageVersion: String { get }
+    // TODO: Robert: what is the purpose of having the message version here?
+    // var messageVersion: String { get }
 }
 
-extension ADYAuthenticationRequestParameters: AnyAuthenticationRequestParameters {}
+extension Adyen3DS2.ADYAuthenticationRequestParameters: AnyAuthenticationRequestParameters {}

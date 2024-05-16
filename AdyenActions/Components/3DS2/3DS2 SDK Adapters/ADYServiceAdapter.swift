@@ -5,7 +5,9 @@
 //
 
 import Adyen3DS2
+import Adyen3DS2_Swift
 import Foundation
+
 @_spi(AdyenInternal) import Adyen
 
 internal protocol AnyADYService {
@@ -36,5 +38,4 @@ internal final class ADYServiceAdapter: AnyADYService {
         }
         return try service.transaction(withMessageVersion: withMessageVersion)
     }
-    
 }
