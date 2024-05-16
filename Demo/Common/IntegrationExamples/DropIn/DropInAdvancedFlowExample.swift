@@ -16,6 +16,8 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     private lazy var palApiClient = ApiClientHelper.generatePalApiClient()
+    
+    internal lazy var context: AdyenContext = generateContext()
 
     // MARK: - Initializers
 
@@ -65,7 +67,7 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
 
         configuration.applePay = try? ConfigurationConstants.current.applePayConfiguration()
         configuration.actionComponent.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
-        configuration.actionComponent.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
+        configuration.actionComponent.threeDS.requestorAppURL = ConfigurationConstants.returnUrl
         configuration.card = ConfigurationConstants.current.cardDropInConfiguration
         return configuration
     }
