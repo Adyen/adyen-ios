@@ -774,8 +774,6 @@
 		F917614A25A30B5E00D653BE /* ThreeDS2FingerprintSubmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957A9F925514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift */; };
 		F917615B25A30B6400D653BE /* AnyAuthenticationRequestParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7AC5A2554066300012EBC /* AnyAuthenticationRequestParameters.swift */; };
 		F917615C25A30B6400D653BE /* AnyChallengeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7AC622554068D00012EBC /* AnyChallengeResult.swift */; };
-		F917615D25A30B6400D653BE /* ADYServiceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA792552F75E0099AD73 /* ADYServiceAdapter.swift */; };
-		F917615E25A30B6400D653BE /* AnyADYTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7AC6A255406AB00012EBC /* AnyADYTransaction.swift */; };
 		F917616F25A30B6A00D653BE /* ThreeDSActionHandlerResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9842C66256D7A010063CE5A /* ThreeDSActionHandlerResult.swift */; };
 		F917617025A30B6A00D653BE /* ThreeDS2CoreActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97C7C502590C56E00D80A54 /* ThreeDS2CoreActionHandler.swift */; };
 		F917617125A30B6A00D653BE /* ThreeDS2CompactActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA2B2551829F0099AD73 /* ThreeDS2CompactActionHandler.swift */; };
@@ -2265,7 +2263,6 @@
 		F957AA612552D8D20099AD73 /* AnyThreeDS2ActionHandlerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyThreeDS2ActionHandlerMock.swift; sourceTree = "<group>"; };
 		F957AA692552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyThreeDS2FingerprintSubmitterMock.swift; sourceTree = "<group>"; };
 		F957AA712552DBC80099AD73 /* AnyRedirectComponentMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyRedirectComponentMock.swift; sourceTree = "<group>"; };
-		F957AA792552F75E0099AD73 /* ADYServiceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADYServiceAdapter.swift; sourceTree = "<group>"; };
 		F957AAA52552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2CompactActionHandlerTests.swift; sourceTree = "<group>"; };
 		F957AAAD2552FDD70099AD73 /* AnyADYServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyADYServiceMock.swift; sourceTree = "<group>"; };
 		F95899C625FA524100E4113F /* AdyenSwiftUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenSwiftUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2430,7 +2427,6 @@
 		F9A781AF2403ED4000E12487 /* NumericStringValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumericStringValidatorTests.swift; sourceTree = "<group>"; };
 		F9A7AC5A2554066300012EBC /* AnyAuthenticationRequestParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyAuthenticationRequestParameters.swift; sourceTree = "<group>"; };
 		F9A7AC622554068D00012EBC /* AnyChallengeResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyChallengeResult.swift; sourceTree = "<group>"; };
-		F9A7AC6A255406AB00012EBC /* AnyADYTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyADYTransaction.swift; sourceTree = "<group>"; };
 		F9A7AC86255430B300012EBC /* ThreeDS2Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2Action.swift; sourceTree = "<group>"; };
 		F9AC61BA24374CE00062A00D /* AppLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLauncher.swift; sourceTree = "<group>"; };
 		F9AC61BD243750BB0062A00D /* RedirectComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectComponentTests.swift; sourceTree = "<group>"; };
@@ -5533,10 +5529,8 @@
 			isa = PBXGroup;
 			children = (
 				218899322BF618D3006D5409 /* SDKAdaptor */,
-				F957AA792552F75E0099AD73 /* ADYServiceAdapter.swift */,
 				F9A7AC5A2554066300012EBC /* AnyAuthenticationRequestParameters.swift */,
 				F9A7AC622554068D00012EBC /* AnyChallengeResult.swift */,
-				F9A7AC6A255406AB00012EBC /* AnyADYTransaction.swift */,
 			);
 			path = "3DS2 SDK Adapters";
 			sourceTree = "<group>";
@@ -7592,7 +7586,6 @@
 				F99D2F702664EDC900BB5B2F /* AnyVoucherAction.swift in Sources */,
 				0058691528B644FB00B65A19 /* QRCodeView.swift in Sources */,
 				F9175FB82594996000D653BE /* ThreeDS2Action.swift in Sources */,
-				F917615E25A30B6400D653BE /* AnyADYTransaction.swift in Sources */,
 				5A4633B6265FBE88005FE0D8 /* VoucherViewModel.swift in Sources */,
 				F97C855A25C1ABD700D7F85C /* VoucherCardView.swift in Sources */,
 				F97C84CD25C1761900D7F85C /* VoucherAction.swift in Sources */,
@@ -7629,7 +7622,6 @@
 				F9175FE62594999C00D653BE /* AwaitComponent.swift in Sources */,
 				0058691C28B6457700B65A19 /* QRCodeActionComponent.swift in Sources */,
 				F9175FBB2594996000D653BE /* RedirectAction.swift in Sources */,
-				F917615D25A30B6400D653BE /* ADYServiceAdapter.swift in Sources */,
 				F917617125A30B6A00D653BE /* ThreeDS2CompactActionHandler.swift in Sources */,
 				A03EE7312761297800470561 /* DocumentComponentStyle.swift in Sources */,
 				F9B997CA25C949AC00891084 /* VoucherCardLayer.swift in Sources */,

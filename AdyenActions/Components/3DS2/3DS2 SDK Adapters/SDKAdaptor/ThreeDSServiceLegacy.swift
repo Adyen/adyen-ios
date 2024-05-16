@@ -8,12 +8,26 @@ import Adyen3DS2
 import Foundation
 @_spi(AdyenInternal) import Adyen
 
-final class ThreeDSServiceLegacy: ThreeDSServiceProtocol {
-    var service: Adyen3DS2.ADYService?
-    var transaction: Adyen3DS2.ADYTransaction?
+internal final class ThreeDSServiceLegacy: ThreeDSServiceProtocol {
+    private var service: Adyen3DS2.ADYService?
+    private var transaction: Adyen3DS2.ADYTransaction?
+
+    internal func isCancelled(error: any Error) -> Bool {
+        let error = error as NSError
+        switch (error.domain, error.code) {
+        case (ADYRuntimeErrorDomain, Int(ADYRuntimeErrorCode.challengeCancelled.rawValue)):
+            return true
+        default:
+            return false
+        }
+    }
     
-    func authenticationParameters(parameters: ServiceParameters,
-                                  completionHandler: @escaping (Result<AnyAuthenticationRequestParameters, Error>) -> Void) {
+    internal func opaqueErrorObject(error: any Error) -> String? {
+        (error as NSError).base64Representation()
+    }
+    
+    internal func authenticationParameters(parameters: ServiceParameters,
+                                           completionHandler: @escaping (Result<AnyAuthenticationRequestParameters, Error>) -> Void) {
 
         let serviceParameters = ADYServiceParameters(directoryServerIdentifier: parameters.directoryServerIdentifier,
                                                      directoryServerPublicKey: parameters.directoryServerPublicKey,
@@ -36,8 +50,8 @@ final class ThreeDSServiceLegacy: ThreeDSServiceProtocol {
         }
     }
     
-    func performChallenge(with parameters: ChallengeParameters,
-                          completionHandler: @escaping (Result<AnyChallengeResult, ThreeDSServiceError>) -> Void) {
+    internal func performChallenge(with parameters: ChallengeParameters,
+                                   completionHandler: @escaping (Result<AnyChallengeResult, ThreeDSServiceError>) -> Void) {
         let challengeParameters = ADYChallengeParameters(serverTransactionIdentifier: parameters.challengeToken.serverTransactionIdentifier,
                                                          threeDSRequestorAppURL: parameters.threeDSRequestorAppURL,
                                                          acsTransactionIdentifier: parameters.challengeToken.acsTransactionIdentifier,
@@ -60,4 +74,13 @@ final class ThreeDSServiceLegacy: ThreeDSServiceProtocol {
             completionHandler(.success(result))
         }
     }
+    
+    internal func resetTransaction() {
+        self.service = nil
+        self.transaction = nil
+    }
 }
+
+extension Adyen3DS2.ADYAuthenticationRequestParameters: AnyAuthenticationRequestParameters {}
+
+extension ADYChallengeResult: AnyChallengeResult {}

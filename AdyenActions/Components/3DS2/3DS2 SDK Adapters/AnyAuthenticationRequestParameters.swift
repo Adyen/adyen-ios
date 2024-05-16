@@ -23,5 +23,3 @@ internal protocol AnyAuthenticationRequestParameters {
     // TODO: Robert: what is the purpose of having the message version here?
     // var messageVersion: String { get }
 }
-
-extension Adyen3DS2.ADYAuthenticationRequestParameters: AnyAuthenticationRequestParameters {}

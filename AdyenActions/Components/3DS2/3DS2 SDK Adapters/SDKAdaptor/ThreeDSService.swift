@@ -9,11 +9,12 @@ import Adyen3DS2_Swift
 import Foundation
 import UIKit
 
+@available(iOS 13, *)
 internal final class ThreeDSService: ThreeDSServiceProtocol, SecurityWarningsDelegate {
     internal var transaction: Adyen3DS2_Swift.Transaction?
     
-    @MainActor func authenticationParameters(parameters: ServiceParameters,
-                                             completionHandler: @escaping (Result<AnyAuthenticationRequestParameters, Error>) -> Void) {
+    @MainActor internal func authenticationParameters(parameters: ServiceParameters,
+                                                      completionHandler: @escaping (Result<AnyAuthenticationRequestParameters, Error>) -> Void) {
         do {
             let serviceParameters = try Adyen3DS2_Swift.ServiceParameters(directoryServerIdentifier: parameters.directoryServerIdentifier,
                                                                           directoryServerPublicKey: parameters.directoryServerPublicKey,
@@ -43,8 +44,8 @@ internal final class ThreeDSService: ThreeDSServiceProtocol, SecurityWarningsDel
         }
     }
 
-    func performChallenge(with parameters: ChallengeParameters,
-                          completionHandler: @escaping (Result<any AnyChallengeResult, ThreeDSServiceError>) -> Void) {
+    internal func performChallenge(with parameters: ChallengeParameters,
+                                   completionHandler: @escaping (Result<any AnyChallengeResult, ThreeDSServiceError>) -> Void) {
         guard let transaction else {
             return completionHandler(.failure(.transactionNotInitialized))
         }
@@ -67,8 +68,26 @@ internal final class ThreeDSService: ThreeDSServiceProtocol, SecurityWarningsDel
         
     }
     
+    internal func isCancelled(error: Error) -> Bool {
+        guard let threedsError = error as? ThreeDSError else {
+            return false
+        }
+        return threedsError.errorCode == "1001"
+    }
+    
+    internal func opaqueErrorObject(error: Error) -> String? {
+        guard let threedsError = error as? ThreeDSError else {
+            return "" // TODO: Robert: Check what we can for failure handling.
+        }
+        return threedsError.base64Representation
+    }
+
+    internal func resetTransaction() {
+        self.transaction = nil
+    }
+    
     @MainActor
-    func transform(config: Adyen3DS2.ADYAppearanceConfiguration) -> Adyen3DS2_Swift.AppearanceConfiguration {
+    internal func transform(config: Adyen3DS2.ADYAppearanceConfiguration) -> Adyen3DS2_Swift.AppearanceConfiguration {
         AppearanceConfiguration()
     }
     

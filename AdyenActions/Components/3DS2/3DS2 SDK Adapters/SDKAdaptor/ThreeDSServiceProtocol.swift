@@ -8,18 +8,18 @@ import class Adyen3DS2.ADYAppearanceConfiguration
 import Foundation
 @_spi(AdyenInternal) import Adyen
 
-struct ChallengeParameters {
-    let challengeToken: ThreeDS2Component.ChallengeToken
-    let threeDSRequestorAppURL: URL
+internal struct ChallengeParameters {
+    internal let challengeToken: ThreeDS2Component.ChallengeToken
+    internal let threeDSRequestorAppURL: URL?
 }
 
-struct ServiceParameters {
-    let directoryServerIdentifier: String
-    let directoryServerPublicKey: String
-    let directoryServerRootCertificates: String
-    let deviceExcludedParameters: [String: Any]?
-    let appearanceConfiguration: ADYAppearanceConfiguration
-    let threeDSMessageVersion: String
+internal struct ServiceParameters {
+    internal let directoryServerIdentifier: String
+    internal let directoryServerPublicKey: String
+    internal let directoryServerRootCertificates: String
+    internal let deviceExcludedParameters: [String: Any]?
+    internal let appearanceConfiguration: Adyen3DS2.ADYAppearanceConfiguration
+    internal let threeDSMessageVersion: String
 }
 
 internal enum ThreeDSServiceError: Error {
@@ -33,4 +33,9 @@ internal protocol ThreeDSServiceProtocol {
                                   completionHandler: @escaping (Result<AnyAuthenticationRequestParameters, Error>) -> Void)
     func performChallenge(with parameters: ChallengeParameters,
                           completionHandler: @escaping (Result<AnyChallengeResult, ThreeDSServiceError>) -> Void)
+    
+    func isCancelled(error: Error) -> Bool
+    func opaqueErrorObject(error: Error) -> String?
+    
+    func resetTransaction()
 }

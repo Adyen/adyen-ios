@@ -67,15 +67,13 @@
         /// Initializes the 3D Secure 2 action handler.
         ///
         /// - Parameter context: The context object for this component.
-        /// - Parameter service: The 3DS2 Service.
         /// - Parameter appearanceConfiguration: The appearance configuration.
         /// - Parameter delegatedAuthenticationService: The Delegated Authentication service.
         internal init(context: AdyenContext,
-                      service: AnyADYService = ADYServiceAdapter(),
                       appearanceConfiguration: ADYAppearanceConfiguration = .init(),
                       delegatedAuthenticationService: AuthenticationServiceProtocol) {
             self.delegatedAuthenticationService = delegatedAuthenticationService
-            super.init(context: context, service: service, appearanceConfiguration: appearanceConfiguration)
+            super.init(context: context, appearanceConfiguration: appearanceConfiguration)
         }
 
         // MARK: - Fingerprint
@@ -215,7 +213,7 @@
                     delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput
                 )
 
-                transaction = nil
+//                transaction = nil
                 completionHandler(.success(threeDSResult))
             } catch {
                 completionHandler(.failure(error))
@@ -224,7 +222,7 @@
 
         private func didFail<R>(with error: Error,
                                 completionHandler: @escaping (Result<R, Error>) -> Void) {
-            transaction = nil
+//            transaction = nil
 
             completionHandler(.failure(error))
         }

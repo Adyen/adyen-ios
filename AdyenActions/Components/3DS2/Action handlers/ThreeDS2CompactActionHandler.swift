@@ -26,15 +26,15 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
         }
     }
 
-    internal var transaction: AnyADYTransaction? {
-        get {
-            coreActionHandler.transaction
-        }
-
-        set {
-            coreActionHandler.transaction = newValue
-        }
-    }
+//    internal var transaction: AnyADYTransaction? {
+//        get {
+//            coreActionHandler.transaction
+//        }
+//
+//        set {
+//            coreActionHandler.transaction = newValue
+//        }
+//    }
     
     /// Initializes the 3D Secure 2 action handler.
     ///
@@ -44,7 +44,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
     internal init(context: AdyenContext,
                   fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter? = nil,
-                  service: AnyADYService = ADYServiceAdapter(),
+                  service: ThreeDSServiceProtocol? = nil,
                   appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
                   coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
                   delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil) {
@@ -54,7 +54,9 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
             delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
         )
         self.fingerprintSubmitter = fingerprintSubmitter ?? ThreeDS2FingerprintSubmitter(apiContext: context.apiContext)
-        self.coreActionHandler.service = service
+        if let service {
+            self.coreActionHandler.service = service
+        }
     }
 
     // MARK: - Fingerprint
