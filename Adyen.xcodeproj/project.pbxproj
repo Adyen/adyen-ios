@@ -1747,6 +1747,7 @@
 		C9454C35276A33A00086C218 /* BACSDirectDebitPresentationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitPresentationDelegate.swift; sourceTree = "<group>"; };
 		C94632BD27BA6985003DD81F /* AnalyticsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsProvider.swift; sourceTree = "<group>"; };
 		C95903DD275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTests.swift; sourceTree = "<group>"; };
+		C95C89312BF63A3500C47296 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentTests.swift; sourceTree = "<group>"; };
 		C96E07A1283B92D500345732 /* BACSDirectDebitComponentTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTrackerTests.swift; sourceTree = "<group>"; };
 		C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardSecurityCodeItemViewTests.swift; sourceTree = "<group>"; };
@@ -1759,6 +1760,9 @@
 		C9B6683427C7CB7A006950B9 /* AnalyticsFlavor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsFlavor.swift; sourceTree = "<group>"; };
 		C9B6683627C8D7FB006950B9 /* AnalyticsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsData.swift; sourceTree = "<group>"; };
 		C9B6683827C903FE006950B9 /* AdyenContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenContext.swift; sourceTree = "<group>"; };
+		C9B88AB62BF63C500033F500 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C9B88ABA2BF63D610033F500 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C9B88ABB2BF63DA70033F500 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9BAE20E27BEA68D002F5728 /* InitialAnalyticsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialAnalyticsRequest.swift; sourceTree = "<group>"; };
 		C9BB460327622D9B00E6730B /* BACSConfirmationViewProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationViewProtocolMock.swift; sourceTree = "<group>"; };
 		C9BB460527622E9600E6730B /* BACSConfirmationPresenterProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationPresenterProtocolMock.swift; sourceTree = "<group>"; };
@@ -2702,6 +2706,7 @@
 				00E5D65E2AF4EA2D00CDE118 /* TwintComponent.swift */,
 				00FAE54D2B21CE1B0059A6F5 /* TwintDetails.swift */,
 				00E5D6542AF4E99B00CDE118 /* AdyenTwint.docc */,
+				C9B88ABA2BF63D610033F500 /* Info.plist */,
 			);
 			path = AdyenTwint;
 			sourceTree = "<group>";
@@ -3112,6 +3117,7 @@
 				A01D775529B250C10075BD70 /* CashAppPayDetails.swift */,
 				A06B7AA12A1F910D008FC09D /* CashAppPayButton */,
 				A04F8C2129E5950100F3F62B /* AdyenCashAppPay.docc */,
+				C9B88AB62BF63C500033F500 /* Info.plist */,
 			);
 			path = AdyenCashAppPay;
 			sourceTree = "<group>";
@@ -4900,6 +4906,7 @@
 				F92980C327CF558E000CA5CA /* AdyenSession+ActionComponentDelegate.swift */,
 				F92980C527CF563C000CA5CA /* AdyenSession+PartialPaymentDelegate.swift */,
 				A0DDA6A62A6162F500EBD6AF /* AdyenSessionResult.swift */,
+				C95C89312BF63A3500C47296 /* Info.plist */,
 			);
 			path = AdyenSession;
 			sourceTree = "<group>";
@@ -4928,6 +4935,7 @@
 			isa = PBXGroup;
 			children = (
 				F94D65DB2B0364AF0095D61E /* AdyenDelegatedAuthentication.h */,
+				C9B88ABB2BF63DA70033F500 /* Info.plist */,
 			);
 			path = AdyenDelegatedAuthentication;
 			sourceTree = "<group>";
@@ -7853,7 +7861,8 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 2;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AdyenTwint/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Adyen. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -7886,7 +7895,8 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 2;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AdyenTwint/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Adyen. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -7973,7 +7983,8 @@
 				DYLIB_CURRENT_VERSION = 2;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AdyenCashAppPay/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Adyen. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -8012,7 +8023,8 @@
 				DYLIB_CURRENT_VERSION = 2;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AdyenCashAppPay/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Adyen. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -8693,7 +8705,8 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 2;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AdyenSession/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Adyen. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -8702,7 +8715,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = "";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenSession;
@@ -8727,7 +8739,8 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 2;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AdyenSession/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Adyen. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -8736,7 +8749,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenSession;
@@ -8765,7 +8777,8 @@
 				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AdyenDelegatedAuthentication/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Adyen. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -8806,7 +8819,8 @@
 				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AdyenDelegatedAuthentication/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Adyen. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
