@@ -96,7 +96,7 @@ class QiwiWalletComponentTests: XCTestCase {
         let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.phoneNumberItem.textField")
         
         let phoneExtensionView: FormPhoneExtensionPickerItemView? = sut.viewController.view.findView(with: "Adyen.FormPhoneNumberItem.phoneExtensionPickerItem")
-        let phoneExtensionViewLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.FormPhoneNumberItem.phoneExtensionPickerItem.inputControl.label")
+        let phoneExtensionViewLabel: UILabel? = sut.viewController.view.findView(with: "Adyen.FormPhoneNumberItem.phoneExtensionPickerItem.label")
         
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.payButtonItem.button")
         let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.payButtonItem.button.titleLabel")

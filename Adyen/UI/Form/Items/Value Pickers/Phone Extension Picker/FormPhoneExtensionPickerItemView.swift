@@ -28,6 +28,14 @@ public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExten
         return label
     }()
     
+    override public var accessibilityIdentifier: String? {
+        didSet {
+            valueLabel.accessibilityIdentifier = accessibilityIdentifier.map {
+                ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "label")
+            }
+        }
+    }
+    
     public required init(item: FormPhoneExtensionPickerItem) {
         super.init(item: item)
         setupView()
@@ -52,6 +60,8 @@ public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExten
     }
     
     internal func setupView() {
+        backgroundColor = item.style.backgroundColor
+        
         let stackView = UIStackView(arrangedSubviews: [countryCodeLabel, chevronView, valueLabel])
         stackView.axis = .horizontal
         stackView.alignment = .center

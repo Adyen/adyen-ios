@@ -71,7 +71,7 @@ class FormPickerItemTests: XCTestCase {
         let resetValueException = expectation(description: "resetValue() should throw an exception")
         
         AdyenAssertion.listener = { assertion in
-            XCTAssertEqual(assertion, "'resetValue()' needs to be implemented on 'FormPickerItem'")
+            XCTAssertEqual(assertion, "'resetValue()' needs to be implemented on 'FormPickerItem<FormPickerElement>'")
             resetValueException.fulfill()
         }
         
@@ -84,7 +84,7 @@ class FormPickerItemTests: XCTestCase {
         let updateValidationFailureMessageException = expectation(description: "updateValidationFailureMessage() should throw an exception")
         
         AdyenAssertion.listener = { assertion in
-            XCTAssertEqual(assertion, "'updateValidationFailureMessage()' needs to be implemented on 'FormPickerItem'")
+            XCTAssertEqual(assertion, "'updateValidationFailureMessage()' needs to be implemented on 'FormPickerItem<FormPickerElement>'")
             updateValidationFailureMessageException.fulfill()
         }
         
@@ -97,7 +97,7 @@ class FormPickerItemTests: XCTestCase {
         let updateFormattedValueException = expectation(description: "updateFormattedValue() should throw an exception")
         
         AdyenAssertion.listener = { assertion in
-            XCTAssertEqual(assertion, "'updateFormattedValue()' needs to be implemented on 'FormPickerItem'")
+            XCTAssertEqual(assertion, "'updateFormattedValue()' needs to be implemented on 'FormPickerItem<FormPickerElement>'")
             updateFormattedValueException.fulfill()
         }
         
