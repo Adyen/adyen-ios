@@ -151,7 +151,8 @@ let package = Package(
                 .target(name: "Adyen"),
                 .target(name: "AdyenActions")
             ],
-            path: "AdyenSession"
+            path: "AdyenSession",
+            exclude: ["Info.plist"]
         ),
         .target(
             name: "AdyenDropIn",
@@ -178,7 +179,8 @@ let package = Package(
                 .product(name: "PayKit", package: "cash-app-pay-ios-sdk"),
                 .product(name: "PayKitUI", package: "cash-app-pay-ios-sdk")
             ],
-            path: "AdyenCashAppPay"
+            path: "AdyenCashAppPay",
+            exclude: ["Info.plist"]
         ),
         .target(
             name: "AdyenTwint",
@@ -186,7 +188,8 @@ let package = Package(
                 .target(name: "Adyen"),
                 .target(name: "TwintSDK")
             ],
-            path: "AdyenTwint"
+            path: "AdyenTwint",
+            exclude: ["Info.plist"]
         ),
         .binaryTarget(
             name: "TwintSDK",
@@ -197,7 +200,8 @@ let package = Package(
             dependencies: [
                 .product(name: "AdyenAuthentication", package: "adyen-authentication-ios")
             ],
-            path: "AdyenDelegatedAuthentication"
+            path: "AdyenDelegatedAuthentication",
+            exclude: ["Info.plist"]
         )
     ]
 )
