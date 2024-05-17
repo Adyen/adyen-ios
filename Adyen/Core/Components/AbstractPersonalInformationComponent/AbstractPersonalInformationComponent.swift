@@ -176,20 +176,19 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     internal lazy var phoneItemInjector: PhoneFormItemInjector? = {
         guard fields.contains(.phone) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneNumberItem")
-        let injector = PhoneFormItemInjector(value: configuration.shopperInformation?.phoneNumber,
-                                             identifier: identifier,
-                                             phoneExtensions: selectableValues,
-                                             style: configuration.style.textField)
+        let injector = PhoneFormItemInjector(
+            value: configuration.shopperInformation?.phoneNumber,
+            identifier: identifier,
+            phoneExtensions: phoneExtensions(),
+            style: configuration.style.textField,
+            presenter: self
+        )
         injector.localizationParameters = configuration.localizationParameters
         return injector
     }()
 
     @_spi(AdyenInternal)
     public var phoneItem: FormPhoneNumberItem? { phoneItemInjector?.item }
-
-    private lazy var selectableValues: [PhoneExtensionPickerItem] = phoneExtensions().map {
-        PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0)
-    }
 
     /// The button item.
     internal lazy var button: FormButtonItem = {
