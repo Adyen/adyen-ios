@@ -148,6 +148,7 @@
 		8140A3762A3327B500896403 /* AdyenComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9175E55259393E800D653BE /* AdyenComponents.framework */; };
 		814276622A7145F50081E896 /* AddressInputFormViewController+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814276612A7145F50081E896 /* AddressInputFormViewController+ViewModel.swift */; };
 		8149CCB62B0B855F007235E2 /* ThreeDS2PlusDACoreActionHandlerTests+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149CCB52B0B855F007235E2 /* ThreeDS2PlusDACoreActionHandlerTests+Constants.swift */; };
+		8152A2982BF7585B00AF957C /* FormItemViewBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A781AD2403BD1600E12487 /* FormItemViewBuilderTests.swift */; };
 		8169B9EC2A0506CC00AAC9F8 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
 		817F6D8C2B62A6110010D248 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		81825CB82AC59C3300F91912 /* UIView+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CB72AC59C3300F91912 /* UIView+Search.swift */; };
@@ -982,7 +983,6 @@
 		F9A6C453265640E000D8CD3E /* InstantPaymentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A6C452265640E000D8CD3E /* InstantPaymentComponentTests.swift */; };
 		F9A6C4BB2657AFF600D8CD3E /* FormSpacerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A6C4BA2657AFF600D8CD3E /* FormSpacerItem.swift */; };
 		F9A6C4D12657B0D700D8CD3E /* FormSpacerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A6C4D02657B0D700D8CD3E /* FormSpacerItemView.swift */; };
-		F9A781AE2403BD1600E12487 /* FormItemViewBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A781AD2403BD1600E12487 /* FormItemViewBuilderTests.swift */; };
 		F9A781B02403ED4000E12487 /* NumericStringValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A781AF2403ED4000E12487 /* NumericStringValidatorTests.swift */; };
 		F9AC61BB24374CE00062A00D /* AppLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AC61BA24374CE00062A00D /* AppLauncher.swift */; };
 		F9AC61BE243750BB0062A00D /* RedirectComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AC61BD243750BB0062A00D /* RedirectComponentTests.swift */; };
@@ -6964,7 +6964,6 @@
 				F99F08642383F2B000EBB948 /* FormTextItemViewTests.swift in Sources */,
 				F96A25432371AB75007DBF0B /* PaymentComponentDelegateMock.swift in Sources */,
 				F9CA6BC627D7503200D7BE6E /* SessionTests.swift in Sources */,
-				F9A781AE2403BD1600E12487 /* FormItemViewBuilderTests.swift in Sources */,
 				E79A64812490D98F00368E9F /* CardComponentDelegateMock.swift in Sources */,
 				E2B317AC22660FB600C1BB30 /* FormCardNumberItemTests.swift in Sources */,
 				F9EDB794239663C200CFB3C9 /* PaymentMethodMock.swift in Sources */,
@@ -7095,6 +7094,7 @@
 				C96E07A3283B92E300345732 /* BACSDirectDebitComponentTrackerTests.swift in Sources */,
 				C9BB460427622D9B00E6730B /* BACSConfirmationViewProtocolMock.swift in Sources */,
 				F9D644E724D40C7C0059CBE3 /* MBWayComponentTests.swift in Sources */,
+				8152A2982BF7585B00AF957C /* FormItemViewBuilderTests.swift in Sources */,
 				5A56E15526B6DEF800744CA0 /* XCTestCase+Style.swift in Sources */,
 				F9E4726228CF1D4300FF9550 /* AuthenticationServiceMock.swift in Sources */,
 				E767F4DC25A603A50077029E /* ModalToolbarTests.swift in Sources */,

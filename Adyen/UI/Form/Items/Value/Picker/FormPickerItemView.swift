@@ -7,9 +7,9 @@
 import UIKit
 
 @_spi(AdyenInternal)
-public class FormPickerItemView: FormSelectableValueItemView<FormPickerElement, FormPickerItem> {
+public class FormPickerItemView<Value: FormPickable>: FormSelectableValueItemView<Value, FormPickerItem<Value>> {
     
-    internal required init(item: FormPickerItem) {
+    internal required init(item: FormPickerItem<Value>) {
         super.init(item: item)
         item.selectionHandler = { [weak self] in
             

@@ -6,9 +6,17 @@
 
 import UIKit
 
+@_spi(AdyenInternal)
+public protocol FormPickable: Equatable {
+    var identifier: String { get }
+    var icon: UIImage? { get }
+    var title: String { get }
+    var subtitle: String? { get }
+}
+
 /// A wrapper struct to use as item in ``FormPickerItem``
 @_spi(AdyenInternal)
-public struct FormPickerElement: Equatable {
+public struct FormPickerElement: FormPickable {
     
     public let identifier: String
     public let icon: UIImage?
@@ -31,13 +39,13 @@ public struct FormPickerElement: Equatable {
 /// An form item for picking values.
 /// This class acts like an abstract class and is supposed to be subclassed.
 @_spi(AdyenInternal)
-open class FormPickerItem: FormSelectableValueItem<FormPickerElement?> {
+open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> {
     
     public let localizationParameters: LocalizationParameters?
     public private(set) var isOptional: Bool = false
     internal private(set) weak var presenter: ViewControllerPresenter?
     
-    override public var value: FormPickerElement? {
+    override public var value: Value? {
         didSet {
             updateValidationFailureMessage()
             updateFormattedValue()
@@ -45,7 +53,7 @@ open class FormPickerItem: FormSelectableValueItem<FormPickerElement?> {
     }
     
     @AdyenObservable([])
-    public var selectableValues: [FormPickerElement]
+    public var selectableValues: [Value]
 
     /// Initializes the form picker item item.
     /// - Parameters:
@@ -57,8 +65,8 @@ open class FormPickerItem: FormSelectableValueItem<FormPickerElement?> {
     ///   - localizationParameters: The localization parameters.
     ///   - identifier: The item identifier
     public init(
-        preselectedValue: FormPickerElement?,
-        selectableValues: [FormPickerElement],
+        preselectedValue: Value?,
+        selectableValues: [Value],
         title: String,
         placeholder: String,
         style: FormTextItemStyle,

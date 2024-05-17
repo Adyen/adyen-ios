@@ -10,9 +10,14 @@ import XCTest
 class FormItemViewBuilderTests: XCTestCase {
     
     func testFormPhoneExtensionPickerItemView() {
-        let selectableValues = [PhoneExtensionPickerItem(identifier: "test_id",
-                                                         element: .init(value: "test title", countryCode: "test extension"))]
-        let item = FormPhoneExtensionPickerItem(preselectedValue: selectableValues[0], selectableValues: selectableValues, style: FormTextItemStyle())
+        let selectableValues: [PhoneExtension] = [.init(value: "+31", countryCode: "NL")]
+        let item = FormPhoneExtensionPickerItem(
+            preselectedExtension: selectableValues[0],
+            selectableExtensions: selectableValues,
+            validationFailureMessage: nil,
+            style: .init(),
+            presenter: UIViewController()
+        )
         let view = item.build(with: FormItemViewBuilder())
         
         XCTAssertNotNil(view as? FormPhoneExtensionPickerItemView)
@@ -41,8 +46,13 @@ class FormItemViewBuilderTests: XCTestCase {
     }
     
     func testFormPhoneNumberItemView() {
-        let selectableValues = [PhoneExtensionPickerItem(identifier: "test_id", element: .init(value: "test title", countryCode: "test extension"))]
-        let item = FormPhoneNumberItem(phoneNumber: nil, selectableValues: selectableValues, style: FormTextItemStyle())
+        let selectableValues: [PhoneExtension] = [.init(value: "+31", countryCode: "NL")]
+        let item = FormPhoneNumberItem(
+            phoneNumber: nil,
+            selectableValues: selectableValues,
+            style: .init(),
+            presenter: UIViewController()
+        )
         let view = item.build(with: FormItemViewBuilder())
         
         XCTAssertNotNil(view as? FormPhoneNumberItemView)

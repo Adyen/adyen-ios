@@ -22,10 +22,10 @@ class FormPickerItemTests: XCTestCase {
         let presentViewControllerExpectation = expectation(description: "presenter.presentViewController was called")
         let dismissViewControllerExpectation = expectation(description: "presenter.dismissViewController was called")
         
-        var presentedViewController: FormPickerSearchViewController?
+        var presentedViewController: FormPickerSearchViewController<FormPickerElement>?
         
         let mockPresenter = PresenterMock { viewController, animated in
-            presentedViewController = viewController as? FormPickerSearchViewController
+            presentedViewController = viewController as? FormPickerSearchViewController<FormPickerElement>
             presentViewControllerExpectation.fulfill()
         } dismiss: { animated in
             dismissViewControllerExpectation.fulfill()
@@ -33,7 +33,7 @@ class FormPickerItemTests: XCTestCase {
         
         let formPickerItem = FormPickerItem(
             preselectedValue: nil,
-            selectableValues: [.init(identifier: "Identifier", title: "Title", subtitle: "Subtitle")],
+            selectableValues: [FormPickerElement(identifier: "Identifier", title: "Title", subtitle: "Subtitle")],
             title: "",
             placeholder: "",
             style: .init(),
@@ -57,7 +57,7 @@ class FormPickerItemTests: XCTestCase {
     
     func testAssertions() throws {
         
-        let formPickerItem = FormPickerItem(
+        let formPickerItem = FormPickerItem<FormPickerElement>(
             preselectedValue: nil,
             selectableValues: [],
             title: "",

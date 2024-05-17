@@ -70,8 +70,8 @@ public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExten
     }
     
     internal func updateSelection() {
-        countryCodeLabel.text = item.value?.identifier
-        valueLabel.text = item.value?.subtitle
+        countryCodeLabel.text = item.value?.countryCode
+        valueLabel.text = item.value?.value
     }
     
     @objc

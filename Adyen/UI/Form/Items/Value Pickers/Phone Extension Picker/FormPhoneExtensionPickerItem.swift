@@ -6,33 +6,32 @@
 
 import Foundation
 
+@_spi(AdyenInternal)
+extension PhoneExtension: FormPickable {
+    public var identifier: String { countryCode }
+    public var icon: UIImage? { nil }
+    public var title: String { countryDisplayName }
+    public var subtitle: String? { value }
+}
+
 /// A picker form item for picking regions.
-@_spi(
-    AdyenInternal
-)
-public final class FormPhoneExtensionPickerItem: FormPickerItem {
+@_spi(AdyenInternal)
+public final class FormPhoneExtensionPickerItem: FormPickerItem<PhoneExtension> {
     
     public required init(
         preselectedExtension: PhoneExtension?,
         selectableExtensions: [PhoneExtension],
         validationFailureMessage: String?,
-        title: String,
-        placeholder: String,
         style: FormTextItemStyle,
-        presenter: ViewControllerPresenter?,
+        presenter: ViewControllerPresenter,
         localizationParameters: LocalizationParameters? = nil,
         identifier: String? = nil
     ) {
-        let preselectedValue = preselectedExtension?.toFormPickerElement()
-        let selectableValues = selectableExtensions.map {
-            $0.toFormPickerElement()
-        }
-        
         super.init(
-            preselectedValue: preselectedValue,
-            selectableValues: selectableValues,
-            title: title,
-            placeholder: placeholder,
+            preselectedValue: preselectedExtension,
+            selectableValues: selectableExtensions,
+            title: localizedString(.phoneNumberTitle, localizationParameters), // TODO: Request "Prefix" localization
+            placeholder: "",
             style: style,
             presenter: presenter,
             localizationParameters: localizationParameters,
@@ -45,7 +44,7 @@ public final class FormPhoneExtensionPickerItem: FormPickerItem {
     public func updateValue(
         with phoneExtension: PhoneExtension?
     ) {
-        self.value = phoneExtension?.toFormPickerElement()
+        self.value = phoneExtension
     }
     
     override public func resetValue() {
@@ -62,19 +61,5 @@ public final class FormPhoneExtensionPickerItem: FormPickerItem {
     
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
-    }
-}
-
-// MARK: - PhoneExtension to FormPickerElement
-
-private extension PhoneExtension {
-    
-    func toFormPickerElement() -> FormPickerElement {
-        .init(
-            identifier: countryCode,
-            icon: nil,
-            title: countryDisplayName,
-            subtitle: value
-        )
     }
 }

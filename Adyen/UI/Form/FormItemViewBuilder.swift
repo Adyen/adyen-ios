@@ -104,7 +104,7 @@ public struct FormItemViewBuilder {
     
     /// Builds `FormPickerItemView` from `FormPickerItem`.
     @_spi(AdyenInternal)
-    public func build(with item: FormPickerItem) -> FormItemView<FormPickerItem> {
+    public func build<Value>(with item: FormPickerItem<Value>) -> FormItemView<FormPickerItem<Value>> {
         FormPickerItemView(item: item)
     }
     

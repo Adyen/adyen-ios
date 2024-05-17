@@ -15,7 +15,7 @@ public final class FormPhoneNumberItem: FormTextItem {
     
     /// The phone prefix value.
     public var prefix: String {
-        phonePrefixItem.value?.identifier ?? ""
+        phonePrefixItem.value?.value ?? ""
     }
     
     public var phoneNumber: String {
@@ -38,9 +38,7 @@ public final class FormPhoneNumberItem: FormTextItem {
             preselectedExtension: selectableValues.preselectedPhoneNumberPrefix(for: phoneNumber),
             selectableExtensions: selectableValues,
             validationFailureMessage: nil,
-            title: "Prefix", // TODO: Localization
-            placeholder: "",
-            style: .init(), // TODO: Pass a style?
+            style: style,
             presenter: presenter
         )
         
