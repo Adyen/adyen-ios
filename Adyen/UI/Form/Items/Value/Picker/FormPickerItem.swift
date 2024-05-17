@@ -12,6 +12,7 @@ public protocol FormPickable: Equatable {
     var icon: UIImage? { get }
     var title: String { get }
     var subtitle: String? { get }
+    var trailingText: String? { get }
 }
 
 /// A wrapper struct to use as item in ``FormPickerItem``
@@ -22,17 +23,20 @@ public struct FormPickerElement: FormPickable {
     public let icon: UIImage?
     public let title: String
     public let subtitle: String?
+    public let trailingText: String?
     
     public init(
         identifier: String,
         icon: UIImage? = nil,
         title: String,
-        subtitle: String?
+        subtitle: String? = nil,
+        trailingText: String? = nil
     ) {
         self.identifier = identifier
         self.icon = icon
         self.title = title
         self.subtitle = subtitle
+        self.trailingText = trailingText
     }
 }
 

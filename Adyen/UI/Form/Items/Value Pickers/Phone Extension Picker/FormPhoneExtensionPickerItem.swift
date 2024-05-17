@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
+import UIKit
 
 @_spi(AdyenInternal)
 extension PhoneExtension: FormPickable {
@@ -12,6 +12,7 @@ extension PhoneExtension: FormPickable {
     public var icon: UIImage? { nil }
     public var title: String { countryDisplayName }
     public var subtitle: String? { value }
+    public var trailingText: String? { nil }
 }
 
 /// A picker form item for picking regions.

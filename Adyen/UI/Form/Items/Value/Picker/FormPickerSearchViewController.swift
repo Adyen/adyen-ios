@@ -66,6 +66,7 @@ private extension FormPickable {
             title: title,
             subtitle: subtitle,
             icon: listItemIcon,
+            trailingText: trailingText,
             identifier: identifier,
             selectionHandler: { selectionHandler(self) }
         )
