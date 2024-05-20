@@ -8,8 +8,8 @@ import Foundation
 
 /// A selectable item displayed in the list.
 @_spi(AdyenInternal)
-public class ListItem: FormItem, Hidable {
-
+public class ListItem: FormItem {
+    
     public var subitems: [FormItem] = []
     
     /// The list item style.
@@ -43,13 +43,7 @@ public class ListItem: FormItem, Hidable {
     ///
     /// See: ``ListItem/startLoading()`` & ``ListItem/stopLoading()``
     internal var loadingHandler: ((Bool, ListItem) -> Void)?
-
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
-
-    public var isSelectable: Bool?
-
-    public var isSelected: Bool = false
-
+    
     /// Initializes the list item.
     ///
     /// - Parameters:
@@ -69,9 +63,7 @@ public class ListItem: FormItem, Hidable {
         style: ListItemStyle = ListItemStyle(),
         identifier: String? = nil,
         accessibilityLabel: String? = nil,
-        selectionHandler: (() -> Void)? = nil,
-        isSelectable: Bool? = nil,
-        isSelected: Bool = false
+        selectionHandler: (() -> Void)? = nil
     ) {
         self.title = title
         self.subtitle = subtitle
@@ -81,8 +73,6 @@ public class ListItem: FormItem, Hidable {
         self.identifier = identifier
         self.accessibilityLabel = accessibilityLabel ?? [title, subtitle, trailingText].compactMap { $0 }.joined(separator: ", ")
         self.selectionHandler = selectionHandler
-        self.isSelectable = isSelectable
-        self.isSelected = isSelected
     }
     
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
@@ -101,7 +91,7 @@ public class ListItem: FormItem, Hidable {
     public func stopLoading() {
         setLoading(false)
     }
-
+    
     private func setLoading(_ isLoading: Bool) {
         guard let loadingHandler else {
             AdyenAssertion.assertionFailure(message: "No loadingHandler provided")

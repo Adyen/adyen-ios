@@ -33,13 +33,11 @@ public final class UPIComponent: PaymentComponent,
         static let upiCollect = "upi_collect"
         static let upiQRCode = "upi_qr"
         static let upiIntent = "upi_intent"
+        static let vpaFlowIdentifier = "UPI/VPA"
     }
 
     /// Configuration for UPI Component.
     public typealias Configuration = BasicComponentConfiguration
-
-    /// UPI App's configuration.
-    public var upiAppsconfiguration: UPIAppsConfiguration
 
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -51,7 +49,11 @@ public final class UPIComponent: PaymentComponent,
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
 
-    private var selectedUPIAppId: String = "UPI/VPA"
+    private var currentSelectedItem: SelectableFormItem?
+
+    // private var previousSelectedUPIAppId: String = "UPI/VPA"
+
+    private var previousSelectedItem: SelectableFormItem?
 
     /// The viewController for the component.
     public lazy var viewController: UIViewController = SecuredViewController(child: formViewController,
@@ -74,12 +76,10 @@ public final class UPIComponent: PaymentComponent,
     /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: UPIPaymentMethod,
                 context: AdyenContext,
-                configuration: Configuration = .init(),
-                upiAppsconfiguration: UPIAppsConfiguration = .init()) {
+                configuration: Configuration = .init()) {
         self.upiPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
-        self.upiAppsconfiguration = upiAppsconfiguration
     }
 
     public func stopLoading() {
@@ -130,56 +130,58 @@ public final class UPIComponent: PaymentComponent,
     }()
 
     /// The UPI app list item.
-    internal lazy var upiAppsList: [ListItem] = {
-        var upiAppslist = [ListItem]()
-        _ = upiPaymentMethod.apps.map { app -> ListItem in
+    internal lazy var upiAppsList: [SelectableFormItem] = {
+        var upiAppslist = [SelectableFormItem]()
+        _ = upiPaymentMethod.apps.map { app -> SelectableFormItem in
             let logoUrl = LogoURLProvider.logoURL(
                 withName: app.identifier,
                 environment: context.apiContext.environment,
                 size: .small
             )
-            let listItem = ListItem(
+            let selectableItem = SelectableFormItem(
                 title: app.name,
                 icon: .init(url: logoUrl),
-                style: upiAppsconfiguration.style.listItem,
-                isSelectable: true
+                isSelected: false,
+                style: .init(),
+                identifier: app.identifier
             )
-            listItem.identifier = ViewIdentifierBuilder.build(
-                scopeInstance: self,
-                postfix: listItem.title
-            )
-            listItem.selectionHandler = { [weak self, weak listItem] in
-                guard let self, let listItem else { return }
-                selectedUPIAppId = app.identifier
-                print("selectedUPIAppId", selectedUPIAppId)
-                // TODO: update checkmark of listItem
-                listItem.isSelected = !listItem.isSelected
+            selectableItem.selectionHandler = { [weak self, weak selectableItem] in
+                guard let self, let selectableItem else { return }
+                currentSelectedItem = selectableItem
+                if previousSelectedItem?.identifier != currentSelectedItem?.identifier {
+                    previousSelectedItem?.isSelected = false
+                }
+                currentSelectedItem?.isSelected = !(currentSelectedItem?.isSelected ?? false)
+                previousSelectedItem = selectableItem
+                virtualPaymentAddressItem.isHidden.wrappedValue = true
             }
-            upiAppslist.append(listItem)
-            return listItem
+            upiAppslist.append(selectableItem)
+            return selectableItem
         }
         upiAppslist.append(vpaItem)
         return upiAppslist
     }()
 
     /// The UPI enter UPI/VPA list item.
-    internal lazy var vpaItem: ListItem = {
-        let listItem = ListItem(
+    internal lazy var vpaItem: SelectableFormItem = {
+        let selectableItem = SelectableFormItem(
             title: "Enter UPI ID",
-            icon: ListItem.Icon(image: UIImage(named: "upiLogo") ?? UIImage()),
-            style: upiAppsconfiguration.style.listItem,
-            isSelectable: true
+            icon: Icon(image: UIImage(named: "upiLogo") ?? UIImage()),
+            isSelected: false,
+            style: .init(),
+            identifier: Constants.vpaFlowIdentifier
         )
-        listItem.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: listItem.title
-        )
-        listItem.selectionHandler = { [weak self, weak listItem] in
-            guard let self, let listItem else { return }
-            selectedUPIAppId = "UPI/VPA"
-            virtualPaymentAddressItem.isHidden.wrappedValue = !virtualPaymentAddressItem.isHidden.wrappedValue
+        selectableItem.selectionHandler = { [weak self, weak selectableItem] in
+            guard let self, let selectableItem else { return }
+            currentSelectedItem = selectableItem
+            if previousSelectedItem?.identifier != currentSelectedItem?.identifier {
+                previousSelectedItem?.isSelected = false
+            }
+            currentSelectedItem?.isSelected = !(currentSelectedItem?.isSelected ?? false)
+            previousSelectedItem = currentSelectedItem
+            virtualPaymentAddressItem.isHidden.wrappedValue = !(currentSelectedItem?.isSelected ?? true)
         }
-        return listItem
+        return selectableItem
     }()
 
     /// The QRCode generation message item.
@@ -253,10 +255,10 @@ public final class UPIComponent: PaymentComponent,
 
         switch UPIFlowType(rawValue: currentSelectedIndex) {
         case .upiApps:
-            let flowType = selectedUPIAppId == "UPI/VPA" ? Constants.upiCollect : Constants.upiIntent
+            let flowType = currentSelectedItem?.identifier == "UPI/VPA" ? Constants.upiCollect : Constants.upiIntent
             let details = UPIComponentDetails(type: flowType,
                                               virtualPaymentAddress: virtualPaymentAddressItem.value,
-                                              selectedUPIAppId: selectedUPIAppId)
+                                              selectedUPIAppId: currentSelectedItem?.identifier)
 
             submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
         case .qrCode:
@@ -269,11 +271,13 @@ public final class UPIComponent: PaymentComponent,
 
     internal func didChangeSegmentedControlIndex(_ changedIndex: Int) {
         currentSelectedIndex = changedIndex
-
         switch UPIFlowType(rawValue: currentSelectedIndex) {
         case .upiApps:
             changeUPIAppsListVisiblity(shouldHide: false)
-            virtualPaymentAddressItem.isVisible = false
+            if currentSelectedItem?.identifier == Constants.vpaFlowIdentifier,
+               let isSelected = currentSelectedItem?.isSelected, isSelected {
+                virtualPaymentAddressItem.isVisible = true
+            }
             qrCodeGenerationLabelContainerItem.isHidden.wrappedValue = true
             qrCodeGenerationImageItem.isHidden.wrappedValue = true
             continueButton.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
@@ -282,6 +286,7 @@ public final class UPIComponent: PaymentComponent,
 
         case .qrCode:
             changeUPIAppsListVisiblity(shouldHide: true)
+            virtualPaymentAddressItem.isHidden.wrappedValue = true
             qrCodeGenerationLabelContainerItem.isHidden.wrappedValue = false
             qrCodeGenerationImageItem.isHidden.wrappedValue = false
             continueButton.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
@@ -312,25 +317,3 @@ public final class UPIComponent: PaymentComponent,
 
 @_spi(AdyenInternal)
 extension UPIComponent: AdyenObserver {}
-
-extension UPIComponent {
-
-    /// Configuration for Issuer List type components.
-    public struct UPIAppsConfiguration: AnyBasicComponentConfiguration {
-
-        /// The UI style of the component.
-        public var style: ListComponentStyle
-
-        public var localizationParameters: LocalizationParameters?
-
-        /// Initializes the configuration for Issuer list type components.
-        /// - Parameters:
-        ///   - style: The UI style of the component.
-        ///   - localizationParameters: Localization parameters.
-        public init(style: ListComponentStyle = .init(),
-                    localizationParameters: LocalizationParameters? = nil) {
-            self.style = style
-            self.localizationParameters = localizationParameters
-        }
-    }
-}

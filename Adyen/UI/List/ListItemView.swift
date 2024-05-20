@@ -49,14 +49,9 @@ public final class ListItemView: UIView, AnyFormItemView {
                 subtitleLabel.adyen.apply(style.subtitle)
                 trailingTextLabel.adyen.apply(style.trailingText)
             }
-            if let isSelectable = item?.isSelectable, isSelectable {
-                self.addGestureRecognizer(itemGestureRecognizer)
-            }
         }
     }
-
-    private lazy var itemGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(listItemTapped))
-
+    
     private func updateItemData(item: ListItem?) {
         accessibilityIdentifier = item?.identifier
         
@@ -86,14 +81,7 @@ public final class ListItemView: UIView, AnyFormItemView {
         super.didMoveToWindow()
         updateIcon()
     }
-
-    @objc private func listItemTapped() {
-        item?.selectionHandler?()
-        print("item selected", item?.isSelected)
-        updateItemSelection()
-
-    }
-
+    
     private func updateIcon() {
         if let iconUrl = item?.icon?.url, window != nil {
             imageLoadingTask = imageView.load(url: iconUrl, using: imageLoader)
@@ -122,23 +110,7 @@ public final class ListItemView: UIView, AnyFormItemView {
         imageView.preservesSuperviewLayoutMargins = true
         return imageView
     }()
-
-    public var checkmarkImageView: UIImageView {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "verification_true",
-                                  in: Bundle.coreInternalResources,
-                                  compatibleWith: nil)
-        imageView.isHidden = !(item?.isSelected ?? false)
-        imageView.translatesAutoresizingMaskIntoConstraints = true
-        imageView.widthAnchor.constraint(equalToConstant: 16).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 16).isActive = true
-        return imageView
-    }
-
-    public func updateItemSelection() {
-        checkmarkImageView.isHidden = !(item?.isSelected ?? false)
-    }
-
+    
     override public func layoutSubviews() {
         super.layoutSubviews()
 
@@ -188,7 +160,7 @@ public final class ListItemView: UIView, AnyFormItemView {
     }()
     
     private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [imageView, titleSubtitleStackView, trailingTextLabel, checkmarkImageView])
+        let stackView = UIStackView(arrangedSubviews: [imageView, titleSubtitleStackView, trailingTextLabel])
         stackView.setCustomSpacing(16, after: imageView)
         stackView.spacing = 8
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -212,12 +184,13 @@ public final class ListItemView: UIView, AnyFormItemView {
             
             imageView.widthAnchor.constraint(equalToConstant: imageSize.width),
             imageView.heightAnchor.constraint(equalToConstant: imageSize.height),
-
+            
             self.heightAnchor.constraint(greaterThanOrEqualToConstant: 48)
         ]
 
         trailingTextLabel.setContentHuggingPriority(.required, for: .horizontal)
         imageView.setContentHuggingPriority(.required, for: .horizontal)
+        
         NSLayoutConstraint.activate(constraints)
     }
     

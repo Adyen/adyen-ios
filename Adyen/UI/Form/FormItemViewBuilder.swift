@@ -53,7 +53,13 @@ public struct FormItemViewBuilder {
         listView.item = item
         return listView
     }
-    
+
+    /// Builds `SelectableFormItemView` from `SelectableFormItem`.
+    @_spi(AdyenInternal)
+    public func build(with item: SelectableFormItem) -> FormItemView<SelectableFormItem> {
+        SelectableFormItemView(item: item)
+    }
+
     /// Builds `FormButtonItemView` from `FormButtonItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormButtonItem) -> FormItemView<FormButtonItem> {

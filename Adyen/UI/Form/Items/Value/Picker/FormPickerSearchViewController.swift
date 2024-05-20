@@ -86,7 +86,7 @@ private extension FormPickerElement {
         return subtitle?.range(of: searchTerm, options: .caseInsensitive) != nil
     }
     
-    private var listItemIcon: ListItem.Icon? {
+    private var listItemIcon: Icon? {
         guard let icon else { return nil }
         return .init(location: .local(image: icon))
     }
