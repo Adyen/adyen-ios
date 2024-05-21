@@ -255,12 +255,19 @@ public final class UPIComponent: PaymentComponent,
 
         switch UPIFlowType(rawValue: currentSelectedIndex) {
         case .upiApps:
+            let details: UPIComponentDetails
             let flowType = currentSelectedItem?.identifier == "UPI/VPA" ? Constants.upiCollect : Constants.upiIntent
-            let details = UPIComponentDetails(type: flowType,
+            if flowType == Constants.upiCollect {
+                details = UPIComponentDetails(type: flowType,
                                               virtualPaymentAddress: virtualPaymentAddressItem.value,
-                                              selectedUPIAppId: currentSelectedItem?.identifier)
-
+                                              appId: nil)
+            } else {
+                details = UPIComponentDetails(type: flowType,
+                                              virtualPaymentAddress: nil,
+                                              appId: currentSelectedItem?.identifier)
+            }
             submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
+
         case .qrCode:
             let details = UPIComponentDetails(type: Constants.upiQRCode)
             submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))

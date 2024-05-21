@@ -19,7 +19,7 @@ public struct UPIComponentDetails: PaymentMethodDetails {
     public let virtualPaymentAddress: String?
 
     ///  The selected UPI app
-    public let selectedUPIAppId: String?
+    public let appId: String?
 
     /// Initializes the UPI Component Details.
     /// - Parameters:
@@ -27,10 +27,10 @@ public struct UPIComponentDetails: PaymentMethodDetails {
     ///   - virtualPaymentAddress: Virtual payment address entered by user.
     public init(type: String,
                 virtualPaymentAddress: String? = nil,
-                selectedUPIAppId: String? = nil) {
+                appId: String? = nil) {
         self.type = type
         self.virtualPaymentAddress = virtualPaymentAddress
-        self.selectedUPIAppId = selectedUPIAppId
+        self.appId = appId
     }
 
 }

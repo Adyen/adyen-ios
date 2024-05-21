@@ -29,7 +29,7 @@ internal enum ConfigurationConstants {
 
     static let returnUrl = "ui-host://payments"
     
-    static let shopperReference = "iOS Checkout Shopper"
+    static let shopperReference = "iOSCheckoutShopper"
 
     static let shopperEmail = "checkoutShopperiOS@example.org"
     
