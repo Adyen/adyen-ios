@@ -12,10 +12,20 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
     private let imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
     private var imageLoadingTask: AdyenCancellable?
 
+    private enum Constants {
+        static let upiLogo = "upiLogo"
+        static let checkmarkImage = "verification_true"
+    }
+
+    private enum SizeConstants {
+        static let checkmarkImageSize = CGSize(width: 16.0, height: 16.0)
+        static let listIconImageSize = CGSize(width: 40, height: 26)
+    }
+
     // MARK: - ImageView
 
     private lazy var imageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "upiLogo",
+        let imageView = UIImageView(image: UIImage(named: Constants.upiLogo,
                                                    in: Bundle.coreInternalResources,
                                                    compatibleWith: nil))
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -36,11 +46,11 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
     // MARK: - Checkmark Imageview
 
     private lazy var checkmarkImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "verification_true",
+        let imageView = UIImageView(image: UIImage(named: Constants.checkmarkImage,
                                                    in: Bundle.coreInternalResources,
                                                    compatibleWith: nil))
 
-        let iconSize = CGSize(width: 16.0, height: 16.0)
+        let iconSize = SizeConstants.checkmarkImageSize
         imageView.adyen.round(using: item.style.imageStyle.cornerRounding)
         imageView.clipsToBounds = true
         imageView.widthAnchor.constraint(equalToConstant: iconSize.width).isActive = true
@@ -160,16 +170,14 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
 
     // MARK: - Layout
 
-    private let iconImageSize = CGSize(width: 40, height: 26)
-
     private func configureConstraints() {
         let constraints = [
             contentStackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
 
-            imageView.widthAnchor.constraint(equalToConstant: iconImageSize.width),
-            imageView.heightAnchor.constraint(equalToConstant: iconImageSize.height),
+            imageView.widthAnchor.constraint(equalToConstant: SizeConstants.listIconImageSize.width),
+            imageView.heightAnchor.constraint(equalToConstant: SizeConstants.listIconImageSize.height),
 
             self.heightAnchor.constraint(greaterThanOrEqualToConstant: 48)
         ]

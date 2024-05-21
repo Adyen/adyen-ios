@@ -35,7 +35,7 @@ public class SelectableFormItem: FormItem, Hidable {
 
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
 
-    /// Initializes the list item.
+    /// Initializes the selectable form item.
     ///
     /// - Parameters:
     ///   - title: The title of the item.
