@@ -15,8 +15,8 @@ public class SelectableFormItem: FormItem, Hidable {
     /// The title of the item.
     public var title: String
 
-    /// The icon to display
-    public var icon: Icon?
+    /// The image url  to display the icon
+    public var imageUrl: URL?
 
     /// Determines whether the item is currently the selected one.
     @AdyenObservable(false) public var isSelected: Bool
@@ -39,7 +39,7 @@ public class SelectableFormItem: FormItem, Hidable {
     ///
     /// - Parameters:
     ///   - title: The title of the item.
-    ///   - icon: The icon of the item.
+    ///   - imageUrl: The image url of the item icon.
     ///   - isSelected: The property to set selected item.
     ///   - style: The selectable item style.
     ///   - identifier: The `accessibilityIdentifier` to be used on the `SelectableFormItem`
@@ -47,7 +47,7 @@ public class SelectableFormItem: FormItem, Hidable {
     ///   - selectionHandler: The closure to execute when an item is selected.
     public init(
         title: String,
-        icon: Icon? = nil,
+        imageUrl: URL? = nil,
         isSelected: Bool = false,
         style: SelectableFormItemStyle = SelectableFormItemStyle(),
         identifier: String? = nil,
@@ -55,7 +55,7 @@ public class SelectableFormItem: FormItem, Hidable {
         selectionHandler: (() -> Void)? = nil
     ) {
         self.title = title
-        self.icon = icon
+        self.imageUrl = imageUrl
         self.style = style
         self.identifier = identifier
         self.accessibilityLabel = accessibilityLabel ?? title

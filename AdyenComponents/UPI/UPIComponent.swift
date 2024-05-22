@@ -140,7 +140,7 @@ public final class UPIComponent: PaymentComponent,
             )
             let selectableItem = SelectableFormItem(
                 title: app.name,
-                icon: .init(url: logoUrl),
+                imageUrl: logoUrl,
                 isSelected: false,
                 style: .init(),
                 identifier: app.identifier
@@ -166,7 +166,7 @@ public final class UPIComponent: PaymentComponent,
     internal lazy var vpaItem: SelectableFormItem = {
         let selectableItem = SelectableFormItem(
             title: "Enter UPI ID",
-            icon: Icon(image: UIImage(named: "upiLogo") ?? UIImage()),
+            imageUrl: nil,
             isSelected: false,
             style: .init(),
             identifier: Constants.vpaFlowIdentifier

@@ -6,30 +6,38 @@
 
 import UIKit
 
-public struct Icon: Hashable {
+extension ListItem {
 
-    public enum Location: Hashable {
-        case local(image: UIImage)
-        case remote(url: URL?)
+    public struct Icon: Hashable {
+
+        public enum Location: Hashable {
+            case local(image: UIImage)
+            case remote(url: URL?)
+        }
+
+        /// The location of the icon image
+        public let location: Location
+        /// Whether or not the icon should be styled/altered
+        public let canBeModified: Bool
+
+        /// Initializes the icon of the `ListItem`
+        ///
+        /// - Parameters:
+        ///   - location: The location of the icon image
+        ///   - canBeModified: Whether or not the icon should be styled/altered
+        public init(
+            location: Location,
+            canBeModified: Bool = true
+        ) {
+            self.location = location
+            self.canBeModified = canBeModified
+        }
     }
+}
 
-    /// The location of the icon image
-    public let location: Location
-    /// Whether or not the icon should be styled/altered
-    public let canBeModified: Bool
+// MARK: - Convenience
 
-    /// Initializes the icon
-    ///
-    /// - Parameters:
-    ///   - location: The location of the icon image
-    ///   - canBeModified: Whether or not the icon should be styled/altered
-    public init(
-        location: Location,
-        canBeModified: Bool = true
-    ) {
-        self.location = location
-        self.canBeModified = canBeModified
-    }
+extension ListItem.Icon {
 
     /// The url of the remote location if applicable
     internal var url: URL? {
@@ -39,7 +47,7 @@ public struct Icon: Hashable {
         }
     }
 
-    /// Convenience init to instantiate an ``Icon`` with a remote ``URL``
+    /// Convenience init to instantiate an ``ListItem.Icon`` with a remote ``URL``
     public init(
         url: URL?,
         canBeModified: Bool = true
@@ -50,7 +58,7 @@ public struct Icon: Hashable {
         )
     }
 
-    /// Convenience init to instantiate an ``Icon`` with a ``UIImage`` object
+    /// Convenience init to instantiate an ``ListItem.Icon`` with a ``UIImage`` object
     public init(
         image: UIImage,
         canBeModified: Bool = true
