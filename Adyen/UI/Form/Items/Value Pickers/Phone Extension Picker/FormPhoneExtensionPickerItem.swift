@@ -10,8 +10,8 @@ import UIKit
 extension PhoneExtension: FormPickable {
     public var identifier: String { countryCode }
     public var icon: UIImage? { nil }
-    public var title: String { countryDisplayName }
-    public var subtitle: String? { value }
+    public var title: String { value }
+    public var subtitle: String? { countryDisplayName }
     public var trailingText: String? { nil }
 }
 
@@ -31,7 +31,7 @@ public final class FormPhoneExtensionPickerItem: FormPickerItem<PhoneExtension> 
         super.init(
             preselectedValue: preselectedExtension,
             selectableValues: selectableExtensions,
-            title: localizedString(.phoneNumberTitle, localizationParameters), // TODO: Request "Prefix" localization
+            title: localizedString(.telephonePrefix, localizationParameters),
             placeholder: "",
             style: style,
             presenter: presenter,
@@ -40,12 +40,6 @@ public final class FormPhoneExtensionPickerItem: FormPickerItem<PhoneExtension> 
         )
         
         self.validationFailureMessage = validationFailureMessage
-    }
-    
-    public func updateValue(
-        with phoneExtension: PhoneExtension?
-    ) {
-        self.value = phoneExtension
     }
     
     override public func resetValue() {
@@ -57,7 +51,7 @@ public final class FormPhoneExtensionPickerItem: FormPickerItem<PhoneExtension> 
     }
     
     override public func updateFormattedValue() {
-        formattedValue = value?.identifier
+        // Not needed in this case
     }
     
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {

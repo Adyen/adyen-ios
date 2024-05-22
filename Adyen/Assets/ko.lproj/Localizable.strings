@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "계속";
 "adyen.phoneNumber.title" = "전화번호";
 "adyen.phoneNumber.invalid" = "유효하지 않은 전화번호";
+"adyen.telephonePrefix" = "명칭";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@자리";
 "adyen.emailItem.title" = "이메일 주소";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "검색한 내용에 일치하는 은행을 찾을 수 없습니다…";
 "adyen.paybybank.title" = "다음에 대한 검색 결과 없음:";
 "adyen.search.placeholder" = "검색…";
-"adyen.upi.modeSelection" = "UPI를 사용할 방식을 선택하세요.";
+"adyen.upi.modeSelection" = "UPI를 어떻게 사용하시겠습니까?";
 "adyen.UPIVpa.validationMessage" = "정확한 가상 결제 주소를 입력하세요";
 "adyen.UPIQrcode.generationMessage" = "QR 코드를 만들어서 다운로드하거나 스크린샷을 찍은 다음 UPI 앱에 업로드하면 결제가 완료됩니다.";
 "adyen.UPIQrcode.timerMessage" = "남은 승인 시한: %@";
