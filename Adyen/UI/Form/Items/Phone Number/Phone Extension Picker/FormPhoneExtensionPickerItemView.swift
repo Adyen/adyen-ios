@@ -11,18 +11,22 @@ import UIKit
 @_spi(AdyenInternal)
 public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExtensionPickerItem> {
     
-    internal lazy var valueLabel = UILabel(style: item.style.text)
+    private lazy var valueLabel = UILabel(style: item.style.text)
     
-    internal var accessoryImage: UIImage? { UIImage(
-        named: "chevron_down",
-        in: Bundle.coreInternalResources,
-        compatibleWith: nil
-    ) }
-    
-    internal lazy var chevronView = UIImageView(image: accessoryImage)
+    private lazy var chevronView: UIImageView = {
+        let image = UIImage(
+            named: "chevron_down",
+            in: Bundle.coreInternalResources,
+            compatibleWith: nil
+        )
+        
+        let chevronView = UIImageView(image: image)
+        chevronView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        return chevronView
+    }()
     
     /// The country code view.
-    internal lazy var countryCodeLabel: UILabel = {
+    private lazy var countryCodeLabel: UILabel = {
         let label = UILabel()
         label.adyen.apply(item.style.text)
         return label
@@ -69,6 +73,7 @@ public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExten
         
         let button = UIButton(type: .custom)
         button.addTarget(self, action: #selector(handleSelection), for: .touchUpInside)
+        
         button.addSubview(stackView)
         addSubview(button)
         

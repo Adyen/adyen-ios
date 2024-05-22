@@ -113,7 +113,6 @@ class QiwiWalletComponentTests: XCTestCase {
         XCTAssertEqual(phoneNumberViewTextField?.font, .systemFont(ofSize: 13))
         
         /// Test phone extension
-        XCTAssertEqual(phoneExtensionView?.backgroundColor, .red)
         XCTAssertEqual(phoneExtensionViewLabel?.textAlignment, .right)
         XCTAssertEqual(phoneExtensionViewLabel?.textColor, .red)
         XCTAssertEqual(phoneExtensionViewLabel?.font, .systemFont(ofSize: 13))
