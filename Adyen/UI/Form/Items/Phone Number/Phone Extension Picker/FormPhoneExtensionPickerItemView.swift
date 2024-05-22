@@ -60,8 +60,6 @@ public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExten
     }
     
     internal func setupView() {
-        backgroundColor = item.style.backgroundColor
-        
         let stackView = UIStackView(arrangedSubviews: [countryCodeLabel, chevronView, valueLabel])
         stackView.axis = .horizontal
         stackView.alignment = .center
@@ -71,7 +69,6 @@ public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExten
         
         let button = UIButton(type: .custom)
         button.addTarget(self, action: #selector(handleSelection), for: .touchUpInside)
-        
         button.addSubview(stackView)
         addSubview(button)
         

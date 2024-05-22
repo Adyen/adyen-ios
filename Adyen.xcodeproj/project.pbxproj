@@ -3993,7 +3993,6 @@
 			isa = PBXGroup;
 			children = (
 				E7085B082628B29600D0153B /* Abstract */,
-				E7085B0D2628B29600D0153B /* Phone Extension Picker */,
 				00EACBBB2876C7D10082B360 /* Issuer List Picker */,
 			);
 			path = "Value Pickers";
@@ -5396,6 +5395,7 @@
 			children = (
 				F9B8C50B23FE962D00C4D0FB /* FormPhoneNumberItem.swift */,
 				F9B8C50D23FE973500C4D0FB /* FormPhoneNumberItemView.swift */,
+				E7085B0D2628B29600D0153B /* Phone Extension Picker */,
 			);
 			path = "Phone Number";
 			sourceTree = "<group>";
