@@ -128,19 +128,11 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
     override public func layoutSubviews() {
         super.layoutSubviews()
 
-        guard item.icon?.canBeModified == true else {
-            return imageView.adyen.round(using: .none)
-        }
         imageView.adyen.round(using: item.style.imageStyle.cornerRounding)
     }
 
     private func updateImageView(style: SelectableFormItemStyle) {
         imageView.contentMode = style.imageStyle.contentMode
-
-        guard item.icon?.canBeModified == true else {
-            return imageView.layer.borderWidth = 0
-        }
-
         imageView.clipsToBounds = style.imageStyle.clipsToBounds
         imageView.layer.borderWidth = style.imageStyle.borderWidth
         imageView.layer.borderColor = style.imageStyle.borderColor?.cgColor
@@ -155,13 +147,12 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
         titleLabel.text = item.title
         titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
 
-        imageView.isHidden = item.icon == nil
         checkmarkImageView.isHidden = !item.isSelected
         updateIcon()
     }
 
     private func updateIcon() {
-        if let iconUrl = item.icon?.url, window != nil, item.title != "Enter UPI ID" {
+        if let iconUrl = item.imageUrl, window != nil {
             imageLoadingTask = imageView.load(url: iconUrl, using: imageLoader)
         } else {
             imageLoadingTask = nil
