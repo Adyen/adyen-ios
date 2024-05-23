@@ -11,7 +11,6 @@ import XCTest
 class AffirmComponentUITests: XCTestCase {
     
     private var paymentMethod: PaymentMethod { AtomePaymentMethod(type: .atome, name: "Affirm") }
-    private var context = Dummy.context
     private var style: FormComponentStyle { FormComponentStyle() }
 
     override func setUpWithError() throws {
@@ -99,11 +98,15 @@ class AffirmComponentUITests: XCTestCase {
 
     func testAffirmPrefilling_givenDeliveryAddressIsSet() throws {
         // Given
-        let config = AffirmComponent.Configuration(style: style,
-                                                   shopperInformation: shopperInformation)
-        let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
-                                         context: context,
-                                         configuration: config)
+        let config = AffirmComponent.Configuration(
+            style: style,
+            shopperInformation: shopperInformation
+        )
+        let prefillSut = AffirmComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: config
+        )
         
         setupRootViewController(prefillSut.viewController)
 

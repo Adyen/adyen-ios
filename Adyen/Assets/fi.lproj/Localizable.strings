@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Jatka";
 "adyen.phoneNumber.title" = "Puhelinnumero";
 "adyen.phoneNumber.invalid" = "Ei-kelvollinen puhelinnumero";
+"adyen.telephonePrefix" = "Etuliite";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ lukua";
 "adyen.emailItem.title" = "Sähköpostiosoite";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Hakukyselylläsi ei löytynyt yhtään pankkia.";
 "adyen.paybybank.title" = "Ei tuloksia haulle";
 "adyen.search.placeholder" = "Hae…";
-"adyen.upi.modeSelection" = "Valitse, kuinka haluat käyttää UPI-sovellusta.";
+"adyen.upi.modeSelection" = "Miten haluaisit käyttää UPI:a?";
 "adyen.UPIVpa.validationMessage" = "Syötä oikea virtuaalinen maksuosoite";
 "adyen.UPIQrcode.generationMessage" = "Luo QR-koodi, jonka voit ladata tai josta voit ottaa kuvakaappauksen ja lähettää sen UPI-sovellukseen suorittaaksesi maksun loppuun.";
 "adyen.UPIQrcode.timerMessage" = "Sinulla on %@ hyväksyttävänä";

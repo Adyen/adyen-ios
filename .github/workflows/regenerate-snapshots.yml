@@ -4,7 +4,7 @@ on:
           
 jobs:
   Generate:
-    runs-on: macos-13-xlarge
+    runs-on: macos-14-xlarge
     
     steps:
     - uses: actions/checkout@v4
