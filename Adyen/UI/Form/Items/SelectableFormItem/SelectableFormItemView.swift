@@ -28,6 +28,8 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
 
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
+        titleLabel.text = item.title
+        titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         return titleLabel
@@ -46,6 +48,7 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
         imageView.widthAnchor.constraint(equalToConstant: iconSize.width).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: iconSize.height).isActive = true
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "checkmark")
+        imageView.isHidden = !item.isSelected
 
         return imageView
     }()
@@ -96,7 +99,11 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
 
         addSubview(itemButton)
 
-        updateItemData(item: item)
+        accessibilityIdentifier = item.identifier
+        accessibilityLabel = item.accessibilityLabel
+        isAccessibilityElement = true
+
+        updateIcon()
         updateImageView(style: item.style)
         configureConstraints()
 
@@ -125,19 +132,6 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
         imageView.clipsToBounds = style.imageStyle.clipsToBounds
         imageView.layer.borderWidth = style.imageStyle.borderWidth
         imageView.layer.borderColor = style.imageStyle.borderColor?.cgColor
-    }
-
-    private func updateItemData(item: SelectableFormItem) {
-        accessibilityIdentifier = item.identifier
-
-        accessibilityLabel = item.accessibilityLabel
-        isAccessibilityElement = true
-
-        titleLabel.text = item.title
-        titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
-
-        checkmarkImageView.isHidden = !item.isSelected
-        updateIcon()
     }
 
     private func updateIcon() {
