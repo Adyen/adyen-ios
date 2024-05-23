@@ -6,9 +6,10 @@
 
 import UIKit
 
-internal class FormPickerItemView: FormSelectableValueItemView<FormPickerElement, FormPickerItem> {
+@_spi(AdyenInternal)
+public class FormPickerItemView<Value: FormPickable>: FormSelectableValueItemView<Value, FormPickerItem<Value>> {
     
-    internal required init(item: FormPickerItem) {
+    internal required init(item: FormPickerItem<Value>) {
         super.init(item: item)
         item.selectionHandler = { [weak self] in
             
@@ -27,7 +28,7 @@ internal class FormPickerItemView: FormSelectableValueItemView<FormPickerElement
         }
     }
     
-    override internal func showValidation() {
+    override public func showValidation() {
         if item.isValid() {
             updateValidationStatus(forced: false)
         } else {
@@ -35,7 +36,7 @@ internal class FormPickerItemView: FormSelectableValueItemView<FormPickerElement
         }
     }
     
-    override internal func reset() {
+    override public func reset() {
         item.resetValue()
         resetValidationStatus()
     }

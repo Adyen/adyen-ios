@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "متابعة";
 "adyen.phoneNumber.title" = "رقم الهاتف";
 "adyen.phoneNumber.invalid" = "رقم هاتف غير صحيح";
+"adyen.telephonePrefix" = "بادئة";
 "adyen.phoneNumber.placeholder" = "789–456–123";
 "adyen.card.cvcItem.placeholder.digits" = "%@ أرقام";
 "adyen.emailItem.title" = "عنوان البريد الإلكتروني";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "لم يتم العثور على أي بنوك لاستعلام البحث الخاص بك…";
 "adyen.paybybank.title" = "لا توجد نتائج لـ";
 "adyen.search.placeholder" = "بحث…";
-"adyen.upi.modeSelection" = "حدد كيف ترغب في استخدام تطبيق UPI.";
+"adyen.upi.modeSelection" = "كيف تود استخدام معرف واجهة المدفوعات الموحدة (UPI)؟";
 "adyen.UPIVpa.validationMessage" = "أدخل عنوان دفع افتراضي صحيح";
 "adyen.UPIQrcode.generationMessage" = "أنشئ رمز الاستجابة السريعة الذي يمكنك تنزيله أو خذ لقطة شاشة له وقم بتحميله على تطبيق UPI لإكمال الدفع.";
 "adyen.UPIQrcode.timerMessage" = "أمامك ٪@ للموافقة";

@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Fortsätt";
 "adyen.phoneNumber.title" = "Telefonnummer";
 "adyen.phoneNumber.invalid" = "Ogiltigt telefonnummer";
+"adyen.telephonePrefix" = "Prefix";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ siffror";
 "adyen.emailItem.title" = "E-postadress";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Inga banker hittades med din sökfråga…";
 "adyen.paybybank.title" = "Inga resultat för";
 "adyen.search.placeholder" = "Sök efter…";
-"adyen.upi.modeSelection" = "Välj hur du vill använda UPI.";
+"adyen.upi.modeSelection" = "Hur vill du använda UPI?";
 "adyen.UPIVpa.validationMessage" = "Ange en korrekt virtuell betalningsadress";
 "adyen.UPIQrcode.generationMessage" = "Generera QR-koden, som du kan ladda ner eller ta en skärmdump av, och ladda upp den i UPI-appen för att slutföra betalningen.";
 "adyen.UPIQrcode.timerMessage" = "Du har %@ att godkänna";
