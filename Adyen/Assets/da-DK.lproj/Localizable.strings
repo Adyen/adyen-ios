@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Fortsæt";
 "adyen.phoneNumber.title" = "Telefonnummer";
 "adyen.phoneNumber.invalid" = "Ugyldigt telefonnummer";
+"adyen.telephonePrefix" = "Præfiks";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ cifre";
 "adyen.emailItem.title" = "E-mailadresse";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Ingen banker fundet med din søgeforespørgsel…";
 "adyen.paybybank.title" = "Ingen resultater for";
 "adyen.search.placeholder" = "Søg…";
-"adyen.upi.modeSelection" = "Foretag et valg om, hvordan du vil bruge UPI.";
+"adyen.upi.modeSelection" = "Hvordan vil du bruge UPI?";
 "adyen.UPIVpa.validationMessage" = "Indtast en korrekt virtuel betalingsadresse";
 "adyen.UPIQrcode.generationMessage" = "Generer QR-koden, som du kan downloade eller tage et screenshot af, og upload den til UPI-appen for at gennemføre betalingen.";
 "adyen.UPIQrcode.timerMessage" = "Du har %@ til at godkende";

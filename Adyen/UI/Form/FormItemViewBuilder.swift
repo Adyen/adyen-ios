@@ -27,12 +27,6 @@ public struct FormItemViewBuilder {
     public func build(with item: FormPhoneNumberItem) -> FormItemView<FormPhoneNumberItem> {
         FormPhoneNumberItemView(item: item)
     }
-    
-    /// Builds `FormPhoneExtensionPickerItemView` from `FormPhoneExtensionPickerItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormPhoneExtensionPickerItem) -> BaseFormPickerItemView<PhoneExtension> {
-        FormPhoneExtensionPickerItemView(item: item)
-    }
 
     /// Builds `FormIssuerPickerItemView` from `FormIssuerPickerItem`.
     @_spi(AdyenInternal)
@@ -110,8 +104,14 @@ public struct FormItemViewBuilder {
     
     /// Builds `FormPickerItemView` from `FormPickerItem`.
     @_spi(AdyenInternal)
-    public func build(with item: FormPickerItem) -> FormItemView<FormPickerItem> {
+    public func build<Value>(with item: FormPickerItem<Value>) -> FormItemView<FormPickerItem<Value>> {
         FormPickerItemView(item: item)
+    }
+    
+    /// Builds `FormPhoneExtensionPickerItemView` from `FormPhoneExtensionPickerItem`.
+    @_spi(AdyenInternal)
+    public func build(with item: FormPhoneExtensionPickerItem) -> FormPhoneExtensionPickerItemView {
+        FormPhoneExtensionPickerItemView(item: item)
     }
 
     @_spi(AdyenInternal)
