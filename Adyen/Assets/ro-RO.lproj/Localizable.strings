@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Continuare";
 "adyen.phoneNumber.title" = "Număr de telefon";
 "adyen.phoneNumber.invalid" = "Număr de telefon incorect";
+"adyen.telephonePrefix" = "Titulatură";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ cifre";
 "adyen.emailItem.title" = "Adresă de e-mail";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Nu s-au găsit bănci cu interogarea de căutare…";
 "adyen.paybybank.title" = "Nu există rezultate pentru";
 "adyen.search.placeholder" = "Căutare…";
-"adyen.upi.modeSelection" = "Selectați modul în care doriți să utilizați UPI.";
+"adyen.upi.modeSelection" = "Cum doriți să utilizați UPI?";
 "adyen.UPIVpa.validationMessage" = "Introduceți o adresă de plată virtuală corectă";
 "adyen.UPIQrcode.generationMessage" = "Generați codul QR pe care îl puteți descărca sau pe care îl puteți reda într-o captură de ecran și încărcați-l în aplicația UPI pentru a finaliza plata.";
 "adyen.UPIQrcode.timerMessage" = "Aveți %@ ca să aprobați";

@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Doorgaan";
 "adyen.phoneNumber.title" = "Telefoonnummer";
 "adyen.phoneNumber.invalid" = "Ongeldig telefoonnummer";
+"adyen.telephonePrefix" = "Voorvoegsel";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ cijfers";
 "adyen.emailItem.title" = "E-mailadres";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Geen banken voor uw zoekopdracht…";
 "adyen.paybybank.title" = "Geen resultaten voor";
 "adyen.search.placeholder" = "Zoeken…";
-"adyen.upi.modeSelection" = "Maak een selectie over hoe u UPI wilt gebruiken.";
+"adyen.upi.modeSelection" = "Hoe wilt u UPI gebruiken?";
 "adyen.UPIVpa.validationMessage" = "Voer een correct virtueel betalingsadres in";
 "adyen.UPIQrcode.generationMessage" = "Genereer de QR-code. U kunt deze downloaden of er een schermafbeelding van maken en deze uploaden naar de UPI-app om de betaling te voltooien.";
 "adyen.UPIQrcode.timerMessage" = "Je hebt nog %@ voor je goedkeuring";

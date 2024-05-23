@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Συνέχεια";
 "adyen.phoneNumber.title" = "Αριθμός τηλεφώνου";
 "adyen.phoneNumber.invalid" = "Μη έγκυρος αριθμός τηλεφώνου";
+"adyen.telephonePrefix" = "Πρόθεμα";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ψήφιος";
 "adyen.emailItem.title" = "Διεύθυνση email";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Δεν βρέθηκαν τράπεζες που αντιστοιχούν στον όρο αναζήτησης…";
 "adyen.paybybank.title" = "Δεν υπάρχουν αποτελέσματα για:";
 "adyen.search.placeholder" = "Αναζήτηση…";
-"adyen.upi.modeSelection" = "Επιλέξτε μια ρύθμιση για τον τρόπο χρήσης του UPI.";
+"adyen.upi.modeSelection" = "Πώς θα θέλατε να χρησιμοποιήσετε το UPI;";
 "adyen.UPIVpa.validationMessage" = "Εισαγάγετε μια σωστή εικονική διεύθυνση πληρωμής";
 "adyen.UPIQrcode.generationMessage" = "Δημιουργήστε τον κωδικό QR που μπορείτε να λάβετε ή τραβήξτε ένα στιγμιότυπο και ανεβάστε το στην εφαρμογή UPI για να ολοκληρώσετε την πληρωμή.";
 "adyen.UPIQrcode.timerMessage" = "%@ προς έγκριση";
