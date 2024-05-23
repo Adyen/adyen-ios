@@ -11,11 +11,15 @@ import UIKit
 @_spi(AdyenInternal)
 public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExtensionPickerItem> {
     
+    private enum Constants {
+        static let chevronImageName = "chevron_down"
+    }
+    
     private lazy var valueLabel = UILabel(style: item.style.text)
     
     private lazy var chevronView: UIImageView = {
         let image = UIImage(
-            named: "chevron_down",
+            named: Constants.chevronImageName,
             in: Bundle.coreInternalResources,
             compatibleWith: nil
         )

@@ -37,13 +37,13 @@ internal final class PhoneFormItemInjector: FormItemInjector, Localizable {
         identifier: String,
         phoneExtensions: [PhoneExtension],
         style: FormTextItemStyle,
-        presenter: ViewControllerPresenter
+        presenter: WeakReferenceViewControllerPresenter
     ) {
         self.value = value
         self.identifier = identifier
         self.phoneExtensions = phoneExtensions
         self.style = style
-        self.presenter = .init(presenter)
+        self.presenter = presenter
     }
 
     internal func inject(into formViewController: FormViewController) {

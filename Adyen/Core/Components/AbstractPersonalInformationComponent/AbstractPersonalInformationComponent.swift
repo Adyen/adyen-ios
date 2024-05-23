@@ -181,7 +181,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
             identifier: identifier,
             phoneExtensions: phoneExtensions(),
             style: configuration.style.textField,
-            presenter: self
+            presenter: .init(self)
         )
         injector.localizationParameters = configuration.localizationParameters
         return injector

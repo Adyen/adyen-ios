@@ -24,7 +24,7 @@ public final class FormPhoneExtensionPickerItem: FormPickerItem<PhoneExtension> 
         selectableExtensions: [PhoneExtension],
         validationFailureMessage: String?,
         style: FormTextItemStyle,
-        presenter: ViewControllerPresenter,
+        presenter: WeakReferenceViewControllerPresenter,
         localizationParameters: LocalizationParameters? = nil,
         identifier: String? = nil
     ) {

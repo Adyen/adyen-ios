@@ -32,7 +32,7 @@ public final class FormPhoneNumberItem: FormTextItem {
         selectableValues: [PhoneExtension],
         style: FormTextItemStyle,
         localizationParameters: LocalizationParameters? = nil,
-        presenter: ViewControllerPresenter
+        presenter: WeakReferenceViewControllerPresenter
     ) {
         phonePrefixItem = .init(
             preselectedExtension: selectableValues.preselectedPhoneNumberPrefix(for: phoneNumber),
