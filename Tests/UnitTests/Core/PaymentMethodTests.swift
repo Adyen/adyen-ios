@@ -175,7 +175,7 @@ class PaymentMethodTests: XCTestCase {
         let creditCardPaymentMethod = try XCTUnwrap(paymentMethods.regular[0] as? CardPaymentMethod)
         XCTAssertEqual(creditCardPaymentMethod.fundingSource, .credit)
         
-        XCTAssertTrue(paymentMethods.regular[1] is IssuerListPaymentMethod)
+        XCTAssertTrue(paymentMethods.regular[1] is InstantPaymentMethod)
         XCTAssertTrue(paymentMethods.regular[2] is SEPADirectDebitPaymentMethod)
         XCTAssertTrue(paymentMethods.regular[3] is InstantPaymentMethod)
         
@@ -745,8 +745,8 @@ class PaymentMethodTests: XCTestCase {
     
     func testDecodingIssuerListPaymentMethod() throws {
         let paymentMethod = try AdyenCoder.decode(issuerListDictionary) as IssuerListPaymentMethod
-        XCTAssertEqual(paymentMethod.type.rawValue, "ideal")
-        XCTAssertEqual(paymentMethod.name, "iDEAL")
+        XCTAssertEqual(paymentMethod.type.rawValue, "onlineBanking_PL")
+        XCTAssertEqual(paymentMethod.name, "Online Banking")
         
         XCTAssertEqual(paymentMethod.issuers.count, 3)
         XCTAssertEqual(paymentMethod.issuers[0].identifier, "xxxx")

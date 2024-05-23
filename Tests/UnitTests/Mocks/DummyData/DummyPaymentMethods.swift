@@ -96,8 +96,8 @@ let storedBcmcDictionary = [
 ] as [String: Any]
 
 let issuerListDictionary = [
-    "type": "ideal",
-    "name": "iDEAL",
+    "type": "onlineBanking_PL",
+    "name": "Online Banking",
     "details": [
         [
             "items": [

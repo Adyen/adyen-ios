@@ -43,9 +43,9 @@ class DropInTests: XCTestCase {
                   "type" : "select"
                 }
               ],
-              "name" : "iDEAL",
+              "name" : "Online Banking",
               "supportsRecurring" : true,
-              "type" : "ideal"
+              "type" : "onlineBanking_PL"
             },
             {
               "brands" : [ "mc", "visa" ],

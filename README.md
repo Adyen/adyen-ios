@@ -251,7 +251,6 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - [3D Secure 2 Component][reference.threeDS2Component]
 - [Apple Pay Component][reference.applePayComponent]
 - [BCMC Component][reference.bcmcComponent]
-- [iDEAL Component][reference.issuerListComponent]
 - [SEPA Direct Debit Component][reference.sepaDirectDebitComponent]
 - [MOLPay Component][reference.issuerListComponent]
 - [Dotpay Component][reference.issuerListComponent]

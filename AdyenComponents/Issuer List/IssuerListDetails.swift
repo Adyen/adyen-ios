@@ -31,9 +31,6 @@ public struct IssuerListDetails: PaymentMethodDetails {
     
 }
 
-/// Contains the details supplied by the IDEAL component.
-public typealias IdealDetails = IssuerListDetails
-
 /// Contains the details supplied by the MOLPay component.
 public typealias MOLPayDetails = IssuerListDetails
 

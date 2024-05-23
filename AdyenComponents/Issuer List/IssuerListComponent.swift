@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-/// A generic component for "issuer-based" payment methods, such as iDEAL and MOLPay.
+/// A generic component for "issuer-based" payment methods, such as MOLPay.
 /// This component will provide a list in which the user can select their issuer.
 public final class IssuerListComponent: PaymentComponent, PaymentAware, PresentableComponent, LoadingComponent {
     
@@ -182,9 +182,6 @@ extension IssuerListComponent {
         }
     }
 }
-
-/// Provides an issuer selection list for iDEAL payments.
-public typealias IdealComponent = IssuerListComponent
 
 /// Provides an issuer selection list for MOLPay payments.
 public typealias MOLPayComponent = IssuerListComponent

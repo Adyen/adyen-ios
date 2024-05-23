@@ -30,6 +30,7 @@ private struct PaymentMethodField: Decodable {
 }
 
 internal enum AnyPaymentMethodDecoder {
+    
     private static var decoders: [PaymentMethodType: PaymentMethodDecoder] = [
 
         // Unsupported payment methods
@@ -46,7 +47,6 @@ internal enum AnyPaymentMethodDecoder {
         // Supported payment methods
         .card: CardPaymentMethodDecoder(),
         .scheme: CardPaymentMethodDecoder(),
-        .ideal: IssuerListPaymentMethodDecoder(),
         .entercash: IssuerListPaymentMethodDecoder(),
         .eps: IssuerListPaymentMethodDecoder(),
         .dotpay: IssuerListPaymentMethodDecoder(),
@@ -91,15 +91,20 @@ internal enum AnyPaymentMethodDecoder {
     internal static func decode(from decoder: Decoder) -> AnyPaymentMethod {
         do {
             let container = try decoder.container(keyedBy: AnyPaymentMethod.CodingKeys.self)
-            let type = try container.decode(String.self, forKey: .type)
+            let type = try PaymentMethodType(rawValue: container.decode(String.self, forKey: .type))
             let isStored = decoder.codingPath.contains { $0.stringValue == PaymentMethods.CodingKeys.stored.stringValue }
             let brand = try? container.decode(String.self, forKey: .brand)
             let isIssuersList = try container.containsValue(.issuers)
-
+            
+            if type == .ideal {
+                return try InstantPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
+            }
+            
             if isIssuersList {
-                if type == "onlineBanking_CZ" || type == "onlineBanking_SK" {
+                if type == .onlineBankingCZ || type == .onlineBankingSK {
                     return try OnlineBankingPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
                 }
+                
                 return try IssuerListPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
             }
             
@@ -111,11 +116,11 @@ internal enum AnyPaymentMethodDecoder {
             // That includes brand, type, isStored, and requiresDetails,
             // This matching struct will be used as the key to the decoders
             // dictionary.
-            if isStored, brand == "bcmc", type == "scheme" {
+            if isStored, brand == "bcmc", type == .scheme {
                 return try decoders[.bcmc, default: defaultDecoder].decode(from: decoder, isStored: true)
             }
 
-            let paymentDecoder = PaymentMethodType(rawValue: type).map { decoders[$0, default: defaultDecoder] } ?? defaultDecoder
+            let paymentDecoder = type.map { decoders[$0, default: defaultDecoder] } ?? defaultDecoder
             return try paymentDecoder.decode(from: decoder, isStored: isStored)
         } catch {
             return .none
