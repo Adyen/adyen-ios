@@ -7,7 +7,7 @@
 import UIKit
 
 /// Displays a form for the user to enter details.
-internal final class FormView: UIScrollView {
+internal final class FormView: UIView {
 
     /// Initializes the form view.
     internal init() {

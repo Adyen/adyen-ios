@@ -107,14 +107,14 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     public func willUpdatePreferredContentSize() { /* Empty implementation */ }
 
     public func didUpdatePreferredContentSize() {
-        let bottomInset: CGFloat = keyboardObserver.keyboardRect.height - view.safeAreaInsets.bottom
-        let context = AnimationContext(animationKey: Animations.keyboardBottomInset,
-                                       duration: 0.25,
-                                       options: [.beginFromCurrentState, .layoutSubviews],
-                                       animations: { [weak self] in
-                                           self?.formView.contentInset.bottom = bottomInset
-                                       })
-        view.adyen.animate(context: context)
+//        let bottomInset: CGFloat = keyboardObserver.keyboardRect.height - view.safeAreaInsets.bottom
+//        let context = AnimationContext(animationKey: Animations.keyboardBottomInset,
+//                                       duration: 0.25,
+//                                       options: [.beginFromCurrentState, .layoutSubviews],
+//                                       animations: { [weak self] in
+//                                           self?.formView.contentInset.bottom = bottomInset
+//                                       })
+//        view.adyen.animate(context: context)
     }
 
     // MARK: - Items
@@ -204,16 +204,37 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     // MARK: - Private
 
     private func addFormView() {
-        view.addSubview(formView)
-        view.backgroundColor = style.backgroundColor
-        formView.backgroundColor = style.backgroundColor
-        formView.adyen.anchor(inside: view.safeAreaLayoutGuide)
+        view.addSubview(scrollView)
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+
+        scrollView.addSubview(formView)
+
+        NSLayoutConstraint.activate([
+            formView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            formView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            formView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            formView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+        ])
+
     }
 
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.backgroundColor = .systemPink
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+
     private lazy var formView: FormView = {
-        let form = FormView()
-        form.translatesAutoresizingMaskIntoConstraints = false
-        return form
+        let formView = FormView()
+        formView.backgroundColor = style.backgroundColor
+        formView.translatesAutoresizingMaskIntoConstraints = false
+        return formView
     }()
 
     // MARK: - UIResponder
