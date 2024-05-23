@@ -10,7 +10,9 @@ import UIKit
 @_spi(AdyenInternal)
 public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
     private let imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
-    private var imageLoadingTask: AdyenCancellable?
+    private var imageLoadingTask: AdyenCancellable? {
+        willSet { imageLoadingTask?.cancel() }
+    }
 
     private enum Constants {
         static let upiLogo = "upiLogo"
