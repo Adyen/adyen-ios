@@ -10,13 +10,14 @@ import XCTest
 class FormItemViewBuilderTests: XCTestCase {
     
     func testFormPhoneExtensionPickerItemView() {
+        let presenter = UIViewController()
         let selectableValues: [PhoneExtension] = [.init(value: "+31", countryCode: "NL")]
         let item = FormPhoneExtensionPickerItem(
             preselectedExtension: selectableValues[0],
             selectableExtensions: selectableValues,
             validationFailureMessage: nil,
             style: .init(),
-            presenter: UIViewController()
+            presenter: .init(presenter)
         )
         let view = item.build(with: FormItemViewBuilder())
         
@@ -46,12 +47,13 @@ class FormItemViewBuilderTests: XCTestCase {
     }
     
     func testFormPhoneNumberItemView() {
+        let presenter = UIViewController()
         let selectableValues: [PhoneExtension] = [.init(value: "+31", countryCode: "NL")]
         let item = FormPhoneNumberItem(
             phoneNumber: nil,
             selectableValues: selectableValues,
             style: .init(),
-            presenter: UIViewController()
+            presenter: .init(presenter)
         )
         let view = item.build(with: FormItemViewBuilder())
         
