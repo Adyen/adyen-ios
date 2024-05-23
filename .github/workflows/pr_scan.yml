@@ -16,7 +16,7 @@ jobs:
       destination: "name=iPhone 15 Pro,OS=17.2"
       project: "Adyen.xcodeproj"
       params: "-derivedDataPath ./DerivedData -skipPackagePluginValidation"
-    runs-on: macos-13-xlarge # Apple Silicon Runner
+    runs-on: macos-14-xlarge # Apple Silicon Runner
 
     steps:
     - uses: actions/checkout@v4
