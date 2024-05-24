@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// An issuer list payment method, such as iDEAL or Open Banking.
+/// An issuer list payment method, such as Open Banking.
 public struct IssuerListPaymentMethod: PaymentMethod {
 
     public let type: PaymentMethodType
