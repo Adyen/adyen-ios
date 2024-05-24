@@ -75,6 +75,11 @@ let applePayDictionary = [
     "type": "applepay"
 ] as [String: Any]
 
+let idealDictionary = [
+    "type": "ideal",
+    "name": "iDeal"
+] as [String: Any]
+
 let bcmcCardDictionary = [
     "name": "Bancontact card",
     "supportsRecurring": true,
