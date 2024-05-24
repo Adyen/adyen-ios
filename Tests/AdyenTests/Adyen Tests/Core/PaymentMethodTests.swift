@@ -122,6 +122,9 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual((paymentMethods.regular[0] as! CardPaymentMethod).fundingSource!, .credit)
         
         XCTAssertTrue(paymentMethods.regular[1] is IssuerListPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[1].type, "openbanking_UK")
+        XCTAssertEqual(paymentMethods.regular[1].name, "Open Banking")
+        
         XCTAssertTrue(paymentMethods.regular[2] is SEPADirectDebitPaymentMethod)
         XCTAssertTrue(paymentMethods.regular[3] is RedirectPaymentMethod)
         
