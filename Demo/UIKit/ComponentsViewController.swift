@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -33,7 +33,6 @@ internal final class ComponentsViewController: UIViewController, Presenter {
             ],
             [
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
-                ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
                 ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent),
                 ComponentsItem(title: "BACS Direct Debit", selectionHandler: presentBACSDirectDebitComponent),
                 ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent),
@@ -59,10 +58,6 @@ internal final class ComponentsViewController: UIViewController, Presenter {
 
     internal func presentCardComponent() {
         integrationExample.presentCardComponent()
-    }
-
-    internal func presentIdealComponent() {
-        integrationExample.presentIdealComponent()
     }
 
     internal func presentSEPADirectDebitComponent() {

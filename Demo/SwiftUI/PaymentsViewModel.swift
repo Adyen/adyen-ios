@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -28,10 +28,6 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
         integrationExample.presentCardComponent()
     }
 
-    internal func presentIdealComponent() {
-        integrationExample.presentIdealComponent()
-    }
-
     internal func presentSEPADirectDebitComponent() {
         integrationExample.presentSEPADirectDebitComponent()
     }
@@ -47,7 +43,6 @@ internal final class PaymentsViewModel: ObservableObject, Identifiable, Presente
             ],
             [
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
-                ComponentsItem(title: "iDEAL", selectionHandler: presentIdealComponent),
                 ComponentsItem(title: "SEPA Direct Debit", selectionHandler: presentSEPADirectDebitComponent),
                 ComponentsItem(title: "MB WAY", selectionHandler: presentMBWayComponent)
             ]

@@ -96,8 +96,8 @@ let storedBcmcDictionary = [
 ] as [String: Any]
 
 let issuerListDictionary = [
-    "type": "ideal",
-    "name": "iDEAL",
+    "type": "openbanking_UK",
+    "name": "Open Banking",
     "details": [
         [
             "items": [
@@ -144,8 +144,8 @@ let sevenElevenDictionary = [
 ] as [String: Any]
 
 let issuerListDictionaryWithoutDetailsObject = [
-    "type": "ideal_100",
-    "name": "iDEAL_100",
+    "type": "openbanking_UK_100",
+    "name": "Open_Banking_100",
     "issuers": [
         [
             "id": "1121",
@@ -224,6 +224,11 @@ let econtextOnline = [
 let oxxo = [
     "name": "OXXO",
     "type": "oxxo"
+] as [String: Any]
+
+let ideal = [
+    "name": "iDeal",
+    "type": "ideal"
 ] as [String: Any]
 
 let multibanco = [

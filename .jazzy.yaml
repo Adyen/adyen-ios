@@ -218,7 +218,6 @@ custom_categories:
   - name: Issuer List Component
     children:
       - IssuerListComponent
-      - IdealComponent
       - MOLPayComponent
       - DotpayComponent
       - EPSComponent
@@ -229,7 +228,6 @@ custom_categories:
       - EPSDetails
       - DotpayDetails
       - MOLPayDetails
-      - IdealDetails
       - IssuerListDetails
       
   - name: EContext Component
