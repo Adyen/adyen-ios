@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 import UIKit
 
-/// A generic component for "issuer-based" payment methods, such as iDEAL and MOLPay.
+/// A generic component for "issuer-based" payment methods, such as MOLPay.
 /// This component will provide a list in which the user can select their issuer.
 public final class IssuerListComponent: PaymentComponent, PresentableComponent, LoadingComponent {
     
@@ -83,9 +83,6 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
         return listViewController
     }()
 }
-
-/// Provides an issuer selection list for iDEAL payments.
-public typealias IdealComponent = IssuerListComponent
 
 /// Provides an issuer selection list for MOLPay payments.
 public typealias MOLPayComponent = IssuerListComponent

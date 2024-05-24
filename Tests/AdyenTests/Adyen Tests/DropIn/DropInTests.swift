@@ -41,9 +41,9 @@ class DropInTests: XCTestCase {
                   "type" : "select"
                 }
               ],
-              "name" : "iDEAL",
+              "name" : "Open Banking",
               "supportsRecurring" : true,
-              "type" : "ideal"
+              "type" : "openbanking_UK"
             },
             {
               "brands" : [ "mc", "visa" ],

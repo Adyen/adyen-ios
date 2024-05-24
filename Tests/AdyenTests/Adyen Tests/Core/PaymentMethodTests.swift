@@ -61,7 +61,8 @@ class PaymentMethodTests: XCTestCase {
                 econtextATM,
                 econtextStores,
                 econtextOnline,
-                oxxo
+                oxxo,
+                ideal
             ]
         ]
         
@@ -116,7 +117,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 21)
+        XCTAssertEqual(paymentMethods.regular.count, 22)
         XCTAssertTrue(paymentMethods.regular[0] is CardPaymentMethod)
         XCTAssertEqual((paymentMethods.regular[0] as! CardPaymentMethod).fundingSource!, .credit)
         
@@ -210,6 +211,10 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.regular[20] is OXXOPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[20].name, "OXXO")
         XCTAssertEqual(paymentMethods.regular[20].type, "oxxo")
+        
+        XCTAssertTrue(paymentMethods.regular[21] is RedirectPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[21].name, "iDeal")
+        XCTAssertEqual(paymentMethods.regular[21].type, "ideal")
 
     }
     
@@ -355,8 +360,8 @@ class PaymentMethodTests: XCTestCase {
     
     func testDecodingIssuerListPaymentMethod() throws {
         let paymentMethod = try Coder.decode(issuerListDictionary) as IssuerListPaymentMethod
-        XCTAssertEqual(paymentMethod.type, "ideal")
-        XCTAssertEqual(paymentMethod.name, "iDEAL")
+        XCTAssertEqual(paymentMethod.type, "openbanking_UK")
+        XCTAssertEqual(paymentMethod.name, "Open Banking")
         
         XCTAssertEqual(paymentMethod.issuers.count, 3)
         XCTAssertEqual(paymentMethod.issuers[0].identifier, "1121")
@@ -369,8 +374,8 @@ class PaymentMethodTests: XCTestCase {
 
     func testDecodingIssuerListPaymentMethodWithoutDetailsObject() throws {
         let paymentMethod = try Coder.decode(issuerListDictionaryWithoutDetailsObject) as IssuerListPaymentMethod
-        XCTAssertEqual(paymentMethod.type, "ideal_100")
-        XCTAssertEqual(paymentMethod.name, "iDEAL_100")
+        XCTAssertEqual(paymentMethod.type, "openbanking_UK_100")
+        XCTAssertEqual(paymentMethod.name, "Open_Banking_100")
 
         XCTAssertEqual(paymentMethod.issuers.count, 3)
         XCTAssertEqual(paymentMethod.issuers[0].identifier, "1121")
