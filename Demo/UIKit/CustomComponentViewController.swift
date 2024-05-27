@@ -143,12 +143,13 @@ class CustomComponentViewController: UIViewController {
         var billingAddressConfiguration = BillingAddressConfiguration()
         billingAddressConfiguration.mode = .full
 
-        let configuration = CardComponent.Configuration(hidePayButton: true, billingAddress: billingAddressConfiguration)
+        let configuration = CardComponent.Configuration(hideDefaultPayButton: true, billingAddress: billingAddressConfiguration)
         return CardComponent(paymentMethod: paymentMethod, context: context, configuration: configuration)
     }
 
     @objc
     private func performPayment() {
+        print("Custom payment")
         cardComponent.didSelectSubmitButton()
         stackView.layoutIfNeeded()
         view.layoutIfNeeded()

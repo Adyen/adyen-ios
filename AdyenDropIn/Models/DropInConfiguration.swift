@@ -53,7 +53,7 @@ public extension DropInComponent {
         public var style: DropInComponent.Style
 
         /// A Boolean value that determines whether the payment button is displayed. For the `DropInComponent` its value is always `false`.
-        public var hidePayButton: Bool = false
+        public var hideDefaultPayButton: Bool = false
 
         /// Boleto component configuration.
         public var boleto: Boleto = .init()

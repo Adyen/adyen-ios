@@ -112,7 +112,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
                                        duration: 0.25,
                                        options: [.beginFromCurrentState, .layoutSubviews],
                                        animations: { [weak self] in
-//                                           self?.formView.contentInset.bottom = bottomInset
+                                           self?.formView.contentInset.bottom = bottomInset
                                        })
         view.adyen.animate(context: context)
     }

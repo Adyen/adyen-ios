@@ -7,7 +7,7 @@
 import UIKit
 
 /// Displays a form for the user to enter details.
-internal final class FormView: UIView {
+internal final class FormView: UIScrollView {
 
     /// Initializes the form view.
     internal init() {
@@ -15,7 +15,7 @@ internal final class FormView: UIView {
         
         preservesSuperviewLayoutMargins = true
         addSubview(stackView)
-//        isScrollEnabled = false
+        isScrollEnabled = false
         configureConstraints()
     }
     

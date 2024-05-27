@@ -16,7 +16,7 @@ extension BoletoComponent {
         public let style: FormComponentStyle
 
         /// A Boolean value that determines whether the payment button is displayed. Defaults to `false`.
-        public var hidePayButton: Bool
+        public var hideDefaultPayButton: Bool
 
         public var localizationParameters: LocalizationParameters?
         
@@ -29,18 +29,18 @@ extension BoletoComponent {
         /// Initializes the configuration for Boleto Component.
         /// - Parameters:
         ///   - style: The UI style of the component.
-        ///   - hidePayButton: Boolean value that determines whether the payment button is displayed.
+        ///   - hideDefaultPayButton: Boolean value that determines whether the payment button is displayed.
         ///   Defaults to`false`.
         ///   - localizationParameters: Localization parameters.
         ///   - shopperInformation: Pre-filled optional personal information about the shopper
         ///   - showEmailAddress: Indicates whether to show `sendCopyByEmail` checkbox and email text field
         public init(style: FormComponentStyle = FormComponentStyle(),
-                    hidePayButton: Bool = false,
+                    hideDefaultPayButton: Bool = false,
                     localizationParameters: LocalizationParameters? = nil,
                     shopperInformation: PrefilledShopperInformation?,
                     showEmailAddress: Bool) {
             self.style = style
-            self.hidePayButton = hidePayButton
+            self.hideDefaultPayButton = hideDefaultPayButton
             self.localizationParameters = localizationParameters
             self.shopperInformation = shopperInformation
             self.showEmailAddress = showEmailAddress
