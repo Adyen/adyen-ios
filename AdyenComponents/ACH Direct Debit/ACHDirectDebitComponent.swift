@@ -316,6 +316,9 @@ extension ACHDirectDebitComponent {
         /// Describes the component's UI style.
         public var style: FormComponentStyle
 
+        /// A Boolean value that determines whether the payment button is displayed. Defaults to `false`.
+        public var hidePayButton: Bool
+
         /// The shopper's information to be prefilled.
         public var shopperInformation: PrefilledShopperInformation?
         
@@ -331,10 +334,12 @@ extension ACHDirectDebitComponent {
         /// List of ISO country codes that is supported for the billing address.
         /// Defaults to ["US", "PR"].
         public var billingAddressCountryCodes: [String]
-        
+
         /// Initializes the configuration for ACH Direct Debit Component.
         /// - Parameters:
         ///   - style: The UI style of the component.
+        ///   - hidePayButton: Boolean value that determines whether the payment button is displayed.
+        ///   Defaults to`false`.
         ///   - shopperInformation: The shopper's information to be prefilled.
         ///   - localizationParameters: Localization parameters.
         ///   - showsBillingAddress: Determines whether the billing address should be displayed or not.
@@ -342,12 +347,14 @@ extension ACHDirectDebitComponent {
         ///   - billingAddressCountryCodes: ISO country codes that is supported for the billing address.
         ///   Defaults to ["US", "PR"].
         public init(style: FormComponentStyle = FormComponentStyle(),
+                    hidePayButton: Bool = false,
                     shopperInformation: PrefilledShopperInformation? = nil,
                     localizationParameters: LocalizationParameters? = nil,
                     showsStorePaymentMethodField: Bool = true,
                     showsBillingAddress: Bool = true,
                     billingAddressCountryCodes: [String] = ["US", "PR"]) {
             self.style = style
+            self.hidePayButton = hidePayButton
             self.shopperInformation = shopperInformation
             self.localizationParameters = localizationParameters
             self.showsStorePaymentMethodField = showsStorePaymentMethodField

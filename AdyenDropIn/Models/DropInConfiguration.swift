@@ -21,7 +21,7 @@ public extension DropInComponent {
     
     /// Contains the configuration for the drop in component and the embedded payment method components.
     final class Configuration: AnyPersonalInformationConfiguration {
-        
+
         /// Card component related configuration.
         public var card = Card()
         
@@ -51,6 +51,9 @@ public extension DropInComponent {
         
         /// Indicates the UI configuration of the drop in component.
         public var style: DropInComponent.Style
+
+        /// A Boolean value that determines whether the payment button is displayed. For the `DropInComponent` its value is always `false`.
+        public var hidePayButton: Bool = false
 
         /// Boleto component configuration.
         public var boleto: Boleto = .init()

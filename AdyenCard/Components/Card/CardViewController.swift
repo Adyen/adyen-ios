@@ -287,7 +287,13 @@ extension CardViewController {
         }
 
         append(FormSpacerItem())
+
+        // Remove button
+
         append(items.button)
+
+        //
+
         append(FormSpacerItem(numberOfSpaces: 2))
     }
     
