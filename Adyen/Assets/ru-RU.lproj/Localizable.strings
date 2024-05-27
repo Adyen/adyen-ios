@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Продолжить";
 "adyen.phoneNumber.title" = "Номер телефона";
 "adyen.phoneNumber.invalid" = "Недействительный номер телефона";
+"adyen.telephonePrefix" = "Приставка";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ цифры";
 "adyen.emailItem.title" = "Адрес эл. почты";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "По вашему поисковому запросу банк не найден…";
 "adyen.paybybank.title" = "Ничего не найдено по запросу";
 "adyen.search.placeholder" = "Поиск…";
-"adyen.upi.modeSelection" = "Укажите, как вы собираетесь использовать UPI.";
+"adyen.upi.modeSelection" = "Как вы хотите использовать UPI?";
 "adyen.UPIVpa.validationMessage" = "Введите правильный адрес виртуальных платежей";
 "adyen.UPIQrcode.generationMessage" = "Сгенерируйте загружаемый QR-код или снимок экрана и отправьте его в приложение UPI, чтобы завершить оплату.";
 "adyen.UPIQrcode.timerMessage" = "На одобрение отведено %@";

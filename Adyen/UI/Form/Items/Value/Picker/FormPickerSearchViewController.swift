@@ -7,14 +7,14 @@
 import UIKit
 
 @_spi(AdyenInternal)
-public final class FormPickerSearchViewController: UINavigationController {
+public final class FormPickerSearchViewController<Option: FormPickable>: UINavigationController {
     
     public init(
         localizationParameters: LocalizationParameters? = nil,
         style: Style = .init(),
         title: String?,
-        options: [FormPickerElement],
-        selectionHandler: @escaping (FormPickerElement) -> Void
+        options: [Option],
+        selectionHandler: @escaping (Option) -> Void
     ) {
         let viewModel = SearchViewController.ViewModel(
             localizationParameters: localizationParameters,
@@ -59,13 +59,14 @@ public final class FormPickerSearchViewController: UINavigationController {
 
 // MARK: FormPickerElement Convenience
 
-private extension FormPickerElement {
+private extension FormPickable {
     
     func toListItem(with selectionHandler: @escaping (Self) -> Void) -> ListItem {
         .init(
             title: title,
             subtitle: subtitle,
             icon: listItemIcon,
+            trailingText: trailingText,
             identifier: identifier,
             selectionHandler: { selectionHandler(self) }
         )

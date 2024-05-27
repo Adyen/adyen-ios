@@ -216,7 +216,6 @@ The Adyen DropIn/Components SDK API Reference.
 ### Issuer List Component
 
 - ``IssuerListComponent``
-- ``IdealComponent``
 - ``OnlineBankingPolandComponent``
 - ``MOLPayComponent``
 - ``DotpayComponent``
@@ -228,7 +227,6 @@ The Adyen DropIn/Components SDK API Reference.
 - ``EPSDetails``
 - ``DotpayDetails``
 - ``MOLPayDetails``
-- ``IdealDetails``
 - ``OnlineBankingPolandDetails``
 - ``IssuerListDetails``
 
