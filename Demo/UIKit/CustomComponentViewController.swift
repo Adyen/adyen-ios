@@ -29,6 +29,7 @@ class CustomComponentViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .vertical
         view.spacing = 8
+        view.distribution = .fillProportionally
         return view
     }()
 
@@ -49,6 +50,7 @@ class CustomComponentViewController: UIViewController {
         button.setTitle("Buy now", for: .normal)
         button.backgroundColor = Colors.terracota
         button.layer.cornerRadius = 8.0
+        button.addTarget(self, action: #selector(performPayment), for: .touchUpInside)
         return button
     }()
 
@@ -73,7 +75,7 @@ class CustomComponentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        addSubviews()
+        setupCardComponent()
         addSubviews()
         layoutViews()
         setupViews()
@@ -81,20 +83,24 @@ class CustomComponentViewController: UIViewController {
 
     // MARK: - Private
 
+    private var cardView: UIView {
+        cardComponent.viewController.view
+    }
+
+    private func setupCardComponent() {
+        let cardComponentViewController = cardComponent.viewController
+        addChild(cardComponentViewController)
+        cardComponentViewController.didMove(toParent: self)
+    }
+
     private func addSubviews() {
-        guard let securedViewController = cardComponent.viewController as? SecuredViewController<CardViewController> else {
-            fatalError("No FormViewController")
-        }
-
-        addChild(securedViewController)
-        securedViewController.didMove(toParent: self)
-
-        let cardView = securedViewController.view!
-
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
 
-        [emptyViewA, cardView, payButton, emptyViewB, emptyViewB].forEach { subView in
+        [emptyViewA,
+         cardView,
+         payButton,
+         emptyViewB].forEach { subView in
             subView.translatesAutoresizingMaskIntoConstraints = false
             stackView.addArrangedSubview(subView)
         }
@@ -105,47 +111,16 @@ class CustomComponentViewController: UIViewController {
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-        NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
-        ])
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
 
-        guard let securedViewController = cardComponent.viewController as? SecuredViewController<CardViewController> else {
-            fatalError("No FormViewController")
-        }
-
-        addChild(securedViewController)
-        securedViewController.didMove(toParent: self)
-
-        let cardView = securedViewController.view!
-
-        NSLayoutConstraint.activate([
-            //            emptyView.topAnchor.constraint(equalTo: contentView.topAnchor),
-//            emptyView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-//            emptyView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             emptyViewA.heightAnchor.constraint(equalToConstant: 700),
-            emptyViewB.heightAnchor.constraint(equalToConstant: 200),
-            cardView.heightAnchor.constraint(equalToConstant: 100)
+            emptyViewB.heightAnchor.constraint(equalToConstant: 200)
         ])
-
-//        NSLayoutConstraint.activate([
-//            cardView.topAnchor.constraint(equalTo: emptyView.bottomAnchor),
-//            cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-//            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-//            cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-//        ])
-//
-//        NSLayoutConstraint.activate([
-//            payButton.topAnchor.constraint(equalTo: cardView.bottomAnchor),
-//            payButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-//            payButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-//            payButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-//        ])
     }
 
     private func setupViews() {
@@ -167,6 +142,15 @@ class CustomComponentViewController: UIViewController {
                                               brands: [.visa])
         var billingAddressConfiguration = BillingAddressConfiguration()
         billingAddressConfiguration.mode = .full
-        return CardComponent(paymentMethod: paymentMethod, context: context, configuration: .init(billingAddress: billingAddressConfiguration))
+
+        let configuration = CardComponent.Configuration(hidePayButton: true, billingAddress: billingAddressConfiguration)
+        return CardComponent(paymentMethod: paymentMethod, context: context, configuration: configuration)
+    }
+
+    @objc
+    private func performPayment() {
+        cardComponent.didSelectSubmitButton()
+        stackView.layoutIfNeeded()
+        view.layoutIfNeeded()
     }
 }

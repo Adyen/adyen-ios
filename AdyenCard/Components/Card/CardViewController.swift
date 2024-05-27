@@ -289,12 +289,11 @@ extension CardViewController {
         append(FormSpacerItem())
 
         // Remove button
+        if !configuration.hidePayButton {
+            append(items.button)
+            append(FormSpacerItem(numberOfSpaces: 2))
+        }
 
-        append(items.button)
-
-        //
-
-        append(FormSpacerItem(numberOfSpaces: 2))
     }
     
     private var billingAddressItem: FormItem? {
