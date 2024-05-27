@@ -129,7 +129,8 @@ class CustomComponentViewController: UIViewController {
 //            emptyView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
 //            emptyView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             emptyViewA.heightAnchor.constraint(equalToConstant: 700),
-            emptyViewB.heightAnchor.constraint(equalToConstant: 200)
+            emptyViewB.heightAnchor.constraint(equalToConstant: 200),
+            cardView.heightAnchor.constraint(equalToConstant: 100)
         ])
 
 //        NSLayoutConstraint.activate([
