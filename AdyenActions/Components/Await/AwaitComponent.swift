@@ -20,7 +20,9 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     public weak var delegate: ActionComponentDelegate?
     
     public let requiresModalPresentation: Bool = true
-    
+
+    internal var appLauncher: AnyAppLauncher = AppLauncher()
+
     /// The await component configurations.
     public struct Configuration {
         
@@ -73,16 +75,38 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     
     private let componentName = "await"
     
+    /// Handles redirect await action.
+    ///
+    /// - Parameter action: The await action object.
+    public func handleRedirectableAwait(_ action: AwaitAction) {
+        if let url = action.url {
+            appLauncher.openCustomSchemeUrl(url) { [weak self] success in
+                guard let self else { return }
+                if success {
+                    self.delegate?.didOpenExternalApplication(component: self)
+                } else {
+                    self.delegate?.didFail(with: RedirectComponent.Error.appNotFound, from: self)
+                    self.didCancel()
+                }
+            }
+        }
+        handleAwait(action)
+    }
+
+    public func didCancel() {
+        paymentMethodSpecificPollingComponent?.didCancel()
+    }
+
     /// Handles await action.
     ///
     /// - Parameter action: The await action object.
-    public func handle(_ action: AwaitAction) {
+    public func handleAwait(_ action: AwaitAction) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
-        
+
         let viewModel = AwaitComponentViewModel.viewModel(with: action.paymentMethodType,
                                                           localizationParameters: configuration.localizationParameters)
         let viewController = AwaitViewController(viewModel: viewModel, style: configuration.style)
-        
+
         if let presentationDelegate {
             let presentableComponent = PresentableComponentWrapper(component: self, viewController: viewController)
             presentationDelegate.present(component: presentableComponent)
@@ -90,17 +114,13 @@ public final class AwaitComponent: ActionComponent, Cancellable {
             let message = "PresentationDelegate is nil. Provide a presentation delegate to AwaitComponent."
             AdyenAssertion.assertionFailure(message: message)
         }
-        
+
         paymentMethodSpecificPollingComponent = awaitComponentBuilder.handler(for: action.paymentMethodType)
         paymentMethodSpecificPollingComponent?.delegate = delegate
-        
+
         paymentMethodSpecificPollingComponent?.handle(action)
     }
-    
-    public func didCancel() {
-        paymentMethodSpecificPollingComponent?.didCancel()
-    }
-    
+
     private var paymentMethodSpecificPollingComponent: AnyPollingHandler?
     
 }

@@ -41,7 +41,7 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
 
     internal func handler(for paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler {
         switch paymentMethodType {
-        case .mbway, .blik, .upicollect:
+        case .mbway, .blik, .upicollect, .upiIntent:
             return createPollingComponent()
         }
     }

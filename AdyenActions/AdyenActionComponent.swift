@@ -201,7 +201,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         component.presentationDelegate = presentationDelegate
         component.configuration.localizationParameters = configuration.localizationParameters
         
-        component.handle(action)
+        action.url == nil ? component.handleAwait(action) : component.handleRedirectableAwait(action)
         currentActionComponent = component
     }
     
