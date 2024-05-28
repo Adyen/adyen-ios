@@ -132,31 +132,8 @@ public final class UPIComponent: PaymentComponent,
     /// The UPI app list item.
     internal lazy var upiAppsList: [SelectableFormItem] = {
         var upiAppslist = [SelectableFormItem]()
-        _ = upiPaymentMethod.apps.map { app -> SelectableFormItem in
-            let logoUrl = LogoURLProvider.logoURL(
-                withName: app.identifier,
-                environment: context.apiContext.environment,
-                size: .small
-            )
-            let selectableItem = SelectableFormItem(
-                title: app.name,
-                imageUrl: logoUrl,
-                isSelected: false,
-                style: .init(),
-                identifier: app.identifier
-            )
-            selectableItem.selectionHandler = { [weak self, weak selectableItem] in
-                guard let self, let selectableItem else { return }
-                currentSelectedItem = selectableItem
-                if previousSelectedItem?.identifier != currentSelectedItem?.identifier {
-                    previousSelectedItem?.isSelected = false
-                }
-                currentSelectedItem?.isSelected = !(currentSelectedItem?.isSelected ?? false)
-                previousSelectedItem = selectableItem
-                virtualPaymentAddressItem.isHidden.wrappedValue = true
-            }
-            upiAppslist.append(selectableItem)
-            return selectableItem
+        upiPaymentMethod.apps.forEach { app in
+            upiAppslist.append(createSelectableItem(app: app))
         }
         upiAppslist.append(vpaItem)
         return upiAppslist
@@ -216,6 +193,32 @@ public final class UPIComponent: PaymentComponent,
     }()
 
     // MARK: - Private
+
+    private func createSelectableItem(app: Issuer) -> SelectableFormItem {
+        let logoUrl = LogoURLProvider.logoURL(
+            withName: app.identifier,
+            environment: context.apiContext.environment,
+            size: .small
+        )
+        let selectableItem = SelectableFormItem(
+            title: app.name,
+            imageUrl: logoUrl,
+            isSelected: false,
+            style: .init(),
+            identifier: app.identifier
+        )
+        selectableItem.selectionHandler = { [weak self, weak selectableItem] in
+            guard let self, let selectableItem else { return }
+            currentSelectedItem = selectableItem
+            if previousSelectedItem?.identifier != currentSelectedItem?.identifier {
+                previousSelectedItem?.isSelected = false
+            }
+            currentSelectedItem?.isSelected = !(currentSelectedItem?.isSelected ?? false)
+            previousSelectedItem = selectableItem
+            virtualPaymentAddressItem.isHidden.wrappedValue = true
+        }
+        return selectableItem
+    }
 
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
