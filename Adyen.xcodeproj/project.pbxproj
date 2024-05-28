@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00165FE02C05DA8600347399 /* RedireactableAwaitAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00165FDF2C05DA8600347399 /* RedireactableAwaitAction.swift */; };
 		001BFF422A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */; };
 		001BFF432A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */; };
 		00220955299B8B1C00B2BACD /* BLIKComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00220953299B885600B2BACD /* BLIKComponentUITests.swift */; };
@@ -21,6 +22,8 @@
 		002B92F3294B2857000B93F4 /* UPIComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B92F2294B2857000B93F4 /* UPIComponent.swift */; };
 		002B92F5294B6987000B93F4 /* UPIComponentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B92F4294B6987000B93F4 /* UPIComponentDetails.swift */; };
 		002B93082951F120000B93F4 /* FormSegmentedControlItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B93072951F120000B93F4 /* FormSegmentedControlItem.swift */; };
+		002D4BFD2C009D8F00DBBD45 /* action_response.json in Resources */ = {isa = PBXBuildFile; fileRef = 002D4BFC2C009D8F00DBBD45 /* action_response.json */; };
+		002D4BFE2C009D9900DBBD45 /* action_response.json in Resources */ = {isa = PBXBuildFile; fileRef = 002D4BFC2C009D8F00DBBD45 /* action_response.json */; };
 		00346FC429895B6A00F7DA94 /* ModalToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F49A25A5E9740077029E /* ModalToolbar.swift */; };
 		00346FC529895B7100F7DA94 /* CancellableToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008AD9DB2982C24000C33983 /* CancellableToolBar.swift */; };
 		0035016C2976B14A00632D8C /* UIImageViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0035016B2976B14A00632D8C /* UIImageViewHelpers.swift */; };
@@ -1393,6 +1396,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		00165FDF2C05DA8600347399 /* RedireactableAwaitAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedireactableAwaitAction.swift; sourceTree = "<group>"; };
 		001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInSettingsView.swift; sourceTree = "<group>"; };
 		00220953299B885600B2BACD /* BLIKComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentUITests.swift; sourceTree = "<group>"; };
 		00220957299E5B1D00B2BACD /* MBWayComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBWayComponentUITests.swift; sourceTree = "<group>"; };
@@ -1404,6 +1408,7 @@
 		002B92F2294B2857000B93F4 /* UPIComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponent.swift; sourceTree = "<group>"; };
 		002B92F4294B6987000B93F4 /* UPIComponentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentDetails.swift; sourceTree = "<group>"; };
 		002B93072951F120000B93F4 /* FormSegmentedControlItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSegmentedControlItem.swift; sourceTree = "<group>"; };
+		002D4BFC2C009D8F00DBBD45 /* action_response.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = action_response.json; sourceTree = "<group>"; };
 		0035016B2976B14A00632D8C /* UIImageViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewHelpers.swift; sourceTree = "<group>"; };
 		003C03AE297AFF9F0022269A /* UPIComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentUITests.swift; sourceTree = "<group>"; };
 		004BA67A29D427F300A8C69B /* DropInExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInExample.swift; sourceTree = "<group>"; };
@@ -3500,6 +3505,7 @@
 				E226F54122969B6C0013A463 /* ThreeDS2ChallengeAction.swift */,
 				F9A7AC86255430B300012EBC /* ThreeDS2Action.swift */,
 				F9639B1824DABDE40073F38A /* AwaitAction.swift */,
+				00165FDF2C05DA8600347399 /* RedireactableAwaitAction.swift */,
 				F97C84CC25C1761900D7F85C /* VoucherAction.swift */,
 				F9B017F62608F4FE001F23FC /* DokuVoucherAction.swift */,
 				F9976BB226D903F400D2D7CE /* MultibancoVoucherAction.swift */,
@@ -5348,6 +5354,7 @@
 			isa = PBXGroup;
 			children = (
 				F9615FBF252F076A00FA8EDD /* payment_methods_response.json */,
+				002D4BFC2C009D8F00DBBD45 /* action_response.json */,
 				A023A9B328103C2D004FDCA4 /* session_response.json */,
 				F9EDB78823955ABF00CFB3C9 /* AdyenUIHost.strings */,
 				F96F44DE23BF453800871C1F /* AdyenUIHostCustomSeparator.strings */,
@@ -6110,6 +6117,7 @@
 				F96F44DF23BF453800871C1F /* AdyenUIHostCustomSeparator.strings in Resources */,
 				E2C0E087220B039B008616F6 /* Assets.xcassets in Resources */,
 				F9615FC0252F076A00FA8EDD /* payment_methods_response.json in Resources */,
+				002D4BFD2C009D8F00DBBD45 /* action_response.json in Resources */,
 				E97B970C2297ED0D00505476 /* LaunchScreen.storyboard in Resources */,
 				A023A9B428103C2D004FDCA4 /* session_response.json in Resources */,
 			);
@@ -6173,6 +6181,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				002D4BFE2C009D9900DBBD45 /* action_response.json in Resources */,
 				F9615FC1252F076A00FA8EDD /* payment_methods_response.json in Resources */,
 				F95B6DA425274551002C9062 /* LaunchScreen.storyboard in Resources */,
 				F94E37B82818138900617382 /* session_response.json in Resources */,
@@ -7166,6 +7175,7 @@
 				F9175FFA259499D500D653BE /* AwaitViewController.swift in Sources */,
 				F96757C327CF909900A16FB6 /* AnyWeChatPaySDKActionComponent.swift in Sources */,
 				F9175FD22594999600D653BE /* RedirectComponent.swift in Sources */,
+				00165FE02C05DA8600347399 /* RedireactableAwaitAction.swift in Sources */,
 				F9237D3D28CB470E004F9929 /* ThreeDS2ClassicActionHandler+Initializers.swift in Sources */,
 				F97C851625C192D000D7F85C /* VoucherViewController.swift in Sources */,
 				F95A78B925C4302A0032CF7E /* ShareableVoucherView.swift in Sources */,

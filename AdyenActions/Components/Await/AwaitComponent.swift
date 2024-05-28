@@ -78,7 +78,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     /// Handles redirect await action.
     ///
     /// - Parameter action: The await action object.
-    public func handleRedirectableAwait(_ action: AwaitAction) {
+    public func handleRedirectableAwait(_ action: RedireactableAwaitAction) {
         if let url = action.url {
             appLauncher.openCustomSchemeUrl(url) { [weak self] success in
                 guard let self else { return }
@@ -90,7 +90,8 @@ public final class AwaitComponent: ActionComponent, Cancellable {
                 }
             }
         }
-        handle(action)
+        handle(AwaitAction(paymentData: action.paymentData,
+                           paymentMethodType: action.paymentMethodType))
     }
 
     public func didCancel() {
