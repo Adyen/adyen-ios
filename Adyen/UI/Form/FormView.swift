@@ -7,7 +7,7 @@
 import UIKit
 
 /// Displays a form for the user to enter details.
-internal final class FormView: UIScrollView {
+internal final class FormView: UIView {
 
     /// Initializes the form view.
     internal init() {
@@ -15,7 +15,7 @@ internal final class FormView: UIScrollView {
         
         preservesSuperviewLayoutMargins = true
         addSubview(stackView)
-        isScrollEnabled = false
+//        isScrollEnabled = false
         configureConstraints()
     }
     
@@ -24,9 +24,9 @@ internal final class FormView: UIScrollView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override internal var intrinsicContentSize: CGSize {
-        stackView.adyen.minimalSize
-    }
+//    override internal var intrinsicContentSize: CGSize {
+//        stackView.adyen.minimalSize
+//    }
     
     // MARK: - Item Views
     
@@ -39,7 +39,7 @@ internal final class FormView: UIScrollView {
 
     // MARK: - Stack View
     
-    lazy var stackView: UIStackView = {
+    private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .fill

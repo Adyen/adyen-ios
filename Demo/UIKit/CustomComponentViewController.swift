@@ -29,7 +29,8 @@ class CustomComponentViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .vertical
         view.spacing = 8
-        view.distribution = .fillProportionally
+        view.distribution = .equalSpacing
+        view.alignment = .top
         return view
     }()
 
@@ -64,12 +65,12 @@ class CustomComponentViewController: UIViewController {
         self.cardComponent = Self.resolveCardComponent()
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - View lifecycle
 
     override func viewDidLoad() {
@@ -107,19 +108,24 @@ class CustomComponentViewController: UIViewController {
     }
 
     private func layoutViews() {
+        stackView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
+            // Constrain UIStackView to edges of the UIScrollView
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+
+            payButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
             emptyViewA.heightAnchor.constraint(equalToConstant: 700),
-            emptyViewB.heightAnchor.constraint(equalToConstant: 200)
+            emptyViewA.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            emptyViewB.heightAnchor.constraint(equalToConstant: 200),
+            emptyViewB.widthAnchor.constraint(equalTo: stackView.widthAnchor)
         ])
     }
 
