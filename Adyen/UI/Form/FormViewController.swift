@@ -26,6 +26,50 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     
     internal lazy var keyboardObserver = KeyboardObserver()
 
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsVerticalScrollIndicator = true
+        return scrollView
+    }()
+
+    var hideDefaultPayButton = true
+
+    func addSubviews() {
+        formView.translatesAutoresizingMaskIntoConstraints = false
+
+        if !hideDefaultPayButton {
+            view.addSubview(scrollView)
+            scrollView.addSubview(formView)
+        } else {
+            view.addSubview(formView)
+        }
+    }
+
+    func setupLayout() {
+        if !hideDefaultPayButton {
+            NSLayoutConstraint.activate([
+                scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+                scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+
+            NSLayoutConstraint.activate([
+                formView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+                formView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+                formView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                formView.topAnchor.constraint(equalTo: view.topAnchor),
+                formView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                formView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                formView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+        }
+    }
+
     // MARK: - Public
 
     /// Initializes the FormViewController.
@@ -46,7 +90,9 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
 
     override open func viewDidLoad() {
         super.viewDidLoad()
-        addFormView()
+        addSubviews()
+        setupLayout()
+//        addFormView()
         itemManager.topLevelItemViews.forEach(formView.appendItemView(_:))
         delegate?.viewDidLoad(viewController: self)
         

@@ -24,9 +24,9 @@ internal final class FormView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    override internal var intrinsicContentSize: CGSize {
-//        stackView.adyen.minimalSize
-//    }
+    override internal var intrinsicContentSize: CGSize {
+        stackView.adyen.minimalSize
+    }
     
     // MARK: - Item Views
     
