@@ -9,14 +9,21 @@ import UIKit
 /// Displays a form for the user to enter details.
 internal final class FormView: UIView {
 
+    // MARK: - UI elements
+
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.preservesSuperviewLayoutMargins = true
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
     /// Initializes the form view.
     internal init() {
         super.init(frame: .zero)
-        
-        preservesSuperviewLayoutMargins = true
-        addSubview(stackView)
-//        isScrollEnabled = false
-        configureConstraints()
+        setupLayout()
     }
     
     @available(*, unavailable)
@@ -37,27 +44,25 @@ internal final class FormView: UIView {
         stackView.addArrangedSubview(itemView)
     }
 
-    // MARK: - Stack View
-    
-    private let stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.preservesSuperviewLayoutMargins = true
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
+    // MARK: - Private
 
-    // MARK: - Layout
+    private func setup() {
+        preservesSuperviewLayoutMargins = true
 
-    private func configureConstraints() {
-//        stackView.adyen.anchor(inside: self)
+        addSubviews()
+        setupLayout()
+    }
+
+    private func addSubviews() {
+        addSubview(stackView)
+    }
+
+    private func setupLayout() {
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
         ])
-//        stackView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
     }
 }
