@@ -112,7 +112,7 @@ internal final class ComponentsViewModel: ObservableObject, Identifiable {
                 ),
                 ComponentsItem(
                     title: "Instant/Redirect Payment",
-                    subtitle: "e.g. Ideal, PayPal, Alipay, ...",
+                    subtitle: "e.g. iDEAL, PayPal, Alipay, ...",
                     selectionHandler: presentInstantPaymentComponent
                 )
             ]
