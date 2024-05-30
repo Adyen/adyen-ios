@@ -51,7 +51,13 @@ internal final class FormView: UIView {
     // MARK: - Layout
 
     private func configureConstraints() {
-        stackView.adyen.anchor(inside: self)
-        stackView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
+//        stackView.adyen.anchor(inside: self)
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
+        ])
+//        stackView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
     }
 }
