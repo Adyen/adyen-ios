@@ -23,7 +23,7 @@ internal final class FormView: UIView {
     /// Initializes the form view.
     internal init() {
         super.init(frame: .zero)
-        setupLayout()
+        setup()
     }
     
     @available(*, unavailable)
