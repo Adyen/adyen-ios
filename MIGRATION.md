@@ -1,5 +1,8 @@
 #  Migration Notes
 
+## 5.9.0
+- `IdealComponent` is not available anymore. If you want to integrate iDeal as a component please use the `InstantPaymentComponent`
+
 ## 5.5.0
 - `telephoneNumber` property of `PrefilledShopperInformation` has been deprecated. Use to `phoneNumber` property if needed.
 
