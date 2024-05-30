@@ -87,6 +87,7 @@ internal class CardViewController: FormViewController {
         }
         
         super.init(
+            scrollDisabled: configuration.hideDefaultPayButton,
             style: formStyle,
             localizationParameters: localizationParameters
         )
