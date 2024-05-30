@@ -101,17 +101,19 @@ class ModalToolbarTests: XCTestCase {
         XCTAssertNotEqual(sut.cancelButton.title(for: .normal), "Cancel")
         XCTAssertNotNil(sut.cancelButton.image(for: .normal))
         
-        XCTAssertNotEqual(sut.cancelButton.image(for: .normal), UIImage(named: "shopping-cart"))
+        XCTAssertNotEqual(sut.cancelButton.image(for: .normal), UIImage(systemName: "cart"))
     }
 
     func testCustomButtonStyle() {
         var style = NavigationStyle()
-        style.cancelButton = .custom(UIImage(named: "shopping-cart")!)
+        
+        let customImage = UIImage(systemName: "cart")!
+        style.cancelButton = .custom(customImage)
 
         sut = ModalToolbar(title: "SomeTitle", style: style)
 
         XCTAssertNotEqual(sut.cancelButton.title(for: .normal), "Cancel")
-        XCTAssertEqual(sut.cancelButton.image(for: .normal), UIImage(named: "shopping-cart"))
+        XCTAssertEqual(sut.cancelButton.image(for: .normal), customImage)
     }
 
 }
