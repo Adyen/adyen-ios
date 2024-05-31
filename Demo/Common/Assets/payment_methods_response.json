@@ -797,8 +797,8 @@
                 "name" : "Google Pay"
             },
             {
-                "id" : "PhonePe",
-                "name" : "phonepe"
+                "id" : "phonepe",
+                "name" : "PhonePe"
             }
         ],
         "name" : "UPI",

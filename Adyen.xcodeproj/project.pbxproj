@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00165FE02C05DA8600347399 /* RedireactableAwaitAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00165FDF2C05DA8600347399 /* RedireactableAwaitAction.swift */; };
 		001BFF422A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */; };
 		001BFF432A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */; };
 		00220955299B8B1C00B2BACD /* BLIKComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00220953299B885600B2BACD /* BLIKComponentUITests.swift */; };
@@ -21,6 +22,8 @@
 		002B92F3294B2857000B93F4 /* UPIComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B92F2294B2857000B93F4 /* UPIComponent.swift */; };
 		002B92F5294B6987000B93F4 /* UPIComponentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B92F4294B6987000B93F4 /* UPIComponentDetails.swift */; };
 		002B93082951F120000B93F4 /* FormSegmentedControlItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B93072951F120000B93F4 /* FormSegmentedControlItem.swift */; };
+		002D4BFD2C009D8F00DBBD45 /* action_response.json in Resources */ = {isa = PBXBuildFile; fileRef = 002D4BFC2C009D8F00DBBD45 /* action_response.json */; };
+		002D4BFE2C009D9900DBBD45 /* action_response.json in Resources */ = {isa = PBXBuildFile; fileRef = 002D4BFC2C009D8F00DBBD45 /* action_response.json */; };
 		00346FC429895B6A00F7DA94 /* ModalToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F49A25A5E9740077029E /* ModalToolbar.swift */; };
 		00346FC529895B7100F7DA94 /* CancellableToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008AD9DB2982C24000C33983 /* CancellableToolBar.swift */; };
 		0035016C2976B14A00632D8C /* UIImageViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0035016B2976B14A00632D8C /* UIImageViewHelpers.swift */; };
@@ -39,6 +42,9 @@
 		00A25E5D2A404303001B32B6 /* ComponentCreationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5C2A404303001B32B6 /* ComponentCreationError.swift */; };
 		00A25E5E2A404303001B32B6 /* ComponentCreationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5C2A404303001B32B6 /* ComponentCreationError.swift */; };
 		00A25E602A404342001B32B6 /* AdyenSdkVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5F2A404342001B32B6 /* AdyenSdkVersion.swift */; };
+		00BC8F512BF2561900EBE0EB /* SelectableFormItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BC8F502BF2561900EBE0EB /* SelectableFormItem.swift */; };
+		00BC8F532BF2569200EBE0EB /* SelectableFormItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BC8F522BF2569200EBE0EB /* SelectableFormItemView.swift */; };
+		00BC8F552BF349FC00EBE0EB /* SelectableFormItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BC8F542BF349FC00EBE0EB /* SelectableFormItemStyle.swift */; };
 		00C3DB0E2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */; };
 		00C3DB0F2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */; };
 		00CC97762BCEA6BA00466E95 /* WechatOpenSDK-XCFramework.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 00CC97742BCEA69600466E95 /* WechatOpenSDK-XCFramework.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1390,6 +1396,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		00165FDF2C05DA8600347399 /* RedireactableAwaitAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedireactableAwaitAction.swift; sourceTree = "<group>"; };
 		001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInSettingsView.swift; sourceTree = "<group>"; };
 		00220953299B885600B2BACD /* BLIKComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentUITests.swift; sourceTree = "<group>"; };
 		00220957299E5B1D00B2BACD /* MBWayComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBWayComponentUITests.swift; sourceTree = "<group>"; };
@@ -1401,6 +1408,7 @@
 		002B92F2294B2857000B93F4 /* UPIComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponent.swift; sourceTree = "<group>"; };
 		002B92F4294B6987000B93F4 /* UPIComponentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentDetails.swift; sourceTree = "<group>"; };
 		002B93072951F120000B93F4 /* FormSegmentedControlItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSegmentedControlItem.swift; sourceTree = "<group>"; };
+		002D4BFC2C009D8F00DBBD45 /* action_response.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = action_response.json; sourceTree = "<group>"; };
 		0035016B2976B14A00632D8C /* UIImageViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewHelpers.swift; sourceTree = "<group>"; };
 		003C03AE297AFF9F0022269A /* UPIComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentUITests.swift; sourceTree = "<group>"; };
 		004BA67A29D427F300A8C69B /* DropInExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInExample.swift; sourceTree = "<group>"; };
@@ -1420,6 +1428,9 @@
 		008AD9DB2982C24000C33983 /* CancellableToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellableToolBar.swift; sourceTree = "<group>"; };
 		00A25E5C2A404303001B32B6 /* ComponentCreationError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentCreationError.swift; sourceTree = "<group>"; };
 		00A25E5F2A404342001B32B6 /* AdyenSdkVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdyenSdkVersion.swift; sourceTree = "<group>"; };
+		00BC8F502BF2561900EBE0EB /* SelectableFormItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableFormItem.swift; sourceTree = "<group>"; };
+		00BC8F522BF2569200EBE0EB /* SelectableFormItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableFormItemView.swift; sourceTree = "<group>"; };
+		00BC8F542BF349FC00EBE0EB /* SelectableFormItemStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableFormItemStyle.swift; sourceTree = "<group>"; };
 		00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsSettingsView.swift; sourceTree = "<group>"; };
 		00CC972A2BBD814E00466E95 /* WechatOpenSDK-XCFramework.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "WechatOpenSDK-XCFramework.xcframework"; sourceTree = "<group>"; };
 		00CC97742BCEA69600466E95 /* WechatOpenSDK-XCFramework.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "WechatOpenSDK-XCFramework.xcframework"; sourceTree = "<group>"; };
@@ -2589,6 +2600,16 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		00BC8F4F2BF255CA00EBE0EB /* SelectableFormItem */ = {
+			isa = PBXGroup;
+			children = (
+				00BC8F502BF2561900EBE0EB /* SelectableFormItem.swift */,
+				00BC8F522BF2569200EBE0EB /* SelectableFormItemView.swift */,
+				00BC8F542BF349FC00EBE0EB /* SelectableFormItemStyle.swift */,
+			);
+			path = SelectableFormItem;
+			sourceTree = "<group>";
+		};
 		00CC97732BCEA69600466E95 /* WeChatPay */ = {
 			isa = PBXGroup;
 			children = (
@@ -3332,6 +3353,7 @@
 		E216D3B42217096E0013CBCF /* Items */ = {
 			isa = PBXGroup;
 			children = (
+				00BC8F4F2BF255CA00EBE0EB /* SelectableFormItem */,
 				0067E73B29658C97005B8D76 /* FormImageItem */,
 				002B93062951F0DA000B93F4 /* Segmented Control */,
 				E708591D261F1C9F00D0153B /* Address */,
@@ -3483,6 +3505,7 @@
 				E226F54122969B6C0013A463 /* ThreeDS2ChallengeAction.swift */,
 				F9A7AC86255430B300012EBC /* ThreeDS2Action.swift */,
 				F9639B1824DABDE40073F38A /* AwaitAction.swift */,
+				00165FDF2C05DA8600347399 /* RedireactableAwaitAction.swift */,
 				F97C84CC25C1761900D7F85C /* VoucherAction.swift */,
 				F9B017F62608F4FE001F23FC /* DokuVoucherAction.swift */,
 				F9976BB226D903F400D2D7CE /* MultibancoVoucherAction.swift */,
@@ -5331,6 +5354,7 @@
 			isa = PBXGroup;
 			children = (
 				F9615FBF252F076A00FA8EDD /* payment_methods_response.json */,
+				002D4BFC2C009D8F00DBBD45 /* action_response.json */,
 				A023A9B328103C2D004FDCA4 /* session_response.json */,
 				F9EDB78823955ABF00CFB3C9 /* AdyenUIHost.strings */,
 				F96F44DE23BF453800871C1F /* AdyenUIHostCustomSeparator.strings */,
@@ -6093,6 +6117,7 @@
 				F96F44DF23BF453800871C1F /* AdyenUIHostCustomSeparator.strings in Resources */,
 				E2C0E087220B039B008616F6 /* Assets.xcassets in Resources */,
 				F9615FC0252F076A00FA8EDD /* payment_methods_response.json in Resources */,
+				002D4BFD2C009D8F00DBBD45 /* action_response.json in Resources */,
 				E97B970C2297ED0D00505476 /* LaunchScreen.storyboard in Resources */,
 				A023A9B428103C2D004FDCA4 /* session_response.json in Resources */,
 			);
@@ -6156,6 +6181,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				002D4BFE2C009D9900DBBD45 /* action_response.json in Resources */,
 				F9615FC1252F076A00FA8EDD /* payment_methods_response.json in Resources */,
 				F95B6DA425274551002C9062 /* LaunchScreen.storyboard in Resources */,
 				F94E37B82818138900617382 /* session_response.json in Resources */,
@@ -6435,6 +6461,7 @@
 				F9589D0F2601EF8100E4113F /* NameFormItemInjector.swift in Sources */,
 				8191838E2A53062F008EB61A /* FormAddressItem+Configuration.swift in Sources */,
 				81F1EBA42AD97095002AA93F /* ListItem.swift in Sources */,
+				00BC8F532BF2569200EBE0EB /* SelectableFormItemView.swift in Sources */,
 				F9FE252F2625AE8C001874BB /* PartialPaymentDelegate.swift in Sources */,
 				A02AF3DF274FB30200E1636C /* ApplePayStyle.swift in Sources */,
 				A0BDF3F02BD28817001FF7E5 /* AddressAnalyticsValidationError.swift in Sources */,
@@ -6618,10 +6645,12 @@
 				E9093403228EDADA00C9F04B /* Payment.swift in Sources */,
 				A0414C2E2790420B00DF3FE9 /* PublicKeyProvider.swift in Sources */,
 				E216D3CD221AFBB90013CBCF /* Validator.swift in Sources */,
+				00BC8F512BF2561900EBE0EB /* SelectableFormItem.swift in Sources */,
 				5AD40EEF26303C830090E01C /* UIButtonHelpers.swift in Sources */,
 				E2D12C07221ED15F00EF682F /* FormToggleItem.swift in Sources */,
 				F917308E26491ED900985310 /* InstantPaymentComponent.swift in Sources */,
 				81B001B12A543CFD0015BFA3 /* SearchViewController+ViewModel.swift in Sources */,
+				00BC8F552BF349FC00EBE0EB /* SelectableFormItemStyle.swift in Sources */,
 				F90FB7C02448587C005BFE0E /* TextField.swift in Sources */,
 				E224088D22B0FD220058923E /* StoredPayPalPaymentMethod.swift in Sources */,
 				F99D2F0A266136A700BB5B2F /* AppleWalletPassResponse.swift in Sources */,
@@ -7146,6 +7175,7 @@
 				F9175FFA259499D500D653BE /* AwaitViewController.swift in Sources */,
 				F96757C327CF909900A16FB6 /* AnyWeChatPaySDKActionComponent.swift in Sources */,
 				F9175FD22594999600D653BE /* RedirectComponent.swift in Sources */,
+				00165FE02C05DA8600347399 /* RedireactableAwaitAction.swift in Sources */,
 				F9237D3D28CB470E004F9929 /* ThreeDS2ClassicActionHandler+Initializers.swift in Sources */,
 				F97C851625C192D000D7F85C /* VoucherViewController.swift in Sources */,
 				F95A78B925C4302A0032CF7E /* ShareableVoucherView.swift in Sources */,
