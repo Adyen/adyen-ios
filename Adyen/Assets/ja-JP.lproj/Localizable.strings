@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "続ける";
 "adyen.phoneNumber.title" = "電話番号";
 "adyen.phoneNumber.invalid" = "無効な電話番号";
+"adyen.telephonePrefix" = "敬称";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@桁";
 "adyen.emailItem.title" = "Eメールアドレス";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "この検索クエリでは銀行は見つかりませんでした…";
 "adyen.paybybank.title" = "以下の結果はありません：";
 "adyen.search.placeholder" = "検索…";
-"adyen.upi.modeSelection" = "UPIの使用方法を選択します。";
+"adyen.upi.modeSelection" = "UPIをどのように使用しますか？";
 "adyen.UPIVpa.validationMessage" = "正しい仮想支払アドレスを入力してください";
 "adyen.UPIQrcode.generationMessage" = "ダウンロードまたはスクリーンショットで取得できるQRコードを生成し、UPIアプリにアップロードして支払いを完了します。";
 "adyen.UPIQrcode.timerMessage" = "承認まで残り%@";

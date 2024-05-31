@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Folytatás";
 "adyen.phoneNumber.title" = "Telefonszám";
 "adyen.phoneNumber.invalid" = "Érvénytelen telefonszám";
+"adyen.telephonePrefix" = "Előtag";
 "adyen.phoneNumber.placeholder" = "12–345–6789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ számjegyű";
 "adyen.emailItem.title" = "E-mail-cím";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "A keresési lekérdezéssel nem található bank…";
 "adyen.paybybank.title" = "Nincs találat a következőre:";
 "adyen.search.placeholder" = "Keresés…";
-"adyen.upi.modeSelection" = "Jelölje meg, hogyan szeretné használni az UPI-t.";
+"adyen.upi.modeSelection" = "Hogyan szeretné használni az UPI-t?";
 "adyen.UPIVpa.validationMessage" = "Adjon meg egy helyes virtuális fizetési címet";
 "adyen.UPIQrcode.generationMessage" = "Hozzon létre QR-kódot, amelyet letölthet vagy amelyről képernyőképet készíthet, és töltse fel az UPI alkalmazásba a fizetés végrehajtásához.";
 "adyen.UPIQrcode.timerMessage" = "Jóváhagyásra rendelkezésre álló idő: %@";

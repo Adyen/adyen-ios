@@ -6,16 +6,23 @@
 
 import Foundation
 
-internal protocol AnyAnalyticsEventDataSource {
-    
+internal protocol AnalyticsEventDataAddition {
     func add(info: AnalyticsEventInfo)
     func add(log: AnalyticsEventLog)
     func add(error: AnalyticsEventError)
     
-    func removeAllEvents()
-    
     func allEvents() -> AnalyticsEventWrapper?
 }
+
+internal protocol AnalyticsEventDataRemoval {
+    
+    func removeAllEvents()
+    
+    /// Removes events matching given collection.
+    func removeEvents(matching collection: AnalyticsEventWrapper)
+}
+
+internal protocol AnyAnalyticsEventDataSource: AnalyticsEventDataAddition & AnalyticsEventDataRemoval {}
 
 internal struct AnalyticsEventWrapper {
     internal var infos: [AnalyticsEventInfo]
@@ -38,7 +45,7 @@ internal final class ThreadSafeAnalyticsEventDataSource: AnyAnalyticsEventDataSo
         self.queue = DispatchQueue(label: Constants.queueLabel, attributes: .concurrent)
     }
     
-    // MARK: - AnyAnalyticsEventHandler
+    // MARK: - AnalyticsEventDataAddition
 
     internal func add(info: AnalyticsEventInfo) {
         queue.sync(flags: .barrier) {
@@ -58,15 +65,24 @@ internal final class ThreadSafeAnalyticsEventDataSource: AnyAnalyticsEventDataSo
         }
     }
     
+    internal func allEvents() -> AnalyticsEventWrapper? {
+        queue.sync {
+            dataSource.allEvents()
+        }
+    }
+    
+    // MARK: - AnalyticsEventDataRemoval
+    
+    internal func removeEvents(matching collection: AnalyticsEventWrapper) {
+        queue.sync(flags: .barrier) {
+            dataSource.removeEvents(matching: collection)
+        }
+    }
+    
     internal func removeAllEvents() {
         queue.sync(flags: .barrier) {
             dataSource.removeAllEvents()
         }
     }
     
-    internal func allEvents() -> AnalyticsEventWrapper? {
-        queue.sync {
-            dataSource.allEvents()
-        }
-    }
 }

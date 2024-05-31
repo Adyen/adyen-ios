@@ -76,9 +76,9 @@
           "type" : "select"
         }
       ],
-      "name" : "iDEAL",
       "supportsRecurring" : true,
-      "type" : "ideal"
+      "type": "onlineBanking_PL",
+      "name": "Online Banking"
     },
     {
       "brands" : [

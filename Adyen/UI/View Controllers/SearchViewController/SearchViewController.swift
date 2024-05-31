@@ -60,7 +60,6 @@ public class SearchViewController: UIViewController, AdyenObserver {
     }()
     
     internal lazy var searchBar: UISearchBar = {
-        
         .prominent(
             placeholder: viewModel.searchBarPlaceholder,
             backgroundColor: viewModel.style.backgroundColor,

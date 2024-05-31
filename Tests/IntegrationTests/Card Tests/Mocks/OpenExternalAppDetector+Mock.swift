@@ -6,7 +6,7 @@
 
 @_spi(AdyenInternal) @testable import AdyenActions
 
-struct MockOpenExternalAppDetector: OpenExternalAppDetector {
+struct MockOpenExternalAppDetector: OpenExternalAppDetecting {
     var didOpenExternalApp: Bool
     func checkIfExternalAppDidOpen(_ completion: @escaping (Bool) -> Void) {
         completion(didOpenExternalApp)

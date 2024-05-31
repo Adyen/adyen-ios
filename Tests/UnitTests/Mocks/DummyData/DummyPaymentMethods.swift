@@ -75,6 +75,11 @@ let applePayDictionary = [
     "type": "applepay"
 ] as [String: Any]
 
+let idealDictionary = [
+    "type": "ideal",
+    "name": "iDeal"
+] as [String: Any]
+
 let bcmcCardDictionary = [
     "name": "Bancontact card",
     "supportsRecurring": true,
@@ -96,8 +101,8 @@ let storedBcmcDictionary = [
 ] as [String: Any]
 
 let issuerListDictionary = [
-    "type": "ideal",
-    "name": "iDEAL",
+    "type": "onlineBanking_PL",
+    "name": "Online Banking",
     "details": [
         [
             "items": [
@@ -553,4 +558,9 @@ let cashAppPay: [String: Any] = [
 let bizum: [String: Any] = [
     "type": "bizum",
     "name": "Bizum"
+]
+
+let twint = [
+    "name": "Twint",
+    "type": "twint"
 ]

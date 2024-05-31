@@ -11,7 +11,7 @@ on:
 jobs:
 
   carthage:
-    runs-on: macos-13
+    runs-on: macos-14-xlarge # Apple Silicon Runner
     steps:
     - uses: actions/checkout@v4
     - uses: n1hility/cancel-previous-runs@v3
