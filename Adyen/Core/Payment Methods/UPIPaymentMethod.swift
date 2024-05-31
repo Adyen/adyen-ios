@@ -13,6 +13,9 @@ public struct UPIPaymentMethod: PaymentMethod {
 
     public let name: String
 
+    /// The available UPI apps.
+    public let apps: [Issuer]
+
     public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
     @_spi(AdyenInternal)
@@ -25,6 +28,7 @@ public struct UPIPaymentMethod: PaymentMethod {
     private enum CodingKeys: String, CodingKey {
         case type
         case name
+        case apps
     }
 
 }

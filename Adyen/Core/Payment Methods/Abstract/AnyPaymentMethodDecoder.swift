@@ -107,7 +107,7 @@ internal enum AnyPaymentMethodDecoder {
                 
                 return try IssuerListPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
             }
-            
+
             // This is a hack to handle stored Bancontact as a separate
             // payment method, even though Bancontact is just another
             // scheme of a card payment method,

@@ -152,6 +152,8 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
             handle(sdkAction)
         case let .await(awaitAction):
             handle(awaitAction)
+        case let .redirectableAwait(redirectableAwaitAction):
+            handleRedirectableAwait(redirectableAwaitAction)
         case let .voucher(voucher):
             handle(voucher)
         case let .qrCode(qrCode):
@@ -276,7 +278,19 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         component.handle(action)
         currentActionComponent = component
     }
-    
+
+    private func handleRedirectableAwait(_ action: RedireactableAwaitAction) {
+        let component = AwaitComponent(context: context)
+        component.configuration.style = configuration.style.awaitComponentStyle
+        component._isDropIn = _isDropIn
+        component.delegate = delegate
+        component.presentationDelegate = presentationDelegate
+        component.configuration.localizationParameters = configuration.localizationParameters
+
+        component.handleRedirectableAwait(action)
+        currentActionComponent = component
+    }
+
     private func handle(_ action: VoucherAction) {
         let component = VoucherComponent(context: context)
         component.configuration.style = configuration.style.voucherComponentStyle
