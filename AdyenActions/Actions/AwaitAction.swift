@@ -20,6 +20,9 @@ public enum AwaitPaymentMethod: String, Decodable {
 
     /// UPI Intent
     case upiIntent = "upi_intent"
+
+    /// Twint payment method
+    case twint
 }
 
 /// Describes an action in which the SDK is waiting for user action.

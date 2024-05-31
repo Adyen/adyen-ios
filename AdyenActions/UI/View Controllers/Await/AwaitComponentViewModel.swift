@@ -38,7 +38,7 @@ internal struct AwaitComponentViewModel {
                                    localizationParameters: LocalizationParameters? = nil) -> AwaitComponentViewModel {
         
         switch paymentMethodType {
-        case .blik:
+        case .blik, .twint:
             return AwaitComponentViewModel(icon: paymentMethodType.rawValue,
                                            message: localizedString(.blikConfirmPayment, localizationParameters),
                                            spinnerTitle: localizedString(.awaitWaitForConfirmation, localizationParameters))

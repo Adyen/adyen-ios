@@ -6,9 +6,12 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenActions
-import AdyenWeChatPay
 import SafariServices
 import XCTest
+
+#if canImport(AdyenTwint)
+    import AdyenTwint
+#endif
 
 class AdyenActionComponentTests: XCTestCase {
 
@@ -74,6 +77,17 @@ class AdyenActionComponentTests: XCTestCase {
     }
     """
     
+    let twintAction = """
+    {
+        "paymentMethodType": "twint",
+        "paymentData": "",
+        "type": "sdk",
+        "sdkData": {
+            "token": ""
+        }
+    }
+    """
+
     override func run() {
         AdyenDependencyValues.runTestWithValues {
             $0.imageLoader = ImageLoaderMock()
@@ -119,7 +133,7 @@ class AdyenActionComponentTests: XCTestCase {
         waitForExpectations(timeout: 100, handler: nil)
     }
 
-    func testWeChatAction() {
+    func testWeChatAction() throws {
         let sut = AdyenActionComponent(context: Dummy.context)
 
         let expectation = expectation(description: "Assertion Expectation")
@@ -130,15 +144,15 @@ class AdyenActionComponentTests: XCTestCase {
             expectation.fulfill()
         }
 
-        let sdkAction = try! JSONDecoder().decode(SDKAction.self, from: weChatActionResponse.data(using: .utf8)!)
+        let sdkAction = try JSONDecoder().decode(SDKAction.self, from: weChatActionResponse.data(using: .utf8)!)
         sut.handle(Action.sdk(sdkAction))
 
         waitForExpectations(timeout: 15, handler: nil)
     }
 
-    func test3DSAction() {
+    func test3DSAction() throws {
         let sut = AdyenActionComponent(context: Dummy.context)
-        let action = try! JSONDecoder().decode(ThreeDS2Action.self, from: threeDSFingerprintAction.data(using: .utf8)!)
+        let action = try JSONDecoder().decode(ThreeDS2Action.self, from: threeDSFingerprintAction.data(using: .utf8)!)
         sut.handle(Action.threeDS2(action))
 
         wait { sut.currentActionComponent is ThreeDS2Component }
@@ -148,7 +162,7 @@ class AdyenActionComponentTests: XCTestCase {
         let sut = AdyenActionComponent(context: Dummy.context)
         sut.presentationDelegate = try UIViewController.topPresenter()
         
-        let action = try! JSONDecoder().decode(VoucherAction.self, from: voucherAction.data(using: .utf8)!)
+        let action = try JSONDecoder().decode(VoucherAction.self, from: voucherAction.data(using: .utf8)!)
         sut.handle(Action.voucher(action))
         
         let waitExpectation = expectation(description: "Expect VoucherViewController to be presented")
@@ -169,7 +183,7 @@ class AdyenActionComponentTests: XCTestCase {
         let sut = AdyenActionComponent(context: Dummy.context)
         sut.presentationDelegate = try UIViewController.topPresenter()
         
-        let action = try! JSONDecoder().decode(QRCodeAction.self, from: qrAction.data(using: .utf8)!)
+        let action = try JSONDecoder().decode(QRCodeAction.self, from: qrAction.data(using: .utf8)!)
         sut.handle(Action.qrCode(action))
         
         try waitUntilTopPresenter(isOfType: QRCodeViewController.self)
@@ -180,10 +194,137 @@ class AdyenActionComponentTests: XCTestCase {
         let sut = AdyenActionComponent(context: Dummy.context)
         sut.presentationDelegate = try UIViewController.topPresenter()
         
-        let action = try! JSONDecoder().decode(DocumentAction.self, from: documentAction.data(using: .utf8)!)
+        let action = try JSONDecoder().decode(DocumentAction.self, from: documentAction.data(using: .utf8)!)
         sut.handle(Action.document(action))
         
         let documentViewController = try waitUntilTopPresenter(isOfType: ADYViewController.self)
         XCTAssertNotNil(documentViewController.view as? DocumentActionView)
     }
+    
+    func testTwintAction() throws {
+        
+        let sut = AdyenActionComponent(context: Dummy.context)
+        sut.presentationDelegate = try UIViewController.topPresenter()
+        
+        let assertionExpectation = expectation(description: "Should Assert if no Twint configuration is provided")
+        AdyenAssertion.listener = { assertion in
+            XCTAssertEqual(assertion, "Twint action configuration instance must not be nil in order to use AdyenTwint")
+            assertionExpectation.fulfill()
+        }
+        
+        let action = try JSONDecoder().decode(TwintSDKAction.self, from: twintAction.data(using: .utf8)!)
+        sut.handle(Action.sdk(.twint(action)))
+        
+        wait(for: [assertionExpectation], timeout: 0.1)
+        
+        AdyenAssertion.listener = nil
+        
+        let expectedCallbackAppScheme = "ui-host"
+        sut.configuration.twint = .init(callbackAppScheme: expectedCallbackAppScheme)
+        sut.handle(Action.sdk(.twint(action)))
+        
+        #if canImport(TwintSDK)
+            let twintComponent = try XCTUnwrap(sut.currentActionComponent as? TwintSDKActionComponent)
+            XCTAssertEqual(twintComponent.configuration.callbackAppScheme, expectedCallbackAppScheme)
+        #endif
+    }
+    
+    func testTwintActionConfiguration() throws {
+        
+        let validSchemes = [
+            "scheme"
+        ]
+        
+        let invalidSchemes = [
+            "scheme:",
+            "scheme://",
+            "scheme://host"
+        ]
+        
+        // Valid Configuration
+        
+        validSchemes.forEach { scheme in
+            AdyenAssertion.listener = { message in
+                XCTFail("No assertion should have been raised")
+            }
+            
+            let _ = AdyenActionComponent.Configuration.Twint(callbackAppScheme: scheme)
+        }
+        
+        // Invalid Configuration
+        
+        invalidSchemes.forEach { scheme in
+            AdyenAssertion.listener = { message in
+                XCTAssertEqual(message, "Format of provided callbackAppScheme '\(scheme)' is incorrect.")
+            }
+            
+            let _ = AdyenActionComponent.Configuration.Twint(callbackAppScheme: scheme)
+        }
+    }
+    
+    func testHandleRedirectEvent() {
+        let redirectAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data")
+        testEvent(for: Action.redirect(redirectAction))
+    }
+    
+    func testHandleAwaitActionEvent() {
+        let awaitAction = AwaitAction(paymentData: "SOME_DATA", paymentMethodType: .blik)
+        testEvent(for: Action.await(awaitAction))
+    }
+    
+    func testHandleSDKActionEvent() {
+        let sdkAction = try! JSONDecoder().decode(SDKAction.self, from: weChatActionResponse.data(using: .utf8)!)
+        testEvent(for: Action.sdk(sdkAction))
+    }
+    
+    func testHandleThreeDSEvent() {
+        let threeDSAction = try! JSONDecoder().decode(ThreeDS2Action.self, from: threeDSFingerprintAction.data(using: .utf8)!)
+        testEvent(for: Action.threeDS2(threeDSAction))
+    }
+    
+    func testHandleVoucherEvent() {
+        let voucherAction = try! JSONDecoder().decode(VoucherAction.self, from: voucherAction.data(using: .utf8)!)
+        testEvent(for: Action.voucher(voucherAction))
+    }
+    
+    func testQRCodeActionEvent() {
+        let qrCodeAction = try! JSONDecoder().decode(QRCodeAction.self, from: qrAction.data(using: .utf8)!)
+        testEvent(for: Action.qrCode(qrCodeAction))
+    }
+    
+    func testDocumentActionEvent() {
+        let documentAction = try! JSONDecoder().decode(DocumentAction.self, from: documentAction.data(using: .utf8)!)
+        testEvent(for: Action.document(documentAction))
+    }
+    
+    private func testEvent(for action: Action) {
+        
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = AdyenActionComponent(context: Dummy.context(with: analyticsProviderMock))
+        
+        sut.handle(action)
+        
+        let event = analyticsProviderMock.logs[0]
+        XCTAssertEqual(event.type, .action)
+        
+        switch action {
+        case .redirect:
+            XCTAssertEqual(event.component, "redirect")
+        case .sdk:
+            XCTAssertEqual(event.component, "sdk")
+        case .threeDS2Fingerprint:
+            XCTAssertEqual(event.component, "threeDS2Fingerprint")
+        case .threeDS2Challenge:
+            XCTAssertEqual(event.component, "threeDS2Challenge")
+        case .threeDS2:
+            XCTAssertEqual(event.component, "threeDS2")
+        case .await:
+            XCTAssertEqual(event.component, "await")
+        case .voucher, .document:
+            XCTAssertEqual(event.component, "voucher")
+        case .qrCode:
+            XCTAssertEqual(event.component, "qrCode")
+        }
+    }
+    
 }

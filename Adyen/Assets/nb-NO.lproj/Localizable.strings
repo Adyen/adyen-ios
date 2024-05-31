@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Fortsett";
 "adyen.phoneNumber.title" = "Telefonnummer";
 "adyen.phoneNumber.invalid" = "Ugyldig telefonnummer";
+"adyen.telephonePrefix" = "Prefiks";
 "adyen.phoneNumber.placeholder" = "987 65 432";
 "adyen.card.cvcItem.placeholder.digits" = "%@ siffer";
 "adyen.emailItem.title" = "E-postadresse";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Fant ingen banker med søket ditt…";
 "adyen.paybybank.title" = "Ingen resultater for";
 "adyen.search.placeholder" = "Søk…";
-"adyen.upi.modeSelection" = "Velg hvordan du vil bruke UPI.";
+"adyen.upi.modeSelection" = "Hvordan vil du bruke UPI?";
 "adyen.UPIVpa.validationMessage" = "Skriv inn en korrekt virtuell betalingsadresse";
 "adyen.UPIQrcode.generationMessage" = "Generer QR-koden, som du kan laste ned eller ta et skjermbilde av, og last den opp til UPI-appen for å fullføre betalingen.";
 "adyen.UPIQrcode.timerMessage" = "Du har %@ å godkjenne";

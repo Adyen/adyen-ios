@@ -15,8 +15,8 @@ extension XCTestCase {
         let cityItemView = addressView.findView(by: identifier(for: .city, addressView: addressViewIdentifier)) as? FormTextInputItemView
         populate(textItemView: cityItemView, with: address.city ?? "")
         
-        let countryItemView = addressView.findView(by: identifier(for: .country, addressView: addressViewIdentifier)) as? FormPickerItemView
-        countryItemView?.item.value = .init(identifier: address.country ?? "", title: "", subtitle: nil)
+        let countryItemView = addressView.findView(by: identifier(for: .country, addressView: addressViewIdentifier)) as? FormPickerItemView<FormPickerElement>
+        countryItemView?.item.value = FormPickerElement(identifier: address.country ?? "", title: "", subtitle: nil)
         
         let houseNumberItemView = addressView.findView(by: identifier(for: .houseNumberOrName, addressView: addressViewIdentifier)) as? FormTextInputItemView
         populate(textItemView: houseNumberItemView, with: address.houseNumberOrName ?? "")
@@ -24,8 +24,8 @@ extension XCTestCase {
         let postalCodeItemView = addressView.findView(by: identifier(for: .postalCode, addressView: addressViewIdentifier)) as? FormTextInputItemView
         populate(textItemView: postalCodeItemView, with: address.postalCode ?? "")
         
-        let regionPickerView = addressView.findView(by: identifier(for: .stateOrProvince, addressView: addressViewIdentifier)) as? FormPickerItemView
-        regionPickerView?.item.value = .init(identifier: address.stateOrProvince ?? "", title: "", subtitle: nil)
+        let regionPickerView = addressView.findView(by: identifier(for: .stateOrProvince, addressView: addressViewIdentifier)) as? FormPickerItemView<FormPickerElement>
+        regionPickerView?.item.value = FormPickerElement(identifier: address.stateOrProvince ?? "", title: "", subtitle: nil)
         
         let streetItemView = addressView.findView(by: identifier(for: .street, addressView: addressViewIdentifier)) as? FormTextInputItemView
         populate(textItemView: streetItemView, with: address.street ?? "")

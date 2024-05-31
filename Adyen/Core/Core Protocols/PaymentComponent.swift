@@ -30,6 +30,8 @@ extension PaymentComponent {
     ///   - data: The Payment data to be submitted
     ///   - component: The component from which the payment originates.
     public func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
+        sendSubmitEvent()
+        
         let component = component ?? self
         
         let updatedData = data.replacing(checkoutAttemptId: component.context.analyticsProvider?.checkoutAttemptId)
@@ -41,7 +43,11 @@ extension PaymentComponent {
         updatedData.dataByAddingBrowserInfo { [weak self] in
             self?.delegate?.didSubmit($0, from: component)
         }
-        
+    }
+    
+    private func sendSubmitEvent() {
+        let logEvent = AnalyticsEventLog(component: paymentMethod.type.rawValue, type: .submit)
+        context.analyticsProvider?.add(log: logEvent)
     }
 
 }

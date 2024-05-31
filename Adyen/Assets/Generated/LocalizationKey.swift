@@ -98,6 +98,8 @@ public struct LocalizationKey {
     public static let phoneNumberTitle = LocalizationKey(key: "adyen.phoneNumber.title")
     /// Invalid telephone number
     public static let phoneNumberInvalid = LocalizationKey(key: "adyen.phoneNumber.invalid")
+    /// Prefix
+    public static let telephonePrefix = LocalizationKey(key: "adyen.telephonePrefix")
     /// 123–456–789
     public static let phoneNumberPlaceholder = LocalizationKey(key: "adyen.phoneNumber.placeholder")
     /// %@ digits
@@ -354,7 +356,7 @@ public struct LocalizationKey {
     public static let paybybankTitle = LocalizationKey(key: "adyen.paybybank.title")
     /// Search…
     public static let searchPlaceholder = LocalizationKey(key: "adyen.search.placeholder")
-    /// Make a selection on how you would like to use UPI.
+    /// How would you like to use UPI?
     public static let upiModeSelection = LocalizationKey(key: "adyen.upi.modeSelection")
     /// Enter a correct virtual payment address
     public static let UPIVpaValidationMessage = LocalizationKey(key: "adyen.UPIVpa.validationMessage")

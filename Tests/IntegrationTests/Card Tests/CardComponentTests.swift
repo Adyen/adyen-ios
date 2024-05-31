@@ -1083,9 +1083,9 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(expDateItem.isValid())
         XCTAssertEqual(sut.cardViewController.card.expiryYear, "20")
         XCTAssertEqual(sut.cardViewController.card.expiryMonth, "1")
-        expDateItem.value = "0224"
+        expDateItem.value = "0234"
         XCTAssertTrue(expDateItem.isValid())
-        XCTAssertEqual(sut.cardViewController.card.expiryYear, "2024")
+        XCTAssertEqual(sut.cardViewController.card.expiryYear, "2034")
         XCTAssertEqual(sut.cardViewController.card.expiryMonth, "02")
 
         expDateItem.isOptional = brands[1].isExpiryDateOptional

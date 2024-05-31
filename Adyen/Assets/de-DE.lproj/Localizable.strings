@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Weiter";
 "adyen.phoneNumber.title" = "Telefonnummer";
 "adyen.phoneNumber.invalid" = "Ungültige Telefonnummer";
+"adyen.telephonePrefix" = "Vorwahl";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ Stellen";
 "adyen.emailItem.title" = "E-Mail-Adresse";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Es wurden keine Banken mit Ihrer Suchanfrage gefunden…";
 "adyen.paybybank.title" = "Keine Ergebnisse für";
 "adyen.search.placeholder" = "Suche…";
-"adyen.upi.modeSelection" = "Legen Sie fest, wie Sie UPI nutzen möchten.";
+"adyen.upi.modeSelection" = "Wie möchten Sie UPI verwenden?";
 "adyen.UPIVpa.validationMessage" = "Geben Sie eine korrekte virtuelle Zahlungsadresse ein";
 "adyen.UPIQrcode.generationMessage" = "Generieren Sie einen QR-Code, den Sie herunterladen oder als Screenshot hochladen können, und laden Sie ihn in der UPI-App hoch, um die Zahlung abzuschließen.";
 "adyen.UPIQrcode.timerMessage" = "Sie haben noch %@ Minuten Zeit für die Genehmigung.";

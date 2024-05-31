@@ -21,13 +21,15 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     internal weak var presenter: PresenterExampleProtocol?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
+    
+    internal lazy var context: AdyenContext = generateContext()
 
     // MARK: - Action Handling
 
     private lazy var adyenActionComponent: AdyenActionComponent = {
         let handler = AdyenActionComponent(context: context)
         handler.configuration.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
-        handler.configuration.threeDS.requestorAppURL = URL(string: ConfigurationConstants.returnUrl)
+        handler.configuration.threeDS.requestorAppURL = ConfigurationConstants.returnUrl
         handler.delegate = self
         handler.presentationDelegate = self
         return handler

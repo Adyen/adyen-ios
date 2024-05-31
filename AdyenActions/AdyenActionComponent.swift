@@ -10,20 +10,20 @@ import Foundation
 import UIKit
 
 /**
-  An action handler component to perform any supported action out of the box.
-
+ An action handler component to perform any supported action out of the box.
+ 
  - SeeAlso:
  [Implementation Reference](https://github.com/Adyen/adyen-ios#handling-an-action)
  */
 public final class AdyenActionComponent: ActionComponent, ActionHandlingComponent {
-
+    
     /// :nodoc:
     /// The context object for this component.
     public let context: AdyenContext
-
+    
     /// The object that acts as the delegate of the action component.
     public weak var delegate: ActionComponentDelegate?
-
+    
     /// The object that acts as the presentation delegate of the action component.
     public weak var presentationDelegate: PresentationDelegate?
     
@@ -65,21 +65,58 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
             }
         }
         
+        public var twint: Twint?
+        
+        public struct Twint {
+            
+            /// The callback app scheme invoked once the Twint app is done with the payment
+            public var callbackAppScheme: String
+            
+            /// Initializes a new instance
+            ///
+            /// - Parameter callbackAppScheme: The callback app scheme invoked once the Twint app is done with the payment
+            ///
+            /// - Important: The value of ``callbackAppScheme`` is  required to only provide the scheme,
+            /// without a host/path/... (e.g. "my-app", not a url "my-app://...")
+            public init(callbackAppScheme: String) {
+                if !Self.isCallbackSchemeValid(callbackAppScheme) {
+                    AdyenAssertion.assertionFailure(message: "Format of provided callbackAppScheme '\(callbackAppScheme)' is incorrect.")
+                }
+                
+                self.callbackAppScheme = callbackAppScheme
+            }
+            
+            /// Validating whether or not the provided `callbackAppScheme` only contains a scheme
+            private static func isCallbackSchemeValid(_ callbackAppScheme: String) -> Bool {
+                if let url = URL(string: callbackAppScheme), url.scheme != nil {
+                    // If the scheme is not nil it means that more information than just the scheme was provided
+                    return false
+                }
+                
+                return true
+            }
+        }
+        
         /// Initializes a new instance
         ///
         /// - Parameters:
         ///   - localizationParameters: Localization parameters.
         ///   - style: The UI style configurations.
         ///   - threeDS: Three DS configurations
-        public init(localizationParameters: LocalizationParameters? = nil,
-                    style: ActionComponentStyle = .init(),
-                    threeDS: AdyenActionComponent.Configuration.ThreeDS = .init()) {
+        ///   - twint: Twint configurations
+        public init(
+            localizationParameters: LocalizationParameters? = nil,
+            style: ActionComponentStyle = .init(),
+            threeDS: AdyenActionComponent.Configuration.ThreeDS = .init(),
+            twint: Twint? = nil
+        ) {
             self.localizationParameters = localizationParameters
             self.style = style
             self.threeDS = threeDS
+            self.twint = twint
         }
     }
-
+    
     internal var currentActionComponent: Component?
     
     /// Initializes a new instance of `AdyenActionComponent`
@@ -99,6 +136,9 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     ///
     /// - Parameter action: The action to handle.
     public func handle(_ action: Action) {
+        
+        sendHandleEvent(for: action)
+        
         switch action {
         case let .redirect(redirectAction):
             handle(redirectAction)
@@ -123,6 +163,11 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         }
     }
     
+    private func sendHandleEvent(for action: Action) {
+        let logEvent = AnalyticsEventLog(component: action.analyticsType, type: .action)
+        context.analyticsProvider?.add(log: logEvent)
+    }
+    
     // MARK: - Private
     
     private func handle(_ action: RedirectAction) {
@@ -135,11 +180,11 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         
         component.handle(action)
     }
-
+    
     private func handle(_ action: ThreeDS2Action) {
         let component = createThreeDS2Component()
         currentActionComponent = component
-
+        
         component.handle(action)
     }
     
@@ -149,7 +194,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         
         component.handle(action)
     }
-
+    
     private func createThreeDS2Component() -> ThreeDS2Component {
         let threeDS2Configuration = ThreeDS2Component.Configuration(redirectComponentStyle: configuration.style.redirectComponentStyle,
                                                                     appearanceConfiguration: configuration.threeDS.appearanceConfiguration,
@@ -159,7 +204,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
-
+        
         return component
     }
     
@@ -173,11 +218,13 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         }
         threeDS2Component.handle(action)
     }
-
+    
     private func handle(_ sdkAction: SDKAction) {
         switch sdkAction {
         case let .weChatPay(weChatPaySDKAction):
             handle(weChatPaySDKAction)
+        case let .twint(twintSDKAction):
+            handle(twintSDKAction)
         }
     }
     
@@ -193,6 +240,31 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         weChatPaySDKActionComponent.handle(action)
         
         currentActionComponent = weChatPaySDKActionComponent
+    }
+    
+    private func handle(_ action: TwintSDKAction) {
+        #if canImport(TwintSDK)
+            guard let twintConfiguration = configuration.twint else {
+                AdyenAssertion.assertionFailure(
+                    message: "Twint action configuration instance must not be nil in order to use AdyenTwint")
+                return
+            }
+        
+            let component = TwintSDKActionComponent(
+                context: context,
+                configuration: .init(
+                    style: configuration.style.awaitComponentStyle,
+                    callbackAppScheme: twintConfiguration.callbackAppScheme,
+                    localizationParameters: configuration.localizationParameters
+                )
+            )
+            component._isDropIn = _isDropIn
+            component.delegate = delegate
+            component.presentationDelegate = presentationDelegate
+        
+            component.handle(action)
+            currentActionComponent = component
+        #endif
     }
     
     private func handle(_ action: AwaitAction) {
@@ -226,11 +298,11 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
         component.configuration.localizationParameters = configuration.localizationParameters
-
+        
         component.handle(action)
         currentActionComponent = component
     }
-
+    
     private func handle(_ action: QRCodeAction) {
         let component = QRCodeActionComponent(context: context)
         component.configuration.style = configuration.style.qrCodeComponentStyle
@@ -238,11 +310,11 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
         component.configuration.localizationParameters = configuration.localizationParameters
-
+        
         component.handle(action)
         currentActionComponent = component
     }
-
+    
     private func handle(_ action: DocumentAction) {
         let component = DocumentComponent(context: context)
         component.configuration.style = configuration.style.documentActionComponentStyle
@@ -253,5 +325,29 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         
         component.handle(action)
         currentActionComponent = component
+    }
+}
+
+private extension Action {
+    
+    var analyticsType: String {
+        switch self {
+        case .redirect:
+            return "redirect"
+        case .sdk:
+            return "sdk"
+        case .threeDS2Fingerprint:
+            return "threeDS2Fingerprint"
+        case .threeDS2Challenge:
+            return "threeDS2Challenge"
+        case .threeDS2:
+            return "threeDS2"
+        case .await:
+            return "await"
+        case .voucher, .document:
+            return "voucher"
+        case .qrCode:
+            return "qrCode"
+        }
     }
 }

@@ -80,7 +80,8 @@ class PaymentMethodTests: XCTestCase {
                 affirm,
                 atome,
                 upi,
-                cashAppPay
+                cashAppPay,
+                idealDictionary
             ]
         ]
     }
@@ -170,16 +171,19 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 31)
+        XCTAssertEqual(paymentMethods.regular.count, 32)
         
         let creditCardPaymentMethod = try XCTUnwrap(paymentMethods.regular[0] as? CardPaymentMethod)
         XCTAssertEqual(creditCardPaymentMethod.fundingSource, .credit)
         
         XCTAssertTrue(paymentMethods.regular[1] is IssuerListPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[1].type.rawValue, "onlineBanking_PL")
+        XCTAssertEqual(paymentMethods.regular[1].name, "Online Banking")
+        
         XCTAssertTrue(paymentMethods.regular[2] is SEPADirectDebitPaymentMethod)
-        XCTAssertTrue(paymentMethods.regular[3] is InstantPaymentMethod)
         
         // Unknown redirect
+        XCTAssertTrue(paymentMethods.regular[3] is InstantPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[3].type.rawValue, "unknown")
         XCTAssertEqual(paymentMethods.regular[3].name, "Redirect Payment Method")
         
@@ -306,6 +310,10 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(cashAppPay.type.rawValue, "cashapp")
         XCTAssertEqual(cashAppPay.clientId, "testClient")
         XCTAssertEqual(cashAppPay.scopeId, "testScope")
+        
+        XCTAssertTrue(paymentMethods.regular[31] is InstantPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[31].type.rawValue, "ideal")
+        XCTAssertEqual(paymentMethods.regular[31].name, "iDeal")
     }
     
     // MARK: - Display Information Override
@@ -745,8 +753,8 @@ class PaymentMethodTests: XCTestCase {
     
     func testDecodingIssuerListPaymentMethod() throws {
         let paymentMethod = try AdyenCoder.decode(issuerListDictionary) as IssuerListPaymentMethod
-        XCTAssertEqual(paymentMethod.type.rawValue, "ideal")
-        XCTAssertEqual(paymentMethod.name, "iDEAL")
+        XCTAssertEqual(paymentMethod.type.rawValue, "onlineBanking_PL")
+        XCTAssertEqual(paymentMethod.name, "Online Banking")
         
         XCTAssertEqual(paymentMethod.issuers.count, 3)
         XCTAssertEqual(paymentMethod.issuers[0].identifier, "xxxx")

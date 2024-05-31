@@ -70,7 +70,12 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         let expectedFingerprint = try AdyenCoder.encodeBase64(fingerprint)
         
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-        let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, service: service)
+        
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = ThreeDS2ClassicActionHandler(
+            context: Dummy.context(with: analyticsProviderMock),
+            service: service
+        )
         sut.handle(fingerprintAction) { fingerprintResult in
             switch fingerprintResult {
             case let .success(result):
@@ -81,6 +86,13 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
                     switch details {
                     case let .fingerprint(fingerprint):
                         XCTAssertEqual(fingerprint, expectedFingerprint)
+                       
+                        // check events
+                        let fingerprintSentEvent = analyticsProviderMock.logs[0]
+                        let fingerprintCompleteEvent = analyticsProviderMock.logs[1]
+                        
+                        XCTAssertEqual(fingerprintSentEvent.subType, .fingerprintSent)
+                        XCTAssertEqual(fingerprintCompleteEvent.subType, .fingerprintComplete)
                     default:
                         XCTFail()
                     }
@@ -142,7 +154,11 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         service.mockedTransaction = transaction
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-        let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, service: service)
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = ThreeDS2ClassicActionHandler(
+            context: Dummy.context(with: analyticsProviderMock),
+            service: service
+        )
         sut.threeDSRequestorAppURL = URL(string: "https://google.com")
         sut.transaction = transaction
         sut.handle(challengeAction) { challengeResult in
@@ -158,6 +174,15 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
                         let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: String]
                         XCTAssertEqual(json?["transStatus"], "Y")
                         XCTAssertEqual(json?["authorisationToken"], "authToken")
+                        
+                        // check events
+                        let challengeSentEvent = analyticsProviderMock.logs[0]
+                        let challengeDisplayedEvent = analyticsProviderMock.logs[1]
+                        let challengeCompleteEvent = analyticsProviderMock.logs[2]
+                        
+                        XCTAssertEqual(challengeSentEvent.subType, .challengeDataSent)
+                        XCTAssertEqual(challengeDisplayedEvent.subType, .challengeDisplayed)
+                        XCTAssertEqual(challengeCompleteEvent.subType, .challengeComplete)
                     default:
                         XCTFail()
                     }

@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "繼續";
 "adyen.phoneNumber.title" = "電話號碼";
 "adyen.phoneNumber.invalid" = "電話號碼無效";
+"adyen.telephonePrefix" = "前綴";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ 位數";
 "adyen.emailItem.title" = "電子郵件地址";
@@ -167,7 +168,7 @@
 "adyen.paybybank.subtitle" = "您的搜尋查詢找不到任何銀行……";
 "adyen.paybybank.title" = "沒有以下結果：";
 "adyen.search.placeholder" = "搜尋……";
-"adyen.upi.modeSelection" = "選擇所需的 UPI 使用方式。";
+"adyen.upi.modeSelection" = "您想如何使用 UPI？";
 "adyen.UPIVpa.validationMessage" = "輸入正確的虛擬付款地址";
 "adyen.UPIQrcode.generationMessage" = "產生可以下載或擷取螢幕畫面的 QR 代碼，然後將其上傳到 UPI 應用程式以完成付款。";
 "adyen.UPIQrcode.timerMessage" = "您有 %@ 的核准時間";

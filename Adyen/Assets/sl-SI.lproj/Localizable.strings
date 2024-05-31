@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Nadaljuj";
 "adyen.phoneNumber.title" = "Telefonska številka";
 "adyen.phoneNumber.invalid" = "Neveljavna telefonska številka";
+"adyen.telephonePrefix" = "Naziv";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ števke";
 "adyen.emailItem.title" = "Elektronski naslov";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Z vašo iskalno poizvedbo ni bilo mogoče najti nobene banke…";
 "adyen.paybybank.title" = "Ni rezultatov za";
 "adyen.search.placeholder" = "Iskanje…";
-"adyen.upi.modeSelection" = "Izberite, kako želite uporabljati aplikacijo UPI.";
+"adyen.upi.modeSelection" = "Kako bi želeli uporabiti UPI?";
 "adyen.UPIVpa.validationMessage" = "Vnesite pravilen virtualni naslov za plačilo";
 "adyen.UPIQrcode.generationMessage" = "Ustvarite kodo QR, ki jo lahko prenesete ali naredite posnetek zaslona, in jo za dokončanje plačila naložite v aplikacijo UPI.";
 "adyen.UPIQrcode.timerMessage" = "Za odobritev imate %@";

@@ -254,7 +254,8 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(context: Dummy.context,
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = ThreeDS2Component(context: Dummy.context(with: analyticsProviderMock),
                                     threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
                                     threeDS2ClassicFlowHandler: threeDS2ActionHandler,
                                     redirectComponent: redirectComponent)

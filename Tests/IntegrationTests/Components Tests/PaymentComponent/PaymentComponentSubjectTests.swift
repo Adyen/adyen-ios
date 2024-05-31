@@ -104,4 +104,18 @@ class PaymentComponentSubjectTests: XCTestCase {
             XCTAssertEqual(expectedBrowserInfo.userAgent, data.browserInfo?.userAgent)
         }
     }
+    
+    func testSubmitEvent() throws {
+        let expectedCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
+        analyticsProviderMock._checkoutAttemptId = expectedCheckoutAttemptId
+        let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
+        
+        paymentComponentDelegate.onDidSubmit = { data, _ in
+            let submitEvent = self.analyticsProviderMock.logs[0]
+            XCTAssertEqual(submitEvent.type, .submit)
+        }
+
+        sut.submit(data: paymentComponentData, component: sut)
+    }
 }

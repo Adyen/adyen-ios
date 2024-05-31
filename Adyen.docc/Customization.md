@@ -2,6 +2,10 @@
 
 Both the Drop-in and the Components offer a number of customization options to allow you to match the appearance of your app.
 
+## Localization
+
+To customize strings, see: <doc:Localization>.
+
 ## Styling
 
 For example, to change the section header titles and form field titles in the Drop-in to red, and turn the submit button's background to black with white foreground:
