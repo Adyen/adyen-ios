@@ -11,7 +11,7 @@ import Foundation
 internal protocol AnyThreeDS2CoreActionHandler: Component {
     var threeDSRequestorAppURL: URL? { get set }
     
-    var service: ThreeDSServiceProtocol { get set }
+    var service: ThreeDSServiceProtocol? { get set }
 //
 //    var transaction: AnyADYTransaction? { get set }
     
@@ -38,7 +38,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     /// The appearance configuration of the 3D Secure 2 challenge UI.
     internal let appearanceConfiguration: ADYAppearanceConfiguration
 
-    internal var service: ThreeDSServiceProtocol
+    internal var service: ThreeDSServiceProtocol?
     
     /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
     internal var threeDSRequestorAppURL: URL?
@@ -53,13 +53,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                   appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()) {
         self.context = context
         self.appearanceConfiguration = appearanceConfiguration
-        self.service = service ?? {
-            if #available(iOS 13.0, *) {
-                return ThreeDSServiceLegacy()
-            } else {
-                return ThreeDSServiceLegacy()
-            }
-        }()
+        self.service = service
     }
 
     // MARK: - Fingerprint
@@ -93,6 +87,19 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                                    completionHandler: @escaping (Result<String, Error>) -> Void) {
         do {
             let token = try AdyenCoder.decodeBase64(action.fingerprintToken) as ThreeDS2Component.FingerprintToken
+            let service: any ThreeDSServiceProtocol = if let service = self.service {
+                service
+            } else if token.sdkToUse == "swift" {
+                if #available(iOS 13, *) {
+                    ThreeDSService()
+                } else {
+                    ThreeDSServiceLegacy()
+                }
+            } else {
+                ThreeDSServiceLegacy()
+            }
+            
+            self.service = service
             
             service.authenticationParameters(parameters:
                 .init(directoryServerIdentifier: token.directoryServerIdentifier,
@@ -143,6 +150,10 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         Analytics.sendEvent(event)
         
         sendChallengeEvent(.challengeDataSent)
+        
+        guard let service else {
+            return didFail(with: ThreeDS2Component.Error.missingTransaction, completionHandler: completionHandler)
+        }
 
         let token: ThreeDS2Component.ChallengeToken
         do {

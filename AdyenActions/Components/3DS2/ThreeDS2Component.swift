@@ -5,7 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import Adyen3DS2
+
+
+import class Adyen3DS2.ADYAppearanceConfiguration
 import Foundation
 
 internal protocol AnyRedirectComponent: ActionComponent {
@@ -85,6 +87,18 @@ public final class ThreeDS2Component: ActionComponent {
             self.requestorAppURL = requestorAppURL
             self.delegateAuthentication = delegateAuthentication
         }
+        
+//        @available(iOS 13.0, *)
+//        public init(redirectComponentStyle: RedirectComponentStyle? = nil,
+//                    appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
+//                    requestorAppURL: URL? = nil,
+//                    delegateAuthentication: DelegatedAuthentication? = nil) {
+//            self.redirectComponentStyle = redirectComponentStyle
+//            self.appearanceConfiguration = appearanceConfiguration
+//            self.requestorAppURL = requestorAppURL
+//            self.delegateAuthentication = delegateAuthentication
+//        }
+
     }
     
     /// Initializes the 3D Secure 2 component.
