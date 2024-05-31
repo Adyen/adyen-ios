@@ -342,7 +342,7 @@ private extension Action {
             return "threeDS2Challenge"
         case .threeDS2:
             return "threeDS2"
-        case .await:
+        case .await, .redirectableAwait:
             return "await"
         case .voucher, .document:
             return "voucher"

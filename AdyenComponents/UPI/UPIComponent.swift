@@ -67,6 +67,10 @@ public final class UPIComponent: PaymentComponent,
 
     internal var currentSelectedIndex: Int = 0
 
+    private var hasApps: Bool {
+        !upiPaymentMethod.apps.isEmpty
+    }
+
     /// Initializes the UPI  component.
     ///
     /// - Parameter paymentMethod: The UPI payment method.
@@ -233,7 +237,7 @@ public final class UPIComponent: PaymentComponent,
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
         formViewController.append(qrCodeGenerationLabelContainerItem)
 
-        if !upiPaymentMethod.apps.isEmpty {
+        if hasApps {
             for item in upiAppsList {
                 formViewController.append(item)
             }
@@ -306,17 +310,9 @@ public final class UPIComponent: PaymentComponent,
     }
 
     private func changeUPIAppsListVisiblity(shouldHide isHidden: Bool = false) {
-        if isHidden {
-            if !upiPaymentMethod.apps.isEmpty {
-                for app in upiAppsList {
-                    app.isHidden.wrappedValue = true
-                }
-            }
-        } else {
-            if !upiPaymentMethod.apps.isEmpty {
-                for app in upiAppsList {
-                    app.isHidden.wrappedValue = false
-                }
+        if hasApps {
+            for app in upiAppsList {
+                app.isHidden.wrappedValue = isHidden
             }
         }
     }
