@@ -51,8 +51,6 @@ public final class UPIComponent: PaymentComponent,
 
     private var currentSelectedItem: SelectableFormItem?
 
-    // private var previousSelectedUPIAppId: String = "UPI/VPA"
-
     private var previousSelectedItem: SelectableFormItem?
 
     /// The viewController for the component.
@@ -259,7 +257,7 @@ public final class UPIComponent: PaymentComponent,
         switch UPIFlowType(rawValue: currentSelectedIndex) {
         case .upiApps:
             let details: UPIComponentDetails
-            let flowType = currentSelectedItem?.identifier == "UPI/VPA" ? Constants.upiCollect : Constants.upiIntent
+            let flowType = currentSelectedItem?.identifier == Constants.vpaFlowIdentifier ? Constants.upiCollect : Constants.upiIntent
             if flowType == Constants.upiCollect {
                 details = UPIComponentDetails(type: flowType,
                                               virtualPaymentAddress: virtualPaymentAddressItem.value,
