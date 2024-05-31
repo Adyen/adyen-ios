@@ -6,7 +6,6 @@
 
 @_spi(AdyenInternal) import Adyen
 
-
 import class Adyen3DS2.ADYAppearanceConfiguration
 import Foundation
 

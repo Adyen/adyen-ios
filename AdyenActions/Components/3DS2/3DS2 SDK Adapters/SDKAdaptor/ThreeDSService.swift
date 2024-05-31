@@ -72,7 +72,7 @@ internal final class ThreeDSService: ThreeDSServiceProtocol, SecurityWarningsDel
         guard let threedsError = error as? ThreeDSError else {
             return false
         }
-        return threedsError.errorCode == /*"1001"*/ // ThreeDSError.cancellation
+        return threedsError.errorCode == "1001" // ThreeDSError.cancellation
     }
     
     internal func opaqueErrorObject(error: Error) -> String? {

@@ -213,7 +213,7 @@
                     delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput
                 )
 
-//                transaction = nil
+                service?.resetTransaction()
                 completionHandler(.success(threeDSResult))
             } catch {
                 completionHandler(.failure(error))
@@ -222,7 +222,7 @@
 
         private func didFail<R>(with error: Error,
                                 completionHandler: @escaping (Result<R, Error>) -> Void) {
-//            transaction = nil
+            service?.resetTransaction()
 
             completionHandler(.failure(error))
         }

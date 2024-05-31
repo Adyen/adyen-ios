@@ -78,7 +78,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
             case let .success(encodedFingerprint):
                 completionHandler(.success(encodedFingerprint))
             case let .failure(error):
-                self.didFail(with: error, completionHandler: completionHandler)
+                self.didFail(service: service, with: error, completionHandler: completionHandler)
             }
         }
     }
@@ -125,15 +125,15 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                             )
                             completionHandler(.success(encodedError))
                         } else {
-                            self.didFail(with: failure, completionHandler: completionHandler)
+                            self.didFail(service: service, with: failure, completionHandler: completionHandler)
                         }
                     }
                 } catch {
-                    self.didFail(with: error, completionHandler: completionHandler)
+                    self.didFail(service: service, with: error, completionHandler: completionHandler)
                 }
             }
         } catch {
-            didFail(with: error, completionHandler: completionHandler)
+            didFail(service: service, with: error, completionHandler: completionHandler)
         }
     }
     
@@ -152,14 +152,14 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         sendChallengeEvent(.challengeDataSent)
         
         guard let service else {
-            return didFail(with: ThreeDS2Component.Error.missingTransaction, completionHandler: completionHandler)
+            return didFail(service: service, with: ThreeDS2Component.Error.missingTransaction, completionHandler: completionHandler)
         }
 
         let token: ThreeDS2Component.ChallengeToken
         do {
             token = try AdyenCoder.decodeBase64(challengeAction.challengeToken) as ThreeDS2Component.ChallengeToken
         } catch {
-            return didFail(with: error, completionHandler: completionHandler)
+            return didFail(service: service, with: error, completionHandler: completionHandler)
         }
 
         sendChallengeEvent(.challengeDisplayed)
@@ -171,17 +171,19 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
 
             switch result {
             case let .success(success):
-                self.didFinish(with: success,
+                self.didFinish(service: service,
+                               with: success,
                                authorizationToken: challengeAction.authorisationToken,
                                completionHandler: completionHandler)
             case let .failure(failure):
                 switch failure {
                 case .transactionNotInitialized:
-                    return self.didFail(with: ThreeDS2Component.Error.missingTransaction, completionHandler: completionHandler)
+                    return self.didFail(service: service, with: ThreeDS2Component.Error.missingTransaction, completionHandler: completionHandler)
                 case let .unknownError(unknownError):
-                    return self.didFail(with: unknownError, completionHandler: completionHandler)
+                    return self.didFail(service: service, with: unknownError, completionHandler: completionHandler)
                 case let .challengeError(error):
-                    self.didReceiveErrorOnChallenge(error: error,
+                    self.didReceiveErrorOnChallenge(service: service,
+                                                    error: error,
                                                     challengeAction: challengeAction,
                                                     completionHandler: completionHandler)
                 }
@@ -191,26 +193,31 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     
     /// Invoked to handle the error flow of a challenge handling by the 3ds2sdk.
     /// For challenge cancelled we return the control back to the merchant immediately as an error.
-    private func didReceiveErrorOnChallenge(error: Error,
+    private func didReceiveErrorOnChallenge(service: ThreeDSServiceProtocol,
+                                            error: Error,
                                             challengeAction: ThreeDS2ChallengeAction,
                                             completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
         switch service.isCancelled(error: error) {
         case true:
-            didFail(with: error,
+            didFail(service: service,
+                    with: error,
                     completionHandler: completionHandler)
         case false:
             if let opaqueError = service.opaqueErrorObject(error: error) {
-                didFinish(threeDS2SDKError: opaqueError,
+                didFinish(service: service,
+                          threeDS2SDKError: opaqueError,
                           authorizationToken: challengeAction.authorisationToken,
                           completionHandler: completionHandler)
             } else {
-                didFail(with: error,
+                didFail(service: service,
+                        with: error,
                         completionHandler: completionHandler)
             }
         }
     }
     
-    private func didFinish(threeDS2SDKError: String,
+    private func didFinish(service: ThreeDSServiceProtocol,
+                           threeDS2SDKError: String,
                            authorizationToken: String?,
                            completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
         do {
@@ -225,7 +232,8 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         }
     }
 
-    private func didFinish(with challengeResult: AnyChallengeResult,
+    private func didFinish(service: ThreeDSServiceProtocol,
+                           with challengeResult: AnyChallengeResult,
                            authorizationToken: String?,
                            completionHandler: @escaping (Result<ThreeDSResult, Error>) -> Void) {
         do {
@@ -241,9 +249,10 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         }
     }
     
-    private func didFail<R>(with error: Error,
+    private func didFail<R>(service: ThreeDSServiceProtocol?,
+                            with error: Error,
                             completionHandler: @escaping (Result<R, Error>) -> Void) {
-        service.resetTransaction()
+        service?.resetTransaction()
 
         completionHandler(.failure(error))
     }
