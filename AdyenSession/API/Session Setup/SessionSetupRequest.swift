@@ -90,10 +90,13 @@ extension SessionSetupResponse {
         
         internal let enableStoreDetails: Bool
         
+        internal let showRemovePaymentMethodButton: Bool
+        
         internal init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             
             self.enableStoreDetails = try container.decodeIfPresent(Bool.self, forKey: .enableStoreDetails) ?? false
+            self.showRemovePaymentMethodButton = try container.decodeIfPresent(Bool.self, forKey: .showRemovePaymentMethodButton) ?? false
             
             var installmentOptions = try container.decodeIfPresent(InstallmentConfiguration.self, forKey: .installmentOptions)
             let showInstallmentAmount = try container.decodeIfPresent(Bool.self, forKey: .showInstallmentAmount) ?? false
@@ -102,15 +105,19 @@ extension SessionSetupResponse {
             self.installmentOptions = installmentOptions
         }
         
-        internal init(installmentOptions: InstallmentConfiguration? = nil, enableStoreDetails: Bool) {
+        internal init(installmentOptions: InstallmentConfiguration? = nil,
+                      enableStoreDetails: Bool,
+                      showRemovePaymentMethodButton: Bool = false) {
             self.installmentOptions = installmentOptions
             self.enableStoreDetails = enableStoreDetails
+            self.showRemovePaymentMethodButton = showRemovePaymentMethodButton
         }
         
         private enum CodingKeys: String, CodingKey {
             case installmentOptions
             case enableStoreDetails
             case showInstallmentAmount
+            case showRemovePaymentMethodButton
         }
     }
 }

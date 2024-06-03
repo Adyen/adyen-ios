@@ -96,7 +96,14 @@ public final class DropInComponent: NSObject,
     public weak var partialPaymentDelegate: PartialPaymentDelegate?
     
     /// The stored payment methods delegate.
-    public weak var storedPaymentMethodsDelegate: StoredPaymentMethodsDelegate?
+    public weak var storedPaymentMethodsDelegate: StoredPaymentMethodsDelegate? {
+        didSet {
+            if let storedPaymentRemovable = storedPaymentMethodsDelegate as? StoredPaymentMethodRemovable,
+               storedPaymentRemovable.isSession {
+                configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = storedPaymentRemovable.showRemovePaymentMethodButton
+            }
+        }
+    }
 
     /// The delegate for user activity on card component.
     public weak var cardComponentDelegate: CardComponentDelegate?
