@@ -190,8 +190,10 @@ class UPIComponentUITests: XCTestCase {
         sut.currentSelectedItem = sut.upiAppsList.last
         sut.currentSelectedItem?.isSelected = true
         sut.virtualPaymentAddressItem.isHidden.wrappedValue = false
-        sut.virtualPaymentAddressItem.value = "testvpa@icici"
-        
+
+        let virtualPaymentAddressItem: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem")
+        self.populate(textItemView: virtualPaymentAddressItem, with: "testvpa@icici")
+
         assertViewControllerImage(matching: sut.viewController, named: "prefilled_vpa")
 
         let continueButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button")
