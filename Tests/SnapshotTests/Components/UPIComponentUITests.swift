@@ -64,6 +64,9 @@ class UPIComponentUITests: XCTestCase {
         style.textField.backgroundColor = .blue
     
         let config = UPIComponent.Configuration(style: style)
+        paymentMethod = UPIPaymentMethod(type: .upi,
+                                         name: "upi",
+                                         apps: upiApps)
         let sut = UPIComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: config)
@@ -106,6 +109,9 @@ class UPIComponentUITests: XCTestCase {
         style.segmentedControlStyle.textStyle.color = .red
     
         let config = UPIComponent.Configuration(style: style)
+        paymentMethod = UPIPaymentMethod(type: .upi,
+                                         name: "upi",
+                                         apps: upiApps)
         let sut = UPIComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: config)
@@ -114,16 +120,7 @@ class UPIComponentUITests: XCTestCase {
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration_Index_One")
     }
 
-    func testUIElementsForUPICollectFlowType() {
-        // Assert
-        let config = UPIComponent.Configuration(style: style)
-        let sut = UPIComponent(paymentMethod: paymentMethod,
-                               context: context,
-                               configuration: config)
-        assertViewControllerImage(matching: sut.viewController, named: "all_required_fields_exist")
-    }
-
-    func testUIElementsForUPIIntentFlowType() {
+    func testUIElementsForPayByAnyUPIAppFlowType() {
         // Assert
         let config = UPIComponent.Configuration(style: style)
         paymentMethod = UPIPaymentMethod(type: .upi,
