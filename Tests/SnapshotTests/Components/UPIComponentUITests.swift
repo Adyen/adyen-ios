@@ -117,9 +117,6 @@ class UPIComponentUITests: XCTestCase {
     func testUIElementsForUPICollectFlowType() {
         // Assert
         let config = UPIComponent.Configuration(style: style)
-        paymentMethod = UPIPaymentMethod(type: .upi,
-                                         name: "upi",
-                                         apps: [])
         let sut = UPIComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: config)
@@ -178,9 +175,6 @@ class UPIComponentUITests: XCTestCase {
     func testUPIComponentDetailsForUPICollectFlow() {
         // Given
         let config = UPIComponent.Configuration(style: style)
-        paymentMethod = UPIPaymentMethod(type: .upi,
-                                         name: "upi",
-                                         apps: [])
         let sut = UPIComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: config)
