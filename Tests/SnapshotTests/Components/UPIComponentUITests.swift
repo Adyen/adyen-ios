@@ -25,7 +25,7 @@ class UPIComponentUITests: XCTestCase {
         ]
         paymentMethod = UPIPaymentMethod(type: .upi,
                                          name: "upi",
-                                         apps: [])
+                                         apps: upiApps)
         context = Dummy.context
         style = FormComponentStyle()
         BrowserInfo.cachedUserAgent = "some_value"
@@ -64,9 +64,6 @@ class UPIComponentUITests: XCTestCase {
         style.textField.backgroundColor = .blue
     
         let config = UPIComponent.Configuration(style: style)
-        paymentMethod = UPIPaymentMethod(type: .upi,
-                                         name: "upi",
-                                         apps: upiApps)
         let sut = UPIComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: config)
@@ -109,9 +106,6 @@ class UPIComponentUITests: XCTestCase {
         style.segmentedControlStyle.textStyle.color = .red
     
         let config = UPIComponent.Configuration(style: style)
-        paymentMethod = UPIPaymentMethod(type: .upi,
-                                         name: "upi",
-                                         apps: upiApps)
         let sut = UPIComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: config)
@@ -123,9 +117,6 @@ class UPIComponentUITests: XCTestCase {
     func testUIElementsForPayByAnyUPIAppFlowType() {
         // Assert
         let config = UPIComponent.Configuration(style: style)
-        paymentMethod = UPIPaymentMethod(type: .upi,
-                                         name: "upi",
-                                         apps: upiApps)
         let sut = UPIComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: config)
@@ -135,10 +126,6 @@ class UPIComponentUITests: XCTestCase {
     func testUPIComponentDetailsForUPIIntentFlow() {
         // Given
         let config = UPIComponent.Configuration(style: style)
-        paymentMethod = UPIPaymentMethod(type: .upi,
-                                         name: "upi",
-                                         apps: upiApps)
-
         let sut = UPIComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: config)
@@ -160,6 +147,9 @@ class UPIComponentUITests: XCTestCase {
         }
 
         wait(for: .milliseconds(300))
+        
+        sut.currentSelectedItem = sut.upiAppsList.first
+        sut.virtualPaymentAddressItem.isVisible = false
 
         assertViewControllerImage(matching: sut.viewController, named: "upi_intent")
 
@@ -195,7 +185,7 @@ class UPIComponentUITests: XCTestCase {
         wait(for: .milliseconds(300))
 
         sut.currentSelectedItem = sut.upiAppsList.last
-        sut.virtualPaymentAddressItem.isVisible = false
+        sut.virtualPaymentAddressItem.isVisible = true
         sut.virtualPaymentAddressItem.value = "testvpa@icici"
         
         assertViewControllerImage(matching: sut.viewController, named: "prefilled_vpa")
