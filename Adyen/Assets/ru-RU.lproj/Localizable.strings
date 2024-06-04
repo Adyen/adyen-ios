@@ -180,6 +180,10 @@
 "adyen.upi.vpaWaitingMessage" = "Откройте приложение UPI для подтверждения платежа";
 "adyen.QRCode.generateQRCode" = "Создать QR-код";
 "adyen.UPI.QRCodeInstructions" = "Сделайте снимок экрана, чтобы загрузить его в приложение UPI, или отсканируйте QR-код своим любимым приложением UPI, чтобы оформить платеж.";
+"adyen.UPI.firstTabTitle" = "Оплата любым приложением UPI";
+"adyen.UPI.secondTabTitle" = "Другие варианты UPI";
+"adyen.UPI.collectDropdownLabel" = "Введите идентификатор UPI";
+"adyen.UPI.collectFieldLabel" = "Введите VPA или идентификатор UPI";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "На этом устройстве либо установлена устаревшая версия TWINT, либо это приложение не установлено вообще. Обновите или установите TWINT.";

@@ -372,6 +372,14 @@ public struct LocalizationKey {
     public static let QRCodeGenerateQRCode = LocalizationKey(key: "adyen.QRCode.generateQRCode")
     /// Take a screenshot to upload in the UPI app or scan the QR code using your preferred UPI app to complete the payment.
     public static let UPIQRCodeInstructions = LocalizationKey(key: "adyen.UPI.QRCodeInstructions")
+    /// Pay by any UPI app
+    public static let UPIFirstTabTitle = LocalizationKey(key: "adyen.UPI.firstTabTitle")
+    /// Other UPI options
+    public static let UPISecondTabTitle = LocalizationKey(key: "adyen.UPI.secondTabTitle")
+    /// Enter UPI ID
+    public static let UPICollectDropdownLabel = LocalizationKey(key: "adyen.UPI.collectDropdownLabel")
+    /// Enter UPI ID / VPA
+    public static let UPICollectFieldLabel = LocalizationKey(key: "adyen.UPI.collectFieldLabel")
     /// Cash App Pay
     public static let cashAppPayTitle = LocalizationKey(key: "adyen.cashAppPay.title")
     /// Cashtag

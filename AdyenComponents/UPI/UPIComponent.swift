@@ -49,7 +49,7 @@ public final class UPIComponent: PaymentComponent,
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
 
-    private var currentSelectedItem: SelectableFormItem?
+    internal var currentSelectedItem: SelectableFormItem?
 
     private var previousSelectedItem: SelectableFormItem?
 
@@ -66,6 +66,10 @@ public final class UPIComponent: PaymentComponent,
     private let upiPaymentMethod: UPIPaymentMethod
 
     internal var currentSelectedIndex: Int = 0
+
+    private var hasApps: Bool {
+        !upiPaymentMethod.apps.isEmpty
+    }
 
     /// Initializes the UPI  component.
     ///
@@ -89,8 +93,8 @@ public final class UPIComponent: PaymentComponent,
 
     /// The upi based payment instructions label item.
     internal lazy var instructionsLabelItem: FormLabelItem = {
-        // TODO: Add localisation
-        let item = FormLabelItem(text: "How would you like to use UPI?",
+        let item = FormLabelItem(text: localizedString(.upiModeSelection,
+                                                       configuration.localizationParameters),
                                  style: configuration.style.footnoteLabel)
         item.style.textAlignment = .left
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
@@ -100,13 +104,20 @@ public final class UPIComponent: PaymentComponent,
 
     /// The upi selection segment control item to choose the upi flow.
     internal lazy var upiFlowSelectionItem: FormSegmentedControlItem = {
-        // TODO: Add localisation
-        let item = FormSegmentedControlItem(items: ["Pay by any UPI app", "Other UPI options"],
-                                            style: configuration.style.segmentedControlStyle,
-                                            identifier: ViewIdentifierBuilder.build(
-                                                scopeInstance: self,
-                                                postfix: ViewIdentifier.upiFlowSelectionItem
-                                            ))
+        let item = FormSegmentedControlItem(
+            items: [
+                localizedString(.UPIFirstTabTitle,
+                                configuration.localizationParameters),
+                localizedString(.UPISecondTabTitle,
+                                configuration.localizationParameters)
+            ],
+            style: configuration.style.segmentedControlStyle,
+            identifier: ViewIdentifierBuilder.build(
+                scopeInstance: self,
+                postfix: ViewIdentifier.upiFlowSelectionItem
+            )
+        )
+
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                       postfix: ViewIdentifier.upiFlowSelectionItem)
         item.selectionHandler = { [weak self] changedIndex in
@@ -118,8 +129,8 @@ public final class UPIComponent: PaymentComponent,
     /// The  virtual payment address text input item.
     internal lazy var virtualPaymentAddressItem: FormTextInputItem = {
         let item = FormTextInputItem(style: configuration.style.textField)
-        // TODO: Add localised string
-        item.title = "Enter UPI ID / VPA"
+        item.title = localizedString(.UPICollectFieldLabel,
+                                     configuration.localizationParameters)
         item.validator = LengthValidator(minimumLength: 1)
         item.validationFailureMessage = localizedString(.UPIVpaValidationMessage, configuration.localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
@@ -140,7 +151,8 @@ public final class UPIComponent: PaymentComponent,
     /// The UPI enter UPI/VPA list item.
     internal lazy var vpaItem: SelectableFormItem = {
         let selectableItem = SelectableFormItem(
-            title: "Enter UPI ID",
+            title: localizedString(.UPICollectDropdownLabel,
+                                   configuration.localizationParameters),
             imageUrl: nil,
             isSelected: false,
             style: .init(),
@@ -161,7 +173,8 @@ public final class UPIComponent: PaymentComponent,
 
     /// The QRCode generation message item.
     internal lazy var qrCodeGenerationLabelContainerItem: FormContainerItem = {
-        let item = FormLabelItem(text: localizedString(.UPIQrcodeGenerationMessage, configuration.localizationParameters),
+        let item = FormLabelItem(text: localizedString(.UPIQrcodeGenerationMessage,
+                                                       configuration.localizationParameters),
                                  style: configuration.style.footnoteLabel)
         item.style.textAlignment = .center
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
@@ -233,15 +246,13 @@ public final class UPIComponent: PaymentComponent,
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
         formViewController.append(qrCodeGenerationLabelContainerItem)
 
-        if !upiPaymentMethod.apps.isEmpty {
+        if hasApps {
             for item in upiAppsList {
                 formViewController.append(item)
             }
-            formViewController.append(virtualPaymentAddressItem)
             virtualPaymentAddressItem.isHidden.wrappedValue = true
-        } else {
-            formViewController.append(virtualPaymentAddressItem)
         }
+        formViewController.append(virtualPaymentAddressItem)
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
         formViewController.append(continueButton)
 
@@ -306,17 +317,9 @@ public final class UPIComponent: PaymentComponent,
     }
 
     private func changeUPIAppsListVisiblity(shouldHide isHidden: Bool = false) {
-        if isHidden {
-            if !upiPaymentMethod.apps.isEmpty {
-                for app in upiAppsList {
-                    app.isHidden.wrappedValue = true
-                }
-            }
-        } else {
-            if !upiPaymentMethod.apps.isEmpty {
-                for app in upiAppsList {
-                    app.isHidden.wrappedValue = false
-                }
+        if hasApps {
+            for app in upiAppsList {
+                app.isHidden.wrappedValue = isHidden
             }
         }
     }

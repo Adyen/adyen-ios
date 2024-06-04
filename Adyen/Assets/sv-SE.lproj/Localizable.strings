@@ -180,6 +180,10 @@
 "adyen.upi.vpaWaitingMessage" = "Öppna din UPI-app för att bekräfta betalningen";
 "adyen.QRCode.generateQRCode" = "Generera QR-kod";
 "adyen.UPI.QRCodeInstructions" = "Ta en skärmdump att ladda upp i UPI-appen eller skanna QR-koden med din UPI-app för att slutföra betalningen.";
+"adyen.UPI.firstTabTitle" = "Betala med valfri UPI-app";
+"adyen.UPI.secondTabTitle" = "Andra UPI-alternativ";
+"adyen.UPI.collectDropdownLabel" = "Ange UPI-ID";
+"adyen.UPI.collectFieldLabel" = "Ange UPI-ID/VPA";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Ingen, eller en utgången, version av TWINT finns installerad på den här enheten. Uppdatera eller installera TWINT-appen.";

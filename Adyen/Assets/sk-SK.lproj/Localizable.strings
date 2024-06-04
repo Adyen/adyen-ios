@@ -180,6 +180,10 @@
 "adyen.upi.vpaWaitingMessage" = "Otvorte aplikáciu UPI a potvrďte platbu";
 "adyen.QRCode.generateQRCode" = "Generovať QR kód";
 "adyen.UPI.QRCodeInstructions" = "Urobte snímku obrazovky, ktorú nahrajte do aplikácie UPI, alebo naskenujte kód QR pomocou preferovanej aplikácie UPI a dokončite platbu.";
+"adyen.UPI.firstTabTitle" = "Plaťte pomocou ľubovoľnej aplikácie UPI";
+"adyen.UPI.secondTabTitle" = "Ďalšie možnosti UPI";
+"adyen.UPI.collectDropdownLabel" = "Zadajte UPI ID";
+"adyen.UPI.collectFieldLabel" = "Zadajte UPI ID / VPA";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "V tomto zariadení nie je nainštalovaná aplikácia TWINT, alebo je verzia aplikácie TWINT zastaraná. Prosím, aktualizujte si alebo si nainštalujte aplikáciu TWINT.";
