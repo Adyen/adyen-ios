@@ -148,8 +148,10 @@ class UPIComponentUITests: XCTestCase {
 
         wait(for: .milliseconds(300))
         
+        sut.currentSelectedIndex = 0
         sut.currentSelectedItem = sut.upiAppsList.first
-        sut.virtualPaymentAddressItem.isVisible = false
+        sut.currentSelectedItem?.isSelected = true
+        sut.virtualPaymentAddressItem.isHidden.wrappedValue = true
 
         assertViewControllerImage(matching: sut.viewController, named: "upi_intent")
 
@@ -184,8 +186,10 @@ class UPIComponentUITests: XCTestCase {
 
         wait(for: .milliseconds(300))
 
+        sut.currentSelectedIndex = 0
         sut.currentSelectedItem = sut.upiAppsList.last
-        sut.virtualPaymentAddressItem.isVisible = true
+        sut.currentSelectedItem?.isSelected = true
+        sut.virtualPaymentAddressItem.isHidden.wrappedValue = false
         sut.virtualPaymentAddressItem.value = "testvpa@icici"
         
         assertViewControllerImage(matching: sut.viewController, named: "prefilled_vpa")
