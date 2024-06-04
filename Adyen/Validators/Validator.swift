@@ -7,7 +7,6 @@
 import Foundation
 
 /// Validates a value.
-@_spi(AdyenInternal)
 public protocol Validator {
     
     /// Returns a boolean value indicating if the given value is valid.

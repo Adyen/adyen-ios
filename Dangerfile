@@ -19,10 +19,20 @@ def diff_contains_public_reference_changes(diffs)
 	    puts line
             return true
           end
+          if line.include?('@_spi')
+	    puts "Public reference removed"
+	    puts line
+            return true
+          end
         when /^-/
           # Lines starting with '-' are removals
           if line.include?('public')
 	    puts "Public reference removed"
+	    puts line
+            return true
+          end
+          if line.include?('@_spi')
+	    puts "Public reference added"
 	    puts line
             return true
           end
