@@ -2,9 +2,9 @@ name: Compatibility Test
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-    - develop
+  #push:
+   # branches:
+    #- develop
     
 jobs:
   tests:
