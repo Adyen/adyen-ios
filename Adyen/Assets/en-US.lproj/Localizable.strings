@@ -180,6 +180,10 @@
 "adyen.upi.vpaWaitingMessage" = "Open your UPI app to confirm the payment";
 "adyen.QRCode.generateQRCode" = "Generate QR code";
 "adyen.UPI.QRCodeInstructions" = "Take a screenshot to upload in the UPI app or scan the QR code using your preferred UPI app to complete the payment.";
+"adyen.UPI.firstTabTitle" = "Pay by any UPI app";
+"adyen.UPI.secondTabTitle" = "Other UPI options";
+"adyen.UPI.collectDropdownLabel" = "Enter UPI ID";
+"adyen.UPI.collectFieldLabel" = "Enter UPI ID / VPA";
 "adyen.cashAppPay.title" = "Cash App Pay";
 "adyen.cashAppPay.cashtag" = "Cashtag";
 "adyen.twint.noAppsInstalled.message" = "No or an outdated version of TWINT is installed on this device. Please update or install the TWINT app.";

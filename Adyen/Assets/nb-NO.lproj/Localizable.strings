@@ -180,6 +180,10 @@
 "adyen.upi.vpaWaitingMessage" = "Åpne UPI-appen for å bekrefte betalingen";
 "adyen.QRCode.generateQRCode" = "Generer QR-kode";
 "adyen.UPI.QRCodeInstructions" = "Ta et skjermbilde for opplasting i UPI-appen, eller skann QR-koden for å bruke din foretrukne UPI-app til å fullføre betalingen.";
+"adyen.UPI.firstTabTitle" = "Betal med hvilken som helst UPI-app";
+"adyen.UPI.secondTabTitle" = "Andre UPI-alternativer";
+"adyen.UPI.collectDropdownLabel" = "Angi UPI-ID";
+"adyen.UPI.collectFieldLabel" = "Skriv inn UPI-ID/VPA";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Du har enten ingen eller en utdatert versjon av TWINT på denne enheten. Du må enten oppdatere eller installere TWINT-appen.";

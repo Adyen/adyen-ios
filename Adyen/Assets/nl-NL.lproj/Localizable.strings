@@ -180,6 +180,10 @@
 "adyen.upi.vpaWaitingMessage" = "Open je UPI-app om de betaling te bevestigen";
 "adyen.QRCode.generateQRCode" = "Genereer QR-code";
 "adyen.UPI.QRCodeInstructions" = "Maak een schermafbeelding en upload deze in de UPI-app of scan de QR-code met je favoriete UPI-app om de betaling te voltooien.";
+"adyen.UPI.firstTabTitle" = "Betaal via elke UPI-app";
+"adyen.UPI.secondTabTitle" = "Andere UPI-opties";
+"adyen.UPI.collectDropdownLabel" = "UPI-ID invoeren";
+"adyen.UPI.collectFieldLabel" = "UPI-ID/VPA invoeren";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Er is geen of een verouderde versie van TWINT geïnstalleerd op dit apparaat. De TWINT-app moet worden bijgewerkt of geïnstalleerd.";
