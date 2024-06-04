@@ -14,10 +14,18 @@ class UPIComponentUITests: XCTestCase {
     private var paymentMethod: UPIPaymentMethod!
     private var context: AdyenContext!
     private var style: FormComponentStyle!
+    private var upiApps: [Issuer]!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        paymentMethod = UPIPaymentMethod(type: .upi, name: "upi")
+        upiApps = [
+            Issuer(identifier: "bhim", name: "BHIM"),
+            Issuer(identifier: "gpay", name: "Google Pay"),
+            Issuer(identifier: "phonepe", name: "PhonePe")
+        ]
+        paymentMethod = UPIPaymentMethod(type: .upi,
+                                         name: "upi",
+                                         apps: [])
         context = Dummy.context
         style = FormComponentStyle()
         BrowserInfo.cachedUserAgent = "some_value"
@@ -109,15 +117,70 @@ class UPIComponentUITests: XCTestCase {
     func testUIElementsForUPICollectFlowType() {
         // Assert
         let config = UPIComponent.Configuration(style: style)
+        paymentMethod = UPIPaymentMethod(type: .upi,
+                                         name: "upi",
+                                         apps: [])
         let sut = UPIComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: config)
         assertViewControllerImage(matching: sut.viewController, named: "all_required_fields_exist")
     }
 
+    func testUIElementsForUPIIntentFlowType() {
+        // Assert
+        let config = UPIComponent.Configuration(style: style)
+        paymentMethod = UPIPaymentMethod(type: .upi,
+                                         name: "upi",
+                                         apps: upiApps)
+        let sut = UPIComponent(paymentMethod: paymentMethod,
+                               context: context,
+                               configuration: config)
+        assertViewControllerImage(matching: sut.viewController, named: "all_required_fields_exist")
+    }
+
+    func testUPIComponentDetailsForUPIIntentFlow() {
+        // Given
+        let config = UPIComponent.Configuration(style: style)
+        paymentMethod = UPIPaymentMethod(type: .upi,
+                                         name: "upi",
+                                         apps: upiApps)
+
+        let sut = UPIComponent(paymentMethod: paymentMethod,
+                               context: context,
+                               configuration: config)
+        sut.currentSelectedIndex = 0
+
+        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+
+        let delegateMock = PaymentComponentDelegateMock()
+        sut.delegate = delegateMock
+
+        delegateMock.onDidSubmit = { data, component in
+            // Assert
+            XCTAssertTrue(component === sut)
+            XCTAssertTrue(data.paymentMethod is UPIComponentDetails)
+            let data = data.paymentMethod as! UPIComponentDetails
+            XCTAssertEqual(data.virtualPaymentAddress, nil)
+            XCTAssertEqual(data.type, "upi_intent")
+            didSubmitExpectation.fulfill()
+        }
+
+        wait(for: .milliseconds(300))
+
+        assertViewControllerImage(matching: sut.viewController, named: "upi_intent")
+
+        let continueButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button")
+        continueButton?.sendActions(for: .touchUpInside)
+    
+        waitForExpectations(timeout: 10, handler: nil)
+    }
+
     func testUPIComponentDetailsForUPICollectFlow() {
         // Given
         let config = UPIComponent.Configuration(style: style)
+        paymentMethod = UPIPaymentMethod(type: .upi,
+                                         name: "upi",
+                                         apps: [])
         let sut = UPIComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: config)
@@ -134,23 +197,24 @@ class UPIComponentUITests: XCTestCase {
             XCTAssertTrue(data.paymentMethod is UPIComponentDetails)
             let data = data.paymentMethod as! UPIComponentDetails
             XCTAssertEqual(data.virtualPaymentAddress, "testvpa@icici")
-            XCTAssertNotNil(data.type)
+            XCTAssertEqual(data.type, "upi_collect")
             didSubmitExpectation.fulfill()
         }
 
         wait(for: .milliseconds(300))
 
-        let virtualPaymentAddressItem: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem")
-        self.populate(textItemView: virtualPaymentAddressItem, with: "testvpa@icici")
-
+        sut.currentSelectedItem = sut.upiAppsList.last
+        sut.virtualPaymentAddressItem.isVisible = false
+        sut.virtualPaymentAddressItem.value = "testvpa@icici"
+        
         assertViewControllerImage(matching: sut.viewController, named: "prefilled_vpa")
 
         let continueButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button")
         continueButton?.sendActions(for: .touchUpInside)
-    
+
         waitForExpectations(timeout: 10, handler: nil)
     }
- 
+
     func testUPIComponentDetailsForUPIQRCodeFlow() {
         // Given
         let config = UPIComponent.Configuration(style: style)
