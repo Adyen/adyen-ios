@@ -26,6 +26,9 @@ public struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
     /// Describes the component's UI style.
     public var style: FormComponentStyle
 
+    /// A boolean value that determines whether the payment button is displayed. Defaults to `false`.
+    public var hideDefaultPayButton: Bool
+
     /// The localization parameters, leave it nil to use the default parameters.
     public var localizationParameters: LocalizationParameters?
 
@@ -38,18 +41,22 @@ public struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
     ///   - storePaymentMethod: Determines whether to store this payment method.
     ///   Ignored if `showsStorePaymentMethodField` is `true`.
     ///   - style: The UI style of the component.
+    ///   - hideDefaultPayButton: Boolean value that determines whether the payment button is displayed.
+    ///   Defaults to `false`.
     ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
     public init(redirectURL: URL,
                 referenceId: String? = nil,
                 showsStorePaymentMethodField: Bool = true,
                 storePaymentMethod: Bool = false,
                 style: FormComponentStyle = FormComponentStyle(),
+                hideDefaultPayButton: Bool = false,
                 localizationParameters: LocalizationParameters? = nil) {
         self.redirectURL = redirectURL
         self.referenceId = referenceId
         self.showsStorePaymentMethodField = showsStorePaymentMethodField
         self.storePaymentMethod = storePaymentMethod
         self.style = style
+        self.hideDefaultPayButton = hideDefaultPayButton
         self.localizationParameters = localizationParameters
     }
 }

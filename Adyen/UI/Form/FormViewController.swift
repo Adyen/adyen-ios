@@ -54,7 +54,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     ///   - style: The `FormViewController` UI style.
     ///   - localizationParameters: The localization parameters.
     public init(
-        scrollDisabled: Bool = false,
+        scrollDisabled: Bool,
         style: ViewStyle,
         localizationParameters: LocalizationParameters?
     ) {

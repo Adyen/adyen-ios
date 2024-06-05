@@ -35,6 +35,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
 
     internal lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
+            scrollDisabled: configuration.hideDefaultPayButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
