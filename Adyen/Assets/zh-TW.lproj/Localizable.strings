@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "繼續";
 "adyen.phoneNumber.title" = "電話號碼";
 "adyen.phoneNumber.invalid" = "電話號碼無效";
+"adyen.telephonePrefix" = "前綴";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ 位數";
 "adyen.emailItem.title" = "電子郵件地址";
@@ -83,8 +84,8 @@
 "adyen.billingAddress.placeholder" = "您的帳單地址";
 "adyen.deliveryAddressSection.title" = "派送地址";
 "adyen.deliveryAddress.placeholder" = "您的派送地址";
-"adyen.countryField.title" = "國家/地區";
-"adyen.countryField.placeholder" = "國家/地區";
+"adyen.countryField.title" = "國家／地區";
+"adyen.countryField.placeholder" = "國家／地區";
 "adyen.countryField.invalid" = "國家／地區無效";
 "adyen.addressField.title" = "地址";
 "adyen.addressField.placeholder" = "地址";
@@ -167,7 +168,7 @@
 "adyen.paybybank.subtitle" = "您的搜尋查詢找不到任何銀行……";
 "adyen.paybybank.title" = "沒有以下結果：";
 "adyen.search.placeholder" = "搜尋……";
-"adyen.upi.modeSelection" = "選擇所需的 UPI 使用方式。";
+"adyen.upi.modeSelection" = "您想如何使用 UPI？";
 "adyen.UPIVpa.validationMessage" = "輸入正確的虛擬付款地址";
 "adyen.UPIQrcode.generationMessage" = "產生可以下載或擷取螢幕畫面的 QR 代碼，然後將其上傳到 UPI 應用程式以完成付款。";
 "adyen.UPIQrcode.timerMessage" = "您有 %@ 的核准時間";
@@ -175,6 +176,7 @@
 "adyen.upi.vpaWaitingMessage" = "開啟您的 UPI 應用程式以確認付款";
 "adyen.QRCode.generateQRCode" = "產生 QR 代碼";
 "adyen.UPI.QRCodeInstructions" = "擷取螢幕畫面並上傳到 UPI 應用程式，或使用偏好的 UPI 應用程式掃描 QR 代碼以完成付款。";
+"adyen.twint.noAppsInstalled.message" = "這個裝置並未安裝 TWINT 的應用程式，或是可能安裝到了舊版的 TWINT 應用程式。 請更新或安裝 TWINT 的應用程式。";
 "adyen.threeds2.DA.registration.title" = "安全快捷的結帳！";
 "adyen.threeds2.DA.registration.description" = "下次您可以使用生物特徵辨識功能，在此裝置上更快結帳。";
 "adyen.threeds2.DA.registration.positiveButton" = "啟用快捷結帳";

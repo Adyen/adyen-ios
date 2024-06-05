@@ -1,43 +1,55 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import UIKit
 
+@_spi(AdyenInternal)
+public protocol FormPickable: Equatable {
+    var identifier: String { get }
+    var icon: UIImage? { get }
+    var title: String { get }
+    var subtitle: String? { get }
+    var trailingText: String? { get }
+}
+
 /// A wrapper struct to use as item in ``FormPickerItem``
 @_spi(AdyenInternal)
-public struct FormPickerElement: Equatable {
+public struct FormPickerElement: FormPickable {
     
     public let identifier: String
     public let icon: UIImage?
     public let title: String
     public let subtitle: String?
+    public let trailingText: String?
     
     public init(
         identifier: String,
         icon: UIImage? = nil,
         title: String,
-        subtitle: String?
+        subtitle: String? = nil,
+        trailingText: String? = nil
     ) {
         self.identifier = identifier
         self.icon = icon
         self.title = title
         self.subtitle = subtitle
+        self.trailingText = trailingText
     }
 }
 
 /// An form item for picking values.
 /// This class acts like an abstract class and is supposed to be subclassed.
 @_spi(AdyenInternal)
-open class FormPickerItem: FormSelectableValueItem<FormPickerElement?> {
+open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> {
     
     public let localizationParameters: LocalizationParameters?
     public private(set) var isOptional: Bool = false
     internal private(set) weak var presenter: ViewControllerPresenter?
     
-    override public var value: FormPickerElement? {
+    override public var value: Value? {
         didSet {
             updateValidationFailureMessage()
             updateFormattedValue()
@@ -45,7 +57,7 @@ open class FormPickerItem: FormSelectableValueItem<FormPickerElement?> {
     }
     
     @AdyenObservable([])
-    public var selectableValues: [FormPickerElement]
+    public var selectableValues: [Value]
 
     /// Initializes the form picker item item.
     /// - Parameters:
@@ -57,8 +69,8 @@ open class FormPickerItem: FormSelectableValueItem<FormPickerElement?> {
     ///   - localizationParameters: The localization parameters.
     ///   - identifier: The item identifier
     public init(
-        preselectedValue: FormPickerElement?,
-        selectableValues: [FormPickerElement],
+        preselectedValue: Value?,
+        selectableValues: [Value],
         title: String,
         placeholder: String,
         style: FormTextItemStyle,
@@ -105,6 +117,10 @@ open class FormPickerItem: FormSelectableValueItem<FormPickerElement?> {
         
         guard let value else { return false }
         return selectableValues.contains { $0.identifier == value.identifier }
+    }
+    
+    override public func validationStatus() -> ValidationStatus? {
+        nil
     }
     
     public func updateValidationFailureMessage() {

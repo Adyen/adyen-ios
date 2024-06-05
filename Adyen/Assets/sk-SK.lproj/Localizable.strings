@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Pokračovať";
 "adyen.phoneNumber.title" = "Telefónne číslo";
 "adyen.phoneNumber.invalid" = "Neplatné telefónne číslo";
+"adyen.telephonePrefix" = "Predpona k priezvisku (ak existuje)";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ číslice";
 "adyen.emailItem.title" = "E-mailová adresa";
@@ -87,9 +88,9 @@
 "adyen.billingAddress.placeholder" = "Vaša fakturačná adresa";
 "adyen.deliveryAddressSection.title" = "Dodacia adresa";
 "adyen.deliveryAddress.placeholder" = "Vaša dodacia adresa";
-"adyen.countryField.title" = "Krajina";
-"adyen.countryField.placeholder" = "Krajina";
-"adyen.countryField.invalid" = "Neplatná krajina";
+"adyen.countryField.title" = "Krajina/región";
+"adyen.countryField.placeholder" = "Krajina/región";
+"adyen.countryField.invalid" = "Neplatná krajina/región";
 "adyen.addressField.title" = "Adresa";
 "adyen.addressField.placeholder" = "Adresa";
 "adyen.streetField.title" = "Ulica";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Pre váš vyhľadávací dotaz sa nenašli žiadne banky…";
 "adyen.paybybank.title" = "Žiadne výsledky pre";
 "adyen.search.placeholder" = "Vyhľadávanie…";
-"adyen.upi.modeSelection" = "Vyberte si, ako by ste chceli používať UPI.";
+"adyen.upi.modeSelection" = "Ako by ste chceli použiť UPI?";
 "adyen.UPIVpa.validationMessage" = "Zadajte správnu adresu pre virtuálnu platbu";
 "adyen.UPIQrcode.generationMessage" = "Vygenerujte kód QR. Ten si môžete stiahnuť alebo môžete urobiť snímku obrazovky a nahrať ju do aplikácie UPI na dokončenie platby.";
 "adyen.UPIQrcode.timerMessage" = "Na schválenie máte %@";
@@ -181,6 +182,7 @@
 "adyen.UPI.QRCodeInstructions" = "Urobte snímku obrazovky, ktorú nahrajte do aplikácie UPI, alebo naskenujte kód QR pomocou preferovanej aplikácie UPI a dokončite platbu.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "V tomto zariadení nie je nainštalovaná aplikácia TWINT, alebo je verzia aplikácie TWINT zastaraná. Prosím, aktualizujte si alebo si nainštalujte aplikáciu TWINT.";
 "adyen.threeds2.DA.registration.title" = "Bezpečná a rýchla platba!";
 "adyen.threeds2.DA.registration.description" = "Nabudúce môžete v tomto zariadení zaplatiť rýchlejšie pomocou biometrických údajov.";
 "adyen.threeds2.DA.registration.positiveButton" = "Aktivovať rýchlu platbu";

@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Συνέχεια";
 "adyen.phoneNumber.title" = "Αριθμός τηλεφώνου";
 "adyen.phoneNumber.invalid" = "Μη έγκυρος αριθμός τηλεφώνου";
+"adyen.telephonePrefix" = "Πρόθεμα";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ψήφιος";
 "adyen.emailItem.title" = "Διεύθυνση email";
@@ -87,9 +88,9 @@
 "adyen.billingAddress.placeholder" = "Η διεύθυνση τιμολόγησής σας";
 "adyen.deliveryAddressSection.title" = "Διεύθυνση παράδοσης";
 "adyen.deliveryAddress.placeholder" = "Η διεύθυνση παράδοσής σας";
-"adyen.countryField.title" = "Χώρα";
-"adyen.countryField.placeholder" = "Χώρα";
-"adyen.countryField.invalid" = "Μη έγκυρη χώρα";
+"adyen.countryField.title" = "Χώρα/Περιοχή";
+"adyen.countryField.placeholder" = "Χώρα/Περιοχή";
+"adyen.countryField.invalid" = "Μη έγκυρη χώρα/περιοχή";
 "adyen.addressField.title" = "Διεύθυνση";
 "adyen.addressField.placeholder" = "Διεύθυνση";
 "adyen.streetField.title" = "Οδός";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Δεν βρέθηκαν τράπεζες που αντιστοιχούν στον όρο αναζήτησης…";
 "adyen.paybybank.title" = "Δεν υπάρχουν αποτελέσματα για:";
 "adyen.search.placeholder" = "Αναζήτηση…";
-"adyen.upi.modeSelection" = "Επιλέξτε μια ρύθμιση για τον τρόπο χρήσης του UPI.";
+"adyen.upi.modeSelection" = "Πώς θα θέλατε να χρησιμοποιήσετε το UPI;";
 "adyen.UPIVpa.validationMessage" = "Εισαγάγετε μια σωστή εικονική διεύθυνση πληρωμής";
 "adyen.UPIQrcode.generationMessage" = "Δημιουργήστε τον κωδικό QR που μπορείτε να λάβετε ή τραβήξτε ένα στιγμιότυπο και ανεβάστε το στην εφαρμογή UPI για να ολοκληρώσετε την πληρωμή.";
 "adyen.UPIQrcode.timerMessage" = "%@ προς έγκριση";
@@ -181,6 +182,7 @@
 "adyen.UPI.QRCodeInstructions" = "Τραβήξτε ένα στιγμιότυπο οθόνης για να το ανεβάσετε στην εφαρμογή UPI ή σαρώστε τον κωδικό QR χρησιμοποιώντας την εφαρμογή UPI που προτιμάτε για να ολοκληρώσετε την πληρωμή.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "Σε αυτή τη συσκευή το TWINT είτε δεν είναι εγκατεστημένο είτε είναι σε παλιά έκδοση. Ενημερώστε ή εγκαταστήστε την εφαρμογή TWINT.";
 "adyen.threeds2.DA.registration.title" = "Ασφαλής και γρήγορη πληρωμή!";
 "adyen.threeds2.DA.registration.description" = "Μπορείτε να πραγματοποιήσετε πληρωμή ταχύτερα την επόμενη φορά σε αυτήν τη συσκευή χρησιμοποιώντας τα βιομετρικά στοιχεία σας.";
 "adyen.threeds2.DA.registration.positiveButton" = "Ενεργοποίηση γρήγορης πληρωμής";

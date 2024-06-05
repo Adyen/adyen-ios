@@ -15,19 +15,19 @@ import PassKit
 internal enum ConfigurationConstants {
     // swiftlint:disable explicit_acl
     // swiftlint:disable line_length
-
+    
     /// Please use your own web server between your app and adyen checkout API.
     static let demoServerEnvironment = DemoCheckoutAPIEnvironment.test
     
     static let classicAPIEnvironment = DemoClassicAPIEnvironment.test
-
+    
     static let componentsEnvironment = Environment.test
-
+    
     static let appName = "Adyen Demo"
-
+    
     static let reference = "Test Order Reference - iOS UIHost"
-
-    static let returnUrl = "ui-host://payments"
+    
+    static var returnUrl: URL { .init(string: "ui-host://payments")! }
     
     static let shopperReference = "iOS Checkout Shopper"
 
@@ -100,7 +100,6 @@ internal struct CardSettings: Codable {
     internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
     internal var enableInstallments = false
     internal var showsInstallmentAmount = false
-    internal var showsCountryFlags = true
     
     internal enum AddressFormType: String, Codable, CaseIterable {
         case lookup
@@ -168,16 +167,17 @@ internal struct DemoAppSettings: Codable {
         analyticsSettings: defaultAnalyticsSettings
     )
 
-    internal static let defaultCardSettings = CardSettings(showsHolderNameField: false,
-                                                           showsStorePaymentMethodField: true,
-                                                           showsStoredCardSecurityCodeField: true,
-                                                           showsSecurityCodeField: true,
-                                                           addressMode: .none,
-                                                           socialSecurityNumberMode: .auto,
-                                                           koreanAuthenticationMode: .auto,
-                                                           enableInstallments: false,
-                                                           showsInstallmentAmount: false,
-                                                           showsCountryFlags: true)
+    internal static let defaultCardSettings = CardSettings(
+        showsHolderNameField: false,
+        showsStorePaymentMethodField: true,
+        showsStoredCardSecurityCodeField: true,
+        showsSecurityCodeField: true,
+        addressMode: .none,
+        socialSecurityNumberMode: .auto,
+        koreanAuthenticationMode: .auto,
+        enableInstallments: false,
+        showsInstallmentAmount: false
+    )
 
     internal static let defaultDropInSettings = DropInSettings(allowDisablingStoredPaymentMethods: false,
                                                                allowsSkippingPaymentList: false,
@@ -215,8 +215,7 @@ internal struct DemoAppSettings: Codable {
         var billingAddressConfig = BillingAddressConfiguration()
         billingAddressConfig.mode = cardComponentAddressFormType(from: cardSettings.addressMode)
         
-        var style = FormComponentStyle()
-        style.addressStyle.showCountryFlags = cardSettings.showsCountryFlags
+        let style = FormComponentStyle()
 
         return .init(style: style,
                      showsHolderNameField: cardSettings.showsHolderNameField,
@@ -248,8 +247,7 @@ internal struct DemoAppSettings: Codable {
     }
 
     internal var dropInConfiguration: DropInComponent.Configuration {
-        var style = DropInComponent.Style()
-        style.formComponent.addressStyle.showCountryFlags = cardSettings.showsCountryFlags
+        let style = DropInComponent.Style()
         
         let dropInConfig = DropInComponent.Configuration(
             style: style,
@@ -259,8 +257,9 @@ internal struct DemoAppSettings: Codable {
 
         dropInConfig.paymentMethodsList.allowDisablingStoredPaymentMethods = dropInSettings.allowDisablingStoredPaymentMethods
         if dropInSettings.cashAppPayEnabled {
-            dropInConfig.cashAppPay = .init(redirectURL: URL(string: ConfigurationConstants.returnUrl)!)
+            dropInConfig.cashAppPay = .init(redirectURL: ConfigurationConstants.returnUrl)
         }
+        dropInConfig.actionComponent.twint = .init(callbackAppScheme: ConfigurationConstants.returnUrl.scheme!)
 
         return dropInConfig
     }

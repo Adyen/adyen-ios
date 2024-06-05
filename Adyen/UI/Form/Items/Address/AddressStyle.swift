@@ -31,9 +31,6 @@ public struct AddressStyle: FormValueItemStyle {
     /// The color of form view item's separator line.
     public var separatorColor: UIColor? { textField.separatorColor }
     
-    /// Whether or not to show country flags in the country picker
-    public var showCountryFlags: Bool = true
-    
     /// Initializes the form address item configuration.
     /// - Parameters:
     ///   - title: The section header style.

@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Pokračovat";
 "adyen.phoneNumber.title" = "Telefonní číslo";
 "adyen.phoneNumber.invalid" = "Neplatné telefonní číslo";
+"adyen.telephonePrefix" = "Prefix";
 "adyen.phoneNumber.placeholder" = "123 456 789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ číslice";
 "adyen.emailItem.title" = "E-mailová adresa";
@@ -87,9 +88,9 @@
 "adyen.billingAddress.placeholder" = "Vaše fakturační adresa";
 "adyen.deliveryAddressSection.title" = "Dodací adresa";
 "adyen.deliveryAddress.placeholder" = "Vaše doručovací adresa";
-"adyen.countryField.title" = "Země";
-"adyen.countryField.placeholder" = "Země";
-"adyen.countryField.invalid" = "Neplatná země";
+"adyen.countryField.title" = "Země/region";
+"adyen.countryField.placeholder" = "Země/region";
+"adyen.countryField.invalid" = "Chybně zadaná země/region";
 "adyen.addressField.title" = "Adresa";
 "adyen.addressField.placeholder" = "Adresa";
 "adyen.streetField.title" = "Ulice";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Na váš vyhledávací dotaz nebyly nalezeny žádné banky…";
 "adyen.paybybank.title" = "Žádné výsledky pro";
 "adyen.search.placeholder" = "Hledat…";
-"adyen.upi.modeSelection" = "Vyberte si, jak chcete platební aplikaci UPI používat.";
+"adyen.upi.modeSelection" = "Jak chcete použít rozhraní UPI?";
 "adyen.UPIVpa.validationMessage" = "Zadejte správnou adresu pro virtuální platby";
 "adyen.UPIQrcode.generationMessage" = "Vygenerujte QR kód, který si můžete stáhnout nebo vyfotit na obrazovku a nahrajte jej do aplikace UPI, abyste mohli dokončit platbu.";
 "adyen.UPIQrcode.timerMessage" = "Máte %@ na schválení";
@@ -181,6 +182,7 @@
 "adyen.UPI.QRCodeInstructions" = "Pořiďte snímek obrazovky a nahrajte ho v aplikaci UPI nebo naskenujte QR kód ve své oblíbené aplikaci UPI a dokončete platbu.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "V tomto zařízení není nainstalována žádná verze TWINT nebo je zastaralá. Aktualizujte nebo nainstalujte aplikaci TWINT.";
 "adyen.threeds2.DA.registration.title" = "Bezpečné a rychlé odbavení!";
 "adyen.threeds2.DA.registration.description" = "Příště se na tomto zařízení můžete odbavit rychleji pomocí biometrických údajů.";
 "adyen.threeds2.DA.registration.positiveButton" = "Povolení rychlého odbavení";

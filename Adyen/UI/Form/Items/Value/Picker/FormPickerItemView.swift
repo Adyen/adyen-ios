@@ -1,14 +1,15 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import UIKit
 
-internal class FormPickerItemView: FormSelectableValueItemView<FormPickerElement, FormPickerItem> {
+@_spi(AdyenInternal)
+public class FormPickerItemView<Value: FormPickable>: FormSelectableValueItemView<Value, FormPickerItem<Value>> {
     
-    internal required init(item: FormPickerItem) {
+    internal required init(item: FormPickerItem<Value>) {
         super.init(item: item)
         item.selectionHandler = { [weak self] in
             
@@ -27,7 +28,7 @@ internal class FormPickerItemView: FormSelectableValueItemView<FormPickerElement
         }
     }
     
-    override internal func showValidation() {
+    override public func showValidation() {
         if item.isValid() {
             updateValidationStatus(forced: false)
         } else {
@@ -35,7 +36,7 @@ internal class FormPickerItemView: FormSelectableValueItemView<FormPickerElement
         }
     }
     
-    override internal func reset() {
+    override public func reset() {
         item.resetValue()
         resetValidationStatus()
     }

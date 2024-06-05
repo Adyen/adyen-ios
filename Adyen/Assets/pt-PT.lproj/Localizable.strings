@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Continuar";
 "adyen.phoneNumber.title" = "Número de telefone";
 "adyen.phoneNumber.invalid" = "Número de telefone inválido";
+"adyen.telephonePrefix" = "Prefixo";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ dígitos";
 "adyen.emailItem.title" = "Endereço de correio eletrónico";
@@ -87,9 +88,9 @@
 "adyen.billingAddress.placeholder" = "O seu endereço de faturação";
 "adyen.deliveryAddressSection.title" = "Morada de entrega";
 "adyen.deliveryAddress.placeholder" = "A sua morada de entrega";
-"adyen.countryField.title" = "País";
-"adyen.countryField.placeholder" = "País";
-"adyen.countryField.invalid" = "País inválido";
+"adyen.countryField.title" = "País/região";
+"adyen.countryField.placeholder" = "País/região";
+"adyen.countryField.invalid" = "País/região inválido";
 "adyen.addressField.title" = "Morada";
 "adyen.addressField.placeholder" = "Morada";
 "adyen.streetField.title" = "Rua";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Nenhum banco encontrado com a sua consulta de pesquisa…";
 "adyen.paybybank.title" = "Sem resultados para";
 "adyen.search.placeholder" = "Pesquisar…";
-"adyen.upi.modeSelection" = "Faça uma seleção de como gostaria de usar a UPI.";
+"adyen.upi.modeSelection" = "Como gostaria de usar a UPI?";
 "adyen.UPIVpa.validationMessage" = "Insira um endereço de pagamento virtual correto";
 "adyen.UPIQrcode.generationMessage" = "Crie o código QR que pode descarregar ou capturar e carregá-lo na aplicação UPI para concluir o pagamento.";
 "adyen.UPIQrcode.timerMessage" = "Tem %@ para aprovar";
@@ -181,6 +182,7 @@
 "adyen.UPI.QRCodeInstructions" = "Faça uma captura de ecrã para carregar na aplicação UPI ou verificar o código QR usando a sua aplicação UPI preferida para concluir o pagamento.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "Nenhuma versão ou uma versão desatualizada do TWINT está instalada neste dispositivo. Atualize ou instale a app TWINT.";
 "adyen.threeds2.DA.registration.title" = "Finalização da compra rápida e segura!";
 "adyen.threeds2.DA.registration.description" = "Pode finalizar a compra mais rapidamente da próxima vez neste dispositivo usando a sua biometria.";
 "adyen.threeds2.DA.registration.positiveButton" = "Ativar finalização da compra rápida";

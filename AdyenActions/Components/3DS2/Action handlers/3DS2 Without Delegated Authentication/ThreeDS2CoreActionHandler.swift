@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -26,8 +26,10 @@ internal protocol AnyThreeDS2CoreActionHandler: Component {
 
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
 internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
-    private enum Constant {
+    private enum Constants {
         static let transStatusWhenError = "U"
+        static let fingerprintEvent = "threeDS2Fingerprint"
+        static let challengeEvent = "threeDS2Challenge"
     }
     
     internal let context: AdyenContext
@@ -66,13 +68,18 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                          event: Analytics.Event,
                          completionHandler: @escaping (Result<String, Error>) -> Void) {
         Analytics.sendEvent(event)
-
+        sendFingerPrintEvent(.fingerprintSent)
+        
         createFingerprint(fingerprintAction) { [weak self] result in
+            guard let self else { return }
+            
+            self.sendFingerPrintEvent(.fingerprintComplete)
+            
             switch result {
             case let .success(encodedFingerprint):
                 completionHandler(.success(encodedFingerprint))
             case let .failure(error):
-                self?.didFail(with: error, completionHandler: completionHandler)
+                self.didFail(with: error, completionHandler: completionHandler)
             }
         }
     }
@@ -142,6 +149,8 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         }
 
         Analytics.sendEvent(event)
+        
+        sendChallengeEvent(.challengeDataSent)
 
         let token: ThreeDS2Component.ChallengeToken
         do {
@@ -152,15 +161,22 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
 
         let challengeParameters = ADYChallengeParameters(challengeToken: token,
                                                          threeDSRequestorAppURL: threeDSRequestorAppURL ?? token.threeDSRequestorAppURL)
+        
+        sendChallengeEvent(.challengeDisplayed)
+        
         transaction.performChallenge(with: challengeParameters) { [weak self] challengeResult, error in
+            guard let self else { return }
+            
+            self.sendChallengeEvent(.challengeComplete)
+            
             guard let result = challengeResult else {
-                self?.didReceiveErrorOnChallenge(error: error, challengeAction: challengeAction, completionHandler: completionHandler)
+                self.didReceiveErrorOnChallenge(error: error, challengeAction: challengeAction, completionHandler: completionHandler)
                 return
             }
 
-            self?.didFinish(with: result,
-                            authorizationToken: challengeAction.authorisationToken,
-                            completionHandler: completionHandler)
+            self.didFinish(with: result,
+                           authorizationToken: challengeAction.authorisationToken,
+                           completionHandler: completionHandler)
         }
     }
     
@@ -192,7 +208,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
             // When we get an error we need to send transStatus as "U" along with the threeDS2SDKError field.
             let threeDSResult = try ThreeDSResult(authorizationToken: authorizationToken,
                                                   threeDS2SDKError: threeDS2SDKError,
-                                                  transStatus: Constant.transStatusWhenError)
+                                                  transStatus: Constants.transStatusWhenError)
             transaction = nil
             completionHandler(.success(threeDSResult))
         } catch {
@@ -222,5 +238,24 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
 
         completionHandler(.failure(error))
     }
-
+    
+    // MARK: - Events {
+    
+    private func sendFingerPrintEvent(_ subtype: AnalyticsEventLog.LogSubType) {
+        let logEvent = AnalyticsEventLog(
+            component: Constants.fingerprintEvent,
+            type: .threeDS2,
+            subType: subtype
+        )
+        context.analyticsProvider?.add(log: logEvent)
+    }
+    
+    private func sendChallengeEvent(_ subtype: AnalyticsEventLog.LogSubType) {
+        let logEvent = AnalyticsEventLog(
+            component: Constants.challengeEvent,
+            type: .threeDS2,
+            subType: subtype
+        )
+        context.analyticsProvider?.add(log: logEvent)
+    }
 }

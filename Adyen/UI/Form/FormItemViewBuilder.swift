@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -26,12 +26,6 @@ public struct FormItemViewBuilder {
     @_spi(AdyenInternal)
     public func build(with item: FormPhoneNumberItem) -> FormItemView<FormPhoneNumberItem> {
         FormPhoneNumberItemView(item: item)
-    }
-    
-    /// Builds `FormPhoneExtensionPickerItemView` from `FormPhoneExtensionPickerItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormPhoneExtensionPickerItem) -> BaseFormPickerItemView<PhoneExtension> {
-        FormPhoneExtensionPickerItemView(item: item)
     }
 
     /// Builds `FormIssuerPickerItemView` from `FormIssuerPickerItem`.
@@ -110,8 +104,14 @@ public struct FormItemViewBuilder {
     
     /// Builds `FormPickerItemView` from `FormPickerItem`.
     @_spi(AdyenInternal)
-    public func build(with item: FormPickerItem) -> FormItemView<FormPickerItem> {
+    public func build<Value>(with item: FormPickerItem<Value>) -> FormItemView<FormPickerItem<Value>> {
         FormPickerItemView(item: item)
+    }
+    
+    /// Builds `FormPhoneExtensionPickerItemView` from `FormPhoneExtensionPickerItem`.
+    @_spi(AdyenInternal)
+    public func build(with item: FormPhoneExtensionPickerItem) -> FormPhoneExtensionPickerItemView {
+        FormPhoneExtensionPickerItemView(item: item)
     }
 
     @_spi(AdyenInternal)

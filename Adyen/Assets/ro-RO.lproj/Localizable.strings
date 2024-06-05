@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Continuare";
 "adyen.phoneNumber.title" = "Număr de telefon";
 "adyen.phoneNumber.invalid" = "Număr de telefon incorect";
+"adyen.telephonePrefix" = "Titulatură";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ cifre";
 "adyen.emailItem.title" = "Adresă de e-mail";
@@ -87,9 +88,9 @@
 "adyen.billingAddress.placeholder" = "Adresa dvs. de facturare";
 "adyen.deliveryAddressSection.title" = "Adresă de livrare";
 "adyen.deliveryAddress.placeholder" = "Adresa dvs. de livrare";
-"adyen.countryField.title" = "Țară";
-"adyen.countryField.placeholder" = "Țară";
-"adyen.countryField.invalid" = "Țară incorectă";
+"adyen.countryField.title" = "Țară/regiune";
+"adyen.countryField.placeholder" = "Țară/regiune";
+"adyen.countryField.invalid" = "Țară/regiune incorectă";
 "adyen.addressField.title" = "Adresă";
 "adyen.addressField.placeholder" = "Adresă";
 "adyen.streetField.title" = "Strada";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Nu s-au găsit bănci cu interogarea de căutare…";
 "adyen.paybybank.title" = "Nu există rezultate pentru";
 "adyen.search.placeholder" = "Căutare…";
-"adyen.upi.modeSelection" = "Selectați modul în care doriți să utilizați UPI.";
+"adyen.upi.modeSelection" = "Cum doriți să utilizați UPI?";
 "adyen.UPIVpa.validationMessage" = "Introduceți o adresă de plată virtuală corectă";
 "adyen.UPIQrcode.generationMessage" = "Generați codul QR pe care îl puteți descărca sau pe care îl puteți reda într-o captură de ecran și încărcați-l în aplicația UPI pentru a finaliza plata.";
 "adyen.UPIQrcode.timerMessage" = "Aveți %@ ca să aprobați";
@@ -181,6 +182,7 @@
 "adyen.UPI.QRCodeInstructions" = "Faceți o captură de ecran pentru a o încărca în aplicația UPI sau scanați codul QR folosind aplicația UPI preferată pentru a finaliza plata.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "Pe acest dispozitiv nu este instalată nicio versiune sau este o versiune depășită a TWINT. Actualizați sau instalați aplicația TWINT.";
 "adyen.threeds2.DA.registration.title" = "Proces de validare sigur și rapid!";
 "adyen.threeds2.DA.registration.description" = "Data viitoare, puteți efectua mai repede validarea de pe acest dispozitiv, utilizând datele biometrice.";
 "adyen.threeds2.DA.registration.positiveButton" = "Activați validarea rapidă";

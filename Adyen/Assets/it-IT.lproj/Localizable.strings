@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Continua";
 "adyen.phoneNumber.title" = "Numero di telefono";
 "adyen.phoneNumber.invalid" = "Numero di telefono non valido";
+"adyen.telephonePrefix" = "Prefisso";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ cifre";
 "adyen.emailItem.title" = "Indirizzo e-mail";
@@ -87,9 +88,9 @@
 "adyen.billingAddress.placeholder" = "Il tuo indirizzo di fatturazione";
 "adyen.deliveryAddressSection.title" = "Indirizzo di consegna";
 "adyen.deliveryAddress.placeholder" = "Il tuo indirizzo di consegna";
-"adyen.countryField.title" = "Paese";
-"adyen.countryField.placeholder" = "Paese";
-"adyen.countryField.invalid" = "Paese non valido";
+"adyen.countryField.title" = "Paese/Regione";
+"adyen.countryField.placeholder" = "Paese/Regione";
+"adyen.countryField.invalid" = "Paese/regione non validi";
 "adyen.addressField.title" = "Indirizzo";
 "adyen.addressField.placeholder" = "Indirizzo";
 "adyen.streetField.title" = "Via";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Non sono state trovate banche corrispondenti alla tua query di ricerca…";
 "adyen.paybybank.title" = "Nessun risultato per";
 "adyen.search.placeholder" = "Cerca…";
-"adyen.upi.modeSelection" = "Scegli la modalità di utilizzo di UPI.";
+"adyen.upi.modeSelection" = "Come vuoi utilizzare UPI?";
 "adyen.UPIVpa.validationMessage" = "Inserisci un indirizzo di pagamento virtuale corretto";
 "adyen.UPIQrcode.generationMessage" = "Per completare il pagamento, genera il codice QR scaricabile, oppure fai uno screenshot del codice e provvedi a caricarlo nell'app UPI.";
 "adyen.UPIQrcode.timerMessage" = "Hai a disposizione %@ per completare l'approvazione";
@@ -181,6 +182,7 @@
 "adyen.UPI.QRCodeInstructions" = "Per completare il pagamento, acquisisci uno screenshot da caricare nell'app UPI o scansiona il codice QR utilizzando l'app UPI che preferisci.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "Su questo dispositivo non è installata alcuna versione di TWINT, oppure la versione installata è obsoleta. Aggiorna o installa l'app TWINT.";
 "adyen.threeds2.DA.registration.title" = "Check-out sicuro e veloce!";
 "adyen.threeds2.DA.registration.description" = "Puoi effettuare il check-out più velocemente la prossima volta su questo dispositivo utilizzando i tuoi dati biometrici.";
 "adyen.threeds2.DA.registration.positiveButton" = "Abilita il checkout rapido";

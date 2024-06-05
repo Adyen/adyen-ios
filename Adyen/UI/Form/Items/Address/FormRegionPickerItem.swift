@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,14 +8,11 @@ import Foundation
 
 /// A picker form item for picking regions.
 @_spi(AdyenInternal)
-public final class FormRegionPickerItem: FormPickerItem {
-    
-    private let shouldShowCountryFlags: Bool
+public final class FormRegionPickerItem: FormPickerItem<FormPickerElement> {
     
     public required init(
         preselectedRegion: Region?,
         selectableRegions: [Region],
-        shouldShowCountryFlags: Bool,
         validationFailureMessage: String?,
         title: String,
         placeholder: String,
@@ -24,10 +21,8 @@ public final class FormRegionPickerItem: FormPickerItem {
         localizationParameters: LocalizationParameters? = nil,
         identifier: String? = nil
     ) {
-        let preselectedValue = preselectedRegion?.toFormPickerElement(shouldShowCountryFlag: shouldShowCountryFlags)
-        let selectableValues = selectableRegions.map { $0.toFormPickerElement(shouldShowCountryFlag: shouldShowCountryFlags) }
-        
-        self.shouldShowCountryFlags = shouldShowCountryFlags
+        let preselectedValue = preselectedRegion?.toFormPickerElement()
+        let selectableValues = selectableRegions.map { $0.toFormPickerElement() }
         
         super.init(
             preselectedValue: preselectedValue,
@@ -44,7 +39,7 @@ public final class FormRegionPickerItem: FormPickerItem {
     }
     
     public func updateValue(with region: Region?) {
-        self.value = region?.toFormPickerElement(shouldShowCountryFlag: shouldShowCountryFlags)
+        self.value = region?.toFormPickerElement()
     }
     
     override public func resetValue() {
@@ -64,20 +59,12 @@ public final class FormRegionPickerItem: FormPickerItem {
 
 private extension Region {
     
-    func toFormPickerElement(shouldShowCountryFlag: Bool) -> FormPickerElement {
+    func toFormPickerElement() -> FormPickerElement {
         .init(
             identifier: identifier,
             icon: nil,
             title: name,
-            subtitle: subtitle(showingCountryFlag: shouldShowCountryFlag)
+            subtitle: identifier
         )
-    }
-    
-    func subtitle(showingCountryFlag: Bool) -> String {
-        if showingCountryFlag, let countryFlag = identifier.adyen.countryFlag {
-            return "\(countryFlag) \(identifier)"
-        }
-        
-        return identifier
     }
 }

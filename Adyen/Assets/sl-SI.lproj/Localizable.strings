@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Nadaljuj";
 "adyen.phoneNumber.title" = "Telefonska številka";
 "adyen.phoneNumber.invalid" = "Neveljavna telefonska številka";
+"adyen.telephonePrefix" = "Naziv";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ števke";
 "adyen.emailItem.title" = "Elektronski naslov";
@@ -87,9 +88,9 @@
 "adyen.billingAddress.placeholder" = "Vaš naslov za račun";
 "adyen.deliveryAddressSection.title" = "Naslov za dostavo";
 "adyen.deliveryAddress.placeholder" = "Vaš naslov za dostavo";
-"adyen.countryField.title" = "Država";
-"adyen.countryField.placeholder" = "Država";
-"adyen.countryField.invalid" = "Neveljavna država";
+"adyen.countryField.title" = "Država/regija";
+"adyen.countryField.placeholder" = "Država/regija";
+"adyen.countryField.invalid" = "Neveljavna država/regija";
 "adyen.addressField.title" = "Naslov";
 "adyen.addressField.placeholder" = "Naslov";
 "adyen.streetField.title" = "Ulica";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Z vašo iskalno poizvedbo ni bilo mogoče najti nobene banke…";
 "adyen.paybybank.title" = "Ni rezultatov za";
 "adyen.search.placeholder" = "Iskanje…";
-"adyen.upi.modeSelection" = "Izberite, kako želite uporabljati aplikacijo UPI.";
+"adyen.upi.modeSelection" = "Kako bi želeli uporabiti UPI?";
 "adyen.UPIVpa.validationMessage" = "Vnesite pravilen virtualni naslov za plačilo";
 "adyen.UPIQrcode.generationMessage" = "Ustvarite kodo QR, ki jo lahko prenesete ali naredite posnetek zaslona, in jo za dokončanje plačila naložite v aplikacijo UPI.";
 "adyen.UPIQrcode.timerMessage" = "Za odobritev imate %@";
@@ -181,6 +182,7 @@
 "adyen.UPI.QRCodeInstructions" = "Za dokončanje plačila naredite posnetek zaslona, ki ga naložite v aplikacijo UPI, ali poskenirajte kodo QR z želeno aplikacijo UPI.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "V tej napravi ni nameščena različica aplikacije TWINT ali pa je zastarela. Posodobite ali namestite aplikacijo TWINT.";
 "adyen.threeds2.DA.registration.title" = "Varno in hitro dokončanje nakupov!";
 "adyen.threeds2.DA.registration.description" = "Naslednjič lahko v tej napravi hitreje dokončate nakup z uporabo biometričnih podatkov.";
 "adyen.threeds2.DA.registration.positiveButton" = "Omogoči hitro dokončanje nakupov";

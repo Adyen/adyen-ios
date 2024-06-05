@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,6 +16,9 @@
 #endif
 #if canImport(AdyenCashAppPay)
     import AdyenCashAppPay
+#endif
+#if canImport(AdyenTwint)
+    import AdyenTwint
 #endif
 import Foundation
 
@@ -175,7 +178,17 @@ extension ComponentManager: PaymentComponentBuilder {
                      context: context,
                      configuration: .init(style: configuration.style.formComponent))
     }
-    
+
+    internal func build(paymentMethod: TwintPaymentMethod) -> PaymentComponent? {
+        #if canImport(TwintSDK)
+            TwintComponent(paymentMethod: paymentMethod,
+                           context: context,
+                           configuration: .init(style: configuration.style.formComponent))
+        #else
+            return nil
+        #endif
+    }
+
     internal func build(paymentMethod: CashAppPayPaymentMethod) -> PaymentComponent? {
         #if canImport(PayKit)
             guard let cashAppPayDropInConfig = configuration.cashAppPay else {

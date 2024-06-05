@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "続ける";
 "adyen.phoneNumber.title" = "電話番号";
 "adyen.phoneNumber.invalid" = "無効な電話番号";
+"adyen.telephonePrefix" = "敬称";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@桁";
 "adyen.emailItem.title" = "Eメールアドレス";
@@ -87,9 +88,9 @@
 "adyen.billingAddress.placeholder" = "ご請求先住所";
 "adyen.deliveryAddressSection.title" = "配送先住所";
 "adyen.deliveryAddress.placeholder" = "配送先住所";
-"adyen.countryField.title" = "国";
-"adyen.countryField.placeholder" = "国";
-"adyen.countryField.invalid" = "国名が正しくありません";
+"adyen.countryField.title" = "国/地域";
+"adyen.countryField.placeholder" = "国/地域";
+"adyen.countryField.invalid" = "国/地域が正しくありません";
 "adyen.addressField.title" = "住所";
 "adyen.addressField.placeholder" = "住所";
 "adyen.streetField.title" = "番地";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "この検索クエリでは銀行は見つかりませんでした…";
 "adyen.paybybank.title" = "以下の結果はありません：";
 "adyen.search.placeholder" = "検索…";
-"adyen.upi.modeSelection" = "UPIの使用方法を選択します。";
+"adyen.upi.modeSelection" = "UPIをどのように使用しますか？";
 "adyen.UPIVpa.validationMessage" = "正しい仮想支払アドレスを入力してください";
 "adyen.UPIQrcode.generationMessage" = "ダウンロードまたはスクリーンショットで取得できるQRコードを生成し、UPIアプリにアップロードして支払いを完了します。";
 "adyen.UPIQrcode.timerMessage" = "承認まで残り%@";
@@ -181,6 +182,7 @@
 "adyen.UPI.QRCodeInstructions" = "スクリーンショットを撮影してUPIアプリにアップロードするか、お好みのUPIアプリを使用してQRコードをスキャンし、支払を完了してください。";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "このデバイスにはTWINTがインストールされていないか、古いバージョンがインストールされています。 TWINTアプリを更新またはインストールするようお願い申し上げます。";
 "adyen.threeds2.DA.registration.title" = "安全で迅速なチェックアウト！";
 "adyen.threeds2.DA.registration.description" = "この端末では次回から生体認証を使用することでより迅速にチェックアウトすることができます。";
 "adyen.threeds2.DA.registration.positiveButton" = "迅速なチェックアウトを有効にする";

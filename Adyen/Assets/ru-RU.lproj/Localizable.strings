@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Продолжить";
 "adyen.phoneNumber.title" = "Номер телефона";
 "adyen.phoneNumber.invalid" = "Недействительный номер телефона";
+"adyen.telephonePrefix" = "Приставка";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ цифры";
 "adyen.emailItem.title" = "Адрес эл. почты";
@@ -87,9 +88,9 @@
 "adyen.billingAddress.placeholder" = "Ваш платежный адрес";
 "adyen.deliveryAddressSection.title" = "Адрес доставки";
 "adyen.deliveryAddress.placeholder" = "Ваш адрес доставки";
-"adyen.countryField.title" = "Страна";
-"adyen.countryField.placeholder" = "Страна";
-"adyen.countryField.invalid" = "Неправильная страна";
+"adyen.countryField.title" = "Страна/регион";
+"adyen.countryField.placeholder" = "Страна/регион";
+"adyen.countryField.invalid" = "Неправильная страна/регион";
 "adyen.addressField.title" = "Адрес";
 "adyen.addressField.placeholder" = "Адрес";
 "adyen.streetField.title" = "Улица";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "По вашему поисковому запросу банк не найден…";
 "adyen.paybybank.title" = "Ничего не найдено по запросу";
 "adyen.search.placeholder" = "Поиск…";
-"adyen.upi.modeSelection" = "Укажите, как вы собираетесь использовать UPI.";
+"adyen.upi.modeSelection" = "Как вы хотите использовать UPI?";
 "adyen.UPIVpa.validationMessage" = "Введите правильный адрес виртуальных платежей";
 "adyen.UPIQrcode.generationMessage" = "Сгенерируйте загружаемый QR-код или снимок экрана и отправьте его в приложение UPI, чтобы завершить оплату.";
 "adyen.UPIQrcode.timerMessage" = "На одобрение отведено %@";
@@ -181,6 +182,7 @@
 "adyen.UPI.QRCodeInstructions" = "Сделайте снимок экрана, чтобы загрузить его в приложение UPI, или отсканируйте QR-код своим любимым приложением UPI, чтобы оформить платеж.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "На этом устройстве либо установлена устаревшая версия TWINT, либо это приложение не установлено вообще. Обновите или установите TWINT.";
 "adyen.threeds2.DA.registration.title" = "Безопасная и быстрая оплата!";
 "adyen.threeds2.DA.registration.description" = "В следующий раз вы сможете быстрее оформить заказ на этом устройстве, используя свои биометрические данные.";
 "adyen.threeds2.DA.registration.positiveButton" = "Включите быстрое оформление заказа";

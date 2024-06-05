@@ -1,10 +1,16 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
+
+@_spi(AdyenInternal)
+public protocol PaymentInitiable {
+    /// Initiate the payment flow
+    func initiatePayment()
+}
 
 /// A component that handles payment methods that don't need any payment detail to be filled.
 public final class InstantPaymentComponent: PaymentComponent {
@@ -61,6 +67,9 @@ public final class InstantPaymentComponent: PaymentComponent {
         submit(data: paymentData)
     }
 }
+
+@_spi(AdyenInternal)
+extension InstantPaymentComponent: PaymentInitiable {}
 
 /// Describes a payment details that contains nothing but the payment method type name.
 public struct InstantPaymentDetails: PaymentMethodDetails {

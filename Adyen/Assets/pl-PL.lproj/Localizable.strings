@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Kontynuuj";
 "adyen.phoneNumber.title" = "Numer telefonu";
 "adyen.phoneNumber.invalid" = "Nieprawidłowy numer telefonu";
+"adyen.telephonePrefix" = "Prefiks";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ cyfry";
 "adyen.emailItem.title" = "Adres e-mail";
@@ -87,9 +88,9 @@
 "adyen.billingAddress.placeholder" = "Twój adres rozliczeniowy";
 "adyen.deliveryAddressSection.title" = "Adres dostawy";
 "adyen.deliveryAddress.placeholder" = "Adres dostawy";
-"adyen.countryField.title" = "Kraj";
-"adyen.countryField.placeholder" = "Kraj";
-"adyen.countryField.invalid" = "Nieprawidłowy kraj";
+"adyen.countryField.title" = "Kraj/Region";
+"adyen.countryField.placeholder" = "Kraj/Region";
+"adyen.countryField.invalid" = "Nieprawidłowy kraj/region";
 "adyen.addressField.title" = "Adres";
 "adyen.addressField.placeholder" = "Adres";
 "adyen.streetField.title" = "Ulica";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Nie znaleziono banków odpowiadających zapytaniu…";
 "adyen.paybybank.title" = "Brak wyników dla";
 "adyen.search.placeholder" = "Szukaj…";
-"adyen.upi.modeSelection" = "Dokonaj wyboru sposobu korzystania z UPI.";
+"adyen.upi.modeSelection" = "Jak chcesz korzystać z UPI?";
 "adyen.UPIVpa.validationMessage" = "Wpisz prawidłowy adres płatności wirtualnej";
 "adyen.UPIQrcode.generationMessage" = "Wygeneruj kod QR, który można pobrać lub zrób zrzut ekranu i załaduj do aplikacji UPI, aby zakończyć płatność.";
 "adyen.UPIQrcode.timerMessage" = "Masz %@ do zatwierdzenia";
@@ -181,6 +182,7 @@
 "adyen.UPI.QRCodeInstructions" = "Zrób zrzut ekranu, aby przesłać go w aplikacji UPI lub zeskanuj kod QR za pomocą preferowanej aplikacji UPI, aby zakończyć płatność.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "Na tym urządzeniu nie ma żadnej wersji TWINT lub jest ona nieaktualna. Zaktualizuj lub zainstaluj aplikację TWINT.";
 "adyen.threeds2.DA.registration.title" = "Bezpieczna i szybka kasa!";
 "adyen.threeds2.DA.registration.description" = "Następnym razem na tym urządzeniu możesz dokończyć transakcję szybciej, korzystając ze swoich danych biometrycznych.";
 "adyen.threeds2.DA.registration.positiveButton" = "Włączenie szybkiej kasy";

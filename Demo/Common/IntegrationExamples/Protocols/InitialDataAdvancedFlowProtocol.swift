@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,17 +14,10 @@ internal protocol InitialDataAdvancedFlowProtocol: AnyObject {
     func requestPaymentMethods(order: PartialPaymentOrder?,
                                amount: Amount,
                                completion: @escaping (Result<PaymentMethods, Error>) -> Void)
+    func generateContext() -> AdyenContext
 }
 
 extension InitialDataAdvancedFlowProtocol {
-
-    internal var context: AdyenContext {
-        var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
-        return AdyenContext(apiContext: ConfigurationConstants.apiContext,
-                            payment: ConfigurationConstants.current.payment,
-                            analyticsConfiguration: analyticsConfiguration)
-    }
 
     internal func requestPaymentMethods(order: PartialPaymentOrder?,
                                         amount: Amount = ConfigurationConstants.current.amount,
@@ -38,6 +31,14 @@ extension InitialDataAdvancedFlowProtocol {
                 completion(.failure(error))
             }
         }
+    }
+    
+    func generateContext() -> AdyenContext {
+        var analyticsConfiguration = AnalyticsConfiguration()
+        analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
+        return AdyenContext(apiContext: ConfigurationConstants.apiContext,
+                            payment: ConfigurationConstants.current.payment,
+                            analyticsConfiguration: analyticsConfiguration)
     }
 
 }

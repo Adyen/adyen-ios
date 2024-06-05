@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,6 +15,9 @@
     @_spi(AdyenInternal) import AdyenCard
 #endif
 import AdyenNetworking
+#if canImport(AdyenTwint)
+    import AdyenTwint
+#endif
 import UIKit
 
 /**
@@ -171,8 +174,8 @@ public final class DropInComponent: NSObject,
     
     internal lazy var rootComponent: PresentableComponent = {
         if configuration.allowPreselectedPaymentView,
-           let preselectedComponents = componentManager.storedComponents.first {
-            return preselectedPaymentMethodComponent(for: preselectedComponents, onCancel: nil)
+           let preselectedComponent = componentManager.storedComponents.first {
+            return preselectedPaymentMethodComponent(for: preselectedComponent, onCancel: nil)
         } else if configuration.allowsSkippingPaymentList,
                   let singleRegularComponent = componentManager.singleRegularComponent {
             setNecessaryDelegates(on: singleRegularComponent)
@@ -198,6 +201,7 @@ public final class DropInComponent: NSObject,
         handler.presentationDelegate = self
         handler.configuration.localizationParameters = configuration.localizationParameters
         handler.configuration.threeDS = configuration.actionComponent.threeDS
+        handler.configuration.twint = configuration.actionComponent.twint
         return handler
     }()
     
@@ -232,7 +236,7 @@ public final class DropInComponent: NSObject,
         switch component {
         case let component as PresentableComponent:
             navigationController.present(asModal: component)
-        case let component as InstantPaymentComponent:
+        case let component as PaymentInitiable:
             component.initiatePayment()
         default:
             break

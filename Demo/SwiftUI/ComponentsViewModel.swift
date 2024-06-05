@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -107,12 +107,12 @@ internal final class ComponentsViewModel: ObservableObject, Identifiable {
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
                 ComponentsItem(
                     title: "Issuer List",
-                    subtitle: "e.g. Ideal, Open Banking, ...",
+                    subtitle: "e.g. Open Banking, ...",
                     selectionHandler: presentIssuerListComponent
                 ),
                 ComponentsItem(
                     title: "Instant/Redirect Payment",
-                    subtitle: "e.g. PayPal, Alipay, ...",
+                    subtitle: "e.g. iDEAL, PayPal, Alipay, ...",
                     selectionHandler: presentInstantPaymentComponent
                 )
             ]

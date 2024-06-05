@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -28,6 +28,10 @@ internal final class VoucherView: UIView, Localizable {
     private lazy var containerView = UIView()
     
     private lazy var loadingView = LoadingView(contentView: containerView)
+    
+    private var imageLoadingTask: AdyenCancellable? {
+        willSet { imageLoadingTask?.cancel() }
+    }
     
     internal init(model: Model) {
         self.model = model
@@ -122,8 +126,8 @@ internal final class VoucherView: UIView, Localizable {
         return stackView
     }()
     
-    internal lazy var logo: NetworkImageView = {
-        let logo = NetworkImageView()
+    internal lazy var logo: UIImageView = {
+        let logo = UIImageView()
         let logoSize = CGSize(width: 77.0, height: 50.0)
         logo.contentMode = .scaleAspectFit
         logo.clipsToBounds = true
@@ -132,9 +136,6 @@ internal final class VoucherView: UIView, Localizable {
         logo.widthAnchor.constraint(equalToConstant: logoSize.width).isActive = true
         logo.heightAnchor.constraint(equalToConstant: logoSize.height).isActive = true
         logo.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "logo")
-        
-        logo.imageURL = model.logoUrl
-        
         return logo
     }()
     
@@ -248,4 +249,16 @@ internal final class VoucherView: UIView, Localizable {
         )
     }
     
+    override public func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        updateLogo()
+    }
+    
+    private func updateLogo() {
+        if superview == nil {
+            imageLoadingTask = nil
+        } else {
+            imageLoadingTask = logo.load(url: model.logoUrl, using: model.imageLoader)
+        }
+    }
 }

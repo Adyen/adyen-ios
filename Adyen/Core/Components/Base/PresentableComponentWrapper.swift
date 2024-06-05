@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -24,7 +24,7 @@ public final class PresentableComponentWrapper: PresentableComponent,
     /// The wrapped component.
     public let component: Component
     
-    public let requiresModalPresentation: Bool = true
+    public var requiresModalPresentation: Bool = true
     
     @_spi(AdyenInternal)
     public var navBarType: NavigationBarType

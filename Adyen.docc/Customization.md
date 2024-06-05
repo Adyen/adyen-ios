@@ -2,6 +2,10 @@
 
 Both the Drop-in and the Components offer a number of customization options to allow you to match the appearance of your app.
 
+## Localization
+
+To customize strings, see: <doc:Localization>.
+
 ## Styling
 
 For example, to change the section header titles and form field titles in the Drop-in to red, and turn the submit button's background to black with white foreground:
@@ -14,7 +18,6 @@ For example, to change the section header titles and form field titles in the Dr
         style.formComponent.textField.title.color = .red
         style.formComponent.mainButtonItem.button.backgroundColor = .black
         style.formComponent.mainButtonItem.button.title.color = .white
-        style.formComponent.addressStyle.showCountryFlags = false // Hiding flags from the country picker
 
         let configuration = DropInComponent.Configuration(style: style)
         let component = DropInComponent(paymentMethods: paymentMethods,
@@ -31,7 +34,6 @@ For example, to change the section header titles and form field titles in the Dr
         style.textField.title.color = .white
         style.textField.text.color = .white
         style.switch.title.color = .white
-        style.addressStyle.showCountryFlags = false // Hiding flags from the country picker
 
         let config = CardComponent.Configuration(style: style)
         let component = CardComponent(paymentMethod: paymentMethod,

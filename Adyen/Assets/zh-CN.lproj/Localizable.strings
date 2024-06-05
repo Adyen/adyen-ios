@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "继续";
 "adyen.phoneNumber.title" = "电话号码";
 "adyen.phoneNumber.invalid" = "无效的电话号码";
+"adyen.telephonePrefix" = "前缀";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ 位数";
 "adyen.emailItem.title" = "电子邮件地址";
@@ -168,7 +169,7 @@
 "adyen.paybybank.subtitle" = "未找到搜索查询的银行……";
 "adyen.paybybank.title" = "无以下内容的结果：";
 "adyen.search.placeholder" = "搜索……";
-"adyen.upi.modeSelection" = "请选择您希望如何使用 UPI。";
+"adyen.upi.modeSelection" = "您打算如何使用 UPI？";
 "adyen.UPIVpa.validationMessage" = "输入正确的虚拟支付地址";
 "adyen.UPIQrcode.generationMessage" = "生成可以下载或截屏的二维码，然后将其上传到 UPI 应用以完成付款。";
 "adyen.UPIQrcode.timerMessage" = "您还有 %@ 可批准";
@@ -176,6 +177,7 @@
 "adyen.upi.vpaWaitingMessage" = "打开您的 UPI 应用以确认付款";
 "adyen.QRCode.generateQRCode" = "生成二维码";
 "adyen.UPI.QRCodeInstructions" = "截取屏幕截图以上传到 UPI 应用，或者使用您首选的 UPI 应用扫描二维码以完成付款。";
+"adyen.twint.noAppsInstalled.message" = "此设备上未安装 TWINT 或安装的 TWINT 版本已过期。请更新或安装 TWINT 应用。";
 "adyen.threeds2.DA.registration.title" = "安全快捷结账！";
 "adyen.threeds2.DA.registration.description" = "下次您可以使用生物识别技术在此设备上更快地结账。";
 "adyen.threeds2.DA.registration.positiveButton" = "启用快捷结账";

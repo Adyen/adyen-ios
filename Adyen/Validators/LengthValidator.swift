@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,6 +7,7 @@
 import Foundation
 
 /// A generic validator that validates the length of a string.
+@_spi(AdyenInternal)
 open class LengthValidator: Validator {
     
     /// The minimum length of the string.

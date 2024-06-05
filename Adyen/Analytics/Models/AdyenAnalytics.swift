@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,7 +19,7 @@ public final class AnalyticsForSession {
 @_spi(AdyenInternal)
 /// A protocol that defines the events that can occur under Checkout Analytics.
 public protocol AnalyticsEvent: Encodable {
-    var timestamp: TimeInterval { get }
+    var timestamp: Int { get }
     
     var component: String { get }
     
@@ -35,6 +35,7 @@ public enum AnalyticsEventTarget: String, Encodable {
     case dualBrand
     case boletoSocialSecurityNumber = "social_security_number"
     case taxNumber = "tax_number"
+    case authPassWord = "password"
     case addressStreet = "street"
     case addressHouseNumber = "house_number_or_name"
     case addressCity = "city"

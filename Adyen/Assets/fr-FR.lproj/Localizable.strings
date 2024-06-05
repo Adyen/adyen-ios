@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Continuer";
 "adyen.phoneNumber.title" = "Numéro de téléphone";
 "adyen.phoneNumber.invalid" = "Numéro de téléphone incorrect";
+"adyen.telephonePrefix" = "Préfixe";
 "adyen.phoneNumber.placeholder" = "01 23 45 67 89";
 "adyen.card.cvcItem.placeholder.digits" = "%@ chiffres";
 "adyen.emailItem.title" = "Adresse e-mail";
@@ -87,9 +88,9 @@
 "adyen.billingAddress.placeholder" = "Votre adresse de facturation";
 "adyen.deliveryAddressSection.title" = "Adresse de livraison";
 "adyen.deliveryAddress.placeholder" = "Votre adresse de livraison";
-"adyen.countryField.title" = "Pays";
-"adyen.countryField.placeholder" = "Pays";
-"adyen.countryField.invalid" = "Pays non valide";
+"adyen.countryField.title" = "Pays/Région";
+"adyen.countryField.placeholder" = "Pays/Région";
+"adyen.countryField.invalid" = "Pays/Région non valide";
 "adyen.addressField.title" = "Adresse";
 "adyen.addressField.placeholder" = "Adresse";
 "adyen.streetField.title" = "Rue";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Aucune banque ne correspond à votre recherche…";
 "adyen.paybybank.title" = "Aucun résultat pour";
 "adyen.search.placeholder" = "Recherche…";
-"adyen.upi.modeSelection" = "Choisissez la façon dont vous souhaitez utiliser l'application UPI.";
+"adyen.upi.modeSelection" = "Comment souhaitez-vous utiliser UPI ?";
 "adyen.UPIVpa.validationMessage" = "Entrez une adresse de paiement virtuelle valide";
 "adyen.UPIQrcode.generationMessage" = "Générez le code QR à télécharger ou à prendre en photo et importez-le dans l'application UPI pour effectuer le paiement.";
 "adyen.UPIQrcode.timerMessage" = "Vous avez %@ pour approuver";
@@ -181,6 +182,7 @@
 "adyen.UPI.QRCodeInstructions" = "Effectuez une capture d'écran afin de l'importer dans l'application UPI ou scannez le code QR à l'aide de votre application UPI préférée pour procéder au paiement.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "Aucune version de TWINT n'est installée sur cet appareil, ou celle-ci est obsolète. Veuillez mettre à jour ou installer l'application TWINT.";
 "adyen.threeds2.DA.registration.title" = "Payez rapidement et en toute sécurité !";
 "adyen.threeds2.DA.registration.description" = "Vous pourrez payer plus rapidement la prochaine fois sur cet appareil à l'aide de vos données biométriques.";
 "adyen.threeds2.DA.registration.positiveButton" = "Activer le paiement rapide";

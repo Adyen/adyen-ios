@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -26,6 +26,8 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem> {
         return collectionView
     }()
     
+    internal lazy var imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
+    
     internal required init(item: FormCardLogosItem) {
         super.init(item: item)
         addSubview(collectionView)
@@ -43,7 +45,12 @@ extension FormCardLogosItemView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardLogoCell.reuseIdentifier, for: indexPath)
         if let cell = cell as? CardLogoCell, let logo = item.cardLogos.adyen[safeIndex: indexPath.row] {
-            cell.update(imageUrl: logo.url, altText: logo.type.name, style: item.style.icon)
+            cell.update(
+                imageUrl: logo.url,
+                altText: logo.type.name,
+                style: item.style.icon,
+                imageLoader: imageLoader
+            )
         }
         return cell
     }
@@ -81,7 +88,13 @@ extension FormCardLogosItemView {
         
         fileprivate static let reuseIdentifier = "CardLogoCell"
         
-        private lazy var cardTypeImageView = NetworkImageView()
+        private lazy var cardTypeImageView = UIImageView()
+        
+        private var imageUrl: URL?
+        private var imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
+        private var imageLoadingTask: AdyenCancellable? {
+            willSet { imageLoadingTask?.cancel() }
+        }
         
         override private init(frame: CGRect) {
             super.init(frame: frame)
@@ -94,8 +107,9 @@ extension FormCardLogosItemView {
             fatalError("init(coder:) has not been implemented")
         }
         
-        internal func update(imageUrl: URL, altText: String, style: ImageStyle) {
-            cardTypeImageView.imageURL = imageUrl
+        internal func update(imageUrl: URL, altText: String, style: ImageStyle, imageLoader: ImageLoading) {
+            self.imageUrl = imageUrl
+            self.imageLoader = imageLoader
             
             cardTypeImageView.isAccessibilityElement = true
             cardTypeImageView.accessibilityValue = altText
@@ -106,7 +120,21 @@ extension FormCardLogosItemView {
             cardTypeImageView.layer.borderColor = style.borderColor?.cgColor
             cardTypeImageView.backgroundColor = style.backgroundColor
             cardTypeImageView.adyen.round(using: style.cornerRounding)
+            
+            updateIcon()
         }
         
+        override public func didMoveToWindow() {
+            super.didMoveToWindow()
+            updateIcon()
+        }
+        
+        private func updateIcon() {
+            if let imageUrl, window != nil {
+                imageLoadingTask = cardTypeImageView.load(url: imageUrl, using: imageLoader)
+            } else {
+                imageLoadingTask = nil
+            }
+        }
     }
 }

@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Jatka";
 "adyen.phoneNumber.title" = "Puhelinnumero";
 "adyen.phoneNumber.invalid" = "Ei-kelvollinen puhelinnumero";
+"adyen.telephonePrefix" = "Etuliite";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ lukua";
 "adyen.emailItem.title" = "Sähköpostiosoite";
@@ -87,9 +88,9 @@
 "adyen.billingAddress.placeholder" = "Laskutusosoitteesi";
 "adyen.deliveryAddressSection.title" = "Toimitusosoite";
 "adyen.deliveryAddress.placeholder" = "Toimitusosoitteesi";
-"adyen.countryField.title" = "Maa";
-"adyen.countryField.placeholder" = "Maa";
-"adyen.countryField.invalid" = "Virheellinen maa";
+"adyen.countryField.title" = "Maa/alue";
+"adyen.countryField.placeholder" = "Maa/alue";
+"adyen.countryField.invalid" = "Virheellinen maa/alue";
 "adyen.addressField.title" = "Osoite";
 "adyen.addressField.placeholder" = "Osoite";
 "adyen.streetField.title" = "Katu";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Hakukyselylläsi ei löytynyt yhtään pankkia.";
 "adyen.paybybank.title" = "Ei tuloksia haulle";
 "adyen.search.placeholder" = "Hae…";
-"adyen.upi.modeSelection" = "Valitse, kuinka haluat käyttää UPI-sovellusta.";
+"adyen.upi.modeSelection" = "Miten haluaisit käyttää UPI:a?";
 "adyen.UPIVpa.validationMessage" = "Syötä oikea virtuaalinen maksuosoite";
 "adyen.UPIQrcode.generationMessage" = "Luo QR-koodi, jonka voit ladata tai josta voit ottaa kuvakaappauksen ja lähettää sen UPI-sovellukseen suorittaaksesi maksun loppuun.";
 "adyen.UPIQrcode.timerMessage" = "Sinulla on %@ hyväksyttävänä";
@@ -181,6 +182,7 @@
 "adyen.UPI.QRCodeInstructions" = "Suorita maksu ottamalla kuvakaappaus, jonka voit ladata UPI-sovellukseen, tai skannaamalla QR-koodi haluamallasi UPI-sovelluksella.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "Laitteeseen ei ole asennettu TWINT-sovellusta tai laitteessa on sen vanhentunut versio. Päivitä tai asenna TWINT-sovellus.";
 "adyen.threeds2.DA.registration.title" = "Turvallinen ja nopea kassa!";
 "adyen.threeds2.DA.registration.description" = "Voit maksaa tällä laitteella nopeammin ensi kerralla käyttämällä biometrisiä tietojasi.";
 "adyen.threeds2.DA.registration.positiveButton" = "Ota käyttöön nopea kassa";

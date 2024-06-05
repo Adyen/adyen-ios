@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -12,29 +12,38 @@ internal final class PhoneFormItemInjector: FormItemInjector, Localizable {
 
     internal let style: FormTextItemStyle
 
-    internal let phoneExtensions: [PhoneExtensionPickerItem]
+    internal let phoneExtensions: [PhoneExtension]
 
     internal var value: PhoneNumber?
 
     internal var identifier: String
+    
+    internal let presenter: WeakReferenceViewControllerPresenter
 
     internal lazy var item: FormPhoneNumberItem = {
-        let item = FormPhoneNumberItem(phoneNumber: value,
-                                       selectableValues: phoneExtensions,
-                                       style: style,
-                                       localizationParameters: localizationParameters)
+        let item = FormPhoneNumberItem(
+            phoneNumber: value,
+            selectableValues: phoneExtensions,
+            style: style,
+            localizationParameters: localizationParameters,
+            presenter: presenter
+        )
         item.identifier = identifier
         return item
     }()
 
-    internal init(value: PhoneNumber?,
-                  identifier: String,
-                  phoneExtensions: [PhoneExtensionPickerItem],
-                  style: FormTextItemStyle) {
+    internal init(
+        value: PhoneNumber?,
+        identifier: String,
+        phoneExtensions: [PhoneExtension],
+        style: FormTextItemStyle,
+        presenter: WeakReferenceViewControllerPresenter
+    ) {
         self.value = value
         self.identifier = identifier
         self.phoneExtensions = phoneExtensions
         self.style = style
+        self.presenter = presenter
     }
 
     internal func inject(into formViewController: FormViewController) {

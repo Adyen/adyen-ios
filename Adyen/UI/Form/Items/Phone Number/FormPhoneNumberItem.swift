@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,7 +15,7 @@ public final class FormPhoneNumberItem: FormTextItem {
     
     /// The phone prefix value.
     public var prefix: String {
-        phonePrefixItem.value.element.value
+        phonePrefixItem.value?.value ?? ""
     }
     
     public var phoneNumber: String {
@@ -27,15 +27,19 @@ public final class FormPhoneNumberItem: FormTextItem {
     /// - Parameter selectableValues: The list of values to select from.
     /// - Parameter style: The `FormTextItemStyle` UI style.
     /// - Parameter localizationParameters: Parameters for custom localization, leave it nil to use the default parameters.
-    public init(phoneNumber: PhoneNumber?,
-                selectableValues: [PhoneExtensionPickerItem],
-                style: FormTextItemStyle,
-                localizationParameters: LocalizationParameters? = nil) {
-        
-        phonePrefixItem = FormPhoneExtensionPickerItem(
-            preselectedValue: selectableValues.preselectedPhoneNumberPrefix(for: phoneNumber),
-            selectableValues: selectableValues,
-            style: style
+    public init(
+        phoneNumber: PhoneNumber?,
+        selectableValues: [PhoneExtension],
+        style: FormTextItemStyle,
+        localizationParameters: LocalizationParameters? = nil,
+        presenter: WeakReferenceViewControllerPresenter
+    ) {
+        phonePrefixItem = .init(
+            preselectedExtension: selectableValues.preselectedPhoneNumberPrefix(for: phoneNumber),
+            selectableExtensions: selectableValues,
+            validationFailureMessage: nil,
+            style: style,
+            presenter: presenter
         )
         
         super.init(style: style)
@@ -56,15 +60,15 @@ public final class FormPhoneNumberItem: FormTextItem {
     }
 }
 
-private extension [PhoneExtensionPickerItem] {
+private extension [PhoneExtension] {
     
-    func preselectedPhoneNumberPrefix(for phoneNumber: PhoneNumber?) -> PhoneExtensionPickerItem {
+    func preselectedPhoneNumberPrefix(for phoneNumber: PhoneNumber?) -> PhoneExtension {
         
-        if let matchingCallingCode = first(where: { $0.element.value == phoneNumber?.callingCode }) {
+        if let matchingCallingCode = first(where: { $0.value == phoneNumber?.callingCode }) {
             return matchingCallingCode
         }
         
-        if let matchingLocaleRegion = first(where: { $0.identifier == Locale.current.regionCode }) {
+        if let matchingLocaleRegion = first(where: { $0.countryCode == Locale.current.regionCode }) {
             return matchingLocaleRegion
         }
         
@@ -73,6 +77,6 @@ private extension [PhoneExtensionPickerItem] {
         }
         
         AdyenAssertion.assertionFailure(message: "Empty list of selectableValues provided")
-        return .init(identifier: "", element: .init(value: "+1", countryCode: "US"))
+        return .init(value: "+1", countryCode: "US")
     }
 }

@@ -109,6 +109,10 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
         guard let address = value else { return false }
         return address.satisfies(requiredFields: addressViewModel.requiredFields)
     }
+    
+    override public func validationStatus() -> ValidationStatus? {
+        nil
+    }
 }
 
 // MARK: - Convenience
@@ -139,6 +143,7 @@ private extension FormAddressPickerItem {
 
 extension FormAddressPickerItem {
     
+    // swiftlint:disable function_parameter_count
     private func didSelectAddressPicker(
         for addressType: FormAddressPickerItem.AddressType,
         with prefillAddress: PostalAddress?,
@@ -149,6 +154,7 @@ extension FormAddressPickerItem {
         style: FormComponentStyle,
         completion: @escaping (PostalAddress?) -> Void
     ) {
+        // swiftlint:enable function_parameter_count
         let securedViewController = SecuredViewController(
             child: addressPickerViewController(
                 for: addressType,
@@ -168,6 +174,7 @@ extension FormAddressPickerItem {
         presenter.presentViewController(securedViewController, animated: true)
     }
     
+    // swiftlint:disable function_parameter_count
     private func addressPickerViewController(
         for addressType: FormAddressPickerItem.AddressType,
         with prefillAddress: PostalAddress?,
@@ -177,6 +184,7 @@ extension FormAddressPickerItem {
         style: FormComponentStyle,
         completionHandler: @escaping (PostalAddress?) -> Void
     ) -> UIViewController {
+        // swiftlint:enable function_parameter_count
         
         guard let lookupProvider else {
         

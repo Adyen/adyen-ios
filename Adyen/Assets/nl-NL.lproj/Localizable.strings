@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Doorgaan";
 "adyen.phoneNumber.title" = "Telefoonnummer";
 "adyen.phoneNumber.invalid" = "Ongeldig telefoonnummer";
+"adyen.telephonePrefix" = "Voorvoegsel";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ cijfers";
 "adyen.emailItem.title" = "E-mailadres";
@@ -87,9 +88,9 @@
 "adyen.billingAddress.placeholder" = "Uw factuuradres";
 "adyen.deliveryAddressSection.title" = "Bezorgadres";
 "adyen.deliveryAddress.placeholder" = "Uw bezorgadres";
-"adyen.countryField.title" = "Land";
-"adyen.countryField.placeholder" = "Land";
-"adyen.countryField.invalid" = "Ongeldig land";
+"adyen.countryField.title" = "Land/regio";
+"adyen.countryField.placeholder" = "Land/regio";
+"adyen.countryField.invalid" = "Ongeldig land/regio";
 "adyen.addressField.title" = "Adres";
 "adyen.addressField.placeholder" = "Adres";
 "adyen.streetField.title" = "Straatnaam";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Geen banken voor uw zoekopdracht…";
 "adyen.paybybank.title" = "Geen resultaten voor";
 "adyen.search.placeholder" = "Zoeken…";
-"adyen.upi.modeSelection" = "Maak een selectie over hoe u UPI wilt gebruiken.";
+"adyen.upi.modeSelection" = "Hoe wilt u UPI gebruiken?";
 "adyen.UPIVpa.validationMessage" = "Voer een correct virtueel betalingsadres in";
 "adyen.UPIQrcode.generationMessage" = "Genereer de QR-code. U kunt deze downloaden of er een schermafbeelding van maken en deze uploaden naar de UPI-app om de betaling te voltooien.";
 "adyen.UPIQrcode.timerMessage" = "Je hebt nog %@ voor je goedkeuring";
@@ -181,6 +182,7 @@
 "adyen.UPI.QRCodeInstructions" = "Maak een schermafbeelding en upload deze in de UPI-app of scan de QR-code met je favoriete UPI-app om de betaling te voltooien.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
+"adyen.twint.noAppsInstalled.message" = "Er is geen of een verouderde versie van TWINT geïnstalleerd op dit apparaat. De TWINT-app moet worden bijgewerkt of geïnstalleerd.";
 "adyen.threeds2.DA.registration.title" = "Veilig en snel afrekenen!";
 "adyen.threeds2.DA.registration.description" = "U kunt de volgende keer sneller afrekenen op dit apparaat met behulp van uw biometrische gegevens.";
 "adyen.threeds2.DA.registration.positiveButton" = "Snel afrekenen inschakelen";
