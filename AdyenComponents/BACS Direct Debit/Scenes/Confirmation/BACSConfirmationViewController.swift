@@ -20,9 +20,11 @@ internal class BACSConfirmationViewController: FormViewController, BACSConfirmat
     // MARK: - Initializers
 
     internal init(title: String,
+                  scrollDisabled: Bool = false,
                   styleProvider: FormComponentStyle,
                   localizationParameters: LocalizationParameters? = nil) {
         super.init(
+            scrollDisabled: scrollDisabled,
             style: styleProvider,
             localizationParameters: localizationParameters
         )

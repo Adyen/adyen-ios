@@ -60,6 +60,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
     
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
+            scrollDisabled: configuration.hideDefaultPayButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
