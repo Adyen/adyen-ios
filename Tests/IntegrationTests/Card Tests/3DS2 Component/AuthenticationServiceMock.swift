@@ -9,23 +9,24 @@ import Foundation
     import AdyenAuthentication
 
     @available(iOS 14.0, *)
-internal final class AuthenticationServiceMock: AuthenticationServiceProtocol {
-    func registeredCredentials(withAuthenticationInput input: String) async throws -> [String] {
-        return []
-    }
+    internal final class AuthenticationServiceMock: AuthenticationServiceProtocol {
+        func registeredCredentials(withAuthenticationInput input: String) async throws -> [String] {
+            []
+        }
     
-    func isDeviceRegistered(withAuthenticationInput input: String) async throws -> Bool {
-        isDeviceRegistered
-    }
-    internal var isDeviceRegistered: Bool = true
+        func isDeviceRegistered(withAuthenticationInput input: String) async throws -> Bool {
+            isDeviceRegistered
+        }
+
+        internal var isDeviceRegistered: Bool = true
 
         internal var isDeviceSupported: Bool = true
         internal var isRegistration: Bool = true
         
         internal var onRegister: ((_: String) async throws -> String)?
         
-    internal func register(withRegistrationInput input: String) async throws -> String {
-            if let onRegister = onRegister {
+        internal func register(withRegistrationInput input: String) async throws -> String {
+            if let onRegister {
                 return try await onRegister(input)
             } else {
                 // swiftlint:disable:next line_length
@@ -35,8 +36,8 @@ internal final class AuthenticationServiceMock: AuthenticationServiceProtocol {
         
         internal var onAuthenticate: ((_: String) async throws -> String)?
     
-    internal func authenticate(withAuthenticationInput input: String) async throws -> String {
-            if let onAuthenticate = onAuthenticate {
+        internal func authenticate(withAuthenticationInput input: String) async throws -> String {
+            if let onAuthenticate {
                 return try await onAuthenticate(input)
             } else if isRegistration {
                 throw AdyenAuthenticationError.noStoredCredentialsMatch(nil)

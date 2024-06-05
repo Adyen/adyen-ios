@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,56 +13,56 @@ import Foundation
     import Foundation
     import UIKit
 
-final class ThreeDS2DAScreenPresenterMock: ThreeDS2PlusDAScreenPresenterProtocol {
+    final class ThreeDS2DAScreenPresenterMock: ThreeDS2PlusDAScreenPresenterProtocol {
     
-    enum ShowRegistrationScreenMockState {
-        case register
-        case fallback
-    }
-    
-    let showRegistrationReturnState: ShowRegistrationScreenMockState
-    func showRegistrationScreen(component: Adyen.Component,
-                                registerDelegatedAuthenticationHandler: @escaping () -> Void,
-                                fallbackHandler: @escaping () -> Void) {
-        switch showRegistrationReturnState {
-        case .register:
-            registerDelegatedAuthenticationHandler()
-        case .fallback:
-            fallbackHandler()
+        enum ShowRegistrationScreenMockState {
+            case register
+            case fallback
         }
-    }
     
-    enum ShowApprovalScreenMockState {
-        case approve
-        case fallback
-        case removeCredentials
-    }
+        let showRegistrationReturnState: ShowRegistrationScreenMockState
+        func showRegistrationScreen(component: Adyen.Component,
+                                    registerDelegatedAuthenticationHandler: @escaping () -> Void,
+                                    fallbackHandler: @escaping () -> Void) {
+            switch showRegistrationReturnState {
+            case .register:
+                registerDelegatedAuthenticationHandler()
+            case .fallback:
+                fallbackHandler()
+            }
+        }
     
-    let showApprovalScreenReturnState: ShowApprovalScreenMockState
+        enum ShowApprovalScreenMockState {
+            case approve
+            case fallback
+            case removeCredentials
+        }
+    
+        let showApprovalScreenReturnState: ShowApprovalScreenMockState
 
-    func showApprovalScreen(component: Adyen.Component,
-                            approveAuthenticationHandler: @escaping () -> Void,
-                            fallbackHandler: @escaping () -> Void,
-                            removeCredentialsHandler: @escaping () -> Void) {
-        switch showApprovalScreenReturnState {
-        case .approve:
-            approveAuthenticationHandler()
-        case .fallback:
-            fallbackHandler()
-        case .removeCredentials:
-            removeCredentialsHandler()
+        func showApprovalScreen(component: Adyen.Component,
+                                approveAuthenticationHandler: @escaping () -> Void,
+                                fallbackHandler: @escaping () -> Void,
+                                removeCredentialsHandler: @escaping () -> Void) {
+            switch showApprovalScreenReturnState {
+            case .approve:
+                approveAuthenticationHandler()
+            case .fallback:
+                fallbackHandler()
+            case .removeCredentials:
+                removeCredentialsHandler()
+            }
+        }
+    
+        var userInput: ThreeDS2PlusDAScreenUserInput = .noInput
+    
+        init(showRegistrationReturnState: ShowRegistrationScreenMockState,
+             showApprovalScreenReturnState: ShowApprovalScreenMockState,
+             userInput: ThreeDS2PlusDAScreenUserInput = .noInput) {
+            self.showRegistrationReturnState = showRegistrationReturnState
+            self.showApprovalScreenReturnState = showApprovalScreenReturnState
+            self.userInput = userInput
         }
     }
-    
-    var userInput: ThreeDS2PlusDAScreenUserInput = .noInput
-    
-    init(showRegistrationReturnState: ShowRegistrationScreenMockState,
-         showApprovalScreenReturnState: ShowApprovalScreenMockState,
-         userInput: ThreeDS2PlusDAScreenUserInput = .noInput) {
-        self.showRegistrationReturnState = showRegistrationReturnState
-        self.showApprovalScreenReturnState = showApprovalScreenReturnState
-        self.userInput = userInput
-    }
-}
 
 #endif

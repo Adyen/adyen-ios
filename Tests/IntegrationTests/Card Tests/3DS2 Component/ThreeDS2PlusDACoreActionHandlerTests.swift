@@ -14,7 +14,7 @@ import XCTest
     import Foundation
     import UIKit
 
-@available(iOS 14.0, *)
+    @available(iOS 14.0, *)
     final class ThreeDS2PlusDACoreActionHandlerTests: XCTestCase {
         var authenticationRequestParameters: AnyAuthenticationRequestParameters!
 
@@ -294,6 +294,7 @@ import XCTest
         }
         
         // MARK: - Delegated Authentication tests
+
         // The approval flow of delegated authentication
         func testDelegatedAuthenticationApprovalFlowWhenUserApproves() throws {
             
@@ -309,7 +310,7 @@ import XCTest
                 
             let authenticationServiceMock = AuthenticationServiceMock()
             authenticationServiceMock.onAuthenticate = { input in
-                return "OnAuthenticate"
+                "OnAuthenticate"
             }
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
@@ -319,8 +320,8 @@ import XCTest
                                                       delegatedAuthenticationService: authenticationServiceMock)
             
             let fingerprintAction = ThreeDS2FingerprintAction(fingerprintToken: TestData.fingerprintToken,
-                                                          authorisationToken: "AuthToken",
-                                                          paymentData: "paymentData")
+                                                              authorisationToken: "AuthToken",
+                                                              paymentData: "paymentData")
             sut.handle(fingerprintAction, event: analyticsEvent) { fingerprintResult in
                 switch fingerprintResult {
                 case let .success(fingerprintString):
@@ -357,8 +358,8 @@ import XCTest
                                                       delegatedAuthenticationService: authenticationServiceMock)
             
             let fingerprintAction = ThreeDS2FingerprintAction(fingerprintToken: TestData.fingerprintToken,
-                                                          authorisationToken: "AuthToken",
-                                                          paymentData: "paymentData")
+                                                              authorisationToken: "AuthToken",
+                                                              paymentData: "paymentData")
             sut.handle(fingerprintAction, event: analyticsEvent) { fingerprintResult in
                 switch fingerprintResult {
                 case let .success(fingerprintString):
@@ -372,7 +373,6 @@ import XCTest
             waitForExpectations(timeout: 20, handler: nil)
         }
 
-        
         func testDelegatedAuthenticationApprovalFlowWhenUserDoesntConsentToApprove() throws {
             // The token and result are base 64 encoded.
             enum TestData {
@@ -388,7 +388,7 @@ import XCTest
                 
             let authenticationServiceMock = AuthenticationServiceMock()
             authenticationServiceMock.onAuthenticate = { input in
-                return "OnAuthenticate"
+                "OnAuthenticate"
             }
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
             let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
@@ -398,8 +398,8 @@ import XCTest
                                                       delegatedAuthenticationService: authenticationServiceMock)
             
             let fingerprintAction = ThreeDS2FingerprintAction(fingerprintToken: TestData.fingerprintToken,
-                                                          authorisationToken: "AuthToken",
-                                                          paymentData: "paymentData")
+                                                              authorisationToken: "AuthToken",
+                                                              paymentData: "paymentData")
             sut.handle(fingerprintAction, event: analyticsEvent) { fingerprintResult in
                 switch fingerprintResult {
                 case let .success(fingerprintString):
@@ -449,8 +449,8 @@ import XCTest
                                                       delegatedAuthenticationService: authenticationServiceMock)
             
             let fingerprintAction = ThreeDS2FingerprintAction(fingerprintToken: TestData.fingerprintToken,
-                                                          authorisationToken: "AuthToken",
-                                                          paymentData: "paymentData")
+                                                              authorisationToken: "AuthToken",
+                                                              paymentData: "paymentData")
             sut.handle(fingerprintAction, event: analyticsEvent) { fingerprintResult in
                 switch fingerprintResult {
                 case let .success(fingerprintString):
@@ -509,7 +509,6 @@ import XCTest
             waitForExpectations(timeout: 2, handler: nil)
         }
 
-
         func testDelegatedAuthenticationRegistrationFlowWhenUserDoesntConsentToRegister() throws {
 
             let service = AnyADYServiceMock()
@@ -564,12 +563,12 @@ import XCTest
         }
     }
 
-internal struct DeviceSupportCheckerMock: AdyenAuthentication.DeviceSupportCheckerProtocol {
-    var isDeviceSupported: Bool
+    internal struct DeviceSupportCheckerMock: AdyenAuthentication.DeviceSupportCheckerProtocol {
+        var isDeviceSupported: Bool
     
-    func checkSupport() throws -> String {
-        return ""
+        func checkSupport() throws -> String {
+            ""
+        }
     }
-}
 
 #endif

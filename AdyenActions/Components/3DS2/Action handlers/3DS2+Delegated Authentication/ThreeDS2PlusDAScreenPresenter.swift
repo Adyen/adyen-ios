@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -80,15 +80,15 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         let approvalViewController = DAApprovalViewController(style: style,
                                                               localizationParameters: localizedParameters,
                                                               useBiometricsHandler: { [weak self] in
-                                                                  guard let self = self else { return }
+                                                                  guard let self else { return }
                                                                   self.userInput = .biometric
                                                                   approveAuthenticationHandler()
                                                               }, approveDifferentlyHandler: { [weak self] in
-                                                                  guard let self = self else { return }
+                                                                  guard let self else { return }
                                                                   self.userInput = .approveDifferently
                                                                   fallbackHandler()
                                                               }, removeCredentialsHandler: { [weak self] in
-                                                                  guard let self = self else { return }
+                                                                  guard let self else { return }
                                                                   self.userInput = .deleteDA
                                                                   removeCredentialsHandler()
                                                               })
