@@ -9,8 +9,8 @@ import Foundation
 /// Any component's most basic configuration.
 public protocol AnyBasicComponentConfiguration: Localizable {
 
-    /// A Boolean value that determines whether the payment button is displayed. Defaults to `false`.
-    var hideDefaultPayButton: Bool { get }
+    /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
+    var showDefaultPayButton: Bool { get }
 }
 
 /// The configuration of any component thats aware of shoppers' personal information.
@@ -26,8 +26,8 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     /// The UI style of the component.
     public var style: FormComponentStyle
 
-    /// A Boolean value that determines whether the payment button is displayed. Defaults to `false`.
-    public var hideDefaultPayButton: Bool
+    /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
+    public var showDefaultPayButton: Bool
 
     public var localizationParameters: LocalizationParameters?
 
@@ -35,15 +35,15 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     ///
     /// - Parameters:
     ///   - style: The form style.
-    ///   - hideDefaultPayButton: Boolean value that determines whether the payment button is displayed.
-    ///   Defaults to `false`.
+    ///   - showDefaultPayButton: Boolean value that determines whether the payment button is displayed.
+    ///   Defaults to `true`.
     ///   - localizationParameters: The localization parameters.
     public init(style: FormComponentStyle = FormComponentStyle(),
-                hideDefaultPayButton: Bool = false,
+                showDefaultPayButton: Bool = true,
                 localizationParameters: LocalizationParameters? = nil) {
         self.style = style
         self.localizationParameters = localizationParameters
-        self.hideDefaultPayButton = hideDefaultPayButton
+        self.showDefaultPayButton = showDefaultPayButton
     }
 
 }
@@ -54,8 +54,8 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
     /// The UI style of the component.
     public var style: FormComponentStyle
 
-    /// A Boolean value that determines whether the payment button is displayed. Defaults to `false`.
-    public var hideDefaultPayButton: Bool
+    /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
+    public var showDefaultPayButton: Bool
 
     public var shopperInformation: PrefilledShopperInformation?
     
@@ -65,16 +65,16 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
     ///
     /// - Parameters:
     ///   - style: The form style.
-    ///   - hideDefaultPayButton: Boolean value that determines whether the payment button is displayed.
-    ///   Defaults to `false`.
+    ///   - showDefaultPayButton: Boolean value that determines whether the payment button is displayed.
+    ///   Defaults to `true`.
     ///   - shopperInformation: The shopper information to be prefilled.
     ///   - localizationParameters: The localization parameters.
     public init(style: FormComponentStyle = FormComponentStyle(),
-                hideDefaultPayButton: Bool = false,
+                showDefaultPayButton: Bool = true,
                 shopperInformation: PrefilledShopperInformation? = nil,
                 localizationParameters: LocalizationParameters? = nil) {
         self.style = style
-        self.hideDefaultPayButton = hideDefaultPayButton
+        self.showDefaultPayButton = showDefaultPayButton
         self.shopperInformation = shopperInformation
         self.localizationParameters = localizationParameters
     }

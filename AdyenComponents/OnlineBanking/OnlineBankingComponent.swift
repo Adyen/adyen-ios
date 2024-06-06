@@ -125,7 +125,7 @@ public final class OnlineBankingComponent: PaymentComponent,
 
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
-            scrollDisabled: configuration.hideDefaultPayButton,
+            scrollEnabled: configuration.showDefaultPayButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )

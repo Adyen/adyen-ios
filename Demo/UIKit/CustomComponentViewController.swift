@@ -149,7 +149,7 @@ class CustomComponentViewController: UIViewController {
         var billingAddressConfiguration = BillingAddressConfiguration()
         billingAddressConfiguration.mode = .full
 
-        let configuration = CardComponent.Configuration(hideDefaultPayButton: true, billingAddress: billingAddressConfiguration)
+        let configuration = CardComponent.Configuration(showDefaultPayButton: false, billingAddress: billingAddressConfiguration)
         return CardComponent(paymentMethod: paymentMethod, context: context, configuration: configuration)
     }
 

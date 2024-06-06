@@ -121,8 +121,8 @@ extension CardComponent {
         /// Describes the component's UI style.
         public var style: FormComponentStyle
 
-        /// A boolean value that determines whether the payment button is displayed. Defaults to `false`.
-        public var hideDefaultPayButton: Bool
+        /// A boolean value that determines whether the payment button is displayed. Defaults to `true`.
+        public var showDefaultPayButton: Bool
 
         /// The shopper's information to be prefilled.
         public var shopperInformation: PrefilledShopperInformation?
@@ -169,8 +169,8 @@ extension CardComponent {
         /// Configuration of Card component.
         /// - Parameters:
         ///   - style: The component's UI style.
-        ///   - hideDefaultPayButton: Boolean value that determines whether the payment button is displayed.
-        ///   Defaults to `false`.
+        ///   - showDefaultPayButton: Boolean value that determines whether the payment button is displayed.
+        ///   Defaults to `true`.
         ///   - shopperInformation: The shopper's information to be prefilled.
         ///   - localizationParameters: Localization parameters.
         ///   - showsHolderNameField: Indicates if the field for entering the holder name should be displayed in the form.
@@ -187,7 +187,7 @@ extension CardComponent {
         ///   - installmentConfiguration: Configuration for installments. Defaults to `nil`.
         ///   - billingAddress: Billing address fields configurations.
         public init(style: FormComponentStyle = FormComponentStyle(),
-                    hideDefaultPayButton: Bool = false,
+                    showDefaultPayButton: Bool = true,
                     shopperInformation: PrefilledShopperInformation? = nil,
                     localizationParameters: LocalizationParameters? = nil,
                     showsHolderNameField: Bool = false,
@@ -200,7 +200,7 @@ extension CardComponent {
                     installmentConfiguration: InstallmentConfiguration? = nil,
                     billingAddress: BillingAddressConfiguration = .init()) {
             self.style = style
-            self.hideDefaultPayButton = hideDefaultPayButton
+            self.showDefaultPayButton = showDefaultPayButton
             self.shopperInformation = shopperInformation
             self.localizationParameters = localizationParameters
             self.showsHolderNameField = showsHolderNameField

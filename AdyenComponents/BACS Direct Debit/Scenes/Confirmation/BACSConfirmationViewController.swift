@@ -24,7 +24,7 @@ internal class BACSConfirmationViewController: FormViewController, BACSConfirmat
                   styleProvider: FormComponentStyle,
                   localizationParameters: LocalizationParameters? = nil) {
         super.init(
-            scrollDisabled: scrollDisabled,
+            scrollEnabled: scrollDisabled,
             style: styleProvider,
             localizationParameters: localizationParameters
         )

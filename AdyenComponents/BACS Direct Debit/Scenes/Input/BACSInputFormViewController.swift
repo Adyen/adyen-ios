@@ -21,7 +21,7 @@ internal class BACSInputFormViewController: FormViewController, BACSInputFormVie
                   scrollDisabled: Bool = false,
                   styleProvider: FormComponentStyle,
                   localizationParameters: LocalizationParameters? = nil) {
-        super.init(scrollDisabled: scrollDisabled,
+        super.init(scrollEnabled: scrollDisabled,
                    style: styleProvider,
                    localizationParameters: localizationParameters)
         self.title = title

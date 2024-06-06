@@ -252,7 +252,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
-            scrollDisabled: configuration.hideDefaultPayButton,
+            scrollEnabled: configuration.showDefaultPayButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
@@ -317,8 +317,8 @@ extension ACHDirectDebitComponent {
         /// Describes the component's UI style.
         public var style: FormComponentStyle
 
-        /// A Boolean value that determines whether the payment button is displayed. Defaults to `false`.
-        public var hideDefaultPayButton: Bool
+        /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
+        public var showDefaultPayButton: Bool
 
         /// The shopper's information to be prefilled.
         public var shopperInformation: PrefilledShopperInformation?
@@ -339,8 +339,8 @@ extension ACHDirectDebitComponent {
         /// Initializes the configuration for ACH Direct Debit Component.
         /// - Parameters:
         ///   - style: The UI style of the component.
-        ///   - hideDefaultPayButton: Boolean value that determines whether the payment button is displayed.
-        ///   Defaults to`false`.
+        ///   - showDefaultPayButton: Boolean value that determines whether the payment button is displayed.
+        ///   Defaults to`true`.
         ///   - shopperInformation: The shopper's information to be prefilled.
         ///   - localizationParameters: Localization parameters.
         ///   - showsBillingAddress: Determines whether the billing address should be displayed or not.
@@ -348,14 +348,14 @@ extension ACHDirectDebitComponent {
         ///   - billingAddressCountryCodes: ISO country codes that is supported for the billing address.
         ///   Defaults to ["US", "PR"].
         public init(style: FormComponentStyle = FormComponentStyle(),
-                    hideDefaultPayButton: Bool = false,
+                    showDefaultPayButton: Bool = true,
                     shopperInformation: PrefilledShopperInformation? = nil,
                     localizationParameters: LocalizationParameters? = nil,
                     showsStorePaymentMethodField: Bool = true,
                     showsBillingAddress: Bool = true,
                     billingAddressCountryCodes: [String] = ["US", "PR"]) {
             self.style = style
-            self.hideDefaultPayButton = hideDefaultPayButton
+            self.showDefaultPayButton = showDefaultPayButton
             self.shopperInformation = shopperInformation
             self.localizationParameters = localizationParameters
             self.showsStorePaymentMethodField = showsStorePaymentMethodField

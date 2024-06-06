@@ -44,21 +44,22 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     // MARK: - Private properties
 
     private var keyboardObserver = KeyboardObserver()
-    private var scrollDisabled: Bool
+    private var scrollEnabled: Bool
 
     // MARK: - Initializers
 
     /// Initializes the FormViewController.
     ///
     /// - Parameters:
+    ///   - scrollEnabled: Boolean value that determines whether the form view contains a scroll view in its view hierarchy.
     ///   - style: The `FormViewController` UI style.
     ///   - localizationParameters: The localization parameters.
     public init(
-        scrollDisabled: Bool,
+        scrollEnabled: Bool,
         style: ViewStyle,
         localizationParameters: LocalizationParameters?
     ) {
-        self.scrollDisabled = scrollDisabled
+        self.scrollEnabled = scrollEnabled
         self.style = style
         self.localizationParameters = localizationParameters
         super.init(nibName: nil, bundle: Bundle(for: FormViewController.self))
@@ -231,7 +232,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     // MARK: - Private
 
     private func addSubviews() {
-        if !scrollDisabled {
+        if scrollEnabled {
             view.addSubview(scrollView)
             scrollView.addSubview(formView)
         } else {
@@ -240,7 +241,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     }
 
     private func setupLayout() {
-        if !scrollDisabled {
+        if scrollEnabled {
             NSLayoutConstraint.activate([
                 scrollView.topAnchor.constraint(equalTo: view.topAnchor),
                 scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),

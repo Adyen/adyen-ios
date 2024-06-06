@@ -52,8 +52,8 @@ public extension DropInComponent {
         /// Indicates the UI configuration of the drop in component.
         public var style: DropInComponent.Style
 
-        /// A Boolean value that determines whether the payment button is displayed. For the `DropInComponent` its value is always `false`.
-        public var hideDefaultPayButton: Bool = false
+        /// A Boolean value that determines whether the payment button is displayed. For the `DropInComponent` its value is always `true`.
+        public var showDefaultPayButton: Bool = true
 
         /// Boleto component configuration.
         public var boleto: Boleto = .init()
@@ -224,7 +224,11 @@ public extension DropInComponent {
     
     /// Cash App Pay component configuration.
     struct CashAppPay: AnyCashAppPayConfiguration {
-        
+
+        // TODO: - Remove since protocol conformance won't be needed
+        public var showDefaultPayButton: Bool = true
+        public var localizationParameters: Adyen.LocalizationParameters? = nil
+
         /// The URL for Cash App to call in order to redirect back to your application.
         public let redirectURL: URL
 

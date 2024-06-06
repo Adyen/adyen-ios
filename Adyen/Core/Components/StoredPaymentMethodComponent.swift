@@ -81,19 +81,19 @@ extension StoredPaymentMethodComponent {
     /// Configuration for Stored Payment type components.
     public struct Configuration: AnyBasicComponentConfiguration {
 
-        /// A Boolean value that determines whether the payment button is displayed. Defaults to `false`.
-        public var hideDefaultPayButton: Bool
+        /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
+        public var showDefaultPayButton: Bool
 
         public var localizationParameters: LocalizationParameters?
 
         /// Initializes the configuration for Issuer list type components.
         /// - Parameters:
-        ///   - hideDefaultPayButton: Boolean value that determines whether the payment button is displayed.
-        ///   Defaults to `false`.
+        ///   - showDefaultPayButton: Boolean value that determines whether the payment button is displayed.
+        ///   Defaults to `true`.
         ///   - localizationParameters: Localization parameters.
-        public init(hideDefaultPayButton: Bool = false,
+        public init(showDefaultPayButton: Bool = true,
                     localizationParameters: LocalizationParameters? = nil) {
-            self.hideDefaultPayButton = hideDefaultPayButton
+            self.showDefaultPayButton = showDefaultPayButton
             self.localizationParameters = localizationParameters
         }
     }
