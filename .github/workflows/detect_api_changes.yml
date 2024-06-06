@@ -29,5 +29,5 @@ jobs:
         Scripts/generate_public_interface_definition.sh ${branch} ${baseRepo}
         ./Scripts/compare_public_interface_definition.swift api_dump_comparison.json api_dump.json
       env:
-        branch: '${{ github.event.pull_request.base.ref }}'
-        baseRepo: '${{ github.server_url }}/${{ github.repository }}.git'
+        branch: '${{github.event.pull_request.base.ref}}'
+        baseRepo: '${{github.server_url}}/${{github.repository}}.git'
