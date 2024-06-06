@@ -26,10 +26,8 @@ jobs:
         
     - name: 🔍 Detect Changes
       run: |
-        echo ${branch}
-        echo ${baseRepo}
-        Scripts/generate_public_interface_definition.sh
-        ./Scripts/compare_public_interface_definition.swift ${branch} ${baseRepo}
+        Scripts/generate_public_interface_definition.sh ${branch} ${baseRepo}
+        ./Scripts/compare_public_interface_definition.swift api_dump_comparison.json api_dump.json
       env:
         branch: '${{ github.event.pull_request.base.ref }}'
         baseRepo: '${{ github.server_url }}/${{ github.repository }}.git'
