@@ -42,15 +42,15 @@ echo "📋 Generating new api_dump"
 xcrun swift-api-digester -dump-sdk -module AdyenDropIn -o api_dump.json -I .build/Build/Products/Debug-iphonesimulator -sdk "`xcrun --sdk iphonesimulator --show-sdk-path`" -target "arm64-apple-ios17.2-simulator"
 xcrun swift-api-digester -dump-sdk -module Adyen -o api_dump.json -I .build/Build/Products/Debug-iphonesimulator -sdk "`xcrun --sdk iphonesimulator --show-sdk-path`" -target "arm64-apple-ios17.2-simulator"
 
-echo "🔀 Comparing"
+#echo "🔀 Comparing"
 
-echo "- diff"
-diff api_dump_comparison.json api_dump.json
+# echo "- diff"
+# diff api_dump_comparison.json api_dump.json
 
-echo "- swift-api-digester -diagnose-sdk"
+#echo "- swift-api-digester -diagnose-sdk"
 # This command does not take @_spi into account unfortunately (It works well with changing from public to private or add new func/var/objects)
 # xcrun swift-api-digester -diagnose-sdk -module Adyen -o api_diff -use-interface-for-module Adyen -abi -BI ./last_release/adyen-ios/.build/Build/Products/Debug-iphonesimulator -I .build/Build/Products/Debug-iphonesimulator -bsdk "`xcrun --sdk iphonesimulator --show-sdk-path`" -sdk "`xcrun --sdk iphonesimulator --show-sdk-path`" -target "arm64-apple-ios17.2-simulator"
 # cat api_diff
 
 # This command also does not take @_spi into account (Same as swift-api-digester -diagnose-sdk basically but running on the json files)
-xcrun swift-api-digester -diagnose-sdk --input-paths api_dump_comparison.json -input-paths api_dump.json
+# xcrun swift-api-digester -diagnose-sdk --input-paths api_dump_comparison.json -input-paths api_dump.json
