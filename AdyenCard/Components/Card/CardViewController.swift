@@ -87,7 +87,7 @@ internal class CardViewController: FormViewController {
         }
         
         super.init(
-            scrollEnabled: configuration.showDefaultPayButton,
+            scrollEnabled: configuration.showSubmitButton,
             style: formStyle,
             localizationParameters: localizationParameters
         )
@@ -290,7 +290,7 @@ extension CardViewController {
         append(FormSpacerItem())
 
         // Remove button
-        if configuration.showDefaultPayButton {
+        if configuration.showSubmitButton {
             append(items.button)
             append(FormSpacerItem(numberOfSpaces: 2))
         }

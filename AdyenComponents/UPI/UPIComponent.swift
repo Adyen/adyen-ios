@@ -153,7 +153,7 @@ public final class UPIComponent: PaymentComponent,
 
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
-            scrollEnabled: configuration.showDefaultPayButton,
+            scrollEnabled: configuration.showSubmitButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )

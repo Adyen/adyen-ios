@@ -52,7 +52,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
 
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
-            scrollEnabled: configuration.showDefaultPayButton,
+            scrollEnabled: configuration.showSubmitButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )

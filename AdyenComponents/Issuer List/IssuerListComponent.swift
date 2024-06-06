@@ -170,21 +170,21 @@ extension IssuerListComponent {
         public var style: ListComponentStyle
 
         /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
-        public var showDefaultPayButton: Bool
+        public var showSubmitButton: Bool
 
         public var localizationParameters: LocalizationParameters?
         
         /// Initializes the configuration for Issuer list type components.
         /// - Parameters:
         ///   - style: The UI style of the component.
-        ///   - showDefaultPayButton: Boolean value that determines whether the payment button is displayed.
+        ///   - showSubmitButton: Boolean value that determines whether the payment button is displayed.
         ///   Defaults to`true`.
         ///   - localizationParameters: Localization parameters.
         public init(style: ListComponentStyle = .init(),
-                    showDefaultPayButton: Bool = true,
+                    showSubmitButton: Bool = true,
                     localizationParameters: LocalizationParameters? = nil) {
             self.style = style
-            self.showDefaultPayButton = showDefaultPayButton
+            self.showSubmitButton = showSubmitButton
             self.localizationParameters = localizationParameters
         }
     }

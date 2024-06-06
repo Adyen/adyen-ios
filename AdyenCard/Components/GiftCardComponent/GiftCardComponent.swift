@@ -48,7 +48,7 @@ public final class GiftCardComponent: PresentableComponent,
     public let style: FormComponentStyle
 
     /// A boolean value that determines whether the payment button is displayed. Defaults to `true`.
-    public var showDefaultPayButton: Bool
+    public var showSubmitButton: Bool
 
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
@@ -72,20 +72,20 @@ public final class GiftCardComponent: PresentableComponent,
     ///   - context:The context object for this component.
     ///   - amount: The amount to pay.
     ///   - style: The Component's UI style.
-    ///   - showDefaultPayButton: Boolean value that determines whether the payment button is displayed.
+    ///   - showSubmitButton: Boolean value that determines whether the payment button is displayed.
     ///   Defaults to `true`.
     ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
     public convenience init(paymentMethod: GiftCardPaymentMethod,
                             context: AdyenContext,
                             amount: Amount,
                             style: FormComponentStyle = FormComponentStyle(),
-                            showDefaultPayButton: Bool = true,
+                            showSubmitButton: Bool = true,
                             showsSecurityCodeField: Bool = true) {
         self.init(partialPaymentMethodType: .giftCard(paymentMethod),
                   context: context,
                   amount: amount,
                   style: style,
-                  showDefaultPayButton: showDefaultPayButton,
+                  showSubmitButton: showSubmitButton,
                   showsSecurityCodeField: showsSecurityCodeField,
                   publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
@@ -97,20 +97,20 @@ public final class GiftCardComponent: PresentableComponent,
     ///   - context:The context object for this component.
     ///   - amount: The amount to pay.
     ///   - style: The Component's UI style.
-    ///   - showDefaultPayButton: Boolean value that determines whether the payment button is displayed.
+    ///   - showSubmitButton: Boolean value that determines whether the payment button is displayed.
     ///   Defaults to `true`.
     ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
     public convenience init(paymentMethod: MealVoucherPaymentMethod,
                             context: AdyenContext,
                             amount: Amount,
                             style: FormComponentStyle = FormComponentStyle(),
-                            showDefaultPayButton: Bool = true,
+                            showSubmitButton: Bool = true,
                             showsSecurityCodeField: Bool = true) {
         self.init(partialPaymentMethodType: .mealVoucher(paymentMethod),
                   context: context,
                   amount: amount,
                   style: style,
-                  showDefaultPayButton: showDefaultPayButton,
+                  showSubmitButton: showSubmitButton,
                   showsSecurityCodeField: showsSecurityCodeField,
                   publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
@@ -119,13 +119,13 @@ public final class GiftCardComponent: PresentableComponent,
                   context: AdyenContext,
                   amount: Amount,
                   style: FormComponentStyle = FormComponentStyle(),
-                  showDefaultPayButton: Bool = true,
+                  showSubmitButton: Bool = true,
                   showsSecurityCodeField: Bool = true,
                   publicKeyProvider: AnyPublicKeyProvider) {
         self.partialPaymentMethodType = partialPaymentMethodType
         self.context = context
         self.style = style
-        self.showDefaultPayButton = showDefaultPayButton
+        self.showSubmitButton = showSubmitButton
         self.showsSecurityCodeField = showsSecurityCodeField
         self.publicKeyProvider = publicKeyProvider
         self.amount = amount
@@ -140,7 +140,7 @@ public final class GiftCardComponent: PresentableComponent,
     private lazy var formViewController: FormViewController = {
 
         let formViewController = FormViewController(
-            scrollEnabled: showDefaultPayButton,
+            scrollEnabled: showSubmitButton,
             style: style,
             localizationParameters: localizationParameters
         )

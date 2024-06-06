@@ -252,7 +252,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
-            scrollEnabled: configuration.showDefaultPayButton,
+            scrollEnabled: configuration.showSubmitButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
@@ -318,7 +318,7 @@ extension ACHDirectDebitComponent {
         public var style: FormComponentStyle
 
         /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
-        public var showDefaultPayButton: Bool
+        public var showSubmitButton: Bool
 
         /// The shopper's information to be prefilled.
         public var shopperInformation: PrefilledShopperInformation?
@@ -339,7 +339,7 @@ extension ACHDirectDebitComponent {
         /// Initializes the configuration for ACH Direct Debit Component.
         /// - Parameters:
         ///   - style: The UI style of the component.
-        ///   - showDefaultPayButton: Boolean value that determines whether the payment button is displayed.
+        ///   - showSubmitButton: Boolean value that determines whether the payment button is displayed.
         ///   Defaults to`true`.
         ///   - shopperInformation: The shopper's information to be prefilled.
         ///   - localizationParameters: Localization parameters.
@@ -348,14 +348,14 @@ extension ACHDirectDebitComponent {
         ///   - billingAddressCountryCodes: ISO country codes that is supported for the billing address.
         ///   Defaults to ["US", "PR"].
         public init(style: FormComponentStyle = FormComponentStyle(),
-                    showDefaultPayButton: Bool = true,
+                    showSubmitButton: Bool = true,
                     shopperInformation: PrefilledShopperInformation? = nil,
                     localizationParameters: LocalizationParameters? = nil,
                     showsStorePaymentMethodField: Bool = true,
                     showsBillingAddress: Bool = true,
                     billingAddressCountryCodes: [String] = ["US", "PR"]) {
             self.style = style
-            self.showDefaultPayButton = showDefaultPayButton
+            self.showSubmitButton = showSubmitButton
             self.shopperInformation = shopperInformation
             self.localizationParameters = localizationParameters
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
