@@ -11,7 +11,6 @@ on:
 jobs:
 
   build:
-    env:
     runs-on: macos-14-xlarge # Apple Silicon Runner
 
     steps:
@@ -27,5 +26,10 @@ jobs:
         
     - name: 🔍 Detect Changes
       run: |
+        echo "${branch}"
+        echo "${baseRepo}"
         Scripts/generate_public_interface_definition.sh
-        ./Scripts/compare_public_interface_definition.swift ${{ github.event.pull_request.base.ref }} ${{ github.server_url }}/${{ github.repository }}
+        ./Scripts/compare_public_interface_definition.swift "${branch}" "${baseRepo}"
+      env:
+        branch: '${{ github.event.pull_request.base.ref }}'
+        baseRepo: '${{ github.server_url }}/${{ github.repository }}'
