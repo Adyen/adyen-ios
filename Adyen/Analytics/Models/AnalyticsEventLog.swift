@@ -39,6 +39,11 @@ public struct AnalyticsEventLog: AnalyticsEvent {
         case qrCode = "QrCode"
         case bankTransfer = "BankTransfer"
         case sdk = "Sdk"
+        case fingerprintSent = "FingerprintDataSentMobile"
+        case fingerprintComplete = "FingerprintCompleted"
+        case challengeDataSent = "ChallengeDataSentMobile"
+        case challengeDisplayed = "ChallengeDisplayed"
+        case challengeComplete = "ChallengeCompleted"
     }
     
     public init(component: String, type: LogType, subType: LogSubType? = nil) {

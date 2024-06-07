@@ -19,7 +19,8 @@ class DokuVoucherUITests: XCTestCase {
 
         let sut = viewControllerProvider.provideView(with: action, logo: nil)
 
-        setupRootViewController(ADYViewController(view: sut))
+        let viewController = ADYViewController(view: sut)
+        viewController.loadViewIfNeeded()
 
         let textLabel: UILabel! = sut.findView(by: "adyen.voucher.textLabel")
         XCTAssertEqual(textLabel.text, "Thank you for your purchase, please use the following information to complete your payment. -- Test")
@@ -57,7 +58,8 @@ class DokuVoucherUITests: XCTestCase {
 
         let sut = viewProvider.provideView(with: action, logo: nil)
 
-        setupRootViewController(ADYViewController(view: sut))
+        let viewController = ADYViewController(view: sut)
+        viewController.loadViewIfNeeded()
 
         let textLabel: UILabel! = sut.findView(by: "adyen.voucher.textLabel")
         XCTAssertEqual(textLabel.text, "Thank you for your purchase, please use the following information to complete your payment.")
@@ -95,7 +97,8 @@ class DokuVoucherUITests: XCTestCase {
 
         let sut = viewProvider.provideView(with: action, logo: nil)
 
-        setupRootViewController(ADYViewController(view: sut))
+        let viewController = ADYViewController(view: sut)
+        viewController.loadViewIfNeeded()
 
         let textLabel: UILabel! = sut.findView(by: "adyen.voucher.textLabel")
         XCTAssertEqual(textLabel.text, "Thank you for your purchase, please use the following information to complete your payment.")

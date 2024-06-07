@@ -15,19 +15,19 @@ import PassKit
 internal enum ConfigurationConstants {
     // swiftlint:disable explicit_acl
     // swiftlint:disable line_length
-
+    
     /// Please use your own web server between your app and adyen checkout API.
     static let demoServerEnvironment = DemoCheckoutAPIEnvironment.test
     
     static let classicAPIEnvironment = DemoClassicAPIEnvironment.test
-
+    
     static let componentsEnvironment = Environment.test
-
+    
     static let appName = "Adyen Demo"
-
+    
     static let reference = "Test Order Reference - iOS UIHost"
-
-    static let returnUrl = "ui-host://payments"
+    
+    static var returnUrl: URL { .init(string: "ui-host://payments")! }
     
     static let shopperReference = "iOS Checkout Shopper"
 
@@ -258,8 +258,9 @@ internal struct DemoAppSettings: Codable {
 
         dropInConfig.paymentMethodsList.allowDisablingStoredPaymentMethods = dropInSettings.allowDisablingStoredPaymentMethods
         if dropInSettings.cashAppPayEnabled {
-            dropInConfig.cashAppPay = .init(redirectURL: URL(string: ConfigurationConstants.returnUrl)!)
+            dropInConfig.cashAppPay = .init(redirectURL: ConfigurationConstants.returnUrl)
         }
+        dropInConfig.actionComponent.twint = .init(callbackAppScheme: ConfigurationConstants.returnUrl.scheme!)
 
         return dropInConfig
     }

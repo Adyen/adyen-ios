@@ -17,6 +17,8 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     internal var applePayComponent: ApplePayComponent?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
+    
+    internal lazy var context: AdyenContext = generateContext()
 
     // MARK: - Initializers
 

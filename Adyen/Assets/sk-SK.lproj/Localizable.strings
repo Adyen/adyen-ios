@@ -43,6 +43,7 @@
 "adyen.continueTitle" = "Pokračovať";
 "adyen.phoneNumber.title" = "Telefónne číslo";
 "adyen.phoneNumber.invalid" = "Neplatné telefónne číslo";
+"adyen.telephonePrefix" = "Predpona k priezvisku (ak existuje)";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ číslice";
 "adyen.emailItem.title" = "E-mailová adresa";
@@ -171,7 +172,7 @@
 "adyen.paybybank.subtitle" = "Pre váš vyhľadávací dotaz sa nenašli žiadne banky…";
 "adyen.paybybank.title" = "Žiadne výsledky pre";
 "adyen.search.placeholder" = "Vyhľadávanie…";
-"adyen.upi.modeSelection" = "Vyberte si, ako by ste chceli používať UPI.";
+"adyen.upi.modeSelection" = "Ako by ste chceli použiť UPI?";
 "adyen.UPIVpa.validationMessage" = "Zadajte správnu adresu pre virtuálnu platbu";
 "adyen.UPIQrcode.generationMessage" = "Vygenerujte kód QR. Ten si môžete stiahnuť alebo môžete urobiť snímku obrazovky a nahrať ju do aplikácie UPI na dokončenie platby.";
 "adyen.UPIQrcode.timerMessage" = "Na schválenie máte %@";

@@ -35,7 +35,9 @@ extension XCTestCase {
         until expectation: () -> Bool,
         timeout: TimeInterval = 60,
         retryInterval: DispatchTimeInterval = .seconds(1),
-        message: String? = nil
+        message: String? = nil,
+        file: StaticString = #file,
+        line: UInt = #line
     ) {
         let thresholdDate = Date().addingTimeInterval(timeout)
         
@@ -46,7 +48,7 @@ extension XCTestCase {
             isMatchingExpectation = expectation()
         }
         
-        XCTAssertTrue(isMatchingExpectation, message ?? "Expectation should be met before timeout \(timeout)s")
+        XCTAssertTrue(isMatchingExpectation, message ?? "Expectation should be met before timeout \(timeout)s", file: file, line: line)
     }
     
     /// Waits until  a keyPath of a target matches an expected value

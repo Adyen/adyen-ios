@@ -109,6 +109,10 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
         guard let address = value else { return false }
         return address.satisfies(requiredFields: addressViewModel.requiredFields)
     }
+    
+    override public func validationStatus() -> ValidationStatus? {
+        nil
+    }
 }
 
 // MARK: - Convenience

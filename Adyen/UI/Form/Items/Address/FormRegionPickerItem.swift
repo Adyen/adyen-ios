@@ -8,7 +8,7 @@ import Foundation
 
 /// A picker form item for picking regions.
 @_spi(AdyenInternal)
-public final class FormRegionPickerItem: FormPickerItem {
+public final class FormRegionPickerItem: FormPickerItem<FormPickerElement> {
     
     public required init(
         preselectedRegion: Region?,

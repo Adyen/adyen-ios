@@ -19,6 +19,8 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     
+    internal lazy var context: AdyenContext = generateContext()
+    
     // MARK: - Initializers
 
     internal init() {}

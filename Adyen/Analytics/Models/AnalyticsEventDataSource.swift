@@ -14,7 +14,7 @@ internal class AnalyticsEventDataSource: AnyAnalyticsEventDataSource {
     private var logs: [AnalyticsEventLog] = []
     private var errors: [AnalyticsEventError] = []
     
-    // MARK: - AnyAnalyticsEventDataSource
+    // MARK: - AnalyticsEventDataAddition
     
     internal func add(info: AnalyticsEventInfo) {
         infos.append(info)
@@ -28,12 +28,6 @@ internal class AnalyticsEventDataSource: AnyAnalyticsEventDataSource {
         errors.append(error)
     }
     
-    internal func removeAllEvents() {
-        infos = []
-        logs = []
-        errors = []
-    }
-    
     internal func allEvents() -> AnalyticsEventWrapper? {
         if infos.isEmpty, logs.isEmpty, errors.isEmpty {
             return nil
@@ -43,4 +37,32 @@ internal class AnalyticsEventDataSource: AnyAnalyticsEventDataSource {
                                      errors: errors)
     }
     
+    // MARK: - AnalyticsEventDataRemoval
+    
+    internal func removeAllEvents() {
+        infos = []
+        logs = []
+        errors = []
+    }
+    
+    internal func removeEvents(matching collection: AnalyticsEventWrapper) {
+        remove(infoEvents: collection.infos)
+        remove(logEvents: collection.logs)
+        remove(errorEvents: collection.errors)
+    }
+    
+    private func remove(infoEvents: [AnalyticsEventInfo]) {
+        let infoIds = infoEvents.map(\.id)
+        infos.removeAll { infoIds.contains($0.id) }
+    }
+    
+    private func remove(logEvents: [AnalyticsEventLog]) {
+        let logIds = logEvents.map(\.id)
+        logs.removeAll { logIds.contains($0.id) }
+    }
+    
+    private func remove(errorEvents: [AnalyticsEventError]) {
+        let errorIds = errorEvents.map(\.id)
+        errors.removeAll { errorIds.contains($0.id) }
+    }
 }
