@@ -1,7 +1,17 @@
 #!/bin/bash
 
-echo "Branch: " $1
-echo "Repo:   " $2
+BRANCH=$1
+REPO=$2
+TARGET="x86_64-apple-ios17.4-simulator"
+SDK="`xcrun --sdk iphonesimulator --show-sdk-path`"
+MODULE=$3 #"Adyen"
+COMPARISON_VERSION_DIR_NAME="comparison_version_$BRANCH"
+
+echo "Branch: " $BRANCH
+echo "Repo:   " $REPO
+echo "Module: " $MODULE
+echo "Target: " $TARGET
+echo "Dir:    " $COMPARISON_VERSION_DIR_NAME
 
 rm -rf .build
 mv Adyen.xcodeproj Adyen.xcode_proj
@@ -9,44 +19,40 @@ rm -rf comparison_version
 
 function cleanup() {
     rm -rf .build
-    rm -rf comparison_version
+    # rm -rf $COMPARISON_VERSION_DIR_NAME
     mv Adyen.xcode_proj Adyen.xcodeproj
 }
 
 trap cleanup EXIT
 
 echo "↘️  Checking out comparison version"
-mkdir comparison_version
-cd comparison_version
-git clone -b $1 $2
-cd adyen-ios
-mv Adyen.xcodeproj Adyen.xcode_proj
+
+# If the directory already exists we just navigate into it and run the commands
+if [ ! -d "$COMPARISON_VERSION_DIR_NAME" ];
+then
+  mkdir $COMPARISON_VERSION_DIR_NAME
+  cd $COMPARISON_VERSION_DIR_NAME
+  git clone -b $BRANCH $REPO
+  cd adyen-ios
+  mv Adyen.xcodeproj Adyen.xcode_proj
+else
+  cd $COMPARISON_VERSION_DIR_NAME
+  cd adyen-ios
+  mv Adyen.xcodeproj Adyen.xcode_proj
+fi
 
 echo "👷 Building comparison project"
-xcodebuild -derivedDataPath .build -sdk "`xcrun --sdk iphonesimulator --show-sdk-path`" -scheme "Adyen" -destination "platform=iOS,name=Any iOS Device" -target "x86_64-apple-ios16.4-simulator" -quiet
+xcodebuild -derivedDataPath .build -sdk $SDK -scheme $MODULE -destination "platform=iOS,name=Any iOS Device" -target $TARGET -quiet
 
 echo "📋 Generating comparison api_dump"
-xcrun swift-api-digester -dump-sdk -module Adyen -o ../../api_dump_comparison.json -I .build/Build/Products/Debug-iphonesimulator -sdk "`xcrun --sdk iphonesimulator --show-sdk-path`" -target "arm64-apple-ios17.2-simulator"
+xcrun swift-api-digester -dump-sdk -module $MODULE -o ../../api_dump_comparison.json -I .build/Build/Products/Debug-iphonesimulator -sdk $SDK -target $TARGET
 
 cd ../..
 
 # Building project in `.build` directory
 echo "👷 Building updated project"
-xcodebuild -derivedDataPath .build -sdk "`xcrun --sdk iphonesimulator --show-sdk-path`" -scheme "Adyen" -destination "platform=iOS,name=Any iOS Device" -target "x86_64-apple-ios16.4-simulator" -quiet
+xcodebuild -derivedDataPath .build -sdk $SDK -scheme $MODULE -destination "platform=iOS,name=Any iOS Device" -target $TARGET -quiet
 
 # Generating api_dump
 echo "📋 Generating new api_dump"
-xcrun swift-api-digester -dump-sdk -module Adyen -o api_dump.json -I .build/Build/Products/Debug-iphonesimulator -sdk "`xcrun --sdk iphonesimulator --show-sdk-path`" -target "arm64-apple-ios17.2-simulator"
-
-#echo "🔀 Comparing"
-
-# echo "- diff"
-# diff api_dump_comparison.json api_dump.json
-
-#echo "- swift-api-digester -diagnose-sdk"
-# This command does not take @_spi into account unfortunately (It works well with changing from public to private or add new func/var/objects)
-# xcrun swift-api-digester -diagnose-sdk -module Adyen -o api_diff -use-interface-for-module Adyen -abi -BI ./last_release/adyen-ios/.build/Build/Products/Debug-iphonesimulator -I .build/Build/Products/Debug-iphonesimulator -bsdk "`xcrun --sdk iphonesimulator --show-sdk-path`" -sdk "`xcrun --sdk iphonesimulator --show-sdk-path`" -target "arm64-apple-ios17.2-simulator"
-# cat api_diff
-
-# This command also does not take @_spi into account (Same as swift-api-digester -diagnose-sdk basically but running on the json files)
-# xcrun swift-api-digester -diagnose-sdk --input-paths api_dump_comparison.json -input-paths api_dump.json
+xcrun swift-api-digester -dump-sdk -module $MODULE -o api_dump.json -I .build/Build/Products/Debug-iphonesimulator -sdk $SDK -target $TARGET

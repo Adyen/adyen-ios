@@ -26,8 +26,12 @@ jobs:
         
     - name: 🔍 Detect Changes
       run: |
-        Scripts/generate_public_interface_definition.sh ${branch} ${baseRepo}
-        ./Scripts/compare_public_interface_definition.swift api_dump_comparison.json api_dump.json
+        for module in Adyen AdyenDropIn AdyenActions AdyenCard
+          do
+            echo Generating API Definition for $module
+            Scripts/generate_public_interface_definition.sh ${branch} ${baseRepo} $module
+            ./Scripts/compare_public_interface_definition.swift api_dump_comparison.json api_dump.json
+          done
       env:
         branch: '${{github.event.pull_request.base.ref}}'
         baseRepo: '${{github.server_url}}/${{github.repository}}.git'
