@@ -26,11 +26,11 @@ jobs:
         
     - name: 🔍 Detect Changes
       run: |
-        for module in Adyen AdyenDropIn AdyenActions AdyenCard
+        for module in Adyen AdyenDropIn AdyenActions AdyenCard AdyenEncryption AdyenComponents AdyenSession AdyenWeChatPay AdyenCashAppPay AdyenTwint AdyenDelegatedAuthentication
           do
             echo Generating API Definition for $module
             Scripts/generate_public_interface_definition.sh ${branch} ${baseRepo} $module
-            ./Scripts/compare_public_interface_definition.swift api_dump_comparison.json api_dump.json
+            ./Scripts/compare_public_interface_definition.swift api_dump_comparison.json api_dump.json $module
           done
       env:
         branch: '${{github.event.pull_request.base.ref}}'

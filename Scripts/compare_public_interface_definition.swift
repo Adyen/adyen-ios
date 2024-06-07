@@ -12,6 +12,7 @@ let currentDirectory = URL(fileURLWithPath: FileManager.default.currentDirectory
 
 let old = CommandLine.arguments[1]
 let new = CommandLine.arguments[2]
+let moduleName = CommandLine.arguments[3]
 
 class Element: Codable, Equatable, CustomDebugStringConvertible {
     let kind: String
@@ -168,7 +169,7 @@ func compare() throws {
     )
     
     if decodedOldDefinition == decodedNewDefinition {
-        try persistComparison(fileContent: "# Public API Changes\n\n✅ Nothing detected")
+        try persistComparison(fileContent: "# Public API Changes to `\(moduleName)`\n\n✅ Nothing detected")
         return
     }
     
@@ -191,7 +192,7 @@ func compare() throws {
         groupedChanges[$0.parentName] = (groupedChanges[$0.parentName] ?? []) + [$0]
     }
     
-    var fileContent: [String] = ["# Public API Changes\n"]
+    var fileContent: [String] = ["# Public API Changes to `\(moduleName)`\n"]
     
     groupedChanges.keys.sorted().forEach { key in
         fileContent +=  ["## \(key)"]
@@ -206,7 +207,17 @@ func compare() throws {
 func persistComparison(fileContent: String) throws {
     print(fileContent)
     let outputPath = currentDirectory.appendingPathComponent("api_comparison.md")
-    try fileContent.write(to: outputPath, atomically: true, encoding: String.Encoding.utf8)
+    
+    guard let data = (fileContent + "\n\n").data(using: String.Encoding.utf8) else { return }
+    
+    if FileManager.default.fileExists(atPath: outputPath.path) {
+        let fileHandle = try FileHandle(forWritingTo: outputPath)
+        fileHandle.seekToEndOfFile()
+        fileHandle.write(data)
+        fileHandle.closeFile()
+    } else {
+        try data.write(to: outputPath, options: .atomicWrite)
+    }
 }
 
 do {
