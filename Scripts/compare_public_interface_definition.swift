@@ -128,7 +128,7 @@ func recursiveCompare(element lhs: Element, to rhs: Element, oldFirst: Bool) -> 
     var changes = [Change]()
     
     if oldFirst, (lhs.printedName != rhs.printedName || lhs.spiGroupNames != rhs.spiGroupNames || lhs.children == rhs.children) {
-        changes += [.init(changeType: .change, parentName: lhs.parentPath, changeDescription: "\(lhs) ➡️  \(rhs)")]
+        changes += [.init(changeType: .change, parentName: lhs.parentPath, changeDescription: "`\(lhs)` ➡️  `\(rhs)`")]
     }
     
     changes += lhs.children?.flatMap { lhsElement in
@@ -136,9 +136,9 @@ func recursiveCompare(element lhs: Element, to rhs: Element, oldFirst: Bool) -> 
             return recursiveCompare(element: lhsElement, to: rhsChildForName, oldFirst: oldFirst)
         } else {
             if oldFirst {
-                return [.init(changeType: .removal, parentName: lhsElement.parentPath, changeDescription: "\(lhsElement) was removed")]
+                return [.init(changeType: .removal, parentName: lhsElement.parentPath, changeDescription: "`\(lhsElement)` was removed")]
             } else {
-                return [.init(changeType: .addition, parentName: lhsElement.parentPath, changeDescription: "\(lhsElement) was added")]
+                return [.init(changeType: .addition, parentName: lhsElement.parentPath, changeDescription: "`\(lhsElement)` was added")]
             }
         }
     } ?? []
@@ -153,7 +153,7 @@ func setupRelationships(for element: Element, parent: Element?) {
     }
 }
 
-func compare() throws -> Bool {
+func compare() throws {
     let oldFileUrl = currentDirectory.appending(path: old)
     let newFileUrl = currentDirectory.appending(path: new)
     
@@ -171,7 +171,8 @@ func compare() throws -> Bool {
     )
     
     if decodedOldDefinition == decodedNewDefinition {
-        return true
+        try persistComparison(fileContent: "# Public API Changes\n\n✅ Nothing detected")
+        return
     }
     
     setupRelationships(for: decodedOldDefinition.root, parent: nil)
@@ -202,21 +203,17 @@ func compare() throws -> Bool {
         }
     }
     
-    print(fileContent.joined(separator: "\n"))
-    
-    let outputPath = currentDirectory.appendingPathComponent("api_comparison.md")
+    try persistComparison(fileContent: fileContent.joined(separator: "\n"))
+}
 
-    do {
-        try fileContent.joined(separator: "\n").write(to: outputPath, atomically: true, encoding: String.Encoding.utf8)
-    } catch {
-        print(error)
-    }
-    
-    return false
+func persistComparison(fileContent: String) throws {
+    print(fileContent)
+    let outputPath = currentDirectory.appendingPathComponent("api_comparison.md")
+    try fileContent.write(to: outputPath, atomically: true, encoding: String.Encoding.utf8)
 }
 
 do {
-    try print(compare() ? "✅ Both files are equal" : "🔀 Changes detected")
+    try compare()
 } catch {
     print(error)
 }
