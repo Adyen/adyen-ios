@@ -157,9 +157,6 @@ func compare() throws {
     let oldFileUrl = currentDirectory.appending(path: old)
     let newFileUrl = currentDirectory.appending(path: new)
     
-    // print("Old:", oldFileUrl)
-    // print("New:", newFileUrl)
-    
     let decodedOldDefinition = try JSONDecoder().decode(
         Definition.self,
         from: Data(contentsOf: oldFileUrl)
