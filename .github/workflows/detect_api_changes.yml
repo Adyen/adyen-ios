@@ -37,8 +37,5 @@ jobs:
     - name: 📝 Comment on PR
       uses: thollander/actions-comment-pull-request@v2
       with:
-        message: |
-          Comparing changes with base branch ${{ github.event.pull_request.base.ref }}
-          Workspace directory: ${{ github.workspace }}
-          _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
+        filePath: "${{ github.workspace }}/Package.swift"
         comment_tag: api_changes
