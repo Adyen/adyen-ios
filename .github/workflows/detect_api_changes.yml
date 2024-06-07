@@ -37,3 +37,4 @@ jobs:
       with:
         filePath: "${{ github.workspace }}/api_comparison.md"
         comment_tag: api_changes
+        mode: recreate
