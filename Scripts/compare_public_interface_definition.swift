@@ -198,7 +198,7 @@ func compare() throws {
     
     groupedChanges.keys.sorted().forEach { key in
         fileContent +=  ["## \(key)"]
-        groupedChanges[key]?.forEach {
+        groupedChanges[key]?.sorted(by: { $0.changeDescription < $1.changeDescription }).forEach {
             fileContent +=  ["- \($0.changeType.icon) \($0.changeDescription)"]
         }
     }
