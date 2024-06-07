@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo "Branch:" $1
-echo "Repo:" $2
+echo "Branch: " $1
+echo "Repo:   " $2
 
 rm -rf .build
 mv Adyen.xcodeproj Adyen.xcode_proj
@@ -18,28 +18,24 @@ trap cleanup EXIT
 echo "↘️  Checking out comparison version"
 mkdir comparison_version
 cd comparison_version
-# ${{ github.server_url }}/${{ github.repository }} # https://github.com/Adyen/adyen-ios.git
-# ${{ github.event.pull_request.base.ref }} # e.g. develop
 git clone -b $1 $2
 cd adyen-ios
 mv Adyen.xcodeproj Adyen.xcode_proj
 
 echo "👷 Building comparison project"
-xcodebuild -derivedDataPath .build -sdk "`xcrun --sdk iphonesimulator --show-sdk-path`" -scheme "AdyenDropIn" -destination "platform=iOS,name=Any iOS Device" -target "x86_64-apple-ios16.4-simulator" -quiet
+xcodebuild -derivedDataPath .build -sdk "`xcrun --sdk iphonesimulator --show-sdk-path`" -scheme "Adyen" -destination "platform=iOS,name=Any iOS Device" -target "x86_64-apple-ios16.4-simulator" -quiet
 
 echo "📋 Generating comparison api_dump"
-xcrun swift-api-digester -dump-sdk -module AdyenDropIn -o ../../api_dump_comparison.json -I .build/Build/Products/Debug-iphonesimulator -sdk "`xcrun --sdk iphonesimulator --show-sdk-path`" -target "arm64-apple-ios17.2-simulator"
 xcrun swift-api-digester -dump-sdk -module Adyen -o ../../api_dump_comparison.json -I .build/Build/Products/Debug-iphonesimulator -sdk "`xcrun --sdk iphonesimulator --show-sdk-path`" -target "arm64-apple-ios17.2-simulator"
 
 cd ../..
 
 # Building project in `.build` directory
 echo "👷 Building updated project"
-xcodebuild -derivedDataPath .build -sdk "`xcrun --sdk iphonesimulator --show-sdk-path`" -scheme "AdyenDropIn" -destination "platform=iOS,name=Any iOS Device" -target "x86_64-apple-ios16.4-simulator" -quiet
+xcodebuild -derivedDataPath .build -sdk "`xcrun --sdk iphonesimulator --show-sdk-path`" -scheme "Adyen" -destination "platform=iOS,name=Any iOS Device" -target "x86_64-apple-ios16.4-simulator" -quiet
 
 # Generating api_dump
 echo "📋 Generating new api_dump"
-xcrun swift-api-digester -dump-sdk -module AdyenDropIn -o api_dump.json -I .build/Build/Products/Debug-iphonesimulator -sdk "`xcrun --sdk iphonesimulator --show-sdk-path`" -target "arm64-apple-ios17.2-simulator"
 xcrun swift-api-digester -dump-sdk -module Adyen -o api_dump.json -I .build/Build/Products/Debug-iphonesimulator -sdk "`xcrun --sdk iphonesimulator --show-sdk-path`" -target "arm64-apple-ios17.2-simulator"
 
 #echo "🔀 Comparing"

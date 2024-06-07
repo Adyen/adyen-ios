@@ -19,6 +19,7 @@ class Element: Codable, Equatable, CustomDebugStringConvertible {
     let mangledName: String?
     let printedName: String
     let declKind: String?
+    let moduleName: String?
     
     let children: [Element]?
     let spiGroupNames: [String]?
@@ -33,6 +34,7 @@ class Element: Codable, Equatable, CustomDebugStringConvertible {
         case children
         case spiGroupNames = "spi_group_names"
         case declKind
+        case moduleName
     }
     
     var debugDescription: String {
@@ -47,7 +49,7 @@ class Element: Codable, Equatable, CustomDebugStringConvertible {
         } else if declKind == "Func" {
             definition += "func "
         } else if declKind == "Import" {
-            definition += "import"
+            definition += "import "
         }
         
         definition += "\(printedName)"
@@ -57,8 +59,8 @@ class Element: Codable, Equatable, CustomDebugStringConvertible {
     
     public static func == (lhs: Element, rhs: Element) -> Bool {
         lhs.mangledName == rhs.mangledName
-        && lhs.children == rhs.children
-        && lhs.spiGroupNames == rhs.spiGroupNames
+            && lhs.children == rhs.children
+            && lhs.spiGroupNames == rhs.spiGroupNames
     }
     
     var parentPath: String {
@@ -69,10 +71,14 @@ class Element: Codable, Equatable, CustomDebugStringConvertible {
             path += [parent?.name]
         }
         
-        var sanitizedPath = path.compactMap({$0})
+        var sanitizedPath = path.compactMap { $0 }
         
         if sanitizedPath.last == "TopLevel" {
             sanitizedPath.removeLast()
+        }
+        
+        if let moduleName = moduleName {
+            sanitizedPath += [moduleName]
         }
         
         return sanitizedPath.reversed().joined(separator: ".")
@@ -121,15 +127,7 @@ func recursiveCompare(element lhs: Element, to rhs: Element, oldFirst: Bool) -> 
     
     var changes = [Change]()
     
-    if oldFirst, lhs.printedName != rhs.printedName {
-        changes += [.init(changeType: .change, parentName: lhs.parentPath, changeDescription: "\(lhs) ➡️  \(rhs)")]
-    }
-    
-    if oldFirst, lhs.spiGroupNames != rhs.spiGroupNames {
-        changes += [.init(changeType: .change, parentName: lhs.parentPath, changeDescription: "\(lhs) ➡️  \(rhs)")]
-    }
-    
-    if oldFirst, lhs.children == rhs.children {
+    if oldFirst, (lhs.printedName != rhs.printedName || lhs.spiGroupNames != rhs.spiGroupNames || lhs.children == rhs.children) {
         changes += [.init(changeType: .change, parentName: lhs.parentPath, changeDescription: "\(lhs) ➡️  \(rhs)")]
     }
     
@@ -159,8 +157,8 @@ func compare() throws -> Bool {
     let oldFileUrl = currentDirectory.appending(path: old)
     let newFileUrl = currentDirectory.appending(path: new)
     
-    //print("Old:", oldFileUrl)
-    //print("New:", newFileUrl)
+    // print("Old:", oldFileUrl)
+    // print("New:", newFileUrl)
     
     let decodedOldDefinition = try JSONDecoder().decode(
         Definition.self,
@@ -179,14 +177,21 @@ func compare() throws -> Bool {
     setupRelationships(for: decodedOldDefinition.root, parent: nil)
     setupRelationships(for: decodedNewDefinition.root, parent: nil)
     
-    let changes = recursiveCompare(element: decodedOldDefinition.root, to: decodedNewDefinition.root, oldFirst: true) + recursiveCompare(element: decodedNewDefinition.root, to: decodedOldDefinition.root, oldFirst: false)
+    let changes = recursiveCompare(
+        element: decodedOldDefinition.root,
+        to: decodedNewDefinition.root,
+        oldFirst: true
+    ) + recursiveCompare(
+        element: decodedNewDefinition.root,
+        to: decodedOldDefinition.root,
+        oldFirst: false
+    )
     
     var groupedChanges = [String: [Change]]()
     
     changes.forEach {
         groupedChanges[$0.parentName] = (groupedChanges[$0.parentName] ?? []) + [$0]
     }
-    
     
     groupedChanges.keys.sorted().forEach { key in
         print("[\(key)]")
@@ -199,7 +204,7 @@ func compare() throws -> Bool {
 }
 
 do {
-    print(try compare() ? "✅ Both files are equal" : "🔀 Changes detected")
+    try print(compare() ? "✅ Both files are equal" : "🔀 Changes detected")
 } catch {
     print(error)
 }
