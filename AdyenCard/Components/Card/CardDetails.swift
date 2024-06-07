@@ -57,7 +57,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
     public let socialSecurityNumber: String?
 
     /// The 3DS2 SDK version.
-    public let threeDS2SDKVersion: String = threeDS2SdkVersion
+    public let threeDS2SDKVersion: String = "" // threeDS2SdkVersion
     
     /// Brand of the card.
     public let selectedBrand: String?
@@ -149,7 +149,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         case fundingSource
         case taxNumber
         case password = "encryptedPassword"
-        case threeDS2SDKVersion = "threeDS2SdkVersion"
+        // case threeDS2SDKVersion = "threeDS2SdkVersion"
     }
 
 }
