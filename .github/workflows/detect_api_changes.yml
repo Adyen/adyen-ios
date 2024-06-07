@@ -35,5 +35,5 @@ jobs:
     - name: 📝 Comment on PR
       uses: thollander/actions-comment-pull-request@v2
       with:
-        filePath: "${{ github.workspace }}/api_dump.json"
+        filePath: "${{ github.workspace }}/api_comparison.md"
         comment_tag: api_changes

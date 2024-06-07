@@ -193,11 +193,23 @@ func compare() throws -> Bool {
         groupedChanges[$0.parentName] = (groupedChanges[$0.parentName] ?? []) + [$0]
     }
     
+    var fileContent: [String] = ["# Public API Changes\n"]
+    
     groupedChanges.keys.sorted().forEach { key in
-        print("[\(key)]")
+        fileContent +=  ["## \(key)"]
         groupedChanges[key]?.forEach {
-            print("- \($0.changeType.icon) \($0.changeDescription)")
+            fileContent +=  ["- \($0.changeType.icon) \($0.changeDescription)"]
         }
+    }
+    
+    print(fileContent.joined(separator: "\n"))
+    
+    let outputPath = currentDirectory.appendingPathComponent("api_comparison.md")
+
+    do {
+        try fileContent.joined(separator: "\n").write(to: outputPath, atomically: true, encoding: String.Encoding.utf8)
+    } catch {
+        print(error)
     }
     
     return false
