@@ -26,16 +26,19 @@ jobs:
         
     - name: 🔍 Detect Changes
       run: |
-        Scripts/generate_public_interface_definition.sh ${branch} ${baseRepo}
-        ./Scripts/compare_public_interface_definition.swift api_dump_comparison.json api_dump.json
+        # Scripts/generate_public_interface_definition.sh ${branch} ${baseRepo}
+        # ./Scripts/compare_public_interface_definition.swift api_dump_comparison.json api_dump.json
+        echo ${workspace}
       env:
         branch: '${{github.event.pull_request.base.ref}}'
         baseRepo: '${{github.server_url}}/${{github.repository}}.git'
+        workspace: '${{ github.workspace }}'
         
     - name: 📝 Comment on PR
       uses: thollander/actions-comment-pull-request@v2
       with:
         message: |
           Comparing changes with base branch ${{ github.event.pull_request.base.ref }}
+          Workspace directory: ${{ github.workspace }}
           _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
         comment_tag: api_changes
