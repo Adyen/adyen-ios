@@ -14,6 +14,14 @@ let old = CommandLine.arguments[1]
 let new = CommandLine.arguments[2]
 let moduleName = CommandLine.arguments[3]
 
+struct Conformance: Codable, Equatable {
+    var printedName: String
+    
+    enum CodingKeys: String, CodingKey {
+        case printedName
+    }
+}
+
 class Element: Codable, Equatable, CustomDebugStringConvertible {
     let kind: String
     let name: String
@@ -23,6 +31,9 @@ class Element: Codable, Equatable, CustomDebugStringConvertible {
     
     let children: [Element]?
     let spiGroupNames: [String]?
+    
+    let declAttributes: [String]?
+    let conformances: [Conformance]?
     
     var parent: Element?
     
@@ -34,6 +45,8 @@ class Element: Codable, Equatable, CustomDebugStringConvertible {
         case children
         case spiGroupNames = "spi_group_names"
         case declKind
+        case declAttributes
+        case conformances
     }
     
     var debugDescription: String {
@@ -43,15 +56,23 @@ class Element: Codable, Equatable, CustomDebugStringConvertible {
         }
         definition += "public "
         
-        if declKind == "Var" {
-            definition += "var "
-        } else if declKind == "Func" {
-            definition += "func "
-        } else if declKind == "Import" {
-            definition += "import "
+        if declAttributes?.contains("Final") == true {
+            definition += "final "
+        }
+        
+        if let declKind {
+            if declKind == "Constructor" {
+                definition += "func "
+            } else  {
+                definition += "\(declKind.lowercased()) "
+            }
         }
         
         definition += "\(printedName)"
+        
+        if let conformanceNames = conformances?.map({ $0.printedName }), !conformanceNames.isEmpty {
+            definition += " : \(conformanceNames.joined(separator: ", "))"
+        }
         
         return definition
     }
@@ -101,9 +122,9 @@ struct Change {
         var icon: String {
             switch self {
             case .addition:
-                return "🐣"
+                return "❇️"
             case .removal:
-                return "💔"
+                return "😶‍🌫️"
             case .change:
                 return "🔀"
             }
@@ -122,8 +143,19 @@ func recursiveCompare(element lhs: Element, to rhs: Element, oldFirst: Bool) -> 
     
     var changes = [Change]()
     
-    if oldFirst, (lhs.printedName != rhs.printedName || lhs.spiGroupNames != rhs.spiGroupNames || lhs.children == rhs.children) {
+    // TODO: Add check if accessor changed (e.g. changed from get/set to get only...)
+    
+    if oldFirst, (
+        lhs.printedName != rhs.printedName ||
+        lhs.spiGroupNames != rhs.spiGroupNames ||
+        lhs.conformances != rhs.conformances ||
+        lhs.declAttributes != rhs.declAttributes
+    ) {
         changes += [.init(changeType: .change, parentName: lhs.parentPath, changeDescription: "`\(lhs)` ➡️  `\(rhs)`")]
+    }
+    
+    if lhs.children == rhs.children {
+        return changes
     }
     
     changes += lhs.children?.flatMap { lhsElement in
@@ -163,7 +195,7 @@ func compare() throws {
     )
     
     if decodedOldDefinition == decodedNewDefinition {
-        try persistComparison(fileContent: "## `\(moduleName)`\n✅ Nothing detected")
+        try persistComparison(fileContent: "## 🫧 `\(moduleName)`\n- No changes detected")
         return
     }
     
@@ -186,12 +218,12 @@ func compare() throws {
         groupedChanges[$0.parentName] = (groupedChanges[$0.parentName] ?? []) + [$0]
     }
     
-    var fileContent: [String] = ["## `\(moduleName)`\n"]
+    var fileContent = ["## 👀 `\(moduleName)`\n"]
     
     groupedChanges.keys.sorted().forEach { key in
-        fileContent +=  ["### \(key)"]
+        fileContent += ["### \(key)"]
         groupedChanges[key]?.sorted(by: { $0.changeDescription < $1.changeDescription }).forEach {
-            fileContent +=  ["- \($0.changeType.icon) \($0.changeDescription)"]
+            fileContent += ["- \($0.changeType.icon) \($0.changeDescription)"]
         }
     }
     

@@ -4,14 +4,21 @@ BRANCH=$1
 REPO=$2
 TARGET="x86_64-apple-ios17.4-simulator"
 SDK="`xcrun --sdk iphonesimulator --show-sdk-path`"
-MODULE=$3 #"Adyen"
+MODULE_NAMES=("Adyen" "AdyenDropIn" "AdyenActions" "AdyenCard" "AdyenEncryption" "AdyenComponents" "AdyenSession" "AdyenWeChatPay" "AdyenCashAppPay" "AdyenTwint" "AdyenDelegatedAuthentication")
 COMPARISON_VERSION_DIR_NAME="comparison_version_$BRANCH"
+DERIVED_DATA_PATH=".build"
+SDK_DUMP_INPUT_PATH="$DERIVED_DATA_PATH/Build/Products/Debug-iphonesimulator"
 
 echo "Branch: " $BRANCH
 echo "Repo:   " $REPO
-echo "Module: " $MODULE
 echo "Target: " $TARGET
 echo "Dir:    " $COMPARISON_VERSION_DIR_NAME
+
+echo "Modules:"
+for MODULE in ${MODULE_NAMES[@]}
+do
+    echo "-" $MODULE
+done
 
 rm -rf .build
 rm -rf comparison_version
@@ -22,53 +29,52 @@ function cleanup() {
     mv Adyen.xcode_proj Adyen.xcodeproj
 }
 
+function setupComparisonRepo() {
+    rm -rf $COMPARISON_VERSION_DIR_NAME
+    mkdir $COMPARISON_VERSION_DIR_NAME
+    cd $COMPARISON_VERSION_DIR_NAME
+    git clone -b $BRANCH $REPO
+    
+    cd adyen-ios
+    mv Adyen.xcodeproj Adyen.xcode_proj
+}
+
 trap cleanup EXIT
 
 # TODO: Compile a list of changed modules from the git diff
 # TODO: Generate a Package.swift target that contains all modules
 # TODO: Build each (updated + comparison) project once
-# TODO: Generate an sdk dump from every module that had changes
+# TODO: Only generate + compare an sdk dump from any module that had changes
 
 mv Adyen.xcodeproj Adyen.xcode_proj
 
 echo "↘️  Checking out comparison version"
 
-# If the directory already exists we just navigate into it and run the commands
-if [ ! -d "$COMPARISON_VERSION_DIR_NAME" ];
-then
-  mkdir $COMPARISON_VERSION_DIR_NAME
-  cd $COMPARISON_VERSION_DIR_NAME
-  git clone -b $BRANCH $REPO
-  COMMIT_HASH=$(git rev-parse origin/$BRANCH)
-else
-  cd $COMPARISON_VERSION_DIR_NAME
-  COMMIT_HASH=$(git rev-parse origin/$BRANCH)
-fi
+setupComparisonRepo # We're now in the comparison repository directory
 
-echo "🗂️  Changed files"
+for MODULE in ${MODULE_NAMES[@]}
+do
 
-CHANGED_FILEPATHS=$(git diff --name-only $COMMIT_HASH)
-for FILE_PATH in $CHANGED_FILEPATHS; do
-    echo $FILE_PATH
-done
+echo "👷 [$MODULE] Building comparison project"
+xcodebuild -derivedDataPath $DERIVED_DATA_PATH -sdk $SDK -scheme $MODULE -destination "platform=iOS,name=Any iOS Device" -target $TARGET -quiet
 
-exit
-
-cd adyen-ios
-mv Adyen.xcodeproj Adyen.xcode_proj
-
-echo "👷 Building comparison project"
-xcodebuild -derivedDataPath .build -sdk $SDK -scheme $MODULE -destination "platform=iOS,name=Any iOS Device" -target $TARGET -quiet
-
-echo "📋 Generating comparison api_dump"
-xcrun swift-api-digester -dump-sdk -module $MODULE -o ../../api_dump_comparison.json -I .build/Build/Products/Debug-iphonesimulator -sdk $SDK -target $TARGET
+echo "📋 [$MODULE] Generating comparison api_dump"
+xcrun swift-api-digester -dump-sdk -module $MODULE -o ../../api_dump_comparison.json -I $SDK_DUMP_INPUT_PATH -sdk $SDK -target $TARGET
 
 cd ../..
 
-# Building project in `.build` directory
-echo "👷 Building updated project"
-xcodebuild -derivedDataPath .build -sdk $SDK -scheme $MODULE -destination "platform=iOS,name=Any iOS Device" -target $TARGET -quiet
+echo "👷 [$MODULE] Building updated project"
+xcodebuild -derivedDataPath $DERIVED_DATA_PATH -sdk $SDK -scheme $MODULE -destination "platform=iOS,name=Any iOS Device" -target $TARGET -quiet
 
-# Generating api_dump
-echo "📋 Generating new api_dump"
-xcrun swift-api-digester -dump-sdk -module $MODULE -o api_dump.json -I .build/Build/Products/Debug-iphonesimulator -sdk $SDK -target $TARGET
+echo "📋 [$MODULE] Generating new api_dump"
+xcrun swift-api-digester -dump-sdk -module $MODULE -o api_dump.json -I $SDK_DUMP_INPUT_PATH -sdk $SDK -target $TARGET
+
+echo "🕵️  [$MODULE] Diffing"
+./Scripts/compare_public_interface_definition.swift api_dump_comparison.json api_dump.json $MODULE
+
+# Reset and move into comparison dir again for the next iteration
+rm api_dump.json
+rm api_dump_comparison.json
+cd $COMPARISON_VERSION_DIR_NAME/adyen-ios
+
+done
