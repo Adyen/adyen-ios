@@ -16,7 +16,7 @@ public class AddressInputFormViewController: FormViewController {
         self.viewModel = viewModel
         
         super.init(
-            scrollEnabled: false,
+            scrollEnabled: true,
             style: viewModel.style,
             localizationParameters: viewModel.localizationParameters
         )

@@ -287,14 +287,11 @@ extension CardViewController {
             append(billingAddressItem)
         }
 
-        append(FormSpacerItem())
-
-        // Remove button
         if configuration.showSubmitButton {
+            append(FormSpacerItem())
             append(items.button)
             append(FormSpacerItem(numberOfSpaces: 2))
         }
-
     }
     
     private var billingAddressItem: FormItem? {

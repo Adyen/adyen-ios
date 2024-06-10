@@ -7,11 +7,7 @@
 import Foundation
 
 /// Any component's most basic configuration.
-public protocol AnyBasicComponentConfiguration: Localizable {
-
-    /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
-    var showSubmitButton: Bool { get }
-}
+public protocol AnyBasicComponentConfiguration: Localizable {}
 
 /// The configuration of any component thats aware of shoppers' personal information.
 public protocol AnyPersonalInformationConfiguration: AnyBasicComponentConfiguration {

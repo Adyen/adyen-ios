@@ -474,6 +474,8 @@
 		C95903DE275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95903DD275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift */; };
 		C96688BF26A6FC1C00DC7297 /* AffirmComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */; };
 		C96E07A3283B92E300345732 /* BACSDirectDebitComponentTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96E07A1283B92D500345732 /* BACSDirectDebitComponentTrackerTests.swift */; };
+		C977C62C2C11D27D00B52A90 /* CustomComponentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C977C62B2C11D27D00B52A90 /* CustomComponentPresenter.swift */; };
+		C977C62F2C11D5F000B52A90 /* CustomComponentAssembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C977C62E2C11D5F000B52A90 /* CustomComponentAssembler.swift */; };
 		C978F5EF2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */; };
 		C981254E2851E9AF006D1374 /* PaymentComponentSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981254C2851E903006D1374 /* PaymentComponentSubject.swift */; };
 		C98125502851E9E4006D1374 /* PaymentComponentSubjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981254F2851E9E4006D1374 /* PaymentComponentSubjectTests.swift */; };
@@ -1751,6 +1753,8 @@
 		C95C89312BF63A3500C47296 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentTests.swift; sourceTree = "<group>"; };
 		C96E07A1283B92D500345732 /* BACSDirectDebitComponentTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTrackerTests.swift; sourceTree = "<group>"; };
+		C977C62B2C11D27D00B52A90 /* CustomComponentPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomComponentPresenter.swift; sourceTree = "<group>"; };
+		C977C62E2C11D5F000B52A90 /* CustomComponentAssembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomComponentAssembler.swift; sourceTree = "<group>"; };
 		C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardSecurityCodeItemViewTests.swift; sourceTree = "<group>"; };
 		C97C16A928059A5A00534419 /* AnalyticsEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEventTests.swift; sourceTree = "<group>"; };
 		C97C16AB280702B200534419 /* AnalyticsFlavorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsFlavorTests.swift; sourceTree = "<group>"; };
@@ -3326,6 +3330,16 @@
 			path = Trackers;
 			sourceTree = "<group>";
 		};
+		C977C62D2C11D52000B52A90 /* CustomComponent */ = {
+			isa = PBXGroup;
+			children = (
+				C927FA0E2BED35B5008A11C6 /* CustomComponentViewController.swift */,
+				C977C62B2C11D27D00B52A90 /* CustomComponentPresenter.swift */,
+				C977C62E2C11D5F000B52A90 /* CustomComponentAssembler.swift */,
+			);
+			path = CustomComponent;
+			sourceTree = "<group>";
+		};
 		C978F5EC2732CD0800F59B3C /* CardNumberItem */ = {
 			isa = PBXGroup;
 			children = (
@@ -3812,7 +3826,7 @@
 			children = (
 				E2C0E07F220B0399008616F6 /* AppDelegate.swift */,
 				E24FECF4226EF9AB00A65122 /* ComponentsViewController.swift */,
-				C927FA0E2BED35B5008A11C6 /* CustomComponentViewController.swift */,
+				C977C62D2C11D52000B52A90 /* CustomComponent */,
 				E24FECF6226EF9D800A65122 /* ComponentsView.swift */,
 				F9CFB05C283541DC002F3B72 /* UIView+Helpers.swift */,
 				E9909FB322B7C815008DE50C /* PaymentMethods.json */,
@@ -7203,12 +7217,14 @@
 				E24FECFC226EFD3C00A65122 /* ComponentsItem.swift in Sources */,
 				F9CFB05D283541DC002F3B72 /* UIView+Helpers.swift in Sources */,
 				F9A53C442549887F009000A7 /* DefaultAPIClient.swift in Sources */,
+				C977C62F2C11D5F000B52A90 /* CustomComponentAssembler.swift in Sources */,
 				E24FED0D2270915A00A65122 /* CodingHelpers.swift in Sources */,
 				B6EE0F3A2BBEA2A800B9810D /* APIClientMock.swift in Sources */,
 				81A48DBB2A5709F600242341 /* DemoAddressLookupProvider.swift in Sources */,
 				C9454C37276A340B0086C218 /* BACSDirectDebitPresentationDelegate.swift in Sources */,
 				004BA67B29D427F300A8C69B /* DropInExample.swift in Sources */,
 				A09ADA112807142600BF6802 /* SessionRequest.swift in Sources */,
+				C977C62C2C11D27D00B52A90 /* CustomComponentPresenter.swift in Sources */,
 				F9A53C4A2549887F009000A7 /* Environment.swift in Sources */,
 				81EF2FE12AF3D75C001FE82F /* InstantPaymentComponentAdvancedFlowExample.swift in Sources */,
 				81C5D0D02AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift in Sources */,

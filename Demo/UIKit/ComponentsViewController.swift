@@ -156,8 +156,9 @@ internal final class ComponentsViewController: UIViewController {
     }
 
     internal func presentCustomComponentView() {
-        let viewController = CustomComponentViewController()
-        let navigationController = UINavigationController(rootViewController: viewController)
+        let assembler = CustomComponentAssembler()
+        let customComponentView = assembler.resolveCustomComponentView()
+        let navigationController = UINavigationController(rootViewController: customComponentView)
         present(viewController: navigationController, completion: nil)
     }
 
