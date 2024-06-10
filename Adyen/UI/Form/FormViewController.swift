@@ -134,16 +134,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
 
     public func willUpdatePreferredContentSize() { /* Empty implementation */ }
 
-    public func didUpdatePreferredContentSize() {
-//        let bottomInset: CGFloat = keyboardObserver.keyboardRect.height - view.safeAreaInsets.bottom
-//        let context = AnimationContext(animationKey: Animations.keyboardBottomInset,
-//                                       duration: 0.25,
-//                                       options: [.beginFromCurrentState, .layoutSubviews],
-//                                       animations: { [weak self] in
-//                                           //                                           self?.formView.contentInset.bottom = bottomInset
-//                                       })
-//        view.adyen.animate(context: context)
-    }
+    public func didUpdatePreferredContentSize() { /* Empty implementation */}
 
     // MARK: - Items
 
