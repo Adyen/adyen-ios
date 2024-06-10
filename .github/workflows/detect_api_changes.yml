@@ -26,7 +26,7 @@ jobs:
         
     - name: 🔍 Detect Changes
       run: |
-        for module in Adyen AdyenDropIn AdyenActions AdyenCard AdyenEncryption AdyenComponents AdyenSession AdyenWeChatPay AdyenCashAppPay AdyenTwint AdyenDelegatedAuthentication
+        for module in $modules
           do
             echo Generating API Definition for $module
             Scripts/generate_public_interface_definition.sh ${branch} ${baseRepo} $module
@@ -35,6 +35,7 @@ jobs:
       env:
         branch: '${{github.event.pull_request.base.ref}}'
         baseRepo: '${{github.server_url}}/${{github.repository}}.git'
+        modules: "Adyen AdyenDropIn" # AdyenActions AdyenCard AdyenEncryption AdyenComponents AdyenSession AdyenWeChatPay AdyenCashAppPay AdyenTwint AdyenDelegatedAuthentication"
         
     - name: 📝 Comment on PR
       uses: thollander/actions-comment-pull-request@v2

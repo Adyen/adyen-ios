@@ -25,6 +25,10 @@ function cleanup() {
 
 trap cleanup EXIT
 
+echo "🗂️  Changed files"
+
+git diff --name-only $BRANCH
+
 echo "↘️  Checking out comparison version"
 
 # If the directory already exists we just navigate into it and run the commands

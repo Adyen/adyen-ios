@@ -192,10 +192,10 @@ func compare() throws {
         groupedChanges[$0.parentName] = (groupedChanges[$0.parentName] ?? []) + [$0]
     }
     
-    var fileContent: [String] = ["# Public API Changes to `\(moduleName)`\n"]
+    var fileContent: [String] = ["## `\(moduleName)`\n"]
     
     groupedChanges.keys.sorted().forEach { key in
-        fileContent +=  ["## \(key)"]
+        fileContent +=  ["### \(key)"]
         groupedChanges[key]?.sorted(by: { $0.changeDescription < $1.changeDescription }).forEach {
             fileContent +=  ["- \($0.changeType.icon) \($0.changeDescription)"]
         }
@@ -208,14 +208,14 @@ func persistComparison(fileContent: String) throws {
     print(fileContent)
     let outputPath = currentDirectory.appendingPathComponent("api_comparison.md")
     
-    guard let data = (fileContent + "\n\n").data(using: String.Encoding.utf8) else { return }
-    
     if FileManager.default.fileExists(atPath: outputPath.path) {
+        guard let data = (fileContent + "\n\n").data(using: String.Encoding.utf8) else { return }
         let fileHandle = try FileHandle(forWritingTo: outputPath)
         fileHandle.seekToEndOfFile()
         fileHandle.write(data)
         fileHandle.closeFile()
     } else {
+        guard let data = ("# Public API Changes\n" + fileContent + "\n\n").data(using: String.Encoding.utf8) else { return }
         try data.write(to: outputPath, options: .atomicWrite)
     }
 }
