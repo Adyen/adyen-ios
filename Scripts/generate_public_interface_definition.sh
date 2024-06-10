@@ -27,9 +27,9 @@ trap cleanup EXIT
 
 echo "🗂️  Changed files"
 
-TARGET_COMMIT_HASH=$(git rev-parse "$BRANCH")
+TARGET_COMMIT_HASH=$(git rev-parse origin/$BRANCH)
 CHANGED_FILEPATHS=$(git diff --name-only "$TARGET_COMMIT_HASH")
-echo CHANGED_FILEPATHS
+echo $CHANGED_FILEPATHS
 
 # TODO: Compile a list of changed modules from the git diff
 # TODO: Generate a Package.swift target that contains all modules
