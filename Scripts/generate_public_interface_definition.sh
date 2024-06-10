@@ -27,8 +27,7 @@ trap cleanup EXIT
 
 echo "🗂️  Changed files"
 
-git fetch origin $BRANCH
-git diff --name-only $BRANCH
+git diff --name-only $(git rev-parse "$BRANCH")
 
 # TODO: Compile a list of changed modules from the git diff
 # TODO: Generate a Package.swift target that contains all modules
