@@ -10,27 +10,6 @@ import Foundation
 /// A class that defines the behavior of the components in a payment flow.
 public final class AdyenContext: PaymentAware {
     
-    // TODO: Remove after testing!
-    public struct PublicStruct {
-        
-        private var privateVar: String
-        internal var internalVar: String
-        @_spi(AdyenInternal) public var spiVar: String
-        public var publicVar: String
-        
-        public init(
-            privateVar: String,
-            internalVar: String,
-            spiVar: String,
-            publicVar: String
-        ) {
-            self.privateVar = privateVar
-            self.internalVar = internalVar
-            self.spiVar = spiVar
-            self.publicVar = publicVar
-        }
-    }
-    
     // MARK: - Properties
     
     /// The API context used to retrieve internal resources.
