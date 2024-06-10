@@ -27,7 +27,13 @@ trap cleanup EXIT
 
 echo "🗂️  Changed files"
 
+git fetch --all
 git diff --name-only $BRANCH
+
+# TODO: Compile a list of changed modules from the git diff
+# TODO: Generate a Package.swift target that contains all modules
+# TODO: Build each (updated + comparison) project once
+# TODO: Generate an sdk dump from every module that had changes
 
 echo "↘️  Checking out comparison version"
 

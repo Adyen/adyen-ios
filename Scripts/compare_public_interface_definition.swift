@@ -169,7 +169,7 @@ func compare() throws {
     )
     
     if decodedOldDefinition == decodedNewDefinition {
-        try persistComparison(fileContent: "# Public API Changes to `\(moduleName)`\n\n✅ Nothing detected")
+        try persistComparison(fileContent: "## `\(moduleName)`\n✅ Nothing detected")
         return
     }
     
