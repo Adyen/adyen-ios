@@ -27,7 +27,7 @@ trap cleanup EXIT
 
 echo "🗂️  Changed files"
 
-git fetch --all
+git fetch origin $BRANCH
 git diff --name-only $BRANCH
 
 # TODO: Compile a list of changed modules from the git diff

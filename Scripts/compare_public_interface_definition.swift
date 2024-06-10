@@ -20,7 +20,6 @@ class Element: Codable, Equatable, CustomDebugStringConvertible {
     let mangledName: String?
     let printedName: String
     let declKind: String?
-    let moduleName: String?
     
     let children: [Element]?
     let spiGroupNames: [String]?
@@ -35,7 +34,6 @@ class Element: Codable, Equatable, CustomDebugStringConvertible {
         case children
         case spiGroupNames = "spi_group_names"
         case declKind
-        case moduleName
     }
     
     var debugDescription: String {
@@ -76,10 +74,6 @@ class Element: Codable, Equatable, CustomDebugStringConvertible {
         
         if sanitizedPath.last == "TopLevel" {
             sanitizedPath.removeLast()
-        }
-        
-        if let moduleName = moduleName {
-            sanitizedPath += [moduleName]
         }
         
         return sanitizedPath.reversed().joined(separator: ".")
