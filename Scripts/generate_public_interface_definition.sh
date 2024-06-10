@@ -24,14 +24,6 @@ function cleanup() {
 
 trap cleanup EXIT
 
-echo "🗂️  Changed files"
-# TODO: Do this check before pulling the repo to prevent pulling when there are no changes
-COMMIT_HASH=$(git rev-parse origin/$BRANCH)
-CHANGED_FILEPATHS=$(git diff --name-only $COMMIT_HASH)
-for FILE_PATH in $CHANGED_FILEPATHS; do
-    echo $FILE_PATH
-done
-
 # TODO: Compile a list of changed modules from the git diff
 # TODO: Generate a Package.swift target that contains all modules
 # TODO: Build each (updated + comparison) project once
@@ -47,9 +39,18 @@ then
   mkdir $COMPARISON_VERSION_DIR_NAME
   cd $COMPARISON_VERSION_DIR_NAME
   git clone -b $BRANCH $REPO
+  COMMIT_HASH=$(git rev-parse origin/$BRANCH)
 else
   cd $COMPARISON_VERSION_DIR_NAME
+  COMMIT_HASH=$(git rev-parse origin/$BRANCH)
 fi
+
+echo "🗂️  Changed files"
+
+CHANGED_FILEPATHS=$(git diff --name-only $COMMIT_HASH)
+for FILE_PATH in $CHANGED_FILEPATHS; do
+    echo $FILE_PATH
+done
 
 exit
 
@@ -59,7 +60,7 @@ mv Adyen.xcodeproj Adyen.xcode_proj
 echo "👷 Building comparison project"
 xcodebuild -derivedDataPath .build -sdk $SDK -scheme $MODULE -destination "platform=iOS,name=Any iOS Device" -target $TARGET -quiet
 
-echo "📋 Generating comparison api_dump"s
+echo "📋 Generating comparison api_dump"
 xcrun swift-api-digester -dump-sdk -module $MODULE -o ../../api_dump_comparison.json -I .build/Build/Products/Debug-iphonesimulator -sdk $SDK -target $TARGET
 
 cd ../..
