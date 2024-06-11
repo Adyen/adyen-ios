@@ -21,8 +21,7 @@ extension ThreeDS2ClassicActionHandler {
         let defaultHandler = createDefaultThreeDS2CoreActionHandler(
             context: context,
             appearanceConfiguration: appearanceConfiguration,
-            delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration,
-            presentationDelegate: presentationDelegate
+            delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
         )
         self.init(
             context: context,

@@ -17,6 +17,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
 
     internal let coreActionHandler: AnyThreeDS2CoreActionHandler
     internal weak var presentationDelegate: PresentationDelegate?
+
     internal var transaction: AnyADYTransaction? {
         get {
             coreActionHandler.transaction
@@ -46,8 +47,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
         self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
             context: context,
             appearanceConfiguration: appearanceConfiguration,
-            delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration,
-            presentationDelegate: presentationDelegate
+            delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
         )
         self.context = context
         self.coreActionHandler.service = service
@@ -108,4 +108,10 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
 
     private let challengeEventName = "3ds2challenge"
 
+}
+
+extension ThreeDS2ClassicActionHandler: PresentationDelegate {
+    func present(component: any Adyen.PresentableComponent) {
+        presentationDelegate?.present(component: component)
+    }
 }

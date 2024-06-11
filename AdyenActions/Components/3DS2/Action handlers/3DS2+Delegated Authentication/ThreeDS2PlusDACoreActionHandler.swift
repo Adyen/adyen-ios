@@ -39,7 +39,7 @@
     }
 
     /// Handles the 3D Secure 2 fingerprint and challenge actions separately + Delegated Authentication.
-    @available(iOS 14.0, *)
+    @available(iOS 16.0, *)
     internal class ThreeDS2PlusDACoreActionHandler: ThreeDS2CoreActionHandler {
     
         internal var delegatedAuthenticationState: DelegatedAuthenticationState = .init()
@@ -50,8 +50,8 @@
     
         private let delegatedAuthenticationService: AuthenticationServiceProtocol
         private let deviceSupportCheckerService: AdyenAuthentication.DeviceSupportCheckerProtocol
-        private let presenter: ThreeDS2PlusDAScreenPresenterProtocol
-    
+        private var presenter: ThreeDS2PlusDAScreenPresenterProtocol
+            
         /// Errors during the Delegated authentication flow
         private enum ThreeDS2PlusDACoreActionError: Error {
             /// When the backend doesn't support delegated authentication, so the threeDSToken doesn't contain the `sdkInput` parameter
@@ -73,20 +73,17 @@
         internal convenience init(
             context: AdyenContext,
             appearanceConfiguration: ADYAppearanceConfiguration,
-            delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication,
-            presentationDelegate: PresentationDelegate?
-        ) {
-            self.init(
+            delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication
+        ) throws {
+            try self.init(
                 context: context,
-                presenter: ThreeDS2PlusDAScreenPresenter(presentationDelegate: presentationDelegate,
-                                                         style: .init(),
+                presenter: ThreeDS2PlusDAScreenPresenter(style: .init(),
                                                          localizedParameters: delegatedAuthenticationConfiguration.localizationParameters),
                 appearanceConfiguration: appearanceConfiguration,
                 style: delegatedAuthenticationConfiguration.delegatedAuthenticationComponentStyle,
-                delegatedAuthenticationService: AuthenticationService(
-                    configuration: delegatedAuthenticationConfiguration.authenticationServiceConfiguration()
-                )
+                delegatedAuthenticationService: AdyenAuthentication.AuthenticationService(passKeyConfiguration: delegatedAuthenticationConfiguration.authenticationServiceConfiguration())
             )
+            
         }
     
         /// Initializes the 3D Secure 2 action handler.
@@ -108,6 +105,7 @@
             self.deviceSupportCheckerService = deviceSupportCheckerService
             self.presenter = presenter
             super.init(context: context, service: service, appearanceConfiguration: appearanceConfiguration)
+            self.presenter.presentationDelegate = self
         }
     
         // MARK: - Fingerprint
@@ -226,6 +224,7 @@
                     guard let self else { return }
                     self.executeDAAuthenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
                                                authenticatedHandler: { sdkOutput in
+                                                   try? self.delegatedAuthenticationService.reset()
                                                    completion(.success(.init(delegatedAuthenticationOutput: sdkOutput, delete: true)))
                                                },
                                                failedAuthenticationHandler: { error in
@@ -382,11 +381,11 @@
 
     @available(iOS 14.0, *)
     extension ThreeDS2Component.Configuration.DelegatedAuthentication {
-        fileprivate func authenticationServiceConfiguration() -> AuthenticationService.Configuration {
-            .init(localizedRegistrationReason: localizedRegistrationReason,
-                  localizedAuthenticationReason: localizedAuthenticationReason,
-                  appleTeamIdentifier: appleTeamIdentifier)
+        fileprivate func authenticationServiceConfiguration() -> AdyenAuthentication.PassKeyConfiguration {
+            .init(relyingPartyIdentifier: appleTeamIdentifier,
+                  displayName: "Configuration.DisplayName")
         }
+
     }
 
 #endif

@@ -34,21 +34,21 @@ internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
                             removeCredentialsHandler: @escaping () -> Void)
     
     var userInput: ThreeDS2PlusDAScreenUserInput { get }
+    var presentationDelegate: PresentationDelegate? { get set }
 }
 
 /// This type handles the presenting of the Delegate authentication screens of Register and Approval.
 internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresenterProtocol {
     /// Delegates `PresentableComponent`'s presentation.
-    internal weak var presentationDelegate: PresentationDelegate?
     private let style: DelegatedAuthenticationComponentStyle
     private let localizedParameters: LocalizationParameters?
     
     internal var userInput: ThreeDS2PlusDAScreenUserInput = .noInput
-
-    internal init(presentationDelegate: PresentationDelegate?,
-                  style: DelegatedAuthenticationComponentStyle,
+    
+    internal weak var presentationDelegate: PresentationDelegate?
+    
+    internal init(style: DelegatedAuthenticationComponentStyle,
                   localizedParameters: LocalizationParameters?) {
-        self.presentationDelegate = presentationDelegate
         self.style = style
         self.localizedParameters = localizedParameters
     }

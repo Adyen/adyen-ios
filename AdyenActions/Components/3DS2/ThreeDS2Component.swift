@@ -23,7 +23,12 @@ public final class ThreeDS2Component: ActionComponent {
     public weak var delegate: ActionComponentDelegate?
 
     /// Delegates `PresentableComponent`'s presentation.  This property must be set if you wish to use delegated authentication.
-    public weak var presentationDelegate: PresentationDelegate?
+    public weak var presentationDelegate: PresentationDelegate? {
+        didSet {
+            threeDS2ClassicFlowHandler.presentationDelegate = presentationDelegate
+            threeDS2CompactFlowHandler.presentationDelegate = presentationDelegate
+        }
+    }
     
     /// Three DS2 component configurations.
     public var configuration: Configuration {
@@ -291,4 +296,10 @@ extension ThreeDS2Component {
 
     }
 
+}
+
+extension ThreeDS2Component: PresentationDelegate {
+    public func present(component: any Adyen.PresentableComponent) {
+        presentationDelegate?.present(component: component)
+    }
 }

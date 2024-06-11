@@ -27,8 +27,7 @@ extension ThreeDS2CompactActionHandler {
             coreActionHandler: createDefaultThreeDS2CoreActionHandler(
                 context: context,
                 appearanceConfiguration: appearanceConfiguration,
-                delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration,
-                presentationDelegate: presentationDelegate
+                delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
             ),
             delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration,
             presentationDelegate: presentationDelegate

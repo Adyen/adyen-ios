@@ -14,6 +14,7 @@ import Foundation
     import UIKit
 
     final class ThreeDS2DAScreenPresenterMock: ThreeDS2PlusDAScreenPresenterProtocol {
+        var presentationDelegate: (any Adyen.PresentationDelegate)?
     
         enum ShowRegistrationScreenMockState {
             case register

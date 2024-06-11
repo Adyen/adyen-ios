@@ -17,6 +17,8 @@ internal protocol AnyThreeDS2ActionHandler {
                 completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void)
     
     var threeDSRequestorAppURL: URL? { get set }
+    
+    var presentationDelegate: PresentationDelegate? { get set }
 }
 
 internal protocol ComponentWrapper: Component {
@@ -45,15 +47,16 @@ extension ComponentWrapper {
 internal func createDefaultThreeDS2CoreActionHandler(
     context: AdyenContext,
     appearanceConfiguration: ADYAppearanceConfiguration,
-    delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?,
-    presentationDelegate: PresentationDelegate?
+    delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?
 ) -> AnyThreeDS2CoreActionHandler {
     #if canImport(AdyenAuthentication)
-        if #available(iOS 14.0, *), let delegatedAuthenticationConfiguration {
-            return ThreeDS2PlusDACoreActionHandler(context: context,
-                                                   appearanceConfiguration: appearanceConfiguration,
-                                                   delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration,
-                                                   presentationDelegate: presentationDelegate)
+        if #available(iOS 16.0, *), let delegatedAuthenticationConfiguration {
+            return (try? ThreeDS2PlusDACoreActionHandler(context: context,
+                                                         appearanceConfiguration: appearanceConfiguration,
+                                                         delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration))
+                ??
+                ThreeDS2CoreActionHandler(context: context,
+                                          appearanceConfiguration: appearanceConfiguration)
         } else {
             return ThreeDS2CoreActionHandler(context: context,
                                              appearanceConfiguration: appearanceConfiguration)

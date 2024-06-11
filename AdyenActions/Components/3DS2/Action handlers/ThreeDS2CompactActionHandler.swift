@@ -10,6 +10,12 @@ import Foundation
 
 /// Handles the 3D Secure 2 fingerprint and challenge in one call using a `fingerprintSubmitter`.
 internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, ComponentWrapper {
+    
+    internal weak var presentationDelegate: Adyen.PresentationDelegate? {
+        didSet {
+            coreActionHandler.presentationDelegate = presentationDelegate
+        }
+    }
 
     internal var wrappedComponent: Component { coreActionHandler }
 
@@ -54,8 +60,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
         self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
             context: context,
             appearanceConfiguration: appearanceConfiguration,
-            delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration,
-            presentationDelegate: presentationDelegate
+            delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
         )
         self.fingerprintSubmitter = fingerprintSubmitter ?? ThreeDS2FingerprintSubmitter(apiContext: context.apiContext)
         self.coreActionHandler.service = service
