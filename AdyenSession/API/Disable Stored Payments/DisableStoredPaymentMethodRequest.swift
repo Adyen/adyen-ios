@@ -10,7 +10,7 @@ import Foundation
 
 internal struct DisableStoredPaymentMethodRequest: APIRequest {
     
-    typealias ResponseType = DisableStoredPaymentMethodResponse
+    internal typealias ResponseType = DisableStoredPaymentMethodResponse
     
     internal let path: String
     

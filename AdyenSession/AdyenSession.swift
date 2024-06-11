@@ -198,9 +198,3 @@ extension AdyenSession: StorePaymentMethodFieldAware {
     
     public var showStorePaymentMethodField: Bool? { sessionContext.configuration.enableStoreDetails }
 }
-
-@_spi(AdyenInternal)
-extension AdyenSession: StoredPaymentMethodRemovable {
-    
-    public var showRemovePaymentMethodButton: Bool { sessionContext.configuration.showRemovePaymentMethodButton }
-}

@@ -8,24 +8,41 @@
 import Foundation
 
 @_spi(AdyenInternal)
-extension AdyenSession: StoredPaymentMethodsDelegate {
+extension AdyenSession: StoredPaymentMethodRemovable {
     
-    public func disable(storedPaymentMethod: StoredPaymentMethod, dropInComponent: AnyDropInComponent? = nil, completion: @escaping Completion<Bool>) {
+    public var showRemovePaymentMethodButton: Bool { sessionContext.configuration.showRemovePaymentMethodButton }
+    
+    public func disable(storedPaymentMethod: StoredPaymentMethod, dropInComponent: AnyDropInComponent, completion: @escaping Completion<Bool>) {
         let request = DisableStoredPaymentMethodRequest(sessionId: sessionContext.identifier,
                                                         sessionData: sessionContext.data,
                                                         storedPaymentMethodId: storedPaymentMethod.identifier)
-        apiClient.perform(request) { result in
+        apiClient.perform(request) { [weak self] result in
             switch result {
             case .success:
                 completion(true)
-            case .failure:
-                
+            case let .failure(error):
+                self?.showAlert(with: error, on: dropInComponent)
                 completion(false)
             }
         }
     }
     
-    private func showAlert(with error: Error) {}
+    private func showAlert(with error: Error?, on dropIn: AnyDropInComponent) {
+        let localizationParameters = (dropIn as? Localizable)?.localizationParameters
+        let title = localizedString(.errorTitle, localizationParameters)
+        let message = localizedString(.errorUnknown, localizationParameters)
+        let doneTitle = localizedString(.dismissButton, localizationParameters)
+        
+        let alertController = UIAlertController(title: title,
+                                                message: message,
+                                                preferredStyle: .alert)
+        
+        let doneAction = UIAlertAction(title: doneTitle, style: .default)
+        alertController.addAction(doneAction)
+        
+        dropIn.viewController.present(alertController, animated: true)
+    }
     
+    // empty implementation of the old method
     public func disable(storedPaymentMethod: Adyen.StoredPaymentMethod, completion: @escaping Adyen.Completion<Bool>) {}
 }

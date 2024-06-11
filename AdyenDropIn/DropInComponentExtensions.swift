@@ -42,8 +42,19 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
             self?.paymentMethods.stored.removeAll(where: { $0 == paymentMethod })
             self?.reloadComponentManager()
         }
-        storedPaymentMethodsDelegate?.disable(storedPaymentMethod: paymentMethod, completion: deletionCompletion)
-        storedPaymentMethodsDelegate?.disable(storedPaymentMethod: paymentMethod, dropInComponent: self, completion: deletionCompletion)
+        
+        if let sessionAsStoredPaymentMethodsDelegate {
+            sessionAsStoredPaymentMethodsDelegate.disable(
+                storedPaymentMethod: paymentMethod,
+                dropInComponent: self,
+                completion: deletionCompletion
+            )
+        } else {
+            storedPaymentMethodsDelegate?.disable(
+                storedPaymentMethod: paymentMethod,
+                completion: deletionCompletion
+            )
+        }
     }
 }
 
