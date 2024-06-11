@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) import Adyen
 import Foundation
+import UIKit
 
 @_spi(AdyenInternal)
 extension AdyenSession: StoredPaymentMethodRemovable {
