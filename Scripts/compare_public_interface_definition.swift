@@ -31,7 +31,6 @@ class Element: Codable, Equatable, CustomDebugStringConvertible {
     
     let children: [Element]?
     let spiGroupNames: [String]?
-    
     let declAttributes: [String]?
     let conformances: [Conformance]?
     
