@@ -33,7 +33,7 @@ internal enum ConfigurationConstants {
 
     static let shopperEmail = "checkoutShopperiOS@example.org"
     
-    static let additionalData = ["allow3DS2": true, "executeThreeD": true]
+    static let additionalData: [String: Bool] = [:] // ["allow3DS2": true, "executeThreeD": true]
     
     static let recurringProcessingModel = "CardOnFile"
 
