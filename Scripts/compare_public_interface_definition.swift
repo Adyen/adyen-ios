@@ -76,6 +76,10 @@ class Element: Codable, Equatable, CustomDebugStringConvertible {
         return definition
     }
     
+    var isSpiInternal: Bool {
+        !(spiGroupNames ?? []).isEmpty
+    }
+    
     public static func == (lhs: Element, rhs: Element) -> Bool {
         lhs.mangledName == rhs.mangledName
             && lhs.children == rhs.children
@@ -121,7 +125,7 @@ struct Change {
         var icon: String {
             switch self {
             case .addition:
-                return "❇️"
+                return "❇️ "
             case .removal:
                 return "😶‍🌫️"
             case .change:
@@ -137,6 +141,11 @@ struct Change {
 
 func recursiveCompare(element lhs: Element, to rhs: Element, oldFirst: Bool) -> [Change] {
     if lhs == rhs {
+        return []
+    }
+    
+    if lhs.isSpiInternal && rhs.isSpiInternal {
+        // If both elements are spi internal we can ignore them as they are not in the public interface
         return []
     }
     
