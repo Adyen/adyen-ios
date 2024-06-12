@@ -228,9 +228,10 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
 
     // MARK: - Other
 
-    private func assignInitialFirstResponder() {
+    @_spi(AdyenInternal)
+    public func assignInitialFirstResponder() {
         guard view.isUserInteractionEnabled else { return }
-        let textItemView = itemManager.topLevelItemViews.first(where: { $0.canBecomeFirstResponder })
+        let textItemView = itemManager.topLevelItemViews.first(where: { $0.canBecomeFirstResponder && $0.isHidden == false })
         textItemView?.becomeFirstResponder()
     }
 }
