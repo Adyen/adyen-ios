@@ -14,7 +14,7 @@ public struct UPIPaymentMethod: PaymentMethod {
     public let name: String
 
     /// The available UPI apps.
-    public let apps: [Issuer]
+    public let apps: [Issuer]?
 
     public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 

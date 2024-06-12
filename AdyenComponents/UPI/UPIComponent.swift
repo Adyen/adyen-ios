@@ -151,9 +151,9 @@ public final class UPIComponent: PaymentComponent,
 
     /// The UPI app list item.
     internal lazy var upiAppsList: [SelectableFormItem] = {
-        guard !upiPaymentMethod.apps.isEmpty else { return [] }
+        guard let apps = upiPaymentMethod.apps, !apps.isEmpty else { return [] }
         
-        var upiAppslist = upiPaymentMethod.apps.map { selectableFormItem(from: $0) }
+        var upiAppslist = apps.map { selectableFormItem(from: $0) }
         upiAppslist.append(vpaSelectionItem)
         return upiAppslist
     }()
