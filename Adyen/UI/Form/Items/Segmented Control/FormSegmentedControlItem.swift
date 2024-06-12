@@ -34,6 +34,7 @@ public final class FormSegmentedControlItem: FormItem {
         segmentedControl.accessibilityIdentifier = identifier
         segmentedControl.backgroundColor = style.backgroundColor
         segmentedControl.tintColor = style.tintColor
+        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.font: style.textStyle.font], for: .normal)
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.addTarget(self, action: #selector(segmentAction), for: .valueChanged)
         segmentedControl.adyen.round(using: style.textStyle.cornerRounding)
