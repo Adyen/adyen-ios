@@ -119,11 +119,6 @@ public final class UPIComponent: PaymentComponent,
                 postfix: ViewIdentifier.upiFlowSelectionItem
             )
         )
-
-        item.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: ViewIdentifier.upiFlowSelectionItem
-        )
         item.selectionHandler = { [weak self] in
             self?.didChangeSegmentedControlIndex($0)
         }
@@ -270,7 +265,7 @@ public final class UPIComponent: PaymentComponent,
 
 extension UPIComponent {
     
-    internal func didSelectContinueButton() {
+    private func didSelectContinueButton() {
         guard formViewController.validate() else { return }
 
         continueButton.showsActivityIndicator = true
@@ -279,7 +274,7 @@ extension UPIComponent {
         submit()
     }
 
-    internal func didChangeSegmentedControlIndex(_ index: Int) {
+    private func didChangeSegmentedControlIndex(_ index: Int) {
         AdyenAssertion.assert(message: "UPI flow type is out of range", condition: UPIFlowType(rawValue: index) == nil)
         selectedUPIFlow = UPIFlowType(rawValue: index) ?? .upiApps
         
@@ -308,10 +303,6 @@ private extension UPIComponent {
             qrCodeGenerationLabelContainerItem.isVisible = false
             qrCodeGenerationImageItem.isVisible = false
             
-            continueButton.identifier = ViewIdentifierBuilder.build(
-                scopeInstance: self,
-                postfix: ViewIdentifier.continueButtonItem
-            )
             continueButton.title = localizedString(.continueTitle, configuration.localizationParameters)
             
             focusVpaInput()
@@ -323,10 +314,6 @@ private extension UPIComponent {
             qrCodeGenerationLabelContainerItem.isVisible = true
             qrCodeGenerationImageItem.isVisible = true
             
-            continueButton.identifier = ViewIdentifierBuilder.build(
-                scopeInstance: self,
-                postfix: ViewIdentifier.generateQRCodeButtonItem
-            )
             continueButton.title = localizedString(.QRCodeGenerateQRCode, configuration.localizationParameters)
         }
     }

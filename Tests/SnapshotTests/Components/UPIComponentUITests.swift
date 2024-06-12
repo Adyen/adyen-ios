@@ -68,7 +68,6 @@ class UPIComponentUITests: XCTestCase {
                                context: context,
                                configuration: config)
         
-        // TODO: Wait until all elements have appeared
         self.wait(for: .aMoment)
     
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
@@ -113,9 +112,10 @@ class UPIComponentUITests: XCTestCase {
                                context: context,
                                configuration: config)
         
-        sut.didChangeSegmentedControlIndex(1)
+        let segmentedControl: UISegmentedControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.upiFlowSelectionSegmentedControlItem"))
+        segmentedControl.selectedSegmentIndex = 1
+        segmentedControl.sendActions(for: .valueChanged)
         
-        // TODO: Wait until all elements have appeared
         self.wait(for: .aMoment)
 
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration_Index_One")
@@ -157,7 +157,6 @@ class UPIComponentUITests: XCTestCase {
             didSubmitExpectation.fulfill()
         }
         
-        sut.didChangeSegmentedControlIndex(0)
         sut.upiAppsList.first?.selectionHandler?()
 
         // TODO: Wait until the first item is selected
@@ -193,7 +192,6 @@ class UPIComponentUITests: XCTestCase {
             didSubmitExpectation.fulfill()
         }
 
-        sut.didChangeSegmentedControlIndex(0)
         sut.upiAppsList.last?.selectionHandler?()
 
         let virtualPaymentAddressItem: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem")
@@ -210,16 +208,21 @@ class UPIComponentUITests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testUPIComponentDetailsForUPIQRCodeFlow() {
+    func testUPIComponentDetailsForUPIQRCodeFlow() throws {
         // Given
         let config = UPIComponent.Configuration(style: style)
         let sut = UPIComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: config)
-
-        sut.didChangeSegmentedControlIndex(1)
-
-        let continueButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.generateQRCodeButton.button")
+        
+        let segmentedControl: UISegmentedControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.upiFlowSelectionSegmentedControlItem"))
+        segmentedControl.selectedSegmentIndex = 1
+        segmentedControl.sendActions(for: .valueChanged)
+        
+        wait(for: .aMoment)
+        
+        let continueButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button"))
+        XCTAssertEqual(continueButton.title, localizedString(.QRCodeGenerateQRCode, nil))
         
         let dummyExpectation = XCTestExpectation(description: "Dummy Expectation")
         
@@ -236,11 +239,12 @@ class UPIComponentUITests: XCTestCase {
             sut.stopLoadingIfNeeded()
             
             self.wait(for: .aMoment)
+            
             self.assertViewControllerImage(matching: sut.viewController, named: "upi_qr_flow")
             dummyExpectation.fulfill()
         }
         
-        continueButton?.sendActions(for: .touchUpInside)
+        continueButton.sendActions(for: .touchUpInside)
         
         wait(for: [dummyExpectation], timeout: 5)
     }

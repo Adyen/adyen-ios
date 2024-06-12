@@ -21,9 +21,14 @@ public final class FormSegmentedControlItem: FormItem {
     /// A closure that will be invoked when a segmented control index is changed.
     public var selectionHandler: ((_ selectedIndex: Int) -> Void)?
 
-    public init(items: [String], style: SegmentedControlStyle, identifier: String? = nil) {
+    public init(
+        items: [String],
+        style: SegmentedControlStyle,
+        identifier: String? = nil
+    ) {
         self.items = items
         self.style = style
+        self.identifier = identifier
     }
 
     // The segmented control items.
