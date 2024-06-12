@@ -159,6 +159,7 @@ func recursiveCompare(element lhs: Element, to rhs: Element, oldFirst: Bool) -> 
         lhs.conformances != rhs.conformances ||
         lhs.declAttributes != rhs.declAttributes
     ) {
+        // TODO: Show what exactly changed (name, spi, conformance, declAttributes, ...) as a bullet list maybe (add a `changeList` property to `Change`)
         changes += [.init(changeType: .change, parentName: lhs.parentPath, changeDescription: "`\(lhs)` ➡️  `\(rhs)`")]
     }
     
@@ -170,6 +171,8 @@ func recursiveCompare(element lhs: Element, to rhs: Element, oldFirst: Bool) -> 
         if let rhsChildForName = rhs.children?.first(where: { ($0.mangledName ?? $0.name) == (lhsElement.mangledName ?? lhsElement.name) }) {
             return recursiveCompare(element: lhsElement, to: rhsChildForName, oldFirst: oldFirst)
         } else {
+            if lhsElement.isSpiInternal { return [] }
+            
             if oldFirst {
                 return [.init(changeType: .removal, parentName: lhsElement.parentPath, changeDescription: "`\(lhsElement)` was removed")]
             } else {
