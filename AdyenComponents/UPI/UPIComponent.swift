@@ -268,9 +268,9 @@ public final class UPIComponent: PaymentComponent,
 
 // MARK: - Event Handling
 
-internal extension UPIComponent {
+extension UPIComponent {
     
-    func didSelectContinueButton() {
+    internal func didSelectContinueButton() {
         guard formViewController.validate() else { return }
 
         continueButton.showsActivityIndicator = true
@@ -279,7 +279,7 @@ internal extension UPIComponent {
         submit()
     }
 
-    func didChangeSegmentedControlIndex(_ index: Int) {
+    internal func didChangeSegmentedControlIndex(_ index: Int) {
         AdyenAssertion.assert(message: "UPI flow type is out of range", condition: UPIFlowType(rawValue: index) == nil)
         selectedUPIFlow = UPIFlowType(rawValue: index) ?? .upiApps
         

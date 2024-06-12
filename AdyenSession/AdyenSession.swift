@@ -133,17 +133,11 @@ public final class AdyenSession {
                                        completion: @escaping ((Result<Context, Error>) -> Void)) {
         let sessionId = configuration.sessionIdentifier
         let sessionData = configuration.initialSessionData
-        let request = SessionSetupRequest(sessionId: sessionId,
-                                          sessionData: sessionData,
-                                          order: order)
-
-        // To Remove: Mocked payment method response to implement upi_intent flow
-        let paymentMethodsUrl = Bundle.main.url(forResource: "payment_methods_response", withExtension: "json")!
-        let paymentMethodsData = (try? Data(contentsOf: paymentMethodsUrl))!
-        guard let paymentMethodsResponse = try? JSONDecoder().decode(PaymentMethods.self, from: paymentMethodsData) else {
-            print("Neelam not able to decode PMs")
-            return
-        }
+        let request = SessionSetupRequest(
+            sessionId: sessionId,
+            sessionData: sessionData,
+            order: order
+        )
 
         let apiClient = SelfRetainingAPIClient(apiClient: baseAPIClient)
         apiClient.perform(request) { result in
@@ -154,7 +148,7 @@ public final class AdyenSession {
                                              countryCode: response.countryCode,
                                              shopperLocale: response.shopperLocale,
                                              amount: response.amount,
-                                             paymentMethods: paymentMethodsResponse,
+                                             paymentMethods: response.paymentMethods,
                                              configuration: response.configuration)
                 completion(.success(sessionContext))
             case let .failure(error):

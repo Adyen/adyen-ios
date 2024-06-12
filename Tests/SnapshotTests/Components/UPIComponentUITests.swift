@@ -109,7 +109,8 @@ class UPIComponentUITests: XCTestCase {
         let sut = UPIComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: config)
-        sut.currentSelectedIndex = 1
+        
+        sut.didChangeSegmentedControlIndex(1)
 
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration_Index_One")
     }
@@ -129,7 +130,6 @@ class UPIComponentUITests: XCTestCase {
         let sut = UPIComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: config)
-        sut.currentSelectedIndex = 0
 
         let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
 
@@ -145,13 +145,9 @@ class UPIComponentUITests: XCTestCase {
             XCTAssertEqual(data.type, "upi_intent")
             didSubmitExpectation.fulfill()
         }
-
-        wait(for: .milliseconds(300))
         
-        sut.currentSelectedIndex = 0
-        sut.currentSelectedItem = sut.upiAppsList.first
-        sut.currentSelectedItem?.isSelected = true
-        sut.virtualPaymentAddressItem.isHidden.wrappedValue = true
+        sut.didChangeSegmentedControlIndex(0)
+        sut.upiAppsList.first?.selectionHandler?()
 
         assertViewControllerImage(matching: sut.viewController, named: "upi_intent")
 
@@ -167,7 +163,6 @@ class UPIComponentUITests: XCTestCase {
         let sut = UPIComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: config)
-        sut.currentSelectedIndex = 0
 
         let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
 
@@ -184,16 +179,15 @@ class UPIComponentUITests: XCTestCase {
             didSubmitExpectation.fulfill()
         }
 
-        wait(for: .milliseconds(300))
-
-        sut.currentSelectedIndex = 0
-        sut.currentSelectedItem = sut.upiAppsList.last
-        sut.currentSelectedItem?.isSelected = true
-        sut.virtualPaymentAddressItem.isVisible = true
+        sut.didChangeSegmentedControlIndex(0)
+        sut.upiAppsList.last?.selectionHandler?()
 
         let virtualPaymentAddressItem: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem")
         self.populate(textItemView: virtualPaymentAddressItem, with: "testvpa@icici")
 
+        // TODO: Wait until the vpa input appears
+        wait(for: .milliseconds(300))
+        
         assertViewControllerImage(matching: sut.viewController, named: "prefilled_vpa")
 
         let continueButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button")
