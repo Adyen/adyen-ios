@@ -67,6 +67,9 @@ class UPIComponentUITests: XCTestCase {
         let sut = UPIComponent(paymentMethod: paymentMethod,
                                context: context,
                                configuration: config)
+        
+        // TODO: Wait until all elements have appeared
+        self.wait(for: .aMoment)
     
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
@@ -111,6 +114,9 @@ class UPIComponentUITests: XCTestCase {
                                configuration: config)
         
         sut.didChangeSegmentedControlIndex(1)
+        
+        // TODO: Wait until all elements have appeared
+        self.wait(for: .aMoment)
 
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration_Index_One")
     }
@@ -118,18 +124,23 @@ class UPIComponentUITests: XCTestCase {
     func testUIElementsForPayByAnyUPIAppFlowType() {
         // Assert
         let config = UPIComponent.Configuration(style: style)
-        let sut = UPIComponent(paymentMethod: paymentMethod,
-                               context: context,
-                               configuration: config)
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
+        
         assertViewControllerImage(matching: sut.viewController, named: "all_required_fields_exist")
     }
 
-    func testUPIComponentDetailsForUPIIntentFlow() {
+    func testUPIComponentDetailsForUPIIntentFlow() throws {
         // Given
         let config = UPIComponent.Configuration(style: style)
-        let sut = UPIComponent(paymentMethod: paymentMethod,
-                               context: context,
-                               configuration: config)
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
 
         let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
 
@@ -149,15 +160,18 @@ class UPIComponentUITests: XCTestCase {
         sut.didChangeSegmentedControlIndex(0)
         sut.upiAppsList.first?.selectionHandler?()
 
+        // TODO: Wait until the first item is selected
+        self.wait(for: .aMoment)
+        
         assertViewControllerImage(matching: sut.viewController, named: "upi_intent")
 
-        let continueButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button")
-        continueButton?.sendActions(for: .touchUpInside)
+        let continueButton: UIControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button"))
+        continueButton.sendActions(for: .touchUpInside)
     
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testUPIComponentDetailsForUPICollectFlow() {
+    func testUPIComponentDetailsForUPICollectFlow() throws {
         // Given
         let config = UPIComponent.Configuration(style: style)
         let sut = UPIComponent(paymentMethod: paymentMethod,
@@ -186,12 +200,12 @@ class UPIComponentUITests: XCTestCase {
         self.populate(textItemView: virtualPaymentAddressItem, with: "testvpa@icici")
 
         // TODO: Wait until the vpa input appears
-        wait(for: .milliseconds(300))
+        self.wait(for: .aMoment)
         
         assertViewControllerImage(matching: sut.viewController, named: "prefilled_vpa")
 
-        let continueButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button")
-        continueButton?.sendActions(for: .touchUpInside)
+        let continueButton: UIControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button"))
+        continueButton.sendActions(for: .touchUpInside)
 
         waitForExpectations(timeout: 10, handler: nil)
     }
