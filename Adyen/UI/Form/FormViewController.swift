@@ -134,7 +134,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
 
     public func willUpdatePreferredContentSize() { /* Empty implementation */ }
 
-    public func didUpdatePreferredContentSize() { /* Empty implementation */}
+    public func didUpdatePreferredContentSize() { /* Empty implementation */ }
 
     // MARK: - Items
 
@@ -244,12 +244,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
                 formView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
             ])
         } else {
-            NSLayoutConstraint.activate([
-                formView.topAnchor.constraint(equalTo: view.topAnchor),
-                formView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                formView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                formView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor)
-            ])
+            formView.adyen.anchor(inside: view)
         }
     }
 
