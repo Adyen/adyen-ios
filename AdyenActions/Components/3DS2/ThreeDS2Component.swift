@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -60,8 +60,10 @@ public final class ThreeDS2Component: ActionComponent {
             /// The localized reason string show to the user during authentication.
             public let localizedAuthenticationReason: String
 
-            /// The Apple registered development team identifier.
-            public let appleTeamIdentifier: String
+            // The relying party identifier that is used for PassKeys.
+            // See: https://developer.apple.com/documentation/xcode/supporting-associated-domains
+            // See: https://developer.apple.com/documentation/authenticationservices/public-private_key_authentication/supporting_passkeys
+            public let relyingPartyIdentifier: String
 
             /// The configuration for Delegated Authentication Component style
             public let delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle
@@ -73,17 +75,17 @@ public final class ThreeDS2Component: ActionComponent {
             ///
             /// - Parameter localizedRegistrationReason: The localized reason string show to the user while registration flow.
             /// - Parameter localizedAuthenticationReason: The localized reason string show to the user while authentication flow.
-            /// - Parameter appleTeamIdentifier: The Apple registered development team identifier.
+            /// - Parameter relyingPartyIdentifier: The relying party identifier that is used for PassKeys
             /// - Parameter delegatedAuthenticationComponentStyle: The delegated authentication component style.
             /// - Parameter localizationParameters: The localization parameters, leave it nil to use the default parameters.
             public init(localizedRegistrationReason: String,
                         localizedAuthenticationReason: String,
-                        appleTeamIdentifier: String,
+                        relyingPartyIdentifier: String,
                         delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle = .init(),
                         localizationParameters: LocalizationParameters? = nil) {
                 self.localizedRegistrationReason = localizedRegistrationReason
                 self.localizedAuthenticationReason = localizedAuthenticationReason
-                self.appleTeamIdentifier = appleTeamIdentifier
+                self.relyingPartyIdentifier = relyingPartyIdentifier
                 self.delegatedAuthenticationComponentStyle = delegatedAuthenticationComponentStyle
                 self.localizationParameters = localizationParameters
             }

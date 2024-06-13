@@ -67,7 +67,6 @@ internal enum ConfigurationConstants {
     static var delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication {
         .init(localizedRegistrationReason: "Register this device!",
               localizedAuthenticationReason: "Authenticate your card!",
-              appleTeamIdentifier: appleTeamIdentifier,
               relyingPartyIdentifier: "test-authentication-adyen.netlify.app")
     }
 
