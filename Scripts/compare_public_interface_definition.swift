@@ -104,6 +104,12 @@ class Element: Codable, Equatable, CustomDebugStringConvertible {
     }
 }
 
+extension [Element] {
+    func firstElementMatchingName(of otherElement: Element) -> Element? {
+        first(where: { ($0.mangledName ?? $0.name) == (otherElement.mangledName ?? otherElement.name) })
+    }
+}
+
 class Definition: Codable, Equatable {
     let root: Element
     
@@ -168,7 +174,7 @@ func recursiveCompare(element lhs: Element, to rhs: Element, oldFirst: Bool) -> 
     }
     
     changes += lhs.children?.flatMap { lhsElement in
-        if let rhsChildForName = rhs.children?.first(where: { ($0.mangledName ?? $0.name) == (lhsElement.mangledName ?? lhsElement.name) }) {
+        if let rhsChildForName = rhs.children?.firstElementMatchingName(of: lhsElement) {
             return recursiveCompare(element: lhsElement, to: rhsChildForName, oldFirst: oldFirst)
         } else {
             if lhsElement.isSpiInternal { return [] }
