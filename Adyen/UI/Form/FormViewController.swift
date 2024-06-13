@@ -76,6 +76,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
         super.loadView()
         addSubviews()
         setupLayout()
+        setupViews()
     }
 
     override open func viewDidLoad() {
@@ -246,6 +247,11 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
         } else {
             formView.adyen.anchor(inside: view)
         }
+    }
+
+    private func setupViews() {
+        view.backgroundColor = style.backgroundColor
+        formView.backgroundColor = style.backgroundColor
     }
 
     // MARK: - UIResponder
