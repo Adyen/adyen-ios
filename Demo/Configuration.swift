@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+// Copyright (c) 2017 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -67,7 +67,8 @@ internal enum ConfigurationConstants {
     static var delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication {
         .init(localizedRegistrationReason: "Register this device!",
               localizedAuthenticationReason: "Authenticate your card!",
-              appleTeamIdentifier: appleTeamIdentifier)
+              appleTeamIdentifier: appleTeamIdentifier,
+              relyingPartyIdentifier: "test-authentication-adyen.netlify.app")
     }
 
     static var shippingMethods: [PKShippingMethod] = {

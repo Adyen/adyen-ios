@@ -382,7 +382,7 @@
     @available(iOS 14.0, *)
     extension ThreeDS2Component.Configuration.DelegatedAuthentication {
         fileprivate func authenticationServiceConfiguration() -> AdyenAuthentication.PassKeyConfiguration {
-            .init(relyingPartyIdentifier: appleTeamIdentifier,
+            .init(relyingPartyIdentifier: relyingPartyIdentifier,
                   displayName: "Configuration.DisplayName")
         }
 
