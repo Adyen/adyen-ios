@@ -173,9 +173,13 @@ class UPIComponentUITests: XCTestCase {
     func testUPIComponentDetailsForUPICollectFlow() throws {
         // Given
         let config = UPIComponent.Configuration(style: style)
-        let sut = UPIComponent(paymentMethod: paymentMethod,
-                               context: context,
-                               configuration: config)
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
+        
+        sut.viewController.loadViewIfNeeded()
 
         let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
 
@@ -189,19 +193,22 @@ class UPIComponentUITests: XCTestCase {
             let data = data.paymentMethod as! UPIComponentDetails
             XCTAssertEqual(data.virtualPaymentAddress, "testvpa@icici")
             XCTAssertEqual(data.type, "upi_collect")
+            
             didSubmitExpectation.fulfill()
         }
 
-        sut.upiAppsList.last?.selectionHandler?()
+        let selectionHandler = try XCTUnwrap(sut.upiAppsList.last?.selectionHandler)
+        selectionHandler()
 
-        let virtualPaymentAddressItem: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem")
-        self.populate(textItemView: virtualPaymentAddressItem, with: "testvpa@icici")
-
-        // TODO: Wait until the vpa input appears
-        self.wait(for: .aMoment)
+        let virtualPaymentAddressItem: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem"))
         
-        assertViewControllerImage(matching: sut.viewController, named: "prefilled_vpa")
-
+        self.populate(textItemView: virtualPaymentAddressItem, with: "testvpa@icici")
+        
+        wait { virtualPaymentAddressItem.isHidden == false }
+        wait(for: .aMoment) // Wait for the animation to finish
+        
+        self.assertViewControllerImage(matching: sut.viewController, named: "prefilled_vpa")
+        
         let continueButton: UIControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button"))
         continueButton.sendActions(for: .touchUpInside)
 
