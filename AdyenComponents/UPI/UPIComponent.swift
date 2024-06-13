@@ -166,10 +166,10 @@ public final class UPIComponent: PaymentComponent,
         )
         selectableItem.selectionHandler = { [weak self, weak selectableItem] in
             guard let self, let selectableItem else { return }
-            currentSelectedItemIdentifier = selectableItem.identifier
-            updateSelection()
-            vpaInputItem.isHidden.wrappedValue = false
-            focusVpaInput()
+            self.currentSelectedItemIdentifier = selectableItem.identifier
+            self.updateSelection()
+            self.vpaInputItem.isHidden.wrappedValue = false
+            self.focusVpaInput()
         }
         return selectableItem
     }()
@@ -227,9 +227,9 @@ public final class UPIComponent: PaymentComponent,
         )
         selectableItem.selectionHandler = { [weak self, weak selectableItem] in
             guard let self, let selectableItem else { return }
-            currentSelectedItemIdentifier = selectableItem.identifier
-            updateSelection()
-            vpaInputItem.isHidden.wrappedValue = true
+            self.currentSelectedItemIdentifier = selectableItem.identifier
+            self.updateSelection()
+            self.vpaInputItem.isHidden.wrappedValue = true
         }
         return selectableItem
     }
