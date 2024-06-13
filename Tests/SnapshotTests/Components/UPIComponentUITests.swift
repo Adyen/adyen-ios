@@ -158,9 +158,7 @@ class UPIComponentUITests: XCTestCase {
         }
         
         sut.upiAppsList.first?.selectionHandler?()
-
-        // TODO: Wait until the first item is selected
-        self.wait(for: .aMoment)
+        wait(for: .aMoment)
         
         assertViewControllerImage(matching: sut.viewController, named: "upi_intent")
 
