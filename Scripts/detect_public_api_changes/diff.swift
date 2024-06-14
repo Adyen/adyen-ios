@@ -211,7 +211,7 @@ func compare() throws {
     )
     
     if decodedOldDefinition == decodedNewDefinition {
-        try persistComparison(fileContent: "## 🫧 `\(moduleName)`\n- No changes detected")
+        // try persistComparison(fileContent: "## 🫧 `\(moduleName)`\n- No changes detected")
         return
     }
     
