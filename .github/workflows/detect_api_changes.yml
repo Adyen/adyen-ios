@@ -1,12 +1,8 @@
 name: Detect public API changes
 
 on:
-  workflow_dispatch:
   pull_request:
     types: [opened, synchronize, reopened]
-  push:
-    branches:
-      - develop
       
 jobs:
 
@@ -26,7 +22,7 @@ jobs:
         
     - name: 🔍 Detect Changes
       run: |
-        Scripts/generate_public_interface_definition.sh ${branch} ${baseRepo}
+        Scripts/detect_public_api_changes/compare.sh ${branch} ${baseRepo}
       env:
         branch: '${{github.event.pull_request.base.ref}}'
         baseRepo: '${{github.server_url}}/${{github.repository}}.git'
