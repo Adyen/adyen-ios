@@ -92,8 +92,8 @@
         override internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
                                       event: Analytics.Event,
                                       completionHandler: @escaping (Result<String, Error>) -> Void) {
-        
-            let completion: (Result<String, Error>) -> Void = { [weak self] result in
+            
+            super.handle(fingerprintAction, event: event) { [weak self] result in
                 switch result {
                 case let .failure(error):
                     completionHandler(.failure(error))
@@ -130,8 +130,6 @@
                     }
                 }
             }
-        
-            super.handle(fingerprintAction, event: event, completionHandler: completion)
         }
     
         private func daPayload(_ fingerprintAction: ThreeDS2FingerprintAction) -> String? {
@@ -311,8 +309,8 @@
                     completionHandler(.failure(error))
                 case let .success(threeDSResult):
                     guard let self,
-                          delegatedAuthenticationState.attemptRegistration, 
-                            deviceSupportCheckerService.isDeviceSupported,
+                          delegatedAuthenticationState.attemptRegistration,
+                          deviceSupportCheckerService.isDeviceSupported,
                           let registrationPayload = daPayload(challengeAction) else {
                         // If there is no payload for delegated authentication approval, continue with the 3ds flow.
                         completionHandler(.success(threeDSResult))
