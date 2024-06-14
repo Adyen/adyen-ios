@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -382,6 +382,15 @@ public struct LocalizationKey {
     public static let threeds2DARegistrationTitle = LocalizationKey(key: "adyen.threeds2.DA.registration.title")
     /// You can check out faster next time on this device using your biometrics.
     public static let threeds2DARegistrationDescription = LocalizationKey(key: "adyen.threeds2.DA.registration.description")
+    public static let threeds2DABiometrics = LocalizationKey(key: "adyen.threeds2.DA.biometrics")
+    public static let threeds2DAFaceID = LocalizationKey(key: "adyen.threeds2.DA.faceID")
+    public static let threeds2DATouchID = LocalizationKey(key: "adyen.threeds2.DA.touchID")
+    public static let threeds2DAOpticID = LocalizationKey(key: "adyen.threeds2.DA.opticID")
+
+    public static let threeds2DARegistrationFirstInfo = LocalizationKey(key: "adyen.threeds2.DA.registration.firstInfo")
+    public static let threeds2DARegistrationSecondInfo = LocalizationKey(key: "adyen.threeds2.DA.registration.secondInfo")
+    public static let threeds2DARegistrationThirdInfo = LocalizationKey(key: "adyen.threeds2.DA.registration.thirdInfo")
+
     /// Enable swift checkout
     public static let threeds2DARegistrationPositiveButton = LocalizationKey(key: "adyen.threeds2.DA.registration.positiveButton")
     /// Not now

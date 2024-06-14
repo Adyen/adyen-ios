@@ -55,7 +55,6 @@
                 style: delegatedAuthenticationConfiguration.delegatedAuthenticationComponentStyle,
                 delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
             )
-        
         }
     
         /// Initializes the 3D Secure 2 action handler.
@@ -270,6 +269,7 @@
         // MARK: Delegated Authentication Registration
         
         internal func register(delegatedAuthenticationInput: String,
+                               cardNumber: String,
                                completion: @escaping (Result<String, Error>) -> Void) {
         
             let service: AuthenticationServiceProtocol = if let delegatedAuthenticationService {
@@ -278,8 +278,8 @@
                 AdyenAuthentication.AuthenticationService(
                     passKeyConfiguration: .init(
                         relyingPartyIdentifier: delegatedAuthenticationConfiguration.relyingPartyIdentifier,
-                        displayName: "Card Number TBD 🔥 "
-                    ) // TODO: Robert: Pass the card number that we recieve from the challenge token.
+                        displayName: cardNumber
+                    )
                 )
             }
         
@@ -317,7 +317,9 @@
                         return
                     }
                 
-                    startRegistrationFlow(registrationPayload) { result in
+                    startRegistrationFlow(delegatedAuthenticationInput: registrationPayload,
+                                          cardNumber: "**** 1479",
+                                          cardType: .visa) { result in // TODO: Robert: Pass the card number.
                         switch result {
                         case let .success(registrationSDKOutput):
                             do {
@@ -343,13 +345,19 @@
             case userOptedOutOfRegistration
         }
     
-        private func startRegistrationFlow(_ delegatedAuthenticationInput: String,
+        private func startRegistrationFlow(delegatedAuthenticationInput: String,
+                                           cardNumber: String,
+                                           cardType: CardType,
                                            completionHandler: @escaping (Result<String, RegistrationFlowError>) -> Void) {
             presenter.showRegistrationScreen(
                 component: self,
+                cardNumber: cardNumber,
+                cardType: cardType,
+                context: context,
                 registerDelegatedAuthenticationHandler: { [weak self] in
                     guard let self else { return }
-                    register(delegatedAuthenticationInput: delegatedAuthenticationInput) { result in
+                    register(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                             cardNumber: cardNumber) { result in
                         switch result {
                         case let .success(success):
                             completionHandler(.success(success))

@@ -19,7 +19,7 @@ public struct DelegatedAuthenticationComponentStyle {
                                               borderWidth: 0.0,
                                               cornerRadius: 0.0,
                                               clipsToBounds: true,
-                                              contentMode: .scaleToFill)
+                                              contentMode: .scaleAspectFit)
     /// The text style of the header.
     public var headerTextStyle = TextStyle(font: .preferredFont(forTextStyle: .title1),
                                            color: UIColor.Adyen.componentLabel,
@@ -30,6 +30,30 @@ public struct DelegatedAuthenticationComponentStyle {
                                                 color: UIColor.Adyen.componentSecondaryLabel,
                                                 textAlignment: .center)
     
+    public var amountTextStyle = TextStyle(font: .preferredFont(forTextStyle: .headline),
+                                           color: UIColor.Adyen.componentLabel,
+                                           textAlignment: .center)
+    
+    public var cardImageStyle: ImageStyle = .init(borderColor: nil,
+                                                  borderWidth: 0.0,
+                                                  cornerRadius: 0.0,
+                                                  clipsToBounds: true,
+                                                  contentMode: .scaleAspectFit)
+    
+    public var cardNumberTextStyle = TextStyle(font: .preferredFont(forTextStyle: .title2),
+                                               color: UIColor.Adyen.componentLabel,
+                                               textAlignment: .center)
+    
+    public var infoImageStyle: ImageStyle = .init(borderColor: nil,
+                                                  borderWidth: 0.0,
+                                                  cornerRadius: 0.0,
+                                                  clipsToBounds: true,
+                                                  contentMode: .scaleAspectFit)
+    
+    public var additionalInformationTextStyle = TextStyle(font: .preferredFont(forTextStyle: .caption1),
+                                                          color: UIColor.Adyen.componentLabel,
+                                                          textAlignment: .center)
+
     /// The style of the timer progress view.
     public var progressViewStyle = ProgressViewStyle(
         progressTintColor: UIColor.Adyen.defaultBlue,

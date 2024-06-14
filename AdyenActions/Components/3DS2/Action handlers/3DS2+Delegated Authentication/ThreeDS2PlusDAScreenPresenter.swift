@@ -6,9 +6,13 @@
 
 import Foundation
 @_spi(AdyenInternal) import Adyen
+import LocalAuthentication
 
 internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
     func showRegistrationScreen(component: Component,
+                                cardNumber: String,
+                                cardType: CardType,
+                                context: AdyenContext,
                                 registerDelegatedAuthenticationHandler: @escaping () -> Void,
                                 fallbackHandler: @escaping () -> Void)
     
@@ -21,6 +25,7 @@ internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
 }
 
 /// This type handles the presenting of the Delegate authentication screens of Register and Approval.
+@available(iOS 16.0, *)
 internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresenterProtocol {
     /// Delegates `PresentableComponent`'s presentation.
     private let style: DelegatedAuthenticationComponentStyle
@@ -35,11 +40,18 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
     }
     
     internal func showRegistrationScreen(component: Component,
+                                         cardNumber: String,
+                                         cardType: CardType,
+                                         context: AdyenContext,
                                          registerDelegatedAuthenticationHandler: @escaping () -> Void,
                                          fallbackHandler: @escaping () -> Void) {
         AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
-        let registrationViewController = DARegistrationViewController(style: style,
+        let registrationViewController = DARegistrationViewController(context: context,
+                                                                      style: style,
                                                                       localizationParameters: localizedParameters,
+                                                                      cardNumber: cardNumber,
+                                                                      cardType: cardType,
+                                                                      biometricName: biometricName,
                                                                       enableCheckoutHandler: {
                                                                           registerDelegatedAuthenticationHandler()
                                                                       }, notNowHandler: {
@@ -60,14 +72,11 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
         let approvalViewController = DAApprovalViewController(style: style,
                                                               localizationParameters: localizedParameters,
-                                                              useBiometricsHandler: { [weak self] in
-                                                                  guard let self else { return }
+                                                              useBiometricsHandler: {
                                                                   approveAuthenticationHandler()
-                                                              }, approveDifferentlyHandler: { [weak self] in
-                                                                  guard let self else { return }
+                                                              }, approveDifferentlyHandler: {
                                                                   fallbackHandler()
-                                                              }, removeCredentialsHandler: { [weak self] in
-                                                                  guard let self else { return }
+                                                              }, removeCredentialsHandler: {
                                                                   removeCredentialsHandler()
                                                               })
         
@@ -76,5 +85,22 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         presentationDelegate?.present(component: presentableComponent)
         approvalViewController.navigationItem.rightBarButtonItems = []
         approvalViewController.navigationItem.leftBarButtonItems = []
+    }
+    
+    private var biometricName: String {
+        let authContext = LAContext()
+        _ = authContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
+        switch authContext.biometryType {
+        case .none:
+            return localizedString(.threeds2DABiometrics, localizedParameters)
+        case .touchID:
+            return localizedString(.threeds2DATouchID, localizedParameters)
+        case .faceID:
+            return localizedString(.threeds2DAFaceID, localizedParameters)
+        case .opticID:
+            return localizedString(.threeds2DAOpticID, localizedParameters)
+        @unknown default:
+            return localizedString(.threeds2DABiometrics, localizedParameters)
+        }
     }
 }

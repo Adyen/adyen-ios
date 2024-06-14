@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
+@available(iOS 16.0, *)
 internal final class DAApprovalViewController: UIViewController {
     private enum Constants {
         static let timeout: TimeInterval = 90.0
@@ -35,15 +36,18 @@ internal final class DAApprovalViewController: UIViewController {
     }()
     
     private lazy var containerView = UIView(frame: .zero)
-    private lazy var approvalView: DelegatedAuthenticationView = .init(logoStyle: style.imageStyle,
-                                                                       headerTextStyle: style.headerTextStyle,
-                                                                       descriptionTextStyle: style.descriptionTextStyle,
-                                                                       progressViewStyle: style.progressViewStyle,
-                                                                       progressTextStyle: style.remainingTimeTextStyle,
-                                                                       firstButtonStyle: style.primaryButton,
-                                                                       secondButtonStyle: style.secondaryButton,
-                                                                       textViewStyle: style.textViewStyle,
-                                                                       linkSelectionHandler: deleteCredentialSelected)
+    private lazy var approvalView: DelegatedAuthenticationView = .init(
+        logoStyle: style.imageStyle,
+        headerTextStyle: style.headerTextStyle,
+        descriptionTextStyle: style.descriptionTextStyle,
+        amountTextStyle: style.amountTextStyle,
+        cardImageStyle: style.cardImageStyle,
+        cardNumberTextStyle: style.cardNumberTextStyle,
+        infoImageStyle: style.infoImageStyle,
+        additionalInformationTextStyle: style.additionalInformationTextStyle,
+        firstButtonStyle: style.primaryButton,
+        secondButtonStyle: style.secondaryButton
+    )
     
     private let style: DelegatedAuthenticationComponentStyle
     private var timeoutTimer: ExpirationTimer?
@@ -63,9 +67,6 @@ internal final class DAApprovalViewController: UIViewController {
         self.localizationParameters = localizationParameters
         super.init(nibName: nil, bundle: Bundle(for: DAApprovalViewController.self))
         approvalView.delegate = self
-        if #available(iOS 13.0, *) {
-            isModalInPresentation = true
-        }
     }
     
     @available(*, unavailable)
@@ -85,31 +86,8 @@ internal final class DAApprovalViewController: UIViewController {
         approvalView.descriptionLabel.text = localizedString(.threeds2DAApprovalDescription, localizationParameters)
         approvalView.firstButton.title = localizedString(.threeds2DAApprovalPositiveButton, localizationParameters)
         approvalView.secondButton.title = localizedString(.threeds2DAApprovalNegativeButton, localizationParameters)
-        configureProgress()
-        approvalView.textView.update(text: localizedString(.threeds2DAApprovalRemoveCredentialsText, localizationParameters),
-                                     style: style.textViewStyle)
     }
     
-    private func configureProgress() {
-        let timeout = Constants.timeout
-        approvalView.progressText.text = timeLeft(timeInterval: timeout)
-        timeoutTimer = ExpirationTimer(
-            expirationTimeout: timeout,
-            onTick: { [weak self] in
-                self?.approvalView.progressView.progress = Float($0 / timeout)
-                self?.approvalView.progressText.text = self?.timeLeft(timeInterval: $0)
-            },
-            onExpiration: { [weak self] in
-                self?.secondButtonTapped()
-            }
-        )
-        timeoutTimer?.startTimer()
-    }
-    
-    private func timeLeft(timeInterval: TimeInterval) -> String {
-        String(format: localizedString(.threeds2DAApprovalTimeLeft, localizationParameters), timeInterval.adyen.timeLeftString() ?? "0")
-    }
-
     private func buildUI() {
         containerView.addSubview(approvalView)
         view.addSubview(containerView)
@@ -137,6 +115,7 @@ internal final class DAApprovalViewController: UIViewController {
     }
 }
 
+@available(iOS 16.0, *)
 extension DAApprovalViewController: DelegatedAuthenticationViewDelegate {
     internal func removeCredential() {
         timeoutTimer?.pauseTimer()

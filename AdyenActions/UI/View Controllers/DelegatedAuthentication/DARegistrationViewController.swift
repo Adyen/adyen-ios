@@ -7,43 +7,59 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
+@available(iOS 16.0, *)
 internal final class DARegistrationViewController: UIViewController {
     private enum Constants {
         static let timeout: TimeInterval = 90.0
     }
 
+    private let context: AdyenContext
+    private let cardNumber: String
+    private let cardType: CardType
+    private let biometricName: String
     private let enableCheckoutHandler: Handler
     private let notNowHandler: Handler
     private lazy var containerView = UIView(frame: .zero)
 
     private lazy var scrollView = UIScrollView()
-    private lazy var registrationView: DelegatedAuthenticationView = .init(logoStyle: style.imageStyle,
-                                                                           headerTextStyle: style.headerTextStyle,
-                                                                           descriptionTextStyle: style.descriptionTextStyle,
-                                                                           progressViewStyle: style.progressViewStyle,
-                                                                           progressTextStyle: style.remainingTimeTextStyle,
-                                                                           firstButtonStyle: style.primaryButton,
-                                                                           secondButtonStyle: style.secondaryButton,
-                                                                           textViewStyle: style.textViewStyle)
+    
+    private lazy var registrationView: DelegatedAuthenticationView = .init(
+        logoStyle: style.imageStyle,
+        headerTextStyle: style.headerTextStyle,
+        descriptionTextStyle: style.descriptionTextStyle,
+        amountTextStyle: style.amountTextStyle,
+        cardImageStyle: style.cardImageStyle,
+        cardNumberTextStyle: style.cardNumberTextStyle,
+        infoImageStyle: style.infoImageStyle,
+        additionalInformationTextStyle: style.additionalInformationTextStyle,
+        firstButtonStyle: style.primaryButton,
+        secondButtonStyle: style.secondaryButton
+    )
+    
     private let style: DelegatedAuthenticationComponentStyle
     private var timeoutTimer: ExpirationTimer?
     internal typealias Handler = () -> Void
     
     private let localizationParameters: LocalizationParameters?
 
-    internal init(style: DelegatedAuthenticationComponentStyle,
+    internal init(context: AdyenContext,
+                  style: DelegatedAuthenticationComponentStyle,
                   localizationParameters: LocalizationParameters?,
+                  cardNumber: String,
+                  cardType: CardType,
+                  biometricName: String,
                   enableCheckoutHandler: @escaping Handler,
                   notNowHandler: @escaping Handler) {
         self.style = style
         self.localizationParameters = localizationParameters
+        self.cardNumber = cardNumber
+        self.cardType = cardType
         self.enableCheckoutHandler = enableCheckoutHandler
+        self.context = context
+        self.biometricName = biometricName
         self.notNowHandler = notNowHandler
         super.init(nibName: nil, bundle: Bundle(for: DARegistrationViewController.self))
         registrationView.delegate = self
-        if #available(iOS 13.0, *) {
-            isModalInPresentation = true
-        }
     }
     
     @available(*, unavailable)
@@ -61,30 +77,24 @@ internal final class DARegistrationViewController: UIViewController {
     
     private func configureDelegateAuthenticationView() {
         registrationView.titleLabel.text = localizedString(.threeds2DARegistrationTitle, localizationParameters)
-        registrationView.descriptionLabel.text = localizedString(.threeds2DARegistrationDescription, localizationParameters)
+        
+        registrationView.descriptionLabel.text = localizedString(.threeds2DARegistrationDescription, localizationParameters, biometricName)
         registrationView.firstButton.title = localizedString(.threeds2DARegistrationPositiveButton, localizationParameters)
         registrationView.secondButton.title = localizedString(.threeds2DARegistrationNegativeButton, localizationParameters)
-        configureProgress()
-    }
-
-    private func configureProgress() {
-        let timeout = Constants.timeout
-        registrationView.progressText.text = timeLeft(timeInterval: timeout)
-        timeoutTimer = ExpirationTimer(
-            expirationTimeout: timeout,
-            onTick: { [weak self] in
-                self?.registrationView.progressView.progress = Float($0 / timeout)
-                self?.registrationView.progressText.text = self?.timeLeft(timeInterval: $0)
-            },
-            onExpiration: { [weak self] in
-                self?.secondButtonTapped()
-            }
-        )
-        timeoutTimer?.startTimer()
-    }
-
-    private func timeLeft(timeInterval: TimeInterval) -> String {
-        String(format: localizedString(.threeds2DARegistrationTimeLeft, localizationParameters), timeInterval.adyen.timeLeftString() ?? "0")
+        registrationView.firstInfoImage.image = UIImage(systemName: "bolt")?.withRenderingMode(.alwaysTemplate)
+        registrationView.firstInfoLabel.text = localizedString(.threeds2DARegistrationFirstInfo, localizationParameters)
+        registrationView.secondInfoImage.image = .biometricImage?.withRenderingMode(.alwaysTemplate)
+        
+        registrationView.secondInfoLabel.text = localizedString(.threeds2DARegistrationSecondInfo, localizationParameters, biometricName)
+        registrationView.thirdInfoImage.image = UIImage(systemName: "trash")?.withRenderingMode(.alwaysTemplate)
+        registrationView.thirdInfoLabel.text = localizedString(.threeds2DARegistrationThirdInfo, localizationParameters)
+        registrationView.cardNumberLabel.text = cardNumber
+        
+        let cardTypeURL = LogoURLProvider.logoURL(withName: cardType.rawValue, environment: context.apiContext.environment)
+        ImageLoaderProvider.imageLoader().load(url: cardTypeURL) { [weak self] image in
+            guard let self else { return }
+            registrationView.cardImage.image = image
+        }
     }
     
     private func buildUI() {
@@ -110,6 +120,7 @@ internal final class DARegistrationViewController: UIViewController {
     }
 }
 
+@available(iOS 16.0, *)
 extension DARegistrationViewController: DelegatedAuthenticationViewDelegate {
     internal func firstButtonTapped() {
         registrationView.firstButton.showsActivityIndicator = true
