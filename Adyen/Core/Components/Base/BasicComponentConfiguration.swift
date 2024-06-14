@@ -23,7 +23,7 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     public var style: FormComponentStyle
 
     /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
-    public var showSubmitButton: Bool
+    public private(set) var showSubmitButton: Bool
 
     public var localizationParameters: LocalizationParameters?
 
@@ -51,7 +51,7 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
     public var style: FormComponentStyle
 
     /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
-    public var showSubmitButton: Bool
+    public private(set) var showSubmitButton: Bool
 
     public var shopperInformation: PrefilledShopperInformation?
     

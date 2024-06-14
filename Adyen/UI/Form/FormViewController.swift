@@ -21,7 +21,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.showsVerticalScrollIndicator = true
+        scrollView.preservesSuperviewLayoutMargins = true
         return scrollView
     }()
 

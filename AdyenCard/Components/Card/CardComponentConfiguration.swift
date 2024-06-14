@@ -122,7 +122,7 @@ extension CardComponent {
         public var style: FormComponentStyle
 
         /// A boolean value that determines whether the payment button is displayed. Defaults to `true`.
-        public var showSubmitButton: Bool
+        public private(set) var showSubmitButton: Bool
 
         /// The shopper's information to be prefilled.
         public var shopperInformation: PrefilledShopperInformation?
