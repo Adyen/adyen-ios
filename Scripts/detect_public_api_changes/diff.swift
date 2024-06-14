@@ -62,14 +62,14 @@ class Element: Codable, Equatable, CustomDebugStringConvertible {
         if let declKind {
             if declKind == "Constructor" {
                 definition += "func "
-            } else  {
+            } else {
                 definition += "\(declKind.lowercased()) "
             }
         }
         
         definition += "\(printedName)"
         
-        if let conformanceNames = conformances?.map({ $0.printedName }), !conformanceNames.isEmpty {
+        if let conformanceNames = conformances?.map(\.printedName), !conformanceNames.isEmpty {
             definition += " : \(conformanceNames.joined(separator: ", "))"
         }
         
@@ -150,7 +150,7 @@ func recursiveCompare(element lhs: Element, to rhs: Element, oldFirst: Bool) -> 
         return []
     }
     
-    if lhs.isSpiInternal && rhs.isSpiInternal {
+    if lhs.isSpiInternal, rhs.isSpiInternal {
         // If both elements are spi internal we can ignore them as they are not in the public interface
         return []
     }
@@ -159,12 +159,11 @@ func recursiveCompare(element lhs: Element, to rhs: Element, oldFirst: Bool) -> 
     
     // TODO: Add check if accessor changed (e.g. changed from get/set to get only...)
     
-    if oldFirst, (
-        lhs.printedName != rhs.printedName ||
-        lhs.spiGroupNames != rhs.spiGroupNames ||
-        lhs.conformances != rhs.conformances ||
-        lhs.declAttributes != rhs.declAttributes
-    ) {
+    if oldFirst,
+       lhs.printedName != rhs.printedName ||
+       lhs.spiGroupNames != rhs.spiGroupNames ||
+       lhs.conformances != rhs.conformances ||
+       lhs.declAttributes != rhs.declAttributes {
         // TODO: Show what exactly changed (name, spi, conformance, declAttributes, ...) as a bullet list maybe (add a `changeList` property to `Change`)
         changes += [.init(changeType: .change, parentName: lhs.parentPath, changeDescription: "`\(lhs)` ➡️  `\(rhs)`")]
     }
