@@ -23,7 +23,7 @@ class CustomComponentViewController: UIViewController, CustomComponentViewProtoc
 
     // MARK: - View components
 
-    private let scrollView: UIScrollView = {
+    private lazy var scrollView: UIScrollView = {
         let view = UIScrollView(frame: .zero)
         view.isScrollEnabled = true
         view.showsVerticalScrollIndicator = false
