@@ -7,22 +7,6 @@
 import Foundation
 @_spi(AdyenInternal) import Adyen
 
-internal enum ThreeDS2PlusDAScreenUserInput {
-    case approveDifferently
-    case deleteDA
-    case noInput
-    case biometric
-    
-    internal var canShowRegistration: Bool {
-        switch self {
-        case .approveDifferently, .deleteDA, .biometric:
-            return false
-        case .noInput:
-            return true
-        }
-    }
-}
-
 internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
     func showRegistrationScreen(component: Component,
                                 registerDelegatedAuthenticationHandler: @escaping () -> Void,
@@ -33,7 +17,6 @@ internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
                             fallbackHandler: @escaping () -> Void,
                             removeCredentialsHandler: @escaping () -> Void)
     
-    var userInput: ThreeDS2PlusDAScreenUserInput { get }
     var presentationDelegate: PresentationDelegate? { get set }
 }
 
@@ -42,9 +25,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
     /// Delegates `PresentableComponent`'s presentation.
     private let style: DelegatedAuthenticationComponentStyle
     private let localizedParameters: LocalizationParameters?
-    
-    internal var userInput: ThreeDS2PlusDAScreenUserInput = .noInput
-    
+        
     internal weak var presentationDelegate: PresentationDelegate?
     
     internal init(style: DelegatedAuthenticationComponentStyle,
@@ -81,15 +62,12 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                                                               localizationParameters: localizedParameters,
                                                               useBiometricsHandler: { [weak self] in
                                                                   guard let self else { return }
-                                                                  self.userInput = .biometric
                                                                   approveAuthenticationHandler()
                                                               }, approveDifferentlyHandler: { [weak self] in
                                                                   guard let self else { return }
-                                                                  self.userInput = .approveDifferently
                                                                   fallbackHandler()
                                                               }, removeCredentialsHandler: { [weak self] in
                                                                   guard let self else { return }
-                                                                  self.userInput = .deleteDA
                                                                   removeCredentialsHandler()
                                                               })
         
