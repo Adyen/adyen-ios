@@ -20,6 +20,11 @@ internal final class FormView: UIView {
         return stackView
     }()
 
+    // MARK: - Properties
+    
+    /// A Boolean value that determines whether the `FormView` is embedded in a `UIScrollView`
+    internal var isEmbeddedInScrollView: Bool = true
+
     /// Initializes the form view.
     internal init() {
         super.init(frame: .zero)
@@ -32,7 +37,7 @@ internal final class FormView: UIView {
     }
     
     override internal var intrinsicContentSize: CGSize {
-        stackView.adyen.minimalSize
+        isEmbeddedInScrollView ? stackView.adyen.minimalSize : super.intrinsicContentSize
     }
     
     // MARK: - Item Views

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+// Copyright (c) 2017 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -135,7 +135,16 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
 
     public func willUpdatePreferredContentSize() { /* Empty implementation */ }
 
-    public func didUpdatePreferredContentSize() { /* Empty implementation */ }
+    public func didUpdatePreferredContentSize() {
+        let bottomInset: CGFloat = keyboardObserver.keyboardRect.height - view.safeAreaInsets.bottom
+        let context = AnimationContext(animationKey: Animations.keyboardBottomInset,
+                                       duration: 0.25,
+                                       options: [.beginFromCurrentState, .layoutSubviews],
+                                       animations: { [weak self] in
+                                           self?.scrollView.contentInset.bottom = bottomInset
+                                       })
+        view.adyen.animate(context: context)
+    }
 
     // MARK: - Items
 
@@ -235,23 +244,30 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     private func setupLayout() {
         if scrollEnabled {
             NSLayoutConstraint.activate([
-                scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-                scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+                scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
                 formView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-                formView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.bottomAnchor),
-                formView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+                formView.leadingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor),
+                formView.trailingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.trailingAnchor),
+                formView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
             ])
         } else {
-            formView.adyen.anchor(inside: view)
+            NSLayoutConstraint.activate([
+                formView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                formView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+                formView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+                formView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            ])
         }
     }
 
     private func setupViews() {
         view.backgroundColor = style.backgroundColor
         formView.backgroundColor = style.backgroundColor
+        formView.isEmbeddedInScrollView = scrollEnabled
     }
 
     // MARK: - UIResponder
