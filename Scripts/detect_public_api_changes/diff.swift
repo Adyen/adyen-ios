@@ -10,6 +10,8 @@ import Foundation
 
 let currentDirectory = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
 
+// TODO: Pass all modules at once so we can write the file out all at once
+// (This also allows us to indicate in the title whether or not there were any changes)
 let old = CommandLine.arguments[1]
 let new = CommandLine.arguments[2]
 let moduleName = CommandLine.arguments[3]
@@ -211,7 +213,7 @@ func compare() throws {
     )
     
     if decodedOldDefinition == decodedNewDefinition {
-        // try persistComparison(fileContent: "## 🫧 `\(moduleName)`\n- No changes detected")
+        try persistComparison(fileContent: "## 🫧 `\(moduleName)` - No changes detected")
         return
     }
     
