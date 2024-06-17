@@ -405,6 +405,10 @@ public struct LocalizationKey {
     public static let threeds2DAApprovalPositiveButton = LocalizationKey(key: "adyen.threeds2.DA.approval.positiveButton")
     /// Approve differently
     public static let threeds2DAApprovalNegativeButton = LocalizationKey(key: "adyen.threeds2.DA.approval.negativeButton")
+    
+    public static let threeds2DAApprovalActionSheetTitle = LocalizationKey(key: "adyen.threeds2.DA.approval.actionSheet.title")
+    public static let threeds2DAApprovalActionSheetFallback = LocalizationKey(key: "adyen.threeds2.DA.approval.actionSheet.fallback")
+    public static let threeds2DAApprovalActionSheetRemove = LocalizationKey(key: "adyen.threeds2.DA.approval.actionSheet.remove")
     /// You have %@ to approve
     public static let threeds2DAApprovalTimeLeft = LocalizationKey(key: "adyen.threeds2.DA.approval.timeLeft")
     /// Opt out any time by %#removing your credentials.%#

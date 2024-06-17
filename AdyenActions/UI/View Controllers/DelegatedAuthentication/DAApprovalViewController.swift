@@ -9,13 +9,14 @@ import UIKit
 
 @available(iOS 16.0, *)
 internal final class DAApprovalViewController: UIViewController {
-    private enum Constants {
-        static let timeout: TimeInterval = 90.0
-    }
-
+    private let context: AdyenContext
+    private let cardNumber: String
+    private let cardType: CardType
+    private let biometricName: String
     private let useBiometricsHandler: Handler
     private let approveDifferentlyHandler: Handler
     private let removeCredentialsHandler: Handler
+    
     private lazy var alert: UIAlertController = {
         let alertController = UIAlertController(title: localizedString(.threeds2DAApprovalRemoveAlertTitle, localizationParameters),
                                                 message: localizedString(.threeds2DAApprovalRemoveAlertDescription, localizationParameters),
@@ -28,13 +29,37 @@ internal final class DAApprovalViewController: UIViewController {
         let cancelAction = UIAlertAction(title: localizedString(.threeds2DAApprovalRemoveAlertNegativeButton, localizationParameters),
                                          style: .default,
                                          handler: { [weak self] _ in
-                                             self?.timeoutTimer?.resumeTimer()
+            
                                          })
         alertController.addAction(cancelAction)
         alertController.addAction(removeAction)
         return alertController
     }()
     
+    private lazy var actionSheet: UIAlertController = {
+        let alertController = UIAlertController(title: localizedString(.threeds2DAApprovalActionSheetTitle, localizationParameters),
+                                                message: nil,
+                                                preferredStyle: .actionSheet)
+        let removeAction = UIAlertAction(title: localizedString(.threeds2DAApprovalActionSheetRemove, localizationParameters),
+                                         style: .destructive,
+                                         handler: { [weak self] _ in
+                                             guard let self else { return }
+                                             present(alert, animated: true)
+                                         })
+        let fallbackAction = UIAlertAction(title: localizedString(.threeds2DAApprovalActionSheetFallback, localizationParameters),
+                                           style: .default,
+                                           handler: { [weak self] _ in
+                                               self?.approveDifferentlyHandler()
+                                           })
+        let cancelAction = UIAlertAction(title: localizedString(.threeds2DAApprovalRemoveAlertNegativeButton, localizationParameters),
+                                         style: .cancel)
+
+        alertController.addAction(cancelAction)
+        alertController.addAction(fallbackAction)
+        alertController.addAction(removeAction)
+        return alertController
+    }()
+
     private lazy var containerView = UIView(frame: .zero)
     private lazy var approvalView: DelegatedAuthenticationView = .init(
         logoStyle: style.imageStyle,
@@ -50,13 +75,17 @@ internal final class DAApprovalViewController: UIViewController {
     )
     
     private let style: DelegatedAuthenticationComponentStyle
-    private var timeoutTimer: ExpirationTimer?
     private let localizationParameters: LocalizationParameters?
     
     internal typealias Handler = () -> Void
     
-    internal init(style: DelegatedAuthenticationComponentStyle,
+    internal init(context: AdyenContext,
+                  style: DelegatedAuthenticationComponentStyle,
                   localizationParameters: LocalizationParameters?,
+                  biometricName: String,
+                  amount: String?,
+                  cardNumber: String,
+                  cardType: CardType,
                   useBiometricsHandler: @escaping Handler,
                   approveDifferentlyHandler: @escaping Handler,
                   removeCredentialsHandler: @escaping Handler) {
@@ -65,6 +94,10 @@ internal final class DAApprovalViewController: UIViewController {
         self.approveDifferentlyHandler = approveDifferentlyHandler
         self.removeCredentialsHandler = removeCredentialsHandler
         self.localizationParameters = localizationParameters
+        self.biometricName = biometricName
+        self.cardType = cardType
+        self.cardNumber = cardNumber
+        self.context = context
         super.init(nibName: nil, bundle: Bundle(for: DAApprovalViewController.self))
         approvalView.delegate = self
     }
@@ -83,9 +116,17 @@ internal final class DAApprovalViewController: UIViewController {
     
     private func configureDelegateAuthenticationView() {
         approvalView.titleLabel.text = localizedString(.threeds2DAApprovalTitle, localizationParameters)
-        approvalView.descriptionLabel.text = localizedString(.threeds2DAApprovalDescription, localizationParameters)
+        approvalView.descriptionLabel.text = localizedString(.threeds2DAApprovalDescription, localizationParameters, biometricName)
         approvalView.firstButton.title = localizedString(.threeds2DAApprovalPositiveButton, localizationParameters)
         approvalView.secondButton.title = localizedString(.threeds2DAApprovalNegativeButton, localizationParameters)
+        approvalView.cardNumberLabel.text = cardNumber
+        approvalView.additionalInformationStackView.isHidden = true
+        
+        let cardTypeURL = LogoURLProvider.logoURL(withName: cardType.rawValue, environment: context.apiContext.environment)
+        ImageLoaderProvider.imageLoader().load(url: cardTypeURL) { [weak self] image in
+            guard let self else { return }
+            approvalView.cardImage.image = image
+        }
     }
     
     private func buildUI() {
@@ -118,19 +159,14 @@ internal final class DAApprovalViewController: UIViewController {
 @available(iOS 16.0, *)
 extension DAApprovalViewController: DelegatedAuthenticationViewDelegate {
     internal func removeCredential() {
-        timeoutTimer?.pauseTimer()
         present(alert, animated: true)
     }
     
     internal func firstButtonTapped() {
-        approvalView.firstButton.showsActivityIndicator = true
-        timeoutTimer?.stopTimer()
         useBiometricsHandler()
     }
     
     internal func secondButtonTapped() {
-        approvalView.secondButton.showsActivityIndicator = true
-        timeoutTimer?.stopTimer()
-        approveDifferentlyHandler()
+        present(actionSheet, animated: true)
     }
 }

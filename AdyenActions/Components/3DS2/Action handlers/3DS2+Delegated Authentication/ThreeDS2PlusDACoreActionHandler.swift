@@ -105,7 +105,9 @@
                         return
                     }
                 
-                    startApprovalFlow(payloadForDA) { [weak self] result in
+                    startApprovalFlow(payloadForDA,
+                                      cardType: .visa, // TODO: Robert: card type and card numbers to be got from the fingerprint action.
+                                      cardNumber: "**** 1479") { [weak self] result in
                         guard let self else { return }
                     
                         switch result {
@@ -119,7 +121,7 @@
                             
                                 completionHandler(.success(threeDSFingerPrintWithDAPayload))
                             } catch {
-                                // If there is any failure in the DA flow we can still attempt to recover the transaction by defaulting to 3ds2.
+                                // If there is any failure in the DA handling we always default to 3ds2.
                                 completionHandler(.success(threeDSFingerprint))
                             }
                         case .failure:
@@ -159,12 +161,16 @@
         /// else calls the completion with a failure.
         private func startApprovalFlow(
             _ delegatedAuthenticationInput: String,
+            cardType: CardType,
+            cardNumber: String,
             completion: @escaping (Result<(daOutput: String, delete: Bool?), ApprovalFlowError>) -> Void
         ) {
             isDeviceRegistered(delegatedAuthenticationInput: delegatedAuthenticationInput) { [weak self] registered in
                 guard let self else { return }
                 if registered {
                     showApprovalScreen(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                                       cardType: cardType,
+                                       cardNumber: cardNumber,
                                        completion: completion)
                 } else {
                     // setting the state to attempt the registration flow.
@@ -185,11 +191,16 @@
     
         private func showApprovalScreen(
             delegatedAuthenticationInput: String,
+            cardType: CardType,
+            cardNumber: String,
             completion: @escaping (Result<(daOutput: String, delete: Bool?), ApprovalFlowError>
             ) -> Void
         ) {
             presenter.showApprovalScreen(
                 component: self,
+                cardNumber: cardNumber,
+                cardType: cardType,
+                context: context,
                 approveAuthenticationHandler: { [weak self] in
                     guard let self else { return }
                     authenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,

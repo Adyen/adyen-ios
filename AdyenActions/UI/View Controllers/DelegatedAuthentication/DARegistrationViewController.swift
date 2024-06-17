@@ -9,10 +9,6 @@ import UIKit
 
 @available(iOS 16.0, *)
 internal final class DARegistrationViewController: UIViewController {
-    private enum Constants {
-        static let timeout: TimeInterval = 90.0
-    }
-
     private let context: AdyenContext
     private let cardNumber: String
     private let cardType: CardType
@@ -37,7 +33,6 @@ internal final class DARegistrationViewController: UIViewController {
     )
     
     private let style: DelegatedAuthenticationComponentStyle
-    private var timeoutTimer: ExpirationTimer?
     internal typealias Handler = () -> Void
     
     private let localizationParameters: LocalizationParameters?
@@ -124,12 +119,10 @@ internal final class DARegistrationViewController: UIViewController {
 extension DARegistrationViewController: DelegatedAuthenticationViewDelegate {
     internal func firstButtonTapped() {
         registrationView.firstButton.showsActivityIndicator = true
-        timeoutTimer?.stopTimer()
         enableCheckoutHandler()
     }
     
     internal func secondButtonTapped() {
-        timeoutTimer?.stopTimer()
         registrationView.secondButton.showsActivityIndicator = true
         notNowHandler()
     }
