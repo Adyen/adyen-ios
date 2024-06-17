@@ -54,7 +54,9 @@ struct PublicApiDiff: ParsableCommand {
             let comparisonSdkDumpFilePath = try generateSdkDump(for: targetName, at: comparisonVersionDirectoryPath)
             
             print("🧐 [\(targetName)]\n-\(sdkDumpFilePath)\n-\(comparisonSdkDumpFilePath)")
-            changesPerTarget[targetName] = try SdkDumpAnalyzer.diff(updated: sdkDumpFilePath, to: comparisonSdkDumpFilePath)
+            
+            let diff = try SdkDumpAnalyzer.diff(updated: sdkDumpFilePath, to: comparisonSdkDumpFilePath)
+            if !diff.isEmpty { changesPerTarget[targetName] = diff }
         }
         
         let diffOutput = generateOutput(from: changesPerTarget, allTargetNames: allTargets)
