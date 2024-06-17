@@ -47,16 +47,80 @@ struct PublicApiDiff: ParsableCommand {
         
         let allTargets = Set(comparisonTargets + updatedTargets).sorted()
         
+        var changesPerTarget = [String: [SdkDumpAnalyzer.Change]]() // [ModuleName: [SdkDumpAnalyzer.Change]]
+        
         try allTargets.forEach { targetName in
             let sdkDumpFilePath = try generateSdkDump(for: targetName, at: updatedSdkPath)
             let comparisonSdkDumpFilePath = try generateSdkDump(for: targetName, at: comparisonVersionDirectoryPath)
             
             print("🧐 [\(targetName)]\n-\(sdkDumpFilePath)\n-\(comparisonSdkDumpFilePath)")
+            changesPerTarget[targetName] = try SdkDumpAnalyzer.diff(updated: sdkDumpFilePath, to: comparisonSdkDumpFilePath)
         }
+        
+        let diffOutput = generateOutput(from: changesPerTarget, allTargetNames: allTargets)
+        try persistDiff(diffOutput, projectDirectoryPath: updatedSdkPath)
     }
 }
 
 private extension PublicApiDiff {
+    
+    func persistDiff(_ output: String, projectDirectoryPath: String) throws {
+        
+        guard let data = output.data(using: String.Encoding.utf8) else { return }
+        
+        let outputFilePath = projectDirectoryPath.appending("/api_comparison.md")
+        let outputFileUrl = URL(filePath: outputFilePath)
+        
+        if FileManager.default.fileExists(atPath: outputFilePath) {
+            try FileManager.default.removeItem(atPath: outputFilePath)
+        }
+        
+        try data.write(to: outputFileUrl, options: .atomicWrite)
+    }
+    
+    func generateOutput(from changesPerTarget: [String: [SdkDumpAnalyzer.Change]], allTargetNames: [String]) -> String {
+        
+        let footer: String = "**Analyzed modules:** \(allTargetNames.joined(separator: ", "))"
+        
+        if changesPerTarget.keys.isEmpty {
+            return [
+                "# ✅ No changes detected",
+                footer
+            ].joined(separator: "\n")
+        }
+        
+        var lines = ["# 💔 Breaking changes detected"]
+        
+        changesPerTarget.keys.sorted().forEach { key in
+            guard let changes = changesPerTarget[key], !changes.isEmpty else { return }
+            
+            if !key.isEmpty {
+                lines.append("## `\(key)`")
+            }
+            
+            var groupedChanges = [String: [SdkDumpAnalyzer.Change]]()
+
+            changes.forEach {
+                groupedChanges[$0.parentName] = (groupedChanges[$0.parentName] ?? []) + [$0]
+            }
+            
+            groupedChanges.keys.sorted().forEach { parent in
+                if let changes = groupedChanges[parent], !changes.isEmpty {
+                    if !parent.isEmpty {
+                        lines.append("### `\(parent)`")
+                    }
+                    groupedChanges[parent]?.forEach {
+                        lines.append("- \($0.changeType.icon) \($0.changeDescription)")
+                    }
+                }
+            }
+        }
+        
+        lines.append("---")
+        lines.append(footer)
+        
+        return lines.joined(separator: "\n")
+    }
     
     func setupComparisonRepository() throws -> String {
         
@@ -82,8 +146,6 @@ private extension PublicApiDiff {
         
         try xcodeProjectHelper.prepare()
         try packageFileHelper.preparePackageWithConsolidatedLibrary(named: Constants.allTargetsLibraryName)
-        
-        let availableTargets = try packageFileHelper.availableTargets()
         
         let buildCommand = "cd \(path); xcodebuild -scheme \(Constants.allTargetsLibraryName) -sdk `\(Constants.simulatorSdkCommand)` -derivedDataPath \(Constants.derivedDataPath) -destination \"\(Constants.destination)\" -target \(Constants.deviceTarget) -skipPackagePluginValidation"
         

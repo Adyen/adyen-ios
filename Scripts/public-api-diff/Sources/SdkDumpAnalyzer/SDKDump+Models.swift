@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension SdkDumpAnalyzer {
+enum SDKDump {
     
     struct Conformance: Codable, Equatable {
         var printedName: String
@@ -48,7 +48,10 @@ extension SdkDumpAnalyzer {
             spiGroupNames?.forEach {
                 definition += "@_spi(\($0)) "
             }
-            definition += "public "
+            
+            if declKind != "Import" {
+                definition += "public "
+            }
             
             if declAttributes?.contains("Final") == true {
                 definition += "final "
@@ -57,6 +60,8 @@ extension SdkDumpAnalyzer {
             if let declKind {
                 if declKind == "Constructor" {
                     definition += "func "
+                } else if declKind == "enumelement" {
+                    definition += "case "
                 } else {
                     definition += "\(declKind.lowercased()) "
                 }
@@ -99,12 +104,6 @@ extension SdkDumpAnalyzer {
         }
     }
 
-    extension [Element] {
-        func firstElementMatchingName(of otherElement: Element) -> Element? {
-            first(where: { ($0.mangledName ?? $0.name) == (otherElement.mangledName ?? otherElement.name) })
-        }
-    }
-
     class Definition: Codable, Equatable {
         let root: Element
         
@@ -116,27 +115,11 @@ extension SdkDumpAnalyzer {
             lhs.root == rhs.root
         }
     }
+}
 
-    struct Change {
-        enum ChangeType {
-            case addition
-            case removal
-            case change
-            
-            var icon: String {
-                switch self {
-                case .addition:
-                    return "❇️ "
-                case .removal:
-                    return "😶‍🌫️"
-                case .change:
-                    return "🔀"
-                }
-            }
-        }
-        
-        var changeType: ChangeType
-        var parentName: String
-        var changeDescription: String
+
+extension [SDKDump.Element] {
+    func firstElementMatchingName(of otherElement: Element) -> Element? {
+        first(where: { ($0.mangledName ?? $0.name) == (otherElement.mangledName ?? otherElement.name) })
     }
 }

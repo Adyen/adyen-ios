@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "public-api-diff",
     platforms: [
-        .macOS(.v10_15)
+        .macOS(.v13)
     ],
     dependencies: [
       .package(url: "https://github.com/apple/swift-argument-parser", from: "1.4.0")
