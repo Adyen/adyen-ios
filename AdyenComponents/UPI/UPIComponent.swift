@@ -319,7 +319,7 @@ private extension UPIComponent {
     }
     
     func focusVpaInput() {
-        formViewController.assignInitialFirstResponder()
+        vpaInputItem.focus()
     }
     
     func submit() {

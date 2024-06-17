@@ -34,5 +34,9 @@ public final class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
                 self?.resignFirstResponder()
             }
         }
+        
+        item.focusHandler = { [weak self] in
+            self?.becomeFirstResponder()
+        }
     }
 }
