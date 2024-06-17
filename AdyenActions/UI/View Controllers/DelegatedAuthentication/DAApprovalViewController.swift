@@ -13,6 +13,7 @@ internal final class DAApprovalViewController: UIViewController {
     private let cardNumber: String
     private let cardType: CardType
     private let biometricName: String
+    private let amount: String?
     private let useBiometricsHandler: Handler
     private let approveDifferentlyHandler: Handler
     private let removeCredentialsHandler: Handler
@@ -94,6 +95,7 @@ internal final class DAApprovalViewController: UIViewController {
         self.approveDifferentlyHandler = approveDifferentlyHandler
         self.removeCredentialsHandler = removeCredentialsHandler
         self.localizationParameters = localizationParameters
+        self.amount = amount
         self.biometricName = biometricName
         self.cardType = cardType
         self.cardNumber = cardNumber
@@ -121,7 +123,7 @@ internal final class DAApprovalViewController: UIViewController {
         approvalView.secondButton.title = localizedString(.threeds2DAApprovalNegativeButton, localizationParameters)
         approvalView.cardNumberLabel.text = cardNumber
         approvalView.additionalInformationStackView.isHidden = true
-        
+        approvalView.amount.text = amount
         let cardTypeURL = LogoURLProvider.logoURL(withName: cardType.rawValue, environment: context.apiContext.environment)
         ImageLoaderProvider.imageLoader().load(url: cardTypeURL) { [weak self] image in
             guard let self else { return }

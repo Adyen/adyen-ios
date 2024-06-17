@@ -106,7 +106,7 @@ internal final class DelegatedAuthenticationView: UIView {
         let stackView = UIStackView(arrangedSubviews: [amount, cardNumberStackView])
         stackView.axis = .vertical
         stackView.alignment = .center
-        stackView.spacing = 8.0
+        stackView.spacing = 15.0
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20)

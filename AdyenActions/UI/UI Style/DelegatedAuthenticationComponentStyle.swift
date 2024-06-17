@@ -30,7 +30,7 @@ public struct DelegatedAuthenticationComponentStyle {
                                                 color: UIColor.Adyen.componentSecondaryLabel,
                                                 textAlignment: .center)
     
-    public var amountTextStyle = TextStyle(font: .preferredFont(forTextStyle: .headline),
+    public var amountTextStyle = TextStyle(font: .preferredFont(forTextStyle: .largeTitle),
                                            color: UIColor.Adyen.componentLabel,
                                            textAlignment: .center)
     
