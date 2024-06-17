@@ -83,6 +83,8 @@
 		210CC97F2A5FC23400F8F672 /* UITextViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210CC97E2A5FC23400F8F672 /* UITextViewHelpers.swift */; };
 		2159173A2A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215917392A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift */; };
 		2159173C2A0D2B6E0004081E /* ThreeDS2DAScreenPresenterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2159173B2A0D2B6E0004081E /* ThreeDS2DAScreenPresenterMock.swift */; };
+		2172F8152C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2172F8142C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift */; };
+		2172F8172C20B93400BE0369 /* DAErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2172F8162C20B93400BE0369 /* DAErrorViewController.swift */; };
 		21B3A71329CA70FF00F48386 /* DelegatedAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B3A71229CA70FF00F48386 /* DelegatedAuthenticationView.swift */; };
 		21B3A71529CA720C00F48386 /* DARegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B3A71429CA720C00F48386 /* DARegistrationViewController.swift */; };
 		21B3A71729CA721F00F48386 /* DAApprovalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B3A71629CA721F00F48386 /* DAApprovalViewController.swift */; };
@@ -1521,6 +1523,8 @@
 		210CC97E2A5FC23400F8F672 /* UITextViewHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextViewHelpers.swift; sourceTree = "<group>"; };
 		215917392A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2PlusDAScreenPresenter.swift; sourceTree = "<group>"; };
 		2159173B2A0D2B6E0004081E /* ThreeDS2DAScreenPresenterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2DAScreenPresenterMock.swift; sourceTree = "<group>"; };
+		2172F8142C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedAuthenticationErrorView.swift; sourceTree = "<group>"; };
+		2172F8162C20B93400BE0369 /* DAErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DAErrorViewController.swift; sourceTree = "<group>"; };
 		21B3A71229CA70FF00F48386 /* DelegatedAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedAuthenticationView.swift; sourceTree = "<group>"; };
 		21B3A71429CA720C00F48386 /* DARegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DARegistrationViewController.swift; sourceTree = "<group>"; };
 		21B3A71629CA721F00F48386 /* DAApprovalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DAApprovalViewController.swift; sourceTree = "<group>"; };
@@ -2804,6 +2808,8 @@
 				21B3A71429CA720C00F48386 /* DARegistrationViewController.swift */,
 				21B3A71629CA721F00F48386 /* DAApprovalViewController.swift */,
 				21B3A71229CA70FF00F48386 /* DelegatedAuthenticationView.swift */,
+				2172F8142C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift */,
+				2172F8162C20B93400BE0369 /* DAErrorViewController.swift */,
 			);
 			path = DelegatedAuthentication;
 			sourceTree = "<group>";
@@ -7376,12 +7382,14 @@
 				F97C84CD25C1761900D7F85C /* VoucherAction.swift in Sources */,
 				5A4633AA265FBAEB005FE0D8 /* VoucherView.swift in Sources */,
 				5A64573F2626D2E2001824F0 /* QRCodeComponentStyle.swift in Sources */,
+				2172F8172C20B93400BE0369 /* DAErrorViewController.swift in Sources */,
 				21B3A71529CA720C00F48386 /* DARegistrationViewController.swift in Sources */,
 				21B3A71729CA721F00F48386 /* DAApprovalViewController.swift in Sources */,
 				E73C54E425EBD2DC00B57758 /* BrowserComponent.swift in Sources */,
 				F9B8AF5927DA48C900DC0894 /* ActionHandlingComponent.swift in Sources */,
 				A03EE735276133A500470561 /* ShareableComponent.swift in Sources */,
 				0058691728B6450900B65A19 /* QRCodeViewController.swift in Sources */,
+				2172F8152C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift in Sources */,
 				F9175FB72594996000D653BE /* ThreeDS2ChallengeAction.swift in Sources */,
 				F917615C25A30B6400D653BE /* AnyChallengeResult.swift in Sources */,
 				F9976BB326D903F400D2D7CE /* MultibancoVoucherAction.swift in Sources */,
