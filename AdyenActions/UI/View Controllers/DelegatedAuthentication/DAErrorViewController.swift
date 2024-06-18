@@ -26,9 +26,9 @@ internal final class DAErrorViewController: UIViewController {
         internal var image: UIImage? {
             switch self {
             case .authenticationFailed:
-                return UIImage(named: "feedback")
+                UIImage(named: "feedback", in: Bundle.actionsInternalResources, compatibleWith: nil)
             case .registrationFailed:
-                return UIImage(named: "union")
+                UIImage(named: "union", in: Bundle.actionsInternalResources, compatibleWith: nil)
             }
         }
         
