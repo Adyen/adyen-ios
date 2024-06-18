@@ -207,6 +207,13 @@
 "adyen.threeds2.DA.approval.remove.alert.description" = "Are you sure you want to remove your Secure Checkout credentials?";
 "adyen.threeds2.DA.approval.remove.alert.positiveButton" = "Remove";
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Cancel";
+"adyen.threeds2.DA.approval.error.title" = "Authenticating...";
+"adyen.threeds2.DA.approval.error.message" = "Authentication with Secure Checkout has failed, regular authentication will now be attempted.";
+"adyen.threeds2.DA.approval.error.timerText" = "Attempting regular authentication in %@...";
+"adyen.threeds2.DA.approval.error.buttonTitle" = "Use regular authentication";
+"adyen.threeds2.DA.registration.error.title" = "Let’s try next time!";
+"adyen.threeds2.DA.registration.error.message" = "Your payment has still been authenticated successfully but the Secure Checkout service was unavailable.";
+"adyen.threeds2.DA.registration.error.timerText" = "We will send you back in %@...";
 "adyen.picker.search.empty.title" = "No results found";
 "adyen.picker.search.empty.subtitle" = "'%@' did not match with anything";
 "adyen.address.lookup.search.placeholder" = "Search for your address";
