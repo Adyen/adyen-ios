@@ -14,7 +14,6 @@ import Foundation
     import UIKit
 
 final class ThreeDS2DAScreenPresenterMock: ThreeDS2PlusDAScreenPresenterProtocol {
-    
         var presentationDelegate: (any Adyen.PresentationDelegate)?
     
         enum ShowRegistrationScreenMockState {
@@ -45,7 +44,10 @@ final class ThreeDS2DAScreenPresenterMock: ThreeDS2PlusDAScreenPresenterProtocol
     
         let showApprovalScreenReturnState: ShowApprovalScreenMockState
 
-        func showApprovalScreen(component: Adyen.Component,
+        func showApprovalScreen(component: any Adyen.Component, 
+                                cardNumber: String,
+                                cardType: Adyen.CardType,
+                                context: Adyen.AdyenContext,
                                 approveAuthenticationHandler: @escaping () -> Void,
                                 fallbackHandler: @escaping () -> Void,
                                 removeCredentialsHandler: @escaping () -> Void) {
