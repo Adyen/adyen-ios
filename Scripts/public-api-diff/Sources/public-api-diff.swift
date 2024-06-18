@@ -7,6 +7,8 @@
 import ArgumentParser
 import Foundation
 
+// TODO: Add UnitTests
+
 enum Constants {
     static let deviceTarget: String = "x86_64-apple-ios17.4-simulator"
     static let destination: String = "platform=iOS,name=Any iOS Device"
@@ -93,7 +95,9 @@ struct PublicApiDiff: ParsableCommand {
                 comparisonSdkDumper: comparisonSdkDumper
             )
             
-            changesPerTarget["Package.swift"] = (changesPerTarget["Package.swift"] ?? []) + libraryChanges
+            if !libraryChanges.isEmpty {
+                changesPerTarget["Package.swift"] = (changesPerTarget["Package.swift"] ?? []) + libraryChanges
+            }
             
             let diffOutput = OutputGenerator.generate(
                 from: changesPerTarget,
