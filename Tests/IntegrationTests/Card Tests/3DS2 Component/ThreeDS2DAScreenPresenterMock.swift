@@ -13,7 +13,8 @@ import Foundation
     import Foundation
     import UIKit
 
-    final class ThreeDS2DAScreenPresenterMock: ThreeDS2PlusDAScreenPresenterProtocol {
+final class ThreeDS2DAScreenPresenterMock: ThreeDS2PlusDAScreenPresenterProtocol {
+    
         var presentationDelegate: (any Adyen.PresentationDelegate)?
     
         enum ShowRegistrationScreenMockState {
@@ -22,7 +23,10 @@ import Foundation
         }
     
         let showRegistrationReturnState: ShowRegistrationScreenMockState
-        func showRegistrationScreen(component: Adyen.Component,
+        func showRegistrationScreen(component: any Adyen.Component, 
+                                    cardNumber: String,
+                                    cardType: Adyen.CardType,
+                                    context: Adyen.AdyenContext,
                                     registerDelegatedAuthenticationHandler: @escaping () -> Void,
                                     fallbackHandler: @escaping () -> Void) {
             switch showRegistrationReturnState {
@@ -54,15 +58,11 @@ import Foundation
                 removeCredentialsHandler()
             }
         }
-    
-        var userInput: ThreeDS2PlusDAScreenUserInput = .noInput
-    
+        
         init(showRegistrationReturnState: ShowRegistrationScreenMockState,
-             showApprovalScreenReturnState: ShowApprovalScreenMockState,
-             userInput: ThreeDS2PlusDAScreenUserInput = .noInput) {
+             showApprovalScreenReturnState: ShowApprovalScreenMockState) {
             self.showRegistrationReturnState = showRegistrationReturnState
             self.showApprovalScreenReturnState = showApprovalScreenReturnState
-            self.userInput = userInput
         }
     }
 

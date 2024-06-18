@@ -17,6 +17,9 @@ internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
                                 fallbackHandler: @escaping () -> Void)
     
     func showApprovalScreen(component: Component,
+                            cardNumber: String,
+                            cardType: CardType,
+                            context: AdyenContext,
                             approveAuthenticationHandler: @escaping () -> Void,
                             fallbackHandler: @escaping () -> Void,
                             removeCredentialsHandler: @escaping () -> Void)
@@ -66,12 +69,20 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
     }
     
     internal func showApprovalScreen(component: Component,
+                                     cardNumber: String,
+                                     cardType: CardType,
+                                     context: AdyenContext,
                                      approveAuthenticationHandler: @escaping () -> Void,
                                      fallbackHandler: @escaping () -> Void,
                                      removeCredentialsHandler: @escaping () -> Void) {
         AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
-        let approvalViewController = DAApprovalViewController(style: style,
+        let approvalViewController = DAApprovalViewController(context: context,
+                                                              style: style,
                                                               localizationParameters: localizedParameters,
+                                                              biometricName: biometricName,
+                                                              amount: context.payment?.amount.formatted,
+                                                              cardNumber: cardNumber,
+                                                              cardType: cardType,
                                                               useBiometricsHandler: {
                                                                   approveAuthenticationHandler()
                                                               }, approveDifferentlyHandler: {
