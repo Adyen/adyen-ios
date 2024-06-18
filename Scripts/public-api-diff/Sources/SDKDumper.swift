@@ -26,7 +26,7 @@ struct SDKDumper {
         
         let dumpCommand = "cd \(projectDirectoryPath); xcrun swift-api-digester -dump-sdk -module \(module) -I \(sdkDumpInputPath) -o \(outputFilePath) -sdk `\(Constants.simulatorSdkCommand)` -target \(Constants.deviceTarget) -abort-on-module-fail"
         
-        print(Shell.execute(dumpCommand))
+        Shell.execute(dumpCommand)
         
         return outputFilePath
     }

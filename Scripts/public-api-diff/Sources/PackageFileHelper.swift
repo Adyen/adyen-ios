@@ -14,10 +14,16 @@ struct PackageFileHelper {
         self.packagePath = packagePath
     }
     
-    func availableTargets() throws -> [String] {
+    func availableTargets() throws -> Set<String> {
         
         let packageContent = try String(contentsOfFile: packagePath)
         return try availableTargets(from: packageContent)
+    }
+    
+    func availableProducts() throws -> Set<String> {
+        
+        let packageContent = try String(contentsOfFile: packagePath)
+        return try availableProducts(from: packageContent)
     }
     
     /// Inserts a new library into the targets section containing all targets from the target section
@@ -28,7 +34,7 @@ struct PackageFileHelper {
         let packageContent = try String(contentsOfFile: packagePath)
         let targets = try availableTargets(from: packageContent)
         
-        let consolidatedEntry = consolidatedLibraryEntry(consolidatedLibraryName, from: targets)
+        let consolidatedEntry = consolidatedLibraryEntry(consolidatedLibraryName, from: targets.sorted())
         let updatedPackageContent = updatedContent(packageContent, with: consolidatedEntry)
         
         // Write the updated content back to the file
@@ -69,12 +75,12 @@ private extension PackageFileHelper {
         return updatedContent
     }
     
-    func availableTargets(from packageContent: String) throws -> [String] {
+    func availableTargets(from packageContent: String) throws -> Set<String> {
         let targets = try availableTargets(from: packageContent, ofType: .target)
         let binaryTargets = try availableTargets(from: packageContent, ofType: .binaryTarget)
         
         // Removing binaryTargets from list of targets as we can't generate an sdk dump for them
-        return targets.subtracting(binaryTargets).sorted()
+        return targets.subtracting(binaryTargets)
     }
     
     enum TargetType {
@@ -110,5 +116,26 @@ private extension PackageFileHelper {
         }
         
         return availableTargets
+    }
+    
+    func availableProducts(from packageContent: String) throws -> Set<String> {
+        let scanner = Scanner(string: packageContent)
+        _ = scanner.scanUpToString("products: [")
+
+        var availableProducts = Set<String>()
+
+        while scanner.scanUpToString(".library(") != nil {
+            let nameStartTag = "name: \""
+            let nameEndTag = "\""
+            
+            _ = scanner.scanUpToString(nameStartTag)
+            _ = scanner.scanString(nameStartTag)
+            
+            if let targetName = scanner.scanUpToString(nameEndTag) {
+                availableProducts.insert(targetName)
+            }
+        }
+        
+        return availableProducts
     }
 }

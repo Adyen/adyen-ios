@@ -41,21 +41,48 @@ struct PublicApiDiff: ParsableCommand {
         do {
             try Self.createCleanDirectory(at: workingDirectoryPath)
             
+            print("🏗️ Setting up working directory for current version")
             let currentVersionWorkingDirectoryPath = try Self.setupCurrentVersion(
                 currentVersionDirectoryPath: updatedSdkPath,
                 workingDirectoryPath: workingDirectoryPath
             )
             
+            print("🏗️ Setting up working directory for comparison version")
             let comparisonVersionWorkingDirectoryPath = try Self.setupComparisonVersion(
                 for: branch,
                 of: repository,
                 workingDirectoryPath: workingDirectoryPath
             )
             
+            print("🔍 Scanning for products changes")
+            let comparisonProducts = try availableProducts(at: comparisonVersionWorkingDirectoryPath)
+            let currentProducts = try availableProducts(at: currentVersionWorkingDirectoryPath)
+            
+            var libraryChanges = [SdkDumpAnalyzer.Change]()
+            
+            let removedLibaries = comparisonProducts.subtracting(currentProducts)
+            libraryChanges += removedLibaries.map {
+                .init(
+                    changeType: .removal,
+                    parentName: "",
+                    changeDescription: "`.library(name: \"\($0)\", ...)` was removed"
+                )
+            }
+            
+            let addedLibraries = currentProducts.subtracting(comparisonProducts)
+            libraryChanges += addedLibraries.map {
+                .init(
+                    changeType: .addition,
+                    parentName: "",
+                    changeDescription: "`.library(name: \"\($0)\", ...)` was added"
+                )
+            }
+            
+            print("🔍 Scanning for breaking API changes")
             let comparisonTargets = try availableTargets(at: comparisonVersionWorkingDirectoryPath)
             let currentTargets = try availableTargets(at: currentVersionWorkingDirectoryPath)
             
-            let allTargets = Set(comparisonTargets + currentTargets).sorted()
+            let allTargets = comparisonTargets.union(currentTargets).sorted()
             
             let updatedSdkDumper = SDKDumper(projectDirectoryPath: currentVersionWorkingDirectoryPath)
             let comparisonSdkDumper = SDKDumper(projectDirectoryPath: comparisonVersionWorkingDirectoryPath)
@@ -65,6 +92,8 @@ struct PublicApiDiff: ParsableCommand {
                 currentSdkDumper: updatedSdkDumper,
                 comparisonSdkDumper: comparisonSdkDumper
             )
+            
+            changesPerTarget["Package.swift"] = (changesPerTarget["Package.swift"] ?? []) + libraryChanges
             
             let diffOutput = OutputGenerator.generate(
                 from: changesPerTarget,
@@ -184,8 +213,7 @@ private extension PublicApiDiff {
             
             if sourceFilePath == baseWorkingDirectoryPath { return }
             
-            print("Copy `\(sourceFilePath)` -> `\(destinationFilePath)`")
-            Shell.execute("mv \(sourceFilePath) \(destinationFilePath)")
+            Shell.execute("cp -a \(sourceFilePath) \(destinationFilePath)")
         }
     }
     
@@ -248,10 +276,17 @@ private extension PublicApiDiff {
         Shell.execute(buildCommand)
     }
     
-    func availableTargets(at projectDirectoryPath: String) throws -> [String] {
+    func availableTargets(at projectDirectoryPath: String) throws -> Set<String> {
         
         let packagePath = projectDirectoryPath.appending("/Package.swift")
         let packageFileHelper = PackageFileHelper(packagePath: packagePath)
         return try packageFileHelper.availableTargets()
+    }
+    
+    func availableProducts(at projectDirectoryPath: String) throws -> Set<String> {
+        
+        let packagePath = projectDirectoryPath.appending("/Package.swift")
+        let packageFileHelper = PackageFileHelper(packagePath: packagePath)
+        return try packageFileHelper.availableProducts()
     }
 }
