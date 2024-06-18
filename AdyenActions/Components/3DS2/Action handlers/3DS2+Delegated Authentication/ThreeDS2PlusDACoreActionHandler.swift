@@ -205,14 +205,14 @@
                     guard let self else { return }
                     authenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
                                  authenticatedHandler: {
-                                     completion(.success((daOutput: $0, delete: nil)))
-                                 },
+                        completion(.success((daOutput: $0, delete: nil)))
+                    },
                                  failedAuthenticationHandler: { [weak self] error in
                         guard let self else { return }
                         self.presenter.showAuthenticationError(component: self) {
                             completion(.failure(.authenticationServiceFailed(underlyingError: error)))
                         }
-                                 })
+                    })
                 },
                 fallbackHandler: {
                     completion(.failure(.fallbackTo3ds))

@@ -156,6 +156,7 @@ internal final class DAErrorViewController: UIViewController {
 extension DAErrorViewController: DelegatedAuthenticationErrorViewDelegate {
     internal func firstButtonTapped() {
         errorView.firstButton.showsActivityIndicator = true
+        timeoutTimer?.stopTimer()
         switch screen {
         case .authenticationFailed:
             continueHandler()
