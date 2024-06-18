@@ -23,11 +23,11 @@ enum SdkDumpAnalyzer {
         }
         
         guard let decodedUpdatedDefinition else {
-            return [.init(changeType: .removal, parentName: "", changeDescription: "😶‍🌫️ Target was removed")]
+            return [.init(changeType: .removal, parentName: "", changeDescription: "Target was removed")]
         }
         
         guard let decodedComparisonDefinition else {
-            return [.init(changeType: .removal, parentName: "", changeDescription: "😶‍🌫️ Target was added")]
+            return [.init(changeType: .addition, parentName: "", changeDescription: "Target was added")]
         }
         
         setupRelationships(for: decodedComparisonDefinition.root, parent: nil)
@@ -49,24 +49,24 @@ enum SdkDumpAnalyzer {
 
 private extension SdkDumpAnalyzer {
     
-    static func loadDefinition(from sdkDumpFilePath: String) -> SDKDump.Definition? {
+    static func loadDefinition(from sdkDumpFilePath: String) -> SDKDumper.Definition? {
         
         let fileUrl = URL(filePath: sdkDumpFilePath)
         
         return try? JSONDecoder().decode(
-            SDKDump.Definition.self,
+            SDKDumper.Definition.self,
             from: Data(contentsOf: fileUrl)
         )
     }
     
-    static func setupRelationships(for element: SDKDump.Element, parent: SDKDump.Element?) {
+    static func setupRelationships(for element: SDKDumper.Element, parent: SDKDumper.Element?) {
         element.children?.forEach {
             $0.parent = element
             setupRelationships(for: $0, parent: element)
         }
     }
     
-    static func recursiveCompare(element lhs: SDKDump.Element, to rhs: SDKDump.Element, oldFirst: Bool) -> [Change] {
+    static func recursiveCompare(element lhs: SDKDumper.Element, to rhs: SDKDumper.Element, oldFirst: Bool) -> [Change] {
         if lhs == rhs {
             return []
         }

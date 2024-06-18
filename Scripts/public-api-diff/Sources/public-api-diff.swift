@@ -7,16 +7,15 @@
 import ArgumentParser
 import Foundation
 
+enum Constants {
+    static let deviceTarget: String = "x86_64-apple-ios17.4-simulator"
+    static let destination: String = "platform=iOS,name=Any iOS Device"
+    static let derivedDataPath: String = ".build"
+    static let simulatorSdkCommand = "xcrun --sdk iphonesimulator --show-sdk-path"
+}
+
 @main
 struct PublicApiDiff: ParsableCommand {
-    
-    private enum Constants {
-        static let deviceTarget: String = "x86_64-apple-ios17.4-simulator"
-        static let destination: String = "platform=iOS,name=Any iOS Device"
-        static let derivedDataPath: String = ".build"
-        static let allTargetsLibraryName = "AdyenAllTargets"
-        static let simulatorSdkCommand = "xcrun --sdk iphonesimulator --show-sdk-path"
-    }
     
     /*
       // TODO: Use a source to specify both projects
@@ -34,43 +33,173 @@ struct PublicApiDiff: ParsableCommand {
     
     @Option(help: "Specify the url where the repository is available")
     public var repository: String
-
-    private var comparisonVersionDirectoryName: String {
-        "tmp_comparison_version_\(branch)"
-    }
+    
     
     public func run() throws {
+        let workingDirectoryPath = updatedSdkPath.appending("/tmp-public-api-diff")
         
-        // TODO: Ideally we move all temporary stuff to a tmp folder and then delete the whole folder
-        
-        let comparisonVersionDirectoryPath = try setupComparisonRepository()
-        try buildProject(at: comparisonVersionDirectoryPath)
-        
-        try buildProject(at: updatedSdkPath)
-        
-        let comparisonTargets = try availableTargets(at: comparisonVersionDirectoryPath)
-        let updatedTargets = try availableTargets(at: updatedSdkPath)
-        
-        let allTargets = Set(comparisonTargets + updatedTargets).sorted()
-        
-        var changesPerTarget = [String: [SdkDumpAnalyzer.Change]]() // [ModuleName: [SdkDumpAnalyzer.Change]]
-        
-        try allTargets.forEach { targetName in
-            let sdkDumpFilePath = try generateSdkDump(for: targetName, at: updatedSdkPath)
-            let comparisonSdkDumpFilePath = try generateSdkDump(for: targetName, at: comparisonVersionDirectoryPath)
+        do {
+            try Self.createCleanDirectory(at: workingDirectoryPath)
             
-            print("🧐 [\(targetName)]\n-\(sdkDumpFilePath)\n-\(comparisonSdkDumpFilePath)")
+            let currentVersionWorkingDirectoryPath = try Self.setupCurrentVersion(
+                currentVersionDirectoryPath: updatedSdkPath,
+                workingDirectoryPath: workingDirectoryPath
+            )
             
-            let diff = try SdkDumpAnalyzer.diff(updated: sdkDumpFilePath, to: comparisonSdkDumpFilePath)
-            if !diff.isEmpty { changesPerTarget[targetName] = diff }
+            let comparisonVersionWorkingDirectoryPath = try Self.setupComparisonVersion(
+                for: branch,
+                of: repository,
+                workingDirectoryPath: workingDirectoryPath
+            )
+            
+            let comparisonTargets = try availableTargets(at: comparisonVersionWorkingDirectoryPath)
+            let currentTargets = try availableTargets(at: currentVersionWorkingDirectoryPath)
+            
+            let allTargets = Set(comparisonTargets + currentTargets).sorted()
+            
+            let updatedSdkDumper = SDKDumper(projectDirectoryPath: currentVersionWorkingDirectoryPath)
+            let comparisonSdkDumper = SDKDumper(projectDirectoryPath: comparisonVersionWorkingDirectoryPath)
+            
+            var changesPerTarget = try Self.diffModules(
+                for: allTargets,
+                currentSdkDumper: updatedSdkDumper,
+                comparisonSdkDumper: comparisonSdkDumper
+            )
+            
+            let diffOutput = OutputGenerator.generate(
+                from: changesPerTarget,
+                allTargetNames: allTargets,
+                branch: branch,
+                repository: repository
+            )
+            
+            try persistDiff(
+                diffOutput,
+                projectDirectoryPath: updatedSdkPath
+            )
+            
+            // Delete working directory once we're done
+            Shell.execute("rm -rf \(workingDirectoryPath)")
+        } catch {
+            // Delete working directory once we're done
+            Shell.execute("rm -rf \(workingDirectoryPath)")
+            throw error
         }
-        
-        let diffOutput = generateOutput(from: changesPerTarget, allTargetNames: allTargets)
-        try persistDiff(diffOutput, projectDirectoryPath: updatedSdkPath)
     }
 }
 
 private extension PublicApiDiff {
+    
+    static func diffModules(
+        for allTargets: [String],
+        currentSdkDumper: SDKDumper,
+        comparisonSdkDumper: SDKDumper
+    ) throws -> [String: [SdkDumpAnalyzer.Change]] {
+        
+        var changesPerTarget = [String: [SdkDumpAnalyzer.Change]]() // [ModuleName: [SdkDumpAnalyzer.Change]]
+        
+        try allTargets.forEach { targetName in
+            let currentSdkDumpFilePath = currentSdkDumper.generate(for: targetName)
+            let comparisonSdkDumpFilePath = comparisonSdkDumper.generate(for: targetName)
+            
+            let diff = try SdkDumpAnalyzer.diff(updated: currentSdkDumpFilePath, to: comparisonSdkDumpFilePath)
+            if !diff.isEmpty { changesPerTarget[targetName] = diff }
+        }
+        
+        return changesPerTarget
+    }
+    
+    static func setupCurrentVersion(currentVersionDirectoryPath: String, workingDirectoryPath: String) throws -> String {
+        
+        let currentVersionWorkingDirectoryPath = workingDirectoryPath.appending("/current")
+
+        try setupIndividualWorkingDirectory(
+            at: currentVersionWorkingDirectoryPath,
+            sourceDirectoryPath: currentVersionDirectoryPath,
+            baseWorkingDirectoryPath: workingDirectoryPath
+        )
+        
+        try buildProject(at: currentVersionWorkingDirectoryPath)
+        
+        return currentVersionWorkingDirectoryPath
+    }
+    
+    static func setupComparisonVersion(for branch: String, of repository: String, workingDirectoryPath: String) throws -> String {
+        
+        let comparisonVersionDirectoryPath = fetchComparisonRepository(for: branch, of: repository)
+        
+        let comparisonVersionWorkingDirectoryPath = workingDirectoryPath.appending("/comparison")
+        
+        try setupIndividualWorkingDirectory(
+            at: comparisonVersionWorkingDirectoryPath,
+            sourceDirectoryPath: comparisonVersionDirectoryPath,
+            baseWorkingDirectoryPath: workingDirectoryPath
+        )
+        
+        try buildProject(at: comparisonVersionWorkingDirectoryPath)
+        
+        return comparisonVersionWorkingDirectoryPath
+    }
+    
+    static func setupIndividualWorkingDirectory(
+        at destinationDirectoryPath: String,
+        sourceDirectoryPath: String,
+        baseWorkingDirectoryPath: String
+    ) throws {
+        
+        try? FileManager.default.removeItem(atPath: destinationDirectoryPath)
+        try FileManager.default.createDirectory(atPath: destinationDirectoryPath, withIntermediateDirectories: true)
+        
+        let fileNameIgnoreList: Set<String> = [
+            Constants.derivedDataPath,
+            ".git",
+            ".github",
+            ".gitmodules",
+            ".codebeatignore",
+            ".swiftformat",
+            ".swiftpm",
+            ".DS_Store",
+            "Tests",
+            "Cartfile",
+        ]
+        
+        let fileExtensionIgnoreList: Set<String> = [
+            ".yaml",
+            ".yml",
+            ".png",
+            ".docc",
+            ".xcodeproj",
+            ".xcworkspace",
+            ".md",
+            ".resolved",
+            ".podspec"
+        ]
+        
+        try FileManager.default.contentsOfDirectory(atPath: sourceDirectoryPath).forEach { fileName in
+            if fileExtensionIgnoreList.contains(where: { fileName.hasSuffix($0) }) { return }
+            if fileNameIgnoreList.contains(where: { fileName == $0 }) { return }
+            
+            let sourceFilePath = sourceDirectoryPath.appending("/\(fileName)")
+            let destinationFilePath = destinationDirectoryPath.appending("/\(fileName)")
+            
+            if sourceFilePath == baseWorkingDirectoryPath { return }
+            
+            print("Copy `\(sourceFilePath)` -> `\(destinationFilePath)`")
+            Shell.execute("mv \(sourceFilePath) \(destinationFilePath)")
+        }
+    }
+    
+    static func createCleanDirectory(at cleanDirectoryPath: String) throws {
+        
+        if FileManager.default.fileExists(atPath: cleanDirectoryPath) {
+            try FileManager.default.removeItem(atPath: cleanDirectoryPath)
+        }
+        
+        try FileManager.default.createDirectory(
+            at: URL(filePath: cleanDirectoryPath),
+            withIntermediateDirectories: true
+        )
+    }
     
     func persistDiff(_ output: String, projectDirectoryPath: String) throws {
         
@@ -86,96 +215,37 @@ private extension PublicApiDiff {
         try data.write(to: outputFileUrl, options: .atomicWrite)
     }
     
-    func generateOutput(from changesPerTarget: [String: [SdkDumpAnalyzer.Change]], allTargetNames: [String]) -> String {
-        
-        let separator = "\n---"
-        let repoInfo = "_Compared to `\(branch)` of `\(repository)`_"
-        let analyzedModulesInfo = "**Analyzed modules:** \(allTargetNames.joined(separator: ", "))"
-        
-        if changesPerTarget.keys.isEmpty {
-            return [
-                "# ✅ No changes detected",
-                repoInfo,
-                separator,
-                analyzedModulesInfo
-            ].joined(separator: "\n")
-        }
-        
-        // TODO: Log the change count
-        var lines = [
-            "# 💔 Breaking changes detected",
-            repoInfo,
-            separator
-        ]
-        
-        changesPerTarget.keys.sorted().forEach { key in
-            guard let changes = changesPerTarget[key], !changes.isEmpty else { return }
-            
-            if !key.isEmpty {
-                lines.append("## `\(key)`")
-            }
-            
-            var groupedChanges = [String: [SdkDumpAnalyzer.Change]]()
-
-            changes.forEach {
-                groupedChanges[$0.parentName] = (groupedChanges[$0.parentName] ?? []) + [$0]
-            }
-            
-            groupedChanges.keys.sorted().forEach { parent in
-                if let changes = groupedChanges[parent], !changes.isEmpty {
-                    if !parent.isEmpty {
-                        lines.append("### `\(parent)`")
-                    }
-                    groupedChanges[parent]?.forEach {
-                        lines.append("- \($0.changeType.icon) \($0.changeDescription)")
-                    }
-                }
-            }
-        }
-        
-        lines += [
-            separator,
-            analyzedModulesInfo
-        ]
-        
-        return lines.joined(separator: "\n")
-    }
-    
-    func setupComparisonRepository() throws -> String {
+    /// Returns the Package.swift file path if available
+    static func fetchComparisonRepository(for branch: String, of repository: String) -> String {
         
         let currentDirectory = FileManager.default.currentDirectoryPath
-        let comparisonVersionDirectoryPath = currentDirectory.appending("/\(comparisonVersionDirectoryName)")
+        let targetDirectoryPath = currentDirectory.appending(UUID().uuidString)
         
-        if FileManager.default.fileExists(atPath: comparisonVersionDirectoryPath) {
-            try FileManager.default.removeItem(atPath: comparisonVersionDirectoryPath)
-        }
+        try? FileManager.default.removeItem(atPath: targetDirectoryPath)
         
-        print("🐱 Cloning \(repository) @ \(branch) into \(comparisonVersionDirectoryPath)")
+        clone(branch, of: repository, into: targetDirectoryPath)
         
-        // TODO: Maybe we can only clone the Package.swift file
-        Shell.execute("git clone -b \(branch) \(repository) \(comparisonVersionDirectoryName)")
-        
-        return comparisonVersionDirectoryPath
+        return targetDirectoryPath
     }
     
-    func buildProject(at path: String) throws {
+    static func clone(_ branch: String, of repository: String, into targetDirectoryPath: String) {
         
+        print("🐱 Cloning \(repository) @ \(branch) into \(targetDirectoryPath)")
+        Shell.execute("git clone -b \(branch) \(repository) \(targetDirectoryPath)")
+    }
+    
+    static func buildProject(at path: String) throws {
+        
+        let allTargetsLibraryName = "AdyenAllTargets"
         let packagePath = path.appending("/Package.swift")
         
         let packageFileHelper = PackageFileHelper(packagePath: packagePath)
-        let xcodeProjectHelper = XcodeProjectHelper(projectDirectoryPath: path)
+        try packageFileHelper.preparePackageWithConsolidatedLibrary(named: allTargetsLibraryName)
         
-        try xcodeProjectHelper.prepare()
-        try packageFileHelper.preparePackageWithConsolidatedLibrary(named: Constants.allTargetsLibraryName)
-        
-        let buildCommand = "cd \(path); xcodebuild -scheme \(Constants.allTargetsLibraryName) -sdk `\(Constants.simulatorSdkCommand)` -derivedDataPath \(Constants.derivedDataPath) -destination \"\(Constants.destination)\" -target \(Constants.deviceTarget) -skipPackagePluginValidation"
+        let buildCommand = "cd \(path); xcodebuild -scheme \(allTargetsLibraryName) -sdk `\(Constants.simulatorSdkCommand)` -derivedDataPath \(Constants.derivedDataPath) -destination \"\(Constants.destination)\" -target \(Constants.deviceTarget) -skipPackagePluginValidation"
         
         print("🛠️ Building project at `\(path)`")
         Shell.execute(buildCommand)
-        
-        // Reverting all tmp changes
-        try packageFileHelper.revertPackageChanges()
-        try xcodeProjectHelper.revert()
     }
     
     func availableTargets(at projectDirectoryPath: String) throws -> [String] {
@@ -183,21 +253,5 @@ private extension PublicApiDiff {
         let packagePath = projectDirectoryPath.appending("/Package.swift")
         let packageFileHelper = PackageFileHelper(packagePath: packagePath)
         return try packageFileHelper.availableTargets()
-    }
-    
-    func generateSdkDump(for module: String, at projectDirectoryPath: String) throws -> String {
-        
-        let sdkDumpInputPath = projectDirectoryPath
-            .appending("/\(Constants.derivedDataPath)")
-            .appending("/Build/Products/Debug-iphonesimulator")
-        
-        let outputFilePath = projectDirectoryPath
-            .appending("/api_dump.json")
-        
-        let dumpCommand = "cd \(projectDirectoryPath); xcrun swift-api-digester -dump-sdk -module \(module) -I \(sdkDumpInputPath) -o \(outputFilePath) -sdk `\(Constants.simulatorSdkCommand)` -target \(Constants.deviceTarget) -abort-on-module-fail"
-        
-        Shell.execute(dumpCommand)
-        
-        return outputFilePath
     }
 }

@@ -6,7 +6,7 @@
 
 import Foundation
 
-enum SDKDump {
+extension SDKDumper {
     
     struct Conformance: Codable, Equatable {
         var printedName: String
@@ -116,7 +116,7 @@ enum SDKDump {
     }
 }
 
-extension [SDKDump.Element] {
+extension [SDKDumper.Element] {
     func firstElementMatchingName(of otherElement: Element) -> Element? {
         first(where: { ($0.mangledName ?? $0.name) == (otherElement.mangledName ?? otherElement.name) })
     }

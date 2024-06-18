@@ -10,10 +10,6 @@ struct PackageFileHelper {
     
     let packagePath: String
     
-    private var packageBackupPath: String {
-        packagePath.appending("_old")
-    }
-    
     init(packagePath: String) {
         self.packagePath = packagePath
     }
@@ -30,9 +26,6 @@ struct PackageFileHelper {
     ) throws {
         
         let packageContent = try String(contentsOfFile: packagePath)
-        
-        // Making a backup of the current Package.swift file
-        try packageContent.write(toFile: packageBackupPath, atomically: true, encoding: .utf8)
         let targets = try availableTargets(from: packageContent)
         
         let consolidatedEntry = consolidatedLibraryEntry(consolidatedLibraryName, from: targets)
@@ -40,13 +33,6 @@ struct PackageFileHelper {
         
         // Write the updated content back to the file
         try updatedPackageContent.write(toFile: packagePath, atomically: true, encoding: .utf8)
-    }
-    
-    func revertPackageChanges() throws {
-        
-        let backupContent = try String(contentsOfFile: packageBackupPath)
-        try backupContent.write(toFile: packagePath, atomically: true, encoding: .utf8)
-        try FileManager.default.removeItem(atPath: packageBackupPath)
     }
 }
 
@@ -84,12 +70,34 @@ private extension PackageFileHelper {
     }
     
     func availableTargets(from packageContent: String) throws -> [String] {
+        let targets = try availableTargets(from: packageContent, ofType: .target)
+        let binaryTargets = try availableTargets(from: packageContent, ofType: .binaryTarget)
+        
+        // Removing binaryTargets from list of targets as we can't generate an sdk dump for them
+        return targets.subtracting(binaryTargets).sorted()
+    }
+    
+    enum TargetType {
+        case target
+        case binaryTarget
+        
+        var startTag: String {
+            switch self {
+            case .target:
+                ".target("
+            case .binaryTarget:
+                ".binaryTarget("
+            }
+        }
+    }
+    
+    func availableTargets(from packageContent: String, ofType targetType: TargetType) throws -> Set<String> {
         let scanner = Scanner(string: packageContent)
         _ = scanner.scanUpToString("targets: [")
 
         var availableTargets = Set<String>()
 
-        while scanner.scanUpToString(".target(") != nil {
+        while scanner.scanUpToString(targetType.startTag) != nil {
             let nameStartTag = "name: \""
             let nameEndTag = "\""
             
@@ -101,6 +109,6 @@ private extension PackageFileHelper {
             }
         }
         
-        return availableTargets.sorted()
+        return availableTargets
     }
 }
