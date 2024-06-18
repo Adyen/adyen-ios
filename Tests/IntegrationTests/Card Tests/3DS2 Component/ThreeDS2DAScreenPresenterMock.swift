@@ -7,65 +7,71 @@
 import Foundation
 
 #if canImport(AdyenAuthentication)
-    @_spi(AdyenInternal) @testable import Adyen
-    import Adyen3DS2
-    import AdyenAuthentication
-    import Foundation
-    import UIKit
+@_spi(AdyenInternal) @testable import Adyen
+import Adyen3DS2
+import AdyenAuthentication
+import Foundation
+import UIKit
 
 final class ThreeDS2DAScreenPresenterMock: ThreeDS2PlusDAScreenPresenterProtocol {
-        var presentationDelegate: (any Adyen.PresentationDelegate)?
+    func showAuthenticationError(component: any Adyen.Component, handler: @escaping () -> Void) {
+    }
     
-        enum ShowRegistrationScreenMockState {
-            case register
-            case fallback
-        }
+    func showRegistrationError(component: any Adyen.Component, handler: () -> Void) {
+    }
     
-        let showRegistrationReturnState: ShowRegistrationScreenMockState
-        func showRegistrationScreen(component: any Adyen.Component, 
-                                    cardNumber: String,
-                                    cardType: Adyen.CardType,
-                                    context: Adyen.AdyenContext,
-                                    registerDelegatedAuthenticationHandler: @escaping () -> Void,
-                                    fallbackHandler: @escaping () -> Void) {
-            switch showRegistrationReturnState {
-            case .register:
-                registerDelegatedAuthenticationHandler()
-            case .fallback:
-                fallbackHandler()
-            }
-        }
+    var presentationDelegate: (any Adyen.PresentationDelegate)?
     
-        enum ShowApprovalScreenMockState {
-            case approve
-            case fallback
-            case removeCredentials
-        }
+    enum ShowRegistrationScreenMockState {
+        case register
+        case fallback
+    }
     
-        let showApprovalScreenReturnState: ShowApprovalScreenMockState
-
-        func showApprovalScreen(component: any Adyen.Component, 
+    let showRegistrationReturnState: ShowRegistrationScreenMockState
+    func showRegistrationScreen(component: any Adyen.Component,
                                 cardNumber: String,
                                 cardType: Adyen.CardType,
                                 context: Adyen.AdyenContext,
-                                approveAuthenticationHandler: @escaping () -> Void,
-                                fallbackHandler: @escaping () -> Void,
-                                removeCredentialsHandler: @escaping () -> Void) {
-            switch showApprovalScreenReturnState {
-            case .approve:
-                approveAuthenticationHandler()
-            case .fallback:
-                fallbackHandler()
-            case .removeCredentials:
-                removeCredentialsHandler()
-            }
-        }
-        
-        init(showRegistrationReturnState: ShowRegistrationScreenMockState,
-             showApprovalScreenReturnState: ShowApprovalScreenMockState) {
-            self.showRegistrationReturnState = showRegistrationReturnState
-            self.showApprovalScreenReturnState = showApprovalScreenReturnState
+                                registerDelegatedAuthenticationHandler: @escaping () -> Void,
+                                fallbackHandler: @escaping () -> Void) {
+        switch showRegistrationReturnState {
+        case .register:
+            registerDelegatedAuthenticationHandler()
+        case .fallback:
+            fallbackHandler()
         }
     }
+    
+    enum ShowApprovalScreenMockState {
+        case approve
+        case fallback
+        case removeCredentials
+    }
+    
+    let showApprovalScreenReturnState: ShowApprovalScreenMockState
+    
+    func showApprovalScreen(component: any Adyen.Component,
+                            cardNumber: String,
+                            cardType: Adyen.CardType,
+                            context: Adyen.AdyenContext,
+                            approveAuthenticationHandler: @escaping () -> Void,
+                            fallbackHandler: @escaping () -> Void,
+                            removeCredentialsHandler: @escaping () -> Void) {
+        switch showApprovalScreenReturnState {
+        case .approve:
+            approveAuthenticationHandler()
+        case .fallback:
+            fallbackHandler()
+        case .removeCredentials:
+            removeCredentialsHandler()
+        }
+    }
+    
+    init(showRegistrationReturnState: ShowRegistrationScreenMockState,
+         showApprovalScreenReturnState: ShowApprovalScreenMockState) {
+        self.showRegistrationReturnState = showRegistrationReturnState
+        self.showApprovalScreenReturnState = showApprovalScreenReturnState
+    }
+}
 
 #endif

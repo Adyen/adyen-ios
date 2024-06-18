@@ -207,8 +207,11 @@
                                  authenticatedHandler: {
                                      completion(.success((daOutput: $0, delete: nil)))
                                  },
-                                 failedAuthenticationHandler: { error in
-                                     completion(.failure(.authenticationServiceFailed(underlyingError: error)))
+                                 failedAuthenticationHandler: { [weak self] error in
+                        guard let self else { return }
+                        self.presenter.showAuthenticationError(component: self) {
+                            completion(.failure(.authenticationServiceFailed(underlyingError: error)))
+                        }
                                  })
                 },
                 fallbackHandler: {
@@ -368,12 +371,15 @@
                 registerDelegatedAuthenticationHandler: { [weak self] in
                     guard let self else { return }
                     register(delegatedAuthenticationInput: delegatedAuthenticationInput,
-                             cardNumber: cardNumber) { result in
+                             cardNumber: cardNumber) { [weak self] result in
                         switch result {
                         case let .success(success):
                             completionHandler(.success(success))
                         case let .failure(failure):
-                            completionHandler(.failure(.registrationServiceError(underlyingError: failure)))
+                            guard let self else { return }
+                            presenter.showRegistrationError(component: self) {
+                                completionHandler(.failure(.registrationServiceError(underlyingError: failure)))
+                            }
                         }
                     }
                 },

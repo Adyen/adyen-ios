@@ -428,6 +428,7 @@ public struct LocalizationKey {
     public static let threeds2DAApprovalErrorButtonTitle = LocalizationKey(key: "adyen.threeds2.DA.approval.error.buttonTitle")
     public static let threeds2DARegistrationErrorTitle = LocalizationKey(key: "adyen.threeds2.DA.registration.error.title")
     public static let threeds2DARegistrationErrorMessage = LocalizationKey(key: "adyen.threeds2.DA.registration.error.message")
+    public static let threeds2DARegistrationTimerText = LocalizationKey(key: "adyen.threeds2.DA.registration.error.timerText")
 
     /// No results found
     public static let pickerSearchEmptyTitle = LocalizationKey(key: "adyen.picker.search.empty.title")

@@ -24,6 +24,9 @@ internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
                             fallbackHandler: @escaping () -> Void,
                             removeCredentialsHandler: @escaping () -> Void)
     
+    func showAuthenticationError(component: Component, handler: @escaping () -> Void)
+    func showRegistrationError(component: Component, handler: @escaping () -> Void)
+
     var presentationDelegate: PresentationDelegate? { get set }
 }
 
@@ -42,6 +45,30 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         self.localizedParameters = localizedParameters
     }
     
+    internal func showAuthenticationError(component: Component, handler: @escaping () -> Void) {
+        AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
+        let errorController = DAErrorViewController(style: style, 
+                                                    screen: .authenticationFailed(localizationParameters: localizedParameters),
+                                                    completion: handler)
+        let presentableComponent = PresentableComponentWrapper(component: component,
+                                                               viewController: errorController)
+        presentationDelegate?.present(component: presentableComponent)
+        errorController.navigationItem.rightBarButtonItems = []
+        errorController.navigationItem.leftBarButtonItems = []
+    }
+    
+    internal func showRegistrationError(component: Component, handler: @escaping () -> Void) {
+        AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
+        let errorController = DAErrorViewController(style: style, 
+                                                    screen: .registrationFailed(localizationParameters: localizedParameters),
+                                                    completion: handler)
+        let presentableComponent = PresentableComponentWrapper(component: component,
+                                                               viewController: errorController)
+        presentationDelegate?.present(component: presentableComponent)
+        errorController.navigationItem.rightBarButtonItems = []
+        errorController.navigationItem.leftBarButtonItems = []
+    }
+
     internal func showRegistrationScreen(component: Component,
                                          cardNumber: String,
                                          cardType: CardType,

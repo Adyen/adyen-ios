@@ -11,39 +11,48 @@ import UIKit
 internal final class DAErrorViewController: UIViewController {
 
     internal enum Screen {
-        case authenticationFailed(localizationParameters: LocalizationParameters?, useSecureCheckoutHandler: Handler)
+        case authenticationFailed(localizationParameters: LocalizationParameters?)
         case registrationFailed(localizationParameters: LocalizationParameters?)
         
-        var title: String {
+        internal var title: String {
             switch self {
-            case .authenticationFailed(let localizationParameters, _):
+            case .authenticationFailed(let localizationParameters):
                 localizedString(.threeds2DAApprovalErrorTitle, localizationParameters)
             case .registrationFailed(let localizationParameters):
                 localizedString(.threeds2DARegistrationErrorTitle, localizationParameters)
             }
         }
         
-        var image: UIImage? {
+        internal var image: UIImage? {
             switch self {
             case .authenticationFailed:
-                return UIImage(systemName: "feedback")
+                return UIImage(named: "feedback")
             case .registrationFailed:
-                return UIImage(systemName: "checkmark.circle")?.withRenderingMode(.alwaysTemplate).withTintColor(.systemGreen)
+                return UIImage(named: "union")
             }
         }
         
-        var message: String {
+        internal var message: String {
             switch self {
-            case .authenticationFailed(let localizationParameters, _):
+            case .authenticationFailed(let localizationParameters):
                 return localizedString(.threeds2DAApprovalErrorMessage, localizationParameters)
             case .registrationFailed(let localizationParameters):
                 return localizedString(.threeds2DARegistrationErrorMessage, localizationParameters)
             }
         }
         
-        var buttonTitle: String? {
+        internal func captionMessage(timeInterval: TimeInterval) -> String {
             switch self {
-            case .authenticationFailed(let localizationParameters, _):
+            case .authenticationFailed(let localizationParameters):
+                String(format: localizedString(.threeds2DAApprovalErrorTimerText, localizationParameters), timeInterval.adyen.timeLeftString() ?? "0")
+            case .registrationFailed(let localizationParameters):
+                String(format: localizedString(.threeds2DARegistrationTimerText, localizationParameters), timeInterval.adyen.timeLeftString() ?? "0")
+            }
+        }
+        
+        internal var buttonTitle: String? {
+            switch self {
+            case .authenticationFailed(let localizationParameters):
                 return localizedString(.threeds2DAApprovalErrorButtonTitle, localizationParameters)
             case .registrationFailed(let localizationParameters):
                 return nil
@@ -53,28 +62,28 @@ internal final class DAErrorViewController: UIViewController {
 
     private lazy var containerView = UIView(frame: .zero)
     private lazy var scrollView = UIScrollView()
-    
+    private var timeoutTimer: ExpirationTimer?
+
     private lazy var errorView: DelegatedAuthenticationErrorView = .init(
         logoStyle: style.imageStyle,
         headerTextStyle: style.headerTextStyle,
         descriptionTextStyle: style.descriptionTextStyle,
-        amountTextStyle: style.amountTextStyle,
-        cardImageStyle: style.cardImageStyle,
-        cardNumberTextStyle: style.cardNumberTextStyle,
-        infoImageStyle: style.infoImageStyle,
-        additionalInformationTextStyle: style.additionalInformationTextStyle,
+        progressTextStyle: style.errorCaption,
         firstButtonStyle: style.primaryButton
     )
     
     private let style: DelegatedAuthenticationComponentStyle
     internal typealias Handler = () -> Void
+    private let continueHandler: Handler
     
     private let screen: Screen
     internal init(style: DelegatedAuthenticationComponentStyle,
                   screen: Screen,
-                  enableCheckoutHandler: @escaping Handler) {
+                  completion: @escaping () -> Void) {
         self.style = style
         self.screen = screen
+        self.continueHandler = completion
+
         super.init(nibName: nil, bundle: Bundle(for: DAErrorViewController.self))
         errorView.delegate = self
     }
@@ -90,6 +99,23 @@ internal final class DAErrorViewController: UIViewController {
         configureErrorView()
         view.backgroundColor = style.backgroundColor
         configureErrorView()
+        configureProgress()
+    }
+    
+    private func configureProgress() {
+        let timeout: TimeInterval = 5
+        errorView.progressText.text = screen.captionMessage(timeInterval: timeout)
+        timeoutTimer = ExpirationTimer(
+            expirationTimeout: timeout,
+            onTick: { [weak self] in
+                self?.errorView.progressText.text = self?.screen.captionMessage(timeInterval: $0)
+            },
+            onExpiration: { [weak self] in
+                self?.timeoutTimer?.stopTimer()
+                self?.continueHandler()
+            }
+        )
+        timeoutTimer?.startTimer()
     }
     
     private func configureErrorView() {
@@ -131,8 +157,8 @@ extension DAErrorViewController: DelegatedAuthenticationErrorViewDelegate {
     internal func firstButtonTapped() {
         errorView.firstButton.showsActivityIndicator = true
         switch screen {
-        case .authenticationFailed(_ , let useSecureCheckoutHandler):
-            useSecureCheckoutHandler()
+        case .authenticationFailed:
+            continueHandler()
         case .registrationFailed: break;
         }
     }

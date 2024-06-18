@@ -53,22 +53,25 @@ public struct DelegatedAuthenticationComponentStyle {
     public var additionalInformationTextStyle = TextStyle(font: .preferredFont(forTextStyle: .caption1),
                                                           color: UIColor.Adyen.componentLabel,
                                                           textAlignment: .center)
-
-    /// The style of the timer progress view.
-    public var progressViewStyle = ProgressViewStyle(
-        progressTintColor: UIColor.Adyen.defaultBlue,
-        trackTintColor: UIColor.Adyen.lightGray
-    )
     
-    /// The text style of the text under the progress view to indicate the time remaining.
-    public var remainingTimeTextStyle = TextStyle(font: .preferredFont(forTextStyle: .caption1),
-                                                  color: UIColor.Adyen.componentSecondaryLabel,
-                                                  textAlignment: .center)
     
-    /// The text style of the option to delete the credentials in the approval screen.
-    public var textViewStyle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
-                                         color: UIColor.Adyen.componentLabel,
-                                         textAlignment: .center)
+    public var errorImageStyle: ImageStyle = .init(borderColor: nil,
+                                                   borderWidth: 0.0,
+                                                   cornerRadius: 0.0,
+                                                   clipsToBounds: true,
+                                                   contentMode: .scaleAspectFit)
+    
+    public var errorTitleStyle = TextStyle(font: .preferredFont(forTextStyle: .title1),
+                                           color: UIColor.Adyen.componentLabel,
+                                           textAlignment: .center)
+    
+    public var errorDescription = TextStyle(font: .preferredFont(forTextStyle: .body),
+                                            color: UIColor.Adyen.componentSecondaryLabel,
+                                            textAlignment: .center)
+    
+    public var errorCaption = TextStyle(font: .preferredFont(forTextStyle: .caption1),
+                                        color: UIColor.Adyen.componentSecondaryLabel,
+                                        textAlignment: .center)
     
     /// The primary button style.
     public var primaryButton = ButtonStyle(
