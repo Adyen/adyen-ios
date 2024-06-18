@@ -10,8 +10,8 @@ import UIKit
 @available(iOS 16.0, *)
 internal final class DARegistrationViewController: UIViewController {
     private let context: AdyenContext
-    private let cardNumber: String
-    private let cardType: CardType
+    private let cardNumber: String?
+    private let cardType: CardType?
     private let biometricName: String
     private let enableCheckoutHandler: Handler
     private let notNowHandler: Handler
@@ -19,18 +19,7 @@ internal final class DARegistrationViewController: UIViewController {
 
     private lazy var scrollView = UIScrollView()
     
-    private lazy var registrationView: DelegatedAuthenticationView = .init(
-        logoStyle: style.imageStyle,
-        headerTextStyle: style.headerTextStyle,
-        descriptionTextStyle: style.descriptionTextStyle,
-        amountTextStyle: style.amountTextStyle,
-        cardImageStyle: style.cardImageStyle,
-        cardNumberTextStyle: style.cardNumberTextStyle,
-        infoImageStyle: style.infoImageStyle,
-        additionalInformationTextStyle: style.additionalInformationTextStyle,
-        firstButtonStyle: style.primaryButton,
-        secondButtonStyle: style.secondaryButton
-    )
+    private lazy var registrationView: DelegatedAuthenticationView = .init(style: style)
     
     private let style: DelegatedAuthenticationComponentStyle
     internal typealias Handler = () -> Void
@@ -40,8 +29,8 @@ internal final class DARegistrationViewController: UIViewController {
     internal init(context: AdyenContext,
                   style: DelegatedAuthenticationComponentStyle,
                   localizationParameters: LocalizationParameters?,
-                  cardNumber: String,
-                  cardType: CardType,
+                  cardNumber: String?,
+                  cardType: CardType?,
                   biometricName: String,
                   enableCheckoutHandler: @escaping Handler,
                   notNowHandler: @escaping Handler) {
@@ -83,12 +72,16 @@ internal final class DARegistrationViewController: UIViewController {
         registrationView.secondInfoLabel.text = localizedString(.threeds2DARegistrationSecondInfo, localizationParameters, biometricName)
         registrationView.thirdInfoImage.image = UIImage(systemName: "trash")?.withRenderingMode(.alwaysTemplate)
         registrationView.thirdInfoLabel.text = localizedString(.threeds2DARegistrationThirdInfo, localizationParameters)
-        registrationView.cardNumberLabel.text = cardNumber
         
-        let cardTypeURL = LogoURLProvider.logoURL(withName: cardType.rawValue, environment: context.apiContext.environment)
-        ImageLoaderProvider.imageLoader().load(url: cardTypeURL) { [weak self] image in
-            guard let self else { return }
-            registrationView.cardImage.image = image
+        if let cardNumber, let cardType {
+            registrationView.cardNumberLabel.text = cardNumber
+            let cardTypeURL = LogoURLProvider.logoURL(withName: cardType.rawValue, environment: context.apiContext.environment)
+            ImageLoaderProvider.imageLoader().load(url: cardTypeURL) { [weak self] image in
+                guard let self else { return }
+                registrationView.cardImage.image = image
+            }
+        } else {
+            registrationView.paymentDetailsStackView.isHidden = true
         }
     }
     

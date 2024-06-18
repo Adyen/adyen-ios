@@ -97,7 +97,7 @@ internal final class DelegatedAuthenticationView: UIView {
         let stackView = UIStackView(arrangedSubviews: [cardImage, cardNumberLabel])
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.spacing = 8.0
+        stackView.spacing = 12
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -106,11 +106,11 @@ internal final class DelegatedAuthenticationView: UIView {
         let stackView = UIStackView(arrangedSubviews: [amount, cardNumberStackView])
         stackView.axis = .vertical
         stackView.alignment = .center
-        stackView.spacing = 15.0
+        stackView.spacing = 20
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20)
-        
+        stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 30, trailing: 20)
+
         let subView = UIView(frame: bounds)
         subView.backgroundColor = UIColor.secondarySystemBackground
         subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -252,26 +252,17 @@ internal final class DelegatedAuthenticationView: UIView {
 
     // MARK: - initializers
     
-    internal init(logoStyle: ImageStyle,
-                  headerTextStyle: TextStyle,
-                  descriptionTextStyle: TextStyle,
-                  amountTextStyle: TextStyle,
-                  cardImageStyle: ImageStyle,
-                  cardNumberTextStyle: TextStyle,
-                  infoImageStyle: ImageStyle,
-                  additionalInformationTextStyle: TextStyle,
-                  firstButtonStyle: ButtonStyle,
-                  secondButtonStyle: ButtonStyle) {
-        self.logoStyle = logoStyle
-        self.headerTextStyle = headerTextStyle
-        self.descriptionTextStyle = descriptionTextStyle
-        self.amountTextStyle = amountTextStyle
-        self.cardNumberTextStyle = cardNumberTextStyle
-        self.infoImageStyle = infoImageStyle
-        self.additionalInformationTextStyle = additionalInformationTextStyle
-        self.firstButtonStyle = firstButtonStyle
-        self.secondButtonStyle = secondButtonStyle
-        self.cardImageStyle = cardImageStyle
+    internal init(style: DelegatedAuthenticationComponentStyle) {
+        self.logoStyle = style.imageStyle
+        self.headerTextStyle = style.headerTextStyle
+        self.descriptionTextStyle = style.descriptionTextStyle
+        self.amountTextStyle = style.amountTextStyle
+        self.infoImageStyle = style.infoImageStyle
+        self.additionalInformationTextStyle = style.additionalInformationTextStyle
+        self.firstButtonStyle = style.primaryButton
+        self.secondButtonStyle = style.secondaryButton
+        self.cardImageStyle = style.cardImageStyle
+        self.cardNumberTextStyle = style.cardNumberTextStyle
         super.init(frame: .zero)
         configureViews()
     }
@@ -291,7 +282,7 @@ internal final class DelegatedAuthenticationView: UIView {
         addSubview(buttonsStackView)
 
         NSLayoutConstraint.activate([
-            image.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor, constant: 20),
+            image.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor, constant: 50),
             image.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor),
             image.widthAnchor.constraint(equalToConstant: 40),
             image.heightAnchor.constraint(equalToConstant: 40),
@@ -314,11 +305,11 @@ internal final class DelegatedAuthenticationView: UIView {
             additionalInformationStackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 15.0),
             additionalInformationStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -15.0),
 
-            firstButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            firstButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            firstButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 20),
+            firstButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -20),
 
-            secondButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            secondButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            secondButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 20),
+            secondButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -20),
 
             buttonsStackView.topAnchor.constraint(greaterThanOrEqualTo: additionalInformationStackView.bottomAnchor, constant: 24),
             buttonsStackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),

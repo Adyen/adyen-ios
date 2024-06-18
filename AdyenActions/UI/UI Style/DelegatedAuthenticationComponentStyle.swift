@@ -54,7 +54,6 @@ public struct DelegatedAuthenticationComponentStyle {
                                                           color: UIColor.Adyen.componentLabel,
                                                           textAlignment: .center)
     
-    
     public var errorImageStyle: ImageStyle = .init(borderColor: nil,
                                                    borderWidth: 0.0,
                                                    cornerRadius: 0.0,
