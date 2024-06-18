@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Alexander Guretzki on 17/06/2024.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
@@ -11,52 +10,30 @@ import Foundation
 
 enum SdkDumpAnalyzer {
     
-    struct Change {
-        enum ChangeType {
-            case addition
-            case removal
-            case change
-            
-            var icon: String {
-                switch self {
-                case .addition: "❇️ "
-                case .removal: "😶‍🌫️"
-                case .change: "🔀"
-                }
-            }
-        }
-        
-        var changeType: ChangeType
-        var parentName: String
-        var changeDescription: String
-    }
-    
     public static func diff(
         updated updatedSdkDumpFilePath: String,
         to comparisonSdkDumpFilePath: String
     ) throws -> [Change] {
         
-        let updatedFileUrl = URL(filePath: updatedSdkDumpFilePath)
-        let comparisonFileUrl = URL(filePath: comparisonSdkDumpFilePath)
+        let decodedComparisonDefinition = loadDefinition(from: comparisonSdkDumpFilePath)
+        let decodedUpdatedDefinition = loadDefinition(from: updatedSdkDumpFilePath)
         
-        let decodedComparisonDefinition = try JSONDecoder().decode(
-            SDKDump.Definition.self,
-            from: Data(contentsOf: comparisonFileUrl)
-        )
-        
-        let decodedUpdatedDefinition = try JSONDecoder().decode(
-            SDKDump.Definition.self,
-            from: Data(contentsOf: updatedFileUrl)
-        )
-        
-        if decodedComparisonDefinition == decodedUpdatedDefinition {
+        guard decodedComparisonDefinition != decodedUpdatedDefinition else {
             return []
+        }
+        
+        guard let decodedUpdatedDefinition else {
+            return [.init(changeType: .removal, parentName: "", changeDescription: "😶‍🌫️ Target was removed")]
+        }
+        
+        guard let decodedComparisonDefinition else {
+            return [.init(changeType: .removal, parentName: "", changeDescription: "😶‍🌫️ Target was added")]
         }
         
         setupRelationships(for: decodedComparisonDefinition.root, parent: nil)
         setupRelationships(for: decodedUpdatedDefinition.root, parent: nil)
         
-        let changes = recursiveCompare(
+        return recursiveCompare(
             element: decodedComparisonDefinition.root,
             to: decodedUpdatedDefinition.root,
             oldFirst: true
@@ -65,14 +42,22 @@ enum SdkDumpAnalyzer {
             to: decodedComparisonDefinition.root,
             oldFirst: false
         )
-        
-        return changes
     }
 }
 
 // MARK: - Private
 
 private extension SdkDumpAnalyzer {
+    
+    static func loadDefinition(from sdkDumpFilePath: String) -> SDKDump.Definition? {
+        
+        let fileUrl = URL(filePath: sdkDumpFilePath)
+        
+        return try? JSONDecoder().decode(
+            SDKDump.Definition.self,
+            from: Data(contentsOf: fileUrl)
+        )
+    }
     
     static func setupRelationships(for element: SDKDump.Element, parent: SDKDump.Element?) {
         element.children?.forEach {
@@ -123,5 +108,30 @@ private extension SdkDumpAnalyzer {
         } ?? []
         
         return changes
+    }
+}
+
+// MARK: - Model
+
+extension SdkDumpAnalyzer {
+    
+    struct Change {
+        enum ChangeType {
+            case addition
+            case removal
+            case change
+            
+            var icon: String {
+                switch self {
+                case .addition: "❇️ "
+                case .removal: "😶‍🌫️"
+                case .change: "🔀"
+                }
+            }
+        }
+        
+        var changeType: ChangeType
+        var parentName: String
+        var changeDescription: String
     }
 }

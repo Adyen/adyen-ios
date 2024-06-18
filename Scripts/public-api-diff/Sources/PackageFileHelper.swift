@@ -1,8 +1,7 @@
 //
-//  PackageFileHelper.swift
-//  
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Alexander Guretzki on 17/06/2024.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
@@ -60,13 +59,13 @@ private extension PackageFileHelper {
         _ name: String,
         from availableTargets: [String]
     ) -> String {
-    """
+        """
 
-            .library(
-                name: "\(name)",
-                targets: [\(availableTargets.map { "\"\($0)\"" }.joined(separator: ", "))]
-            ),
-    """
+                .library(
+                    name: "\(name)",
+                    targets: [\(availableTargets.map { "\"\($0)\"" }.joined(separator: ", "))]
+                ),
+        """
     }
     
     /// Generates the updated content for the `Package.swift` adding the consolidated library entry (containing all targets) in the products section

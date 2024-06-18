@@ -1,3 +1,9 @@
+//
+// Copyright (c) 2024 Adyen N.V.
+//
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//
+
 import ArgumentParser
 import Foundation
 
@@ -13,12 +19,12 @@ struct PublicApiDiff: ParsableCommand {
     }
     
     /*
-     // TODO: Use a source to specify both projects
-    enum Source {
-        case local(path: String)
-        case remote(branch: String, url: String)
-    }
-     */
+      // TODO: Use a source to specify both projects
+     enum Source {
+         case local(path: String)
+         case remote(branch: String, url: String)
+     }
+      */
     
     @Option(help: "Path to the local version to compare")
     public var updatedSdkPath: String
@@ -35,6 +41,8 @@ struct PublicApiDiff: ParsableCommand {
     
     public func run() throws {
         
+        // TODO: Ideally we move all temporary stuff to a tmp folder and then delete the whole folder
+        
         let comparisonVersionDirectoryPath = try setupComparisonRepository()
         try buildProject(at: comparisonVersionDirectoryPath)
         
@@ -42,8 +50,6 @@ struct PublicApiDiff: ParsableCommand {
         
         let comparisonTargets = try availableTargets(at: comparisonVersionDirectoryPath)
         let updatedTargets = try availableTargets(at: updatedSdkPath)
-
-        // Maybe check if the targets changed
         
         let allTargets = Set(comparisonTargets + updatedTargets).sorted()
         
@@ -82,16 +88,25 @@ private extension PublicApiDiff {
     
     func generateOutput(from changesPerTarget: [String: [SdkDumpAnalyzer.Change]], allTargetNames: [String]) -> String {
         
-        let footer: String = "**Analyzed modules:** \(allTargetNames.joined(separator: ", "))"
+        let separator = "\n---"
+        let repoInfo = "_Compared to `\(branch)` of `\(repository)`_"
+        let analyzedModulesInfo = "**Analyzed modules:** \(allTargetNames.joined(separator: ", "))"
         
         if changesPerTarget.keys.isEmpty {
             return [
                 "# ✅ No changes detected",
-                footer
+                repoInfo,
+                separator,
+                analyzedModulesInfo
             ].joined(separator: "\n")
         }
         
-        var lines = ["# 💔 Breaking changes detected"]
+        // TODO: Log the change count
+        var lines = [
+            "# 💔 Breaking changes detected",
+            repoInfo,
+            separator
+        ]
         
         changesPerTarget.keys.sorted().forEach { key in
             guard let changes = changesPerTarget[key], !changes.isEmpty else { return }
@@ -118,8 +133,10 @@ private extension PublicApiDiff {
             }
         }
         
-        lines.append("---")
-        lines.append(footer)
+        lines += [
+            separator,
+            analyzedModulesInfo
+        ]
         
         return lines.joined(separator: "\n")
     }
@@ -134,6 +151,8 @@ private extension PublicApiDiff {
         }
         
         print("🐱 Cloning \(repository) @ \(branch) into \(comparisonVersionDirectoryPath)")
+        
+        // TODO: Maybe we can only clone the Package.swift file
         Shell.execute("git clone -b \(branch) \(repository) \(comparisonVersionDirectoryName)")
         
         return comparisonVersionDirectoryPath
@@ -175,7 +194,7 @@ private extension PublicApiDiff {
         let outputFilePath = projectDirectoryPath
             .appending("/api_dump.json")
         
-        let dumpCommand = "cd \(projectDirectoryPath); xcrun swift-api-digester -dump-sdk -module \(module) -I \(sdkDumpInputPath) -o \(outputFilePath) -sdk `\(Constants.simulatorSdkCommand)` -target \(Constants.deviceTarget)"
+        let dumpCommand = "cd \(projectDirectoryPath); xcrun swift-api-digester -dump-sdk -module \(module) -I \(sdkDumpInputPath) -o \(outputFilePath) -sdk `\(Constants.simulatorSdkCommand)` -target \(Constants.deviceTarget) -abort-on-module-fail"
         
         Shell.execute(dumpCommand)
         
