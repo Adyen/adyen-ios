@@ -22,7 +22,7 @@ jobs:
         
     - name: 🔍 Detect Changes
       run: |
-        Scripts/detect_public_api_changes/compare.sh ${branch} ${baseRepo}
+        Scripts/generate_public_interface_definition.sh ${branch} ${baseRepo}
       env:
         branch: '${{github.event.pull_request.base.ref}}'
         baseRepo: '${{github.server_url}}/${{github.repository}}.git'
