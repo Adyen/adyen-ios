@@ -207,6 +207,7 @@ public final class UPIComponent: PaymentComponent,
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectContinueButton()
         }
+        item.enabled = false
         return item
     }()
 
@@ -292,6 +293,8 @@ private extension UPIComponent {
         if let currentSelectedItemIdentifier {
             upiAppsList.first(where: { $0.identifier == currentSelectedItemIdentifier })?.isSelected = true
         }
+        
+        updateButtonState()
     }
     
     func updateInterface() {
@@ -316,10 +319,25 @@ private extension UPIComponent {
             
             continueButton.title = localizedString(.QRCodeGenerateQRCode, configuration.localizationParameters)
         }
+        
+        updateButtonState()
+    }
+    
+    func updateButtonState() {
+        continueButton.enabled = canSubmit()
     }
     
     func focusVpaInput() {
         vpaInputItem.focus()
+    }
+    
+    func canSubmit() -> Bool {
+        switch selectedUPIFlow {
+        case .upiApps:
+            return currentSelectedItemIdentifier != nil
+        case .qrCode:
+            return true
+        }
     }
     
     func submit() {

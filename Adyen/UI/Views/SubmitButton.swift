@@ -59,6 +59,13 @@ public final class SubmitButton: UIControl {
         }
     }
     
+    override public var isEnabled: Bool {
+        didSet {
+            backgroundView.backgroundColor = isEnabled ? style.backgroundColor : .gray
+            alpha = isEnabled ? 1.0 : 0.5
+        }
+    }
+    
     internal lazy var titleLabel: UILabel = {
         let titleLabel = UILabel(style: style.title)
         titleLabel.isAccessibilityElement = false

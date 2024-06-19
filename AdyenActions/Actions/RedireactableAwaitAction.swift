@@ -7,7 +7,7 @@
 import Foundation
 
 /// Describes an action in which the SDK is waiting for user action.
-public struct RedireactableAwaitAction: PaymentDataAware, Decodable {
+public struct RedirectableAwaitAction: PaymentDataAware, Decodable {
 
     /// The `paymentMethodType` for which the await action is used.
     public let paymentMethodType: AwaitPaymentMethod

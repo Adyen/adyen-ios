@@ -29,7 +29,7 @@ public enum Action: Decodable {
     case await (AwaitAction)
 
     /// Indicate that the SDK should wait for user action while redirecting.
-    case redirectableAwait(RedireactableAwaitAction)
+    case redirectableAwait(RedirectableAwaitAction)
 
     /// Indicates that a voucher is presented to the shopper.
     case voucher(VoucherAction)
@@ -88,7 +88,7 @@ public enum Action: Decodable {
     private static func handleAwaitType(from decoder: Decoder) throws -> Action {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         if (try? container.decode(String.self, forKey: .redirectUrl)) != nil {
-            return try .redirectableAwait(RedireactableAwaitAction(from: decoder))
+            return try .redirectableAwait(RedirectableAwaitAction(from: decoder))
         } else {
             return try .await(AwaitAction(from: decoder))
         }

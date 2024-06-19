@@ -78,7 +78,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     /// Handles redirect await action.
     ///
     /// - Parameter action: The await action object.
-    public func handleRedirectableAwait(_ action: RedireactableAwaitAction) {
+    public func handleRedirectableAwait(_ action: RedirectableAwaitAction) {
         if let url = action.url {
             appLauncher.openCustomSchemeUrl(url) { [weak self] success in
                 guard let self else { return }

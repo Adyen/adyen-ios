@@ -198,3 +198,4 @@ whiteList:
   - twint
   - initiable
   - func
+  - redirectable

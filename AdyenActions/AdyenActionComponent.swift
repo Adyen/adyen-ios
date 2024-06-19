@@ -279,7 +279,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         currentActionComponent = component
     }
 
-    private func handleRedirectableAwait(_ action: RedireactableAwaitAction) {
+    private func handleRedirectableAwait(_ action: RedirectableAwaitAction) {
         let component = AwaitComponent(context: context)
         component.configuration.style = configuration.style.awaitComponentStyle
         component._isDropIn = _isDropIn
