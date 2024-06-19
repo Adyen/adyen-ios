@@ -58,7 +58,6 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
         )
 
         let iconSize = CGSize(width: 16.0, height: 16.0)
-        imageView.adyen.round(using: item.style.imageStyle.cornerRounding)
         imageView.clipsToBounds = true
         imageView.widthAnchor.constraint(equalToConstant: iconSize.width).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: iconSize.height).isActive = true

@@ -162,6 +162,7 @@ public final class UPIComponent: PaymentComponent,
             ),
             imageUrl: nil,
             isSelected: false,
+            style: .init(title: configuration.style.textField.title),
             identifier: Constants.vpaFlowIdentifier
         )
         selectableItem.selectionHandler = { [weak self, weak selectableItem] in
@@ -223,7 +224,7 @@ public final class UPIComponent: PaymentComponent,
             title: app.name,
             imageUrl: logoUrl,
             isSelected: false,
-            style: .init(),
+            style: .init(title: configuration.style.textField.title),
             identifier: app.identifier
         )
         selectableItem.selectionHandler = { [weak self, weak selectableItem] in

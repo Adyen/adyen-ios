@@ -8,6 +8,7 @@ import Foundation
 import UIKit
 
 /// Contains the styling customization options for an item in a selectable form.
+@_spi(AdyenInternal)
 public struct SelectableFormItemStyle: ViewStyle {
 
     /// The title style.
@@ -28,18 +29,11 @@ public struct SelectableFormItemStyle: ViewStyle {
     ///
     /// - Parameter title: The title style.
     /// - Parameter imageStyle: The image style.
-    /// - Parameter checkmarkImageStyle: The checkmarkImage style.
-    public init(title: TextStyle,
-                subtitle: TextStyle,
-                imageStyle: ImageStyle,
-                checkmarkImageStyle: ImageStyle? = nil) {
+    public init(
+        title: TextStyle
+    ) {
         self.title = title
-        self.imageStyle = imageStyle
     }
-
-    /// Initializes the list item style with the default style.
-    public init() {}
-
 }
 
 extension SelectableFormItemStyle: Equatable {

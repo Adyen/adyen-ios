@@ -49,7 +49,7 @@ public class SelectableFormItem: FormItem, Hidable {
         title: String,
         imageUrl: URL? = nil,
         isSelected: Bool = false,
-        style: SelectableFormItemStyle = SelectableFormItemStyle(),
+        style: SelectableFormItemStyle,
         identifier: String? = nil,
         accessibilityLabel: String? = nil,
         selectionHandler: (() -> Void)? = nil
