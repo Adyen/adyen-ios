@@ -5,3 +5,4 @@ Demo/Common/IntegrationExamples/DemoAddressLookupProvider.swift
 Demo/Common/IntegrationExamples/MapkitAddressLookupProvider.swift
 Tests/*
 UITests/*
+Scripts/*
