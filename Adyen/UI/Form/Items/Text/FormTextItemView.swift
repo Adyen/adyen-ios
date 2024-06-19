@@ -207,12 +207,14 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     // MARK: - Interaction
     
     override open var canBecomeFirstResponder: Bool {
-        textField.canBecomeFirstResponder
+        if isHidden { return false }
+        return textField.canBecomeFirstResponder
     }
     
     @discardableResult
     override open func becomeFirstResponder() -> Bool {
-        textField.becomeFirstResponder()
+        if isHidden { return false }
+        return textField.becomeFirstResponder()
     }
     
     @discardableResult

@@ -34,6 +34,8 @@ public final class UPIComponent: PaymentComponent,
         static let upiQRCode = "upi_qr"
         static let upiIntent = "upi_intent"
         static let vpaFlowIdentifier = "UPI/VPA"
+        
+        static let qrCodeIcon = "qrcode"
     }
 
     /// Configuration for UPI Component.
@@ -49,13 +51,11 @@ public final class UPIComponent: PaymentComponent,
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
 
-    internal var currentSelectedItem: SelectableFormItem?
-
-    private var previousSelectedItem: SelectableFormItem?
-
     /// The viewController for the component.
-    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController,
-                                                                             style: configuration.style)
+    public lazy var viewController: UIViewController = SecuredViewController(
+        child: formViewController,
+        style: configuration.style
+    )
 
     /// This indicates that `viewController` expected to be presented modally,
     public var requiresModalPresentation: Bool = true
@@ -64,12 +64,10 @@ public final class UPIComponent: PaymentComponent,
     public var configuration: Configuration
 
     private let upiPaymentMethod: UPIPaymentMethod
+    
+    internal private(set) var currentSelectedItemIdentifier: String?
 
-    internal var currentSelectedIndex: Int = 0
-
-    private var hasApps: Bool {
-        !upiPaymentMethod.apps.isEmpty
-    }
+    internal private(set) var selectedUPIFlow: UPIFlowType = .upiApps
 
     /// Initializes the UPI  component.
     ///
@@ -106,10 +104,14 @@ public final class UPIComponent: PaymentComponent,
     internal lazy var upiFlowSelectionItem: FormSegmentedControlItem = {
         let item = FormSegmentedControlItem(
             items: [
-                localizedString(.UPIFirstTabTitle,
-                                configuration.localizationParameters),
-                localizedString(.UPISecondTabTitle,
-                                configuration.localizationParameters)
+                localizedString(
+                    .UPIFirstTabTitle,
+                    configuration.localizationParameters
+                ),
+                localizedString(
+                    .UPISecondTabTitle,
+                    configuration.localizationParameters
+                )
             ],
             style: configuration.style.segmentedControlStyle,
             identifier: ViewIdentifierBuilder.build(
@@ -117,56 +119,57 @@ public final class UPIComponent: PaymentComponent,
                 postfix: ViewIdentifier.upiFlowSelectionItem
             )
         )
-
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                      postfix: ViewIdentifier.upiFlowSelectionItem)
-        item.selectionHandler = { [weak self] changedIndex in
-            self?.didChangeSegmentedControlIndex(changedIndex)
+        item.selectionHandler = { [weak self] in
+            self?.didChangeSegmentedControlIndex($0)
         }
         return item
     }()
 
     /// The  virtual payment address text input item.
-    internal lazy var virtualPaymentAddressItem: FormTextInputItem = {
+    internal lazy var vpaInputItem: FormTextInputItem = {
         let item = FormTextInputItem(style: configuration.style.textField)
-        item.title = localizedString(.UPICollectFieldLabel,
-                                     configuration.localizationParameters)
+        item.title = localizedString(
+            .UPICollectFieldLabel,
+            configuration.localizationParameters
+        )
         item.validator = LengthValidator(minimumLength: 1)
-        item.validationFailureMessage = localizedString(.UPIVpaValidationMessage, configuration.localizationParameters)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                      postfix: ViewIdentifier.virtualPaymentAddressInputItem)
+        item.validationFailureMessage = localizedString(
+            .UPIVpaValidationMessage,
+            configuration.localizationParameters
+        )
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.virtualPaymentAddressInputItem
+        )
         return item
     }()
 
     /// The UPI app list item.
     internal lazy var upiAppsList: [SelectableFormItem] = {
-        var upiAppslist = [SelectableFormItem]()
-        upiPaymentMethod.apps.forEach { app in
-            upiAppslist.append(createSelectableItem(app: app))
-        }
-        upiAppslist.append(vpaItem)
+        guard let apps = upiPaymentMethod.apps, !apps.isEmpty else { return [] }
+        
+        var upiAppslist = apps.map { selectableFormItem(from: $0) }
+        upiAppslist.append(vpaSelectionItem)
         return upiAppslist
     }()
 
     /// The UPI enter UPI/VPA list item.
-    internal lazy var vpaItem: SelectableFormItem = {
+    internal lazy var vpaSelectionItem: SelectableFormItem = {
         let selectableItem = SelectableFormItem(
-            title: localizedString(.UPICollectDropdownLabel,
-                                   configuration.localizationParameters),
+            title: localizedString(
+                .UPICollectDropdownLabel,
+                configuration.localizationParameters
+            ),
             imageUrl: nil,
             isSelected: false,
-            style: .init(),
             identifier: Constants.vpaFlowIdentifier
         )
         selectableItem.selectionHandler = { [weak self, weak selectableItem] in
             guard let self, let selectableItem else { return }
-            currentSelectedItem = selectableItem
-            if previousSelectedItem?.identifier != currentSelectedItem?.identifier {
-                previousSelectedItem?.isSelected = false
-            }
-            currentSelectedItem?.isSelected = !(currentSelectedItem?.isSelected ?? false)
-            previousSelectedItem = currentSelectedItem
-            virtualPaymentAddressItem.isHidden.wrappedValue = !(currentSelectedItem?.isSelected ?? true)
+            self.currentSelectedItemIdentifier = selectableItem.identifier
+            self.updateSelection()
+            self.vpaInputItem.isHidden.wrappedValue = false
+            self.focusVpaInput()
         }
         return selectableItem
     }()
@@ -184,9 +187,11 @@ public final class UPIComponent: PaymentComponent,
 
     /// The QRCode generation message view.
     internal lazy var qrCodeGenerationImageItem: FormImageItem = {
-        let imageView = FormImageItem(name: "qrcode")
-        imageView.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                           postfix: ViewIdentifier.qrCodeGenerationImageItem)
+        let imageView = FormImageItem(name: Constants.qrCodeIcon)
+        imageView.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.qrCodeGenerationImageItem
+        )
         imageView.isHidden.wrappedValue = true
         return imageView
     }()
@@ -194,8 +199,10 @@ public final class UPIComponent: PaymentComponent,
     /// The continue button item.
     internal lazy var continueButton: FormButtonItem = {
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                      postfix: ViewIdentifier.continueButtonItem)
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.continueButtonItem
+        )
         item.title = localizedString(.continueTitle, configuration.localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectContinueButton()
@@ -205,9 +212,9 @@ public final class UPIComponent: PaymentComponent,
 
     // MARK: - Private
 
-    private func createSelectableItem(app: Issuer) -> SelectableFormItem {
+    private func selectableFormItem(from app: Issuer) -> SelectableFormItem {
         let logoUrl = LogoURLProvider.logoURL(
-            withName: app.identifier,
+            withName: "upi/\(app.identifier)",
             environment: context.apiContext.environment,
             size: .small
         )
@@ -220,21 +227,17 @@ public final class UPIComponent: PaymentComponent,
         )
         selectableItem.selectionHandler = { [weak self, weak selectableItem] in
             guard let self, let selectableItem else { return }
-            currentSelectedItem = selectableItem
-            if previousSelectedItem?.identifier != currentSelectedItem?.identifier {
-                previousSelectedItem?.isSelected = false
-            }
-            currentSelectedItem?.isSelected = !(currentSelectedItem?.isSelected ?? false)
-            previousSelectedItem = selectableItem
-            virtualPaymentAddressItem.isHidden.wrappedValue = true
+            self.currentSelectedItemIdentifier = selectableItem.identifier
+            self.updateSelection()
+            self.vpaInputItem.isHidden.wrappedValue = true
         }
         return selectableItem
     }
 
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
-            style: self.configuration.style,
-            localizationParameters: self.configuration.localizationParameters
+            style: configuration.style,
+            localizationParameters: configuration.localizationParameters
         )
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
@@ -246,84 +249,104 @@ public final class UPIComponent: PaymentComponent,
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
         formViewController.append(qrCodeGenerationLabelContainerItem)
 
-        if hasApps {
-            for item in upiAppsList {
-                formViewController.append(item)
-            }
-            virtualPaymentAddressItem.isHidden.wrappedValue = true
-        }
-        formViewController.append(virtualPaymentAddressItem)
+        upiAppsList.forEach { formViewController.append($0) }
+        // If apps get returned we hide the vpa input field until the vpa selection item is selected
+        vpaInputItem.isVisible = upiAppsList.isEmpty
+        
+        formViewController.append(vpaInputItem)
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
         formViewController.append(continueButton)
 
         return formViewController
     }()
+}
 
-    internal func didSelectContinueButton() {
+// MARK: - Event Handling
+
+extension UPIComponent {
+    
+    private func didSelectContinueButton() {
         guard formViewController.validate() else { return }
 
         continueButton.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
-        switch UPIFlowType(rawValue: currentSelectedIndex) {
+        submit()
+    }
+
+    private func didChangeSegmentedControlIndex(_ index: Int) {
+        AdyenAssertion.assert(message: "UPI flow type is out of range", condition: UPIFlowType(rawValue: index) == nil)
+        selectedUPIFlow = UPIFlowType(rawValue: index) ?? .upiApps
+        
+        updateInterface()
+    }
+}
+
+// MARK: - Private
+
+private extension UPIComponent {
+    
+    func updateSelection() {
+        upiAppsList.forEach { $0.isSelected = false }
+        
+        if let currentSelectedItemIdentifier {
+            upiAppsList.first(where: { $0.identifier == currentSelectedItemIdentifier })?.isSelected = true
+        }
+    }
+    
+    func updateInterface() {
+        switch selectedUPIFlow {
+        case .upiApps:
+            upiAppsList.forEach { $0.isHidden.wrappedValue = false }
+            vpaInputItem.isVisible = currentSelectedItemIdentifier == Constants.vpaFlowIdentifier || upiAppsList.isEmpty
+            
+            qrCodeGenerationLabelContainerItem.isVisible = false
+            qrCodeGenerationImageItem.isVisible = false
+            
+            continueButton.title = localizedString(.continueTitle, configuration.localizationParameters)
+            
+            focusVpaInput()
+
+        case .qrCode:
+            upiAppsList.forEach { $0.isHidden.wrappedValue = true }
+            vpaInputItem.isVisible = false
+            
+            qrCodeGenerationLabelContainerItem.isVisible = true
+            qrCodeGenerationImageItem.isVisible = true
+            
+            continueButton.title = localizedString(.QRCodeGenerateQRCode, configuration.localizationParameters)
+        }
+    }
+    
+    func focusVpaInput() {
+        vpaInputItem.focus()
+    }
+    
+    func submit() {
+        switch selectedUPIFlow {
         case .upiApps:
             let details: UPIComponentDetails
-            let flowType = currentSelectedItem?.identifier == Constants.vpaFlowIdentifier ? Constants.upiCollect : Constants.upiIntent
+            let flowType = currentSelectedItemIdentifier == Constants.vpaFlowIdentifier ? Constants.upiCollect : Constants.upiIntent
             if flowType == Constants.upiCollect {
-                details = UPIComponentDetails(type: flowType,
-                                              virtualPaymentAddress: virtualPaymentAddressItem.value,
-                                              appId: nil)
+                details = UPIComponentDetails(
+                    type: flowType,
+                    virtualPaymentAddress: vpaInputItem.value,
+                    appId: nil
+                )
             } else {
-                details = UPIComponentDetails(type: flowType,
-                                              virtualPaymentAddress: nil,
-                                              appId: currentSelectedItem?.identifier)
+                details = UPIComponentDetails(
+                    type: flowType,
+                    virtualPaymentAddress: nil,
+                    appId: currentSelectedItemIdentifier
+                )
             }
             submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
 
         case .qrCode:
             let details = UPIComponentDetails(type: Constants.upiQRCode)
             submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
-        default:
-            AdyenAssertion.assert(message: "UPI flow type is out of range", condition: currentSelectedIndex > 1)
         }
     }
-
-    internal func didChangeSegmentedControlIndex(_ changedIndex: Int) {
-        currentSelectedIndex = changedIndex
-        switch UPIFlowType(rawValue: currentSelectedIndex) {
-        case .upiApps:
-            changeUPIAppsListVisiblity(shouldHide: false)
-            if currentSelectedItem?.identifier == Constants.vpaFlowIdentifier,
-               let isSelected = currentSelectedItem?.isSelected, isSelected {
-                virtualPaymentAddressItem.isVisible = true
-            }
-            qrCodeGenerationLabelContainerItem.isHidden.wrappedValue = true
-            qrCodeGenerationImageItem.isHidden.wrappedValue = true
-            continueButton.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                                    postfix: ViewIdentifier.continueButtonItem)
-            continueButton.title = localizedString(.continueTitle, configuration.localizationParameters)
-
-        case .qrCode:
-            changeUPIAppsListVisiblity(shouldHide: true)
-            virtualPaymentAddressItem.isHidden.wrappedValue = true
-            qrCodeGenerationLabelContainerItem.isHidden.wrappedValue = false
-            qrCodeGenerationImageItem.isHidden.wrappedValue = false
-            continueButton.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                                    postfix: ViewIdentifier.generateQRCodeButtonItem)
-            continueButton.title = localizedString(.QRCodeGenerateQRCode, configuration.localizationParameters)
-        default:
-            AdyenAssertion.assert(message: "UPI flow type is out of range", condition: currentSelectedIndex > 1)
-        }
-    }
-
-    private func changeUPIAppsListVisiblity(shouldHide isHidden: Bool = false) {
-        if hasApps {
-            for app in upiAppsList {
-                app.isHidden.wrappedValue = isHidden
-            }
-        }
-    }
-
 }
 
 @_spi(AdyenInternal)

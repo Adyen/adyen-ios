@@ -9,6 +9,12 @@ import UIKit
 /// A view representing a selectableFormItem item.
 @_spi(AdyenInternal)
 public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
+    
+    private enum Constants {
+        static let upiLogo = "upiLogo"
+        static let checkmarkIcon = "verification_true"
+    }
+    
     private let imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
     private var imageLoadingTask: AdyenCancellable? {
         willSet { imageLoadingTask?.cancel() }
@@ -17,11 +23,14 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
     // MARK: - ImageView
 
     private lazy var imageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "upiLogo",
-                                                   in: Bundle.coreInternalResources,
-                                                   compatibleWith: nil))
+        let imageView = UIImageView(
+            image: UIImage(
+                named: Constants.upiLogo,
+                in: Bundle.coreInternalResources,
+                compatibleWith: nil
+            )
+        )
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.preservesSuperviewLayoutMargins = true
 
         return imageView
     }()
@@ -40,9 +49,13 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
     // MARK: - Checkmark Imageview
 
     private lazy var checkmarkImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "verification_true",
-                                                   in: Bundle.coreInternalResources,
-                                                   compatibleWith: nil))
+        let imageView = UIImageView(
+            image: UIImage(
+                named: Constants.checkmarkIcon,
+                in: Bundle.coreInternalResources,
+                compatibleWith: nil
+            )
+        )
 
         let iconSize = CGSize(width: 16.0, height: 16.0)
         imageView.adyen.round(using: item.style.imageStyle.cornerRounding)
@@ -75,17 +88,16 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
     // MARK: - Item Button
 
     private lazy var itemButton: UIButton = {
-        let customButton = UIButton(type: .custom)
+        let customButton = UIButton(type: .system)
         customButton.addTarget(self, action: #selector(didSelectItemButton), for: .touchUpInside)
-        customButton.preservesSuperviewLayoutMargins = true
         customButton.translatesAutoresizingMaskIntoConstraints = false
+        customButton.preservesSuperviewLayoutMargins = true
         customButton.accessibilityIdentifier = item.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "button")
         }
-
         customButton.addSubview(contentStackView)
+        
         contentStackView.isUserInteractionEnabled = false
-        contentStackView.adyen.anchor(inside: customButton)
 
         return customButton
     }()
@@ -110,8 +122,6 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
         configureConstraints()
 
         preservesSuperviewLayoutMargins = true
-
-        itemButton.adyen.anchor(inside: self.layoutMarginsGuide)
 
         observe(item.$isSelected) { [weak self] isSelected in
             guard let self else { return }
@@ -146,21 +156,22 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
 
     // MARK: - Layout
 
-    private let iconImageSize = CGSize(width: 40, height: 26)
-
     private func configureConstraints() {
-        let constraints = [
-            contentStackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            contentStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+        let iconImageSize = CGSize(width: 40, height: 26)
+        
+        itemButton.adyen.anchor(inside: self)
+        imageView.setContentHuggingPriority(.required, for: .horizontal)
+    
+        NSLayoutConstraint.activate([
+            contentStackView.topAnchor.constraint(equalTo: itemButton.topAnchor),
+            contentStackView.bottomAnchor.constraint(equalTo: itemButton.bottomAnchor),
+            contentStackView.leadingAnchor.constraint(equalTo: itemButton.layoutMarginsGuide.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: itemButton.layoutMarginsGuide.trailingAnchor),
 
             imageView.widthAnchor.constraint(equalToConstant: iconImageSize.width),
             imageView.heightAnchor.constraint(equalToConstant: iconImageSize.height),
-
-            self.heightAnchor.constraint(greaterThanOrEqualToConstant: 48)
-        ]
-        imageView.setContentHuggingPriority(.required, for: .horizontal)
-
-        NSLayoutConstraint.activate(constraints)
+            
+            heightAnchor.constraint(greaterThanOrEqualToConstant: 48)
+        ])
     }
 }

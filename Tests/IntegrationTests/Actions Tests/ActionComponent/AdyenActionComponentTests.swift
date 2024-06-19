@@ -324,6 +324,8 @@ class AdyenActionComponentTests: XCTestCase {
             XCTAssertEqual(event.component, "voucher")
         case .qrCode:
             XCTAssertEqual(event.component, "qrCode")
+        case .redirectableAwait:
+            XCTAssertEqual(event.component, "await")
         }
     }
     
