@@ -37,7 +37,7 @@ internal final class DelegatedAuthenticationView: UIView {
         imageView.image = .biometricImage?.withRenderingMode(.alwaysTemplate)
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "image")
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
 
@@ -59,10 +59,11 @@ internal final class DelegatedAuthenticationView: UIView {
     }()
     
     internal lazy var tileAndSubtitleStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel])
+        let stackView = UIStackView(arrangedSubviews: [image, titleLabel, descriptionLabel])
         stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = 8.0
+        stackView.alignment = .fill
+        stackView.distribution = .fill
+        stackView.spacing = 12
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -98,15 +99,17 @@ internal final class DelegatedAuthenticationView: UIView {
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.spacing = 12
+        stackView.distribution = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
 
-    internal lazy var paymentDetailsStackView: UIStackView = {
+    internal lazy var cardAndAmountDetailsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [amount, cardNumberStackView])
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.spacing = 20
+        stackView.distribution = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 30, trailing: 20)
@@ -128,6 +131,7 @@ internal final class DelegatedAuthenticationView: UIView {
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "infoImage")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .clear
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
@@ -154,6 +158,7 @@ internal final class DelegatedAuthenticationView: UIView {
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "infoImage")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .clear
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
@@ -180,6 +185,7 @@ internal final class DelegatedAuthenticationView: UIView {
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "infoImage")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .clear
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
@@ -205,6 +211,7 @@ internal final class DelegatedAuthenticationView: UIView {
         let stackView = UIStackView(arrangedSubviews: [firstInfoStackView, secondInfoStackView, thirdInfoStackView])
         stackView.axis = .vertical
         stackView.alignment = .leading
+        stackView.distribution = .fill
         stackView.spacing = 8.0
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.isLayoutMarginsRelativeArrangement = true
@@ -244,8 +251,29 @@ internal final class DelegatedAuthenticationView: UIView {
     internal lazy var buttonsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [firstButton, secondButton])
         stackView.axis = .vertical
+        stackView.distribution = .fillEqually
         stackView.spacing = 20
-        stackView.alignment = .center
+        stackView.alignment = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    internal lazy var informationStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [cardAndAmountDetailsStackView, additionalInformationStackView])
+        stackView.axis = .vertical
+        stackView.spacing = 20
+        stackView.alignment = .fill
+        stackView.distribution = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+    internal lazy var contentStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [tileAndSubtitleStackView, informationStackView])
+        stackView.axis = .vertical
+        stackView.spacing = 20
+        stackView.distribution = .fill
+        stackView.alignment = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -275,46 +303,24 @@ internal final class DelegatedAuthenticationView: UIView {
     // MARK: - Configuration
         
     private func configureViews() {
-        addSubview(image)
-        addSubview(tileAndSubtitleStackView)
-        addSubview(paymentDetailsStackView)
-        addSubview(additionalInformationStackView)
+        addSubview(contentStackView)
         addSubview(buttonsStackView)
-
+        
         NSLayoutConstraint.activate([
-            image.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor, constant: 50),
-            image.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor),
-            image.widthAnchor.constraint(equalToConstant: 40),
-            image.heightAnchor.constraint(equalToConstant: 40),
+//            image.widthAnchor.constraint(equalToConstant: 40),
+//            image.heightAnchor.constraint(equalToConstant: 40),
 
-            cardImage.widthAnchor.constraint(equalToConstant: 40),
-            cardImage.heightAnchor.constraint(equalToConstant: 26),
+//            cardImage.widthAnchor.constraint(equalToConstant: 40),
+//            cardImage.heightAnchor.constraint(equalToConstant: 26),
+                        
+            contentStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 30),
+            contentStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15.0),
+            contentStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15.0),
 
-            tileAndSubtitleStackView.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 24),
-            tileAndSubtitleStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            tileAndSubtitleStackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 15.0),
-            tileAndSubtitleStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -15.0),
-
-            paymentDetailsStackView.topAnchor.constraint(equalTo: tileAndSubtitleStackView.bottomAnchor, constant: 24),
-            paymentDetailsStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            paymentDetailsStackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 15.0),
-            paymentDetailsStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -15.0),
-
-            additionalInformationStackView.topAnchor.constraint(equalTo: paymentDetailsStackView.bottomAnchor, constant: 24),
-            additionalInformationStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            additionalInformationStackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 15.0),
-            additionalInformationStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -15.0),
-
-            firstButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 20),
-            firstButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -20),
-
-            secondButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 20),
-            secondButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -20),
-
-            buttonsStackView.topAnchor.constraint(greaterThanOrEqualTo: additionalInformationStackView.bottomAnchor, constant: 24),
-            buttonsStackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            buttonsStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            buttonsStackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
+//            buttonsStackView.topAnchor.constraint(greaterThanOrEqualTo: contentStackView.bottomAnchor, constant: 24),
+            buttonsStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15.0),
+            buttonsStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15.0),
+            buttonsStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 
@@ -324,6 +330,17 @@ internal final class DelegatedAuthenticationView: UIView {
     
     @objc private func secondButtonTapped() {
         delegate?.secondButtonTapped()
+    }
+    
+    internal override func layoutSubviews() {
+        super.layoutSubviews()
+        updateAxisBasedOnOrientation()
+    }
+    
+    private func updateAxisBasedOnOrientation() {
+        contentStackView.axis = UIDevice.current.orientation.isLandscape ? .horizontal : .vertical
+        buttonsStackView.axis = UIDevice.current.orientation.isLandscape ? .horizontal : .vertical
+        contentStackView.distribution = UIDevice.current.orientation.isLandscape ?  .fillEqually : .fill
     }
 }
 

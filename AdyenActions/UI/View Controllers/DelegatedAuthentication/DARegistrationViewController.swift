@@ -16,8 +16,6 @@ internal final class DARegistrationViewController: UIViewController {
     private let enableCheckoutHandler: Handler
     private let notNowHandler: Handler
     private lazy var containerView = UIView(frame: .zero)
-
-    private lazy var scrollView = UIScrollView()
     
     private lazy var registrationView: DelegatedAuthenticationView = .init(style: style)
     
@@ -57,6 +55,7 @@ internal final class DARegistrationViewController: UIViewController {
         configureDelegateAuthenticationView()
         view.backgroundColor = style.backgroundColor
         configureDelegateAuthenticationView()
+        isModalInPresentation = true
     }
     
     private func configureDelegateAuthenticationView() {
@@ -81,22 +80,19 @@ internal final class DARegistrationViewController: UIViewController {
                 registrationView.cardImage.image = image
             }
         } else {
-            registrationView.paymentDetailsStackView.isHidden = true
+            registrationView.cardAndAmountDetailsStackView.isHidden = true
         }
     }
     
     private func buildUI() {
-        containerView.addSubview(registrationView)
-        view.addSubview(containerView)
-        containerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(registrationView)
         registrationView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.adyen.anchor(inside: view.safeAreaLayoutGuide)
-        registrationView.adyen.anchor(inside: containerView)
+        registrationView.adyen.anchor(inside: view)
     }
 
     override internal var preferredContentSize: CGSize {
         get {
-            containerView.adyen.minimalSize
+            return UIView.layoutFittingExpandedSize
         }
 
         // swiftlint:disable:next unused_setter_value

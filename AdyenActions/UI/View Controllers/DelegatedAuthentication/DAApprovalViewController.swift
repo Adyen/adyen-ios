@@ -100,6 +100,7 @@ internal final class DAApprovalViewController: UIViewController {
         view.backgroundColor = style.backgroundColor
         configureDelegateAuthenticationView()
         buildUI()
+        isModalInPresentation = true
     }
     
     private func configureDelegateAuthenticationView() {
@@ -111,10 +112,10 @@ internal final class DAApprovalViewController: UIViewController {
 
         switch (amount, cardNumber, cardType) {
         case (.none, .none, .none), (.none, _, .none), (.none, .none, _):
-            approvalView.paymentDetailsStackView.isHidden = true
+            approvalView.cardAndAmountDetailsStackView.isHidden = true
         
         case (let amount, let cardNumber, let cardType):
-            approvalView.paymentDetailsStackView.isHidden = false
+            approvalView.cardAndAmountDetailsStackView.isHidden = false
             approvalView.amount.text = amount
             
             if let cardNumber, let cardType {
@@ -129,17 +130,14 @@ internal final class DAApprovalViewController: UIViewController {
     }
     
     private func buildUI() {
-        containerView.addSubview(approvalView)
-        view.addSubview(containerView)
-        containerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(approvalView)
         approvalView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.adyen.anchor(inside: view.safeAreaLayoutGuide)
-        approvalView.adyen.anchor(inside: containerView)
+        approvalView.adyen.anchor(inside: view.safeAreaLayoutGuide)
     }
     
     override internal var preferredContentSize: CGSize {
         get {
-            containerView.adyen.minimalSize
+            return UIView.layoutFittingExpandedSize
         }
         
         // swiftlint:disable:next unused_setter_value
