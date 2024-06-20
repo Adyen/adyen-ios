@@ -61,7 +61,7 @@ public final class SubmitButton: UIControl {
     
     override public var isEnabled: Bool {
         didSet {
-            backgroundView.backgroundColor = isEnabled ? style.backgroundColor : style.title.disabledColor
+            updateBackgroundColor()
         }
     }
     
@@ -155,6 +155,17 @@ public final class SubmitButton: UIControl {
         }
     }
     
+    private func updateBackgroundColor() {
+        let backgroundColor: UIColor
+        
+        if !isEnabled, !showsActivityIndicator {
+            backgroundColor = style.backgroundColor.withSaturationMultiple(0.2)
+        } else {
+            backgroundColor = style.backgroundColor
+        }
+        
+        backgroundView.backgroundColor = backgroundColor
+    }
 }
 
 extension SubmitButton {
