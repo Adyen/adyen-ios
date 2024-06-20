@@ -67,8 +67,7 @@ internal final class DARegistrationViewController: UIViewController {
         registrationView.secondButton.title = localizedString(.threeds2DARegistrationNegativeButton, localizationParameters)
         registrationView.firstInfoImage.image = UIImage(systemName: "bolt")?.withRenderingMode(.alwaysTemplate)
         registrationView.firstInfoLabel.text = localizedString(.threeds2DARegistrationFirstInfo, localizationParameters)
-        registrationView.secondInfoImage.image = .biometricImage?.withRenderingMode(.alwaysTemplate)
-        
+        registrationView.secondInfoImage.image = UIImage(systemName: "person.badge.key")?.withRenderingMode(.alwaysTemplate)
         registrationView.secondInfoLabel.text = localizedString(.threeds2DARegistrationSecondInfo, localizationParameters, biometricName)
         registrationView.thirdInfoImage.image = UIImage(systemName: "trash")?.withRenderingMode(.alwaysTemplate)
         registrationView.thirdInfoLabel.text = localizedString(.threeds2DARegistrationThirdInfo, localizationParameters)

@@ -68,7 +68,7 @@ internal final class DelegatedAuthenticationView: UIView {
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.distribution = .fill
-        stackView.spacing = 12
+        stackView.spacing = 16
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -119,11 +119,11 @@ internal final class DelegatedAuthenticationView: UIView {
         let stackView = UIStackView(arrangedSubviews: [amount, cardNumberStackView])
         stackView.axis = .vertical
         stackView.alignment = .center
-        stackView.spacing = 20
+        stackView.spacing = 16
         stackView.distribution = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 30, trailing: 20)
+        stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 26, trailing: 16)
 
         let subView = UIView(frame: bounds)
         subView.backgroundColor = UIColor.secondarySystemBackground
@@ -143,6 +143,12 @@ internal final class DelegatedAuthenticationView: UIView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .clear
         imageView.contentMode = .scaleAspectFit
+        
+        NSLayoutConstraint.activate(
+            [imageView.widthAnchor.constraint(equalToConstant: 16),
+             imageView.heightAnchor.constraint(equalToConstant: 16)]
+        )
+
         return imageView
     }()
     
@@ -159,7 +165,7 @@ internal final class DelegatedAuthenticationView: UIView {
         let stackView = UIStackView(arrangedSubviews: [firstInfoImage, firstInfoLabel])
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.spacing = 8.0
+        stackView.spacing = 12
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -170,6 +176,12 @@ internal final class DelegatedAuthenticationView: UIView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .clear
         imageView.contentMode = .scaleAspectFit
+        
+        NSLayoutConstraint.activate(
+            [imageView.widthAnchor.constraint(equalToConstant: 16),
+             imageView.heightAnchor.constraint(equalToConstant: 16)]
+        )
+
         return imageView
     }()
     
@@ -186,7 +198,7 @@ internal final class DelegatedAuthenticationView: UIView {
         let stackView = UIStackView(arrangedSubviews: [secondInfoImage, secondInfoLabel])
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.spacing = 8.0
+        stackView.spacing = 12
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -197,6 +209,12 @@ internal final class DelegatedAuthenticationView: UIView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .clear
         imageView.contentMode = .scaleAspectFit
+        
+        NSLayoutConstraint.activate(
+            [imageView.widthAnchor.constraint(equalToConstant: 16),
+             imageView.heightAnchor.constraint(equalToConstant: 16)]
+        )
+
         return imageView
     }()
     
@@ -213,7 +231,7 @@ internal final class DelegatedAuthenticationView: UIView {
         let stackView = UIStackView(arrangedSubviews: [thirdInfoImage, thirdInfoLabel])
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.spacing = 8.0
+        stackView.spacing = 12
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -229,7 +247,7 @@ internal final class DelegatedAuthenticationView: UIView {
         stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20)
         
         let subView = UIView(frame: bounds)
-        subView.backgroundColor = UIColor.tertiarySystemGroupedBackground
+        subView.backgroundColor = UIColor.secondarySystemBackground
         subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         stackView.insertSubview(subView, at: 0)
         subView.layer.cornerRadius = 10.0
@@ -263,7 +281,7 @@ internal final class DelegatedAuthenticationView: UIView {
         let stackView = UIStackView(arrangedSubviews: [firstButton, secondButton])
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
-        stackView.spacing = 20
+        stackView.spacing = 5
         stackView.alignment = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -272,7 +290,7 @@ internal final class DelegatedAuthenticationView: UIView {
     internal lazy var informationStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [cardAndAmountDetailsStackView, additionalInformationStackView])
         stackView.axis = .vertical
-        stackView.spacing = 20
+        stackView.spacing = 16
         stackView.alignment = .fill
         stackView.distribution = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -282,7 +300,7 @@ internal final class DelegatedAuthenticationView: UIView {
     internal lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [tileAndSubtitleStackView, informationStackView])
         stackView.axis = .vertical
-        stackView.spacing = 20
+        stackView.spacing = 16
         stackView.distribution = .fill
         stackView.alignment = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
