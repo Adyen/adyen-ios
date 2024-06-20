@@ -32,7 +32,9 @@ internal final class DelegatedAuthenticationView: UIView {
 
     internal weak var delegate: DelegatedAuthenticationViewDelegate?
     
-    internal lazy var image: UIImageView = {
+    internal lazy var scrollView = UIScrollView(frame: .zero)
+    
+    internal lazy var logoImage: UIImageView = {
         let imageView = UIImageView(style: logoStyle)
         imageView.image = .biometricImage?.withRenderingMode(.alwaysTemplate)
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "image")
@@ -59,7 +61,7 @@ internal final class DelegatedAuthenticationView: UIView {
     }()
     
     internal lazy var tileAndSubtitleStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [image, titleLabel, descriptionLabel])
+        let stackView = UIStackView(arrangedSubviews: [logoImage, titleLabel, descriptionLabel])
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.distribution = .fill
@@ -73,7 +75,7 @@ internal final class DelegatedAuthenticationView: UIView {
     internal lazy var amount: UILabel = {
         let label = UILabel(style: amountTextStyle)
         label.isAccessibilityElement = false
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "titleLabel")
+        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "amountLabel")
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -82,15 +84,21 @@ internal final class DelegatedAuthenticationView: UIView {
         let imageView = UIImageView(style: cardImageStyle)
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardImage")
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        
+        NSLayoutConstraint.activate(
+            [imageView.widthAnchor.constraint(equalToConstant: 40),
+             imageView.heightAnchor.constraint(equalToConstant: 26)]
+        )
+
         return imageView
     }()
 
     internal lazy var cardNumberLabel: UILabel = {
         let label = UILabel(style: cardNumberTextStyle)
         label.isAccessibilityElement = false
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "descriptionLabel")
+        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardNumber")
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
         return label
     }()
     
@@ -99,7 +107,7 @@ internal final class DelegatedAuthenticationView: UIView {
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.spacing = 12
-        stackView.distribution = .fill
+        stackView.distribution = .equalSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -303,21 +311,26 @@ internal final class DelegatedAuthenticationView: UIView {
     // MARK: - Configuration
         
     private func configureViews() {
-        addSubview(contentStackView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(contentStackView)
+        addSubview(scrollView)
         addSubview(buttonsStackView)
         
         NSLayoutConstraint.activate([
-//            image.widthAnchor.constraint(equalToConstant: 40),
-//            image.heightAnchor.constraint(equalToConstant: 40),
-
-//            cardImage.widthAnchor.constraint(equalToConstant: 40),
-//            cardImage.heightAnchor.constraint(equalToConstant: 26),
+            logoImage.heightAnchor.constraint(equalToConstant: 40),
                         
-            contentStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 30),
-            contentStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15.0),
-            contentStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15.0),
-
-//            buttonsStackView.topAnchor.constraint(greaterThanOrEqualTo: contentStackView.bottomAnchor, constant: 24),
+            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 30),
+            scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15.0),
+            scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15.0),
+            scrollView.bottomAnchor.constraint(equalTo: buttonsStackView.topAnchor, constant: -8),
+            
+            contentStackView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor),
+            contentStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentStackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            contentStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            
             buttonsStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15.0),
             buttonsStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15.0),
             buttonsStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
@@ -338,9 +351,7 @@ internal final class DelegatedAuthenticationView: UIView {
     }
     
     private func updateAxisBasedOnOrientation() {
-        contentStackView.axis = UIDevice.current.orientation.isLandscape ? .horizontal : .vertical
         buttonsStackView.axis = UIDevice.current.orientation.isLandscape ? .horizontal : .vertical
-        contentStackView.distribution = UIDevice.current.orientation.isLandscape ?  .fillEqually : .fill
     }
 }
 

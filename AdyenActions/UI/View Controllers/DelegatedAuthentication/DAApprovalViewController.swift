@@ -58,7 +58,6 @@ internal final class DAApprovalViewController: UIViewController {
         return alertController
     }()
 
-    private lazy var containerView = UIView(frame: .zero)
     private lazy var approvalView: DelegatedAuthenticationView = .init(style: style)
     
     private let style: DelegatedAuthenticationComponentStyle
