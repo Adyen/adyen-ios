@@ -25,10 +25,10 @@ struct ProjectHelper {
         defer { cleanup() }
         
         do {
-            print("🏗️ Setting up working directory for current version")
+            print("🏗️ Setting up working directory for new version")
             let newWorkingDirectoryPath = try setupProject(from: newSource)
             
-            print("🏗️ Setting up working directory for comparison version")
+            print("🏗️ Setting up working directory for old version")
             let oldWorkingDirectoryPath = try setupProject(from: oldSource)
             
             try body(oldWorkingDirectoryPath, newWorkingDirectoryPath)

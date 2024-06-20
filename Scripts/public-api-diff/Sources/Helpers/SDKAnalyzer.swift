@@ -14,6 +14,7 @@ enum SDKAnalyzer {
         old oldProjectDirectoryPath: String,
         new newProjectDirectoryPath: String
     ) throws -> [String: [SDKAnalyzer.Change]] {
+        
         print("🔍 Scanning for products changes")
         
         let packageFileChanges = try SDKAnalyzer.analyzePackageFile(
@@ -30,8 +31,8 @@ enum SDKAnalyzer {
         
         var changesPerTarget = try SDKAnalyzer.analyzeSdkDump(
             for: allTargets,
-            currentSdkDumpGenerator: .init(projectDirectoryPath: newProjectDirectoryPath),
-            comparisonSdkDumpGenerator: .init(projectDirectoryPath: oldProjectDirectoryPath)
+            newDumpGenerator: .init(projectDirectoryPath: newProjectDirectoryPath),
+            oldDumpGenerator: .init(projectDirectoryPath: oldProjectDirectoryPath)
         )
         
         if !packageFileChanges.isEmpty {
@@ -47,10 +48,10 @@ enum SDKAnalyzer {
     ) throws -> [Change] {
         var libraryChanges = [Change]()
         
-        let comparisonProducts = try PackageFileHelper(packagePath: comparisonPackageFilePath).availableProducts()
-        let currentProducts = try PackageFileHelper(packagePath: updatedPackageFilePath).availableProducts()
+        let oldProducts = try PackageFileHelper(packagePath: comparisonPackageFilePath).availableProducts()
+        let newProducts = try PackageFileHelper(packagePath: updatedPackageFilePath).availableProducts()
         
-        let removedLibaries = comparisonProducts.subtracting(currentProducts)
+        let removedLibaries = oldProducts.subtracting(newProducts)
         libraryChanges += removedLibaries.map {
             .init(
                 changeType: .removal,
@@ -59,7 +60,7 @@ enum SDKAnalyzer {
             )
         }
         
-        let addedLibraries = currentProducts.subtracting(comparisonProducts)
+        let addedLibraries = newProducts.subtracting(oldProducts)
         libraryChanges += addedLibraries.map {
             .init(
                 changeType: .addition,
@@ -73,19 +74,19 @@ enum SDKAnalyzer {
     
     private static func analyzeSdkDump(
         for allTargets: [String],
-        currentSdkDumpGenerator: SDKDumpGenerator,
-        comparisonSdkDumpGenerator: SDKDumpGenerator
+        newDumpGenerator: SDKDumpGenerator,
+        oldDumpGenerator: SDKDumpGenerator
     ) throws -> [String: [SDKAnalyzer.Change]] {
         
         var changesPerTarget = [String: [SDKAnalyzer.Change]]() // [ModuleName: [SDKDumpAnalyzer.Change]]
         
         try allTargets.forEach { targetName in
-            let currentSdkDumpFilePath = currentSdkDumpGenerator.generate(for: targetName)
-            let comparisonSdkDumpFilePath = comparisonSdkDumpGenerator.generate(for: targetName)
+            let newDumpFilePath = newDumpGenerator.generate(for: targetName)
+            let oldDumpFilePath = oldDumpGenerator.generate(for: targetName)
             
             let diff = try SDKAnalyzer.diffSdkDump(
-                updated: currentSdkDumpFilePath,
-                to: comparisonSdkDumpFilePath
+                new: newDumpFilePath,
+                old: oldDumpFilePath
             )
             
             if !diff.isEmpty { changesPerTarget[targetName] = diff }
@@ -95,35 +96,35 @@ enum SDKAnalyzer {
     }
     
     private static func diffSdkDump(
-        updated updatedSdkDumpFilePath: String,
-        to comparisonSdkDumpFilePath: String
+        new newDumpFilePath: String,
+        old oldDumpFilePath: String
     ) throws -> [Change] {
         
-        let decodedComparisonDump = load(from: comparisonSdkDumpFilePath)
-        let decodedUpdatedDump = load(from: updatedSdkDumpFilePath)
+        let decodedNewDump = load(from: newDumpFilePath)
+        let decodedOldDump = load(from: oldDumpFilePath)
         
-        guard decodedComparisonDump != decodedUpdatedDump else {
+        guard decodedNewDump != decodedOldDump else {
             return []
         }
         
-        guard let decodedUpdatedDump else {
+        guard let decodedNewDump else {
             return [.init(changeType: .removal, parentName: "", changeDescription: "Target was removed")]
         }
         
-        guard let decodedComparisonDump else {
+        guard let decodedOldDump else {
             return [.init(changeType: .addition, parentName: "", changeDescription: "Target was added")]
         }
         
-        setupRelationships(for: decodedComparisonDump.root, parent: nil)
-        setupRelationships(for: decodedUpdatedDump.root, parent: nil)
+        setupRelationships(for: decodedNewDump.root, parent: nil)
+        setupRelationships(for: decodedOldDump.root, parent: nil)
         
         return recursiveCompare(
-            element: decodedComparisonDump.root,
-            to: decodedUpdatedDump.root,
+            element: decodedOldDump.root,
+            to: decodedNewDump.root,
             oldFirst: true
         ) + recursiveCompare(
-            element: decodedUpdatedDump.root,
-            to: decodedComparisonDump.root,
+            element: decodedNewDump.root,
+            to: decodedOldDump.root,
             oldFirst: false
         )
     }
@@ -162,22 +163,17 @@ private extension SDKAnalyzer {
         
         var changes = [Change]()
         
-        // TODO: Add check if accessor changed (e.g. changed from get/set to get only...)
-        
-        if oldFirst,
-           lhs.printedName != rhs.printedName ||
-           lhs.spiGroupNames != rhs.spiGroupNames ||
-           lhs.conformances != rhs.conformances ||
-           lhs.declAttributes != rhs.declAttributes {
+        if oldFirst, lhs.definition != rhs.definition {
             // TODO: Show what exactly changed (name, spi, conformance, declAttributes, ...) as a bullet list maybe (add a `changeList` property to `Change`)
             changes += [.init(changeType: .change, parentName: lhs.parentPath, changeDescription: "`\(lhs)`\n  ➡️  `\(rhs)`")]
         }
         
         changes += lhs.children?.flatMap { lhsElement in
-            if let rhsChildForName = rhs.children?.firstElementMatchingName(of: lhsElement) {
+            if let rhsChildForName = rhs.children?.first(where: { $0.name == lhsElement.name }) {
                 return recursiveCompare(element: lhsElement, to: rhsChildForName, oldFirst: oldFirst)
             } else {
-                if lhsElement.isSpiInternal { return [] }
+                // Type changes we handle as a change, not an addition/removal (they are in the children array tho)
+                if lhsElement.kind == "TypeNominal" { return [] }
                 
                 if oldFirst {
                     return [.init(changeType: .removal, parentName: lhsElement.parentPath, changeDescription: "`\(lhsElement)` was removed")]
