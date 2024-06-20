@@ -23,21 +23,4 @@ internal extension UIColor {
                        brightness: min(max(brightness * CGFloat(brightnessMultiple), 0.0), 1.0),
                        alpha: alpha)
     }
-    
-    // swiftlint:disable:next explicit_acl
-    func withSaturationMultiple(_ saturationMultiple: Float) -> UIColor {
-        var hue: CGFloat = 1.0
-        var saturation: CGFloat = 1.0
-        var brightness: CGFloat = 1.0
-        var alpha: CGFloat = 1.0
-        guard getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else {
-            return self
-        }
-        
-        return UIColor(hue: hue,
-                       saturation: min(max(saturation * CGFloat(saturationMultiple), 0.0), 1.0),
-                       brightness: brightness,
-                       alpha: alpha)
-    }
-    
 }

@@ -23,12 +23,14 @@ public struct SelectableFormItemStyle: ViewStyle {
                                        clipsToBounds: true,
                                        contentMode: .scaleAspectFit)
 
-    public var backgroundColor = UIColor.Adyen.componentBackground
+    public var backgroundColor: UIColor {
+        get { title.backgroundColor }
+        set { title.backgroundColor = newValue }
+    }
 
     /// Initializes the selectableForm item style.
     ///
     /// - Parameter title: The title style.
-    /// - Parameter imageStyle: The image style.
     public init(
         title: TextStyle
     ) {
