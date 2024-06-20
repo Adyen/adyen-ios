@@ -14,6 +14,7 @@ import Foundation
 import UIKit
 
 final class ThreeDS2DAScreenPresenterMock: ThreeDS2PlusDAScreenPresenterProtocol {
+    
     func showAuthenticationError(component: any Adyen.Component, handler: @escaping () -> Void) {
     }
     
@@ -29,9 +30,7 @@ final class ThreeDS2DAScreenPresenterMock: ThreeDS2PlusDAScreenPresenterProtocol
     
     let showRegistrationReturnState: ShowRegistrationScreenMockState
     func showRegistrationScreen(component: any Adyen.Component,
-                                cardNumber: String,
-                                cardType: Adyen.CardType,
-                                context: Adyen.AdyenContext,
+                                cardDetails: (number: String?, type: Adyen.CardType?),
                                 registerDelegatedAuthenticationHandler: @escaping () -> Void,
                                 fallbackHandler: @escaping () -> Void) {
         switch showRegistrationReturnState {
@@ -51,9 +50,7 @@ final class ThreeDS2DAScreenPresenterMock: ThreeDS2PlusDAScreenPresenterProtocol
     let showApprovalScreenReturnState: ShowApprovalScreenMockState
     
     func showApprovalScreen(component: any Adyen.Component,
-                            cardNumber: String,
-                            cardType: Adyen.CardType,
-                            context: Adyen.AdyenContext,
+                            cardDetails: (number: String?, type: Adyen.CardType?),
                             approveAuthenticationHandler: @escaping () -> Void,
                             fallbackHandler: @escaping () -> Void,
                             removeCredentialsHandler: @escaping () -> Void) {

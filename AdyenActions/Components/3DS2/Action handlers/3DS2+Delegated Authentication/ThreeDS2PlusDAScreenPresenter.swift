@@ -10,23 +10,18 @@ import LocalAuthentication
 
 internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
     func showRegistrationScreen(component: Component,
-                                cardNumber: String,
-                                cardType: CardType,
-                                context: AdyenContext,
+                                cardDetails: (number: String?, type: CardType?),
                                 registerDelegatedAuthenticationHandler: @escaping () -> Void,
                                 fallbackHandler: @escaping () -> Void)
     
     func showApprovalScreen(component: Component,
-                            cardNumber: String,
-                            cardType: CardType,
-                            context: AdyenContext,
+                            cardDetails: (number: String?, type: CardType?),
                             approveAuthenticationHandler: @escaping () -> Void,
                             fallbackHandler: @escaping () -> Void,
                             removeCredentialsHandler: @escaping () -> Void)
     
     func showAuthenticationError(component: Component, handler: @escaping () -> Void)
     func showRegistrationError(component: Component, handler: @escaping () -> Void)
-
     var presentationDelegate: PresentationDelegate? { get set }
 }
 
@@ -36,12 +31,14 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
     /// Delegates `PresentableComponent`'s presentation.
     private let style: DelegatedAuthenticationComponentStyle
     private let localizedParameters: LocalizationParameters?
-        
+    private let context: AdyenContext
     internal weak var presentationDelegate: PresentationDelegate?
     
     internal init(style: DelegatedAuthenticationComponentStyle,
-                  localizedParameters: LocalizationParameters?) {
+                  localizedParameters: LocalizationParameters?,
+                  context: AdyenContext) {
         self.style = style
+        self.context = context
         self.localizedParameters = localizedParameters
     }
     
@@ -70,17 +67,15 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
     }
 
     internal func showRegistrationScreen(component: Component,
-                                         cardNumber: String,
-                                         cardType: CardType,
-                                         context: AdyenContext,
+                                         cardDetails: (number: String?, type: CardType?),
                                          registerDelegatedAuthenticationHandler: @escaping () -> Void,
                                          fallbackHandler: @escaping () -> Void) {
         AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
         let registrationViewController = DARegistrationViewController(context: context,
                                                                       style: style,
                                                                       localizationParameters: localizedParameters,
-                                                                      cardNumber: cardNumber,
-                                                                      cardType: cardType,
+                                                                      cardNumber: cardDetails.number,
+                                                                      cardType: cardDetails.type,
                                                                       biometricName: biometricName,
                                                                       enableCheckoutHandler: {
                                                                           registerDelegatedAuthenticationHandler()
@@ -96,9 +91,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
     }
     
     internal func showApprovalScreen(component: Component,
-                                     cardNumber: String,
-                                     cardType: CardType,
-                                     context: AdyenContext,
+                                     cardDetails: (number: String?, type: CardType?),
                                      approveAuthenticationHandler: @escaping () -> Void,
                                      fallbackHandler: @escaping () -> Void,
                                      removeCredentialsHandler: @escaping () -> Void) {
@@ -108,8 +101,8 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                                                               localizationParameters: localizedParameters,
                                                               biometricName: biometricName,
                                                               amount: context.payment?.amount.formatted,
-                                                              cardNumber: cardNumber,
-                                                              cardType: cardType,
+                                                              cardNumber: cardDetails.number,
+                                                              cardType: cardDetails.type,
                                                               useBiometricsHandler: {
                                                                   approveAuthenticationHandler()
                                                               }, approveDifferentlyHandler: {

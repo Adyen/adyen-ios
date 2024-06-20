@@ -50,7 +50,8 @@
             self.init(
                 context: context,
                 presenter: ThreeDS2PlusDAScreenPresenter(style: .init(),
-                                                         localizedParameters: delegatedAuthenticationConfiguration.localizationParameters),
+                                                         localizedParameters: delegatedAuthenticationConfiguration.localizationParameters,
+                                                         context: context),
                 appearanceConfiguration: appearanceConfiguration,
                 style: delegatedAuthenticationConfiguration.delegatedAuthenticationComponentStyle,
                 delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
@@ -106,8 +107,8 @@
                     }
                 
                     startApprovalFlow(payloadForDA,
-                                      cardType: .visa, // TODO: Robert: card type and card numbers to be got from the fingerprint action.
-                                      cardNumber: "**** 1479") { [weak self] result in
+                                      cardType: nil,
+                                      cardNumber: nil) { [weak self] result in
                         guard let self else { return }
                     
                         switch result {
@@ -161,8 +162,8 @@
         /// else calls the completion with a failure.
         private func startApprovalFlow(
             _ delegatedAuthenticationInput: String,
-            cardType: CardType,
-            cardNumber: String,
+            cardType: CardType?,
+            cardNumber: String?,
             completion: @escaping (Result<(daOutput: String, delete: Bool?), ApprovalFlowError>) -> Void
         ) {
             isDeviceRegistered(delegatedAuthenticationInput: delegatedAuthenticationInput) { [weak self] registered in
@@ -191,19 +192,18 @@
     
         private func showApprovalScreen(
             delegatedAuthenticationInput: String,
-            cardType: CardType,
-            cardNumber: String,
+            cardType: CardType?,
+            cardNumber: String?,
             completion: @escaping (Result<(daOutput: String, delete: Bool?), ApprovalFlowError>
             ) -> Void
         ) {
             presenter.showApprovalScreen(
                 component: self,
-                cardNumber: cardNumber,
-                cardType: cardType,
-                context: context,
+                cardDetails: (cardNumber, cardType),
                 approveAuthenticationHandler: { [weak self] in
                     guard let self else { return }
                     authenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                                 cardNumber: cardNumber,
                                  authenticatedHandler: {
                         completion(.success((daOutput: $0, delete: nil)))
                     },
@@ -220,6 +220,7 @@
                 removeCredentialsHandler: { [weak self] in
                     guard let self else { return }
                     authenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                                 cardNumber: cardNumber,
                                  authenticatedHandler: { sdkOutput in
                                      self.delegatedAuthenticationState.attemptRegistration = false
                                      completion(.success((daOutput: sdkOutput, delete: true)))
@@ -233,6 +234,7 @@
         }
     
         private func authenticate(delegatedAuthenticationInput: String,
+                                  cardNumber: String?,
                                   authenticatedHandler: @escaping (String) -> Void,
                                   failedAuthenticationHandler: @escaping (Error) -> Void) {
             let service: AuthenticationServiceProtocol = if let delegatedAuthenticationService {
@@ -240,8 +242,8 @@
             } else {
                 AdyenAuthentication.AuthenticationService(
                     passKeyConfiguration: .init(relyingPartyIdentifier: delegatedAuthenticationConfiguration.relyingPartyIdentifier,
-                                                displayName: "Card Number TBD 🔥")
-                ) // TODO: Robert: pass the card number when it is available.
+                                                displayName: cardNumber ?? Bundle.main.displayName)
+                )
             }
         
             service.authenticate(withAuthenticationInput: delegatedAuthenticationInput) { result in
@@ -283,7 +285,7 @@
         // MARK: Delegated Authentication Registration
         
         internal func register(delegatedAuthenticationInput: String,
-                               cardNumber: String,
+                               cardNumber: String?,
                                completion: @escaping (Result<String, Error>) -> Void) {
         
             let service: AuthenticationServiceProtocol = if let delegatedAuthenticationService {
@@ -292,7 +294,7 @@
                 AdyenAuthentication.AuthenticationService(
                     passKeyConfiguration: .init(
                         relyingPartyIdentifier: delegatedAuthenticationConfiguration.relyingPartyIdentifier,
-                        displayName: cardNumber
+                        displayName: cardNumber ?? Bundle.main.displayName
                     )
                 )
             }
@@ -332,8 +334,8 @@
                     }
                 
                     startRegistrationFlow(delegatedAuthenticationInput: registrationPayload,
-                                          cardNumber: "**** 1479",
-                                          cardType: .visa) { result in // TODO: Robert: Pass the card number.
+                                          cardNumber: nil,
+                                          cardType: nil) { result in
                         switch result {
                         case let .success(registrationSDKOutput):
                             do {
@@ -360,14 +362,12 @@
         }
     
         private func startRegistrationFlow(delegatedAuthenticationInput: String,
-                                           cardNumber: String,
-                                           cardType: CardType,
+                                           cardNumber: String?,
+                                           cardType: CardType?,
                                            completionHandler: @escaping (Result<String, RegistrationFlowError>) -> Void) {
             presenter.showRegistrationScreen(
                 component: self,
-                cardNumber: cardNumber,
-                cardType: cardType,
-                context: context,
+                cardDetails: (cardNumber, cardType),
                 registerDelegatedAuthenticationHandler: { [weak self] in
                     guard let self else { return }
                     register(delegatedAuthenticationInput: delegatedAuthenticationInput,
@@ -397,4 +397,15 @@
             return token.delegatedAuthenticationSDKInput
         }
     }
+
+private extension Bundle {
+
+    // Name of the app - title under the icon.
+    var displayName: String {
+        object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ??
+            object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
+    }
+
+}
+
 #endif

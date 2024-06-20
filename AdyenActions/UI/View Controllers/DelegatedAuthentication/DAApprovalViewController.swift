@@ -125,6 +125,8 @@ internal final class DAApprovalViewController: UIViewController {
                     guard let self else { return }
                     approvalView.cardImage.image = image
                 }
+            } else {
+                approvalView.cardNumberStackView.isHidden = true
             }
         }
     }
