@@ -25,7 +25,7 @@ internal final class DAApprovalViewController: UIViewController {
                                                 message: localizedString(.threeds2DAApprovalRemoveAlertDescription, localizationParameters),
                                                 preferredStyle: .alert)
         let removeAction = UIAlertAction(title: localizedString(.threeds2DAApprovalRemoveAlertPositiveButton, localizationParameters),
-                                         style: .cancel,
+                                         style: .destructive,
                                          handler: { [weak self] _ in
                                              self?.removeCredentialsHandler()
                                          })
