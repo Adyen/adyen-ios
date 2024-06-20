@@ -6,8 +6,24 @@
 
 import Foundation
 
-extension SDKDumper {
+/// Root node
+class SDKDump: Codable, Equatable {
+    let root: Element
     
+    enum CodingKeys: String, CodingKey {
+        case root = "ABIRoot"
+    }
+    
+    public static func == (lhs: SDKDump, rhs: SDKDump) -> Bool {
+        lhs.root == rhs.root
+    }
+}
+
+// MARK: - Conformance
+
+extension SDKDump {
+    
+    // Protocol conformance
     struct Conformance: Codable, Equatable {
         var printedName: String
         
@@ -15,8 +31,15 @@ extension SDKDumper {
             case printedName
         }
     }
+}
 
+// MARK: - Element
+
+extension SDKDump {
+    
+    // Element node
     class Element: Codable, Equatable, CustomDebugStringConvertible {
+        
         let kind: String
         let name: String
         let mangledName: String?
@@ -102,21 +125,9 @@ extension SDKDumper {
             return sanitizedPath.reversed().joined(separator: ".")
         }
     }
-
-    class Definition: Codable, Equatable {
-        let root: Element
-        
-        enum CodingKeys: String, CodingKey {
-            case root = "ABIRoot"
-        }
-        
-        public static func == (lhs: Definition, rhs: Definition) -> Bool {
-            lhs.root == rhs.root
-        }
-    }
 }
 
-extension [SDKDumper.Element] {
+extension [SDKDump.Element] {
     func firstElementMatchingName(of otherElement: Element) -> Element? {
         first(where: { ($0.mangledName ?? $0.name) == (otherElement.mangledName ?? otherElement.name) })
     }

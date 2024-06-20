@@ -8,10 +8,6 @@ import Foundation
 
 enum Shell {
     
-    static func execute(_ commands: [String]) {
-        commands.forEach { print(execute($0)) }
-    }
-    
     @discardableResult
     static func execute(_ command: String) -> String {
         let task = Process()
@@ -26,5 +22,13 @@ enum Shell {
         
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         return String(data: data, encoding: .utf8) ?? ""
+    }
+}
+
+// MARK: - Convenience
+
+extension Shell {
+    static func removeDirectory(at directoryPath: String) {
+        Shell.execute("rm -rf \(directoryPath)")
     }
 }

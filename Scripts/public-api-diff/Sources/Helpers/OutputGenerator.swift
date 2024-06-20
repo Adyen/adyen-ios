@@ -10,14 +10,14 @@ import Foundation
 enum OutputGenerator {
     
     static func generate(
-        from changesPerTarget: [String: [SdkDumpAnalyzer.Change]],
+        from changesPerTarget: [String: [SDKAnalyzer.Change]],
         allTargetNames: [String],
-        branch: String,
-        repository: String
+        oldSource: ProjectSource,
+        newSource: ProjectSource
     ) -> String {
         
         let separator = "\n---"
-        let repoInfo = "_Compared to `\(branch)` of `\(repository)`_"
+        let repoInfo = "_Comparing `\(newSource.rawValue)` to `\(oldSource.rawValue)`_"
         let analyzedModulesInfo = "**Analyzed modules:** \(allTargetNames.joined(separator: ", "))"
         
         if changesPerTarget.keys.isEmpty {
@@ -43,7 +43,7 @@ enum OutputGenerator {
                 lines.append("## `\(key)`")
             }
             
-            var groupedChanges = [String: [SdkDumpAnalyzer.Change]]()
+            var groupedChanges = [String: [SDKAnalyzer.Change]]()
 
             changes.forEach {
                 groupedChanges[$0.parentName] = (groupedChanges[$0.parentName] ?? []) + [$0]

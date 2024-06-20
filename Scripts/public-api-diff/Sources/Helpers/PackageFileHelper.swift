@@ -14,6 +14,10 @@ struct PackageFileHelper {
         self.packagePath = packagePath
     }
     
+    static func packagePath(for projectDirectoryPath: String) -> String {
+        projectDirectoryPath.appending("/Package.swift")
+    }
+    
     func availableTargets() throws -> Set<String> {
         
         let packageContent = try String(contentsOfFile: packagePath)
@@ -39,6 +43,20 @@ struct PackageFileHelper {
         
         // Write the updated content back to the file
         try updatedPackageContent.write(toFile: packagePath, atomically: true, encoding: .utf8)
+    }
+}
+
+extension PackageFileHelper {
+    
+    static func availableTargets(oldProjectDirectoryPath: String, newProjectDirectoryPath: String) throws -> [String] {
+        
+        let oldPackagePath = packagePath(for: oldProjectDirectoryPath)
+        let newPackagePath = packagePath(for: newProjectDirectoryPath)
+        
+        let oldTargets = try Self(packagePath: oldPackagePath).availableTargets()
+        let newTargets = try Self(packagePath: newPackagePath).availableTargets()
+        
+        return oldTargets.union(newTargets).sorted()
     }
 }
 

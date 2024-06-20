@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SDKDumper {
+struct SDKDumpGenerator {
     
     let projectDirectoryPath: String
     
