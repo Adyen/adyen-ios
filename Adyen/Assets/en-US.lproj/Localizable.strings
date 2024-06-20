@@ -211,6 +211,9 @@
 "adyen.threeds2.DA.registration.error.title" = "Let’s try next time!";
 "adyen.threeds2.DA.registration.error.message" = "Your payment has still been authenticated successfully but the Secure Checkout service was unavailable.";
 "adyen.threeds2.DA.registration.error.buttonTitle" = "Finish";
+"adyen.threeds2.DA.deletion.confirmation.title" = "Credentials removed";
+"adyen.threeds2.DA.deletion.confirmation.message" = "You will no longer be asked to approve transactions through Secure Checkout.";
+"adyen.threeds2.DA.deletion.confirmation.buttonTitle" = "Continue";
 "adyen.picker.search.empty.title" = "No results found";
 "adyen.picker.search.empty.subtitle" = "'%@' did not match with anything";
 "adyen.address.lookup.search.placeholder" = "Search for your address";

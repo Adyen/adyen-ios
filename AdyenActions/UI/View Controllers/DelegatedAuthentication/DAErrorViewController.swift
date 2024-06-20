@@ -13,6 +13,7 @@ internal final class DAErrorViewController: UIViewController {
     internal enum Screen {
         case authenticationFailed(localizationParameters: LocalizationParameters?)
         case registrationFailed(localizationParameters: LocalizationParameters?)
+        case deletionConfirmation(localizationParameters: LocalizationParameters?)
         
         internal var title: String {
             switch self {
@@ -20,6 +21,8 @@ internal final class DAErrorViewController: UIViewController {
                 localizedString(.threeds2DAApprovalErrorTitle, localizationParameters)
             case .registrationFailed(let localizationParameters):
                 localizedString(.threeds2DARegistrationErrorTitle, localizationParameters)
+            case .deletionConfirmation(let localizationParameters):
+                localizedString(.threeds2DADeletionConfirmationTitle, localizationParameters)
             }
         }
         
@@ -32,6 +35,11 @@ internal final class DAErrorViewController: UIViewController {
                         withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight))?
                     .withTintColor(.systemGreen,
                                    renderingMode: .alwaysOriginal)
+            case .deletionConfirmation:
+                UIImage(systemName: "trash",
+                        withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight))?
+                    .withRenderingMode(.alwaysTemplate)
+                    
             }
         }
         
@@ -41,6 +49,8 @@ internal final class DAErrorViewController: UIViewController {
                 return localizedString(.threeds2DAApprovalErrorMessage, localizationParameters)
             case .registrationFailed(let localizationParameters):
                 return localizedString(.threeds2DARegistrationErrorMessage, localizationParameters)
+            case .deletionConfirmation(let localizationParameters):
+                return localizedString(.threeds2DADeletionConfirmationMessage, localizationParameters)
             }
         }
                 
@@ -50,6 +60,8 @@ internal final class DAErrorViewController: UIViewController {
                 return localizedString(.threeds2DAApprovalErrorButtonTitle, localizationParameters)
             case .registrationFailed(let localizationParameters):
                 return localizedString(.threeds2DARegistrationErrorButtonTitle, localizationParameters)
+            case .deletionConfirmation(let localizationParameters):
+                return localizedString(.threeds2DADeletionConfirmationButtonTitle, localizationParameters)
             }
         }
     }

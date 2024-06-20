@@ -434,6 +434,12 @@ public struct LocalizationKey {
     public static let threeds2DARegistrationErrorMessage = LocalizationKey(key: "adyen.threeds2.DA.registration.error.message")
     /// Finish
     public static let threeds2DARegistrationErrorButtonTitle = LocalizationKey(key: "adyen.threeds2.DA.registration.error.buttonTitle")
+    /// Credentials removed
+    public static let threeds2DADeletionConfirmationTitle = LocalizationKey(key: "adyen.threeds2.DA.deletion.confirmation.title")
+    /// You will no longer be asked to approve transactions through Secure Checkout.
+    public static let threeds2DADeletionConfirmationMessage = LocalizationKey(key: "adyen.threeds2.DA.deletion.confirmation.message")
+    /// Continue
+    public static let threeds2DADeletionConfirmationButtonTitle = LocalizationKey(key: "adyen.threeds2.DA.deletion.confirmation.buttonTitle")
     /// No results found
     public static let pickerSearchEmptyTitle = LocalizationKey(key: "adyen.picker.search.empty.title")
     /// '%@' did not match with anything

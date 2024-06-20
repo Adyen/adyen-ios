@@ -22,6 +22,8 @@ internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
     
     func showAuthenticationError(component: Component, handler: @escaping () -> Void)
     func showRegistrationError(component: Component, handler: @escaping () -> Void)
+    func showDeletionConfirmation(component: Component, handler: @escaping () -> Void)
+
     var presentationDelegate: PresentationDelegate? { get set }
 }
 
@@ -58,6 +60,18 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
         let errorController = DAErrorViewController(style: style, 
                                                     screen: .registrationFailed(localizationParameters: localizedParameters),
+                                                    completion: handler)
+        let presentableComponent = PresentableComponentWrapper(component: component,
+                                                               viewController: errorController)
+        presentationDelegate?.present(component: presentableComponent)
+        errorController.navigationItem.rightBarButtonItems = []
+        errorController.navigationItem.leftBarButtonItems = []
+    }
+    
+    internal func showDeletionConfirmation(component: Component, handler: @escaping () -> Void) {
+        AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
+        let errorController = DAErrorViewController(style: style,
+                                                    screen: .deletionConfirmation(localizationParameters: localizedParameters),
                                                     completion: handler)
         let presentableComponent = PresentableComponentWrapper(component: component,
                                                                viewController: errorController)

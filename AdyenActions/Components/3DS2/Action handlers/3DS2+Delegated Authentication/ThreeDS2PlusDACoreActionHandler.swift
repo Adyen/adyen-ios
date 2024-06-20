@@ -14,13 +14,13 @@
     /// Handles the 3D Secure 2 fingerprint and challenge actions separately + Delegated Authentication.
     @available(iOS 16.0, *)
     internal class ThreeDS2PlusDACoreActionHandler: ThreeDS2CoreActionHandler {
-    
+        
         internal var delegatedAuthenticationState: DelegatedAuthenticationState = .init()
-    
+        
         internal struct DelegatedAuthenticationState {
             internal var attemptRegistration: Bool = false
         }
-    
+        
         private let delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication
         private var delegatedAuthenticationService: AuthenticationServiceProtocol?
         private let deviceSupportCheckerService: AdyenAuthentication.DeviceSupportCheckerProtocol
@@ -47,7 +47,7 @@
                 delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
             )
         }
-    
+        
         /// Initializes the 3D Secure 2 action handler.
         ///
         /// - Parameter context: The context object for this component.
@@ -72,9 +72,9 @@
             super.init(context: context, service: service, appearanceConfiguration: appearanceConfiguration)
             self.presenter.presentationDelegate = self
         }
-    
+        
         // MARK: - Fingerprint
-    
+        
         /// Handles the 3D Secure 2 fingerprint action.
         ///
         /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
@@ -96,12 +96,12 @@
                         completionHandler(.success(threeDSFingerprint))
                         return
                     }
-                
+                    
                     startApprovalFlow(payloadForDA,
                                       cardType: .visa,
                                       cardNumber: "**** 1234") { [weak self] result in
                         guard let self else { return }
-                    
+                        
                         switch result {
                         case let .success(approvalResponse):
                             do {
@@ -110,7 +110,7 @@
                                     threeDSFingerPrint: threeDSFingerprint,
                                     deleteDelegatedAuthenticationCredential: approvalResponse.delete
                                 )
-                            
+                                
                                 completionHandler(.success(threeDSFingerPrintWithDAPayload))
                             } catch {
                                 // If there is any failure in the DA handling we always default to 3ds2.
@@ -124,14 +124,14 @@
                 }
             }
         }
-    
+        
         private func daPayload(_ fingerprintAction: ThreeDS2FingerprintAction) -> String? {
             guard let token: ThreeDS2Component.FingerprintToken = try? AdyenCoder.decodeBase64(fingerprintAction.fingerprintToken) else {
                 return nil
             }
             return token.delegatedAuthenticationSDKInput
         }
-    
+        
         /// Adds the authenticationSDK output into the fingerprint result to approve the transaction/delete the credential in the backend.
         private func modifyFingerPrint(with authenticationSDKOutput: String?,
                                        threeDSFingerPrint: String,
@@ -144,9 +144,9 @@
             let encodedFingerprintResult = try AdyenCoder.encodeBase64(fingerprintResult)
             return encodedFingerprintResult
         }
-    
+        
         // MARK: - Delegated Authentication
-    
+        
         /// This method checks;
         /// 1. if DA has been registered on the device
         /// 2. shows an approval screen if it has been registered
@@ -171,16 +171,16 @@
                 }
             }
         }
-    
+        
         // MARK: Delegated Authentication Approval
-    
+        
         private enum ApprovalFlowError: Error {
             case fallbackTo3ds
             case deviceIsNotRegistered
             case authenticationServiceFailed(underlyingError: Error)
             case removeCredentialServiceError(underlyingError: Error)
         }
-    
+        
         private func showApprovalScreen(
             delegatedAuthenticationInput: String,
             cardType: CardType?,
@@ -212,18 +212,21 @@
                     guard let self else { return }
                     authenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
                                  cardNumber: cardNumber,
-                                 authenticatedHandler: { sdkOutput in
-                                     self.delegatedAuthenticationState.attemptRegistration = false
-                                     completion(.success((daOutput: sdkOutput, delete: true)))
-                                 },
+                                 authenticatedHandler: { [weak self] sdkOutput in
+                        guard let self else { return }
+                        self.presenter.showDeletionConfirmation(component: self) {
+                            self.delegatedAuthenticationState.attemptRegistration = false
+                            completion(.success((daOutput: sdkOutput, delete: true)))
+                        }
+                    },
                                  failedAuthenticationHandler: { error in
-                                     self.delegatedAuthenticationState.attemptRegistration = false
-                                     completion(.failure(.removeCredentialServiceError(underlyingError: error)))
-                                 })
+                        self.delegatedAuthenticationState.attemptRegistration = false
+                        completion(.failure(.removeCredentialServiceError(underlyingError: error)))
+                    })
                 }
             )
         }
-    
+        
         private func authenticate(delegatedAuthenticationInput: String,
                                   cardNumber: String?,
                                   authenticatedHandler: @escaping (String) -> Void,
@@ -236,7 +239,7 @@
                                                 displayName: cardNumber ?? Bundle.main.displayName)
                 )
             }
-        
+            
             service.authenticate(withAuthenticationInput: delegatedAuthenticationInput) { result in
                 switch result {
                 case let .success(sdkOutput):
@@ -246,10 +249,10 @@
                 }
             }
         }
-    
+        
         private func isDeviceRegistered(delegatedAuthenticationInput: String,
                                         handler: @escaping (Bool) -> Void) {
-        
+            
             let service: AuthenticationServiceProtocol = if let delegatedAuthenticationService {
                 delegatedAuthenticationService
             } else {
@@ -260,7 +263,7 @@
                     )
                 )
             }
-        
+            
             service.isDeviceRegistered(withAuthenticationInput: delegatedAuthenticationInput) { result in
                 switch result {
                 case .failure:
@@ -272,13 +275,13 @@
                 }
             }
         }
-    
+        
         // MARK: Delegated Authentication Registration
         
         internal func register(delegatedAuthenticationInput: String,
                                cardNumber: String?,
                                completion: @escaping (Result<String, Error>) -> Void) {
-        
+            
             let service: AuthenticationServiceProtocol = if let delegatedAuthenticationService {
                 delegatedAuthenticationService
             } else {
@@ -289,7 +292,7 @@
                     )
                 )
             }
-        
+            
             service.register(withRegistrationInput: delegatedAuthenticationInput) { result in
                 switch result {
                 case let .success(sdkOutput):
@@ -299,9 +302,9 @@
                 }
             }
         }
-    
+        
         // MARK: - Challenge
-    
+        
         /// Handles the 3D Secure 2 challenge action.
         ///
         /// - Parameter challengeAction: The challenge action as received from the Checkout API.
@@ -323,7 +326,7 @@
                         completionHandler(.success(threeDSResult))
                         return
                     }
-                
+                    
                     startRegistrationFlow(delegatedAuthenticationInput: registrationPayload,
                                           cardNumber: "**** 1234",
                                           cardType: .masterCard) { result in
@@ -334,11 +337,11 @@
                                     delegatedAuthenticationSDKOutput: registrationSDKOutput
                                 )
                                 completionHandler(.success(threeDSResultWithRegistrationPayload))
-                            
+                                
                             } catch {
                                 completionHandler(.success(threeDSResult))
                             }
-                        
+                            
                         case .failure:
                             completionHandler(.success(threeDSResult))
                         }
@@ -346,12 +349,12 @@
                 }
             }
         }
-    
+        
         private enum RegistrationFlowError: Error {
             case registrationServiceError(underlyingError: Error)
             case userOptedOutOfRegistration
         }
-    
+        
         private func startRegistrationFlow(delegatedAuthenticationInput: String,
                                            cardNumber: String?,
                                            cardType: CardType?,
@@ -380,7 +383,7 @@
                 }
             )
         }
-    
+        
         private func daPayload(_ challengeAction: ThreeDS2ChallengeAction) -> String? {
             guard let token: ThreeDS2Component.ChallengeToken = try? AdyenCoder.decodeBase64(challengeAction.challengeToken) else {
                 return nil
@@ -393,7 +396,7 @@ private extension Bundle {
     // Name of the app - title under the icon.
     var displayName: String {
         object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ??
-            object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
+        object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
     }
 }
 
