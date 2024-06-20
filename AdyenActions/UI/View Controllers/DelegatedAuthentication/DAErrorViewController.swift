@@ -65,21 +65,14 @@ internal final class DAErrorViewController: UIViewController {
         }
     }
 
-    private lazy var containerView = UIView(frame: .zero)
-    private lazy var scrollView = UIScrollView()
-
-    private lazy var errorView: DelegatedAuthenticationErrorView = .init(
-        logoStyle: style.imageStyle,
-        headerTextStyle: style.headerTextStyle,
-        descriptionTextStyle: style.descriptionTextStyle,
-        firstButtonStyle: style.primaryButton
-    )
-    
+    private lazy var errorView: DelegatedAuthenticationErrorView = .init(style: style)
     private let style: DelegatedAuthenticationComponentStyle
     internal typealias Handler = () -> Void
     private let continueHandler: Handler
+    private let screen: Screen    
     
-    private let screen: Screen
+    // MARK: - Init
+
     internal init(style: DelegatedAuthenticationComponentStyle,
                   screen: Screen,
                   completion: @escaping () -> Void) {
@@ -96,6 +89,8 @@ internal final class DAErrorViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - View Life Cycle
+    
     override internal func viewDidLoad() {
         super.viewDidLoad()
         buildUI()
@@ -105,6 +100,8 @@ internal final class DAErrorViewController: UIViewController {
         isModalInPresentation = true
     }
         
+    // MARK: - Configuration
+    
     private func configureErrorView() {
         errorView.titleLabel.text = screen.title
         errorView.descriptionLabel.text = screen.message
@@ -117,12 +114,9 @@ internal final class DAErrorViewController: UIViewController {
     }
     
     private func buildUI() {
-        containerView.addSubview(errorView)
-        view.addSubview(containerView)
-        containerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(errorView)
         errorView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.adyen.anchor(inside: view.safeAreaLayoutGuide)
-        errorView.adyen.anchor(inside: containerView)
+        errorView.adyen.anchor(inside: view.safeAreaLayoutGuide)
     }
 
     override internal var preferredContentSize: CGSize {

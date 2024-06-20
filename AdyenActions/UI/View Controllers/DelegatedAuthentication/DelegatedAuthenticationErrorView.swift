@@ -14,17 +14,15 @@ internal protocol DelegatedAuthenticationErrorViewDelegate: AnyObject {
 
 @available(iOS 16.0, *)
 internal final class DelegatedAuthenticationErrorView: UIView {
-    private let logoStyle: ImageStyle
-    private let headerTextStyle: TextStyle
-    private let descriptionTextStyle: TextStyle
-    private let firstButtonStyle: ButtonStyle
+
+    private let style: DelegatedAuthenticationComponentStyle
 
     internal weak var delegate: DelegatedAuthenticationErrorViewDelegate?
     
-    internal lazy var scrollView = UIScrollView(frame: .zero)
+    // MARK: Header & Description
 
     internal lazy var image: UIImageView = {
-        let imageView = UIImageView(style: logoStyle)
+        let imageView = UIImageView(style: style.errorImageStyle)
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "image")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -32,37 +30,20 @@ internal final class DelegatedAuthenticationErrorView: UIView {
         return imageView
     }()
 
-    internal lazy var titleLabel: UILabel = {
-        let label = UILabel(style: headerTextStyle)
-        label.isAccessibilityElement = false
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "titleLabel")
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-
-    internal lazy var descriptionLabel: UILabel = {
-        let label = UILabel(style: descriptionTextStyle)
-        label.isAccessibilityElement = false
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "descriptionLabel")
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        return label
-    }()
+    internal lazy var titleLabel: UILabel = .make(style: style.errorTitleStyle, accessibilityPostfix: "titleLabel")
     
-    internal lazy var tileAndSubtitleStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [image, titleLabel, descriptionLabel])
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = 16
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
+    internal lazy var descriptionLabel: UILabel = .make(style: style.errorDescription,
+                                                        accessibilityPostfix: "descriptionLabel",
+                                                        multiline: true)
+    
+    internal lazy var tileAndSubtitleStackView: UIStackView = .make(arrangedSubviews: [image, titleLabel, descriptionLabel],
+                                                                    spacing: 16,
+                                                                    view: self)
                     
     // MARK: Buttons
 
     internal lazy var firstButton: SubmitButton = {
-        let button = SubmitButton(style: firstButtonStyle)
+        let button = SubmitButton(style: style.errorButton)
 
         button.addTarget(self, action: #selector(firstButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton")
@@ -71,38 +52,22 @@ internal final class DelegatedAuthenticationErrorView: UIView {
         return button
     }()
 
-    internal lazy var buttonsStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [firstButton])
-        stackView.axis = .vertical
-        stackView.distribution = .fillEqually
-        stackView.spacing = 5
-        stackView.alignment = .fill
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
+    internal lazy var buttonsStackView: UIStackView = .make(arrangedSubviews: [firstButton], 
+                                                            distribution: .fillEqually,
+                                                            spacing: 5,
+                                                            view: self)
     
-    // MARK: - content stack
-
-    internal lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [tileAndSubtitleStackView, buttonsStackView])
-        stackView.axis = .vertical
-        stackView.spacing = 16
-        stackView.distribution = .fill
-        stackView.alignment = .fill
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
+    // MARK: - Container Views
+    
+    internal lazy var scrollView = UIScrollView(frame: .zero)
+    internal lazy var contentStackView: UIStackView = .make(arrangedSubviews: [tileAndSubtitleStackView, buttonsStackView],
+                                                            spacing: 16,
+                                                            view: self)
 
     // MARK: - initializers
     
-    internal init(logoStyle: ImageStyle,
-                  headerTextStyle: TextStyle,
-                  descriptionTextStyle: TextStyle,
-                  firstButtonStyle: ButtonStyle) {
-        self.logoStyle = logoStyle
-        self.headerTextStyle = headerTextStyle
-        self.descriptionTextStyle = descriptionTextStyle
-        self.firstButtonStyle = firstButtonStyle
+    internal init(style: DelegatedAuthenticationComponentStyle) {
+        self.style = style
         super.init(frame: .zero)
         configureViews()
     }

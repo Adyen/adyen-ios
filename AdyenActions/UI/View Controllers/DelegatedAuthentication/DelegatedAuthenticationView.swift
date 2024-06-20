@@ -16,26 +16,14 @@ internal protocol DelegatedAuthenticationViewDelegate: AnyObject {
 
 @available(iOS 16.0, *)
 internal final class DelegatedAuthenticationView: UIView {
-    private let logoStyle: ImageStyle
-    private let headerTextStyle: TextStyle
-    private let descriptionTextStyle: TextStyle
+    private let style: DelegatedAuthenticationComponentStyle
     
-    private let amountTextStyle: TextStyle
-    private let cardNumberTextStyle: TextStyle
-    private let cardImageStyle: ImageStyle
-
-    private let infoImageStyle: ImageStyle
-    private let additionalInformationTextStyle: TextStyle
-
-    private let firstButtonStyle: ButtonStyle
-    private let secondButtonStyle: ButtonStyle
-
     internal weak var delegate: DelegatedAuthenticationViewDelegate?
-    
-    internal lazy var scrollView = UIScrollView(frame: .zero)
-    
+        
+    // MARK: Header & Description
+
     internal lazy var logoImage: UIImageView = {
-        let imageView = UIImageView(style: logoStyle)
+        let imageView = UIImageView(style: style.imageStyle)
         imageView.image = UIImage(systemName: "lock",
                                   withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight))?
             .withRenderingMode(.alwaysTemplate)
@@ -46,45 +34,22 @@ internal final class DelegatedAuthenticationView: UIView {
         return imageView
     }()
 
-    internal lazy var titleLabel: UILabel = {
-        let label = UILabel(style: headerTextStyle)
-        label.isAccessibilityElement = false
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "titleLabel")
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-
-    internal lazy var descriptionLabel: UILabel = {
-        let label = UILabel(style: descriptionTextStyle)
-        label.isAccessibilityElement = false
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "descriptionLabel")
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        return label
-    }()
+    internal lazy var titleLabel: UILabel = .make(style: style.headerTextStyle, accessibilityPostfix: "titleLabel")
     
-    internal lazy var tileAndSubtitleStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [logoImage, titleLabel, descriptionLabel])
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = 16
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
+    internal lazy var descriptionLabel: UILabel = .make(style: style.descriptionTextStyle,
+                                                        accessibilityPostfix: "descriptionLabel",
+                                                        multiline: true)
+    
+    internal lazy var tileAndSubtitleStackView: UIStackView = .make(arrangedSubviews: [logoImage, titleLabel, descriptionLabel],
+                                                                    spacing: 16,
+                                                                    view: self)
     
     // MARK: Payment Information
     
-    internal lazy var amount: UILabel = {
-        let label = UILabel(style: amountTextStyle)
-        label.isAccessibilityElement = false
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "amountLabel")
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-
+    internal lazy var amount: UILabel = .make(style: style.amountTextStyle, accessibilityPostfix: "amountLabel")
+    
     internal lazy var cardImage: UIImageView = {
-        let imageView = UIImageView(style: cardImageStyle)
+        let imageView = UIImageView(style: style.cardImageStyle)
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardImage")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
@@ -97,48 +62,30 @@ internal final class DelegatedAuthenticationView: UIView {
         return imageView
     }()
 
-    internal lazy var cardNumberLabel: UILabel = {
-        let label = UILabel(style: cardNumberTextStyle)
-        label.isAccessibilityElement = false
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardNumber")
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    internal lazy var cardNumberLabel: UILabel = .make(style: style.cardNumberTextStyle, accessibilityPostfix: "cardNumber")
     
-    internal lazy var cardNumberStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [cardImage, cardNumberLabel])
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.spacing = 12
-        stackView.distribution = .equalSpacing
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
-
+    internal lazy var cardNumberStackView: UIStackView = .make(arrangedSubviews: [cardImage, cardNumberLabel],
+                                                               axis: .horizontal,
+                                                               distribution: .equalSpacing,
+                                                               alignment: .center,
+                                                               spacing: 12,
+                                                               view: self)
+    
     internal lazy var cardAndAmountDetailsStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [amount, cardNumberStackView])
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = 16
-        stackView.distribution = .fill
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        let stackView = UIStackView.make(arrangedSubviews: [amount, cardNumberStackView],
+                                         distribution: .fill,
+                                         alignment: .center,
+                                         spacing: 16,
+                                         view: self, withBackground: true)
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 23, trailing: 16)
-
-        let subView = UIView(frame: bounds)
-        subView.backgroundColor = UIColor.secondarySystemBackground
-        subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        stackView.insertSubview(subView, at: 0)
-        subView.layer.cornerRadius = 10.0
-        subView.layer.masksToBounds = true
-        subView.clipsToBounds = true
         return stackView
     }()
     
     // MARK: Additional Information
     
     internal lazy var firstInfoImage: UIImageView = {
-        let imageView = UIImageView(style: infoImageStyle)
+        let imageView = UIImageView(style: style.infoImageStyle)
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "infoImage")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .clear
@@ -152,26 +99,16 @@ internal final class DelegatedAuthenticationView: UIView {
         return imageView
     }()
     
-    internal lazy var firstInfoLabel: UILabel = {
-        let label = UILabel(style: additionalInformationTextStyle)
-        label.isAccessibilityElement = false
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "additionalInformationLabel")
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        return label
-    }()
+    internal lazy var firstInfoLabel: UILabel = .make(style: style.additionalInformationTextStyle,
+                                                      accessibilityPostfix: "additionalInformationLabel")
 
-    internal lazy var firstInfoStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [firstInfoImage, firstInfoLabel])
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.spacing = 12
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
-    
+    internal lazy var firstInfoStackView: UIStackView = .make(arrangedSubviews: [firstInfoImage, firstInfoLabel],
+                                                              axis: .horizontal,
+                                                              alignment: .center,
+                                                              spacing: 12,
+                                                              view: self)
     internal lazy var secondInfoImage: UIImageView = {
-        let imageView = UIImageView(style: infoImageStyle)
+        let imageView = UIImageView(style: style.infoImageStyle)
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "infoImage")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .clear
@@ -185,26 +122,17 @@ internal final class DelegatedAuthenticationView: UIView {
         return imageView
     }()
     
-    internal lazy var secondInfoLabel: UILabel = {
-        let label = UILabel(style: additionalInformationTextStyle)
-        label.isAccessibilityElement = false
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "additionalInformationLabel")
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        return label
-    }()
-
-    internal lazy var secondInfoStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [secondInfoImage, secondInfoLabel])
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.spacing = 12
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
+    internal lazy var secondInfoLabel: UILabel = .make(style: style.additionalInformationTextStyle,
+                                                       accessibilityPostfix: "additionalInformationLabel")
+    
+    internal lazy var secondInfoStackView: UIStackView = .make(arrangedSubviews: [secondInfoImage, secondInfoLabel],
+                                                               axis: .horizontal,
+                                                               alignment: .center,
+                                                               spacing: 12,
+                                                               view: self)
     
     internal lazy var thirdInfoImage: UIImageView = {
-        let imageView = UIImageView(style: infoImageStyle)
+        let imageView = UIImageView(style: style.infoImageStyle)
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "infoImage")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.backgroundColor = .clear
@@ -219,47 +147,35 @@ internal final class DelegatedAuthenticationView: UIView {
     }()
     
     internal lazy var thirdInfoLabel: UILabel = {
-        let label = UILabel(style: additionalInformationTextStyle)
-        label.isAccessibilityElement = false
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "additionalInformationLabel")
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        return label
+        .make(style: style.additionalInformationTextStyle, accessibilityPostfix: "additionalInformationLabel")
     }()
 
     internal lazy var thirdInfoStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [thirdInfoImage, thirdInfoLabel])
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.spacing = 12
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
+        .make(arrangedSubviews: [thirdInfoImage, thirdInfoLabel],
+              axis: .horizontal,
+              alignment: .center,
+              spacing: 12,
+              view: self)
     }()
 
     internal lazy var additionalInformationStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [firstInfoStackView, secondInfoStackView, thirdInfoStackView])
-        stackView.axis = .vertical
-        stackView.alignment = .leading
-        stackView.distribution = .fill
-        stackView.spacing = 8.0
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        let stackView = UIStackView.make(arrangedSubviews: [firstInfoStackView,
+                                                            secondInfoStackView,
+                                                            thirdInfoStackView],
+                                         distribution: .fill,
+                                         alignment: .leading,
+                                         spacing: 8,
+                                         view: self,
+                                         withBackground: true)
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20)
-        
-        let subView = UIView(frame: bounds)
-        subView.backgroundColor = UIColor.secondarySystemBackground
-        subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        stackView.insertSubview(subView, at: 0)
-        subView.layer.cornerRadius = 10.0
-        subView.layer.masksToBounds = true
-        subView.clipsToBounds = true
         return stackView
     }()
     
     // MARK: Buttons
 
     internal lazy var firstButton: SubmitButton = {
-        let button = SubmitButton(style: firstButtonStyle)
+        let button = SubmitButton(style: style.primaryButton)
 
         button.addTarget(self, action: #selector(firstButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton")
@@ -269,7 +185,7 @@ internal final class DelegatedAuthenticationView: UIView {
     }()
 
     internal lazy var secondButton: SubmitButton = {
-        let button = SubmitButton(style: secondButtonStyle)
+        let button = SubmitButton(style: style.secondaryButton)
         button.addTarget(self, action: #selector(secondButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "secondaryButton")
         button.preservesSuperviewLayoutMargins = true
@@ -277,43 +193,25 @@ internal final class DelegatedAuthenticationView: UIView {
         return button
     }()
 
-    internal lazy var buttonsStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [firstButton, secondButton])
-        stackView.axis = .vertical
-        stackView.distribution = .fillEqually
-        stackView.spacing = 8
-        stackView.alignment = .fill
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
+    internal lazy var buttonsStackView: UIStackView = .make(arrangedSubviews: [firstButton,
+                                                                               secondButton],
+                                                            distribution: .fillEqually,
+                                                            spacing: 8,
+                                                            view: self)
+    // MARK: Container views
     
-    // MARK: grouping stacks
+    internal lazy var scrollView = UIScrollView(frame: .zero)
 
-    internal lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [tileAndSubtitleStackView, 
-                                                       cardAndAmountDetailsStackView, 
-                                                       additionalInformationStackView])
-        stackView.axis = .vertical
-        stackView.spacing = 16
-        stackView.distribution = .fill
-        stackView.alignment = .fill
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
+    internal lazy var contentStackView: UIStackView = .make(arrangedSubviews: [tileAndSubtitleStackView,
+                                                                               cardAndAmountDetailsStackView,
+                                                                               additionalInformationStackView],
+                                                            spacing: 16,
+                                                            view: self)
 
     // MARK: - initializers
     
     internal init(style: DelegatedAuthenticationComponentStyle) {
-        self.logoStyle = style.imageStyle
-        self.headerTextStyle = style.headerTextStyle
-        self.descriptionTextStyle = style.descriptionTextStyle
-        self.amountTextStyle = style.amountTextStyle
-        self.infoImageStyle = style.infoImageStyle
-        self.additionalInformationTextStyle = style.additionalInformationTextStyle
-        self.firstButtonStyle = style.primaryButton
-        self.secondButtonStyle = style.secondaryButton
-        self.cardImageStyle = style.cardImageStyle
-        self.cardNumberTextStyle = style.cardNumberTextStyle
+        self.style = style
         super.init(frame: .zero)
         configureViews()
     }
@@ -393,22 +291,47 @@ internal final class DelegatedAuthenticationView: UIView {
     }
 }
 
+// MARK: - view creation helpers
+
 @available(iOS 16.0, *)
-extension UIImage {
-    static var biometricImage: UIImage? {
-        let authContext = LAContext()
-        _ = authContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
-        switch authContext.biometryType {
-        case .none:
-            return nil
-        case .touchID:
-            return UIImage(systemName: "touchid")
-        case .faceID:
-            return UIImage(systemName: "faceid")
-        case .opticID:
-            return UIImage(systemName: "opticid")
-        @unknown default:
-            return nil
+extension UIStackView {
+    internal static func make(arrangedSubviews: [UIView],
+                              axis: NSLayoutConstraint.Axis = .vertical,
+                              distribution: UIStackView.Distribution = .fill,
+                              alignment: UIStackView.Alignment = .fill,
+                              spacing: CGFloat,
+                              view: UIView,
+                              withBackground: Bool = false) -> UIStackView {
+        let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
+        stackView.axis = axis
+        stackView.alignment = alignment
+        stackView.spacing = spacing
+        stackView.distribution = distribution
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        if withBackground {
+            let subView = UIView(frame: view.bounds)
+            subView.backgroundColor = UIColor.secondarySystemBackground
+            subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            stackView.insertSubview(subView, at: 0)
+            subView.layer.cornerRadius = 10.0
+            subView.layer.masksToBounds = true
+            subView.clipsToBounds = true
         }
+        return stackView
+    }
+}
+
+@available(iOS 16.0, *)
+extension UILabel {
+    internal static func make(style: TextStyle, accessibilityPostfix: String, multiline: Bool = false) -> UILabel {
+        let label = UILabel(style: style)
+        label.isAccessibilityElement = false
+        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: accessibilityPostfix)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        if multiline {
+            label.numberOfLines = 0
+        }
+        return label
     }
 }

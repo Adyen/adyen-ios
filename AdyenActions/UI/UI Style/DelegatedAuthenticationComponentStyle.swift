@@ -67,11 +67,7 @@ public struct DelegatedAuthenticationComponentStyle {
     public var errorDescription = TextStyle(font: .preferredFont(forTextStyle: .body),
                                             color: UIColor.Adyen.componentSecondaryLabel,
                                             textAlignment: .center)
-    
-    public var errorCaption = TextStyle(font: .preferredFont(forTextStyle: .caption1),
-                                        color: UIColor.Adyen.componentSecondaryLabel,
-                                        textAlignment: .center)
-    
+        
     /// The primary button style.
     public var primaryButton = ButtonStyle(
         title: TextStyle(font: .preferredFont(forTextStyle: .headline),
@@ -88,6 +84,13 @@ public struct DelegatedAuthenticationComponentStyle {
         background: .clear
     )
     
+    public var errorButton = ButtonStyle(
+        title: TextStyle(font: .preferredFont(forTextStyle: .headline),
+                         color: .white),
+        cornerRadius: 8,
+        background: UIColor.Adyen.defaultBlue
+    )
+
     /// Creates a component style with the default styling
     public init() {
         imageStyle.tintColor = .systemGray

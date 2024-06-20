@@ -10,6 +10,8 @@ import UIKit
 @available(iOS 16.0, *)
 internal final class DAApprovalViewController: UIViewController {
     private let context: AdyenContext
+    private let style: DelegatedAuthenticationComponentStyle
+    private let localizationParameters: LocalizationParameters?
     private let cardNumber: String?
     private let cardType: CardType?
     private let biometricName: String
@@ -17,7 +19,7 @@ internal final class DAApprovalViewController: UIViewController {
     private let useBiometricsHandler: Handler
     private let approveDifferentlyHandler: Handler
     private let removeCredentialsHandler: Handler
-    
+
     private lazy var removeCredentialAlert: UIAlertController = {
         let alertController = UIAlertController(title: localizedString(.threeds2DAApprovalRemoveAlertTitle, localizationParameters),
                                                 message: localizedString(.threeds2DAApprovalRemoveAlertDescription, localizationParameters),
@@ -60,10 +62,9 @@ internal final class DAApprovalViewController: UIViewController {
 
     private lazy var approvalView: DelegatedAuthenticationView = .init(style: style)
     
-    private let style: DelegatedAuthenticationComponentStyle
-    private let localizationParameters: LocalizationParameters?
-    
     internal typealias Handler = () -> Void
+    
+    // MARK: - init
     
     internal init(context: AdyenContext,
                   style: DelegatedAuthenticationComponentStyle,
@@ -94,6 +95,8 @@ internal final class DAApprovalViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - View Life Cycle
+    
     override internal func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = style.backgroundColor
@@ -102,6 +105,8 @@ internal final class DAApprovalViewController: UIViewController {
         approvalView.animateImageTransitionToSystemImage(named: "lock.open")
         isModalInPresentation = true
     }
+    
+    // MARK: - Configuration
     
     private func configureDelegateAuthenticationView() {
         approvalView.titleLabel.text = localizedString(.threeds2DAApprovalTitle, localizationParameters)
@@ -120,7 +125,8 @@ internal final class DAApprovalViewController: UIViewController {
             
             if let cardNumber, let cardType {
                 approvalView.cardNumberLabel.text = cardNumber
-                let cardTypeURL = LogoURLProvider.logoURL(withName: cardType.rawValue, environment: context.apiContext.environment)
+                let cardTypeURL = LogoURLProvider.logoURL(withName: cardType.rawValue, 
+                                                          environment: context.apiContext.environment)
                 ImageLoaderProvider.imageLoader().load(url: cardTypeURL) { [weak self] image in
                     guard let self else { return }
                     approvalView.cardImage.image = image
