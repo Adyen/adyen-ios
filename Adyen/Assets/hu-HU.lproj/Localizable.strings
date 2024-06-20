@@ -180,8 +180,8 @@
 "adyen.upi.vpaWaitingMessage" = "A fizetés megerősítéséhez nyissa meg UPI-alkalmazást";
 "adyen.QRCode.generateQRCode" = "QR-kód létrehozása";
 "adyen.UPI.QRCodeInstructions" = "A fizetés befejezéséhez készítsen képernyőképet és töltse fel az UPI-alkalmazásban, vagy a kívánt UPI-alkalmazással olvassa be a QR-kódot.";
-"adyen.UPI.firstTabTitle" = "Fizetés bármilyen UPI-alkalmazással";
-"adyen.UPI.secondTabTitle" = "További UPI-lehetőségek";
+"adyen.UPI.firstTabTitle" = "Pay by any UPI app";
+"adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "UPI-azonosító megadása";
 "adyen.UPI.collectFieldLabel" = "UPI-azonosító/VPA megadása";
 "adyen.cashAppPay.title" = "";

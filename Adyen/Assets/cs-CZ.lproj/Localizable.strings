@@ -180,8 +180,8 @@
 "adyen.upi.vpaWaitingMessage" = "Otevřete platební aplikaci UPI a potvrďte platbu";
 "adyen.QRCode.generateQRCode" = "Vygenerovat QR kód";
 "adyen.UPI.QRCodeInstructions" = "Pořiďte snímek obrazovky a nahrajte ho v aplikaci UPI nebo naskenujte QR kód ve své oblíbené aplikaci UPI a dokončete platbu.";
-"adyen.UPI.firstTabTitle" = "Plaťte pomocí kterékoli aplikace UPI";
-"adyen.UPI.secondTabTitle" = "Další možnosti UPI";
+"adyen.UPI.firstTabTitle" = "Pay by any UPI app";
+"adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Zadejte UPI ID";
 "adyen.UPI.collectFieldLabel" = "Zadejte UPI ID / VPA";
 "adyen.cashAppPay.title" = "";

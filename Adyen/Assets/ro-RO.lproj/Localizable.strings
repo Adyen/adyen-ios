@@ -57,7 +57,6 @@
 "adyen.blik.invalid" = "Introduceți 6 cifre";
 "adyen.blik.code" = "Cod din 6 cifre";
 "adyen.blik.help" = "Obțineți codul din aplicația dvs. de banking.";
-"adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Preautorizare cu %@";
 "adyen.confirmPreauthorization" = "Confirmați preautorizarea";
 "adyen.card.cvcItem.title.optional" = "Cod de securitate (opțional)";
@@ -75,9 +74,6 @@
 "adyen.button.copy" = "Copiere";
 "adyen.voucher.introduction" = "Vă mulțumim pentru cumpărături, vă rugăm să utilizați următoarele informații pentru a vă finaliza plata.";
 "adyen.voucher.readInstructions" = "Citiți instrucțiunile";
-"adyen.voucher.saveImage" = "";
-"adyen.voucher.finish" = "";
-"adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Sumă";
 "adyen.voucher.entity" = "Entitate";
 "adyen.pix.instructions" = "";
@@ -180,12 +176,10 @@
 "adyen.upi.vpaWaitingMessage" = "Deschideți aplicația UPI pentru a confirma plata";
 "adyen.QRCode.generateQRCode" = "Generați codul QR";
 "adyen.UPI.QRCodeInstructions" = "Faceți o captură de ecran pentru a o încărca în aplicația UPI sau scanați codul QR folosind aplicația UPI preferată pentru a finaliza plata.";
-"adyen.UPI.firstTabTitle" = "Plătiți cu orice aplicație UPI";
-"adyen.UPI.secondTabTitle" = "Alte opțiuni UPI";
+"adyen.UPI.firstTabTitle" = "Pay by any UPI app";
+"adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Introduceți ID-ul UPI";
 "adyen.UPI.collectFieldLabel" = "Completați identificatorul UPI/VPA";
-"adyen.cashAppPay.title" = "";
-"adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Pe acest dispozitiv nu este instalată nicio versiune sau este o versiune depășită a TWINT. Actualizați sau instalați aplicația TWINT.";
 "adyen.threeds2.DA.registration.title" = "Proces de validare sigur și rapid!";
 "adyen.threeds2.DA.registration.description" = "Data viitoare, puteți efectua mai repede validarea de pe acest dispozitiv, utilizând datele biometrice.";

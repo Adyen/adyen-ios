@@ -74,7 +74,6 @@
 "adyen.button.copy" = "复制";
 "adyen.voucher.introduction" = "感谢您的购买，请使用以下信息完成支付。";
 "adyen.voucher.readInstructions" = "阅读说明";
-"adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "金额";
 "adyen.voucher.entity" = "实体";
 "adyen.pix.instructions" = "";
@@ -177,8 +176,8 @@
 "adyen.upi.vpaWaitingMessage" = "打开您的 UPI 应用以确认付款";
 "adyen.QRCode.generateQRCode" = "生成二维码";
 "adyen.UPI.QRCodeInstructions" = "截取屏幕截图以上传到 UPI 应用，或者使用您首选的 UPI 应用扫描二维码以完成付款。";
-"adyen.UPI.firstTabTitle" = "使用任意 UPI 应用付款";
-"adyen.UPI.secondTabTitle" = "其他 UPI 选项";
+"adyen.UPI.firstTabTitle" = "Pay by any UPI app";
+"adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "输入 UPI ID";
 "adyen.UPI.collectFieldLabel" = "输入 UPI ID/VPA";
 "adyen.twint.noAppsInstalled.message" = "此设备上未安装 TWINT 或安装的 TWINT 版本已过期。请更新或安装 TWINT 应用。";

@@ -180,8 +180,8 @@
 "adyen.upi.vpaWaitingMessage" = "Ouvrez votre application UPI pour confirmer le paiement";
 "adyen.QRCode.generateQRCode" = "Générer un code QR";
 "adyen.UPI.QRCodeInstructions" = "Effectuez une capture d'écran afin de l'importer dans l'application UPI ou scannez le code QR à l'aide de votre application UPI préférée pour procéder au paiement.";
-"adyen.UPI.firstTabTitle" = "Payez avec n'importe quelle application UPI";
-"adyen.UPI.secondTabTitle" = "Autres options UPI";
+"adyen.UPI.firstTabTitle" = "Pay by any UPI app";
+"adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Entrez l'identifiant UPI";
 "adyen.UPI.collectFieldLabel" = "Entrez l'identifiant UPI / VPA";
 "adyen.cashAppPay.title" = "";

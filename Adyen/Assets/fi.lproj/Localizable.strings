@@ -180,8 +180,8 @@
 "adyen.upi.vpaWaitingMessage" = "Avaa UPI-sovellus vahvistaaksesi maksun";
 "adyen.QRCode.generateQRCode" = "Tuota QR-koodi";
 "adyen.UPI.QRCodeInstructions" = "Suorita maksu ottamalla kuvakaappaus, jonka voit ladata UPI-sovellukseen, tai skannaamalla QR-koodi haluamallasi UPI-sovelluksella.";
-"adyen.UPI.firstTabTitle" = "Maksa millä tahansa UPI-sovelluksella";
-"adyen.UPI.secondTabTitle" = "Muita UPI-vaihtoehtoja";
+"adyen.UPI.firstTabTitle" = "Pay by any UPI app";
+"adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Syötä UPI-tunnus";
 "adyen.UPI.collectFieldLabel" = "Syötä UPI-tunnus/VPA";
 "adyen.cashAppPay.title" = "";

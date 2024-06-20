@@ -57,7 +57,6 @@
 "adyen.blik.invalid" = "Vnesite 6 številk";
 "adyen.blik.code" = "6-mestna koda";
 "adyen.blik.help" = "Pridobite kodo iz bančne aplikacije.";
-"adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Predhodna odobritev s/z: %@";
 "adyen.confirmPreauthorization" = "Potrdi predhodno odobritev";
 "adyen.card.cvcItem.title.optional" = "Varnostna koda (neobvezno)";
@@ -75,9 +74,6 @@
 "adyen.button.copy" = "Kopiraj";
 "adyen.voucher.introduction" = "Zahvaljujemo se vam za nakup. Za dokončanje plačila uporabite naslednji kupon.";
 "adyen.voucher.readInstructions" = "Preberite navodila";
-"adyen.voucher.saveImage" = "";
-"adyen.voucher.finish" = "";
-"adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Znesek";
 "adyen.voucher.entity" = "Entiteta";
 "adyen.pix.instructions" = "";
@@ -180,12 +176,10 @@
 "adyen.upi.vpaWaitingMessage" = "Za potrditev plačila odprite svojo aplikacijo UPI";
 "adyen.QRCode.generateQRCode" = "Ustvari kodo QR";
 "adyen.UPI.QRCodeInstructions" = "Za dokončanje plačila naredite posnetek zaslona, ki ga naložite v aplikacijo UPI, ali poskenirajte kodo QR z želeno aplikacijo UPI.";
-"adyen.UPI.firstTabTitle" = "Plačajte s poljubno aplikacijo UPI";
-"adyen.UPI.secondTabTitle" = "Druge možnosti za UPI";
+"adyen.UPI.firstTabTitle" = "Pay by any UPI app";
+"adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Vnesite UPI ID";
 "adyen.UPI.collectFieldLabel" = "Vnesite UPI ID / VPA";
-"adyen.cashAppPay.title" = "";
-"adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "V tej napravi ni nameščena različica aplikacije TWINT ali pa je zastarela. Posodobite ali namestite aplikacijo TWINT.";
 "adyen.threeds2.DA.registration.title" = "Varno in hitro dokončanje nakupov!";
 "adyen.threeds2.DA.registration.description" = "Naslednjič lahko v tej napravi hitreje dokončate nakup z uporabo biometričnih podatkov.";

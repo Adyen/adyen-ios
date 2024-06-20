@@ -180,8 +180,8 @@
 "adyen.upi.vpaWaitingMessage" = "Åbn din UPI-app for at bekræfte betalingen";
 "adyen.QRCode.generateQRCode" = "Generér QR-kode";
 "adyen.UPI.QRCodeInstructions" = "Tag et skærmbillede, som du kan uploade i UPI-appen, eller scan QR-koden med din foretrukne UPI-app for at gennemføre betalingen.";
-"adyen.UPI.firstTabTitle" = "Betal med enhver UPI-app";
-"adyen.UPI.secondTabTitle" = "Andre UPI-muligheder";
+"adyen.UPI.firstTabTitle" = "Pay by any UPI app";
+"adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Indtast UPI-id";
 "adyen.UPI.collectFieldLabel" = "Indtast UPI-id/VPA";
 "adyen.cashAppPay.title" = "";

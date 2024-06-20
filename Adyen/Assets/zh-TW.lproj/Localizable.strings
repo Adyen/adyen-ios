@@ -176,8 +176,8 @@
 "adyen.upi.vpaWaitingMessage" = "開啟您的 UPI 應用程式以確認付款";
 "adyen.QRCode.generateQRCode" = "產生 QR 代碼";
 "adyen.UPI.QRCodeInstructions" = "擷取螢幕畫面並上傳到 UPI 應用程式，或使用偏好的 UPI 應用程式掃描 QR 代碼以完成付款。";
-"adyen.UPI.firstTabTitle" = "透過任何 UPI 應用程式付款";
-"adyen.UPI.secondTabTitle" = "其他 UPI 選項";
+"adyen.UPI.firstTabTitle" = "Pay by any UPI app";
+"adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "輸入 UPI ID";
 "adyen.UPI.collectFieldLabel" = "輸入 UPI ID / VPA";
 "adyen.twint.noAppsInstalled.message" = "這個裝置並未安裝 TWINT 的應用程式，或是可能安裝到了舊版的 TWINT 應用程式。 請更新或安裝 TWINT 的應用程式。";

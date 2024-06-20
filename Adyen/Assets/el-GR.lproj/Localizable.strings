@@ -180,8 +180,8 @@
 "adyen.upi.vpaWaitingMessage" = "Ανοίξτε την εφαρμογή UPI για επιβεβαίωση της πληρωμής";
 "adyen.QRCode.generateQRCode" = "Δημιουργία κωδικού QR";
 "adyen.UPI.QRCodeInstructions" = "Τραβήξτε ένα στιγμιότυπο οθόνης για να το ανεβάσετε στην εφαρμογή UPI ή σαρώστε τον κωδικό QR χρησιμοποιώντας την εφαρμογή UPI που προτιμάτε για να ολοκληρώσετε την πληρωμή.";
-"adyen.UPI.firstTabTitle" = "Πληρώστε με οποιαδήποτε εφαρμογή UPI";
-"adyen.UPI.secondTabTitle" = "Άλλες επιλογές UPI";
+"adyen.UPI.firstTabTitle" = "Pay by any UPI app";
+"adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Εισαγωγή αναγνωριστικού UPI";
 "adyen.UPI.collectFieldLabel" = "Εισαγωγή αναγνωριστικού UPI / VPA";
 "adyen.cashAppPay.title" = "";

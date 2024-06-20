@@ -57,7 +57,6 @@
 "adyen.blik.invalid" = "Digite 6 números";
 "adyen.blik.code" = "Código de 6 dígitos";
 "adyen.blik.help" = "Obtenha o código da sua aplicação bancária.";
-"adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Pré-autorizar com %@";
 "adyen.confirmPreauthorization" = "Confirmar pré-autorização";
 "adyen.card.cvcItem.title.optional" = "Código de segurança (opcional)";
@@ -75,8 +74,6 @@
 "adyen.button.copy" = "Copiar";
 "adyen.voucher.introduction" = "Obrigado pela sua compra, use as seguintes informações para concluir o seu pagamento.";
 "adyen.voucher.readInstructions" = "Ler instruções";
-"adyen.voucher.saveImage" = "";
-"adyen.voucher.finish" = "";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Valor";
 "adyen.voucher.entity" = "Entidade";
@@ -180,12 +177,10 @@
 "adyen.upi.vpaWaitingMessage" = "Abra a aplicação UPI para confirmar o pagamento";
 "adyen.QRCode.generateQRCode" = "Gerar código QR";
 "adyen.UPI.QRCodeInstructions" = "Faça uma captura de ecrã para carregar na aplicação UPI ou verificar o código QR usando a sua aplicação UPI preferida para concluir o pagamento.";
-"adyen.UPI.firstTabTitle" = "Pague com qualquer aplicação UPI";
-"adyen.UPI.secondTabTitle" = "Outras opções UPI";
+"adyen.UPI.firstTabTitle" = "Pay by any UPI app";
+"adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Introduza o ID da app UPI";
 "adyen.UPI.collectFieldLabel" = "Introduza o ID da aplicação UPI/VPA";
-"adyen.cashAppPay.title" = "";
-"adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Nenhuma versão ou uma versão desatualizada do TWINT está instalada neste dispositivo. Atualize ou instale a app TWINT.";
 "adyen.threeds2.DA.registration.title" = "Finalização da compra rápida e segura!";
 "adyen.threeds2.DA.registration.description" = "Pode finalizar a compra mais rapidamente da próxima vez neste dispositivo usando a sua biometria.";

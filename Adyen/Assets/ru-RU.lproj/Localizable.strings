@@ -57,7 +57,6 @@
 "adyen.blik.invalid" = "Введите 6 цифр";
 "adyen.blik.code" = "6-значный код";
 "adyen.blik.help" = "Получите код из приложения вашего банка.";
-"adyen.blik.placeholder" = "";
 "adyen.preauthorizeWith" = "Предавторизация в %@";
 "adyen.confirmPreauthorization" = "Подтвердить предавторизацию";
 "adyen.card.cvcItem.title.optional" = "Защитный код (необязательно)";
@@ -75,9 +74,6 @@
 "adyen.button.copy" = "Копия";
 "adyen.voucher.introduction" = "Благодарим за покупку. Для завершения оплаты используйте следующие сведения.";
 "adyen.voucher.readInstructions" = "Прочитайте инструкции";
-"adyen.voucher.saveImage" = "";
-"adyen.voucher.finish" = "";
-"adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Сумма";
 "adyen.voucher.entity" = "Объект";
 "adyen.pix.instructions" = "";
@@ -180,12 +176,10 @@
 "adyen.upi.vpaWaitingMessage" = "Откройте приложение UPI для подтверждения платежа";
 "adyen.QRCode.generateQRCode" = "Создать QR-код";
 "adyen.UPI.QRCodeInstructions" = "Сделайте снимок экрана, чтобы загрузить его в приложение UPI, или отсканируйте QR-код своим любимым приложением UPI, чтобы оформить платеж.";
-"adyen.UPI.firstTabTitle" = "Оплата любым приложением UPI";
-"adyen.UPI.secondTabTitle" = "Другие варианты UPI";
+"adyen.UPI.firstTabTitle" = "Pay by any UPI app";
+"adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Введите идентификатор UPI";
 "adyen.UPI.collectFieldLabel" = "Введите VPA или идентификатор UPI";
-"adyen.cashAppPay.title" = "";
-"adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "На этом устройстве либо установлена устаревшая версия TWINT, либо это приложение не установлено вообще. Обновите или установите TWINT.";
 "adyen.threeds2.DA.registration.title" = "Безопасная и быстрая оплата!";
 "adyen.threeds2.DA.registration.description" = "В следующий раз вы сможете быстрее оформить заказ на этом устройстве, используя свои биометрические данные.";
