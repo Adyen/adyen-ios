@@ -17,17 +17,18 @@ internal final class DelegatedAuthenticationErrorView: UIView {
     private let logoStyle: ImageStyle
     private let headerTextStyle: TextStyle
     private let descriptionTextStyle: TextStyle
-    private let progressTextStyle: TextStyle
     private let firstButtonStyle: ButtonStyle
 
     internal weak var delegate: DelegatedAuthenticationErrorViewDelegate?
     
+    internal lazy var scrollView = UIScrollView(frame: .zero)
+
     internal lazy var image: UIImageView = {
         let imageView = UIImageView(style: logoStyle)
-        imageView.image = .biometricImage?.withRenderingMode(.alwaysTemplate)
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "image")
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        
+        imageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
 
@@ -49,22 +50,15 @@ internal final class DelegatedAuthenticationErrorView: UIView {
     }()
     
     internal lazy var tileAndSubtitleStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel])
+        let stackView = UIStackView(arrangedSubviews: [image, titleLabel, descriptionLabel])
         stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = 8.0
+        stackView.alignment = .fill
+        stackView.distribution = .fill
+        stackView.spacing = 16
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-    
-    internal lazy var progressText: UILabel = {
-        let label = UILabel(style: progressTextStyle)
-        label.isAccessibilityElement = false
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "progressText")
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-                
+                    
     // MARK: Buttons
 
     internal lazy var firstButton: SubmitButton = {
@@ -80,8 +74,21 @@ internal final class DelegatedAuthenticationErrorView: UIView {
     internal lazy var buttonsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [firstButton])
         stackView.axis = .vertical
-        stackView.spacing = 20
-        stackView.alignment = .center
+        stackView.distribution = .fillEqually
+        stackView.spacing = 5
+        stackView.alignment = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    // MARK: - content stack
+
+    internal lazy var contentStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [tileAndSubtitleStackView, buttonsStackView])
+        stackView.axis = .vertical
+        stackView.spacing = 16
+        stackView.distribution = .fill
+        stackView.alignment = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -91,13 +98,11 @@ internal final class DelegatedAuthenticationErrorView: UIView {
     internal init(logoStyle: ImageStyle,
                   headerTextStyle: TextStyle,
                   descriptionTextStyle: TextStyle,
-                  progressTextStyle: TextStyle,
                   firstButtonStyle: ButtonStyle) {
         self.logoStyle = logoStyle
         self.headerTextStyle = headerTextStyle
         self.descriptionTextStyle = descriptionTextStyle
         self.firstButtonStyle = firstButtonStyle
-        self.progressTextStyle = progressTextStyle
         super.init(frame: .zero)
         configureViews()
     }
@@ -110,32 +115,27 @@ internal final class DelegatedAuthenticationErrorView: UIView {
     // MARK: - Configuration
     
     private func configureViews() {
-        addSubview(image)
-        addSubview(tileAndSubtitleStackView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(contentStackView)
+        addSubview(scrollView)
         addSubview(buttonsStackView)
-        addSubview(progressText)
         
         NSLayoutConstraint.activate([
-            image.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor, constant: 20),
-            image.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor),
-            image.widthAnchor.constraint(equalToConstant: 40),
-            image.heightAnchor.constraint(equalToConstant: 40),
-
-            tileAndSubtitleStackView.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 24),
-            tileAndSubtitleStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            tileAndSubtitleStackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 15.0),
-            tileAndSubtitleStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -15.0),
-
-            progressText.topAnchor.constraint(equalTo: tileAndSubtitleStackView.bottomAnchor, constant: 24),
-            progressText.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor),
-
-            firstButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            firstButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-
-            buttonsStackView.topAnchor.constraint(greaterThanOrEqualTo: progressText.bottomAnchor, constant: 24),
-            buttonsStackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            buttonsStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            buttonsStackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
+            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 30),
+            scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15.0),
+            scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15.0),
+            scrollView.bottomAnchor.constraint(equalTo: buttonsStackView.topAnchor, constant: -8),
+            
+            contentStackView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor),
+            contentStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 10),
+            contentStackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            contentStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            
+            buttonsStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15.0),
+            buttonsStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15.0),
+            buttonsStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -25.0)
         ])
     }
 

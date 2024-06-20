@@ -28,7 +28,10 @@ internal final class DAErrorViewController: UIViewController {
             case .authenticationFailed:
                 UIImage(named: "feedback", in: Bundle.actionsInternalResources, compatibleWith: nil)
             case .registrationFailed:
-                UIImage(named: "union", in: Bundle.actionsInternalResources, compatibleWith: nil)
+                UIImage(systemName: "checkmark.circle",
+                        withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight))?
+                    .withTintColor(.systemGreen,
+                                   renderingMode: .alwaysOriginal)
             }
         }
         
@@ -44,9 +47,11 @@ internal final class DAErrorViewController: UIViewController {
         internal func captionMessage(timeInterval: TimeInterval) -> String {
             switch self {
             case .authenticationFailed(let localizationParameters):
-                String(format: localizedString(.threeds2DAApprovalErrorTimerText, localizationParameters), timeInterval.adyen.timeLeftString() ?? "0")
+                String(format: localizedString(.threeds2DAApprovalErrorTimerText, localizationParameters), 
+                       timeInterval.adyen.timeLeftString() ?? "0")
             case .registrationFailed(let localizationParameters):
-                String(format: localizedString(.threeds2DARegistrationTimerText, localizationParameters), timeInterval.adyen.timeLeftString() ?? "0")
+                String(format: localizedString(.threeds2DARegistrationTimerText, localizationParameters), 
+                       timeInterval.adyen.timeLeftString() ?? "0")
             }
         }
         
@@ -55,20 +60,18 @@ internal final class DAErrorViewController: UIViewController {
             case .authenticationFailed(let localizationParameters):
                 return localizedString(.threeds2DAApprovalErrorButtonTitle, localizationParameters)
             case .registrationFailed(let localizationParameters):
-                return nil
+                return localizedString(.threeds2DAApprovalErrorButtonTitle, localizationParameters)
             }
         }
     }
 
     private lazy var containerView = UIView(frame: .zero)
     private lazy var scrollView = UIScrollView()
-    private var timeoutTimer: ExpirationTimer?
 
     private lazy var errorView: DelegatedAuthenticationErrorView = .init(
         logoStyle: style.imageStyle,
         headerTextStyle: style.headerTextStyle,
         descriptionTextStyle: style.descriptionTextStyle,
-        progressTextStyle: style.errorCaption,
         firstButtonStyle: style.primaryButton
     )
     
@@ -99,25 +102,9 @@ internal final class DAErrorViewController: UIViewController {
         configureErrorView()
         view.backgroundColor = style.backgroundColor
         configureErrorView()
-        configureProgress()
+        isModalInPresentation = true
     }
-    
-    private func configureProgress() {
-        let timeout: TimeInterval = 5
-        errorView.progressText.text = screen.captionMessage(timeInterval: timeout)
-        timeoutTimer = ExpirationTimer(
-            expirationTimeout: timeout,
-            onTick: { [weak self] in
-                self?.errorView.progressText.text = self?.screen.captionMessage(timeInterval: $0)
-            },
-            onExpiration: { [weak self] in
-                self?.timeoutTimer?.stopTimer()
-                self?.continueHandler()
-            }
-        )
-        timeoutTimer?.startTimer()
-    }
-    
+        
     private func configureErrorView() {
         errorView.titleLabel.text = screen.title
         errorView.descriptionLabel.text = screen.message
@@ -140,7 +127,7 @@ internal final class DAErrorViewController: UIViewController {
 
     override internal var preferredContentSize: CGSize {
         get {
-            containerView.adyen.minimalSize
+            UIView.layoutFittingExpandedSize
         }
 
         // swiftlint:disable:next unused_setter_value
@@ -156,11 +143,6 @@ internal final class DAErrorViewController: UIViewController {
 extension DAErrorViewController: DelegatedAuthenticationErrorViewDelegate {
     internal func firstButtonTapped() {
         errorView.firstButton.showsActivityIndicator = true
-        timeoutTimer?.stopTimer()
-        switch screen {
-        case .authenticationFailed:
-            continueHandler()
-        case .registrationFailed: break;
-        }
+        continueHandler()
     }
 }

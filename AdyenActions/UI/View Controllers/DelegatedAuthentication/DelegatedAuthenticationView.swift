@@ -287,18 +287,12 @@ internal final class DelegatedAuthenticationView: UIView {
         return stackView
     }()
     
-    internal lazy var informationStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [cardAndAmountDetailsStackView, additionalInformationStackView])
-        stackView.axis = .vertical
-        stackView.spacing = 16
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
+    // MARK: grouping stacks
 
     internal lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [tileAndSubtitleStackView, informationStackView])
+        let stackView = UIStackView(arrangedSubviews: [tileAndSubtitleStackView, 
+                                                       cardAndAmountDetailsStackView, 
+                                                       additionalInformationStackView])
         stackView.axis = .vertical
         stackView.spacing = 16
         stackView.distribution = .fill
@@ -354,7 +348,7 @@ internal final class DelegatedAuthenticationView: UIView {
             
             buttonsStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15.0),
             buttonsStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15.0),
-            buttonsStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+            buttonsStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -15.0)
         ])
     }
 
