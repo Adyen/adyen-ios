@@ -159,7 +159,7 @@ public final class SubmitButton: UIControl {
         let backgroundColor: UIColor
         
         if !isEnabled, !showsActivityIndicator {
-            backgroundColor = style.backgroundColor.withSaturationMultiple(0.2)
+            backgroundColor = style.backgroundColor.withSaturationMultiple(0.15)
         } else {
             backgroundColor = style.backgroundColor
         }
