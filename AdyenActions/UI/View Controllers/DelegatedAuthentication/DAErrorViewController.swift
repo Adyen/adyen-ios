@@ -95,7 +95,7 @@ internal final class DAErrorViewController: UIViewController {
         super.viewDidLoad()
         buildUI()
         configureErrorView()
-        view.backgroundColor = style.backgroundColor
+        view.backgroundColor = style.errorBackgroundColor
         configureErrorView()
         isModalInPresentation = true
     }
