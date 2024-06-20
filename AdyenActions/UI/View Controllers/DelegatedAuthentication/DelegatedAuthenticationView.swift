@@ -36,7 +36,10 @@ internal final class DelegatedAuthenticationView: UIView {
     
     internal lazy var logoImage: UIImageView = {
         let imageView = UIImageView(style: logoStyle)
-        imageView.image = .biometricImage?.withRenderingMode(.alwaysTemplate)
+        imageView.image = UIImage(systemName: "lock",
+                                  withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight))?
+            .withRenderingMode(.alwaysTemplate)
+        
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "image")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
@@ -326,7 +329,7 @@ internal final class DelegatedAuthenticationView: UIView {
             
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor),
-            contentStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 10),
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             contentStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
@@ -352,6 +355,29 @@ internal final class DelegatedAuthenticationView: UIView {
     
     private func updateAxisBasedOnOrientation() {
         buttonsStackView.axis = UIDevice.current.orientation.isLandscape ? .horizontal : .vertical
+    }
+    
+    internal func animateImageTransitionToSystemImage(named: String) {
+        let workItem = DispatchWorkItem { [weak self] in
+            guard let self else { return }
+            if #available(iOS 17.0, *) {
+                logoImage.addSymbolEffect(.bounce, options: .repeat(2))
+            }
+            
+            if let replacementImage = UIImage(systemName: named,
+                                              withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight)) {
+                if #available(iOS 17.0, *) {
+                    logoImage.setSymbolImage(replacementImage, contentTransition: .replace)
+                } else {
+                    UIView.transition(with: logoImage,
+                                      duration: 0.5,
+                                      options: .transitionCrossDissolve,
+                                      animations: { self.logoImage.image = replacementImage },
+                                      completion: nil)
+                }
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: workItem)
     }
 }
 

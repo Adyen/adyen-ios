@@ -56,6 +56,7 @@ internal final class DARegistrationViewController: UIViewController {
         view.backgroundColor = style.backgroundColor
         configureDelegateAuthenticationView()
         isModalInPresentation = true
+        registrationView.animateImageTransitionToSystemImage(named: "lock.open")
     }
     
     private func configureDelegateAuthenticationView() {
@@ -83,7 +84,7 @@ internal final class DARegistrationViewController: UIViewController {
             registrationView.cardAndAmountDetailsStackView.isHidden = true
         }
     }
-    
+        
     private func buildUI() {
         view.addSubview(registrationView)
         registrationView.translatesAutoresizingMaskIntoConstraints = false

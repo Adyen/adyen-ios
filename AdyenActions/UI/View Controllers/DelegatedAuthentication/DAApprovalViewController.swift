@@ -99,6 +99,7 @@ internal final class DAApprovalViewController: UIViewController {
         view.backgroundColor = style.backgroundColor
         configureDelegateAuthenticationView()
         buildUI()
+        approvalView.animateImageTransitionToSystemImage(named: "lock.open")
         isModalInPresentation = true
     }
     
