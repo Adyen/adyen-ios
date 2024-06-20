@@ -43,24 +43,13 @@ internal final class DAErrorViewController: UIViewController {
                 return localizedString(.threeds2DARegistrationErrorMessage, localizationParameters)
             }
         }
-        
-        internal func captionMessage(timeInterval: TimeInterval) -> String {
-            switch self {
-            case .authenticationFailed(let localizationParameters):
-                String(format: localizedString(.threeds2DAApprovalErrorTimerText, localizationParameters), 
-                       timeInterval.adyen.timeLeftString() ?? "0")
-            case .registrationFailed(let localizationParameters):
-                String(format: localizedString(.threeds2DARegistrationTimerText, localizationParameters), 
-                       timeInterval.adyen.timeLeftString() ?? "0")
-            }
-        }
-        
-        internal var buttonTitle: String? {
+                
+        internal var buttonTitle: String {
             switch self {
             case .authenticationFailed(let localizationParameters):
                 return localizedString(.threeds2DAApprovalErrorButtonTitle, localizationParameters)
             case .registrationFailed(let localizationParameters):
-                return localizedString(.threeds2DAApprovalErrorButtonTitle, localizationParameters)
+                return localizedString(.threeds2DARegistrationErrorButtonTitle, localizationParameters)
             }
         }
     }
@@ -105,11 +94,7 @@ internal final class DAErrorViewController: UIViewController {
     private func configureErrorView() {
         errorView.titleLabel.text = screen.title
         errorView.descriptionLabel.text = screen.message
-        if let buttonTitle =  screen.buttonTitle {
-            errorView.firstButton.title = buttonTitle
-        } else {
-            errorView.buttonsStackView.isHidden = true
-        }
+        errorView.firstButton.title = screen.buttonTitle
         errorView.image.image = screen.image
     }
     

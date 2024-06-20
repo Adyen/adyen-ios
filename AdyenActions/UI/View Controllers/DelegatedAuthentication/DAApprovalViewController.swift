@@ -14,7 +14,6 @@ internal final class DAApprovalViewController: UIViewController {
     private let localizationParameters: LocalizationParameters?
     private let cardNumber: String?
     private let cardType: CardType?
-    private let biometricName: String
     private let amount: String?
     private let useBiometricsHandler: Handler
     private let approveDifferentlyHandler: Handler
@@ -69,7 +68,6 @@ internal final class DAApprovalViewController: UIViewController {
     internal init(context: AdyenContext,
                   style: DelegatedAuthenticationComponentStyle,
                   localizationParameters: LocalizationParameters?,
-                  biometricName: String,
                   amount: String?,
                   cardNumber: String?,
                   cardType: CardType?,
@@ -82,7 +80,6 @@ internal final class DAApprovalViewController: UIViewController {
         self.removeCredentialsHandler = removeCredentialsHandler
         self.localizationParameters = localizationParameters
         self.amount = amount
-        self.biometricName = biometricName
         self.cardType = cardType
         self.cardNumber = cardNumber
         self.context = context
@@ -110,7 +107,7 @@ internal final class DAApprovalViewController: UIViewController {
     
     private func configureDelegateAuthenticationView() {
         approvalView.titleLabel.text = localizedString(.threeds2DAApprovalTitle, localizationParameters)
-        approvalView.descriptionLabel.text = localizedString(.threeds2DAApprovalDescription, localizationParameters, biometricName)
+        approvalView.descriptionLabel.text = localizedString(.threeds2DAApprovalDescription, localizationParameters)
         approvalView.firstButton.title = localizedString(.threeds2DAApprovalPositiveButton, localizationParameters)
         approvalView.secondButton.title = localizedString(.threeds2DAApprovalNegativeButton, localizationParameters)
         approvalView.additionalInformationStackView.isHidden = true

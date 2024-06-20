@@ -378,58 +378,62 @@ public struct LocalizationKey {
     public static let cashAppPayCashtag = LocalizationKey(key: "adyen.cashAppPay.cashtag")
     /// No or an outdated version of TWINT is installed on this device. Please update or install the TWINT app.
     public static let twintNoAppsInstalledMessage = LocalizationKey(key: "adyen.twint.noAppsInstalled.message")
-    /// Safe and swift checkout!
+    /// Secure checkout
     public static let threeds2DARegistrationTitle = LocalizationKey(key: "adyen.threeds2.DA.registration.title")
-    /// You can check out faster next time on this device using your biometrics.
+    /// You can checkout faster next time with this card
     public static let threeds2DARegistrationDescription = LocalizationKey(key: "adyen.threeds2.DA.registration.description")
+    /// biometrics
     public static let threeds2DABiometrics = LocalizationKey(key: "adyen.threeds2.DA.biometrics")
+    /// FaceID
     public static let threeds2DAFaceID = LocalizationKey(key: "adyen.threeds2.DA.faceID")
+    /// TouchID
     public static let threeds2DATouchID = LocalizationKey(key: "adyen.threeds2.DA.touchID")
+    /// OpticID
     public static let threeds2DAOpticID = LocalizationKey(key: "adyen.threeds2.DA.opticID")
-
+    /// Enjoy a faster checkout process.
     public static let threeds2DARegistrationFirstInfo = LocalizationKey(key: "adyen.threeds2.DA.registration.firstInfo")
+    /// Use %@ and Passcode to approve payments.
     public static let threeds2DARegistrationSecondInfo = LocalizationKey(key: "adyen.threeds2.DA.registration.secondInfo")
+    /// Remove your credentials at any time.
     public static let threeds2DARegistrationThirdInfo = LocalizationKey(key: "adyen.threeds2.DA.registration.thirdInfo")
-
-    /// Enable swift checkout
+    /// Use secure checkout
     public static let threeds2DARegistrationPositiveButton = LocalizationKey(key: "adyen.threeds2.DA.registration.positiveButton")
     /// Not now
     public static let threeds2DARegistrationNegativeButton = LocalizationKey(key: "adyen.threeds2.DA.registration.negativeButton")
-    /// You have %@ to enable
-    public static let threeds2DARegistrationTimeLeft = LocalizationKey(key: "adyen.threeds2.DA.registration.timeLeft")
     /// Approve transaction
     public static let threeds2DAApprovalTitle = LocalizationKey(key: "adyen.threeds2.DA.approval.title")
-    /// To make sure it’s you, approve this transaction with your biometrics to complete your purchase.
+    /// Approve this transaction to complete your purchase.
     public static let threeds2DAApprovalDescription = LocalizationKey(key: "adyen.threeds2.DA.approval.description")
-    /// Use biometrics
+    /// Approve transaction
     public static let threeds2DAApprovalPositiveButton = LocalizationKey(key: "adyen.threeds2.DA.approval.positiveButton")
-    /// Approve differently
+    /// Other options
     public static let threeds2DAApprovalNegativeButton = LocalizationKey(key: "adyen.threeds2.DA.approval.negativeButton")
-    
+    /// Other options
     public static let threeds2DAApprovalActionSheetTitle = LocalizationKey(key: "adyen.threeds2.DA.approval.actionSheet.title")
+    /// Use traditional authentication
     public static let threeds2DAApprovalActionSheetFallback = LocalizationKey(key: "adyen.threeds2.DA.approval.actionSheet.fallback")
+    /// Remove my credentials
     public static let threeds2DAApprovalActionSheetRemove = LocalizationKey(key: "adyen.threeds2.DA.approval.actionSheet.remove")
-    /// You have %@ to approve
-    public static let threeds2DAApprovalTimeLeft = LocalizationKey(key: "adyen.threeds2.DA.approval.timeLeft")
-    /// Opt out any time by %#removing your credentials.%#
-    public static let threeds2DAApprovalRemoveCredentialsText = LocalizationKey(key: "adyen.threeds2.DA.approval.removeCredentialsText")
-    /// Remove credentials?
+    /// Remove credentials
     public static let threeds2DAApprovalRemoveAlertTitle = LocalizationKey(key: "adyen.threeds2.DA.approval.remove.alert.title")
-    /// Are you sure you want to remove your credentials?
+    /// Are you sure that you want to remove your Secure Checkout credentials?
     public static let threeds2DAApprovalRemoveAlertDescription = LocalizationKey(key: "adyen.threeds2.DA.approval.remove.alert.description")
     /// Remove
     public static let threeds2DAApprovalRemoveAlertPositiveButton = LocalizationKey(key: "adyen.threeds2.DA.approval.remove.alert.positiveButton")
     /// Cancel
     public static let threeds2DAApprovalRemoveAlertNegativeButton = LocalizationKey(key: "adyen.threeds2.DA.approval.remove.alert.negativeButton")
-    
+    /// Authenticating...
     public static let threeds2DAApprovalErrorTitle = LocalizationKey(key: "adyen.threeds2.DA.approval.error.title")
+    /// Authentication with Secure Checkout has failed, please attempt regular authentication.
     public static let threeds2DAApprovalErrorMessage = LocalizationKey(key: "adyen.threeds2.DA.approval.error.message")
-    public static let threeds2DAApprovalErrorTimerText = LocalizationKey(key: "adyen.threeds2.DA.approval.error.timerText")
+    /// Use regular authentication
     public static let threeds2DAApprovalErrorButtonTitle = LocalizationKey(key: "adyen.threeds2.DA.approval.error.buttonTitle")
+    /// Let’s try next time!
     public static let threeds2DARegistrationErrorTitle = LocalizationKey(key: "adyen.threeds2.DA.registration.error.title")
+    /// Your payment has still been authenticated successfully but the Secure Checkout service was unavailable.
     public static let threeds2DARegistrationErrorMessage = LocalizationKey(key: "adyen.threeds2.DA.registration.error.message")
-    public static let threeds2DARegistrationTimerText = LocalizationKey(key: "adyen.threeds2.DA.registration.error.timerText")
-
+    /// Finish
+    public static let threeds2DARegistrationErrorButtonTitle = LocalizationKey(key: "adyen.threeds2.DA.registration.error.buttonTitle")
     /// No results found
     public static let pickerSearchEmptyTitle = LocalizationKey(key: "adyen.picker.search.empty.title")
     /// '%@' did not match with anything

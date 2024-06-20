@@ -25,17 +25,7 @@
         private var delegatedAuthenticationService: AuthenticationServiceProtocol?
         private let deviceSupportCheckerService: AdyenAuthentication.DeviceSupportCheckerProtocol
         private var presenter: ThreeDS2PlusDAScreenPresenterProtocol
-    
-        /// Errors during the Delegated authentication flow
-        private enum ThreeDS2PlusDACoreActionError: Error {
-            /// When the backend doesn't support delegated authentication, so the threeDSToken doesn't contain the `sdkInput` parameter
-            case sdkInputNotAvailableForApproval
-            /// When the device is not registered for delegated authentication.
-            case deviceIsNotRegistered
-            /// When the user doesn't provide consent to use delegated authentication for the transaction during an approval flow.
-            case noConsentForApproval
-        }
-    
+        
         /// Initializes the 3D Secure 2 action handler.
         ///
         /// - Parameter context: The context object for this component.
@@ -62,6 +52,7 @@
         ///
         /// - Parameter context: The context object for this component.
         /// - Parameter service: The 3DS2 Service.
+        /// - Parameter presenter: The presenter
         /// - Parameter appearanceConfiguration: The appearance configuration.
         /// - Parameter style: The delegate authentication component style.
         /// - Parameter delegatedAuthenticationConfiguration: The delegate authentication configuration.
@@ -107,8 +98,8 @@
                     }
                 
                     startApprovalFlow(payloadForDA,
-                                      cardType: nil,
-                                      cardNumber: nil) { [weak self] result in
+                                      cardType: .visa,
+                                      cardNumber: "**** 1234") { [weak self] result in
                         guard let self else { return }
                     
                         switch result {
@@ -334,8 +325,8 @@
                     }
                 
                     startRegistrationFlow(delegatedAuthenticationInput: registrationPayload,
-                                          cardNumber: nil,
-                                          cardType: nil) { result in
+                                          cardNumber: "**** 1234",
+                                          cardType: .masterCard) { result in
                         switch result {
                         case let .success(registrationSDKOutput):
                             do {
@@ -399,13 +390,11 @@
     }
 
 private extension Bundle {
-
     // Name of the app - title under the icon.
     var displayName: String {
         object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ??
             object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
     }
-
 }
 
 #endif

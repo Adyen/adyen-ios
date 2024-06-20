@@ -62,7 +62,7 @@ internal final class DARegistrationViewController: UIViewController {
     private func configureDelegateAuthenticationView() {
         registrationView.titleLabel.text = localizedString(.threeds2DARegistrationTitle, localizationParameters)
         
-        registrationView.descriptionLabel.text = localizedString(.threeds2DARegistrationDescription, localizationParameters, biometricName)
+        registrationView.descriptionLabel.text = localizedString(.threeds2DARegistrationDescription, localizationParameters)
         registrationView.firstButton.title = localizedString(.threeds2DARegistrationPositiveButton, localizationParameters)
         registrationView.secondButton.title = localizedString(.threeds2DARegistrationNegativeButton, localizationParameters)
         registrationView.firstInfoImage.image = UIImage(systemName: "bolt")?.withRenderingMode(.alwaysTemplate)

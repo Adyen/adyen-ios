@@ -99,7 +99,6 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         let approvalViewController = DAApprovalViewController(context: context,
                                                               style: style,
                                                               localizationParameters: localizedParameters,
-                                                              biometricName: biometricName,
                                                               amount: context.payment?.amount.formatted,
                                                               cardNumber: cardDetails.number,
                                                               cardType: cardDetails.type,
