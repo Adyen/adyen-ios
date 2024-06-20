@@ -159,13 +159,14 @@ public final class SubmitButton: UIControl {
         let backgroundColor: UIColor
         
         if !isEnabled, !showsActivityIndicator {
-            backgroundColor = style.backgroundColor.withSaturationMultiple(0.15)
+            backgroundColor = UIColor.Adyen.secondaryComponentBackground
         } else {
             backgroundColor = style.backgroundColor
         }
         
         backgroundView.backgroundColor = backgroundColor
     }
+    
 }
 
 extension SubmitButton {
