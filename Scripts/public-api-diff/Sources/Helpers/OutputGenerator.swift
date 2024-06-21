@@ -61,7 +61,7 @@ private extension OutputGenerator {
         }
 
         let totalChangeCount = changesPerTarget.totalChangeCount
-        return "# 💔 \(totalChangeCount) breaking \(totalChangeCount == 1 ? "change" : "changes") detected"
+        return "# 👀 \(totalChangeCount) public \(totalChangeCount == 1 ? "change" : "changes") detected"
     }
     
     var repoInfo: String { "_Comparing `\(newSource.rawValue)` to `\(oldSource.rawValue)`_" }
@@ -90,7 +90,7 @@ private extension OutputGenerator {
                     lines.append("### `\(parent)`")
                 }
                 
-                changes.forEach {
+                changes.sorted { lhs, rhs in lhs.changeDescription < rhs.changeDescription }.forEach {
                     lines.append("- \($0.changeType.icon) \($0.changeDescription)")
                 }
             }

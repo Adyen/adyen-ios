@@ -97,7 +97,7 @@ extension SDKDump {
             if let declKind {
                 if declKind == "Constructor" {
                     definition += "func "
-                } else if declKind == "enumelement" {
+                } else if declKind == "EnumElement" {
                     definition += "case "
                 } else {
                     definition += "\(declKind.lowercased()) "
@@ -123,6 +123,10 @@ extension SDKDump {
         
         var isSpiInternal: Bool {
             !(spiGroupNames ?? []).isEmpty
+        }
+        
+        var isTypeInformation: Bool {
+            kind == "TypeNominal"
         }
         
         var parentPath: String {

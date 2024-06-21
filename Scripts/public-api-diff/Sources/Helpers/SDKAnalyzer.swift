@@ -22,7 +22,7 @@ enum SDKAnalyzer {
             to: PackageFileHelper.packagePath(for: oldProjectDirectoryPath)
         )
         
-        print("🔍 Scanning for breaking API changes")
+        print("🔍 Scanning for public API changes")
         
         let allTargets = try PackageFileHelper.availableTargets(
             oldProjectDirectoryPath: oldProjectDirectoryPath,
@@ -169,11 +169,14 @@ private extension SDKAnalyzer {
         }
         
         changes += lhs.children?.flatMap { lhsElement in
-            if let rhsChildForName = rhs.children?.first(where: { $0.name == lhsElement.name }) {
+            if let rhsChildForName = rhs.children?.first(where: { $0.printedName == lhsElement.printedName }) {
                 return recursiveCompare(element: lhsElement, to: rhsChildForName, oldFirst: oldFirst)
             } else {
                 // Type changes we handle as a change, not an addition/removal (they are in the children array tho)
-                if lhsElement.kind == "TypeNominal" { return [] }
+                if lhsElement.isTypeInformation { return [] }
+                
+                // An spi-internal element was added/removed which we do not count as a public change
+                if lhsElement.isSpiInternal { return [] }
                 
                 if oldFirst {
                     return [.init(changeType: .removal, parentName: lhsElement.parentPath, changeDescription: "`\(lhsElement)` was removed")]

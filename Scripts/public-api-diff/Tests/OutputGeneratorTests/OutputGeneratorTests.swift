@@ -33,7 +33,7 @@ class OutputGeneratorTests: XCTestCase {
     func test_oneChangeLocalSingleModule() {
         
         let expectedOutput = """
-        # 💔 1 breaking change detected
+        # 👀 1 public change detected
         _Comparing `new_source` to `old_source`_
 
         ---
@@ -58,18 +58,18 @@ class OutputGeneratorTests: XCTestCase {
     func test_multipleChanges_local_multipleModules() {
         
         let expectedOutput = """
-        # 💔 7 breaking changes detected
+        # 👀 7 public changes detected
         _Comparing `new_source` to `old_source`_
 
         ---
         ## `Target_1`
         - ❇️  Some Addition
-        - 😶‍🌫️ Some Removal
         - 🔀 Some Change
+        - 😶‍🌫️ Some Removal
         ## `Target_2`
         - ❇️  Another Addition
-        - 😶‍🌫️ Another Removal
         - 🔀 Another Change
+        - 😶‍🌫️ Another Removal
         ### `Parent_In_Target_2`
         - 🔀 Another Change
 
