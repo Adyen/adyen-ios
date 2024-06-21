@@ -29,7 +29,8 @@ enum SDKAnalyzer {
         
         let allTargets = try PackageFileHelper.availableTargets(
             oldProjectDirectoryPath: oldProjectDirectoryPath,
-            newProjectDirectoryPath: newProjectDirectoryPath
+            newProjectDirectoryPath: newProjectDirectoryPath,
+            fileHandler: fileHandler
         )
         
         var changesPerTarget = try SDKAnalyzer.analyzeSdkDump(

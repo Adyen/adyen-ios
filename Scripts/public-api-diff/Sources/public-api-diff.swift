@@ -35,7 +35,7 @@ struct PublicApiDiff: ParsableCommand {
         // TODO: Move all of this code into a single testable module
         
         let shell = Shell()
-        let fileHandler = FileHandler()
+        let fileHandler = FileManager.default
         let oldSource = try ProjectSource.from(old, fileHandler: fileHandler)
         let newSource = try ProjectSource.from(new, fileHandler: fileHandler)
         
@@ -44,11 +44,13 @@ struct PublicApiDiff: ParsableCommand {
         let currentDirectory = fileHandler.currentDirectoryPath
         let workingDirectoryPath = currentDirectory.appending("/tmp-public-api-diff")
         
-        try ProjectHelper(
+        let projectHelper = ProjectHelper(
             workingDirectoryPath: workingDirectoryPath,
             fileHandler: fileHandler,
             shell: shell
-        ).setup(
+        )
+        
+        try projectHelper.setup(
             old: oldSource,
             new: newSource
         ) { oldProjectDirectoryPath, newProjectDirectoryPath in
@@ -62,7 +64,8 @@ struct PublicApiDiff: ParsableCommand {
             
             let allAvailableTargets = try PackageFileHelper.availableTargets(
                 oldProjectDirectoryPath: oldProjectDirectoryPath,
-                newProjectDirectoryPath: newProjectDirectoryPath
+                newProjectDirectoryPath: newProjectDirectoryPath,
+                fileHandler: fileHandler
             )
             
             let outputGenerator = OutputGenerator(

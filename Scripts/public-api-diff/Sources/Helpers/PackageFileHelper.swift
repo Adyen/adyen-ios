@@ -56,7 +56,7 @@ extension PackageFileHelper {
     static func availableTargets(
         oldProjectDirectoryPath: String,
         newProjectDirectoryPath: String,
-        fileHandler: FileHandling = FileHandler()
+        fileHandler: FileHandling
     ) throws -> [String] {
         
         let oldPackagePath = packagePath(for: oldProjectDirectoryPath)

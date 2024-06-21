@@ -13,6 +13,8 @@ enum Git {
     /// - Parameters:
     ///   - repository: The repository to clone
     ///   - branchOrTag: The branch or tag to clone
+    ///   - fileHandler: The file handler to use
+    ///   - shell: The shell to use
     ///
     /// - Returns: The local directory path where to find the cloned repository
     static func clone(_ repository: String, at branchOrTag: String, fileHandler: FileHandling, shell: ShellHandling) -> String {
