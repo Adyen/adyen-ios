@@ -47,6 +47,18 @@ struct ProjectHelper {
 
 private extension ProjectHelper {
 
+    func retrieveRemoteProject(branchOrTag: String, repository: String) -> String {
+        
+        let currentDirectory = fileHandler.currentDirectoryPath
+        let targetDirectoryPath = currentDirectory.appending("\(UUID().uuidString)")
+        
+        try? fileHandler.removeItem(atPath: targetDirectoryPath)
+        
+        let git = Git(shell: shell)
+        git.clone(repository, at: branchOrTag, targetDirectoryPath: targetDirectoryPath)
+        return targetDirectoryPath
+    }
+    
     func setupProject(from source: ProjectSource) throws -> String {
         
         let sourceDirectoryPath: String
@@ -56,12 +68,7 @@ private extension ProjectHelper {
             sourceDirectoryPath = path
             
         case let .remote(branchOrTag, repository):
-            sourceDirectoryPath = Git.clone(
-                repository,
-                at: branchOrTag,
-                fileHandler: fileHandler,
-                shell: shell
-            )
+            sourceDirectoryPath = retrieveRemoteProject(branchOrTag: branchOrTag, repository: repository)
         }
 
         let sourceWorkingDirectoryPath = workingDirectoryPath.appending("/\(UUID().uuidString)")
@@ -73,10 +80,12 @@ private extension ProjectHelper {
             shell: shell
         )
         
+        let packagePath = PackageFileHelper.packagePath(for: sourceWorkingDirectoryPath)
+        
         try Self.buildProject(
-            at: sourceWorkingDirectoryPath,
-            fileHandler: fileHandler,
-            shell: shell
+            projectDirectoryPath: sourceWorkingDirectoryPath,
+            packageFileHelper: PackageFileHelper(packagePath: packagePath, fileHandler: fileHandler),
+            xcodeTools: XcodeTools(shell: shell)
         )
         
         switch source {
@@ -101,7 +110,7 @@ private extension ProjectHelper {
         try fileHandler.createDirectory(atPath: destinationDirectoryPath)
         
         let fileNameIgnoreList: Set<String> = [
-            Constants.derivedDataPath,
+            ".build",
             ".git",
             ".github",
             ".gitmodules",
@@ -132,26 +141,26 @@ private extension ProjectHelper {
             let sourceFilePath = sourceDirectoryPath.appending("/\(fileName)")
             let destinationFilePath = destinationDirectoryPath.appending("/\(fileName)")
             
+            // Using shell here as it's faster than the FileManager
             shell.execute("cp -a \(sourceFilePath) \(destinationFilePath)")
         }
     }
     
     static func buildProject(
-        at path: String,
-        fileHandler: FileHandling,
-        shell: ShellHandling
+        projectDirectoryPath: String,
+        packageFileHelper: PackageFileHelper,
+        xcodeTools: XcodeTools
     ) throws {
         
         let allTargetsLibraryName = "_AllTargets"
-        let packagePath = PackageFileHelper.packagePath(for: path)
+        try packageFileHelper.preparePackageWithConsolidatedLibrary(named: allTargetsLibraryName)
         
-        try PackageFileHelper(packagePath: packagePath, fileHandler: fileHandler)
-            .preparePackageWithConsolidatedLibrary(named: allTargetsLibraryName)
+        print("🛠️ Building project at `\(projectDirectoryPath)`")
         
-        let buildCommand = "cd \(path); xcodebuild -scheme \(allTargetsLibraryName) -sdk `\(Constants.simulatorSdkCommand)` -derivedDataPath \(Constants.derivedDataPath) -destination \"\(Constants.destination)\" -target \(Constants.deviceTarget) -skipPackagePluginValidation"
-        
-        print("🛠️ Building project at `\(path)`")
-        shell.execute(buildCommand)
+        xcodeTools.build(
+            projectDirectoryPath: projectDirectoryPath,
+            allTargetsLibraryName: allTargetsLibraryName
+        )
     }
     
     func cleanup() {

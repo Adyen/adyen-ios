@@ -6,26 +6,25 @@
 
 import Foundation
 
-enum Git {
+struct Git {
+    
+    private let shell: ShellHandling
+    
+    init(shell: ShellHandling) {
+        self.shell = shell
+    }
     
     /// Clones a repository at a specific branch or tag into the current directory
     ///
     /// - Parameters:
     ///   - repository: The repository to clone
     ///   - branchOrTag: The branch or tag to clone
-    ///   - fileHandler: The file handler to use
-    ///   - shell: The shell to use
+    ///   - targetDirectoryPath: The directory to clone into
     ///
     /// - Returns: The local directory path where to find the cloned repository
-    static func clone(_ repository: String, at branchOrTag: String, fileHandler: FileHandling, shell: ShellHandling) -> String {
-        
-        let currentDirectory = fileHandler.currentDirectoryPath
-        let targetDirectoryPath = currentDirectory.appending("\(UUID().uuidString)")
-        try? fileHandler.removeItem(atPath: targetDirectoryPath)
-        
+    func clone(_ repository: String, at branchOrTag: String, targetDirectoryPath: String) {
         print("🐱 Cloning \(repository) @ \(branchOrTag) into \(targetDirectoryPath)")
-        shell.execute("git clone -b \(branchOrTag) \(repository) \(targetDirectoryPath)")
-        
-        return targetDirectoryPath
+        let command = "git clone -b \(branchOrTag) \(repository) \(targetDirectoryPath)"
+        shell.execute(command)
     }
 }

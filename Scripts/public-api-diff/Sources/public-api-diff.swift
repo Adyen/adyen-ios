@@ -7,15 +7,6 @@
 import ArgumentParser
 import Foundation
 
-// TODO: Add UnitTests
-
-enum Constants {
-    static let deviceTarget: String = "x86_64-apple-ios17.4-simulator"
-    static let destination: String = "platform=iOS,name=Any iOS Device"
-    static let derivedDataPath: String = ".build"
-    static let simulatorSdkCommand = "xcrun --sdk iphonesimulator --show-sdk-path"
-}
-
 @main
 struct PublicApiDiff: ParsableCommand {
     
@@ -35,6 +26,7 @@ struct PublicApiDiff: ParsableCommand {
         // TODO: Move all of this code into a single testable module
         
         let shell = Shell()
+        let xcodeTools = XcodeTools(shell: shell)
         let fileHandler = FileManager.default
         let oldSource = try ProjectSource.from(old, fileHandler: fileHandler)
         let newSource = try ProjectSource.from(new, fileHandler: fileHandler)
@@ -59,7 +51,7 @@ struct PublicApiDiff: ParsableCommand {
                 old: oldProjectDirectoryPath,
                 new: newProjectDirectoryPath,
                 fileHandler: fileHandler,
-                shell: shell
+                xcodeTools: xcodeTools
             )
             
             let allAvailableTargets = try PackageFileHelper.availableTargets(

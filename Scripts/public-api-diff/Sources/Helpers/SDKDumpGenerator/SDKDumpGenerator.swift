@@ -10,31 +10,47 @@ struct SDKDumpGenerator {
     
     /// The path to the project directory that contains the Package.swift
     let projectDirectoryPath: String
-    
-    let shell: ShellHandling
+    let fileHandler: FileHandling
+    let xcodeTools: XcodeTools
     
     init(
         projectDirectoryPath: String,
-        shell: ShellHandling
+        fileHandler: FileHandling,
+        xcodeTools: XcodeTools
     ) {
         self.projectDirectoryPath = projectDirectoryPath
-        self.shell = shell
+        self.fileHandler = fileHandler
+        self.xcodeTools = xcodeTools
     }
     
     /// Generates an sdk dump for a specific module
-    func generate(for module: String) -> String {
+    ///
+    /// - Returns: An optional `SDKDump` (Can be nil if no dump for a specific module can be created e.g. the module does not exist in one version)
+    func generate(for module: String) -> SDKDump? {
         
-        let sdkDumpInputPath = projectDirectoryPath
-            .appending("/\(Constants.derivedDataPath)")
-            .appending("/Build/Products/Debug-iphonesimulator")
+        let outputFilePath = projectDirectoryPath.appending("/api_dump.json")
         
-        let outputFilePath = projectDirectoryPath
-            .appending("/api_dump.json")
+        xcodeTools.dumpSdk(
+            projectDirectoryPath: projectDirectoryPath,
+            module: module,
+            outputFilePath: outputFilePath
+        )
         
-        let dumpCommand = "cd \(projectDirectoryPath); xcrun swift-api-digester -dump-sdk -module \(module) -I \(sdkDumpInputPath) -o \(outputFilePath) -sdk `\(Constants.simulatorSdkCommand)` -target \(Constants.deviceTarget) -abort-on-module-fail"
+        return load(from: outputFilePath)
+    }
+}
+
+private extension SDKDumpGenerator {
+    
+    func load(from sdkDumpFilePath: String) -> SDKDump? {
         
-        shell.execute(dumpCommand)
+        guard let data = fileHandler.contents(atPath: sdkDumpFilePath) else {
+            return nil
+        }
         
-        return outputFilePath
+        return try? JSONDecoder().decode(
+            SDKDump.self,
+            from: data
+        )
     }
 }
