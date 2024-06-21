@@ -186,39 +186,3 @@ private extension SDKAnalyzer {
         return changes
     }
 }
-
-// MARK: - Model
-
-extension SDKAnalyzer {
-    
-    struct Change {
-        enum ChangeType {
-            case addition
-            case removal
-            case change
-            
-            var icon: String {
-                switch self {
-                case .addition: "❇️ "
-                case .removal: "😶‍🌫️"
-                case .change: "🔀"
-                }
-            }
-        }
-        
-        var changeType: ChangeType
-        var parentName: String
-        var changeDescription: String
-    }
-}
-
-extension [String: [SDKAnalyzer.Change]] {
-    
-    var totalChangeCount: Int {
-        var totalChangeCount = 0
-        keys.forEach { targetName in
-            totalChangeCount += self[targetName]?.count ?? 0
-        }
-        return totalChangeCount
-    }
-}

@@ -130,9 +130,8 @@ private extension ProjectHelper {
     
     static func createCleanDirectory(at cleanDirectoryPath: String) throws {
         
-        if FileManager.default.fileExists(atPath: cleanDirectoryPath) {
-            try FileManager.default.removeItem(atPath: cleanDirectoryPath)
-        }
+        // Remove existing file if it exists
+        try? FileManager.default.removeItem(atPath: cleanDirectoryPath)
         
         try FileManager.default.createDirectory(
             at: URL(filePath: cleanDirectoryPath),

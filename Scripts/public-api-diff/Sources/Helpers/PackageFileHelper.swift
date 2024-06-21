@@ -62,44 +62,9 @@ extension PackageFileHelper {
 
 // MARK: - Privates
 
-private extension PackageFileHelper {
-    
-    /// Generates a library entry from the name and available target names to be inserted into the `Package.swift` file
-    func consolidatedLibraryEntry(
-        _ name: String,
-        from availableTargets: [String]
-    ) -> String {
-        """
+// MARK: Extract Targets/Products
 
-                .library(
-                    name: "\(name)",
-                    targets: [\(availableTargets.map { "\"\($0)\"" }.joined(separator: ", "))]
-                ),
-        """
-    }
-    
-    /// Generates the updated content for the `Package.swift` adding the consolidated library entry (containing all targets) in the products section
-    func updatedContent(
-        _ packageContent: String,
-        with consolidatedEntry: String
-    ) -> String {
-        // Update the Package.swift content
-        var updatedContent = packageContent
-        if let productsRange = packageContent.range(of: "products: [", options: .caseInsensitive) {
-            updatedContent.insert(contentsOf: consolidatedEntry, at: productsRange.upperBound)
-        } else {
-            print("Products section not found")
-        }
-        return updatedContent
-    }
-    
-    func availableTargets(from packageContent: String) throws -> Set<String> {
-        let targets = try availableTargets(from: packageContent, ofType: .target)
-        let binaryTargets = try availableTargets(from: packageContent, ofType: .binaryTarget)
-        
-        // Removing binaryTargets from list of targets as we can't generate an sdk dump for them
-        return targets.subtracting(binaryTargets)
-    }
+private extension PackageFileHelper {
     
     enum TargetType {
         case target
@@ -113,6 +78,14 @@ private extension PackageFileHelper {
                 ".binaryTarget("
             }
         }
+    }
+    
+    func availableTargets(from packageContent: String) throws -> Set<String> {
+        let targets = try availableTargets(from: packageContent, ofType: .target)
+        let binaryTargets = try availableTargets(from: packageContent, ofType: .binaryTarget)
+        
+        // Removing binaryTargets from list of targets as we can't generate an sdk dump for them
+        return targets.subtracting(binaryTargets)
     }
     
     func availableTargets(from packageContent: String, ofType targetType: TargetType) throws -> Set<String> {
@@ -155,5 +128,40 @@ private extension PackageFileHelper {
         }
         
         return availableProducts
+    }
+}
+
+
+// MARK: Update Package Content
+
+private extension PackageFileHelper {
+    
+    /// Generates a library entry from the name and available target names to be inserted into the `Package.swift` file
+    func consolidatedLibraryEntry(
+        _ name: String,
+        from availableTargets: [String]
+    ) -> String {
+        """
+
+                .library(
+                    name: "\(name)",
+                    targets: [\(availableTargets.map { "\"\($0)\"" }.joined(separator: ", "))]
+                ),
+        """
+    }
+    
+    /// Generates the updated content for the `Package.swift` adding the consolidated library entry (containing all targets) in the products section
+    func updatedContent(
+        _ packageContent: String,
+        with consolidatedEntry: String
+    ) -> String {
+        // Update the Package.swift content
+        var updatedContent = packageContent
+        if let productsRange = packageContent.range(of: "products: [", options: .caseInsensitive) {
+            updatedContent.insert(contentsOf: consolidatedEntry, at: productsRange.upperBound)
+        } else {
+            print("Products section not found")
+        }
+        return updatedContent
     }
 }

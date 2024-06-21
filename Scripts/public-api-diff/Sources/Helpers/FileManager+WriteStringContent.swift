@@ -26,9 +26,8 @@ extension FileManager {
         
         let outputFileUrl = URL(filePath: outputFilePath)
         
-        if FileManager.default.fileExists(atPath: outputFilePath) {
-            try FileManager.default.removeItem(atPath: outputFilePath)
-        }
+        // Remove existing file if it exists
+        try? removeItem(atPath: outputFilePath)
         
         try data.write(to: outputFileUrl, options: .atomicWrite)
     }
