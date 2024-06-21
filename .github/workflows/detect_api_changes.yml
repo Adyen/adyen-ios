@@ -22,7 +22,9 @@ jobs:
         
     - name: 🔍 Detect Changes
       run: |
-        Scripts/detect_public_api_changes/compare.sh ${branch} ${baseRepo}
+        PROJECT_FOLDER=$PWD
+        cd Scripts/public-api-diff
+        swift run public-api-diff --new "$PROJECT_FOLDER" --old "${branch};${baseRepo}" --output "$PROJECT_FOLDER/api_comparison.md"
       env:
         branch: '${{github.event.pull_request.base.ref}}'
         baseRepo: '${{github.server_url}}/${{github.repository}}.git'
