@@ -15,14 +15,14 @@ enum Git {
     ///   - branchOrTag: The branch or tag to clone
     ///
     /// - Returns: The local directory path where to find the cloned repository
-    static func clone(_ repository: String, at branchOrTag: String) -> String {
+    static func clone(_ repository: String, at branchOrTag: String, fileHandler: FileHandling, shell: ShellHandling) -> String {
         
-        let currentDirectory = FileManager.default.currentDirectoryPath
+        let currentDirectory = fileHandler.currentDirectoryPath
         let targetDirectoryPath = currentDirectory.appending("\(UUID().uuidString)")
-        try? FileManager.default.removeItem(atPath: targetDirectoryPath)
+        try? fileHandler.removeItem(atPath: targetDirectoryPath)
         
         print("🐱 Cloning \(repository) @ \(branchOrTag) into \(targetDirectoryPath)")
-        Shell.execute("git clone -b \(branchOrTag) \(repository) \(targetDirectoryPath)")
+        shell.execute("git clone -b \(branchOrTag) \(repository) \(targetDirectoryPath)")
         
         return targetDirectoryPath
     }

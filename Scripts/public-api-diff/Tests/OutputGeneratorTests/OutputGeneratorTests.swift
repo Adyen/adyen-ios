@@ -9,7 +9,7 @@ import XCTest
 
 class OutputGeneratorTests: XCTestCase {
     
-    func test_emptyLocalSingleModule() {
+    func test_noChanges_singleModule() {
         
         let expectedOutput = """
         # ✅ No changes detected
@@ -30,7 +30,7 @@ class OutputGeneratorTests: XCTestCase {
         XCTAssertEqual(output, expectedOutput)
     }
     
-    func test_oneChangeLocalSingleModule() {
+    func test_oneChange_singleModule() {
         
         let expectedOutput = """
         # 👀 1 public change detected
@@ -55,11 +55,11 @@ class OutputGeneratorTests: XCTestCase {
         XCTAssertEqual(output, expectedOutput)
     }
     
-    func test_multipleChanges_local_multipleModules() {
+    func test_multipleChanges_multipleModules() {
         
         let expectedOutput = """
         # 👀 7 public changes detected
-        _Comparing `new_source` to `old_source`_
+        _Comparing `new_source` to `old_repository @ old_branch`_
 
         ---
         ## `Target_1`
@@ -92,7 +92,7 @@ class OutputGeneratorTests: XCTestCase {
                 ]
             ],
             allTargetNames: ["Target_1", "Target_2"],
-            oldSource: .local(path: "old_source"),
+            oldSource: .remote(branch: "old_branch", repository: "old_repository"),
             newSource: .local(path: "new_source")
         )
         

@@ -11,8 +11,14 @@ struct SDKDumpGenerator {
     /// The path to the project directory that contains the Package.swift
     let projectDirectoryPath: String
     
-    init(projectDirectoryPath: String) {
+    let shell: ShellHandling
+    
+    init(
+        projectDirectoryPath: String,
+        shell: ShellHandling
+    ) {
         self.projectDirectoryPath = projectDirectoryPath
+        self.shell = shell
     }
     
     /// Generates an sdk dump for a specific module
@@ -27,7 +33,7 @@ struct SDKDumpGenerator {
         
         let dumpCommand = "cd \(projectDirectoryPath); xcrun swift-api-digester -dump-sdk -module \(module) -I \(sdkDumpInputPath) -o \(outputFilePath) -sdk `\(Constants.simulatorSdkCommand)` -target \(Constants.deviceTarget) -abort-on-module-fail"
         
-        Shell.execute(dumpCommand)
+        shell.execute(dumpCommand)
         
         return outputFilePath
     }

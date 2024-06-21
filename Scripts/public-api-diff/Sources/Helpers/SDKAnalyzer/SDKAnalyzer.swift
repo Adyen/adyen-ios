@@ -12,14 +12,17 @@ enum SDKAnalyzer {
     
     public static func analyze(
         old oldProjectDirectoryPath: String,
-        new newProjectDirectoryPath: String
+        new newProjectDirectoryPath: String,
+        fileHandler: FileHandling,
+        shell: ShellHandling
     ) throws -> [String: [SDKAnalyzer.Change]] {
         
         print("🔍 Scanning for products changes")
         
         let packageFileChanges = try SDKAnalyzer.analyzePackageFile(
             updated: PackageFileHelper.packagePath(for: newProjectDirectoryPath),
-            to: PackageFileHelper.packagePath(for: oldProjectDirectoryPath)
+            to: PackageFileHelper.packagePath(for: oldProjectDirectoryPath),
+            fileHandler: fileHandler
         )
         
         print("🔍 Scanning for public API changes")
@@ -31,8 +34,8 @@ enum SDKAnalyzer {
         
         var changesPerTarget = try SDKAnalyzer.analyzeSdkDump(
             for: allTargets,
-            newDumpGenerator: .init(projectDirectoryPath: newProjectDirectoryPath),
-            oldDumpGenerator: .init(projectDirectoryPath: oldProjectDirectoryPath)
+            newDumpGenerator: .init(projectDirectoryPath: newProjectDirectoryPath, shell: shell),
+            oldDumpGenerator: .init(projectDirectoryPath: oldProjectDirectoryPath, shell: shell)
         )
         
         if !packageFileChanges.isEmpty {
@@ -44,12 +47,20 @@ enum SDKAnalyzer {
     
     private static func analyzePackageFile(
         updated updatedPackageFilePath: String,
-        to comparisonPackageFilePath: String
+        to comparisonPackageFilePath: String,
+        fileHandler: FileHandling
     ) throws -> [Change] {
         var libraryChanges = [Change]()
         
-        let oldProducts = try PackageFileHelper(packagePath: comparisonPackageFilePath).availableProducts()
-        let newProducts = try PackageFileHelper(packagePath: updatedPackageFilePath).availableProducts()
+        let oldProducts = try PackageFileHelper(
+            packagePath: comparisonPackageFilePath,
+            fileHandler: fileHandler
+        ).availableProducts()
+        
+        let newProducts = try PackageFileHelper(
+            packagePath: updatedPackageFilePath,
+            fileHandler: fileHandler
+        ).availableProducts()
         
         let removedLibaries = oldProducts.subtracting(newProducts)
         libraryChanges += removedLibaries.map {

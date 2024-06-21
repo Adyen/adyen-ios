@@ -8,10 +8,18 @@ import Foundation
 
 struct ProjectHelper {
     
-    let workingDirectoryPath: String
+    private let workingDirectoryPath: String
+    private let fileHandler: FileHandling
+    private let shell: ShellHandling
     
-    init(workingDirectoryPath: String) throws {
+    init(
+        workingDirectoryPath: String,
+        fileHandler: FileHandling,
+        shell: ShellHandling
+    ) {
         self.workingDirectoryPath = workingDirectoryPath
+        self.fileHandler = fileHandler
+        self.shell = shell
     }
     
     func setup(
@@ -20,7 +28,7 @@ struct ProjectHelper {
         _ body: (_ oldWorkingDirectoryPath: String, _ newWorkingDirectoryPath: String) throws -> Void
     ) throws {
         
-        try Self.createCleanDirectory(at: workingDirectoryPath)
+        try fileHandler.createCleanDirectory(atPath: workingDirectoryPath)
         defer { cleanup() }
         
         do {
@@ -46,25 +54,37 @@ private extension ProjectHelper {
         switch source {
         case let .local(path):
             sourceDirectoryPath = path
+            
         case let .remote(branchOrTag, repository):
-            sourceDirectoryPath = Git.clone(repository, at: branchOrTag)
+            sourceDirectoryPath = Git.clone(
+                repository,
+                at: branchOrTag,
+                fileHandler: fileHandler,
+                shell: shell
+            )
         }
 
         let sourceWorkingDirectoryPath = workingDirectoryPath.appending("/\(UUID().uuidString)")
         
         try Self.setupIndividualWorkingDirectory(
             at: sourceWorkingDirectoryPath,
-            sourceDirectoryPath: sourceDirectoryPath
+            sourceDirectoryPath: sourceDirectoryPath,
+            fileHandler: fileHandler,
+            shell: shell
         )
         
-        try Self.buildProject(at: sourceWorkingDirectoryPath)
+        try Self.buildProject(
+            at: sourceWorkingDirectoryPath,
+            fileHandler: fileHandler,
+            shell: shell
+        )
         
         switch source {
         case .local:
             break
         case .remote:
             // Clean up the cloned repo
-            Shell.removeDirectory(at: sourceDirectoryPath)
+            try? fileHandler.removeItem(atPath: sourceDirectoryPath)
         }
         
         return sourceWorkingDirectoryPath
@@ -72,11 +92,13 @@ private extension ProjectHelper {
     
     static func setupIndividualWorkingDirectory(
         at destinationDirectoryPath: String,
-        sourceDirectoryPath: String
+        sourceDirectoryPath: String,
+        fileHandler: FileHandling,
+        shell: ShellHandling
     ) throws {
         
-        try? FileManager.default.removeItem(atPath: destinationDirectoryPath)
-        try FileManager.default.createDirectory(atPath: destinationDirectoryPath, withIntermediateDirectories: true)
+        try? fileHandler.removeItem(atPath: destinationDirectoryPath)
+        try fileHandler.createDirectory(atPath: destinationDirectoryPath)
         
         let fileNameIgnoreList: Set<String> = [
             Constants.derivedDataPath,
@@ -103,43 +125,36 @@ private extension ProjectHelper {
             ".podspec"
         ]
         
-        try FileManager.default.contentsOfDirectory(atPath: sourceDirectoryPath).forEach { fileName in
+        try fileHandler.contentsOfDirectory(atPath: sourceDirectoryPath).forEach { fileName in
             if fileExtensionIgnoreList.contains(where: { fileName.hasSuffix($0) }) { return }
             if fileNameIgnoreList.contains(where: { fileName == $0 }) { return }
             
             let sourceFilePath = sourceDirectoryPath.appending("/\(fileName)")
             let destinationFilePath = destinationDirectoryPath.appending("/\(fileName)")
             
-            Shell.execute("cp -a \(sourceFilePath) \(destinationFilePath)")
+            shell.execute("cp -a \(sourceFilePath) \(destinationFilePath)")
         }
     }
     
-    static func buildProject(at path: String) throws {
+    static func buildProject(
+        at path: String,
+        fileHandler: FileHandling,
+        shell: ShellHandling
+    ) throws {
         
         let allTargetsLibraryName = "_AllTargets"
         let packagePath = PackageFileHelper.packagePath(for: path)
         
-        try PackageFileHelper(packagePath: packagePath)
+        try PackageFileHelper(packagePath: packagePath, fileHandler: fileHandler)
             .preparePackageWithConsolidatedLibrary(named: allTargetsLibraryName)
         
         let buildCommand = "cd \(path); xcodebuild -scheme \(allTargetsLibraryName) -sdk `\(Constants.simulatorSdkCommand)` -derivedDataPath \(Constants.derivedDataPath) -destination \"\(Constants.destination)\" -target \(Constants.deviceTarget) -skipPackagePluginValidation"
         
         print("🛠️ Building project at `\(path)`")
-        Shell.execute(buildCommand)
-    }
-    
-    static func createCleanDirectory(at cleanDirectoryPath: String) throws {
-        
-        // Remove existing file if it exists
-        try? FileManager.default.removeItem(atPath: cleanDirectoryPath)
-        
-        try FileManager.default.createDirectory(
-            at: URL(filePath: cleanDirectoryPath),
-            withIntermediateDirectories: true
-        )
+        shell.execute(buildCommand)
     }
     
     func cleanup() {
-        Shell.removeDirectory(at: workingDirectoryPath)
+        try? fileHandler.removeItem(atPath: workingDirectoryPath)
     }
 }
