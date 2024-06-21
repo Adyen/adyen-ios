@@ -1,71 +1,101 @@
 //
-//  File.swift
-//  
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Alexander Guretzki on 18/06/2024.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-enum OutputGenerator {
+/// Allows generation of human readable output from the provided information
+struct OutputGenerator {
     
-    static func generate(
-        from changesPerTarget: [String: [SDKAnalyzer.Change]],
+    let changesPerTarget: [String: [SDKAnalyzer.Change]]
+    let allTargetNames: [String]
+    let oldSource: ProjectSource
+    let newSource: ProjectSource
+    
+    init(
+        changesPerTarget: [String: [SDKAnalyzer.Change]],
         allTargetNames: [String],
         oldSource: ProjectSource,
         newSource: ProjectSource
-    ) -> String {
+    ) {
+        self.changesPerTarget = changesPerTarget
+        self.allTargetNames = allTargetNames
+        self.oldSource = oldSource
+        self.newSource = newSource
+    }
+    
+    /// Generates human readable output from the provided information
+    func generate() -> String {
         
         let separator = "\n---"
-        let repoInfo = "_Comparing `\(newSource.rawValue)` to `\(oldSource.rawValue)`_"
-        let analyzedModulesInfo = "**Analyzed modules:** \(allTargetNames.joined(separator: ", "))"
+        let changes = changeLines
         
-        if changesPerTarget.keys.isEmpty {
-            return [
-                "# ✅ No changes detected",
-                repoInfo,
-                separator,
-                analyzedModulesInfo
-            ].joined(separator: "\n")
-        }
-        
-        // TODO: Log the change count
         var lines = [
-            "# 💔 Breaking changes detected",
+            title,
             repoInfo,
             separator
         ]
         
-        changesPerTarget.keys.sorted().forEach { key in
-            guard let changes = changesPerTarget[key], !changes.isEmpty else { return }
-            
-            if !key.isEmpty {
-                lines.append("## `\(key)`")
-            }
-            
-            var groupedChanges = [String: [SDKAnalyzer.Change]]()
-
-            changes.forEach {
-                groupedChanges[$0.parentName] = (groupedChanges[$0.parentName] ?? []) + [$0]
-            }
-            
-            groupedChanges.keys.sorted().forEach { parent in
-                if let changes = groupedChanges[parent], !changes.isEmpty {
-                    if !parent.isEmpty {
-                        lines.append("### `\(parent)`")
-                    }
-                    groupedChanges[parent]?.forEach {
-                        lines.append("- \($0.changeType.icon) \($0.changeDescription)")
-                    }
-                }
-            }
+        if !changes.isEmpty {
+            lines += changes + [separator]
         }
         
         lines += [
-            separator,
             analyzedModulesInfo
         ]
         
         return lines.joined(separator: "\n")
+    }
+}
+
+// MARK: - Privates
+
+private extension OutputGenerator {
+    
+    var title: String {
+        
+        if changesPerTarget.keys.isEmpty {
+            return "# ✅ No changes detected"
+        }
+
+        let totalChangeCount = changesPerTarget.totalChangeCount
+        return "# 💔 \(totalChangeCount) breaking \(totalChangeCount == 1 ? "change" : "changes") detected"
+    }
+    
+    var repoInfo: String { "_Comparing `\(newSource.rawValue)` to `\(oldSource.rawValue)`_" }
+    var analyzedModulesInfo: String { "**Analyzed modules:** \(allTargetNames.joined(separator: ", "))" }
+    
+    var changeLines: [String] {
+        var lines = [String]()
+        
+        changesPerTarget.keys.sorted().forEach { targetName in
+            guard let changesForTarget = changesPerTarget[targetName], !changesForTarget.isEmpty else { return }
+            
+            if !targetName.isEmpty {
+                lines.append("## `\(targetName)`")
+            }
+            
+            var groupedChanges = [String: [SDKAnalyzer.Change]]()
+
+            changesForTarget.forEach {
+                groupedChanges[$0.parentName] = (groupedChanges[$0.parentName] ?? []) + [$0]
+            }
+            
+            groupedChanges.keys.sorted().forEach { parent in
+                guard let changes = groupedChanges[parent], !changes.isEmpty else { return }
+                
+                if !parent.isEmpty {
+                    lines.append("### `\(parent)`")
+                }
+                
+                changes.forEach {
+                    lines.append("- \($0.changeType.icon) \($0.changeDescription)")
+                }
+            }
+        }
+        
+        return lines
     }
 }

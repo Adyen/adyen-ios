@@ -76,7 +76,9 @@ struct PublicApiDiff: ParsableCommand {
         ).setup(
             old: oldSource,
             new: newSource
-        ) { oldProjectDirectoryPath, newProjectDirectoryPath in
+        ) {
+            oldProjectDirectoryPath,
+                newProjectDirectoryPath in
             
             let changesPerTarget = try SDKAnalyzer.analyze(
                 old: oldProjectDirectoryPath,
@@ -88,12 +90,14 @@ struct PublicApiDiff: ParsableCommand {
                 newProjectDirectoryPath: newProjectDirectoryPath
             )
             
-            let diffOutput = OutputGenerator.generate(
-                from: changesPerTarget,
+            let outputGenerator = OutputGenerator(
+                changesPerTarget: changesPerTarget,
                 allTargetNames: allAvailableTargets,
                 oldSource: oldSource,
                 newSource: newSource
             )
+            
+            let diffOutput = outputGenerator.generate()
             
             if let output {
                 try FileManager.default.write(diffOutput, to: output)

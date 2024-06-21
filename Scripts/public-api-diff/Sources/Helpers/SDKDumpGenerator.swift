@@ -1,20 +1,21 @@
 //
-//  File.swift
-//  
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Alexander Guretzki on 18/06/2024.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
 struct SDKDumpGenerator {
     
+    /// The path to the project directory that contains the Package.swift
     let projectDirectoryPath: String
     
     init(projectDirectoryPath: String) {
         self.projectDirectoryPath = projectDirectoryPath
     }
     
+    /// Generates an sdk dump for a specific module
     func generate(for module: String) -> String {
         
         let sdkDumpInputPath = projectDirectoryPath
@@ -31,5 +32,3 @@ struct SDKDumpGenerator {
         return outputFilePath
     }
 }
-
-

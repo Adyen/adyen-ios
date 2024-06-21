@@ -211,3 +211,14 @@ extension SDKAnalyzer {
         var changeDescription: String
     }
 }
+
+extension [String: [SDKAnalyzer.Change]] {
+    
+    var totalChangeCount: Int {
+        var totalChangeCount = 0
+        keys.forEach { targetName in
+            totalChangeCount += self[targetName]?.count ?? 0
+        }
+        return totalChangeCount
+    }
+}

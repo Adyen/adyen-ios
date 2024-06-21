@@ -24,6 +24,6 @@ let package = Package(
         .testTarget(
             name: "OutputGeneratorTests",
             dependencies: ["public-api-diff"]
-        ),
+        )
     ]
 )

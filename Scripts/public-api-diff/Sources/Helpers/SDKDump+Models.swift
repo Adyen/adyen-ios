@@ -23,7 +23,7 @@ class SDKDump: Codable, Equatable {
 
 extension SDKDump.Element {
     
-    // Protocol conformance
+    // Protocol conformance node
     struct Conformance: Codable, Equatable {
         var printedName: String
         
@@ -69,15 +69,15 @@ extension SDKDump {
         
         static func == (lhs: SDKDump.Element, rhs: SDKDump.Element) -> Bool {
             lhs.kind == rhs.kind &&
-            lhs.name == rhs.name &&
-            lhs.mangledName == rhs.mangledName &&
-            lhs.printedName == rhs.printedName &&
-            lhs.declKind == rhs.declKind &&
-            lhs.children == rhs.children &&
-            lhs.spiGroupNames == rhs.spiGroupNames &&
-            lhs.declAttributes == rhs.declAttributes &&
-            lhs.accessors == rhs.accessors &&
-            lhs.conformances == rhs.conformances
+                lhs.name == rhs.name &&
+                lhs.mangledName == rhs.mangledName &&
+                lhs.printedName == rhs.printedName &&
+                lhs.declKind == rhs.declKind &&
+                lhs.children == rhs.children &&
+                lhs.spiGroupNames == rhs.spiGroupNames &&
+                lhs.declAttributes == rhs.declAttributes &&
+                lhs.accessors == rhs.accessors &&
+                lhs.conformances == rhs.conformances
         }
         
         var definition: String {
@@ -90,7 +90,7 @@ extension SDKDump {
                 definition += "public "
             }
             
-            if let declAttributes, declAttributes.contains("Final") && declKind == "Class" {
+            if let declAttributes, declAttributes.contains("Final"), declKind == "Class" {
                 definition += "final "
             }
             
@@ -118,7 +118,7 @@ extension SDKDump {
         }
         
         var debugDescription: String {
-            return definition
+            definition
         }
         
         var isSpiInternal: Bool {
@@ -128,6 +128,7 @@ extension SDKDump {
         var parentPath: String {
             var parent = self.parent
             var path = [parent?.name]
+            
             while parent != nil {
                 parent = parent?.parent
                 path += [parent?.name]

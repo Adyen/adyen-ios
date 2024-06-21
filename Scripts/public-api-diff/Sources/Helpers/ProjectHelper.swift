@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Alexander Guretzki on 20/06/2024.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
@@ -36,8 +35,11 @@ struct ProjectHelper {
             cleanup()
         }
     }
-    
-    private func setupProject(from source: ProjectSource) throws -> String {
+}
+
+private extension ProjectHelper {
+
+    func setupProject(from source: ProjectSource) throws -> String {
         
         let sourceDirectoryPath: String
         
@@ -67,10 +69,7 @@ struct ProjectHelper {
         
         return sourceWorkingDirectoryPath
     }
-}
-
-private extension ProjectHelper {
-
+    
     static func setupIndividualWorkingDirectory(
         at destinationDirectoryPath: String,
         sourceDirectoryPath: String
@@ -89,7 +88,7 @@ private extension ProjectHelper {
             ".swiftpm",
             ".DS_Store",
             "Tests",
-            "Cartfile",
+            "Cartfile"
         ]
         
         let fileExtensionIgnoreList: Set<String> = [
