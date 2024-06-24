@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2017 Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -21,7 +21,6 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.preservesSuperviewLayoutMargins = true
         return scrollView
     }()
 
@@ -247,8 +246,8 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
 
             NSLayoutConstraint.activate([
                 formView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-                formView.leadingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor),
-                formView.trailingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.trailingAnchor),
+                formView.leadingAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.leadingAnchor),
+                formView.trailingAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.trailingAnchor),
                 formView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
             ])
         } else {

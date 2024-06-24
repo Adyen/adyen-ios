@@ -1,5 +1,11 @@
 #!/usr/bin/env xcrun swift
 
+//
+// Copyright (c) 2024 Adyen N.V.
+//
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//
+
 import Foundation
 
 // MARK: - Convenience Methods
@@ -30,13 +36,13 @@ func availableTargets(from packageContent: String) -> [String] {
 
 /// Generates a library entry from the name and available target names to be inserted into the `Package.swift` file
 func consolidatedLibraryEntry(_ name: String, from availableTargets: [String]) -> String {
-"""
+    """
 
-        .library(
-            name: "\(name)",
-            targets: [\(availableTargets.map { "\"\($0)\"" }.joined(separator: ", "))]
-        ),
-"""
+            .library(
+                name: "\(name)",
+                targets: [\(availableTargets.map { "\"\($0)\"" }.joined(separator: ", "))]
+            ),
+    """
 }
 
 /// Generates the updated content for the `Package.swift` adding the consolidated library entry (containing all targets) in the products section

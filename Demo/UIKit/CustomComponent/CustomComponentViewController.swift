@@ -164,10 +164,10 @@ class CustomComponentViewController: UIViewController, CustomComponentViewProtoc
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.trailingAnchor),
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            cardComponentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+
+            cardComponentView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
             payButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             payButton.heightAnchor.constraint(equalToConstant: 48),

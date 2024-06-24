@@ -74,7 +74,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         }
         formViewController.append(FormSpacerItem())
         formViewController.append(button)
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+        formViewController.append(FormSpacerItem(numberOfSpaces: 4))
     }
 
     private func add(

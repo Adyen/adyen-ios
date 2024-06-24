@@ -42,6 +42,7 @@ internal struct AwaitComponentViewModel {
             return AwaitComponentViewModel(icon: paymentMethodType.rawValue,
                                            message: localizedString(.blikConfirmPayment, localizationParameters),
                                            spinnerTitle: localizedString(.awaitWaitForConfirmation, localizationParameters))
+
         case .mbway:
             return AwaitComponentViewModel(icon: paymentMethodType.rawValue,
                                            message: localizedString(.mbwayConfirmPayment, localizationParameters),

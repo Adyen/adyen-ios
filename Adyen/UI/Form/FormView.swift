@@ -15,7 +15,6 @@ internal final class FormView: UIView {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .fill
-        stackView.preservesSuperviewLayoutMargins = true
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -52,8 +51,6 @@ internal final class FormView: UIView {
     // MARK: - Private
 
     private func setup() {
-        preservesSuperviewLayoutMargins = true
-
         addSubviews()
         setupLayout()
     }
