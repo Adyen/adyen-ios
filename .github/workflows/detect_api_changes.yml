@@ -20,11 +20,15 @@ jobs:
       with:
         xcode-version: '15.1'
         
+    - name: 🛠️ Run Tests
+      run: |
+        cd Scripts/public-api-diff
+        xcodebuild test -scheme public-api-diff -destination "platform=iOS,name=Any iOS Device" -quiet
+        
     - name: 🔍 Detect Changes
       run: |
         PROJECT_FOLDER=$PWD
         cd Scripts/public-api-diff
-        xcodebuild test -scheme public-api-diff -destination "platform=iOS,name=Any iOS Device"
         swift run public-api-diff --new "$PROJECT_FOLDER" --old "${branch}~${baseRepo}" --output "$PROJECT_FOLDER/api_comparison.md"
       env:
         branch: '${{github.event.pull_request.base.ref}}'
