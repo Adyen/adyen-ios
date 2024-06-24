@@ -23,7 +23,14 @@ let package = Package(
         ),
         .testTarget(
             name: "PublicApiDiffTests",
-            dependencies: ["public-api-diff"]
+            dependencies: ["public-api-diff"],
+            resources: [
+                // Copy Tests/ExampleTests/Resources directories as-is.
+                // Use to retain directory structure.
+                // Will be at top level in bundle.
+                .copy("Resources/NewPackage.txt"),
+                .copy("Resources/OldPackage.txt"),
+            ]
         )
     ]
 )
