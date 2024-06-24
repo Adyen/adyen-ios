@@ -8,20 +8,26 @@ import Foundation
 
 // MARK: - Model
 
-enum SDKAnalyzer {
+struct SDKAnalyzer {
     
-    public static func analyze(
+    let fileHandler: FileHandling
+    let xcodeTools: XcodeTools
+    
+    init(fileHandler: FileHandling, xcodeTools: XcodeTools) {
+        self.fileHandler = fileHandler
+        self.xcodeTools = xcodeTools
+    }
+    
+    public func analyze(
         old oldProjectDirectoryPath: String,
-        new newProjectDirectoryPath: String,
-        fileHandler: FileHandling,
-        xcodeTools: XcodeTools
+        new newProjectDirectoryPath: String
     ) throws -> [String: [SDKAnalyzer.Change]] {
         
         print("🔍 Scanning for products changes")
         
-        let packageFileChanges = try SDKAnalyzer.analyzePackageFile(
-            updated: PackageFileHelper.packagePath(for: newProjectDirectoryPath),
-            to: PackageFileHelper.packagePath(for: oldProjectDirectoryPath),
+        let packageFileChanges = try analyzePackageFile(
+            new: PackageFileHelper.packagePath(for: newProjectDirectoryPath),
+            old: PackageFileHelper.packagePath(for: oldProjectDirectoryPath),
             fileHandler: fileHandler
         )
         
@@ -45,7 +51,7 @@ enum SDKAnalyzer {
             xcodeTools: xcodeTools
         )
         
-        var changesPerTarget = try SDKAnalyzer.analyzeSdkDump(
+        var changesPerTarget = try analyzeSdkDump(
             for: allTargets,
             newDumpGenerator: newDumpGenerator,
             oldDumpGenerator: oldDumpGenerator
@@ -58,26 +64,43 @@ enum SDKAnalyzer {
         
         return changesPerTarget
     }
+}
+
+// MARK: - Private
+
+private extension SDKAnalyzer {
     
-    private static func analyzePackageFile(
-        updated updatedPackageFilePath: String,
-        to comparisonPackageFilePath: String,
+    func analyzePackageFile(
+        new newPackageFilePath: String,
+        old oldPackageFilePath: String,
         fileHandler: FileHandling
     ) throws -> [Change] {
-        var libraryChanges = [Change]()
         
         let oldProducts = try PackageFileHelper(
-            packagePath: comparisonPackageFilePath,
+            packagePath: oldPackageFilePath,
             fileHandler: fileHandler
         ).availableProducts()
         
         let newProducts = try PackageFileHelper(
-            packagePath: updatedPackageFilePath,
+            packagePath: newPackageFilePath,
             fileHandler: fileHandler
         ).availableProducts()
         
+        return analyzeProductDifferences(
+            new: newProducts,
+            old: oldProducts
+        )
+    }
+    
+    func analyzeProductDifferences(
+        new newProducts: Set<String>,
+        old oldProducts: Set<String>
+    ) -> [Change] {
+        
         let removedLibaries = oldProducts.subtracting(newProducts)
-        libraryChanges += removedLibaries.map {
+        var packageChanges = [Change]()
+        
+        packageChanges += removedLibaries.map {
             .init(
                 changeType: .removal,
                 parentName: "",
@@ -86,7 +109,7 @@ enum SDKAnalyzer {
         }
         
         let addedLibraries = newProducts.subtracting(oldProducts)
-        libraryChanges += addedLibraries.map {
+        packageChanges += addedLibraries.map {
             .init(
                 changeType: .addition,
                 parentName: "",
@@ -94,10 +117,10 @@ enum SDKAnalyzer {
             )
         }
         
-        return libraryChanges
+        return packageChanges
     }
     
-    private static func analyzeSdkDump(
+    func analyzeSdkDump(
         for allTargets: [String],
         newDumpGenerator: SDKDumpGenerator,
         oldDumpGenerator: SDKDumpGenerator
@@ -117,7 +140,7 @@ enum SDKAnalyzer {
         return changesPerTarget
     }
     
-    private static func diffSdkDump(
+    static func diffSdkDump(
         newDump: SDKDump?,
         oldDump: SDKDump?
     ) throws -> [Change] {
@@ -132,9 +155,6 @@ enum SDKAnalyzer {
             return [.init(changeType: .addition, parentName: "", changeDescription: "Target was added")]
         }
         
-        setupRelationships(for: newDump.root, parent: nil)
-        setupRelationships(for: oldDump.root, parent: nil)
-        
         return recursiveCompare(
             element: oldDump.root,
             to: newDump.root,
@@ -144,18 +164,6 @@ enum SDKAnalyzer {
             to: oldDump.root,
             oldFirst: false
         )
-    }
-}
-
-// MARK: - Private
-
-private extension SDKAnalyzer {
-    
-    static func setupRelationships(for element: SDKDump.Element, parent: SDKDump.Element?) {
-        element.children?.forEach {
-            $0.parent = element
-            setupRelationships(for: $0, parent: element)
-        }
     }
     
     static func recursiveCompare(element lhs: SDKDump.Element, to rhs: SDKDump.Element, oldFirst: Bool) -> [Change] {

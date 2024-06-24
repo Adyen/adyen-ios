@@ -45,13 +45,18 @@ struct PublicApiDiff: ParsableCommand {
         try projectHelper.setup(
             old: oldSource,
             new: newSource
-        ) { oldProjectDirectoryPath, newProjectDirectoryPath in
+        ) {
+            oldProjectDirectoryPath,
+            newProjectDirectoryPath in
             
-            let changesPerTarget = try SDKAnalyzer.analyze(
-                old: oldProjectDirectoryPath,
-                new: newProjectDirectoryPath,
+            let sdkAnalyzer = SDKAnalyzer(
                 fileHandler: fileHandler,
                 xcodeTools: xcodeTools
+            )
+            
+            let changesPerTarget = try sdkAnalyzer.analyze(
+                old: oldProjectDirectoryPath,
+                new: newProjectDirectoryPath
             )
             
             let allAvailableTargets = try PackageFileHelper.availableTargets(

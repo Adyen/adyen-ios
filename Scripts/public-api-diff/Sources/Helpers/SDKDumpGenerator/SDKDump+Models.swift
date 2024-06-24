@@ -16,11 +16,13 @@ class SDKDump: Codable, Equatable {
     
     internal init(root: Element) {
         self.root = root
+        setupParentRelationships()
     }
     
     required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.root = try container.decode(Element.self, forKey: .root)
+        setupParentRelationships()
     }
     
     public static func == (lhs: SDKDump, rhs: SDKDump) -> Bool {
@@ -198,8 +200,25 @@ extension SDKDump {
     }
 }
 
+// MARK: - Convenience
+
 extension [SDKDump.Element] {
     func firstElementMatchingName(of otherElement: Element) -> Element? {
         first(where: { $0.name == otherElement.name })
+    }
+}
+
+private extension SDKDump {
+    func setupParentRelationships() {
+        root.setupParentRelationships()
+    }
+}
+
+private extension SDKDump.Element {
+    func setupParentRelationships(parent: SDKDump.Element? = nil) {
+        children?.forEach {
+            $0.parent = self
+            setupParentRelationships(parent: self)
+        }
     }
 }
