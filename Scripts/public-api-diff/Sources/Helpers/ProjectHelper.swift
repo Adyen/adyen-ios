@@ -53,8 +53,6 @@ private extension ProjectHelper {
         let currentDirectory = fileHandler.currentDirectoryPath
         let targetDirectoryPath = currentDirectory.appending("\(UUID().uuidString)")
         
-        try? fileHandler.removeItem(atPath: targetDirectoryPath)
-        
         let git = Git(shell: shell)
         git.clone(repository, at: branchOrTag, targetDirectoryPath: targetDirectoryPath)
         return targetDirectoryPath
@@ -107,7 +105,6 @@ private extension ProjectHelper {
         shell: ShellHandling
     ) throws {
         
-        try? fileHandler.removeItem(atPath: destinationDirectoryPath)
         try fileHandler.createDirectory(atPath: destinationDirectoryPath)
         
         let fileNameIgnoreList: Set<String> = [
