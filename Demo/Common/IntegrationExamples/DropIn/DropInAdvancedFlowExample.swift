@@ -9,20 +9,20 @@ import AdyenComponents
 import AdyenDropIn
 
 internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
-    
+
     internal weak var presenter: PresenterExampleProtocol?
 
     private var dropInComponent: DropInComponent?
-    
+
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     private lazy var palApiClient = ApiClientHelper.generatePalApiClient()
-    
+
     internal lazy var context: AdyenContext = generateContext()
 
     // MARK: - Initializers
 
     internal init() {}
-    
+
     internal func start() {
         presenter?.showLoadingIndicator()
         requestPaymentMethods(order: nil) { [weak self] result in
@@ -39,9 +39,9 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
             }
         }
     }
-    
+
     // MARK: - Presentation
-    
+
     private func presentComponent(with paymentMethods: PaymentMethods) {
         let dropIn = dropInComponent(from: paymentMethods)
         presenter?.present(viewController: dropIn.viewController, completion: nil)
@@ -54,14 +54,14 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
                                         context: context,
                                         configuration: configuration,
                                         title: ConfigurationConstants.appName)
-        
+
         component.delegate = self
         component.partialPaymentDelegate = self
         component.storedPaymentMethodsDelegate = self
 
         return component
     }
-    
+
     private func dropInConfiguration(from paymentMethods: PaymentMethods) -> DropInComponent.Configuration {
         let configuration = ConfigurationConstants.current.dropInConfiguration
 
@@ -121,13 +121,11 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
     }
 
     private func finish(with error: Error) {
-        let message: String
-        if let componentError = (error as? ComponentError), componentError == ComponentError.cancelled {
-            message = "Cancelled"
+        if (error as? ComponentError) == .cancelled {
+            presenter?.dismiss(completion: nil)
         } else {
-            message = error.localizedDescription
+            finalize(false, error.localizedDescription)
         }
-        finalize(false, message)
     }
 
     private func finalize(_ success: Bool, _ message: String) {
