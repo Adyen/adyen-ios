@@ -38,8 +38,9 @@ internal final class DAErrorViewController: UIViewController {
             case .deletionConfirmation:
                 UIImage(systemName: "trash",
                         withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight))?
-                    .withRenderingMode(.alwaysTemplate)
-                    
+                    .withTintColor(.systemGray,
+                                   renderingMode: .alwaysOriginal)
+
             }
         }
         
