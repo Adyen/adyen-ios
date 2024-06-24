@@ -8,10 +8,15 @@ import Foundation
 
 struct PackageFileHelper {
     
-    let packagePath: String
+    private let packagePath: String
+    private let fileHandler: FileHandling
     
-    init(packagePath: String) {
+    init(
+        packagePath: String,
+        fileHandler: FileHandling
+    ) {
         self.packagePath = packagePath
+        self.fileHandler = fileHandler
     }
     
     static func packagePath(for projectDirectoryPath: String) -> String {
@@ -20,13 +25,13 @@ struct PackageFileHelper {
     
     func availableTargets() throws -> Set<String> {
         
-        let packageContent = try String(contentsOfFile: packagePath)
+        let packageContent = try fileHandler.load(from: packagePath)
         return try availableTargets(from: packageContent)
     }
     
     func availableProducts() throws -> Set<String> {
         
-        let packageContent = try String(contentsOfFile: packagePath)
+        let packageContent = try fileHandler.load(from: packagePath)
         return try availableProducts(from: packageContent)
     }
     
@@ -35,7 +40,7 @@ struct PackageFileHelper {
         named consolidatedLibraryName: String
     ) throws {
         
-        let packageContent = try String(contentsOfFile: packagePath)
+        let packageContent = try fileHandler.load(from: packagePath)
         let targets = try availableTargets(from: packageContent)
         
         let consolidatedEntry = consolidatedLibraryEntry(consolidatedLibraryName, from: targets.sorted())
@@ -48,13 +53,24 @@ struct PackageFileHelper {
 
 extension PackageFileHelper {
     
-    static func availableTargets(oldProjectDirectoryPath: String, newProjectDirectoryPath: String) throws -> [String] {
+    static func availableTargets(
+        oldProjectDirectoryPath: String,
+        newProjectDirectoryPath: String,
+        fileHandler: FileHandling
+    ) throws -> [String] {
         
         let oldPackagePath = packagePath(for: oldProjectDirectoryPath)
         let newPackagePath = packagePath(for: newProjectDirectoryPath)
         
-        let oldTargets = try Self(packagePath: oldPackagePath).availableTargets()
-        let newTargets = try Self(packagePath: newPackagePath).availableTargets()
+        let oldTargets = try Self(
+            packagePath: oldPackagePath,
+            fileHandler: fileHandler
+        ).availableTargets()
+        
+        let newTargets = try Self(
+            packagePath: newPackagePath,
+            fileHandler: fileHandler
+        ).availableTargets()
         
         return oldTargets.union(newTargets).sorted()
     }

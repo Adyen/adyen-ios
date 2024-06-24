@@ -24,7 +24,7 @@ jobs:
       run: |
         PROJECT_FOLDER=$PWD
         cd Scripts/public-api-diff
-        swift run public-api-diff --new "$PROJECT_FOLDER" --old "${branch};${baseRepo}" --output "$PROJECT_FOLDER/api_comparison.md"
+        swift run public-api-diff --new "$PROJECT_FOLDER" --old "${branch}~${baseRepo}" --output "$PROJECT_FOLDER/api_comparison.md"
       env:
         branch: '${{github.event.pull_request.base.ref}}'
         baseRepo: '${{github.server_url}}/${{github.repository}}.git'

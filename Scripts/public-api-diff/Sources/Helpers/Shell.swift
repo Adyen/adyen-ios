@@ -6,10 +6,16 @@
 
 import Foundation
 
-enum Shell {
+protocol ShellHandling {
     
     @discardableResult
-    static func execute(_ command: String) -> String {
+    func execute(_ command: String) -> String
+}
+
+struct Shell: ShellHandling {
+    
+    @discardableResult
+    func execute(_ command: String) -> String {
         let task = Process()
         let pipe = Pipe()
         
@@ -22,13 +28,5 @@ enum Shell {
         
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         return String(data: data, encoding: .utf8) ?? ""
-    }
-}
-
-// MARK: - Convenience
-
-extension Shell {
-    static func removeDirectory(at directoryPath: String) {
-        Shell.execute("rm -rf \(directoryPath)")
     }
 }

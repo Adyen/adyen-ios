@@ -7,46 +7,6 @@
 import ArgumentParser
 import Foundation
 
-// TODO: Add UnitTests
-
-enum Constants {
-    static let deviceTarget: String = "x86_64-apple-ios17.4-simulator"
-    static let destination: String = "platform=iOS,name=Any iOS Device"
-    static let derivedDataPath: String = ".build"
-    static let simulatorSdkCommand = "xcrun --sdk iphonesimulator --show-sdk-path"
-}
-
-enum ProjectSource: RawRepresentable {
-    typealias RawValue = String
-    
-    case local(path: String)
-    case remote(branch: String, repository: String)
- 
-    init?(rawValue: String) {
-        if FileManager.default.fileExists(atPath: rawValue) {
-            self = .local(path: rawValue)
-            return
-        }
-        
-        let remoteComponents = rawValue.components(separatedBy: ";")
-        if remoteComponents.count == 2, let branch = remoteComponents.first, let repository = remoteComponents.last {
-            self = .remote(branch: branch, repository: repository)
-            return
-        }
-        
-        return nil
-    }
-    
-    var rawValue: String {
-        switch self {
-        case let .local(path):
-            return path
-        case let .remote(branch, repository):
-            return "\(branch);\(repository)"
-        }
-    }
-}
-
 @main
 struct PublicApiDiff: ParsableCommand {
     
@@ -61,33 +21,43 @@ struct PublicApiDiff: ParsableCommand {
     @Option(help: "Where to output the result (File path)")
     public var output: String?
     
-    private var newSource: ProjectSource { .init(rawValue: new)! }
-    private var oldSource: ProjectSource { .init(rawValue: old)! }
-    
     public func run() throws {
         
-        print("Comparing `\(newSource.rawValue)` to `\(oldSource.rawValue)`")
+        // TODO: Move all of this code into a single testable module
         
-        let currentDirectory = FileManager.default.currentDirectoryPath
+        let shell = Shell()
+        let xcodeTools = XcodeTools(shell: shell)
+        let fileHandler = FileManager.default
+        let oldSource = try ProjectSource.from(old, fileHandler: fileHandler)
+        let newSource = try ProjectSource.from(new, fileHandler: fileHandler)
+        
+        print("Comparing `\(newSource.description)` to `\(oldSource.description)`")
+        
+        let currentDirectory = fileHandler.currentDirectoryPath
         let workingDirectoryPath = currentDirectory.appending("/tmp-public-api-diff")
         
-        try ProjectHelper(
-            workingDirectoryPath: workingDirectoryPath
-        ).setup(
+        let projectHelper = ProjectHelper(
+            workingDirectoryPath: workingDirectoryPath,
+            fileHandler: fileHandler,
+            shell: shell
+        )
+        
+        try projectHelper.setup(
             old: oldSource,
             new: newSource
-        ) {
-            oldProjectDirectoryPath,
-                newProjectDirectoryPath in
+        ) { oldProjectDirectoryPath, newProjectDirectoryPath in
             
             let changesPerTarget = try SDKAnalyzer.analyze(
                 old: oldProjectDirectoryPath,
-                new: newProjectDirectoryPath
+                new: newProjectDirectoryPath,
+                fileHandler: fileHandler,
+                xcodeTools: xcodeTools
             )
             
             let allAvailableTargets = try PackageFileHelper.availableTargets(
                 oldProjectDirectoryPath: oldProjectDirectoryPath,
-                newProjectDirectoryPath: newProjectDirectoryPath
+                newProjectDirectoryPath: newProjectDirectoryPath,
+                fileHandler: fileHandler
             )
             
             let outputGenerator = OutputGenerator(
@@ -100,7 +70,7 @@ struct PublicApiDiff: ParsableCommand {
             let diffOutput = outputGenerator.generate()
             
             if let output {
-                try FileManager.default.write(diffOutput, to: output)
+                try fileHandler.write(diffOutput, to: output)
             } else {
                 print(diffOutput)
             }

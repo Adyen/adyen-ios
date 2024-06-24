@@ -64,7 +64,7 @@ private extension OutputGenerator {
         return "# 👀 \(totalChangeCount) public \(totalChangeCount == 1 ? "change" : "changes") detected"
     }
     
-    var repoInfo: String { "_Comparing `\(newSource.rawValue)` to `\(oldSource.rawValue)`_" }
+    var repoInfo: String { "_Comparing `\(newSource.description)` to `\(oldSource.description)`_" }
     var analyzedModulesInfo: String { "**Analyzed modules:** \(allTargetNames.joined(separator: ", "))" }
     
     var changeLines: [String] {
