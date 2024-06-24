@@ -16,7 +16,7 @@ public struct RedirectableAwaitAction: PaymentDataAware, Decodable {
     public let paymentData: String
 
     /// The URL to which to redirect the user.
-    public let url: URL?
+    public let url: URL
 
     /// Initializes a await action.
     ///
@@ -26,10 +26,9 @@ public struct RedirectableAwaitAction: PaymentDataAware, Decodable {
     ///   - url: The URL to which to redirect the user.
     public init(paymentData: String,
                 paymentMethodType: AwaitPaymentMethod,
-                url: URL? = nil) {
+                url: URL) {
         self.paymentData = paymentData
         self.paymentMethodType = paymentMethodType
         self.url = url
     }
-
 }

@@ -87,7 +87,7 @@ public enum Action: Decodable {
 
     private static func handleAwaitType(from decoder: Decoder) throws -> Action {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        if (try? container.decode(String.self, forKey: .redirectUrl)) != nil {
+        if (try? container.decode(URL.self, forKey: .redirectUrl)) != nil {
             return try .redirectableAwait(RedirectableAwaitAction(from: decoder))
         } else {
             return try .await(AwaitAction(from: decoder))

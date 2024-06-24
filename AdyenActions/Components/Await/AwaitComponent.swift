@@ -78,20 +78,21 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     /// Handles redirect await action.
     ///
     /// - Parameter action: The await action object.
-    public func handleRedirectableAwait(_ action: RedirectableAwaitAction) {
-        if let url = action.url {
-            appLauncher.openCustomSchemeUrl(url) { [weak self] success in
-                guard let self else { return }
-                if success {
-                    self.delegate?.didOpenExternalApplication(component: self)
-                } else {
-                    self.delegate?.didFail(with: RedirectComponent.Error.appNotFound, from: self)
-                    self.didCancel()
-                }
+    public func handle(_ action: RedirectableAwaitAction) {
+        appLauncher.openCustomSchemeUrl(action.url) { [weak self] success in
+            guard let self else { return }
+            if success {
+                self.handle(AwaitAction(
+                    paymentData: action.paymentData,
+                    paymentMethodType: action.paymentMethodType)
+                )
+                
+                self.delegate?.didOpenExternalApplication(component: self)
+            } else {
+                self.delegate?.didFail(with: RedirectComponent.Error.appNotFound, from: self)
+                self.didCancel()
             }
         }
-        handle(AwaitAction(paymentData: action.paymentData,
-                           paymentMethodType: action.paymentMethodType))
     }
 
     public func didCancel() {

@@ -132,6 +132,45 @@ class AdyenActionComponentTests: XCTestCase {
 
         waitForExpectations(timeout: 100, handler: nil)
     }
+    
+    func testRedirectableAwaitAction() throws {
+        let expectedRedirectUrl = URL(string: "https://adyen.com")!
+        let expectedAppLaunch = expectation(description: "`AppLauncher.openCustomSchemeUrl` was called")
+        
+        let mockAppLauncher = AppLauncherMock()
+        mockAppLauncher.onOpenCustomSchemeUrl = { url, completion in
+            XCTAssertEqual(expectedRedirectUrl, url)
+            expectedAppLaunch.fulfill()
+            completion?(true)
+        }
+        
+        let sut = AdyenActionComponent(context: Dummy.context)
+        sut.appLauncher = mockAppLauncher
+        
+        sut.presentationDelegate = try UIViewController.topPresenter()
+        let action = Action.redirectableAwait(
+            RedirectableAwaitAction(
+                paymentData: "SOME_DATA",
+                paymentMethodType: .upiIntent,
+                url: expectedRedirectUrl
+            )
+        )
+        
+        sut.handle(action)
+        
+        let waitExpectation = expectation(description: "Expect AwaitViewController to be presented")
+        
+        try waitUntilTopPresenter(isOfType: AdyenActions.AwaitViewController.self)
+
+        try XCTUnwrap(sut.presentationDelegate as? UIViewController).dismiss(animated: true) {
+            let topPresentedViewController = try? UIViewController.topPresenter()
+            XCTAssertNil(topPresentedViewController as? AdyenActions.AwaitViewController)
+
+            waitExpectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 100, handler: nil)
+    }
 
     func testWeChatAction() throws {
         let sut = AdyenActionComponent(context: Dummy.context)

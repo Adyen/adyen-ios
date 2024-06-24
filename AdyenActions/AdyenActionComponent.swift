@@ -119,6 +119,8 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     
     internal var currentActionComponent: Component?
     
+    internal var appLauncher: AnyAppLauncher = AppLauncher()
+    
     /// Initializes a new instance of `AdyenActionComponent`
     ///
     /// - Parameters:
@@ -153,7 +155,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         case let .await(awaitAction):
             handle(awaitAction)
         case let .redirectableAwait(redirectableAwaitAction):
-            handleRedirectableAwait(redirectableAwaitAction)
+            handle(redirectableAwaitAction)
         case let .voucher(voucher):
             handle(voucher)
         case let .qrCode(qrCode):
@@ -274,20 +276,22 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
         component.configuration.localizationParameters = configuration.localizationParameters
+        component.appLauncher = appLauncher
         
         component.handle(action)
         currentActionComponent = component
     }
 
-    private func handleRedirectableAwait(_ action: RedirectableAwaitAction) {
+    private func handle(_ action: RedirectableAwaitAction) {
         let component = AwaitComponent(context: context)
         component.configuration.style = configuration.style.awaitComponentStyle
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
         component.configuration.localizationParameters = configuration.localizationParameters
-
-        component.handleRedirectableAwait(action)
+        component.appLauncher = appLauncher
+        
+        component.handle(action)
         currentActionComponent = component
     }
 

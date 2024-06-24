@@ -120,7 +120,7 @@ function diffModuleVersions() {
 
     cd ../..
     
-    ./Scripts/detect_public_api_changes/diff.swift "api_dump.json" "api_dump_comparison.json" $1
+    ./Scripts/detect_public_api_changes/diff.swift "api_dump_comparison.json" "api_dump.json" $1
     
     # Cleaning up afterwards
     rm api_dump.json
