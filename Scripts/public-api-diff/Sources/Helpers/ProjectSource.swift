@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ProjectSourceError: LocalizedError {
+enum ProjectSourceError: LocalizedError, Equatable {
     case invalidSourceValue(value: String)
     
     var errorDescription: String? {
@@ -18,7 +18,7 @@ enum ProjectSourceError: LocalizedError {
     }
 }
 
-enum ProjectSource {
+enum ProjectSource: Equatable {
     
     /// The separator used to join branch & repository
     static var gitSourceSeparator: String { "~" }
@@ -32,7 +32,7 @@ enum ProjectSource {
         }
         
         let remoteComponents = rawValue.components(separatedBy: gitSourceSeparator)
-        if remoteComponents.count == 2, let branch = remoteComponents.first, let repository = remoteComponents.last {
+        if remoteComponents.count == 2, let branch = remoteComponents.first, let repository = remoteComponents.last, URL(string: repository) != nil {
             return .remote(branch: branch, repository: repository)
         }
         

@@ -22,7 +22,7 @@ let package = Package(
             path: "Sources"
         ),
         .testTarget(
-            name: "OutputGeneratorTests",
+            name: "PublicApiDiffTests",
             dependencies: ["public-api-diff"]
         )
     ]
