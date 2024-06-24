@@ -25,12 +25,14 @@ struct PackageFileHelper {
     
     func availableTargets() throws -> Set<String> {
         
+        // TODO: Better use "swift package describe --type json" instead of trying to parse the Package.swift file itself
         let packageContent = try fileHandler.load(from: packagePath)
         return availableTargets(from: packageContent)
     }
     
     func availableProducts() throws -> Set<String> {
         
+        // TODO: Better use "swift package describe --type json" instead of trying to parse the Package.swift file itself
         let packageContent = try fileHandler.load(from: packagePath)
         return availableProducts(from: packageContent)
     }
@@ -105,6 +107,7 @@ private extension PackageFileHelper {
     }
     
     func availableTargets(from packageContent: String, ofType targetType: TargetType) -> Set<String> {
+        // TODO: Better use "swift package describe --type json" instead of trying to parse the Package.swift file itself
         let scanner = Scanner(string: packageContent)
         _ = scanner.scanUpToString("targets: [")
 
@@ -126,6 +129,7 @@ private extension PackageFileHelper {
     }
     
     func availableProducts(from packageContent: String) -> Set<String> {
+        // TODO: Better use "swift package describe --type json" instead of trying to parse the Package.swift file itself
         let scanner = Scanner(string: packageContent)
         _ = scanner.scanUpToString("products: [")
 
