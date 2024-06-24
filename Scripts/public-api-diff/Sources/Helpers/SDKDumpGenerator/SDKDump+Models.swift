@@ -216,9 +216,9 @@ private extension SDKDump {
 
 private extension SDKDump.Element {
     func setupParentRelationships(parent: SDKDump.Element? = nil) {
+        self.parent = parent
         children?.forEach {
-            $0.parent = self
-            setupParentRelationships(parent: self)
+            $0.setupParentRelationships(parent: self)
         }
     }
 }
