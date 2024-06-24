@@ -23,7 +23,7 @@ jobs:
     - name: 🛠️ Run Tests
       run: |
         cd Scripts/public-api-diff
-        xcodebuild test -scheme public-api-diff -destination "platform=iOS,name=Any iOS Device" -quiet
+        xcodebuild test -scheme public-api-diff -destination "platform=iOS,name=Any iOS Device" | xcpretty --utf --color && exit
         
     - name: 🔍 Detect Changes
       run: |
