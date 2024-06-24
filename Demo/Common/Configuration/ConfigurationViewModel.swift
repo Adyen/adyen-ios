@@ -29,7 +29,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var applePayMerchantIdentifier: String = ""
     @Published internal var allowOnboarding: Bool = false
     @Published internal var analyticsIsEnabled: Bool = true
-    @Published internal var cashAppPayEnabled: Bool = false
+    @Published internal var cashAppPayEnabled: Bool = true
     @Published internal var installmentsEnabled: Bool = false
     @Published internal var showInstallmentAmount: Bool = false
 
