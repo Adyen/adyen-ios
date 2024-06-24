@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Alexander Guretzki on 21/06/2024.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
@@ -12,7 +11,7 @@ enum ProjectSourceError: LocalizedError, Equatable {
     
     var errorDescription: String? {
         switch self {
-        case .invalidSourceValue(let value):
+        case let .invalidSourceValue(value):
             "Invalid source parameter `\(value)`. It needs to either be a local file path or a repository in the format `[BRANCH_OR_TAG]\(ProjectSource.gitSourceSeparator)[REPOSITORY_URL]"
         }
     }

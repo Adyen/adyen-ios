@@ -1,12 +1,12 @@
 //
-//  File.swift
-//  
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Alexander Guretzki on 24/06/2024.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 @testable import public_api_diff
 import XCTest
+
 
 class XcodeToolsTests: XCTestCase {
     
@@ -45,3 +45,4 @@ class XcodeToolsTests: XCTestCase {
         xcodeTools.build(projectDirectoryPath: projectDirectoryPath, allTargetsLibraryName: allTargetsLibraryName)
     }
 }
+

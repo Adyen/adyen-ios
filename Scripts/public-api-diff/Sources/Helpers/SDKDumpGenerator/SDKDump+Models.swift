@@ -14,6 +14,15 @@ class SDKDump: Codable, Equatable {
         case root = "ABIRoot"
     }
     
+    internal init(root: Element) {
+        self.root = root
+    }
+    
+    required init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.root = try container.decode(Element.self, forKey: .root)
+    }
+    
     public static func == (lhs: SDKDump, rhs: SDKDump) -> Bool {
         lhs.root == rhs.root
     }
@@ -53,6 +62,46 @@ extension SDKDump {
         let conformances: [Conformance]?
         
         var parent: Element?
+        
+        internal init(
+            kind: String,
+            name: String,
+            mangledName: String? = nil,
+            printedName: String,
+            declKind: String? = nil,
+            children: [Element]? = nil,
+            spiGroupNames: [String]? = nil,
+            declAttributes: [String]? = nil,
+            accessors: [Element]? = nil,
+            conformances: [Conformance]? = nil,
+            parent: Element? = nil
+        ) {
+            self.kind = kind
+            self.name = name
+            self.mangledName = mangledName
+            self.printedName = printedName
+            self.declKind = declKind
+            self.children = children
+            self.spiGroupNames = spiGroupNames
+            self.declAttributes = declAttributes
+            self.accessors = accessors
+            self.conformances = conformances
+            self.parent = parent
+        }
+        
+        required init(from decoder: any Decoder) throws {
+            let container: KeyedDecodingContainer<CodingKeys> = try decoder.container(keyedBy: CodingKeys.self)
+            self.kind = try container.decode(String.self, forKey: CodingKeys.kind)
+            self.name = try container.decode(String.self, forKey: CodingKeys.name)
+            self.printedName = try container.decode(String.self, forKey: CodingKeys.printedName)
+            self.mangledName = try container.decodeIfPresent(String.self, forKey: CodingKeys.mangledName)
+            self.children = try container.decodeIfPresent([SDKDump.Element].self, forKey: CodingKeys.children)
+            self.spiGroupNames = try container.decodeIfPresent([String].self, forKey: CodingKeys.spiGroupNames)
+            self.declKind = try container.decodeIfPresent(String.self, forKey: CodingKeys.declKind)
+            self.declAttributes = try container.decodeIfPresent([String].self, forKey: CodingKeys.declAttributes)
+            self.conformances = try container.decodeIfPresent([Conformance].self, forKey: CodingKeys.conformances)
+            self.accessors = try container.decodeIfPresent([SDKDump.Element].self, forKey: CodingKeys.accessors)
+        }
         
         enum CodingKeys: String, CodingKey {
             case kind

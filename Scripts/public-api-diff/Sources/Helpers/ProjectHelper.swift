@@ -41,6 +41,7 @@ struct ProjectHelper {
             try body(oldWorkingDirectoryPath, newWorkingDirectoryPath)
         } catch {
             cleanup()
+            throw error
         }
     }
 }

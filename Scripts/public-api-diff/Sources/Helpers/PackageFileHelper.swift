@@ -26,13 +26,13 @@ struct PackageFileHelper {
     func availableTargets() throws -> Set<String> {
         
         let packageContent = try fileHandler.load(from: packagePath)
-        return try availableTargets(from: packageContent)
+        return availableTargets(from: packageContent)
     }
     
     func availableProducts() throws -> Set<String> {
         
         let packageContent = try fileHandler.load(from: packagePath)
-        return try availableProducts(from: packageContent)
+        return availableProducts(from: packageContent)
     }
     
     /// Inserts a new library into the targets section containing all targets from the target section
@@ -41,13 +41,13 @@ struct PackageFileHelper {
     ) throws {
         
         let packageContent = try fileHandler.load(from: packagePath)
-        let targets = try availableTargets(from: packageContent)
+        let targets = availableTargets(from: packageContent)
         
         let consolidatedEntry = consolidatedLibraryEntry(consolidatedLibraryName, from: targets.sorted())
         let updatedPackageContent = updatedContent(packageContent, with: consolidatedEntry)
         
         // Write the updated content back to the file
-        try updatedPackageContent.write(toFile: packagePath, atomically: true, encoding: .utf8)
+        try fileHandler.write(updatedPackageContent, to: packagePath)
     }
 }
 
@@ -96,15 +96,15 @@ private extension PackageFileHelper {
         }
     }
     
-    func availableTargets(from packageContent: String) throws -> Set<String> {
-        let targets = try availableTargets(from: packageContent, ofType: .target)
-        let binaryTargets = try availableTargets(from: packageContent, ofType: .binaryTarget)
+    func availableTargets(from packageContent: String) -> Set<String> {
+        let targets = availableTargets(from: packageContent, ofType: .target)
+        let binaryTargets = availableTargets(from: packageContent, ofType: .binaryTarget)
         
         // Removing binaryTargets from list of targets as we can't generate an sdk dump for them
         return targets.subtracting(binaryTargets)
     }
     
-    func availableTargets(from packageContent: String, ofType targetType: TargetType) throws -> Set<String> {
+    func availableTargets(from packageContent: String, ofType targetType: TargetType) -> Set<String> {
         let scanner = Scanner(string: packageContent)
         _ = scanner.scanUpToString("targets: [")
 
@@ -125,7 +125,7 @@ private extension PackageFileHelper {
         return availableTargets
     }
     
-    func availableProducts(from packageContent: String) throws -> Set<String> {
+    func availableProducts(from packageContent: String) -> Set<String> {
         let scanner = Scanner(string: packageContent)
         _ = scanner.scanUpToString("products: [")
 
@@ -146,7 +146,6 @@ private extension PackageFileHelper {
         return availableProducts
     }
 }
-
 
 // MARK: Update Package Content
 
