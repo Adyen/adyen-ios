@@ -15,6 +15,8 @@ internal protocol AnyThreeDS2CoreActionHandler: Component {
     
     var transaction: AnyADYTransaction? { get set }
     
+    var presentationDelegate: PresentationDelegate? { get set }
+    
     func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
                 event: Analytics.Event,
                 completionHandler: @escaping (Result<String, Error>) -> Void)
@@ -40,6 +42,8 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     internal lazy var service: AnyADYService = ADYServiceAdapter()
 
     internal var transaction: AnyADYTransaction?
+    
+    internal weak var presentationDelegate: PresentationDelegate?
     
     /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
     internal var threeDSRequestorAppURL: URL?
@@ -108,7 +112,8 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
             case let .success(transaction):
                 let encodedFingerprint = try AdyenCoder.encodeBase64(ThreeDS2Component.Fingerprint(
                     authenticationRequestParameters: transaction.authenticationParameters,
-                    delegatedAuthenticationSDKOutput: nil
+                    delegatedAuthenticationSDKOutput: nil,
+                    deleteDelegatedAuthenticationCredential: nil
                 ))
                 self.transaction = transaction
                 completionHandler(.success(encodedFingerprint))
@@ -256,5 +261,11 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
             subType: subtype
         )
         context.analyticsProvider?.add(log: logEvent)
+    }
+}
+
+extension ThreeDS2CoreActionHandler: PresentationDelegate {
+    func present(component: any PresentableComponent) {
+        presentationDelegate?.present(component: component)
     }
 }

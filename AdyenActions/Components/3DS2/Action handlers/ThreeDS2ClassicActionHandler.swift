@@ -16,6 +16,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     internal var wrappedComponent: Component { coreActionHandler }
 
     internal let coreActionHandler: AnyThreeDS2CoreActionHandler
+    internal weak var presentationDelegate: PresentationDelegate?
 
     internal var transaction: AnyADYTransaction? {
         get {
@@ -107,4 +108,10 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
 
     private let challengeEventName = "3ds2challenge"
 
+}
+
+extension ThreeDS2ClassicActionHandler: PresentationDelegate {
+    func present(component: any Adyen.PresentableComponent) {
+        presentationDelegate?.present(component: component)
+    }
 }

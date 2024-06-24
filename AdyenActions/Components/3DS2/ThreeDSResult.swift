@@ -55,7 +55,7 @@ public struct ThreeDSResult: Decodable {
                                  transStatus: oldPayload.transStatus)
         return try .init(payload: AdyenCoder.encode(newPayload).base64EncodedString())
     }
-
+    
     internal init(authenticated: Bool, authorizationToken: String?) throws {
         var payloadJson = ["transStatus": authenticated ? "Y" : "N"]
 
