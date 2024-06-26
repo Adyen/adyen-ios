@@ -10,8 +10,8 @@ import Foundation
 
 struct SDKAnalyzer {
     
-    let fileHandler: FileHandling
-    let xcodeTools: XcodeTools
+    private let fileHandler: FileHandling
+    private let xcodeTools: XcodeTools
     
     init(fileHandler: FileHandling, xcodeTools: XcodeTools) {
         self.fileHandler = fileHandler

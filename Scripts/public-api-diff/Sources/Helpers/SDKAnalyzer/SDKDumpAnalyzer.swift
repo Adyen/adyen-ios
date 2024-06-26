@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Alexander Guretzki on 26/06/2024.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
@@ -50,8 +49,8 @@ enum SDKDumpAnalyzer {
             changes += [.init(changeType: .change, parentName: lhs.parentPath, changeDescription: "`\(lhs)`\n  ➡️  `\(rhs)`")]
         }
         
-        changes += lhs.children?.flatMap { lhsElement in
-            if let rhsChildForName = rhs.children?.first(where: { $0.printedName == lhsElement.printedName }) {
+        changes += lhs.children.flatMap { lhsElement in
+            if let rhsChildForName = rhs.children.first(where: { $0.printedName == lhsElement.printedName }) {
                 return recursiveCompare(element: lhsElement, to: rhsChildForName, oldFirst: oldFirst)
             } else {
                 // Type changes we handle as a change, not an addition/removal (they are in the children array tho)
@@ -66,7 +65,7 @@ enum SDKDumpAnalyzer {
                     return [.init(changeType: .addition, parentName: lhsElement.parentPath, changeDescription: "`\(lhsElement)` was added")]
                 }
             }
-        } ?? []
+        }
         
         return changes
     }

@@ -7,7 +7,6 @@
 @testable import public_api_diff
 import XCTest
 
-
 class XcodeToolsTests: XCTestCase {
     
     func test_dumpSdk() throws {
@@ -45,4 +44,3 @@ class XcodeToolsTests: XCTestCase {
         xcodeTools.build(projectDirectoryPath: projectDirectoryPath, allTargetsLibraryName: allTargetsLibraryName)
     }
 }
-

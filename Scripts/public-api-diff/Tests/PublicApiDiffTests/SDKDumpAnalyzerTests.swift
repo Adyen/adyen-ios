@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Alexander Guretzki on 26/06/2024.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 @testable import public_api_diff
@@ -98,14 +97,15 @@ class SDKDumpAnalyzerTests: XCTestCase {
                 kind: "Class",
                 name: "parent",
                 printedName: "printedName",
-                declKind: "Class",
+                declKind: .classDeclaration,
                 children: [
-                    .init(kind: "Struct", name: "child", printedName: "childPrintedName", declKind: "Struct"),
-                    .init(kind: "Class", name: "spiChild", printedName: "spiChildPrintedName", declKind: "Class"),
-                    .init(kind: "Class", name: "spiChild", printedName: "invisibleSpiChildPrintedName", declKind: "Class", spiGroupNames: ["SpiInternal"]),
-                    .init(kind: "Enum", name: "enumChild", printedName: "new_childPrintedName", declKind: "Enum", children: [
-                        .init(kind: "EnumElement", name: "someCase", printedName: "someCasePrintedName", declKind: "EnumElement"),
-                        .init(kind: "EnumElement", name: "oldCase", printedName: "oldCasePrintedName", declKind: "EnumElement")
+                    .init(kind: "Struct", name: "child", printedName: "childPrintedName", declKind: .structDelcaration),
+                    .init(kind: "Class", name: "spiChild", printedName: "spiChildPrintedName", declKind: .classDeclaration),
+                    .init(kind: "Class", name: "spiChild", printedName: "invisibleSpiChildPrintedName", declKind: .classDeclaration, spiGroupNames: ["SpiInternal"]),
+                    .init(kind: "Enum", name: "enumChild", printedName: "new_childPrintedName", declKind: .enumDeclaration, children: [
+                        .init(kind: "StaticLet", name: "staticLet", printedName: "staticLetPrintedName", declKind: .varDeclaration, isStatic: true, isLet: false),
+                        .init(kind: "EnumElement", name: "someCase", printedName: "someCasePrintedName", declKind: .enumElement),
+                        .init(kind: "EnumElement", name: "oldCase", printedName: "oldCasePrintedName", declKind: .enumElement)
                     ])
                 ]
             )
@@ -116,16 +116,17 @@ class SDKDumpAnalyzerTests: XCTestCase {
                 kind: "Class",
                 name: "parent",
                 printedName: "printedName",
-                declKind: "Class",
+                declKind: .classDeclaration,
                 children: [
-                    .init(kind: "Class", name: "child", printedName: "childPrintedName", declKind: "Class"),
-                    .init(kind: "Class", name: "spiChild", printedName: "spiChildPrintedName", declKind: "Class", spiGroupNames: ["SpiInternal"]),
-                    .init(kind: "Class", name: "spiChild", printedName: "invisibleSpiChildPrintedName", declKind: "Class", children: [
+                    .init(kind: "Class", name: "child", printedName: "childPrintedName", declKind: .classDeclaration),
+                    .init(kind: "Class", name: "spiChild", printedName: "spiChildPrintedName", declKind: .classDeclaration, spiGroupNames: ["SpiInternal"]),
+                    .init(kind: "Class", name: "spiChild", printedName: "invisibleSpiChildPrintedName", declKind: .classDeclaration, children: [
                         .init(kind: "kind", name: "name", printedName: "printedName")
                     ], spiGroupNames: ["SpiInternal"]),
-                    .init(kind: "Enum", name: "enumChild", printedName: "new_childPrintedName", declKind: "Enum", children: [
-                        .init(kind: "EnumElement", name: "someCase", printedName: "someCasePrintedName", declKind: "EnumElement"),
-                        .init(kind: "EnumElement", name: "newCase", printedName: "newCasePrintedName", declKind: "EnumElement")
+                    .init(kind: "Enum", name: "enumChild", printedName: "new_childPrintedName", declKind: .enumDeclaration, children: [
+                        .init(kind: "StaticLet", name: "staticLet", printedName: "staticLetPrintedName", declKind: .varDeclaration, isStatic: true, isLet: true),
+                        .init(kind: "EnumElement", name: "someCase", printedName: "someCasePrintedName", declKind: .enumElement),
+                        .init(kind: "EnumElement", name: "newCase", printedName: "newCasePrintedName", declKind: .enumElement)
                     ])
                 ]
             )
@@ -134,6 +135,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
         let expectedChanges: [SDKAnalyzer.Change] = [
             .init(changeType: .change, parentName: "parent", changeDescription: "`public struct childPrintedName`\n  ➡️  `public class childPrintedName`"),
             .init(changeType: .change, parentName: "parent", changeDescription: "`public class spiChildPrintedName`\n  ➡️  `@_spi(SpiInternal) public class spiChildPrintedName`"),
+            .init(changeType: .change, parentName: "parent.enumChild", changeDescription: "`public static var staticLetPrintedName`\n  ➡️  `public static let staticLetPrintedName`"),
             .init(changeType: .removal, parentName: "parent.enumChild", changeDescription: "`public case oldCasePrintedName` was removed"),
             .init(changeType: .addition, parentName: "parent.enumChild", changeDescription: "`public case newCasePrintedName` was added")
         ]
@@ -142,11 +144,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
             newDump: newDump,
             oldDump: oldDump
         )
-        
-        print(changes.map { $0.changeDescription })
-        
-        print(expectedChanges.map { $0.changeDescription })
-        
+
         XCTAssertEqual(changes, expectedChanges)
     }
     
@@ -163,7 +161,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
         // Adding Target
         
         let expectedChangesAdded: [SDKAnalyzer.Change] = [
-            .init(changeType: .addition, parentName: "", changeDescription: "Target was added"),
+            .init(changeType: .addition, parentName: "", changeDescription: "Target was added")
         ]
         
         let changesAdded = try SDKDumpAnalyzer.analyzeSdkDump(
@@ -176,7 +174,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
         // Removing Target
         
         let expectedChangesRemoved: [SDKAnalyzer.Change] = [
-            .init(changeType: .removal, parentName: "", changeDescription: "Target was removed"),
+            .init(changeType: .removal, parentName: "", changeDescription: "Target was removed")
         ]
         
         let changesRemoved = try SDKDumpAnalyzer.analyzeSdkDump(

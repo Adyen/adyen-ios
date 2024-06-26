@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Alexander Guretzki on 26/06/2024.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 @testable import public_api_diff
@@ -33,7 +32,7 @@ class FileHandlingTests: XCTestCase {
         // Fail scenario
         
         fileHandler.handleCreateFile = { _, _ in
-            return false
+            false
         }
         
         do {
@@ -80,7 +79,7 @@ class FileHandlingTests: XCTestCase {
         // Fail scenario
         
         fileHandler.handleContents = { path in
-            return nil
+            nil
         }
         
         do {

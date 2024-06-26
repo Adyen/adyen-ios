@@ -16,7 +16,7 @@ struct XcodeTools {
     
     private let shell: ShellHandling
     
-    init(shell: ShellHandling) {
+    init(shell: ShellHandling = Shell()) {
         self.shell = shell
     }
     

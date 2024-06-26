@@ -1,50 +1,11 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+//  File.swift
+//  
 //
-// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//  Created by Alexander Guretzki on 26/06/2024.
 //
 
 import Foundation
-
-/// Root node
-class SDKDump: Codable, Equatable {
-    let root: Element
-    
-    enum CodingKeys: String, CodingKey {
-        case root = "ABIRoot"
-    }
-    
-    internal init(root: Element) {
-        self.root = root
-        setupParentRelationships()
-    }
-    
-    required init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.root = try container.decode(Element.self, forKey: .root)
-        setupParentRelationships()
-    }
-    
-    public static func == (lhs: SDKDump, rhs: SDKDump) -> Bool {
-        lhs.root == rhs.root
-    }
-}
-
-// MARK: - Conformance
-
-extension SDKDump.Element {
-    
-    // Protocol conformance node
-    struct Conformance: Codable, Equatable {
-        var printedName: String
-        
-        enum CodingKeys: String, CodingKey {
-            case printedName
-        }
-    }
-}
-
-// MARK: - Element
 
 extension SDKDump {
     
@@ -55,9 +16,11 @@ extension SDKDump {
         let name: String
         let mangledName: String?
         let printedName: String
-        let declKind: String?
+        let declKind: DeclarationType?
+        let isStatic: Bool
+        let isLet: Bool
         
-        let children: [Element]?
+        let children: [Element]
         let spiGroupNames: [String]?
         let declAttributes: [String]?
         let accessors: [Element]?
@@ -70,8 +33,10 @@ extension SDKDump {
             name: String,
             mangledName: String? = nil,
             printedName: String,
-            declKind: String? = nil,
-            children: [Element]? = nil,
+            declKind: DeclarationType? = nil,
+            isStatic: Bool = false,
+            isLet: Bool = false,
+            children: [Element] = [],
             spiGroupNames: [String]? = nil,
             declAttributes: [String]? = nil,
             accessors: [Element]? = nil,
@@ -83,6 +48,8 @@ extension SDKDump {
             self.mangledName = mangledName
             self.printedName = printedName
             self.declKind = declKind
+            self.isStatic = isStatic
+            self.isLet = isLet
             self.children = children
             self.spiGroupNames = spiGroupNames
             self.declAttributes = declAttributes
@@ -97,9 +64,11 @@ extension SDKDump {
             self.name = try container.decode(String.self, forKey: CodingKeys.name)
             self.printedName = try container.decode(String.self, forKey: CodingKeys.printedName)
             self.mangledName = try container.decodeIfPresent(String.self, forKey: CodingKeys.mangledName)
-            self.children = try container.decodeIfPresent([SDKDump.Element].self, forKey: CodingKeys.children)
+            self.children = try container.decodeIfPresent([SDKDump.Element].self, forKey: CodingKeys.children) ?? []
             self.spiGroupNames = try container.decodeIfPresent([String].self, forKey: CodingKeys.spiGroupNames)
-            self.declKind = try container.decodeIfPresent(String.self, forKey: CodingKeys.declKind)
+            self.declKind = try container.decodeIfPresent(DeclarationType.self, forKey: CodingKeys.declKind)
+            self.isStatic = (try? container.decode(Bool.self, forKey: CodingKeys.isStatic)) ?? false
+            self.isLet = (try? container.decode(Bool.self, forKey: CodingKeys.isLet)) ?? false
             self.declAttributes = try container.decodeIfPresent([String].self, forKey: CodingKeys.declAttributes)
             self.conformances = try container.decodeIfPresent([Conformance].self, forKey: CodingKeys.conformances)
             self.accessors = try container.decodeIfPresent([SDKDump.Element].self, forKey: CodingKeys.accessors)
@@ -113,6 +82,8 @@ extension SDKDump {
             case children
             case spiGroupNames = "spi_group_names"
             case declKind
+            case isStatic = "static"
+            case isLet
             case declAttributes
             case conformances
             case accessors
@@ -120,15 +91,17 @@ extension SDKDump {
         
         static func == (lhs: SDKDump.Element, rhs: SDKDump.Element) -> Bool {
             lhs.kind == rhs.kind &&
-                lhs.name == rhs.name &&
-                lhs.mangledName == rhs.mangledName &&
-                lhs.printedName == rhs.printedName &&
-                lhs.declKind == rhs.declKind &&
-                lhs.children == rhs.children &&
-                lhs.spiGroupNames == rhs.spiGroupNames &&
-                lhs.declAttributes == rhs.declAttributes &&
-                lhs.accessors == rhs.accessors &&
-                lhs.conformances == rhs.conformances
+            lhs.name == rhs.name &&
+            lhs.mangledName == rhs.mangledName &&
+            lhs.printedName == rhs.printedName &&
+            lhs.declKind == rhs.declKind &&
+            lhs.children == rhs.children &&
+            lhs.spiGroupNames == rhs.spiGroupNames &&
+            lhs.declAttributes == rhs.declAttributes &&
+            lhs.accessors == rhs.accessors &&
+            lhs.conformances == rhs.conformances &&
+            lhs.isLet == rhs.isLet &&
+            lhs.isStatic == rhs.isStatic
         }
         
         var definition: String {
@@ -137,25 +110,31 @@ extension SDKDump {
                 definition += "@_spi(\($0)) "
             }
             
-            if declKind != "Import" {
+            if declKind != .importDeclaration {
                 definition += "public "
             }
             
-            if let declAttributes, declAttributes.contains("Final"), declKind == "Class" {
+            if let declAttributes, declAttributes.contains("Final"), declKind == .classDeclaration {
                 definition += "final "
             }
             
+            if isStatic {
+                definition += "static "
+            }
+            
             if let declKind {
-                if declKind == "Constructor" {
+                if declKind == .constructor {
                     definition += "func "
-                } else if declKind == "EnumElement" {
+                } else if declKind == .enumElement {
                     definition += "case "
+                } else if declKind == .varDeclaration, isLet {
+                    definition += "let "
                 } else {
-                    definition += "\(declKind.lowercased()) "
+                    definition += "\(declKind.rawValue.lowercased()) "
                 }
             }
             
-            definition += "\(printedName)"
+            definition += verbosePrintedName
             
             if let conformanceNames = conformances?.map(\.printedName), !conformanceNames.isEmpty {
                 definition += " : \(conformanceNames.joined(separator: ", "))"
@@ -166,6 +145,33 @@ extension SDKDump {
             }
             
             return definition
+        }
+        
+        var verbosePrintedName: String {
+            let typeInfo = children.filter(\.isTypeInformation)
+            
+            if typeInfo.isEmpty {
+                return printedName
+            }
+            
+            if declKind == .typeAlias {
+                return "\(printedName) = \(typeInfo.first!.verbosePrintedName)"
+            }
+            
+            if declKind == .constructor || declKind == .function {
+                guard let returnValue = typeInfo.first?.printedName else {
+                    return printedName
+                }
+                
+                // TODO: Insert the type information in line
+                let inlineTypeInformation = typeInfo.suffix(from: 1).map(\.verbosePrintedName)
+                
+                return "\(printedName) -> \(returnValue) [\(inlineTypeInformation.joined(separator: ", "))]"
+            }
+            
+            // TODO: Add more information
+            
+            return printedName
         }
         
         var debugDescription: String {
@@ -205,20 +211,5 @@ extension SDKDump {
 extension [SDKDump.Element] {
     func firstElementMatchingName(of otherElement: Element) -> Element? {
         first(where: { $0.name == otherElement.name })
-    }
-}
-
-private extension SDKDump {
-    func setupParentRelationships() {
-        root.setupParentRelationships()
-    }
-}
-
-private extension SDKDump.Element {
-    func setupParentRelationships(parent: SDKDump.Element? = nil) {
-        self.parent = parent
-        children?.forEach {
-            $0.setupParentRelationships(parent: self)
-        }
     }
 }
