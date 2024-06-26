@@ -23,6 +23,7 @@ public final class UPIComponent: PaymentComponent,
         static let instructionsItem = "instructionsLabelItem"
         static let upiFlowSelectionItem = "upiFlowSelectionSegmentedControlItem"
         static let continueButtonItem = "continueButton"
+        static let errorItem = "errorItem"
         static let generateQRCodeButtonItem = "generateQRCodeButton"
         static let generateQRCodeContainerItem = "generateQRCodeLabelContainerItem"
         static let virtualPaymentAddressInputItem = "virtualPaymentAddressInputItem"
@@ -206,7 +207,17 @@ public final class UPIComponent: PaymentComponent,
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectContinueButton()
         }
-        item.enabled = false
+        return item
+    }()
+    
+    internal lazy var errorItem: FormErrorItem = {
+        // TODO: Get correct text
+        let item = FormErrorItem(message: "You need to select a payment method", iconName: "error")
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.errorItem
+        )
+        item.isHidden.wrappedValue = true
         return item
     }()
 
@@ -223,7 +234,10 @@ public final class UPIComponent: PaymentComponent,
             imageUrl: logoUrl,
             isSelected: false,
             style: .init(title: configuration.style.textField.title),
-            identifier: app.identifier
+            identifier: ViewIdentifierBuilder.build(
+                scopeInstance: self,
+                postfix: app.identifier
+            )
         )
         selectableItem.selectionHandler = { [weak self, weak selectableItem] in
             guard let self, let selectableItem else { return }
@@ -244,6 +258,7 @@ public final class UPIComponent: PaymentComponent,
         formViewController.append(instructionsLabelItem.addingDefaultMargins())
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
         formViewController.append(upiFlowSelectionItem.addingDefaultMargins())
+        formViewController.append(errorItem)
         formViewController.append(qrCodeGenerationImageItem)
         qrCodeGenerationLabelContainerItem.isHidden.wrappedValue = true
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
@@ -268,6 +283,11 @@ extension UPIComponent {
     private func didSelectContinueButton() {
         guard formViewController.validate() else { return }
 
+        guard canSubmit() else {
+            showError()
+            return
+        }
+        
         continueButton.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
@@ -304,7 +324,7 @@ private extension UPIComponent {
             upiAppsList.first(where: { $0.identifier == currentSelectedItemIdentifier })?.isSelected = true
         }
         
-        updateButtonState()
+        hideError()
     }
     
     func updateInterface() {
@@ -330,15 +350,24 @@ private extension UPIComponent {
             continueButton.title = localizedString(.QRCodeGenerateQRCode, configuration.localizationParameters)
         }
         
-        updateButtonState()
-    }
-    
-    func updateButtonState() {
-        continueButton.enabled = canSubmit()
+        hideError()
     }
     
     func focusVpaInput() {
         vpaInputItem.focus()
+    }
+    
+    private func showError() {
+        errorItem.isHidden.wrappedValue = false
+        UIAccessibility.post(
+            notification: .announcement,
+            argument: "\(localizedString(.errorTitle, configuration.localizationParameters)): \(errorItem.message ?? "")"
+        )
+    }
+
+    private func hideError() {
+        errorItem.message = nil
+        errorItem.isHidden.wrappedValue = true
     }
     
     func canSubmit() -> Bool {

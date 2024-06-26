@@ -11,34 +11,26 @@ import XCTest
 
 class UPIComponentUITests: XCTestCase {
 
-    private var paymentMethod: UPIPaymentMethod!
-    private var context: AdyenContext!
-    private var style: FormComponentStyle!
-    private var upiApps: [Issuer]!
+    private lazy var paymentMethod: UPIPaymentMethod = .init(
+        type: .upi,
+        name: "upi",
+        apps: upiApps
+    )
+    private var context: AdyenContext { Dummy.context }
+    private var style: FormComponentStyle { FormComponentStyle() }
+    private var upiApps: [Issuer] = [
+        Issuer(identifier: "bhim", name: "BHIM"),
+        Issuer(identifier: "gpay", name: "Google Pay"),
+        Issuer(identifier: "phonepe", name: "PhonePe")
+    ]
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        upiApps = [
-            Issuer(identifier: "bhim", name: "BHIM"),
-            Issuer(identifier: "gpay", name: "Google Pay"),
-            Issuer(identifier: "phonepe", name: "PhonePe")
-        ]
-        paymentMethod = UPIPaymentMethod(type: .upi,
-                                         name: "upi",
-                                         apps: upiApps)
-        context = Dummy.context
-        style = FormComponentStyle()
         BrowserInfo.cachedUserAgent = "some_value"
     }
 
-    override func tearDownWithError() throws {
-        paymentMethod = nil
-        context = nil
-        style = nil
-        try super.tearDownWithError()
-    }
-
     func testUIConfiguration() throws {
+        var style = style
         style.backgroundColor = .green
         
         /// Footer
@@ -74,7 +66,7 @@ class UPIComponentUITests: XCTestCase {
     }
     
     func testUIConfigurationForIndexOne() throws {
-    
+        var style = style
         style.backgroundColor = .green
         
         /// Footer
@@ -254,4 +246,48 @@ class UPIComponentUITests: XCTestCase {
         wait(for: [dummyExpectation], timeout: 5)
     }
 
+    func test_noAppSelectedSubmit_shouldShowError() throws {
+        
+        let config = UPIComponent.Configuration(style: style)
+        let sut = UPIComponent(paymentMethod: paymentMethod,
+                               context: context,
+                               configuration: config)
+        
+        let errorItem = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.errorItem"))
+        XCTAssertTrue(errorItem.isHidden)
+        
+        let continueButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button"))
+        
+        // Tapping button with no apps selected - error should be shown
+        
+        continueButton.sendActions(for: .touchUpInside)
+        wait { errorItem.isHidden == false }
+        
+        self.assertViewControllerImage(matching: sut.viewController, named: "upi_no_app_selected_submit")
+        
+        // Switching tabs - error should be reset/hidden
+        
+        let segmentedControl: UISegmentedControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.upiFlowSelectionSegmentedControlItem"))
+        segmentedControl.selectedSegmentIndex = 1
+        segmentedControl.sendActions(for: .valueChanged)
+        
+        wait { errorItem.isHidden == true }
+        
+        // Switching back to apps - error should still be hidden
+        
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.sendActions(for: .valueChanged)
+        
+        XCTAssertTrue(errorItem.isHidden)
+        
+        // Tapping button with no apps selected - error should be shown
+        
+        continueButton.sendActions(for: .touchUpInside)
+        wait { errorItem.isHidden == false }
+        
+        let selectionHandler = try XCTUnwrap(sut.upiAppsList.last?.selectionHandler)
+        selectionHandler()
+        
+        wait { errorItem.isHidden == true }
+    }
 }
