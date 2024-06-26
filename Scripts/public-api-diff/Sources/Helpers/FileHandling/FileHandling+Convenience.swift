@@ -6,7 +6,7 @@
 
 import Foundation
 
-enum FileHandlerError: LocalizedError {
+enum FileHandlerError: LocalizedError, Equatable {
     /// Could not encode the output string into data
     case couldNotEncodeOutput
     /// Could not persist output at the specified `outputFilePath`
