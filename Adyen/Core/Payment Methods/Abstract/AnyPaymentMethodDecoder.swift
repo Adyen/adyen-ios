@@ -43,6 +43,9 @@ internal enum AnyPaymentMethodDecoder {
         .androidPay: UnsupportedPaymentMethodDecoder(),
         .amazonPay: UnsupportedPaymentMethodDecoder(),
         .bizum: UnsupportedPaymentMethodDecoder(),
+        .upiQr: UnsupportedPaymentMethodDecoder(),
+        .upiIntent: UnsupportedPaymentMethodDecoder(),
+        .upiCollect: UnsupportedPaymentMethodDecoder(),
 
         // Supported payment methods
         .card: CardPaymentMethodDecoder(),
@@ -119,7 +122,7 @@ internal enum AnyPaymentMethodDecoder {
             if isStored, brand == "bcmc", type == .scheme {
                 return try decoders[.bcmc, default: defaultDecoder].decode(from: decoder, isStored: true)
             }
-
+            
             let paymentDecoder = type.map { decoders[$0, default: defaultDecoder] } ?? defaultDecoder
             return try paymentDecoder.decode(from: decoder, isStored: isStored)
         } catch {

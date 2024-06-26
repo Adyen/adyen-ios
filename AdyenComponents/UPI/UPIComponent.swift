@@ -34,6 +34,7 @@ public final class UPIComponent: PaymentComponent,
         static let upiQRCode = "upi_qr"
         static let upiIntent = "upi_intent"
         static let vpaFlowIdentifier = "UPI/VPA"
+        static let noAppsVpaSegmentTitle = "VPA"
         
         static let qrCodeIcon = "qrcode"
     }
@@ -104,10 +105,7 @@ public final class UPIComponent: PaymentComponent,
     internal lazy var upiFlowSelectionItem: FormSegmentedControlItem = {
         let item = FormSegmentedControlItem(
             items: [
-                localizedString(
-                    .UPIFirstTabTitle,
-                    configuration.localizationParameters
-                ),
+                firstSegmentTitle,
                 localizedString(
                     .UPISecondTabTitle,
                     configuration.localizationParameters
@@ -287,6 +285,17 @@ extension UPIComponent {
 // MARK: - Private
 
 private extension UPIComponent {
+    
+    var firstSegmentTitle: String {
+        guard let apps = upiPaymentMethod.apps, !apps.isEmpty else {
+            return Constants.noAppsVpaSegmentTitle
+        }
+        
+        return localizedString(
+            .UPIFirstTabTitle,
+            configuration.localizationParameters
+        )
+    }
     
     func updateSelection() {
         upiAppsList.forEach { $0.isSelected = false }
