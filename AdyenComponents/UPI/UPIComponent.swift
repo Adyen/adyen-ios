@@ -82,6 +82,10 @@ public final class UPIComponent: PaymentComponent,
         self.upiPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
+        
+        if upiAppsList.isEmpty {
+            self.currentSelectedItemIdentifier = Constants.vpaFlowIdentifier
+        }
     }
 
     public func stopLoading() {
@@ -234,10 +238,7 @@ public final class UPIComponent: PaymentComponent,
             imageUrl: logoUrl,
             isSelected: false,
             style: .init(title: configuration.style.textField.title),
-            identifier: ViewIdentifierBuilder.build(
-                scopeInstance: self,
-                postfix: app.identifier
-            )
+            identifier: app.identifier
         )
         selectableItem.selectionHandler = { [weak self, weak selectableItem] in
             guard let self, let selectableItem else { return }
@@ -331,7 +332,7 @@ private extension UPIComponent {
         switch selectedUPIFlow {
         case .upiApps:
             upiAppsList.forEach { $0.isHidden.wrappedValue = false }
-            vpaInputItem.isVisible = currentSelectedItemIdentifier == Constants.vpaFlowIdentifier || upiAppsList.isEmpty
+            vpaInputItem.isVisible = currentSelectedItemIdentifier == Constants.vpaFlowIdentifier
             
             qrCodeGenerationLabelContainerItem.isVisible = false
             qrCodeGenerationImageItem.isVisible = false
@@ -372,7 +373,11 @@ private extension UPIComponent {
     func canSubmit() -> Bool {
         switch selectedUPIFlow {
         case .upiApps:
-            return currentSelectedItemIdentifier != nil
+            if currentSelectedItemIdentifier == Constants.vpaFlowIdentifier {
+                return vpaInputItem.isValid()
+            } else {
+                return currentSelectedItemIdentifier != nil
+            }
         case .qrCode:
             return true
         }
