@@ -72,8 +72,11 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         fields.forEach { field in
             self.add(field, into: formViewController)
         }
-        formViewController.append(FormSpacerItem())
-        formViewController.append(button)
+
+        if configuration.showSubmitButton {
+            formViewController.append(FormSpacerItem())
+            formViewController.append(button)
+        }
         formViewController.append(FormSpacerItem(numberOfSpaces: 4))
     }
 
