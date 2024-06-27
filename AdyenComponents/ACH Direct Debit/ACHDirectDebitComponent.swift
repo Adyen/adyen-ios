@@ -275,8 +275,10 @@ public final class ACHDirectDebitComponent: PaymentComponent,
             formViewController.append(storeDetailsItem)
         }
         
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
-        formViewController.append(payButton)
+        if configuration.showSubmitButton {
+            formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+            formViewController.append(payButton)
+        }
 
         return formViewController
     }()
