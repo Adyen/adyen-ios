@@ -253,7 +253,7 @@ class UPIComponentUITests: XCTestCase {
                                context: context,
                                configuration: config)
         
-        let errorItem = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.errorItem"))
+        let errorItem = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.errorItem") as? FormErrorItemView)
         XCTAssertTrue(errorItem.isHidden)
         
         let continueButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button"))
@@ -284,6 +284,7 @@ class UPIComponentUITests: XCTestCase {
         
         continueButton.sendActions(for: .touchUpInside)
         wait { errorItem.isHidden == false }
+        XCTAssertEqual(errorItem.messageLabel.text, "You need to select a payment method") // TODO: Replace with correct string
         
         let selectionHandler = try XCTUnwrap(sut.upiAppsList.last?.selectionHandler)
         selectionHandler()

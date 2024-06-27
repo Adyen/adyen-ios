@@ -357,7 +357,7 @@ private extension UPIComponent {
         vpaInputItem.focus()
     }
     
-    private func showError() {
+    func showError() {
         errorItem.isHidden.wrappedValue = false
         UIAccessibility.post(
             notification: .announcement,
@@ -365,8 +365,7 @@ private extension UPIComponent {
         )
     }
 
-    private func hideError() {
-        errorItem.message = nil
+    func hideError() {
         errorItem.isHidden.wrappedValue = true
     }
     
