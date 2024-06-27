@@ -6,11 +6,17 @@
 
 import Foundation
 
+/// A helper to work with the `Package.swift` file of the project
 struct PackageFileHelper {
     
     private let packagePath: String
     private let fileHandler: FileHandling
     
+    /// Creates a new instance of `PackageFileHelper`
+    ///
+    /// - Parameters:
+    ///   - packagePath: The file path to the `Package.swift` file
+    ///   - fileHandler: The file handler to use
     init(
         packagePath: String,
         fileHandler: FileHandling
@@ -19,16 +25,26 @@ struct PackageFileHelper {
         self.fileHandler = fileHandler
     }
     
+    /// Helper method that returns the path to the `Package.swift` file for the provided project directory
+    ///
+    /// - Parameters:
+    ///   - projectDirectoryPath: The path to the project directory
+    ///
+    /// - Returns: The file path to the `Package.swift`
+    ///
+    /// - Warning: This function does not guarantee that the file exists
     static func packagePath(for projectDirectoryPath: String) -> String {
         projectDirectoryPath.appending("/Package.swift")
     }
     
+    /// Returns all targets of the `Package.swift` file
     func availableTargets() throws -> Set<String> {
         
         let packageContent = try fileHandler.load(from: packagePath)
         return try availableTargets(from: packageContent)
     }
     
+    /// Returns all products/libraries of the `Package.swift` file
     func availableProducts() throws -> Set<String> {
         
         let packageContent = try fileHandler.load(from: packagePath)
