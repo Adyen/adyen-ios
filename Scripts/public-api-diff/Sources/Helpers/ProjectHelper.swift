@@ -109,6 +109,8 @@ private extension ProjectHelper {
         try? fileHandler.removeItem(atPath: destinationDirectoryPath)
         try fileHandler.createDirectory(atPath: destinationDirectoryPath)
         
+        // TODO: Have 1 list instead and use a regex to filter (Maybe also move this to a file)
+        
         let fileNameIgnoreList: Set<String> = [
             ".build",
             ".git",
