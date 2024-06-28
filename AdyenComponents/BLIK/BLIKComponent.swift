@@ -65,8 +65,11 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
         formViewController.append(FormSpacerItem())
         formViewController.append(codeItem)
         formViewController.append(FormSpacerItem())
-        formViewController.append(button)
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+
+        if configuration.showSubmitButton {
+            formViewController.append(button)
+            formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+        }
 
         return formViewController
     }()
