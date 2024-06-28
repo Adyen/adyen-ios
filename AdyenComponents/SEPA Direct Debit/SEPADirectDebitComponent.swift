@@ -69,7 +69,10 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.append(nameItem)
         formViewController.append(ibanItem)
-        formViewController.append(button)
+
+        if configuration.showSubmitButton {
+            formViewController.append(button)
+        }
 
         return formViewController
     }()
