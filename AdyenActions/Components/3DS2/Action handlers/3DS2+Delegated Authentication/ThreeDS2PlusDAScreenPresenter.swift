@@ -50,7 +50,8 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                                                     screen: .authenticationFailed(localizationParameters: localizedParameters),
                                                     completion: handler)
         let presentableComponent = PresentableComponentWrapper(component: component,
-                                                               viewController: errorController)
+                                                               viewController: errorController,
+                                                               navBarType: .custom(EmptyNavigationBar()))
         presentationDelegate?.present(component: presentableComponent)
         errorController.navigationItem.rightBarButtonItems = []
         errorController.navigationItem.leftBarButtonItems = []
@@ -62,7 +63,8 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                                                     screen: .registrationFailed(localizationParameters: localizedParameters),
                                                     completion: handler)
         let presentableComponent = PresentableComponentWrapper(component: component,
-                                                               viewController: errorController)
+                                                               viewController: errorController,
+                                                               navBarType: .custom(EmptyNavigationBar()))
         presentationDelegate?.present(component: presentableComponent)
         errorController.navigationItem.rightBarButtonItems = []
         errorController.navigationItem.leftBarButtonItems = []
@@ -74,7 +76,8 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                                                     screen: .deletionConfirmation(localizationParameters: localizedParameters),
                                                     completion: handler)
         let presentableComponent = PresentableComponentWrapper(component: component,
-                                                               viewController: errorController)
+                                                               viewController: errorController,
+                                                               navBarType: .custom(EmptyNavigationBar()))
         presentationDelegate?.present(component: presentableComponent)
         errorController.navigationItem.rightBarButtonItems = []
         errorController.navigationItem.leftBarButtonItems = []
@@ -98,7 +101,9 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                                                                       })
         
         let presentableComponent = PresentableComponentWrapper(component: component,
-                                                               viewController: registrationViewController)
+                                                               viewController: registrationViewController,
+                                                               navBarType: .custom(EmptyNavigationBar()))
+
         presentationDelegate?.present(component: presentableComponent)
         registrationViewController.navigationItem.rightBarButtonItems = []
         registrationViewController.navigationItem.leftBarButtonItems = []
@@ -125,7 +130,8 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                                                               })
         
         let presentableComponent = PresentableComponentWrapper(component: component,
-                                                               viewController: approvalViewController)
+                                                               viewController: approvalViewController,
+                                                               navBarType: .custom(EmptyNavigationBar()))
         presentationDelegate?.present(component: presentableComponent)
         approvalViewController.navigationItem.rightBarButtonItems = []
         approvalViewController.navigationItem.leftBarButtonItems = []
@@ -147,4 +153,8 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
             return localizedString(.threeds2DABiometrics, localizedParameters)
         }
     }
+}
+
+internal class EmptyNavigationBar: UIView, AnyNavigationBar {
+    internal var onCancelHandler: (() -> Void)?
 }
