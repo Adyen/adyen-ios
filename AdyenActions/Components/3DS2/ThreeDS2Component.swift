@@ -54,12 +54,6 @@ public final class ThreeDS2Component: ActionComponent {
         
         /// The configuration for Delegated Authentication.
         public struct DelegatedAuthentication {
-            /// The localized reason string show to the user during registration.
-            public let localizedRegistrationReason: String
-
-            /// The localized reason string show to the user during authentication.
-            public let localizedAuthenticationReason: String
-
             // The relying party identifier that is used for PassKeys.
             // See: https://developer.apple.com/documentation/xcode/supporting-associated-domains
             // See: https://developer.apple.com/documentation/authenticationservices/public-private_key_authentication/supporting_passkeys
@@ -73,18 +67,12 @@ public final class ThreeDS2Component: ActionComponent {
 
             /// Initializes a new instance.
             ///
-            /// - Parameter localizedRegistrationReason: The localized reason string show to the user while registration flow.
-            /// - Parameter localizedAuthenticationReason: The localized reason string show to the user while authentication flow.
             /// - Parameter relyingPartyIdentifier: The relying party identifier that is used for PassKeys
             /// - Parameter delegatedAuthenticationComponentStyle: The delegated authentication component style.
             /// - Parameter localizationParameters: The localization parameters, leave it nil to use the default parameters.
-            public init(localizedRegistrationReason: String,
-                        localizedAuthenticationReason: String,
-                        relyingPartyIdentifier: String,
+            public init(relyingPartyIdentifier: String,
                         delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle = .init(),
                         localizationParameters: LocalizationParameters? = nil) {
-                self.localizedRegistrationReason = localizedRegistrationReason
-                self.localizedAuthenticationReason = localizedAuthenticationReason
                 self.relyingPartyIdentifier = relyingPartyIdentifier
                 self.delegatedAuthenticationComponentStyle = delegatedAuthenticationComponentStyle
                 self.localizationParameters = localizationParameters

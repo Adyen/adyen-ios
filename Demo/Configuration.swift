@@ -65,9 +65,7 @@ internal enum ConfigurationConstants {
     ]]
     
     static var delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication {
-        .init(localizedRegistrationReason: "Register this device!",
-              localizedAuthenticationReason: "Authenticate your card!",
-              relyingPartyIdentifier: "test-authentication-adyen.netlify.app")
+        .init(relyingPartyIdentifier: "test-authentication-adyen.netlify.app")
     }
 
     static var shippingMethods: [PKShippingMethod] = {

@@ -22,12 +22,10 @@ import XCTest
 
         var challengeAction: ThreeDS2ChallengeAction!
         
-        static let appleTeamIdentifier = "B2NYSS5932"
+        static let relyingPartyIdentifier = "test-authentication-adyen.netlify.app"
         
         static var delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication {
-            .init(localizedRegistrationReason: "Authenticate your card!",
-                  localizedAuthenticationReason: "Register this device!",
-                  appleTeamIdentifier: appleTeamIdentifier)
+            .init(relyingPartyIdentifier: relyingPartyIdentifier)
             
         }
     
