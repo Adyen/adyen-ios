@@ -98,8 +98,8 @@
                     }
                     
                     startApprovalFlow(payloadForDA,
-                                      cardType: .visa,
-                                      cardNumber: "**** 1234") { [weak self] result in
+                                      cardType: nil,
+                                      cardNumber: nil) { [weak self] result in
                         guard let self else { return }
                         
                         switch result {
@@ -328,8 +328,8 @@
                     }
                     
                     startRegistrationFlow(delegatedAuthenticationInput: registrationPayload,
-                                          cardNumber: "**** 1234",
-                                          cardType: .masterCard) { result in
+                                          cardNumber: nil,
+                                          cardType: nil) { result in
                         switch result {
                         case let .success(registrationSDKOutput):
                             do {
