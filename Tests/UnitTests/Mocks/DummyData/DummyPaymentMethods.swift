@@ -544,7 +544,25 @@ let onlineBankingDictionary = [
 let upi = [
     "name": "UPI",
     "type": "upi"
-]
+] as [String: Any]
+
+let upiWithApps = [
+    "name": "UPI",
+    "type": "upi",
+    "apps": [
+        [
+            "id": "bhim",
+            "name": "BHIM"
+        ],
+        ["id":
+            "gpay", "name":
+            "Google Pay"],
+        [
+            "id": "phonepe",
+            "name": "PhonePe"
+        ]
+    ]
+] as [String: Any]
 
 let cashAppPay: [String: Any] = [
     "name": "Cash App Pay",

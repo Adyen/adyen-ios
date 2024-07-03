@@ -30,7 +30,7 @@ public final class UPIComponent: PaymentComponent,
         static let qrCodeGenerationImageItem = "qrCodeGenerationImageItem"
     }
 
-    private enum Constants {
+    internal enum Constants {
         static let upiCollect = "upi_collect"
         static let upiQRCode = "upi_qr"
         static let upiIntent = "upi_intent"
