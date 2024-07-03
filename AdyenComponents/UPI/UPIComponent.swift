@@ -215,8 +215,7 @@ public final class UPIComponent: PaymentComponent,
     }()
     
     internal lazy var errorItem: FormErrorItem = {
-        // TODO: Get correct text
-        let item = FormErrorItem(message: "You need to select a payment method", iconName: "error")
+        let item = FormErrorItem(message: "Select a payment method to continue", iconName: "error")
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifier.errorItem
