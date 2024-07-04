@@ -215,7 +215,8 @@ public final class UPIComponent: PaymentComponent,
     }()
     
     internal lazy var errorItem: FormErrorItem = {
-        let item = FormErrorItem(message: "Select a payment method to continue", iconName: "error")
+        let errorMessage = localizedString(LocalizationKey.UPIErrorNoAppSelected, configuration.localizationParameters)
+        let item = FormErrorItem(message: errorMessage, iconName: "error")
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifier.errorItem

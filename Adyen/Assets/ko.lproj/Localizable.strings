@@ -184,6 +184,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "UPI ID 입력";
 "adyen.UPI.collectFieldLabel" = "UPI ID / VPA 입력";
+"adyen.UPI.error.noAppSelected" = "계속 진행하려면 결제 수단을 선택하세요";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "이 기기에 TWINT가 설치되어 있지 않거나 오래된 버전이 설치되어 있습니다. TWINT 앱을 업데이트하거나 설치해 주세요.";

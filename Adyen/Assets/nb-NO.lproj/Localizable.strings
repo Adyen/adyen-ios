@@ -184,6 +184,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Angi UPI-ID";
 "adyen.UPI.collectFieldLabel" = "Skriv inn UPI-ID/VPA";
+"adyen.UPI.error.noAppSelected" = "";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Du har enten ingen eller en utdatert versjon av TWINT på denne enheten. Du må enten oppdatere eller installere TWINT-appen.";

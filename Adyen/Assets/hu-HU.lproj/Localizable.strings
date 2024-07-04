@@ -184,6 +184,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "UPI-azonosító megadása";
 "adyen.UPI.collectFieldLabel" = "UPI-azonosító/VPA megadása";
+"adyen.UPI.error.noAppSelected" = "A folytatáshoz válasszon fizetési módot";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Az eszközről hiányzik a TWINT, vagy egy elavult verziója van telepítve. Frissítse vagy telepítse a TWINT alkalmazást.";

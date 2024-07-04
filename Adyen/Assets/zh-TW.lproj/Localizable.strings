@@ -180,6 +180,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "輸入 UPI ID";
 "adyen.UPI.collectFieldLabel" = "輸入 UPI ID / VPA";
+"adyen.UPI.error.noAppSelected" = "";
 "adyen.twint.noAppsInstalled.message" = "這個裝置並未安裝 TWINT 的應用程式，或是可能安裝到了舊版的 TWINT 應用程式。 請更新或安裝 TWINT 的應用程式。";
 "adyen.threeds2.DA.registration.title" = "安全快捷的結帳！";
 "adyen.threeds2.DA.registration.description" = "下次您可以使用生物特徵辨識功能，在此裝置上更快結帳。";

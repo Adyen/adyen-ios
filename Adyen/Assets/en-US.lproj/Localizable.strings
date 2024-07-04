@@ -184,6 +184,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Enter UPI ID";
 "adyen.UPI.collectFieldLabel" = "Enter UPI ID / VPA";
+"adyen.UPI.error.noAppSelected" = "Select a payment method to continue";
 "adyen.cashAppPay.title" = "Cash App Pay";
 "adyen.cashAppPay.cashtag" = "Cashtag";
 "adyen.twint.noAppsInstalled.message" = "No or an outdated version of TWINT is installed on this device. Please update or install the TWINT app.";

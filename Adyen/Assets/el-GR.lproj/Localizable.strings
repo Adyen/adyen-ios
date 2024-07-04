@@ -184,6 +184,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Εισαγωγή αναγνωριστικού UPI";
 "adyen.UPI.collectFieldLabel" = "Εισαγωγή αναγνωριστικού UPI / VPA";
+"adyen.UPI.error.noAppSelected" = "";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Σε αυτή τη συσκευή το TWINT είτε δεν είναι εγκατεστημένο είτε είναι σε παλιά έκδοση. Ενημερώστε ή εγκαταστήστε την εφαρμογή TWINT.";
