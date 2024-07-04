@@ -57,7 +57,6 @@
         /// - Parameter style: The delegate authentication component style.
         /// - Parameter delegatedAuthenticationConfiguration: The delegate authentication configuration.
         /// - Parameter delegatedAuthenticationService: The Delegated Authentication service.
-        /// - Parameter presentationDelegate: Presentation delegate
         internal init(context: AdyenContext,
                       service: AnyADYService = ADYServiceAdapter(),
                       presenter: ThreeDS2PlusDAScreenPresenterProtocol,
@@ -193,40 +192,66 @@
                 cardDetails: (cardNumber, cardType),
                 approveAuthenticationHandler: { [weak self] in
                     guard let self else { return }
-                    authenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
-                                 cardNumber: cardNumber,
-                                 authenticatedHandler: {
-                                     completion(.success((daOutput: $0, delete: nil)))
-                                 },
-                                 failedAuthenticationHandler: { [weak self] error in
-                                     guard let self else { return }
-                                     self.presenter.showAuthenticationError(component: self) {
-                                         completion(.failure(.authenticationServiceFailed(underlyingError: error)))
-                                     }
-                                 })
+                    userApprovedTransaction(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                                            cardNumber: cardNumber,
+                                            completion: completion)
                 },
                 fallbackHandler: {
                     completion(.failure(.fallbackTo3ds))
                 },
                 removeCredentialsHandler: { [weak self] in
                     guard let self else { return }
-                    authenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
-                                 cardNumber: cardNumber,
-                                 authenticatedHandler: { [weak self] sdkOutput in
-                                     guard let self else { return }
-                                     self.presenter.showDeletionConfirmation(component: self) {
-                                         self.delegatedAuthenticationState.attemptRegistration = false
-                                         completion(.success((daOutput: sdkOutput, delete: true)))
-                                     }
-                                 },
-                                 failedAuthenticationHandler: { error in
-                                     self.delegatedAuthenticationState.attemptRegistration = false
-                                     completion(.failure(.removeCredentialServiceError(underlyingError: error)))
-                                 })
+                    userChoseToRemoveCredentials(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                                                 cardNumber: cardNumber,
+                                                 completion: completion)
                 }
             )
         }
         
+        /// Call this when user approves a transaction in the UI
+        /// 1. Authenticates using the sdk.
+        /// 2. If failure then show an error.
+        private func userApprovedTransaction(
+            delegatedAuthenticationInput: String,
+            cardNumber: String?,
+            completion: @escaping (Result<(daOutput: String, delete: Bool?), ApprovalFlowError>) -> Void
+        ) {
+            authenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                         cardNumber: cardNumber,
+                         authenticatedHandler: {
+                             completion(.success((daOutput: $0, delete: nil)))
+                         },
+                         failedAuthenticationHandler: { [weak self] error in
+                             guard let self else { return }
+                             self.presenter.showAuthenticationError(component: self) {
+                                 completion(.failure(.authenticationServiceFailed(underlyingError: error)))
+                             }
+                         })
+        }
+
+        /// Call this when user approves a transaction in the UI
+        /// 1. Authenticates using the authentication service.
+        /// 2. show delete confirmation
+        private func userChoseToRemoveCredentials(
+            delegatedAuthenticationInput: String,
+            cardNumber: String?,
+            completion: @escaping (Result<(daOutput: String, delete: Bool?), ApprovalFlowError>) -> Void
+        ) {
+            authenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                         cardNumber: cardNumber,
+                         authenticatedHandler: { [weak self] sdkOutput in
+                             guard let self else { return }
+                             self.presenter.showDeletionConfirmation(component: self) {
+                                 self.delegatedAuthenticationState.attemptRegistration = false
+                                 completion(.success((daOutput: sdkOutput, delete: true)))
+                             }
+                         },
+                         failedAuthenticationHandler: { error in
+                             self.delegatedAuthenticationState.attemptRegistration = false
+                             completion(.failure(.removeCredentialServiceError(underlyingError: error)))
+                         })
+        }
+
         private func authenticate(delegatedAuthenticationInput: String,
                                   cardNumber: String?,
                                   authenticatedHandler: @escaping (String) -> Void,
@@ -364,18 +389,9 @@
                 cardDetails: (cardNumber, cardType),
                 registerDelegatedAuthenticationHandler: { [weak self] in
                     guard let self else { return }
-                    register(delegatedAuthenticationInput: delegatedAuthenticationInput,
-                             cardNumber: cardNumber) { [weak self] result in
-                        switch result {
-                        case let .success(success):
-                            completionHandler(.success(success))
-                        case let .failure(failure):
-                            guard let self else { return }
-                            presenter.showRegistrationError(component: self) {
-                                completionHandler(.failure(.registrationServiceError(underlyingError: failure)))
-                            }
-                        }
-                    }
+                    userChoseToRegister(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                                        cardNumber: cardNumber,
+                                        completionHandler: completionHandler)
                 },
                 fallbackHandler: {
                     // Improvement: Is it possible to track this through some event?
@@ -384,6 +400,25 @@
             )
         }
         
+        private func userChoseToRegister(
+            delegatedAuthenticationInput: String,
+            cardNumber: String?,
+            completionHandler: @escaping (Result<String, RegistrationFlowError>) -> Void
+        ) {
+            register(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                     cardNumber: cardNumber) { [weak self] result in
+                switch result {
+                case let .success(success):
+                    completionHandler(.success(success))
+                case let .failure(failure):
+                    guard let self else { return }
+                    presenter.showRegistrationError(component: self) {
+                        completionHandler(.failure(.registrationServiceError(underlyingError: failure)))
+                    }
+                }
+            }
+        }
+
         private func daPayload(_ challengeAction: ThreeDS2ChallengeAction) -> String? {
             guard let token: ThreeDS2Component.ChallengeToken = try? AdyenCoder.decodeBase64(challengeAction.challengeToken) else {
                 return nil

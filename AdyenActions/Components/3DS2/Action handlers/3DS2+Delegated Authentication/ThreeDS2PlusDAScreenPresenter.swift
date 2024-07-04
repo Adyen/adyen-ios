@@ -53,8 +53,6 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                                                                viewController: errorController,
                                                                navBarType: .custom(EmptyNavigationBar()))
         presentationDelegate?.present(component: presentableComponent)
-        errorController.navigationItem.rightBarButtonItems = []
-        errorController.navigationItem.leftBarButtonItems = []
     }
     
     internal func showRegistrationError(component: Component, handler: @escaping () -> Void) {
@@ -66,8 +64,6 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                                                                viewController: errorController,
                                                                navBarType: .custom(EmptyNavigationBar()))
         presentationDelegate?.present(component: presentableComponent)
-        errorController.navigationItem.rightBarButtonItems = []
-        errorController.navigationItem.leftBarButtonItems = []
     }
     
     internal func showDeletionConfirmation(component: Component, handler: @escaping () -> Void) {
@@ -79,8 +75,6 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                                                                viewController: errorController,
                                                                navBarType: .custom(EmptyNavigationBar()))
         presentationDelegate?.present(component: presentableComponent)
-        errorController.navigationItem.rightBarButtonItems = []
-        errorController.navigationItem.leftBarButtonItems = []
     }
 
     internal func showRegistrationScreen(component: Component,
@@ -105,8 +99,6 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                                                                navBarType: .custom(EmptyNavigationBar()))
 
         presentationDelegate?.present(component: presentableComponent)
-        registrationViewController.navigationItem.rightBarButtonItems = []
-        registrationViewController.navigationItem.leftBarButtonItems = []
     }
     
     internal func showApprovalScreen(component: Component,
@@ -133,8 +125,6 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                                                                viewController: approvalViewController,
                                                                navBarType: .custom(EmptyNavigationBar()))
         presentationDelegate?.present(component: presentableComponent)
-        approvalViewController.navigationItem.rightBarButtonItems = []
-        approvalViewController.navigationItem.leftBarButtonItems = []
     }
     
     private var biometricName: String {
