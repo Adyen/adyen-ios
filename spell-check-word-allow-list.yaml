@@ -199,3 +199,4 @@ whiteList:
   - initiable
   - func
   - redirectable
+  - appslist

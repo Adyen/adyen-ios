@@ -180,6 +180,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Zadajte UPI ID";
 "adyen.UPI.collectFieldLabel" = "Zadajte UPI ID / VPA";
+"adyen.UPI.error.noAppSelected" = "Pokračujte výberom spôsobu platby";
 "adyen.twint.noAppsInstalled.message" = "V tomto zariadení nie je nainštalovaná aplikácia TWINT, alebo je verzia aplikácie TWINT zastaraná. Prosím, aktualizujte si alebo si nainštalujte aplikáciu TWINT.";
 "adyen.threeds2.DA.registration.title" = "Bezpečná a rýchla platba!";
 "adyen.threeds2.DA.registration.description" = "Nabudúce môžete v tomto zariadení zaplatiť rýchlejšie pomocou biometrických údajov.";

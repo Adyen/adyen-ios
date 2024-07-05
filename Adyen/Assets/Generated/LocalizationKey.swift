@@ -381,6 +381,8 @@ public struct LocalizationKey {
     public static let UPICollectDropdownLabel = LocalizationKey(key: "adyen.UPI.collectDropdownLabel")
     /// Enter UPI ID / VPA
     public static let UPICollectFieldLabel = LocalizationKey(key: "adyen.UPI.collectFieldLabel")
+    /// Select a payment method to continue
+    public static let UPIErrorNoAppSelected = LocalizationKey(key: "adyen.UPI.error.noAppSelected")
     /// Cash App Pay
     public static let cashAppPayTitle = LocalizationKey(key: "adyen.cashAppPay.title")
     /// Cashtag

@@ -23,13 +23,14 @@ public final class UPIComponent: PaymentComponent,
         static let instructionsItem = "instructionsLabelItem"
         static let upiFlowSelectionItem = "upiFlowSelectionSegmentedControlItem"
         static let continueButtonItem = "continueButton"
+        static let errorItem = "errorItem"
         static let generateQRCodeButtonItem = "generateQRCodeButton"
         static let generateQRCodeContainerItem = "generateQRCodeLabelContainerItem"
         static let virtualPaymentAddressInputItem = "virtualPaymentAddressInputItem"
         static let qrCodeGenerationImageItem = "qrCodeGenerationImageItem"
     }
 
-    private enum Constants {
+    internal enum Constants {
         static let upiCollect = "upi_collect"
         static let upiQRCode = "upi_qr"
         static let upiIntent = "upi_intent"
@@ -81,6 +82,10 @@ public final class UPIComponent: PaymentComponent,
         self.upiPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
+        
+        if upiAppsList.isEmpty {
+            self.currentSelectedItemIdentifier = Constants.vpaFlowIdentifier
+        }
     }
 
     public func stopLoading() {
@@ -206,7 +211,17 @@ public final class UPIComponent: PaymentComponent,
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectContinueButton()
         }
-        item.enabled = false
+        return item
+    }()
+    
+    internal lazy var errorItem: FormErrorItem = {
+        let errorMessage = localizedString(LocalizationKey.UPIErrorNoAppSelected, configuration.localizationParameters)
+        let item = FormErrorItem(message: errorMessage, iconName: "error")
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.errorItem
+        )
+        item.isHidden.wrappedValue = true
         return item
     }()
 
@@ -244,6 +259,7 @@ public final class UPIComponent: PaymentComponent,
         formViewController.append(instructionsLabelItem.addingDefaultMargins())
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
         formViewController.append(upiFlowSelectionItem.addingDefaultMargins())
+        formViewController.append(errorItem)
         formViewController.append(qrCodeGenerationImageItem)
         qrCodeGenerationLabelContainerItem.isHidden.wrappedValue = true
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
@@ -268,6 +284,11 @@ extension UPIComponent {
     private func didSelectContinueButton() {
         guard formViewController.validate() else { return }
 
+        guard canSubmit() else {
+            showError()
+            return
+        }
+        
         continueButton.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
@@ -304,14 +325,14 @@ private extension UPIComponent {
             upiAppsList.first(where: { $0.identifier == currentSelectedItemIdentifier })?.isSelected = true
         }
         
-        updateButtonState()
+        hideError()
     }
     
     func updateInterface() {
         switch selectedUPIFlow {
         case .upiApps:
             upiAppsList.forEach { $0.isHidden.wrappedValue = false }
-            vpaInputItem.isVisible = currentSelectedItemIdentifier == Constants.vpaFlowIdentifier || upiAppsList.isEmpty
+            vpaInputItem.isVisible = currentSelectedItemIdentifier == Constants.vpaFlowIdentifier
             
             qrCodeGenerationLabelContainerItem.isVisible = false
             qrCodeGenerationImageItem.isVisible = false
@@ -330,21 +351,33 @@ private extension UPIComponent {
             continueButton.title = localizedString(.QRCodeGenerateQRCode, configuration.localizationParameters)
         }
         
-        updateButtonState()
-    }
-    
-    func updateButtonState() {
-        continueButton.enabled = canSubmit()
+        hideError()
     }
     
     func focusVpaInput() {
         vpaInputItem.focus()
     }
     
+    func showError() {
+        errorItem.isHidden.wrappedValue = false
+        UIAccessibility.post(
+            notification: .announcement,
+            argument: "\(localizedString(.errorTitle, configuration.localizationParameters)): \(errorItem.message ?? "")"
+        )
+    }
+
+    func hideError() {
+        errorItem.isHidden.wrappedValue = true
+    }
+    
     func canSubmit() -> Bool {
         switch selectedUPIFlow {
         case .upiApps:
-            return currentSelectedItemIdentifier != nil
+            if currentSelectedItemIdentifier == Constants.vpaFlowIdentifier {
+                return vpaInputItem.isValid()
+            } else {
+                return currentSelectedItemIdentifier != nil
+            }
         case .qrCode:
             return true
         }

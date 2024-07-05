@@ -9,61 +9,52 @@
 import XCTest
 
 class UPIComponentTests: XCTestCase {
-
-    private var context: AdyenContext!
-    private var paymentMethod: UPIPaymentMethod!
-    private var style: FormComponentStyle!
-    private var sut: UPIComponent!
-    private var analyticsProviderMock: AnalyticsProviderMock!
-
-    override func setUpWithError() throws {
-        paymentMethod = try AdyenCoder.decode(upi)
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, payment: nil, analyticsProvider: analyticsProviderMock)
-        style = FormComponentStyle()
-        sut = UPIComponent(paymentMethod: paymentMethod,
-                           context: context,
-                           configuration: UPIComponent.Configuration(style: style))
-        getFormViewController().title = "Test title"
+    
+    func test_init_withApps() throws {
+        let sut = try UPIComponent(
+            paymentMethod: AdyenCoder.decode(upiWithApps),
+            context: Dummy.context
+        )
+        
+        XCTAssertEqual(sut.currentSelectedItemIdentifier, nil)
+    }
+    
+    func test_init_withoutApps() throws {
+        let sut = try UPIComponent(
+            paymentMethod: AdyenCoder.decode(upi),
+            context: Dummy.context
+        )
+        
+        XCTAssertEqual(sut.currentSelectedItemIdentifier, UPIComponent.Constants.vpaFlowIdentifier)
     }
 
-    override func tearDownWithError() throws {
-        analyticsProviderMock = nil
-        context = nil
-        paymentMethod = nil
-        style = nil
-        sut = nil
-        try super.tearDownWithError()
+    func test_paymentMethodType_isUpi() throws {
+        let sut = try UPIComponent(
+            paymentMethod: AdyenCoder.decode(upi),
+            context: Dummy.context
+        )
+
+        XCTAssertEqual(sut.paymentMethod.type, .upi)
     }
 
-    func testComponent_ShouldPaymentMethodTypeBeUPI() throws {
-        // Given
-        let expectedPaymentMethodType: PaymentMethodType = .upi
+    func test_shouldRequireModalPresentation() throws {
+        let sut = try UPIComponent(
+            paymentMethod: AdyenCoder.decode(upi),
+            context: Dummy.context
+        )
 
-        // Action
-        let paymentMethodType = sut.paymentMethod.type
-
-        // Assert
-        XCTAssertEqual(paymentMethodType, expectedPaymentMethodType)
-    }
-
-    func testComponent_ShouldRequireModalPresentation() throws {
-        // Assert
         XCTAssertTrue(sut.requiresModalPresentation)
     }
 
-    func testRequiresKeyboardInput() {
-        let childViewController = getFormViewController()
+    func test_requiresKeyboardInput() throws {
+        let sut = try UPIComponent(
+            paymentMethod: AdyenCoder.decode(upi),
+            context: Dummy.context
+        )
+        
+        let securedViewController = try XCTUnwrap(sut.viewController as? SecuredViewController<FormViewController>)
+        let childViewController = securedViewController.childViewController
 
         XCTAssertTrue(childViewController.requiresKeyboardInput)
-    }
-
-    func testTitle() {
-        // Assert
-        XCTAssertEqual(getFormViewController().title, "Test title")
-    }
-
-    private func getFormViewController() -> FormViewController {
-        (sut.viewController as! SecuredViewController<FormViewController>).childViewController
     }
 }

@@ -184,6 +184,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Zadejte UPI ID";
 "adyen.UPI.collectFieldLabel" = "Zadejte UPI ID / VPA";
+"adyen.UPI.error.noAppSelected" = "Pro pokračování je potřeba vybrat platební metodu";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "V tomto zařízení není nainstalována žádná verze TWINT nebo je zastaralá. Aktualizujte nebo nainstalujte aplikaci TWINT.";

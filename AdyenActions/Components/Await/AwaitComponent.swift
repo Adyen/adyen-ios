@@ -84,7 +84,8 @@ public final class AwaitComponent: ActionComponent, Cancellable {
             if success {
                 self.handle(AwaitAction(
                     paymentData: action.paymentData,
-                    paymentMethodType: action.paymentMethodType)
+                    paymentMethodType: action.paymentMethodType
+                )
                 )
                 
                 self.delegate?.didOpenExternalApplication(component: self)

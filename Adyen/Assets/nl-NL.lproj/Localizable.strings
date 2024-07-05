@@ -184,6 +184,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "UPI-ID invoeren";
 "adyen.UPI.collectFieldLabel" = "UPI-ID/VPA invoeren";
+"adyen.UPI.error.noAppSelected" = "Selecteer een betalingsmethode om door te gaan";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Er is geen of een verouderde versie van TWINT geïnstalleerd op dit apparaat. De TWINT-app moet worden bijgewerkt of geïnstalleerd.";

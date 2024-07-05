@@ -11,7 +11,7 @@ enum ProjectSourceError: LocalizedError {
     
     var errorDescription: String? {
         switch self {
-        case .invalidSourceValue(let value):
+        case let .invalidSourceValue(value):
             "Invalid source parameter `\(value)`. It needs to either be a local file path or a repository in the format `[BRANCH_OR_TAG]\(ProjectSource.gitSourceSeparator)[REPOSITORY_URL]"
         }
     }
