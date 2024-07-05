@@ -260,8 +260,7 @@
                 delegatedAuthenticationService
             } else {
                 AdyenAuthentication.AuthenticationService(
-                    passKeyConfiguration: .init(relyingPartyIdentifier: delegatedAuthenticationConfiguration.relyingPartyIdentifier,
-                                                displayName: cardNumber ?? Bundle.main.displayName)
+                    configuration: .init(localizedRegistrationReason: "", localizedAuthenticationReason: "", appleTeamIdentifier: "")
                 )
             }
             
@@ -282,10 +281,7 @@
                 delegatedAuthenticationService
             } else {
                 AdyenAuthentication.AuthenticationService(
-                    passKeyConfiguration: .init(
-                        relyingPartyIdentifier: delegatedAuthenticationConfiguration.relyingPartyIdentifier,
-                        displayName: "" // At this point the display name isn't used.
-                    )
+                    configuration: .init(localizedRegistrationReason: "", localizedAuthenticationReason: "", appleTeamIdentifier: "")
                 )
             }
             
@@ -311,10 +307,7 @@
                 delegatedAuthenticationService
             } else {
                 AdyenAuthentication.AuthenticationService(
-                    passKeyConfiguration: .init(
-                        relyingPartyIdentifier: delegatedAuthenticationConfiguration.relyingPartyIdentifier,
-                        displayName: cardNumber ?? Bundle.main.displayName
-                    )
+                    configuration: .init(localizedRegistrationReason: "", localizedAuthenticationReason: "", appleTeamIdentifier: "")
                 )
             }
             
