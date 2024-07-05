@@ -28,8 +28,8 @@ struct PublicApiDiff: ParsableCommand {
         let shell = Shell()
         let xcodeTools = XcodeTools(shell: shell)
         let fileHandler = FileManager.default
-        let oldSource = try ProjectSource.from(old, fileHandler: fileHandler)
-        let newSource = try ProjectSource.from(new, fileHandler: fileHandler)
+        let oldSource = ProjectSource.remote(branch: "develop", repository: "https://github.com/Adyen/adyen-ios.git") // try ProjectSource.from(old, fileHandler: fileHandler)
+        let newSource = ProjectSource.remote(branch: "delegated-authentication-passkeys", repository: "https://github.com/Adyen/adyen-ios.git") // try ProjectSource.from(new, fileHandler: fileHandler)
         
         print("Comparing `\(newSource.description)` to `\(oldSource.description)`")
         
