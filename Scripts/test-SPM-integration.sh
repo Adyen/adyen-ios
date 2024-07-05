@@ -39,7 +39,7 @@ let package = Package(
     ],
     dependencies: [
         .package(name: \"Adyen\", path: \"../\"),
-        .package(name: \"AdyenAuthentication\", url: \"https://github.com/Adyen/adyen-authentication-ios\", .exact(Version(2, 0, 0)))
+        .package(name: \"AdyenAuthentication\", url: \"https://github.com/Adyen/adyen-authentication-ios\", .exact(Version(3, 0, 0)))
     ],
     targets: [
         .target(
