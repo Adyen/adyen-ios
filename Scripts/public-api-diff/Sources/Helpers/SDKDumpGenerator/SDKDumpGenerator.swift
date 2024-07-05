@@ -29,7 +29,7 @@ struct SDKDumpGenerator {
     ///   - module: The module name to generate the dump for
     ///
     /// - Returns: An optional `SDKDump` (Can be nil if no dump for a specific module can be created e.g. the module does not exist in one version)
-    func generate(for module: String) -> SDKDump? {
+    func generate(for module: String) throws -> SDKDump {
         
         let outputFilePath = projectDirectoryPath.appending("/api_dump.json")
         
@@ -39,7 +39,11 @@ struct SDKDumpGenerator {
             outputFilePath: outputFilePath
         )
         
-        return generate(from: outputFilePath)
+        if !fileHandler.fileExists(atPath: outputFilePath) {
+            throw FileHandlerError.pathDoesNotExist(path: outputFilePath)
+        }
+        
+        return try generate(from: outputFilePath)
     }
     
     /// Generates an sdk dump object from a file
@@ -48,13 +52,11 @@ struct SDKDumpGenerator {
     ///   - sdkDumpFilePath: The file path pointing to the sdk dump json
     ///
     /// - Returns: An optional `SDKDump` (Can be nil if no dump can be found at the specific file path)
-    func generate(from sdkDumpFilePath: String) -> SDKDump? {
+    func generate(from sdkDumpFilePath: String) throws -> SDKDump {
+
+        let data = try fileHandler.loadData(from: sdkDumpFilePath)
         
-        guard let data = fileHandler.contents(atPath: sdkDumpFilePath) else {
-            return nil
-        }
-        
-        return try? JSONDecoder().decode(
+        return try JSONDecoder().decode(
             SDKDump.self,
             from: data
         )

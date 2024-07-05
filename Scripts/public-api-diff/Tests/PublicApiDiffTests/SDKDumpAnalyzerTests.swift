@@ -15,7 +15,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
         
         let expectedChanges: [SDKAnalyzer.Change] = []
         
-        let changes = try SDKDumpAnalyzer.analyzeSdkDump(
+        let changes = SDKDumpAnalyzer.analyzeSdkDump(
             newDump: newDump,
             oldDump: newDump
         )
@@ -32,7 +32,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
             .init(changeType: .change, parentName: "", changeDescription: "`public printedName`\n  ➡️  `public old_printedName`")
         ]
         
-        let changes = try SDKDumpAnalyzer.analyzeSdkDump(
+        let changes = SDKDumpAnalyzer.analyzeSdkDump(
             newDump: newDump,
             oldDump: oldDump
         )
@@ -69,7 +69,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
             .init(changeType: .addition, parentName: "parent", changeDescription: "`public childPrintedName` was added")
         ]
         
-        let changesAdded = try SDKDumpAnalyzer.analyzeSdkDump(
+        let changesAdded = SDKDumpAnalyzer.analyzeSdkDump(
             newDump: newDump,
             oldDump: oldDump
         )
@@ -82,7 +82,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
             .init(changeType: .removal, parentName: "parent", changeDescription: "`public childPrintedName` was removed")
         ]
         
-        let changesRemoved = try SDKDumpAnalyzer.analyzeSdkDump(
+        let changesRemoved = SDKDumpAnalyzer.analyzeSdkDump(
             newDump: oldDump,
             oldDump: newDump
         )
@@ -140,7 +140,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
             .init(changeType: .addition, parentName: "parent.enumChild", changeDescription: "`public case newCasePrintedName` was added")
         ]
         
-        let changes = try SDKDumpAnalyzer.analyzeSdkDump(
+        let changes = SDKDumpAnalyzer.analyzeSdkDump(
             newDump: newDump,
             oldDump: oldDump
         )
@@ -164,7 +164,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
             .init(changeType: .addition, parentName: "", changeDescription: "Target was added")
         ]
         
-        let changesAdded = try SDKDumpAnalyzer.analyzeSdkDump(
+        let changesAdded = SDKDumpAnalyzer.analyzeSdkDump(
             newDump: dump,
             oldDump: nil
         )
@@ -177,7 +177,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
             .init(changeType: .removal, parentName: "", changeDescription: "Target was removed")
         ]
         
-        let changesRemoved = try SDKDumpAnalyzer.analyzeSdkDump(
+        let changesRemoved = SDKDumpAnalyzer.analyzeSdkDump(
             newDump: nil,
             oldDump: dump
         )

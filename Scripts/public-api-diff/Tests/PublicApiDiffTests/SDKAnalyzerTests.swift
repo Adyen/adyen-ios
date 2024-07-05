@@ -13,10 +13,13 @@ class SDKAnalyzerTests: XCTestCase {
         let mockShell = MockShell { command in "" }
         
         var mockFileHandler = MockFileHandler()
-        mockFileHandler.handleContents = { path in
+        mockFileHandler.handleLoadData = { path in
             let packageName = path.components(separatedBy: "/").first
-            guard let resourcePath = Bundle.module.path(forResource: packageName, ofType: "txt") else { return nil }
-            return FileManager.default.contents(atPath: resourcePath)
+            let resourcePath = try XCTUnwrap(Bundle.module.path(forResource: packageName, ofType: "txt"))
+            return try XCTUnwrap(FileManager.default.contents(atPath: resourcePath))
+        }
+        mockFileHandler.handleFileExists = { _ in
+            return true
         }
         
         let xcodeTools = XcodeTools(shell: mockShell)
@@ -44,10 +47,13 @@ class SDKAnalyzerTests: XCTestCase {
         }
         
         var mockFileHandler = MockFileHandler()
-        mockFileHandler.handleContents = { path in
+        mockFileHandler.handleLoadData = { path in
             let packageName = path.components(separatedBy: "/").first
-            guard let resourcePath = Bundle.module.path(forResource: packageName, ofType: "txt") else { return nil }
-            return FileManager.default.contents(atPath: resourcePath)
+            let resourcePath = try XCTUnwrap(Bundle.module.path(forResource: packageName, ofType: "txt"))
+            return try XCTUnwrap(FileManager.default.contents(atPath: resourcePath))
+        }
+        mockFileHandler.handleFileExists = { _ in
+            return true
         }
         
         let xcodeTools = XcodeTools(shell: mockShell)
@@ -82,10 +88,13 @@ class SDKAnalyzerTests: XCTestCase {
         }
         
         var mockFileHandler = MockFileHandler()
-        mockFileHandler.handleContents = { path in
+        mockFileHandler.handleLoadData = { path in
             let packageName = path.components(separatedBy: "/").first
-            guard let resourcePath = Bundle.module.path(forResource: packageName, ofType: "txt") else { return nil }
-            return FileManager.default.contents(atPath: resourcePath)
+            let resourcePath = try XCTUnwrap(Bundle.module.path(forResource: packageName, ofType: "txt"))
+            return try XCTUnwrap(FileManager.default.contents(atPath: resourcePath))
+        }
+        mockFileHandler.handleFileExists = { _ in
+            return true
         }
         
         let xcodeTools = XcodeTools(shell: mockShell)

@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Alexander Guretzki on 26/06/2024.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
@@ -91,17 +90,17 @@ extension SDKDump {
         
         static func == (lhs: SDKDump.Element, rhs: SDKDump.Element) -> Bool {
             lhs.kind == rhs.kind &&
-            lhs.name == rhs.name &&
-            lhs.mangledName == rhs.mangledName &&
-            lhs.printedName == rhs.printedName &&
-            lhs.declKind == rhs.declKind &&
-            lhs.children == rhs.children &&
-            lhs.spiGroupNames == rhs.spiGroupNames &&
-            lhs.declAttributes == rhs.declAttributes &&
-            lhs.accessors == rhs.accessors &&
-            lhs.conformances == rhs.conformances &&
-            lhs.isLet == rhs.isLet &&
-            lhs.isStatic == rhs.isStatic
+                lhs.name == rhs.name &&
+                lhs.mangledName == rhs.mangledName &&
+                lhs.printedName == rhs.printedName &&
+                lhs.declKind == rhs.declKind &&
+                lhs.children == rhs.children &&
+                lhs.spiGroupNames == rhs.spiGroupNames &&
+                lhs.declAttributes == rhs.declAttributes &&
+                lhs.accessors == rhs.accessors &&
+                lhs.conformances == rhs.conformances &&
+                lhs.isLet == rhs.isLet &&
+                lhs.isStatic == rhs.isStatic
         }
         
         var definition: String {

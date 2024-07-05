@@ -41,6 +41,6 @@ class XcodeToolsTests: XCTestCase {
         }
         
         let xcodeTools = XcodeTools(shell: mockShell)
-        xcodeTools.build(projectDirectoryPath: projectDirectoryPath, allTargetsLibraryName: allTargetsLibraryName)
+        try xcodeTools.build(projectDirectoryPath: projectDirectoryPath, allTargetsLibraryName: allTargetsLibraryName)
     }
 }

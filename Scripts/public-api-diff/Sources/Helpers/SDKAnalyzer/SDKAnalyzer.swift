@@ -100,10 +100,21 @@ private extension SDKAnalyzer {
         
         var changesPerTarget = [String: [SDKAnalyzer.Change]]() // [ModuleName: [SDKDumpAnalyzer.Change]]
         
-        try allTargets.forEach { targetName in
-            let diff = try SDKDumpAnalyzer.analyzeSdkDump(
-                newDump: newDumpGenerator.generate(for: targetName),
-                oldDump: oldDumpGenerator.generate(for: targetName)
+        allTargets.forEach { targetName in
+            
+            var newDump: SDKDump? = nil
+            var oldDump: SDKDump? = nil
+            
+            do {
+                newDump = try newDumpGenerator.generate(for: targetName)
+                oldDump = try oldDumpGenerator.generate(for: targetName)
+            } catch {
+                print(error)
+            }
+            
+            let diff = SDKDumpAnalyzer.analyzeSdkDump(
+                newDump: newDump,
+                oldDump: oldDump
             )
             
             if !diff.isEmpty { changesPerTarget[targetName] = diff }

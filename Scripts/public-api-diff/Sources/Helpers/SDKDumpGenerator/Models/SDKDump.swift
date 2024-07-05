@@ -32,8 +32,6 @@ class SDKDump: Codable, Equatable {
 
 // MARK: - Convenience
 
-
-
 private extension SDKDump {
     func setupParentRelationships() {
         root.setupParentRelationships()
