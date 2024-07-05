@@ -6,6 +6,10 @@
 
 import Foundation
 
+struct XcodeToolsError: LocalizedError {
+    var errorDescription: String
+}
+
 struct XcodeTools {
     
     private enum Constants {
@@ -23,7 +27,7 @@ struct XcodeTools {
     func build(
         projectDirectoryPath: String,
         allTargetsLibraryName: String
-    ) {
+    ) throws {
         let command = [
             "cd \(projectDirectoryPath);",
             "xcodebuild -scheme \"\(allTargetsLibraryName)\"",
@@ -33,7 +37,10 @@ struct XcodeTools {
             "-skipPackagePluginValidation"
         ]
         
-        shell.execute(command.joined(separator: " "))
+        let result = shell.execute(command.joined(separator: " "))
+        if result.range(of: "xcodebuild: error:") != nil {
+            throw XcodeToolsError(errorDescription: result)
+        }
     }
     
     func dumpSdk(

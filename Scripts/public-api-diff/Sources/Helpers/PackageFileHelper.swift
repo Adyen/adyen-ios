@@ -26,14 +26,14 @@ struct PackageFileHelper {
     func availableTargets() throws -> Set<String> {
         
         // TODO: Better use "swift package describe --type json" instead of trying to parse the Package.swift file itself
-        let packageContent = try fileHandler.load(from: packagePath)
+        let packageContent = try fileHandler.loadString(from: packagePath)
         return availableTargets(from: packageContent)
     }
     
     func availableProducts() throws -> Set<String> {
         
         // TODO: Better use "swift package describe --type json" instead of trying to parse the Package.swift file itself
-        let packageContent = try fileHandler.load(from: packagePath)
+        let packageContent = try fileHandler.loadString(from: packagePath)
         return availableProducts(from: packageContent)
     }
     
@@ -42,7 +42,7 @@ struct PackageFileHelper {
         named consolidatedLibraryName: String
     ) throws {
         
-        let packageContent = try fileHandler.load(from: packagePath)
+        let packageContent = try fileHandler.loadString(from: packagePath)
         let targets = availableTargets(from: packageContent)
         
         let consolidatedEntry = consolidatedLibraryEntry(consolidatedLibraryName, from: targets.sorted())

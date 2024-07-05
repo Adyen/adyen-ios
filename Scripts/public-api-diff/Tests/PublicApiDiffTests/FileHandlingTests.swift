@@ -68,22 +68,22 @@ class FileHandlingTests: XCTestCase {
         
         // Success scenario
         
-        fileHandler.handleContents = { path in
+        fileHandler.handleLoadData = { path in
             XCTAssertEqual(path, filePath)
-            return expectedContent.data(using: .utf8)
+            return try XCTUnwrap(expectedContent.data(using: .utf8))
         }
         
-        let content = try fileHandler.load(from: filePath)
+        let content = try fileHandler.loadString(from: filePath)
         XCTAssertEqual(expectedContent, content)
         
         // Fail scenario
         
-        fileHandler.handleContents = { path in
-            nil
+        fileHandler.handleLoadData = { path in
+            throw FileHandlerError.couldNotLoadFile(filePath: path)
         }
         
         do {
-            _ = try fileHandler.load(from: filePath)
+            _ = try fileHandler.loadString(from: filePath)
             XCTFail("Load should have thrown an error")
         } catch {
             let fileHandlerError = try XCTUnwrap(error as? FileHandlerError)

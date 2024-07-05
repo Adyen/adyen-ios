@@ -17,9 +17,15 @@ class SDKDumpGeneratorTests: XCTestCase {
         
         let mockShell = MockShell { command in "" }
         
-        let fileHandler = MockFileHandler(handleContents: { path in
-            try? JSONEncoder().encode(expectedDump)
-        })
+        var fileHandler = MockFileHandler()
+        
+        fileHandler.handleLoadData = { _ in
+            try JSONEncoder().encode(expectedDump)
+        }
+        
+        fileHandler.handleFileExists = { _ in
+            true
+        }
         
         let xcodeTools = XcodeTools(shell: mockShell)
         
@@ -40,9 +46,15 @@ class SDKDumpGeneratorTests: XCTestCase {
         
         let mockShell = MockShell { command in "" }
         
-        let fileHandler = MockFileHandler(handleContents: { path in
-            nil
-        })
+        var fileHandler = MockFileHandler()
+        
+        fileHandler.handleLoadData = { path in
+            throw FileHandlerError.couldNotLoadFile(filePath: path)
+        }
+        
+        fileHandler.handleFileExists = { _ in
+            false
+        }
         
         let xcodeTools = XcodeTools(shell: mockShell)
         
@@ -52,8 +64,12 @@ class SDKDumpGeneratorTests: XCTestCase {
             xcodeTools: xcodeTools
         )
         
-        let dump = dumpGenerator.generate(for: moduleName)
-        
-        XCTAssertNil(dump)
+        do {
+            _ = try dumpGenerator.generate(for: moduleName)
+            XCTFail("Generate should have thrown an error")
+        } catch {
+            let fileHandlerError = try XCTUnwrap(error as? FileHandlerError)
+            XCTAssertEqual(fileHandlerError, FileHandlerError.pathDoesNotExist(path: projectDirectoryPath.appending("/api_dump.json")))
+        }
     }
 }

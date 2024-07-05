@@ -47,7 +47,7 @@ struct PublicApiDiff: ParsableCommand {
             new: newSource
         ) {
             oldProjectDirectoryPath,
-            newProjectDirectoryPath in
+                newProjectDirectoryPath in
             
             let sdkAnalyzer = SDKAnalyzer(
                 fileHandler: fileHandler,

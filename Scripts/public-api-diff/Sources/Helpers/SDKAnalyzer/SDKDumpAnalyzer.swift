@@ -11,7 +11,7 @@ enum SDKDumpAnalyzer {
     static func analyzeSdkDump(
         newDump: SDKDump?,
         oldDump: SDKDump?
-    ) throws -> [SDKAnalyzer.Change] {
+    ) -> [SDKAnalyzer.Change] {
         
         guard newDump != oldDump else { return [] }
         

@@ -17,4 +17,12 @@ extension FileManager: FileHandling {
     func createFile(atPath path: String, contents data: Data) -> Bool {
         createFile(atPath: path, contents: data, attributes: nil)
     }
+    
+    func loadData(from filePath: String) throws -> Data {
+        guard let data = self.contents(atPath: filePath) else {
+            throw FileHandlerError.couldNotLoadFile(filePath: filePath)
+        }
+        
+        return data
+    }
 }

@@ -8,7 +8,8 @@
 import XCTest
 
 class GitTests: XCTestCase {
-    func test_clone() throws {
+    
+    func test_clone_success() throws {
         
         let repository = "repository"
         let branch = "branch"
@@ -20,7 +21,34 @@ class GitTests: XCTestCase {
             return ""
         }
         
-        let git = Git(shell: mockShell)
-        git.clone(repository, at: branch, targetDirectoryPath: targetDirectoryPath)
+        let mockFileHandler = MockFileHandler(handleFileExists: { _ in true })
+        
+        let git = Git(shell: mockShell, fileHandler: mockFileHandler)
+        try git.clone(repository, at: branch, targetDirectoryPath: targetDirectoryPath)
+    }
+    
+    func test_clone_fail() throws {
+        
+        let repository = "repository"
+        let branch = "branch"
+        let targetDirectoryPath = "targetDirectoryPath"
+        
+        let mockShell = MockShell { command in
+            print(command)
+            XCTAssertEqual(command, "git clone -b \(branch) \(repository) \(targetDirectoryPath)")
+            return ""
+        }
+        
+        let mockFileHandler = MockFileHandler(handleFileExists: { _ in false })
+        
+        let git = Git(shell: mockShell, fileHandler: mockFileHandler)
+        
+        do {
+            try git.clone(repository, at: branch, targetDirectoryPath: targetDirectoryPath)
+            XCTFail("Clone should have thrown an error")
+        } catch {
+            let fileHandlerError = try XCTUnwrap(error as? FileHandlerError)
+            XCTAssertEqual(fileHandlerError, FileHandlerError.pathDoesNotExist(path: targetDirectoryPath))
+        }
     }
 }

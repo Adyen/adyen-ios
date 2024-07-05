@@ -34,9 +34,9 @@ struct MockFileHandler: FileHandling {
         return false
     }
     
-    var handleContents: (String) -> Data? = {
+    var handleLoadData: (String) throws -> Data = {
         XCTFail("Unexpectedly called `contents(atPath: \($0))`")
-        return nil
+        return .init()
     }
     
     func removeItem(atPath path: String) throws {
@@ -59,7 +59,7 @@ struct MockFileHandler: FileHandling {
         handleFileExists(path)
     }
     
-    func contents(atPath path: String) -> Data? {
-        handleContents(path)
+    func loadData(from path: String) throws -> Data {
+        try handleLoadData(path)
     }
 }
