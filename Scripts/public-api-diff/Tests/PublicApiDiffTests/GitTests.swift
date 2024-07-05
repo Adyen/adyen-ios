@@ -16,7 +16,6 @@ class GitTests: XCTestCase {
         let targetDirectoryPath = "targetDirectoryPath"
         
         let mockShell = MockShell { command in
-            print(command)
             XCTAssertEqual(command, "git clone -b \(branch) \(repository) \(targetDirectoryPath)")
             return ""
         }
@@ -34,7 +33,6 @@ class GitTests: XCTestCase {
         let targetDirectoryPath = "targetDirectoryPath"
         
         let mockShell = MockShell { command in
-            print(command)
             XCTAssertEqual(command, "git clone -b \(branch) \(repository) \(targetDirectoryPath)")
             return ""
         }

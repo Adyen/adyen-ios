@@ -69,7 +69,7 @@ class SDKDumpGeneratorTests: XCTestCase {
             XCTFail("Generate should have thrown an error")
         } catch {
             let fileHandlerError = try XCTUnwrap(error as? FileHandlerError)
-            XCTAssertEqual(fileHandlerError, FileHandlerError.pathDoesNotExist(path: projectDirectoryPath.appending("/api_dump.json")))
+            XCTAssertEqual(fileHandlerError, FileHandlerError.pathDoesNotExist(path: projectDirectoryPath.appending("/api_dump_\(moduleName).json")))
         }
     }
 }

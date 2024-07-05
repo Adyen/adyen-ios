@@ -59,12 +59,6 @@ enum SDKDumpAnalyzer {
                 // An spi-internal element was added/removed which we do not count as a public change
                 if lhsElement.isSpiInternal { return [] }
                 
-                print("Could not find `\(lhsElement.printedName)` in `\(lhsElement.parentPath)`")
-                print("Children:")
-                rhs.children.forEach { child in
-                    print("- \(child.printedName)")
-                }
-                
                 if oldFirst {
                     return [.init(changeType: .removal, parentName: lhsElement.parentPath, changeDescription: "`\(lhsElement)` was removed")]
                 } else {

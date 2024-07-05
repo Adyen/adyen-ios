@@ -41,8 +41,7 @@ class SDKAnalyzerTests: XCTestCase {
     
     func test_analyze_targetChanges() throws {
         
-        let mockShell = MockShell { command in
-            print(command)
+        let mockShell = MockShell { _ in
             return ""
         }
         
@@ -82,8 +81,7 @@ class SDKAnalyzerTests: XCTestCase {
         
         // TODO: Implement
         
-        let mockShell = MockShell { command in
-            print(command)
+        let mockShell = MockShell { _ in
             return ""
         }
         

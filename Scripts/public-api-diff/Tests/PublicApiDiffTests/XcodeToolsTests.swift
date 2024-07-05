@@ -31,7 +31,6 @@ class XcodeToolsTests: XCTestCase {
         let allTargetsLibraryName = UUID().uuidString
         
         let mockShell = MockShell { command in
-            print(command)
             
             let expectedCommand = "cd \(projectDirectoryPath); xcodebuild -scheme \"\(allTargetsLibraryName)\" -derivedDataPath .build -sdk `xcrun --sdk iphonesimulator --show-sdk-path` -target x86_64-apple-ios17.4-simulator -destination \"platform=iOS,name=Any iOS Device\" -skipPackagePluginValidation"
             

@@ -31,7 +31,7 @@ struct SDKDumpGenerator {
     /// - Returns: An optional `SDKDump` (Can be nil if no dump for a specific module can be created e.g. the module does not exist in one version)
     func generate(for module: String) throws -> SDKDump {
         
-        let outputFilePath = projectDirectoryPath.appending("/api_dump.json")
+        let outputFilePath = projectDirectoryPath.appending("/api_dump_\(module).json")
         
         xcodeTools.dumpSdk(
             projectDirectoryPath: projectDirectoryPath,
