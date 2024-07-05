@@ -3,6 +3,14 @@ name: Detect public API changes
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      new:
+        description: 'The branch & repository of the new version "${sourceBranch}~${repository}"'
+        required: true
+      old:
+        description: 'The branch & repository of the old version "${targetBranch}~${repository}"'
+        required: true
       
 jobs:
 
@@ -29,10 +37,10 @@ jobs:
       run: |
         PROJECT_FOLDER=$PWD
         cd Scripts/public-api-diff        
-        swift run public-api-diff --new "$PROJECT_FOLDER" --old "${branch}~${baseRepo}" --output "$PROJECT_FOLDER/api_comparison.md"
+        swift run public-api-diff --new "${source}" --old "${target}" --output "$PROJECT_FOLDER/api_comparison.md"
       env:
-        branch: '${{github.event.pull_request.base.ref}}'
-        baseRepo: '${{github.server_url}}/${{github.repository}}.git'
+        source: '${{ github.event.inputs.new || github.ref_name}}~${{github.server_url}}/${{github.repository}}.git'
+        target: '${{ github.event.inputs.old || github.event.pull_request.base.ref}}~${{github.server_url}}/${{github.repository}}.git'
         
     - name: 📝 Comment on PR
       uses: thollander/actions-comment-pull-request@v2
