@@ -6,10 +6,10 @@ on:
   workflow_dispatch:
     inputs:
       new:
-        description: 'The branch & repository of the new version "${sourceBranch}~${repository}"'
+        description: 'The branch & repository of the updated version "${sourceBranch}~${repository}"'
         required: true
       old:
-        description: 'The branch & repository of the old version "${targetBranch}~${repository}"'
+        description: 'The branch & repository of the comparison version "${targetBranch}~${repository}"'
         required: true
       
 jobs:
@@ -35,8 +35,6 @@ jobs:
         
     - name: 🔍 Detect Changes
       run: |
-        echo "${{ github.head_ref }}"
-        echo "${{ github.ref_name }}"
         PROJECT_FOLDER=$PWD
         cd Scripts/public-api-diff        
         swift run public-api-diff --new "${source}" --old "${target}" --output "$PROJECT_FOLDER/api_comparison.md"
