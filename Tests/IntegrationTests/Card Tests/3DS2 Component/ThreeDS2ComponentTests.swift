@@ -9,6 +9,7 @@
 import XCTest
 @_spi(AdyenInternal) import Adyen
 
+@available(iOS 16.0, *)
 class ThreeDS2ComponentTests: XCTestCase {
 
     func testFullFlowRedirectSuccess() throws {
@@ -403,8 +404,6 @@ class ThreeDS2ComponentTests: XCTestCase {
     }
 
     #if canImport(AdyenAuthentication)
-        @available(iOS 14.0, *)
-    
         /// A positive flow, when DA is registered on the device, & user taps on approve - PresentationDelegateMock. We expect the approval flow to succeed.
         func testDelegatedAuthenticationWhenDeviceIsRegisteredAndUserApproves() {
             enum TestData {
@@ -444,10 +443,10 @@ class ThreeDS2ComponentTests: XCTestCase {
         
             let threeDS2ActionHandler = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
                                                                         service: mockService,
-                                                                        presenter: ThreeDS2PlusDAScreenPresenter(presentationDelegate: presentationDelegateMock,
-                                                                                                                 style: .init(),
-                                                                                                                 localizedParameters: nil),
-                                                                        delegatedAuthenticationService: authenticationServiceMock,
+                                                                        presenter: ThreeDS2PlusDAScreenPresenter(style: .init(),
+                                                                                                                 localizedParameters: nil,
+                                                                                                                 context: Dummy.context),
+                                                                        delegatedAuthenticationConfiguration: .init(relyingPartyIdentifier: ""), delegatedAuthenticationService: authenticationServiceMock,
                                                                         deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true))
                 
             let classicActionHandler = ThreeDS2ClassicActionHandler(context: Dummy.context, service: mockService, coreActionHandler: threeDS2ActionHandler)
@@ -494,7 +493,6 @@ class ThreeDS2ComponentTests: XCTestCase {
             waitForExpectations(timeout: 3, handler: nil)
         }
     
-        @available(iOS 14.0, *)
         func testDelegatedAuthenticationWhenDeviceIsNotRegisteredAndGetsTheRegisterScreenAndTheUserTapsOnRegister() {
             enum TestData {
                 static let challengeToken = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES0lucHV0IjogImV5SmphR0ZzYkdWdVoyVWlPaUpqYUdGc2JHVnVaMlVpZlEiLCAiYWNzUmVmZXJlbmNlTnVtYmVyIjoiQURZRU4tQUNTLVNJTVVMQVRPUiIsImFjc1NpZ25lZENvbnRlbnQiOiJleUpoYkdjaU9pSlFVekkxTmlJc0luZzFZeUk2V3lKTlNVbEVNMFJEUTBGelVVTkRVVVJVU205VFZHeFlXQzlQVkVGT1FtZHJjV2hyYVVjNWR6QkNRVkZ6UmtGRVEwSjFha1ZNVFVGclIwRXhWVVZDYUUxRFZHdDNlRVpxUVZWQ1owNVdRa0ZuVFVSVk5YWmlNMHByVEZWb2RtSkhlR2hpYlZGNFJXcEJVVUpuVGxaQ1FXTk5RMVZHZEdNelVteGpiVkpvWWxSRlZFMUNSVWRCTVZWRlEyZDNTMUZYVWpWYVZ6Um5WR2sxVjB4cVJWSk5RVGhIUVRGVlJVTjNkMGxSTW1oc1dUSjBkbVJZVVhoT1ZFRjZRbWRPVmtKQlRVMU1SRTVGVlhwSloxVXliSFJrVjNob1pFYzVlVWxHV2twVk1FVm5Va1pOWjFFeVZubGtSMnh0WVZkT2FHUkhWV2RSV0ZZd1lVYzVlV0ZZVWpWTlUwRjNTR2RaU2t0dldrbG9kbU5PUVZGclFrWm9SbnBrV0VKM1lqTktNRkZIUm10bFYxWjFURzFPZG1KVVFXVkdkekI0VDBSQk5FMXFZM2hOZWxGNlRWUlNZVVozTUhsUFJFRTBUV3BSZUUxNlVYcE5WRkpoVFVsSGEwMVJjM2REVVZsRVZsRlJSMFYzU2s5VVJFVlhUVUpSUjBFeFZVVkRRWGRPVkcwNWRtTnRVWFJUUnpsellrZEdkVnBFUlZOTlFrRkhRVEZWUlVKM2QwcFJWekY2WkVkV2VWcEhSblJOVWsxM1JWRlpSRlpSVVV0RVFYQkNXa2hzYkdKcFFrOU1iRmwxVFZKRmQwUjNXVVJXVVZGTVJFRm9SR0ZIVm1waE1qa3haRVJGWmsxQ01FZEJNVlZGUVhkM1YwMHdVbFJOYVVKVVlWY3hNV0pIUmpCaU0wbG5WbXRzVkZGVFFrVlZla1ZuVFVJMFIwTlRjVWRUU1dJelJGRkZTa0ZTV1ZKak0xWjNZMGM1ZVdSRlFtaGFTR3hzWW1rMWFtSXlNSGRuWjBWcFRVRXdSME5UY1VkVFNXSXpSRkZGUWtGUlZVRkJORWxDUkhkQmQyZG5SVXRCYjBsQ1FWRkRZeTlYZDA0MlpuWXhZVWwxYTNwTmFGZGhVbVJhWjBRNVVHdDFOV0Y1VFdWaGJXeE9SelIwVld3eVV6WTNURXRFT1VKU2VXTm9RWFp2TlVFclJXdG1Na2hMVWpKWVZHVnhUMlpIWm05TVJFbHhNa3hYUnpsSGEwdHlSeTlMUW5RdlFWQkVNWGhDYUdkdFNHNXJORmxxY0VGV2JsQTBabUZLVEhSU2NXRlFSVVZPVHpnd2JXTjZXV3hoZHpoWmFuUlJObmxJV0ZCTk5FOVBMMlo2TjJZMU9GRmxjRWhoZFUxYWNIcDZlazByUkc5dFZEQk1NVWhDYkZoVWVGcG5kVlpETUM5MVpVUk5ZMU5SVFdZNFQzSldZa3hVZHpOa1FubEVPRmQ1TlhkNFFXZFJkbFl2UkdaRWVWRllXamRMUTFabVpqbDFaVkZZYmtSdVQzbEdNRTVoTDBKSlZXMXFlbWgyU205R1kxZzJVeTg0V1V3MmRtSnBNMjVrWVhsTFdXdHVkRFZ2Y1RKb1ZrZG1hRm9yYURVM2VWbzNabmxXWmtJd2MyRlFhRkZyTTBjMlNqQlBLMHBzTWxWWE9GRjJRVFl3VmpoNk5HWkJaMDFDUVVGRmQwUlJXVXBMYjFwSmFIWmpUa0ZSUlV4Q1VVRkVaMmRGUWtGSFVVeGpVRzlRTkRoQllVTnlVV0p4ZWl0MlJsQTBNbWx5YjJKR1VHWnhjRlZyWkZZMlFVeE5lRXBDWTJOMlNEbENibHBuVmxKNkwzRk9UbE0yUlVnMmJIWnZabGt3YkVoVGRVdGthMEo0TDFCV09FcE9jR1JvYldNdllVTkZTM2RtY1dsMFZuWndNemxFUnpsTlVrcFZNWG8zYlhRdlVsSklTbWxWUkRGR01WRlJlR0pUT0dSTWJXOTBTR1pOU1dsVmR5OXpVWEpXWm1WRU5sQk1VRGxxUTNrdlZXbDFkMlZIWTNOaWFGRXpiekJJUVdjeGRrbDJUVUpXU0RKaWNDdG1iREJpUVhFNVRHczBXWGhCTUVSdlMyTklZbGhtUTBWS2J6ZFBMM1JMV1d4YVoxcHJOVk5rUzFGbGNFTmhWRkV6Tmk5V2IxUnliSHBKTUU5d1ZVY3hkSEpGT1dWVk1TdEpOa3hxTVU5bFpYbGtaalU1Wm5aWVFXUm9MMmhrWkdoTFZEUm5TbkoyZGtaaU1IYzBlbHBwV0hWNlZscFFTMUF3ZG5sclFXNDVLMGsyUVZJeVVrczRZVUUwTkc5S1FVd3pkMGd4U1VFOUlpd2lUVWxKUkRocVEwTkJkRzlEUTFGRVRtNVllV05XUlVsM2RYcEJUa0puYTNGb2EybEhPWGN3UWtGUmMwWkJSRU5DZFdwRlRFMUJhMGRCTVZWRlFtaE5RMVJyZDNoR2FrRlZRbWRPVmtKQlowMUVWVFYyWWpOS2EweFZhSFppUjNob1ltMVJlRVZxUVZGQ1owNVdRa0ZqVFVOVlJuUmpNMUpzWTIxU2FHSlVSVlJOUWtWSFFURlZSVU5uZDB0UlYxSTFXbGMwWjFScE5WZE1ha1ZTVFVFNFIwRXhWVVZEZDNkSlVUSm9iRmt5ZEhaa1dGRjRUbFJCZWtKblRsWkNRVTFOVEVST1JWVjZTV2RWTW14MFpGZDRhR1JIT1hsSlJscEtWVEJGWjFKR1RXZFJNbFo1WkVkc2JXRlhUbWhrUjFWblVWaFdNR0ZIT1hsaFdGSTFUVk5CZDBobldVcExiMXBKYUhaalRrRlJhMEpHYUVaNlpGaENkMkl6U2pCUlIwWnJaVmRXZFV4dFRuWmlWRUZsUm5jd2VFOUVRVFJOYW1ONFRYcFJkMDVVYUdGR2R6QjVUMFJCTkUxcVVYaE5lbEYzVGxSb1lVMUpSelpOVVhOM1ExRlpSRlpSVVVkRmQwcFBWRVJGVjAxQ1VVZEJNVlZGUTBGM1RsUnRPWFpqYlZGMFUwYzVjMkpIUm5WYVJFVlRUVUpCUjBFeFZVVkNkM2RLVVZjeGVtUkhWbmxhUjBaMFRWSk5kMFZSV1VSV1VWRkxSRUZ3UWxwSWJHeGlhVUpQVEd4WmRVMVNSWGRFZDFsRVZsRlJURVJCYUVSaFIxWnFZVEk1TVdSRVJURk5SRTFIUVRGVlJVRjNkM05OTUZKVVRXbENWR0ZYTVRGaVIwWXdZak5KWjFacmJGUlJVMEpGVlhsQ1JGcFlTakJoVjFwd1dUSkdNRnBUUWtKa1dGSnZZak5LY0dSSWEzaEpSRUZsUW1kcmNXaHJhVWM1ZHpCQ1ExRkZWMFZZVGpGalNFSjJZMjVTUVZsWFVqVmFWelIxV1RJNWRFMUpTVUpKYWtGT1FtZHJjV2hyYVVjNWR6QkNRVkZGUmtGQlQwTkJVVGhCVFVsSlFrTm5TME5CVVVWQmRYQTNLMlowZDFkblIyUmpZVFl4Y1ZaQ1l6RkNkbFJwTlZrME0wSjNhRm96VTJoS1NXdHRSMGwzWjFsUWMwbzVjSEpQWTFwVlZtVkhhMFZvWXpWSFdIY3ZPVkpNWTJ4WmJXbHBNbG92VEZCRmVYazJWVWxqVUhORlJtbGtVbnBYVERaa09EUmlaR0k0VkRWcE5rbEJUSE5JVTJkUFptTlFUekpFUTFsdlRqVkdLMGd2ZGxWaGNIZFpSMnBDTkZrcmFYZE5abEV5WlhOTU0xRkVaRVVyTDI4NUwxbzBUbkJtYnprclkyWXhSSHBsY0ZOWFZuaFVlRkpTYTFOWU1VY3JVWFpyUWswdmNHeDBOVzAxZUN0TVZWa3dlalpWTkN0MVVYRkNVVmx6YVRCVlVEVk5iV0k0UlRaVmQwY3lhMk00Tm5SelpYYzBXVXh4VTJOWWRGVTVaeTl2T1Rsbk9VVnJia1ZUV205Q09GRnRhbWRKTUhOYVVYSkZNMHR2TkVFeUwxbERaVEkxU21kYU56RkxZemRGTHpsSVMxRkxNMVl4ZEdsTWNucDRhVk5MTUhFNFlrVk9NMnBoWWpSelVVcFhZM3BTTlU1UlNVUkJVVUZDVFVFd1IwTlRjVWRUU1dJelJGRkZRa04zVlVGQk5FbENRVkZCYlRoeFQwUkJUa0l6VUhBck9UaFJablZSVlVWVVdHVXhUbEp3U25aRWIyTjVjMlJ2U2l0emREaEhXbVJpVjJsdWEwOXdOMlpzV1RSWWNFWnlNbHBKY1U1SVRYbEtjMlkzT1VsQlMyeENaVzlUV0RkNFZHWnFaM0l5T0hkbmExTjVkRFZRVjJJM1drWXpXRlF3Ym1kWGMzaHlNbVIwUmpkU2RVRjRVVGhLWWxSd1VFeGtSVmt4V2pKeWFFbzFZWFJLZERkRlNsbEZOa0ZZU25wQmNqVlZTamQ1YlRCaldTczVUazB6VmtKcVUzQmpPV1ZNVDA0elZHdFpXRzlWZGpKa2JVdDFNVWg2VEhaaU1XMUVNR1ZJZVhWRmNsRlBjbUpVS3pGdlJrMWxMMHRvZW5ZeE4weHJXRGhxTjA5NFUwdHRVaTlJTDFReWVYRm5iWHBQZUdkTk1HeExlbXN6VjJsUlQyNHhhMVJYWVc5WU9FTm9VRFpwVTIxS2EzSjNTVlY1V2l0V01WVkpVRU5VYm5Sc1VYcEZVVXBJT1RaUk5XNVpUbFJNVGpocVZteHdOVzF1UzBkMFVrRlljbXgxY25oTWFUbFpOa1VpWFgwLmV5SmhZM05GY0dobGJWQjFZa3RsZVNJNmV5SmpjbllpT2lKUUxUSTFOaUlzSW10MGVTSTZJa1ZESWl3aWVDSTZJbWRKTUVkQlNVeENaSFUzVkRVellXdHlSbTFOZVVkamMwWXpialZrVHpkTmJYZE9Ra2hMVnpWVFZqQWlMQ0o1SWpvaVUweFhYM2hUWm1aNmJGQlhja2hGVmtrek1FUklUVjgwWldkV2QzUXpUbEZ4WlZWRU4yNU5SbkJ3Y3lKOUxDSnpaR3RGY0dobGJWQjFZa3RsZVNJNmV5SmpjbllpT2lKUUxUSTFOaUlzSW10MGVTSTZJa1ZESWl3aWVDSTZJa1ozUldGc1prOTZRV1l0YmpaRU5GRjJSRnBHZG1oU2FEVm5ORkJIWm00NVYzcEVWelZSTkZNeU1VVWlMQ0o1SWpvaVJrYzBiMDFXTjJ0dWNUSllSVEZHVFRsUE0zb3hTVXBPTWxNeE9FSk9RVTB0ZGt0SFRXeDNjbU5UV1NKOUxDSmhZM05WVWt3aU9pSm9kSFJ3Y3pwY0wxd3ZjR0ZzTFhSbGMzUXVZV1I1Wlc0dVkyOXRYQzkwYUhKbFpXUnpNbk5wYlhWc1lYUnZjbHd2YzJWeWRtbGpaWE5jTDFSb2NtVmxSRk15VTJsdGRXeGhkRzl5WEM5Mk1Wd3ZhR0Z1Wkd4bFhDOHlOR1ZsTnpJME1pMHhaRGcxTFRRNFpHTXRPREV6WWkwM01EaGhOVFl3Wm1WaVpUVWlmUS5UM0pSUUg4UlkwNzYta1BCRGl1LU9lRlJLcEtyX0tfX3RCdUxscnZSeWlsc3JxMHA2dzVMcGM2STVXMHE1V1Awbk5hUmE2VFdYMWZVc1g2Rldhbk5LYzJXczRWYk0zejg5M3BjRFNSZVZYWVp3eWs5WnZzaWhRNzAzQjJoTzNQbXZPM09QT0VTWi1xRGFJckRLRkVHUEdSQnVwQlhUVmVRaFNkdUlPOWpUekxEZW5NZGdEMlFDNU9BR3VTTEVKN0o4VnFiM0htV0k4bGZJLWNQQ3YxSkpEY3YxMWJ2ZEZOVC1WNzVIT0xGNjN2WGY3UkxhZTVLbFQwalJtMW93NDFTMG9Td3lrN1BjeTBvN3A0S0o2LWxGaGRvc2ZEVGJQWXp5VkprSHdfR0J2YzhNNWU2QV8zcUdtbWJtYjlvaUJkWC1taEtJc0RrVkI4bW5CbkdKdzRRY0EiLCJhY3NUcmFuc0lEIjoiMjRlZTcyNDItMWQ4NS00OGRjLTgxM2ItNzA4YTU2MGZlYmU1IiwiYWNzVVJMIjoiaHR0cHM6XC9cL3BhbC10ZXN0LmFkeWVuLmNvbVwvdGhyZWVkczJzaW11bGF0b3JcL3NlcnZpY2VzXC9UaHJlZURTMlNpbXVsYXRvclwvdjFcL2hhbmRsZVwvMjRlZTcyNDItMWQ4NS00OGRjLTgxM2ItNzA4YTU2MGZlYmU1IiwibWVzc2FnZVZlcnNpb24iOiIyLjEuMCIsInRocmVlRFNTZXJ2ZXJUcmFuc0lEIjoiN2IyNjBkNzMtNzE2NC00MWNkLWE3MGMtOGFhOGQxYTFjOWEyIn0="
@@ -535,12 +533,12 @@ class ThreeDS2ComponentTests: XCTestCase {
 
             let threeDS2ActionHandler = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
                                                                         service: mockService,
-                                                                        presenter: ThreeDS2PlusDAScreenPresenter(presentationDelegate: presentationDelegateMock,
-                                                                                                                 style: .init(),
-                                                                                                                 localizedParameters: nil),
-                                                                        delegatedAuthenticationService: authenticationServiceMock,
+                                                                        presenter: ThreeDS2PlusDAScreenPresenter(style: .init(),
+                                                                                                                 localizedParameters: nil,
+                                                                                                                 context: Dummy.context),
+                                                                        delegatedAuthenticationConfiguration: .init(relyingPartyIdentifier: ""), delegatedAuthenticationService: authenticationServiceMock,
                                                                         deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true))
-            threeDS2ActionHandler.delegatedAuthenticationState.isDeviceRegistrationFlow = true
+            threeDS2ActionHandler.delegatedAuthenticationState.attemptRegistration = true
             let classicActionHandler = ThreeDS2ClassicActionHandler(context: Dummy.context, service: mockService, coreActionHandler: threeDS2ActionHandler)
         
             let mockedTransaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)

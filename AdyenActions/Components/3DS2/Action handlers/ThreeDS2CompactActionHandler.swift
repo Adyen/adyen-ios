@@ -49,14 +49,12 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     /// - Parameter service: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
     /// - Parameter delegatedAuthenticationConfiguration: The delegated authentication configuration.
-    /// - Parameter presentationDelegate: The presentation delegate
     internal init(context: AdyenContext,
                   fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter? = nil,
                   service: AnyADYService = ADYServiceAdapter(),
                   appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
                   coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
-                  delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil,
-                  presentationDelegate: PresentationDelegate?) {
+                  delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil) {
         self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
             context: context,
             appearanceConfiguration: appearanceConfiguration,

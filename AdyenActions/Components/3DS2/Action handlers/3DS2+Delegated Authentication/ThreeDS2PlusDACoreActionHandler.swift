@@ -36,7 +36,7 @@
             context: AdyenContext,
             appearanceConfiguration: ADYAppearanceConfiguration,
             delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication
-        ) throws {
+        ) {
             self.init(
                 context: context,
                 presenter: ThreeDS2PlusDAScreenPresenter(style: .init(),

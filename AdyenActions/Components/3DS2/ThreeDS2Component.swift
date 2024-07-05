@@ -219,9 +219,8 @@ public final class ThreeDS2Component: ActionComponent {
     internal lazy var threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler = {
         let handler = ThreeDS2CompactActionHandler(context: context,
                                                    appearanceConfiguration: configuration.appearanceConfiguration,
-                                                   delegatedAuthenticationConfiguration: configuration.delegateAuthentication,
-                                                   presentationDelegate: presentationDelegate)
-
+                                                   delegatedAuthenticationConfiguration: configuration.delegateAuthentication)
+        handler.presentationDelegate = presentationDelegate
         handler._isDropIn = _isDropIn
         handler.threeDSRequestorAppURL = configuration.requestorAppURL
 
@@ -231,8 +230,8 @@ public final class ThreeDS2Component: ActionComponent {
     internal lazy var threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler = {
         let handler = ThreeDS2ClassicActionHandler(context: context,
                                                    appearanceConfiguration: configuration.appearanceConfiguration,
-                                                   delegatedAuthenticationConfiguration: configuration.delegateAuthentication,
-                                                   presentationDelegate: presentationDelegate)
+                                                   delegatedAuthenticationConfiguration: configuration.delegateAuthentication)
+        handler.presentationDelegate = presentationDelegate
         handler._isDropIn = _isDropIn
         handler.threeDSRequestorAppURL = configuration.requestorAppURL
         return handler

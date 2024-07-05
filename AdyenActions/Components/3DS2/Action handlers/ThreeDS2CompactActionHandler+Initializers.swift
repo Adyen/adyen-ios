@@ -16,8 +16,7 @@ extension ThreeDS2CompactActionHandler {
     /// Initializes the 3D Secure 2 action handler.
     internal convenience init(context: AdyenContext,
                               appearanceConfiguration: ADYAppearanceConfiguration,
-                              delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?,
-                              presentationDelegate: PresentationDelegate?) {
+                              delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?) {
         
         let fingerprintSubmitter = ThreeDS2FingerprintSubmitter(apiContext: context.apiContext)
         self.init(
@@ -29,8 +28,7 @@ extension ThreeDS2CompactActionHandler {
                 appearanceConfiguration: appearanceConfiguration,
                 delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
             ),
-            delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration,
-            presentationDelegate: presentationDelegate
+            delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
         )
     }
 }
