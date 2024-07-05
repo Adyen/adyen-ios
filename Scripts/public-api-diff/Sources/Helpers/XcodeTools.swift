@@ -6,8 +6,9 @@
 
 import Foundation
 
-struct XcodeToolsError: LocalizedError {
+struct XcodeToolsError: LocalizedError, CustomDebugStringConvertible {
     var errorDescription: String
+    var debugDescription: String { errorDescription }
 }
 
 struct XcodeTools {
@@ -39,7 +40,7 @@ struct XcodeTools {
         
         let result = shell.execute(command.joined(separator: " "))
         if result.range(of: "xcodebuild: error:") != nil || result.range(of: "BUILD FAILED") != nil {
-            throw XcodeToolsError(errorDescription: result)
+            throw XcodeToolsError(errorDescription: "💥 Building project failed")
         }
     }
     
