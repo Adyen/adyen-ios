@@ -9359,7 +9359,7 @@
 			repositoryURL = "https://github.com/Adyen/adyen-authentication-ios";
 			requirement = {
 				kind = exactVersion;
-				version = 2.0.0;
+				version = 3.0.0;
 			};
 		};
 		F9CCA3D8296ECDF900AD643D /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
