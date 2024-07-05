@@ -6,6 +6,11 @@
 
 import Foundation
 
+struct XcodeToolsError: LocalizedError, CustomDebugStringConvertible {
+    var errorDescription: String
+    var debugDescription: String { errorDescription }
+}
+
 struct XcodeTools {
     
     private enum Constants {
@@ -24,9 +29,13 @@ struct XcodeTools {
     func build(
         projectDirectoryPath: String,
         allTargetsLibraryName: String
-    ) {
+    ) throws {
         let command = "cd \(projectDirectoryPath); xcodebuild -scheme \(allTargetsLibraryName) -sdk `\(Constants.simulatorSdkCommand)` -derivedDataPath \(Constants.derivedDataPath) -destination \"\(Constants.destination)\" -target \(Constants.deviceTarget) -skipPackagePluginValidation"
-        shell.execute(command)
+        
+        let result = shell.execute(command)
+        if result.range(of: "xcodebuild: error:") != nil || result.range(of: "BUILD FAILED") != nil {
+            throw XcodeToolsError(errorDescription: "💥 Building project failed")
+        }
     }
     
     func dumpSdk(

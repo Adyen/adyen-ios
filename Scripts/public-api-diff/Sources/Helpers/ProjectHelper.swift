@@ -41,6 +41,7 @@ struct ProjectHelper {
             try body(oldWorkingDirectoryPath, newWorkingDirectoryPath)
         } catch {
             cleanup()
+            throw error
         }
     }
 }
@@ -159,7 +160,7 @@ private extension ProjectHelper {
         
         print("🛠️ Building project at `\(projectDirectoryPath)`")
         
-        xcodeTools.build(
+        try xcodeTools.build(
             projectDirectoryPath: projectDirectoryPath,
             allTargetsLibraryName: allTargetsLibraryName
         )
