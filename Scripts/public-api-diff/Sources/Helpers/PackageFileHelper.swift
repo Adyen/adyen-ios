@@ -6,17 +6,11 @@
 
 import Foundation
 
-/// A helper to work with the `Package.swift` file of the project
 struct PackageFileHelper {
     
     private let packagePath: String
     private let fileHandler: FileHandling
     
-    /// Creates a new instance of `PackageFileHelper`
-    ///
-    /// - Parameters:
-    ///   - packagePath: The file path to the `Package.swift` file
-    ///   - fileHandler: The file handler to use
     init(
         packagePath: String,
         fileHandler: FileHandling
@@ -25,30 +19,22 @@ struct PackageFileHelper {
         self.fileHandler = fileHandler
     }
     
-    /// Helper method that returns the path to the `Package.swift` file for the provided project directory
-    ///
-    /// - Parameters:
-    ///   - projectDirectoryPath: The path to the project directory
-    ///
-    /// - Returns: The file path to the `Package.swift`
-    ///
-    /// - Warning: This function does not guarantee that the file exists
     static func packagePath(for projectDirectoryPath: String) -> String {
         projectDirectoryPath.appending("/Package.swift")
     }
     
-    /// Returns all targets of the `Package.swift` file
     func availableTargets() throws -> Set<String> {
         
+        // TODO: Better use "swift package describe --type json" instead of trying to parse the Package.swift file itself
         let packageContent = try fileHandler.load(from: packagePath)
-        return try availableTargets(from: packageContent)
+        return availableTargets(from: packageContent)
     }
     
-    /// Returns all products/libraries of the `Package.swift` file
     func availableProducts() throws -> Set<String> {
         
+        // TODO: Better use "swift package describe --type json" instead of trying to parse the Package.swift file itself
         let packageContent = try fileHandler.load(from: packagePath)
-        return try availableProducts(from: packageContent)
+        return availableProducts(from: packageContent)
     }
     
     /// Inserts a new library into the targets section containing all targets from the target section
@@ -57,13 +43,13 @@ struct PackageFileHelper {
     ) throws {
         
         let packageContent = try fileHandler.load(from: packagePath)
-        let targets = try availableTargets(from: packageContent)
+        let targets = availableTargets(from: packageContent)
         
         let consolidatedEntry = consolidatedLibraryEntry(consolidatedLibraryName, from: targets.sorted())
         let updatedPackageContent = updatedContent(packageContent, with: consolidatedEntry)
         
         // Write the updated content back to the file
-        try updatedPackageContent.write(toFile: packagePath, atomically: true, encoding: .utf8)
+        try fileHandler.write(updatedPackageContent, to: packagePath)
     }
 }
 
@@ -112,15 +98,16 @@ private extension PackageFileHelper {
         }
     }
     
-    func availableTargets(from packageContent: String) throws -> Set<String> {
-        let targets = try availableTargets(from: packageContent, ofType: .target)
-        let binaryTargets = try availableTargets(from: packageContent, ofType: .binaryTarget)
+    func availableTargets(from packageContent: String) -> Set<String> {
+        let targets = availableTargets(from: packageContent, ofType: .target)
+        let binaryTargets = availableTargets(from: packageContent, ofType: .binaryTarget)
         
         // Removing binaryTargets from list of targets as we can't generate an sdk dump for them
         return targets.subtracting(binaryTargets)
     }
     
-    func availableTargets(from packageContent: String, ofType targetType: TargetType) throws -> Set<String> {
+    func availableTargets(from packageContent: String, ofType targetType: TargetType) -> Set<String> {
+        // TODO: Better use "swift package describe --type json" instead of trying to parse the Package.swift file itself
         let scanner = Scanner(string: packageContent)
         _ = scanner.scanUpToString("targets: [")
 
@@ -141,7 +128,8 @@ private extension PackageFileHelper {
         return availableTargets
     }
     
-    func availableProducts(from packageContent: String) throws -> Set<String> {
+    func availableProducts(from packageContent: String) -> Set<String> {
+        // TODO: Better use "swift package describe --type json" instead of trying to parse the Package.swift file itself
         let scanner = Scanner(string: packageContent)
         _ = scanner.scanUpToString("products: [")
 
@@ -162,7 +150,6 @@ private extension PackageFileHelper {
         return availableProducts
     }
 }
-
 
 // MARK: Update Package Content
 

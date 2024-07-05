@@ -7,7 +7,7 @@ on:
 jobs:
 
   build:
-    runs-on: macos-14-xlarge # Apple Silicon Runner
+    runs-on: macos-14 # Apple Silicon Runner
 
     steps:
     - uses: actions/checkout@v4
@@ -20,10 +20,15 @@ jobs:
       with:
         xcode-version: '15.1'
         
+    - name: 🛠️ Run Tests
+      run: |
+        cd Scripts/public-api-diff
+        xcodebuild test -scheme public-api-diff -destination "platform=iOS,name=Any iOS Device" | xcpretty --utf --color && exit
+        
     - name: 🔍 Detect Changes
       run: |
         PROJECT_FOLDER=$PWD
-        cd Scripts/public-api-diff
+        cd Scripts/public-api-diff        
         swift run public-api-diff --new "$PROJECT_FOLDER" --old "${branch}~${baseRepo}" --output "$PROJECT_FOLDER/api_comparison.md"
       env:
         branch: '${{github.event.pull_request.base.ref}}'

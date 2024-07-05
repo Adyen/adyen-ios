@@ -41,6 +41,7 @@ struct ProjectHelper {
             try body(oldWorkingDirectoryPath, newWorkingDirectoryPath)
         } catch {
             cleanup()
+            throw error
         }
     }
 }
@@ -51,8 +52,6 @@ private extension ProjectHelper {
         
         let currentDirectory = fileHandler.currentDirectoryPath
         let targetDirectoryPath = currentDirectory.appending("\(UUID().uuidString)")
-        
-        try? fileHandler.removeItem(atPath: targetDirectoryPath)
         
         let git = Git(shell: shell)
         git.clone(repository, at: branchOrTag, targetDirectoryPath: targetDirectoryPath)
@@ -106,10 +105,7 @@ private extension ProjectHelper {
         shell: ShellHandling
     ) throws {
         
-        try? fileHandler.removeItem(atPath: destinationDirectoryPath)
         try fileHandler.createDirectory(atPath: destinationDirectoryPath)
-        
-        // TODO: Have 1 list instead and use a regex to filter (Maybe also move this to a file)
         
         let fileNameIgnoreList: Set<String> = [
             ".build",
