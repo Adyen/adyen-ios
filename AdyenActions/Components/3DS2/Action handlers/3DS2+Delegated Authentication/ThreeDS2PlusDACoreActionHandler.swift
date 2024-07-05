@@ -39,7 +39,7 @@
         ) {
             self.init(
                 context: context,
-                presenter: ThreeDS2PlusDAScreenPresenter(style: .init(),
+                presenter: ThreeDS2PlusDAScreenPresenter(style: delegatedAuthenticationConfiguration.delegatedAuthenticationComponentStyle,
                                                          localizedParameters: delegatedAuthenticationConfiguration.localizationParameters,
                                                          context: context),
                 appearanceConfiguration: appearanceConfiguration,

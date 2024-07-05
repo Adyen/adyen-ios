@@ -266,6 +266,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
 
 extension ThreeDS2CoreActionHandler: PresentationDelegate {
     func present(component: any PresentableComponent) {
+        AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
         presentationDelegate?.present(component: component)
     }
 }

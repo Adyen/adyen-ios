@@ -46,7 +46,6 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
     }
     
     internal func showAuthenticationError(component: Component, handler: @escaping () -> Void) {
-        AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
         let errorController = DAErrorViewController(style: style,
                                                     screen: .authenticationFailed(localizationParameters: localizedParameters),
                                                     completion: handler)
@@ -57,7 +56,6 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
     }
     
     internal func showRegistrationError(component: Component, handler: @escaping () -> Void) {
-        AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
         let errorController = DAErrorViewController(style: style,
                                                     screen: .registrationFailed(localizationParameters: localizedParameters),
                                                     completion: handler)
@@ -68,7 +66,6 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
     }
     
     internal func showDeletionConfirmation(component: Component, handler: @escaping () -> Void) {
-        AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
         let errorController = DAErrorViewController(style: style,
                                                     screen: .deletionConfirmation(localizationParameters: localizedParameters),
                                                     completion: handler)
@@ -82,7 +79,6 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                                          cardDetails: (number: String?, type: CardType?),
                                          registerDelegatedAuthenticationHandler: @escaping () -> Void,
                                          fallbackHandler: @escaping () -> Void) {
-        AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
         let registrationViewController = DARegistrationViewController(context: context,
                                                                       style: style,
                                                                       localizationParameters: localizedParameters,
@@ -107,7 +103,6 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                                      approveAuthenticationHandler: @escaping () -> Void,
                                      fallbackHandler: @escaping () -> Void,
                                      removeCredentialsHandler: @escaping () -> Void) {
-        AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
         let approvalViewController = DAApprovalViewController(context: context,
                                                               style: style,
                                                               localizationParameters: localizedParameters,
