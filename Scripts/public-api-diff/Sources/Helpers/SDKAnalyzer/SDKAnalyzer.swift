@@ -105,6 +105,8 @@ private extension SDKAnalyzer {
             var newDump: SDKDump? = nil
             var oldDump: SDKDump? = nil
             
+            print("🕵️‍♂️ Analyzing `\(targetName)` -----------------------------------------------")
+            
             do {
                 oldDump = try oldDumpGenerator.generate(for: targetName)
             } catch {
