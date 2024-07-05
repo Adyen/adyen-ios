@@ -7,6 +7,7 @@
 import Foundation
 @_spi(AdyenInternal) import Adyen
 import LocalAuthentication
+import UIKit
 
 internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
     func showRegistrationScreen(component: Component,
