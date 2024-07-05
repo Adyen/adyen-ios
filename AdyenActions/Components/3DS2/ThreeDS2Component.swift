@@ -286,9 +286,3 @@ extension ThreeDS2Component {
     }
 
 }
-
-extension ThreeDS2Component: PresentationDelegate {
-    public func present(component: any Adyen.PresentableComponent) {
-        presentationDelegate?.present(component: component)
-    }
-}

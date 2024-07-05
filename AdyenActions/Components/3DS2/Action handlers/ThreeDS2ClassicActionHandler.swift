@@ -16,7 +16,12 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     internal var wrappedComponent: Component { coreActionHandler }
 
     internal let coreActionHandler: AnyThreeDS2CoreActionHandler
-    internal weak var presentationDelegate: PresentationDelegate?
+    
+    internal weak var presentationDelegate: Adyen.PresentationDelegate? {
+        didSet {
+            coreActionHandler.presentationDelegate = presentationDelegate
+        }
+    }
 
     internal var transaction: AnyADYTransaction? {
         get {
