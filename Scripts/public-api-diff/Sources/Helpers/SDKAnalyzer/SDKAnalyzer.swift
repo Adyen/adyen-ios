@@ -106,10 +106,15 @@ private extension SDKAnalyzer {
             var oldDump: SDKDump? = nil
             
             do {
-                newDump = try newDumpGenerator.generate(for: targetName)
                 oldDump = try oldDumpGenerator.generate(for: targetName)
             } catch {
-                print(error)
+                print("OLD", targetName, error)
+            }
+            
+            do {
+                newDump = try newDumpGenerator.generate(for: targetName)
+            } catch {
+                print("NEW", targetName, error)
             }
             
             let diff = SDKDumpAnalyzer.analyzeSdkDump(
