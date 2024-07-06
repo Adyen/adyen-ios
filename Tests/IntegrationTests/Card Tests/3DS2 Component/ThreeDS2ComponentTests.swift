@@ -598,22 +598,15 @@ class ThreeDS2ComponentTests: XCTestCase {
 
             let descriptionLabel: UILabel? = viewController.view.findView(by: "descriptionLabel")
             XCTAssertNotNil(descriptionLabel)
-            XCTAssertEqual(descriptionLabel?.text, "To make sure it’s you, approve this transaction with your biometrics to complete your purchase.")
+            XCTAssertEqual(descriptionLabel?.text, "Approve this transaction to complete your purchase.")
 
-            let progressView: UIProgressView? = viewController.view.findView(by: "progressView")
-            XCTAssertNotNil(progressView)
-            let progressText: UILabel? = viewController.view.findView(by: "progressText")
-            XCTAssertNotNil(progressText)
             let firstButton: SubmitButton? = viewController.view.findView(by: "primaryButton")
             XCTAssertNotNil(firstButton)
-            XCTAssertEqual(firstButton?.title, "Use biometrics")
+            XCTAssertEqual(firstButton?.title, "Approve transaction")
 
             let secondButton: SubmitButton? = viewController.view.findView(by: "secondaryButton")
             XCTAssertNotNil(secondButton)
-            XCTAssertEqual(secondButton?.title, "Approve differently")
-
-            let textView: UITextView? = viewController.view.findView(by: "textView")
-            XCTAssertEqual(textView?.text, "Opt out any time by removing your credentials.")
+            XCTAssertEqual(secondButton?.title, "Other options")
         }
     
         func verifyRegistrationView(viewController: DARegistrationViewController?) {
@@ -622,25 +615,18 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTAssertNotNil(image)
             let titleLabel: UILabel? = viewController.view.findView(by: "titleLabel")
             XCTAssertNotNil(titleLabel)
-            XCTAssertEqual(titleLabel?.text, "Safe and swift checkout!")
+            XCTAssertEqual(titleLabel?.text, "Secure checkout")
 
             let descriptionLabel: UILabel? = viewController.view.findView(by: "descriptionLabel")
             XCTAssertNotNil(descriptionLabel)
-            XCTAssertEqual(descriptionLabel?.text, "You can check out faster next time on this device using your biometrics.")
-
-            let progressView: UIProgressView? = viewController.view.findView(by: "progressView")
-            XCTAssertNotNil(progressView)
-            let progressText: UILabel? = viewController.view.findView(by: "progressText")
-            XCTAssertNotNil(progressText)
+            XCTAssertEqual(descriptionLabel?.text, "You can check out faster next time with this card")
 
             let firstButton: SubmitButton? = viewController.view.findView(by: "primaryButton")
             XCTAssertNotNil(firstButton)
-            XCTAssertEqual(firstButton?.title, "Enable swift checkout")
+            XCTAssertEqual(firstButton?.title, "Use secure checkout")
             let secondButton: SubmitButton? = viewController.view.findView(by: "secondaryButton")
             XCTAssertNotNil(secondButton)
             XCTAssertEqual(secondButton?.title, "Not now")
-            let textView: UITextView? = viewController.view.findView(by: "textView")
-            XCTAssertEqual(textView?.text, "")
         }
 
     #endif
