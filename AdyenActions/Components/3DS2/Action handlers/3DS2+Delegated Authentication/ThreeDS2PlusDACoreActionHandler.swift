@@ -68,6 +68,7 @@
             self.delegatedAuthenticationConfiguration = delegatedAuthenticationConfiguration
             self.deviceSupportCheckerService = deviceSupportCheckerService
             self.presenter = presenter
+            self.delegatedAuthenticationService = delegatedAuthenticationService
             super.init(context: context, service: service, appearanceConfiguration: appearanceConfiguration)
             self.presenter.presentationDelegate = self
         }

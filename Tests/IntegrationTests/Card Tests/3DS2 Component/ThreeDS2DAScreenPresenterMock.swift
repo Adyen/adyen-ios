@@ -14,11 +14,17 @@ import Foundation
     import UIKit
 
     final class ThreeDS2DAScreenPresenterMock: ThreeDS2PlusDAScreenPresenterProtocol {
-        func showDeletionConfirmation(component: any Adyen.Component, handler: @escaping () -> Void) {}
+        func showDeletionConfirmation(component: any Adyen.Component, handler: @escaping () -> Void) {
+            handler()
+        }
         
-        func showAuthenticationError(component: any Adyen.Component, handler: @escaping () -> Void) {}
+        func showAuthenticationError(component: any Adyen.Component, handler: @escaping () -> Void) {
+            handler()
+        }
     
-        func showRegistrationError(component: any Adyen.Component, handler: () -> Void) {}
+        func showRegistrationError(component: any Adyen.Component, handler: () -> Void) {
+            handler()
+        }
     
         var presentationDelegate: (any Adyen.PresentationDelegate)?
     
