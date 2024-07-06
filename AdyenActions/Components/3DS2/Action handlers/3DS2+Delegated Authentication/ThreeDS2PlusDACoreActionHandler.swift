@@ -257,15 +257,8 @@
                                   cardNumber: String?,
                                   authenticatedHandler: @escaping (String) -> Void,
                                   failedAuthenticationHandler: @escaping (Error) -> Void) {
-            let service: AuthenticationServiceProtocol = if let delegatedAuthenticationService {
-                delegatedAuthenticationService
-            } else {
-                AdyenAuthentication.AuthenticationService(
-                    passKeyConfiguration: .init(relyingPartyIdentifier: delegatedAuthenticationConfiguration.relyingPartyIdentifier,
-                                                displayName: cardNumber ?? Bundle.main.displayName)
-                )
-            }
-            
+            let service: AuthenticationServiceProtocol = service(cardNumber: cardNumber)
+
             service.authenticate(withAuthenticationInput: delegatedAuthenticationInput) { result in
                 switch result {
                 case let .success(sdkOutput):
@@ -279,16 +272,7 @@
         private func isDeviceRegistered(delegatedAuthenticationInput: String,
                                         handler: @escaping (Bool) -> Void) {
             
-            let service: AuthenticationServiceProtocol = if let delegatedAuthenticationService {
-                delegatedAuthenticationService
-            } else {
-                AdyenAuthentication.AuthenticationService(
-                    passKeyConfiguration: .init(
-                        relyingPartyIdentifier: delegatedAuthenticationConfiguration.relyingPartyIdentifier,
-                        displayName: "" // At this point the display name isn't used.
-                    )
-                )
-            }
+            let service: AuthenticationServiceProtocol = service(cardNumber: nil)
             
             service.isDeviceRegistered(withAuthenticationInput: delegatedAuthenticationInput) { result in
                 switch result {
@@ -308,16 +292,7 @@
                                cardNumber: String?,
                                completion: @escaping (Result<String, Error>) -> Void) {
             
-            let service: AuthenticationServiceProtocol = if let delegatedAuthenticationService {
-                delegatedAuthenticationService
-            } else {
-                AdyenAuthentication.AuthenticationService(
-                    passKeyConfiguration: .init(
-                        relyingPartyIdentifier: delegatedAuthenticationConfiguration.relyingPartyIdentifier,
-                        displayName: cardNumber ?? Bundle.main.displayName
-                    )
-                )
-            }
+            let service: AuthenticationServiceProtocol = service(cardNumber: cardNumber)
             
             service.register(withRegistrationInput: delegatedAuthenticationInput) { result in
                 switch result {
@@ -327,6 +302,18 @@
                     completion(.failure(error))
                 }
             }
+        }
+        
+        internal func service(cardNumber: String?) -> AuthenticationServiceProtocol {
+            if let delegatedAuthenticationService {
+                return delegatedAuthenticationService
+            }
+            
+            return AdyenAuthentication.AuthenticationService(
+                passKeyConfiguration: .init(relyingPartyIdentifier: delegatedAuthenticationConfiguration.relyingPartyIdentifier,
+                                            displayName: cardNumber ?? Bundle.main.displayName)
+            )
+
         }
         
         // MARK: - Challenge
