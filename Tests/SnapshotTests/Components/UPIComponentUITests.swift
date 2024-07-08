@@ -284,7 +284,7 @@ class UPIComponentUITests: XCTestCase {
         
         continueButton.sendActions(for: .touchUpInside)
         wait { errorItem.isHidden == false }
-        XCTAssertEqual(errorItem.messageLabel.text, "You need to select a payment method") // TODO: Replace with correct string
+        XCTAssertEqual(errorItem.messageLabel.text, localizedString(.UPIErrorNoAppSelected, nil))
         
         let selectionHandler = try XCTUnwrap(sut.upiAppsList.last?.selectionHandler)
         selectionHandler()
