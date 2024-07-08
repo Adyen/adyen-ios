@@ -25,6 +25,11 @@ class SDKDump: Codable, Equatable {
         setupParentRelationships()
     }
     
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.root, forKey: .root)
+    }
+    
     public static func == (lhs: SDKDump, rhs: SDKDump) -> Bool {
         lhs.root == rhs.root
     }

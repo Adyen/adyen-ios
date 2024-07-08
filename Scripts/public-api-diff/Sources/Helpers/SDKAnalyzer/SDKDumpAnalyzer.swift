@@ -50,20 +50,34 @@ enum SDKDumpAnalyzer {
         }
         
         changes += lhs.children.flatMap { lhsElement in
-            if let rhsChildForName = rhs.children.first(where: { $0.printedName == lhsElement.printedName }) {
-                return recursiveCompare(element: lhsElement, to: rhsChildForName, oldFirst: oldFirst)
-            } else {
-                // Type changes we handle as a change, not an addition/removal (they are in the children array tho)
-                if lhsElement.isTypeInformation { return [] }
-                
-                // An spi-internal element was added/removed which we do not count as a public change
-                if lhsElement.isSpiInternal { return [] }
-                
-                if oldFirst {
-                    return [.init(changeType: .removal, parentName: lhsElement.parentPath, changeDescription: "`\(lhsElement)` was removed")]
-                } else {
-                    return [.init(changeType: .addition, parentName: lhsElement.parentPath, changeDescription: "`\(lhsElement)` was added")]
+
+            let rhsChildrenWithSamePrintedName = rhs.children.filter { $0.printedName == lhsElement.printedName }
+            
+            if rhsChildrenWithSamePrintedName.count > 1 {
+                for rhsChildWithSamePrintedName in rhsChildrenWithSamePrintedName {
+                    
+                    // If more than one printedName matches we compare the ones where the definition is the same
+                    if rhsChildWithSamePrintedName.definition == lhsElement.definition {
+                        return recursiveCompare(element: lhsElement, to: rhsChildWithSamePrintedName, oldFirst: oldFirst)
+                    }
                 }
+                
+                // If for none the definition is the same we consider it as being added/removed
+                
+            } else if let rhsChildForName = rhsChildrenWithSamePrintedName.first {
+                return recursiveCompare(element: lhsElement, to: rhsChildForName, oldFirst: oldFirst)
+            }
+            
+            // Type changes we handle as a change, not an addition/removal (they are in the children array tho)
+            if lhsElement.isTypeInformation { return [] }
+            
+            // An spi-internal element was added/removed which we do not count as a public change
+            if lhsElement.isSpiInternal { return [] }
+            
+            if oldFirst {
+                return [.init(changeType: .removal, parentName: lhsElement.parentPath, changeDescription: "`\(lhsElement)` was removed")]
+            } else {
+                return [.init(changeType: .addition, parentName: lhsElement.parentPath, changeDescription: "`\(lhsElement)` was added")]
             }
         }
         

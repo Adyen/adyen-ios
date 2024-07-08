@@ -73,6 +73,22 @@ extension SDKDump {
             self.accessors = try container.decodeIfPresent([SDKDump.Element].self, forKey: CodingKeys.accessors)
         }
         
+        func encode(to encoder: any Encoder) throws {
+            var container: KeyedEncodingContainer<SDKDump.Element.CodingKeys> = encoder.container(keyedBy: SDKDump.Element.CodingKeys.self)
+            try container.encode(self.kind, forKey: SDKDump.Element.CodingKeys.kind)
+            try container.encode(self.name, forKey: SDKDump.Element.CodingKeys.name)
+            try container.encode(self.printedName, forKey: SDKDump.Element.CodingKeys.printedName)
+            try container.encodeIfPresent(self.mangledName, forKey: SDKDump.Element.CodingKeys.mangledName)
+            try container.encode(self.children, forKey: SDKDump.Element.CodingKeys.children)
+            try container.encodeIfPresent(self.spiGroupNames, forKey: SDKDump.Element.CodingKeys.spiGroupNames)
+            try container.encodeIfPresent(self.declKind, forKey: SDKDump.Element.CodingKeys.declKind)
+            try container.encode(self.isStatic, forKey: SDKDump.Element.CodingKeys.isStatic)
+            try container.encode(self.isLet, forKey: SDKDump.Element.CodingKeys.isLet)
+            try container.encodeIfPresent(self.declAttributes, forKey: SDKDump.Element.CodingKeys.declAttributes)
+            try container.encodeIfPresent(self.conformances, forKey: SDKDump.Element.CodingKeys.conformances)
+            try container.encodeIfPresent(self.accessors, forKey: SDKDump.Element.CodingKeys.accessors)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case kind
             case name

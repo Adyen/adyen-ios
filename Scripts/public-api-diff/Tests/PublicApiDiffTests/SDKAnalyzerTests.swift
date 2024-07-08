@@ -87,8 +87,64 @@ class SDKAnalyzerTests: XCTestCase {
         
         var mockFileHandler = MockFileHandler()
         mockFileHandler.handleLoadData = { path in
-            let packageName = path.components(separatedBy: "/").first
-            let resourcePath = try XCTUnwrap(Bundle.module.path(forResource: packageName, ofType: "txt"))
+            if path.range(of: "api_dump_") != nil {
+                if path.range(of: "NewPackage") != nil {
+                    // New
+                    let newAbi = SDKDump(
+                        root: .init(
+                            kind: "Root",
+                            name: "TopLevel",
+                            printedName: "TopLevel",
+                            children: [
+                                .init(kind: "Function", name: "FunctionName", printedName: "handle(_:)", declKind: .funcDeclaration , children: [
+                                    .init(kind: "TypeNominal", name: "String", printedName: "String"),
+                                    .init(kind: "TypeNominal", name: "NewAction", printedName: "NewAction")
+                                ]),
+                                .init(kind: "Function", name: "FunctionName", printedName: "handle(_:)", declKind: .funcDeclaration , children: [
+                                    .init(kind: "TypeNominal", name: "String", printedName: "String"),
+                                    .init(kind: "TypeNominal", name: "SomeAction", printedName: "SomeAction")
+                                ]),
+                                .init(kind: "Function", name: "FunctionName", printedName: "handle(_:)", declKind: .funcDeclaration , children: [
+                                    .init(kind: "TypeNominal", name: "String", printedName: "String"),
+                                    .init(kind: "TypeNominal", name: "AnotherAction", printedName: "AnotherAction")
+                                ])
+                            ]
+                        )
+                    )
+                    let abiJson = try JSONEncoder().encode(newAbi)
+                    print(String(data: abiJson, encoding: .utf8)!)
+                    return abiJson
+                } else {
+                    // Old
+                    let oldAbi = SDKDump(
+                        root: .init(
+                            kind: "Root",
+                            name: "TopLevel",
+                            printedName: "TopLevel",
+                            children: [
+                                .init(kind: "Function", name: "FunctionName", printedName: "handle(_:)", declKind: .funcDeclaration, children: [
+                                    .init(kind: "TypeNominal", name: "String", printedName: "String"),
+                                    .init(kind: "TypeNominal", name: "OldAction", printedName: "OldAction")
+                                ]),
+                                .init(kind: "Function", name: "FunctionName", printedName: "handle(_:)", declKind: .funcDeclaration, children: [
+                                    .init(kind: "TypeNominal", name: "String", printedName: "String"),
+                                    .init(kind: "TypeNominal", name: "SomeAction", printedName: "SomeAction")
+                                ]),
+                                .init(kind: "Function", name: "FunctionName", printedName: "handle(_:)", declKind: .funcDeclaration, children: [
+                                    .init(kind: "TypeNominal", name: "String", printedName: "String"),
+                                    .init(kind: "TypeNominal", name: "AnotherAction", printedName: "AnotherAction")
+                                ])
+                            ]
+                        )
+                    )
+                    let abiJson = try JSONEncoder().encode(oldAbi)
+                    print(String(data: abiJson, encoding: .utf8)!)
+                    return abiJson
+                }
+            }
+            
+            // We're only using the NewPackage definition to only check for code changes, not package changes
+            let resourcePath = try XCTUnwrap(Bundle.module.path(forResource: "NewPackage", ofType: "txt"))
             return try XCTUnwrap(FileManager.default.contents(atPath: resourcePath))
         }
         mockFileHandler.handleFileExists = { _ in
@@ -102,10 +158,35 @@ class SDKAnalyzerTests: XCTestCase {
             xcodeTools: xcodeTools
         )
         
-        let expectedChanges: [String: [SDKAnalyzer.Change]] = [:]
+        let expectedChanges: [String: [SDKAnalyzer.Change]] = [
+            "Adyen":
+                [
+                    SDKAnalyzer.Change.init(
+                        changeType: .removal,
+                        parentName: "",
+                        changeDescription: "`public func handle(_: OldAction) -> String` was removed"
+                    ),
+                    SDKAnalyzer.Change.init(
+                        changeType: .addition,
+                        parentName: "",
+                        changeDescription: "`public func handle(_: NewAction) -> String` was added"
+                    )],
+            "TargetWithBinaryDependency":
+                [
+                    SDKAnalyzer.Change.init(
+                        changeType: .removal,
+                        parentName: "",
+                        changeDescription: "`public func handle(_: OldAction) -> String` was removed"
+                    ),
+                    SDKAnalyzer.Change.init(
+                        changeType: .addition,
+                        parentName: "",
+                        changeDescription: "`public func handle(_: NewAction) -> String` was added"
+                    )]
+        ]
         
         let changes = try analyzer.analyze(
-            old: "NewPackage",
+            old: "OldPackage",
             new: "NewPackage"
         )
         
