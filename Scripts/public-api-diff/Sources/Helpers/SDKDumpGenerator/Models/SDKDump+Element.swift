@@ -157,18 +157,41 @@ extension SDKDump {
                 return "\(printedName) = \(typeInfo.first!.verbosePrintedName)"
             }
             
-            if declKind == .constructor || declKind == .function {
+            if declKind == .constructor || declKind == .function || declKind == .funcDeclaration {
                 guard let returnValue = typeInfo.first?.printedName else {
                     return printedName
                 }
                 
-                // TODO: Insert the type information in line
                 let inlineTypeInformation = typeInfo.suffix(from: 1).map(\.verbosePrintedName)
                 
-                return "\(printedName) -> \(returnValue) [\(inlineTypeInformation.joined(separator: ", "))]"
+                var typedPrintedName: String = ""
+                
+                if inlineTypeInformation.isEmpty {
+                    typedPrintedName = printedName
+                } else {
+                    let funcComponents = printedName.components(separatedBy: ":")
+                    funcComponents.enumerated().forEach { index, component in
+                        typedPrintedName += component
+                        if index < inlineTypeInformation.count {
+                            typedPrintedName += ": \(inlineTypeInformation[index])"
+                        }
+                        
+                        if index < funcComponents.count - 2 {
+                            typedPrintedName += ", "
+                        }
+                    }
+                }
+                
+                return "\(typedPrintedName) -> \(returnValue)"
             }
             
-            // TODO: Add more information
+            if declKind == .varDeclaration {
+                guard let returnValue = typeInfo.first?.printedName else {
+                    return printedName
+                }
+                
+                return "\(printedName): \(returnValue)"
+            }
             
             return printedName
         }
@@ -182,7 +205,7 @@ extension SDKDump {
         }
         
         var isTypeInformation: Bool {
-            kind == "TypeNominal"
+            kind == "TypeNominal" || kind == "TypeNameAlias"
         }
         
         var parentPath: String {
