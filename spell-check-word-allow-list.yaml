@@ -197,3 +197,5 @@ whiteList:
   - xcprivacy
   - twint
   - initiable
+  - authenticationservices
+  - netlify
