@@ -25,6 +25,8 @@ jobs:
 
     - name: Lint Cocoapods
       run: |
+        brew update
+        brew install xcodegen
         gem install cocoapods -v 1.10.2
         pod repo update
         pod lib lint Adyen.podspec --allow-warnings --verbose
