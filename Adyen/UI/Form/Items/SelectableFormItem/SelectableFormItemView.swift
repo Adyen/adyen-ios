@@ -13,6 +13,8 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
     private enum Constants {
         static let upiLogo = "upiLogo"
         static let checkmarkIcon = "verification_true"
+        static let iconImageSize = CGSize(width: 40, height: 26)
+        static let viewHeight: CGFloat = 48
     }
     
     private let imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
@@ -156,7 +158,6 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
     // MARK: - Layout
 
     private func configureConstraints() {
-        let iconImageSize = CGSize(width: 40, height: 26)
         
         itemButton.adyen.anchor(inside: self)
         imageView.setContentHuggingPriority(.required, for: .horizontal)
@@ -167,10 +168,10 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
             contentStackView.leadingAnchor.constraint(equalTo: itemButton.layoutMarginsGuide.leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: itemButton.layoutMarginsGuide.trailingAnchor),
 
-            imageView.widthAnchor.constraint(equalToConstant: iconImageSize.width),
-            imageView.heightAnchor.constraint(equalToConstant: iconImageSize.height),
+            imageView.widthAnchor.constraint(equalToConstant: Constants.iconImageSize.width),
+            imageView.heightAnchor.constraint(equalToConstant: Constants.iconImageSize.height),
             
-            heightAnchor.constraint(greaterThanOrEqualToConstant: 48)
+            heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.viewHeight)
         ])
     }
 }

@@ -156,6 +156,12 @@
 		8149CCB62B0B855F007235E2 /* ThreeDS2PlusDACoreActionHandlerTests+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149CCB52B0B855F007235E2 /* ThreeDS2PlusDACoreActionHandlerTests+Constants.swift */; };
 		8152A2982BF7585B00AF957C /* FormItemViewBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A781AD2403BD1600E12487 /* FormItemViewBuilderTests.swift */; };
 		8169B9EC2A0506CC00AAC9F8 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
+		817C90802C3D590C0072A202 /* GiftCardComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817C907F2C3D590C0072A202 /* GiftCardComponentUITests.swift */; };
+		817C90812C3D590C0072A202 /* GiftCardComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817C907F2C3D590C0072A202 /* GiftCardComponentUITests.swift */; };
+		817C90822C3D59B30072A202 /* PartialPaymentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9838CC026315CEA00963483 /* PartialPaymentDelegateMock.swift */; };
+		817C90832C3D59B30072A202 /* PartialPaymentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9838CC026315CEA00963483 /* PartialPaymentDelegateMock.swift */; };
+		817C90842C3D5E5C0072A202 /* PublicKeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E8343B24F3C81700EC3844 /* PublicKeyProviderMock.swift */; };
+		817C90852C3D5E5D0072A202 /* PublicKeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E8343B24F3C81700EC3844 /* PublicKeyProviderMock.swift */; };
 		817F6D8C2B62A6110010D248 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		81825CB82AC59C3300F91912 /* UIView+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CB72AC59C3300F91912 /* UIView+Search.swift */; };
 		81825CB92AC59C3300F91912 /* UIView+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CB72AC59C3300F91912 /* UIView+Search.swift */; };
@@ -1580,6 +1586,7 @@
 		814044302B62BDBB00EB7FBA /* SecuredViewControllerUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecuredViewControllerUITests.swift; sourceTree = "<group>"; };
 		814276612A7145F50081E896 /* AddressInputFormViewController+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressInputFormViewController+ViewModel.swift"; sourceTree = "<group>"; };
 		8149CCB52B0B855F007235E2 /* ThreeDS2PlusDACoreActionHandlerTests+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreeDS2PlusDACoreActionHandlerTests+Constants.swift"; sourceTree = "<group>"; };
+		817C907F2C3D590C0072A202 /* GiftCardComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftCardComponentUITests.swift; sourceTree = "<group>"; };
 		81825CB72AC59C3300F91912 /* UIView+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Search.swift"; sourceTree = "<group>"; };
 		81825CBA2AC59C4000F91912 /* UIViewController+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Search.swift"; sourceTree = "<group>"; };
 		81825CC02AC59C6400F91912 /* XCTestCase+RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+RootViewController.swift"; sourceTree = "<group>"; };
@@ -2691,6 +2698,7 @@
 				00220957299E5B1D00B2BACD /* MBWayComponentUITests.swift */,
 				00220953299B885600B2BACD /* BLIKComponentUITests.swift */,
 				003C03AE297AFF9F0022269A /* UPIComponentUITests.swift */,
+				817C907F2C3D590C0072A202 /* GiftCardComponentUITests.swift */,
 				F9CCA3AC296DB0D200AD643D /* IssuerListComponentUITests.swift */,
 				0058692228B8C1FE00B65A19 /* QRCodeActionComponentUITests.swift */,
 				00EACBD328855D190082B360 /* OnlineBankingComponentUITests.swift */,
@@ -6526,16 +6534,19 @@
 				81DF940C2BAAD8EB0001DCBC /* XCTestCase+FirstResponder.swift in Sources */,
 				81DF940D2BAAD8EB0001DCBC /* OnlineBankingComponentUITests.swift in Sources */,
 				81DF940E2BAAD8EB0001DCBC /* SecuredViewControllerUITests.swift in Sources */,
+				817C90812C3D590C0072A202 /* GiftCardComponentUITests.swift in Sources */,
 				81DF940F2BAAD8EB0001DCBC /* (null) in Sources */,
 				81DF94112BAAD8EB0001DCBC /* AdyenCoder.swift in Sources */,
 				B62D48C82BBE8F47001EF01A /* XCTestCase+Wait.swift in Sources */,
 				81DF94122BAAD8EB0001DCBC /* PresentationDelegateMock.swift in Sources */,
 				81DF94132BAAD8EB0001DCBC /* Dummy.swift in Sources */,
 				81DF94142BAAD8EB0001DCBC /* PaymentComponentDelegateMock.swift in Sources */,
+				817C90832C3D59B30072A202 /* PartialPaymentDelegateMock.swift in Sources */,
 				B6EE0F442BBEC94F00B9810D /* AnalyticsProviderMock.swift in Sources */,
 				81DF94152BAAD8EB0001DCBC /* UPIComponentUITests.swift in Sources */,
 				81DF94162BAAD8EB0001DCBC /* UIBarButtonItem+XCTest.swift in Sources */,
 				81DF94172BAAD8EB0001DCBC /* XCTestCase+Wait+UIKit.swift in Sources */,
+				817C90852C3D5E5D0072A202 /* PublicKeyProviderMock.swift in Sources */,
 				81088A262BDBC2DE007FCDB9 /* CancellableMock.swift in Sources */,
 				81DF94182BAAD8EB0001DCBC /* DummyPaymentMethods.swift in Sources */,
 				81DF94192BAAD8EB0001DCBC /* DokuComponentUITests.swift in Sources */,
@@ -7570,6 +7581,7 @@
 				B6EE0F3C2BBEAB4900B9810D /* AnalyticsProviderMock.swift in Sources */,
 				F9CCA3CF296ECCA900AD643D /* PaymentComponentDelegateMock.swift in Sources */,
 				003C03B0297AFFA30022269A /* UPIComponentUITests.swift in Sources */,
+				817C90842C3D5E5C0072A202 /* PublicKeyProviderMock.swift in Sources */,
 				81B5057A2A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift in Sources */,
 				81825CC52AC59C6C00F91912 /* XCTestCase+Wait+UIKit.swift in Sources */,
 				F9CCA3CE296ECC9C00AD643D /* DummyPaymentMethods.swift in Sources */,
@@ -7582,6 +7594,7 @@
 				0022095C29A4C65E00B2BACD /* BoletoComponentUITests.swift in Sources */,
 				81088A242BDBC2C5007FCDB9 /* CancellableMock.swift in Sources */,
 				F9CCA3D2296ECCFA00AD643D /* XCTestCase+FormTextItemView.swift in Sources */,
+				817C90802C3D590C0072A202 /* GiftCardComponentUITests.swift in Sources */,
 				F9CCA3DE296ED1F400AD643D /* XCTestCase+SnapshotTesting.swift in Sources */,
 				81825CBC2AC59C4000F91912 /* UIViewController+Search.swift in Sources */,
 				F9CCA3C6296ECB9900AD643D /* QRCodeActionComponentUITests.swift in Sources */,
@@ -7591,6 +7604,7 @@
 				F9CCA3D7296ECDB200AD643D /* XCTestCase+Coder.swift in Sources */,
 				F9CCA3C5296ECB9900AD643D /* ListViewControllerUITests.swift in Sources */,
 				F9CCA3D3296ECD0700AD643D /* PostalAddressMocks.swift in Sources */,
+				817C90822C3D59B30072A202 /* PartialPaymentDelegateMock.swift in Sources */,
 				81FC2C992BB1BB69007F1316 /* URLProtocolMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
