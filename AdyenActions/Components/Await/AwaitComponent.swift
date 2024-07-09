@@ -82,12 +82,12 @@ public final class AwaitComponent: ActionComponent, Cancellable {
         appLauncher.openCustomSchemeUrl(action.url) { [weak self] success in
             guard let self else { return }
             if success {
-                self.handle(AwaitAction(
+                let awaitAction = AwaitAction(
                     paymentData: action.paymentData,
                     paymentMethodType: action.paymentMethodType
                 )
-                )
                 
+                self.handle(awaitAction)
                 self.delegate?.didOpenExternalApplication(component: self)
             } else {
                 self.delegate?.didFail(with: RedirectComponent.Error.appNotFound, from: self)
