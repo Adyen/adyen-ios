@@ -45,26 +45,21 @@ enum SDKDumpAnalyzer {
         var changes = [SDKAnalyzer.Change]()
         
         if oldFirst, lhs.definition != rhs.definition {
-            // TODO: Show what exactly changed (name, spi, conformance, declAttributes, ...) as a bullet list maybe (add a `changeList` property to `Change`)
-            changes += [.init(changeType: .change, parentName: lhs.parentPath, changeDescription: "`\(lhs)`\n  ➡️  `\(rhs)`")]
+            changes += [
+                .init(changeType: .removal, parentName: lhs.parentPath, changeDescription: "`\(lhs)` was removed"),
+                .init(changeType: .addition, parentName: rhs.parentPath, changeDescription: "`\(rhs)` was added")
+            ]
         }
         
         changes += lhs.children.flatMap { lhsElement in
 
-            let rhsChildrenWithSamePrintedName = rhs.children.filter { $0.printedName == lhsElement.printedName }
+            // We're comparing the definition which means that additions to or removals from a definition 
+            // (e.g. adding protocol conformance or a new/changed parameter name) will cause an element
+            // to be marked as added/removed.
+            // This simplifies the script and also makes it more accurate
+            // but has the downside of running into the chance of not grouping the changed element together
             
-            if rhsChildrenWithSamePrintedName.count > 1 {
-                for rhsChildWithSamePrintedName in rhsChildrenWithSamePrintedName {
-                    
-                    // If more than one printedName matches we compare the ones where the definition is the same
-                    if rhsChildWithSamePrintedName.definition == lhsElement.definition {
-                        return recursiveCompare(element: lhsElement, to: rhsChildWithSamePrintedName, oldFirst: oldFirst)
-                    }
-                }
-                
-                // If for none the definition is the same we consider it as being added/removed
-                
-            } else if let rhsChildForName = rhsChildrenWithSamePrintedName.first {
+            if let rhsChildForName = rhs.children.first(where: { $0.definition == lhsElement.definition }) {
                 return recursiveCompare(element: lhsElement, to: rhsChildForName, oldFirst: oldFirst)
             }
             

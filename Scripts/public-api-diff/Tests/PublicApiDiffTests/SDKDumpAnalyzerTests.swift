@@ -25,11 +25,12 @@ class SDKDumpAnalyzerTests: XCTestCase {
     
     func test_rootChanged() throws {
         
-        let oldDump = SDKDump(root: .init(kind: "kind", name: "name", printedName: "printedName"))
-        let newDump = SDKDump(root: .init(kind: "old_kind", name: "old_name", printedName: "old_printedName"))
+        let newDump = SDKDump(root: .init(kind: "kind", name: "name", printedName: "printedName"))
+        let oldDump = SDKDump(root: .init(kind: "old_kind", name: "old_name", printedName: "old_printedName"))
         
         let expectedChanges: [SDKAnalyzer.Change] = [
-            .init(changeType: .change, parentName: "", changeDescription: "`public printedName`\n  ➡️  `public old_printedName`")
+            .init(changeType: .removal, parentName: "", changeDescription: "`public old_printedName` was removed"),
+            .init(changeType: .addition, parentName: "", changeDescription: "`public printedName` was added")
         ]
         
         let changes = SDKDumpAnalyzer.analyzeSdkDump(
@@ -133,10 +134,12 @@ class SDKDumpAnalyzerTests: XCTestCase {
         )
         
         let expectedChanges: [SDKAnalyzer.Change] = [
-            .init(changeType: .change, parentName: "parent", changeDescription: "`public struct childPrintedName`\n  ➡️  `public class childPrintedName`"),
-            .init(changeType: .change, parentName: "parent", changeDescription: "`public class spiChildPrintedName`\n  ➡️  `@_spi(SpiInternal) public class spiChildPrintedName`"),
-            .init(changeType: .change, parentName: "parent.enumChild", changeDescription: "`public static var staticLetPrintedName`\n  ➡️  `public static let staticLetPrintedName`"),
+            .init(changeType: .removal, parentName: "parent", changeDescription: "`public struct childPrintedName` was removed"),
+            .init(changeType: .removal, parentName: "parent", changeDescription: "`public class spiChildPrintedName` was removed"),
+            .init(changeType: .removal, parentName: "parent.enumChild", changeDescription: "`public static var staticLetPrintedName` was removed"),
             .init(changeType: .removal, parentName: "parent.enumChild", changeDescription: "`public case oldCasePrintedName` was removed"),
+            .init(changeType: .addition, parentName: "parent", changeDescription: "`public class childPrintedName` was added"),
+            .init(changeType: .addition, parentName: "parent.enumChild", changeDescription: "`public static let staticLetPrintedName` was added"),
             .init(changeType: .addition, parentName: "parent.enumChild", changeDescription: "`public case newCasePrintedName` was added")
         ]
         

@@ -102,8 +102,8 @@ private extension SDKAnalyzer {
         
         allTargets.forEach { targetName in
             
-            var newDump: SDKDump? = nil
-            var oldDump: SDKDump? = nil
+            var newDump: SDKDump?
+            var oldDump: SDKDump?
             
             print("🕵️‍♂️ Analyzing `\(targetName)`")
             

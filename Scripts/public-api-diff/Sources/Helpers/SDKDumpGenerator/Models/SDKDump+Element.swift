@@ -124,6 +124,9 @@ extension SDKDump {
             spiGroupNames?.forEach {
                 definition += "@_spi(\($0)) "
             }
+            if let declAttributes, declAttributes.contains("DiscardableResult") {
+                definition += "@discardableResult "
+            }
             
             if declKind != .importDeclaration {
                 definition += "public "
@@ -180,7 +183,7 @@ extension SDKDump {
                 
                 let inlineTypeInformation = typeInfo.suffix(from: 1).map(\.verbosePrintedName)
                 
-                var typedPrintedName: String = ""
+                var typedPrintedName = ""
                 
                 if inlineTypeInformation.isEmpty {
                     typedPrintedName = printedName
@@ -198,7 +201,7 @@ extension SDKDump {
                     }
                 }
                 
-                return "\(typedPrintedName) -> \(returnValue)"
+                return "\(typedPrintedName) -> \(returnValue == "()" ? "Void" : returnValue)"
             }
             
             if declKind == .varDeclaration {

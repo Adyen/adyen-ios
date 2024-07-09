@@ -12,13 +12,11 @@ extension SDKAnalyzer {
         enum ChangeType: Equatable {
             case addition
             case removal
-            case change
             
             var icon: String {
                 switch self {
                 case .addition: "❇️ "
                 case .removal: "😶‍🌫️"
-                case .change: "🔀"
                 }
             }
         }

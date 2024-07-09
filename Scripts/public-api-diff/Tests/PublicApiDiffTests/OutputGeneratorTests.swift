@@ -58,20 +58,16 @@ class OutputGeneratorTests: XCTestCase {
     func test_multipleChanges_multipleModules() {
         
         let expectedOutput = """
-        # 👀 7 public changes detected
+        # 👀 4 public changes detected
         _Comparing `new_source` to `old_repository @ old_branch`_
 
         ---
         ## `Target_1`
         - ❇️  Some Addition
-        - 🔀 Some Change
         - 😶‍🌫️ Some Removal
         ## `Target_2`
         - ❇️  Another Addition
-        - 🔀 Another Change
         - 😶‍🌫️ Another Removal
-        ### `Parent_In_Target_2`
-        - 🔀 Another Change
 
         ---
         **Analyzed modules:** Target_1, Target_2
@@ -81,14 +77,11 @@ class OutputGeneratorTests: XCTestCase {
             changesPerTarget: [
                 "Target_1": [
                     .init(changeType: .addition, parentName: "", changeDescription: "Some Addition"),
-                    .init(changeType: .removal, parentName: "", changeDescription: "Some Removal"),
-                    .init(changeType: .change, parentName: "", changeDescription: "Some Change")
+                    .init(changeType: .removal, parentName: "", changeDescription: "Some Removal")
                 ],
                 "Target_2": [
                     .init(changeType: .addition, parentName: "", changeDescription: "Another Addition"),
-                    .init(changeType: .removal, parentName: "", changeDescription: "Another Removal"),
-                    .init(changeType: .change, parentName: "", changeDescription: "Another Change"),
-                    .init(changeType: .change, parentName: "Parent_In_Target_2", changeDescription: "Another Change")
+                    .init(changeType: .removal, parentName: "", changeDescription: "Another Removal")
                 ]
             ],
             allTargetNames: ["Target_1", "Target_2"],

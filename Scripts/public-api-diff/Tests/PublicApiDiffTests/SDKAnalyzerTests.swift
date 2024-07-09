@@ -19,7 +19,7 @@ class SDKAnalyzerTests: XCTestCase {
             return try XCTUnwrap(FileManager.default.contents(atPath: resourcePath))
         }
         mockFileHandler.handleFileExists = { _ in
-            return true
+            true
         }
         
         let xcodeTools = XcodeTools(shell: mockShell)
@@ -42,7 +42,7 @@ class SDKAnalyzerTests: XCTestCase {
     func test_analyze_targetChanges() throws {
         
         let mockShell = MockShell { _ in
-            return ""
+            ""
         }
         
         var mockFileHandler = MockFileHandler()
@@ -52,7 +52,7 @@ class SDKAnalyzerTests: XCTestCase {
             return try XCTUnwrap(FileManager.default.contents(atPath: resourcePath))
         }
         mockFileHandler.handleFileExists = { _ in
-            return true
+            true
         }
         
         let xcodeTools = XcodeTools(shell: mockShell)
@@ -82,7 +82,7 @@ class SDKAnalyzerTests: XCTestCase {
         // TODO: Implement
         
         let mockShell = MockShell { _ in
-            return ""
+            ""
         }
         
         var mockFileHandler = MockFileHandler()
@@ -96,24 +96,22 @@ class SDKAnalyzerTests: XCTestCase {
                             name: "TopLevel",
                             printedName: "TopLevel",
                             children: [
-                                .init(kind: "Function", name: "FunctionName", printedName: "handle(_:)", declKind: .funcDeclaration , children: [
+                                .init(kind: "Function", name: "FunctionName", printedName: "handle(_:)", declKind: .funcDeclaration, children: [
                                     .init(kind: "TypeNominal", name: "String", printedName: "String"),
                                     .init(kind: "TypeNominal", name: "NewAction", printedName: "NewAction")
-                                ]),
-                                .init(kind: "Function", name: "FunctionName", printedName: "handle(_:)", declKind: .funcDeclaration , children: [
+                                ], declAttributes: ["DiscardableResult"]),
+                                .init(kind: "Function", name: "FunctionName", printedName: "handle(_:)", declKind: .funcDeclaration, children: [
                                     .init(kind: "TypeNominal", name: "String", printedName: "String"),
                                     .init(kind: "TypeNominal", name: "SomeAction", printedName: "SomeAction")
                                 ]),
-                                .init(kind: "Function", name: "FunctionName", printedName: "handle(_:)", declKind: .funcDeclaration , children: [
+                                .init(kind: "Function", name: "FunctionName", printedName: "handle(_:)", declKind: .funcDeclaration, children: [
                                     .init(kind: "TypeNominal", name: "String", printedName: "String"),
                                     .init(kind: "TypeNominal", name: "AnotherAction", printedName: "AnotherAction")
                                 ])
                             ]
                         )
                     )
-                    let abiJson = try JSONEncoder().encode(newAbi)
-                    print(String(data: abiJson, encoding: .utf8)!)
-                    return abiJson
+                    return try JSONEncoder().encode(newAbi)
                 } else {
                     // Old
                     let oldAbi = SDKDump(
@@ -137,9 +135,7 @@ class SDKAnalyzerTests: XCTestCase {
                             ]
                         )
                     )
-                    let abiJson = try JSONEncoder().encode(oldAbi)
-                    print(String(data: abiJson, encoding: .utf8)!)
-                    return abiJson
+                    return try JSONEncoder().encode(oldAbi)
                 }
             }
             
@@ -148,7 +144,7 @@ class SDKAnalyzerTests: XCTestCase {
             return try XCTUnwrap(FileManager.default.contents(atPath: resourcePath))
         }
         mockFileHandler.handleFileExists = { _ in
-            return true
+            true
         }
         
         let xcodeTools = XcodeTools(shell: mockShell)
@@ -158,31 +154,22 @@ class SDKAnalyzerTests: XCTestCase {
             xcodeTools: xcodeTools
         )
         
+        let expectedModuleChanges: [SDKAnalyzer.Change] = [
+            SDKAnalyzer.Change(
+                changeType: .removal,
+                parentName: "",
+                changeDescription: "`public func handle(_: OldAction) -> String` was removed"
+            ),
+            SDKAnalyzer.Change(
+                changeType: .addition,
+                parentName: "",
+                changeDescription: "`@discardableResult public func handle(_: NewAction) -> String` was added"
+            )
+        ]
+        
         let expectedChanges: [String: [SDKAnalyzer.Change]] = [
-            "Adyen":
-                [
-                    SDKAnalyzer.Change.init(
-                        changeType: .removal,
-                        parentName: "",
-                        changeDescription: "`public func handle(_: OldAction) -> String` was removed"
-                    ),
-                    SDKAnalyzer.Change.init(
-                        changeType: .addition,
-                        parentName: "",
-                        changeDescription: "`public func handle(_: NewAction) -> String` was added"
-                    )],
-            "TargetWithBinaryDependency":
-                [
-                    SDKAnalyzer.Change.init(
-                        changeType: .removal,
-                        parentName: "",
-                        changeDescription: "`public func handle(_: OldAction) -> String` was removed"
-                    ),
-                    SDKAnalyzer.Change.init(
-                        changeType: .addition,
-                        parentName: "",
-                        changeDescription: "`public func handle(_: NewAction) -> String` was added"
-                    )]
+            "Adyen": expectedModuleChanges,
+            "TargetWithBinaryDependency": expectedModuleChanges
         ]
         
         let changes = try analyzer.analyze(
