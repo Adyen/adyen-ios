@@ -16,6 +16,14 @@ internal protocol DelegatedAuthenticationViewDelegate: AnyObject {
 
 @available(iOS 16.0, *)
 internal final class DelegatedAuthenticationView: UIView {
+    
+    private enum Constants {
+        static let topMargin = 30.0
+        static let leadingMargin = 15.0
+        static let trailingMargin = 15.0
+        static let bottomMargin = 15.0
+    }
+    
     private let style: DelegatedAuthenticationComponentStyle
     
     internal weak var delegate: DelegatedAuthenticationViewDelegate?
@@ -85,20 +93,7 @@ internal final class DelegatedAuthenticationView: UIView {
     
     // MARK: Additional Information
     
-    internal lazy var firstInfoImage: UIImageView = {
-        let imageView = UIImageView(style: style.infoImageStyle)
-        imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "infoImage")
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .clear
-        imageView.contentMode = .scaleAspectFit
-        
-        NSLayoutConstraint.activate(
-            [imageView.widthAnchor.constraint(equalToConstant: 16),
-             imageView.heightAnchor.constraint(equalToConstant: 16)]
-        )
-
-        return imageView
-    }()
+    internal lazy var firstInfoImage: UIImageView = .makeInfoImage(style: style.infoImageStyle)
     
     internal lazy var firstInfoLabel: UILabel = .make(style: style.additionalInformationTextStyle,
                                                       accessibilityPostfix: "additionalInformationLabel")
@@ -108,20 +103,7 @@ internal final class DelegatedAuthenticationView: UIView {
                                                               alignment: .center,
                                                               spacing: 12,
                                                               view: self)
-    internal lazy var secondInfoImage: UIImageView = {
-        let imageView = UIImageView(style: style.infoImageStyle)
-        imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "infoImage")
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .clear
-        imageView.contentMode = .scaleAspectFit
-        
-        NSLayoutConstraint.activate(
-            [imageView.widthAnchor.constraint(equalToConstant: 16),
-             imageView.heightAnchor.constraint(equalToConstant: 16)]
-        )
-
-        return imageView
-    }()
+    internal lazy var secondInfoImage: UIImageView = .makeInfoImage(style: style.infoImageStyle)
     
     internal lazy var secondInfoLabel: UILabel = .make(style: style.additionalInformationTextStyle,
                                                        accessibilityPostfix: "additionalInformationLabel")
@@ -132,20 +114,7 @@ internal final class DelegatedAuthenticationView: UIView {
                                                                spacing: 12,
                                                                view: self)
     
-    internal lazy var thirdInfoImage: UIImageView = {
-        let imageView = UIImageView(style: style.infoImageStyle)
-        imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "infoImage")
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .clear
-        imageView.contentMode = .scaleAspectFit
-        
-        NSLayoutConstraint.activate(
-            [imageView.widthAnchor.constraint(equalToConstant: 16),
-             imageView.heightAnchor.constraint(equalToConstant: 16)]
-        )
-
-        return imageView
-    }()
+    internal lazy var thirdInfoImage: UIImageView = .makeInfoImage(style: style.infoImageStyle)
     
     internal lazy var thirdInfoLabel: UILabel = {
         .make(style: style.additionalInformationTextStyle, accessibilityPostfix: "additionalInformationLabel")
@@ -234,9 +203,9 @@ internal final class DelegatedAuthenticationView: UIView {
         NSLayoutConstraint.activate([
             logoImage.heightAnchor.constraint(equalToConstant: 40),
                         
-            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 30),
-            scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15.0),
-            scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15.0),
+            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: Constants.topMargin),
+            scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Constants.leadingMargin),
+            scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Constants.trailingMargin),
             scrollView.bottomAnchor.constraint(equalTo: buttonsStackView.topAnchor, constant: -8),
             
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor),
@@ -246,9 +215,9 @@ internal final class DelegatedAuthenticationView: UIView {
             contentStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             contentStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
             
-            buttonsStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15.0),
-            buttonsStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15.0),
-            buttonsStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -15.0)
+            buttonsStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Constants.leadingMargin),
+            buttonsStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Constants.trailingMargin),
+            buttonsStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -Constants.bottomMargin)
         ])
     }
 
@@ -335,5 +304,22 @@ extension UILabel {
             label.numberOfLines = 0
         }
         return label
+    }
+}
+
+@available(iOS 16.0, *)
+extension UIImageView {
+    internal static func makeInfoImage(style: ImageStyle) -> UIImageView {
+        let imageView = UIImageView(style: style)
+        imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "infoImage")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.backgroundColor = .clear
+        imageView.contentMode = .scaleAspectFit
+        
+        NSLayoutConstraint.activate(
+            [imageView.widthAnchor.constraint(equalToConstant: 16),
+             imageView.heightAnchor.constraint(equalToConstant: 16)]
+        )
+        return imageView
     }
 }

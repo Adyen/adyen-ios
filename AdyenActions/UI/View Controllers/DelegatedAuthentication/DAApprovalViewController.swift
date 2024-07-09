@@ -18,7 +18,8 @@ internal final class DAApprovalViewController: UIViewController {
     private let useBiometricsHandler: Handler
     private let approveDifferentlyHandler: Handler
     private let removeCredentialsHandler: Handler
-
+    private let imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
+    
     private lazy var removeCredentialAlert: UIAlertController = {
         let alertController = UIAlertController(title: localizedString(.threeds2DAApprovalRemoveAlertTitle, localizationParameters),
                                                 message: localizedString(.threeds2DAApprovalRemoveAlertDescription, localizationParameters),
@@ -112,25 +113,24 @@ internal final class DAApprovalViewController: UIViewController {
         approvalView.secondButton.title = localizedString(.threeds2DAApprovalNegativeButton, localizationParameters)
         approvalView.additionalInformationStackView.isHidden = true
 
-        switch (amount, cardNumber, cardType) {
-        case (.none, .none, .none), (.none, _, .none), (.none, .none, _):
-            approvalView.cardAndAmountDetailsStackView.isHidden = true
-        
-        case let (amount, cardNumber, cardType):
+        approvalView.cardAndAmountDetailsStackView.isHidden = true
+        approvalView.cardNumberStackView.isHidden = true
+
+        if let cardNumber, let cardType {
             approvalView.cardAndAmountDetailsStackView.isHidden = false
-            approvalView.amount.text = amount
-            
-            if let cardNumber, let cardType {
-                approvalView.cardNumberLabel.text = cardNumber
-                let cardTypeURL = LogoURLProvider.logoURL(withName: cardType.rawValue,
-                                                          environment: context.apiContext.environment)
-                ImageLoaderProvider.imageLoader().load(url: cardTypeURL) { [weak self] image in
-                    guard let self else { return }
-                    approvalView.cardImage.image = image
-                }
-            } else {
-                approvalView.cardNumberStackView.isHidden = true
+            approvalView.cardNumberStackView.isHidden = false
+            approvalView.cardNumberLabel.text = cardNumber
+            let cardTypeURL = LogoURLProvider.logoURL(withName: cardType.rawValue,
+                                                      environment: context.apiContext.environment)
+            imageLoader.load(url: cardTypeURL) { [weak self] image in
+                guard let self else { return }
+                approvalView.cardImage.image = image
             }
+        }
+
+        if let amount {
+            approvalView.amount.text = amount
+            approvalView.cardAndAmountDetailsStackView.isHidden = false
         }
     }
     

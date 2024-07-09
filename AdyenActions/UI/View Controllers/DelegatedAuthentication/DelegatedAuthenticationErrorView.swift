@@ -15,6 +15,13 @@ internal protocol DelegatedAuthenticationErrorViewDelegate: AnyObject {
 @available(iOS 16.0, *)
 internal final class DelegatedAuthenticationErrorView: UIView {
 
+    private enum Constants {
+        static let topMargin = 30.0
+        static let leadingMargin = 15.0
+        static let trailingMargin = 15.0
+        static let bottomMargin = 25.0
+    }
+    
     private let style: DelegatedAuthenticationComponentStyle
 
     internal weak var delegate: DelegatedAuthenticationErrorViewDelegate?
@@ -86,9 +93,9 @@ internal final class DelegatedAuthenticationErrorView: UIView {
         addSubview(buttonsStackView)
         
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 30),
-            scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15.0),
-            scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15.0),
+            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: Constants.topMargin),
+            scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Constants.leadingMargin),
+            scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Constants.trailingMargin),
             scrollView.bottomAnchor.constraint(equalTo: buttonsStackView.topAnchor, constant: -8),
             
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor),
@@ -98,9 +105,9 @@ internal final class DelegatedAuthenticationErrorView: UIView {
             contentStackView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             contentStackView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
             
-            buttonsStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15.0),
-            buttonsStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15.0),
-            buttonsStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -25.0)
+            buttonsStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Constants.leadingMargin),
+            buttonsStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Constants.trailingMargin),
+            buttonsStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -Constants.bottomMargin)
         ])
     }
 

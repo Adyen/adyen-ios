@@ -15,6 +15,7 @@ internal final class DARegistrationViewController: UIViewController {
     private let biometricName: String
     private let enableCheckoutHandler: Handler
     private let notNowHandler: Handler
+    private let imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
     private lazy var containerView = UIView(frame: .zero)
     
     private lazy var registrationView: DelegatedAuthenticationView = .init(style: style)
@@ -75,7 +76,7 @@ internal final class DARegistrationViewController: UIViewController {
         if let cardNumber, let cardType {
             registrationView.cardNumberLabel.text = cardNumber
             let cardTypeURL = LogoURLProvider.logoURL(withName: cardType.rawValue, environment: context.apiContext.environment)
-            ImageLoaderProvider.imageLoader().load(url: cardTypeURL) { [weak self] image in
+            imageLoader.load(url: cardTypeURL) { [weak self] image in
                 guard let self else { return }
                 registrationView.cardImage.image = image
             }

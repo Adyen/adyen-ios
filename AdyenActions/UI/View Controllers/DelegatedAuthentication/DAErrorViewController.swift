@@ -11,6 +11,17 @@ import UIKit
 internal final class DAErrorViewController: UIViewController {
 
     internal enum Screen {
+        
+        private enum Constant {
+            static let feedbackImage = UIImage(named: "feedback",
+                                               in: Bundle.actionsInternalResources,
+                                               compatibleWith: nil)
+            static let checkmarkImage = UIImage(systemName: "checkmark.circle",
+                                                withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight))
+            static let thrashImage = UIImage(systemName: "trash",
+                                             withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight))
+        }
+        
         case authenticationFailed(localizationParameters: LocalizationParameters?)
         case registrationFailed(localizationParameters: LocalizationParameters?)
         case deletionConfirmation(localizationParameters: LocalizationParameters?)
@@ -29,17 +40,13 @@ internal final class DAErrorViewController: UIViewController {
         internal var image: UIImage? {
             switch self {
             case .authenticationFailed:
-                UIImage(named: "feedback", in: Bundle.actionsInternalResources, compatibleWith: nil)
+                return Constant.feedbackImage
             case .registrationFailed:
-                UIImage(systemName: "checkmark.circle",
-                        withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight))?
-                    .withTintColor(.systemGreen,
-                                   renderingMode: .alwaysOriginal)
+                return Constant.checkmarkImage?.withTintColor(.systemGreen,
+                                                              renderingMode: .alwaysOriginal)
             case .deletionConfirmation:
-                UIImage(systemName: "trash",
-                        withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight))?
-                    .withTintColor(.systemGray,
-                                   renderingMode: .alwaysOriginal)
+                return Constant.thrashImage?.withTintColor(.systemGray,
+                                                           renderingMode: .alwaysOriginal)
             }
         }
         
