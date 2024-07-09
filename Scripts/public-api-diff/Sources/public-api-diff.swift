@@ -65,7 +65,7 @@ struct PublicApiDiff: ParsableCommand {
                 fileHandler: fileHandler
             )
             
-            let outputGenerator = OutputGenerator(
+            let outputGenerator = MarkdownOutputGenerator(
                 changesPerTarget: changesPerTarget,
                 allTargetNames: allAvailableTargets,
                 oldSource: oldSource,
