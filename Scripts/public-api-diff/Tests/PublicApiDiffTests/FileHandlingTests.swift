@@ -44,19 +44,44 @@ class FileHandlingTests: XCTestCase {
         }
     }
     
-    func test_createCleanRepository() throws {
+    func test_createCleanRepository_success() throws {
         
         let filePath = "directory/path"
         
         var fileHandler = MockFileHandler()
         fileHandler.handleRemoveItem = { path in
             XCTAssertEqual(path, filePath)
+            throw FileHandlerError.pathDoesNotExist(path: path) // This error should not cause an exception and "fail" gracefully
         }
         fileHandler.handleCreateDirectory = { path in
             XCTAssertEqual(path, filePath)
         }
         
         try fileHandler.createCleanDirectory(atPath: filePath)
+    }
+    
+    func test_createCleanRepository_failure() throws {
+        
+        let filePath = "directory/path"
+        
+        var fileHandler = MockFileHandler()
+        fileHandler.handleRemoveItem = { path in
+            XCTAssertEqual(path, filePath)
+            throw FileHandlerError.pathDoesNotExist(path: path) // This error should not cause an exception and "fail" gracefully
+        }
+        fileHandler.handleCreateDirectory = { path in
+            XCTAssertEqual(path, filePath)
+            throw FileHandlerError.couldNotCreateFile(outputFilePath: path)
+        }
+        
+        do {
+            try fileHandler.createCleanDirectory(atPath: filePath)
+            XCTFail("createCleanDirectory should have thrown an error")
+        } catch {
+            let fileHandlerError = try XCTUnwrap(error as? FileHandlerError)
+            XCTAssertEqual(fileHandlerError, .couldNotCreateFile(outputFilePath: filePath))
+        }
+        
     }
     
     func test_load() throws {
