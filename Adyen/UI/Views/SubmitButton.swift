@@ -59,12 +59,6 @@ public final class SubmitButton: UIControl {
         }
     }
     
-    override public var isEnabled: Bool {
-        didSet {
-            updateBackgroundColor()
-        }
-    }
-    
     internal lazy var titleLabel: UILabel = {
         let titleLabel = UILabel(style: style.title)
         titleLabel.isAccessibilityElement = false
@@ -153,18 +147,6 @@ public final class SubmitButton: UIControl {
         didSet {
             backgroundView.isHighlighted = isHighlighted
         }
-    }
-    
-    private func updateBackgroundColor() {
-        let backgroundColor: UIColor
-        
-        if !isEnabled, !showsActivityIndicator {
-            backgroundColor = UIColor.Adyen.secondaryComponentBackground
-        } else {
-            backgroundColor = style.backgroundColor
-        }
-        
-        backgroundView.backgroundColor = backgroundColor
     }
     
 }
