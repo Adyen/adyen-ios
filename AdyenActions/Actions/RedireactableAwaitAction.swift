@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// Describes an action in which the SDK is waiting for user action.
+/// Describes an action in which the SDK is redirecting to an url while waiting for user action.
 public struct RedirectableAwaitAction: PaymentDataAware, Decodable {
 
     /// The `paymentMethodType` for which the await action is used.
