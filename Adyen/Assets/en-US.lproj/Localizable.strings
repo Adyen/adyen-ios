@@ -180,11 +180,16 @@
 "adyen.upi.vpaWaitingMessage" = "Open your UPI app to confirm the payment";
 "adyen.QRCode.generateQRCode" = "Generate QR code";
 "adyen.UPI.QRCodeInstructions" = "Take a screenshot to upload in the UPI app or scan the QR code using your preferred UPI app to complete the payment.";
+"adyen.UPI.firstTabTitle" = "Pay by any UPI app";
+"adyen.UPI.secondTabTitle" = "Other UPI options";
+"adyen.UPI.collectDropdownLabel" = "Enter UPI ID";
+"adyen.UPI.collectFieldLabel" = "Enter UPI ID / VPA";
+"adyen.UPI.error.noAppSelected" = "Select a payment method to continue";
 "adyen.cashAppPay.title" = "Cash App Pay";
 "adyen.cashAppPay.cashtag" = "Cashtag";
 "adyen.twint.noAppsInstalled.message" = "No or an outdated version of TWINT is installed on this device. Please update or install the TWINT app.";
 "adyen.threeds2.DA.registration.title" = "Secure checkout";
-"adyen.threeds2.DA.biometrics" = "biometrics";
+"adyen.threeds2.DA.biometrics" = "biometric";
 "adyen.threeds2.DA.faceID" = "FaceID";
 "adyen.threeds2.DA.touchID" = "TouchID";
 "adyen.threeds2.DA.opticID" = "OpticID";
@@ -205,7 +210,7 @@
 "adyen.threeds2.DA.approval.remove.alert.description" = "Are you sure that you want to remove your Secure Checkout credentials?";
 "adyen.threeds2.DA.approval.remove.alert.positiveButton" = "Remove";
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Cancel";
-"adyen.threeds2.DA.approval.error.title" = "Authenticating...";
+"adyen.threeds2.DA.approval.error.title" = "Authenticating…";
 "adyen.threeds2.DA.approval.error.message" = "Authentication with Secure Checkout has failed, please attempt an alternative authentication.";
 "adyen.threeds2.DA.approval.error.buttonTitle" = "Approve the transaction";
 "adyen.threeds2.DA.registration.error.title" = "Let’s try next time!";
