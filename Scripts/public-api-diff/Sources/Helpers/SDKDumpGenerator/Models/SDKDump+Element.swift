@@ -73,6 +73,22 @@ extension SDKDump {
             self.accessors = try container.decodeIfPresent([SDKDump.Element].self, forKey: CodingKeys.accessors)
         }
         
+        func encode(to encoder: any Encoder) throws {
+            var container: KeyedEncodingContainer<SDKDump.Element.CodingKeys> = encoder.container(keyedBy: SDKDump.Element.CodingKeys.self)
+            try container.encode(self.kind, forKey: SDKDump.Element.CodingKeys.kind)
+            try container.encode(self.name, forKey: SDKDump.Element.CodingKeys.name)
+            try container.encode(self.printedName, forKey: SDKDump.Element.CodingKeys.printedName)
+            try container.encodeIfPresent(self.mangledName, forKey: SDKDump.Element.CodingKeys.mangledName)
+            try container.encode(self.children, forKey: SDKDump.Element.CodingKeys.children)
+            try container.encodeIfPresent(self.spiGroupNames, forKey: SDKDump.Element.CodingKeys.spiGroupNames)
+            try container.encodeIfPresent(self.declKind, forKey: SDKDump.Element.CodingKeys.declKind)
+            try container.encode(self.isStatic, forKey: SDKDump.Element.CodingKeys.isStatic)
+            try container.encode(self.isLet, forKey: SDKDump.Element.CodingKeys.isLet)
+            try container.encodeIfPresent(self.declAttributes, forKey: SDKDump.Element.CodingKeys.declAttributes)
+            try container.encodeIfPresent(self.conformances, forKey: SDKDump.Element.CodingKeys.conformances)
+            try container.encodeIfPresent(self.accessors, forKey: SDKDump.Element.CodingKeys.accessors)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case kind
             case name
@@ -107,6 +123,9 @@ extension SDKDump {
             var definition = ""
             spiGroupNames?.forEach {
                 definition += "@_spi(\($0)) "
+            }
+            if let declAttributes, declAttributes.contains("DiscardableResult") {
+                definition += "@discardableResult "
             }
             
             if declKind != .importDeclaration {
@@ -157,18 +176,41 @@ extension SDKDump {
                 return "\(printedName) = \(typeInfo.first!.verbosePrintedName)"
             }
             
-            if declKind == .constructor || declKind == .function {
+            if declKind == .constructor || declKind == .function || declKind == .funcDeclaration {
                 guard let returnValue = typeInfo.first?.printedName else {
                     return printedName
                 }
                 
-                // TODO: Insert the type information in line
                 let inlineTypeInformation = typeInfo.suffix(from: 1).map(\.verbosePrintedName)
                 
-                return "\(printedName) -> \(returnValue) [\(inlineTypeInformation.joined(separator: ", "))]"
+                var typedPrintedName = ""
+                
+                if inlineTypeInformation.isEmpty {
+                    typedPrintedName = printedName
+                } else {
+                    let funcComponents = printedName.components(separatedBy: ":")
+                    funcComponents.enumerated().forEach { index, component in
+                        typedPrintedName += component
+                        if index < inlineTypeInformation.count {
+                            typedPrintedName += ": \(inlineTypeInformation[index])"
+                        }
+                        
+                        if index < funcComponents.count - 2 {
+                            typedPrintedName += ", "
+                        }
+                    }
+                }
+                
+                return "\(typedPrintedName) -> \(returnValue == "()" ? "Void" : returnValue)"
             }
             
-            // TODO: Add more information
+            if declKind == .varDeclaration {
+                guard let returnValue = typeInfo.first?.printedName else {
+                    return printedName
+                }
+                
+                return "\(printedName): \(returnValue)"
+            }
             
             return printedName
         }
@@ -182,7 +224,7 @@ extension SDKDump {
         }
         
         var isTypeInformation: Bool {
-            kind == "TypeNominal"
+            kind == "TypeNominal" || kind == "TypeNameAlias"
         }
         
         var parentPath: String {

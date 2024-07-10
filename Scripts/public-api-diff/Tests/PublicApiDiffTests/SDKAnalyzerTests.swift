@@ -19,7 +19,7 @@ class SDKAnalyzerTests: XCTestCase {
             return try XCTUnwrap(FileManager.default.contents(atPath: resourcePath))
         }
         mockFileHandler.handleFileExists = { _ in
-            return true
+            true
         }
         
         let xcodeTools = XcodeTools(shell: mockShell)
@@ -42,7 +42,7 @@ class SDKAnalyzerTests: XCTestCase {
     func test_analyze_targetChanges() throws {
         
         let mockShell = MockShell { _ in
-            return ""
+            ""
         }
         
         var mockFileHandler = MockFileHandler()
@@ -52,7 +52,7 @@ class SDKAnalyzerTests: XCTestCase {
             return try XCTUnwrap(FileManager.default.contents(atPath: resourcePath))
         }
         mockFileHandler.handleFileExists = { _ in
-            return true
+            true
         }
         
         let xcodeTools = XcodeTools(shell: mockShell)
@@ -82,17 +82,69 @@ class SDKAnalyzerTests: XCTestCase {
         // TODO: Implement
         
         let mockShell = MockShell { _ in
-            return ""
+            ""
         }
         
         var mockFileHandler = MockFileHandler()
         mockFileHandler.handleLoadData = { path in
-            let packageName = path.components(separatedBy: "/").first
-            let resourcePath = try XCTUnwrap(Bundle.module.path(forResource: packageName, ofType: "txt"))
+            if path.range(of: "api_dump_") != nil {
+                if path.range(of: "NewPackage") != nil {
+                    // New
+                    let newAbi = SDKDump(
+                        root: .init(
+                            kind: "Root",
+                            name: "TopLevel",
+                            printedName: "TopLevel",
+                            children: [
+                                .init(kind: "Function", name: "FunctionName", printedName: "handle(_:)", declKind: .funcDeclaration, children: [
+                                    .init(kind: "TypeNominal", name: "String", printedName: "String"),
+                                    .init(kind: "TypeNominal", name: "NewAction", printedName: "NewAction")
+                                ], declAttributes: ["DiscardableResult"]),
+                                .init(kind: "Function", name: "FunctionName", printedName: "handle(_:)", declKind: .funcDeclaration, children: [
+                                    .init(kind: "TypeNominal", name: "String", printedName: "String"),
+                                    .init(kind: "TypeNominal", name: "SomeAction", printedName: "SomeAction")
+                                ]),
+                                .init(kind: "Function", name: "FunctionName", printedName: "handle(_:)", declKind: .funcDeclaration, children: [
+                                    .init(kind: "TypeNominal", name: "String", printedName: "String"),
+                                    .init(kind: "TypeNominal", name: "AnotherAction", printedName: "AnotherAction")
+                                ])
+                            ]
+                        )
+                    )
+                    return try JSONEncoder().encode(newAbi)
+                } else {
+                    // Old
+                    let oldAbi = SDKDump(
+                        root: .init(
+                            kind: "Root",
+                            name: "TopLevel",
+                            printedName: "TopLevel",
+                            children: [
+                                .init(kind: "Function", name: "FunctionName", printedName: "handle(_:)", declKind: .funcDeclaration, children: [
+                                    .init(kind: "TypeNominal", name: "String", printedName: "String"),
+                                    .init(kind: "TypeNominal", name: "OldAction", printedName: "OldAction")
+                                ]),
+                                .init(kind: "Function", name: "FunctionName", printedName: "handle(_:)", declKind: .funcDeclaration, children: [
+                                    .init(kind: "TypeNominal", name: "String", printedName: "String"),
+                                    .init(kind: "TypeNominal", name: "SomeAction", printedName: "SomeAction")
+                                ]),
+                                .init(kind: "Function", name: "FunctionName", printedName: "handle(_:)", declKind: .funcDeclaration, children: [
+                                    .init(kind: "TypeNominal", name: "String", printedName: "String"),
+                                    .init(kind: "TypeNominal", name: "AnotherAction", printedName: "AnotherAction")
+                                ])
+                            ]
+                        )
+                    )
+                    return try JSONEncoder().encode(oldAbi)
+                }
+            }
+            
+            // We're only using the NewPackage definition to only check for code changes, not package changes
+            let resourcePath = try XCTUnwrap(Bundle.module.path(forResource: "NewPackage", ofType: "txt"))
             return try XCTUnwrap(FileManager.default.contents(atPath: resourcePath))
         }
         mockFileHandler.handleFileExists = { _ in
-            return true
+            true
         }
         
         let xcodeTools = XcodeTools(shell: mockShell)
@@ -102,10 +154,26 @@ class SDKAnalyzerTests: XCTestCase {
             xcodeTools: xcodeTools
         )
         
-        let expectedChanges: [String: [SDKAnalyzer.Change]] = [:]
+        let expectedModuleChanges: [SDKAnalyzer.Change] = [
+            SDKAnalyzer.Change(
+                changeType: .removal,
+                parentName: "",
+                changeDescription: "`public func handle(_: OldAction) -> String` was removed"
+            ),
+            SDKAnalyzer.Change(
+                changeType: .addition,
+                parentName: "",
+                changeDescription: "`@discardableResult public func handle(_: NewAction) -> String` was added"
+            )
+        ]
+        
+        let expectedChanges: [String: [SDKAnalyzer.Change]] = [
+            "Adyen": expectedModuleChanges,
+            "TargetWithBinaryDependency": expectedModuleChanges
+        ]
         
         let changes = try analyzer.analyze(
-            old: "NewPackage",
+            old: "OldPackage",
             new: "NewPackage"
         )
         
