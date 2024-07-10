@@ -113,8 +113,8 @@
 "adyen.selectStateOrProvinceField.placeholder" = "Pasirinkite provinciją arba teritoriją";
 "adyen.provinceOrTerritoryField.title" = "Provincija arba teritorija";
 "adyen.provinceOrTerritoryField.placeholder" = "Provincija arba teritorija";
-"adyen.apartmentSuiteField.title" = "Apartamentai / liukso numeris\";
-"adyen.apartmentSuiteField.placeholder" = "Apartamentai / liukso numeris\";
+"adyen.apartmentSuiteField.title" = "Apartamentai / liukso numeris";
+"adyen.apartmentSuiteField.placeholder" = "Apartamentai / liukso numeris";
 "adyen.errorFeedback.emptyField" = "Privalomas laukas, užpildykite jį.";
 "adyen.errorFeedback.incorrectFormat" = "Įvesties formatas negalioja.";
 "adyen.field.title.optional" = "(neprivaloma)";
