@@ -15,14 +15,13 @@ struct XcodeTools {
     
     private enum Constants {
         static let deviceTarget: String = "x86_64-apple-ios17.4-simulator"
-        static let destination: String = "platform=iOS,name=Any iOS Device"
         static let derivedDataPath: String = ".build"
         static let simulatorSdkCommand = "xcrun --sdk iphonesimulator --show-sdk-path"
     }
     
     private let shell: ShellHandling
     
-    init(shell: ShellHandling) {
+    init(shell: ShellHandling = Shell()) {
         self.shell = shell
     }
     
@@ -30,9 +29,16 @@ struct XcodeTools {
         projectDirectoryPath: String,
         allTargetsLibraryName: String
     ) throws {
-        let command = "cd \(projectDirectoryPath); xcodebuild -scheme \(allTargetsLibraryName) -sdk `\(Constants.simulatorSdkCommand)` -derivedDataPath \(Constants.derivedDataPath) -destination \"\(Constants.destination)\" -target \(Constants.deviceTarget) -skipPackagePluginValidation"
+        let command = [
+            "cd \(projectDirectoryPath);",
+            "xcodebuild -scheme \"\(allTargetsLibraryName)\"",
+            "-derivedDataPath \(Constants.derivedDataPath)",
+            iOSTarget,
+            "-destination \"platform=iOS,name=Any iOS Device\"",
+            "-skipPackagePluginValidation"
+        ]
         
-        let result = shell.execute(command)
+        let result = shell.execute(command.joined(separator: " "))
         if result.range(of: "xcodebuild: error:") != nil || result.range(of: "BUILD FAILED") != nil {
             throw XcodeToolsError(errorDescription: "💥 Building project failed")
         }
@@ -43,11 +49,22 @@ struct XcodeTools {
         module: String,
         outputFilePath: String
     ) {
-        let sdkDumpInputPath = projectDirectoryPath
-            .appending("/\(Constants.derivedDataPath)")
-            .appending("/Build/Products/Debug-iphonesimulator")
+        let sdkDumpInputPath = "\(Constants.derivedDataPath)/Build/Products/Debug-iphonesimulator"
         
-        let command = "cd \(projectDirectoryPath); xcrun swift-api-digester -dump-sdk -module \(module) -I \(sdkDumpInputPath) -o \(outputFilePath) -sdk `\(Constants.simulatorSdkCommand)` -target \(Constants.deviceTarget) -abort-on-module-fail"
-        shell.execute(command)
+        let command = [
+            "cd \(projectDirectoryPath);",
+            "xcrun swift-api-digester -dump-sdk",
+            "-module \(module)",
+            "-I \(sdkDumpInputPath)",
+            "-o \(outputFilePath)",
+            iOSTarget,
+            "-abort-on-module-fail"
+        ]
+        
+        shell.execute(command.joined(separator: " "))
+    }
+    
+    private var iOSTarget: String {
+        "-sdk `\(Constants.simulatorSdkCommand)` -target \(Constants.deviceTarget)"
     }
 }

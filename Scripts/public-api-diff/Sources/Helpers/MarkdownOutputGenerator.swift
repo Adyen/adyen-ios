@@ -7,7 +7,7 @@
 import Foundation
 
 /// Allows generation of human readable output from the provided information
-struct OutputGenerator {
+struct MarkdownOutputGenerator {
     
     let changesPerTarget: [String: [SDKAnalyzer.Change]]
     let allTargetNames: [String]
@@ -52,7 +52,7 @@ struct OutputGenerator {
 
 // MARK: - Privates
 
-private extension OutputGenerator {
+private extension MarkdownOutputGenerator {
     
     var title: String {
         
