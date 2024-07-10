@@ -19,7 +19,7 @@ class OutputGeneratorTests: XCTestCase {
         **Analyzed modules:** Target_1
         """
         
-        let outputGenerator = OutputGenerator(
+        let outputGenerator = MarkdownOutputGenerator(
             changesPerTarget: [:],
             allTargetNames: ["Target_1"],
             oldSource: .local(path: "old_source"),
@@ -44,7 +44,7 @@ class OutputGeneratorTests: XCTestCase {
         **Analyzed modules:** Target_1
         """
         
-        let outputGenerator = OutputGenerator(
+        let outputGenerator = MarkdownOutputGenerator(
             changesPerTarget: ["Target_1": [.init(changeType: .addition, parentName: "", changeDescription: "Some Addition")]],
             allTargetNames: ["Target_1"],
             oldSource: .local(path: "old_source"),
@@ -73,7 +73,7 @@ class OutputGeneratorTests: XCTestCase {
         **Analyzed modules:** Target_1, Target_2
         """
 
-        let outputGenerator = OutputGenerator(
+        let outputGenerator = MarkdownOutputGenerator(
             changesPerTarget: [
                 "Target_1": [
                     .init(changeType: .addition, parentName: "", changeDescription: "Some Addition"),
