@@ -45,7 +45,7 @@ internal final class DAApprovalViewController: UIViewController {
                                          style: .destructive,
                                          handler: { [weak self] _ in
             guard let self else { return }
-            present(self.removeCredentialAlert, animated: true)
+            self.present(self.removeCredentialAlert, animated: true)
         })
         let fallbackAction = UIAlertAction(title: localizedString(.threeds2DAApprovalActionSheetFallback, localizationParameters),
                                            style: .default,
