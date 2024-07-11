@@ -57,4 +57,30 @@ extension XCTestCase {
         
         return try XCTUnwrap(UIViewController.topPresenter() as? T)
     }
+    
+    /// Waits for a view with a certain accessibilityIdentifier to appear within another view
+    ///
+    /// Instead of waiting for a specific amount of time it polls if the expecation is returning true in time intervals until the timeout is reached.
+    /// Use it whenever a value change is not guaranteed to be instant or happening after a short amount of time.
+    ///
+    /// - Parameters:
+    ///   - accessibilityIdentifier: the accessibilityIdentifier of the expected view
+    ///   - parent: the parent view
+    ///   - timeout: the maximum time (in seconds)  to wait.
+    func waitForView<T: UIView>(
+        withIdentifier accessibilityIdentifier: String,
+        toAppearIn parent: UIView,
+        timeout: TimeInterval = 60
+    ) throws -> T {
+        
+        wait(
+            until: {
+                parent.findView(with: accessibilityIdentifier) != nil
+            },
+            timeout: timeout,
+            message: "\(String(describing: T.self)) should appear in \(type(of: parent)) before timeout \(timeout)s"
+        )
+        
+        return try XCTUnwrap(parent.findView(with: accessibilityIdentifier) as? T)
+    }
 }

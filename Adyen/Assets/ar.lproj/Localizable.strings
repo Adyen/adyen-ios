@@ -180,6 +180,11 @@
 "adyen.upi.vpaWaitingMessage" = "افتح تطبيق UPI لتأكيد الدفع";
 "adyen.QRCode.generateQRCode" = "إنشاء رمز استجابة سريعة";
 "adyen.UPI.QRCodeInstructions" = "التقط لقطة شاشة لتحميلها في تطبيق UPI أو امسح رمز الاستجابة السريعة باستخدام تطبيق UPI الذي تُفضله لإتمام الدفع.";
+"adyen.UPI.firstTabTitle" = "Pay by any UPI app";
+"adyen.UPI.secondTabTitle" = "Other UPI options";
+"adyen.UPI.collectDropdownLabel" = "أدخل معرف UPI";
+"adyen.UPI.collectFieldLabel" = "أدخل معرف واجهة المدفوعات الموحدة (UPI) / عنوان الدفع الافتراضي (VPA)";
+"adyen.UPI.error.noAppSelected" = "للمتابعة؛ حدد وسيلة للدفع";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "لم يتم تثبيت أي إصدار من TWINT على هذا الجهاز أو الإصدار قديم. يُرجى تحديث أو تثبيت تطبيق TWINT.";

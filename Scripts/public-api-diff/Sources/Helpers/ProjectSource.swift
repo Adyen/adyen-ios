@@ -6,18 +6,18 @@
 
 import Foundation
 
-enum ProjectSourceError: LocalizedError {
+enum ProjectSourceError: LocalizedError, Equatable {
     case invalidSourceValue(value: String)
     
     var errorDescription: String? {
         switch self {
-        case .invalidSourceValue(let value):
+        case let .invalidSourceValue(value):
             "Invalid source parameter `\(value)`. It needs to either be a local file path or a repository in the format `[BRANCH_OR_TAG]\(ProjectSource.gitSourceSeparator)[REPOSITORY_URL]"
         }
     }
 }
 
-enum ProjectSource {
+enum ProjectSource: Equatable {
     
     /// The separator used to join branch & repository
     static var gitSourceSeparator: String { "~" }
@@ -31,7 +31,7 @@ enum ProjectSource {
         }
         
         let remoteComponents = rawValue.components(separatedBy: gitSourceSeparator)
-        if remoteComponents.count == 2, let branch = remoteComponents.first, let repository = remoteComponents.last {
+        if remoteComponents.count == 2, let branch = remoteComponents.first, let repository = remoteComponents.last, URL(string: repository) != nil {
             return .remote(branch: branch, repository: repository)
         }
         

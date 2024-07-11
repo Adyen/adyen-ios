@@ -41,21 +41,20 @@ struct ProjectHelper {
             try body(oldWorkingDirectoryPath, newWorkingDirectoryPath)
         } catch {
             cleanup()
+            throw error
         }
     }
 }
 
 private extension ProjectHelper {
 
-    func retrieveRemoteProject(branchOrTag: String, repository: String) -> String {
+    func retrieveRemoteProject(branchOrTag: String, repository: String) throws -> String {
         
         let currentDirectory = fileHandler.currentDirectoryPath
         let targetDirectoryPath = currentDirectory.appending("\(UUID().uuidString)")
         
-        try? fileHandler.removeItem(atPath: targetDirectoryPath)
-        
-        let git = Git(shell: shell)
-        git.clone(repository, at: branchOrTag, targetDirectoryPath: targetDirectoryPath)
+        let git = Git(shell: shell, fileHandler: fileHandler)
+        try git.clone(repository, at: branchOrTag, targetDirectoryPath: targetDirectoryPath)
         return targetDirectoryPath
     }
     
@@ -68,7 +67,7 @@ private extension ProjectHelper {
             sourceDirectoryPath = path
             
         case let .remote(branchOrTag, repository):
-            sourceDirectoryPath = retrieveRemoteProject(branchOrTag: branchOrTag, repository: repository)
+            sourceDirectoryPath = try retrieveRemoteProject(branchOrTag: branchOrTag, repository: repository)
         }
 
         let sourceWorkingDirectoryPath = workingDirectoryPath.appending("/\(UUID().uuidString)")
@@ -93,7 +92,7 @@ private extension ProjectHelper {
             break
         case .remote:
             // Clean up the cloned repo
-            try? fileHandler.removeItem(atPath: sourceDirectoryPath)
+            try fileHandler.removeItem(atPath: sourceDirectoryPath)
         }
         
         return sourceWorkingDirectoryPath
@@ -106,10 +105,7 @@ private extension ProjectHelper {
         shell: ShellHandling
     ) throws {
         
-        try? fileHandler.removeItem(atPath: destinationDirectoryPath)
         try fileHandler.createDirectory(atPath: destinationDirectoryPath)
-        
-        // TODO: Have 1 list instead and use a regex to filter (Maybe also move this to a file)
         
         let fileNameIgnoreList: Set<String> = [
             ".build",
@@ -159,7 +155,7 @@ private extension ProjectHelper {
         
         print("🛠️ Building project at `\(projectDirectoryPath)`")
         
-        xcodeTools.build(
+        try xcodeTools.build(
             projectDirectoryPath: projectDirectoryPath,
             allTargetsLibraryName: allTargetsLibraryName
         )
