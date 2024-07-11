@@ -199,3 +199,7 @@ whiteList:
   - initiable
   - authenticationservices
   - netlify
+  - func
+  - redirectable
+  - appslist
+  
