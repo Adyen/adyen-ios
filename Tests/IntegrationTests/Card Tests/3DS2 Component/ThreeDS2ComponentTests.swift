@@ -811,7 +811,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTAssertNotNil(image)
             let titleLabel: UILabel? = controller.view.findView(by: "titleLabel")
             XCTAssertNotNil(titleLabel)
-            XCTAssertEqual(titleLabel?.text, "Authenticating...")
+            XCTAssertEqual(titleLabel?.text, "Authenticating…")
 
             let descriptionLabel: UILabel? = controller.view.findView(by: "descriptionLabel")
             XCTAssertNotNil(descriptionLabel)
