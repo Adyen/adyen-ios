@@ -37,11 +37,14 @@ internal final class DelegatedAuthenticationErrorView: UIView {
         return imageView
     }()
 
-    internal lazy var titleLabel: UILabel = .make(style: style.errorTitleStyle, accessibilityPostfix: "titleLabel")
+    internal lazy var titleLabel: UILabel = .init(style: style.errorTitleStyle,
+                                                  accessibilityPostfix: "titleLabel",
+                                                  scopeInstance: self)
     
-    internal lazy var descriptionLabel: UILabel = .make(style: style.errorDescription,
+    internal lazy var descriptionLabel: UILabel = .init(style: style.errorDescription,
                                                         accessibilityPostfix: "descriptionLabel",
-                                                        multiline: true)
+                                                        multiline: true,
+                                                        scopeInstance: self)
     
     internal lazy var tileAndSubtitleStackView: UIStackView = .make(arrangedSubviews: [image, titleLabel, descriptionLabel],
                                                                     spacing: 16,

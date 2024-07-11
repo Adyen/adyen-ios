@@ -89,7 +89,7 @@
                 case let .failure(error):
                     completionHandler(.failure(error))
                 case let .success(threeDSFingerprint):
-                    guard let self = self,
+                    guard let self,
                           let payloadForDA = self.daPayload(fingerprintAction) else {
                         // If there is no payload for delegated authentication approval, continue with the 3ds flow.
                         self?.delegatedAuthenticationState.attemptRegistration = true
@@ -158,7 +158,7 @@
             completion: @escaping (Result<(daOutput: String, delete: Bool?), ApprovalFlowError>) -> Void
         ) {
             isDeviceRegistered(delegatedAuthenticationInput: delegatedAuthenticationInput) { [weak self] registered in
-                guard let self = self else { return }
+                guard let self else { return }
                 if registered {
                     self.showApprovalScreen(delegatedAuthenticationInput: delegatedAuthenticationInput,
                                             cardType: cardType,
@@ -192,7 +192,7 @@
                 component: self,
                 cardDetails: (cardNumber, cardType),
                 approveAuthenticationHandler: { [weak self] in
-                    guard let self = self else { return }
+                    guard let self else { return }
                     self.userApprovedTransaction(delegatedAuthenticationInput: delegatedAuthenticationInput,
                                                  cardNumber: cardNumber,
                                                  completion: completion)
@@ -201,7 +201,7 @@
                     completion(.failure(.fallbackTo3ds))
                 },
                 removeCredentialsHandler: { [weak self] in
-                    guard let self = self else { return }
+                    guard let self else { return }
                     self.userChoseToRemoveCredentials(delegatedAuthenticationInput: delegatedAuthenticationInput,
                                                       cardNumber: cardNumber,
                                                       completion: completion)
@@ -223,7 +223,7 @@
                              completion(.success((daOutput: $0, delete: nil)))
                          },
                          failedAuthenticationHandler: { [weak self] error in
-                             guard let self = self else { return }
+                             guard let self else { return }
                              self.presenter.showAuthenticationError(component: self) {
                                  completion(.failure(.authenticationServiceFailed(underlyingError: error)))
                              }
@@ -241,7 +241,7 @@
             authenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
                          cardNumber: cardNumber,
                          authenticatedHandler: { [weak self] sdkOutput in
-                             guard let self = self else { return }
+                             guard let self else { return }
                              self.presenter.showDeletionConfirmation(component: self) {
                                  self.delegatedAuthenticationState.attemptRegistration = false
                                  completion(.success((daOutput: sdkOutput, delete: true)))
@@ -376,7 +376,7 @@
                 component: self,
                 cardDetails: (cardNumber, cardType),
                 registerDelegatedAuthenticationHandler: { [weak self] in
-                    guard let self = self else { return }
+                    guard let self else { return }
                     self.userChoseToRegister(delegatedAuthenticationInput: delegatedAuthenticationInput,
                                              cardNumber: cardNumber,
                                              completionHandler: completionHandler)
