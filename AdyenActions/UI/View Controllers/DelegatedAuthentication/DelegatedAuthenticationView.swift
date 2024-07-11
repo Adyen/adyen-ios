@@ -251,21 +251,16 @@ internal final class DelegatedAuthenticationView: UIView {
     internal func animateImageTransitionToSystemImage(named: String) {
         let workItem = DispatchWorkItem { [weak self] in
             guard let self else { return }
-            if #available(iOS 17.0, *) {
-                self.logoImage.addSymbolEffect(.bounce, options: .repeat(2))
-            }
             
             if let replacementImage = UIImage(systemName: named,
                                               withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight)) {
-                if #available(iOS 17.0, *) {
-                    self.logoImage.setSymbolImage(replacementImage, contentTransition: .replace)
-                } else {
-                    UIView.transition(with: self.logoImage,
-                                      duration: 0.5,
-                                      options: .transitionCrossDissolve,
-                                      animations: { self.logoImage.image = replacementImage },
-                                      completion: nil)
-                }
+                
+                UIView.transition(with: self.logoImage,
+                                  duration: 0.5,
+                                  options: .transitionCrossDissolve,
+                                  animations: { self.logoImage.image = replacementImage },
+                                  completion: nil)
+
             }
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: workItem)

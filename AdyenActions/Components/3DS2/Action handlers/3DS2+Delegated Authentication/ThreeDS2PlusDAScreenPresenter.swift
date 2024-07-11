@@ -134,9 +134,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
             return localizedString(.threeds2DATouchID, localizedParameters)
         case .faceID:
             return localizedString(.threeds2DAFaceID, localizedParameters)
-        case .opticID:
-            return localizedString(.threeds2DAOpticID, localizedParameters)
-        @unknown default:
+        default:
             return localizedString(.threeds2DABiometrics, localizedParameters)
         }
     }
