@@ -331,10 +331,10 @@
                 case let .failure(error):
                     completionHandler(.failure(error))
                 case let .success(threeDSResult):
-                    guard let self = self,
+                    guard let self,
                           self.delegatedAuthenticationState.attemptRegistration,
                           self.deviceSupportCheckerService.isDeviceSupported,
-                          let registrationPayload = daPayload(challengeAction) else {
+                          let registrationPayload = self.daPayload(challengeAction) else {
                         // If there is no payload for delegated authentication approval, continue with the 3ds flow.
                         completionHandler(.success(threeDSResult))
                         return
