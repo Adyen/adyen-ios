@@ -30,7 +30,7 @@ public final class FormErrorItem: FormItem, Hidable {
     /// - Parameter message: The message.
     /// - Parameter iconName: The icon name.
     /// - Parameter style: a `FormErrorItemStyle` UI style.
-    public init(message: String? = nil, iconName: String, style: FormErrorItemStyle = FormErrorItemStyle()) {
+    public init(message: String? = nil, iconName: String = "error", style: FormErrorItemStyle = FormErrorItemStyle()) {
         self.iconName = iconName
         self.style = style
         self.message = message

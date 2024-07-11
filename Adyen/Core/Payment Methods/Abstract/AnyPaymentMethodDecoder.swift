@@ -43,6 +43,9 @@ internal enum AnyPaymentMethodDecoder {
         .androidPay: UnsupportedPaymentMethodDecoder(),
         .amazonPay: UnsupportedPaymentMethodDecoder(),
         .bizum: UnsupportedPaymentMethodDecoder(),
+        .upiQr: UnsupportedPaymentMethodDecoder(),
+        .upiIntent: UnsupportedPaymentMethodDecoder(),
+        .upiCollect: UnsupportedPaymentMethodDecoder(),
 
         // Supported payment methods
         .card: CardPaymentMethodDecoder(),
@@ -107,7 +110,7 @@ internal enum AnyPaymentMethodDecoder {
                 
                 return try IssuerListPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
             }
-            
+
             // This is a hack to handle stored Bancontact as a separate
             // payment method, even though Bancontact is just another
             // scheme of a card payment method,
@@ -119,7 +122,7 @@ internal enum AnyPaymentMethodDecoder {
             if isStored, brand == "bcmc", type == .scheme {
                 return try decoders[.bcmc, default: defaultDecoder].decode(from: decoder, isStored: true)
             }
-
+            
             let paymentDecoder = type.map { decoders[$0, default: defaultDecoder] } ?? defaultDecoder
             return try paymentDecoder.decode(from: decoder, isStored: isStored)
         } catch {

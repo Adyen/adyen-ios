@@ -18,6 +18,9 @@ public enum AwaitPaymentMethod: String, Decodable {
     /// upi
     case upicollect = "upi_collect"
 
+    /// UPI Intent
+    case upiIntent = "upi_intent"
+
     /// Twint payment method
     case twint
 }
@@ -30,13 +33,15 @@ public struct AwaitAction: PaymentDataAware, Decodable {
     
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     public let paymentData: String
-    
-    /// Initializes a redirect action.
+
+    /// Initializes a await action.
     ///
     /// - Parameters:
     ///   - paymentData: The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     ///   - paymentMethodType: The `paymentMethodType` for which the await action is used.
-    public init(paymentData: String, paymentMethodType: AwaitPaymentMethod) {
+    ///   - redirectUrl: The URL to which to redirect the user.
+    public init(paymentData: String,
+                paymentMethodType: AwaitPaymentMethod) {
         self.paymentData = paymentData
         self.paymentMethodType = paymentMethodType
     }

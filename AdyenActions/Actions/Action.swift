@@ -28,6 +28,9 @@ public enum Action: Decodable {
     /// Indicate that the SDK should wait for user action.
     case await (AwaitAction)
 
+    /// Indicate that the SDK should wait for user action while redirecting.
+    case redirectableAwait(RedirectableAwaitAction)
+
     /// Indicates that a voucher is presented to the shopper.
     case voucher(VoucherAction)
     
@@ -55,7 +58,7 @@ public enum Action: Decodable {
         case .sdk:
             self = try .sdk(SDKAction(from: decoder))
         case .await:
-            self = try .await(AwaitAction(from: decoder))
+            self = try Self.handleAwaitType(from: decoder)
         case .voucher:
             self = try Self.handleVoucherType(from: decoder)
         case .qrCode:
@@ -81,7 +84,16 @@ public enum Action: Decodable {
             return try .voucher(VoucherAction(from: decoder))
         }
     }
-    
+
+    private static func handleAwaitType(from decoder: Decoder) throws -> Action {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        if (try? container.decode(URL.self, forKey: .redirectUrl)) != nil {
+            return try .redirectableAwait(RedirectableAwaitAction(from: decoder))
+        } else {
+            return try .await(AwaitAction(from: decoder))
+        }
+    }
+
     private enum ActionType: String, Decodable {
         case redirect
         case nativeRedirect
@@ -97,6 +109,7 @@ public enum Action: Decodable {
     private enum CodingKeys: String, CodingKey {
         case type
         case paymentMethodType
+        case redirectUrl = "url"
     }
     
     private enum Constant {

@@ -21,9 +21,14 @@ public final class FormSegmentedControlItem: FormItem {
     /// A closure that will be invoked when a segmented control index is changed.
     public var selectionHandler: ((_ selectedIndex: Int) -> Void)?
 
-    public init(items: [String], style: SegmentedControlStyle, identifier: String? = nil) {
+    public init(
+        items: [String],
+        style: SegmentedControlStyle,
+        identifier: String? = nil
+    ) {
         self.items = items
         self.style = style
+        self.identifier = identifier
     }
 
     // The segmented control items.
@@ -34,6 +39,7 @@ public final class FormSegmentedControlItem: FormItem {
         segmentedControl.accessibilityIdentifier = identifier
         segmentedControl.backgroundColor = style.backgroundColor
         segmentedControl.tintColor = style.tintColor
+        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.font: style.textStyle.font], for: .normal)
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.addTarget(self, action: #selector(segmentAction), for: .valueChanged)
         segmentedControl.adyen.round(using: style.textStyle.cornerRounding)
