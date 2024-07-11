@@ -197,3 +197,6 @@ whiteList:
   - xcprivacy
   - twint
   - initiable
+  - func
+  - redirectable
+  - appslist

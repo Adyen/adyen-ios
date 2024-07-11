@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00165FE02C05DA8600347399 /* RedireactableAwaitAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00165FDF2C05DA8600347399 /* RedireactableAwaitAction.swift */; };
 		001BFF422A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */; };
 		001BFF432A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */; };
 		00220955299B8B1C00B2BACD /* BLIKComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00220953299B885600B2BACD /* BLIKComponentUITests.swift */; };
@@ -21,6 +22,8 @@
 		002B92F3294B2857000B93F4 /* UPIComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B92F2294B2857000B93F4 /* UPIComponent.swift */; };
 		002B92F5294B6987000B93F4 /* UPIComponentDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B92F4294B6987000B93F4 /* UPIComponentDetails.swift */; };
 		002B93082951F120000B93F4 /* FormSegmentedControlItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B93072951F120000B93F4 /* FormSegmentedControlItem.swift */; };
+		002D4BFD2C009D8F00DBBD45 /* action_response.json in Resources */ = {isa = PBXBuildFile; fileRef = 002D4BFC2C009D8F00DBBD45 /* action_response.json */; };
+		002D4BFE2C009D9900DBBD45 /* action_response.json in Resources */ = {isa = PBXBuildFile; fileRef = 002D4BFC2C009D8F00DBBD45 /* action_response.json */; };
 		00346FC429895B6A00F7DA94 /* ModalToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F49A25A5E9740077029E /* ModalToolbar.swift */; };
 		00346FC529895B7100F7DA94 /* CancellableToolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008AD9DB2982C24000C33983 /* CancellableToolBar.swift */; };
 		0035016C2976B14A00632D8C /* UIImageViewHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0035016B2976B14A00632D8C /* UIImageViewHelpers.swift */; };
@@ -43,6 +46,9 @@
 		00A25E5D2A404303001B32B6 /* ComponentCreationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5C2A404303001B32B6 /* ComponentCreationError.swift */; };
 		00A25E5E2A404303001B32B6 /* ComponentCreationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5C2A404303001B32B6 /* ComponentCreationError.swift */; };
 		00A25E602A404342001B32B6 /* AdyenSdkVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5F2A404342001B32B6 /* AdyenSdkVersion.swift */; };
+		00BC8F512BF2561900EBE0EB /* SelectableFormItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BC8F502BF2561900EBE0EB /* SelectableFormItem.swift */; };
+		00BC8F532BF2569200EBE0EB /* SelectableFormItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BC8F522BF2569200EBE0EB /* SelectableFormItemView.swift */; };
+		00BC8F552BF349FC00EBE0EB /* SelectableFormItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BC8F542BF349FC00EBE0EB /* SelectableFormItemStyle.swift */; };
 		00C3DB0E2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */; };
 		00C3DB0F2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */; };
 		00D5B8662A4C63FE003CFCD0 /* CardComponentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */; };
@@ -150,6 +156,12 @@
 		8149CCB62B0B855F007235E2 /* ThreeDS2PlusDACoreActionHandlerTests+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8149CCB52B0B855F007235E2 /* ThreeDS2PlusDACoreActionHandlerTests+Constants.swift */; };
 		8152A2982BF7585B00AF957C /* FormItemViewBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A781AD2403BD1600E12487 /* FormItemViewBuilderTests.swift */; };
 		8169B9EC2A0506CC00AAC9F8 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
+		817C90802C3D590C0072A202 /* GiftCardComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817C907F2C3D590C0072A202 /* GiftCardComponentUITests.swift */; };
+		817C90812C3D590C0072A202 /* GiftCardComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817C907F2C3D590C0072A202 /* GiftCardComponentUITests.swift */; };
+		817C90822C3D59B30072A202 /* PartialPaymentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9838CC026315CEA00963483 /* PartialPaymentDelegateMock.swift */; };
+		817C90832C3D59B30072A202 /* PartialPaymentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9838CC026315CEA00963483 /* PartialPaymentDelegateMock.swift */; };
+		817C90842C3D5E5C0072A202 /* PublicKeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E8343B24F3C81700EC3844 /* PublicKeyProviderMock.swift */; };
+		817C90852C3D5E5D0072A202 /* PublicKeyProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E8343B24F3C81700EC3844 /* PublicKeyProviderMock.swift */; };
 		817F6D8C2B62A6110010D248 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		81825CB82AC59C3300F91912 /* UIView+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CB72AC59C3300F91912 /* UIView+Search.swift */; };
 		81825CB92AC59C3300F91912 /* UIView+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81825CB72AC59C3300F91912 /* UIView+Search.swift */; };
@@ -1448,6 +1460,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		00165FDF2C05DA8600347399 /* RedireactableAwaitAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedireactableAwaitAction.swift; sourceTree = "<group>"; };
 		001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInSettingsView.swift; sourceTree = "<group>"; };
 		00220953299B885600B2BACD /* BLIKComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentUITests.swift; sourceTree = "<group>"; };
 		00220957299E5B1D00B2BACD /* MBWayComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBWayComponentUITests.swift; sourceTree = "<group>"; };
@@ -1459,6 +1472,7 @@
 		002B92F2294B2857000B93F4 /* UPIComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponent.swift; sourceTree = "<group>"; };
 		002B92F4294B6987000B93F4 /* UPIComponentDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentDetails.swift; sourceTree = "<group>"; };
 		002B93072951F120000B93F4 /* FormSegmentedControlItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSegmentedControlItem.swift; sourceTree = "<group>"; };
+		002D4BFC2C009D8F00DBBD45 /* action_response.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = action_response.json; sourceTree = "<group>"; };
 		0035016B2976B14A00632D8C /* UIImageViewHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewHelpers.swift; sourceTree = "<group>"; };
 		003C03AE297AFF9F0022269A /* UPIComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentUITests.swift; sourceTree = "<group>"; };
 		0042EBB12B750B4E001B1F6C /* TwintSDKAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwintSDKAction.swift; sourceTree = "<group>"; };
@@ -1481,6 +1495,9 @@
 		008AD9DB2982C24000C33983 /* CancellableToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellableToolBar.swift; sourceTree = "<group>"; };
 		00A25E5C2A404303001B32B6 /* ComponentCreationError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentCreationError.swift; sourceTree = "<group>"; };
 		00A25E5F2A404342001B32B6 /* AdyenSdkVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdyenSdkVersion.swift; sourceTree = "<group>"; };
+		00BC8F502BF2561900EBE0EB /* SelectableFormItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableFormItem.swift; sourceTree = "<group>"; };
+		00BC8F522BF2569200EBE0EB /* SelectableFormItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableFormItemView.swift; sourceTree = "<group>"; };
+		00BC8F542BF349FC00EBE0EB /* SelectableFormItemStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableFormItemStyle.swift; sourceTree = "<group>"; };
 		00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsSettingsView.swift; sourceTree = "<group>"; };
 		00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentSettingsView.swift; sourceTree = "<group>"; };
 		00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenTwint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1575,6 +1592,7 @@
 		817C90922C3EB9220072A202 /* is-IS */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "is-IS"; path = "is-IS.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		817C90932C3EB9330072A202 /* lt-LT */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "lt-LT"; path = "lt-LT.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		817C90982C3EB9490072A202 /* lv-LV */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "lv-LV"; path = "lv-LV.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		817C907F2C3D590C0072A202 /* GiftCardComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftCardComponentUITests.swift; sourceTree = "<group>"; };
 		81825CB72AC59C3300F91912 /* UIView+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Search.swift"; sourceTree = "<group>"; };
 		81825CBA2AC59C4000F91912 /* UIViewController+Search.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Search.swift"; sourceTree = "<group>"; };
 		81825CC02AC59C6400F91912 /* XCTestCase+RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+RootViewController.swift"; sourceTree = "<group>"; };
@@ -2686,6 +2704,7 @@
 				00220957299E5B1D00B2BACD /* MBWayComponentUITests.swift */,
 				00220953299B885600B2BACD /* BLIKComponentUITests.swift */,
 				003C03AE297AFF9F0022269A /* UPIComponentUITests.swift */,
+				817C907F2C3D590C0072A202 /* GiftCardComponentUITests.swift */,
 				F9CCA3AC296DB0D200AD643D /* IssuerListComponentUITests.swift */,
 				0058692228B8C1FE00B65A19 /* QRCodeActionComponentUITests.swift */,
 				00EACBD328855D190082B360 /* OnlineBankingComponentUITests.swift */,
@@ -2701,6 +2720,16 @@
 				F9CCA3DD296ED1F400AD643D /* XCTestCase+SnapshotTesting.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		00BC8F4F2BF255CA00EBE0EB /* SelectableFormItem */ = {
+			isa = PBXGroup;
+			children = (
+				00BC8F502BF2561900EBE0EB /* SelectableFormItem.swift */,
+				00BC8F522BF2569200EBE0EB /* SelectableFormItemView.swift */,
+				00BC8F542BF349FC00EBE0EB /* SelectableFormItemStyle.swift */,
+			);
+			path = SelectableFormItem;
 			sourceTree = "<group>";
 		};
 		00E5D6522AF4E99B00CDE118 /* AdyenTwint */ = {
@@ -3470,6 +3499,7 @@
 		E216D3B42217096E0013CBCF /* Items */ = {
 			isa = PBXGroup;
 			children = (
+				00BC8F4F2BF255CA00EBE0EB /* SelectableFormItem */,
 				0067E73B29658C97005B8D76 /* FormImageItem */,
 				002B93062951F0DA000B93F4 /* Segmented Control */,
 				E708591D261F1C9F00D0153B /* Address */,
@@ -3624,6 +3654,7 @@
 				E226F54122969B6C0013A463 /* ThreeDS2ChallengeAction.swift */,
 				F9A7AC86255430B300012EBC /* ThreeDS2Action.swift */,
 				F9639B1824DABDE40073F38A /* AwaitAction.swift */,
+				00165FDF2C05DA8600347399 /* RedireactableAwaitAction.swift */,
 				F97C84CC25C1761900D7F85C /* VoucherAction.swift */,
 				F9B017F62608F4FE001F23FC /* DokuVoucherAction.swift */,
 				F9976BB226D903F400D2D7CE /* MultibancoVoucherAction.swift */,
@@ -5478,6 +5509,7 @@
 			isa = PBXGroup;
 			children = (
 				F9615FBF252F076A00FA8EDD /* payment_methods_response.json */,
+				002D4BFC2C009D8F00DBBD45 /* action_response.json */,
 				A023A9B328103C2D004FDCA4 /* session_response.json */,
 				F9EDB78823955ABF00CFB3C9 /* AdyenUIHost.strings */,
 				F96F44DE23BF453800871C1F /* AdyenUIHostCustomSeparator.strings */,
@@ -6289,6 +6321,7 @@
 				F96F44DF23BF453800871C1F /* AdyenUIHostCustomSeparator.strings in Resources */,
 				E2C0E087220B039B008616F6 /* Assets.xcassets in Resources */,
 				F9615FC0252F076A00FA8EDD /* payment_methods_response.json in Resources */,
+				002D4BFD2C009D8F00DBBD45 /* action_response.json in Resources */,
 				E97B970C2297ED0D00505476 /* LaunchScreen.storyboard in Resources */,
 				A023A9B428103C2D004FDCA4 /* session_response.json in Resources */,
 			);
@@ -6352,6 +6385,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				002D4BFE2C009D9900DBBD45 /* action_response.json in Resources */,
 				F9615FC1252F076A00FA8EDD /* payment_methods_response.json in Resources */,
 				F95B6DA425274551002C9062 /* LaunchScreen.storyboard in Resources */,
 				F94E37B82818138900617382 /* session_response.json in Resources */,
@@ -6512,16 +6546,19 @@
 				81DF940C2BAAD8EB0001DCBC /* XCTestCase+FirstResponder.swift in Sources */,
 				81DF940D2BAAD8EB0001DCBC /* OnlineBankingComponentUITests.swift in Sources */,
 				81DF940E2BAAD8EB0001DCBC /* SecuredViewControllerUITests.swift in Sources */,
+				817C90812C3D590C0072A202 /* GiftCardComponentUITests.swift in Sources */,
 				81DF940F2BAAD8EB0001DCBC /* (null) in Sources */,
 				81DF94112BAAD8EB0001DCBC /* AdyenCoder.swift in Sources */,
 				B62D48C82BBE8F47001EF01A /* XCTestCase+Wait.swift in Sources */,
 				81DF94122BAAD8EB0001DCBC /* PresentationDelegateMock.swift in Sources */,
 				81DF94132BAAD8EB0001DCBC /* Dummy.swift in Sources */,
 				81DF94142BAAD8EB0001DCBC /* PaymentComponentDelegateMock.swift in Sources */,
+				817C90832C3D59B30072A202 /* PartialPaymentDelegateMock.swift in Sources */,
 				B6EE0F442BBEC94F00B9810D /* AnalyticsProviderMock.swift in Sources */,
 				81DF94152BAAD8EB0001DCBC /* UPIComponentUITests.swift in Sources */,
 				81DF94162BAAD8EB0001DCBC /* UIBarButtonItem+XCTest.swift in Sources */,
 				81DF94172BAAD8EB0001DCBC /* XCTestCase+Wait+UIKit.swift in Sources */,
+				817C90852C3D5E5D0072A202 /* PublicKeyProviderMock.swift in Sources */,
 				81088A262BDBC2DE007FCDB9 /* CancellableMock.swift in Sources */,
 				81DF94182BAAD8EB0001DCBC /* DummyPaymentMethods.swift in Sources */,
 				81DF94192BAAD8EB0001DCBC /* DokuComponentUITests.swift in Sources */,
@@ -6642,6 +6679,7 @@
 				F9589D0F2601EF8100E4113F /* NameFormItemInjector.swift in Sources */,
 				8191838E2A53062F008EB61A /* FormAddressItem+Configuration.swift in Sources */,
 				81F1EBA42AD97095002AA93F /* ListItem.swift in Sources */,
+				00BC8F532BF2569200EBE0EB /* SelectableFormItemView.swift in Sources */,
 				F9FE252F2625AE8C001874BB /* PartialPaymentDelegate.swift in Sources */,
 				A02AF3DF274FB30200E1636C /* ApplePayStyle.swift in Sources */,
 				A0BDF3F02BD28817001FF7E5 /* AddressAnalyticsValidationError.swift in Sources */,
@@ -6825,10 +6863,12 @@
 				E9093403228EDADA00C9F04B /* Payment.swift in Sources */,
 				A0414C2E2790420B00DF3FE9 /* PublicKeyProvider.swift in Sources */,
 				E216D3CD221AFBB90013CBCF /* Validator.swift in Sources */,
+				00BC8F512BF2561900EBE0EB /* SelectableFormItem.swift in Sources */,
 				5AD40EEF26303C830090E01C /* UIButtonHelpers.swift in Sources */,
 				E2D12C07221ED15F00EF682F /* FormToggleItem.swift in Sources */,
 				F917308E26491ED900985310 /* InstantPaymentComponent.swift in Sources */,
 				81B001B12A543CFD0015BFA3 /* SearchViewController+ViewModel.swift in Sources */,
+				00BC8F552BF349FC00EBE0EB /* SelectableFormItemStyle.swift in Sources */,
 				F90FB7C02448587C005BFE0E /* TextField.swift in Sources */,
 				E224088D22B0FD220058923E /* StoredPayPalPaymentMethod.swift in Sources */,
 				F99D2F0A266136A700BB5B2F /* AppleWalletPassResponse.swift in Sources */,
@@ -7360,6 +7400,7 @@
 				F9175FFA259499D500D653BE /* AwaitViewController.swift in Sources */,
 				F96757C327CF909900A16FB6 /* AnyWeChatPaySDKActionComponent.swift in Sources */,
 				F9175FD22594999600D653BE /* RedirectComponent.swift in Sources */,
+				00165FE02C05DA8600347399 /* RedireactableAwaitAction.swift in Sources */,
 				F9237D3D28CB470E004F9929 /* ThreeDS2ClassicActionHandler+Initializers.swift in Sources */,
 				8182AAB72B95D3560087568E /* Twint+Injectable.swift in Sources */,
 				F97C851625C192D000D7F85C /* VoucherViewController.swift in Sources */,
@@ -7552,6 +7593,7 @@
 				B6EE0F3C2BBEAB4900B9810D /* AnalyticsProviderMock.swift in Sources */,
 				F9CCA3CF296ECCA900AD643D /* PaymentComponentDelegateMock.swift in Sources */,
 				003C03B0297AFFA30022269A /* UPIComponentUITests.swift in Sources */,
+				817C90842C3D5E5C0072A202 /* PublicKeyProviderMock.swift in Sources */,
 				81B5057A2A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift in Sources */,
 				81825CC52AC59C6C00F91912 /* XCTestCase+Wait+UIKit.swift in Sources */,
 				F9CCA3CE296ECC9C00AD643D /* DummyPaymentMethods.swift in Sources */,
@@ -7564,6 +7606,7 @@
 				0022095C29A4C65E00B2BACD /* BoletoComponentUITests.swift in Sources */,
 				81088A242BDBC2C5007FCDB9 /* CancellableMock.swift in Sources */,
 				F9CCA3D2296ECCFA00AD643D /* XCTestCase+FormTextItemView.swift in Sources */,
+				817C90802C3D590C0072A202 /* GiftCardComponentUITests.swift in Sources */,
 				F9CCA3DE296ED1F400AD643D /* XCTestCase+SnapshotTesting.swift in Sources */,
 				81825CBC2AC59C4000F91912 /* UIViewController+Search.swift in Sources */,
 				F9CCA3C6296ECB9900AD643D /* QRCodeActionComponentUITests.swift in Sources */,
@@ -7573,6 +7616,7 @@
 				F9CCA3D7296ECDB200AD643D /* XCTestCase+Coder.swift in Sources */,
 				F9CCA3C5296ECB9900AD643D /* ListViewControllerUITests.swift in Sources */,
 				F9CCA3D3296ECD0700AD643D /* PostalAddressMocks.swift in Sources */,
+				817C90822C3D59B30072A202 /* PartialPaymentDelegateMock.swift in Sources */,
 				81FC2C992BB1BB69007F1316 /* URLProtocolMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

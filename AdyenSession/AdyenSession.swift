@@ -133,9 +133,12 @@ public final class AdyenSession {
                                        completion: @escaping ((Result<Context, Error>) -> Void)) {
         let sessionId = configuration.sessionIdentifier
         let sessionData = configuration.initialSessionData
-        let request = SessionSetupRequest(sessionId: sessionId,
-                                          sessionData: sessionData,
-                                          order: order)
+        let request = SessionSetupRequest(
+            sessionId: sessionId,
+            sessionData: sessionData,
+            order: order
+        )
+
         let apiClient = SelfRetainingAPIClient(apiClient: baseAPIClient)
         apiClient.perform(request) { result in
             switch result {

@@ -787,6 +787,24 @@
       "type" : "payu_IN_nb"
     },
     {
+        "apps" : [
+            {
+                "id" : "bhim",
+                "name" : "BHIM"
+            },
+            {
+                "id" : "gpay",
+                "name" : "Google Pay"
+            },
+            {
+                "id" : "phonepe",
+                "name" : "PhonePe"
+            }
+        ],
+        "name" : "UPI",
+        "type" : "upi"
+    },
+    {
       "details" : [
         {
           "key" : "virtualPaymentAddress",
