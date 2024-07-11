@@ -19,7 +19,7 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
         bind(item.$message, to: self, at: \.accessibilityLabel)
         isHidden = item.isHidden.wrappedValue
         addSubview(containerView)
-        containerView.adyen.anchor(inside: layoutMarginsGuide, with: UIEdgeInsets(top: 16, left: 16, bottom: -16, right: -16))
+        containerView.adyen.anchor(inside: layoutMarginsGuide, with: UIEdgeInsets(top: 8, left: 0, bottom: -8, right: 0))
         containerView.backgroundColor = item.style.backgroundColor
         containerView.adyen.round(using: item.style.cornerRounding)
         backgroundColor = .clear
@@ -49,7 +49,7 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
 
     // MARK: - Message
 
-    private lazy var messageLabel: UILabel = {
+    internal lazy var messageLabel: UILabel = {
         let messageLabel = UILabel(style: item.style.message)
         messageLabel.numberOfLines = 0
         messageLabel.isAccessibilityElement = false

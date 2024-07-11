@@ -18,14 +18,20 @@ public struct UPIComponentDetails: PaymentMethodDetails {
     ///  The entered virtual payment address
     public let virtualPaymentAddress: String?
 
+    ///  The selected UPI app
+    public let appId: String?
+
     /// Initializes the UPI Component Details.
     /// - Parameters:
     ///   - type: UPI flow type.
     ///   - virtualPaymentAddress: Virtual payment address entered by user.
-    public init(type: String,
-                virtualPaymentAddress: String? = nil) {
+    public init(
+        type: String,
+        virtualPaymentAddress: String? = nil,
+        appId: String? = nil
+    ) {
         self.type = type
         self.virtualPaymentAddress = virtualPaymentAddress
+        self.appId = appId
     }
-
 }

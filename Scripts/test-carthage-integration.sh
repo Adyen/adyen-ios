@@ -136,6 +136,7 @@ cp "../Tests/IntegrationTests/Helpers/XCTestCase+RootViewController.swift" Tests
 cp "../Tests/IntegrationTests/Helpers/XCTestCase+Wait.swift" Tests/XCTestCase+Wait.swift
 cp "../Tests/IntegrationTests/Helpers/XCTestCase+Wait+UIKit.swift" Tests/XCTestCase+Wait+UIKit.swift
 cp "../Tests/IntegrationTests/Helpers/UIViewController+Search.swift" Tests/UIViewController+Search.swift
+cp "../Tests/IntegrationTests/Helpers/UIView+Search.swift" Tests/UIView+Search.swift
 cp "../Tests/UnitTests/Helpers/PaymentMethods+Equatable.swift" Tests/PaymentMethods+Equatable.swift
 cp "../Tests/UnitTests/Analytics/AnalyticsProviderMock.swift" Tests/AnalyticsProviderMock.swift
 cp "../Tests/UnitTests/Mocks/DummyData/Dummy.swift" Tests/Dummy.swift
