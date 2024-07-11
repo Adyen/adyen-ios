@@ -44,9 +44,9 @@ internal final class DAApprovalViewController: UIViewController {
         let removeAction = UIAlertAction(title: localizedString(.threeds2DAApprovalActionSheetRemove, localizationParameters),
                                          style: .destructive,
                                          handler: { [weak self] _ in
-                                             guard let self else { return }
-                                             present(removeCredentialAlert, animated: true)
-                                         })
+            guard let self else { return }
+            present(self.removeCredentialAlert, animated: true)
+        })
         let fallbackAction = UIAlertAction(title: localizedString(.threeds2DAApprovalActionSheetFallback, localizationParameters),
                                            style: .default,
                                            handler: { [weak self] _ in
@@ -124,7 +124,7 @@ internal final class DAApprovalViewController: UIViewController {
                                                       environment: context.apiContext.environment)
             imageLoader.load(url: cardTypeURL) { [weak self] image in
                 guard let self else { return }
-                approvalView.cardImage.image = image
+                self.approvalView.cardImage.image = image
             }
         }
 

@@ -78,7 +78,7 @@ internal final class DARegistrationViewController: UIViewController {
             let cardTypeURL = LogoURLProvider.logoURL(withName: cardType.rawValue, environment: context.apiContext.environment)
             imageLoader.load(url: cardTypeURL) { [weak self] image in
                 guard let self else { return }
-                registrationView.cardImage.image = image
+                self.registrationView.cardImage.image = image
             }
         } else {
             registrationView.cardAndAmountDetailsStackView.isHidden = true

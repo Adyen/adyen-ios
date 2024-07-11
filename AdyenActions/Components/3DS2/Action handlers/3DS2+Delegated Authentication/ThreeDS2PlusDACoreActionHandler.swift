@@ -89,23 +89,23 @@
                 case let .failure(error):
                     completionHandler(.failure(error))
                 case let .success(threeDSFingerprint):
-                    guard let self,
-                          let payloadForDA = daPayload(fingerprintAction) else {
+                    guard let self = self,
+                          let payloadForDA = self.daPayload(fingerprintAction) else {
                         // If there is no payload for delegated authentication approval, continue with the 3ds flow.
                         self?.delegatedAuthenticationState.attemptRegistration = true
                         completionHandler(.success(threeDSFingerprint))
                         return
                     }
                     
-                    startApprovalFlow(payloadForDA,
-                                      cardType: nil,
-                                      cardNumber: nil) { [weak self] result in
+                    self.startApprovalFlow(payloadForDA,
+                                           cardType: nil,
+                                           cardNumber: nil) { [weak self] result in
                         guard let self else { return }
                         
                         switch result {
                         case let .success(approvalResponse):
                             do {
-                                let threeDSFingerPrintWithDAPayload = try modifyFingerPrint(
+                                let threeDSFingerPrintWithDAPayload = try self.modifyFingerPrint(
                                     with: approvalResponse.daOutput,
                                     threeDSFingerPrint: threeDSFingerprint,
                                     deleteDelegatedAuthenticationCredential: approvalResponse.delete
@@ -158,15 +158,15 @@
             completion: @escaping (Result<(daOutput: String, delete: Bool?), ApprovalFlowError>) -> Void
         ) {
             isDeviceRegistered(delegatedAuthenticationInput: delegatedAuthenticationInput) { [weak self] registered in
-                guard let self else { return }
+                guard let self = self else { return }
                 if registered {
-                    showApprovalScreen(delegatedAuthenticationInput: delegatedAuthenticationInput,
-                                       cardType: cardType,
-                                       cardNumber: cardNumber,
-                                       completion: completion)
+                    self.showApprovalScreen(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                                            cardType: cardType,
+                                            cardNumber: cardNumber,
+                                            completion: completion)
                 } else {
                     // setting the state to attempt the registration flow.
-                    delegatedAuthenticationState.attemptRegistration = true
+                    self.delegatedAuthenticationState.attemptRegistration = true
                     completion(.failure(.deviceIsNotRegistered))
                 }
             }
@@ -192,19 +192,19 @@
                 component: self,
                 cardDetails: (cardNumber, cardType),
                 approveAuthenticationHandler: { [weak self] in
-                    guard let self else { return }
-                    userApprovedTransaction(delegatedAuthenticationInput: delegatedAuthenticationInput,
-                                            cardNumber: cardNumber,
-                                            completion: completion)
+                    guard let self = self else { return }
+                    self.userApprovedTransaction(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                                                 cardNumber: cardNumber,
+                                                 completion: completion)
                 },
                 fallbackHandler: {
                     completion(.failure(.fallbackTo3ds))
                 },
                 removeCredentialsHandler: { [weak self] in
-                    guard let self else { return }
-                    userChoseToRemoveCredentials(delegatedAuthenticationInput: delegatedAuthenticationInput,
-                                                 cardNumber: cardNumber,
-                                                 completion: completion)
+                    guard let self = self else { return }
+                    self.userChoseToRemoveCredentials(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                                                      cardNumber: cardNumber,
+                                                      completion: completion)
                 }
             )
         }
@@ -223,7 +223,7 @@
                              completion(.success((daOutput: $0, delete: nil)))
                          },
                          failedAuthenticationHandler: { [weak self] error in
-                             guard let self else { return }
+                             guard let self = self else { return }
                              self.presenter.showAuthenticationError(component: self) {
                                  completion(.failure(.authenticationServiceFailed(underlyingError: error)))
                              }
@@ -241,7 +241,7 @@
             authenticate(delegatedAuthenticationInput: delegatedAuthenticationInput,
                          cardNumber: cardNumber,
                          authenticatedHandler: { [weak self] sdkOutput in
-                             guard let self else { return }
+                             guard let self = self else { return }
                              self.presenter.showDeletionConfirmation(component: self) {
                                  self.delegatedAuthenticationState.attemptRegistration = false
                                  completion(.success((daOutput: sdkOutput, delete: true)))
@@ -331,18 +331,18 @@
                 case let .failure(error):
                     completionHandler(.failure(error))
                 case let .success(threeDSResult):
-                    guard let self,
-                          delegatedAuthenticationState.attemptRegistration,
-                          deviceSupportCheckerService.isDeviceSupported,
+                    guard let self = self,
+                          self.delegatedAuthenticationState.attemptRegistration,
+                          self.deviceSupportCheckerService.isDeviceSupported,
                           let registrationPayload = daPayload(challengeAction) else {
                         // If there is no payload for delegated authentication approval, continue with the 3ds flow.
                         completionHandler(.success(threeDSResult))
                         return
                     }
                     
-                    startRegistrationFlow(delegatedAuthenticationInput: registrationPayload,
-                                          cardNumber: nil,
-                                          cardType: nil) { result in
+                    self.startRegistrationFlow(delegatedAuthenticationInput: registrationPayload,
+                                               cardNumber: nil,
+                                               cardType: nil) { result in
                         switch result {
                         case let .success(registrationSDKOutput):
                             do {
@@ -376,10 +376,10 @@
                 component: self,
                 cardDetails: (cardNumber, cardType),
                 registerDelegatedAuthenticationHandler: { [weak self] in
-                    guard let self else { return }
-                    userChoseToRegister(delegatedAuthenticationInput: delegatedAuthenticationInput,
-                                        cardNumber: cardNumber,
-                                        completionHandler: completionHandler)
+                    guard let self = self else { return }
+                    self.userChoseToRegister(delegatedAuthenticationInput: delegatedAuthenticationInput,
+                                             cardNumber: cardNumber,
+                                             completionHandler: completionHandler)
                 },
                 fallbackHandler: {
                     // Improvement: Is it possible to track this through some event?
@@ -400,7 +400,7 @@
                     completionHandler(.success(success))
                 case let .failure(failure):
                     guard let self else { return }
-                    presenter.showRegistrationError(component: self) {
+                    self.presenter.showRegistrationError(component: self) {
                         completionHandler(.failure(.registrationServiceError(underlyingError: failure)))
                     }
                 }

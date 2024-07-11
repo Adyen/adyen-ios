@@ -87,9 +87,9 @@
 		00FFD8F02A865BFB008D4A5A /* ApplePaySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FFD8EF2A865BFB008D4A5A /* ApplePaySettingsView.swift */; };
 		00FFD8F12A865BFB008D4A5A /* ApplePaySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FFD8EF2A865BFB008D4A5A /* ApplePaySettingsView.swift */; };
 		2159173A2A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215917392A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift */; };
-		2159173C2A0D2B6E0004081E /* ThreeDS2DAScreenPresenterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2159173B2A0D2B6E0004081E /* ThreeDS2DAScreenPresenterMock.swift */; };
 		2172F8152C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2172F8142C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift */; };
 		2172F8172C20B93400BE0369 /* DAErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2172F8162C20B93400BE0369 /* DAErrorViewController.swift */; };
+		21B387B62C401C890029101E /* ThreeDS2DAScreenPresenterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2159173B2A0D2B6E0004081E /* ThreeDS2DAScreenPresenterMock.swift */; };
 		21B3A71329CA70FF00F48386 /* DelegatedAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B3A71229CA70FF00F48386 /* DelegatedAuthenticationView.swift */; };
 		21B3A71529CA720C00F48386 /* DARegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B3A71429CA720C00F48386 /* DARegistrationViewController.swift */; };
 		21B3A71729CA721F00F48386 /* DAApprovalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B3A71629CA721F00F48386 /* DAApprovalViewController.swift */; };
@@ -7152,6 +7152,7 @@
 				81825CB82AC59C3300F91912 /* UIView+Search.swift in Sources */,
 				C981254E2851E9AF006D1374 /* PaymentComponentSubject.swift in Sources */,
 				81A48DC62A5800EA00242341 /* AddressLookupViewControllerTests.swift in Sources */,
+				21B387B62C401C890029101E /* ThreeDS2DAScreenPresenterMock.swift in Sources */,
 				F9D5750E237475DB009C18B5 /* CardEncryptorCardTests.swift in Sources */,
 				F9C5F0DD25CAB8FC005A6E54 /* VoucherComponentTests.swift in Sources */,
 				E7E8343C24F3C81700EC3844 /* PublicKeyProviderMock.swift in Sources */,
@@ -7439,7 +7440,6 @@
 				F95A78B925C4302A0032CF7E /* ShareableVoucherView.swift in Sources */,
 				F9175FBA2594996000D653BE /* Action.swift in Sources */,
 				F95A78CD25C43C4F0032CF7E /* VoucherSeparatorView.swift in Sources */,
-				2159173C2A0D2B6E0004081E /* ThreeDS2DAScreenPresenterMock.swift in Sources */,
 				E745256925C1C9E1006A941F /* AdyenActionComponent.swift in Sources */,
 				F917616F25A30B6A00D653BE /* ThreeDSActionHandlerResult.swift in Sources */,
 				F9175FB92594996000D653BE /* AwaitAction.swift in Sources */,
