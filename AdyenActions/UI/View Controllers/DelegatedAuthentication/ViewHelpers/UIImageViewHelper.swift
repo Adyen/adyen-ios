@@ -5,3 +5,20 @@
 //
 
 import Foundation
+import UIKit
+@_spi(AdyenInternal) import Adyen
+
+extension UIImageView {
+    convenience init(infoImageStyle: ImageStyle, scopedInstance: Any) {
+        self.init(style: infoImageStyle)
+        self.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "infoImage")
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.backgroundColor = .clear
+        self.contentMode = .scaleAspectFit
+        
+        NSLayoutConstraint.activate(
+            [self.widthAnchor.constraint(equalToConstant: 16),
+             self.heightAnchor.constraint(equalToConstant: 16)]
+        )
+    }
+}

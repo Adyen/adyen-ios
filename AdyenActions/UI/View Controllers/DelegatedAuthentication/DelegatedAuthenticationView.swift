@@ -49,9 +49,10 @@ internal final class DelegatedAuthenticationView: UIView {
                                                         multiline: true,
                                                         scopeInstance: self)
     
-    internal lazy var tileAndSubtitleStackView: UIStackView = .make(arrangedSubviews: [logoImage, titleLabel, descriptionLabel],
+    internal lazy var tileAndSubtitleStackView: UIStackView = .init(arrangedSubviews: [logoImage, titleLabel, descriptionLabel],
                                                                     spacing: 8,
-                                                                    view: self)
+                                                                    view: self,
+                                                                    scopedInstance: self)
     
     // MARK: Payment Information
     
@@ -73,20 +74,22 @@ internal final class DelegatedAuthenticationView: UIView {
 
     internal lazy var cardNumberLabel: UILabel = .init(style: style.cardNumberTextStyle, accessibilityPostfix: "cardNumber", scopeInstance: self)
     
-    internal lazy var cardNumberStackView: UIStackView = .make(arrangedSubviews: [cardImage, cardNumberLabel],
+    internal lazy var cardNumberStackView: UIStackView = .init(arrangedSubviews: [cardImage, cardNumberLabel],
                                                                axis: .horizontal,
                                                                distribution: .equalSpacing,
                                                                alignment: .center,
                                                                spacing: 12,
-                                                               view: self)
+                                                               view: self,
+                                                               scopedInstance: self)
     
     internal lazy var cardAndAmountDetailsStackView: UIStackView = {
-        let stackView = UIStackView.make(arrangedSubviews: [amount, cardNumberStackView],
-                                         distribution: .fill,
-                                         alignment: .center,
-                                         spacing: 8,
-                                         view: self,
-                                         withBackground: true)
+        let stackView = UIStackView(arrangedSubviews: [amount, cardNumberStackView],
+                                    distribution: .fill,
+                                    alignment: .center,
+                                    spacing: 8,
+                                    view: self,
+                                    withBackground: true,
+                                    scopedInstance: self)
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 20, trailing: 16)
         return stackView
@@ -94,52 +97,54 @@ internal final class DelegatedAuthenticationView: UIView {
     
     // MARK: Additional Information
     
-    internal lazy var firstInfoImage: UIImageView = .makeInfoImage(style: style.infoImageStyle)
+    internal lazy var firstInfoImage: UIImageView = .init(infoImageStyle: style.infoImageStyle, scopedInstance: self)
     
     internal lazy var firstInfoLabel: UILabel = .init(style: style.additionalInformationTextStyle,
                                                       accessibilityPostfix: "additionalInformationLabel",
                                                       scopeInstance: self)
 
-    internal lazy var firstInfoStackView: UIStackView = .make(arrangedSubviews: [firstInfoImage, firstInfoLabel],
+    internal lazy var firstInfoStackView: UIStackView = .init(arrangedSubviews: [firstInfoImage, firstInfoLabel],
                                                               axis: .horizontal,
                                                               alignment: .center,
                                                               spacing: 12,
-                                                              view: self)
-    internal lazy var secondInfoImage: UIImageView = .makeInfoImage(style: style.infoImageStyle)
+                                                              view: self,
+                                                              scopedInstance: self)
+    internal lazy var secondInfoImage: UIImageView = .init(infoImageStyle: style.infoImageStyle, scopedInstance: self)
     
     internal lazy var secondInfoLabel: UILabel = .init(style: style.additionalInformationTextStyle,
                                                        accessibilityPostfix: "additionalInformationLabel",
                                                        scopeInstance: self)
     
-    internal lazy var secondInfoStackView: UIStackView = .make(arrangedSubviews: [secondInfoImage, secondInfoLabel],
+    internal lazy var secondInfoStackView: UIStackView = .init(arrangedSubviews: [secondInfoImage, secondInfoLabel],
                                                                axis: .horizontal,
                                                                alignment: .center,
                                                                spacing: 12,
-                                                               view: self)
+                                                               view: self,
+                                                               scopedInstance: self)
     
-    internal lazy var thirdInfoImage: UIImageView = .makeInfoImage(style: style.infoImageStyle)
+    internal lazy var thirdInfoImage: UIImageView = .init(infoImageStyle: style.infoImageStyle, scopedInstance: self)
     
     internal lazy var thirdInfoLabel: UILabel = .init(style: style.additionalInformationTextStyle,
                                                       accessibilityPostfix: "additionalInformationLabel",
                                                       scopeInstance: self)
 
-    internal lazy var thirdInfoStackView: UIStackView = {
-        .make(arrangedSubviews: [thirdInfoImage, thirdInfoLabel],
-              axis: .horizontal,
-              alignment: .center,
-              spacing: 12,
-              view: self)
-    }()
+    internal lazy var thirdInfoStackView: UIStackView = .init(arrangedSubviews: [thirdInfoImage, thirdInfoLabel],
+                                                              axis: .horizontal,
+                                                              alignment: .center,
+                                                              spacing: 12,
+                                                              view: self,
+                                                              scopedInstance: self)
 
     internal lazy var additionalInformationStackView: UIStackView = {
-        let stackView = UIStackView.make(arrangedSubviews: [firstInfoStackView,
-                                                            secondInfoStackView,
-                                                            thirdInfoStackView],
-                                         distribution: .fill,
-                                         alignment: .leading,
-                                         spacing: 8,
-                                         view: self,
-                                         withBackground: true)
+        let stackView = UIStackView(arrangedSubviews: [firstInfoStackView,
+                                                       secondInfoStackView,
+                                                       thirdInfoStackView],
+                                    distribution: .fill,
+                                    alignment: .leading,
+                                    spacing: 8,
+                                    view: self,
+                                    withBackground: true,
+                                    scopedInstance: self)
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16)
         return stackView
@@ -166,21 +171,23 @@ internal final class DelegatedAuthenticationView: UIView {
         return button
     }()
 
-    internal lazy var buttonsStackView: UIStackView = .make(arrangedSubviews: [firstButton,
+    internal lazy var buttonsStackView: UIStackView = .init(arrangedSubviews: [firstButton,
                                                                                secondButton],
                                                             distribution: .fillEqually,
                                                             spacing: 8,
-                                                            view: self)
+                                                            view: self,
+                                                            scopedInstance: self)
 
     // MARK: Container views
     
     internal lazy var scrollView = UIScrollView(frame: .zero)
 
-    internal lazy var contentStackView: UIStackView = .make(arrangedSubviews: [tileAndSubtitleStackView,
+    internal lazy var contentStackView: UIStackView = .init(arrangedSubviews: [tileAndSubtitleStackView,
                                                                                cardAndAmountDetailsStackView,
                                                                                additionalInformationStackView],
                                                             spacing: 16,
-                                                            view: self)
+                                                            view: self,
+                                                            scopedInstance: self)
 
     // MARK: - initializers
     
@@ -262,53 +269,5 @@ internal final class DelegatedAuthenticationView: UIView {
             }
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: workItem)
-    }
-}
-
-// MARK: - view creation helpers
-
-@available(iOS 16.0, *)
-extension UIStackView {
-    internal static func make(arrangedSubviews: [UIView],
-                              axis: NSLayoutConstraint.Axis = .vertical,
-                              distribution: UIStackView.Distribution = .fill,
-                              alignment: UIStackView.Alignment = .fill,
-                              spacing: CGFloat,
-                              view: UIView,
-                              withBackground: Bool = false) -> UIStackView {
-        let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
-        stackView.axis = axis
-        stackView.alignment = alignment
-        stackView.spacing = spacing
-        stackView.distribution = distribution
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        if withBackground {
-            let subView = UIView(frame: view.bounds)
-            subView.backgroundColor = UIColor.secondarySystemBackground
-            subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            stackView.insertSubview(subView, at: 0)
-            subView.layer.cornerRadius = 10.0
-            subView.layer.masksToBounds = true
-            subView.clipsToBounds = true
-        }
-        return stackView
-    }
-}
-
-@available(iOS 16.0, *)
-extension UIImageView {
-    internal static func makeInfoImage(style: ImageStyle) -> UIImageView {
-        let imageView = UIImageView(style: style)
-        imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "infoImage")
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .clear
-        imageView.contentMode = .scaleAspectFit
-        
-        NSLayoutConstraint.activate(
-            [imageView.widthAnchor.constraint(equalToConstant: 16),
-             imageView.heightAnchor.constraint(equalToConstant: 16)]
-        )
-        return imageView
     }
 }
