@@ -18,10 +18,10 @@ internal class BACSInputFormViewController: FormViewController, BACSInputFormVie
     // MARK: - Initializers
 
     internal init(title: String,
-                  scrollDisabled: Bool = false,
+                  scrollEnabled: Bool,
                   styleProvider: FormComponentStyle,
                   localizationParameters: LocalizationParameters? = nil) {
-        super.init(scrollEnabled: scrollDisabled,
+        super.init(scrollEnabled: scrollEnabled,
                    style: styleProvider,
                    localizationParameters: localizationParameters)
         self.title = title
