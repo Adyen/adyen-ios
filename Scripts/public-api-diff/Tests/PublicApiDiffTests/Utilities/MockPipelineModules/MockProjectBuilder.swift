@@ -10,9 +10,9 @@ import XCTest
 
 struct MockProjectBuilder: ProjectBuilding {
     
-    var onBuild: (ProjectSource) throws -> URL
+    var onBuild: (ProjectSource, String?) throws -> URL
     
-    func build(source: ProjectSource) throws -> URL {
-        try onBuild(source)
+    func build(source: ProjectSource, scheme: String?) throws -> URL {
+        try onBuild(source, scheme)
     }
 }

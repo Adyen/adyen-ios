@@ -21,6 +21,9 @@ struct PublicApiDiff: ParsableCommand {
     @Option(help: "Where to output the result (File path)")
     public var output: String?
     
+    @Option(help: "Which scheme to build")
+    public var scheme: String?
+    
     public func run() throws {
         
         let fileHandler = FileManager.default
@@ -35,6 +38,7 @@ struct PublicApiDiff: ParsableCommand {
         let pipelineOutput = try Pipeline(
             newProjectSource: newSource,
             oldProjectSource: oldSource,
+            scheme: scheme,
             projectBuilder: ProjectBuilder(baseWorkingDirectoryPath: workingDirectoryPath),
             abiGenerator: ABIGenerator(),
             libraryAnalyzer: LibraryAnalyzer(),

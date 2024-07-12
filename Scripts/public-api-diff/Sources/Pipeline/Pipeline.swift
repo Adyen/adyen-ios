@@ -9,19 +9,21 @@ import Foundation
 
 struct Pipeline {
     
-    var newProjectSource: ProjectSource
-    var oldProjectSource: ProjectSource
+    let newProjectSource: ProjectSource
+    let oldProjectSource: ProjectSource
+    let scheme: String?
     
-    var projectBuilder: any ProjectBuilding
-    var abiGenerator: any ABIGenerating
-    var libraryAnalyzer: any LibraryAnalyzing
-    var sdkDumpGenerator: any SDKDumpGenerating
-    var sdkDumpAnalyzer: any SDKDumpAnalyzing
-    var outputGenerator: any OutputGenerating
+    let projectBuilder: any ProjectBuilding
+    let abiGenerator: any ABIGenerating
+    let libraryAnalyzer: any LibraryAnalyzing
+    let sdkDumpGenerator: any SDKDumpGenerating
+    let sdkDumpAnalyzer: any SDKDumpAnalyzing
+    let outputGenerator: any OutputGenerating
     
     init(
         newProjectSource: ProjectSource,
         oldProjectSource: ProjectSource,
+        scheme: String?,
         projectBuilder: any ProjectBuilding,
         abiGenerator: any ABIGenerating,
         libraryAnalyzer: any LibraryAnalyzing,
@@ -31,6 +33,7 @@ struct Pipeline {
     ) {
         self.newProjectSource = newProjectSource
         self.oldProjectSource = oldProjectSource
+        self.scheme = scheme
         self.projectBuilder = projectBuilder
         self.abiGenerator = abiGenerator
         self.libraryAnalyzer = libraryAnalyzer
@@ -42,12 +45,12 @@ struct Pipeline {
     func run() throws -> String {
         
         // Building both projects from the respective source
-        let oldProjectUrl = try projectBuilder.build(source: oldProjectSource)
-        let newProjectUrl = try projectBuilder.build(source: newProjectSource)
+        let oldProjectUrl = try projectBuilder.build(source: oldProjectSource, scheme: scheme)
+        let newProjectUrl = try projectBuilder.build(source: newProjectSource, scheme: scheme)
         
         // Generating abi files from the respective builds
-        let oldAbiFiles = try abiGenerator.generate(for: oldProjectUrl)
-        let newAbiFiles = try abiGenerator.generate(for: newProjectUrl)
+        let oldAbiFiles = try abiGenerator.generate(for: oldProjectUrl, scheme: scheme)
+        let newAbiFiles = try abiGenerator.generate(for: newProjectUrl, scheme: scheme)
         
         let allTargets = Set(oldAbiFiles.map(\.targetName)).union(Set(newAbiFiles.map(\.targetName)))
         if allTargets.isEmpty { throw PipelineError.noTargetFound }

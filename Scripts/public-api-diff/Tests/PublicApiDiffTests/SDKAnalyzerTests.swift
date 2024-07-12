@@ -10,36 +10,6 @@ import XCTest
 /*
 class SDKAnalyzerTests: XCTestCase {
     
-    func test_analyze_noChanges() throws {
-        let mockShell = MockShell { command in "" }
-        
-        var mockFileHandler = MockFileHandler()
-        mockFileHandler.handleLoadData = { path in
-            let packageName = path.components(separatedBy: "/").first
-            let resourcePath = try XCTUnwrap(Bundle.module.path(forResource: packageName, ofType: "txt"))
-            return try XCTUnwrap(FileManager.default.contents(atPath: resourcePath))
-        }
-        mockFileHandler.handleFileExists = { _ in
-            true
-        }
-        
-        let xcodeTools = XcodeTools(shell: mockShell)
-        
-        let analyzer = SDKAnalyzer(
-            fileHandler: mockFileHandler,
-            xcodeTools: xcodeTools
-        )
-        
-        let expectedChanges: [String: [Change]] = [:]
-        
-        let changes = try analyzer.analyze(
-            old: "NewPackage",
-            new: "NewPackage"
-        )
-        
-        XCTAssertEqual(changes, expectedChanges)
-    }
-    
     func test_analyze_targetChanges() throws {
         
         let mockShell = MockShell { _ in

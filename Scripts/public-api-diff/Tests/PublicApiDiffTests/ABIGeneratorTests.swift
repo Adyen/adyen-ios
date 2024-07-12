@@ -27,7 +27,7 @@ class ABIGeneratorTests: XCTestCase {
         
         let abiGenerator = ABIGenerator(xcodeTools: xcodeTools, fileHandler: fileHandler)
         
-        let output = try abiGenerator.generate(for: URL(filePath: ""))
+        let output = try abiGenerator.generate(for: URL(filePath: ""), scheme: nil)
         let expectedOutput = [ABIGeneratorOutput]()
         XCTAssertEqual(output, expectedOutput)
     }

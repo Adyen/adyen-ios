@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ProjectBuilding {
-    func build(source: ProjectSource) throws -> URL
+    func build(source: ProjectSource, scheme: String?) throws -> URL
 }
 
 struct ABIGeneratorOutput: Equatable {
@@ -17,7 +17,7 @@ struct ABIGeneratorOutput: Equatable {
 }
 
 protocol ABIGenerating {
-    func generate(for projectDirectory: URL) throws -> [ABIGeneratorOutput]
+    func generate(for projectDirectory: URL, scheme: String?) throws -> [ABIGeneratorOutput]
 }
 
 protocol SDKDumpGenerating {

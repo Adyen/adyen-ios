@@ -20,7 +20,6 @@ struct LibraryAnalyzer: LibraryAnalyzing {
         let newPackagePath = PackageFileHelper.packagePath(for: newProjectUrl.path())
         
         if fileHandler.fileExists(atPath: oldPackagePath), fileHandler.fileExists(atPath: newPackagePath) {
-            // Swift package
             let oldPackageHelper = PackageFileHelper(packagePath: oldPackagePath, fileHandler: fileHandler)
             let newPackageHelper = PackageFileHelper(packagePath: newPackagePath, fileHandler: fileHandler)
             
@@ -29,7 +28,6 @@ struct LibraryAnalyzer: LibraryAnalyzing {
                 new: newPackageHelper.availableProducts()
             )
         } else {
-            // Xcode project
             return []
         }
     }

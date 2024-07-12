@@ -23,14 +23,14 @@ struct ProjectBuilder: ProjectBuilding {
         self.shell = shell
     }
     
-    func build(source: ProjectSource) throws -> URL {
-        try setupProject(from: source)
+    func build(source: ProjectSource, scheme: String?) throws -> URL {
+        try setupProject(from: source, scheme: scheme)
     }
 }
 
 private extension ProjectBuilder {
     
-    func setupProject(from source: ProjectSource) throws -> URL {
+    func setupProject(from source: ProjectSource, scheme: String?) throws -> URL {
         
         let sourceDirectoryPath: String
         
@@ -48,7 +48,8 @@ private extension ProjectBuilder {
             at: sourceWorkingDirectoryPath,
             sourceDirectoryPath: sourceDirectoryPath,
             fileHandler: fileHandler,
-            shell: shell
+            shell: shell,
+            isPackage: scheme == nil
         )
         
         let packagePath = PackageFileHelper.packagePath(for: sourceWorkingDirectoryPath)
@@ -57,7 +58,8 @@ private extension ProjectBuilder {
             projectDirectoryPath: sourceWorkingDirectoryPath,
             packageFileHelper: PackageFileHelper(packagePath: packagePath, fileHandler: fileHandler),
             xcodeTools: XcodeTools(shell: shell),
-            fileHandler: fileHandler
+            fileHandler: fileHandler,
+            scheme: scheme
         )
         
         switch source {
@@ -85,50 +87,59 @@ private extension ProjectBuilder {
         at destinationDirectoryPath: String,
         sourceDirectoryPath: String,
         fileHandler: FileHandling,
-        shell: ShellHandling
+        shell: ShellHandling,
+        isPackage: Bool
     ) throws {
         
         try fileHandler.createDirectory(atPath: destinationDirectoryPath)
         
-        let fileNameIgnoreList: Set<String> = [
-            ".build",
-            ".git",
-            ".github",
-            ".gitmodules",
-            ".codebeatignore",
-            ".swiftformat",
-            ".swiftpm",
-            ".DS_Store",
-            "Tests",
-            "Cartfile"
-        ]
+        var fileNameIgnoreList: Set<String> = [".build"]
+        var fileExtensionIgnoreList: Set<String> = []
         
-        var fileExtensionIgnoreList: Set<String> = [
-            ".yaml",
-            ".yml",
-            ".png",
-            ".docc",
-            ".md",
-            ".resolved",
-            ".podspec"
-        ]
-        
-        if fileHandler.fileExists(atPath: PackageFileHelper.packagePath(for: sourceDirectoryPath)) {
-            // Not copying over xcodeproj/xcworkspace files because otherwise
-            // xcodebuild prefers them over the Package.swift file when building
-            fileExtensionIgnoreList.insert(".xcodeproj")
-            fileExtensionIgnoreList.insert(".xcworkspace")
+        if isPackage {
+            fileNameIgnoreList = [
+                ".build",
+                ".git",
+                ".github",
+                ".gitmodules",
+                ".codebeatignore",
+                ".swiftformat",
+                ".swiftpm",
+                ".DS_Store",
+                "Tests",
+                "Cartfile"
+            ]
+            
+            fileExtensionIgnoreList = [
+                ".yaml",
+                ".yml",
+                ".png",
+                ".docc",
+                ".md",
+                ".resolved",
+                ".podspec",
+                // Not copying over xcodeproj/xcworkspace files because otherwise
+                // xcodebuild prefers them over the Package.swift file when building
+                ".xcodeproj",
+                ".xcworkspace"
+            ]
         }
         
         try fileHandler.contentsOfDirectory(atPath: sourceDirectoryPath).forEach { fileName in
-            if fileExtensionIgnoreList.contains(where: { fileName.hasSuffix($0) }) { return }
-            if fileNameIgnoreList.contains(where: { fileName == $0 }) { return }
+            if fileExtensionIgnoreList.contains(where: { fileName.hasSuffix($0) }) {
+                print("Skipping `\(fileName)`")
+                return
+            }
+            if fileNameIgnoreList.contains(where: { fileName == $0 }) {
+                print("Skipping `\(fileName)`")
+                return
+            }
             
             let sourceFilePath = sourceDirectoryPath.appending("/\(fileName)")
             let destinationFilePath = destinationDirectoryPath.appending("/\(fileName)")
             
             // Using shell here as it's faster than the FileManager
-            shell.execute("cp -a \(sourceFilePath) \(destinationFilePath)")
+            shell.execute("cp -a '\(sourceFilePath)' '\(destinationFilePath)'")
         }
     }
     
@@ -136,27 +147,27 @@ private extension ProjectBuilder {
         projectDirectoryPath: String,
         packageFileHelper: PackageFileHelper,
         xcodeTools: XcodeTools,
-        fileHandler: FileHandling
+        fileHandler: FileHandling,
+        scheme: String?
     ) throws {
+        var schemeToBuild: String
         
-        let isPackage = fileHandler.fileExists(atPath: PackageFileHelper.packagePath(for: projectDirectoryPath))
-        var scheme: String
-        
-        if isPackage {
+        if let scheme {
+            // If a project scheme was provided we just try to build it
+            schemeToBuild = scheme
+        } else {
             // Creating an `.library(name: "_allTargets", targets: [ALL_TARGETS])`
             // so we only have to build once and then can generate ABI files for every module from a single build
-            scheme = "_AllTargets"
-            try packageFileHelper.preparePackageWithConsolidatedLibrary(named: scheme)
-        } else {
-            fatalError("🚫 Only Swift Packages are supported for now")
+            schemeToBuild = "_AllTargets"
+            try packageFileHelper.preparePackageWithConsolidatedLibrary(named: schemeToBuild)
         }
         
         print("🛠️ Building project at `\(projectDirectoryPath)`")
         
         try xcodeTools.build(
             projectDirectoryPath: projectDirectoryPath,
-            scheme: scheme,
-            isPackage: isPackage
+            scheme: schemeToBuild,
+            isPackage: scheme == nil
         )
     }
 }

@@ -20,13 +20,27 @@ struct ABIGenerator: ABIGenerating {
         self.fileHandler = fileHandler
     }
     
-    func generate(for projectDirectory: URL) throws -> [ABIGeneratorOutput] {
+    func generate(for projectDirectory: URL, scheme: String?) throws -> [ABIGeneratorOutput] {
         
         print("📋 Generating ABI files for `\(projectDirectory.lastPathComponent)`")
         
         var output = [ABIGeneratorOutput]()
         
-        if fileHandler.fileExists(atPath: PackageFileHelper.packagePath(for: projectDirectory.path())) {
+        if let scheme {
+            // TODO: Check with other projects - this seems very specific:
+            
+            let swiftModuleDirectory = projectDirectory.appending(path: ".build/Build/Products/Debug-maccatalyst/\(scheme).framework/Modules/\(scheme).swiftmodule")
+            let swiftModuleDirectoryContent = try fileHandler.contentsOfDirectory(atPath: swiftModuleDirectory.path())
+            guard let abiJsonFilePath = swiftModuleDirectoryContent.first(where: {
+                $0.hasSuffix("abi.json")
+            }) else {
+                return [] // TODO: Throw an error if no abi.json can be found
+            }
+            
+            let abiJsonFileUrl = swiftModuleDirectory.appending(path: abiJsonFilePath)
+            return [.init(targetName: scheme, abiJsonFileUrl: abiJsonFileUrl)]
+            
+        } else {
             
             // Try to find the Package.swift file - if it exists, alter it and generate dumps for all modules
             let packageFileHelper = PackageFileHelper(
@@ -38,15 +52,6 @@ struct ABIGenerator: ABIGenerating {
                 let abiJsonFileUrl = try generateApiDump(for: target, projectDirectory: projectDirectory)
                 output.append(.init(targetName: target, abiJsonFileUrl: abiJsonFileUrl))
             }
-        } else {
-            // TODO: Implement
-            
-            // Go into the build folder and try to find the abi.json
-            
-            // TODO: Allow passing of an xcodproj/xcworkspace
-            // Once that's built the abi.json can be found here:
-            // .build/Build/Products/Debug-maccatalyst/Adyen3DS2_Swift.framework/
-            //      Versions/A/Modules/[NAME_OF_MODULE].swiftmodule/arm64-apple-ios-macabi.abi.json
         }
         
         return output

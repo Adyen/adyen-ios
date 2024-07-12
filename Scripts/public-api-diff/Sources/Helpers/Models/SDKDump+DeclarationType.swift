@@ -29,5 +29,7 @@ extension SDKDump {
         
         case subscriptDeclaration = "Subscript"
         case associatedType = "AssociatedType"
+        
+        case macro = "Macro"
     }
 }

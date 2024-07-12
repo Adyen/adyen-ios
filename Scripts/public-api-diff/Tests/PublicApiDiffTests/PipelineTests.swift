@@ -58,17 +58,22 @@ class PipelineTests: XCTestCase {
         let pipeline = Pipeline(
             newProjectSource: newProjectSource,
             oldProjectSource: oldProjectSource,
-            projectBuilder: MockProjectBuilder(onBuild: { source in
+            scheme: nil,
+            projectBuilder: MockProjectBuilder(onBuild: { source, scheme in
                 XCTAssertEqual(source, expectedSteps.first as? ProjectSource)
                 expectedSteps.removeFirst()
                 projectBuilderExpectation.fulfill()
                 
+                XCTAssertNil(scheme)
+                
                 return URL(filePath: source.description)
             }),
-            abiGenerator: MockABIGenerator(onGenerate: { url in
+            abiGenerator: MockABIGenerator(onGenerate: { url, scheme in
                 XCTAssertEqual(url, expectedSteps.first as? URL)
                 expectedSteps.removeFirst()
                 abiGeneratorExpectation.fulfill()
+                
+                XCTAssertNil(scheme)
                 
                 return [.init(targetName: "Target", abiJsonFileUrl: url)]
             }),
