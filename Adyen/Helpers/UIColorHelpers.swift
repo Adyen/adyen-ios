@@ -23,5 +23,4 @@ internal extension UIColor {
                        brightness: min(max(brightness * CGFloat(brightnessMultiple), 0.0), 1.0),
                        alpha: alpha)
     }
-    
 }

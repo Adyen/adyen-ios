@@ -46,5 +46,4 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem> {
     @objc internal func didSelectSubmitButton() {
         item.buttonSelectionHandler?()
     }
-    
 }

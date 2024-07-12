@@ -23,19 +23,11 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     case applePay
     case payPal
     case bcmc
-    case bcmcMobileQR
     case bcmcMobile
-    case weChatMiniProgram
-    case weChatQR
     case qiwiWallet
-    case weChatPayWeb
     case weChatPaySDK
     case mbWay
     case blik
-    case googlePay
-    case afterpay
-    case androidPay
-    case amazonPay
     case dokuWallet
     case dokuAlfamart
     case dokuIndomaret
@@ -59,9 +51,22 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     case mealVoucherSodexo
     case upi
     case cashAppPay
-    case bizum
     case twint
     case other(String)
+    
+    // Unsupported
+    case bcmcMobileQR
+    case weChatMiniProgram
+    case weChatQR
+    case weChatPayWeb
+    case googlePay
+    case afterpay
+    case androidPay
+    case amazonPay
+    case upiCollect
+    case upiIntent
+    case upiQr
+    case bizum
     
     // swiftlint:disable cyclomatic_complexity function_body_length
     
@@ -118,6 +123,9 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case "mealVoucher_FR_natixis": self = .mealVoucherNatixis
         case "mealVoucher_FR_sodexo": self = .mealVoucherSodexo
         case "upi": self = .upi
+        case "upi_collect": self = .upiCollect
+        case "upi_intent": self = .upiIntent
+        case "upi_qr": self = .upiQr
         case "cashapp": self = .cashAppPay
         case "bizum": self = .bizum
         case "twint": self = .twint
@@ -177,6 +185,9 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case .mealVoucherNatixis: return "mealVoucher_FR_natixis"
         case .mealVoucherSodexo: return "mealVoucher_FR_sodexo"
         case .upi: return "upi"
+        case .upiQr: return "upi_qr"
+        case .upiIntent: return "upi_intent"
+        case .upiCollect: return "upi_collect"
         case .cashAppPay: return "cashapp"
         case .bizum: return "bizum"
         case .twint: return "twint"
@@ -243,6 +254,9 @@ extension PaymentMethodType {
         case .mealVoucherNatixis: return "meal voucher natixis"
         case .mealVoucherSodexo: return "meal voucher sodexo"
         case .upi: return "UPI"
+        case .upiQr: return "UPI QR"
+        case .upiIntent: return "UPI Intent"
+        case .upiCollect: return "UPI Collect"
         case .cashAppPay: return "cash app"
         case .bizum: return "bizum"
         case .twint: return "twint"

@@ -28,5 +28,15 @@ public final class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
                 self.textField.textColor = item.style.text.disabledColor
             }
         }
+        
+        observe(item.isHidden) { [weak self] isHidden in
+            if isHidden {
+                self?.resignFirstResponder()
+            }
+        }
+        
+        item.focusHandler = { [weak self] in
+            self?.becomeFirstResponder()
+        }
     }
 }

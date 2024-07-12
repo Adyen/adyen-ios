@@ -3,11 +3,19 @@ name: Detect public API changes
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      new:
+        description: 'The branch & repository of the updated version "${sourceBranch}~${repository}"'
+        required: true
+      old:
+        description: 'The branch & repository of the comparison version "${targetBranch}~${repository}"'
+        required: true
       
 jobs:
 
   build:
-    runs-on: macos-14-xlarge # Apple Silicon Runner
+    runs-on: macos-14 # Apple Silicon Runner
 
     steps:
     - uses: actions/checkout@v4
@@ -20,12 +28,19 @@ jobs:
       with:
         xcode-version: '15.1'
         
+    - name: 🛠️ Run Tests
+      run: |
+        cd Scripts/public-api-diff
+        xcodebuild test -scheme public-api-diff -destination "platform=iOS,name=Any iOS Device" | xcpretty --utf --color && exit
+        
     - name: 🔍 Detect Changes
       run: |
-        Scripts/detect_public_api_changes/compare.sh ${branch} ${baseRepo}
+        PROJECT_FOLDER=$PWD
+        cd Scripts/public-api-diff        
+        swift run public-api-diff --new "${source}" --old "${target}" --output "$PROJECT_FOLDER/api_comparison.md"
       env:
-        branch: '${{github.event.pull_request.base.ref}}'
-        baseRepo: '${{github.server_url}}/${{github.repository}}.git'
+        source: '${{ github.event.inputs.new || github.head_ref }}~${{github.server_url}}/${{github.repository}}.git'
+        target: '${{ github.event.inputs.old || github.event.pull_request.base.ref }}~${{github.server_url}}/${{github.repository}}.git'
         
     - name: 📝 Comment on PR
       uses: thollander/actions-comment-pull-request@v2
