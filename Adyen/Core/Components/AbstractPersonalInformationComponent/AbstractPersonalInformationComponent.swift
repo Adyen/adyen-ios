@@ -35,6 +35,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
 
     internal lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
+            scrollEnabled: configuration.showSubmitButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
@@ -73,7 +74,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         }
         formViewController.append(FormSpacerItem())
         formViewController.append(button)
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+        formViewController.append(FormSpacerItem(numberOfSpaces: 4))
     }
 
     private func add(

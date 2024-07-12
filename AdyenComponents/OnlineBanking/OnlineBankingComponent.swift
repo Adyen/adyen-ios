@@ -125,6 +125,7 @@ public final class OnlineBankingComponent: PaymentComponent,
 
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
+            scrollEnabled: configuration.showSubmitButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )

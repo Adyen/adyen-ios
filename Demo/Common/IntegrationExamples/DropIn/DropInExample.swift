@@ -123,7 +123,11 @@ extension DropInExample: AdyenSessionDelegate {
     }
 
     func didFail(with error: Error, from component: Component, session: AdyenSession) {
-        dismissAndShowAlert(false, error.localizedDescription)
+        if (error as? ComponentError) == .cancelled {
+            presenter?.dismiss(completion: nil)
+        } else {
+            dismissAndShowAlert(false, error.localizedDescription)
+        }
     }
 
     func didOpenExternalApplication(component: ActionComponent, session: AdyenSession) {}

@@ -131,7 +131,7 @@ public class CardComponent: PresentableComponent,
     }
     
     public var requiresModalPresentation: Bool { storedCardComponent?.requiresModalPresentation ?? true }
-    
+
     public func stopLoading() {
         // since storedCardComponent is instantiated through this class
         // cardViewController should not be accessed when it's the storedCardComponent
@@ -140,7 +140,13 @@ public class CardComponent: PresentableComponent,
         
         cardViewController.stopLoading()
     }
-    
+
+    public func submit() {
+        guard !configuration.showSubmitButton else { return }
+
+        didSelectSubmitButton()
+    }
+
     // MARK: - Stored Card
     
     internal lazy var storedCardComponent: (PaymentComponent & PresentableComponent)? = {

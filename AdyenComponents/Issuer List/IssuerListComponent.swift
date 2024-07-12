@@ -168,7 +168,7 @@ extension IssuerListComponent {
         
         /// The UI style of the component.
         public var style: ListComponentStyle
-        
+
         public var localizationParameters: LocalizationParameters?
         
         /// Initializes the configuration for Issuer list type components.

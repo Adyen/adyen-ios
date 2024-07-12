@@ -47,6 +47,9 @@ public final class GiftCardComponent: PresentableComponent,
     /// Describes the component's UI style.
     public let style: FormComponentStyle
 
+    /// A boolean value that determines whether the payment button is displayed. Defaults to `true`.
+    public private(set) var showSubmitButton: Bool
+
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
 
@@ -69,16 +72,20 @@ public final class GiftCardComponent: PresentableComponent,
     ///   - context:The context object for this component.
     ///   - amount: The amount to pay.
     ///   - style: The Component's UI style.
+    ///   - showSubmitButton: Boolean value that determines whether the payment button is displayed.
+    ///   Defaults to `true`.
     ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
     public convenience init(paymentMethod: GiftCardPaymentMethod,
                             context: AdyenContext,
                             amount: Amount,
                             style: FormComponentStyle = FormComponentStyle(),
+                            showSubmitButton: Bool = true,
                             showsSecurityCodeField: Bool = true) {
         self.init(partialPaymentMethodType: .giftCard(paymentMethod),
                   context: context,
                   amount: amount,
                   style: style,
+                  showSubmitButton: showSubmitButton,
                   showsSecurityCodeField: showsSecurityCodeField,
                   publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
@@ -90,16 +97,20 @@ public final class GiftCardComponent: PresentableComponent,
     ///   - context:The context object for this component.
     ///   - amount: The amount to pay.
     ///   - style: The Component's UI style.
+    ///   - showSubmitButton: Boolean value that determines whether the payment button is displayed.
+    ///   Defaults to `true`.
     ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
     public convenience init(paymentMethod: MealVoucherPaymentMethod,
                             context: AdyenContext,
                             amount: Amount,
                             style: FormComponentStyle = FormComponentStyle(),
+                            showSubmitButton: Bool = true,
                             showsSecurityCodeField: Bool = true) {
         self.init(partialPaymentMethodType: .mealVoucher(paymentMethod),
                   context: context,
                   amount: amount,
                   style: style,
+                  showSubmitButton: showSubmitButton,
                   showsSecurityCodeField: showsSecurityCodeField,
                   publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
     }
@@ -108,11 +119,13 @@ public final class GiftCardComponent: PresentableComponent,
                   context: AdyenContext,
                   amount: Amount,
                   style: FormComponentStyle = FormComponentStyle(),
+                  showSubmitButton: Bool = true,
                   showsSecurityCodeField: Bool = true,
                   publicKeyProvider: AnyPublicKeyProvider) {
         self.partialPaymentMethodType = partialPaymentMethodType
         self.context = context
         self.style = style
+        self.showSubmitButton = showSubmitButton
         self.showsSecurityCodeField = showsSecurityCodeField
         self.publicKeyProvider = publicKeyProvider
         self.amount = amount
@@ -127,6 +140,7 @@ public final class GiftCardComponent: PresentableComponent,
     private lazy var formViewController: FormViewController = {
 
         let formViewController = FormViewController(
+            scrollEnabled: showSubmitButton,
             style: style,
             localizationParameters: localizationParameters
         )
@@ -140,7 +154,6 @@ public final class GiftCardComponent: PresentableComponent,
             formViewController.append(securityCodeItem)
         case (.giftCard, false):
             break // Nothing additionally to add
-            
         case (.mealVoucher, true):
             let splitTextItem = FormSplitItem(items: expiryDateItem, securityCodeItem,
                                               style: style.textField)

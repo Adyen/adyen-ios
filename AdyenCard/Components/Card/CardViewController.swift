@@ -87,6 +87,7 @@ internal class CardViewController: FormViewController {
         }
         
         super.init(
+            scrollEnabled: configuration.showSubmitButton,
             style: formStyle,
             localizationParameters: localizationParameters
         )
@@ -286,9 +287,11 @@ extension CardViewController {
             append(billingAddressItem)
         }
 
-        append(FormSpacerItem())
-        append(items.button)
-        append(FormSpacerItem(numberOfSpaces: 2))
+        if configuration.showSubmitButton {
+            append(FormSpacerItem())
+            append(items.button)
+            append(FormSpacerItem(numberOfSpaces: 2))
+        }
     }
     
     private var billingAddressItem: FormItem? {
@@ -296,6 +299,7 @@ extension CardViewController {
         switch configuration.billingAddress.mode {
         case .lookup:
             return items.billingAddressPickerItem
+
         case .full:
             return items.billingAddressPickerItem
             

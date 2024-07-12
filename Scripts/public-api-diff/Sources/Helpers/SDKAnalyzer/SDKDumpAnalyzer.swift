@@ -53,7 +53,7 @@ enum SDKDumpAnalyzer {
         
         changes += lhs.children.flatMap { lhsElement in
 
-            // We're comparing the definition which means that additions to or removals from a definition 
+            // We're comparing the definition which means that additions to or removals from a definition
             // (e.g. adding protocol conformance or a new/changed parameter name) will cause an element
             // to be marked as added/removed.
             // This simplifies the script and also makes it more accurate
