@@ -16,17 +16,16 @@ class OutputGeneratorTests: XCTestCase {
         _Comparing `new_source` to `old_source`_
 
         ---
-        **Analyzed modules:** Target_1
+        **Analyzed targets:** Target_1
         """
         
-        let outputGenerator = MarkdownOutputGenerator(
-            changesPerTarget: [:],
-            allTargetNames: ["Target_1"],
+        let outputGenerator = MarkdownOutputGenerator()
+        let output = outputGenerator.generate(
+            from: [:],
+            allTargets: ["Target_1"],
             oldSource: .local(path: "old_source"),
             newSource: .local(path: "new_source")
         )
-        
-        let output = outputGenerator.generate()
         XCTAssertEqual(output, expectedOutput)
     }
     
@@ -41,17 +40,17 @@ class OutputGeneratorTests: XCTestCase {
         - ❇️  Some Addition
 
         ---
-        **Analyzed modules:** Target_1
+        **Analyzed targets:** Target_1
         """
         
-        let outputGenerator = MarkdownOutputGenerator(
-            changesPerTarget: ["Target_1": [.init(changeType: .addition, parentName: "", changeDescription: "Some Addition")]],
-            allTargetNames: ["Target_1"],
+        let outputGenerator = MarkdownOutputGenerator()
+        
+        let output = outputGenerator.generate(
+            from: ["Target_1": [.init(changeType: .addition, parentName: "", changeDescription: "Some Addition")]],
+            allTargets: ["Target_1"],
             oldSource: .local(path: "old_source"),
             newSource: .local(path: "new_source")
         )
-        
-        let output = outputGenerator.generate()
         XCTAssertEqual(output, expectedOutput)
     }
     
@@ -70,11 +69,13 @@ class OutputGeneratorTests: XCTestCase {
         - 😶‍🌫️ Another Removal
 
         ---
-        **Analyzed modules:** Target_1, Target_2
+        **Analyzed targets:** Target_1, Target_2
         """
 
-        let outputGenerator = MarkdownOutputGenerator(
-            changesPerTarget: [
+        let outputGenerator = MarkdownOutputGenerator()
+        
+        let output = outputGenerator.generate(
+            from: [
                 "Target_1": [
                     .init(changeType: .addition, parentName: "", changeDescription: "Some Addition"),
                     .init(changeType: .removal, parentName: "", changeDescription: "Some Removal")
@@ -84,12 +85,10 @@ class OutputGeneratorTests: XCTestCase {
                     .init(changeType: .removal, parentName: "", changeDescription: "Another Removal")
                 ]
             ],
-            allTargetNames: ["Target_1", "Target_2"],
+            allTargets: ["Target_1", "Target_2"],
             oldSource: .remote(branch: "old_branch", repository: "old_repository"),
             newSource: .local(path: "new_source")
         )
-        
-        let output = outputGenerator.generate()
         XCTAssertEqual(output, expectedOutput)
     }
 }

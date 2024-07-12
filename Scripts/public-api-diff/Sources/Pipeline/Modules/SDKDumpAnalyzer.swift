@@ -6,35 +6,25 @@
 
 import Foundation
 
-enum SDKDumpAnalyzer {
+struct SDKDumpAnalyzer: SDKDumpAnalyzing {
     
-    static func analyzeSdkDump(
-        newDump: SDKDump?,
-        oldDump: SDKDump?
-    ) -> [SDKAnalyzer.Change] {
+    func analyze(
+        old: SDKDump,
+        new: SDKDump
+    ) -> [Change] {
         
-        guard newDump != oldDump else { return [] }
-        
-        guard let newDump else {
-            return [.init(changeType: .removal, parentName: "", changeDescription: "Target was removed")]
-        }
-        
-        guard let oldDump else {
-            return [.init(changeType: .addition, parentName: "", changeDescription: "Target was added")]
-        }
-        
-        return recursiveCompare(
-            element: oldDump.root,
-            to: newDump.root,
+        return Self.recursiveCompare(
+            element: old.root,
+            to: new.root,
             oldFirst: true
-        ) + recursiveCompare(
-            element: newDump.root,
-            to: oldDump.root,
+        ) + Self.recursiveCompare(
+            element: new.root,
+            to: old.root,
             oldFirst: false
         )
     }
     
-    private static func recursiveCompare(element lhs: SDKDump.Element, to rhs: SDKDump.Element, oldFirst: Bool) -> [SDKAnalyzer.Change] {
+    private static func recursiveCompare(element lhs: SDKDump.Element, to rhs: SDKDump.Element, oldFirst: Bool) -> [Change] {
         if lhs == rhs { return [] }
         
         if lhs.isSpiInternal, rhs.isSpiInternal {
@@ -42,7 +32,7 @@ enum SDKDumpAnalyzer {
             return []
         }
         
-        var changes = [SDKAnalyzer.Change]()
+        var changes = [Change]()
         
         if oldFirst, lhs.definition != rhs.definition {
             changes += [

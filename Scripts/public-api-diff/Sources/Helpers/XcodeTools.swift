@@ -8,6 +8,8 @@ import Foundation
 
 struct XcodeToolsError: LocalizedError, CustomDebugStringConvertible {
     var errorDescription: String
+    var underlyingError: String
+    
     var debugDescription: String { errorDescription }
 }
 
@@ -27,20 +29,29 @@ struct XcodeTools {
     
     func build(
         projectDirectoryPath: String,
-        allTargetsLibraryName: String
+        scheme: String,
+        isPackage: Bool
     ) throws {
-        let command = [
+        var command = [
             "cd \(projectDirectoryPath);",
-            "xcodebuild -scheme \"\(allTargetsLibraryName)\"",
+            "xcodebuild -scheme \"\(scheme)\"",
             "-derivedDataPath \(Constants.derivedDataPath)",
             iOSTarget,
             "-destination \"platform=iOS,name=Any iOS Device\"",
-            "-skipPackagePluginValidation"
         ]
+        
+        if isPackage {
+            command += [
+                "-skipPackagePluginValidation"
+            ]
+        }
         
         let result = shell.execute(command.joined(separator: " "))
         if result.range(of: "xcodebuild: error:") != nil || result.range(of: "BUILD FAILED") != nil {
-            throw XcodeToolsError(errorDescription: "💥 Building project failed")
+            throw XcodeToolsError(
+                errorDescription: "💥 Building project failed",
+                underlyingError: result
+            )
         }
     }
     

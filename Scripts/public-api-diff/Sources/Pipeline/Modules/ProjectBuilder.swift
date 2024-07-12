@@ -1,64 +1,36 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+//  File.swift
+//  
 //
-// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//  Created by Alexander Guretzki on 12/07/2024.
 //
 
 import Foundation
 
-struct ProjectHelper {
+struct ProjectBuilder: ProjectBuilding {
     
-    private let workingDirectoryPath: String
+    private let baseWorkingDirectoryPath: String
     private let fileHandler: FileHandling
     private let shell: ShellHandling
     
     init(
-        workingDirectoryPath: String,
-        fileHandler: FileHandling,
-        shell: ShellHandling
+        baseWorkingDirectoryPath: String,
+        fileHandler: FileHandling = FileManager.default,
+        shell: ShellHandling = Shell()
     ) {
-        self.workingDirectoryPath = workingDirectoryPath
+        self.baseWorkingDirectoryPath = baseWorkingDirectoryPath
         self.fileHandler = fileHandler
         self.shell = shell
     }
     
-    func setup(
-        old oldSource: ProjectSource,
-        new newSource: ProjectSource,
-        _ body: (_ oldWorkingDirectoryPath: String, _ newWorkingDirectoryPath: String) throws -> Void
-    ) throws {
-        
-        try fileHandler.createCleanDirectory(atPath: workingDirectoryPath)
-        defer { cleanup() }
-        
-        do {
-            print("🏗️ Setting up working directory for new version")
-            let newWorkingDirectoryPath = try setupProject(from: newSource)
-            
-            print("🏗️ Setting up working directory for old version")
-            let oldWorkingDirectoryPath = try setupProject(from: oldSource)
-            
-            try body(oldWorkingDirectoryPath, newWorkingDirectoryPath)
-        } catch {
-            cleanup()
-            throw error
-        }
+    func build(source: ProjectSource) throws -> URL {
+        try setupProject(from: source)
     }
 }
 
-private extension ProjectHelper {
-
-    func retrieveRemoteProject(branchOrTag: String, repository: String) throws -> String {
-        
-        let currentDirectory = fileHandler.currentDirectoryPath
-        let targetDirectoryPath = currentDirectory.appending("\(UUID().uuidString)")
-        
-        let git = Git(shell: shell, fileHandler: fileHandler)
-        try git.clone(repository, at: branchOrTag, targetDirectoryPath: targetDirectoryPath)
-        return targetDirectoryPath
-    }
+private extension ProjectBuilder {
     
-    func setupProject(from source: ProjectSource) throws -> String {
+    func setupProject(from source: ProjectSource) throws -> URL {
         
         let sourceDirectoryPath: String
         
@@ -70,7 +42,7 @@ private extension ProjectHelper {
             sourceDirectoryPath = try retrieveRemoteProject(branchOrTag: branchOrTag, repository: repository)
         }
 
-        let sourceWorkingDirectoryPath = workingDirectoryPath.appending("/\(UUID().uuidString)")
+        let sourceWorkingDirectoryPath = baseWorkingDirectoryPath.appending("/\(UUID().uuidString)")
         
         try Self.setupIndividualWorkingDirectory(
             at: sourceWorkingDirectoryPath,
@@ -84,7 +56,8 @@ private extension ProjectHelper {
         try Self.buildProject(
             projectDirectoryPath: sourceWorkingDirectoryPath,
             packageFileHelper: PackageFileHelper(packagePath: packagePath, fileHandler: fileHandler),
-            xcodeTools: XcodeTools(shell: shell)
+            xcodeTools: XcodeTools(shell: shell),
+            fileHandler: fileHandler
         )
         
         switch source {
@@ -95,7 +68,17 @@ private extension ProjectHelper {
             try fileHandler.removeItem(atPath: sourceDirectoryPath)
         }
         
-        return sourceWorkingDirectoryPath
+        return URL(filePath: sourceWorkingDirectoryPath)
+    }
+    
+    func retrieveRemoteProject(branchOrTag: String, repository: String) throws -> String {
+        
+        let currentDirectory = fileHandler.currentDirectoryPath
+        let targetDirectoryPath = currentDirectory.appending("/\(UUID().uuidString)")
+        
+        let git = Git(shell: shell, fileHandler: fileHandler)
+        try git.clone(repository, at: branchOrTag, targetDirectoryPath: targetDirectoryPath)
+        return targetDirectoryPath
     }
     
     static func setupIndividualWorkingDirectory(
@@ -120,17 +103,22 @@ private extension ProjectHelper {
             "Cartfile"
         ]
         
-        let fileExtensionIgnoreList: Set<String> = [
+        var fileExtensionIgnoreList: Set<String> = [
             ".yaml",
             ".yml",
             ".png",
             ".docc",
-            ".xcodeproj",
-            ".xcworkspace",
             ".md",
             ".resolved",
             ".podspec"
         ]
+        
+        if fileHandler.fileExists(atPath: PackageFileHelper.packagePath(for: sourceDirectoryPath)) {
+            // Not copying over xcodeproj/xcworkspace files because otherwise
+            // xcodebuild prefers them over the Package.swift file when building
+            fileExtensionIgnoreList.insert(".xcodeproj")
+            fileExtensionIgnoreList.insert(".xcworkspace")
+        }
         
         try fileHandler.contentsOfDirectory(atPath: sourceDirectoryPath).forEach { fileName in
             if fileExtensionIgnoreList.contains(where: { fileName.hasSuffix($0) }) { return }
@@ -147,21 +135,28 @@ private extension ProjectHelper {
     static func buildProject(
         projectDirectoryPath: String,
         packageFileHelper: PackageFileHelper,
-        xcodeTools: XcodeTools
+        xcodeTools: XcodeTools,
+        fileHandler: FileHandling
     ) throws {
         
-        let allTargetsLibraryName = "_AllTargets"
-        try packageFileHelper.preparePackageWithConsolidatedLibrary(named: allTargetsLibraryName)
+        let isPackage = fileHandler.fileExists(atPath: PackageFileHelper.packagePath(for: projectDirectoryPath))
+        var scheme: String
+        
+        if isPackage {
+            // Creating an `.library(name: "_allTargets", targets: [ALL_TARGETS])`
+            // so we only have to build once and then can generate ABI files for every module from a single build
+            scheme = "_AllTargets"
+            try packageFileHelper.preparePackageWithConsolidatedLibrary(named: scheme)
+        } else {
+            fatalError("🚫 Only Swift Packages are supported for now")
+        }
         
         print("🛠️ Building project at `\(projectDirectoryPath)`")
         
         try xcodeTools.build(
             projectDirectoryPath: projectDirectoryPath,
-            allTargetsLibraryName: allTargetsLibraryName
+            scheme: scheme,
+            isPackage: isPackage
         )
-    }
-    
-    func cleanup() {
-        try? fileHandler.removeItem(atPath: workingDirectoryPath)
     }
 }

@@ -13,12 +13,10 @@ class SDKDumpAnalyzerTests: XCTestCase {
         
         let newDump = SDKDump(root: .init(kind: "kind", name: "name", printedName: "printedName"))
         
-        let expectedChanges: [SDKAnalyzer.Change] = []
+        let expectedChanges: [Change] = []
         
-        let changes = SDKDumpAnalyzer.analyzeSdkDump(
-            newDump: newDump,
-            oldDump: newDump
-        )
+        let analyzer = SDKDumpAnalyzer()
+        let changes = analyzer.analyze(old: newDump, new: newDump)
         
         XCTAssertEqual(changes, expectedChanges)
     }
@@ -28,14 +26,15 @@ class SDKDumpAnalyzerTests: XCTestCase {
         let newDump = SDKDump(root: .init(kind: "kind", name: "name", printedName: "printedName"))
         let oldDump = SDKDump(root: .init(kind: "old_kind", name: "old_name", printedName: "old_printedName"))
         
-        let expectedChanges: [SDKAnalyzer.Change] = [
+        let expectedChanges: [Change] = [
             .init(changeType: .removal, parentName: "", changeDescription: "`public old_printedName` was removed"),
             .init(changeType: .addition, parentName: "", changeDescription: "`public printedName` was added")
         ]
         
-        let changes = SDKDumpAnalyzer.analyzeSdkDump(
-            newDump: newDump,
-            oldDump: oldDump
+        let analyzer = SDKDumpAnalyzer()
+        let changes = analyzer.analyze(
+            old: oldDump,
+            new: newDump
         )
         
         XCTAssertEqual(changes, expectedChanges)
@@ -66,26 +65,27 @@ class SDKDumpAnalyzerTests: XCTestCase {
         
         // Adding Child
         
-        let expectedChangesAdded: [SDKAnalyzer.Change] = [
+        let expectedChangesAdded: [Change] = [
             .init(changeType: .addition, parentName: "parent", changeDescription: "`public childPrintedName` was added")
         ]
         
-        let changesAdded = SDKDumpAnalyzer.analyzeSdkDump(
-            newDump: newDump,
-            oldDump: oldDump
+        let analyzer = SDKDumpAnalyzer()
+        let changesAdded = analyzer.analyze(
+            old: oldDump,
+            new: newDump
         )
         
         XCTAssertEqual(changesAdded, expectedChangesAdded)
         
         // Removing Child
         
-        let expectedChangesRemoved: [SDKAnalyzer.Change] = [
+        let expectedChangesRemoved: [Change] = [
             .init(changeType: .removal, parentName: "parent", changeDescription: "`public childPrintedName` was removed")
         ]
         
-        let changesRemoved = SDKDumpAnalyzer.analyzeSdkDump(
-            newDump: oldDump,
-            oldDump: newDump
+        let changesRemoved = analyzer.analyze(
+            old: newDump,
+            new: oldDump
         )
         
         XCTAssertEqual(changesRemoved, expectedChangesRemoved)
@@ -133,7 +133,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
             )
         )
         
-        let expectedChanges: [SDKAnalyzer.Change] = [
+        let expectedChanges: [Change] = [
             .init(changeType: .removal, parentName: "parent", changeDescription: "`public struct childPrintedName` was removed"),
             .init(changeType: .removal, parentName: "parent", changeDescription: "`public class spiChildPrintedName` was removed"),
             .init(changeType: .removal, parentName: "parent.enumChild", changeDescription: "`public static var staticLetPrintedName` was removed"),
@@ -143,14 +143,16 @@ class SDKDumpAnalyzerTests: XCTestCase {
             .init(changeType: .addition, parentName: "parent.enumChild", changeDescription: "`public case newCasePrintedName` was added")
         ]
         
-        let changes = SDKDumpAnalyzer.analyzeSdkDump(
-            newDump: newDump,
-            oldDump: oldDump
+        let analyzer = SDKDumpAnalyzer()
+        let changes = analyzer.analyze(
+            old: oldDump,
+            new: newDump
         )
 
         XCTAssertEqual(changes, expectedChanges)
     }
     
+    /*
     func test_targetChange() throws {
         
         let dump = SDKDump(
@@ -163,28 +165,30 @@ class SDKDumpAnalyzerTests: XCTestCase {
         
         // Adding Target
         
-        let expectedChangesAdded: [SDKAnalyzer.Change] = [
+        let expectedChangesAdded: [Change] = [
             .init(changeType: .addition, parentName: "", changeDescription: "Target was added")
         ]
         
-        let changesAdded = SDKDumpAnalyzer.analyzeSdkDump(
-            newDump: dump,
-            oldDump: nil
+        let analyzer = SDKDumpAnalyzer()
+        let changes = analyzer.analyze(
+            old: nil,
+            new: dump
         )
 
         XCTAssertEqual(changesAdded, expectedChangesAdded)
         
         // Removing Target
         
-        let expectedChangesRemoved: [SDKAnalyzer.Change] = [
+        let expectedChangesRemoved: [Change] = [
             .init(changeType: .removal, parentName: "", changeDescription: "Target was removed")
         ]
         
-        let changesRemoved = SDKDumpAnalyzer.analyzeSdkDump(
-            newDump: nil,
-            oldDump: dump
+        let changesRemoved = analyzer.analyze(
+            old: dump,
+            new: nil
         )
         
         XCTAssertEqual(changesRemoved, expectedChangesRemoved)
     }
+     */
 }

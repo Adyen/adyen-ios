@@ -23,10 +23,6 @@ struct PublicApiDiff: ParsableCommand {
     
     public func run() throws {
         
-        // TODO: Move all of this code into a single testable module
-        
-        let shell = Shell()
-        let xcodeTools = XcodeTools(shell: shell)
         let fileHandler = FileManager.default
         let oldSource = try ProjectSource.from(old, fileHandler: fileHandler)
         let newSource = try ProjectSource.from(new, fileHandler: fileHandler)
@@ -36,49 +32,21 @@ struct PublicApiDiff: ParsableCommand {
         let currentDirectory = fileHandler.currentDirectoryPath
         let workingDirectoryPath = currentDirectory.appending("/tmp-public-api-diff")
         
-        let projectHelper = ProjectHelper(
-            workingDirectoryPath: workingDirectoryPath,
-            fileHandler: fileHandler,
-            shell: shell
-        )
+        let pipelineOutput = try Pipeline(
+            newProjectSource: newSource,
+            oldProjectSource: oldSource,
+            projectBuilder: ProjectBuilder(baseWorkingDirectoryPath: workingDirectoryPath),
+            abiGenerator: ABIGenerator(),
+            libraryAnalyzer: LibraryAnalyzer(),
+            sdkDumpGenerator: SDKDumpGenerator(),
+            sdkDumpAnalyzer: SDKDumpAnalyzer(),
+            outputGenerator: MarkdownOutputGenerator()
+        ).run()
         
-        try projectHelper.setup(
-            old: oldSource,
-            new: newSource
-        ) {
-            oldProjectDirectoryPath,
-                newProjectDirectoryPath in
-            
-            let sdkAnalyzer = SDKAnalyzer(
-                fileHandler: fileHandler,
-                xcodeTools: xcodeTools
-            )
-            
-            let changesPerTarget = try sdkAnalyzer.analyze(
-                old: oldProjectDirectoryPath,
-                new: newProjectDirectoryPath
-            )
-            
-            let allAvailableTargets = try PackageFileHelper.availableTargets(
-                oldProjectDirectoryPath: oldProjectDirectoryPath,
-                newProjectDirectoryPath: newProjectDirectoryPath,
-                fileHandler: fileHandler
-            )
-            
-            let outputGenerator = MarkdownOutputGenerator(
-                changesPerTarget: changesPerTarget,
-                allTargetNames: allAvailableTargets,
-                oldSource: oldSource,
-                newSource: newSource
-            )
-            
-            let diffOutput = outputGenerator.generate()
-            
-            if let output {
-                try fileHandler.write(diffOutput, to: output)
-            } else {
-                print(diffOutput)
-            }
+        if let output {
+            try fileHandler.write(pipelineOutput, to: output)
+        } else {
+            print(pipelineOutput)
         }
     }
 }

@@ -7,34 +7,22 @@
 import Foundation
 
 /// Allows generation of human readable output from the provided information
-struct MarkdownOutputGenerator {
-    
-    let changesPerTarget: [String: [SDKAnalyzer.Change]]
-    let allTargetNames: [String]
-    let oldSource: ProjectSource
-    let newSource: ProjectSource
-    
-    init(
-        changesPerTarget: [String: [SDKAnalyzer.Change]],
-        allTargetNames: [String],
-        oldSource: ProjectSource,
-        newSource: ProjectSource
-    ) {
-        self.changesPerTarget = changesPerTarget
-        self.allTargetNames = allTargetNames
-        self.oldSource = oldSource
-        self.newSource = newSource
-    }
+struct MarkdownOutputGenerator: OutputGenerating {
     
     /// Generates human readable output from the provided information
-    func generate() -> String {
+    func generate(
+        from changesPerTarget: [String: [Change]],
+        allTargets: [String],
+        oldSource: ProjectSource,
+        newSource: ProjectSource
+    ) -> String {
         
         let separator = "\n---"
-        let changes = changeLines
+        let changes = Self.changeLines(changesPerModule: changesPerTarget)
         
         var lines = [
-            title,
-            repoInfo,
+            Self.title(changesPerTarget: changesPerTarget),
+            Self.repoInfo(oldSource: oldSource, newSource: newSource),
             separator
         ]
         
@@ -43,7 +31,7 @@ struct MarkdownOutputGenerator {
         }
         
         lines += [
-            analyzedModulesInfo
+            Self.analyzedModulesInfo(allTargets: allTargets)
         ]
         
         return lines.joined(separator: "\n")
@@ -54,7 +42,7 @@ struct MarkdownOutputGenerator {
 
 private extension MarkdownOutputGenerator {
     
-    var title: String {
+    static func title(changesPerTarget: [String: [Change]]) -> String {
         
         if changesPerTarget.keys.isEmpty {
             return "# ✅ No changes detected"
@@ -64,20 +52,25 @@ private extension MarkdownOutputGenerator {
         return "# 👀 \(totalChangeCount) public \(totalChangeCount == 1 ? "change" : "changes") detected"
     }
     
-    var repoInfo: String { "_Comparing `\(newSource.description)` to `\(oldSource.description)`_" }
-    var analyzedModulesInfo: String { "**Analyzed modules:** \(allTargetNames.joined(separator: ", "))" }
+    static func repoInfo(oldSource: ProjectSource, newSource: ProjectSource) -> String {
+        "_Comparing `\(newSource.description)` to `\(oldSource.description)`_"
+    }
     
-    var changeLines: [String] {
+    static func analyzedModulesInfo(allTargets: [String]) -> String {
+        "**Analyzed targets:** \(allTargets.joined(separator: ", "))"
+    }
+    
+    static func changeLines(changesPerModule: [String: [Change]]) -> [String] {
         var lines = [String]()
         
-        changesPerTarget.keys.sorted().forEach { targetName in
-            guard let changesForTarget = changesPerTarget[targetName], !changesForTarget.isEmpty else { return }
+        changesPerModule.keys.sorted().forEach { targetName in
+            guard let changesForTarget = changesPerModule[targetName], !changesPerModule.isEmpty else { return }
             
             if !targetName.isEmpty {
                 lines.append("## `\(targetName)`")
             }
             
-            var groupedChanges = [String: [SDKAnalyzer.Change]]()
+            var groupedChanges = [String: [Change]]()
 
             changesForTarget.forEach {
                 groupedChanges[$0.parentName] = (groupedChanges[$0.parentName] ?? []) + [$0]
