@@ -35,16 +35,14 @@ jobs:
           device: 'iPhone 12'
           displayname: 'iPhone-12'
           runtime: 'iOS-14-2'
-          os: 'macos-13-xl'
-          xcode_version: '14.3'
+          os: 'macos-12-xl'
           needs_custom_sim: true
           
         - version: '13.7'
           runtime: 'iOS-13-7'
           device: 'iPhone 11'
           displayname: 'iPhone-11'
-          os: 'macos-13-xl'
-          xcode_version: '14.3'
+          os: 'macos-12-xl'
           needs_custom_sim: true
           
     steps:
@@ -68,9 +66,7 @@ jobs:
     - name: Download simulator if needed (${{ matrix.version }})
       if: matrix.needs_custom_sim
       run: |
-        xcodes runtimes
-        xcodes runtimes install "iOS ${version}"
-        # xcversion simulators --install="iOS ${version}" # This is no longer available
+        xcversion simulators --install="iOS ${version}"
       env:
         version: ${{ matrix.version }}
 
