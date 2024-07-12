@@ -29,11 +29,11 @@ internal final class DAErrorViewController: UIViewController {
         internal var title: String {
             switch self {
             case let .authenticationFailed(localizationParameters):
-                localizedString(.threeds2DAApprovalErrorTitle, localizationParameters)
+                return localizedString(.threeds2DAApprovalErrorTitle, localizationParameters)
             case let .registrationFailed(localizationParameters):
-                localizedString(.threeds2DARegistrationErrorTitle, localizationParameters)
+                return localizedString(.threeds2DARegistrationErrorTitle, localizationParameters)
             case let .deletionConfirmation(localizationParameters):
-                localizedString(.threeds2DADeletionConfirmationTitle, localizationParameters)
+                return localizedString(.threeds2DADeletionConfirmationTitle, localizationParameters)
             }
         }
         
