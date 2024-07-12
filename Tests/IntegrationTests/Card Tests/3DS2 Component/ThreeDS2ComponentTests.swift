@@ -584,7 +584,9 @@ class ThreeDS2ComponentTests: XCTestCase {
         
             let fingerprintAction = ThreeDS2FingerprintAction(fingerprintToken: TestData.fingerprintToken, authorisationToken: "AuthToken", paymentData: "data")
             sut.handle(fingerprintAction)
-            wait(for: [approvalPresentationExpectation, onAuthenticateExpectation, approvalErrorPresentationExpectation, delegateExpectation], enforceOrder: true)
+            wait(for: [approvalPresentationExpectation, onAuthenticateExpectation, approvalErrorPresentationExpectation, delegateExpectation],
+                 timeout: 2,
+                 enforceOrder: true)
         }
     
         func testDelegatedAuthenticationRegistrationFlow() {
@@ -782,7 +784,9 @@ class ThreeDS2ComponentTests: XCTestCase {
             // execute a challenge - as the registration flow is triggered only during a challenge flow.
             sut.handle(ThreeDS2ChallengeAction(challengeToken: TestData.challengeToken, authorisationToken: "authToken", paymentData: "paymentData"))
 
-            wait(for: [registrationViewExpectation, onRegisterExpectation, registrationErrorViewExpectation, delegateExpectation], enforceOrder: true)
+            wait(for: [registrationViewExpectation, onRegisterExpectation, registrationErrorViewExpectation, delegateExpectation],
+                 timeout: 2,
+                 enforceOrder: true)
         }
 
         func verifyApprovalView(viewController: DAApprovalViewController?) {
