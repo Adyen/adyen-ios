@@ -90,7 +90,7 @@
 		2172F8152C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2172F8142C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift */; };
 		2172F8172C20B93400BE0369 /* DAErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2172F8162C20B93400BE0369 /* DAErrorViewController.swift */; };
 		21B387B62C401C890029101E /* ThreeDS2DAScreenPresenterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2159173B2A0D2B6E0004081E /* ThreeDS2DAScreenPresenterMock.swift */; };
-		21B387B92C408A9C0029101E /* UILabelHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B387B82C408A9C0029101E /* UILabelHelpers.swift */; };
+		21B387B92C408A9C0029101E /* UILabelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B387B82C408A9C0029101E /* UILabelHelper.swift */; };
 		21B387BB2C408C920029101E /* UIStackViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B387BA2C408C920029101E /* UIStackViewHelper.swift */; };
 		21B387BD2C408CA90029101E /* UIImageViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B387BC2C408CA90029101E /* UIImageViewHelper.swift */; };
 		21B3A71329CA70FF00F48386 /* DelegatedAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B3A71229CA70FF00F48386 /* DelegatedAuthenticationView.swift */; };
@@ -1543,7 +1543,7 @@
 		2159173B2A0D2B6E0004081E /* ThreeDS2DAScreenPresenterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2DAScreenPresenterMock.swift; sourceTree = "<group>"; };
 		2172F8142C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedAuthenticationErrorView.swift; sourceTree = "<group>"; };
 		2172F8162C20B93400BE0369 /* DAErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DAErrorViewController.swift; sourceTree = "<group>"; };
-		21B387B82C408A9C0029101E /* UILabelHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelHelpers.swift; sourceTree = "<group>"; };
+		21B387B82C408A9C0029101E /* UILabelHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelHelper.swift; sourceTree = "<group>"; };
 		21B387BA2C408C920029101E /* UIStackViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackViewHelper.swift; sourceTree = "<group>"; };
 		21B387BC2C408CA90029101E /* UIImageViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewHelper.swift; sourceTree = "<group>"; };
 		21B3A71229CA70FF00F48386 /* DelegatedAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedAuthenticationView.swift; sourceTree = "<group>"; };
@@ -2838,7 +2838,7 @@
 		21B387B72C408A860029101E /* ViewHelpers */ = {
 			isa = PBXGroup;
 			children = (
-				21B387B82C408A9C0029101E /* UILabelHelpers.swift */,
+				21B387B82C408A9C0029101E /* UILabelHelper.swift */,
 				21B387BA2C408C920029101E /* UIStackViewHelper.swift */,
 				21B387BC2C408CA90029101E /* UIImageViewHelper.swift */,
 			);
@@ -7476,7 +7476,7 @@
 				F917615D25A30B6400D653BE /* ADYServiceAdapter.swift in Sources */,
 				F917617125A30B6A00D653BE /* ThreeDS2CompactActionHandler.swift in Sources */,
 				A03EE7312761297800470561 /* DocumentComponentStyle.swift in Sources */,
-				21B387B92C408A9C0029101E /* UILabelHelpers.swift in Sources */,
+				21B387B92C408A9C0029101E /* UILabelHelper.swift in Sources */,
 				F9B997CA25C949AC00891084 /* VoucherCardLayer.swift in Sources */,
 				A03EE73327612BF300470561 /* DocumentActionView.swift in Sources */,
 				21B387BB2C408C920029101E /* UIStackViewHelper.swift in Sources */,
