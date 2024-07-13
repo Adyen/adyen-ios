@@ -249,7 +249,7 @@ internal final class DelegatedAuthenticationView: UIView {
     }
     
     internal func animateImageTransitionToSystemImage(named: String) {
-        let workItem = DispatchWorkItem { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             guard let self else { return }
             
             if let replacementImage = UIImage(systemName: named,
@@ -260,9 +260,7 @@ internal final class DelegatedAuthenticationView: UIView {
                                   options: .transitionCrossDissolve,
                                   animations: { self.logoImage.image = replacementImage },
                                   completion: nil)
-
             }
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: workItem)
     }
 }
