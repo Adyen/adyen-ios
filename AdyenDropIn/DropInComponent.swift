@@ -98,10 +98,10 @@ public final class DropInComponent: NSObject,
     /// The stored payment methods delegate.
     public weak var storedPaymentMethodsDelegate: StoredPaymentMethodsDelegate? {
         didSet {
-            if let sessionAsStoredPaymentMethodsDelegate {
-                let showRemoveStoredPaymentButton = sessionAsStoredPaymentMethodsDelegate.showRemovePaymentMethodButton
-                configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = showRemoveStoredPaymentButton
-            }
+            guard let sessionAsStoredPaymentMethodsDelegate else { return }
+            
+            let showRemoveStoredPaymentButton = sessionAsStoredPaymentMethodsDelegate.showRemovePaymentMethodButton
+            configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = showRemoveStoredPaymentButton
         }
     }
 

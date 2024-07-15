@@ -126,6 +126,7 @@ mkdir -p Tests
 mkdir -p Source
 cp "../Tests/IntegrationTests/DropIn Tests/DropInTests.swift" Tests/DropInTests.swift
 cp "../Tests/IntegrationTests/DropIn Tests/DropInDelegateMock.swift" Tests/DropInDelegateMock.swift
+cp "../Tests/IntegrationTests/DropIn Tests/StoredPaymentMethodDelegateMock.swift" Tests/StoredPaymentMethodDelegateMock.swift
 cp "../Tests/IntegrationTests/Card Tests/Mocks/OpenExternalAppDetector+Mock.swift" Tests/OpenExternalAppDetector+Mock.swift
 cp "../Tests/IntegrationTests/Card Tests/3DS2 Component/ThreeDS2PlusDACoreActionHandlerTests.swift" Tests/ThreeDS2PlusDACoreActionHandlerTests.swift
 cp "../Tests/IntegrationTests/Card Tests/3DS2 Component/ThreeDS2PlusDACoreActionHandlerTests+Constants.swift" Tests/ThreeDS2PlusDACoreActionHandlerTests+Constants.swift
