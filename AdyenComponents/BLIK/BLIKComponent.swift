@@ -50,6 +50,13 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
         formViewController.view.isUserInteractionEnabled = true
     }
 
+    /// Submits payment action.
+    public func submit() {
+        guard !configuration.showSubmitButton else { return }
+
+        didSelectSubmitButton()
+    }
+
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
             scrollEnabled: configuration.showSubmitButton,

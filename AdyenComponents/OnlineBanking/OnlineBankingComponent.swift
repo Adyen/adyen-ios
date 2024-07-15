@@ -110,6 +110,13 @@ public final class OnlineBankingComponent: PaymentComponent,
         formViewController.view.isUserInteractionEnabled = true
     }
 
+    /// Submits payment action.
+    public func submit() {
+        guard !configuration.showSubmitButton else { return }
+
+        didSelectContinueButton()
+    }
+
     // MARK: - Private
 
     private func didSelectContinueButton() {

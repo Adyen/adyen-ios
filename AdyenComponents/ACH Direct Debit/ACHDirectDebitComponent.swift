@@ -96,7 +96,14 @@ public final class ACHDirectDebitComponent: PaymentComponent,
         payButton.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
     }
-    
+
+    /// Submits payment action.
+    public func submit() {
+        guard !configuration.showSubmitButton else { return }
+
+        didSelectSubmitButton()
+    }
+
     private func didSelectSubmitButton() {
         guard formViewController.validate() else { return }
         

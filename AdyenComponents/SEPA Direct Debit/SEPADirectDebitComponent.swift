@@ -55,7 +55,14 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
-    
+
+    /// Submits payment action.
+    public func submit() {
+        guard !configuration.showSubmitButton else { return }
+
+        didSelectSubmitButton()
+    }
+
     // MARK: - View Controller
     
     private lazy var formViewController: FormViewController = {
