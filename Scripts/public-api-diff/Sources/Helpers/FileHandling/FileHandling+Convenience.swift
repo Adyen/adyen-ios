@@ -6,13 +6,15 @@
 
 import Foundation
 
-enum FileHandlerError: LocalizedError {
+enum FileHandlerError: LocalizedError, Equatable {
     /// Could not encode the output string into data
     case couldNotEncodeOutput
     /// Could not persist output at the specified `outputFilePath`
     case couldNotCreateFile(outputFilePath: String)
     /// Could not load file at the specified `filePath`
     case couldNotLoadFile(filePath: String)
+    /// File/Directory does not exist at `path`
+    case pathDoesNotExist(path: String)
     
     var errorDescription: String? {
         switch self {
@@ -22,6 +24,8 @@ enum FileHandlerError: LocalizedError {
             "Could not persist output at `\(outputFilePath)`"
         case let .couldNotLoadFile(filePath):
             "Could not load file from `\(filePath)`"
+        case let .pathDoesNotExist(path):
+            "File/Directory does not exist at `\(path)`"
         }
     }
 }
@@ -66,11 +70,8 @@ extension FileHandling {
     ///   - filePath: The path to load the string content from
     ///
     /// - Returns: The string content of the file
-    func load(from filePath: String) throws -> String {
-        guard let data = contents(atPath: filePath) else {
-            throw FileHandlerError.couldNotLoadFile(filePath: filePath)
-        }
-
+    func loadString(from filePath: String) throws -> String {
+        let data = try loadData(from: filePath)
         return String(decoding: data, as: UTF8.self)
     }
 }

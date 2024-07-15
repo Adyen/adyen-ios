@@ -180,6 +180,11 @@
 "adyen.upi.vpaWaitingMessage" = "UPIアプリを開いて、支払を確認してください";
 "adyen.QRCode.generateQRCode" = "QRコードを生成する";
 "adyen.UPI.QRCodeInstructions" = "スクリーンショットを撮影してUPIアプリにアップロードするか、お好みのUPIアプリを使用してQRコードをスキャンし、支払を完了してください。";
+"adyen.UPI.firstTabTitle" = "Pay by any UPI app";
+"adyen.UPI.secondTabTitle" = "Other UPI options";
+"adyen.UPI.collectDropdownLabel" = "UPI IDを入力してください";
+"adyen.UPI.collectFieldLabel" = "UPI ID/VPAを入力してください";
+"adyen.UPI.error.noAppSelected" = "支払い方法を選択して続行する";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "このデバイスにはTWINTがインストールされていないか、古いバージョンがインストールされています。 TWINTアプリを更新またはインストールするようお願い申し上げます。";

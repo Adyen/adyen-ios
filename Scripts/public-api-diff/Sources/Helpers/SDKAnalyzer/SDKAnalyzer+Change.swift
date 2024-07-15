@@ -8,17 +8,15 @@ import Foundation
 
 extension SDKAnalyzer {
     
-    struct Change {
-        enum ChangeType {
+    struct Change: Equatable {
+        enum ChangeType: Equatable {
             case addition
             case removal
-            case change
             
             var icon: String {
                 switch self {
                 case .addition: "❇️ "
                 case .removal: "😶‍🌫️"
-                case .change: "🔀"
                 }
             }
         }

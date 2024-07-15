@@ -48,7 +48,7 @@ internal struct AwaitComponentViewModel {
                                            message: localizedString(.mbwayConfirmPayment, localizationParameters),
                                            spinnerTitle: localizedString(.awaitWaitForConfirmation, localizationParameters))
             
-        case .upicollect:
+        case .upicollect, .upiIntent:
             return AwaitComponentViewModel(icon: paymentMethodType.rawValue,
                                            message: localizedString(.upiVpaWaitingMessage, localizationParameters),
                                            spinnerTitle: localizedString(.upiCollectConfirmPayment, localizationParameters))

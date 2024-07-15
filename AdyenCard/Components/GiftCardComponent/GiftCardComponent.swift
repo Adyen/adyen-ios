@@ -157,8 +157,7 @@ public final class GiftCardComponent: PresentableComponent,
     // MARK: Items
 
     internal lazy var errorItem: FormErrorItem = {
-        let item = FormErrorItem(iconName: "error",
-                                 style: style.errorStyle)
+        let item = FormErrorItem(style: style.errorStyle)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "errorItem")
         return item
     }()

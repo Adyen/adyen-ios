@@ -15,6 +15,14 @@
         "language" : "de",
         "region" : "DE"
       }
+    },
+    {
+      "id" : "E8AFA671-081D-4239-89D0-EB8FA4981F8C",
+      "name" : "🇦🇪",
+      "options" : {
+        "language" : "ar",
+        "region" : "AE"
+      }
     }
   ],
   "defaultOptions" : {

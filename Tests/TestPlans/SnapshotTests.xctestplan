@@ -15,6 +15,14 @@
         "language" : "de",
         "region" : "DE"
       }
+    },
+    {
+      "id" : "4416B627-B259-4571-9E45-99CE55AAD778",
+      "name" : "Snapshot Tests 🇦🇪",
+      "options" : {
+        "language" : "ar",
+        "region" : "AE"
+      }
     }
   ],
   "defaultOptions" : {
@@ -34,7 +42,7 @@
       "target" : {
         "containerPath" : "container:Adyen.xcodeproj",
         "identifier" : "F9CCA3B4296ECB3E00AD643D",
-        "name" : "AdyenUIHostUITests"
+        "name" : "SnapshotsTests"
       }
     }
   ],
