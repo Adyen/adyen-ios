@@ -13,8 +13,8 @@ public protocol StorePaymentMethodFieldAware: AdyenSessionAware {
 }
 
 @_spi(AdyenInternal)
-/// Describes whether it is possible to allow removing stored payment methods.
-public protocol StoredPaymentMethodRemovable: AdyenSessionAware, StoredPaymentMethodsDelegate {
+/// Describes whether it is possible to allow for session to remove stored payment methods.
+public protocol SessionStoredPaymentMethodsDelegate: AdyenSessionAware, StoredPaymentMethodsDelegate {
     
     var showRemovePaymentMethodButton: Bool { get }
     

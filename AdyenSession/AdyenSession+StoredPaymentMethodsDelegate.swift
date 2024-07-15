@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 @_spi(AdyenInternal)
-extension AdyenSession: StoredPaymentMethodRemovable {
+extension AdyenSession: SessionStoredPaymentMethodsDelegate {
     
     public var showRemovePaymentMethodButton: Bool { sessionContext.configuration.showRemovePaymentMethodButton }
     

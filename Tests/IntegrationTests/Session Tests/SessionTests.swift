@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import AdyenSession
 import XCTest
+@_spi(AdyenInternal) @testable import AdyenSession
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenActions
 import AdyenComponents
@@ -636,6 +636,58 @@ class SessionTests: XCTestCase {
         )
         sut.didProvide(data, from: RedirectComponent(context: context))
         wait(for: [didProvideExpectation], timeout: 10)
+    }
+    
+    func testRemoveStoredPaymentMethodSuccess() throws {
+        let expectedPaymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let paymentMethod = expectedPaymentMethods.regular.last as! MBWayPaymentMethod
+        
+        let apiClient = APIClientMock()
+        sut.apiClient = apiClient
+        apiClient.mockedResults = [.success(DisableStoredPaymentMethodResponse())]
+        
+        let deleteExpectation = expectation(description: "Expect delete call to succeed")
+        apiClient.onExecute = { _ in
+            deleteExpectation.fulfill()
+        }
+        
+        let stored = expectedPaymentMethods.stored.first as! StoredCardPaymentMethod
+        let config = DropInComponent.Configuration()
+        let dropIn = DropInComponent(paymentMethods: expectedPaymentMethods,
+                                     context: context,
+                                     configuration: config)
+        sut.disable(storedPaymentMethod: stored, dropInComponent: dropIn) { succes in
+            XCTAssertTrue(succes)
+        }
+        
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+    
+    func testRemoveStoredPaymentMethodFailure() throws {
+        let expectedPaymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let paymentMethod = expectedPaymentMethods.regular.last as! MBWayPaymentMethod
+        
+        let apiClient = APIClientMock()
+        sut.apiClient = apiClient
+        apiClient.mockedResults = [.failure(Dummy.error)]
+        
+        let deleteExpectation = expectation(description: "Expect delete call to fail")
+        apiClient.onExecute = { _ in
+            deleteExpectation.fulfill()
+        }
+        
+        let stored = expectedPaymentMethods.stored.first as! StoredCardPaymentMethod
+        let config = DropInComponent.Configuration()
+        let dropIn = DropInComponent(paymentMethods: expectedPaymentMethods,
+                                     context: context,
+                                     configuration: config)
+        sut.disable(storedPaymentMethod: stored, dropInComponent: dropIn) { succes in
+            XCTAssertFalse(succes)
+        }
+        
+        waitForExpectations(timeout: 2, handler: nil)
     }
     
     func testSessionAsDropInDelegate() throws {

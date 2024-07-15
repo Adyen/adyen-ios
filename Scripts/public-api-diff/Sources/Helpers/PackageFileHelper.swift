@@ -163,7 +163,6 @@ private extension PackageFileHelper {
     }
 }
 
-
 // MARK: Update Package Content
 
 private extension PackageFileHelper {

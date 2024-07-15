@@ -130,8 +130,8 @@ public final class DropInComponent: NSObject,
     }
     
     /// Convenience accessor to the session if it's the delegate for removing stored payment methods
-    internal var sessionAsStoredPaymentMethodsDelegate: StoredPaymentMethodRemovable? {
-        if let storedPaymentRemovable = storedPaymentMethodsDelegate as? StoredPaymentMethodRemovable,
+    internal var sessionAsStoredPaymentMethodsDelegate: SessionStoredPaymentMethodsDelegate? {
+        if let storedPaymentRemovable = storedPaymentMethodsDelegate as? SessionStoredPaymentMethodsDelegate,
            storedPaymentRemovable.isSession {
             return storedPaymentRemovable
         }

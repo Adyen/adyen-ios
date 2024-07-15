@@ -140,7 +140,6 @@ public final class GiftCardComponent: PresentableComponent,
             formViewController.append(securityCodeItem)
         case (.giftCard, false):
             break // Nothing additionally to add
-            
         case (.mealVoucher, true):
             let splitTextItem = FormSplitItem(items: expiryDateItem, securityCodeItem,
                                               style: style.textField)

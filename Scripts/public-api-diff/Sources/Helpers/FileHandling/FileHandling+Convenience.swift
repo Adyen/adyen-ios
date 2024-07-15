@@ -18,9 +18,9 @@ enum FileHandlerError: LocalizedError {
         switch self {
         case .couldNotEncodeOutput:
             "Could not encode the output string into data"
-        case .couldNotCreateFile(let outputFilePath):
+        case let .couldNotCreateFile(outputFilePath):
             "Could not persist output at `\(outputFilePath)`"
-        case .couldNotLoadFile(let filePath):
+        case let .couldNotLoadFile(filePath):
             "Could not load file from `\(filePath)`"
         }
     }
@@ -74,4 +74,3 @@ extension FileHandling {
         return String(decoding: data, as: UTF8.self)
     }
 }
-
