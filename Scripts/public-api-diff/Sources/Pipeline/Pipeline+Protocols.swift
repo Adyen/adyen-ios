@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ProjectBuilding {
-    func build(source: ProjectSource, scheme: String?) throws -> URL
+    func build(source: ProjectSource, scheme: String?) async throws -> URL
 }
 
 struct ABIGeneratorOutput: Equatable {

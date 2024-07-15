@@ -46,11 +46,10 @@ struct XcodeTools {
             ]
         }
         
-        print("👾 \(command.joined(separator: " "))")
+        // print("👾 \(command.joined(separator: " "))")
         let result = shell.execute(command.joined(separator: " "))
         
         if result.range(of: "xcodebuild: error:") != nil || result.range(of: "BUILD FAILED") != nil {
-            print(result)
             throw XcodeToolsError(
                 errorDescription: "💥 Building project failed",
                 underlyingError: result
@@ -75,7 +74,7 @@ struct XcodeTools {
             "-abort-on-module-fail"
         ]
         
-        print("👾 \(command.joined(separator: " "))")
+        // print("👾 \(command.joined(separator: " "))")
         shell.execute(command.joined(separator: " "))
     }
     

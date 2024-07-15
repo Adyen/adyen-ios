@@ -71,8 +71,6 @@ extension SDKDump {
             self.declAttributes = try container.decodeIfPresent([String].self, forKey: CodingKeys.declAttributes)
             self.conformances = try container.decodeIfPresent([Conformance].self, forKey: CodingKeys.conformances)
             self.accessors = try container.decodeIfPresent([SDKDump.Element].self, forKey: CodingKeys.accessors)
-            
-            print(definition)
         }
         
         func encode(to encoder: any Encoder) throws {

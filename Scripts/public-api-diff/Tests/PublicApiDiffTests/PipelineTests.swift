@@ -10,7 +10,7 @@ import XCTest
 
 class PipelineTests: XCTestCase {
     
-    func test_pipeline() throws {
+    func test_pipeline() async throws {
         
         let projectBuilderExpectation = expectation(description: "ProjectBuilder is called twice")
         projectBuilderExpectation.expectedFulfillmentCount = 2
@@ -29,9 +29,6 @@ class PipelineTests: XCTestCase {
         let newProjectSource = ProjectSource.local(path: "new")
         
         var expectedSteps: [Any] = [
-            oldProjectSource,
-            newProjectSource,
-            
             URL(filePath: oldProjectSource.description),
             URL(filePath: newProjectSource.description),
             
@@ -60,8 +57,6 @@ class PipelineTests: XCTestCase {
             oldProjectSource: oldProjectSource,
             scheme: nil,
             projectBuilder: MockProjectBuilder(onBuild: { source, scheme in
-                XCTAssertEqual(source, expectedSteps.first as? ProjectSource)
-                expectedSteps.removeFirst()
                 projectBuilderExpectation.fulfill()
                 
                 XCTAssertNil(scheme)
@@ -116,9 +111,15 @@ class PipelineTests: XCTestCase {
             })
         )
         
-        let pipelineOutput = try pipeline.run()
+        let pipelineOutput = try await pipeline.run()
         
-        waitForExpectations(timeout: 1)
+        await fulfillment(of: [
+            projectBuilderExpectation,
+            abiGeneratorExpectation,
+            libraryAnalyzerExpectation,
+            dumpGeneratorExpectation,
+            dumpAnalyzerExpectation
+        ])
         
         XCTAssertEqual(pipelineOutput, expectedSteps.first as? String)
         expectedSteps.removeFirst()

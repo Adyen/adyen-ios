@@ -42,11 +42,17 @@ struct Pipeline {
         self.outputGenerator = outputGenerator
     }
     
-    func run() throws -> String {
+    func run() async throws -> String {
+        
+        let startDate = Date()
         
         // Building both projects from the respective source
-        let oldProjectUrl = try projectBuilder.build(source: oldProjectSource, scheme: scheme)
-        let newProjectUrl = try projectBuilder.build(source: newProjectSource, scheme: scheme)
+        async let oldBuildResult = try projectBuilder.build(source: oldProjectSource, scheme: scheme)
+        async let newBuildResult = try projectBuilder.build(source: newProjectSource, scheme: scheme)
+        
+        // Awaiting the result of the async builds
+        let oldProjectUrl = try await oldBuildResult
+        let newProjectUrl = try await newBuildResult
         
         // Generating abi files from the respective builds
         let oldAbiFiles = try abiGenerator.generate(for: oldProjectUrl, scheme: scheme)

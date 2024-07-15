@@ -8,7 +8,7 @@ import ArgumentParser
 import Foundation
 
 @main
-struct PublicApiDiff: ParsableCommand {
+struct PublicApiDiff: AsyncParsableCommand {
     
     // TODO: Do more documentation
     @Option(help: "Specify the updated version to compare to")
@@ -24,7 +24,7 @@ struct PublicApiDiff: ParsableCommand {
     @Option(help: "Which scheme to build")
     public var scheme: String?
     
-    public func run() throws {
+    public func run() async throws {
         
         let fileHandler = FileManager.default
         let oldSource = try ProjectSource.from(old, fileHandler: fileHandler)
@@ -35,7 +35,7 @@ struct PublicApiDiff: ParsableCommand {
         let currentDirectory = fileHandler.currentDirectoryPath
         let workingDirectoryPath = currentDirectory.appending("/tmp-public-api-diff")
         
-        let pipelineOutput = try Pipeline(
+        let pipelineOutput = try await Pipeline(
             newProjectSource: newSource,
             oldProjectSource: oldSource,
             scheme: scheme,
