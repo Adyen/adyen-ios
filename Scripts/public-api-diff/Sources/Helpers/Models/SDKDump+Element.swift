@@ -18,6 +18,7 @@ extension SDKDump {
         let isStatic: Bool
         let isLet: Bool
         let hasDefaultArg: Bool
+        let isInternal: Bool
         
         let children: [Element]
         let spiGroupNames: [String]?
@@ -35,6 +36,7 @@ extension SDKDump {
             isStatic: Bool = false,
             isLet: Bool = false,
             hasDefaultArg: Bool = false,
+            isInternal: Bool = false,
             children: [Element] = [],
             spiGroupNames: [String]? = nil,
             declAttributes: [String]? = nil,
@@ -49,6 +51,7 @@ extension SDKDump {
             self.isStatic = isStatic
             self.isLet = isLet
             self.hasDefaultArg = hasDefaultArg
+            self.isInternal = isInternal
             self.children = children
             self.spiGroupNames = spiGroupNames
             self.declAttributes = declAttributes
@@ -68,6 +71,7 @@ extension SDKDump {
             self.isStatic = (try? container.decode(Bool.self, forKey: CodingKeys.isStatic)) ?? false
             self.isLet = (try? container.decode(Bool.self, forKey: CodingKeys.isLet)) ?? false
             self.hasDefaultArg = (try? container.decode(Bool.self, forKey: CodingKeys.hasDefaultArg)) ?? false
+            self.isInternal = (try? container.decode(Bool.self, forKey: CodingKeys.isInternal)) ?? false
             self.declAttributes = try container.decodeIfPresent([String].self, forKey: CodingKeys.declAttributes)
             self.conformances = try container.decodeIfPresent([Conformance].self, forKey: CodingKeys.conformances)
             self.accessors = try container.decodeIfPresent([SDKDump.Element].self, forKey: CodingKeys.accessors)
@@ -84,6 +88,7 @@ extension SDKDump {
             try container.encode(self.isStatic, forKey: SDKDump.Element.CodingKeys.isStatic)
             try container.encode(self.isLet, forKey: SDKDump.Element.CodingKeys.isLet)
             try container.encode(self.hasDefaultArg, forKey: SDKDump.Element.CodingKeys.hasDefaultArg)
+            try container.encode(self.isInternal, forKey: SDKDump.Element.CodingKeys.isInternal)
             try container.encodeIfPresent(self.declAttributes, forKey: SDKDump.Element.CodingKeys.declAttributes)
             try container.encodeIfPresent(self.conformances, forKey: SDKDump.Element.CodingKeys.conformances)
             try container.encodeIfPresent(self.accessors, forKey: SDKDump.Element.CodingKeys.accessors)
@@ -99,6 +104,7 @@ extension SDKDump {
             case isStatic = "static"
             case isLet
             case hasDefaultArg
+            case isInternal
             case declAttributes
             case conformances
             case accessors
@@ -116,6 +122,7 @@ extension SDKDump {
                 lhs.conformances == rhs.conformances &&
                 lhs.isLet == rhs.isLet &&
                 lhs.hasDefaultArg == rhs.hasDefaultArg &&
+                lhs.isInternal == rhs.isInternal &&
                 lhs.isStatic == rhs.isStatic
         }
         

@@ -35,4 +35,12 @@ class SDKDumpTests: XCTestCase {
             expectedDefinition
         )
     }
+    
+    func test_isInternal() throws {
+        // TODO: Implement
+    }
+    
+    func test_spi() throws {
+        // TODO: Implement
+    }
 }

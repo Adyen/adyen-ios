@@ -32,6 +32,11 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
             return []
         }
         
+        if lhs.isInternal, rhs.isInternal {
+            // If both elements are spi internal we can ignore them as they are not in the public interface
+            return []
+        }
+        
         var changes = [Change]()
         
         if oldFirst, lhs.definition != rhs.definition {

@@ -28,13 +28,26 @@ struct ABIGenerator: ABIGenerating {
         
         if let scheme {
             // TODO: Check with other projects - this seems very specific:
+            let targetSpecificDirectories = [
+                "Debug-maccatalyst",
+                "Debug-iphonesimulator"
+            ]
             
-            let swiftModuleDirectory = projectDirectory.appending(path: ".build/Build/Products/Debug-maccatalyst/\(scheme).framework/Modules/\(scheme).swiftmodule")
+            let potentialModulePaths = targetSpecificDirectories.map { target in
+                projectDirectory.appending(path: ".build/Build/Products/\(target)/\(scheme).framework/Modules/\(scheme).swiftmodule")
+            }
+            
+            let swiftModuleDirectory = potentialModulePaths.first { fileHandler.fileExists(atPath: $0.path()) }
+
+            guard let swiftModuleDirectory else {
+                throw FileHandlerError.pathDoesNotExist(path: potentialModulePaths.first!.path())
+            }
+            
             let swiftModuleDirectoryContent = try fileHandler.contentsOfDirectory(atPath: swiftModuleDirectory.path())
             guard let abiJsonFilePath = swiftModuleDirectoryContent.first(where: {
                 $0.hasSuffix("abi.json")
             }) else {
-                return [] // TODO: Throw an error if no abi.json can be found
+                throw FileHandlerError.pathDoesNotExist(path: swiftModuleDirectory.appending(path: ".abi.json").path())
             }
             
             let abiJsonFileUrl = swiftModuleDirectory.appending(path: abiJsonFilePath)
