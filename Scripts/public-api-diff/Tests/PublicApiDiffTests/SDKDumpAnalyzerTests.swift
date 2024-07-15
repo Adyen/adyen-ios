@@ -11,7 +11,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
     
     func test_noChanges() throws {
         
-        let newDump = SDKDump(root: .init(kind: "kind", name: "name", printedName: "printedName"))
+        let newDump = SDKDump(root: .init(kind: .var, name: "name", printedName: "printedName"))
         
         let expectedChanges: [Change] = []
         
@@ -23,8 +23,8 @@ class SDKDumpAnalyzerTests: XCTestCase {
     
     func test_rootChanged() throws {
         
-        let newDump = SDKDump(root: .init(kind: "kind", name: "name", printedName: "printedName"))
-        let oldDump = SDKDump(root: .init(kind: "old_kind", name: "old_name", printedName: "old_printedName"))
+        let newDump = SDKDump(root: .init(kind: .var, name: "name", printedName: "printedName"))
+        let oldDump = SDKDump(root: .init(kind: .func, name: "old_name", printedName: "old_printedName"))
         
         let expectedChanges: [Change] = [
             .init(changeType: .removal, parentName: "", changeDescription: "`public old_printedName` was removed"),
@@ -44,7 +44,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
         
         let oldDump = SDKDump(
             root: .init(
-                kind: "kind",
+                kind: .var,
                 name: "parent",
                 printedName: "printedName"
             )
@@ -52,11 +52,11 @@ class SDKDumpAnalyzerTests: XCTestCase {
         
         let newDump = SDKDump(
             root: .init(
-                kind: "kind",
+                kind: .var,
                 name: "parent",
                 printedName: "printedName",
                 children: [.init(
-                    kind: "kind",
+                    kind: .var,
                     name: "child",
                     printedName: "childPrintedName"
                 )]
@@ -95,18 +95,18 @@ class SDKDumpAnalyzerTests: XCTestCase {
         
         let oldDump = SDKDump(
             root: .init(
-                kind: "Class",
+                kind: .class,
                 name: "parent",
                 printedName: "printedName",
-                declKind: .classDeclaration,
+                declKind: .class,
                 children: [
-                    .init(kind: "Struct", name: "child", printedName: "childPrintedName", declKind: .structDelcaration),
-                    .init(kind: "Class", name: "spiChild", printedName: "spiChildPrintedName", declKind: .classDeclaration),
-                    .init(kind: "Class", name: "spiChild", printedName: "invisibleSpiChildPrintedName", declKind: .classDeclaration, spiGroupNames: ["SpiInternal"]),
-                    .init(kind: "Enum", name: "enumChild", printedName: "new_childPrintedName", declKind: .enumDeclaration, children: [
-                        .init(kind: "StaticLet", name: "staticLet", printedName: "staticLetPrintedName", declKind: .varDeclaration, isStatic: true, isLet: false),
-                        .init(kind: "EnumElement", name: "someCase", printedName: "someCasePrintedName", declKind: .enumElement),
-                        .init(kind: "EnumElement", name: "oldCase", printedName: "oldCasePrintedName", declKind: .enumElement)
+                    .init(kind: .struct, name: "child", printedName: "childPrintedName", declKind: .struct),
+                    .init(kind: .class, name: "spiChild", printedName: "spiChildPrintedName", declKind: .class),
+                    .init(kind: .class, name: "spiChild", printedName: "invisibleSpiChildPrintedName", declKind: .class, spiGroupNames: ["SpiInternal"]),
+                    .init(kind: .enum, name: "enumChild", printedName: "new_childPrintedName", declKind: .enum, children: [
+                        .init(kind: .var, name: "staticLet", printedName: "staticLetPrintedName", declKind: .var, isStatic: true, isLet: false),
+                        .init(kind: .case, name: "someCase", printedName: "someCasePrintedName", declKind: .case),
+                        .init(kind: .case, name: "oldCase", printedName: "oldCasePrintedName", declKind: .case)
                     ])
                 ]
             )
@@ -114,20 +114,20 @@ class SDKDumpAnalyzerTests: XCTestCase {
         
         let newDump = SDKDump(
             root: .init(
-                kind: "Class",
+                kind: .class,
                 name: "parent",
                 printedName: "printedName",
-                declKind: .classDeclaration,
+                declKind: .class,
                 children: [
-                    .init(kind: "Class", name: "child", printedName: "childPrintedName", declKind: .classDeclaration),
-                    .init(kind: "Class", name: "spiChild", printedName: "spiChildPrintedName", declKind: .classDeclaration, spiGroupNames: ["SpiInternal"]),
-                    .init(kind: "Class", name: "spiChild", printedName: "invisibleSpiChildPrintedName", declKind: .classDeclaration, children: [
-                        .init(kind: "kind", name: "name", printedName: "printedName")
+                    .init(kind: .class, name: "child", printedName: "childPrintedName", declKind: .class),
+                    .init(kind: .class, name: "spiChild", printedName: "spiChildPrintedName", declKind: .class, spiGroupNames: ["SpiInternal"]),
+                    .init(kind: .class, name: "spiChild", printedName: "invisibleSpiChildPrintedName", declKind: .class, children: [
+                        .init(kind: .var, name: "name", printedName: "printedName")
                     ], spiGroupNames: ["SpiInternal"]),
-                    .init(kind: "Enum", name: "enumChild", printedName: "new_childPrintedName", declKind: .enumDeclaration, children: [
-                        .init(kind: "StaticLet", name: "staticLet", printedName: "staticLetPrintedName", declKind: .varDeclaration, isStatic: true, isLet: true),
-                        .init(kind: "EnumElement", name: "someCase", printedName: "someCasePrintedName", declKind: .enumElement),
-                        .init(kind: "EnumElement", name: "newCase", printedName: "newCasePrintedName", declKind: .enumElement)
+                    .init(kind: .enum, name: "enumChild", printedName: "new_childPrintedName", declKind: .enum, children: [
+                        .init(kind: .var, name: "staticLet", printedName: "staticLetPrintedName", declKind: .var, isStatic: true, isLet: true),
+                        .init(kind: .case, name: "someCase", printedName: "someCasePrintedName", declKind: .case),
+                        .init(kind: .case, name: "newCase", printedName: "newCasePrintedName", declKind: .case)
                     ])
                 ]
             )

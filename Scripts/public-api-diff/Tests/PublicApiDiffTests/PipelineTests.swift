@@ -41,8 +41,8 @@ class PipelineTests: XCTestCase {
             URL(filePath: oldProjectSource.description),
             URL(filePath: newProjectSource.description),
             
-            SDKDump(root: .init(kind: "Kind", name: "Name", printedName: URL(filePath: oldProjectSource.description).absoluteString)),
-            SDKDump(root: .init(kind: "Kind", name: "Name", printedName: URL(filePath: newProjectSource.description).absoluteString)),
+            SDKDump(root: .init(kind: .var, name: "Name", printedName: URL(filePath: oldProjectSource.description).absoluteString)),
+            SDKDump(root: .init(kind: .var, name: "Name", printedName: URL(filePath: newProjectSource.description).absoluteString)),
             
             [
                 "": [Change(changeType: .addition, parentName: "Parent", changeDescription: "A Library was added")],
@@ -91,7 +91,7 @@ class PipelineTests: XCTestCase {
                 expectedSteps.removeFirst()
                 dumpGeneratorExpectation.fulfill()
                 
-                return .init(root: .init(kind: "Kind", name: "Name", printedName: url.absoluteString))
+                return .init(root: .init(kind: .var, name: "Name", printedName: url.absoluteString))
             }),
             sdkDumpAnalyzer: MockSDKDumpAnalyzer(onAnalyze: { old, new in
                 XCTAssertEqual(old, expectedSteps.first as? SDKDump)

@@ -10,44 +10,6 @@ import XCTest
 /*
 class SDKAnalyzerTests: XCTestCase {
     
-    func test_analyze_targetChanges() throws {
-        
-        let mockShell = MockShell { _ in
-            ""
-        }
-        
-        var mockFileHandler = MockFileHandler()
-        mockFileHandler.handleLoadData = { path in
-            let packageName = path.components(separatedBy: "/").first
-            let resourcePath = try XCTUnwrap(Bundle.module.path(forResource: packageName, ofType: "txt"))
-            return try XCTUnwrap(FileManager.default.contents(atPath: resourcePath))
-        }
-        mockFileHandler.handleFileExists = { _ in
-            true
-        }
-        
-        let xcodeTools = XcodeTools(shell: mockShell)
-        
-        let analyzer = SDKAnalyzer(
-            fileHandler: mockFileHandler,
-            xcodeTools: xcodeTools
-        )
-        
-        let expectedChanges: [String: [Change]] = [
-            "Package.swift": [
-                .init(changeType: .removal, parentName: "", changeDescription: "`.library(name: \"OldLibrary\", ...)` was removed"),
-                .init(changeType: .addition, parentName: "", changeDescription: "`.library(name: \"NewLibrary\", ...)` was added")
-            ]
-        ]
-        
-        let changes = try analyzer.analyze(
-            old: "OldPackage",
-            new: "NewPackage"
-        )
-        
-        XCTAssertEqual(changes, expectedChanges)
-    }
-    
     func test_analyze_codeChanges() throws {
         
         // TODO: Implement

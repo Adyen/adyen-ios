@@ -10,14 +10,11 @@ struct SDKDumpGenerator: SDKDumpGenerating {
     
     /// The path to the project directory that contains the Package.swift
     let fileHandler: FileHandling
-    let xcodeTools: XcodeTools
     
     init(
-        fileHandler: FileHandling = FileManager.default,
-        xcodeTools: XcodeTools = XcodeTools()
+        fileHandler: FileHandling = FileManager.default
     ) {
         self.fileHandler = fileHandler
-        self.xcodeTools = xcodeTools
     }
     
     /// Generates an sdk dump object from a file

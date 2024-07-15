@@ -10,21 +10,18 @@ extension SDKDump {
     
     enum DeclarationType: String, RawRepresentable, Codable {
         
-        case classDeclaration = "Class"
-        case structDelcaration = "Struct"
-        
-        case enumDeclaration = "Enum"
-        case enumElement = "EnumElement"
-        
-        case varDeclaration = "Var"
-        case protocolDeclaration = "Protocol"
-        case funcDeclaration = "Func"
+        case `import` = "Import"
+        case `class` = "Class"
+        case `struct` = "Struct"
+        case `enum` = "Enum"
+        case `case` = "EnumElement"
+        case `var` = "Var"
+        case `func` = "Func"
+        case `protocol` = "Protocol"
         
         case constructor = "Constructor"
-        case function = "Function"
-        
         case accessor = "Accessor"
-        case importDeclaration = "Import"
+        
         case typeAlias = "TypeAlias"
         
         case subscriptDeclaration = "Subscript"
