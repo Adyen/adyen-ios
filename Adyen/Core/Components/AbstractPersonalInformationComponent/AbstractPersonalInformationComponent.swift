@@ -66,6 +66,13 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         self.configuration = configuration
     }
 
+    /// Submits payment action.
+    public func submit() {
+        guard !configuration.showSubmitButton else { return }
+
+        didSelectSubmitButton()
+    }
+
     // MARK: - Private
 
     private func build(_ formViewController: FormViewController) {

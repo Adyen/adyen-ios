@@ -79,14 +79,12 @@ class CustomComponentViewController: UIViewController, CustomComponentViewProtoc
     // MARK: - Properties
 
     private let presenter: CustomComponentPresenter
-    private var cardComponent: CardComponent?
 
     // MARK: - Initializers
 
     init(presenter: CustomComponentPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
-        self.cardComponent = resolveCardComponent()
     }
 
     @available(*, unavailable)
@@ -98,8 +96,9 @@ class CustomComponentViewController: UIViewController, CustomComponentViewProtoc
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter.viewDidLoad()
 
-        setupCardComponent()
+        setupCardViewController()
         addSubviews()
         layoutViews()
         setupViews()
@@ -121,25 +120,18 @@ class CustomComponentViewController: UIViewController, CustomComponentViewProtoc
 
     // MARK: - Private
 
-    private var cardComponentViewController: UIViewController {
-        guard let cardComponent else {
-            fatalError("Card component has not been initialized")
-        }
-
-        return cardComponent.viewController
-    }
-
     private var cardComponentView: UIView {
-        guard let cardView = cardComponentViewController.view else {
+        guard let cardView = presenter.cardViewController.view else {
             fatalError("Card view is nil")
         }
 
         return cardView
     }
 
-    private func setupCardComponent() {
-        addChild(cardComponentViewController)
-        cardComponentViewController.didMove(toParent: self)
+    private func setupCardViewController() {
+        let cardViewController = presenter.cardViewController
+        addChild(cardViewController)
+        cardViewController.didMove(toParent: self)
     }
 
     private func addSubviews() {
@@ -196,27 +188,8 @@ class CustomComponentViewController: UIViewController, CustomComponentViewProtoc
         navigationItem.largeTitleDisplayMode = .always
     }
 
-    private func resolveCardComponent() -> CardComponent {
-        let apiContext = ConfigurationConstants.apiContext
-        let context = AdyenContext(apiContext: apiContext, payment: nil)
-        let paymentMethod = CardPaymentMethod(type: .scheme,
-                                              name: "Card",
-                                              fundingSource: .debit,
-                                              brands: [.visa])
-        var billingAddressConfiguration = BillingAddressConfiguration()
-        billingAddressConfiguration.mode = .none
-
-        let configuration = CardComponent.Configuration(showSubmitButton: false, billingAddress: billingAddressConfiguration)
-
-        let cardComponent = CardComponent(paymentMethod: paymentMethod,
-                                          context: context,
-                                          configuration: configuration)
-        cardComponent.delegate = presenter
-        return cardComponent
-    }
-
     @objc
     private func performPayment() {
-        cardComponent?.submit()
+        presenter.performPayment()
     }
 }

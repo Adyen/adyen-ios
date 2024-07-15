@@ -141,6 +141,7 @@ public class CardComponent: PresentableComponent,
         cardViewController.stopLoading()
     }
 
+    /// Submits payment action.
     public func submit() {
         guard !configuration.showSubmitButton else { return }
 
