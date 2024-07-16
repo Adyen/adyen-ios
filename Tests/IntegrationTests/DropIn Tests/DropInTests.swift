@@ -219,14 +219,14 @@ class DropInTests: XCTestCase {
         let expectation = expectation(description: "deletion delegate should be called")
         let paymentMethodsListComponent = sut.paymentMethodListComponent(onCancel: nil)
 
-        sut.didDelete(storedPaymentMethod, in: paymentMethodsListComponent) { succes in
+        sut.didDelete(storedPaymentMethod, in: paymentMethodsListComponent) { success in
             XCTAssertEqual(storedPaymentMethodsDelegate.onDisableCallCount, 1)
-            XCTAssertTrue(succes)
+            XCTAssertTrue(success)
             XCTAssertTrue(sut.paymentMethods.stored.isEmpty)
             expectation.fulfill()
         }
         
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 2)
     }
     
     func testDeletingStoredPaymentFailureWithSession() throws {
@@ -252,14 +252,14 @@ class DropInTests: XCTestCase {
         let expectation = expectation(description: "deletion delegate should be called")
         let paymentMethodsListComponent = sut.paymentMethodListComponent(onCancel: nil)
 
-        sut.didDelete(storedPaymentMethod, in: paymentMethodsListComponent) { succes in
+        sut.didDelete(storedPaymentMethod, in: paymentMethodsListComponent) { success in
             XCTAssertEqual(storedPaymentMethodsDelegate.onDisableCallCount, 1)
-            XCTAssertFalse(succes)
+            XCTAssertFalse(success)
             XCTAssertFalse(sut.paymentMethods.stored.isEmpty)
             expectation.fulfill()
         }
         
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 2)
     }
     
     func testDeletingStoredPaymentSuccessAdvanced() throws {
@@ -285,14 +285,14 @@ class DropInTests: XCTestCase {
         let expectation = expectation(description: "deletion delegate should be called")
         let paymentMethodsListComponent = sut.paymentMethodListComponent(onCancel: nil)
 
-        sut.didDelete(storedPaymentMethod, in: paymentMethodsListComponent) { succes in
+        sut.didDelete(storedPaymentMethod, in: paymentMethodsListComponent) { success in
             XCTAssertEqual(storedPaymentMethodsDelegate.onDisableCallCount, 1)
-            XCTAssertTrue(succes)
+            XCTAssertTrue(success)
             XCTAssertTrue(sut.paymentMethods.stored.isEmpty)
             expectation.fulfill()
         }
         
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 2)
     }
     
     func testDeletingStoredPaymentFailureAdvanced() throws {
@@ -318,14 +318,14 @@ class DropInTests: XCTestCase {
         let expectation = expectation(description: "deletion delegate should be called")
         let paymentMethodsListComponent = sut.paymentMethodListComponent(onCancel: nil)
 
-        sut.didDelete(storedPaymentMethod, in: paymentMethodsListComponent) { succes in
+        sut.didDelete(storedPaymentMethod, in: paymentMethodsListComponent) { success in
             XCTAssertEqual(storedPaymentMethodsDelegate.onDisableCallCount, 1)
-            XCTAssertFalse(succes)
+            XCTAssertFalse(success)
             XCTAssertFalse(sut.paymentMethods.stored.isEmpty)
             expectation.fulfill()
         }
         
-        waitForExpectations(timeout: 5)
+        waitForExpectations(timeout: 2)
     }
 
     func testOpenDropInWithNoOneClickPayment() throws {

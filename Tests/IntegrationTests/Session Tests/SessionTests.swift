@@ -657,8 +657,8 @@ class SessionTests: XCTestCase {
         let dropIn = DropInComponent(paymentMethods: expectedPaymentMethods,
                                      context: context,
                                      configuration: config)
-        sut.disable(storedPaymentMethod: stored, dropInComponent: dropIn) { succes in
-            XCTAssertTrue(succes)
+        sut.disable(storedPaymentMethod: stored, dropInComponent: dropIn) { success in
+            XCTAssertTrue(success)
         }
         
         waitForExpectations(timeout: 2, handler: nil)
@@ -683,8 +683,8 @@ class SessionTests: XCTestCase {
         let dropIn = DropInComponent(paymentMethods: expectedPaymentMethods,
                                      context: context,
                                      configuration: config)
-        sut.disable(storedPaymentMethod: stored, dropInComponent: dropIn) { succes in
-            XCTAssertFalse(succes)
+        sut.disable(storedPaymentMethod: stored, dropInComponent: dropIn) { success in
+            XCTAssertFalse(success)
         }
         
         waitForExpectations(timeout: 2, handler: nil)
