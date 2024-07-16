@@ -163,8 +163,12 @@ public final class GiftCardComponent: PresentableComponent,
         }
         
         formViewController.append(FormSpacerItem())
-        formViewController.append(button)
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+
+        if showSubmitButton {
+            formViewController.append(button)
+            formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+        }
+
         return formViewController
     }()
 
@@ -226,6 +230,13 @@ public final class GiftCardComponent: PresentableComponent,
         }
         return item
     }()
+
+    /// Submits payment action.
+    public func submit() {
+        guard !showSubmitButton else { return }
+
+        didSelectSubmitButton()
+    }
 
     // MARK: - Loading Component Protocol
 
