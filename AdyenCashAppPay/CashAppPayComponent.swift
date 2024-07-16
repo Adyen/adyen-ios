@@ -118,6 +118,13 @@ public final class CashAppPayComponent: PaymentComponent,
         self.configuration = configuration
     }
 
+    /// Submits payment action.
+    public func submit() {
+        guard !configuration.showSubmitButton else { return }
+
+        didSelectSubmitButton()
+    }
+
     private func didSelectSubmitButton() {
         guard formViewController.validate() else { return }
     
