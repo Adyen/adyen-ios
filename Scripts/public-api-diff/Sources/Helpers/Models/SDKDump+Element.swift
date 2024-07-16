@@ -19,6 +19,7 @@ extension SDKDump {
         let isLet: Bool
         let hasDefaultArg: Bool
         let isInternal: Bool
+        let isThrowing: Bool
         
         let children: [Element]
         let spiGroupNames: [String]?
@@ -37,6 +38,7 @@ extension SDKDump {
             isLet: Bool = false,
             hasDefaultArg: Bool = false,
             isInternal: Bool = false,
+            isThrowing: Bool = false,
             children: [Element] = [],
             spiGroupNames: [String]? = nil,
             declAttributes: [String]? = nil,
@@ -52,6 +54,7 @@ extension SDKDump {
             self.isLet = isLet
             self.hasDefaultArg = hasDefaultArg
             self.isInternal = isInternal
+            self.isThrowing = isThrowing
             self.children = children
             self.spiGroupNames = spiGroupNames
             self.declAttributes = declAttributes
@@ -72,6 +75,7 @@ extension SDKDump {
             self.isLet = (try? container.decode(Bool.self, forKey: CodingKeys.isLet)) ?? false
             self.hasDefaultArg = (try? container.decode(Bool.self, forKey: CodingKeys.hasDefaultArg)) ?? false
             self.isInternal = (try? container.decode(Bool.self, forKey: CodingKeys.isInternal)) ?? false
+            self.isThrowing = (try? container.decode(Bool.self, forKey: CodingKeys.isThrowing)) ?? false
             self.declAttributes = try container.decodeIfPresent([String].self, forKey: CodingKeys.declAttributes)
             self.conformances = try container.decodeIfPresent([Conformance].self, forKey: CodingKeys.conformances)
             self.accessors = try container.decodeIfPresent([SDKDump.Element].self, forKey: CodingKeys.accessors)
@@ -89,6 +93,7 @@ extension SDKDump {
             try container.encode(self.isLet, forKey: SDKDump.Element.CodingKeys.isLet)
             try container.encode(self.hasDefaultArg, forKey: SDKDump.Element.CodingKeys.hasDefaultArg)
             try container.encode(self.isInternal, forKey: SDKDump.Element.CodingKeys.isInternal)
+            try container.encode(self.isThrowing, forKey: SDKDump.Element.CodingKeys.isThrowing)
             try container.encodeIfPresent(self.declAttributes, forKey: SDKDump.Element.CodingKeys.declAttributes)
             try container.encodeIfPresent(self.conformances, forKey: SDKDump.Element.CodingKeys.conformances)
             try container.encodeIfPresent(self.accessors, forKey: SDKDump.Element.CodingKeys.accessors)
@@ -105,6 +110,7 @@ extension SDKDump {
             case isLet
             case hasDefaultArg
             case isInternal
+            case isThrowing
             case declAttributes
             case conformances
             case accessors

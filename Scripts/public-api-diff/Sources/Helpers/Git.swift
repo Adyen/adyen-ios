@@ -10,13 +10,16 @@ struct Git {
     
     private let shell: ShellHandling
     private let fileHandler: FileHandling
+    private let logger: Logging?
     
     init(
         shell: ShellHandling,
-        fileHandler: FileHandling
+        fileHandler: FileHandling,
+        logger: Logging?
     ) {
         self.shell = shell
         self.fileHandler = fileHandler
+        self.logger = logger
     }
     
     /// Clones a repository at a specific branch or tag into the current directory
@@ -28,7 +31,7 @@ struct Git {
     ///
     /// - Returns: The local directory path where to find the cloned repository
     func clone(_ repository: String, at branchOrTag: String, targetDirectoryPath: String) throws {
-        print("🐱 Cloning \(repository) @ \(branchOrTag) into \(targetDirectoryPath)")
+        logger?.log("🐱 Cloning \(repository) @ \(branchOrTag) into \(targetDirectoryPath)", from: "\(Self.self)")
         let command = "git clone -b \(branchOrTag) \(repository) \(targetDirectoryPath)"
         shell.execute(command)
         

@@ -12,15 +12,18 @@ struct ProjectBuilder: ProjectBuilding {
     private let baseWorkingDirectoryPath: String
     private let fileHandler: FileHandling
     private let shell: ShellHandling
+    private let logger: Logging?
     
     init(
         baseWorkingDirectoryPath: String,
         fileHandler: FileHandling = FileManager.default,
-        shell: ShellHandling = Shell()
+        shell: ShellHandling = Shell(),
+        logger: Logging?
     ) {
         self.baseWorkingDirectoryPath = baseWorkingDirectoryPath
         self.fileHandler = fileHandler
         self.shell = shell
+        self.logger = logger
     }
     
     func build(source: ProjectSource, scheme: String?) throws -> URL {
@@ -49,7 +52,8 @@ private extension ProjectBuilder {
             sourceDirectoryPath: sourceDirectoryPath,
             fileHandler: fileHandler,
             shell: shell,
-            isPackage: scheme == nil
+            isPackage: scheme == nil,
+            logger: logger
         )
         
         let packagePath = PackageFileHelper.packagePath(for: sourceWorkingDirectoryPath)
@@ -59,7 +63,8 @@ private extension ProjectBuilder {
             packageFileHelper: PackageFileHelper(packagePath: packagePath, fileHandler: fileHandler),
             xcodeTools: XcodeTools(shell: shell),
             fileHandler: fileHandler,
-            scheme: scheme
+            scheme: scheme,
+            logger: logger
         )
         
         switch source {
@@ -78,7 +83,7 @@ private extension ProjectBuilder {
         let currentDirectory = fileHandler.currentDirectoryPath
         let targetDirectoryPath = currentDirectory.appending("/\(UUID().uuidString)")
         
-        let git = Git(shell: shell, fileHandler: fileHandler)
+        let git = Git(shell: shell, fileHandler: fileHandler, logger: logger)
         try git.clone(repository, at: branchOrTag, targetDirectoryPath: targetDirectoryPath)
         return targetDirectoryPath
     }
@@ -88,7 +93,8 @@ private extension ProjectBuilder {
         sourceDirectoryPath: String,
         fileHandler: FileHandling,
         shell: ShellHandling,
-        isPackage: Bool
+        isPackage: Bool,
+        logger: Logging?
     ) throws {
         
         try fileHandler.createDirectory(atPath: destinationDirectoryPath)
@@ -127,11 +133,11 @@ private extension ProjectBuilder {
         
         try fileHandler.contentsOfDirectory(atPath: sourceDirectoryPath).forEach { fileName in
             if fileExtensionIgnoreList.contains(where: { fileName.hasSuffix($0) }) {
-                print("Skipping `\(fileName)`")
+                logger?.debug("Skipping `\(fileName)`", from: "ProjectBuilder")
                 return
             }
             if fileNameIgnoreList.contains(where: { fileName == $0 }) {
-                print("Skipping `\(fileName)`")
+                logger?.debug("Skipping `\(fileName)`", from: "ProjectBuilder")
                 return
             }
             
@@ -148,7 +154,8 @@ private extension ProjectBuilder {
         packageFileHelper: PackageFileHelper,
         xcodeTools: XcodeTools,
         fileHandler: FileHandling,
-        scheme: String?
+        scheme: String?,
+        logger: Logging?
     ) throws {
         var schemeToBuild: String
         
@@ -162,7 +169,7 @@ private extension ProjectBuilder {
             try packageFileHelper.preparePackageWithConsolidatedLibrary(named: schemeToBuild)
         }
         
-        print("🛠️ Building project at `\(projectDirectoryPath)`")
+        logger?.log("🛠️ Building project at `\(projectDirectoryPath)`", from: "ProjectBuilder")
         
         try xcodeTools.build(
             projectDirectoryPath: projectDirectoryPath,

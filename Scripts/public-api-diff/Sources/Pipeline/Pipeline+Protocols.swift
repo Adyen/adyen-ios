@@ -38,9 +38,22 @@ protocol OutputGenerating {
 }
 
 protocol LibraryAnalyzing {
-    /// Analyzes whether or not the libraries/products changed between the old and new version
+    /// Analyzes whether or not the available libraries changed between the old and new version
     func analyze(
         oldProjectUrl: URL,
         newProjectUrl: URL
     ) throws -> [Change]
+}
+
+enum LogLevel {
+    case quiet
+    case `default`
+    case debug
+}
+
+protocol Logging {
+    
+    init(logLevel: LogLevel)
+    func log(_ message: String, from subsystem: String)
+    func debug(_ message: String, from subsystem: String)
 }

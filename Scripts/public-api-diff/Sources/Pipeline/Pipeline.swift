@@ -19,6 +19,7 @@ struct Pipeline {
     let sdkDumpGenerator: any SDKDumpGenerating
     let sdkDumpAnalyzer: any SDKDumpAnalyzing
     let outputGenerator: any OutputGenerating
+    let logger: (any Logging)?
     
     init(
         newProjectSource: ProjectSource,
@@ -29,7 +30,8 @@ struct Pipeline {
         libraryAnalyzer: any LibraryAnalyzing,
         sdkDumpGenerator: any SDKDumpGenerating,
         sdkDumpAnalyzer: any SDKDumpAnalyzing,
-        outputGenerator: any OutputGenerating
+        outputGenerator: any OutputGenerating,
+        logger: (any Logging)?
     ) {
         self.newProjectSource = newProjectSource
         self.oldProjectSource = oldProjectSource
@@ -40,6 +42,7 @@ struct Pipeline {
         self.sdkDumpGenerator = sdkDumpGenerator
         self.sdkDumpAnalyzer = sdkDumpAnalyzer
         self.outputGenerator = outputGenerator
+        self.logger = logger
     }
     
     func run() async throws -> String {

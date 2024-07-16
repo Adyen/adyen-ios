@@ -21,8 +21,13 @@ class GitTests: XCTestCase {
         }
         
         let mockFileHandler = MockFileHandler(handleFileExists: { _ in true })
+        var mockLogger = MockLogger(logLevel: .default)
+        mockLogger.handleLog = { message, subsystem in
+            XCTAssertEqual(message, "🐱 Cloning repository @ branch into targetDirectoryPath")
+            XCTAssertEqual(subsystem, "Git")
+        }
         
-        let git = Git(shell: mockShell, fileHandler: mockFileHandler)
+        let git = Git(shell: mockShell, fileHandler: mockFileHandler, logger: mockLogger)
         try git.clone(repository, at: branch, targetDirectoryPath: targetDirectoryPath)
     }
     
@@ -38,8 +43,13 @@ class GitTests: XCTestCase {
         }
         
         let mockFileHandler = MockFileHandler(handleFileExists: { _ in false })
+        var mockLogger = MockLogger(logLevel: .default)
+        mockLogger.handleLog = { message, subsystem in
+            XCTAssertEqual(message, "🐱 Cloning repository @ branch into targetDirectoryPath")
+            XCTAssertEqual(subsystem, "Git")
+        }
         
-        let git = Git(shell: mockShell, fileHandler: mockFileHandler)
+        let git = Git(shell: mockShell, fileHandler: mockFileHandler, logger: mockLogger)
         
         do {
             try git.clone(repository, at: branch, targetDirectoryPath: targetDirectoryPath)

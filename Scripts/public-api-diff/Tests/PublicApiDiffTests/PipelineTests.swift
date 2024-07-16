@@ -108,7 +108,8 @@ class PipelineTests: XCTestCase {
                 expectedSteps.removeFirst()
                 
                 return "Output"
-            })
+            }),
+            logger: MockLogger(logLevel: .debug)
         )
         
         let pipelineOutput = try await pipeline.run()
