@@ -146,6 +146,7 @@ cp "../Tests/UnitTests/APIClientMock.swift" Tests/APIClientMock.swift
 cp "../Tests/UnitTests/Mocks/ImageLoaderMock.swift" Tests/ImageLoaderMock.swift
 cp "../Tests/UnitTests/Mocks/CancellableMock.swift" Tests/CancellableMock.swift
 cp "../Tests/UnitTests/Helpers/String+UIImage.swift" Tests/String+UIImage.swift
+cp "../Tests/UnitTests/Helpers/XCTestCase+Coder.swift" Tests/XCTestCase+Coder.swift
 cp "../Tests/UnitTests/APIClientMock.swift" Source/APIClientMock.swift
 cp -a "../Demo/Common" Source/
 cp -a "../Demo/UIKit" Source/
