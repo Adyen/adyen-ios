@@ -28,8 +28,6 @@ extension UIStackView {
             let subView = UIView(frame: view.bounds)
             if #available(iOS 13.0, *) {
                 subView.backgroundColor = UIColor.secondarySystemBackground
-            } else {
-                // Fallback on earlier versions
             }
             subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             self.insertSubview(subView, at: 0)
