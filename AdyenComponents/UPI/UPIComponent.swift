@@ -68,6 +68,12 @@ public final class UPIComponent: PaymentComponent,
     
     internal private(set) var currentSelectedItemIdentifier: String?
 
+    /// Represents the selected UPI (Unified Payments Interface) flow for the payment component.
+    /// Determines the specific UPI transaction process to follow.
+    ///
+    /// Possible values are defined by `UPIFlowType`:
+    /// - `.upiApps`: Transaction handled through UPI-enabled apps.
+    /// - `.qrCode`: Transaction initiated by scanning a QR code.
     @AdyenObservable(.upiApps) public private(set) var selectedUPIFlow: UPIFlowType
 
     /// Initializes the UPI  component.
