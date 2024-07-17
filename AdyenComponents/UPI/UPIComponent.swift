@@ -14,7 +14,7 @@ public final class UPIComponent: PaymentComponent,
     LoadingComponent {
 
     /// The flow types for UPI component.
-    internal enum UPIFlowType: Int {
+    public enum UPIFlowType: Int {
         case upiApps = 0
         case qrCode = 1
     }
@@ -68,7 +68,7 @@ public final class UPIComponent: PaymentComponent,
     
     internal private(set) var currentSelectedItemIdentifier: String?
 
-    internal private(set) var selectedUPIFlow: UPIFlowType = .upiApps
+    @AdyenObservable(.upiApps) public private(set) var selectedUPIFlow: UPIFlowType
 
     /// Initializes the UPI  component.
     ///
