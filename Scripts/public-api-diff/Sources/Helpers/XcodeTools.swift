@@ -27,6 +27,17 @@ struct XcodeTools {
         self.shell = shell
     }
     
+    func loadPackageDescription(
+        projectDirectoryPath: String
+    ) throws -> String {
+        let command = [
+            "cd \(projectDirectoryPath);",
+            "swift package describe --type json"
+        ]
+        
+        return shell.execute(command.joined(separator: " "))
+    }
+    
     func build(
         projectDirectoryPath: String,
         scheme: String,

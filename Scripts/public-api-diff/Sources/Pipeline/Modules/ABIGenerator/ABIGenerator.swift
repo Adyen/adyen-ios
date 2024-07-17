@@ -10,15 +10,18 @@ import Foundation
 struct ABIGenerator: ABIGenerating {
     
     private let xcodeTools: XcodeTools
-    private let fileHandler: any FileHandling
-    private let logger: (any Logging)?
+    private let packageFileHelper: PackageFileHelper
+    private let fileHandler: FileHandling
+    private let logger: Logging?
     
     init(
         xcodeTools: XcodeTools = XcodeTools(),
-        fileHandler: any FileHandling = FileManager.default,
-        logger: (any Logging)?
+        packageFileHelper: PackageFileHelper = .init(fileHandler: FileManager.default, xcodeTools: XcodeTools()),
+        fileHandler: FileHandling = FileManager.default,
+        logger: Logging?
     ) {
         self.xcodeTools = xcodeTools
+        self.packageFileHelper = packageFileHelper
         self.fileHandler = fileHandler
         self.logger = logger
     }
@@ -39,6 +42,7 @@ struct ABIGenerator: ABIGenerating {
             generator = PackageABIGenerator(
                 fileHandler: fileHandler,
                 xcodeTools: xcodeTools,
+                packageFileHelper: packageFileHelper,
                 logger: logger
             )
         }

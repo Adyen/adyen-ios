@@ -12,17 +12,20 @@ struct ProjectBuilder: ProjectBuilding {
     private let baseWorkingDirectoryPath: String
     private let fileHandler: FileHandling
     private let shell: ShellHandling
+    private let randomStringGenerator: RandomStringGenerating
     private let logger: Logging?
     
     init(
         baseWorkingDirectoryPath: String,
         fileHandler: FileHandling = FileManager.default,
         shell: ShellHandling = Shell(),
+        randomStringGenerator: RandomStringGenerating = RandomStringGenerator(),
         logger: Logging?
     ) {
         self.baseWorkingDirectoryPath = baseWorkingDirectoryPath
         self.fileHandler = fileHandler
         self.shell = shell
+        self.randomStringGenerator = randomStringGenerator
         self.logger = logger
     }
     
@@ -55,7 +58,7 @@ private extension ProjectBuilder {
     
     func buildSource(from sourceDirectoryPath: String, scheme: String?) throws -> URL {
         
-        let sourceWorkingDirectoryPath = baseWorkingDirectoryPath.appending("/\(UUID().uuidString)")
+        let sourceWorkingDirectoryPath = baseWorkingDirectoryPath.appending(randomStringGenerator.generateRandomString())
         
         try Self.setupIndividualWorkingDirectory(
             at: sourceWorkingDirectoryPath,
@@ -66,12 +69,12 @@ private extension ProjectBuilder {
             logger: logger
         )
         
-        let packagePath = PackageFileHelper.packagePath(for: sourceWorkingDirectoryPath)
+        let xcodeTools = XcodeTools(shell: shell)
         
         try Self.buildProject(
             projectDirectoryPath: sourceWorkingDirectoryPath,
-            packageFileHelper: PackageFileHelper(packagePath: packagePath, fileHandler: fileHandler),
-            xcodeTools: XcodeTools(shell: shell),
+            packageFileHelper: PackageFileHelper(fileHandler: fileHandler, xcodeTools: xcodeTools),
+            xcodeTools: xcodeTools,
             fileHandler: fileHandler,
             scheme: scheme,
             logger: logger
@@ -83,7 +86,7 @@ private extension ProjectBuilder {
     func retrieveRemoteProject(branchOrTag: String, repository: String) throws -> String {
         
         let currentDirectory = fileHandler.currentDirectoryPath
-        let targetDirectoryPath = currentDirectory.appending("/\(UUID().uuidString)")
+        let targetDirectoryPath = currentDirectory.appending(randomStringGenerator.generateRandomString())
         
         let git = Git(shell: shell, fileHandler: fileHandler, logger: logger)
         try git.clone(repository, at: branchOrTag, targetDirectoryPath: targetDirectoryPath)
@@ -168,7 +171,7 @@ private extension ProjectBuilder {
             // Creating an `.library(name: "_allTargets", targets: [ALL_TARGETS])`
             // so we only have to build once and then can generate ABI files for every module from a single build
             schemeToBuild = "_AllTargets"
-            try packageFileHelper.preparePackageWithConsolidatedLibrary(named: schemeToBuild)
+            try packageFileHelper.preparePackageWithConsolidatedLibrary(named: schemeToBuild, at: projectDirectoryPath)
         }
         
         logger?.log("🛠️ Building project at `\(projectDirectoryPath)`", from: String(describing: Self.self))

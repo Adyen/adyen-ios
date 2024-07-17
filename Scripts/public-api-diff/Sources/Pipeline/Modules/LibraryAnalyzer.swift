@@ -8,24 +8,32 @@ import Foundation
 
 struct LibraryAnalyzer: LibraryAnalyzing {
     
-    let fileHandler: any FileHandling
+    let fileHandler: FileHandling
+    let xcodeTools: XcodeTools
     
-    init(fileHandler: any FileHandling = FileManager.default) {
+    init(
+        fileHandler: FileHandling = FileManager.default,
+        xcodeTools: XcodeTools = XcodeTools()
+    ) {
         self.fileHandler = fileHandler
+        self.xcodeTools = xcodeTools
     }
     
     func analyze(oldProjectUrl: URL, newProjectUrl: URL) throws -> [Change] {
         
-        let oldPackagePath = PackageFileHelper.packagePath(for: oldProjectUrl.path())
-        let newPackagePath = PackageFileHelper.packagePath(for: newProjectUrl.path())
+        let oldProjectPath = oldProjectUrl.path()
+        let newProjectPath = newProjectUrl.path()
+        
+        let oldPackagePath = PackageFileHelper.packagePath(for: oldProjectPath)
+        let newPackagePath = PackageFileHelper.packagePath(for: newProjectPath)
         
         if fileHandler.fileExists(atPath: oldPackagePath), fileHandler.fileExists(atPath: newPackagePath) {
-            let oldPackageHelper = PackageFileHelper(packagePath: oldPackagePath, fileHandler: fileHandler)
-            let newPackageHelper = PackageFileHelper(packagePath: newPackagePath, fileHandler: fileHandler)
+            let oldPackageHelper = PackageFileHelper(fileHandler: fileHandler, xcodeTools: xcodeTools)
+            let newPackageHelper = PackageFileHelper(fileHandler: fileHandler, xcodeTools: xcodeTools)
             
             return try analyze(
-                old: oldPackageHelper.availableProducts(),
-                new: newPackageHelper.availableProducts()
+                old: oldPackageHelper.availableProducts(at: oldProjectPath),
+                new: newPackageHelper.availableProducts(at: newProjectPath)
             )
         } else {
             return []

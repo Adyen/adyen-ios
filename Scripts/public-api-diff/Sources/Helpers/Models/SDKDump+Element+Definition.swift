@@ -44,7 +44,7 @@ extension SDKDump.Element {
         
         definition += verbosePrintedName
         
-        if let conformanceNames = conformances?.map(\.printedName), !conformanceNames.isEmpty {
+        if let conformanceNames = conformances?.sorted().map(\.printedName), !conformanceNames.isEmpty {
             definition += " : \(conformanceNames.joined(separator: ", "))"
         }
         

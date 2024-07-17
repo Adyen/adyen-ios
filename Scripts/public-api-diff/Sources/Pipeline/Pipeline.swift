@@ -47,8 +47,6 @@ struct Pipeline {
     
     func run() async throws -> String {
         
-        let startDate = Date()
-        
         // Building both projects from the respective source
         async let oldBuildResult = try projectBuilder.build(source: oldProjectSource, scheme: scheme)
         async let newBuildResult = try projectBuilder.build(source: newProjectSource, scheme: scheme)

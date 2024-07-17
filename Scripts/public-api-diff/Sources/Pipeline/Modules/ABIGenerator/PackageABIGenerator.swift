@@ -11,6 +11,7 @@ struct PackageABIGenerator: ABIGenerating {
     
     let fileHandler: FileHandling
     let xcodeTools: XcodeTools
+    let packageFileHelper: PackageFileHelper
     let logger: Logging?
     
     func generate(
@@ -20,12 +21,10 @@ struct PackageABIGenerator: ABIGenerating {
         
         logger?.log("📋 Generating ABI files for `\(projectDirectory.lastPathComponent)`", from: String(describing: Self.self))
         
-        let packageFileHelper = PackageFileHelper(
-            packagePath: PackageFileHelper.packagePath(for: projectDirectory.path()),
-            fileHandler: fileHandler
-        )
-        
-        return try packageFileHelper.availableTargets().map { target in
+        return try packageFileHelper.availableTargets(
+            at: projectDirectory.path(),
+            moduleType: .swiftTarget
+        ).map { target in
             
             let abiJsonFileUrl = try generateApiDump(
                 for: target,
