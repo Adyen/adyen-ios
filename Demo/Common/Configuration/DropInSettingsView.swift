@@ -18,7 +18,10 @@ internal struct DropInSettingsView: View {
             List {
                 Section {
                     Toggle(isOn: $viewModel.allowDisablingStoredPaymentMethods) {
-                        Text("Disable Stored Payment Methods")
+                        Text("Stored Payment Method Removal")
+                        Text("Displays a button to remove stored payment methods")
+                            .foregroundColor(.gray)
+                            .font(.footnote)
                     }
 
                     Toggle(isOn: $viewModel.allowsSkippingPaymentList) {
