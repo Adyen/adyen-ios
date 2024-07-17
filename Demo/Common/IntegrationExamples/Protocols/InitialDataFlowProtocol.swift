@@ -13,6 +13,7 @@ internal protocol InitialDataFlowProtocol: AnyObject {
     var apiClient: APIClientProtocol { get }
     func requestAdyenSessionConfiguration(completion: @escaping (Result<AdyenSession.Configuration, Error>) -> Void)
     func generateContext() -> AdyenContext
+    func start()
 }
 
 extension InitialDataFlowProtocol {

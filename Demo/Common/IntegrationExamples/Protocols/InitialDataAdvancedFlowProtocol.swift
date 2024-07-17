@@ -15,6 +15,7 @@ internal protocol InitialDataAdvancedFlowProtocol: AnyObject {
                                amount: Amount,
                                completion: @escaping (Result<PaymentMethods, Error>) -> Void)
     func generateContext() -> AdyenContext
+    func start()
 }
 
 extension InitialDataAdvancedFlowProtocol {
