@@ -27,24 +27,34 @@ struct ProjectBuilder: ProjectBuilding {
     }
     
     func build(source: ProjectSource, scheme: String?) throws -> URL {
-        try setupProject(from: source, scheme: scheme)
+        let sourceDirectoryPath: String = try {
+            switch source {
+            case let .local(path):
+                path
+                
+            case let .remote(branchOrTag, repository):
+                try retrieveRemoteProject(branchOrTag: branchOrTag, repository: repository)
+            }
+        }()
+        
+        let sourceWorkingDirectoryPath = try buildSource(from: sourceDirectoryPath, scheme: scheme)
+        
+        switch source {
+        case .local:
+            break
+        case .remote:
+            // Clean up the cloned repo
+            try fileHandler.removeItem(atPath: sourceDirectoryPath)
+        }
+        
+        return sourceWorkingDirectoryPath
     }
 }
 
 private extension ProjectBuilder {
     
-    func setupProject(from source: ProjectSource, scheme: String?) throws -> URL {
+    func buildSource(from sourceDirectoryPath: String, scheme: String?) throws -> URL {
         
-        let sourceDirectoryPath: String
-        
-        switch source {
-        case let .local(path):
-            sourceDirectoryPath = path
-            
-        case let .remote(branchOrTag, repository):
-            sourceDirectoryPath = try retrieveRemoteProject(branchOrTag: branchOrTag, repository: repository)
-        }
-
         let sourceWorkingDirectoryPath = baseWorkingDirectoryPath.appending("/\(UUID().uuidString)")
         
         try Self.setupIndividualWorkingDirectory(
@@ -66,14 +76,6 @@ private extension ProjectBuilder {
             scheme: scheme,
             logger: logger
         )
-        
-        switch source {
-        case .local:
-            break
-        case .remote:
-            // Clean up the cloned repo
-            try fileHandler.removeItem(atPath: sourceDirectoryPath)
-        }
         
         return URL(filePath: sourceWorkingDirectoryPath)
     }
@@ -133,11 +135,11 @@ private extension ProjectBuilder {
         
         try fileHandler.contentsOfDirectory(atPath: sourceDirectoryPath).forEach { fileName in
             if fileExtensionIgnoreList.contains(where: { fileName.hasSuffix($0) }) {
-                logger?.debug("Skipping `\(fileName)`", from: "ProjectBuilder")
+                logger?.debug("Skipping `\(fileName)`", from: String(describing: Self.self))
                 return
             }
             if fileNameIgnoreList.contains(where: { fileName == $0 }) {
-                logger?.debug("Skipping `\(fileName)`", from: "ProjectBuilder")
+                logger?.debug("Skipping `\(fileName)`", from: String(describing: Self.self))
                 return
             }
             
@@ -169,7 +171,7 @@ private extension ProjectBuilder {
             try packageFileHelper.preparePackageWithConsolidatedLibrary(named: schemeToBuild)
         }
         
-        logger?.log("🛠️ Building project at `\(projectDirectoryPath)`", from: "ProjectBuilder")
+        logger?.log("🛠️ Building project at `\(projectDirectoryPath)`", from: String(describing: Self.self))
         
         try xcodeTools.build(
             projectDirectoryPath: projectDirectoryPath,

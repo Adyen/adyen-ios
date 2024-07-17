@@ -20,7 +20,7 @@ struct ProjectABIProvider: ABIGenerating {
             return []
         }
         
-        logger?.log("📋 Locating ABI file for `\(projectDirectory.lastPathComponent)`", from: "ProjectABIProvider")
+        logger?.log("📋 Locating ABI file for `\(projectDirectory.lastPathComponent)`", from: String(describing: Self.self))
         
         // TODO: Check with other projects - this seems very specific:
         let targetSpecificDirectories = [
@@ -45,8 +45,7 @@ struct ProjectABIProvider: ABIGenerating {
             throw FileHandlerError.pathDoesNotExist(path: swiftModuleDirectory.appending(path: ".abi.json").path())
         }
         
-        
-        logger?.debug("- `\(abiJsonFilePath)`", from: "ProjectABIProvider")
+        logger?.debug("- `\(abiJsonFilePath)`", from: String(describing: Self.self))
         let abiJsonFileUrl = swiftModuleDirectory.appending(path: abiJsonFilePath)
         return [.init(targetName: scheme, abiJsonFileUrl: abiJsonFileUrl)]
     }

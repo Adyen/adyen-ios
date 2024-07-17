@@ -20,7 +20,7 @@ class ABIGeneratorTests: XCTestCase {
             return true
         }
         fileHandler.handleLoadData = { _ in
-            "".data(using: .utf8)!
+            try XCTUnwrap("".data(using: .utf8))
         }
         
         var logger = MockLogger()
@@ -50,7 +50,7 @@ class ABIGeneratorTests: XCTestCase {
             return true
         }
         fileHandler.handleLoadData = { _ in
-            "".data(using: .utf8)!
+            try XCTUnwrap("".data(using: .utf8))
         }
         fileHandler.handleContentsOfDirectory = { _ in
             ["abi.json"]

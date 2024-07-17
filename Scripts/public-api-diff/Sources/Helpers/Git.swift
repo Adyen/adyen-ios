@@ -31,7 +31,7 @@ struct Git {
     ///
     /// - Returns: The local directory path where to find the cloned repository
     func clone(_ repository: String, at branchOrTag: String, targetDirectoryPath: String) throws {
-        logger?.log("🐱 Cloning \(repository) @ \(branchOrTag) into \(targetDirectoryPath)", from: "\(Self.self)")
+        logger?.log("🐱 Cloning \(repository) @ \(branchOrTag) into \(targetDirectoryPath)", from: String(describing: Self.self))
         let command = "git clone -b \(branchOrTag) \(repository) \(targetDirectoryPath)"
         shell.execute(command)
         

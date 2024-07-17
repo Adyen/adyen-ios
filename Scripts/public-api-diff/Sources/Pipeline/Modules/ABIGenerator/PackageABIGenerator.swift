@@ -18,7 +18,7 @@ struct PackageABIGenerator: ABIGenerating {
         scheme: String?
     ) throws -> [ABIGeneratorOutput] {
         
-        logger?.log("📋 Generating ABI files for `\(projectDirectory.lastPathComponent)`", from: "PackageABIGenerator")
+        logger?.log("📋 Generating ABI files for `\(projectDirectory.lastPathComponent)`", from: String(describing: Self.self))
         
         let packageFileHelper = PackageFileHelper(
             packagePath: PackageFileHelper.packagePath(for: projectDirectory.path()),
@@ -48,7 +48,7 @@ private extension PackageABIGenerator {
     ) throws -> URL {
         
         let abiJsonFileUrl = projectDirectory.appending(component: "\(module).abi.json")
-        logger?.debug("- `\(module).abi.json`", from: "PackageABIGenerator")
+        logger?.debug("- `\(module).abi.json`", from: String(describing: Self.self))
         
         xcodeTools.dumpSdk(
             projectDirectoryPath: projectDirectory.path(),
