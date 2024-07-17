@@ -45,5 +45,7 @@ extension AdyenSession: SessionStoredPaymentMethodsDelegate {
     }
     
     // empty implementation of the old method
-    public func disable(storedPaymentMethod: Adyen.StoredPaymentMethod, completion: @escaping Adyen.Completion<Bool>) {}
+    public func disable(storedPaymentMethod: Adyen.StoredPaymentMethod, completion: @escaping Adyen.Completion<Bool>) {
+        AdyenAssertion.assertionFailure(message: "Use the new delegate method from session.")
+    }
 }
