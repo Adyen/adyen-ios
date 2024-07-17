@@ -36,7 +36,6 @@ public final class UPIComponent: PaymentComponent,
         static let upiIntent = "upi_intent"
         static let vpaFlowIdentifier = "UPI/VPA"
         static let noAppsVpaSegmentTitle = "VPA"
-        
         static let qrCodeIcon = "qrcode"
     }
 
@@ -87,6 +86,15 @@ public final class UPIComponent: PaymentComponent,
             self.currentSelectedItemIdentifier = Constants.vpaFlowIdentifier
         }
     }
+
+    /// Submits payment action.
+    public func submit() {
+        guard !configuration.showSubmitButton else { return }
+
+        didSelectContinueButton()
+    }
+
+    // MARK: - LoadingComponent
 
     public func stopLoading() {
         continueButton.showsActivityIndicator = false
@@ -272,8 +280,11 @@ public final class UPIComponent: PaymentComponent,
         vpaInputItem.isVisible = upiAppsList.isEmpty
         
         formViewController.append(vpaInputItem)
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
-        formViewController.append(continueButton)
+
+        if configuration.showSubmitButton {
+            formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+            formViewController.append(continueButton)
+        }
 
         return formViewController
     }()
@@ -394,7 +405,7 @@ private extension UPIComponent {
         }
     }
     
-    func submit() {
+    func submitPayment() {
         switch selectedUPIFlow {
         case .upiApps:
             let details: UPIComponentDetails
