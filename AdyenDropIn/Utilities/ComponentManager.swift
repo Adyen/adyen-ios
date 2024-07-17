@@ -74,18 +74,15 @@ internal final class ComponentManager {
         // Stored section
         let storedSection: ComponentsSection
         
-        if supportsEditingStoredPaymentMethods {
-            let allowDeleting = configuration.paymentMethodsList.allowDisablingStoredPaymentMethods
-            let editingStyle: EditingStyle = allowDeleting ? .delete : .none
-            storedSection = ComponentsSection(header: .init(title: localizedString(.paymentMethodsStoredMethods,
-                                                                                   configuration.localizationParameters),
-                                                            editingStyle: editingStyle,
-                                                            style: configuration.style.listComponent.sectionHeader),
-                                              components: storedComponents,
-                                              footer: nil)
-        } else {
-            storedSection = ComponentsSection(components: storedComponents)
-        }
+        let allowDeleting = configuration.paymentMethodsList.allowDisablingStoredPaymentMethods
+            && supportsEditingStoredPaymentMethods
+        let editingStyle: EditingStyle = allowDeleting ? .delete : .none
+        storedSection = ComponentsSection(header: .init(title: localizedString(.paymentMethodsStoredMethods,
+                                                                               configuration.localizationParameters),
+                                                        editingStyle: editingStyle,
+                                                        style: configuration.style.listComponent.sectionHeader),
+                                          components: storedComponents,
+                                          footer: nil)
         
         // Regular section
         let localizedTitle = localizedString(.paymentMethodsOtherMethods, configuration.localizationParameters)

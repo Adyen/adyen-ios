@@ -49,7 +49,6 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
                 default:
                     XCTFail()
                 }
-
             }
         }
 
