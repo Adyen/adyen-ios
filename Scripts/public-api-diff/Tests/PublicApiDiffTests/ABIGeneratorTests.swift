@@ -12,7 +12,17 @@ class ABIGeneratorTests: XCTestCase {
     
     func test_noSchemeProvided_shouldHandleAsPackage() throws {
         
-        let shell = MockShell()
+        var shell = MockShell()
+        shell.handleExecute = { _ in
+            let packageDescription = SwiftPackageDescription(
+                defaultLocalization: "en-en",
+                products: [],
+                targets: [],
+                toolsVersion: "1.0"
+            )
+            let encodedPackageDescription = try! JSONEncoder().encode(packageDescription)
+            return String(data: encodedPackageDescription, encoding: .utf8)!
+        }
         let xcodeTools = XcodeTools(shell: shell)
         
         var fileHandler = MockFileHandler()

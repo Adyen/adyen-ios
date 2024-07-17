@@ -10,11 +10,9 @@ import Foundation
 @main
 struct PublicApiDiff: AsyncParsableCommand {
     
-    // TODO: Do more documentation
     @Option(help: "Specify the updated version to compare to")
     public var new: String
     
-    // TODO: Do more documentation
     @Option(help: "Specify the old version to compare to")
     public var old: String
     

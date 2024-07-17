@@ -28,8 +28,6 @@ let package = Package(
                 // Copy Tests/ExampleTests/Resources directories as-is.
                 // Use to retain directory structure.
                 // Will be at top level in bundle.
-                .copy("Resources/NewPackage.txt"),
-                .copy("Resources/OldPackage.txt"),
                 .copy("Resources/dummy.abi.json")
             ]
         )

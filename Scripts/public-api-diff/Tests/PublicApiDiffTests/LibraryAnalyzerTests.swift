@@ -14,21 +14,30 @@ class LibraryAnalyzerTests: XCTestCase {
         
         let handleFileExpectation = expectation(description: "handleFileExists is called twice")
         handleFileExpectation.expectedFulfillmentCount = 2
-        let handleLoadDataExpectation = expectation(description: "handleFileExists is called twice")
-        handleLoadDataExpectation.expectedFulfillmentCount = 2
         
         var fileHandler = MockFileHandler()
         fileHandler.handleFileExists = { _ in
             handleFileExpectation.fulfill()
             return true
         }
-        fileHandler.handleLoadData = { path in
-            handleLoadDataExpectation.fulfill()
-            let packageName = path.components(separatedBy: "/").first
-            let resourcePath = try XCTUnwrap(Bundle.module.path(forResource: packageName, ofType: "txt"))
-            return try XCTUnwrap(FileManager.default.contents(atPath: resourcePath))
+        var shell = MockShell()
+        shell.handleExecute = { _ in
+            let packageDescription = SwiftPackageDescription(
+                defaultLocalization: "en-en",
+                products: [],
+                targets: [],
+                toolsVersion: "1.0"
+            )
+            let encodedPackageDescription = try! JSONEncoder().encode(packageDescription)
+            return String(data: encodedPackageDescription, encoding: .utf8)!
         }
-        let libraryAnalyzer = LibraryAnalyzer(fileHandler: fileHandler)
+        
+        let xcodeTools = XcodeTools(shell: shell)
+        
+        let libraryAnalyzer = LibraryAnalyzer(
+            fileHandler: fileHandler,
+            xcodeTools: xcodeTools
+        )
         
         let changes = try libraryAnalyzer.analyze(
             oldProjectUrl: URL(filePath: "NewPackage"),
@@ -45,21 +54,40 @@ class LibraryAnalyzerTests: XCTestCase {
         
         let handleFileExpectation = expectation(description: "handleFileExists is called twice")
         handleFileExpectation.expectedFulfillmentCount = 2
-        let handleLoadDataExpectation = expectation(description: "handleFileExists is called twice")
-        handleLoadDataExpectation.expectedFulfillmentCount = 2
         
         var fileHandler = MockFileHandler()
         fileHandler.handleFileExists = { _ in
             handleFileExpectation.fulfill()
             return true
         }
-        fileHandler.handleLoadData = { path in
-            handleLoadDataExpectation.fulfill()
-            let packageName = path.components(separatedBy: "/").first
-            let resourcePath = try XCTUnwrap(Bundle.module.path(forResource: packageName, ofType: "txt"))
-            return try XCTUnwrap(FileManager.default.contents(atPath: resourcePath))
+        
+        var shell = MockShell()
+        shell.handleExecute = { command in
+            let packageDescription: SwiftPackageDescription
+            
+            if command.range(of: "NewPackage") != nil {
+                packageDescription = SwiftPackageDescription(
+                    defaultLocalization: "en-en",
+                    products: [.init(name: "NewLibrary", targets: [])],
+                    targets: [],
+                    toolsVersion: "1.0"
+                )
+            } else {
+                packageDescription = SwiftPackageDescription(
+                    defaultLocalization: "en-en",
+                    products: [.init(name: "OldLibrary", targets: [])],
+                    targets: [],
+                    toolsVersion: "1.0"
+                )
+            }
+            
+            let encodedPackageDescription = try! JSONEncoder().encode(packageDescription)
+            return String(data: encodedPackageDescription, encoding: .utf8)!
         }
-        let libraryAnalyzer = LibraryAnalyzer(fileHandler: fileHandler)
+        
+        let xcodeTools = XcodeTools(shell: shell)
+        
+        let libraryAnalyzer = LibraryAnalyzer(fileHandler: fileHandler, xcodeTools: xcodeTools)
         
         let changes = try libraryAnalyzer.analyze(
             oldProjectUrl: URL(filePath: "OldPackage"),

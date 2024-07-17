@@ -16,12 +16,11 @@ struct ABIGenerator: ABIGenerating {
     
     init(
         xcodeTools: XcodeTools = XcodeTools(),
-        packageFileHelper: PackageFileHelper = .init(fileHandler: FileManager.default, xcodeTools: XcodeTools()),
         fileHandler: FileHandling = FileManager.default,
         logger: Logging?
     ) {
         self.xcodeTools = xcodeTools
-        self.packageFileHelper = packageFileHelper
+        self.packageFileHelper = .init(fileHandler: fileHandler, xcodeTools: xcodeTools)
         self.fileHandler = fileHandler
         self.logger = logger
     }

@@ -108,7 +108,7 @@ private extension PackageFileHelper {
                 warnings += [firstLine]
             }
             
-            if firstLine == "{",
+            if firstLine.starts(with: "{"),
                 let packageDescriptionData = packageDescriptionLines.joined(separator: newLine).data(using: .utf8)
             {
                 var packageDescription = try JSONDecoder().decode(SwiftPackageDescription.self, from: packageDescriptionData)

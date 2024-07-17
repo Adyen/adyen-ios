@@ -58,7 +58,7 @@ private extension ProjectBuilder {
     
     func buildSource(from sourceDirectoryPath: String, scheme: String?) throws -> URL {
         
-        let sourceWorkingDirectoryPath = baseWorkingDirectoryPath.appending(randomStringGenerator.generateRandomString())
+        let sourceWorkingDirectoryPath = baseWorkingDirectoryPath.appending("/\(randomStringGenerator.generateRandomString())")
         
         try Self.setupIndividualWorkingDirectory(
             at: sourceWorkingDirectoryPath,
@@ -86,7 +86,7 @@ private extension ProjectBuilder {
     func retrieveRemoteProject(branchOrTag: String, repository: String) throws -> String {
         
         let currentDirectory = fileHandler.currentDirectoryPath
-        let targetDirectoryPath = currentDirectory.appending(randomStringGenerator.generateRandomString())
+        let targetDirectoryPath = currentDirectory.appending("/\(randomStringGenerator.generateRandomString())")
         
         let git = Git(shell: shell, fileHandler: fileHandler, logger: logger)
         try git.clone(repository, at: branchOrTag, targetDirectoryPath: targetDirectoryPath)
