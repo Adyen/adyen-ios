@@ -23,6 +23,7 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     public var style: FormComponentStyle
 
     /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
+    @_spi(AdyenInternal)
     public private(set) var showSubmitButton: Bool
 
     public var localizationParameters: LocalizationParameters?
@@ -51,7 +52,7 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
     public var style: FormComponentStyle
 
     /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
-    public private(set) var showSubmitButton: Bool
+    internal let showSubmitButton: Bool
 
     public var shopperInformation: PrefilledShopperInformation?
     

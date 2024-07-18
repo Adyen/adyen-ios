@@ -48,7 +48,7 @@ public final class GiftCardComponent: PresentableComponent,
     public let style: FormComponentStyle
 
     /// A boolean value that determines whether the payment button is displayed. Defaults to `true`.
-    public private(set) var showSubmitButton: Bool
+    internal let showSubmitButton: Bool
 
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?

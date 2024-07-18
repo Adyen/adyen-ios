@@ -27,7 +27,7 @@ public struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
     public var style: FormComponentStyle
 
     /// A boolean value that determines whether the payment button is displayed. Defaults to `true`.
-    public private(set) var showSubmitButton: Bool
+    internal let showSubmitButton: Bool
 
     /// The localization parameters, leave it nil to use the default parameters.
     public var localizationParameters: LocalizationParameters?

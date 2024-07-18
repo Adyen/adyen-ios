@@ -16,7 +16,7 @@ extension BoletoComponent {
         public let style: FormComponentStyle
 
         /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
-        public private(set) var showSubmitButton: Bool
+        internal let showSubmitButton: Bool
 
         public var localizationParameters: LocalizationParameters?
         
