@@ -194,6 +194,139 @@ class DropInTests: XCTestCase {
         
         XCTAssertNil(sut.viewController.findChild(of: ListViewController.self))
     }
+    
+    func testDeletingStoredPaymentSuccessWithSession() throws {
+        var config = DropInComponent.Configuration()
+        config.allowPreselectedPaymentView = false
+
+        var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
+        paymentMethods.stored = [storedPaymentMethod]
+        
+        let sut = DropInComponent(paymentMethods: paymentMethods,
+                                  context: Dummy.context,
+                                  configuration: config)
+        
+        let storedPaymentMethodsDelegate = SessionStoredPaymentMethodDelegateMock()
+        storedPaymentMethodsDelegate.onDisable = { storedPM, dropIn in
+            XCTAssertEqual(storedPM.identifier, storedPaymentMethod.identifier)
+            XCTAssertEqual(dropIn as! DropInComponent, sut)
+            return true
+        }
+        sut.storedPaymentMethodsDelegate = storedPaymentMethodsDelegate
+        XCTAssertNotNil(sut.sessionAsStoredPaymentMethodsDelegate)
+        
+        let expectation = expectation(description: "deletion delegate should be called")
+        let paymentMethodsListComponent = sut.paymentMethodListComponent(onCancel: nil)
+
+        sut.didDelete(storedPaymentMethod, in: paymentMethodsListComponent) { success in
+            XCTAssertEqual(storedPaymentMethodsDelegate.onDisableCallCount, 1)
+            XCTAssertTrue(success)
+            XCTAssertTrue(sut.paymentMethods.stored.isEmpty)
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 2)
+    }
+    
+    func testDeletingStoredPaymentFailureWithSession() throws {
+        var config = DropInComponent.Configuration()
+        config.allowPreselectedPaymentView = false
+
+        var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
+        paymentMethods.stored = [storedPaymentMethod]
+        
+        let sut = DropInComponent(paymentMethods: paymentMethods,
+                                  context: Dummy.context,
+                                  configuration: config)
+        
+        let storedPaymentMethodsDelegate = SessionStoredPaymentMethodDelegateMock()
+        storedPaymentMethodsDelegate.onDisable = { storedPM, dropIn in
+            XCTAssertEqual(storedPM.identifier, storedPaymentMethod.identifier)
+            return false
+        }
+        sut.storedPaymentMethodsDelegate = storedPaymentMethodsDelegate
+        XCTAssertNotNil(sut.sessionAsStoredPaymentMethodsDelegate)
+        
+        let expectation = expectation(description: "deletion delegate should be called")
+        let paymentMethodsListComponent = sut.paymentMethodListComponent(onCancel: nil)
+
+        sut.didDelete(storedPaymentMethod, in: paymentMethodsListComponent) { success in
+            XCTAssertEqual(storedPaymentMethodsDelegate.onDisableCallCount, 1)
+            XCTAssertFalse(success)
+            XCTAssertFalse(sut.paymentMethods.stored.isEmpty)
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 2)
+    }
+    
+    func testDeletingStoredPaymentSuccessAdvanced() throws {
+        var config = DropInComponent.Configuration()
+        config.allowPreselectedPaymentView = false
+
+        var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
+        paymentMethods.stored = [storedPaymentMethod]
+        
+        let sut = DropInComponent(paymentMethods: paymentMethods,
+                                  context: Dummy.context,
+                                  configuration: config)
+        
+        let storedPaymentMethodsDelegate = StoredPaymentMethodDelegateMock()
+        storedPaymentMethodsDelegate.onDisable = { storedPM in
+            XCTAssertEqual(storedPM.identifier, storedPaymentMethod.identifier)
+            return true
+        }
+        sut.storedPaymentMethodsDelegate = storedPaymentMethodsDelegate
+        XCTAssertNil(sut.sessionAsStoredPaymentMethodsDelegate)
+        
+        let expectation = expectation(description: "deletion delegate should be called")
+        let paymentMethodsListComponent = sut.paymentMethodListComponent(onCancel: nil)
+
+        sut.didDelete(storedPaymentMethod, in: paymentMethodsListComponent) { success in
+            XCTAssertEqual(storedPaymentMethodsDelegate.onDisableCallCount, 1)
+            XCTAssertTrue(success)
+            XCTAssertTrue(sut.paymentMethods.stored.isEmpty)
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 2)
+    }
+    
+    func testDeletingStoredPaymentFailureAdvanced() throws {
+        var config = DropInComponent.Configuration()
+        config.allowPreselectedPaymentView = false
+
+        var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
+        paymentMethods.stored = [storedPaymentMethod]
+        
+        let sut = DropInComponent(paymentMethods: paymentMethods,
+                                  context: Dummy.context,
+                                  configuration: config)
+        
+        let storedPaymentMethodsDelegate = StoredPaymentMethodDelegateMock()
+        storedPaymentMethodsDelegate.onDisable = { storedPM in
+            XCTAssertEqual(storedPM.identifier, storedPaymentMethod.identifier)
+            return false
+        }
+        sut.storedPaymentMethodsDelegate = storedPaymentMethodsDelegate
+        XCTAssertNil(sut.sessionAsStoredPaymentMethodsDelegate)
+        
+        let expectation = expectation(description: "deletion delegate should be called")
+        let paymentMethodsListComponent = sut.paymentMethodListComponent(onCancel: nil)
+
+        sut.didDelete(storedPaymentMethod, in: paymentMethodsListComponent) { success in
+            XCTAssertEqual(storedPaymentMethodsDelegate.onDisableCallCount, 1)
+            XCTAssertFalse(success)
+            XCTAssertFalse(sut.paymentMethods.stored.isEmpty)
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 2)
+    }
 
     func testOpenDropInWithNoOneClickPayment() throws {
         let config = DropInComponent.Configuration(allowPreselectedPaymentView: false)

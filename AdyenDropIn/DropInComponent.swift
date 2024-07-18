@@ -96,7 +96,14 @@ public final class DropInComponent: NSObject,
     public weak var partialPaymentDelegate: PartialPaymentDelegate?
     
     /// The stored payment methods delegate.
-    public weak var storedPaymentMethodsDelegate: StoredPaymentMethodsDelegate?
+    public weak var storedPaymentMethodsDelegate: StoredPaymentMethodsDelegate? {
+        didSet {
+            guard let sessionAsStoredPaymentMethodsDelegate else { return }
+            
+            let showRemoveStoredPaymentButton = sessionAsStoredPaymentMethodsDelegate.showRemovePaymentMethodButton
+            configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = showRemoveStoredPaymentButton
+        }
+    }
 
     /// The delegate for user activity on card component.
     public weak var cardComponentDelegate: CardComponentDelegate?
@@ -120,6 +127,15 @@ public final class DropInComponent: NSObject,
     
     internal func reloadComponentManager() {
         componentManager = createComponentManager(componentManager.order)
+    }
+    
+    /// Convenience accessor to the session if it's the delegate for removing stored payment methods
+    internal var sessionAsStoredPaymentMethodsDelegate: SessionStoredPaymentMethodsDelegate? {
+        if let storedPaymentRemovable = storedPaymentMethodsDelegate as? SessionStoredPaymentMethodsDelegate,
+           storedPaymentRemovable.isSession {
+            return storedPaymentRemovable
+        }
+        return nil
     }
 
     /// Reloads the DropIn with a partial payment order and a new `PaymentMethods` object.
