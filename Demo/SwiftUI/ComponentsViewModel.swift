@@ -7,54 +7,56 @@
 import SwiftUI
 
 internal final class ComponentsViewModel: ObservableObject, Identifiable {
+    
+    private var currentExample: ExampleContainer?
 
-    private lazy var dropInExample: DropInExample = {
+    private var dropInExample: DropInExample {
         let dropIn = DropInExample()
         dropIn.presenter = self
         return dropIn
-    }()
+    }
 
-    private lazy var dropInAdvancedFlowExample: DropInAdvancedFlowExample = {
+    private var dropInAdvancedFlowExample: DropInAdvancedFlowExample {
         let dropInAdvancedFlow = DropInAdvancedFlowExample()
         dropInAdvancedFlow.presenter = self
         return dropInAdvancedFlow
-    }()
+    }
 
-    private lazy var cardComponentAdvancedFlowExample: CardComponentAdvancedFlowExample = {
+    private var cardComponentAdvancedFlowExample: CardComponentAdvancedFlowExample {
         let cardComponentAdvancedFlow = CardComponentAdvancedFlowExample()
         cardComponentAdvancedFlow.presenter = self
         return cardComponentAdvancedFlow
-    }()
+    }
 
-    private lazy var cardComponentExample: CardComponentExample = {
+    private var cardComponentExample: CardComponentExample {
         let cardComponentExample = CardComponentExample()
         cardComponentExample.presenter = self
         return cardComponentExample
-    }()
+    }
     
-    private lazy var issuerListComponentAdvancedFlowExample: IssuerListComponentAdvancedFlowExample = {
+    private var issuerListComponentAdvancedFlowExample: IssuerListComponentAdvancedFlowExample {
         let cardComponentAdvancedFlow = IssuerListComponentAdvancedFlowExample()
         cardComponentAdvancedFlow.presenter = self
         return cardComponentAdvancedFlow
-    }()
+    }
 
-    private lazy var issuerListComponentExample: IssuerListComponentExample = {
+    private var issuerListComponentExample: IssuerListComponentExample {
         let cardComponentExample = IssuerListComponentExample()
         cardComponentExample.presenter = self
         return cardComponentExample
-    }()
+    }
     
-    private lazy var instantPaymentComponentExample: InstantPaymentComponentExample = {
+    private var instantPaymentComponentExample: InstantPaymentComponentExample {
         let instantPaymentComponentExample = InstantPaymentComponentExample()
         instantPaymentComponentExample.presenter = self
         return instantPaymentComponentExample
-    }()
+    }
     
-    private lazy var instantPaymentComponentAdvancedFlow: InstantPaymentComponentAdvancedFlow = {
+    private var instantPaymentComponentAdvancedFlow: InstantPaymentComponentAdvancedFlow {
         let instantPaymentComponentExample = InstantPaymentComponentAdvancedFlow()
         instantPaymentComponentExample.presenter = self
         return instantPaymentComponentExample
-    }()
+    }
 
     @Published internal var viewControllerToPresent: UIViewController?
 
@@ -63,38 +65,50 @@ internal final class ComponentsViewModel: ObservableObject, Identifiable {
     @Published internal private(set) var isLoading: Bool = false
     
     @Published internal var isUsingSession: Bool = true
+    
+    // MARK: - Private
+    
+    private func start(_ example: some InitialDataFlowProtocol) {
+        currentExample = .session(example)
+        example.start()
+    }
+    
+    private func start(_ example: some InitialDataAdvancedFlowProtocol) {
+        currentExample = .advanced(example)
+        example.start()
+    }
 
     // MARK: - DropIn Component
 
     internal func presentDropInComponent() {
         if isUsingSession {
-            dropInExample.start()
+            start(dropInExample)
         } else {
-            dropInAdvancedFlowExample.start()
+            start(dropInAdvancedFlowExample)
         }
     }
 
     internal func presentCardComponent() {
         if isUsingSession {
-            cardComponentExample.start()
+            start(cardComponentExample)
         } else {
-            cardComponentAdvancedFlowExample.start()
+            start(cardComponentAdvancedFlowExample)
         }
     }
     
     internal func presentIssuerListComponent() {
         if isUsingSession {
-            issuerListComponentExample.start()
+            start(issuerListComponentExample)
         } else {
-            issuerListComponentAdvancedFlowExample.start()
+            start(issuerListComponentAdvancedFlowExample)
         }
     }
     
     internal func presentInstantPaymentComponent() {
         if isUsingSession {
-            instantPaymentComponentExample.start()
+            start(instantPaymentComponentExample)
         } else {
-            instantPaymentComponentAdvancedFlow.start()
+            start(instantPaymentComponentAdvancedFlow)
         }
     }
 
