@@ -296,6 +296,7 @@ extension CardViewController {
         switch configuration.billingAddress.mode {
         case .lookup:
             return items.billingAddressPickerItem
+
         case .full:
             return items.billingAddressPickerItem
             

@@ -23,7 +23,6 @@ internal final class DropInExample: InitialDataFlowProtocol {
     private var dropInComponent: DropInComponent?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
-    private lazy var palApiClient = ApiClientHelper.generatePalApiClient()
     
     internal lazy var context: AdyenContext = generateContext()
     
@@ -85,7 +84,7 @@ internal final class DropInExample: InitialDataFlowProtocol {
                                         title: ConfigurationConstants.appName)
         
         component.delegate = session
-        component.storedPaymentMethodsDelegate = self
+        component.storedPaymentMethodsDelegate = session
         component.partialPaymentDelegate = session
 
         return component
@@ -136,13 +135,7 @@ extension DropInExample: PresentationDelegate {
     }
 }
 
-extension DropInExample: StoredPaymentMethodsDelegate {
-    internal func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping (Bool) -> Void) {
-        let request = DisableStoredPaymentMethodRequest(recurringDetailReference: storedPaymentMethod.identifier)
-        palApiClient.perform(request) { [weak self] result in
-            self?.handleDisableResult(result, completion: completion)
-        }
-    }
+extension DropInExample {
 
     private func handleDisableResult(_ result: Result<DisableStoredPaymentMethodRequest.ResponseType, Error>, completion: (Bool) -> Void) {
         switch result {

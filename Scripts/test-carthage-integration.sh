@@ -127,6 +127,7 @@ mkdir -p Tests
 mkdir -p Source
 cp "../Tests/IntegrationTests/DropIn Tests/DropInTests.swift" Tests/DropInTests.swift
 cp "../Tests/IntegrationTests/DropIn Tests/DropInDelegateMock.swift" Tests/DropInDelegateMock.swift
+cp "../Tests/IntegrationTests/DropIn Tests/StoredPaymentMethodDelegateMock.swift" Tests/StoredPaymentMethodDelegateMock.swift
 cp "../Tests/IntegrationTests/Card Tests/Mocks/OpenExternalAppDetector+Mock.swift" Tests/OpenExternalAppDetector+Mock.swift
 cp "../Tests/IntegrationTests/Card Tests/3DS2 Component/ThreeDS2PlusDACoreActionHandlerTests.swift" Tests/ThreeDS2PlusDACoreActionHandlerTests.swift
 cp "../Tests/IntegrationTests/Card Tests/3DS2 Component/ThreeDS2DAScreenPresenterMock.swift" Tests/ThreeDS2DAScreenPresenterMock.swift
@@ -142,10 +143,12 @@ cp "../Tests/IntegrationTests/Helpers/UIView+Search.swift" Tests/UIView+Search.s
 cp "../Tests/UnitTests/Helpers/PaymentMethods+Equatable.swift" Tests/PaymentMethods+Equatable.swift
 cp "../Tests/UnitTests/Analytics/AnalyticsProviderMock.swift" Tests/AnalyticsProviderMock.swift
 cp "../Tests/UnitTests/Mocks/DummyData/Dummy.swift" Tests/Dummy.swift
+cp "../Tests/UnitTests/Mocks/DummyData/DummyPaymentMethods.swift" Tests/DummyPaymentMethods.swift
 cp "../Tests/UnitTests/APIClientMock.swift" Tests/APIClientMock.swift
 cp "../Tests/UnitTests/Mocks/ImageLoaderMock.swift" Tests/ImageLoaderMock.swift
 cp "../Tests/UnitTests/Mocks/CancellableMock.swift" Tests/CancellableMock.swift
 cp "../Tests/UnitTests/Helpers/String+UIImage.swift" Tests/String+UIImage.swift
+cp "../Tests/UnitTests/Helpers/XCTestCase+Coder.swift" Tests/XCTestCase+Coder.swift
 cp "../Tests/UnitTests/APIClientMock.swift" Source/APIClientMock.swift
 cp -a "../Demo/Common" Source/
 cp -a "../Demo/UIKit" Source/
