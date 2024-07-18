@@ -31,12 +31,12 @@ public final class UPIComponent: PaymentComponent,
     }
 
     internal enum Constants {
-        static let upiCollect = "upi_collect"
-        static let upiQRCode = "upi_qr"
-        static let upiIntent = "upi_intent"
-        static let vpaFlowIdentifier = "UPI/VPA"
-        static let noAppsVpaSegmentTitle = "VPA"
-        static let qrCodeIcon = "qrcode"
+        internal static let upiCollect = "upi_collect"
+        internal static let upiQRCode = "upi_qr"
+        internal static let upiIntent = "upi_intent"
+        internal static let vpaFlowIdentifier = "UPI/VPA"
+        internal static let noAppsVpaSegmentTitle = "VPA"
+        internal static let qrCodeIcon = "qrcode"
     }
 
     /// Configuration for UPI Component.
@@ -441,7 +441,8 @@ extension UPIComponent: SubmitCustomizable {
     /**
      Submits the payment request to initiate the payment process.
 
-     This method starts the payment flow in the payment component. It triggers the validation of the form associated with the payment component and initiates the loading state.
+     This method starts the payment flow in the payment component. It triggers the validation of the form associated
+     with the payment component and initiates the loading state.
      Ensure that the loading state is appropriately stopped once the payment process is complete.
 
      If the `showSubmitButton` of the payment component is enabled, calling this method will have no effect and will simply return.

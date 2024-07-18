@@ -55,7 +55,7 @@ class CustomComponentViewController: UIViewController, CustomComponentViewProtoc
         return view
     }()
 
-    private let payButton: UIButton = {
+    private lazy var payButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setTitle(Content.submitButtonTitle, for: .normal)
         button.backgroundColor = .black
