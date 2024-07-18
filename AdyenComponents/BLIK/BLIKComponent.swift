@@ -50,24 +50,6 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
         formViewController.view.isUserInteractionEnabled = true
     }
 
-    /**
-     Submits the payment request to initiate the payment process.
-
-     This method starts the payment flow in the payment component. It triggers the validation of the form associated with the payment component and initiates the loading state.
-     Ensure that the loading state is appropriately stopped once the payment process is complete.
-
-     If the `showSubmitButton` of the payment component is enabled, calling this method will have no effect and will simply return.
-
-     - Important:
-        - Ensure that the payment component is properly configured before calling this method.
-        - Handle stopping the loading state after the payment process is completed.
-     */
-    public func submit() {
-        guard !configuration.showSubmitButton else { return }
-
-        didSelectSubmitButton()
-    }
-
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
             scrollEnabled: configuration.showSubmitButton,
@@ -143,3 +125,26 @@ extension BLIKComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)
 extension BLIKComponent: ViewControllerDelegate {}
+
+extension BLIKComponent: SubmitCustomizable {
+
+    // MARK: - SubmitCustomizable
+
+    /**
+     Submits the payment request to initiate the payment process.
+
+     This method starts the payment flow in the payment component. It triggers the validation of the form associated with the payment component and initiates the loading state.
+     Ensure that the loading state is appropriately stopped once the payment process is complete.
+
+     If the `showSubmitButton` of the payment component is enabled, calling this method will have no effect and will simply return.
+
+     - Important:
+        - Ensure that the payment component is properly configured before calling this method.
+        - Handle stopping the loading state after the payment process is completed.
+     */
+    public func submit() {
+        guard !configuration.showSubmitButton else { return }
+
+        didSelectSubmitButton()
+    }
+}

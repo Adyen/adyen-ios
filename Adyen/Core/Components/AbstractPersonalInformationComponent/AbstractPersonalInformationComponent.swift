@@ -66,24 +66,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         self.configuration = configuration
     }
 
-    /**
-     Submits the payment request to initiate the payment process.
-
-     This method starts the payment flow in the payment component. It triggers the validation of the form associated with the payment component and initiates the loading state.
-     Ensure that the loading state is appropriately stopped once the payment process is complete.
-
-     If the `showSubmitButton` of the payment component is enabled, calling this method will have no effect and will simply return.
-
-     - Important:
-        - Ensure that the payment component is properly configured before calling this method.
-        - Handle stopping the loading state after the payment process is completed.
-     */
-    public func submit() {
-        guard !configuration.showSubmitButton else { return }
-
-        didSelectSubmitButton()
-    }
-
     // MARK: - Private
 
     private func build(_ formViewController: FormViewController) {
@@ -290,4 +272,28 @@ extension AbstractPersonalInformationComponent: ViewControllerDelegate {
         sendInitialAnalytics()
         sendDidLoadEvent()
     }
+}
+
+extension AbstractPersonalInformationComponent: SubmitCustomizable {
+
+    // MARK: - SubmitCustomizable
+
+    /**
+     Submits the payment request to initiate the payment process.
+
+     This method starts the payment flow in the payment component. It triggers the validation of the form associated with the payment component and initiates the loading state.
+     Ensure that the loading state is appropriately stopped once the payment process is complete.
+
+     If the `showSubmitButton` of the payment component is enabled, calling this method will have no effect and will simply return.
+
+     - Important:
+        - Ensure that the payment component is properly configured before calling this method.
+        - Handle stopping the loading state after the payment process is completed.
+     */
+    public func submit() {
+        guard !configuration.showSubmitButton else { return }
+
+        didSelectSubmitButton()
+    }
+
 }
