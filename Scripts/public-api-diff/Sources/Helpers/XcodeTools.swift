@@ -61,6 +61,7 @@ struct XcodeTools {
         let result = shell.execute(command.joined(separator: " "))
         
         if result.range(of: "xcodebuild: error:") != nil || result.range(of: "BUILD FAILED") != nil {
+            print(result)
             throw XcodeToolsError(
                 errorDescription: "💥 Building project failed",
                 underlyingError: result

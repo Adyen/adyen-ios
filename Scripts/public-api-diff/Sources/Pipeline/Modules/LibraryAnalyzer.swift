@@ -28,12 +28,14 @@ struct LibraryAnalyzer: LibraryAnalyzing {
         let newPackagePath = PackageFileHelper.packagePath(for: newProjectPath)
         
         if fileHandler.fileExists(atPath: oldPackagePath), fileHandler.fileExists(atPath: newPackagePath) {
-            let oldPackageHelper = PackageFileHelper(fileHandler: fileHandler, xcodeTools: xcodeTools)
-            let newPackageHelper = PackageFileHelper(fileHandler: fileHandler, xcodeTools: xcodeTools)
+            let packageHelper = PackageFileHelper(
+                fileHandler: fileHandler,
+                xcodeTools: xcodeTools
+            )
             
             return try analyze(
-                old: oldPackageHelper.availableProducts(at: oldProjectPath),
-                new: newPackageHelper.availableProducts(at: newProjectPath)
+                old: packageHelper.availableProducts(at: oldProjectPath),
+                new: packageHelper.availableProducts(at: newProjectPath)
             )
         } else {
             return []

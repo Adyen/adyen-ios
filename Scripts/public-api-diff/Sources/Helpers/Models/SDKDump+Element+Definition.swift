@@ -10,102 +10,164 @@ import Foundation
 extension SDKDump.Element {
     
     var definition: String {
-        var definition = ""
+        var components = [String]()
         spiGroupNames?.forEach {
-            definition += "@_spi(\($0)) "
+            components += ["@_spi(\($0))"]
         }
         if let declAttributes, declAttributes.contains("DiscardableResult") {
-            definition += "@discardableResult "
+            components += ["@discardableResult"]
         }
         
         if declKind != .import {
-            definition += "public "
+            components += ["public"]
         }
         
         if let declAttributes, declAttributes.contains("Final"), declKind == .class {
-            definition += "final "
+            components += ["final"]
         }
         
         if isStatic {
-            definition += "static "
+            components += ["static"]
         }
         
         if let declKind {
             if declKind == .constructor {
-                definition += "func "
+                components += ["func"]
             } else if declKind == .case {
-                definition += "case "
+                components += ["case"]
             } else if declKind == .var, isLet {
-                definition += "let "
+                components += ["let"]
             } else {
-                definition += "\(declKind.rawValue.lowercased()) "
+                components += ["\(declKind.rawValue.lowercased())"]
             }
         }
         
-        definition += verbosePrintedName
+        components += [verbosePrintedName]
         
         if let conformanceNames = conformances?.sorted().map(\.printedName), !conformanceNames.isEmpty {
-            definition += " : \(conformanceNames.joined(separator: ", "))"
+            components += [": \(conformanceNames.joined(separator: ", "))"]
         }
         
         if let accessors = accessors?.map({ $0.name.lowercased() }), !accessors.isEmpty {
-            definition += " { \(accessors.joined(separator: " ")) }"
+            components += ["{ \(accessors.joined(separator: " ")) }"]
         }
         
-        return definition
+        return components.joined(separator: " ")
     }
     
     var verbosePrintedName: String {
-        let typeInfo = children.filter(\.isTypeInformation)
         
-        if typeInfo.isEmpty {
+        guard let declKind else {
             return printedName
         }
         
-        if declKind == .typeAlias {
-            return "\(printedName) = \(typeInfo.first!.verbosePrintedName)"
+        switch declKind {
+        case .import:
+            return printedName
+        case .class:
+            return printedName
+        case .struct:
+            return printedName
+        case .enum:
+            return printedName
+        case .case:
+            return caseDefinition()
+        case .var:
+            return varDefinition()
+        case .protocol:
+            return printedName
+        case .constructor, .func:
+            return funcDefinition()
+        case .accessor:
+            return printedName
+        case .typeAlias:
+            return typeAliasDefinition()
+        case .subscriptDeclaration:
+            return printedName
+        case .associatedType:
+            return printedName
+        case .macro:
+            return printedName
+        }
+    }
+}
+
+private extension SDKDump.Element {
+    
+    func typeAliasDefinition() -> String {
+        guard let alias = children.first?.verbosePrintedName else {
+            return printedName
         }
         
-        if declKind == .constructor || declKind == .func {
-            guard let returnValue = typeInfo.first?.printedName else {
-                return printedName
-            }
+        return "\(printedName) = \(alias)"
+    }
+    
+    func varDefinition() -> String {
+        guard let returnValue = children.first?.printedName else {
+            return printedName
+        }
+        
+        return "\(printedName): \(returnValue)"
+    }
+    
+    func caseDefinition() -> String {
+        guard let firstChild = children.first else {
+            return printedName
+        }
+        
+        guard let nestedFirstChild = firstChild.children.first else {
+            return printedName // Return type (enum type)
+        }
+        
+        guard nestedFirstChild.children.count == 2, let associatedValue = nestedFirstChild.children.last else { 
+            return printedName // No associated value
+        }
+        
+        return printedName + associatedValue.printedName
+    }
+    
+    func funcDefinition() -> String {
+        guard let returnValue = children.first?.printedName else {
+            return printedName
+        }
+        
+        let inlineTypeInformation = Array(children.suffix(from: 1))
+        let typedPrintedName: String
+        
+        if inlineTypeInformation.isEmpty {
+            typedPrintedName = printedName
+        } else {
+            let funcComponents = printedName.components(separatedBy: ":")
             
-            let inlineTypeInformation = Array(typeInfo.suffix(from: 1))
-            
-            var typedPrintedName = ""
-            
-            if inlineTypeInformation.isEmpty {
-                typedPrintedName = printedName
-            } else {
-                let funcComponents = printedName.components(separatedBy: ":")
-                funcComponents.enumerated().forEach { index, component in
-                    typedPrintedName += component
-                    if index < inlineTypeInformation.count {
-                        let type = inlineTypeInformation[index]
-                        typedPrintedName += ": \(type.verbosePrintedName)"
-                        if type.hasDefaultArg {
-                            typedPrintedName += " = $DEFAULT_ARG"
-                        }
-                    }
+            var typedName = ""
+            funcComponents.enumerated().forEach { index, component in
+                typedName += component
+                
+                guard index < inlineTypeInformation.count else { return }
                     
-                    if index < funcComponents.count - 2 {
-                        typedPrintedName += ", "
-                    }
+                let type = inlineTypeInformation[index]
+                typedName += ": \(type.verbosePrintedName)"
+                
+                if type.hasDefaultArg {
+                    typedName += " = $DEFAULT_ARG"
+                }
+                
+                if index < funcComponents.count - 2 {
+                    typedName += ", "
                 }
             }
-            
-            return "\(typedPrintedName) -> \(returnValue == "()" ? "Void" : returnValue)"
+            typedPrintedName = typedName
         }
         
-        if declKind == .var {
-            guard let returnValue = typeInfo.first?.printedName else {
-                return printedName
-            }
-            
-            return "\(printedName): \(returnValue)"
-        }
+        let components: [String?] = [
+            typedPrintedName,
+            isThrowing ? "throws" : nil,
+            "->",
+            returnValue == "()" ? "Swift.Void" : returnValue
+        ]
         
-        return printedName
+        return components
+            .compactMap { $0 }
+            .joined(separator: " ")
     }
 }

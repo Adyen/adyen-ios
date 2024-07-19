@@ -42,13 +42,18 @@ struct PackageFileHelper {
     
     func availableTargets(
         at projectDirectoryPath: String,
-        moduleType: SwiftPackageDescription.Target.ModuleType? = nil
+        moduleType: SwiftPackageDescription.Target.ModuleType? = nil,
+        targetType: SwiftPackageDescription.Target.TargetType? = nil
     ) throws -> Set<String> {
         
         var targets = try packageDescription(at: projectDirectoryPath).targets
         
         if let moduleType {
             targets = targets.filter({ $0.moduleType == moduleType })
+        }
+        
+        if let targetType {
+            targets = targets.filter({ $0.type == targetType })
         }
         
         return Set(targets.map(\.name))
@@ -67,7 +72,11 @@ struct PackageFileHelper {
         
         let packagePath = Self.packagePath(for: projectDirectoryPath)
         let packageContent = try fileHandler.loadString(from: packagePath)
-        let targets = try availableTargets(at: projectDirectoryPath, moduleType: .swiftTarget)
+        let targets = try availableTargets(
+            at: projectDirectoryPath,
+            moduleType: .swiftTarget,
+            targetType: .library
+        )
         
         let consolidatedEntry = consolidatedLibraryEntry(consolidatedLibraryName, from: targets.sorted())
         let updatedPackageContent = try updatedContent(packageContent, with: consolidatedEntry)

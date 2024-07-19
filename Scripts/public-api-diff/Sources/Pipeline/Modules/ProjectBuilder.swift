@@ -40,7 +40,11 @@ struct ProjectBuilder: ProjectBuilding {
             }
         }()
         
-        let sourceWorkingDirectoryPath = try buildSource(from: sourceDirectoryPath, scheme: scheme)
+        let sourceWorkingDirectoryPath = try buildSource(
+            from: sourceDirectoryPath,
+            scheme: scheme,
+            description: source.description
+        )
         
         switch source {
         case .local:
@@ -56,7 +60,11 @@ struct ProjectBuilder: ProjectBuilding {
 
 private extension ProjectBuilder {
     
-    func buildSource(from sourceDirectoryPath: String, scheme: String?) throws -> URL {
+    func buildSource(
+        from sourceDirectoryPath: String,
+        scheme: String?,
+        description: String
+    ) throws -> URL {
         
         let sourceWorkingDirectoryPath = baseWorkingDirectoryPath.appending("/\(randomStringGenerator.generateRandomString())")
         
@@ -73,10 +81,10 @@ private extension ProjectBuilder {
         
         try Self.buildProject(
             projectDirectoryPath: sourceWorkingDirectoryPath,
-            packageFileHelper: PackageFileHelper(fileHandler: fileHandler, xcodeTools: xcodeTools),
             xcodeTools: xcodeTools,
             fileHandler: fileHandler,
             scheme: scheme,
+            description: description,
             logger: logger
         )
         
@@ -117,13 +125,10 @@ private extension ProjectBuilder {
                 ".swiftformat",
                 ".swiftpm",
                 ".DS_Store",
-                "Tests",
                 "Cartfile"
             ]
             
             fileExtensionIgnoreList = [
-                ".yaml",
-                ".yml",
                 ".png",
                 ".docc",
                 ".md",
@@ -133,6 +138,10 @@ private extension ProjectBuilder {
                 // xcodebuild prefers them over the Package.swift file when building
                 ".xcodeproj",
                 ".xcworkspace"
+            ]
+        } else {
+            fileNameIgnoreList = [
+                "Package.swift"
             ]
         }
         
@@ -156,10 +165,10 @@ private extension ProjectBuilder {
     
     static func buildProject(
         projectDirectoryPath: String,
-        packageFileHelper: PackageFileHelper,
         xcodeTools: XcodeTools,
         fileHandler: FileHandling,
         scheme: String?,
+        description: String,
         logger: Logging?
     ) throws {
         var schemeToBuild: String
@@ -171,15 +180,22 @@ private extension ProjectBuilder {
             // Creating an `.library(name: "_allTargets", targets: [ALL_TARGETS])`
             // so we only have to build once and then can generate ABI files for every module from a single build
             schemeToBuild = "_AllTargets"
+            let packageFileHelper = PackageFileHelper(fileHandler: fileHandler, xcodeTools: xcodeTools)
             try packageFileHelper.preparePackageWithConsolidatedLibrary(named: schemeToBuild, at: projectDirectoryPath)
         }
         
-        logger?.log("🛠️ Building project at `\(projectDirectoryPath)`", from: String(describing: Self.self))
+        logger?.log("🛠️ Building project `\(description)` at\n`\(projectDirectoryPath)`", from: String(describing: Self.self))
         
-        try xcodeTools.build(
-            projectDirectoryPath: projectDirectoryPath,
-            scheme: schemeToBuild,
-            isPackage: scheme == nil
-        )
+        do {
+            try xcodeTools.build(
+                projectDirectoryPath: projectDirectoryPath,
+                scheme: schemeToBuild,
+                isPackage: scheme == nil
+            )
+            logger?.debug("✅ `\(description)` was built successfully", from: String(describing: Self.self))
+        } catch {
+            logger?.debug("💔 `\(description)` failed building", from: String(describing: Self.self))
+            throw error
+        }
     }
 }

@@ -13,14 +13,18 @@ struct ProjectABIProvider: ABIGenerating {
     let fileHandler: FileHandling
     let logger: Logging?
     
-    func generate(for projectDirectory: URL, scheme: String?) throws -> [ABIGeneratorOutput] {
+    func generate(
+        for projectDirectory: URL,
+        scheme: String?,
+        description: String
+    ) throws -> [ABIGeneratorOutput] {
     
         guard let scheme else {
             assertionFailure("ProjectABIProvider needs a scheme to be passed to \(#function)")
             return []
         }
         
-        logger?.log("📋 Locating ABI file for `\(projectDirectory.lastPathComponent)`", from: String(describing: Self.self))
+        logger?.log("📋 Locating ABI file for `\(description)`", from: String(describing: Self.self))
         
         // TODO: Check with other projects - this seems very specific:
         let targetSpecificDirectories = [

@@ -10,9 +10,9 @@ import XCTest
 
 struct MockABIGenerator: ABIGenerating {
     
-    var onGenerate: (URL, String?) throws -> [ABIGeneratorOutput]
+    var onGenerate: (URL, String?, String) throws -> [ABIGeneratorOutput]
     
-    func generate(for projectDirectory: URL, scheme: String?) throws -> [ABIGeneratorOutput] {
-        try onGenerate(projectDirectory, scheme)
+    func generate(for projectDirectory: URL, scheme: String?, description: String) throws -> [ABIGeneratorOutput] {
+        try onGenerate(projectDirectory, scheme, description)
     }
 }

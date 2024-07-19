@@ -35,7 +35,7 @@ class ABIGeneratorTests: XCTestCase {
         
         var logger = MockLogger()
         logger.handleLog = { message, subsystem in
-            XCTAssertEqual(message, "📋 Generating ABI files for `projectDir`")
+            XCTAssertEqual(message, "📋 Generating ABI files for `description`")
             XCTAssertEqual(subsystem, "PackageABIGenerator")
         }
         
@@ -45,7 +45,7 @@ class ABIGeneratorTests: XCTestCase {
             logger: logger
         )
         
-        let output = try abiGenerator.generate(for: URL(filePath: "projectDir"), scheme: nil)
+        let output = try abiGenerator.generate(for: URL(filePath: "projectDir"), scheme: nil, description: "description")
         let expectedOutput = [ABIGeneratorOutput]()
         XCTAssertEqual(output, expectedOutput)
     }
@@ -68,7 +68,7 @@ class ABIGeneratorTests: XCTestCase {
         
         var logger = MockLogger()
         logger.handleLog = { message, subsystem in
-            XCTAssertEqual(message, "📋 Locating ABI file for `projectDir`")
+            XCTAssertEqual(message, "📋 Locating ABI file for `description`")
             XCTAssertEqual(subsystem, "ProjectABIProvider")
         }
         logger.handleDebug = { message, subsystem in
@@ -84,7 +84,7 @@ class ABIGeneratorTests: XCTestCase {
         
         let scheme = "Scheme"
         
-        let output = try abiGenerator.generate(for: URL(filePath: "projectDir"), scheme: scheme)
+        let output = try abiGenerator.generate(for: URL(filePath: "projectDir"), scheme: scheme, description: "description")
         let expectedOutput: [ABIGeneratorOutput] = [.init(
             targetName: "Scheme",
             abiJsonFileUrl: URL(filePath: "projectDir/.build/Build/Products/Debug-maccatalyst/\(scheme).framework/Modules/\(scheme).swiftmodule/abi.json")

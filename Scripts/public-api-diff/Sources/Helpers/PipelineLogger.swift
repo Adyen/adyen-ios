@@ -46,7 +46,7 @@ private extension PipelineLogger {
     func logger(for subsystem: String) -> Logger {
         Logger(
             subsystem: subsystem,
-            category: ""
+            category: "" // TODO: Pass the description/tag so it can be differentiated
         )
     }
 }

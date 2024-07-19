@@ -30,7 +30,10 @@ class PipelineTests: XCTestCase {
         
         var expectedSteps: [Any] = [
             URL(filePath: oldProjectSource.description),
+            "old",
+            
             URL(filePath: newProjectSource.description),
+            "new",
             
             URL(filePath: oldProjectSource.description),
             URL(filePath: newProjectSource.description),
@@ -63,12 +66,15 @@ class PipelineTests: XCTestCase {
                 
                 return URL(filePath: source.description)
             }),
-            abiGenerator: MockABIGenerator(onGenerate: { url, scheme in
+            abiGenerator: MockABIGenerator(onGenerate: { url, scheme, description in
                 XCTAssertEqual(url, expectedSteps.first as? URL)
                 expectedSteps.removeFirst()
-                abiGeneratorExpectation.fulfill()
-                
                 XCTAssertNil(scheme)
+                
+                XCTAssertEqual(description, expectedSteps.first as? String)
+                expectedSteps.removeFirst()
+                
+                abiGeneratorExpectation.fulfill()
                 
                 return [.init(targetName: "Target", abiJsonFileUrl: url)]
             }),

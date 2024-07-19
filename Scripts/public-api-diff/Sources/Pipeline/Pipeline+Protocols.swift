@@ -17,7 +17,7 @@ struct ABIGeneratorOutput: Equatable {
 }
 
 protocol ABIGenerating {
-    func generate(for projectDirectory: URL, scheme: String?) throws -> [ABIGeneratorOutput]
+    func generate(for projectDirectory: URL, scheme: String?, description: String) throws -> [ABIGeneratorOutput]
 }
 
 protocol SDKDumpGenerating {

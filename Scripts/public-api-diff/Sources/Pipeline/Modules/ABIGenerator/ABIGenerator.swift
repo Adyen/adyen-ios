@@ -27,7 +27,8 @@ struct ABIGenerator: ABIGenerating {
     
     func generate(
         for projectDirectory: URL,
-        scheme: String?
+        scheme: String?,
+        description: String
     ) throws -> [ABIGeneratorOutput] {
         
         let generator: ABIGenerating
@@ -48,7 +49,8 @@ struct ABIGenerator: ABIGenerating {
         
         return try generator.generate(
             for: projectDirectory,
-            scheme: scheme
+            scheme: scheme,
+            description: description
         )
     }
 }

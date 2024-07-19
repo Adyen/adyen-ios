@@ -10,7 +10,7 @@ import XCTest
 
 class ProjectBuilderTests: XCTestCase {
     
-    func test_buildPackage() throws {
+    func test_buildPackage_success() throws {
         
         let baseWorkingDirectoryPath = "baseWorkingDirectoryPath"
         let randomString = "RANDOM_STRING"
@@ -62,7 +62,11 @@ class ProjectBuilderTests: XCTestCase {
         }
         var logger = MockLogger()
         logger.handleLog = { message, subsystem in
-            XCTAssertEqual(message, "🛠️ Building project at `\(baseWorkingDirectoryPath)/\(randomString)`")
+            XCTAssertEqual(message, "🛠️ Building project `\(localPath)` at\n`\(baseWorkingDirectoryPath)/\(randomString)`")
+            XCTAssertEqual(subsystem, "ProjectBuilder")
+        }
+        logger.handleDebug = { message, subsystem in
+            XCTAssertEqual(message, "✅ `\(localPath)` was built successfully")
             XCTAssertEqual(subsystem, "ProjectBuilder")
         }
         
@@ -77,16 +81,9 @@ class ProjectBuilderTests: XCTestCase {
             logger: logger
         )
         
-        let projectWorkingDirectoryUrl = try projectBuilder.build(source: .local(path: "local/path"), scheme: nil)
+        let projectWorkingDirectoryUrl = try projectBuilder.build(source: .local(path: localPath), scheme: nil)
         XCTAssertEqual(projectWorkingDirectoryUrl, URL(filePath: "\(baseWorkingDirectoryPath)/\(randomString)"))
         
         wait(for: [removeItemExpectation], timeout: 1)
-    }
-}
-
-private extension String.SubSequence {
-    
-    var toString: String {
-        String(self)
     }
 }

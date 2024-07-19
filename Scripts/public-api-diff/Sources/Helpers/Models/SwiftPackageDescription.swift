@@ -9,7 +9,7 @@ import Foundation
 
 struct SwiftPackageDescription: Codable {
     
-    let defaultLocalization: String
+    let defaultLocalization: String?
     let products: [Product]
     let targets: [Target]
     let toolsVersion: String
@@ -40,15 +40,22 @@ extension SwiftPackageDescription {
         enum ModuleType: String, Codable {
             case swiftTarget = "SwiftTarget"
             case binaryTarget = "BinaryTarget"
+            case clangTarget = "ClangTarget"
+        }
+        
+        enum TargetType: String, Codable {
+            case library = "library"
+            case binary = "binary"
+            case test = "test"
         }
         
         let name: String
-        let type: String // library, binary, ...
+        let type: TargetType
         let path: String
         let moduleType: ModuleType
         
         let productDependencies: [String]?
-        let productMemberships: [String]
+        let productMemberships: [String]?
         let sources: [String]
         let targetDependencies: [String]?
         

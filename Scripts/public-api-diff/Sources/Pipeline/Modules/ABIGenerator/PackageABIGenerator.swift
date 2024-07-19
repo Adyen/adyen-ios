@@ -16,14 +16,16 @@ struct PackageABIGenerator: ABIGenerating {
     
     func generate(
         for projectDirectory: URL,
-        scheme: String?
+        scheme: String?,
+        description: String
     ) throws -> [ABIGeneratorOutput] {
         
-        logger?.log("📋 Generating ABI files for `\(projectDirectory.lastPathComponent)`", from: String(describing: Self.self))
+        logger?.log("📋 Generating ABI files for `\(description)`", from: String(describing: Self.self))
         
         return try packageFileHelper.availableTargets(
             at: projectDirectory.path(),
-            moduleType: .swiftTarget
+            moduleType: .swiftTarget,
+            targetType: .library
         ).map { target in
             
             let abiJsonFileUrl = try generateApiDump(

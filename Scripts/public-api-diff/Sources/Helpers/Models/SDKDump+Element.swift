@@ -110,7 +110,7 @@ extension SDKDump {
             case isLet
             case hasDefaultArg
             case isInternal
-            case isThrowing
+            case isThrowing = "throwing"
             case declAttributes
             case conformances
             case accessors

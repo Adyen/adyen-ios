@@ -10,20 +10,74 @@ import XCTest
 
 class SDKDumpGeneratorTests: XCTestCase {
     
-    func test_loadFromJson() throws {
-        
+    func test_loadFromJson_dummy() throws {
         let abiJsonPath = try XCTUnwrap(Bundle.module.path(forResource: "dummy.abi", ofType: "json"))
-        let abiJsonUrl = try XCTUnwrap(URL(filePath: abiJsonPath))
+        let abiFlatDefinitionPath = try XCTUnwrap(Bundle.module.path(forResource: "dummi-abi-flat-definition", ofType: "txt"))
+        try compare(abiJsonFilePath: abiJsonPath, toFlatDefinition: abiFlatDefinitionPath)
+    }
+    
+    func test_loadFromJson_dummy2() throws {
+        let abiJsonPath = try XCTUnwrap(Bundle.module.path(forResource: "dummy2.abi", ofType: "json"))
+        let abiFlatDefinitionPath = try XCTUnwrap(Bundle.module.path(forResource: "dummi2-abi-flat-definition", ofType: "txt"))
+        try compare(abiJsonFilePath: abiJsonPath, toFlatDefinition: abiFlatDefinitionPath)
+    }
+    
+    private func compare(abiJsonFilePath: String, toFlatDefinition flatDefinitionFilePath: String) throws {
+        
+        let abiJsonUrl = try XCTUnwrap(URL(filePath: abiJsonFilePath))
         
         var fileHandler = MockFileHandler()
         fileHandler.handleLoadData = { path in
-            XCTAssertEqual(path, abiJsonPath)
+            XCTAssertEqual(path, abiJsonFilePath)
             return try FileManager.default.loadData(from: path)
         }
         
         let generator = SDKDumpGenerator(fileHandler: fileHandler)
-        _ = try generator.generate(for: abiJsonUrl)
+        let sdkDump = try generator.generate(for: abiJsonUrl)
         
-        // TODO: Check if it was decoded correctly
+        let expectedFlatDefinition = try FileManager.default.loadString(from: flatDefinitionFilePath)
+        var expectedLines = expectedFlatDefinition.components(separatedBy: "\n")
+        if let lastLine = expectedLines.last, lastLine.isEmpty {
+            // Unfortunately Xcode always adds an empty line at the end when copying over
+            expectedLines.removeLast()
+        }
+        
+        let lines = sdkDump.flatDefinition.components(separatedBy: "\n")
+        XCTAssertEqual(expectedLines.count, lines.count)
+        
+        // Comparing line by line to make debugging easier
+        for lineIndex in (0..<lines.count) {
+            if lines[lineIndex] != expectedLines[lineIndex] {
+                XCTFail("Line \(lineIndex + 1): `\(lines[lineIndex])` is not equal to `\(expectedLines[lineIndex])`")
+                break
+            }
+        }
+        
+        // To update the dummi-abi-flat-definition.txt file
+        // just print the flatDefinition and copy the content over into the file
+        // print(sdkDump.flatDefinition)
+    }
+}
+
+// MARK: - Convenience
+
+extension SDKDump {
+    
+    var flatDefinition: String {
+        var components = [String]()
+        components += root.flatChildDefinitions()
+        return components.joined(separator: "\n")
+    }
+}
+
+extension SDKDump.Element {
+    
+    func flatChildDefinitions() -> [String] {
+        var definitions = [String]()
+        children.forEach { child in
+            if child.declKind == nil { return }
+            definitions += [child.definition] + child.flatChildDefinitions()
+        }
+        return definitions
     }
 }

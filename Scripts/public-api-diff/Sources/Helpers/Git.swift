@@ -6,6 +6,17 @@
 
 import Foundation
 
+enum GitError: LocalizedError {
+    case couldNotClone(branchOrTag: String, repository: String)
+    
+    var errorDescription: String? {
+        switch self {
+        case .couldNotClone(let branchOrTag, let repository):
+            "Could not clone \(repository) @ \(branchOrTag) - Please check the provided information"
+        }
+    }
+}
+
 struct Git {
     
     private let shell: ShellHandling
@@ -36,7 +47,7 @@ struct Git {
         shell.execute(command)
         
         guard fileHandler.fileExists(atPath: targetDirectoryPath) else {
-            throw FileHandlerError.pathDoesNotExist(path: targetDirectoryPath)
+            throw GitError.couldNotClone(branchOrTag: branchOrTag, repository: repository)
         }
     }
 }

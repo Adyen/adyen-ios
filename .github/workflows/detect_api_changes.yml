@@ -6,10 +6,10 @@ on:
   workflow_dispatch:
     inputs:
       new:
-        description: 'The branch & repository of the updated version "${sourceBranch}~${repository}"'
+        description: 'Branch/tag of the new/updated version'
         required: true
       old:
-        description: 'The branch & repository of the comparison version "${targetBranch}~${repository}"'
+        description: 'Branch/tag of the old/comparison version'
         required: true
       
 jobs:

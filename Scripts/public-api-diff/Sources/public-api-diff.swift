@@ -10,6 +10,8 @@ import Foundation
 @main
 struct PublicApiDiff: AsyncParsableCommand {
     
+    // TODO: Allow to pass already built projects
+    
     @Option(help: "Specify the updated version to compare to")
     public var new: String
     
@@ -36,7 +38,7 @@ struct PublicApiDiff: AsyncParsableCommand {
         
         defer {
             logger.debug("Cleaning up", from: "Main")
-            try? fileHandler.removeItem(atPath: workingDirectoryPath)
+            // try? fileHandler.removeItem(atPath: workingDirectoryPath)
         }
         
         let pipelineOutput = try await Pipeline(
