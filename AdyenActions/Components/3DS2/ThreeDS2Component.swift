@@ -22,8 +22,13 @@ public final class ThreeDS2Component: ActionComponent {
     /// The delegate of the component.
     public weak var delegate: ActionComponentDelegate?
 
-    /// Delegates `PresentableComponent`'s presentation.
-    public weak var presentationDelegate: PresentationDelegate?
+    /// Delegates `PresentableComponent`'s presentation.  This property must be set if you wish to use delegated authentication.
+    public weak var presentationDelegate: PresentationDelegate? {
+        didSet {
+            threeDS2ClassicFlowHandler.presentationDelegate = presentationDelegate
+            threeDS2CompactFlowHandler.presentationDelegate = presentationDelegate
+        }
+    }
     
     /// Three DS2 component configurations.
     public var configuration: Configuration {
@@ -49,24 +54,28 @@ public final class ThreeDS2Component: ActionComponent {
         
         /// The configuration for Delegated Authentication.
         public struct DelegatedAuthentication {
-            /// The localized reason string show to the user during registration.
-            public let localizedRegistrationReason: String
+            // The relying party identifier that is used for PassKeys.
+            // See: https://developer.apple.com/documentation/xcode/supporting-associated-domains
+            // See: https://developer.apple.com/documentation/authenticationservices/public-private_key_authentication/supporting_passkeys
+            public let relyingPartyIdentifier: String
 
-            /// The localized reason string show to the user during authentication.
-            public let localizedAuthenticationReason: String
+            /// The configuration for Delegated Authentication Component style
+            public let delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle
 
-            /// The Apple registered development team identifier.
-            public let appleTeamIdentifier: String
+            /// The localization parameters, leave it nil to use the default parameters.
+            public let localizationParameters: LocalizationParameters?
 
             /// Initializes a new instance.
             ///
-            /// - Parameter localizedRegistrationReason: The localized reason string show to the user while registration flow.
-            /// - Parameter localizedAuthenticationReason: The localized reason string show to the user while authentication flow.
-            /// - Parameter appleTeamIdentifier: The Apple registered development team identifier.
-            public init(localizedRegistrationReason: String, localizedAuthenticationReason: String, appleTeamIdentifier: String) {
-                self.localizedRegistrationReason = localizedRegistrationReason
-                self.localizedAuthenticationReason = localizedAuthenticationReason
-                self.appleTeamIdentifier = appleTeamIdentifier
+            /// - Parameter relyingPartyIdentifier: The relying party identifier that is used for PassKeys
+            /// - Parameter delegatedAuthenticationComponentStyle: The delegated authentication component style.
+            /// - Parameter localizationParameters: The localization parameters, leave it nil to use the default parameters.
+            public init(relyingPartyIdentifier: String,
+                        delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle = .init(),
+                        localizationParameters: LocalizationParameters? = nil) {
+                self.relyingPartyIdentifier = relyingPartyIdentifier
+                self.delegatedAuthenticationComponentStyle = delegatedAuthenticationComponentStyle
+                self.localizationParameters = localizationParameters
             }
         }
         
@@ -76,6 +85,7 @@ public final class ThreeDS2Component: ActionComponent {
         ///   - redirectComponentStyle: `RedirectComponent` style
         ///   - appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
         ///   - requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
+        ///   - delegateAuthentication: The configuration for delegate authentication
         public init(redirectComponentStyle: RedirectComponentStyle? = nil,
                     appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
                     requestorAppURL: URL? = nil,
@@ -95,6 +105,7 @@ public final class ThreeDS2Component: ActionComponent {
                 configuration: Configuration = Configuration()) {
         self.context = context
         self.configuration = configuration
+
         self.updateConfiguration()
     }
     
@@ -209,7 +220,7 @@ public final class ThreeDS2Component: ActionComponent {
         let handler = ThreeDS2CompactActionHandler(context: context,
                                                    appearanceConfiguration: configuration.appearanceConfiguration,
                                                    delegatedAuthenticationConfiguration: configuration.delegateAuthentication)
-
+        handler.presentationDelegate = presentationDelegate
         handler._isDropIn = _isDropIn
         handler.threeDSRequestorAppURL = configuration.requestorAppURL
 
@@ -220,9 +231,9 @@ public final class ThreeDS2Component: ActionComponent {
         let handler = ThreeDS2ClassicActionHandler(context: context,
                                                    appearanceConfiguration: configuration.appearanceConfiguration,
                                                    delegatedAuthenticationConfiguration: configuration.delegateAuthentication)
+        handler.presentationDelegate = presentationDelegate
         handler._isDropIn = _isDropIn
         handler.threeDSRequestorAppURL = configuration.requestorAppURL
-
         return handler
     }()
 

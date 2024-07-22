@@ -9,6 +9,8 @@
 import Foundation
 
 final class AnyThreeDS2ActionHandlerMock: AnyThreeDS2ActionHandler {
+    var presentationDelegate: (any Adyen.PresentationDelegate)?
+    
     var threeDSRequestorAppURL: URL?
 
     var mockedFingerprintResult: Result<ThreeDSActionHandlerResult, Error>?

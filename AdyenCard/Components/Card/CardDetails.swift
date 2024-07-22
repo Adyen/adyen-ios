@@ -131,7 +131,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         self.password = nil
         self.socialSecurityNumber = nil
         self.selectedBrand = nil
-        self.delegatedAuthenticationData = nil
+        self.delegatedAuthenticationData = Self.createDelegatedAuthenticationData()
     }
 
     // MARK: - Encoding

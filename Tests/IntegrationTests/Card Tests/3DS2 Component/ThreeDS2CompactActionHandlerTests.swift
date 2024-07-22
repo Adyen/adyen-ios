@@ -40,13 +40,13 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
     }
     
     func testSettingThreeDSRequestorAppURL() {
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration())
+        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration(), delegatedAuthenticationConfiguration: nil)
         sut.threeDSRequestorAppURL = URL(string: "https://google.com")
         XCTAssertEqual(sut.coreActionHandler.threeDSRequestorAppURL, URL(string: "https://google.com"))
     }
 
     func testWrappedComponent() {
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration())
+        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration(), delegatedAuthenticationConfiguration: nil)
         XCTAssertEqual(sut.wrappedComponent.context.apiContext.clientKey, Dummy.apiContext.clientKey)
         XCTAssertEqual(sut.wrappedComponent.context.apiContext.environment.baseURL, Dummy.apiContext.environment.baseURL)
 

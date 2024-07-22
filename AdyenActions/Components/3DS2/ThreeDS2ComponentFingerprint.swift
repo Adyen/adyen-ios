@@ -16,15 +16,19 @@ internal extension ThreeDS2Component {
         internal let sdkReferenceNumber: String?
         internal let sdkApplicationIdentifier: String?
         internal let sdkTransactionIdentifier: String?
+
         internal let delegatedAuthenticationSDKOutput: String?
+        internal let deleteDelegatedAuthenticationCredential: Bool?
+
         internal let threeDS2SDKError: String?
-        
+
         internal init(deviceInformation: String?,
                       sdkEphemeralPublicKey: ThreeDS2Component.Fingerprint.EphemeralPublicKey?,
                       sdkReferenceNumber: String?,
                       sdkApplicationIdentifier: String?,
                       sdkTransactionIdentifier: String?,
                       delegatedAuthenticationSDKOutput: String?,
+                      deleteDelegatedAuthenticationCredential: Bool?,
                       threeDS2SDKError: String?) {
             self.deviceInformation = deviceInformation
             self.sdkEphemeralPublicKey = sdkEphemeralPublicKey
@@ -33,11 +37,12 @@ internal extension ThreeDS2Component {
             self.sdkTransactionIdentifier = sdkTransactionIdentifier
             self.delegatedAuthenticationSDKOutput = delegatedAuthenticationSDKOutput
             self.threeDS2SDKError = threeDS2SDKError
+            self.deleteDelegatedAuthenticationCredential = deleteDelegatedAuthenticationCredential
         }
         
         internal init(threeDS2SDKError: String) {
             self.threeDS2SDKError = threeDS2SDKError
-            
+            self.deleteDelegatedAuthenticationCredential = nil
             self.deviceInformation = nil
             self.sdkEphemeralPublicKey = nil
             self.sdkReferenceNumber = nil
@@ -47,7 +52,8 @@ internal extension ThreeDS2Component {
         }
         
         internal init(authenticationRequestParameters: AnyAuthenticationRequestParameters,
-                      delegatedAuthenticationSDKOutput: String?) throws {
+                      delegatedAuthenticationSDKOutput: String?,
+                      deleteDelegatedAuthenticationCredential: Bool?) throws {
             let sdkEphemeralPublicKeyData = Data(authenticationRequestParameters.sdkEphemeralPublicKey.utf8)
             let sdkEphemeralPublicKey = try JSONDecoder().decode(EphemeralPublicKey.self, from: sdkEphemeralPublicKeyData)
             
@@ -57,16 +63,19 @@ internal extension ThreeDS2Component {
             self.sdkApplicationIdentifier = authenticationRequestParameters.sdkApplicationIdentifier
             self.sdkTransactionIdentifier = authenticationRequestParameters.sdkTransactionIdentifier
             self.delegatedAuthenticationSDKOutput = delegatedAuthenticationSDKOutput
+            self.deleteDelegatedAuthenticationCredential = deleteDelegatedAuthenticationCredential
             self.threeDS2SDKError = nil
         }
         
-        internal func withDelegatedAuthenticationSDKOutput(delegatedAuthenticationSDKOutput: String?) -> Fingerprint {
+        internal func withDelegatedAuthenticationSDKOutput(delegatedAuthenticationSDKOutput: String?,
+                                                           deleteDelegatedAuthenticationCredential: Bool?) -> Fingerprint {
             .init(deviceInformation: deviceInformation,
                   sdkEphemeralPublicKey: sdkEphemeralPublicKey,
                   sdkReferenceNumber: sdkReferenceNumber,
                   sdkApplicationIdentifier: sdkApplicationIdentifier,
                   sdkTransactionIdentifier: sdkTransactionIdentifier,
                   delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
+                  deleteDelegatedAuthenticationCredential: deleteDelegatedAuthenticationCredential,
                   threeDS2SDKError: threeDS2SDKError)
         }
         
@@ -78,6 +87,7 @@ internal extension ThreeDS2Component {
             case sdkTransactionIdentifier = "sdkTransID"
             case delegatedAuthenticationSDKOutput
             case threeDS2SDKError
+            case deleteDelegatedAuthenticationCredential
         }
         
     }
