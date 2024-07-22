@@ -9,7 +9,7 @@ import Foundation
 
 extension SDKDump.Element {
     
-    var definition: String {
+    var description: String {
         var components = [String]()
         spiGroupNames?.forEach {
             components += ["@_spi(\($0))"]
@@ -19,7 +19,7 @@ extension SDKDump.Element {
         }
         
         if declKind != .import {
-            components += ["public"]
+            components += [isInternal ? "internal" : "public"]
         }
         
         if let declAttributes, declAttributes.contains("Final"), declKind == .class {
@@ -42,7 +42,7 @@ extension SDKDump.Element {
             }
         }
         
-        components += [verbosePrintedName]
+        components += [verboseName]
         
         if let conformanceNames = conformances?.sorted().map(\.printedName), !conformanceNames.isEmpty {
             components += [": \(conformanceNames.joined(separator: ", "))"]
@@ -55,7 +55,7 @@ extension SDKDump.Element {
         return components.joined(separator: " ")
     }
     
-    var verbosePrintedName: String {
+    var verboseName: String {
         
         guard let declKind else {
             return printedName
@@ -71,17 +71,17 @@ extension SDKDump.Element {
         case .enum:
             return printedName
         case .case:
-            return caseDefinition()
+            return verboseNameForCase()
         case .var:
-            return varDefinition()
+            return verboseNameForVar()
         case .protocol:
             return printedName
         case .constructor, .func:
-            return funcDefinition()
+            return verboseNameForFunc()
         case .accessor:
             return printedName
         case .typeAlias:
-            return typeAliasDefinition()
+            return verboseNameForTypeAlias()
         case .subscriptDeclaration:
             return printedName
         case .associatedType:
@@ -94,15 +94,21 @@ extension SDKDump.Element {
 
 private extension SDKDump.Element {
     
-    func typeAliasDefinition() -> String {
-        guard let alias = children.first?.verbosePrintedName else {
+    /// Verbose name for `typealias`
+    ///
+    /// - Adds alias asignment information
+    func verboseNameForTypeAlias() -> String {
+        guard let alias = children.first?.verboseName else {
             return printedName
         }
         
         return "\(printedName) = \(alias)"
     }
     
-    func varDefinition() -> String {
+    /// Verbose name for `var`
+    ///
+    /// - Adds return type information
+    func verboseNameForVar() -> String {
         guard let returnValue = children.first?.printedName else {
             return printedName
         }
@@ -110,7 +116,10 @@ private extension SDKDump.Element {
         return "\(printedName): \(returnValue)"
     }
     
-    func caseDefinition() -> String {
+    /// Verbose name for `case`
+    ///
+    /// - Adds typing information for associated value
+    func verboseNameForCase() -> String {
         guard let firstChild = children.first else {
             return printedName
         }
@@ -126,17 +135,23 @@ private extension SDKDump.Element {
         return printedName + associatedValue.printedName
     }
     
-    func funcDefinition() -> String {
+    /// Verbose name for `func`
+    ///
+    /// - Adds type information for parameters & return value
+    /// - Adds default argument indicator
+    /// - Adds `throws` indicator
+    func verboseNameForFunc() -> String {
         guard let returnValue = children.first?.printedName else {
             return printedName
         }
         
         let inlineTypeInformation = Array(children.suffix(from: 1))
-        let typedPrintedName: String
         
-        if inlineTypeInformation.isEmpty {
-            typedPrintedName = printedName
-        } else {
+        let typedPrintedName: String = {
+            guard !inlineTypeInformation.isEmpty else {
+                return printedName
+            }
+            
             let funcComponents = printedName.components(separatedBy: ":")
             
             var typedName = ""
@@ -146,7 +161,7 @@ private extension SDKDump.Element {
                 guard index < inlineTypeInformation.count else { return }
                     
                 let type = inlineTypeInformation[index]
-                typedName += ": \(type.verbosePrintedName)"
+                typedName += ": \(type.verboseName)"
                 
                 if type.hasDefaultArg {
                     typedName += " = $DEFAULT_ARG"
@@ -156,8 +171,8 @@ private extension SDKDump.Element {
                     typedName += ", "
                 }
             }
-            typedPrintedName = typedName
-        }
+            return typedName
+        }()
         
         let components: [String?] = [
             typedPrintedName,

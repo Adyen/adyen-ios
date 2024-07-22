@@ -9,17 +9,19 @@ import Foundation
 
 struct ABIGenerator: ABIGenerating {
     
+    private let shell: ShellHandling
     private let xcodeTools: XcodeTools
     private let packageFileHelper: PackageFileHelper
     private let fileHandler: FileHandling
     private let logger: Logging?
     
     init(
-        xcodeTools: XcodeTools = XcodeTools(),
+        shell: ShellHandling = Shell(),
         fileHandler: FileHandling = FileManager.default,
         logger: Logging?
     ) {
-        self.xcodeTools = xcodeTools
+        self.shell = shell
+        self.xcodeTools = XcodeTools(shell: shell)
         self.packageFileHelper = .init(fileHandler: fileHandler, xcodeTools: xcodeTools)
         self.fileHandler = fileHandler
         self.logger = logger
@@ -35,6 +37,7 @@ struct ABIGenerator: ABIGenerating {
         
         if scheme != nil {
             generator = ProjectABIProvider(
+                shell: shell,
                 fileHandler: fileHandler,
                 logger: logger
             )

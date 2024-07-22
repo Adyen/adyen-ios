@@ -42,7 +42,7 @@ class SDKDumpGeneratorTests: XCTestCase {
             expectedLines.removeLast()
         }
         
-        let lines = sdkDump.flatDefinition.components(separatedBy: "\n")
+        let lines = sdkDump.flatDescription.components(separatedBy: "\n")
         XCTAssertEqual(expectedLines.count, lines.count)
         
         // Comparing line by line to make debugging easier
@@ -63,20 +63,20 @@ class SDKDumpGeneratorTests: XCTestCase {
 
 extension SDKDump {
     
-    var flatDefinition: String {
+    var flatDescription: String {
         var components = [String]()
-        components += root.flatChildDefinitions()
+        components += root.flatChildDescriptions()
         return components.joined(separator: "\n")
     }
 }
 
 extension SDKDump.Element {
     
-    func flatChildDefinitions() -> [String] {
+    func flatChildDescriptions() -> [String] {
         var definitions = [String]()
         children.forEach { child in
             if child.declKind == nil { return }
-            definitions += [child.definition] + child.flatChildDefinitions()
+            definitions += [child.description] + child.flatChildDescriptions()
         }
         return definitions
     }

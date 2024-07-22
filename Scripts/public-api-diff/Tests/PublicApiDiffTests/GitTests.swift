@@ -55,8 +55,8 @@ class GitTests: XCTestCase {
             try git.clone(repository, at: branch, targetDirectoryPath: targetDirectoryPath)
             XCTFail("Clone should have thrown an error")
         } catch {
-            let fileHandlerError = try XCTUnwrap(error as? FileHandlerError)
-            XCTAssertEqual(fileHandlerError, FileHandlerError.pathDoesNotExist(path: targetDirectoryPath))
+            let fileHandlerError = try XCTUnwrap(error as? GitError)
+            XCTAssertEqual(fileHandlerError, GitError.couldNotClone(branchOrTag: branch, repository: repository))
         }
     }
 }

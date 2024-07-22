@@ -39,7 +39,7 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
         
         var changes = [Change]()
         
-        if oldFirst, lhs.definition != rhs.definition {
+        if oldFirst, lhs.description != rhs.description {
             changes += [
                 .init(changeType: .removal, parentName: lhs.parentPath, changeDescription: "`\(lhs)` was removed"),
                 .init(changeType: .addition, parentName: rhs.parentPath, changeDescription: "`\(rhs)` was added")
@@ -54,7 +54,7 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
             // This simplifies the script and also makes it more accurate
             // but has the downside of running into the chance of not grouping the changed element together
             
-            if let rhsChildForName = rhs.children.first(where: { $0.definition == lhsElement.definition }) {
+            if let rhsChildForName = rhs.children.first(where: { $0.description == lhsElement.description }) {
                 return recursiveCompare(element: lhsElement, to: rhsChildForName, oldFirst: oldFirst)
             }
             

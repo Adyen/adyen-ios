@@ -133,7 +133,7 @@ extension SDKDump {
         }
         
         var debugDescription: String {
-            definition
+            description
         }
         
         var isSpiInternal: Bool {

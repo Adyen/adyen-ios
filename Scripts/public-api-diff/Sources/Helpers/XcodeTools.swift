@@ -21,6 +21,8 @@ struct XcodeTools {
         static let simulatorSdkCommand = "xcrun --sdk iphonesimulator --show-sdk-path"
     }
     
+    // xcrun swift-ide-test -print-module -source-filename /Users/alexandergu/Library/Developer/Xcode/DerivedData/public-api-diff-egupzhmahwumtceocddrklkoobgs/Build/Products/Debug/tmp-public-api-diff/6AA36F6B-1599-430A-B7D0-2ADB220BCF7E/.build/Build/Products/Debug-iphonesimulator/Alamofire.swiftmodule/arm64-apple-ios-simulator.swiftmodule -sdk `xcrun --sdk iphonesimulator --show-sdk-path` -print-regular-comments -module-print-submodules -module-to-print CoreGraphics
+    
     private let shell: ShellHandling
     
     init(shell: ShellHandling = Shell()) {
@@ -88,6 +90,23 @@ struct XcodeTools {
         
         // print("👾 \(command.joined(separator: " "))")
         shell.execute(command.joined(separator: " "))
+    }
+    
+    func diagnoseSdk(
+        oldAbiJsonFilePath: String,
+        newAbiJsonFilePath: String,
+        module: String
+    ) -> String {
+        // https://github.com/mapbox/mapbox-navigation-ios/pull/4308/files#diff-53b9c5f29bb5c353edd0bbae0271d3750162c28a170a9ffccfd27e400e771cfbR20
+        
+        let command = [
+            "xcrun --sdk iphoneos swift-api-digester -diagnose-sdk",
+            "-module \(module)",
+            "-input-paths \(oldAbiJsonFilePath)",
+            "-input-paths \(newAbiJsonFilePath)"
+        ]
+        
+        return shell.execute(command.joined(separator: " "))
     }
     
     private var iOSTarget: String {

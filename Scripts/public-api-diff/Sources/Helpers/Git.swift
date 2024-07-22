@@ -6,7 +6,7 @@
 
 import Foundation
 
-enum GitError: LocalizedError {
+enum GitError: LocalizedError, Equatable {
     case couldNotClone(branchOrTag: String, repository: String)
     
     var errorDescription: String? {

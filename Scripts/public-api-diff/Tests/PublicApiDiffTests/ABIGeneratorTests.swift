@@ -23,7 +23,6 @@ class ABIGeneratorTests: XCTestCase {
             let encodedPackageDescription = try! JSONEncoder().encode(packageDescription)
             return String(data: encodedPackageDescription, encoding: .utf8)!
         }
-        let xcodeTools = XcodeTools(shell: shell)
         
         var fileHandler = MockFileHandler()
         fileHandler.handleFileExists = { _ in
@@ -40,7 +39,7 @@ class ABIGeneratorTests: XCTestCase {
         }
         
         let abiGenerator = ABIGenerator(
-            xcodeTools: xcodeTools,
+            shell: shell,
             fileHandler: fileHandler,
             logger: logger
         )
@@ -52,16 +51,16 @@ class ABIGeneratorTests: XCTestCase {
     
     func test_schemeProvided_shouldHandleAsProject() throws {
         
-        let shell = MockShell()
-        let xcodeTools = XcodeTools(shell: shell)
+        let scheme = "Scheme"
+        let pathToSwiftModule = "path/to/\(scheme).swiftmodule"
+        let expectedAbiJsonUrl = URL(filePath: "\(pathToSwiftModule)/abi.json")
+        
+        var shell = MockShell()
+        shell.handleExecute = { _ in
+            return "\(pathToSwiftModule)\nsomeMoreStuff.txt"
+        }
         
         var fileHandler = MockFileHandler()
-        fileHandler.handleFileExists = { _ in
-            return true
-        }
-        fileHandler.handleLoadData = { _ in
-            try XCTUnwrap("".data(using: .utf8))
-        }
         fileHandler.handleContentsOfDirectory = { _ in
             ["abi.json"]
         }
@@ -77,17 +76,15 @@ class ABIGeneratorTests: XCTestCase {
         }
         
         let abiGenerator = ABIGenerator(
-            xcodeTools: xcodeTools,
+            shell: shell,
             fileHandler: fileHandler,
             logger: logger
         )
         
-        let scheme = "Scheme"
-        
         let output = try abiGenerator.generate(for: URL(filePath: "projectDir"), scheme: scheme, description: "description")
         let expectedOutput: [ABIGeneratorOutput] = [.init(
-            targetName: "Scheme",
-            abiJsonFileUrl: URL(filePath: "projectDir/.build/Build/Products/Debug-maccatalyst/\(scheme).framework/Modules/\(scheme).swiftmodule/abi.json")
+            targetName: scheme,
+            abiJsonFileUrl: expectedAbiJsonUrl
         )]
         
         XCTAssertEqual(output, expectedOutput)

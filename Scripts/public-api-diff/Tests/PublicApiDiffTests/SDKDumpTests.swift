@@ -10,6 +10,8 @@ import XCTest
 
 class SDKDumpTests: XCTestCase {
     
+    // MARK: - Default Args
+    
     func test_staticFuncWithDefaultArgs() throws {
         
         let dump = SDKDump(
@@ -31,16 +33,92 @@ class SDKDumpTests: XCTestCase {
         let expectedDefinition: String = "public static func foo(_: Swift.Int, bar: Swift.Double = $DEFAULT_ARG) -> Swift.Bool"
         
         XCTAssertEqual(
-            dump.root.definition,
+            dump.root.description,
             expectedDefinition
         )
     }
     
-    func test_isInternal() throws {
-        // TODO: Implement
+    func test_staticFuncWithDefaultArgs_missingArgs() throws {
+        
+        let dump = SDKDump(
+            root: .init(
+                kind: .func,
+                name: "name",
+                printedName: "foo(_:bar:)",
+                declKind: .func,
+                isStatic: true,
+                isLet: false,
+                children: [
+                    .init(kind: .typeNominal, name: "ReturnValue", printedName: "Swift.Bool"), // Return value
+                    .init(kind: .typeNominal, name: "FirstParameter", printedName: "Swift.Int"), // 1st parameter
+                ]
+            )
+        )
+        
+        let expectedDefinition: String = "public static func foo(_: Swift.Int, bar) -> Swift.Bool"
+        
+        XCTAssertEqual(
+            dump.root.description,
+            expectedDefinition
+        )
     }
     
+    // MARK: - isInternal
+    
+    func test_isInternal() throws {
+        
+        let dump = SDKDump(
+            root: .init(
+                kind: .func,
+                name: "name",
+                printedName: "foo(_:)",
+                declKind: .func,
+                isStatic: true,
+                isLet: false,
+                isInternal: true,
+                children: [
+                    .init(kind: .typeNominal, name: "ReturnValue", printedName: "Swift.Bool"), // Return value
+                    .init(kind: .typeNominal, name: "FirstParameter", printedName: "Swift.Int"), // 1st parameter
+                ]
+            )
+        )
+        
+        let expectedDefinition: String = "internal static func foo(_: Swift.Int) -> Swift.Bool"
+        
+        XCTAssertEqual(
+            dump.root.description,
+            expectedDefinition
+        )
+    }
+    
+    // MARK: - spi
+    
     func test_spi() throws {
-        // TODO: Implement
+        
+        let dump = SDKDump(
+            root: .init(
+                kind: .func,
+                name: "name",
+                printedName: "foo(_:)",
+                declKind: .func,
+                isStatic: true,
+                isLet: false,
+                children: [
+                    .init(kind: .typeNominal, name: "ReturnValue", printedName: "Swift.Bool"), // Return value
+                    .init(kind: .typeNominal, name: "FirstParameter", printedName: "Swift.Int"), // 1st parameter
+                ], spiGroupNames: [
+                    "Internal1",
+                    "Internal2",
+                    "Internal3"
+                ]
+            )
+        )
+        
+        let expectedDefinition: String = "@_spi(Internal1) @_spi(Internal2) @_spi(Internal3) public static func foo(_: Swift.Int) -> Swift.Bool"
+        
+        XCTAssertEqual(
+            dump.root.description,
+            expectedDefinition
+        )
     }
 }

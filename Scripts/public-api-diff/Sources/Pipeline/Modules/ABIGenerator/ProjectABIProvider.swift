@@ -10,6 +10,7 @@ import OSLog
 
 struct ProjectABIProvider: ABIGenerating {
     
+    let shell: ShellHandling
     let fileHandler: FileHandling
     let logger: Logging?
     
@@ -18,7 +19,7 @@ struct ProjectABIProvider: ABIGenerating {
         scheme: String?,
         description: String
     ) throws -> [ABIGeneratorOutput] {
-    
+        
         guard let scheme else {
             assertionFailure("ProjectABIProvider needs a scheme to be passed to \(#function)")
             return []
@@ -26,22 +27,14 @@ struct ProjectABIProvider: ABIGenerating {
         
         logger?.log("📋 Locating ABI file for `\(description)`", from: String(describing: Self.self))
         
-        // TODO: Check with other projects - this seems very specific:
-        let targetSpecificDirectories = [
-            "Debug-maccatalyst",
-            "Debug-iphonesimulator"
-        ]
-        
-        let potentialModulePaths = targetSpecificDirectories.map { target in
-            projectDirectory.appending(path: ".build/Build/Products/\(target)/\(scheme).framework/Modules/\(scheme).swiftmodule")
-        }
-        
-        let swiftModuleDirectory = potentialModulePaths.first { fileHandler.fileExists(atPath: $0.path()) }
+        let swiftModulePaths = shell.execute("cd '\(projectDirectory)'; find . -type d -name '\(scheme).swiftmodule'")
+            .components(separatedBy: .newlines)
+            .map { URL(filePath: $0) }
 
-        guard let swiftModuleDirectory else {
-            throw FileHandlerError.pathDoesNotExist(path: potentialModulePaths.first!.path())
+        guard let swiftModuleDirectory = swiftModulePaths.first else {
+            throw FileHandlerError.pathDoesNotExist(path: "find . -type d -name '\(scheme).swiftmodule'")
         }
-        
+
         let swiftModuleDirectoryContent = try fileHandler.contentsOfDirectory(atPath: swiftModuleDirectory.path())
         guard let abiJsonFilePath = swiftModuleDirectoryContent.first(where: {
             $0.hasSuffix("abi.json")

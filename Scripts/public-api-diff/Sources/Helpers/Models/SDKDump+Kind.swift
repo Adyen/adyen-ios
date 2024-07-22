@@ -31,7 +31,7 @@ extension SDKDump {
         case typeNameAlias = "TypeNameAlias"
         case typeAlias = "TypeAlias"
         
-        case typeFunc = "TypeFunc" // TODO: Figure out what this actually does
+        case typeFunc = "TypeFunc"
     }
 }
 
