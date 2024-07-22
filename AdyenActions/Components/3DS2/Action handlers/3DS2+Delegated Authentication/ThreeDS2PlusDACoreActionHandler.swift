@@ -4,6 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+internal typealias VoidHandler = () -> Void
+
 #if canImport(AdyenAuthentication)
     @_spi(AdyenInternal) import Adyen
     import Adyen3DS2
@@ -11,8 +13,6 @@
     import Foundation
     import UIKit
     
-    internal typealias VoidHandler = () -> Void
-
     /// Handles the 3D Secure 2 fingerprint and challenge actions separately + Delegated Authentication.
     @available(iOS 16.0, *)
     internal class ThreeDS2PlusDACoreActionHandler: ThreeDS2CoreActionHandler {
