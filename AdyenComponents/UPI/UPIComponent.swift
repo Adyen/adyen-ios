@@ -15,7 +15,9 @@ public final class UPIComponent: PaymentComponent,
 
     /// The flow types for UPI component.
     public enum UPIFlowType: Int {
+        /// Transaction handled through UPI-enabled apps.
         case upiApps = 0
+        /// Transaction initiated by scanning a QR code.
         case qrCode = 1
     }
 
@@ -70,10 +72,6 @@ public final class UPIComponent: PaymentComponent,
 
     /// Represents the selected UPI (Unified Payments Interface) flow for the payment component.
     /// Determines the specific UPI transaction process to follow.
-    ///
-    /// Possible values are defined by `UPIFlowType`:
-    /// - `.upiApps`: Transaction handled through UPI-enabled apps.
-    /// - `.qrCode`: Transaction initiated by scanning a QR code.
     @AdyenObservable(.upiApps) public private(set) var selectedUPIFlow: UPIFlowType
 
     /// Initializes the UPI  component.
@@ -434,23 +432,10 @@ private extension UPIComponent {
 @_spi(AdyenInternal)
 extension UPIComponent: AdyenObserver {}
 
+// MARK: - SubmitCustomizable
+
 extension UPIComponent: SubmitCustomizable {
 
-    // MARK: - SubmitCustomizable
-
-    /**
-     Submits the payment request to initiate the payment process.
-
-     This method starts the payment flow in the payment component. It triggers the validation of the form associated
-     with the payment component and initiates the loading state.
-     Ensure that the loading state is appropriately stopped once the payment process is complete.
-
-     If the `showSubmitButton` of the payment component is enabled, calling this method will have no effect and will simply return.
-
-     - Important:
-        - Ensure that the payment component is properly configured before calling this method.
-        - Handle stopping the loading state after the payment process is completed.
-     */
     public func submit() {
         guard !configuration.showSubmitButton else { return }
 
