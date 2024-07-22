@@ -82,6 +82,7 @@ struct Pipeline {
                 return changes[target] = [.addedTarget]
             }
             
+            /*
             // Using `xcrun --sdk iphoneos swift-api-digester -diagnose-sdk` instead of the custom parser
             let diagnose = XcodeTools().diagnoseSdk(
                 oldAbiJsonFilePath: oldAbiJson.path(),
@@ -90,6 +91,7 @@ struct Pipeline {
             )
             
             print(diagnose)
+            */
             
             // Generate SDKDump objects
             let oldSDKDump = try sdkDumpGenerator.generate(for: oldAbiJson)

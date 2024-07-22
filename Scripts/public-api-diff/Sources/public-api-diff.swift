@@ -38,7 +38,7 @@ struct PublicApiDiff: AsyncParsableCommand {
         
         defer {
             logger.debug("Cleaning up", from: "Main")
-            // try? fileHandler.removeItem(atPath: workingDirectoryPath)
+            try? fileHandler.removeItem(atPath: workingDirectoryPath)
         }
         
         let pipelineOutput = try await Pipeline(
