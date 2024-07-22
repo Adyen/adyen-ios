@@ -75,8 +75,7 @@ internal final class DAErrorViewController: UIViewController {
 
     private lazy var errorView: DelegatedAuthenticationErrorView = .init(style: style)
     private let style: DelegatedAuthenticationComponentStyle
-    internal typealias Handler = () -> Void
-    private let continueHandler: Handler
+    private let continueHandler: VoidHandler
     private let screen: Screen
     
     // MARK: - Init

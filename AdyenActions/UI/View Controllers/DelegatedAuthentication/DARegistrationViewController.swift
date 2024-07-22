@@ -13,15 +13,14 @@ internal final class DARegistrationViewController: UIViewController {
     private let cardNumber: String?
     private let cardType: CardType?
     private let biometricName: String
-    private let enableCheckoutHandler: Handler
-    private let notNowHandler: Handler
+    private let enableCheckoutHandler: VoidHandler
+    private let notNowHandler: VoidHandler
     private let imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
     private lazy var containerView = UIView(frame: .zero)
     
     private lazy var registrationView: DelegatedAuthenticationView = .init(style: style)
     
     private let style: DelegatedAuthenticationComponentStyle
-    internal typealias Handler = () -> Void
     
     private let localizationParameters: LocalizationParameters?
 
@@ -31,8 +30,8 @@ internal final class DARegistrationViewController: UIViewController {
                   cardNumber: String?,
                   cardType: CardType?,
                   biometricName: String,
-                  enableCheckoutHandler: @escaping Handler,
-                  notNowHandler: @escaping Handler) {
+                  enableCheckoutHandler: @escaping VoidHandler,
+                  notNowHandler: @escaping VoidHandler) {
         self.style = style
         self.localizationParameters = localizationParameters
         self.cardNumber = cardNumber

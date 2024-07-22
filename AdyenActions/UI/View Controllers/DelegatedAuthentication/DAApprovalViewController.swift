@@ -15,9 +15,9 @@ internal final class DAApprovalViewController: UIViewController {
     private let cardNumber: String?
     private let cardType: CardType?
     private let amount: String?
-    private let useBiometricsHandler: Handler
-    private let approveDifferentlyHandler: Handler
-    private let removeCredentialsHandler: Handler
+    private let useBiometricsHandler: VoidHandler
+    private let approveDifferentlyHandler: VoidHandler
+    private let removeCredentialsHandler: VoidHandler
     private let imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
     
     private lazy var removeCredentialAlert: UIAlertController = {
@@ -61,9 +61,7 @@ internal final class DAApprovalViewController: UIViewController {
     }()
 
     private lazy var approvalView: DelegatedAuthenticationView = .init(style: style)
-    
-    internal typealias Handler = () -> Void
-    
+        
     // MARK: - init
     
     internal init(context: AdyenContext,
@@ -72,9 +70,9 @@ internal final class DAApprovalViewController: UIViewController {
                   amount: String?,
                   cardNumber: String?,
                   cardType: CardType?,
-                  useBiometricsHandler: @escaping Handler,
-                  approveDifferentlyHandler: @escaping Handler,
-                  removeCredentialsHandler: @escaping Handler) {
+                  useBiometricsHandler: @escaping VoidHandler,
+                  approveDifferentlyHandler: @escaping VoidHandler,
+                  removeCredentialsHandler: @escaping VoidHandler) {
         self.style = style
         self.useBiometricsHandler = useBiometricsHandler
         self.approveDifferentlyHandler = approveDifferentlyHandler

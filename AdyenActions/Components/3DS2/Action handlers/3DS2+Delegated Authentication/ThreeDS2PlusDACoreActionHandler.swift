@@ -10,6 +10,8 @@
     import AdyenAuthentication
     import Foundation
     import UIKit
+    
+    internal typealias VoidHandler = () -> Void
 
     /// Handles the 3D Secure 2 fingerprint and challenge actions separately + Delegated Authentication.
     @available(iOS 16.0, *)
