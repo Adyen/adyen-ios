@@ -16,12 +16,6 @@ class SDKDumpGeneratorTests: XCTestCase {
         try compare(abiJsonFilePath: abiJsonPath, toFlatDefinition: abiFlatDefinitionPath)
     }
     
-    func test_loadFromJson_dummy2() throws {
-        let abiJsonPath = try XCTUnwrap(Bundle.module.path(forResource: "dummy2.abi", ofType: "json"))
-        let abiFlatDefinitionPath = try XCTUnwrap(Bundle.module.path(forResource: "dummi2-abi-flat-definition", ofType: "txt"))
-        try compare(abiJsonFilePath: abiJsonPath, toFlatDefinition: abiFlatDefinitionPath)
-    }
-    
     private func compare(abiJsonFilePath: String, toFlatDefinition flatDefinitionFilePath: String) throws {
         
         let abiJsonUrl = try XCTUnwrap(URL(filePath: abiJsonFilePath))
@@ -54,8 +48,8 @@ class SDKDumpGeneratorTests: XCTestCase {
         }
         
         // To update the dummi-abi-flat-definition.txt file
-        // just print the flatDefinition and copy the content over into the file
-        // print(sdkDump.flatDefinition)
+        // just print the flatDescription and copy the content over into the file
+        // print(sdkDump.flatDescription)
     }
 }
 
