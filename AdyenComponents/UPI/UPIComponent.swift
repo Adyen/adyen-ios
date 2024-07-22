@@ -311,7 +311,7 @@ extension UPIComponent {
         continueButton.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
-        submit()
+        submitPayment()
     }
 
     private func didChangeSegmentedControlIndex(_ index: Int) {
