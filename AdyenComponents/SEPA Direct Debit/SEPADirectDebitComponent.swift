@@ -151,8 +151,11 @@ extension SEPADirectDebitComponent: ViewControllerDelegate {}
 extension SEPADirectDebitComponent: SubmitCustomizable {
 
     public func submit() {
-        guard !configuration.showSubmitButton else { return }
-
+        AdyenAssertion.assert(
+            message: "Default submit button must be disabled in order to call submit.",
+            condition: configuration.showSubmitButton
+        )
+        
         didSelectSubmitButton()
     }
 }

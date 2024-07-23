@@ -256,14 +256,16 @@ extension CashAppPayComponent: TrackableComponent {}
 @_spi(AdyenInternal)
 extension CashAppPayComponent: ViewControllerDelegate {}
 
-
 // MARK: - SubmitCustomizable
 
 @available(iOS 13.0, *)
 extension CashAppPayComponent: SubmitCustomizable {
 
     public func submit() {
-        guard !configuration.showSubmitButton else { return }
+        AdyenAssertion.assert(
+            message: "Default submit button must be disabled in order to call submit.",
+            condition: configuration.showSubmitButton
+        )
 
         didSelectSubmitButton()
     }

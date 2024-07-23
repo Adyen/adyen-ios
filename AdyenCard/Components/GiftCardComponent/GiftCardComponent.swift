@@ -439,8 +439,11 @@ extension GiftCardComponent: PublicKeyConsumer {}
 extension GiftCardComponent: SubmitCustomizable {
 
     public func submit() {
-        guard !showSubmitButton else { return }
-
+        AdyenAssertion.assert(
+            message: "Default submit button must be disabled in order to call submit.",
+            condition: showSubmitButton
+        )
+        
         didSelectSubmitButton()
     }
 }
