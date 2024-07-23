@@ -131,11 +131,11 @@ extension BLIKComponent: ViewControllerDelegate {}
 extension BLIKComponent: SubmitCustomizable {
 
     public func submit() {
-        AdyenAssertion.assert(
-            message: "Default submit button must be disabled in order to call submit.",
-            condition: configuration.showSubmitButton
-        )
-        
+        guard !configuration.showSubmitButton else {
+            AdyenAssertion.assertionFailure(message: "Default submit button must be hidden in order to call submit.")
+            return
+        }
+
         didSelectSubmitButton()
     }
 }
