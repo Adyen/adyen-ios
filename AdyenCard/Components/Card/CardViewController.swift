@@ -87,7 +87,7 @@ internal class CardViewController: FormViewController {
         }
         
         super.init(
-            scrollEnabled: configuration.showSubmitButton,
+            scrollEnabled: configuration.showsSubmitButton,
             style: formStyle,
             localizationParameters: localizationParameters
         )
@@ -287,7 +287,7 @@ extension CardViewController {
             append(billingAddressItem)
         }
 
-        if configuration.showSubmitButton {
+        if configuration.showsSubmitButton {
             append(FormSpacerItem())
             append(items.button)
             append(FormSpacerItem(numberOfSpaces: 2))

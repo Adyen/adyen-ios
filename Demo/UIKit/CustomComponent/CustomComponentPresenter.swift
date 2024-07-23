@@ -98,7 +98,7 @@ class CustomComponentPresenter: CustomComponentPresenterProtocol {
         var billingAddressConfiguration = BillingAddressConfiguration()
         billingAddressConfiguration.mode = .none
 
-        let configuration = CardComponent.Configuration(showSubmitButton: false, billingAddress: billingAddressConfiguration)
+        let configuration = CardComponent.Configuration(showsSubmitButton: false, billingAddress: billingAddressConfiguration)
 
         let cardComponent = CardComponent(paymentMethod: paymentMethod,
                                           context: adyenContext,

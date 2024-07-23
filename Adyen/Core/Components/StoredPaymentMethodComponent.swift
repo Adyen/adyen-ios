@@ -85,7 +85,7 @@ extension StoredPaymentMethodComponent {
 
         /// Initializes the configuration for Issuer list type components.
         /// - Parameters:
-        ///   - showSubmitButton: Boolean value that determines whether the payment button is displayed.
+        ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
         ///   Defaults to `true`.
         ///   - localizationParameters: Localization parameters.
         public init(localizationParameters: LocalizationParameters? = nil) {

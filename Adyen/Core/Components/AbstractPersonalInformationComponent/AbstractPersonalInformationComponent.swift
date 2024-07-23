@@ -35,7 +35,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
 
     internal lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
-            scrollEnabled: configuration.showSubmitButton,
+            scrollEnabled: configuration.showsSubmitButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
@@ -73,7 +73,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
             self.add(field, into: formViewController)
         }
 
-        if configuration.showSubmitButton {
+        if configuration.showsSubmitButton {
             formViewController.append(FormSpacerItem())
             formViewController.append(button)
         }
@@ -279,7 +279,7 @@ extension AbstractPersonalInformationComponent: ViewControllerDelegate {
 extension AbstractPersonalInformationComponent: SubmitCustomizable {
 
     public func submit() {
-        guard !configuration.showSubmitButton else {
+        guard !configuration.showsSubmitButton else {
             AdyenAssertion.assertionFailure(message: "Default submit button must be hidden in order to call submit.")
             return
         }

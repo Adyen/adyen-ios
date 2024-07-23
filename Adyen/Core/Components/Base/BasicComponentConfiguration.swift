@@ -24,7 +24,7 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
 
     /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
     @_spi(AdyenInternal)
-    public private(set) var showSubmitButton: Bool
+    public private(set) var showsSubmitButton: Bool
 
     public var localizationParameters: LocalizationParameters?
 
@@ -32,15 +32,15 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     ///
     /// - Parameters:
     ///   - style: The form style.
-    ///   - showSubmitButton: Boolean value that determines whether the payment button is displayed.
+    ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
     ///   Defaults to `true`.
     ///   - localizationParameters: The localization parameters.
     public init(style: FormComponentStyle = FormComponentStyle(),
-                showSubmitButton: Bool = true,
+                showsSubmitButton: Bool = true,
                 localizationParameters: LocalizationParameters? = nil) {
         self.style = style
         self.localizationParameters = localizationParameters
-        self.showSubmitButton = showSubmitButton
+        self.showsSubmitButton = showsSubmitButton
     }
 
 }
@@ -52,7 +52,7 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
     public var style: FormComponentStyle
 
     /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
-    internal let showSubmitButton: Bool
+    internal let showsSubmitButton: Bool
 
     public var shopperInformation: PrefilledShopperInformation?
     
@@ -62,16 +62,16 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
     ///
     /// - Parameters:
     ///   - style: The form style.
-    ///   - showSubmitButton: Boolean value that determines whether the payment button is displayed.
+    ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
     ///   Defaults to `true`.
     ///   - shopperInformation: The shopper information to be prefilled.
     ///   - localizationParameters: The localization parameters.
     public init(style: FormComponentStyle = FormComponentStyle(),
-                showSubmitButton: Bool = true,
+                showsSubmitButton: Bool = true,
                 shopperInformation: PrefilledShopperInformation? = nil,
                 localizationParameters: LocalizationParameters? = nil) {
         self.style = style
-        self.showSubmitButton = showSubmitButton
+        self.showsSubmitButton = showsSubmitButton
         self.shopperInformation = shopperInformation
         self.localizationParameters = localizationParameters
     }
