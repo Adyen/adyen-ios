@@ -197,6 +197,9 @@ whiteList:
   - xcprivacy
   - twint
   - initiable
+  - authenticationservices
+  - netlify
   - func
   - redirectable
   - appslist
+  
