@@ -87,7 +87,7 @@ class AtomeComponentUITests: XCTestCase {
 
         // Then
         let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.onDidSubmit = { data, component in
+        delegate.onDidSubmitClosure = { data, component in
             XCTAssertTrue(component === sut)
             let details = data.paymentMethod as! AtomeDetails
             XCTAssertEqual(details.shopperName?.firstName, "Katrina")

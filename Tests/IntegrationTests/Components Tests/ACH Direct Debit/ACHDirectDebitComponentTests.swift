@@ -305,16 +305,55 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(infoType, .rendered)
     }
 
-    func testSubmit() throws {
+    func testSubmit_whenDefaultSubmitIsHidden_shouldCallPaymentDelegateOnDidSubmit() throws {
+        // Given
+        let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
+        let configuration = ACHDirectDebitComponent.Configuration(showsSubmitButton: false,
+                                                                  showsBillingAddress: false)
+        let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
+                                          context: context,
+                                          configuration: configuration,
+                                          publicKeyProvider: PublicKeyProviderMock())
+
+        setupRootViewController(sut.viewController)
+
+        let expectation = XCTestExpectation(description: "Dummy Expectation")
+
+        let delegateMock = PaymentComponentDelegateMock()
+        sut.delegate = delegateMock
+        delegateMock.onDidSubmitClosure = { _, component in
+            XCTAssertTrue(component === sut)
+            expectation.fulfill()
+        }
+
+        let nameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem"))
+        let accountNumberItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.bankAccountNumberItem"))
+        let routingNumberItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.bankRoutingNumberItem"))
+
+        self.populate(textItemView: nameItemView, with: "test")
+        self.populate(textItemView: accountNumberItemView, with: "123456789")
+        self.populate(textItemView: routingNumberItemView, with: "121000358")
+
+        // When
+        sut.submit()
+
+        wait(for: [expectation], timeout: 100)
+
+        XCTAssertEqual(delegateMock.onDidSubmitCallsCount, 1)
+    }
+
+    func testSubmit_whenDefaultSubmitIsShown_shouldCallPaymentDelegateOnDidSubmit() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(apiContext: Dummy.apiContext,
                                    payment: Dummy.payment,
                                    analyticsProvider: analyticsProviderMock)
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
+
+        let configuration = ACHDirectDebitComponent.Configuration(showsSubmitButton: false)
         let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
                                           context: context,
-                                          configuration: .init(showsBillingAddress: false),
+                                          configuration: configuration,
                                           publicKeyProvider: PublicKeyProviderMock())
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
@@ -322,6 +361,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         // When
         sut.submit()
 
-        XCTAssertTrue(delegateMock.onDidSubmit.ca)
+        // Then
+        XCTAssertEqual(delegateMock.onDidSubmitCallsCount, 0)
     }
 }

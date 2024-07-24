@@ -76,7 +76,7 @@ class OnlineBankingComponentUITests: XCTestCase {
 
         let didContinueExpectation = XCTestExpectation(description: "Dummy Expectation")
 
-        delegate.onDidSubmit = { data, component in
+        delegate.onDidSubmitClosure = { data, component in
             // Assert
             XCTAssertTrue(component === sut)
             let details = data.paymentMethod as! OnlineBankingDetails

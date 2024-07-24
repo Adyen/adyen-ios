@@ -188,7 +188,7 @@ import XCTest
             let cancelExpectation = expectation(description: "Component was cancelled")
         
             let actonComponentDelegateMock = ActionComponentDelegateMock()
-            actonComponentDelegateMock.onDidFailClosure = { error, component in
+            actonComponentDelegateMock.onDidFail = { error, component in
                 XCTAssertEqual(error as! ComponentError, ComponentError.cancelled)
                 XCTAssertTrue(component === twintActionComponent)
                 cancelExpectation.fulfill()

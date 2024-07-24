@@ -106,7 +106,7 @@ final class BoletoComponentUITests: XCTestCase {
         let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "lastNameItem"))
         let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: "addressItem"))
 
-        mockDelegate.onDidSubmit = { paymentData, paymentComponent in
+        mockDelegate.onDidSubmitClosure = { paymentData, paymentComponent in
             let boletoDetails = paymentData.paymentMethod as? BoletoDetails
             XCTAssertNotNil(boletoDetails)
             
