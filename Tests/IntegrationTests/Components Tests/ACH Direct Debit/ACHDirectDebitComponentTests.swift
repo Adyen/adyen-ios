@@ -305,7 +305,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(infoType, .rendered)
     }
 
-    func testSubmit_whenDefaultSubmitIsHidden_shouldCallPaymentDelegateOnDidSubmit() throws {
+    func testSubmit_withDefaultSubmitHidden_shouldCallPaymentDelegateOnDidSubmit() throws {
         // Given
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let configuration = ACHDirectDebitComponent.Configuration(showsSubmitButton: false,
@@ -319,9 +319,9 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
-        let delegateMock = PaymentComponentDelegateMock()
-        sut.delegate = delegateMock
-        delegateMock.onDidSubmitClosure = { _, component in
+        let paymentDelegateMock = PaymentComponentDelegateMock()
+        sut.delegate = paymentDelegateMock
+        paymentDelegateMock.onDidSubmitClosure = { _, component in
             XCTAssertTrue(component === sut)
             expectation.fulfill()
         }
@@ -337,12 +337,13 @@ class ACHDirectDebitComponentTests: XCTestCase {
         // When
         sut.submit()
 
+        // Then
         wait(for: [expectation], timeout: 100)
 
-        XCTAssertEqual(delegateMock.onDidSubmitCallsCount, 1)
+        XCTAssertEqual(paymentDelegateMock.onDidSubmitCallsCount, 1)
     }
 
-    func testSubmit_whenDefaultSubmitIsShown_shouldCallPaymentDelegateOnDidSubmit() throws {
+    func testSubmit_withDefaultSubmitShown_shouldNotCallPaymentDelegateOnDidSubmit() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(apiContext: Dummy.apiContext,
