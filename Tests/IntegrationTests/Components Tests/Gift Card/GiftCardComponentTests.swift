@@ -128,7 +128,7 @@ class GiftCardComponentTests: XCTestCase {
 
         let didFailExpectation = expectation(description: "Expect delegateMock.onDidFail to be called.")
         didFailExpectation.assertForOverFulfill = true
-        delegateMock.onDidFail = { error, component in
+        delegateMock.onDidFailClosure = { error, component in
             XCTAssertTrue(component === self.sut)
             XCTAssertNotNil(error as? Dummy)
             didFailExpectation.fulfill()
@@ -185,7 +185,7 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        delegateMock.onDidFail = { error, component in
+        delegateMock.onDidFailClosure = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
         }
 
@@ -223,7 +223,7 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        delegateMock.onDidFail = { error, component in
+        delegateMock.onDidFailClosure = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
         }
 
@@ -261,7 +261,7 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        delegateMock.onDidFail = { error, component in
+        delegateMock.onDidFailClosure = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
         }
 
@@ -301,7 +301,7 @@ class GiftCardComponentTests: XCTestCase {
 
         sut.readyToSubmitComponentDelegate = nil
 
-        delegateMock.onDidFail = { error, component in
+        delegateMock.onDidFailClosure = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
         }
 
@@ -317,7 +317,7 @@ class GiftCardComponentTests: XCTestCase {
         }
 
         let onSubmitExpectation = expectation(description: "Expect delegateMock.onDidSubmit to be called.")
-        delegateMock.onDidSubmit = { data, component in
+        delegateMock.onDidSubmitClosure = { data, component in
             XCTAssertNil(data.order)
             XCTAssertTrue(component === self.sut)
             onSubmitExpectation.fulfill()
@@ -350,7 +350,7 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        delegateMock.onDidFail = { error, component in
+        delegateMock.onDidFailClosure = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
         }
 
@@ -365,7 +365,7 @@ class GiftCardComponentTests: XCTestCase {
             XCTFail("partialPaymentDelegate.onRequestOrder must not be called.")
         }
 
-        delegateMock.onDidSubmit = { data, component in
+        delegateMock.onDidSubmitClosure = { data, component in
             XCTFail("delegateMock.onDidSubmit must not be called")
         }
 
@@ -402,7 +402,7 @@ class GiftCardComponentTests: XCTestCase {
             completion(.success(Dummy.publicKey))
         }
 
-        delegateMock.onDidFail = { error, component in
+        delegateMock.onDidFailClosure = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
         }
 
@@ -421,7 +421,7 @@ class GiftCardComponentTests: XCTestCase {
         }
 
         let onSubmitExpectation = expectation(description: "Expect delegateMock.onDidSubmit to be called.")
-        delegateMock.onDidSubmit = { data, component in
+        delegateMock.onDidSubmitClosure = { data, component in
             XCTAssertEqual(data.order, expectedOrder)
             onSubmitExpectation.fulfill()
         }
@@ -459,7 +459,7 @@ class GiftCardComponentTests: XCTestCase {
 
         sut.order = PartialPaymentOrder(pspReference: "pspreference", orderData: "data")
 
-        delegateMock.onDidFail = { error, component in
+        delegateMock.onDidFailClosure = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
         }
 
@@ -476,7 +476,7 @@ class GiftCardComponentTests: XCTestCase {
         }
 
         let onSubmitExpectation = expectation(description: "Expect delegateMock.onDidSubmit to be called.")
-        delegateMock.onDidSubmit = { data, component in
+        delegateMock.onDidSubmitClosure = { data, component in
             XCTAssertEqual(data.order, expectedOrder)
             onSubmitExpectation.fulfill()
         }
@@ -513,7 +513,7 @@ class GiftCardComponentTests: XCTestCase {
         }
 
         let onDidFailExpectation = expectation(description: "Expect delegateMock.onDidFail to be called.")
-        delegateMock.onDidFail = { error, component in
+        delegateMock.onDidFailClosure = { error, component in
             XCTAssertEqual(error as? Dummy, .error)
             onDidFailExpectation.fulfill()
         }
@@ -531,7 +531,7 @@ class GiftCardComponentTests: XCTestCase {
             onRequestOrderExpectation.fulfill()
         }
 
-        delegateMock.onDidSubmit = { data, component in
+        delegateMock.onDidSubmitClosure = { data, component in
             XCTFail("delegateMock.onDidSubmit must not be called")
         }
 

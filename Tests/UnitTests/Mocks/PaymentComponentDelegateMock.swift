@@ -12,17 +12,37 @@ final class PaymentComponentDelegateMock: PaymentComponentDelegate {
         onDidSubmit: ((PaymentComponentData, PaymentComponent) -> Void)? = nil,
         onDidFail: ((Error, PaymentComponent) -> Void)? = nil
     ) {
-        self.onDidSubmit = onDidSubmit
-        self.onDidFail = onDidFail
+        self.onDidSubmitClosure = onDidSubmit
+        self.onDidFailClosure = onDidFail
     }
     
-    var onDidSubmit: ((PaymentComponentData, PaymentComponent) -> Void)?
+    // MARK: - onDidSubmit
+
+    var onDidSubmitCallsCount = 0
+    var onDidSubmitCalled: Bool {
+        onDidSubmitCallsCount > 0
+    }
+
+    var onDidSubmitReceivedArguments: (data: PaymentComponentData, component: PaymentComponent)?
+    var onDidSubmitClosure: ((PaymentComponentData, PaymentComponent) -> Void)?
     func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        onDidSubmit?(data, component)
+        onDidSubmitCallsCount += 1
+        onDidSubmitReceivedArguments = (data: data, component: component)
+        onDidSubmitClosure?(data, component)
     }
-    
-    var onDidFail: ((Error, PaymentComponent) -> Void)?
+
+    // MARK: - onDidFail
+
+    var onDidFailCallsCount = 0
+    var onDidFailCalled: Bool {
+        onDidFailCallsCount > 0
+    }
+
+    var onDidFailReceivedArguments: (error: Error, component: PaymentComponent)?
+    var onDidFailClosure: ((Error, PaymentComponent) -> Void)?
     func didFail(with error: Error, from component: PaymentComponent) {
-        onDidFail?(error, component)
+        onDidFailCallsCount += 1
+        onDidFailReceivedArguments = (error: error, component: component)
+        onDidFailClosure?(error, component)
     }
 }

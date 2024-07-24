@@ -100,7 +100,7 @@ import XCTest
         ) -> ActionComponentDelegateMock {
         
             let actonComponentDelegateMock = ActionComponentDelegateMock()
-            actonComponentDelegateMock.onDidFail = { error, component in
+            actonComponentDelegateMock.onDidFailClosure = { error, component in
                 XCTFail("delegate.onDidFail should not have been called")
             }
             actonComponentDelegateMock.onDidProvide = { data, component in
@@ -112,12 +112,12 @@ import XCTest
     
         /// ActionComponentDelegateMock that fails when `onDidFail` is called
         static func failureFlowActionComponentDelegateMock(
-            onDidFail: @escaping (Error) -> Void
+            onDidFailClosure: @escaping (Error) -> Void
         ) -> ActionComponentDelegateMock {
         
             let actonComponentDelegateMock = ActionComponentDelegateMock()
-            actonComponentDelegateMock.onDidFail = { error, component in
-                onDidFail(error)
+            actonComponentDelegateMock.onDidFailClosure = { error, component in
+                onDidFailClosure(error)
             }
             actonComponentDelegateMock.onDidProvide = { data, component in
                 XCTFail("delegate.onDidProvide should not have been called")

@@ -50,7 +50,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         sut.submit(data: paymentComponentData, component: sut)
 
         // Then
-        paymentComponentDelegate.onDidSubmit = { data, _ in
+        paymentComponentDelegate.onDidSubmitClosure = { data, _ in
             XCTAssertEqual(expectedCheckoutAttemptId, data.checkoutAttemptId)
         }
     }
@@ -66,7 +66,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         sut.submit(data: paymentComponentData, component: sut)
 
         // Then
-        paymentComponentDelegate.onDidSubmit = { data, _ in
+        paymentComponentDelegate.onDidSubmitClosure = { data, _ in
             XCTAssertNil(data.checkoutAttemptId)
         }
     }
@@ -81,7 +81,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         sut.submit(data: paymentComponentData, component: sut)
 
         // Then
-        paymentComponentDelegate.onDidSubmit = { data, _ in
+        paymentComponentDelegate.onDidSubmitClosure = { data, _ in
             XCTAssertNotNil(data.browserInfo)
         }
     }
@@ -99,7 +99,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         sut.submit(data: paymentComponentData, component: sut)
 
         // Then
-        paymentComponentDelegate.onDidSubmit = { data, _ in
+        paymentComponentDelegate.onDidSubmitClosure = { data, _ in
             XCTAssertNotNil(data.browserInfo)
             XCTAssertEqual(expectedBrowserInfo.userAgent, data.browserInfo?.userAgent)
         }
@@ -111,7 +111,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
         
-        paymentComponentDelegate.onDidSubmit = { data, _ in
+        paymentComponentDelegate.onDidSubmitClosure = { data, _ in
             let submitEvent = self.analyticsProviderMock.logs[0]
             XCTAssertEqual(submitEvent.type, .submit)
         }

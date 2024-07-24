@@ -69,7 +69,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
 
         let delegateExpectation = expectation(description: "expect delegate to be called.")
-        delegate.onDidSubmit = { data, component in
+        delegate.onDidSubmitClosure = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertNotNil(data.paymentMethod as? StoredPaymentDetails)
 
@@ -79,7 +79,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
 
             delegateExpectation.fulfill()
         }
-        delegate.onDidFail = { _, _ in
+        delegate.onDidFailClosure = { _, _ in
             XCTFail("delegate.didFail() should never be called.")
         }
         sut.delegate = delegate

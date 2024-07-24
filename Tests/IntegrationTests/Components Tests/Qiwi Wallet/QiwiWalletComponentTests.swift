@@ -150,7 +150,7 @@ class QiwiWalletComponentTests: XCTestCase {
         sut.delegate = delegate
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.onDidSubmit = { data, component in
+        delegate.onDidSubmitClosure = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is QiwiWalletDetails)
             let data = data.paymentMethod as! QiwiWalletDetails

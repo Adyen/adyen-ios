@@ -286,5 +286,4 @@ extension AbstractPersonalInformationComponent: SubmitCustomizable {
 
         didSelectSubmitButton()
     }
-
 }

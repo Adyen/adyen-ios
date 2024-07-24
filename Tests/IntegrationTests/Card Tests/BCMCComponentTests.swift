@@ -191,7 +191,7 @@ class BCMCComponentTests: XCTestCase {
         sut.viewController.loadViewIfNeeded()
         
         let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called")
-        delegate.onDidSubmit = { paymentData, component in
+        delegate.onDidSubmitClosure = { paymentData, component in
             
             let data = try! AdyenCoder.encode(paymentData.paymentMethod.encodable) as Data
             
@@ -208,7 +208,7 @@ class BCMCComponentTests: XCTestCase {
             sut.stopLoadingIfNeeded()
             didSubmitExpectation.fulfill()
         }
-        delegate.onDidFail = { error, _ in
+        delegate.onDidFailClosure = { error, _ in
             XCTFail("delegate.didFail() must not be called")
         }
         
@@ -480,10 +480,10 @@ class BCMCComponentTests: XCTestCase {
         sut.delegate = delegate
         sut.viewController.loadViewIfNeeded()
         
-        delegate.onDidSubmit = { data, component in
+        delegate.onDidSubmitClosure = { data, component in
             XCTFail("delegate.didSubmit() must not be called")
         }
-        delegate.onDidFail = { _, _ in
+        delegate.onDidFailClosure = { _, _ in
             XCTFail("delegate.didFail() must not be called")
         }
         

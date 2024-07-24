@@ -254,7 +254,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
-        delegateMock.onDidSubmit = { data, component in
+        delegateMock.onDidSubmitClosure = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is ACHDirectDebitDetails)
             let data = data.paymentMethod as! ACHDirectDebitDetails
@@ -303,5 +303,25 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(analyticsProviderMock.infos.count, 1)
         let infoType = analyticsProviderMock.infos.first?.type
         XCTAssertEqual(infoType, .rendered)
+    }
+
+    func testSubmit() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = AdyenContext(apiContext: Dummy.apiContext,
+                                   payment: Dummy.payment,
+                                   analyticsProvider: analyticsProviderMock)
+        let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
+        let sut = ACHDirectDebitComponent(paymentMethod: paymentMethod,
+                                          context: context,
+                                          configuration: .init(showsBillingAddress: false),
+                                          publicKeyProvider: PublicKeyProviderMock())
+        let delegateMock = PaymentComponentDelegateMock()
+        sut.delegate = delegateMock
+
+        // When
+        sut.submit()
+
+        XCTAssertTrue(delegateMock.onDidSubmit.ca)
     }
 }

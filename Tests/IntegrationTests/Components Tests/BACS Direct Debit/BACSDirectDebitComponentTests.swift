@@ -89,7 +89,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
     func testConfirmPaymentShouldCallPaymentComponentDelegateDidSubmit() throws {
         // Given
         let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called.")
-        paymentComponentDelegate.onDidSubmit = { [weak self] data, component in
+        paymentComponentDelegate.onDidSubmitClosure = { [weak self] data, component in
             XCTAssertTrue(component === self?.sut)
             let details = data.paymentMethod as! BACSDirectDebitDetails
 
