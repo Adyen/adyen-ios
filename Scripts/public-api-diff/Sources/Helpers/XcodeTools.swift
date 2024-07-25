@@ -8,6 +8,8 @@ import Foundation
 
 struct XcodeToolsError: LocalizedError, CustomDebugStringConvertible {
     var errorDescription: String
+    var underlyingError: String
+    
     var debugDescription: String { errorDescription }
 }
 
@@ -19,28 +21,53 @@ struct XcodeTools {
         static let simulatorSdkCommand = "xcrun --sdk iphonesimulator --show-sdk-path"
     }
     
+    // xcrun swift-ide-test -print-module -source-filename /Users/alexandergu/Library/Developer/Xcode/DerivedData/public-api-diff-egupzhmahwumtceocddrklkoobgs/Build/Products/Debug/tmp-public-api-diff/6AA36F6B-1599-430A-B7D0-2ADB220BCF7E/.build/Build/Products/Debug-iphonesimulator/Alamofire.swiftmodule/arm64-apple-ios-simulator.swiftmodule -sdk `xcrun --sdk iphonesimulator --show-sdk-path` -print-regular-comments -module-print-submodules -module-to-print CoreGraphics
+    
     private let shell: ShellHandling
     
     init(shell: ShellHandling = Shell()) {
         self.shell = shell
     }
     
-    func build(
-        projectDirectoryPath: String,
-        allTargetsLibraryName: String
-    ) throws {
+    func loadPackageDescription(
+        projectDirectoryPath: String
+    ) throws -> String {
         let command = [
             "cd \(projectDirectoryPath);",
-            "xcodebuild -scheme \"\(allTargetsLibraryName)\"",
+            "swift package describe --type json"
+        ]
+        
+        return shell.execute(command.joined(separator: " "))
+    }
+    
+    func build(
+        projectDirectoryPath: String,
+        scheme: String,
+        isPackage: Bool
+    ) throws {
+        var command = [
+            "cd \(projectDirectoryPath);",
+            "xcodebuild -scheme \"\(scheme)\"",
             "-derivedDataPath \(Constants.derivedDataPath)",
             iOSTarget,
             "-destination \"platform=iOS,name=Any iOS Device\"",
-            "-skipPackagePluginValidation"
         ]
         
+        if isPackage {
+            command += [
+                "-skipPackagePluginValidation"
+            ]
+        }
+        
+        // print("👾 \(command.joined(separator: " "))")
         let result = shell.execute(command.joined(separator: " "))
+        
         if result.range(of: "xcodebuild: error:") != nil || result.range(of: "BUILD FAILED") != nil {
-            throw XcodeToolsError(errorDescription: "💥 Building project failed")
+            print(result)
+            throw XcodeToolsError(
+                errorDescription: "💥 Building project failed",
+                underlyingError: result
+            )
         }
     }
     
@@ -61,7 +88,25 @@ struct XcodeTools {
             "-abort-on-module-fail"
         ]
         
+        // print("👾 \(command.joined(separator: " "))")
         shell.execute(command.joined(separator: " "))
+    }
+    
+    func diagnoseSdk(
+        oldAbiJsonFilePath: String,
+        newAbiJsonFilePath: String,
+        module: String
+    ) -> String {
+        // https://github.com/mapbox/mapbox-navigation-ios/pull/4308/files#diff-53b9c5f29bb5c353edd0bbae0271d3750162c28a170a9ffccfd27e400e771cfbR20
+        
+        let command = [
+            "xcrun --sdk iphoneos swift-api-digester -diagnose-sdk",
+            "-module \(module)",
+            "-input-paths \(oldAbiJsonFilePath)",
+            "-input-paths \(newAbiJsonFilePath)"
+        ]
+        
+        return shell.execute(command.joined(separator: " "))
     }
     
     private var iOSTarget: String {
