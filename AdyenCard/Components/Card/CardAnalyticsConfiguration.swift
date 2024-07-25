@@ -14,31 +14,31 @@ internal struct CardAnalyticsConfiguration: Encodable {
     
     private let billingAddressMode: String?
     private let billingAddressAllowedCountries: String?
-    private let billingAddressRequired: Bool
-    private let showsHolderNameField: Bool
-    private let showsStorePaymentMethodField: Bool
-    private let showsSecurityCodeField: Bool
-    private let koreanAuthenticationMode: String
+    private let billingAddressRequired: String
+    private let showsHolderNameField: String
+    private let showsStorePaymentMethodField: String
+    private let showsSecurityCodeField: String
+    private let showKCPType: String
     private let socialSecurityNumberMode: String
-    private let enableStoredDetails: Bool
-    private let hasInstallmentOptions: Bool
+    private let enableStoredDetails: String
+    private let hasInstallmentOptions: String
     private let allowedCardTypes: String?
     
     internal init(configuration: CardComponent.Configuration) {
         self.billingAddressMode = configuration.billingAddress.mode.analyticsDescription
         self.billingAddressAllowedCountries = configuration.billingAddress.countryCodes?.joined(separator: Constants.stringSeparator)
         if case .required = configuration.billingAddress.requirementPolicy {
-            self.billingAddressRequired = true
+            self.billingAddressRequired = String(true)
         } else {
-            self.billingAddressRequired = false
+            self.billingAddressRequired = String(false)
         }
-        self.showsHolderNameField = configuration.showsHolderNameField
-        self.showsStorePaymentMethodField = configuration.showsStorePaymentMethodField
-        self.showsSecurityCodeField = configuration.showsSecurityCodeField
-        self.koreanAuthenticationMode = configuration.koreanAuthenticationMode.analyticsDescription
+        self.showsHolderNameField = String(configuration.showsHolderNameField)
+        self.showsStorePaymentMethodField = String(configuration.showsStorePaymentMethodField)
+        self.showsSecurityCodeField = String(configuration.showsSecurityCodeField)
+        self.enableStoredDetails = String(configuration.showsStorePaymentMethodField)
+        self.hasInstallmentOptions = String(configuration.installmentConfiguration != nil)
+        self.showKCPType = configuration.koreanAuthenticationMode.analyticsDescription
         self.socialSecurityNumberMode = configuration.socialSecurityNumberMode.analyticsDescription
-        self.enableStoredDetails = configuration.showsStorePaymentMethodField
-        self.hasInstallmentOptions = configuration.installmentConfiguration != nil
         self.allowedCardTypes = configuration.allowedCardTypes?
             .map(\.rawValue)
             .joined(separator: Constants.stringSeparator)

@@ -33,8 +33,20 @@ final class CardComponentEventTests: XCTestCase {
         // Then
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
         XCTAssertEqual(analyticsProviderMock.infos.count, 1)
-        let infoType = analyticsProviderMock.infos.first?.type
-        XCTAssertEqual(infoType, .rendered)
+        
+        let info = analyticsProviderMock.infos.first
+        XCTAssertEqual(info?.type, .rendered)
+        
+        let configData = info?.configData
+        XCTAssertNotNil(configData)
+        XCTAssertEqual(configData?["socialSecurityNumberMode"], "auto")
+        XCTAssertEqual(configData?["hasInstallmentOptions"], "false")
+        XCTAssertEqual(configData?["showsStorePaymentMethodField"], "true")
+        XCTAssertEqual(configData?["billingAddressRequired"], "true")
+        XCTAssertEqual(configData?["showsSecurityCodeField"], "true")
+        XCTAssertEqual(configData?["showsHolderNameField"], "false")
+        XCTAssertEqual(configData?["showKCPType"], "auto")
+        XCTAssertEqual(configData?["enableStoredDetails"], "true")
 
     }
     

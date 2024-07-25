@@ -45,3 +45,14 @@ public struct AnyEncodable: Encodable {
     }
     
 }
+
+@_spi(AdyenInternal)
+public extension Encodable {
+    
+    /// Creates a [String: String] representation of the encodable type if possible.
+    func toStringDictionary() -> [String: String]? {
+        guard let data = try? JSONEncoder().encode(self) else { return nil }
+        let jsonDictionary = try? JSONSerialization.jsonObject(with: data) as? [String: String]
+        return jsonDictionary
+    }
+}
