@@ -27,6 +27,8 @@ public struct AnalyticsEventInfo: AnalyticsEvent {
     
     public var issuer: String?
     
+    public var configData: [String: String]?
+    
     public var validationErrorCode: String?
     
     public var validationErrorMessage: String?

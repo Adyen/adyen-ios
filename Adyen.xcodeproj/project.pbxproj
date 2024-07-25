@@ -328,6 +328,7 @@
 		A0290DF82C413056005BE269 /* StoredPaymentMethodDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0290DF72C413056005BE269 /* StoredPaymentMethodDelegateMock.swift */; };
 		A0290DFA2C480CE9005BE269 /* ExampleContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0290DF92C480CE9005BE269 /* ExampleContainer.swift */; };
 		A0290DFB2C480CE9005BE269 /* ExampleContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0290DF92C480CE9005BE269 /* ExampleContainer.swift */; };
+		A0290DFD2C4FD6D5005BE269 /* CardAnalyticsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0290DFC2C4FD6D5005BE269 /* CardAnalyticsConfiguration.swift */; };
 		A02AF3DF274FB30200E1636C /* ApplePayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3DE274FB30200E1636C /* ApplePayStyle.swift */; };
 		A02AF3E8275A0D0900E1636C /* DocumentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3E7275A0D0900E1636C /* DocumentComponent.swift */; };
 		A02AF3EA275A3A5100E1636C /* DocumentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3E9275A3A5100E1636C /* DocumentAction.swift */; };
@@ -1705,6 +1706,7 @@
 		A026C85027C4FE4700E6C34A /* BasicComponentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicComponentConfiguration.swift; sourceTree = "<group>"; };
 		A0290DF72C413056005BE269 /* StoredPaymentMethodDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPaymentMethodDelegateMock.swift; sourceTree = "<group>"; };
 		A0290DF92C480CE9005BE269 /* ExampleContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleContainer.swift; sourceTree = "<group>"; };
+		A0290DFC2C4FD6D5005BE269 /* CardAnalyticsConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardAnalyticsConfiguration.swift; sourceTree = "<group>"; };
 		A02AF3DE274FB30200E1636C /* ApplePayStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayStyle.swift; sourceTree = "<group>"; };
 		A02AF3E7275A0D0900E1636C /* DocumentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentComponent.swift; sourceTree = "<group>"; };
 		A02AF3E9275A3A5100E1636C /* DocumentAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAction.swift; sourceTree = "<group>"; };
@@ -4840,6 +4842,7 @@
 				E76EEDA6267CEA3F00BEB3C6 /* CardComponentDelegate.swift */,
 				E745175425FB6A59000BDCCF /* CardViewController.swift */,
 				E76CAC4D26BC0CC200117953 /* CardViewControllerItemsProvider.swift */,
+				A0290DFC2C4FD6D5005BE269 /* CardAnalyticsConfiguration.swift */,
 			);
 			path = Card;
 			sourceTree = "<group>";
@@ -7228,6 +7231,7 @@
 				F9FE25682625B3D7001874BB /* CardExpiryDateFormatter.swift in Sources */,
 				E7451A112600EDE0000BDCCF /* StoredCardConfiguration.swift in Sources */,
 				F9FE25882625B40F001874BB /* CardNumberFormatter.swift in Sources */,
+				A0290DFD2C4FD6D5005BE269 /* CardAnalyticsConfiguration.swift in Sources */,
 				F919DF9724E6E2810027976E /* StoredCardComponent.swift in Sources */,
 				A0B180312A2DE445003C608E /* MealVoucherDetails.swift in Sources */,
 				A0FA145726D65B6200627127 /* FormCardInstallmentsItemView.swift in Sources */,
