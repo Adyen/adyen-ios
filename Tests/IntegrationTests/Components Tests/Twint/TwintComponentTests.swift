@@ -40,7 +40,7 @@ class TwintComponentTests: XCTestCase {
 
     func testCustomPaymentData() throws {
         let delegateExpectation = expectation(description: "expect delegate to be called.")
-        delegate.onDidSubmitClosure = { data, component in
+        delegate.didSubmitClosure = { data, component in
             XCTAssertTrue(component === self.sut)
             let details = data.paymentMethod as! TwintDetails
             XCTAssertEqual(details.type, .twint)

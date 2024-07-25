@@ -55,7 +55,7 @@ class AffirmComponentUITests: XCTestCase {
 
         // Then
         let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.onDidSubmitClosure = { data, component in
+        delegate.didSubmitClosure = { data, component in
             XCTAssertTrue(component === sut)
             let details = data.paymentMethod as! AffirmDetails
             XCTAssertEqual(details.shopperName?.firstName, "Katrina")

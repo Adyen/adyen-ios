@@ -107,7 +107,7 @@ class BLIKComponentTests: XCTestCase {
         let paymentDelegateMock = PaymentComponentDelegateMock()
         sut.delegate = paymentDelegateMock
 
-        paymentDelegateMock.onDidSubmitClosure = { _, component in
+        paymentDelegateMock.didSubmitClosure = { _, component in
             expectation.fulfill()
         }
 
@@ -120,7 +120,7 @@ class BLIKComponentTests: XCTestCase {
 
         // Then
         wait(for: [expectation], timeout: 100)
-        XCTAssertEqual(paymentDelegateMock.onDidSubmitCallsCount, 1)
+        XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
     }
 
     func testSubmit_withDefaultSubmitButtonShown_shouldNotCallPaymentDelegateOnDidSubmit() throws {
@@ -139,6 +139,6 @@ class BLIKComponentTests: XCTestCase {
         sut.submit()
 
         // Then
-        XCTAssertEqual(paymentDelegateMock.onDidSubmitCallsCount, 0)
+        XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 0)
     }
 }

@@ -7,42 +7,34 @@
 @_spi(AdyenInternal) @testable import Adyen
 
 final class PaymentComponentDelegateMock: PaymentComponentDelegate {
-    
-    init(
-        onDidSubmit: ((PaymentComponentData, PaymentComponent) -> Void)? = nil,
-        onDidFail: ((Error, PaymentComponent) -> Void)? = nil
-    ) {
-        self.onDidSubmitClosure = onDidSubmit
-        self.onDidFailClosure = onDidFail
-    }
-    
-    // MARK: - onDidSubmit
 
-    var onDidSubmitCallsCount = 0
-    var onDidSubmitCalled: Bool {
-        onDidSubmitCallsCount > 0
+    // MARK: - didSubmit
+
+    var didSubmitCallsCount = 0
+    var didSubmitCalled: Bool {
+        didSubmitCallsCount > 0
     }
 
-    var onDidSubmitReceivedArguments: (data: PaymentComponentData, component: PaymentComponent)?
-    var onDidSubmitClosure: ((PaymentComponentData, PaymentComponent) -> Void)?
+    var didSubmitReceivedArguments: (data: PaymentComponentData, component: PaymentComponent)?
+    var didSubmitClosure: ((PaymentComponentData, PaymentComponent) -> Void)?
     func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        onDidSubmitCallsCount += 1
-        onDidSubmitReceivedArguments = (data: data, component: component)
-        onDidSubmitClosure?(data, component)
+        didSubmitCallsCount += 1
+        didSubmitReceivedArguments = (data: data, component: component)
+        didSubmitClosure?(data, component)
     }
 
-    // MARK: - onDidFail
+    // MARK: - didFail
 
-    var onDidFailCallsCount = 0
-    var onDidFailCalled: Bool {
-        onDidFailCallsCount > 0
+    var didFailCallsCount = 0
+    var didFailCalled: Bool {
+        didFailCallsCount > 0
     }
 
-    var onDidFailReceivedArguments: (error: Error, component: PaymentComponent)?
-    var onDidFailClosure: ((Error, PaymentComponent) -> Void)?
+    var didFailReceivedArguments: (error: Error, component: PaymentComponent)?
+    var didFailClosure: ((Error, PaymentComponent) -> Void)?
     func didFail(with error: Error, from component: PaymentComponent) {
-        onDidFailCallsCount += 1
-        onDidFailReceivedArguments = (error: error, component: component)
-        onDidFailClosure?(error, component)
+        didFailCallsCount += 1
+        didFailReceivedArguments = (error: error, component: component)
+        didFailClosure?(error, component)
     }
 }

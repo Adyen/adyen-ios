@@ -254,7 +254,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
-        delegateMock.onDidSubmitClosure = { data, component in
+        delegateMock.didSubmitClosure = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is ACHDirectDebitDetails)
             let data = data.paymentMethod as! ACHDirectDebitDetails
@@ -321,7 +321,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
         let paymentDelegateMock = PaymentComponentDelegateMock()
         sut.delegate = paymentDelegateMock
-        paymentDelegateMock.onDidSubmitClosure = { _, component in
+        paymentDelegateMock.didSubmitClosure = { _, component in
             XCTAssertTrue(component === sut)
             expectation.fulfill()
         }
@@ -340,7 +340,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         // Then
         wait(for: [expectation], timeout: 100)
 
-        XCTAssertEqual(paymentDelegateMock.onDidSubmitCallsCount, 1)
+        XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
     }
 
     func testSubmit_withDefaultSubmitShown_shouldNotCallPaymentDelegateOnDidSubmit() throws {
@@ -363,6 +363,6 @@ class ACHDirectDebitComponentTests: XCTestCase {
         sut.submit()
 
         // Then
-        XCTAssertEqual(delegateMock.onDidSubmitCallsCount, 0)
+        XCTAssertEqual(delegateMock.didSubmitCallsCount, 0)
     }
 }

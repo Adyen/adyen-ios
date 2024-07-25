@@ -217,7 +217,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
-        delegateMock.onDidSubmitClosure = { data, component in
+        delegateMock.didSubmitClosure = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is SEPADirectDebitDetails)
             let data = data.paymentMethod as! SEPADirectDebitDetails

@@ -74,7 +74,7 @@ final class MBWayComponentUITests: XCTestCase {
 
         let delegateExpectation = XCTestExpectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
 
-        delegate.onDidSubmitClosure = { data, component in
+        delegate.didSubmitClosure = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is MBWayDetails)
             let data = data.paymentMethod as! MBWayDetails

@@ -80,7 +80,7 @@ final class DokuComponentUITests: XCTestCase {
         self.populate(textItemView: emailView, with: "mohamed.smith@domain.com")
 
         let delegateExpectation = XCTestExpectation(description: "Dummy Expectation")
-        delegate.onDidSubmitClosure = { data, component in
+        delegate.didSubmitClosure = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is DokuDetails)
             let data = data.paymentMethod as! DokuDetails
