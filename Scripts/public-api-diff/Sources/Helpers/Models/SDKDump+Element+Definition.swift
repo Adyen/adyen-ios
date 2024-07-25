@@ -22,7 +22,7 @@ extension SDKDump.Element {
             components += [isInternal ? "internal" : "public"]
         }
         
-        if let declAttributes, declAttributes.contains("Final"), declKind == .class {
+        if isFinal, declKind == .class {
             components += ["final"]
         }
         
