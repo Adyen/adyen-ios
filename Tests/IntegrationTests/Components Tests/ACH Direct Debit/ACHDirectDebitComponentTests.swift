@@ -305,7 +305,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(infoType, .rendered)
     }
 
-    func testSubmit_withDefaultSubmitHidden_shouldCallPaymentDelegateOnDidSubmit() throws {
+    func testSubmitWithDefaultSubmitHiddenShouldCallPaymentDelegateOnDidSubmit() throws {
         // Given
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let configuration = ACHDirectDebitComponent.Configuration(showsSubmitButton: false,
@@ -343,7 +343,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
     }
 
-    func testSubmit_withDefaultSubmitShown_shouldNotCallPaymentDelegateOnDidSubmit() throws {
+    func testSubmitWithDefaultSubmitShownShouldNotCallPaymentDelegateOnDidSubmit() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(apiContext: Dummy.apiContext,
