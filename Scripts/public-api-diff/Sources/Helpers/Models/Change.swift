@@ -10,11 +10,13 @@ struct Change: Equatable {
     enum ChangeType: Equatable {
         case addition
         case removal
+        case change
         
         var icon: String {
             switch self {
             case .addition: "❇️ "
             case .removal: "😶‍🌫️"
+            case .change: "🔀"
             }
         }
     }
@@ -22,6 +24,7 @@ struct Change: Equatable {
     var changeType: ChangeType
     var parentName: String
     var changeDescription: String
+    var listOfChanges: [String]? = nil
 }
 
 extension [String: [Change]] {

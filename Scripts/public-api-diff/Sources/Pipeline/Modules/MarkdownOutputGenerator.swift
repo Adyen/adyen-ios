@@ -85,6 +85,9 @@ private extension MarkdownOutputGenerator {
                 
                 changes.sorted { lhs, rhs in lhs.changeDescription < rhs.changeDescription }.forEach {
                     lines.append("- \($0.changeType.icon) \($0.changeDescription)")
+                    $0.listOfChanges?.forEach {
+                        lines.append("  - \($0)")
+                    }
                 }
             }
         }
