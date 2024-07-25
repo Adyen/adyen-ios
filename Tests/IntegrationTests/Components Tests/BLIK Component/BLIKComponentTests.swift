@@ -10,13 +10,13 @@ import XCTest
 
 class BLIKComponentTests: XCTestCase {
 
-    lazy var method = BLIKPaymentMethod(type: .blik, name: "test_name")
+    lazy var paymentMethod = BLIKPaymentMethod(type: .blik, name: "test_name")
     let payment = Payment(amount: Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
     var context: AdyenContext { Dummy.context(with: payment) }
     var sut: BLIKComponent!
 
     override func setUp() {
-        sut = BLIKComponent(paymentMethod: method, context: context)
+        sut = BLIKComponent(paymentMethod: paymentMethod, context: context)
     }
 
     override func tearDown() {
@@ -38,7 +38,7 @@ class BLIKComponentTests: XCTestCase {
     func testLocalizationWithZeroPayment() throws {
         let payment = Payment(amount: Amount(value: 0, currencyCode: "PLN"), countryCode: "PL")
         let context: AdyenContext = Dummy.context(with: payment)
-        sut = BLIKComponent(paymentMethod: method, context: context)
+        sut = BLIKComponent(paymentMethod: paymentMethod, context: context)
         
         XCTAssertEqual(sut.hintLabelItem.text, localizedString(.blikHelp, sut.configuration.localizationParameters))
 
@@ -66,7 +66,7 @@ class BLIKComponentTests: XCTestCase {
         setupRootViewController(sut.viewController)
 
         wait(for: .milliseconds(300))
-        XCTAssertEqual(sut.viewController.title, method.name.uppercased())
+        XCTAssertEqual(sut.viewController.title, paymentMethod.name.uppercased())
     }
 
     func testRequiresModalPresentation() {
@@ -79,7 +79,7 @@ class BLIKComponentTests: XCTestCase {
         // When
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
-        sut = BLIKComponent(paymentMethod: method, context: context)
+        sut = BLIKComponent(paymentMethod: paymentMethod, context: context)
         sut.viewDidLoad(viewController: sut.viewController)
 
         // Then
@@ -87,5 +87,58 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(analyticsProviderMock.infos.count, 1)
         let infoType = analyticsProviderMock.infos.first?.type
         XCTAssertEqual(infoType, .rendered)
+    }
+
+    // MARK: - submit
+
+    func testSubmit_withDefaultSubmitButtonHidden_shouldCallPaymentDelegateOnDidSubmit() throws {
+        // Given
+        let configuration = BLIKComponent.Configuration(showsSubmitButton: false)
+        let sut = BLIKComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        setupRootViewController(sut.viewController)
+
+        let expectation = XCTestExpectation(description: "onDidSubmit expection")
+
+        let paymentDelegateMock = PaymentComponentDelegateMock()
+        sut.delegate = paymentDelegateMock
+
+        paymentDelegateMock.onDidSubmitClosure = { _, component in
+            expectation.fulfill()
+        }
+
+        let codeItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem"))
+
+        self.populate(textItemView: codeItemView, with: "123456")
+
+        // When
+        sut.submit()
+
+        // Then
+        wait(for: [expectation], timeout: 100)
+        XCTAssertEqual(paymentDelegateMock.onDidSubmitCallsCount, 1)
+    }
+
+    func testSubmit_withDefaultSubmitButtonShown_shouldNotCallPaymentDelegateOnDidSubmit() throws {
+        // Given
+        let configuration = BLIKComponent.Configuration(showsSubmitButton: true)
+        let sut = BLIKComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        let paymentDelegateMock = PaymentComponentDelegateMock()
+        sut.delegate = paymentDelegateMock
+
+        // When
+        sut.submit()
+
+        // Then
+        XCTAssertEqual(paymentDelegateMock.onDidSubmitCallsCount, 0)
     }
 }
