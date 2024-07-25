@@ -6,148 +6,129 @@
 
 import Foundation
 
+enum PackageFileHelperError: LocalizedError {
+    case packageDescriptionError(_ description: String)
+    case couldNotGeneratePackageDescription
+    case couldNotConsolidateTargetsInPackageFile
+    
+    var errorDescription: String? {
+        switch self {
+        case .couldNotGeneratePackageDescription:
+            "Could not generate package description"
+        case let .packageDescriptionError(description):
+            description
+        case .couldNotConsolidateTargetsInPackageFile:
+            "Could not consolidate all targets into a single product"
+        }
+    }
+}
+
 struct PackageFileHelper {
     
-    private let packagePath: String
     private let fileHandler: FileHandling
+    private let xcodeTools: XcodeTools
     
     init(
-        packagePath: String,
-        fileHandler: FileHandling
+        fileHandler: FileHandling,
+        xcodeTools: XcodeTools
     ) {
-        self.packagePath = packagePath
         self.fileHandler = fileHandler
+        self.xcodeTools = xcodeTools
     }
     
     static func packagePath(for projectDirectoryPath: String) -> String {
         projectDirectoryPath.appending("/Package.swift")
     }
     
-    func availableTargets() throws -> Set<String> {
+    func availableTargets(
+        at projectDirectoryPath: String,
+        moduleType: SwiftPackageDescription.Target.ModuleType? = nil,
+        targetType: SwiftPackageDescription.Target.TargetType? = nil
+    ) throws -> Set<String> {
         
-        // TODO: Better use "swift package describe --type json" instead of trying to parse the Package.swift file itself
-        let packageContent = try fileHandler.loadString(from: packagePath)
-        return availableTargets(from: packageContent)
+        var targets = try packageDescription(at: projectDirectoryPath).targets
+        
+        if let moduleType {
+            targets = targets.filter({ $0.moduleType == moduleType })
+        }
+        
+        if let targetType {
+            targets = targets.filter({ $0.type == targetType })
+        }
+        
+        return Set(targets.map(\.name))
     }
     
-    func availableProducts() throws -> Set<String> {
-        
-        // TODO: Better use "swift package describe --type json" instead of trying to parse the Package.swift file itself
-        let packageContent = try fileHandler.loadString(from: packagePath)
-        return availableProducts(from: packageContent)
+    func availableProducts(at projectDirectoryPath: String) throws -> Set<String> {
+        let packageDescription = try packageDescription(at: projectDirectoryPath)
+        return Set(packageDescription.products.map(\.name))
     }
     
     /// Inserts a new library into the targets section containing all targets from the target section
     func preparePackageWithConsolidatedLibrary(
-        named consolidatedLibraryName: String
+        named consolidatedLibraryName: String,
+        at projectDirectoryPath: String
     ) throws {
         
+        let packagePath = Self.packagePath(for: projectDirectoryPath)
         let packageContent = try fileHandler.loadString(from: packagePath)
-        let targets = availableTargets(from: packageContent)
+        let targets = try availableTargets(
+            at: projectDirectoryPath,
+            moduleType: .swiftTarget,
+            targetType: .library
+        )
         
         let consolidatedEntry = consolidatedLibraryEntry(consolidatedLibraryName, from: targets.sorted())
-        let updatedPackageContent = updatedContent(packageContent, with: consolidatedEntry)
+        let updatedPackageContent = try updatedContent(packageContent, with: consolidatedEntry)
         
         // Write the updated content back to the file
         try fileHandler.write(updatedPackageContent, to: packagePath)
     }
 }
 
-extension PackageFileHelper {
-    
-    static func availableTargets(
-        oldProjectDirectoryPath: String,
-        newProjectDirectoryPath: String,
-        fileHandler: FileHandling
-    ) throws -> [String] {
-        
-        let oldPackagePath = packagePath(for: oldProjectDirectoryPath)
-        let newPackagePath = packagePath(for: newProjectDirectoryPath)
-        
-        let oldTargets = try Self(
-            packagePath: oldPackagePath,
-            fileHandler: fileHandler
-        ).availableTargets()
-        
-        let newTargets = try Self(
-            packagePath: newPackagePath,
-            fileHandler: fileHandler
-        ).availableTargets()
-        
-        return oldTargets.union(newTargets).sorted()
-    }
-}
-
 // MARK: - Privates
 
-// MARK: Extract Targets/Products
+// MARK: Generate Package Description
 
 private extension PackageFileHelper {
     
-    enum TargetType {
-        case target
-        case binaryTarget
+    func packageDescription(at projectDirectoryPath: String) throws -> SwiftPackageDescription {
         
-        var startTag: String {
-            switch self {
-            case .target:
-                ".target("
-            case .binaryTarget:
-                ".binaryTarget("
-            }
-        }
-    }
-    
-    func availableTargets(from packageContent: String) -> Set<String> {
-        let targets = availableTargets(from: packageContent, ofType: .target)
-        let binaryTargets = availableTargets(from: packageContent, ofType: .binaryTarget)
+        let result = try xcodeTools.loadPackageDescription(projectDirectoryPath: projectDirectoryPath)
         
-        // Removing binaryTargets from list of targets as we can't generate an sdk dump for them
-        return targets.subtracting(binaryTargets)
-    }
-    
-    func availableTargets(from packageContent: String, ofType targetType: TargetType) -> Set<String> {
-        // TODO: Better use "swift package describe --type json" instead of trying to parse the Package.swift file itself
-        let scanner = Scanner(string: packageContent)
-        _ = scanner.scanUpToString("targets: [")
-
-        var availableTargets = Set<String>()
-
-        while scanner.scanUpToString(targetType.startTag) != nil {
-            let nameStartTag = "name: \""
-            let nameEndTag = "\""
+        let newLine = "\n"
+        let errorTag = "error: "
+        let warningTag = "warning: "
+        
+        var packageDescriptionLines = result.components(separatedBy: newLine)
+        var warnings = [String]()
+        
+        while let firstLine = packageDescriptionLines.first {
             
-            _ = scanner.scanUpToString(nameStartTag)
-            _ = scanner.scanString(nameStartTag)
+            // If there are warnings/errors when generating the description
+            // there are non-json lines added on the top of the result
+            // That we have to get rid of first to generate the description object
             
-            if let targetName = scanner.scanUpToString(nameEndTag) {
-                availableTargets.insert(targetName)
+            if firstLine.starts(with: errorTag) {
+                throw PackageFileHelperError.packageDescriptionError(result)
             }
+            
+            if firstLine.starts(with: warningTag) {
+                warnings += [firstLine]
+            }
+            
+            if firstLine.starts(with: "{"),
+                let packageDescriptionData = packageDescriptionLines.joined(separator: newLine).data(using: .utf8)
+            {
+                var packageDescription = try JSONDecoder().decode(SwiftPackageDescription.self, from: packageDescriptionData)
+                packageDescription.warnings = warnings
+                return packageDescription
+            }
+            
+            packageDescriptionLines.removeFirst()
         }
         
-        return availableTargets
-    }
-    
-    func availableProducts(from packageContent: String) -> Set<String> {
-        // TODO: Better use "swift package describe --type json" instead of trying to parse the Package.swift file itself
-        let scanner = Scanner(string: packageContent)
-        _ = scanner.scanUpToString("products: [")
-
-        var availableProducts = Set<String>()
-
-        while scanner.scanUpToString(".library(") != nil {
-            let nameStartTag = "name: \""
-            let nameEndTag = "\""
-            
-            _ = scanner.scanUpToString(nameStartTag)
-            _ = scanner.scanString(nameStartTag)
-            
-            if let targetName = scanner.scanUpToString(nameEndTag) {
-                availableProducts.insert(targetName)
-            }
-        }
-        
-        return availableProducts
+        throw PackageFileHelperError.couldNotGeneratePackageDescription
     }
 }
 
@@ -161,7 +142,7 @@ private extension PackageFileHelper {
         from availableTargets: [String]
     ) -> String {
         """
-
+        
                 .library(
                     name: "\(name)",
                     targets: [\(availableTargets.map { "\"\($0)\"" }.joined(separator: ", "))]
@@ -173,13 +154,13 @@ private extension PackageFileHelper {
     func updatedContent(
         _ packageContent: String,
         with consolidatedEntry: String
-    ) -> String {
+    ) throws -> String {
         // Update the Package.swift content
         var updatedContent = packageContent
         if let productsRange = packageContent.range(of: "products: [", options: .caseInsensitive) {
             updatedContent.insert(contentsOf: consolidatedEntry, at: productsRange.upperBound)
         } else {
-            print("Products section not found")
+            throw PackageFileHelperError.couldNotConsolidateTargetsInPackageFile
         }
         return updatedContent
     }

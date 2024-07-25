@@ -86,6 +86,17 @@
 		00FAE54E2B21CE1B0059A6F5 /* TwintDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FAE54D2B21CE1B0059A6F5 /* TwintDetails.swift */; };
 		00FFD8F02A865BFB008D4A5A /* ApplePaySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FFD8EF2A865BFB008D4A5A /* ApplePaySettingsView.swift */; };
 		00FFD8F12A865BFB008D4A5A /* ApplePaySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FFD8EF2A865BFB008D4A5A /* ApplePaySettingsView.swift */; };
+		2159173A2A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215917392A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift */; };
+		2172F8152C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2172F8142C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift */; };
+		2172F8172C20B93400BE0369 /* DAErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2172F8162C20B93400BE0369 /* DAErrorViewController.swift */; };
+		21B387B62C401C890029101E /* ThreeDS2DAScreenPresenterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2159173B2A0D2B6E0004081E /* ThreeDS2DAScreenPresenterMock.swift */; };
+		21B387B92C408A9C0029101E /* UILabelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B387B82C408A9C0029101E /* UILabelHelper.swift */; };
+		21B387BB2C408C920029101E /* UIStackViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B387BA2C408C920029101E /* UIStackViewHelper.swift */; };
+		21B387BD2C408CA90029101E /* UIImageViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B387BC2C408CA90029101E /* UIImageViewHelper.swift */; };
+		21B3A71329CA70FF00F48386 /* DelegatedAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B3A71229CA70FF00F48386 /* DelegatedAuthenticationView.swift */; };
+		21B3A71529CA720C00F48386 /* DARegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B3A71429CA720C00F48386 /* DARegistrationViewController.swift */; };
+		21B3A71729CA721F00F48386 /* DAApprovalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B3A71629CA721F00F48386 /* DAApprovalViewController.swift */; };
+		21B3A71929CA780200F48386 /* DelegatedAuthenticationComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B3A71829CA780200F48386 /* DelegatedAuthenticationComponentStyle.swift */; };
 		5A1315C926296B100092366D /* ProgressViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1315C826296B100092366D /* ProgressViewStyle.swift */; };
 		5A15D589264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */; };
 		5A15D5A1264BE1E500A8E3C7 /* PrefilledShopperInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */; };
@@ -1544,6 +1555,17 @@
 		00FAE54B2B21CBAD0059A6F5 /* TwintPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwintPaymentMethod.swift; sourceTree = "<group>"; };
 		00FAE54D2B21CE1B0059A6F5 /* TwintDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwintDetails.swift; sourceTree = "<group>"; };
 		00FFD8EF2A865BFB008D4A5A /* ApplePaySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePaySettingsView.swift; sourceTree = "<group>"; };
+		215917392A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2PlusDAScreenPresenter.swift; sourceTree = "<group>"; };
+		2159173B2A0D2B6E0004081E /* ThreeDS2DAScreenPresenterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2DAScreenPresenterMock.swift; sourceTree = "<group>"; };
+		2172F8142C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedAuthenticationErrorView.swift; sourceTree = "<group>"; };
+		2172F8162C20B93400BE0369 /* DAErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DAErrorViewController.swift; sourceTree = "<group>"; };
+		21B387B82C408A9C0029101E /* UILabelHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelHelper.swift; sourceTree = "<group>"; };
+		21B387BA2C408C920029101E /* UIStackViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackViewHelper.swift; sourceTree = "<group>"; };
+		21B387BC2C408CA90029101E /* UIImageViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewHelper.swift; sourceTree = "<group>"; };
+		21B3A71229CA70FF00F48386 /* DelegatedAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedAuthenticationView.swift; sourceTree = "<group>"; };
+		21B3A71429CA720C00F48386 /* DARegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DARegistrationViewController.swift; sourceTree = "<group>"; };
+		21B3A71629CA721F00F48386 /* DAApprovalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DAApprovalViewController.swift; sourceTree = "<group>"; };
+		21B3A71829CA780200F48386 /* DelegatedAuthenticationComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedAuthenticationComponentStyle.swift; sourceTree = "<group>"; };
 		5A1315C826296B100092366D /* ProgressViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewStyle.swift; sourceTree = "<group>"; };
 		5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoComponentExtensions.swift; sourceTree = "<group>"; };
 		5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefilledShopperInformation.swift; sourceTree = "<group>"; };
@@ -2834,6 +2856,36 @@
 			path = Atome;
 			sourceTree = "<group>";
 		};
+		210CC97D2A5FC11900F8F672 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		21B387B72C408A860029101E /* ViewHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				21B387B82C408A9C0029101E /* UILabelHelper.swift */,
+				21B387BA2C408C920029101E /* UIStackViewHelper.swift */,
+				21B387BC2C408CA90029101E /* UIImageViewHelper.swift */,
+			);
+			path = ViewHelpers;
+			sourceTree = "<group>";
+		};
+		21B3A70F29CA709D00F48386 /* DelegatedAuthentication */ = {
+			isa = PBXGroup;
+			children = (
+				21B387B72C408A860029101E /* ViewHelpers */,
+				21B3A71429CA720C00F48386 /* DARegistrationViewController.swift */,
+				21B3A71629CA721F00F48386 /* DAApprovalViewController.swift */,
+				21B3A71229CA70FF00F48386 /* DelegatedAuthenticationView.swift */,
+				2172F8142C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift */,
+				2172F8162C20B93400BE0369 /* DAErrorViewController.swift */,
+			);
+			path = DelegatedAuthentication;
+			sourceTree = "<group>";
+		};
 		5A22C26C262D67C000F12D97 /* QRCode */ = {
 			isa = PBXGroup;
 			children = (
@@ -3811,6 +3863,7 @@
 				81B28F092BCFCE6900CDFA70 /* Tests */,
 				E2C0E03422097917008616F6 /* Products */,
 				E2D12C01221ECBB000EF682F /* Frameworks */,
+				210CC97D2A5FC11900F8F672 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -4765,6 +4818,7 @@
 		F9175FF0259499C900D653BE /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				21B3A70F29CA709D00F48386 /* DelegatedAuthentication */,
 				A02AF3EB275A3C6F00E1636C /* Document */,
 				5A64570D2625CB02001824F0 /* QR Code */,
 				F97C851425C1928500D7F85C /* Voucher */,
@@ -4807,6 +4861,7 @@
 				5A64573E2626D2E2001824F0 /* QRCodeComponentStyle.swift */,
 				A03EE7302761297800470561 /* DocumentComponentStyle.swift */,
 				5A2D1950267368580082BCE9 /* ActionComponentStyle.swift */,
+				21B3A71829CA780200F48386 /* DelegatedAuthenticationComponentStyle.swift */,
 			);
 			path = "UI Style";
 			sourceTree = "<group>";
@@ -5012,6 +5067,7 @@
 			isa = PBXGroup;
 			children = (
 				F94F0DEA28AA3FB400C0923D /* ThreeDS2PlusDACoreActionHandler.swift */,
+				215917392A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift */,
 			);
 			path = "3DS2+Delegated Authentication";
 			sourceTree = "<group>";
@@ -5056,6 +5112,7 @@
 				F94F0DFE28AD2BCE00C0923D /* AuthenticationServiceMock.swift */,
 				F957AA692552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift */,
 				F9B9F624295485A2008C2E49 /* ThreeDSResultExtension.swift */,
+				2159173B2A0D2B6E0004081E /* ThreeDS2DAScreenPresenterMock.swift */,
 			);
 			path = "3DS2 Component";
 			sourceTree = "<group>";
@@ -7163,6 +7220,7 @@
 				81825CB82AC59C3300F91912 /* UIView+Search.swift in Sources */,
 				C981254E2851E9AF006D1374 /* PaymentComponentSubject.swift in Sources */,
 				81A48DC62A5800EA00242341 /* AddressLookupViewControllerTests.swift in Sources */,
+				21B387B62C401C890029101E /* ThreeDS2DAScreenPresenterMock.swift in Sources */,
 				F9D5750E237475DB009C18B5 /* CardEncryptorCardTests.swift in Sources */,
 				F9C5F0DD25CAB8FC005A6E54 /* VoucherComponentTests.swift in Sources */,
 				E7E8343C24F3C81700EC3844 /* PublicKeyProviderMock.swift in Sources */,
@@ -7431,10 +7489,14 @@
 				F97C84CD25C1761900D7F85C /* VoucherAction.swift in Sources */,
 				5A4633AA265FBAEB005FE0D8 /* VoucherView.swift in Sources */,
 				5A64573F2626D2E2001824F0 /* QRCodeComponentStyle.swift in Sources */,
+				2172F8172C20B93400BE0369 /* DAErrorViewController.swift in Sources */,
+				21B3A71529CA720C00F48386 /* DARegistrationViewController.swift in Sources */,
+				21B3A71729CA721F00F48386 /* DAApprovalViewController.swift in Sources */,
 				E73C54E425EBD2DC00B57758 /* BrowserComponent.swift in Sources */,
 				F9B8AF5927DA48C900DC0894 /* ActionHandlingComponent.swift in Sources */,
 				A03EE735276133A500470561 /* ShareableComponent.swift in Sources */,
 				0058691728B6450900B65A19 /* QRCodeViewController.swift in Sources */,
+				2172F8152C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift in Sources */,
 				F9175FB72594996000D653BE /* ThreeDS2ChallengeAction.swift in Sources */,
 				F917615C25A30B6400D653BE /* AnyChallengeResult.swift in Sources */,
 				F9976BB326D903F400D2D7CE /* MultibancoVoucherAction.swift in Sources */,
@@ -7451,8 +7513,10 @@
 				E745256925C1C9E1006A941F /* AdyenActionComponent.swift in Sources */,
 				F917616F25A30B6A00D653BE /* ThreeDSActionHandlerResult.swift in Sources */,
 				F9175FB92594996000D653BE /* AwaitAction.swift in Sources */,
+				21B3A71929CA780200F48386 /* DelegatedAuthenticationComponentStyle.swift in Sources */,
 				F97C850125C17CCD00D7F85C /* VoucherShareableViewProvider.swift in Sources */,
 				F9175FB42594996000D653BE /* ThreeDS2FingerprintAction.swift in Sources */,
+				21B387BD2C408CA90029101E /* UIImageViewHelper.swift in Sources */,
 				5A22C2AD262EF99C00F12D97 /* ExpirationTimer.swift in Sources */,
 				8109FF4C2AD5AD0C000748C8 /* OpenExternalAppDetector+DependencyKey.swift in Sources */,
 				F91760822594B1F400D653BE /* AwaitComponentStyle.swift in Sources */,
@@ -7465,8 +7529,10 @@
 				F917615D25A30B6400D653BE /* ADYServiceAdapter.swift in Sources */,
 				F917617125A30B6A00D653BE /* ThreeDS2CompactActionHandler.swift in Sources */,
 				A03EE7312761297800470561 /* DocumentComponentStyle.swift in Sources */,
+				21B387B92C408A9C0029101E /* UILabelHelper.swift in Sources */,
 				F9B997CA25C949AC00891084 /* VoucherCardLayer.swift in Sources */,
 				A03EE73327612BF300470561 /* DocumentActionView.swift in Sources */,
+				21B387BB2C408C920029101E /* UIStackViewHelper.swift in Sources */,
 				0042EBB42B750C16001B1F6C /* TwintSDKData.swift in Sources */,
 				F97C84D925C178E900D7F85C /* VoucherComponent.swift in Sources */,
 				F97BC22C2667768B00F1D242 /* AppleWalletPassProvider.swift in Sources */,
@@ -7479,9 +7545,11 @@
 				F9237D3B28CB467D004F9929 /* ThreeDS2CompactActionHandler+Initializers.swift in Sources */,
 				A0113D9B2763887800AD395C /* ActionNavigationBar.swift in Sources */,
 				F91760632594A0E300D653BE /* ActionsBundleExtension.swift in Sources */,
+				21B3A71329CA70FF00F48386 /* DelegatedAuthenticationView.swift in Sources */,
 				F917614A25A30B5E00D653BE /* ThreeDS2FingerprintSubmitter.swift in Sources */,
 				5A988B7B2653F1750007F4C0 /* BoletoVoucherAction.swift in Sources */,
 				F917613525A30B5700D653BE /* ThreeDS2Details.swift in Sources */,
+				2159173A2A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift in Sources */,
 				A03EE72F2760A2E300470561 /* DocumentActionViewModel.swift in Sources */,
 				F94F0DEB28AA3FB400C0923D /* ThreeDS2PlusDACoreActionHandler.swift in Sources */,
 				F9B018032608F648001F23FC /* EContextStoresVoucherAction.swift in Sources */,
@@ -9422,7 +9490,7 @@
 			repositoryURL = "https://github.com/Adyen/adyen-authentication-ios";
 			requirement = {
 				kind = exactVersion;
-				version = 2.0.0;
+				version = 3.0.0;
 			};
 		};
 		F9CCA3D8296ECDF900AD643D /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {

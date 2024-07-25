@@ -81,7 +81,8 @@ jobs:
 
     - name: Build and test
       run: |
-        xcodebuild build test -project ${project} -scheme "${scheme}" ${params} -destination "${destination}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild -version
+        xcodebuild build test -project ${project} -scheme "${scheme}" ${params} -destination "${destination}" ## | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
         params: "-skipPackagePluginValidation"

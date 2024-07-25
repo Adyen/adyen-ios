@@ -38,7 +38,8 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(name: \"Adyen\", path: \"../\")
+        .package(name: \"Adyen\", path: \"../\"),
+        .package(name: \"AdyenAuthentication\", url: \"https://github.com/Adyen/adyen-authentication-ios\", .exact(Version(3, 0, 0)))
     ],
     targets: [
         .target(
@@ -61,20 +62,22 @@ let package = Package(
 )
 " > Package.swift
 
+
+echo '############# swift package update ###############'
 swift package update
 
 # Build for generic iOS device
 echo '############# Build for generic iOS device ###############'
-xcodebuild build -scheme TempProject -destination 'generic/platform=iOS' -skipPackagePluginValidation -quiet
+xcodebuild build -scheme TempProject -destination 'generic/platform=iOS' -skipPackagePluginValidation -quiet -derivedDataPath ./.dd
 
 # Archive for generic iOS device
 echo '############# Archive for generic iOS device ###############'
-xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS' -skipPackagePluginValidation -quiet
+xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS' -skipPackagePluginValidation -quiet -derivedDataPath ./.dd
 
 # Build for x86_64 simulator
 echo '############# Build for x86_64 simulator ###############'
-xcodebuild build -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation -quiet
+xcodebuild build -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation -quiet -derivedDataPath ./.dd
 
 # Archive for x86_64 simulator
 echo '############# Archive for x86_64 simulator ###############'
-xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation -quiet
+xcodebuild clean build archive -scheme TempProject -destination 'generic/platform=iOS Simulator' ARCHS=x86_64 -skipPackagePluginValidation -quiet -derivedDataPath ./.dd

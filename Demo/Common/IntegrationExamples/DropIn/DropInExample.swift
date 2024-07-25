@@ -79,7 +79,7 @@ internal final class DropInExample: InitialDataFlowProtocol {
         let paymentMethods = session.sessionContext.paymentMethods
         let configuration = dropInConfiguration(from: paymentMethods)
         let component = DropInComponent(paymentMethods: paymentMethods,
-                                        context: context,
+                                        context: generateContext(),
                                         configuration: configuration,
                                         title: ConfigurationConstants.appName)
         
