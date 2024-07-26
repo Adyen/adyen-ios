@@ -99,8 +99,10 @@ public final class CashAppPayComponent: PaymentComponent,
             formViewController.append(storeDetailsItem)
         }
     
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
-        formViewController.append(cashAppPayButton)
+        if configuration.showsSubmitButton {
+            formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+            formViewController.append(cashAppPayButton)
+        }
 
         return formViewController
     }()

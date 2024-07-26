@@ -107,7 +107,7 @@ class BLIKComponentTests: XCTestCase {
         let paymentDelegateMock = PaymentComponentDelegateMock()
         sut.delegate = paymentDelegateMock
 
-        paymentDelegateMock.didSubmitClosure = { _, component in
+        paymentDelegateMock.didSubmitClosure = { _, _ in
             expectation.fulfill()
         }
 
