@@ -66,7 +66,7 @@ extension CardComponent: TrackableComponent {
         var infoEvent = AnalyticsEventInfo(component: paymentMethod.type.rawValue, type: .rendered)
         infoEvent.isStoredPaymentMethod = (paymentMethod is StoredPaymentMethod) ? true : nil
         infoEvent.brand = (paymentMethod as? StoredCardPaymentMethod)?.brand.rawValue
-        infoEvent.configData = CardAnalyticsConfiguration(configuration: configuration).toStringDictionary()
+        infoEvent.configData = CardAnalyticsConfiguration(configuration: configuration)
         context.analyticsProvider?.add(info: infoEvent)
     }
 }

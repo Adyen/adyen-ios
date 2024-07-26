@@ -37,16 +37,16 @@ final class CardComponentEventTests: XCTestCase {
         let info = analyticsProviderMock.infos.first
         XCTAssertEqual(info?.type, .rendered)
         
-        let configData = info?.configData
-        XCTAssertNotNil(configData)
-        XCTAssertEqual(configData?["socialSecurityNumberMode"], "auto")
-        XCTAssertEqual(configData?["hasInstallmentOptions"], "false")
-        XCTAssertEqual(configData?["showsStorePaymentMethodField"], "true")
-        XCTAssertEqual(configData?["billingAddressRequired"], "true")
-        XCTAssertEqual(configData?["showsSecurityCodeField"], "true")
-        XCTAssertEqual(configData?["showsHolderNameField"], "false")
-        XCTAssertEqual(configData?["showKCPType"], "auto")
-        XCTAssertEqual(configData?["enableStoredDetails"], "true")
+        let configDataDic = info?.configData?.stringOnlyDictionary
+        XCTAssertNotNil(configDataDic)
+        XCTAssertEqual(configDataDic?["socialSecurityNumberMode"], "auto")
+        XCTAssertEqual(configDataDic?["hasInstallmentOptions"], "false")
+        XCTAssertEqual(configDataDic?["showsStorePaymentMethodField"], "true")
+        XCTAssertEqual(configDataDic?["billingAddressRequired"], "true")
+        XCTAssertEqual(configDataDic?["showsSecurityCodeField"], "true")
+        XCTAssertEqual(configDataDic?["showsHolderNameField"], "false")
+        XCTAssertEqual(configDataDic?["showKCPType"], "auto")
+        XCTAssertEqual(configDataDic?["enableStoredDetails"], "true")
 
     }
     
