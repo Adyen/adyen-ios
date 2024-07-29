@@ -317,13 +317,13 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
         setupRootViewController(sut.viewController)
 
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
+        let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
 
         let paymentDelegateMock = PaymentComponentDelegateMock()
         sut.delegate = paymentDelegateMock
         paymentDelegateMock.onDidSubmit = { _, component in
             XCTAssertTrue(component === sut)
-            expectation.fulfill()
+            didSubmitExpectation.fulfill()
         }
 
         let nameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem"))
@@ -338,8 +338,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         sut.submit()
 
         // Then
-        wait(for: [expectation], timeout: 100)
-
+        waitForExpectations(timeout: 10)
         XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
     }
 

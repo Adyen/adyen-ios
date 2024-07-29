@@ -124,7 +124,7 @@ final class DokuComponentUITests: XCTestCase {
         let emailView: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: DokuViewIdentifier.email))
         self.populate(textItemView: emailView, with: "katrina.mar@mail.com")
 
-        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called.")
+        let didSubmitExpectation = expectation(description: "didSubmitExpectation")
         paymentDelegateMock.onDidSubmit = { _, _ in
             didSubmitExpectation.fulfill()
         }

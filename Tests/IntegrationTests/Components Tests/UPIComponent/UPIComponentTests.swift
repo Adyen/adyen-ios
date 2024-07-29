@@ -70,7 +70,7 @@ class UPIComponentTests: XCTestCase {
 
         setupRootViewController(sut.viewController)
 
-        let didSubmitExpectation = XCTestExpectation(description: "didSubmit expectation")
+        let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
 
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
@@ -85,7 +85,7 @@ class UPIComponentTests: XCTestCase {
         sut.submit()
 
         // Then
-        wait(for: [didSubmitExpectation], timeout: 100)
+        waitForExpectations(timeout: 10)
         XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
     }
 

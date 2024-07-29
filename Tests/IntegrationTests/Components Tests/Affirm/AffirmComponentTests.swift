@@ -122,7 +122,7 @@ class AffirmComponentTests: XCTestCase {
         setupRootViewController(sut.viewController)
         
         // Then
-        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
+        let didSubmitExpectation = expectation(description: "Expect delegate.didSubmit() to be called.")
         delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
             let details = data.paymentMethod as! AffirmDetails

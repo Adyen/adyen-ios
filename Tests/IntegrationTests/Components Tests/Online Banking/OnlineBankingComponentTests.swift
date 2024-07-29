@@ -76,20 +76,20 @@ class OnlineBankingComponentTests: XCTestCase {
             configuration: configuration
         )
 
-        let expectation = XCTestExpectation(description: "onDidSubmit expection")
+        let didSubmitExpectation = XCTestExpectation(description: "dExpect delegate.didSubmit() to be called.")
 
         let paymentDelegateMock = PaymentComponentDelegateMock()
         sut.delegate = paymentDelegateMock
 
         paymentDelegateMock.onDidSubmit = { _, component in
-            expectation.fulfill()
+            didSubmitExpectation.fulfill()
         }
 
         // When
         sut.submit()
 
         // Then
-        wait(for: [expectation], timeout: 100)
+        waitForExpectations(timeout: 10)
         XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
     }
 

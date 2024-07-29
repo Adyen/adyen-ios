@@ -255,7 +255,7 @@ import XCTest
             let paymentDelegateMock = PaymentComponentDelegateMock()
             sut.delegate = paymentDelegateMock
 
-            let didSubmitExpectation = XCTestExpectation(description: "didSubmit expectation")
+            let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
             let finalizationExpectation = expectation(description: "Component should finalize.")
 
             paymentDelegateMock.onDidSubmit = { _, _ in

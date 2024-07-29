@@ -271,7 +271,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
         setupRootViewController(sut.viewController)
 
-        let didSubmitExpectation = XCTestExpectation(description: "Dummy Expectation")
+        let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
 
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
@@ -289,7 +289,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         sut.submit()
 
         // Then
-        wait(for: [didSubmitExpectation], timeout: 5)
+        waitForExpectations(timeout: 10)
         XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
     }
 
