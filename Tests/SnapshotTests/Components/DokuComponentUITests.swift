@@ -103,6 +103,59 @@ final class DokuComponentUITests: XCTestCase {
         wait(for: [delegateExpectation], timeout: 60)
     }
 
+    func testSubmitWithDefaultSubmitButtonHiddenShouldCallPaymentDelegateDidSubmit() throws {
+        // Given
+        let configuration = AbstractPersonalInformationComponent.Configuration(showsSubmitButton: false)
+        let sut = DokuComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        let paymentDelegateMock = PaymentComponentDelegateMock()
+        sut.delegate = paymentDelegateMock
+
+        let firstNameView: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: DokuViewIdentifier.firstName))
+        self.populate(textItemView: firstNameView, with: "Katrina")
+
+        let lastNameView: FormTextInputItemView! = try XCTUnwrap(sut.viewController.view.findView(with: DokuViewIdentifier.lastName))
+        self.populate(textItemView: lastNameView, with: "Del Mar")
+
+        let emailView: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: DokuViewIdentifier.email))
+        self.populate(textItemView: emailView, with: "katrina.mar@mail.com")
+
+        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called.")
+        paymentDelegateMock.didSubmitClosure = { _, _ in
+            didSubmitExpectation.fulfill()
+        }
+
+        // When
+        sut.submit()
+
+        // Then
+        waitForExpectations(timeout: 10)
+        XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
+    }
+
+    func testSubmitWithDefaultSubmitButtonShownShouldNotCallPaymentDelegateDidSubmit() throws {
+        // Given
+        let configuration = AbstractPersonalInformationComponent.Configuration(showsSubmitButton: true)
+        let sut = DokuComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        let paymentDelegateMock = PaymentComponentDelegateMock()
+        sut.delegate = paymentDelegateMock
+
+        // When
+        sut.submit()
+
+        // Then
+        XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 0)
+    }
+
     private enum DokuViewIdentifier {
         static let firstName = "AdyenComponents.DokuComponent.firstNameItem"
         static let lastName = "AdyenComponents.DokuComponent.lastNameItem"

@@ -259,7 +259,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(infoType, .rendered)
     }
 
-    func testSubmitWithDefaultSubmitHiddenShouldCallPaymentDelegateOnDidSubmit() throws {
+    func testSubmitWithDefaultSubmitHiddenShouldCallPaymentDelegateDidSubmit() throws {
         // Given
         let paymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
         let configuration = SEPADirectDebitComponent.Configuration(showsSubmitButton: false)
@@ -293,7 +293,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
     }
 
-    func testSubmitWithDefaultSubmitShownShouldNotCallPaymentDelegateOnDidSubmit() throws {
+    func testSubmitWithDefaultSubmitShownShouldNotCallPaymentDelegateDidSubmit() throws {
         // Given
         let paymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
         let configuration = SEPADirectDebitComponent.Configuration(showsSubmitButton: false)

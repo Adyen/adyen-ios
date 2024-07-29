@@ -58,7 +58,7 @@ class UPIComponentTests: XCTestCase {
         XCTAssertTrue(childViewController.requiresKeyboardInput)
     }
 
-    func testSubmit_withDefaultSubmitHidden_shouldCallPaymentDelegateOnDidSubmit() throws {
+    func testSubmit_withDefaultSubmitHidden_shouldCallPaymentDelegateDidSubmit() throws {
         // Given
         let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upi)
         let configuration = UPIComponent.Configuration(showsSubmitButton: false)
@@ -89,7 +89,7 @@ class UPIComponentTests: XCTestCase {
         XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
     }
 
-    func test_submitWithDefaultSubmitShown_shouldNotCallPaymentDelegateOnDidSubmit() throws {
+    func test_submitWithDefaultSubmitShown_shouldNotCallPaymentDelegateDidSubmit() throws {
         // Given
         let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upi)
         let configuration = UPIComponent.Configuration(showsSubmitButton: true)

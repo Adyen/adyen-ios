@@ -91,7 +91,7 @@ class BLIKComponentTests: XCTestCase {
 
     // MARK: - submit
 
-    func testSubmit_withDefaultSubmitButtonHidden_shouldCallPaymentDelegateOnDidSubmit() throws {
+    func testSubmit_withDefaultSubmitButtonHidden_shouldCallPaymentDelegateDidSubmit() throws {
         // Given
         let configuration = BLIKComponent.Configuration(showsSubmitButton: false)
         let sut = BLIKComponent(
@@ -123,7 +123,7 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
     }
 
-    func testSubmit_withDefaultSubmitButtonShown_shouldNotCallPaymentDelegateOnDidSubmit() throws {
+    func testSubmit_withDefaultSubmitButtonShown_shouldNotCallPaymentDelegateDidSubmit() throws {
         // Given
         let configuration = BLIKComponent.Configuration(showsSubmitButton: true)
         let sut = BLIKComponent(

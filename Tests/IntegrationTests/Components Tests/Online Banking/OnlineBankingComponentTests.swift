@@ -67,7 +67,7 @@ class OnlineBankingComponentTests: XCTestCase {
         (sut.viewController as! SecuredViewController<FormViewController>).childViewController
     }
 
-    func testSubmit_withDefaultSubmitButtonHidden_shouldCallPaymentDelegateOnDidSubmit() throws {
+    func testSubmit_withDefaultSubmitButtonHidden_shouldCallPaymentDelegateDidSubmit() throws {
         // Given
         let configuration = OnlineBankingComponent.Configuration(showsSubmitButton: false)
         let sut = OnlineBankingComponent(
@@ -93,7 +93,7 @@ class OnlineBankingComponentTests: XCTestCase {
         XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
     }
 
-    func testSubmit_withDefaultSubmitButtonShown_shouldNotCallPaymentDelegateOnDidSubmit() throws {
+    func testSubmit_withDefaultSubmitButtonShown_shouldNotCallPaymentDelegateDidSubmit() throws {
         // Given
         let configuration = OnlineBankingComponent.Configuration(showsSubmitButton: true)
         let sut = OnlineBankingComponent(

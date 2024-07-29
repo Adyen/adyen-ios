@@ -242,7 +242,7 @@ import XCTest
             waitForExpectations(timeout: 10, handler: nil)
         }
 
-        func testSubmitWithDefaultSubmitHiddenShouldCallPaymentDelegateOnDidSubmit() throws {
+        func testSubmitWithDefaultSubmitHiddenShouldCallPaymentDelegateDidSubmit() throws {
             // Given
             let configuration = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsSubmitButton: false)
             let sut = CashAppPayComponent(
@@ -274,7 +274,7 @@ import XCTest
             XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
         }
 
-        func testSubmitWithDefaultSubmitShownShouldNotCallPaymentDelegateOnDidSubmit() throws {
+        func testSubmitWithDefaultSubmitShownShouldNotCallPaymentDelegateDidSubmit() throws {
             // Given
             let configuration = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsSubmitButton: true)
             let sut = CashAppPayComponent(
