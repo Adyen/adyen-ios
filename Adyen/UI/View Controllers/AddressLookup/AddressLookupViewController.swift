@@ -93,7 +93,8 @@ extension AddressLookupViewController.ViewModel {
             prefillAddress: prefillAddress,
             supportedCountryCodes: supportedCountryCodes,
             handleShowSearch: handleShowSearchTapped(currentInput:),
-            completionHandler: handleAddressInputFormCompletion(validAddress:)
+            completionHandler: handleAddressInputFormCompletion(validAddress:),
+            cancelHandler: handleDismissAddressLookup
         )
     }
     

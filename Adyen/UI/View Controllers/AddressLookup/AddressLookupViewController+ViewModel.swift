@@ -24,6 +24,7 @@ public extension AddressLookupViewController {
         
         internal let lookupProvider: AddressLookupProvider
         private let completionHandler: (PostalAddress?) -> Void
+        private let cancelHandler: () -> Void
         
         internal let addressType: FormAddressPickerItem.AddressType
         
@@ -60,7 +61,8 @@ public extension AddressLookupViewController {
             initialCountry: String,
             prefillAddress: PostalAddress? = nil,
             lookupProvider: AddressLookupProvider,
-            completionHandler: @escaping (PostalAddress?) -> Void
+            completionHandler: @escaping (PostalAddress?) -> Void,
+            cancelHandler: @escaping () -> Void
         ) {
             self.addressType = addressType
             self.style = style
@@ -68,6 +70,7 @@ public extension AddressLookupViewController {
             self.supportedCountryCodes = supportedCountryCodes
             self.lookupProvider = lookupProvider
             self.completionHandler = completionHandler
+            self.cancelHandler = cancelHandler
             self.initialCountry = initialCountry
             self.prefillAddress = prefillAddress
             
@@ -116,7 +119,7 @@ extension AddressLookupViewController.ViewModel {
         completionHandler(validAddress)
     }
     
-    private func handleDismissAddressLookup() {
-        completionHandler(nil)
+    internal func handleDismissAddressLookup() {
+        cancelHandler()
     }
 }

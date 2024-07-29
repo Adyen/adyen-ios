@@ -82,7 +82,7 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
             
             self.didSelectAddressPicker(
                 for: addressType,
-                with: prefillAddress,
+                with: self.value,
                 initialCountry: initialCountry,
                 supportedCountryCodes: supportedCountryCodes,
                 lookupProvider: lookupProvider,
@@ -166,6 +166,8 @@ extension FormAddressPickerItem {
                 completionHandler: { [weak presenter] address in
                     completion(address)
                     presenter?.dismissViewController(animated: true)
+                }, cancelHandler: { [weak presenter] in
+                    presenter?.dismissViewController(animated: true)
                 }
             ),
             style: style
@@ -182,7 +184,8 @@ extension FormAddressPickerItem {
         supportedCountryCodes: [String]?,
         lookupProvider: AddressLookupProvider?,
         style: FormComponentStyle,
-        completionHandler: @escaping (PostalAddress?) -> Void
+        completionHandler: @escaping (PostalAddress?) -> Void,
+        cancelHandler: @escaping () -> Void
     ) -> UIViewController {
         // swiftlint:enable function_parameter_count
         
@@ -197,7 +200,8 @@ extension FormAddressPickerItem {
                 supportedCountryCodes: supportedCountryCodes,
                 addressViewModelBuilder: addressViewModelBuilder,
                 handleShowSearch: nil,
-                completionHandler: completionHandler
+                completionHandler: completionHandler,
+                cancelHandler: cancelHandler
             )
             
             return UINavigationController(
@@ -213,7 +217,8 @@ extension FormAddressPickerItem {
             initialCountry: initialCountry,
             prefillAddress: prefillAddress,
             lookupProvider: lookupProvider,
-            completionHandler: completionHandler
+            completionHandler: completionHandler,
+            cancelHandler: cancelHandler
         )
 
         return AddressLookupViewController(viewModel: viewModel)

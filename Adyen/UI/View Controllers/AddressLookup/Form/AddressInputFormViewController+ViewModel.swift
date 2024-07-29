@@ -27,6 +27,7 @@ extension AddressInputFormViewController {
         private let addressType: FormAddressPickerItem.AddressType
         private let showSearchHandler: ShowSearchHandler?
         private let completionHandler: (PostalAddress?) -> Void
+        private let cancelHandler: () -> Void
         
         /// Initializes a view model for ``AddressInputFormViewController``
         ///
@@ -49,7 +50,8 @@ extension AddressInputFormViewController {
             supportedCountryCodes: [String]?,
             addressViewModelBuilder: AddressViewModelBuilder = DefaultAddressViewModelBuilder(),
             handleShowSearch: ShowSearchHandler? = nil,
-            completionHandler: @escaping (PostalAddress?) -> Void
+            completionHandler: @escaping (PostalAddress?) -> Void,
+            cancelHandler: @escaping () -> Void
         ) {
             self.addressType = addressType
             self.style = style
@@ -60,6 +62,7 @@ extension AddressInputFormViewController {
             self.showSearchHandler = handleShowSearch
             self.localizationParameters = localizationParameters
             self.completionHandler = completionHandler
+            self.cancelHandler = cancelHandler
         }
         
         internal var shouldShowSearch: Bool {
@@ -75,7 +78,7 @@ extension AddressInputFormViewController {
         }
         
         internal func handleDismiss() {
-            completionHandler(nil)
+            cancelHandler()
         }
     }
 }

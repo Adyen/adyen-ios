@@ -269,7 +269,8 @@ private extension CardComponent.Configuration {
         with initialCountry: String,
         prefillAddress: PostalAddress?,
         lookupProvider: AddressLookupProvider,
-        completionHandler: @escaping (PostalAddress?) -> Void
+        completionHandler: @escaping (PostalAddress?) -> Void,
+        cancelHandler: @escaping () -> Void
     ) -> AddressLookupViewController.ViewModel {
         
         .init(
@@ -279,14 +280,16 @@ private extension CardComponent.Configuration {
             initialCountry: initialCountry,
             prefillAddress: prefillAddress,
             lookupProvider: lookupProvider,
-            completionHandler: completionHandler
+            completionHandler: completionHandler,
+            cancelHandler: cancelHandler
         )
     }
     
     func addressInputFormViewModel(
         with initialCountry: String,
         prefillAddress: PostalAddress?,
-        completionHandler: @escaping (PostalAddress?) -> Void
+        completionHandler: @escaping (PostalAddress?) -> Void,
+        cancelHandler: @escaping () -> Void
     ) -> AddressInputFormViewController.ViewModel {
         
         .init(
@@ -298,7 +301,8 @@ private extension CardComponent.Configuration {
             supportedCountryCodes: billingAddress.countryCodes,
             addressViewModelBuilder: DefaultAddressViewModelBuilder(),
             handleShowSearch: nil,
-            completionHandler: completionHandler
+            completionHandler: completionHandler,
+            cancelHandler: cancelHandler
         )
     }
 }
