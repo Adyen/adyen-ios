@@ -661,7 +661,7 @@ class CardComponentTests: XCTestCase {
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         let finalizationExpectation = expectation(description: "Component should finalize.")
-        delegate.didSubmitClosure = { data, component in
+        delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is CardDetails)
             let details = data.paymentMethod as! CardDetails
@@ -795,8 +795,8 @@ class CardComponentTests: XCTestCase {
         sut.delegate = delegate
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.didFailClosure = { error, component in XCTFail("should not fail") }
-        delegate.didSubmitClosure = { data, component in
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is CardDetails)
 
@@ -846,8 +846,8 @@ class CardComponentTests: XCTestCase {
         sut.delegate = delegate
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.didFailClosure = { error, component in XCTFail("should not fail") }
-        delegate.didSubmitClosure = { data, component in
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
             let paymentDetails = data.paymentMethod as? CardDetails
             XCTAssertNotNil(paymentDetails)
@@ -903,8 +903,8 @@ class CardComponentTests: XCTestCase {
         sut.delegate = delegate
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.didFailClosure = { error, component in XCTFail("should not fail") }
-        delegate.didSubmitClosure = { data, component in
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
             let paymentDetails = data.paymentMethod as? CardDetails
             XCTAssertNotNil(paymentDetails)
@@ -1790,8 +1790,8 @@ class CardComponentTests: XCTestCase {
         wait(until: billingAddressView, at: \.isValid, is: true)
         
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.didFailClosure = { error, component in XCTFail("should not fail") }
-        delegate.didSubmitClosure = { data, component in
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is CardDetails)
 
@@ -1844,8 +1844,8 @@ class CardComponentTests: XCTestCase {
         populate(textItemView: expiryDateField, with: "12/30")
         
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.didFailClosure = { error, component in XCTFail("should not fail") }
-        delegate.didSubmitClosure = { data, component in
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is CardDetails)
 
@@ -1898,8 +1898,8 @@ class CardComponentTests: XCTestCase {
         populate(textItemView: postalCodeField, with: "123")
         
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.didFailClosure = { error, component in XCTFail("should not fail") }
-        delegate.didSubmitClosure = { data, component in
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is CardDetails)
 
@@ -1952,8 +1952,8 @@ class CardComponentTests: XCTestCase {
         wait(until: postalCodeField, at: \.isValid, is: true)
         
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.didFailClosure = { error, component in XCTFail("should not fail") }
-        delegate.didSubmitClosure = { data, component in
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is CardDetails)
 
@@ -2064,8 +2064,8 @@ class CardComponentTests: XCTestCase {
         billingAddressView.item.value = PostalAddress(city: "Seattle", postalCode: "123", stateOrProvince: "AZ", street: "Test Street")
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.didFailClosure = { error, component in XCTFail("should not fail") }
-        delegate.didSubmitClosure = { data, component in
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is CardDetails)
             XCTAssertNotNil(sut.cardViewController.validAddress)
@@ -2122,8 +2122,8 @@ class CardComponentTests: XCTestCase {
         )
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.didFailClosure = { error, component in XCTFail("should not fail") }
-        delegate.didSubmitClosure = { data, component in
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is CardDetails)
             XCTAssertNotNil(sut.cardViewController.validAddress)
@@ -2179,8 +2179,8 @@ class CardComponentTests: XCTestCase {
         )
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.didFailClosure = { error, component in XCTFail("should not fail") }
-        delegate.didSubmitClosure = { data, component in
+        delegate.onDidFail = { error, component in XCTFail("should not fail") }
+        delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is CardDetails)
             XCTAssertNotNil(sut.cardViewController.validAddress)

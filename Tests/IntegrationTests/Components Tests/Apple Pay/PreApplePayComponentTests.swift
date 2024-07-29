@@ -135,7 +135,7 @@ class PreApplePayComponentTests: XCTestCase {
         sut.didSubmit(paymentComponentData, from: sut)
 
         // Then
-        paymentComponentDelegate.didSubmitClosure = { data, _ in
+        paymentComponentDelegate.onDidSubmit = { data, _ in
             XCTAssertEqual(expectedCheckoutAttemptId, data.checkoutAttemptId)
         }
     }
@@ -158,7 +158,7 @@ class PreApplePayComponentTests: XCTestCase {
         sut.didSubmit(paymentComponentData, from: sut)
 
         // Then
-        paymentComponentDelegate.didSubmitClosure = { data, _ in
+        paymentComponentDelegate.onDidSubmit = { data, _ in
             XCTAssertNil(data.checkoutAttemptId)
         }
     }

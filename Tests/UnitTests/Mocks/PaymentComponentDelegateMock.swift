@@ -16,11 +16,11 @@ final class PaymentComponentDelegateMock: PaymentComponentDelegate {
     }
 
     var didSubmitReceivedArguments: (data: PaymentComponentData, component: PaymentComponent)?
-    var didSubmitClosure: ((PaymentComponentData, PaymentComponent) -> Void)?
+    var onDidSubmit: ((PaymentComponentData, PaymentComponent) -> Void)?
     func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         didSubmitCallsCount += 1
         didSubmitReceivedArguments = (data: data, component: component)
-        didSubmitClosure?(data, component)
+        onDidSubmit?(data, component)
     }
 
     // MARK: - didFail
@@ -31,10 +31,10 @@ final class PaymentComponentDelegateMock: PaymentComponentDelegate {
     }
 
     var didFailReceivedArguments: (error: Error, component: PaymentComponent)?
-    var didFailClosure: ((Error, PaymentComponent) -> Void)?
+    var onDidFail: ((Error, PaymentComponent) -> Void)?
     func didFail(with error: Error, from component: PaymentComponent) {
         didFailCallsCount += 1
         didFailReceivedArguments = (error: error, component: component)
-        didFailClosure?(error, component)
+        onDidFail?(error, component)
     }
 }

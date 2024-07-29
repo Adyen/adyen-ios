@@ -254,7 +254,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
-        delegateMock.didSubmitClosure = { data, component in
+        delegateMock.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is ACHDirectDebitDetails)
             let data = data.paymentMethod as! ACHDirectDebitDetails
@@ -321,7 +321,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
         let paymentDelegateMock = PaymentComponentDelegateMock()
         sut.delegate = paymentDelegateMock
-        paymentDelegateMock.didSubmitClosure = { _, component in
+        paymentDelegateMock.onDidSubmit = { _, component in
             XCTAssertTrue(component === sut)
             expectation.fulfill()
         }

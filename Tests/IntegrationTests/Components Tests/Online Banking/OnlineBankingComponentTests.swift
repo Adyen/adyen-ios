@@ -81,7 +81,7 @@ class OnlineBankingComponentTests: XCTestCase {
         let paymentDelegateMock = PaymentComponentDelegateMock()
         sut.delegate = paymentDelegateMock
 
-        paymentDelegateMock.didSubmitClosure = { _, component in
+        paymentDelegateMock.onDidSubmit = { _, component in
             expectation.fulfill()
         }
 

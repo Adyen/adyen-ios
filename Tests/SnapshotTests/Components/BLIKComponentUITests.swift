@@ -66,7 +66,7 @@ final class BLIKComponentUITests: XCTestCase {
 
         let delegateExpectation = XCTestExpectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
 
-        delegate.didSubmitClosure = { data, component in
+        delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is BLIKDetails)
             let data = data.paymentMethod as! BLIKDetails

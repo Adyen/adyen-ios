@@ -139,7 +139,7 @@ class UPIComponentUITests: XCTestCase {
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
 
-        delegateMock.didSubmitClosure = { data, component in
+        delegateMock.onDidSubmit = { data, component in
             // Assert
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is UPIComponentDetails)
@@ -176,7 +176,7 @@ class UPIComponentUITests: XCTestCase {
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
 
-        delegateMock.didSubmitClosure = { data, component in
+        delegateMock.onDidSubmit = { data, component in
             // Assert
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is UPIComponentDetails)
@@ -226,7 +226,7 @@ class UPIComponentUITests: XCTestCase {
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
         
-        delegateMock.didSubmitClosure = { data, component in
+        delegateMock.onDidSubmit = { data, component in
             // Assert
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is UPIComponentDetails)

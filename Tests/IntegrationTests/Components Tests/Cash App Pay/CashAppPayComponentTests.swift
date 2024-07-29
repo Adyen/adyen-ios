@@ -186,7 +186,7 @@ import XCTest
             
             let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
             let finalizationExpectation = expectation(description: "Component should finalize.")
-            delegate.didSubmitClosure = { data, component in
+            delegate.onDidSubmit = { data, component in
                 XCTAssertTrue(component === sut)
                 XCTAssertTrue(data.paymentMethod is CashAppPayDetails)
                 let details = data.paymentMethod as! CashAppPayDetails
@@ -219,7 +219,7 @@ import XCTest
             
             let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
             let finalizationExpectation = expectation(description: "Component should finalize.")
-            delegate.didSubmitClosure = { data, component in
+            delegate.onDidSubmit = { data, component in
                 XCTAssertTrue(component === sut)
                 XCTAssertTrue(data.paymentMethod is CashAppPayDetails)
                 let details = data.paymentMethod as! CashAppPayDetails
@@ -258,7 +258,7 @@ import XCTest
             let didSubmitExpectation = XCTestExpectation(description: "didSubmit expectation")
             let finalizationExpectation = expectation(description: "Component should finalize.")
 
-            paymentDelegateMock.didSubmitClosure = { _, _ in
+            paymentDelegateMock.onDidSubmit = { _, _ in
                 sut.finalizeIfNeeded(with: true, completion: {
                     finalizationExpectation.fulfill()
                 })

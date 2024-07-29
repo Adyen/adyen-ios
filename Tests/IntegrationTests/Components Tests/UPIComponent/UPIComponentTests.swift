@@ -74,7 +74,7 @@ class UPIComponentTests: XCTestCase {
 
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
-        delegateMock.didSubmitClosure = { data, component in
+        delegateMock.onDidSubmit = { data, component in
             didSubmitExpectation.fulfill()
         }
 

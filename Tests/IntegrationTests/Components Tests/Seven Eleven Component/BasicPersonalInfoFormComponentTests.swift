@@ -165,7 +165,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         sut.delegate = delegate
 
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.didSubmitClosure = { data, component in
+        delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is BasicPersonalInfoFormDetails)
             let data = data.paymentMethod as! BasicPersonalInfoFormDetails

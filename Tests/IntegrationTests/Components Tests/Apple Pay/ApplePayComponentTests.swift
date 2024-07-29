@@ -53,7 +53,7 @@ class ApplePayComponentTest: XCTestCase {
         sut.delegate = mockDelegate
         let viewController = sut!.viewController
         let onDidFailExpectation = expectation(description: "Wait for delegate call")
-        mockDelegate.didFailClosure = { error, component in
+        mockDelegate.onDidFail = { error, component in
             XCTAssertEqual(error as! ComponentError, ComponentError.cancelled)
             onDidFailExpectation.fulfill()
             self.mockDelegate = nil // to prevent false triggering
