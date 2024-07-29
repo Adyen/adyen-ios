@@ -14,7 +14,8 @@ extension SDKDump.Element {
         spiGroupNames?.forEach {
             components += ["@_spi(\($0))"]
         }
-        if let declAttributes, declAttributes.contains("DiscardableResult") {
+        
+        if hasDiscardableResult {
             components += ["@discardableResult"]
         }
         
