@@ -42,6 +42,8 @@ class AddressLookupViewControllerTests: XCTestCase {
             lookupProvider: mockLookupProvider
         ) { address in
             XCTFail("Completion handler should not have been called")
+        } cancelHandler: {
+            XCTFail("Cancel handler should not have been called")
         }
 
         // When
@@ -69,7 +71,7 @@ class AddressLookupViewControllerTests: XCTestCase {
 
         // Given
 
-        let emptyCompletionExpectation = expectation(description: "Completion handler called with nil object")
+        let cancelHandlerExpectation = expectation(description: "Cancel handler was called")
         
         let viewModel = AddressLookupViewController.ViewModel(
             for: .billing,
@@ -79,16 +81,17 @@ class AddressLookupViewControllerTests: XCTestCase {
             initialCountry: "NL",
             prefillAddress: nil,
             lookupProvider: MockAddressLookupProvider.alwaysFailing
-        ) { address in
-            XCTAssertNil(address)
-            emptyCompletionExpectation.fulfill()
+        ) { _ in
+            XCTFail("Completion handler should not have been called")
+        } cancelHandler: {
+            cancelHandlerExpectation.fulfill()
         }
 
         // Then
 
         viewModel.handleDismissSearchTapped()
 
-        wait(for: [emptyCompletionExpectation], timeout: 10)
+        wait(for: [cancelHandlerExpectation], timeout: 10)
     }
 
     func testSearchDismissalAfterInteraction() {
@@ -110,6 +113,8 @@ class AddressLookupViewControllerTests: XCTestCase {
         ) { address in
             XCTAssertEqual(address, .init())
             completionHandlerExpectation.fulfill()
+        } cancelHandler: {
+            XCTFail("Cancel handler should not have been called")
         }
 
         // Then
@@ -148,6 +153,8 @@ class AddressLookupViewControllerTests: XCTestCase {
             lookupProvider: MockAddressLookupProvider.alwaysFailing
         ) { address in
             XCTFail("Completion handler should not have been called")
+        } cancelHandler: {
+            XCTFail("Cancel handler should not have been called")
         }
 
         // Then
@@ -172,6 +179,8 @@ class AddressLookupViewControllerTests: XCTestCase {
             lookupProvider: MockAddressLookupProvider.alwaysFailing
         ) { address in
             XCTFail("Completion handler should not have been called")
+        } cancelHandler: {
+            XCTFail("Cancel handler should not have been called")
         }
 
         // Then
@@ -210,6 +219,8 @@ class AddressLookupViewControllerTests: XCTestCase {
         ) { address in
             XCTAssertEqual(address, expectedCompletionHandlerAddress)
             completionHandlerExpectation.fulfill()
+        } cancelHandler: {
+            XCTFail("Cancel handler should not have been called")
         }
 
         // When - Showing Search
@@ -268,5 +279,40 @@ class AddressLookupViewControllerTests: XCTestCase {
         // Then
 
         wait(for: [completionHandlerExpectation, loadingExpectation], timeout: 10)
+    }
+    
+    func test_cancel_shouldNotAlterValue() throws {
+        
+        let cancelExpectation = expectation(description: "Cancel was called")
+        
+        let results: [LookupAddressModel] = PostalAddressMocks.all.map {
+            .init(identifier: UUID().uuidString, postalAddress: $0)
+        }
+        
+        let expectedPrefillAddress = results.first?.postalAddress
+        
+        let mockLookupProvider = MockAddressLookupProvider { searchTerm in
+            XCTFail("Lookup Provider should not have been called")
+            return results
+        }
+        
+        let viewModel = AddressLookupViewController.ViewModel(
+            for: .billing,
+            style: .init(),
+            localizationParameters: nil,
+            supportedCountryCodes: nil,
+            initialCountry: "NL",
+            prefillAddress: expectedPrefillAddress,
+            lookupProvider: mockLookupProvider
+        ) { _ in
+            XCTFail("Completion handler should not have been called")
+        } cancelHandler: {
+            cancelExpectation.fulfill()
+        }
+        
+        viewModel.handleDismissAddressLookup()
+        XCTAssertEqual(viewModel.prefillAddress, expectedPrefillAddress)
+        
+        wait(for: [cancelExpectation], timeout: 1)
     }
 }

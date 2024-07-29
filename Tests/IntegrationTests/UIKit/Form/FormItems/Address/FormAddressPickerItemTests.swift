@@ -59,6 +59,97 @@ class FormAddressPickerItemTests: XCTestCase {
         XCTAssertTrue(addressLookupItem.isValid())
     }
     
+    func testCancel() throws {
+        
+        let presentationExpectation = expectation(description: "Address lookup should have been presented")
+        let dismissExpectation = expectation(description: "Dismiss should have been presented")
+        
+        var presentedViewController: UIViewController?
+        
+        let presenter = PresenterMock(
+            present: { viewController, animated in
+                presentedViewController = viewController
+                presentationExpectation.fulfill()
+            },
+            dismiss: { animated in
+                dismissExpectation.fulfill()
+            }
+        )
+        
+        let addressLookupItem = FormAddressPickerItem(
+            for: .billing,
+            initialCountry: "NL",
+            supportedCountryCodes: nil,
+            prefillAddress: PostalAddressMocks.singaporePostalAddress,
+            style: .init(),
+            presenter: presenter
+        )
+        
+        XCTAssertEqual(addressLookupItem.value, PostalAddressMocks.singaporePostalAddress)
+        XCTAssertTrue(addressLookupItem.isValid())
+        
+        addressLookupItem.selectionHandler()
+        
+        wait(for: [presentationExpectation], timeout: 1)
+        
+        let securedViewController = try XCTUnwrap(presentedViewController as? SecuredViewController<UIViewController>)
+        let navigationController = try XCTUnwrap(securedViewController.childViewController as? UINavigationController)
+        let addressInputFormViewController = try XCTUnwrap(navigationController.viewControllers.first as? AddressInputFormViewController)
+        
+        addressInputFormViewController.dismissAddressLookup()
+        
+        // Dismiss should not affect the value
+        XCTAssertEqual(addressLookupItem.value, PostalAddressMocks.singaporePostalAddress)
+        
+        wait(for: [dismissExpectation], timeout: 1)
+    }
+    
+    func testValueUpdate() throws {
+        
+        let presentationExpectation = expectation(description: "Address lookup should have been presented")
+        let dismissExpectation = expectation(description: "Dismiss should have been presented")
+        
+        var presentedViewController: UIViewController?
+        
+        let presenter = PresenterMock(
+            present: { viewController, animated in
+                presentedViewController = viewController
+                presentationExpectation.fulfill()
+            },
+            dismiss: { animated in
+                dismissExpectation.fulfill()
+            }
+        )
+        
+        let addressLookupItem = FormAddressPickerItem(
+            for: .billing,
+            initialCountry: "NL",
+            supportedCountryCodes: nil,
+            prefillAddress: PostalAddressMocks.singaporePostalAddress,
+            style: .init(),
+            presenter: presenter
+        )
+        
+        XCTAssertEqual(addressLookupItem.value, PostalAddressMocks.singaporePostalAddress)
+        XCTAssertTrue(addressLookupItem.isValid())
+        
+        addressLookupItem.selectionHandler()
+        
+        wait(for: [presentationExpectation], timeout: 1)
+        
+        let securedViewController = try XCTUnwrap(presentedViewController as? SecuredViewController<UIViewController>)
+        let navigationController = try XCTUnwrap(securedViewController.childViewController as? UINavigationController)
+        let addressInputFormViewController = try XCTUnwrap(navigationController.viewControllers.first as? AddressInputFormViewController)
+        
+        addressInputFormViewController.addressItem.value = PostalAddressMocks.newYorkPostalAddress
+        addressInputFormViewController.submitTapped()
+        
+        // Dismiss should not affect the value
+        XCTAssertEqual(addressLookupItem.value, PostalAddressMocks.newYorkPostalAddress)
+        
+        wait(for: [dismissExpectation], timeout: 1)
+    }
+    
     func testValidationFailureMessage() {
         
         let addressLookupItem = FormAddressPickerItem(

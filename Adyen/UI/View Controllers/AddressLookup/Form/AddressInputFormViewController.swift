@@ -105,6 +105,9 @@ private extension AddressInputFormViewController {
             action: #selector(submitTapped)
         )
     }
+}
+
+internal extension AddressInputFormViewController {
     
     @objc
     func submitTapped() {

@@ -322,6 +322,18 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertEqual(firstListItem.title, "Afghanistan")
         XCTAssertEqual(firstListItem.subtitle, "AF")
     }
+    
+    func test_cancel() throws {
+        
+        let cancelHandlerExpectation = expectation(description: "Cancel handler was called")
+        let viewModel = self.viewModel(cancelHandler: {
+            cancelHandlerExpectation.fulfill()
+        })
+        
+        viewModel.handleDismiss()
+        
+        wait(for: [cancelHandlerExpectation], timeout: 1)
+    }
 }
 
 private extension AddressInputFormViewControllerTests {
@@ -348,7 +360,8 @@ private extension AddressInputFormViewControllerTests {
         initialCountry: String = "NL",
         prefillAddress: PostalAddress? = nil,
         style: FormComponentStyle = .init(),
-        searchHandler: AddressInputFormViewController.ShowSearchHandler? = nil
+        searchHandler: AddressInputFormViewController.ShowSearchHandler? = nil,
+        cancelHandler: @escaping () -> Void = { XCTFail("Cancel Handler should not have been called") }
     ) -> AddressInputFormViewController.ViewModel {
         
         .init(
@@ -359,7 +372,8 @@ private extension AddressInputFormViewControllerTests {
             prefillAddress: prefillAddress,
             supportedCountryCodes: nil,
             handleShowSearch: searchHandler,
-            completionHandler: { _ in }
+            completionHandler: { _ in },
+            cancelHandler: cancelHandler
         )
     }
 }
