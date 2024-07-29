@@ -338,7 +338,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         sut.submit()
 
         // Then
-        waitForExpectations(timeout: 10)
+        wait(for: [didSubmitExpectation], timeout: 10)
         XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
     }
 

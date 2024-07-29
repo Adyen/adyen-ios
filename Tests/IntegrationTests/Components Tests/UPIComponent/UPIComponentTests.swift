@@ -85,7 +85,7 @@ class UPIComponentTests: XCTestCase {
         sut.submit()
 
         // Then
-        waitForExpectations(timeout: 10)
+        wait(for: [didSubmitExpectation], timeout: 10)
         XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
     }
 
