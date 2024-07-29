@@ -82,13 +82,16 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
             
             self.didSelectAddressPicker(
                 for: addressType,
-                with: prefillAddress,
+                with: self.value,
                 initialCountry: initialCountry,
                 supportedCountryCodes: supportedCountryCodes,
                 lookupProvider: lookupProvider,
                 presenter: presenter,
                 style: style
-            ) { [weak self] in self?.value = $0 }
+            ) { [weak self] newValue in
+                guard let newValue else { return }
+                self?.value = newValue
+            }
         }
     }
     
