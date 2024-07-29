@@ -6,175 +6,6 @@
 
 import Foundation
 
-private struct TmpChange {
-    let change: Change
-    let element: SDKDump.Element
-    let oldFirst: Bool
-}
-
-extension [TmpChange] {
-    var consolidated: [Change] {
-        var tmpChanges = self
-        var consolidatedChanges = [Change]()
-        
-        while !tmpChanges.isEmpty {
-            let firstChange = tmpChanges.removeFirst()
-            
-            if let nameAndTypeMatchIndex = tmpChanges.firstIndex(where: { $0.element.isComparable(to: firstChange.element) }) {
-                let match = tmpChanges[nameAndTypeMatchIndex]
-                
-                let changeDescription = {
-                    if match.oldFirst {
-                        "`\(match.element.description)`\n  ➡️ `\(firstChange.element.description)`"
-                    } else {
-                        "`\(firstChange.element.description)`\n  ➡️ `\(match.element.description)`"
-                    }
-                }()
-                
-                let changeSummary = {
-                    if match.oldFirst {
-                        firstChange.element.compare(to: match.element)
-                    } else {
-                        match.element.compare(to: firstChange.element)
-                    }
-                }()
-                
-                consolidatedChanges.append(
-                    .init(
-                        changeType: .change,
-                        parentName: match.element.parentPath,
-                        changeDescription: changeDescription,
-                        listOfChanges: changeSummary
-                    )
-                )
-                tmpChanges.remove(at: nameAndTypeMatchIndex)
-            } else {
-                consolidatedChanges.append(firstChange.change)
-            }
-        }
-        
-        return consolidatedChanges
-    }
-}
-
-extension SDKDump.Element {
-    
-    func isComparable(to otherElement: SDKDump.Element) -> Bool {
-        name == otherElement.name && declKind == otherElement.declKind && parentPath == otherElement.parentPath
-    }
-    
-    func compare(to otherElement: SDKDump.Element) -> [String]? {
-        guard let declKind = self.declKind, let otherDeclKind = otherElement.declKind, declKind == otherDeclKind else { return nil }
-        
-        // TODO: Move every comparison to a function (can be used on multiple declKinds)
-        
-        switch declKind {
-        case .import, .accessor, .subscriptDeclaration, .macro:
-            return []
-        case .class:
-            // Comparing: conformances, final, spi
-            var diff = [String]()
-            
-            if self.isFinal != otherElement.isFinal {
-                if isFinal {
-                    diff.append("`final` keyword was added")
-                } else {
-                    diff.append("`final` keyword was removed")
-                }
-            }
-            
-            if self.isSpiInternal != otherElement.isSpiInternal {
-                if isSpiInternal {
-                    diff.append("`final` was added")
-                } else {
-                    diff.append("`final` was removed")
-                }
-            }
-            
-            let ownSpiGroupNames = Set(spiGroupNames ?? [])
-            let otherSpiGroupNames = Set(otherElement.spiGroupNames ?? [])
-            
-            ownSpiGroupNames.symmetricDifference(otherSpiGroupNames).forEach {
-                if ownSpiGroupNames.contains($0) {
-                    diff.append("`@_spi(\($0))` was added")
-                } else {
-                    diff.append("`@_spi(\($0))` was removed")
-                }
-            }
-            
-            let ownConformances = Set(conformances ?? [])
-            let otherConformances = Set(otherElement.conformances ?? [])
-            
-            ownConformances.symmetricDifference(otherConformances).forEach {
-                if ownConformances.contains($0) {
-                    diff.append("\($0.printedName) conformance was added")
-                } else {
-                    diff.append("\($0.printedName) conformance was removed")
-                }
-            }
-            
-            return diff
-        case .struct:
-            // Comparing: conformances, spi
-            var diff = [String]()
-            
-            if self.isSpiInternal != otherElement.isSpiInternal {
-                if isSpiInternal {
-                    diff.append("`final` was added")
-                } else {
-                    diff.append("`final` was removed")
-                }
-            }
-            
-            let ownSpiGroupNames = Set(spiGroupNames ?? [])
-            let otherSpiGroupNames = Set(otherElement.spiGroupNames ?? [])
-            
-            ownSpiGroupNames.symmetricDifference(otherSpiGroupNames).forEach {
-                if ownSpiGroupNames.contains($0) {
-                    diff.append("`@_spi(\($0))` was added")
-                } else {
-                    diff.append("`@_spi(\($0))` was removed")
-                }
-            }
-            
-            let ownConformances = Set(conformances ?? [])
-            let otherConformances = Set(otherElement.conformances ?? [])
-            
-            ownConformances.symmetricDifference(otherConformances).forEach {
-                if ownConformances.contains($0) {
-                    diff.append("\($0.printedName) conformance was added")
-                } else {
-                    diff.append("\($0.printedName) conformance was removed")
-                }
-            }
-            
-            return diff
-        case .enum:
-            // TODO: Compare conformances, spi
-            return []
-        case .case:
-            return []
-        case .var:
-            // TODO: Compare accessors, spi
-            return []
-        case .func:
-            // TODO: Compare return, types, properties, async?!
-            return []
-        case .protocol:
-            // TODO: Compare conformances
-            return []
-        case .constructor:
-            // TODO: Same as function
-            return []
-        case .typeAlias:
-            // TODO: Compare type
-            return ["Renamed"]
-        case .associatedType:
-            return []
-        }
-    }
-}
-
 struct SDKDumpAnalyzer: SDKDumpAnalyzing {
     
     func analyze(
@@ -233,6 +64,7 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
             // This simplifies the script and also makes it more accurate
             // but has the downside of running into the chance of not grouping the changed element together
             
+            // TODO: Maybe already use the comparison of type/name/parent here to not having to need the TmpChange but just do it immediately here
             if let rhsChildForName = rhs.children.first(where: { $0.description == lhsElement.description }) {
                 return recursiveCompare(element: lhsElement, to: rhsChildForName, oldFirst: oldFirst)
             }
@@ -263,5 +95,71 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
         }
         
         return changes
+    }
+}
+
+// MARK: - Consolidation
+
+// TODO: Rename/Refactor
+private struct TmpChange {
+    let change: Change
+    let element: SDKDump.Element
+    let oldFirst: Bool
+}
+
+private extension [TmpChange] {
+    
+    var consolidated: [Change] {
+        
+        var tmpChanges = self
+        var consolidatedChanges = [Change]()
+        
+        while !tmpChanges.isEmpty {
+            let firstChange = tmpChanges.removeFirst()
+            
+            if let nameAndTypeMatchIndex = tmpChanges.firstIndex(where: { $0.element.isComparable(to: firstChange.element) }) {
+                let match = tmpChanges[nameAndTypeMatchIndex]
+                
+                let changeDescription = changeDescription(
+                    for: firstChange,
+                    and: match
+                )
+                
+                let listOfChanges = listOfChanges(
+                    between: firstChange,
+                    and: match
+                )
+                
+                consolidatedChanges.append(
+                    .init(
+                        changeType: .change,
+                        parentName: match.element.parentPath,
+                        changeDescription: changeDescription,
+                        listOfChanges: listOfChanges
+                    )
+                )
+                tmpChanges.remove(at: nameAndTypeMatchIndex)
+            } else {
+                consolidatedChanges.append(firstChange.change)
+            }
+        }
+        
+        return consolidatedChanges
+    }
+    
+    func changeDescription(for lhs: TmpChange, and rhs: TmpChange) -> String {
+        if rhs.oldFirst {
+            "`\(rhs.element.description)`\n  ➡️ `\(lhs.element.description)`"
+        } else {
+            "`\(lhs.element.description)`\n  ➡️ `\(rhs.element.description)`"
+        }
+    }
+    
+    func listOfChanges(between lhs: TmpChange, and rhs: TmpChange) -> [String] {
+        if rhs.oldFirst {
+            lhs.element.difference(to: rhs.element)
+        } else {
+            rhs.element.difference(to: lhs.element)
+        }
     }
 }

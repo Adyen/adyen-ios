@@ -144,6 +144,10 @@ extension SDKDump {
             (declAttributes ?? []).contains("Final")
         }
         
+        var hasDiscardableResult: Bool {
+            (declAttributes ?? []).contains("DiscardableResult")
+        }
+        
         var isTypeInformation: Bool {
             kind.isTypeInformation
         }
