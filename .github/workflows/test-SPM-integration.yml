@@ -11,7 +11,7 @@ on:
 jobs:
 
   SPM:
-    runs-on: macos-13-xlarge
+    runs-on: macos-14-xlarge
     steps:
     - uses: actions/checkout@v4
     - uses: n1hility/cancel-previous-runs@v3
