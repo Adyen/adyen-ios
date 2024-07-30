@@ -18,14 +18,21 @@ public struct TwintDetails: PaymentMethodDetails {
     /// The payment method subType.
     public let subType: String
 
+    // TODO: - Document
+    public var storePaymentMethod: Bool
+
     /// Initializes the Twint details.
     /// - Parameters:
     ///   - paymentMethod: Twint payment method.
     ///   - subType: Twint subType.
-    public init(type: PaymentMethod,
-                subType: String) {
+    public init(
+        type: PaymentMethod,
+        subType: String,
+        storePaymentMethod: Bool
+    ) {
         self.type = type.type
         self.subType = subType
+        self.storePaymentMethod = storePaymentMethod
     }
 
     // MARK: - Private
@@ -33,5 +40,6 @@ public struct TwintDetails: PaymentMethodDetails {
     private enum CodingKeys: String, CodingKey {
         case type
         case subType = "subtype"
+        case storePaymentMethod
     }
 }

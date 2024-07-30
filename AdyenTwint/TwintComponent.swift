@@ -27,7 +27,19 @@ public final class TwintComponent: PaymentComponent,
     public let paymentMethod: PaymentMethod
 
     /// The ready to submit payment data.
-    public let paymentData: PaymentComponentData
+    public var paymentData: PaymentComponentData {
+        let details = TwintDetails(
+            type: paymentMethod,
+            subType: "sdk",
+            storePaymentMethod: shouldStorePaymentMethod
+        )
+
+        return PaymentComponentData(
+            paymentMethodDetails: details,
+            amount: context.payment?.amount,
+            order: nil
+        )
+    }
 
     /// Component's configuration
     public var configuration: Configuration
@@ -107,12 +119,6 @@ public final class TwintComponent: PaymentComponent,
         self.paymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
-
-        let details = TwintDetails(type: paymentMethod,
-                                   subType: "sdk")
-        self.paymentData = PaymentComponentData(paymentMethodDetails: details,
-                                                amount: context.payment?.amount,
-                                                order: nil)
     }
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
@@ -129,7 +135,7 @@ public final class TwintComponent: PaymentComponent,
 
     // MARK: - Private
 
-    private var shouldStorePayment: Bool {
+    private var shouldStorePaymentMethod: Bool {
         guard configuration.showsStorePaymentMethodField else {
             return configuration.storePaymentMethod
         }
@@ -138,7 +144,7 @@ public final class TwintComponent: PaymentComponent,
     }
 
     private func didSelectSubmitButton() {
-        // TODO: - Implement logic
+        initiatePayment()
     }
 }
 
