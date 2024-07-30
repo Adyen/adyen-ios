@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Alexander Guretzki on 15/07/2024.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 @testable import public_api_diff
@@ -30,7 +29,7 @@ class SDKDumpTests: XCTestCase {
             )
         )
         
-        let expectedDefinition: String = "public static func foo(_: Swift.Int, bar: Swift.Double = $DEFAULT_ARG) -> Swift.Bool"
+        let expectedDefinition = "public static func foo(_: Swift.Int, bar: Swift.Double = $DEFAULT_ARG) -> Swift.Bool"
         
         XCTAssertEqual(
             dump.root.description,
@@ -50,12 +49,12 @@ class SDKDumpTests: XCTestCase {
                 isLet: false,
                 children: [
                     .init(kind: .typeNominal, name: "ReturnValue", printedName: "Swift.Bool"), // Return value
-                    .init(kind: .typeNominal, name: "FirstParameter", printedName: "Swift.Int"), // 1st parameter
+                    .init(kind: .typeNominal, name: "FirstParameter", printedName: "Swift.Int") // 1st parameter
                 ]
             )
         )
         
-        let expectedDefinition: String = "public static func foo(_: Swift.Int, bar) -> Swift.Bool"
+        let expectedDefinition = "public static func foo(_: Swift.Int, bar) -> Swift.Bool"
         
         XCTAssertEqual(
             dump.root.description,
@@ -78,12 +77,12 @@ class SDKDumpTests: XCTestCase {
                 isInternal: true,
                 children: [
                     .init(kind: .typeNominal, name: "ReturnValue", printedName: "Swift.Bool"), // Return value
-                    .init(kind: .typeNominal, name: "FirstParameter", printedName: "Swift.Int"), // 1st parameter
+                    .init(kind: .typeNominal, name: "FirstParameter", printedName: "Swift.Int") // 1st parameter
                 ]
             )
         )
         
-        let expectedDefinition: String = "internal static func foo(_: Swift.Int) -> Swift.Bool"
+        let expectedDefinition = "internal static func foo(_: Swift.Int) -> Swift.Bool"
         
         XCTAssertEqual(
             dump.root.description,
@@ -105,7 +104,7 @@ class SDKDumpTests: XCTestCase {
                 isLet: false,
                 children: [
                     .init(kind: .typeNominal, name: "ReturnValue", printedName: "Swift.Bool"), // Return value
-                    .init(kind: .typeNominal, name: "FirstParameter", printedName: "Swift.Int"), // 1st parameter
+                    .init(kind: .typeNominal, name: "FirstParameter", printedName: "Swift.Int") // 1st parameter
                 ], spiGroupNames: [
                     "Internal1",
                     "Internal2",
@@ -114,7 +113,7 @@ class SDKDumpTests: XCTestCase {
             )
         )
         
-        let expectedDefinition: String = "@_spi(Internal1) @_spi(Internal2) @_spi(Internal3) public static func foo(_: Swift.Int) -> Swift.Bool"
+        let expectedDefinition = "@_spi(Internal1) @_spi(Internal2) @_spi(Internal3) public static func foo(_: Swift.Int) -> Swift.Bool"
         
         XCTAssertEqual(
             dump.root.description,

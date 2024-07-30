@@ -13,7 +13,7 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
         new: SDKDump
     ) -> [Change] {
         
-        return Self.recursiveCompare(
+        Self.recursiveCompare(
             element: old.root,
             to: new.root,
             oldFirst: true

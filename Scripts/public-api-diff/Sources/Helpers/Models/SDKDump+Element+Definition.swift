@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Alexander Guretzki on 15/07/2024.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
@@ -128,7 +127,7 @@ private extension SDKDump.Element {
             return printedName // Return type (enum type)
         }
         
-        guard nestedFirstChild.children.count == 2, let associatedValue = nestedFirstChild.children.last else { 
+        guard nestedFirstChild.children.count == 2, let associatedValue = nestedFirstChild.children.last else {
             return printedName // No associated value
         }
         

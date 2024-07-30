@@ -153,42 +153,42 @@ class SDKDumpAnalyzerTests: XCTestCase {
     }
     
     /*
-    func test_targetChange() throws {
+     func test_targetChange() throws {
         
-        let dump = SDKDump(
-            root: .init(
-                kind: "kind",
-                name: "parent",
-                printedName: "printedName"
-            )
-        )
+         let dump = SDKDump(
+             root: .init(
+                 kind: "kind",
+                 name: "parent",
+                 printedName: "printedName"
+             )
+         )
         
-        // Adding Target
+         // Adding Target
         
-        let expectedChangesAdded: [Change] = [
-            .init(changeType: .addition, parentName: "", changeDescription: "Target was added")
-        ]
+         let expectedChangesAdded: [Change] = [
+             .init(changeType: .addition, parentName: "", changeDescription: "Target was added")
+         ]
         
-        let analyzer = SDKDumpAnalyzer()
-        let changes = analyzer.analyze(
-            old: nil,
-            new: dump
-        )
+         let analyzer = SDKDumpAnalyzer()
+         let changes = analyzer.analyze(
+             old: nil,
+             new: dump
+         )
 
-        XCTAssertEqual(changesAdded, expectedChangesAdded)
+         XCTAssertEqual(changesAdded, expectedChangesAdded)
         
-        // Removing Target
+         // Removing Target
         
-        let expectedChangesRemoved: [Change] = [
-            .init(changeType: .removal, parentName: "", changeDescription: "Target was removed")
-        ]
+         let expectedChangesRemoved: [Change] = [
+             .init(changeType: .removal, parentName: "", changeDescription: "Target was removed")
+         ]
         
-        let changesRemoved = analyzer.analyze(
-            old: dump,
-            new: nil
-        )
+         let changesRemoved = analyzer.analyze(
+             old: dump,
+             new: nil
+         )
         
-        XCTAssertEqual(changesRemoved, expectedChangesRemoved)
-    }
-     */
+         XCTAssertEqual(changesRemoved, expectedChangesRemoved)
+     }
+      */
 }

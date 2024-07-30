@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Alexander Guretzki on 12/07/2024.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 @testable import public_api_diff
@@ -26,7 +25,7 @@ class ABIGeneratorTests: XCTestCase {
         
         var fileHandler = MockFileHandler()
         fileHandler.handleFileExists = { _ in
-            return true
+            true
         }
         fileHandler.handleLoadData = { _ in
             try XCTUnwrap("".data(using: .utf8))
@@ -57,7 +56,7 @@ class ABIGeneratorTests: XCTestCase {
         
         var shell = MockShell()
         shell.handleExecute = { _ in
-            return "\(pathToSwiftModule)\nsomeMoreStuff.txt"
+            "\(pathToSwiftModule)\nsomeMoreStuff.txt"
         }
         
         var fileHandler = MockFileHandler()

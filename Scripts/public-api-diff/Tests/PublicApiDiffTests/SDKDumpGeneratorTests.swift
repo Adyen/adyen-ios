@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Alexander Guretzki on 15/07/2024.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 @testable import public_api_diff
@@ -40,7 +39,7 @@ class SDKDumpGeneratorTests: XCTestCase {
         XCTAssertEqual(expectedLines.count, lines.count)
         
         // Comparing line by line to make debugging easier
-        for lineIndex in (0..<lines.count) {
+        for lineIndex in 0..<lines.count {
             if lines[lineIndex] != expectedLines[lineIndex] {
                 XCTFail("Line \(lineIndex + 1): `\(lines[lineIndex])` is not equal to `\(expectedLines[lineIndex])`")
                 break

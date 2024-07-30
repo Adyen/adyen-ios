@@ -49,11 +49,11 @@ struct PackageFileHelper {
         var targets = try packageDescription(at: projectDirectoryPath).targets
         
         if let moduleType {
-            targets = targets.filter({ $0.moduleType == moduleType })
+            targets = targets.filter { $0.moduleType == moduleType }
         }
         
         if let targetType {
-            targets = targets.filter({ $0.type == targetType })
+            targets = targets.filter { $0.type == targetType }
         }
         
         return Set(targets.map(\.name))
@@ -118,8 +118,7 @@ private extension PackageFileHelper {
             }
             
             if firstLine.starts(with: "{"),
-                let packageDescriptionData = packageDescriptionLines.joined(separator: newLine).data(using: .utf8)
-            {
+               let packageDescriptionData = packageDescriptionLines.joined(separator: newLine).data(using: .utf8) {
                 var packageDescription = try JSONDecoder().decode(SwiftPackageDescription.self, from: packageDescriptionData)
                 packageDescription.warnings = warnings
                 return packageDescription
