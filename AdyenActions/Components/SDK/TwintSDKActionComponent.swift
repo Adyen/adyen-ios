@@ -44,35 +44,21 @@ import Foundation
             /// without a host/path/.... (e.g. "my-app", not a url "my-app://...")
             public let callbackAppScheme: String
 
-            /// Indicates if the field for storing the payment method should be displayed in the form. Defaults to `true`.
-            public var showsStorePaymentMethodField: Bool
-
-            /// Determines whether to store this payment method. Defaults to `false`.
-            /// Ignored if `showsStorePaymentMethodField` is `true`.
-            public var storePaymentMethod: Bool
-
             /// Initializes an instance of `Configuration`
             ///
             /// - Parameters:
             ///   - style: The Component UI style.
             ///   - callbackAppScheme: The callback app scheme invoked once the Twint app is done with the payment
-            ///   - showsStorePaymentMethodField: Determines the visibility of the field for storing the payment method.
-            ///   - storePaymentMethod: Determines whether to store this payment method.
-            ///   Ignored if `showsStorePaymentMethodField` is `true`.
             ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
             /// - Important: The value of ``callbackAppScheme`` is  required to only provide the scheme,
             /// without a host/path/... (e.g. "my-app", not a url "my-app://...")
             public init(
                 style: AwaitComponentStyle = .init(),
                 callbackAppScheme: String,
-                showsStorePaymentMethodField: Bool = true,
-                storePaymentMethod: Bool = false,
                 localizationParameters: LocalizationParameters? = nil
             ) {
                 self.style = style
                 self.callbackAppScheme = callbackAppScheme
-                self.showsStorePaymentMethodField = showsStorePaymentMethodField
-                self.storePaymentMethod = storePaymentMethod
                 self.localizationParameters = localizationParameters
             }
         }
