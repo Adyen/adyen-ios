@@ -12,6 +12,7 @@ protocol CustomComponentViewProtocol: AnyObject {
     func dismiss()
     func startActivityIndicator()
     func stopActivityIndicator()
+    func present(view: UIViewController, animated: Bool)
 }
 
 class CustomComponentViewController: UIViewController, CustomComponentViewProtocol {
@@ -116,6 +117,10 @@ class CustomComponentViewController: UIViewController, CustomComponentViewProtoc
 
     func stopActivityIndicator() {
         activityIndicator.stopAnimating()
+    }
+
+    func present(view: UIViewController, animated: Bool) {
+        present(view, animated: animated)
     }
 
     // MARK: - Private

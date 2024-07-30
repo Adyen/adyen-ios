@@ -270,7 +270,7 @@ import XCTest
             sut.submitApprovedRequest(with: [oneTimeGrant, onFileGrant], profile: .init(id: "testId", cashtag: "testtag"))
 
             // Then
-            wait(for: [finalizationExpectation,didSubmitExpectation], timeout: 10)
+            wait(for: [finalizationExpectation, didSubmitExpectation], timeout: 10)
             XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
         }
 

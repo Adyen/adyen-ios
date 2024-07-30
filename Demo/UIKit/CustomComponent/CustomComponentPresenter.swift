@@ -83,10 +83,19 @@ class CustomComponentPresenter: CustomComponentPresenterProtocol {
                 adyenActionComponent.handle(action)
             } else {
                 stopLoading()
-                view?.dismiss()
+                handlePayment(response: response)
             }
         case let .failure(error):
             handlePayment(error: error)
+        }
+    }
+
+    private func handlePayment(response: PaymentsResponse) {
+        switch response.resultCode {
+        case .authorised, .pending, .received:
+            view?.dismiss()
+        default:
+            handlePayment(error: nil)
         }
     }
 
@@ -131,7 +140,7 @@ extension CustomComponentPresenter: PaymentComponentDelegate {
             alertViewController.dismiss(animated: true)
         }
         alertViewController.addAction(doneAction)
-        (view as? UIViewController)?.present(alertViewController, animated: true)
+        view?.present(view: alertViewController, animated: true)
     }
 
     private func stopLoading() {
@@ -164,6 +173,6 @@ extension CustomComponentPresenter: PresentationDelegate {
     
     func present(component: any PresentableComponent) {
         let viewController = component.viewController
-        (view as? UIViewController)?.present(viewController, animated: true)
+        view?.present(view: viewController, animated: true)
     }
 }
