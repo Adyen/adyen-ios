@@ -12,7 +12,7 @@ public struct TwintSDKData: Decodable {
     /// SDK token.
     public let token: String
 
-    // TODO: - Document this property
+    // Determines if the Twint payment is tokenized.
     public let isStored: Bool
 
     private enum CodingKeys: String, CodingKey {
@@ -23,7 +23,9 @@ public struct TwintSDKData: Decodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         token = try container.decode(String.self, forKey: .token)
-        isStored = try container.decodeIfPresent(Bool.self, forKey: .isStored) ?? false
+
+        let isStoredString = try container.decodeIfPresent(String.self, forKey: .isStored) ?? "false"
+        isStored = Bool(isStoredString) ?? false
     }
 
     internal init(token: String, isStored: Bool) {

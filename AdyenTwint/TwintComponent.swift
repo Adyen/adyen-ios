@@ -30,14 +30,15 @@ public final class TwintComponent: PaymentComponent,
     public var paymentData: PaymentComponentData {
         let details = TwintDetails(
             type: paymentMethod,
-            subType: "sdk",
-            storePaymentMethod: shouldStorePaymentMethod
+            subType: "sdk"
         )
 
+        let storePaymentMethod = storeDetailsItem.value
         return PaymentComponentData(
             paymentMethodDetails: details,
             amount: context.payment?.amount,
-            order: nil
+            order: nil,
+            storePaymentMethod: storePaymentMethod
         )
     }
 
@@ -144,7 +145,15 @@ public final class TwintComponent: PaymentComponent,
     }
 
     private func didSelectSubmitButton() {
+        guard formViewController.validate() else { return }
+
+        startLoading()
         initiatePayment()
+    }
+
+    private func startLoading() {
+        submitButtonItem.showsActivityIndicator = true
+        formViewController.view.isUserInteractionEnabled = false
     }
 }
 

@@ -120,12 +120,21 @@ import Foundation
         }
 
         private func invokeTwint(app: TWAppConfiguration, action: TwintSDKAction) {
-
-            let error = twint.pay(
-                withCode: action.sdkData.token,
-                appConfiguration: app,
-                callback: configuration.callbackAppScheme
-            )
+            var error: Error? = {
+                if action.sdkData.isStored {
+                    twint.registerForUOF(
+                        withCode: action.sdkData.token,
+                        appConfiguration: app,
+                        callback: configuration.callbackAppScheme
+                    )
+                } else {
+                    twint.pay(
+                        withCode: action.sdkData.token,
+                        appConfiguration: app,
+                        callback: configuration.callbackAppScheme
+                    )
+                }
+            }()
 
             if let error {
                 handleShowError(error.localizedDescription)
