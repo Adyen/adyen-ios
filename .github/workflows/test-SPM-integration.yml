@@ -11,7 +11,7 @@ on:
 jobs:
 
   SPM:
-    runs-on: macos-13-xlarge
+    runs-on: macos-14-xlarge
     steps:
     - uses: actions/checkout@v4
     - uses: n1hility/cancel-previous-runs@v3
@@ -21,7 +21,7 @@ jobs:
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '15.1'
+        xcode-version: '15.3'
 
     - name: Test Swift Package Manager Integration
       run: |
