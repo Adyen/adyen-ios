@@ -52,7 +52,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
 
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
-            scrollEnabled: configuration.showSubmitButton,
+            scrollEnabled: configuration.showsSubmitButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
@@ -65,8 +65,11 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
         formViewController.append(FormSpacerItem())
         formViewController.append(codeItem)
         formViewController.append(FormSpacerItem())
-        formViewController.append(button)
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+
+        if configuration.showsSubmitButton {
+            formViewController.append(button)
+            formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+        }
 
         return formViewController
     }()
@@ -122,3 +125,17 @@ extension BLIKComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)
 extension BLIKComponent: ViewControllerDelegate {}
+
+// MARK: - SubmitCustomizable
+
+extension BLIKComponent: SubmitCustomizable {
+
+    public func submit() {
+        guard !configuration.showsSubmitButton else {
+            AdyenAssertion.assertionFailure(message: "Default submit button must be hidden in order to call submit.")
+            return
+        }
+
+        didSelectSubmitButton()
+    }
+}

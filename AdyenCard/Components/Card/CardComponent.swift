@@ -141,12 +141,6 @@ public class CardComponent: PresentableComponent,
         cardViewController.stopLoading()
     }
 
-    public func submit() {
-        guard !configuration.showSubmitButton else { return }
-
-        didSelectSubmitButton()
-    }
-
     // MARK: - Stored Card
     
     internal lazy var storedCardComponent: (PaymentComponent & PresentableComponent)? = {
@@ -306,5 +300,19 @@ private extension CardComponent.Configuration {
             handleShowSearch: nil,
             completionHandler: completionHandler
         )
+    }
+}
+
+// MARK: - SubmitCustomizable
+
+extension CardComponent: SubmitCustomizable {
+
+    public func submit() {
+        guard !configuration.showsSubmitButton else {
+            AdyenAssertion.assertionFailure(message: "Default submit button must be hidden in order to call submit.")
+            return
+        }
+
+        didSelectSubmitButton()
     }
 }

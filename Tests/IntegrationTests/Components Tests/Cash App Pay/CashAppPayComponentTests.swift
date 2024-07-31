@@ -241,5 +241,56 @@ import XCTest
             
             waitForExpectations(timeout: 10, handler: nil)
         }
+
+        func testSubmitWithDefaultSubmitHiddenShouldCallPaymentDelegateDidSubmit() throws {
+            // Given
+            let configuration = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsSubmitButton: false)
+            let sut = CashAppPayComponent(
+                paymentMethod: paymentMethod,
+                context: context,
+                configuration: configuration
+            )
+            setupRootViewController(sut.viewController)
+
+            let paymentDelegateMock = PaymentComponentDelegateMock()
+            sut.delegate = paymentDelegateMock
+
+            let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
+            let finalizationExpectation = expectation(description: "Component should finalize.")
+
+            paymentDelegateMock.onDidSubmit = { _, _ in
+                sut.finalizeIfNeeded(with: true, completion: {
+                    finalizationExpectation.fulfill()
+                })
+                didSubmitExpectation.fulfill()
+            }
+
+            // When
+            sut.submit()
+            sut.submitApprovedRequest(with: [oneTimeGrant, onFileGrant], profile: .init(id: "testId", cashtag: "testtag"))
+
+            // Then
+            wait(for: [finalizationExpectation, didSubmitExpectation], timeout: 10)
+            XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
+        }
+
+        func testSubmitWithDefaultSubmitShownShouldNotCallPaymentDelegateDidSubmit() throws {
+            // Given
+            let configuration = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsSubmitButton: true)
+            let sut = CashAppPayComponent(
+                paymentMethod: paymentMethod,
+                context: context,
+                configuration: configuration
+            )
+
+            let paymentDelegateMock = PaymentComponentDelegateMock()
+            sut.delegate = paymentDelegateMock
+
+            // When
+            sut.submit()
+
+            // Then
+            XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 0)
+        }
     }
 #endif

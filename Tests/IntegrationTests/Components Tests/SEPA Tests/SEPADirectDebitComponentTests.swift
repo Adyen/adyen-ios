@@ -258,4 +258,57 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let infoType = analyticsProviderMock.infos.first?.type
         XCTAssertEqual(infoType, .rendered)
     }
+
+    func testSubmitWithDefaultSubmitHiddenShouldCallPaymentDelegateDidSubmit() throws {
+        // Given
+        let paymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
+        let configuration = SEPADirectDebitComponent.Configuration(showsSubmitButton: false)
+        let sut = SEPADirectDebitComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        setupRootViewController(sut.viewController)
+
+        let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
+
+        let delegateMock = PaymentComponentDelegateMock()
+        sut.delegate = delegateMock
+        delegateMock.onDidSubmit = { data, component in
+            didSubmitExpectation.fulfill()
+        }
+
+        let ibanItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem"))
+        let nameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem"))
+
+        self.populate(textItemView: ibanItemView, with: "NL13TEST0123456789")
+        self.populate(textItemView: nameItemView, with: "A. Klaassen")
+
+        // When
+        sut.submit()
+
+        // Then
+        wait(for: [didSubmitExpectation], timeout: 10)
+        XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
+    }
+
+    func testSubmitWithDefaultSubmitShownShouldNotCallPaymentDelegateDidSubmit() throws {
+        // Given
+        let paymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
+        let configuration = SEPADirectDebitComponent.Configuration(showsSubmitButton: false)
+        let sut = SEPADirectDebitComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+        let delegateMock = PaymentComponentDelegateMock()
+        sut.delegate = delegateMock
+
+        // When
+        sut.submit()
+
+        // Then
+        XCTAssertEqual(delegateMock.didSubmitCallsCount, 0)
+    }
 }

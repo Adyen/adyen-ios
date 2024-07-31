@@ -125,7 +125,7 @@ public final class OnlineBankingComponent: PaymentComponent,
 
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
-            scrollEnabled: configuration.showSubmitButton,
+            scrollEnabled: configuration.showsSubmitButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
@@ -135,8 +135,11 @@ public final class OnlineBankingComponent: PaymentComponent,
         formViewController.append(FormSpacerItem(numberOfSpaces: 4))
         formViewController.append(termsAndConditionsLabelItem.addingDefaultMargins())
         formViewController.append(FormSpacerItem())
-        formViewController.append(continueButton)
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+
+        if configuration.showsSubmitButton {
+            formViewController.append(continueButton)
+            formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+        }
 
         return formViewController
     }()
@@ -145,3 +148,17 @@ public final class OnlineBankingComponent: PaymentComponent,
 
 @_spi(AdyenInternal)
 extension OnlineBankingComponent: AdyenObserver {}
+
+// MARK: - SubmitCustomizable
+
+extension OnlineBankingComponent: SubmitCustomizable {
+
+    public func submit() {
+        guard !configuration.showsSubmitButton else {
+            AdyenAssertion.assertionFailure(message: "Default submit button must be hidden in order to call submit.")
+            return
+        }
+
+        didSelectContinueButton()
+    }
+}

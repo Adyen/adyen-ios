@@ -88,7 +88,7 @@ public final class CashAppPayComponent: PaymentComponent,
 
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
-            scrollEnabled: configuration.showSubmitButton,
+            scrollEnabled: configuration.showsSubmitButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
@@ -99,8 +99,10 @@ public final class CashAppPayComponent: PaymentComponent,
             formViewController.append(storeDetailsItem)
         }
     
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
-        formViewController.append(cashAppPayButton)
+        if configuration.showsSubmitButton {
+            formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+            formViewController.append(cashAppPayButton)
+        }
 
         return formViewController
     }()
@@ -255,3 +257,18 @@ extension CashAppPayComponent: TrackableComponent {}
 @available(iOS 13.0, *)
 @_spi(AdyenInternal)
 extension CashAppPayComponent: ViewControllerDelegate {}
+
+// MARK: - SubmitCustomizable
+
+@available(iOS 13.0, *)
+extension CashAppPayComponent: SubmitCustomizable {
+
+    public func submit() {
+        guard !configuration.showsSubmitButton else {
+            AdyenAssertion.assertionFailure(message: "Default submit button must be hidden in order to call submit.")
+            return
+        }
+
+        didSelectSubmitButton()
+    }
+}

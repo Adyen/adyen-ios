@@ -96,7 +96,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
         payButton.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
     }
-    
+
     private func didSelectSubmitButton() {
         guard formViewController.validate() else { return }
         
@@ -252,7 +252,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
-            scrollEnabled: configuration.showSubmitButton,
+            scrollEnabled: configuration.showsSubmitButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
@@ -275,8 +275,10 @@ public final class ACHDirectDebitComponent: PaymentComponent,
             formViewController.append(storeDetailsItem)
         }
         
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
-        formViewController.append(payButton)
+        if configuration.showsSubmitButton {
+            formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+            formViewController.append(payButton)
+        }
 
         return formViewController
     }()
@@ -318,7 +320,7 @@ extension ACHDirectDebitComponent {
         public var style: FormComponentStyle
 
         /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
-        public private(set) var showSubmitButton: Bool
+        internal let showsSubmitButton: Bool
 
         /// The shopper's information to be prefilled.
         public var shopperInformation: PrefilledShopperInformation?
@@ -339,7 +341,7 @@ extension ACHDirectDebitComponent {
         /// Initializes the configuration for ACH Direct Debit Component.
         /// - Parameters:
         ///   - style: The UI style of the component.
-        ///   - showSubmitButton: Boolean value that determines whether the payment button is displayed.
+        ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
         ///   Defaults to`true`.
         ///   - shopperInformation: The shopper's information to be prefilled.
         ///   - localizationParameters: Localization parameters.
@@ -348,14 +350,14 @@ extension ACHDirectDebitComponent {
         ///   - billingAddressCountryCodes: ISO country codes that is supported for the billing address.
         ///   Defaults to ["US", "PR"].
         public init(style: FormComponentStyle = FormComponentStyle(),
-                    showSubmitButton: Bool = true,
+                    showsSubmitButton: Bool = true,
                     shopperInformation: PrefilledShopperInformation? = nil,
                     localizationParameters: LocalizationParameters? = nil,
                     showsStorePaymentMethodField: Bool = true,
                     showsBillingAddress: Bool = true,
                     billingAddressCountryCodes: [String] = ["US", "PR"]) {
             self.style = style
-            self.showSubmitButton = showSubmitButton
+            self.showsSubmitButton = showsSubmitButton
             self.shopperInformation = shopperInformation
             self.localizationParameters = localizationParameters
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
@@ -379,3 +381,17 @@ extension ACHDirectDebitComponent: ViewControllerPresenter {
 
 @_spi(AdyenInternal)
 extension ACHDirectDebitComponent: PublicKeyConsumer {}
+
+// MARK: - SubmitCustomizable
+
+extension ACHDirectDebitComponent: SubmitCustomizable {
+
+    public func submit() {
+        guard !configuration.showsSubmitButton else {
+            AdyenAssertion.assertionFailure(message: "Default submit button must be hidden in order to call submit.")
+            return
+        }
+
+        didSelectSubmitButton()
+    }
+}

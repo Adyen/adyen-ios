@@ -115,7 +115,7 @@ internal struct DropInSettings: Codable {
     internal var allowDisablingStoredPaymentMethods: Bool = false
     internal var allowsSkippingPaymentList: Bool = false
     internal var allowPreselectedPaymentView: Bool = true
-    internal var cashAppPayEnabled: Bool = false
+    internal var cashAppPayEnabled: Bool = true
 }
 
 internal struct ApplePaySettings: Codable {

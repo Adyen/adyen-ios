@@ -99,15 +99,15 @@ import XCTest
             onProvide: @escaping (ActionComponentData) -> Void
         ) -> ActionComponentDelegateMock {
         
-            let actonComponentDelegateMock = ActionComponentDelegateMock()
-            actonComponentDelegateMock.onDidFail = { error, component in
+            let actionComponentDelegateMock = ActionComponentDelegateMock()
+            actionComponentDelegateMock.onDidFail = { error, component in
                 XCTFail("delegate.onDidFail should not have been called")
             }
-            actonComponentDelegateMock.onDidProvide = { data, component in
+            actionComponentDelegateMock.onDidProvide = { data, component in
                 onProvide(data)
             }
         
-            return actonComponentDelegateMock
+            return actionComponentDelegateMock
         }
     
         /// ActionComponentDelegateMock that fails when `onDidFail` is called

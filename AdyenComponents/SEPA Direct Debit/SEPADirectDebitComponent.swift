@@ -55,12 +55,12 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
-    
+
     // MARK: - View Controller
     
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
-            scrollEnabled: configuration.showSubmitButton,
+            scrollEnabled: configuration.showsSubmitButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
@@ -69,7 +69,10 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.append(nameItem)
         formViewController.append(ibanItem)
-        formViewController.append(button)
+
+        if configuration.showsSubmitButton {
+            formViewController.append(button)
+        }
 
         return formViewController
     }()
@@ -142,3 +145,17 @@ extension SEPADirectDebitComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)
 extension SEPADirectDebitComponent: ViewControllerDelegate {}
+
+// MARK: - SubmitCustomizable
+
+extension SEPADirectDebitComponent: SubmitCustomizable {
+
+    public func submit() {
+        guard !configuration.showsSubmitButton else {
+            AdyenAssertion.assertionFailure(message: "Default submit button must be hidden in order to call submit.")
+            return
+        }
+
+        didSelectSubmitButton()
+    }
+}
