@@ -340,6 +340,7 @@
 		A0290DFA2C480CE9005BE269 /* ExampleContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0290DF92C480CE9005BE269 /* ExampleContainer.swift */; };
 		A0290DFB2C480CE9005BE269 /* ExampleContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0290DF92C480CE9005BE269 /* ExampleContainer.swift */; };
 		A0290DFD2C4FD6D5005BE269 /* CardAnalyticsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0290DFC2C4FD6D5005BE269 /* CardAnalyticsConfiguration.swift */; };
+		A0290DFF2C57DBC1005BE269 /* DropInAnalyticsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0290DFE2C57DBC1005BE269 /* DropInAnalyticsConfiguration.swift */; };
 		A02AF3DF274FB30200E1636C /* ApplePayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3DE274FB30200E1636C /* ApplePayStyle.swift */; };
 		A02AF3E8275A0D0900E1636C /* DocumentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3E7275A0D0900E1636C /* DocumentComponent.swift */; };
 		A02AF3EA275A3A5100E1636C /* DocumentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3E9275A3A5100E1636C /* DocumentAction.swift */; };
@@ -1729,6 +1730,7 @@
 		A0290DF72C413056005BE269 /* StoredPaymentMethodDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPaymentMethodDelegateMock.swift; sourceTree = "<group>"; };
 		A0290DF92C480CE9005BE269 /* ExampleContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleContainer.swift; sourceTree = "<group>"; };
 		A0290DFC2C4FD6D5005BE269 /* CardAnalyticsConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardAnalyticsConfiguration.swift; sourceTree = "<group>"; };
+		A0290DFE2C57DBC1005BE269 /* DropInAnalyticsConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInAnalyticsConfiguration.swift; sourceTree = "<group>"; };
 		A02AF3DE274FB30200E1636C /* ApplePayStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayStyle.swift; sourceTree = "<group>"; };
 		A02AF3E7275A0D0900E1636C /* DocumentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentComponent.swift; sourceTree = "<group>"; };
 		A02AF3E9275A3A5100E1636C /* DocumentAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAction.swift; sourceTree = "<group>"; };
@@ -4606,6 +4608,7 @@
 			children = (
 				E9B36CC622451C8300EAA368 /* DropInConfiguration.swift */,
 				F96F44CE23BDEC0200871C1F /* DropInComponentStyle.swift */,
+				A0290DFE2C57DBC1005BE269 /* DropInAnalyticsConfiguration.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -7388,6 +7391,7 @@
 				E9B36CC722451C8300EAA368 /* DropInConfiguration.swift in Sources */,
 				E7620EA123BF3DC800A492C3 /* ModalViewController.swift in Sources */,
 				E7388D8523DB1F9A008E62B8 /* DimmingPresentationController.swift in Sources */,
+				A0290DFF2C57DBC1005BE269 /* DropInAnalyticsConfiguration.swift in Sources */,
 				E2D1784022D8763400B6883E /* PaymentMethodListComponent.swift in Sources */,
 				E72DA33F23E19DE300707638 /* PreselectedPaymentMethodComponent.swift in Sources */,
 				E72DA34123E1BE5300707638 /* DropInNavigationController.swift in Sources */,
