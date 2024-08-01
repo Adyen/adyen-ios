@@ -6,8 +6,8 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
 /// A log in the analytics scheme represents important checkpoints such as the pay button press, 3ds challenge etc.
+@_spi(AdyenInternal)
 public struct AnalyticsEventLog: AnalyticsEvent {
     
     public var id: String = UUID().uuidString

@@ -6,9 +6,9 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
 /// Represents an info event  in the analytics scheme that can occur
 /// multiple times during the checkout flow, such as input field focus/unfocus etc.
+@_spi(AdyenInternal)
 public struct AnalyticsEventInfo: AnalyticsEvent {
     
     public var id: String = UUID().uuidString
@@ -77,8 +77,8 @@ public struct AnalyticsEventInfo: AnalyticsEvent {
     }
 }
 
-@_spi(AdyenInternal)
 /// Protocol that requires a string only dictionary for analytics. Only meant for analytics as it uses mirroring.
+@_spi(AdyenInternal)
 public protocol AnalyticsStringDictionaryConvertible: Encodable {
     var stringOnlyDictionary: [String: String]? { get }
 }
