@@ -78,7 +78,7 @@ extension SDKDump.Element {
         case .protocol:
             return printedName
         case .constructor, .func:
-            return verboseNameForFunc()
+            return SDKDump.FunctionDescription(underlyingElement: self)?.verboseName() ?? printedName
         case .accessor:
             return printedName
         case .typeAlias:
@@ -134,56 +134,5 @@ private extension SDKDump.Element {
         }
         
         return printedName + associatedValue.printedName
-    }
-    
-    /// Verbose name for `func`
-    ///
-    /// - Adds type information for parameters & return value
-    /// - Adds default argument indicator
-    /// - Adds `throws` indicator
-    func verboseNameForFunc() -> String {
-        guard let returnValue = children.first?.printedName else {
-            return printedName
-        }
-        
-        let inlineTypeInformation = Array(children.suffix(from: 1))
-        
-        let typedPrintedName: String = {
-            guard !inlineTypeInformation.isEmpty else {
-                return printedName
-            }
-            
-            let funcComponents = printedName.components(separatedBy: ":")
-            
-            var typedName = ""
-            funcComponents.enumerated().forEach { index, component in
-                typedName += component
-                
-                guard index < inlineTypeInformation.count else { return }
-                    
-                let type = inlineTypeInformation[index]
-                typedName += ": \(type.verboseName)"
-                
-                if type.hasDefaultArg {
-                    typedName += " = $DEFAULT_ARG"
-                }
-                
-                if index < funcComponents.count - 2 {
-                    typedName += ", "
-                }
-            }
-            return typedName
-        }()
-        
-        let components: [String?] = [
-            typedPrintedName,
-            isThrowing ? "throws" : nil,
-            "->",
-            returnValue == "()" ? "Swift.Void" : returnValue
-        ]
-        
-        return components
-            .compactMap { $0 }
-            .joined(separator: " ")
     }
 }
