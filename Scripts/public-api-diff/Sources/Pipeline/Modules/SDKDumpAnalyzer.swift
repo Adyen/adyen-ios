@@ -54,7 +54,7 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
             // This simplifies the script and also makes it more accurate
             // but has the downside of running into the chance of not grouping the changed element together
             
-            if let rhsChildForName = rhs.children.first(where: { $0.description == lhsElement.description }) {
+            if let rhsChildForName = rhs.children.first(where: { $0.isComparable(to: lhsElement) }) {
                 return recursiveCompare(element: lhsElement, to: rhsChildForName, oldFirst: oldFirst)
             }
             
@@ -72,5 +72,13 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
         }
         
         return changes
+    }
+}
+
+private extension SDKDump.Element {
+    
+    func isComparable(to otherElement: SDKDump.Element) -> Bool {
+        // If the name, type + parent is the same we can assume that it's the same element but altered
+        name == otherElement.name && declKind == otherElement.declKind && parentPath == otherElement.parentPath
     }
 }
