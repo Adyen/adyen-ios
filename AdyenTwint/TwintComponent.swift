@@ -38,7 +38,7 @@ public final class TwintComponent: PaymentComponent,
             paymentMethodDetails: details,
             amount: context.payment?.amount,
             order: nil,
-            storePaymentMethod: storePaymentMethod
+            storePaymentMethod: shouldStorePaymentMethod
         )
     }
 
