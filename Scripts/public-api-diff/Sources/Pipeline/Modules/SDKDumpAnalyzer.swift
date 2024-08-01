@@ -40,10 +40,11 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
         var changes = [Change]()
         
         if oldFirst, lhs.description != rhs.description {
-            changes += [
-                .init(changeType: .removal, parentName: lhs.parentPath, changeDescription: "`\(lhs)` was removed"),
-                .init(changeType: .addition, parentName: rhs.parentPath, changeDescription: "`\(rhs)` was added")
-            ]
+            changes += [.init(changeType: .removal, parentName: lhs.parentPath, changeDescription: "`\(lhs)` was removed")]
+            
+            if !rhs.isSpiInternal {
+                changes += [.init(changeType: .addition, parentName: rhs.parentPath, changeDescription: "`\(rhs)` was added")]
+            }
         }
         
         changes += lhs.children.flatMap { lhsElement in

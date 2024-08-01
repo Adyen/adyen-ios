@@ -102,7 +102,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
                 children: [
                     .init(kind: .struct, name: "child", printedName: "childPrintedName", declKind: .struct),
                     .init(kind: .class, name: "spiChild", printedName: "spiChildPrintedName", declKind: .class),
-                    .init(kind: .class, name: "spiChild", printedName: "invisibleSpiChildPrintedName", declKind: .class, spiGroupNames: ["SpiInternal"]),
+                    .init(kind: .class, name: "invisibleSpiChild", printedName: "invisibleSpiChildPrintedName", declKind: .class, spiGroupNames: ["SpiInternal"]),
                     .init(kind: .enum, name: "enumChild", printedName: "new_childPrintedName", declKind: .enum, children: [
                         .init(kind: .var, name: "staticLet", printedName: "staticLetPrintedName", declKind: .var, isStatic: true, isLet: false),
                         .init(kind: .case, name: "someCase", printedName: "someCasePrintedName", declKind: .case),
@@ -121,7 +121,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
                 children: [
                     .init(kind: .class, name: "child", printedName: "childPrintedName", declKind: .class),
                     .init(kind: .class, name: "spiChild", printedName: "spiChildPrintedName", declKind: .class, spiGroupNames: ["SpiInternal"]),
-                    .init(kind: .class, name: "spiChild", printedName: "invisibleSpiChildPrintedName", declKind: .class, children: [
+                    .init(kind: .class, name: "invisibleSpiChild", printedName: "invisibleSpiChildPrintedName", declKind: .class, children: [
                         .init(kind: .var, name: "name", printedName: "printedName")
                     ], spiGroupNames: ["SpiInternal"]),
                     .init(kind: .enum, name: "enumChild", printedName: "new_childPrintedName", declKind: .enum, children: [
@@ -137,9 +137,9 @@ class SDKDumpAnalyzerTests: XCTestCase {
             .init(changeType: .removal, parentName: "parent", changeDescription: "`public struct childPrintedName` was removed"),
             .init(changeType: .removal, parentName: "parent", changeDescription: "`public class spiChildPrintedName` was removed"),
             .init(changeType: .removal, parentName: "parent.enumChild", changeDescription: "`public static var staticLetPrintedName` was removed"),
+            .init(changeType: .addition, parentName: "parent.enumChild", changeDescription: "`public static let staticLetPrintedName` was added"),
             .init(changeType: .removal, parentName: "parent.enumChild", changeDescription: "`public case oldCasePrintedName` was removed"),
             .init(changeType: .addition, parentName: "parent", changeDescription: "`public class childPrintedName` was added"),
-            .init(changeType: .addition, parentName: "parent.enumChild", changeDescription: "`public static let staticLetPrintedName` was added"),
             .init(changeType: .addition, parentName: "parent.enumChild", changeDescription: "`public case newCasePrintedName` was added")
         ]
         
