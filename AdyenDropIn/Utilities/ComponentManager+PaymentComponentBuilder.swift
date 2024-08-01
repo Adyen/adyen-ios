@@ -39,14 +39,20 @@ extension ComponentManager: PaymentComponentBuilder {
                                      context: context,
                                      configuration: .init(localizationParameters: configuration.localizationParameters))
     }
-    
+
     internal func build(paymentMethod: StoredACHDirectDebitPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(paymentMethod: paymentMethod,
                                      context: context,
                                      configuration: .init(localizationParameters: configuration.localizationParameters))
     }
-    
+
     internal func build(paymentMethod: StoredCashAppPayPaymentMethod) -> PaymentComponent? {
+        StoredPaymentMethodComponent(paymentMethod: paymentMethod,
+                                     context: context,
+                                     configuration: .init(localizationParameters: configuration.localizationParameters))
+    }
+
+    internal func build(paymentMethod: StoredTwintPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(paymentMethod: paymentMethod,
                                      context: context,
                                      configuration: .init(localizationParameters: configuration.localizationParameters))
@@ -129,7 +135,7 @@ extension ComponentManager: PaymentComponentBuilder {
                                  style: configuration.style.formComponent,
                                  showsSecurityCodeField: configuration.giftCard.showsSecurityCodeField)
     }
-    
+
     internal func build(paymentMethod: MealVoucherPaymentMethod) -> PaymentComponent? {
         guard let amount = context.payment?.amount, partialPaymentEnabled else { return nil }
         return GiftCardComponent(paymentMethod: paymentMethod,
@@ -202,7 +208,7 @@ extension ComponentManager: PaymentComponentBuilder {
                 cashAppPayConfiguration.showsStorePaymentMethodField = cashAppPayDropInConfig.showsStorePaymentMethodField
                 cashAppPayConfiguration.localizationParameters = configuration.localizationParameters
                 cashAppPayConfiguration.style = configuration.style.formComponent
-        
+
                 return CashAppPayComponent(paymentMethod: paymentMethod,
                                            context: context,
                                            configuration: cashAppPayConfiguration)
