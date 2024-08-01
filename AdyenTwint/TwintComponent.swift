@@ -46,7 +46,14 @@ public final class TwintComponent: PaymentComponent,
     public var configuration: Configuration
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    public weak var delegate: PaymentComponentDelegate? {
+        didSet {
+            if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
+               storePaymentMethodAware.isSession {
+                configuration.showsStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
+            }
+        }
+    }
 
     // MARK: - Form items
 
