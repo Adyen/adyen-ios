@@ -79,7 +79,9 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
 private extension SDKDump.Element {
     
     func isComparable(to otherElement: SDKDump.Element) -> Bool {
-        // If the name, type + parent is the same we can assume that it's the same element but altered
-        name == otherElement.name && declKind == otherElement.declKind && parentPath == otherElement.parentPath
+        // If the `printedName`, type + parent is the same we can assume that it's the same element but altered
+        // We're using the `printedName` and not the `name` as for example there could be multiple functions with the same name but different parameters.
+        // In this specific case we want to find an exact match of the signature.
+        printedName == otherElement.printedName && declKind == otherElement.declKind && parentPath == otherElement.parentPath
     }
 }
