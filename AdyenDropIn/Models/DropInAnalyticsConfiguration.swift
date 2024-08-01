@@ -9,7 +9,12 @@ import Foundation
 
 internal struct DropInAnalyticsConfiguration: AnalyticsStringDictionaryConvertible {
     
-    private let allowsSkippingPaymentList: Bool
+    private let skipPaymentMethodList: Bool
     
-    private let allowPreselectedPaymentView: Bool
+    private let openFirstStoredPaymentMethod: Bool
+    
+    internal init(configuration: DropInComponent.Configuration) {
+        self.skipPaymentMethodList = configuration.allowsSkippingPaymentList
+        self.openFirstStoredPaymentMethod = configuration.allowPreselectedPaymentView
+    }
 }
