@@ -9,11 +9,6 @@ import Foundation
 
 extension SDKDump.Element {
     
-    func isComparable(to otherElement: SDKDump.Element) -> Bool {
-        // If the name, type + parent is the same we can assume that it's the same element but altered
-        name == otherElement.name && declKind == otherElement.declKind && parentPath == otherElement.parentPath
-    }
-    
     func difference(to otherElement: SDKDump.Element) -> [String] {
         var diff = [String]()
         diff += difference(toIsFinal: otherElement.isFinal)
@@ -57,7 +52,7 @@ extension SDKDump.Element {
         let otherSpiGroupNames = Set(otherSpiGroupNames ?? [])
         
         return ownSpiGroupNames.symmetricDifference(otherSpiGroupNames).map {
-            if ownSpiGroupNames.contains($0) {
+            if otherSpiGroupNames.contains($0) {
                 return "`@_spi(\($0))` was added"
             } else {
                 return "`@_spi(\($0))` was removed"
@@ -72,7 +67,7 @@ extension SDKDump.Element {
         let otherConformances = Set(otherConformances ?? [])
         
         return ownConformances.symmetricDifference(otherConformances).map {
-            if ownConformances.contains($0) {
+            if otherConformances.contains($0) {
                 return "`\($0.printedName)` conformance was added"
             } else {
                 return "`\($0.printedName)` conformance was removed"
@@ -95,7 +90,7 @@ extension SDKDump.FunctionDescription {
         // TODO: Figure out more in depth if the order, type and/or default arg changed
         
         return ownArgumentNames.symmetricDifference(otherArgumentNames).map {
-            if ownArgumentNames.contains($0) {
+            if otherArgumentNames.contains($0) {
                 return "`\($0)` was added"
             } else {
                 return "`\($0)` was removed"

@@ -8,23 +8,50 @@ import Foundation
 
 struct Change: Equatable {
     enum ChangeType: Equatable {
-        case addition
-        case removal
-        case change
-        
-        var icon: String {
-            switch self {
-            case .addition: "❇️ "
-            case .removal: "😶‍🌫️"
-            case .change: "🔀"
-            }
-        }
+        case addition(description: String)
+        case removal(description: String)
+        case change(oldDescription: String, newDescription: String)
     }
     
     var changeType: ChangeType
     var parentName: String
-    var changeDescription: String
     var listOfChanges: [String]? = nil
+}
+
+extension Change.ChangeType {
+    
+    var isAddition: Bool {
+        switch self {
+        case .addition:
+            return true
+        case .removal:
+            return false
+        case .change:
+            return false
+        }
+    }
+    
+    var isRemoval: Bool {
+        switch self {
+        case .addition:
+            return false
+        case .removal:
+            return true
+        case .change:
+            return false
+        }
+    }
+    
+    var isChange: Bool {
+        switch self {
+        case .addition:
+            return false
+        case .removal:
+            return false
+        case .change:
+            return true
+        }
+    }
 }
 
 extension [String: [Change]] {

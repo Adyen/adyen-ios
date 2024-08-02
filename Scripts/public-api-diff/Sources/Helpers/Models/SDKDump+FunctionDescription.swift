@@ -9,23 +9,17 @@ import Foundation
 
 extension SDKDump {
     
-    struct FunctionDescription {
-        
-        struct Argument: Equatable {
-            let name: String
-            let type: String
-            let defaultArgument: String?
-            
-            var description: String {
-                let nameAndType = "\(name): \(type)"
-                if let defaultArgument {
-                    return "\(nameAndType) = \(defaultArgument)"
-                }
-                return nameAndType
-            }
-        }
+    struct FunctionDescription: CustomStringConvertible {
         
         private let underlyingElement: SDKDump.Element
+        
+        init?(underlyingElement: SDKDump.Element) {
+            guard underlyingElement.declKind == .func || underlyingElement.declKind == .constructor else {
+                return nil
+            }
+            
+            self.underlyingElement = underlyingElement
+        }
         
         public var functionName: String {
             underlyingElement.printedName.components(separatedBy: "(").first ?? ""
@@ -41,12 +35,15 @@ extension SDKDump {
                 sanitizedArguments.removeLast() // `)`
             }
             
+            if sanitizedArguments.isEmpty { return [] }
+            
             let funcComponents = sanitizedArguments.components(separatedBy: ":")
-            let inlineTypeInformation = Array(underlyingElement.children.suffix(from: 1)) // First element is the return type
+            
+            let argumentTypes = Array(underlyingElement.children.suffix(from: 1)) // First element is the return type
             
             return funcComponents.enumerated().map { index, component in
                 
-                guard index < inlineTypeInformation.count else {
+                guard index < argumentTypes.count else {
                     return .init(
                         name: component,
                         type: "UNKNOWN_TYPE",
@@ -54,7 +51,7 @@ extension SDKDump {
                     )
                 }
                 
-                let type = inlineTypeInformation[index]
+                let type = argumentTypes[index]
                 return .init(
                     name: component,
                     type: type.verboseName,
@@ -68,17 +65,9 @@ extension SDKDump {
             return returnType == "()" ? "Swift.Void" : returnType
         }
         
-        init?(underlyingElement: SDKDump.Element) {
-            guard underlyingElement.declKind == .func || underlyingElement.declKind == .constructor else {
-                return nil
-            }
-            
-            self.underlyingElement = underlyingElement
-        }
-        
-        func verboseName() -> String {
+        public var description: String {
             guard let returnType else {
-                // Return type is optional as enum is using it as well (Figure out what's the use is there)
+                // Return type is optional as enum is using it as well (Figure out what the use is there)
                 return underlyingElement.printedName
             }
             
@@ -96,6 +85,23 @@ extension SDKDump {
             return components
                 .compactMap { $0 }
                 .joined(separator: " ")
+        }
+    }
+}
+
+extension SDKDump.FunctionDescription {
+    
+    public struct Argument: Equatable, CustomStringConvertible {
+        let name: String
+        let type: String
+        let defaultArgument: String?
+        
+        public var description: String {
+            let nameAndType = "\(name): \(type)"
+            if let defaultArgument {
+                return "\(nameAndType) = \(defaultArgument)"
+            }
+            return nameAndType
         }
     }
 }

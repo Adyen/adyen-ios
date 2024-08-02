@@ -83,15 +83,65 @@ private extension MarkdownOutputGenerator {
                     lines.append("### `\(parent)`")
                 }
                 
-                changes.sorted { lhs, rhs in lhs.changeDescription < rhs.changeDescription }.forEach {
-                    lines.append("- \($0.changeType.icon) \($0.changeDescription)")
-                    $0.listOfChanges?.forEach {
-                        lines.append("  - \($0)")
+                let additionLines = changeSectionLines(
+                    title: "#### ❇️ Added",
+                    changes: changes.filter {
+                        $0.changeType.isAddition
                     }
-                }
+                )
+                let changeLines = changeSectionLines(
+                    title: "#### 🔀 Changed",
+                    changes: changes.filter {
+                        $0.changeType.isChange
+                    }
+                )
+                let removalLines = changeSectionLines(
+                    title: "#### 😶‍🌫️ Removed",
+                    changes: changes.filter {
+                        $0.changeType.isRemoval
+                    }
+                )
+                
+                if !additionLines.isEmpty { lines += additionLines }
+                if !changeLines.isEmpty { lines += changeLines }
+                if !removalLines.isEmpty { lines += removalLines }
             }
         }
         
         return lines
+    }
+}
+
+private extension MarkdownOutputGenerator {
+    
+    static func changeSectionLines(title: String, changes: [Change]) -> [String] {
+        if changes.isEmpty { return [] }
+        
+        var lines = [title]
+        changes.sorted { lhs, rhs in description(for: lhs) < description(for: rhs) }.forEach {
+            lines.append("```javascript")
+            lines.append(description(for: $0))
+            
+            if let listOfChanges = $0.listOfChanges, !listOfChanges.isEmpty {
+                lines.append("")
+                listOfChanges.forEach {
+                    lines.append("// \($0)")
+                }
+            }
+            
+            lines.append("```")
+        }
+        return lines
+    }
+    
+    static func description(for change: Change) -> String {
+        switch change.changeType {
+        case .addition(let description):
+            return description
+        case .removal(let description):
+            return description
+        case .change(let before, let after):
+            return "// From\n\(before)\n\n// To\n\(after)"
+        }
     }
 }

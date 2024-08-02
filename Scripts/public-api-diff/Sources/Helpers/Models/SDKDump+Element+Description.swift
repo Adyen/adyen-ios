@@ -78,7 +78,7 @@ extension SDKDump.Element {
         case .protocol:
             return printedName
         case .constructor, .func:
-            return SDKDump.FunctionDescription(underlyingElement: self)?.verboseName() ?? printedName
+            return SDKDump.FunctionDescription(underlyingElement: self)?.description ?? printedName
         case .accessor:
             return printedName
         case .typeAlias:

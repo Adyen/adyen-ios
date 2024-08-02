@@ -6,6 +6,42 @@
 
 import Foundation
 
+private struct IndependentChange {
+    
+    enum ChangeType {
+        case addition(description: String)
+        case removal(description: String)
+        
+        var isAddition: Bool {
+            switch self {
+            case .addition: true
+            case .removal: false
+            }
+        }
+        
+        var isRemoval: Bool {
+            switch self {
+            case .addition: false
+            case .removal: true
+            }
+        }
+        
+        func toConsolidatedChangeType() -> Change.ChangeType {
+            switch self {
+            case .addition(let description):
+                return .addition(description: description)
+            case .removal(let description):
+                return .removal(description: description)
+            }
+        }
+    }
+    
+    let changeType: ChangeType
+    let parentName: String
+    let element: SDKDump.Element
+    let oldFirst: Bool
+}
+
 struct SDKDumpAnalyzer: SDKDumpAnalyzing {
     
     func analyze(
@@ -23,143 +59,173 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
             oldFirst: false
         )
         
+        // Matching removals/additions to changes when applicable
         return changes.consolidated
     }
     
-    private static func recursiveCompare(element lhs: SDKDump.Element, to rhs: SDKDump.Element, oldFirst: Bool) -> [TmpChange] {
+    private static func recursiveCompare(element lhs: SDKDump.Element, to rhs: SDKDump.Element, oldFirst: Bool) -> [IndependentChange] {
         if lhs == rhs { return [] }
         
-        if lhs.isSpiInternal, rhs.isSpiInternal {
-            // If both elements are spi internal we can ignore them as they are not in the public interface
-            return []
-        }
+        // If both elements are spi internal we can ignore them as they are not in the public interface
+        if lhs.isSpiInternal, rhs.isSpiInternal { return [] }
         
-        if lhs.isInternal, rhs.isInternal {
-            // If both elements are spi internal we can ignore them as they are not in the public interface
-            return []
-        }
+        // If both elements are internal we can ignore them as they are not in the public interface
+        if lhs.isInternal, rhs.isInternal { return [] }
         
-        var changes = [TmpChange]()
+        var changes = [IndependentChange]()
         
         if oldFirst, lhs.description != rhs.description {
             changes += [
-                .init(
-                    change: .init(changeType: .removal, parentName: lhs.parentPath, changeDescription: "`\(lhs)` was removed"),
+                .from(
+                    changeType: .removal(description: lhs.description),
                     element: lhs,
-                    oldFirst: oldFirst
-                ),
-                .init(
-                    change: .init(changeType: .addition, parentName: rhs.parentPath, changeDescription: "`\(rhs)` was added"),
-                    element: rhs,
                     oldFirst: oldFirst
                 )
             ]
+            
+            if !rhs.isSpiInternal {
+                // We only report additions if they are not @_spi
+                changes += [
+                    .from(
+                        changeType: .addition(description: rhs.description),
+                        element: rhs,
+                        oldFirst: oldFirst
+                    )
+                ]
+            }
         }
         
-        changes += lhs.children.flatMap { lhsElement in
+        changes += lhs.children.flatMap { lhsElement -> [IndependentChange] in
 
-            // We're comparing the description which means that additions to or removals from a definition
-            // (e.g. adding protocol conformance or a new/changed parameter name) will cause an element
-            // to be marked as added/removed.
-            // This simplifies the script and also makes it more accurate
-            // but has the downside of running into the chance of not grouping the changed element together
-            
-            // TODO: Maybe already use the comparison of type/name/parent here to not having to need the TmpChange but just do it immediately here
-            if let rhsChildForName = rhs.children.first(where: { $0.description == lhsElement.description }) {
+            // Trying to find a matching element
+            if let rhsChildForName = rhs.children.first(where: { $0.isComparable(to: lhsElement) }) {
+                // We found a matching element so we check if the children changed
                 return recursiveCompare(element: lhsElement, to: rhsChildForName, oldFirst: oldFirst)
             }
+    
+            // No matching element was found so either it was removed or added
             
-            // Type changes we handle as a change, not an addition/removal (they are in the children array tho)
+            // Type changes get caught during comparing the description and would only add noise to the output
             if lhsElement.isTypeInformation { return [] }
             
-            // An spi-internal element was added/removed which we do not count as a public change
-            if lhsElement.isSpiInternal { return [] }
+            // An (spi-)internal element was added/removed which we do not count as a public change
+            if lhsElement.isSpiInternal || lhsElement.isInternal { return [] }
             
-            if oldFirst {
-                return [
-                    .init(
-                        change: .init(changeType: .removal, parentName: lhsElement.parentPath, changeDescription: "`\(lhsElement)` was removed"),
-                        element: lhsElement,
-                        oldFirst: oldFirst
-                    )
-                ]
-            } else {
-                return [
-                    .init(
-                        change: .init(changeType: .addition, parentName: lhsElement.parentPath, changeDescription: "`\(lhsElement)` was added"),
-                        element: lhsElement,
-                        oldFirst: oldFirst
-                    )
-                ]
-            }
+            let changeType: IndependentChange.ChangeType = oldFirst ?
+                .removal(description: lhsElement.description) :
+                .addition(description: lhsElement.description)
+            
+            return [
+                .from(
+                    changeType: changeType,
+                    element: lhsElement,
+                    oldFirst: oldFirst
+                )
+            ]
         }
         
         return changes
     }
 }
 
-// MARK: - Consolidation
-
-// TODO: Rename/Refactor
-private struct TmpChange {
-    let change: Change
-    let element: SDKDump.Element
-    let oldFirst: Bool
+private extension SDKDump.Element {
+    
+    /// Checks whether or not 2 elements can be compared based on their `printedName`, `declKind` and `parentPath`
+    ///
+    /// If the `printedName`, `declKind` + `parentPath` is the same we can assume that it's the same element but altered
+    /// We're using the `printedName` and not the `name` as for example there could be multiple functions with the same name but different parameters.
+    /// In this specific case we want to find an exact match of the signature.
+    ///
+    /// e.g. if we have a function `init(foo: Int, bar: Int) -> Void` the `name` would be `init` and `printedName` would be `init(foo:bar:)`.
+    /// If we used the `name` it could cause a false positive with other functions named `init` (e.g. convenience inits) when trying to find matching elements during this finding phase.
+    /// In a later consolidation phase removals/additions are compared again based on their `name` to combine them to a `change`
+    func isComparable(to otherElement: SDKDump.Element) -> Bool {
+        printedName == otherElement.printedName && 
+        declKind == otherElement.declKind &&
+        parentPath == otherElement.parentPath
+    }
 }
 
-private extension [TmpChange] {
+// MARK: - Consolidation
+
+extension [IndependentChange] {
     
+    /// Matching removals/additions to changes when applicable
     var consolidated: [Change] {
         
-        var tmpChanges = self
+        var independentChanges = self
         var consolidatedChanges = [Change]()
         
-        while !tmpChanges.isEmpty {
-            let firstChange = tmpChanges.removeFirst()
+        while !independentChanges.isEmpty {
+            let change = independentChanges.removeFirst()
             
-            if let nameAndTypeMatchIndex = tmpChanges.firstIndex(where: { $0.element.isComparable(to: firstChange.element) }) {
-                let match = tmpChanges[nameAndTypeMatchIndex]
-                
-                let changeDescription = changeDescription(
-                    for: firstChange,
-                    and: match
-                )
-                
-                let listOfChanges = listOfChanges(
-                    between: firstChange,
-                    and: match
-                )
-                
+            // Trying to find 2 independent changes that could actually have been a change instead of an addition/removal
+            guard let nameAndTypeMatchIndex = independentChanges.firstIndex(where: { $0.isDiffable(with: change) }) else {
                 consolidatedChanges.append(
                     .init(
-                        changeType: .change,
-                        parentName: match.element.parentPath,
-                        changeDescription: changeDescription,
-                        listOfChanges: listOfChanges
+                        changeType: change.changeType.toConsolidatedChangeType(),
+                        parentName: change.parentName,
+                        listOfChanges: nil
                     )
                 )
-                tmpChanges.remove(at: nameAndTypeMatchIndex)
-            } else {
-                consolidatedChanges.append(firstChange.change)
+                continue
             }
+        
+            let match = independentChanges.remove(at: nameAndTypeMatchIndex)
+            let oldDescription = change.oldFirst ? change.element.description : match.element.description
+            let newDescription = change.oldFirst ? match.element.description : change.element.description
+            let listOfChanges = listOfChanges(between: change, and: match)
+            
+            consolidatedChanges.append(
+                .init(
+                    changeType: .change(
+                        oldDescription: oldDescription,
+                        newDescription: newDescription
+                    ),
+                    parentName: match.element.parentPath,
+                    listOfChanges: listOfChanges
+                )
+            )
         }
         
         return consolidatedChanges
     }
     
-    func changeDescription(for lhs: TmpChange, and rhs: TmpChange) -> String {
-        if rhs.oldFirst {
-            "`\(rhs.element.description)`\n  ➡️ `\(lhs.element.description)`"
-        } else {
-            "`\(lhs.element.description)`\n  ➡️ `\(rhs.element.description)`"
-        }
-    }
-    
-    func listOfChanges(between lhs: TmpChange, and rhs: TmpChange) -> [String] {
+    func listOfChanges(between lhs: Self.Element, and rhs: Self.Element) -> [String] {
         if rhs.oldFirst {
             lhs.element.difference(to: rhs.element)
         } else {
             rhs.element.difference(to: lhs.element)
         }
+    }
+}
+
+extension IndependentChange {
+    
+    static func from(changeType: ChangeType, element: SDKDump.Element, oldFirst: Bool) -> Self {
+        .init(
+            changeType: changeType,
+            parentName: element.parentPath,
+            element: element,
+            oldFirst: oldFirst
+        )
+    }
+    
+    /// Checks whether or not 2 changes can be diffed based on their elements `name`, `declKind` and `parentPath`.
+    /// It also checks if the `changeType` is different to not compare 2 additions/removals with eachother.
+    ///
+    /// If the `name`, `declKind`, `parentPath` of the element is the same we can assume that it's the same element but altered.
+    /// We're using the `name` and not the `printedName` is intended to be used to figure out if an addition & removal is actually a change.
+    /// `name` is more generic than `printedName` as it (for functions) does not take the arguments into account.
+    ///
+    /// e.g. if we have a function `init(foo: Int, bar: Int) -> Void` the `name` would be `init` and `printedName` would be `init(foo:bar:)`.
+    /// It could cause a false positive with other functions named `init` (e.g. convenience inits) when trying to find matching elements during the finding phase.
+    /// Here we already found the matching elements and thus are looking for combining a removal/addition to a change and thus we can loosen the filter to use the `name`.
+    /// It could potentially still lead to false positives when having multiple functions with changes and the same name and parent but this is acceptable in this phase.
+    func isDiffable(with otherChange: IndependentChange) -> Bool {
+        element.name == otherChange.element.name && 
+        element.declKind == otherChange.element.declKind &&
+        element.parentPath == otherChange.element.parentPath &&
+        changeType.isAddition != otherChange.changeType.isAddition // We only want to match independent changes that are hava a different changeType
     }
 }
