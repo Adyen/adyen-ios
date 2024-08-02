@@ -109,6 +109,98 @@ class TwintComponentUITests: XCTestCase {
         wait(for: [didSubmitExpectation], timeout: 10)
     }
 
+    func testSubmitStoreDetailsIsEnabledShouldSendPaymentComponentDataWithStorePaymentMethodTrue() throws {
+        // Given
+        let configuration = TwintComponentConfiguration(showsStorePaymentMethodField: true, storePaymentMethod: false)
+        sut = TwintComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        let paymentComponentDelegate = PaymentComponentDelegateMock()
+        sut.delegate = paymentComponentDelegate
+
+        setupRootViewController(sut.viewController)
+
+        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called.")
+        paymentComponentDelegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === self.sut)
+
+            // Then
+            XCTAssertTrue(data.storePaymentMethod ?? false)
+
+            didSubmitExpectation.fulfill()
+        }
+
+        // When
+        let view = sut.viewController.view
+        let storeDetailsToggle: FormToggleItemView = try XCTUnwrap(view?.findView(by: TwintViewIdentifier.storeDetailsToogle))
+        let submitButton: UIControl = try XCTUnwrap(view?.findView(by: TwintViewIdentifier.submitButton))
+
+        storeDetailsToggle.item.value = true
+        submitButton.sendActions(for: .touchUpInside)
+
+        wait(for: [didSubmitExpectation], timeout: 10)
+    }
+
+    func testSubmitStoreDetailsIsDisabledShouldSendPaymentComponentDataWithStorePaymentMethodFalse() throws {
+        // Given
+        let configuration = TwintComponentConfiguration(showsStorePaymentMethodField: true, storePaymentMethod: false)
+        sut = TwintComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        let paymentComponentDelegate = PaymentComponentDelegateMock()
+        sut.delegate = paymentComponentDelegate
+
+        setupRootViewController(sut.viewController)
+
+        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called.")
+        paymentComponentDelegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === self.sut)
+
+            // Then
+            XCTAssertFalse(data.storePaymentMethod ?? false)
+
+            didSubmitExpectation.fulfill()
+        }
+
+        // When
+        let view = sut.viewController.view
+        let storeDetailsToggle: FormToggleItemView = try XCTUnwrap(view?.findView(by: TwintViewIdentifier.storeDetailsToogle))
+        let submitButton: UIControl = try XCTUnwrap(view?.findView(by: TwintViewIdentifier.submitButton))
+
+        storeDetailsToggle.item.value = false
+        submitButton.sendActions(for: .touchUpInside)
+
+        wait(for: [didSubmitExpectation], timeout: 10)
+    }
+
+    func testStopLoading() {
+        // Given
+        let configuration = TwintComponent.Configuration()
+        sut = TwintComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        setupRootViewController(sut.viewController)
+        wait(for: .milliseconds(300))
+
+        XCTAssertFalse(sut.submitButtonItem.showsActivityIndicator)
+        sut.submitButtonItem.showsActivityIndicator = true
+
+        // When
+        sut.stopLoadingIfNeeded()
+
+        // Then
+        XCTAssertFalse(sut.submitButtonItem.showsActivityIndicator)
+    }
+
     // MARK: - Private
 
     private enum TwintViewIdentifier {

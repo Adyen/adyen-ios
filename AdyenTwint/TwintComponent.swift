@@ -33,7 +33,6 @@ public final class TwintComponent: PaymentComponent,
             subType: "sdk"
         )
 
-        let storePaymentMethod = storeDetailsItem.value
         return PaymentComponentData(
             paymentMethodDetails: details,
             amount: context.payment?.amount,
@@ -57,7 +56,7 @@ public final class TwintComponent: PaymentComponent,
 
     // MARK: - Form items
 
-    private lazy var storeDetailsItem: FormToggleItem = {
+    internal lazy var storeDetailsItem: FormToggleItem = {
         let formToggleItem = FormToggleItem(style: configuration.style.toggle)
 
         let title = localizedString(.cardStoreDetailsButton, configuration.localizationParameters)
@@ -69,7 +68,7 @@ public final class TwintComponent: PaymentComponent,
         return formToggleItem
     }()
 
-    private lazy var submitButtonItem: FormButtonItem = {
+    internal lazy var submitButtonItem: FormButtonItem = {
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
 
         let title = localizedString(.continueTitle, configuration.localizationParameters)
@@ -114,7 +113,7 @@ public final class TwintComponent: PaymentComponent,
         style: configuration.style
     )
 
-    // MARK: - Initalizers
+    // MARK: - Initializers
 
     /// Initializes the Twint component.
     ///
@@ -123,7 +122,7 @@ public final class TwintComponent: PaymentComponent,
     /// - Parameter configuration: The configuration for the component.
     public init(paymentMethod: TwintPaymentMethod,
                 context: AdyenContext,
-                configuration: TwintComponentConfiguration = .init()) {
+                configuration: Configuration = .init()) {
         self.paymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
