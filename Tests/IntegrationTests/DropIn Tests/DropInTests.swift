@@ -167,6 +167,33 @@ class DropInTests: XCTestCase {
         XCTAssertEqual(style.navigation.separatorColor, .green)
     }
     
+    func testViewDidLoadShouldSendRenderCall() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+        let config = DropInComponent.Configuration(allowPreselectedPaymentView: false)
+
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
+        let sut = DropInComponent(paymentMethods: paymentMethods,
+                                  context: context,
+                                  configuration: config)
+
+        // When
+        sut.sendDidLoadEvent()
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.infos.count, 1)
+        
+        let info = analyticsProviderMock.infos.first
+        XCTAssertEqual(info?.type, .rendered)
+        
+        let configDataDict = try XCTUnwrap(info?.configData?.stringOnlyDictionary)
+        XCTAssertNotNil(configDataDict)
+        XCTAssertEqual(configDataDict["skipPaymentMethodList"], "false")
+        XCTAssertEqual(configDataDict["openFirstStoredPaymentMethod"], "false")
+        XCTAssertEqual(configDataDict.keys.count, 2)
+    }
+    
     func testOpenDropInAsList() throws {
         let config = DropInComponent.Configuration()
 
