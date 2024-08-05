@@ -167,4 +167,12 @@ public final class TwintComponent: PaymentComponent,
 extension TwintComponent: PaymentInitiable {}
 
 @_spi(AdyenInternal)
+extension TwintComponent: PresentableInitiableComponent {
+
+    public var requiresPresentation: Bool {
+        configuration.showsStorePaymentMethodField
+    }
+}
+
+@_spi(AdyenInternal)
 extension TwintComponent: ViewControllerDelegate {}

@@ -270,7 +270,7 @@ public extension DropInComponent {
         ///   - showsStorePaymentMethodField: Determines the visibility of the field for storing the payment method.
         ///   - storePaymentMethod: Determines whether to store this payment method.
         ///   Ignored if `showsStorePaymentMethodField` is `true`.
-        init(showsStorePaymentMethodField: Bool, storePaymentMethod: Bool) {
+        public init(showsStorePaymentMethodField: Bool, storePaymentMethod: Bool) {
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
             self.storePaymentMethod = storePaymentMethod
         }

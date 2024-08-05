@@ -248,12 +248,20 @@ public final class DropInComponent: NSObject,
     
     internal func didSelect(_ component: PaymentComponent) {
         setNecessaryDelegates(on: component)
-        
+
         switch component {
-        case let component as PresentableComponent:
-            navigationController.present(asModal: component)
+        // TODO: - Review with team
+        // TODO: - Test case order
+        case let component as PresentableInitiableComponent:
+            if component.requiresPresentation {
+                navigationController.present(asModal: component)
+            } else {
+                component.initiatePayment()
+            }
         case let component as PaymentInitiable:
             component.initiatePayment()
+        case let component as PresentableComponent:
+            navigationController.present(asModal: component)
         default:
             break
         }
