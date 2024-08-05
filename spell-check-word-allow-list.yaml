@@ -202,4 +202,4 @@ whiteList:
   - func
   - redirectable
   - appslist
-  
+  - unfocus

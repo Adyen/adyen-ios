@@ -33,9 +33,20 @@ final class CardComponentEventTests: XCTestCase {
         // Then
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
         XCTAssertEqual(analyticsProviderMock.infos.count, 1)
-        let infoType = analyticsProviderMock.infos.first?.type
-        XCTAssertEqual(infoType, .rendered)
-
+        
+        let info = analyticsProviderMock.infos.first
+        XCTAssertEqual(info?.type, .rendered)
+        
+        let configDataDict = try XCTUnwrap(info?.configData?.stringOnlyDictionary)
+        XCTAssertEqual(configDataDict["socialSecurityNumberMode"], "auto")
+        XCTAssertEqual(configDataDict["hasInstallmentOptions"], "false")
+        XCTAssertEqual(configDataDict["showsStorePaymentMethodField"], "true")
+        XCTAssertEqual(configDataDict["billingAddressRequired"], "true")
+        XCTAssertEqual(configDataDict["showsSecurityCodeField"], "true")
+        XCTAssertEqual(configDataDict["showsHolderNameField"], "false")
+        XCTAssertEqual(configDataDict["showKCPType"], "auto")
+        XCTAssertEqual(configDataDict["enableStoredDetails"], "true")
+        XCTAssertEqual(configDataDict.keys.count, 8)
     }
     
     // MARK: Focus/unfocus
