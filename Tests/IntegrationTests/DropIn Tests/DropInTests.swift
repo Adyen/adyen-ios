@@ -187,11 +187,11 @@ class DropInTests: XCTestCase {
         let info = analyticsProviderMock.infos.first
         XCTAssertEqual(info?.type, .rendered)
         
-        let configDataDict = info?.configData?.stringOnlyDictionary
+        let configDataDict = try XCTUnwrap(info?.configData?.stringOnlyDictionary)
         XCTAssertNotNil(configDataDict)
-        XCTAssertEqual(configDataDict?["skipPaymentMethodList"], "false")
-        XCTAssertEqual(configDataDict?["openFirstStoredPaymentMethod"], "false")
-
+        XCTAssertEqual(configDataDict["skipPaymentMethodList"], "false")
+        XCTAssertEqual(configDataDict["openFirstStoredPaymentMethod"], "false")
+        XCTAssertEqual(configDataDict.keys.count, 2)
     }
     
     func testOpenDropInAsList() throws {

@@ -37,17 +37,16 @@ final class CardComponentEventTests: XCTestCase {
         let info = analyticsProviderMock.infos.first
         XCTAssertEqual(info?.type, .rendered)
         
-        let configDataDict = info?.configData?.stringOnlyDictionary
-        XCTAssertNotNil(configDataDict)
-        XCTAssertEqual(configDataDict?["socialSecurityNumberMode"], "auto")
-        XCTAssertEqual(configDataDict?["hasInstallmentOptions"], "false")
-        XCTAssertEqual(configDataDict?["showsStorePaymentMethodField"], "true")
-        XCTAssertEqual(configDataDict?["billingAddressRequired"], "true")
-        XCTAssertEqual(configDataDict?["showsSecurityCodeField"], "true")
-        XCTAssertEqual(configDataDict?["showsHolderNameField"], "false")
-        XCTAssertEqual(configDataDict?["showKCPType"], "auto")
-        XCTAssertEqual(configDataDict?["enableStoredDetails"], "true")
-
+        let configDataDict = try XCTUnwrap(info?.configData?.stringOnlyDictionary)
+        XCTAssertEqual(configDataDict["socialSecurityNumberMode"], "auto")
+        XCTAssertEqual(configDataDict["hasInstallmentOptions"], "false")
+        XCTAssertEqual(configDataDict["showsStorePaymentMethodField"], "true")
+        XCTAssertEqual(configDataDict["billingAddressRequired"], "true")
+        XCTAssertEqual(configDataDict["showsSecurityCodeField"], "true")
+        XCTAssertEqual(configDataDict["showsHolderNameField"], "false")
+        XCTAssertEqual(configDataDict["showKCPType"], "auto")
+        XCTAssertEqual(configDataDict["enableStoredDetails"], "true")
+        XCTAssertEqual(configDataDict.keys.count, 8)
     }
     
     // MARK: Focus/unfocus

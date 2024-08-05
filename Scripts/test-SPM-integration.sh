@@ -6,13 +6,11 @@ PROJECT_NAME=TempProject
 
 # Clean up.
 rm -rf $PROJECT_NAME
-rm -rf .swiftpm
 
 cleanup() {
     echo "Clean Up"
     cd ../
     rm -rf $PROJECT_NAME
-    rm -rf .swiftpm
 }
 trap cleanup EXIT
 
