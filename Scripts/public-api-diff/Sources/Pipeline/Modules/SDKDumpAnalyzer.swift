@@ -40,10 +40,11 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
         var changes = [Change]()
         
         if oldFirst, lhs.description != rhs.description {
-            changes += [
-                .init(changeType: .removal, parentName: lhs.parentPath, changeDescription: "`\(lhs)` was removed"),
-                .init(changeType: .addition, parentName: rhs.parentPath, changeDescription: "`\(rhs)` was added")
-            ]
+            changes += [.init(changeType: .removal, parentName: lhs.parentPath, changeDescription: "`\(lhs)` was removed")]
+            
+            if !rhs.isSpiInternal {
+                changes += [.init(changeType: .addition, parentName: rhs.parentPath, changeDescription: "`\(rhs)` was added")]
+            }
         }
         
         changes += lhs.children.flatMap { lhsElement in
@@ -54,7 +55,7 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
             // This simplifies the script and also makes it more accurate
             // but has the downside of running into the chance of not grouping the changed element together
             
-            if let rhsChildForName = rhs.children.first(where: { $0.description == lhsElement.description }) {
+            if let rhsChildForName = rhs.children.first(where: { $0.isComparable(to: lhsElement) }) {
                 return recursiveCompare(element: lhsElement, to: rhsChildForName, oldFirst: oldFirst)
             }
             
@@ -72,5 +73,15 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
         }
         
         return changes
+    }
+}
+
+private extension SDKDump.Element {
+    
+    func isComparable(to otherElement: SDKDump.Element) -> Bool {
+        // If the `printedName`, type + parent is the same we can assume that it's the same element but altered
+        // We're using the `printedName` and not the `name` as for example there could be multiple functions with the same name but different parameters.
+        // In this specific case we want to find an exact match of the signature.
+        printedName == otherElement.printedName && declKind == otherElement.declKind && parentPath == otherElement.parentPath
     }
 }
