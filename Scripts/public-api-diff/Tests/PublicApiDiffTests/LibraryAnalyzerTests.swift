@@ -95,8 +95,8 @@ class LibraryAnalyzerTests: XCTestCase {
         )
         
         let expectedChanges: [Change] = [
-            .init(changeType: .removal(description: "`.library(name: \"OldLibrary\", ...)` was removed"), parentName: ""),
-            .init(changeType: .addition(description: "`.library(name: \"NewLibrary\", ...)` was added"), parentName: "")
+            .init(changeType: .removal(description: "`.library(name: \"OldLibrary\", ...)`"), parentName: ""),
+            .init(changeType: .addition(description: "`.library(name: \"NewLibrary\", ...)`"), parentName: "")
         ]
         XCTAssertEqual(changes, expectedChanges)
         
