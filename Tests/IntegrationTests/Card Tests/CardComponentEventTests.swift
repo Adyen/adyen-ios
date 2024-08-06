@@ -40,13 +40,12 @@ final class CardComponentEventTests: XCTestCase {
         let configDataDict = try XCTUnwrap(info?.configData?.stringOnlyDictionary)
         XCTAssertEqual(configDataDict["socialSecurityNumberMode"], "auto")
         XCTAssertEqual(configDataDict["hasInstallmentOptions"], "false")
-        XCTAssertEqual(configDataDict["showsStorePaymentMethodField"], "true")
         XCTAssertEqual(configDataDict["billingAddressRequired"], "true")
-        XCTAssertEqual(configDataDict["showsSecurityCodeField"], "true")
+        XCTAssertEqual(configDataDict["hideCVC"], "false")
         XCTAssertEqual(configDataDict["showsHolderNameField"], "false")
         XCTAssertEqual(configDataDict["showKCPType"], "auto")
         XCTAssertEqual(configDataDict["enableStoredDetails"], "true")
-        XCTAssertEqual(configDataDict.keys.count, 8)
+        XCTAssertEqual(configDataDict.keys.count, 7)
     }
     
     // MARK: Focus/unfocus
