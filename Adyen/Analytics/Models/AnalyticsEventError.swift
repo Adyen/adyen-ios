@@ -6,8 +6,8 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
 /// Represents an error in the analytics scheme that indicates the flow was interrupted due to an error in the SDK.
+@_spi(AdyenInternal)
 public struct AnalyticsEventError: AnalyticsEvent {
     
     public var id: String = UUID().uuidString

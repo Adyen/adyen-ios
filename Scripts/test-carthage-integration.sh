@@ -143,6 +143,7 @@ cp "../Tests/IntegrationTests/Helpers/UIView+Search.swift" Tests/UIView+Search.s
 cp "../Tests/UnitTests/Helpers/PaymentMethods+Equatable.swift" Tests/PaymentMethods+Equatable.swift
 cp "../Tests/UnitTests/Analytics/AnalyticsProviderMock.swift" Tests/AnalyticsProviderMock.swift
 cp "../Tests/UnitTests/Mocks/DummyData/Dummy.swift" Tests/Dummy.swift
+cp "../Tests/UnitTests/Mocks/DummyData/DummyHelper.swift" Tests/DummyHelper.swift
 cp "../Tests/UnitTests/Mocks/DummyData/DummyPaymentMethods.swift" Tests/DummyPaymentMethods.swift
 cp "../Tests/UnitTests/APIClientMock.swift" Tests/APIClientMock.swift
 cp "../Tests/UnitTests/Mocks/ImageLoaderMock.swift" Tests/ImageLoaderMock.swift
