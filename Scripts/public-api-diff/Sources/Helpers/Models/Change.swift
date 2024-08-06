@@ -15,7 +15,7 @@ struct Change: Equatable {
     
     var changeType: ChangeType
     var parentName: String
-    var listOfChanges: [String]? = nil
+    var listOfChanges: [String] = []
 }
 
 extension Change.ChangeType {

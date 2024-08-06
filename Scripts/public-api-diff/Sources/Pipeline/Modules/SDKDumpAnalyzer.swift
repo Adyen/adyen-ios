@@ -6,17 +6,25 @@
 
 import Foundation
 
-private struct IndependentChange {
+private struct IndependentChange: Equatable {
     
-    enum ChangeType {
+    enum ChangeType: Equatable {
         case addition(_ description: String)
         case removal(_ description: String)
+        
+        var description: String {
+            switch self {
+            case .addition(let description): description
+            case .removal(let description): description
+            }
+        }
     }
     
     let changeType: ChangeType
-    var parentName: String { element.parentPath }
     let element: SDKDump.Element
+    
     let oldFirst: Bool
+    var parentName: String { element.parentPath }
 }
 
 struct SDKDumpAnalyzer: SDKDumpAnalyzing {
@@ -52,31 +60,22 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
         var changes = [IndependentChange]()
         
         if oldFirst, lhs.description != rhs.description {
-            changes += [
-                .from(
-                    changeType: .removal(lhs.description),
-                    element: lhs,
-                    oldFirst: oldFirst
-                )
-            ]
-            
-            if !rhs.isSpiInternal {
-                // We only report additions if they are not @_spi
-                changes += [
-                    .from(
-                        changeType: .addition(rhs.description),
-                        element: rhs,
-                        oldFirst: oldFirst
-                    )
-                ]
-            }
+            changes += independentChanges(from: lhs, and: rhs, oldFirst: oldFirst)
         }
         
         changes += lhs.children.flatMap { lhsElement -> [IndependentChange] in
 
             // Trying to find a matching element
+            
+            // First checking if we found an exact match based on the description...
+            if let exactMatch = rhs.children.first(where: { $0.description == lhsElement.description }) {
+                // We found an exact match so we check if the children changed
+                return recursiveCompare(element: lhsElement, to: exactMatch, oldFirst: oldFirst)
+            }
+            
+            // ... then losening the criteria to find a comparable element
             if let rhsChildForName = rhs.children.first(where: { $0.isComparable(to: lhsElement) }) {
-                // We found a matching element so we check if the children changed
+                // We found a comparable element so we check if the children changed
                 return recursiveCompare(element: lhsElement, to: rhsChildForName, oldFirst: oldFirst)
             }
     
@@ -103,6 +102,34 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
         
         return changes
     }
+    
+    private static func independentChanges(
+        from lhs: SDKDump.Element,
+        and rhs: SDKDump.Element,
+        oldFirst: Bool
+    ) -> [IndependentChange] {
+        
+        var changes: [IndependentChange] = [
+            .from(
+                changeType: .removal(lhs.description),
+                element: lhs,
+                oldFirst: oldFirst
+            )
+        ]
+        
+        if !rhs.isSpiInternal {
+            // We only report additions if they are not @_spi
+            changes += [
+                .from(
+                    changeType: .addition(rhs.description),
+                    element: rhs,
+                    oldFirst: oldFirst
+                )
+            ]
+        }
+        
+        return changes
+    }
 }
 
 private extension SDKDump.Element {
@@ -117,7 +144,7 @@ private extension SDKDump.Element {
     /// If we used the `name` it could cause a false positive with other functions named `init` (e.g. convenience inits) when trying to find matching elements during this finding phase.
     /// In a later consolidation phase removals/additions are compared again based on their `name` to combine them to a `change`
     func isComparable(to otherElement: SDKDump.Element) -> Bool {
-        printedName == otherElement.printedName && 
+        printedName == otherElement.printedName &&
         declKind == otherElement.declKind &&
         parentPath == otherElement.parentPath
     }
@@ -151,13 +178,7 @@ private struct ChangeConsolidator {
             
             // Trying to find 2 independent changes that could actually have been a change instead of an addition/removal
             guard let nameAndTypeMatchIndex = independentChanges.firstIndex(where: { $0.isConsolidatable(with: change) }) else {
-                consolidatedChanges.append(
-                    .init(
-                        changeType: change.changeType.toConsolidatedChangeType,
-                        parentName: change.parentName,
-                        listOfChanges: nil
-                    )
-                )
+                consolidatedChanges.append(change.toConsolidatedChange)
                 continue
             }
         
@@ -183,7 +204,7 @@ private struct ChangeConsolidator {
     
     /// Compiles a list of changes between 2 independent changes
     func listOfChanges(between lhs: IndependentChange, and rhs: IndependentChange) -> [String] {
-        if rhs.oldFirst {
+        if lhs.oldFirst {
             lhs.element.difference(to: rhs.element)
         } else {
             rhs.element.difference(to: lhs.element)
@@ -192,6 +213,23 @@ private struct ChangeConsolidator {
 }
 
 private extension IndependentChange {
+    
+    var toConsolidatedChange: Change {
+        let changeType: Change.ChangeType = {
+            switch self.changeType {
+            case .addition(let description):
+                .addition(description: description)
+            case .removal(let description):
+                .removal(description: description)
+            }
+        }()
+        
+        return .init(
+            changeType: changeType,
+            parentName: parentName,
+            listOfChanges: []
+        )
+    }
     
     /// Helper method to construct an IndependentChange from the changeType & element
     static func from(changeType: ChangeType, element: SDKDump.Element, oldFirst: Bool) -> Self {
@@ -217,35 +255,17 @@ private extension IndependentChange {
         element.name == otherChange.element.name &&
         element.declKind == otherChange.element.declKind &&
         element.parentPath == otherChange.element.parentPath &&
-        changeType.isAddition != otherChange.changeType.isAddition // We only want to match independent changes that are hava a different changeType
+        changeType.name != otherChange.changeType.name // We only want to match independent changes that are hava a different changeType
     }
 }
 
 private extension IndependentChange.ChangeType {
     
-    /// Whether or not the type is an `.addition`
-    var isAddition: Bool {
+    /// The name of the type (without associated value) as String
+    var name: String {
         switch self {
-        case .addition: true
-        case .removal: false
-        }
-    }
-    
-    /// Whether or not the type is an `.removal`
-    var isRemoval: Bool {
-        switch self {
-        case .addition: false
-        case .removal: true
-        }
-    }
-    
-    /// Converts a `IndependentChange.ChangeType` to a `Change.ChangeType`
-    var toConsolidatedChangeType: Change.ChangeType {
-        switch self {
-        case .addition(let description):
-            return .addition(description: description)
-        case .removal(let description):
-            return .removal(description: description)
+        case .addition: "addition"
+        case .removal: "removal"
         }
     }
 }

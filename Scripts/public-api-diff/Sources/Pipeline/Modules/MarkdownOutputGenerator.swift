@@ -122,11 +122,12 @@ private extension MarkdownOutputGenerator {
             lines.append("```javascript")
             lines.append(description(for: $0))
             
-            if let listOfChanges = $0.listOfChanges, !listOfChanges.isEmpty {
-                lines.append("")
-                listOfChanges.forEach {
-                    lines.append("// \($0)")
+            if !$0.listOfChanges.isEmpty {
+                lines.append("\n/**")
+                $0.listOfChanges.forEach {
+                    lines.append("- \($0)")
                 }
+                lines.append("*/")
             }
             
             lines.append("```")

@@ -37,7 +37,10 @@ class OutputGeneratorTests: XCTestCase {
 
         ---
         ## `Target_1`
-        - ❇️  Some Addition
+        #### ❇️ Added
+        ```javascript
+        Some Addition
+        ```
 
         ---
         **Analyzed targets:** Target_1
@@ -46,7 +49,7 @@ class OutputGeneratorTests: XCTestCase {
         let outputGenerator = MarkdownOutputGenerator()
         
         let output = outputGenerator.generate(
-            from: ["Target_1": [.init(changeType: .addition, parentName: "", changeDescription: "Some Addition")]],
+            from: ["Target_1": [.init(changeType: .addition(description: "Some Addition"), parentName: "")]],
             allTargets: ["Target_1"],
             oldSource: .local(path: "old_source"),
             newSource: .local(path: "new_source")
@@ -62,11 +65,23 @@ class OutputGeneratorTests: XCTestCase {
 
         ---
         ## `Target_1`
-        - ❇️  Some Addition
-        - 😶‍🌫️ Some Removal
+        #### ❇️ Added
+        ```javascript
+        Some Addition
+        ```
+        #### 😶‍🌫️ Removed
+        ```javascript
+        Some Removal
+        ```
         ## `Target_2`
-        - ❇️  Another Addition
-        - 😶‍🌫️ Another Removal
+        #### ❇️ Added
+        ```javascript
+        Another Addition
+        ```
+        #### 😶‍🌫️ Removed
+        ```javascript
+        Another Removal
+        ```
 
         ---
         **Analyzed targets:** Target_1, Target_2
@@ -77,12 +92,12 @@ class OutputGeneratorTests: XCTestCase {
         let output = outputGenerator.generate(
             from: [
                 "Target_1": [
-                    .init(changeType: .addition, parentName: "", changeDescription: "Some Addition"),
-                    .init(changeType: .removal, parentName: "", changeDescription: "Some Removal")
+                    .init(changeType: .addition(description: "Some Addition"), parentName: ""),
+                    .init(changeType: .removal(description: "Some Removal"), parentName: "")
                 ],
                 "Target_2": [
-                    .init(changeType: .addition, parentName: "", changeDescription: "Another Addition"),
-                    .init(changeType: .removal, parentName: "", changeDescription: "Another Removal")
+                    .init(changeType: .addition(description: "Another Addition"), parentName: ""),
+                    .init(changeType: .removal(description: "Another Removal"), parentName: "")
                 ]
             ],
             allTargets: ["Target_1", "Target_2"],
