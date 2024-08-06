@@ -262,6 +262,57 @@ import XCTest
             )
         }
 
+        func testHandleWhenIsStoredEnabledAndSingleAppFoundShouldCallTwintRegisterForUOF() throws {
+            // Given
+            let fetchBlockExpectation = expectation(description: "Fetch was called")
+            let registerForUFO = expectation(description: "registerForUFO was called")
+
+            let twintSpy = TwintSpy { configurationsBlock in
+                fetchBlockExpectation.fulfill()
+                configurationsBlock([.dummy])
+            } handlePay: { _, _, _ in
+                XCTFail("Pay should not have been called.")
+                return nil
+            } handleRegisterForUOF: { code, appConfiguration, callbackAppScheme in
+                registerForUFO.fulfill()
+                XCTAssertEqual(code, TwintSDKAction.dummy.sdkData.token)
+                XCTAssertEqual(appConfiguration.appDisplayName, TWAppConfiguration.dummy.appDisplayName)
+                XCTAssertEqual(appConfiguration.appURLScheme, TWAppConfiguration.dummy.appURLScheme)
+                XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.callbackAppScheme)
+                return nil
+            } handleController: { installedAppConfigurations, selectionHandler, cancelHandler in
+                XCTFail("Twint controller should not have been shown")
+                return nil
+            } handleOpenUrl: { url, responseHandler in
+                XCTFail("Handle open should not have been called")
+                return false
+            }
+
+            let presentationDelegate = Self.failingPresentationDelegateMock()
+            let sut = Self.actionComponent(
+                with: twintSpy,
+                presentationDelegate: presentationDelegate,
+                delegate: nil
+            )
+
+            // When
+            let sdkData = TwintSDKData(token: "token", isStored: true)
+            let action = TwintSDKAction(
+                sdkData: sdkData,
+                paymentData: "payment-data",
+                paymentMethodType: "payment-method",
+                type: "type"
+            )
+            sut.handle(action)
+
+            // Then
+            wait(
+                for: [fetchBlockExpectation, registerForUFO],
+                timeout: 1,
+                enforceOrder: true
+            )
+        }
+
         func testHandleWhenIsStoredEnabledAndMultipleAppsFoundShouldCallTwintRegisterForUOF() throws {
             // Given
             let fetchBlockExpectation = expectation(description: "Fetch was called")
