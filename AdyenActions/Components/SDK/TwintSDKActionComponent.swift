@@ -120,7 +120,7 @@ import Foundation
         }
 
         private func invokeTwint(app: TWAppConfiguration, action: TwintSDKAction) {
-            var error: Error? = {
+            let error: Error? = {
                 if action.sdkData.isStored {
                     twint.registerForUOF(
                         withCode: action.sdkData.token,

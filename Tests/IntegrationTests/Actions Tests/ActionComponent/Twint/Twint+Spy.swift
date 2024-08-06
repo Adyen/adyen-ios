@@ -21,7 +21,13 @@ import Foundation
             _ appConfiguration: TWAppConfiguration,
             _ callbackAppScheme: String
         ) -> Error?
-    
+
+        internal typealias HandleRegisterForUOF = (
+            _ code: String,
+            _ appConfiguration: TWAppConfiguration,
+            _ callbackAppScheme: String
+        ) -> Error?
+
         internal typealias HandleControllerBlock = (
             _ installedAppConfigurations: [TWAppConfiguration],
             _ selectionHandler: @escaping (TWAppConfiguration?) -> Void,
@@ -35,17 +41,20 @@ import Foundation
     
         internal var handleFetchInstalledAppConfigurations: HandleFetchBlock
         internal var handlePay: HandlePayBlock
+        internal var handleRegisterForUOF: HandleRegisterForUOF
         internal var handleController: HandleControllerBlock
         internal var handleOpenUrl: HandleOpenBlock
     
         internal init(
             handleFetchInstalledAppConfigurations: @escaping HandleFetchBlock,
             handlePay: @escaping HandlePayBlock,
+            handleRegisterForUOF: @escaping HandleRegisterForUOF,
             handleController: @escaping HandleControllerBlock,
             handleOpenUrl: @escaping HandleOpenBlock
         ) {
             self.handleFetchInstalledAppConfigurations = handleFetchInstalledAppConfigurations
             self.handlePay = handlePay
+            self.handleRegisterForUOF = handleRegisterForUOF
             self.handleController = handleController
             self.handleOpenUrl = handleOpenUrl
         }
@@ -63,7 +72,15 @@ import Foundation
         ) -> Error? {
             handlePay(code, appConfiguration, callbackAppScheme)
         }
-    
+
+        @objc override internal func registerForUOF(
+            withCode code: String,
+            appConfiguration: TWAppConfiguration,
+            callback: String
+        ) -> Error? {
+            handleRegisterForUOF(code, appConfiguration, callback)
+        }
+
         @objc override internal func controller(
             for installedAppConfigurations: [TWAppConfiguration],
             selectionHandler: @escaping (TWAppConfiguration?) -> Void,
