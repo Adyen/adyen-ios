@@ -41,7 +41,7 @@ final class CardComponentEventTests: XCTestCase {
         XCTAssertEqual(configDataDict["socialSecurityNumberMode"], "auto")
         XCTAssertEqual(configDataDict["hasInstallmentOptions"], "false")
         XCTAssertEqual(configDataDict["billingAddressRequired"], "true")
-        XCTAssertEqual(configDataDict["hideCVC"], "true")
+        XCTAssertEqual(configDataDict["hideCVC"], "false")
         XCTAssertEqual(configDataDict["showsHolderNameField"], "false")
         XCTAssertEqual(configDataDict["showKCPType"], "auto")
         XCTAssertEqual(configDataDict["enableStoredDetails"], "true")

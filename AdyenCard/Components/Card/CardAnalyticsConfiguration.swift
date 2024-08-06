@@ -33,7 +33,7 @@ internal struct CardAnalyticsConfiguration: AnalyticsStringDictionaryConvertible
             self.billingAddressRequired = false
         }
         self.showsHolderNameField = configuration.showsHolderNameField
-        self.hideCVC = configuration.showsSecurityCodeField
+        self.hideCVC = !configuration.showsSecurityCodeField
         self.enableStoredDetails = configuration.showsStorePaymentMethodField
         self.hasInstallmentOptions = configuration.installmentConfiguration != nil
         self.showKCPType = configuration.koreanAuthenticationMode.analyticsDescription
