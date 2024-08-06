@@ -36,7 +36,7 @@ public struct TwintComponentConfiguration: AnyTwintComponentConfiguration, Local
         style: FormComponentStyle = FormComponentStyle(),
         localizationParameters: LocalizationParameters? = nil
     ) {
-        self.showsStorePaymentMethodField = false
+        self.showsStorePaymentMethodField = showsStorePaymentMethodField
         self.storePaymentMethod = storePaymentMethod
         self.style = style
         self.localizationParameters = localizationParameters
