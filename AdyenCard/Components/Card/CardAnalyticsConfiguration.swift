@@ -17,13 +17,12 @@ internal struct CardAnalyticsConfiguration: AnalyticsStringDictionaryConvertible
     private let billingAddressAllowedCountries: String?
     private let billingAddressRequired: Bool
     private let showsHolderNameField: Bool
-    private let showsStorePaymentMethodField: Bool
-    private let showsSecurityCodeField: Bool
+    private let hideCVC: Bool
     private let showKCPType: String
     private let socialSecurityNumberMode: String
     private let enableStoredDetails: Bool
     private let hasInstallmentOptions: Bool
-    private let allowedCardTypes: String?
+    private let brands: String?
     
     internal init(configuration: CardComponent.Configuration) {
         self.billingAddressMode = configuration.billingAddress.mode.analyticsDescription
@@ -34,13 +33,12 @@ internal struct CardAnalyticsConfiguration: AnalyticsStringDictionaryConvertible
             self.billingAddressRequired = false
         }
         self.showsHolderNameField = configuration.showsHolderNameField
-        self.showsStorePaymentMethodField = configuration.showsStorePaymentMethodField
-        self.showsSecurityCodeField = configuration.showsSecurityCodeField
+        self.hideCVC = configuration.showsSecurityCodeField
         self.enableStoredDetails = configuration.showsStorePaymentMethodField
         self.hasInstallmentOptions = configuration.installmentConfiguration != nil
         self.showKCPType = configuration.koreanAuthenticationMode.analyticsDescription
         self.socialSecurityNumberMode = configuration.socialSecurityNumberMode.analyticsDescription
-        self.allowedCardTypes = configuration.allowedCardTypes?
+        self.brands = configuration.allowedCardTypes?
             .map(\.rawValue)
             .joined(separator: Constants.stringSeparator)
     }
