@@ -478,26 +478,6 @@ class DropInTests: XCTestCase {
         wait(for: [waitExpectation], timeout: 30)
     }
 
-    func testDidSelectComponentPresentableInitiableComponent() throws {
-        // Given
-        let configuration = DropInComponent.Configuration()
-
-        let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
-        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: paymentMethodsData)
-
-        let sut = DropInComponent(
-            paymentMethods: paymentMethods,
-            context: Dummy.context,
-            configuration: configuration
-        )
-
-        // When
-        sut.didSelect(<#T##component: any PaymentComponent##any PaymentComponent#>)
-
-        // Then
-
-    }
-
     func testReload() throws {
         
         let config = DropInComponent.Configuration()
