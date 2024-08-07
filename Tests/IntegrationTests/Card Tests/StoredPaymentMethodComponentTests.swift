@@ -135,6 +135,26 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         XCTAssertEqual(viewController?.title, localizedString(.dropInStoredTitle, nil, paymentMethod.name))
     }
 
+    func testStoredTwintComponent() throws {
+        // Given
+        let paymentMethod = StoredTwintPaymentMethod(
+            type: .twint,
+            name: "Twint",
+            identifier: "twint",
+            supportedShopperInteractions: [.shopperPresent]
+        )
+        let sut = StoredPaymentMethodComponent(paymentMethod: paymentMethod, context: context)
+
+        // When
+        let viewController = sut.viewController as? UIAlertController
+        XCTAssertNotNil(viewController)
+        XCTAssertEqual(viewController?.actions.count, 2)
+        XCTAssertEqual(viewController?.actions.first?.title, localizedString(.cancelButton, nil))
+        XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, nil))
+        XCTAssertEqual(viewController?.message, paymentMethod.defaultDisplayInformation(using: nil).title)
+        XCTAssertEqual(viewController?.title, localizedString(.dropInStoredTitle, nil, paymentMethod.name))
+    }
+
     func testViewDidLoadShouldSendInitialEvent() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
