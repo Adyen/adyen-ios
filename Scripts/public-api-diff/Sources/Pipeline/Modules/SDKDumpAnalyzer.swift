@@ -67,12 +67,13 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
 
             // Trying to find a matching element
             
-            // First checking if we found an exact match based on the description...
+            // First checking if we found an exact match based on the description
+            // as we don't want to match a non-change with a change
             if let exactMatch = rhs.children.first(where: { $0.description == lhsElement.description }) {
                 // We found an exact match so we check if the children changed
                 return recursiveCompare(element: lhsElement, to: exactMatch, oldFirst: oldFirst)
             }
-            
+
             // ... then losening the criteria to find a comparable element
             if let rhsChildForName = rhs.children.first(where: { $0.isComparable(to: lhsElement) }) {
                 // We found a comparable element so we check if the children changed

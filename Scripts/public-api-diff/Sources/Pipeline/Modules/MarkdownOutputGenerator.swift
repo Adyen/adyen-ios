@@ -113,7 +113,7 @@ private extension MarkdownOutputGenerator {
 }
 
 private extension MarkdownOutputGenerator {
-    
+
     static func changeSectionLines(title: String, changes: [Change]) -> [String] {
         if changes.isEmpty { return [] }
         

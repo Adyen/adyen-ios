@@ -184,7 +184,7 @@ private extension Change {
             parentName: ""
         )
     }
-    
+
     static var addedTarget: Self {
         .init(
             changeType: .addition(description: "Target was added"),

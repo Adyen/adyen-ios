@@ -14,7 +14,7 @@ extension SDKDump.Element {
         spiGroupNames?.forEach {
             components += ["@_spi(\($0))"]
         }
-        
+
         if hasDiscardableResult {
             components += ["@discardableResult"]
         }

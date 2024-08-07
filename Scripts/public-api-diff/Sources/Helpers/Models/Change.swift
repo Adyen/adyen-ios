@@ -15,11 +15,12 @@ struct Change: Equatable {
     
     var changeType: ChangeType
     var parentName: String
+
     var listOfChanges: [String] = []
 }
 
 extension Change.ChangeType {
-    
+
     var isAddition: Bool {
         switch self {
         case .addition:
@@ -30,7 +31,7 @@ extension Change.ChangeType {
             return false
         }
     }
-    
+
     var isRemoval: Bool {
         switch self {
         case .addition:
