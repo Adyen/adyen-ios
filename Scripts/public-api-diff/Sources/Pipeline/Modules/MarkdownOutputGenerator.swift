@@ -101,7 +101,7 @@ private extension MarkdownOutputGenerator {
                         $0.changeType.isRemoval
                     }
                 )
-                
+
                 if !additionLines.isEmpty { lines += additionLines }
                 if !changeLines.isEmpty { lines += changeLines }
                 if !removalLines.isEmpty { lines += removalLines }
@@ -115,6 +115,7 @@ private extension MarkdownOutputGenerator {
 private extension MarkdownOutputGenerator {
 
     static func changeSectionLines(title: String, changes: [Change]) -> [String] {
+
         if changes.isEmpty { return [] }
         
         var lines = [title]

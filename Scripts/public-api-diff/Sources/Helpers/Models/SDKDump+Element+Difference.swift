@@ -1,6 +1,5 @@
 //
 //  File.swift
-//  
 //
 //  Created by Alexander Guretzki on 26/07/2024.
 //
@@ -15,7 +14,7 @@ extension SDKDump.Element {
         diff += difference(toIsThrowing: otherElement.isThrowing)
         diff += difference(toSpiGroupNames: otherElement.spiGroupNames)
         diff += difference(toConformances: otherElement.conformances)
-        
+
         if let functionDescription = SDKDump.FunctionDescription(underlyingElement: self), 
             let otherFunctionDescription = SDKDump.FunctionDescription(underlyingElement: otherElement)
         {
