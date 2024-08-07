@@ -8,8 +8,8 @@ import Foundation
 
 struct Change: Equatable {
     enum ChangeType: Equatable {
-        case addition
-        case removal
+        case addition(description: String)
+        case removal(description: String)
         
         var icon: String {
             switch self {
@@ -21,7 +21,27 @@ struct Change: Equatable {
     
     var changeType: ChangeType
     var parentName: String
-    var changeDescription: String
+}
+
+extension Change.ChangeType {
+
+    var isAddition: Bool {
+        switch self {
+        case .addition:
+            return true
+        case .removal:
+            return false
+        }
+    }
+
+    var isRemoval: Bool {
+        switch self {
+        case .addition:
+            return false
+        case .removal:
+            return true
+        }
+    }
 }
 
 extension [String: [Change]] {

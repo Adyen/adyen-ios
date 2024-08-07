@@ -83,12 +83,24 @@ private extension MarkdownOutputGenerator {
                     lines.append("### `\(parent)`")
                 }
                 
-                changes.sorted { lhs, rhs in lhs.changeDescription < rhs.changeDescription }.forEach {
-                    lines.append("- \($0.changeType.icon) \($0.changeDescription)")
+                changes.sorted { lhs, rhs in description(for: lhs) < description(for: rhs) }.forEach {
+                    lines.append("- \($0.changeType.icon) \(description(for: $0))")
                 }
             }
         }
         
         return lines
+    }
+}
+
+private extension MarkdownOutputGenerator {
+
+    static func description(for change: Change) -> String {
+        switch change.changeType {
+        case .addition(let description):
+            return description
+        case .removal(let description):
+            return description
+        }
     }
 }
