@@ -119,6 +119,8 @@ private extension MarkdownOutputGenerator {
 
             var lines = [title]
             changes.sorted { lhs, rhs in description(for: lhs) < description(for: rhs) }.forEach {
+                // We're using `javascript` as it produces the nicest looking markdown output on Github
+                // `swift` is available but sometimes produces unexpected syntax highlighting
                 lines.append("```javascript")
                 lines.append(description(for: $0))
 
