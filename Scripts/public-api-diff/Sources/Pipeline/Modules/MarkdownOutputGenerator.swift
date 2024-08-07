@@ -101,8 +101,6 @@ private extension MarkdownOutputGenerator {
             return description
         case .removal(let description):
             return description
-        case .change(let before, let after):
-            return "\(before) ➡️ \(after)"
         }
     }
 }
