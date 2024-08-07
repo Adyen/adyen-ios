@@ -15,8 +15,8 @@ extension SDKDump.Element {
         diff += difference(toSpiGroupNames: otherElement.spiGroupNames)
         diff += difference(toConformances: otherElement.conformances)
 
-        if let functionDescription = SDKDump.FunctionDescription(underlyingElement: self), 
-            let otherFunctionDescription = SDKDump.FunctionDescription(underlyingElement: otherElement)
+        if let functionDescription = SDKDump.FunctionDescription(for: self),
+            let otherFunctionDescription = SDKDump.FunctionDescription(for: otherElement)
         {
             diff += functionDescription.difference(toFunction: otherFunctionDescription)
         }
@@ -83,10 +83,10 @@ extension SDKDump.FunctionDescription {
         
         guard ownArguments != otherArguments else { return [] }
         
+        // TODO: Indicate more in depth if the order, type and/or default arg changed
+        
         let ownArgumentNames = Set(arguments.map(\.description))
         let otherArgumentNames = Set(otherArguments.map(\.description))
-        
-        // TODO: Figure out more in depth if the order, type and/or default arg changed
         
         return ownArgumentNames.symmetricDifference(otherArgumentNames).map {
             if otherArgumentNames.contains($0) {

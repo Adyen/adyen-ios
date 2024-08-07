@@ -13,7 +13,7 @@ extension SDKDump {
         
         private let underlyingElement: SDKDump.Element
         
-        init?(underlyingElement: SDKDump.Element) {
+        init?(for underlyingElement: SDKDump.Element) {
             guard underlyingElement.declKind == .func || underlyingElement.declKind == .constructor else {
                 return nil
             }
@@ -26,24 +26,19 @@ extension SDKDump {
         }
         
         public var arguments: [Argument] {
-            var sanitizedArguments = underlyingElement.printedName
-            sanitizedArguments.removeFirst(functionName.count)
-            sanitizedArguments.removeFirst() // `(`
-            if sanitizedArguments.hasSuffix(":)") {
-                sanitizedArguments.removeLast(2) // `:)`
-            } else {
-                sanitizedArguments.removeLast() // `)`
-            }
+ 
+            let parameterNames = Self.parameterNames(
+                from: underlyingElement.printedName,
+                functionName: functionName
+            )
             
-            if sanitizedArguments.isEmpty { return [] }
+            let parameterTypes = Self.parameterTypes(
+                for: underlyingElement
+            )
             
-            let funcComponents = sanitizedArguments.components(separatedBy: ":")
-            
-            let argumentTypes = Array(underlyingElement.children.suffix(from: 1)) // First element is the return type
-            
-            return funcComponents.enumerated().map { index, component in
+            return parameterNames.enumerated().map { index, component in
                 
-                guard index < argumentTypes.count else {
+                guard index < parameterTypes.count else {
                     return .init(
                         name: component,
                         type: "UNKNOWN_TYPE",
@@ -51,7 +46,7 @@ extension SDKDump {
                     )
                 }
                 
-                let type = argumentTypes[index]
+                let type = parameterTypes[index]
                 return .init(
                     name: component,
                     type: type.verboseName,
@@ -103,5 +98,24 @@ extension SDKDump.FunctionDescription {
             }
             return nameAndType
         }
+    }
+    
+    static func parameterNames(from printedName: String, functionName: String) -> [String] {
+        var sanitizedArguments = printedName
+        sanitizedArguments.removeFirst(functionName.count)
+        sanitizedArguments.removeFirst() // `(`
+        if sanitizedArguments.hasSuffix(":)") {
+            sanitizedArguments.removeLast(2) // `:)`
+        } else {
+            sanitizedArguments.removeLast() // `)`
+        }
+        
+        if sanitizedArguments.isEmpty { return [] }
+        
+        return sanitizedArguments.components(separatedBy: ":")
+    }
+    
+    static func parameterTypes(for underlyingElement: SDKDump.Element) -> [SDKDump.Element] {
+        Array(underlyingElement.children.suffix(from: 1)) // First element is the return type
     }
 }
