@@ -9,7 +9,7 @@ import Foundation
 extension SDKDump.Element {
     
     // Protocol conformance node
-    struct Conformance: Codable, Equatable, Hashable {
+    struct Conformance: Codable, Equatable {
         
         var printedName: String
         
