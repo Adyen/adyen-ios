@@ -32,7 +32,7 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
         )
         
         // Matching removals/additions to changes when applicable
-        return ChangeConsolidator().consolidate(individualChanges)
+        return changeConsolidator.consolidate(individualChanges)
     }
     
     private static func recursiveCompare(
