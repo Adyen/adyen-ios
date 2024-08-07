@@ -30,7 +30,7 @@ class SDKDumpTests: XCTestCase {
             )
         )
         
-        let expectedDefinition: String = "public static func foo(\n    _: Swift.Int,\n    bar: Swift.Double = $DEFAULT_ARG\n) -> Swift.Bool"
+        let expectedDefinition: String = "public static func foo(_: Swift.Int, bar: Swift.Double = $DEFAULT_ARG) -> Swift.Bool"
         
         XCTAssertEqual(
             dump.root.description,
@@ -55,7 +55,7 @@ class SDKDumpTests: XCTestCase {
             )
         )
         
-        let expectedDefinition: String = "public static func foo(\n    _: Swift.Int,\n    bar: UNKNOWN_TYPE\n) -> Swift.Bool"
+        let expectedDefinition: String = "public static func foo(_: Swift.Int, bar: UNKNOWN_TYPE) -> Swift.Bool"
         
         XCTAssertEqual(
             dump.root.description,
@@ -83,7 +83,7 @@ class SDKDumpTests: XCTestCase {
             )
         )
         
-        let expectedDefinition: String = "internal static func foo(\n    _: Swift.Int\n) -> Swift.Bool"
+        let expectedDefinition: String = "internal static func foo(_: Swift.Int) -> Swift.Bool"
         
         XCTAssertEqual(
             dump.root.description,
@@ -114,7 +114,7 @@ class SDKDumpTests: XCTestCase {
             )
         )
         
-        let expectedDefinition: String = "@_spi(Internal1) @_spi(Internal2) @_spi(Internal3) public static func foo(\n    _: Swift.Int\n) -> Swift.Bool"
+        let expectedDefinition: String = "@_spi(Internal1) @_spi(Internal2) @_spi(Internal3) public static func foo(_: Swift.Int) -> Swift.Bool"
         
         XCTAssertEqual(
             dump.root.description,

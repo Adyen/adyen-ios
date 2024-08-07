@@ -55,7 +55,7 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
             changes += independentChanges(from: lhs, and: rhs, oldFirst: oldFirst)
         }
         
-        changes += lhs.children.flatMap { lhsElement -> [IndependentChange] in
+        changes += lhs.children.flatMap { lhsElement in
 
             // Trying to find a matching element
             

@@ -71,13 +71,12 @@ extension SDKDump {
                 return underlyingElement.printedName
             }
             
-            // TODO: Better allow passing of a formatting option to do multi line formatting
             let argumentList = arguments
-                .map({ "    \($0.description)"})
-                .joined(separator: ",\n")
+                .map(\.description)
+                .joined(separator: ", ")
             
             let components: [String?] = [
-                "\(functionName)(\n\(argumentList)\n)",
+                "\(functionName)(\(argumentList))",
                 underlyingElement.isThrowing ? "throws" : nil,
                 "->",
                 returnType

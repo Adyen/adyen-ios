@@ -47,7 +47,7 @@ private extension MarkdownOutputGenerator {
         if changesPerTarget.keys.isEmpty {
             return "# ✅ No changes detected"
         }
-
+        
         let totalChangeCount = changesPerTarget.totalChangeCount
         return "# 👀 \(totalChangeCount) public \(totalChangeCount == 1 ? "change" : "changes") detected"
     }
@@ -71,7 +71,7 @@ private extension MarkdownOutputGenerator {
             }
             
             var groupedChanges = [String: [Change]]()
-
+            
             changesForTarget.forEach {
                 groupedChanges[$0.parentName] = (groupedChanges[$0.parentName] ?? []) + [$0]
             }
@@ -101,7 +101,7 @@ private extension MarkdownOutputGenerator {
                         $0.changeType.isRemoval
                     }
                 )
-
+                
                 if !additionLines.isEmpty { lines += additionLines }
                 if !changeLines.isEmpty { lines += changeLines }
                 if !removalLines.isEmpty { lines += removalLines }
@@ -113,9 +113,8 @@ private extension MarkdownOutputGenerator {
 }
 
 private extension MarkdownOutputGenerator {
-
+    
     static func changeSectionLines(title: String, changes: [Change]) -> [String] {
-
         if changes.isEmpty { return [] }
         
         var lines = [title]
@@ -130,7 +129,6 @@ private extension MarkdownOutputGenerator {
                 }
                 lines.append("*/")
             }
-            
             lines.append("```")
         }
         return lines
