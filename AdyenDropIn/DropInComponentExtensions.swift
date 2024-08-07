@@ -177,7 +177,8 @@ extension DropInComponent: TrackableComponent {
     }
     
     public func sendDidLoadEvent() {
-        let infoEvent = AnalyticsEventInfo(component: "dropin", type: .rendered)
+        var infoEvent = AnalyticsEventInfo(component: "dropin", type: .rendered)
+        infoEvent.configData = DropInAnalyticsConfiguration(configuration: configuration)
         context.analyticsProvider?.add(info: infoEvent)
     }
 }

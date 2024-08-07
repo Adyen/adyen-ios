@@ -6,8 +6,8 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
 /// Describes the interface to have an installments configuration.
+@_spi(AdyenInternal)
 public protocol InstallmentConfigurationAware: AdyenSessionAware {
     var installmentConfiguration: InstallmentConfiguration? { get }
 }
@@ -17,12 +17,12 @@ public protocol InstallmentConfigurationAware: AdyenSessionAware {
 /// but in some countries `revolving` option may be added.
 public struct InstallmentOptions: Equatable, Codable {
     
-    @_spi(AdyenInternal)
     /// Month options for regular installments.
+    @_spi(AdyenInternal)
     public let regularInstallmentMonths: [UInt]
     
-    @_spi(AdyenInternal)
     /// Determines if revolving installment is an option.
+    @_spi(AdyenInternal)
     public let includesRevolving: Bool
     
     /// Creates a new instance of installment options.
@@ -77,12 +77,12 @@ public struct InstallmentOptions: Equatable, Codable {
 /// Configuration type to specify installment options.
 public struct InstallmentConfiguration: Decodable {
     
-    @_spi(AdyenInternal)
     /// The option that apply to all card types, unless included `cardTypeBased` options.
+    @_spi(AdyenInternal)
     public let defaultOptions: InstallmentOptions?
     
-    @_spi(AdyenInternal)
     /// Options that are specific to given card types
+    @_spi(AdyenInternal)
     public let cardBasedOptions: [CardType: InstallmentOptions]?
     
     /// Determines whether to show the amount next to the installment value.

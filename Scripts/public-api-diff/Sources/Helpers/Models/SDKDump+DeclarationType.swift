@@ -8,7 +8,7 @@ import Foundation
 
 extension SDKDump {
     
-    enum DeclarationType: String, RawRepresentable, Codable {
+    enum DeclarationKind: String, RawRepresentable, Codable {
         
         case `import` = "Import"
         case `class` = "Class"

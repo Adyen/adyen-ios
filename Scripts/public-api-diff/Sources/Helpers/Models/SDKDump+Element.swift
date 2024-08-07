@@ -14,7 +14,7 @@ extension SDKDump {
         let kind: Kind
         let name: String
         let printedName: String
-        let declKind: DeclarationType?
+        let declKind: DeclarationKind?
         let isStatic: Bool
         let isLet: Bool
         let hasDefaultArg: Bool
@@ -33,7 +33,7 @@ extension SDKDump {
             kind: Kind,
             name: String,
             printedName: String,
-            declKind: DeclarationType? = nil,
+            declKind: DeclarationKind? = nil,
             isStatic: Bool = false,
             isLet: Bool = false,
             hasDefaultArg: Bool = false,
@@ -70,7 +70,7 @@ extension SDKDump {
             self.printedName = try container.decode(String.self, forKey: CodingKeys.printedName)
             self.children = try container.decodeIfPresent([SDKDump.Element].self, forKey: CodingKeys.children) ?? []
             self.spiGroupNames = try container.decodeIfPresent([String].self, forKey: CodingKeys.spiGroupNames)
-            self.declKind = try container.decodeIfPresent(DeclarationType.self, forKey: CodingKeys.declKind)
+            self.declKind = try container.decodeIfPresent(DeclarationKind.self, forKey: CodingKeys.declKind)
             self.isStatic = (try? container.decode(Bool.self, forKey: CodingKeys.isStatic)) ?? false
             self.isLet = (try? container.decode(Bool.self, forKey: CodingKeys.isLet)) ?? false
             self.hasDefaultArg = (try? container.decode(Bool.self, forKey: CodingKeys.hasDefaultArg)) ?? false
@@ -138,6 +138,14 @@ extension SDKDump {
         
         var isSpiInternal: Bool {
             !(spiGroupNames ?? []).isEmpty
+        }
+        
+        var isFinal: Bool {
+            (declAttributes ?? []).contains("Final")
+        }
+
+        var hasDiscardableResult: Bool {
+            (declAttributes ?? []).contains("DiscardableResult")
         }
         
         var isTypeInformation: Bool {
