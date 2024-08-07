@@ -140,6 +140,14 @@ extension SDKDump {
             !(spiGroupNames ?? []).isEmpty
         }
         
+        var isFinal: Bool {
+            (declAttributes ?? []).contains("Final")
+        }
+
+        var hasDiscardableResult: Bool {
+            (declAttributes ?? []).contains("DiscardableResult")
+        }
+        
         var isTypeInformation: Bool {
             kind.isTypeInformation
         }
