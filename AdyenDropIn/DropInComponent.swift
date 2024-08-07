@@ -250,8 +250,8 @@ public final class DropInComponent: NSObject,
         setNecessaryDelegates(on: component)
 
         switch component {
-        // TODO: - Review with team
-        // TODO: - Test case order
+        // Please, always make sure to keep this case ordering as `PresentableInitiableComponent`
+        // inherits from `PaymentInitiable` && `PresentableComponent`.
         case let component as PresentableInitiableComponent:
             if component.requiresPresentation {
                 navigationController.present(asModal: component)

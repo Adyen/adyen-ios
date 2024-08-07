@@ -196,7 +196,7 @@ class DropInTests: XCTestCase {
     }
     
     func testDeletingStoredPaymentSuccessWithSession() throws {
-        var config = DropInComponent.Configuration()
+        let config = DropInComponent.Configuration()
         config.allowPreselectedPaymentView = false
 
         var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
@@ -230,7 +230,7 @@ class DropInTests: XCTestCase {
     }
     
     func testDeletingStoredPaymentFailureWithSession() throws {
-        var config = DropInComponent.Configuration()
+        let config = DropInComponent.Configuration()
         config.allowPreselectedPaymentView = false
 
         var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
@@ -476,6 +476,82 @@ class DropInTests: XCTestCase {
         delegate.safariViewControllerDidFinish?(safari)
 
         wait(for: [waitExpectation], timeout: 30)
+    }
+
+    func testDidSelectWithPresentableInitiableComponentWhenPresentationIsNotRequiredShouldInitiatePayment() throws {
+        // Given
+        let configuration = DropInComponent.Configuration()
+
+        let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: paymentMethodsData)
+
+        let sut = DropInComponent(
+            paymentMethods: paymentMethods,
+            context: Dummy.context,
+            configuration: configuration
+        )
+
+        // When
+        let paymentMethod = PaymentMethodMock(type: .twint, name: "Twint")
+        let viewController = UIViewController()
+        let presentableInitiableComponent = PresentableInitiableComponentMock(
+            paymentMethod: paymentMethod,
+            requiresPresentation: false,
+            viewController: viewController
+        )
+        sut.didSelect(presentableInitiableComponent)
+
+        // Then
+        XCTAssertEqual(presentableInitiableComponent.initiatePaymentCallsCount, 1)
+    }
+
+    func testDidSelectWithPresentableInitiableComponentWhenPresentationIsRequiredShouldNotInitiatePayment() throws {
+        // Given
+        let configuration = DropInComponent.Configuration()
+
+        let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: paymentMethodsData)
+
+        let sut = DropInComponent(
+            paymentMethods: paymentMethods,
+            context: Dummy.context,
+            configuration: configuration
+        )
+
+        // When
+        let paymentMethod = PaymentMethodMock(type: .twint, name: "Twint")
+        let viewControllerMock = UIViewController()
+        let presentableInitiableComponent = PresentableInitiableComponentMock(
+            paymentMethod: paymentMethod,
+            requiresPresentation: true,
+            viewController: viewControllerMock
+        )
+        sut.didSelect(presentableInitiableComponent)
+
+        // Then
+        XCTAssertEqual(presentableInitiableComponent.initiatePaymentCallsCount, 0)
+    }
+
+    func testDidSelectWithInitiableComponentShouldInitiatePayment() throws {
+        // Given
+        let configuration = DropInComponent.Configuration()
+
+        let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: paymentMethodsData)
+
+        let sut = DropInComponent(
+            paymentMethods: paymentMethods,
+            context: Dummy.context,
+            configuration: configuration
+        )
+
+        // When
+        let paymentMethod = PaymentMethodMock(type: .twint, name: "Twint")
+        let initiableComponentMock = InitiableComponentMock(paymentMethod: paymentMethod)
+        sut.didSelect(initiableComponentMock)
+
+        // Then
+        XCTAssertEqual(initiableComponentMock.initiatePaymentCallsCount, 1)
     }
 
     func testReload() throws {

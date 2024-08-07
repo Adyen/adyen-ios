@@ -17,5 +17,72 @@ class PaymentComponentMock: PaymentComponent {
     init(paymentMethod: PaymentMethod) {
         self.paymentMethod = paymentMethod
     }
-    
+}
+
+class PresentableInitiableComponentMock: PaymentComponentMock, PresentableInitiableComponent {
+
+    // MARK: - Properties
+
+    var requiresPresentation: Bool
+    var viewController: UIViewController
+
+    // MARK: - Initalizers
+
+    init(
+        paymentMethod: PaymentMethod,
+        requiresPresentation: Bool,
+        viewController: UIViewController
+    ) {
+        self.requiresPresentation = requiresPresentation
+        self.viewController = viewController
+        super.init(paymentMethod: paymentMethod)
+    }
+
+    // MARK: - initiatePayment
+
+    var initiatePaymentCallsCount = 0
+    var initiatePaymentCalled: Bool {
+        initiatePaymentCallsCount > 0
+    }
+
+    var onInitiatePayment: (() -> Void)?
+
+    func initiatePayment() {
+        initiatePaymentCallsCount += 1
+        onInitiatePayment?()
+    }
+}
+
+class PresentableComponentMock: PaymentComponentMock, PresentableComponent {
+
+    // MARK: - Properties
+
+    var viewController: UIViewController
+
+    // MARK: - Initializers
+
+    init(
+        paymentMethod: PaymentMethod,
+        viewController: UIViewController
+    ) {
+        self.viewController = viewController
+        super.init(paymentMethod: paymentMethod)
+    }
+}
+
+class InitiableComponentMock: PaymentComponentMock, PaymentInitiable {
+
+    // MARK: - initiatePayment
+
+    var initiatePaymentCallsCount = 0
+    var initiatePaymentCalled: Bool {
+        initiatePaymentCallsCount > 0
+    }
+
+    var onInitiatePayment: (() -> Void)?
+
+    func initiatePayment() {
+        initiatePaymentCallsCount += 1
+        onInitiatePayment?()
+    }
 }
