@@ -11,6 +11,10 @@
 #if canImport(AdyenCashAppPay)
     @testable import AdyenCashAppPay
 #endif
+
+#if canImport(AdyenCashAppPay)
+    @testable import AdyenTwint
+#endif
 import PassKit
 import XCTest
 
@@ -26,7 +30,8 @@ class ComponentManagerTests: XCTestCase {
             storedCreditCardDictionary,
             storedPayPalDictionary,
             storedBcmcDictionary,
-            storedACHDictionary
+            storedACHDictionary,
+            storedTwintDictionary
         ],
         "paymentMethods": [
             creditCardDictionary,
@@ -59,11 +64,12 @@ class ComponentManagerTests: XCTestCase {
             bacsDirectDebit,
             cashAppPay,
             giftCard,
-            mealVoucherSodexo
+            mealVoucherSodexo,
+            twint
         ]
     ]
     
-    let numberOfExpectedRegularComponents = 23
+    let numberOfExpectedRegularComponents = 24
 
     var presentationDelegate: PresentationDelegateMock!
     var context: AdyenContext!
@@ -91,14 +97,14 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
 
-        XCTAssertEqual(sut.storedComponents.count, 5)
+        XCTAssertEqual(sut.storedComponents.count, 6)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
 
-        XCTAssertEqual(sut.storedComponents.filter { $0.context.apiContext.clientKey == Dummy.apiContext.clientKey }.count, 5)
+        XCTAssertEqual(sut.storedComponents.filter { $0.context.apiContext.clientKey == Dummy.apiContext.clientKey }.count, 6)
         XCTAssertEqual(sut.regularComponents.filter { $0.context.apiContext.clientKey == Dummy.apiContext.clientKey }.count, numberOfExpectedRegularComponents)
 
-        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 19)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 19)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 20)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 20)
         XCTAssertEqual(sut.regularComponents.filter { $0 is FinalizableComponent }.count, 0)
     }
 
@@ -110,11 +116,11 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
 
-        XCTAssertEqual(sut.storedComponents.count, 5)
+        XCTAssertEqual(sut.storedComponents.count, 6)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents + 1)
 
-        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 19)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 20)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 20)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 21)
         XCTAssertEqual(sut.regularComponents.filter { $0 is FinalizableComponent }.count, 1)
     }
     
@@ -149,7 +155,44 @@ class ComponentManagerTests: XCTestCase {
             XCTAssertNil(cashAppPayComponent)
         #endif
     }
-    
+
+    func testTwintShouldSucceedWithConfig() throws {
+        // Given
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
+                                   configuration: configuration,
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
+
+        // When
+        let paymentComponent = sut.regularComponents.first { $0.paymentMethod.type.rawValue == "twint" }
+
+        // Then
+        #if canImport(AdyenTwint)
+            let twintComponent = paymentComponent as? TwintComponent
+            XCTAssertNotNil(twintComponent)
+        #else
+            let twintComponent = paymentComponent as? InstantPaymentComponent
+            XCTAssertNil(twintComponent)
+        #endif
+    }
+
+    func testStoredTwintShouldSucceedWithConfig() throws {
+        // Given
+        let sut = ComponentManager(paymentMethods: paymentMethods,
+                                   context: context,
+                                   configuration: configuration,
+                                   order: nil,
+                                   presentationDelegate: presentationDelegate)
+
+        // When
+        let paymentComponent = sut.storedComponents.first { $0.paymentMethod.type.rawValue == "twint" }
+
+        // Then
+        let storedTwintComponent = paymentComponent as? StoredPaymentMethodComponent
+        XCTAssertNotNil(storedTwintComponent)
+    }
+
     func testLocalizationWithCustomTableName() throws {
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
@@ -159,10 +202,10 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
         
-        XCTAssertEqual(sut.storedComponents.count, 5)
+        XCTAssertEqual(sut.storedComponents.count, 6)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
         
-        XCTAssertEqual(sut.storedComponents.compactMap { ($0 as? StoredPaymentMethodComponent)?.configuration.localizationParameters }.filter { $0.tableName == "AdyenUIHost" }.count, 3)
+        XCTAssertEqual(sut.storedComponents.compactMap { ($0 as? StoredPaymentMethodComponent)?.configuration.localizationParameters }.filter { $0.tableName == "AdyenUIHost" }.count, 4)
     }
     
     func testLocalizationWithCustomKeySeparator() throws {
@@ -174,10 +217,10 @@ class ComponentManagerTests: XCTestCase {
                                    order: nil,
                                    presentationDelegate: presentationDelegate)
         
-        XCTAssertEqual(sut.storedComponents.count, 5)
+        XCTAssertEqual(sut.storedComponents.count, 6)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
         
-        XCTAssertEqual(sut.storedComponents.compactMap { ($0 as? StoredPaymentMethodComponent)?.configuration.localizationParameters }.filter { $0.keySeparator == "_" }.count, 3)
+        XCTAssertEqual(sut.storedComponents.compactMap { ($0 as? StoredPaymentMethodComponent)?.configuration.localizationParameters }.filter { $0.keySeparator == "_" }.count, 4)
     }
 
     func testOrderInjection() throws {
@@ -202,11 +245,11 @@ class ComponentManagerTests: XCTestCase {
                                    presentationDelegate: presentationDelegate)
 
         XCTAssertEqual(sut.paidComponents.count, 2)
-        XCTAssertEqual(sut.storedComponents.count, 5)
+        XCTAssertEqual(sut.storedComponents.count, 6)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
 
         XCTAssertEqual(sut.paidComponents.filter { $0.order == order }.count, 2)
-        XCTAssertEqual(sut.storedComponents.filter { $0.order == order }.count, 5)
+        XCTAssertEqual(sut.storedComponents.filter { $0.order == order }.count, 6)
         XCTAssertEqual(sut.regularComponents.filter { $0.order == order }.count, numberOfExpectedRegularComponents)
     }
 
