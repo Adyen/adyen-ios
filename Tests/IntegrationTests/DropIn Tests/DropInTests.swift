@@ -263,7 +263,7 @@ class DropInTests: XCTestCase {
     }
     
     func testDeletingStoredPaymentSuccessAdvanced() throws {
-        var config = DropInComponent.Configuration()
+        let config = DropInComponent.Configuration()
         config.allowPreselectedPaymentView = false
 
         var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
@@ -296,7 +296,7 @@ class DropInTests: XCTestCase {
     }
     
     func testDeletingStoredPaymentFailureAdvanced() throws {
-        var config = DropInComponent.Configuration()
+        let config = DropInComponent.Configuration()
         config.allowPreselectedPaymentView = false
 
         var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
