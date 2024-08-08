@@ -145,6 +145,8 @@ cp "../Tests/UnitTests/Analytics/AnalyticsProviderMock.swift" Tests/AnalyticsPro
 cp "../Tests/UnitTests/Mocks/DummyData/Dummy.swift" Tests/Dummy.swift
 cp "../Tests/UnitTests/Mocks/DummyData/DummyHelper.swift" Tests/DummyHelper.swift
 cp "../Tests/UnitTests/Mocks/DummyData/DummyPaymentMethods.swift" Tests/DummyPaymentMethods.swift
+cp "../Tests/UnitTests/Mocks/PaymentComponentMock.swift" Tests/PaymentComponentMock.swift
+cp "../Tests/UnitTests/Mocks/PaymentMethodMock.swift" Tests/PaymentMethodMock.swift
 cp "../Tests/UnitTests/APIClientMock.swift" Tests/APIClientMock.swift
 cp "../Tests/UnitTests/Mocks/ImageLoaderMock.swift" Tests/ImageLoaderMock.swift
 cp "../Tests/UnitTests/Mocks/CancellableMock.swift" Tests/CancellableMock.swift
