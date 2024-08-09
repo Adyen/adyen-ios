@@ -24,7 +24,11 @@ public struct TwintSDKData: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         token = try container.decode(String.self, forKey: .token)
 
-        let isStoredString = try container.decodeIfPresent(String.self, forKey: .isStored) ?? "false"
+        // `isStored` field comes a String instead of Bool due to technical limitations
+        // on the API side. This is the reason it is necessary to parse it from String to
+        // Bool.
+        // This is the ticket where the field was added: https://youtrack.is.adyen.com/issue/FOC-77001
+        let isStoredString = try container.decode(String.self, forKey: .isStored)
         isStored = Bool(isStoredString) ?? false
     }
 
