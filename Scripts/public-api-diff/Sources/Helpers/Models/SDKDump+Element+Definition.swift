@@ -14,7 +14,7 @@ extension SDKDump.Element {
         spiGroupNames?.forEach {
             components += ["@_spi(\($0))"]
         }
-        if let declAttributes, declAttributes.contains("DiscardableResult") {
+        if hasDiscardableResult {
             components += ["@discardableResult"]
         }
         
@@ -22,7 +22,7 @@ extension SDKDump.Element {
             components += [isInternal ? "internal" : "public"]
         }
         
-        if let declAttributes, declAttributes.contains("Final"), declKind == .class {
+        if isFinal, declKind == .class {
             components += ["final"]
         }
         

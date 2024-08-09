@@ -179,11 +179,11 @@ private extension Pipeline {
 private extension Change {
     
     static var removedTarget: Self {
-        .init(changeType: .removal, parentName: "", changeDescription: "Target was removed")
+        .init(changeType: .removal(description: "Target was removed"), parentName: "")
     }
     
     static var addedTarget: Self {
-        .init(changeType: .addition, parentName: "", changeDescription: "Target was added")
+        .init(changeType: .addition(description: "Target was added"), parentName: "")
     }
 }
 

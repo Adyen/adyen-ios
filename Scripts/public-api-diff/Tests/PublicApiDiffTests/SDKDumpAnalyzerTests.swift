@@ -27,8 +27,8 @@ class SDKDumpAnalyzerTests: XCTestCase {
         let oldDump = SDKDump(root: .init(kind: .func, name: "old_name", printedName: "old_printedName"))
         
         let expectedChanges: [Change] = [
-            .init(changeType: .removal, parentName: "", changeDescription: "`public old_printedName` was removed"),
-            .init(changeType: .addition, parentName: "", changeDescription: "`public printedName` was added")
+            .init(changeType: .removal(description: "`public old_printedName` was removed"), parentName: ""),
+            .init(changeType: .addition(description: "`public printedName` was added"), parentName: "")
         ]
         
         let analyzer = SDKDumpAnalyzer()
@@ -66,7 +66,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
         // Adding Child
         
         let expectedChangesAdded: [Change] = [
-            .init(changeType: .addition, parentName: "parent", changeDescription: "`public childPrintedName` was added")
+            .init(changeType: .addition(description: "`public childPrintedName` was added"), parentName: "parent")
         ]
         
         let analyzer = SDKDumpAnalyzer()
@@ -80,7 +80,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
         // Removing Child
         
         let expectedChangesRemoved: [Change] = [
-            .init(changeType: .removal, parentName: "parent", changeDescription: "`public childPrintedName` was removed")
+            .init(changeType: .removal(description: "`public childPrintedName` was removed"), parentName: "parent")
         ]
         
         let changesRemoved = analyzer.analyze(
@@ -134,13 +134,13 @@ class SDKDumpAnalyzerTests: XCTestCase {
         )
         
         let expectedChanges: [Change] = [
-            .init(changeType: .removal, parentName: "parent", changeDescription: "`public struct childPrintedName` was removed"),
-            .init(changeType: .removal, parentName: "parent", changeDescription: "`public class spiChildPrintedName` was removed"),
-            .init(changeType: .removal, parentName: "parent.enumChild", changeDescription: "`public static var staticLetPrintedName` was removed"),
-            .init(changeType: .addition, parentName: "parent.enumChild", changeDescription: "`public static let staticLetPrintedName` was added"),
-            .init(changeType: .removal, parentName: "parent.enumChild", changeDescription: "`public case oldCasePrintedName` was removed"),
-            .init(changeType: .addition, parentName: "parent", changeDescription: "`public class childPrintedName` was added"),
-            .init(changeType: .addition, parentName: "parent.enumChild", changeDescription: "`public case newCasePrintedName` was added")
+            .init(changeType: .removal(description: "`public struct childPrintedName` was removed"), parentName: "parent"),
+            .init(changeType: .removal(description: "`public class spiChildPrintedName` was removed"), parentName: "parent"),
+            .init(changeType: .removal(description: "`public static var staticLetPrintedName` was removed"), parentName: "parent.enumChild"),
+            .init(changeType: .addition(description: "`public static let staticLetPrintedName` was added"), parentName: "parent.enumChild"),
+            .init(changeType: .removal(description: "`public case oldCasePrintedName` was removed"), parentName: "parent.enumChild"),
+            .init(changeType: .addition(description: "`public class childPrintedName` was added"), parentName: "parent"),
+            .init(changeType: .addition(description: "`public case newCasePrintedName` was added"), parentName: "parent.enumChild")
         ]
         
         let analyzer = SDKDumpAnalyzer()

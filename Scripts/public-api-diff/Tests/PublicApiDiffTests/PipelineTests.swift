@@ -45,8 +45,8 @@ class PipelineTests: XCTestCase {
             SDKDump(root: .init(kind: .var, name: "Name", printedName: URL(filePath: newProjectSource.description).absoluteString)),
             
             [
-                "": [Change(changeType: .addition, parentName: "Parent", changeDescription: "A Library was added")],
-                "Target": [Change(changeType: .addition, parentName: "Parent", changeDescription: "Something was added")]
+                "": [Change(changeType: .addition(description: "A Library was added"), parentName: "Parent")],
+                "Target": [Change(changeType: .addition(description: "Something was added"), parentName: "Parent")]
             ],
             ["Target"],
             oldProjectSource,
@@ -85,7 +85,7 @@ class PipelineTests: XCTestCase {
                 expectedSteps.removeFirst()
                 libraryAnalyzerExpectation.fulfill()
                 
-                return [.init(changeType: .addition, parentName: "Parent", changeDescription: "A Library was added")]
+                return [.init(changeType: .addition(description: "A Library was added"), parentName: "Parent")]
             }),
             sdkDumpGenerator: MockSDKDumpGenerator(onGenerate: { url in
                 XCTAssertEqual(url, expectedSteps.first as? URL)
@@ -101,7 +101,7 @@ class PipelineTests: XCTestCase {
                 expectedSteps.removeFirst()
                 dumpAnalyzerExpectation.fulfill()
                 
-                return [.init(changeType: .addition, parentName: "Parent", changeDescription: "Something was added")]
+                return [.init(changeType: .addition(description: "Something was added"), parentName: "Parent")]
             }),
             outputGenerator: MockOutputGenerator(onGenerate: { changes, allTargets, old, new in
                 XCTAssertEqual(changes, expectedSteps.first as? [String: [Change]])
