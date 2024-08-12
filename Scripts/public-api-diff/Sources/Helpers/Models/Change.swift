@@ -6,6 +6,7 @@
 
 import Foundation
 
+/// A change indicating an `addition`, `removal` or genuine `change` of an element
 struct Change: Equatable {
     enum ChangeType: Equatable {
         case addition(description: String)

@@ -7,6 +7,10 @@
 
 import Foundation
 
+/// A change indicating an `addition` or `removal` of an element
+///
+/// This intermediate structure helps gathering a list of additions and removals
+/// that are later consolidated to a ``Change``
 struct IndependentChange: Equatable {
     enum ChangeType: Equatable {
         case addition(_ description: String)

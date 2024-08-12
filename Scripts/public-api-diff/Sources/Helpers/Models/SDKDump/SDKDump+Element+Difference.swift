@@ -12,11 +12,12 @@ extension SDKDump.Element {
         var diff = [String]()
         diff += differences(toIsFinal: otherElement.isFinal)
         diff += differences(toIsThrowing: otherElement.isThrowing)
+        diff += differences(toHasDiscardableResult: otherElement.hasDiscardableResult)
         diff += differences(toSpiGroupNames: otherElement.spiGroupNames)
         diff += differences(toConformances: otherElement.conformances)
 
-        if let functionDescription = functionDescription,
-           let otherFunctionDescription = otherElement.functionDescription
+        if let functionDescription = asFunction,
+           let otherFunctionDescription = otherElement.asFunction
         {
             diff += functionDescription.differences(toFunction: otherFunctionDescription)
         }
@@ -24,6 +25,8 @@ extension SDKDump.Element {
         return diff
     }
 }
+
+// MARK: Generic comparisons
 
 private extension SDKDump.Element {
     
@@ -74,6 +77,31 @@ private extension SDKDump.Element {
             } else {
                 return "`\($0.printedName)` conformance was removed"
             }
+        }
+    }
+    
+    func differences(toAccessors otherAccessors: [SDKDump.Element]?) -> [String] {
+        guard accessors != otherAccessors else { return [] }
+            
+        let ownAccessors = Set(accessors?.map(\.printedName) ?? [])
+        let otherAccessors = Set(otherAccessors?.map(\.printedName) ?? [])
+        
+        return ownAccessors.symmetricDifference(otherAccessors).map {
+            if otherAccessors.contains($0) {
+                return "`\($0)` accessor was added"
+            } else {
+                return "`\($0)` accessor was removed"
+            }
+        }
+    }
+    
+    func differences(toHasDiscardableResult otherHasDiscardableResult: Bool) -> [String] {
+        guard hasDiscardableResult != otherHasDiscardableResult else { return [] }
+            
+        if hasDiscardableResult {
+            return ["`@discardableResult` keyword was added"]
+        } else {
+            return ["`@discardableResult` keyword was removed"]
         }
     }
 }
