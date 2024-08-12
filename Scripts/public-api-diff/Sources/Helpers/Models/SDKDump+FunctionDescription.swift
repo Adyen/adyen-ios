@@ -7,18 +7,29 @@
 
 import Foundation
 
+extension SDKDump.Element {
+    
+    var functionDescription: SDKDump.FunctionDescription? {
+        .init(for: self)
+    }
+}
+
 extension SDKDump {
     
     struct FunctionDescription: CustomStringConvertible {
         
-        private let underlyingElement: SDKDump.Element
-        
-        init?(for underlyingElement: SDKDump.Element) {
-            guard underlyingElement.declKind == .func || underlyingElement.declKind == .constructor else {
-                return nil
-            }
+        public struct Argument: Equatable, CustomStringConvertible {
+            let name: String
+            let type: String
+            let defaultArgument: String?
             
-            self.underlyingElement = underlyingElement
+            public var description: String {
+                let nameAndType = "\(name): \(type)"
+                if let defaultArgument {
+                    return "\(nameAndType) = \(defaultArgument)"
+                }
+                return nameAndType
+            }
         }
         
         public var functionName: String {
@@ -61,10 +72,7 @@ extension SDKDump {
         }
         
         public var description: String {
-            guard let returnType else {
-                // Return type is optional as enum is using it as well (Figure out what the use is there)
-                return underlyingElement.printedName
-            }
+            guard let returnType else { return underlyingElement.printedName }
             
             let argumentList = arguments
                 .map(\.description)
@@ -81,26 +89,25 @@ extension SDKDump {
                 .compactMap { $0 }
                 .joined(separator: " ")
         }
+        
+        private let underlyingElement: SDKDump.Element
+        
+        init?(for underlyingElement: SDKDump.Element) {
+            guard underlyingElement.declKind == .func || underlyingElement.declKind == .constructor else {
+                return nil
+            }
+            
+            self.underlyingElement = underlyingElement
+        }
     }
 }
 
+// MARK: - Arguments
+
 extension SDKDump.FunctionDescription {
     
-    public struct Argument: Equatable, CustomStringConvertible {
-        let name: String
-        let type: String
-        let defaultArgument: String?
-        
-        public var description: String {
-            let nameAndType = "\(name): \(type)"
-            if let defaultArgument {
-                return "\(nameAndType) = \(defaultArgument)"
-            }
-            return nameAndType
-        }
-    }
-    
-    static func parameterNames(from printedName: String, functionName: String) -> [String] {
+    /// Extracts the parameter names from the `printedName`
+    private static func parameterNames(from printedName: String, functionName: String) -> [String] {
         var sanitizedArguments = printedName
         sanitizedArguments.removeFirst(functionName.count)
         sanitizedArguments.removeFirst() // `(`
@@ -115,7 +122,33 @@ extension SDKDump.FunctionDescription {
         return sanitizedArguments.components(separatedBy: ":")
     }
     
-    static func parameterTypes(for underlyingElement: SDKDump.Element) -> [SDKDump.Element] {
+    /// Extracts the parameter types from the underlying element
+    private static func parameterTypes(for underlyingElement: SDKDump.Element) -> [SDKDump.Element] {
         Array(underlyingElement.children.suffix(from: 1)) // First element is the return type
+    }
+}
+
+// MARK: - Differences
+
+extension SDKDump.FunctionDescription {
+    
+    func differences(toFunction otherFunction: Self) -> [String] {
+        let ownArguments = arguments
+        let otherArguments = otherFunction.arguments
+        
+        guard ownArguments != otherArguments else { return [] }
+        
+        // TODO: Indicate more in depth if the order, type and/or default arg changed
+        
+        let ownArgumentNames = Set(arguments.map(\.description))
+        let otherArgumentNames = Set(otherArguments.map(\.description))
+        
+        return ownArgumentNames.symmetricDifference(otherArgumentNames).map {
+            if otherArgumentNames.contains($0) {
+                return "`\($0)` was added"
+            } else {
+                return "`\($0)` was removed"
+            }
+        }
     }
 }

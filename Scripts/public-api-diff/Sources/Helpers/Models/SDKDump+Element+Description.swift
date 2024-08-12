@@ -7,10 +7,30 @@
 
 import Foundation
 
-extension SDKDump.Element {
+extension SDKDump.Element: CustomStringConvertible {
     
     var description: String {
+        
+        var components = descriptionPrefixComponents
+        
+        if let declKindName { components += [declKindName] }
+        
+        components += [verboseName]
+        
+        if let conformanceNames = conformances?.sorted().map(\.printedName), !conformanceNames.isEmpty {
+            components += [": \(conformanceNames.joined(separator: ", "))"]
+        }
+        
+        if let accessors = accessors?.map({ $0.name.lowercased() }), !accessors.isEmpty {
+            components += ["{ \(accessors.joined(separator: " ")) }"]
+        }
+        
+        return components.joined(separator: " ")
+    }
+    
+    private var descriptionPrefixComponents: [String] {
         var components = [String]()
+        
         spiGroupNames?.forEach {
             components += ["@_spi(\($0))"]
         }
@@ -31,29 +51,20 @@ extension SDKDump.Element {
             components += ["static"]
         }
         
-        if let declKind {
-            if declKind == .constructor {
-                components += ["func"]
-            } else if declKind == .case {
-                components += ["case"]
-            } else if declKind == .var, isLet {
-                components += ["let"]
-            } else {
-                components += ["\(declKind.rawValue.lowercased())"]
-            }
+        return components
+    }
+    
+    private var declKindName: String? {
+        guard let declKind else { return nil }
+        if declKind == .constructor {
+            return "func"
+        } else if declKind == .case {
+            return "case"
+        } else if declKind == .var, isLet {
+            return "let"
+        } else {
+            return "\(declKind.rawValue.lowercased())"
         }
-        
-        components += [verboseName]
-        
-        if let conformanceNames = conformances?.sorted().map(\.printedName), !conformanceNames.isEmpty {
-            components += [": \(conformanceNames.joined(separator: ", "))"]
-        }
-        
-        if let accessors = accessors?.map({ $0.name.lowercased() }), !accessors.isEmpty {
-            components += ["{ \(accessors.joined(separator: " ")) }"]
-        }
-        
-        return components.joined(separator: " ")
     }
     
     var verboseName: String {
@@ -78,7 +89,7 @@ extension SDKDump.Element {
         case .protocol:
             return printedName
         case .constructor, .func:
-            return SDKDump.FunctionDescription(for: self)?.description ?? printedName
+            return self.functionDescription?.description ?? printedName
         case .accessor:
             return printedName
         case .typeAlias:

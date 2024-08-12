@@ -171,11 +171,3 @@ extension SDKDump {
         }
     }
 }
-
-// MARK: - Convenience
-
-extension [SDKDump.Element] {
-    func firstElementMatchingName(of otherElement: Element) -> Element? {
-        first(where: { $0.name == otherElement.name })
-    }
-}

@@ -8,23 +8,26 @@ import Foundation
 
 extension SDKDump.Element {
     
-    func difference(to otherElement: SDKDump.Element) -> [String] {
+    func differences(to otherElement: SDKDump.Element) -> [String] {
         var diff = [String]()
-        diff += difference(toIsFinal: otherElement.isFinal)
-        diff += difference(toIsThrowing: otherElement.isThrowing)
-        diff += difference(toSpiGroupNames: otherElement.spiGroupNames)
-        diff += difference(toConformances: otherElement.conformances)
+        diff += differences(toIsFinal: otherElement.isFinal)
+        diff += differences(toIsThrowing: otherElement.isThrowing)
+        diff += differences(toSpiGroupNames: otherElement.spiGroupNames)
+        diff += differences(toConformances: otherElement.conformances)
 
-        if let functionDescription = SDKDump.FunctionDescription(for: self),
-            let otherFunctionDescription = SDKDump.FunctionDescription(for: otherElement)
+        if let functionDescription = functionDescription,
+           let otherFunctionDescription = otherElement.functionDescription
         {
-            diff += functionDescription.difference(toFunction: otherFunctionDescription)
+            diff += functionDescription.differences(toFunction: otherFunctionDescription)
         }
         
         return diff
     }
+}
+
+private extension SDKDump.Element {
     
-    func difference(toIsFinal otherIsFinal: Bool) -> [String] {
+    func differences(toIsFinal otherIsFinal: Bool) -> [String] {
         guard isFinal != otherIsFinal else { return [] }
             
         if isFinal {
@@ -34,7 +37,7 @@ extension SDKDump.Element {
         }
     }
     
-    func difference(toIsThrowing otherIsThrowing: Bool) -> [String] {
+    func differences(toIsThrowing otherIsThrowing: Bool) -> [String] {
         guard isThrowing != otherIsThrowing else { return [] }
             
         if isThrowing {
@@ -44,7 +47,7 @@ extension SDKDump.Element {
         }
     }
     
-    func difference(toSpiGroupNames otherSpiGroupNames: [String]?) -> [String] {
+    func differences(toSpiGroupNames otherSpiGroupNames: [String]?) -> [String] {
         guard spiGroupNames != otherSpiGroupNames else { return [] }
             
         let ownSpiGroupNames = Set(spiGroupNames ?? [])
@@ -59,7 +62,7 @@ extension SDKDump.Element {
         }
     }
     
-    func difference(toConformances otherConformances: [Conformance]?) -> [String] {
+    func differences(toConformances otherConformances: [Conformance]?) -> [String] {
         guard conformances != otherConformances else { return [] }
             
         let ownConformances = Set(conformances ?? [])
@@ -70,29 +73,6 @@ extension SDKDump.Element {
                 return "`\($0.printedName)` conformance was added"
             } else {
                 return "`\($0.printedName)` conformance was removed"
-            }
-        }
-    }
-}
-
-extension SDKDump.FunctionDescription {
-    
-    func difference(toFunction otherFunction: SDKDump.FunctionDescription) -> [String] {
-        let ownArguments = arguments
-        let otherArguments = otherFunction.arguments
-        
-        guard ownArguments != otherArguments else { return [] }
-        
-        // TODO: Indicate more in depth if the order, type and/or default arg changed
-        
-        let ownArgumentNames = Set(arguments.map(\.description))
-        let otherArgumentNames = Set(otherArguments.map(\.description))
-        
-        return ownArgumentNames.symmetricDifference(otherArgumentNames).map {
-            if otherArgumentNames.contains($0) {
-                return "`\($0)` was added"
-            } else {
-                return "`\($0)` was removed"
             }
         }
     }
