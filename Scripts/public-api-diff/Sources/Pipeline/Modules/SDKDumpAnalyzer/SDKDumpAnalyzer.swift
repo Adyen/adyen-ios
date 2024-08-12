@@ -83,7 +83,7 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
             let changeType: IndependentChange.ChangeType = oldFirst ?
                 .removal(lhsElement.description) :
                 .addition(lhsElement.description)
-            
+
             return [
                 .from(
                     changeType: changeType,
