@@ -37,7 +37,10 @@ class OutputGeneratorTests: XCTestCase {
 
         ---
         ## `Target_1`
-        - ❇️  Some Addition
+        #### ❇️ Added
+        ```javascript
+        Some Addition
+        ```
 
         ---
         **Analyzed targets:** Target_1
@@ -62,11 +65,23 @@ class OutputGeneratorTests: XCTestCase {
 
         ---
         ## `Target_1`
-        - ❇️  Some Addition
-        - 😶‍🌫️ Some Removal
+        #### ❇️ Added
+        ```javascript
+        Some Addition
+        ```
+        #### 😶‍🌫️ Removed
+        ```javascript
+        Some Removal
+        ```
         ## `Target_2`
-        - ❇️  Another Addition
-        - 😶‍🌫️ Another Removal
+        #### ❇️ Added
+        ```javascript
+        Another Addition
+        ```
+        #### 😶‍🌫️ Removed
+        ```javascript
+        Another Removal
+        ```
 
         ---
         **Analyzed targets:** Target_1, Target_2
