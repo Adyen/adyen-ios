@@ -8,12 +8,20 @@ import Foundation
 
 struct SDKDumpAnalyzer: SDKDumpAnalyzing {
     
+    let changeConsolidator: ChangeConsolidating
+    
+    init(
+        changeConsolidator: ChangeConsolidating = ChangeConsolidator()
+    ) {
+        self.changeConsolidator = changeConsolidator
+    }
+    
     func analyze(
         old: SDKDump,
         new: SDKDump
     ) -> [Change] {
         
-        Self.recursiveCompare(
+        let individualChanges = Self.recursiveCompare(
             element: old.root,
             to: new.root,
             oldFirst: true
@@ -22,38 +30,34 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
             to: old.root,
             oldFirst: false
         )
+        
+        // Matching removals/additions to changes when applicable
+        return changeConsolidator.consolidate(individualChanges)
     }
     
-    private static func recursiveCompare(element lhs: SDKDump.Element, to rhs: SDKDump.Element, oldFirst: Bool) -> [Change] {
+    private static func recursiveCompare(
+        element lhs: SDKDump.Element,
+        to rhs: SDKDump.Element,
+        oldFirst: Bool
+    ) -> [IndependentChange] {
+        
         if lhs == rhs { return [] }
         
-        if lhs.isSpiInternal, rhs.isSpiInternal {
-            // If both elements are spi internal we can ignore them as they are not in the public interface
-            return []
-        }
+        // If both elements are spi internal we can ignore them as they are not in the public interface
+        if lhs.isSpiInternal, rhs.isSpiInternal { return [] }
         
-        if lhs.isInternal, rhs.isInternal {
-            // If both elements are spi internal we can ignore them as they are not in the public interface
-            return []
-        }
+        // If both elements are spi internal we can ignore them as they are not in the public interface
+        if lhs.isInternal, rhs.isInternal { return [] }
         
-        var changes = [Change]()
+        var changes = [IndependentChange]()
         
         if oldFirst, lhs.description != rhs.description {
-            changes += [.init(changeType: .removal(description: "`\(lhs)` was removed"), parentName: lhs.parentPath)]
-            
-            if !rhs.isSpiInternal {
-                changes += [.init(changeType: .addition(description: "`\(rhs)` was added"), parentName: rhs.parentPath)]
-            }
+            changes += independentChanges(from: lhs, and: rhs, oldFirst: oldFirst)
         }
         
         changes += lhs.children.flatMap { lhsElement in
 
-            // We're comparing the definition which means that additions to or removals from a definition
-            // (e.g. adding protocol conformance or a new/changed parameter name) will cause an element
-            // to be marked as added/removed.
-            // This simplifies the script and also makes it more accurate
-            // but has the downside of running into the chance of not grouping the changed element together
+            // Trying to find a matching element
             
             // First checking if we found an exact match based on the description
             // as we don't want to match a non-change with a change
@@ -64,20 +68,57 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
 
             // ... then losening the criteria to find a comparable element
             if let rhsChildForName = rhs.children.first(where: { $0.isComparable(to: lhsElement) }) {
+                // We found a comparable element so we check if the children changed
                 return recursiveCompare(element: lhsElement, to: rhsChildForName, oldFirst: oldFirst)
             }
             
-            // Type changes we handle as a change, not an addition/removal (they are in the children array tho)
+            // No matching element was found so either it was removed or added
+            
+            // Type changes get caught during comparing the description and would only add noise to the output
             if lhsElement.isTypeInformation { return [] }
             
-            // An spi-internal element was added/removed which we do not count as a public change
-            if lhsElement.isSpiInternal { return [] }
+            // An (spi-)internal element was added/removed which we do not count as a public change
+            if lhsElement.isSpiInternal || lhsElement.isInternal { return [] }
             
-            if oldFirst {
-                return [.init(changeType: .removal(description: "`\(lhsElement)` was removed"), parentName: lhsElement.parentPath)]
-            } else {
-                return [.init(changeType: .addition(description: "`\(lhsElement)` was added"), parentName: lhsElement.parentPath)]
-            }
+            let changeType: IndependentChange.ChangeType = oldFirst ?
+                .removal(lhsElement.description) :
+                .addition(lhsElement.description)
+
+            return [
+                .from(
+                    changeType: changeType,
+                    element: lhsElement,
+                    oldFirst: oldFirst
+                )
+            ]
+        }
+        
+        return changes
+    }
+    
+    private static func independentChanges(
+        from lhs: SDKDump.Element,
+        and rhs: SDKDump.Element,
+        oldFirst: Bool
+    ) -> [IndependentChange] {
+        
+        var changes: [IndependentChange] = [
+            .from(
+                changeType: .removal(lhs.description),
+                element: lhs,
+                oldFirst: oldFirst
+            )
+        ]
+        
+        if !rhs.isSpiInternal {
+            // We only report additions if they are not @_spi
+            changes += [
+                .from(
+                    changeType: .addition(rhs.description),
+                    element: rhs,
+                    oldFirst: oldFirst
+                )
+            ]
         }
         
         return changes
