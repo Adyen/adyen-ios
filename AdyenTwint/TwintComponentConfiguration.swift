@@ -5,7 +5,6 @@
 //
 
 import Adyen
-import Foundation
 
 /// Configuration for the Twint component.
 public struct TwintComponentConfiguration: AnyTwintComponentConfiguration, Localizable {
