@@ -22,9 +22,9 @@ extension SDKDump {
         
         public var name: String { underlyingElement.printedName }
         
-        public var type: String { underlyingElement.children.first?.printedName ?? "UNKNOWN_TYPE" }
+        public var type: String { underlyingElement.children.first?.printedName ?? Constants.unknownType }
         
-        public var description: String { "\(declaration) \(name): \(type)" }
+        public var description: String { compileDescription() }
         
         private let underlyingElement: SDKDump.Element
         
@@ -33,5 +33,24 @@ extension SDKDump {
             
             self.underlyingElement = underlyingElement
         }
+    }
+}
+
+// MARK: - Privates
+
+private extension SDKDump.VarElement {
+    
+    func compileDescription() -> String {
+        let isWeak = underlyingElement.children.first?.isWeak == true
+        
+        let defaultDescription = [
+            isWeak ? "weak" : nil,
+            underlyingElement.isLazy ? "lazy" : nil,
+            declaration,
+            "\(name):",
+            type
+        ].compactMap { $0 }.joined(separator: " ")
+        
+        return defaultDescription
     }
 }

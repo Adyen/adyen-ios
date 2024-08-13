@@ -10,6 +10,11 @@ extension SDKDump {
     
     enum DeclarationKind: String, RawRepresentable, Codable {
         
+        // TODO: Add support for: Actor, Operator, PrecedenceGroup,
+        // See: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/declarations#Actor-Declaration
+        // See: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/declarations#Operator-Declaration
+        // See: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/declarations#Precedence-Group-Declaration
+        
         case `import` = "Import"
         case `class` = "Class"
         case `struct` = "Struct"

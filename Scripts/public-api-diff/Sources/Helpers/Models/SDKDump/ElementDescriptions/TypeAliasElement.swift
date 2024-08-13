@@ -22,7 +22,7 @@ extension SDKDump {
         
         public var name: String { underlyingElement.printedName }
         
-        public var type: String { underlyingElement.children.first?.verboseName ?? "UNKNOWN_TYPE" }
+        public var type: String { underlyingElement.children.first?.verboseName ?? Constants.unknownType }
         
         public var description: String { "\(declaration) \(name) = \(type)" }
         

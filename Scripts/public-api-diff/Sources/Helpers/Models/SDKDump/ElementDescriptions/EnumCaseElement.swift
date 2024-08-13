@@ -37,6 +37,9 @@ extension SDKDump {
 private extension SDKDump.EnumCaseElement {
     
     func compileDescription() -> String {
+        // TODO: Add support for: indirect
+        // See: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/declarations#Enumerations-with-Indirection
+        
         let defaultDescription = "\(declaration) \(underlyingElement.printedName)"
         
         guard let firstChild = underlyingElement.children.first else {

@@ -8,25 +8,49 @@ import Foundation
 
 extension SDKDump {
     
-    // Element node
-    class Element: Codable, Equatable, CustomDebugStringConvertible {
+    /// Generic element node
+    ///
+    /// The generic ``Element`` node contains all information from the abi.json 
+    /// which - due to it's recursive (children) nature leads to optional fields that are only available in a specific context.
+    class Element: Codable, Equatable {
         
         let kind: Kind
         let name: String
         let printedName: String
         let declKind: DeclarationKind?
+        /// Indicates whether or not a property / function is static
         let isStatic: Bool
+        /// Indicates whether or not a variable is a `let` (or a `var`)
         let isLet: Bool
+        /// Indicates whether or not a function argument has a default value
         let hasDefaultArg: Bool
+        /// Whether or not an element is marked as internal (only observed when using an abi.json from a binary framework)
         let isInternal: Bool
+        /// Indicates whether or not a function is throwing
         let isThrowing: Bool
-        
+        /// Indicates whether or not an init is a `convenience` or a `designated` initializer
+        let initKind: String?
+        /// Contains the generic signature of the element
+        let genericSig: String?
+        /// Defines the ownership of the parameter value (e.g. inout)
+        let paramValueOwnership: String?
+        /// Defines whether or not the function is mutating/nonmutating
+        let funcSelfKind: String?
+        /// The `children` of an ``Element`` which can contain a return value,
+        /// function arguments and other context related information
         let children: [Element]
+        /// The `@_spi` group names
         let spiGroupNames: [String]?
+        /// Additional context related information about the element
+        /// (e.g. `DiscardableResult`, `Objc`,  `Dynamic`, ...)
         let declAttributes: [String]?
+        /// The accessors of the element (in the context of a protocol definition)
         let accessors: [Element]?
+        /// The conformances the ``Element`` conforms to
         let conformances: [Conformance]?
         
+        /// The parent element to the ``Element`` to traverse back to the hierarchy
+        /// Is set manually within the ``setupParentRelationships(parent:)``
         var parent: Element?
         
         internal init(
@@ -39,6 +63,10 @@ extension SDKDump {
             hasDefaultArg: Bool = false,
             isInternal: Bool = false,
             isThrowing: Bool = false,
+            initKind: String? = nil,
+            genericSig: String? = nil,
+            paramValueOwnership: String? = nil,
+            funcSelfKind: String? = nil,
             children: [Element] = [],
             spiGroupNames: [String]? = nil,
             declAttributes: [String]? = nil,
@@ -61,6 +89,10 @@ extension SDKDump {
             self.accessors = accessors
             self.conformances = conformances
             self.parent = parent
+            self.initKind = initKind
+            self.genericSig = genericSig
+            self.paramValueOwnership = paramValueOwnership
+            self.funcSelfKind = funcSelfKind
         }
         
         required init(from decoder: any Decoder) throws {
@@ -79,6 +111,10 @@ extension SDKDump {
             self.declAttributes = try container.decodeIfPresent([String].self, forKey: CodingKeys.declAttributes)
             self.conformances = try container.decodeIfPresent([Conformance].self, forKey: CodingKeys.conformances)
             self.accessors = try container.decodeIfPresent([SDKDump.Element].self, forKey: CodingKeys.accessors)
+            self.initKind = try container.decodeIfPresent(String.self, forKey: CodingKeys.initKind)
+            self.genericSig = try container.decodeIfPresent(String.self, forKey: CodingKeys.genericSig)
+            self.paramValueOwnership = try container.decodeIfPresent(String.self, forKey: CodingKeys.paramValueOwnership)
+            self.funcSelfKind = try container.decodeIfPresent(String.self, forKey: CodingKeys.funcSelfKind)
         }
         
         func encode(to encoder: any Encoder) throws {
@@ -97,6 +133,10 @@ extension SDKDump {
             try container.encodeIfPresent(self.declAttributes, forKey: SDKDump.Element.CodingKeys.declAttributes)
             try container.encodeIfPresent(self.conformances, forKey: SDKDump.Element.CodingKeys.conformances)
             try container.encodeIfPresent(self.accessors, forKey: SDKDump.Element.CodingKeys.accessors)
+            try container.encodeIfPresent(self.initKind, forKey: SDKDump.Element.CodingKeys.initKind)
+            try container.encodeIfPresent(self.genericSig, forKey: SDKDump.Element.CodingKeys.genericSig)
+            try container.encodeIfPresent(self.paramValueOwnership, forKey: SDKDump.Element.CodingKeys.paramValueOwnership)
+            try container.encodeIfPresent(self.funcSelfKind, forKey: SDKDump.Element.CodingKeys.funcSelfKind)
         }
         
         enum CodingKeys: String, CodingKey {
@@ -114,6 +154,10 @@ extension SDKDump {
             case declAttributes
             case conformances
             case accessors
+            case initKind = "init_kind"
+            case genericSig
+            case paramValueOwnership
+            case funcSelfKind
         }
         
         static func == (lhs: SDKDump.Element, rhs: SDKDump.Element) -> Bool {
@@ -129,45 +173,90 @@ extension SDKDump {
                 lhs.isLet == rhs.isLet &&
                 lhs.hasDefaultArg == rhs.hasDefaultArg &&
                 lhs.isInternal == rhs.isInternal &&
-                lhs.isStatic == rhs.isStatic
+                lhs.isStatic == rhs.isStatic &&
+                lhs.initKind == rhs.initKind &&
+                lhs.genericSig == rhs.genericSig
+        }
+    }
+}
+
+// MARK: - CustomDebugStringConvertible
+
+extension SDKDump.Element: CustomDebugStringConvertible {
+    
+    var debugDescription: String {
+        description
+    }
+}
+
+// MARK: - Convenience
+
+extension SDKDump.Element {
+    
+    var isSpiInternal: Bool {
+        !(spiGroupNames ?? []).isEmpty
+    }
+    
+    var isFinal: Bool {
+        guard declKind == .class else { return false }
+        return (declAttributes ?? []).contains("Final")
+    }
+    
+    var hasDiscardableResult: Bool {
+        (declAttributes ?? []).contains("DiscardableResult")
+    }
+    
+    var isObjcAccessible: Bool {
+        (declAttributes ?? []).contains("ObjC")
+    }
+    
+    var isOverride: Bool {
+        (declAttributes ?? []).contains("Override")
+    }
+    
+    var isDynamic: Bool {
+        (declAttributes ?? []).contains("Dynamic")
+    }
+    
+    var isLazy: Bool {
+        (declAttributes ?? []).contains("Lazy")
+    }
+    
+    var isRequired: Bool {
+        (declAttributes ?? []).contains("Required")
+    }
+    
+    var isTypeInformation: Bool {
+        kind.isTypeInformation
+    }
+    
+    var isConvenienceInit: Bool {
+        initKind == "Convenience"
+    }
+    
+    var isWeak: Bool {
+        name == "WeakStorage"
+    }
+    
+    var isMutating: Bool {
+        funcSelfKind == "Mutating"
+    }
+    
+    var parentPath: String {
+        var parent = self.parent
+        var path = [parent?.name]
+        
+        while parent != nil {
+            parent = parent?.parent
+            path += [parent?.name]
         }
         
-        var debugDescription: String {
-            description
+        var sanitizedPath = path.compactMap { $0 }
+        
+        if sanitizedPath.last == "TopLevel" {
+            sanitizedPath.removeLast()
         }
         
-        var isSpiInternal: Bool {
-            !(spiGroupNames ?? []).isEmpty
-        }
-        
-        var isFinal: Bool {
-            (declAttributes ?? []).contains("Final")
-        }
-        
-        var hasDiscardableResult: Bool {
-            (declAttributes ?? []).contains("DiscardableResult")
-        }
-        
-        var isTypeInformation: Bool {
-            kind.isTypeInformation
-        }
-        
-        var parentPath: String {
-            var parent = self.parent
-            var path = [parent?.name]
-            
-            while parent != nil {
-                parent = parent?.parent
-                path += [parent?.name]
-            }
-            
-            var sanitizedPath = path.compactMap { $0 }
-            
-            if sanitizedPath.last == "TopLevel" {
-                sanitizedPath.removeLast()
-            }
-            
-            return sanitizedPath.reversed().joined(separator: ".")
-        }
+        return sanitizedPath.reversed().joined(separator: ".")
     }
 }
