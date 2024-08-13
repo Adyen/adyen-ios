@@ -6,8 +6,8 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
 /// Used as a singleton to update the sessionId
+@_spi(AdyenInternal)
 public final class AnalyticsForSession {
     
     /// Needed to be able to determine if using session
@@ -16,8 +16,8 @@ public final class AnalyticsForSession {
     private init() { /* Private empty init */ }
 }
 
-@_spi(AdyenInternal)
 /// A protocol that defines the events that can occur under Checkout Analytics.
+@_spi(AdyenInternal)
 public protocol AnalyticsEvent: Encodable {
     var timestamp: Int { get }
     
@@ -61,8 +61,8 @@ public struct AnalyticsConfiguration {
     public init() { /* Empty implementation */ }
 }
 
-@_spi(AdyenInternal)
 /// Additional fields to be provided with an ``InitialAnalyticsRequest``
+@_spi(AdyenInternal)
 public struct AdditionalAnalyticsFields {
     /// The amount of the payment
     public let amount: Amount?

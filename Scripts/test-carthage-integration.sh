@@ -48,6 +48,7 @@ then
   CURRENT_COMMIT=$(git rev-parse HEAD)
 
   echo "git \"file://$CWD/../\" \"$CURRENT_COMMIT\"" > Cartfile
+  echo "github \"adyen/adyen-authentication-ios\" == 3.0.0" >> Cartfile
   carthage update --use-xcframeworks --configuration Debug
 else
   cd $PROJECT_NAME
@@ -129,6 +130,7 @@ cp "../Tests/IntegrationTests/DropIn Tests/DropInDelegateMock.swift" Tests/DropI
 cp "../Tests/IntegrationTests/DropIn Tests/StoredPaymentMethodDelegateMock.swift" Tests/StoredPaymentMethodDelegateMock.swift
 cp "../Tests/IntegrationTests/Card Tests/Mocks/OpenExternalAppDetector+Mock.swift" Tests/OpenExternalAppDetector+Mock.swift
 cp "../Tests/IntegrationTests/Card Tests/3DS2 Component/ThreeDS2PlusDACoreActionHandlerTests.swift" Tests/ThreeDS2PlusDACoreActionHandlerTests.swift
+cp "../Tests/IntegrationTests/Card Tests/3DS2 Component/ThreeDS2DAScreenPresenterMock.swift" Tests/ThreeDS2DAScreenPresenterMock.swift
 cp "../Tests/IntegrationTests/Card Tests/3DS2 Component/ThreeDS2PlusDACoreActionHandlerTests+Constants.swift" Tests/ThreeDS2PlusDACoreActionHandlerTests+Constants.swift
 cp "../Tests/IntegrationTests/Card Tests/3DS2 Component/AnyADYServiceMock.swift" Tests/AnyADYServiceMock.swift
 cp "../Tests/IntegrationTests/Card Tests/3DS2 Component/AuthenticationServiceMock.swift" Tests/AuthenticationServiceMock.swift
@@ -141,6 +143,7 @@ cp "../Tests/IntegrationTests/Helpers/UIView+Search.swift" Tests/UIView+Search.s
 cp "../Tests/UnitTests/Helpers/PaymentMethods+Equatable.swift" Tests/PaymentMethods+Equatable.swift
 cp "../Tests/UnitTests/Analytics/AnalyticsProviderMock.swift" Tests/AnalyticsProviderMock.swift
 cp "../Tests/UnitTests/Mocks/DummyData/Dummy.swift" Tests/Dummy.swift
+cp "../Tests/UnitTests/Mocks/DummyData/DummyHelper.swift" Tests/DummyHelper.swift
 cp "../Tests/UnitTests/Mocks/DummyData/DummyPaymentMethods.swift" Tests/DummyPaymentMethods.swift
 cp "../Tests/UnitTests/APIClientMock.swift" Tests/APIClientMock.swift
 cp "../Tests/UnitTests/Mocks/ImageLoaderMock.swift" Tests/ImageLoaderMock.swift

@@ -16,17 +16,16 @@ class OutputGeneratorTests: XCTestCase {
         _Comparing `new_source` to `old_source`_
 
         ---
-        **Analyzed modules:** Target_1
+        **Analyzed targets:** Target_1
         """
         
-        let outputGenerator = MarkdownOutputGenerator(
-            changesPerTarget: [:],
-            allTargetNames: ["Target_1"],
+        let outputGenerator = MarkdownOutputGenerator()
+        let output = outputGenerator.generate(
+            from: [:],
+            allTargets: ["Target_1"],
             oldSource: .local(path: "old_source"),
             newSource: .local(path: "new_source")
         )
-        
-        let output = outputGenerator.generate()
         XCTAssertEqual(output, expectedOutput)
     }
     
@@ -38,20 +37,23 @@ class OutputGeneratorTests: XCTestCase {
 
         ---
         ## `Target_1`
-        - ❇️  Some Addition
+        #### ❇️ Added
+        ```javascript
+        Some Addition
+        ```
 
         ---
-        **Analyzed modules:** Target_1
+        **Analyzed targets:** Target_1
         """
         
-        let outputGenerator = MarkdownOutputGenerator(
-            changesPerTarget: ["Target_1": [.init(changeType: .addition, parentName: "", changeDescription: "Some Addition")]],
-            allTargetNames: ["Target_1"],
+        let outputGenerator = MarkdownOutputGenerator()
+        
+        let output = outputGenerator.generate(
+            from: ["Target_1": [.init(changeType: .addition(description: "Some Addition"), parentName: "")]],
+            allTargets: ["Target_1"],
             oldSource: .local(path: "old_source"),
             newSource: .local(path: "new_source")
         )
-        
-        let output = outputGenerator.generate()
         XCTAssertEqual(output, expectedOutput)
     }
     
@@ -63,33 +65,45 @@ class OutputGeneratorTests: XCTestCase {
 
         ---
         ## `Target_1`
-        - ❇️  Some Addition
-        - 😶‍🌫️ Some Removal
+        #### ❇️ Added
+        ```javascript
+        Some Addition
+        ```
+        #### 😶‍🌫️ Removed
+        ```javascript
+        Some Removal
+        ```
         ## `Target_2`
-        - ❇️  Another Addition
-        - 😶‍🌫️ Another Removal
+        #### ❇️ Added
+        ```javascript
+        Another Addition
+        ```
+        #### 😶‍🌫️ Removed
+        ```javascript
+        Another Removal
+        ```
 
         ---
-        **Analyzed modules:** Target_1, Target_2
+        **Analyzed targets:** Target_1, Target_2
         """
 
-        let outputGenerator = MarkdownOutputGenerator(
-            changesPerTarget: [
+        let outputGenerator = MarkdownOutputGenerator()
+        
+        let output = outputGenerator.generate(
+            from: [
                 "Target_1": [
-                    .init(changeType: .addition, parentName: "", changeDescription: "Some Addition"),
-                    .init(changeType: .removal, parentName: "", changeDescription: "Some Removal")
+                    .init(changeType: .addition(description: "Some Addition"), parentName: ""),
+                    .init(changeType: .removal(description: "Some Removal"), parentName: "")
                 ],
                 "Target_2": [
-                    .init(changeType: .addition, parentName: "", changeDescription: "Another Addition"),
-                    .init(changeType: .removal, parentName: "", changeDescription: "Another Removal")
+                    .init(changeType: .addition(description: "Another Addition"), parentName: ""),
+                    .init(changeType: .removal(description: "Another Removal"), parentName: "")
                 ]
             ],
-            allTargetNames: ["Target_1", "Target_2"],
+            allTargets: ["Target_1", "Target_2"],
             oldSource: .remote(branch: "old_branch", repository: "old_repository"),
             newSource: .local(path: "new_source")
         )
-        
-        let output = outputGenerator.generate()
         XCTAssertEqual(output, expectedOutput)
     }
 }

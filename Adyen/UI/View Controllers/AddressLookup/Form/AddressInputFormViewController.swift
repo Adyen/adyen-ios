@@ -91,6 +91,20 @@ public class AddressInputFormViewController: FormViewController {
     }()
 }
 
+internal extension AddressInputFormViewController {
+    
+    @objc
+    func submitTapped() {
+        guard validate() else { return }
+        viewModel.handleSubmit(validAddress: addressItem.value)
+    }
+    
+    @objc
+    func dismissAddressLookup() {
+        viewModel.handleDismiss()
+    }
+}
+
 private extension AddressInputFormViewController {
     
     func setupNavigationItems() {
@@ -105,16 +119,5 @@ private extension AddressInputFormViewController {
             target: self,
             action: #selector(submitTapped)
         )
-    }
-    
-    @objc
-    func submitTapped() {
-        guard validate() else { return }
-        viewModel.handleSubmit(validAddress: addressItem.value)
-    }
-    
-    @objc
-    func dismissAddressLookup() {
-        viewModel.handleDismiss()
     }
 }

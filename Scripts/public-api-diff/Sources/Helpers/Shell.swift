@@ -16,6 +16,7 @@ struct Shell: ShellHandling {
     
     @discardableResult
     func execute(_ command: String) -> String {
+        
         let task = Process()
         let pipe = Pipe()
         
