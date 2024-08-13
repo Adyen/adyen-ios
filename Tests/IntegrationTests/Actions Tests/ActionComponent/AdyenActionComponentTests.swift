@@ -83,7 +83,8 @@ class AdyenActionComponentTests: XCTestCase {
         "paymentData": "",
         "type": "sdk",
         "sdkData": {
-            "token": ""
+            "token": "",
+            "isStored": "false"
         }
     }
     """
