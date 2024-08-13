@@ -160,22 +160,27 @@ extension SDKDump {
             case funcSelfKind
         }
         
+        // Custom conformance as we have to use a `class` for the `Element`
         static func == (lhs: SDKDump.Element, rhs: SDKDump.Element) -> Bool {
             lhs.kind == rhs.kind &&
-                lhs.name == rhs.name &&
-                lhs.printedName == rhs.printedName &&
-                lhs.declKind == rhs.declKind &&
-                lhs.children == rhs.children &&
-                lhs.spiGroupNames == rhs.spiGroupNames &&
-                lhs.declAttributes == rhs.declAttributes &&
-                lhs.accessors == rhs.accessors &&
-                lhs.conformances == rhs.conformances &&
-                lhs.isLet == rhs.isLet &&
-                lhs.hasDefaultArg == rhs.hasDefaultArg &&
-                lhs.isInternal == rhs.isInternal &&
-                lhs.isStatic == rhs.isStatic &&
-                lhs.initKind == rhs.initKind &&
-                lhs.genericSig == rhs.genericSig
+            lhs.name == rhs.name &&
+            lhs.printedName == rhs.printedName &&
+            lhs.declKind == rhs.declKind &&
+            lhs.isStatic == rhs.isStatic &&
+            lhs.isLet == rhs.isLet &&
+            lhs.hasDefaultArg == rhs.hasDefaultArg &&
+            lhs.isInternal == rhs.isInternal &&
+            lhs.isThrowing == rhs.isThrowing &&
+            lhs.children == rhs.children &&
+            lhs.spiGroupNames == rhs.spiGroupNames &&
+            lhs.declAttributes == rhs.declAttributes &&
+            lhs.accessors == rhs.accessors &&
+            lhs.conformances == rhs.conformances &&
+            lhs.parent == rhs.parent &&
+            lhs.initKind == rhs.initKind &&
+            lhs.genericSig == rhs.genericSig &&
+            lhs.paramValueOwnership == rhs.paramValueOwnership &&
+            lhs.funcSelfKind == rhs.funcSelfKind
         }
     }
 }
