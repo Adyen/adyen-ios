@@ -5003,7 +5003,7 @@ public init() -> Adyen.AddressStyle
 @_spi(AdyenInternal) public final class FormRegionPickerItem : FormItem, ValidatableFormItem
 ```
 ```javascript
-@_spi(AdyenInternal) public init(preselectedRegion: Adyen.Region?, selectableRegions: [Adyen.Region], validationFailureMessage: Swift.String?, title: Swift.String, placeholder: Swift.String, style: Adyen.FormTextItemStyle, presenter: (any Adyen.ViewControllerPresenter)?, localizationParameters: Adyen.LocalizationParameters? = $DEFAULT_ARG, identifier: Swift.String? = $DEFAULT_ARG) -> Adyen.FormRegionPickerItem
+@_spi(AdyenInternal) public required init(preselectedRegion: Adyen.Region?, selectableRegions: [Adyen.Region], validationFailureMessage: Swift.String?, title: Swift.String, placeholder: Swift.String, style: Adyen.FormTextItemStyle, presenter: (any Adyen.ViewControllerPresenter)?, localizationParameters: Adyen.LocalizationParameters? = $DEFAULT_ARG, identifier: Swift.String? = $DEFAULT_ARG) -> Adyen.FormRegionPickerItem
 ```
 ```javascript
 @_spi(AdyenInternal) public func updateValue(with: Adyen.Region?) -> Swift.Void
@@ -5141,7 +5141,7 @@ public init() -> Adyen.AddressStyle
 @_spi(AdyenInternal) public var views: [any Adyen.AnyFormItemView] { get }
 ```
 ```javascript
-@_spi(AdyenInternal) public init<FormItemType where FormItemType : Adyen.FormItem>(item: FormItemType) -> Adyen.FormVerticalStackItemView<FormItemType>
+@_spi(AdyenInternal) public required init<FormItemType where FormItemType : Adyen.FormItem>(item: FormItemType) -> Adyen.FormVerticalStackItemView<FormItemType>
 ```
 ```javascript
 @_spi(AdyenInternal) public convenience init<FormItemType where FormItemType : Adyen.FormItem>(item: FormItemType, itemSpacing: CoreGraphics.CGFloat) -> Adyen.FormVerticalStackItemView<FormItemType>
@@ -5363,7 +5363,7 @@ public init() -> Adyen.FormErrorItemStyle
 @_spi(AdyenInternal) public let item: ItemType { get }
 ```
 ```javascript
-@_spi(AdyenInternal) public init<ItemType where ItemType : Adyen.FormItem>(item: ItemType) -> Adyen.FormItemView<ItemType>
+@_spi(AdyenInternal) public required init<ItemType where ItemType : Adyen.FormItem>(item: ItemType) -> Adyen.FormItemView<ItemType>
 ```
 ```javascript
 @_spi(AdyenInternal) public var childItemViews: [any Adyen.AnyFormItemView] { get }
@@ -5414,7 +5414,7 @@ public init() -> Adyen.FormErrorItemStyle
 @_spi(AdyenInternal) public final class FormPhoneExtensionPickerItem : FormItem, ValidatableFormItem
 ```
 ```javascript
-@_spi(AdyenInternal) public init(preselectedExtension: Adyen.PhoneExtension?, selectableExtensions: [Adyen.PhoneExtension], validationFailureMessage: Swift.String?, style: Adyen.FormTextItemStyle, presenter: Adyen.WeakReferenceViewControllerPresenter, localizationParameters: Adyen.LocalizationParameters? = $DEFAULT_ARG, identifier: Swift.String? = $DEFAULT_ARG) -> Adyen.FormPhoneExtensionPickerItem
+@_spi(AdyenInternal) public required init(preselectedExtension: Adyen.PhoneExtension?, selectableExtensions: [Adyen.PhoneExtension], validationFailureMessage: Swift.String?, style: Adyen.FormTextItemStyle, presenter: Adyen.WeakReferenceViewControllerPresenter, localizationParameters: Adyen.LocalizationParameters? = $DEFAULT_ARG, identifier: Swift.String? = $DEFAULT_ARG) -> Adyen.FormPhoneExtensionPickerItem
 ```
 ```javascript
 @_spi(AdyenInternal) override public func resetValue() -> Swift.Void
@@ -5438,7 +5438,7 @@ public init() -> Adyen.FormErrorItemStyle
 @_spi(AdyenInternal) @objc override public var accessibilityIdentifier: Swift.String? { get set }
 ```
 ```javascript
-@_spi(AdyenInternal) public init(item: Adyen.FormPhoneExtensionPickerItem) -> Adyen.FormPhoneExtensionPickerItemView
+@_spi(AdyenInternal) public required init(item: Adyen.FormPhoneExtensionPickerItem) -> Adyen.FormPhoneExtensionPickerItemView
 ```
 ```javascript
 @_spi(AdyenInternal) public final class FormSegmentedControlItem : FormItem
@@ -5522,7 +5522,7 @@ public init() -> Adyen.FormErrorItemStyle
 @_spi(AdyenInternal) public final class SelectableFormItemView : AdyenCompatible, AdyenObserver, AnyFormItemView, CALayerDelegate, CVarArg, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSObjectProtocol, Sendable, UIAccessibilityIdentification, UIActivityItemsConfigurationProviding, UIAppearance, UIAppearanceContainer, UICoordinateSpace, UIDynamicItem, UIFocusEnvironment, UIFocusItem, UIFocusItemContainer, UILargeContentViewerItem, UIPasteConfigurationSupporting, UIPopoverPresentationControllerSourceItem, UIResponderStandardEditActions, UITraitChangeObservable, UITraitEnvironment, UIUserActivityRestoring
 ```
 ```javascript
-@_spi(AdyenInternal) public init(item: Adyen.SelectableFormItem) -> Adyen.SelectableFormItemView
+@_spi(AdyenInternal) public required init(item: Adyen.SelectableFormItem) -> Adyen.SelectableFormItemView
 ```
 ```javascript
 @_spi(AdyenInternal) @objc override public func didMoveToWindow() -> Swift.Void
@@ -5615,7 +5615,7 @@ public init() -> Adyen.FormErrorItemStyle
 @_spi(AdyenInternal) public final class FormTextInputItemView : AdyenCompatible, AdyenObserver, AnyFormItemView, AnyFormTextItemView, AnyFormValidatableValueItemView, AnyFormValueItemView, CALayerDelegate, CVarArg, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSObjectProtocol, Sendable, UIAccessibilityIdentification, UIActivityItemsConfigurationProviding, UIAppearance, UIAppearanceContainer, UICoordinateSpace, UIDynamicItem, UIFocusEnvironment, UIFocusItem, UIFocusItemContainer, UILargeContentViewerItem, UIPasteConfigurationSupporting, UIPopoverPresentationControllerSourceItem, UIResponderStandardEditActions, UITextFieldDelegate, UITraitChangeObservable, UITraitEnvironment, UIUserActivityRestoring
 ```
 ```javascript
-@_spi(AdyenInternal) public init(item: Adyen.FormTextInputItem) -> Adyen.FormTextInputItemView
+@_spi(AdyenInternal) public required init(item: Adyen.FormTextInputItem) -> Adyen.FormTextInputItemView
 ```
 ```javascript
 @_spi(AdyenInternal) public class FormTextItem : FormItem, InputViewRequiringFormItem, ValidatableFormItem
@@ -5723,7 +5723,7 @@ public init() -> Adyen.FormTextItemStyle
 @_spi(AdyenInternal) override public var accessibilityLabelView: UIKit.UIView? { get }
 ```
 ```javascript
-@_spi(AdyenInternal) public init<ItemType where ItemType : Adyen.FormTextItem>(item: ItemType) -> Adyen.FormTextItemView<ItemType>
+@_spi(AdyenInternal) public required init<ItemType where ItemType : Adyen.FormTextItem>(item: ItemType) -> Adyen.FormTextItemView<ItemType>
 ```
 ```javascript
 @_spi(AdyenInternal) override public func reset<ItemType where ItemType : Adyen.FormTextItem>() -> Swift.Void
@@ -5813,7 +5813,7 @@ public init() -> Adyen.FormTextItemStyle
 @_spi(AdyenInternal) @objc override public dynamic init(frame: CoreFoundation.CGRect) -> Adyen.TextField
 ```
 ```javascript
-@_spi(AdyenInternal) @objc public dynamic init(coder: Foundation.NSCoder) -> Adyen.TextField?
+@_spi(AdyenInternal) @objc public required dynamic init(coder: Foundation.NSCoder) -> Adyen.TextField?
 ```
 ```javascript
 @_spi(AdyenInternal) public func apply(placeholderText: Swift.String?, with: Adyen.TextStyle?) -> Swift.Void
@@ -5855,7 +5855,7 @@ public init() -> Adyen.FormToggleItemStyle
 @_spi(AdyenInternal) public final class FormToggleItemView : AdyenCompatible, AdyenObserver, AnyFormItemView, AnyFormValueItemView, CALayerDelegate, CVarArg, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSObjectProtocol, Sendable, UIAccessibilityIdentification, UIActivityItemsConfigurationProviding, UIAppearance, UIAppearanceContainer, UICoordinateSpace, UIDynamicItem, UIFocusEnvironment, UIFocusItem, UIFocusItemContainer, UILargeContentViewerItem, UIPasteConfigurationSupporting, UIPopoverPresentationControllerSourceItem, UIResponderStandardEditActions, UITraitChangeObservable, UITraitEnvironment, UIUserActivityRestoring
 ```
 ```javascript
-@_spi(AdyenInternal) public init(item: Adyen.FormToggleItem) -> Adyen.FormToggleItemView
+@_spi(AdyenInternal) public required init(item: Adyen.FormToggleItem) -> Adyen.FormToggleItemView
 ```
 ```javascript
 @_spi(AdyenInternal) @discardableResult @objc override public func accessibilityActivate() -> Swift.Bool
@@ -5906,7 +5906,7 @@ public init() -> Adyen.FormToggleItemStyle
 @_spi(AdyenInternal) public class BaseFormPickerItemView<T where T : Swift.CustomStringConvertible, T : Swift.Equatable> : AdyenCompatible, AdyenObserver, AnyFormItemView, AnyFormValueItemView, CALayerDelegate, CVarArg, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSObjectProtocol, Sendable, UIAccessibilityIdentification, UIActivityItemsConfigurationProviding, UIAppearance, UIAppearanceContainer, UICoordinateSpace, UIDynamicItem, UIFocusEnvironment, UIFocusItem, UIFocusItemContainer, UILargeContentViewerItem, UIPasteConfigurationSupporting, UIPickerViewDataSource, UIPickerViewDelegate, UIPopoverPresentationControllerSourceItem, UIResponderStandardEditActions, UITraitChangeObservable, UITraitEnvironment, UIUserActivityRestoring
 ```
 ```javascript
-@_spi(AdyenInternal) public init<T where T : Swift.CustomStringConvertible, T : Swift.Equatable>(item: Adyen.BaseFormPickerItem<T>) -> Adyen.BaseFormPickerItemView<T>
+@_spi(AdyenInternal) public required init<T where T : Swift.CustomStringConvertible, T : Swift.Equatable>(item: Adyen.BaseFormPickerItem<T>) -> Adyen.BaseFormPickerItemView<T>
 ```
 ```javascript
 @_spi(AdyenInternal) @objc override public dynamic var canBecomeFirstResponder: Swift.Bool { get }
@@ -6008,7 +6008,7 @@ public var title: Adyen.TextStyle { get }
 @_spi(AdyenInternal) public lazy var titleLabel: UIKit.UILabel { get set }
 ```
 ```javascript
-@_spi(AdyenInternal) public init<ValueType, Style, ItemType where ValueType : Swift.Equatable, Style : Adyen.FormValueItemStyle, ItemType : Adyen.FormValueItem<ValueType, Style>>(item: ItemType) -> Adyen.FormValueItemView<ValueType, Style, ItemType>
+@_spi(AdyenInternal) public required init<ValueType, Style, ItemType where ValueType : Swift.Equatable, Style : Adyen.FormValueItemStyle, ItemType : Adyen.FormValueItem<ValueType, Style>>(item: ItemType) -> Adyen.FormValueItemView<ValueType, Style, ItemType>
 ```
 ```javascript
 @_spi(AdyenInternal) @objc override public dynamic func didAddSubview<ValueType, Style, ItemType where ValueType : Swift.Equatable, Style : Adyen.FormValueItemStyle, ItemType : Adyen.FormValueItem<ValueType, Style>>(_: UIKit.UIView) -> Swift.Void
@@ -6194,7 +6194,7 @@ public var title: Adyen.TextStyle { get }
 @_spi(AdyenInternal) public class FormSelectableValueItemView<ValueType, ItemType where ValueType : Swift.Equatable, ItemType : Adyen.FormSelectableValueItem<ValueType?>> : AdyenCompatible, AdyenObserver, AnyFormItemView, AnyFormValidatableValueItemView, AnyFormValueItemView, CALayerDelegate, CVarArg, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSObjectProtocol, Sendable, UIAccessibilityIdentification, UIActivityItemsConfigurationProviding, UIAppearance, UIAppearanceContainer, UICoordinateSpace, UIDynamicItem, UIFocusEnvironment, UIFocusItem, UIFocusItemContainer, UILargeContentViewerItem, UIPasteConfigurationSupporting, UIPopoverPresentationControllerSourceItem, UIResponderStandardEditActions, UITraitChangeObservable, UITraitEnvironment, UIUserActivityRestoring
 ```
 ```javascript
-@_spi(AdyenInternal) public init<ValueType, ItemType where ValueType : Swift.Equatable, ItemType : Adyen.FormSelectableValueItem<ValueType?>>(item: ItemType) -> Adyen.FormSelectableValueItemView<ValueType, ItemType>
+@_spi(AdyenInternal) public required init<ValueType, ItemType where ValueType : Swift.Equatable, ItemType : Adyen.FormSelectableValueItem<ValueType?>>(item: ItemType) -> Adyen.FormSelectableValueItemView<ValueType, ItemType>
 ```
 ```javascript
 @_spi(AdyenInternal) public class FormValidatableValueItem<ValueType where ValueType : Swift.Equatable> : FormItem, ValidatableFormItem
@@ -6218,7 +6218,7 @@ public var title: Adyen.TextStyle { get }
 @_spi(AdyenInternal) public class FormValidatableValueItemView<ValueType, ItemType where ValueType : Swift.Equatable, ItemType : Adyen.FormValidatableValueItem<ValueType>> : AdyenCompatible, AdyenObserver, AnyFormItemView, AnyFormValidatableValueItemView, AnyFormValueItemView, CALayerDelegate, CVarArg, CustomDebugStringConvertible, CustomStringConvertible, Equatable, Hashable, NSCoding, NSObjectProtocol, Sendable, UIAccessibilityIdentification, UIActivityItemsConfigurationProviding, UIAppearance, UIAppearanceContainer, UICoordinateSpace, UIDynamicItem, UIFocusEnvironment, UIFocusItem, UIFocusItemContainer, UILargeContentViewerItem, UIPasteConfigurationSupporting, UIPopoverPresentationControllerSourceItem, UIResponderStandardEditActions, UITraitChangeObservable, UITraitEnvironment, UIUserActivityRestoring
 ```
 ```javascript
-@_spi(AdyenInternal) public init<ValueType, ItemType where ValueType : Swift.Equatable, ItemType : Adyen.FormValidatableValueItem<ValueType>>(item: ItemType) -> Adyen.FormValidatableValueItemView<ValueType, ItemType>
+@_spi(AdyenInternal) public required init<ValueType, ItemType where ValueType : Swift.Equatable, ItemType : Adyen.FormValidatableValueItem<ValueType>>(item: ItemType) -> Adyen.FormValidatableValueItemView<ValueType, ItemType>
 ```
 ```javascript
 @_spi(AdyenInternal) override public func configureSeparatorView<ValueType, ItemType where ValueType : Swift.Equatable, ItemType : Adyen.FormValidatableValueItem<ValueType>>() -> Swift.Void
