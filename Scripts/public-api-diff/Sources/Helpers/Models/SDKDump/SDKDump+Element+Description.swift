@@ -47,7 +47,7 @@ private extension SDKDump.Element {
     private var genericPrefixes: [String] {
         var components = [String]()
         
-        // TODO: Add support for: required, unowned, ...
+        // TODO: Add support for: unowned, ...
         // See: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/declarations#Declaration-Modifiers
         
         spiGroupNames?.forEach { components += ["@_spi(\($0))"] }
