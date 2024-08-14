@@ -100,8 +100,6 @@ private extension SDKDump.FunctionElement {
     }
     
     func extractArguments() -> [Argument] {
-        // TODO: Add support for: class func, rethrows, async
-        // See: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/declarations#Enumerations-with-Indirection
         
         let parameterNames = Self.parameterNames(
             from: underlyingElement.printedName,

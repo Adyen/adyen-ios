@@ -32,6 +32,7 @@ extension SDKDump {
         case typeAlias = "TypeAlias"
         
         case typeFunc = "TypeFunc"
+        case operatorDeclaration = "OperatorDecl"
     }
 }
 

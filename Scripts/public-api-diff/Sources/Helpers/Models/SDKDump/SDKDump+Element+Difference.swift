@@ -21,6 +21,13 @@ extension SDKDump.Element {
         diff += differences(toIsDynamic: otherElement.isDynamic)
         diff += differences(toIsMutating: otherElement.isMutating)
         diff += differences(toIsRequired: otherElement.isRequired)
+        diff += differences(toIsOpen: otherElement.isOpen)
+        diff += differences(toIsInternal: otherElement.isInternal)
+        diff += differences(toIsPrefix: otherElement.isPrefix)
+        diff += differences(toIsInfix: otherElement.isInfix)
+        diff += differences(toIsPostfix: otherElement.isPostfix)
+        diff += differences(toIsInlinable: otherElement.isInlinable)
+        diff += differences(toIsIndirect: otherElement.isIndirect)
 
         if let functionDescription = asFunction, let otherFunctionDescription = otherElement.asFunction {
             diff += functionDescription.differences(toFunction: otherFunctionDescription)
@@ -34,22 +41,12 @@ private extension SDKDump.Element {
     
     func differences(toIsFinal otherIsFinal: Bool) -> [String] {
         guard isFinal != otherIsFinal else { return [] }
-            
-        if otherIsFinal {
-            return ["Added `final` keyword"]
-        } else {
-            return ["Removed `final` keyword"]
-        }
+        return ["\(otherIsFinal ? "Added" : "Removed") `final` keyword"]
     }
     
     func differences(toIsThrowing otherIsThrowing: Bool) -> [String] {
         guard isThrowing != otherIsThrowing else { return [] }
-            
-        if otherIsThrowing {
-            return ["Added `throws` keyword"]
-        } else {
-            return ["Removed `throws` keyword"]
-        }
+        return ["\(otherIsThrowing ? "Added" : "Removed") `throws` keyword"]
     }
     
     func differences(toSpiGroupNames otherSpiGroupNames: [String]?) -> [String] {
@@ -59,11 +56,7 @@ private extension SDKDump.Element {
         let otherSpiGroupNames = Set(otherSpiGroupNames ?? [])
         
         return ownSpiGroupNames.symmetricDifference(otherSpiGroupNames).map {
-            if otherSpiGroupNames.contains($0) {
-                return "Added `@_spi(\($0))`"
-            } else {
-                return "Removed `@_spi(\($0))`"
-            }
+            "\(otherSpiGroupNames.contains($0) ? "Added" : "Removed") `@_spi(\($0))`"
         }
     }
     
@@ -74,11 +67,7 @@ private extension SDKDump.Element {
         let otherConformances = Set(otherConformances ?? [])
         
         return ownConformances.symmetricDifference(otherConformances).map {
-            if otherConformances.contains($0) {
-                return "Added `\($0.printedName)` conformance"
-            } else {
-                return "Removed `\($0.printedName)` conformance"
-            }
+            "\(otherConformances.contains($0) ? "Added" : "Removed") `\($0.printedName)` conformance"
         }
     }
     
@@ -89,22 +78,13 @@ private extension SDKDump.Element {
         let otherAccessors = Set(otherAccessors?.map(\.printedName) ?? [])
         
         return ownAccessors.symmetricDifference(otherAccessors).map {
-            if otherAccessors.contains($0) {
-                return "Added `\($0)` accessor"
-            } else {
-                return "Removed `\($0)` accessor"
-            }
+            "\(otherAccessors.contains($0) ? "Added" : "Removed") `\($0)` accessor"
         }
     }
     
     func differences(toHasDiscardableResult otherHasDiscardableResult: Bool) -> [String] {
         guard hasDiscardableResult != otherHasDiscardableResult else { return [] }
-            
-        if otherHasDiscardableResult {
-            return ["Added `@discardableResult` keyword"]
-        } else {
-            return ["Removed `@discardableResult` keyword"]
-        }
+        return ["\(otherHasDiscardableResult ? "Added" : "Removed") `@discardableResult` keyword"]
     }
     
     func differences(toInitKind otherInitKind: String?) -> [String] {
@@ -133,52 +113,62 @@ private extension SDKDump.Element {
     
     func differences(toIsObjcAccessible otherIsObjcAccessible: Bool) -> [String] {
         guard isObjcAccessible != otherIsObjcAccessible else { return [] }
-        
-        if otherIsObjcAccessible {
-            return ["Added `@objc` keyword"]
-        } else {
-            return ["Removed `@objc` keyword"]
-        }
+        return ["\(otherIsObjcAccessible ? "Added" : "Removed") `@objc` keyword"]
     }
     
     func differences(toIsOverride otherIsOverride: Bool) -> [String] {
         guard isOverride != otherIsOverride else { return [] }
-        
-        if otherIsOverride {
-            return ["Added `override` keyword"]
-        } else {
-            return ["Removed `override` keyword"]
-        }
+        return ["\(otherIsOverride ? "Added" : "Removed") `override` keyword"]
     }
     
     func differences(toIsDynamic otherIsDynamic: Bool) -> [String] {
         guard isDynamic != otherIsDynamic else { return [] }
-        
-        if otherIsDynamic {
-            return ["Added `dynamic` keyword"]
-        } else {
-            return ["Removed `dynamic` keyword"]
-        }
+        return ["\(otherIsDynamic ? "Added" : "Removed") `dynamic` keyword"]
     }
     
     func differences(toIsMutating otherIsMutating: Bool) -> [String] {
         guard isMutating != otherIsMutating else { return [] }
-        
-        if otherIsMutating {
-            return ["Added `mutating` keyword"]
-        } else {
-            return ["Removed `mutating` keyword"]
-        }
+        return ["\(otherIsMutating ? "Added" : "Removed") `mutating` keyword"]
     }
     
     func differences(toIsRequired otherIsRequired: Bool) -> [String] {
         guard isRequired != otherIsRequired else { return [] }
-        
-        if otherIsRequired {
-            return ["Added `required` keyword"]
-        } else {
-            return ["Removed `required` keyword"]
-        }
+        return ["\(otherIsRequired ? "Added" : "Removed") `required` keyword"]
+    }
+    
+    func differences(toIsOpen otherIsOpen: Bool) -> [String] {
+        guard isOpen != otherIsOpen else { return [] }
+        return ["\(otherIsOpen ? "Added" : "Removed") `open` keyword"]
+    }
+    
+    func differences(toIsInternal otherIsInternal: Bool) -> [String] {
+        guard isInternal != otherIsInternal else { return [] }
+        return ["\(otherIsInternal ? "Added" : "Removed") `internal` keyword"]
+    }
+    
+    func differences(toIsPrefix otherIsPrefix: Bool) -> [String] {
+        guard isPrefix != otherIsPrefix else { return [] }
+        return ["\(otherIsPrefix ? "Added" : "Removed") `prefix` keyword"]
+    }
+    
+    func differences(toIsPostfix otherIsPostfix: Bool) -> [String] {
+        guard isPostfix != otherIsPostfix else { return [] }
+        return ["\(otherIsPostfix ? "Added" : "Removed") `postfix` keyword"]
+    }
+    
+    func differences(toIsInfix otherIsInfix: Bool) -> [String] {
+        guard isInfix != otherIsInfix else { return [] }
+        return ["\(otherIsInfix ? "Added" : "Removed") `infix` keyword"]
+    }
+    
+    func differences(toIsInlinable otherIsInlinable: Bool) -> [String] {
+        guard isInlinable != otherIsInlinable else { return [] }
+        return ["\(otherIsInlinable ? "Added" : "Removed") `@inlinable` keyword"]
+    }
+    
+    func differences(toIsIndirect otherIsIndirect: Bool) -> [String] {
+        guard isIndirect != otherIsIndirect else { return [] }
+        return ["\(otherIsIndirect ? "Added" : "Removed") `indirect` keyword"]
     }
 }
 
@@ -190,17 +180,11 @@ extension SDKDump.FunctionElement {
         
         guard ownArguments != otherArguments else { return [] }
         
-        // TODO: Indicate more in depth if the order, type and/or default arg changed
-        
         let ownArgumentNames = Set(arguments.map(\.description))
         let otherArgumentNames = Set(otherArguments.map(\.description))
         
         return ownArgumentNames.symmetricDifference(otherArgumentNames).map {
-            if otherArgumentNames.contains($0) {
-                return "Added `\($0)`"
-            } else {
-                return "Removed `\($0)`"
-            }
+            "\(otherArgumentNames.contains($0) ? "Added" : "Removed") `\($0)`"
         }
     }
 }

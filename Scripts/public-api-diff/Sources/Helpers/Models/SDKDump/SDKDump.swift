@@ -58,9 +58,7 @@ internal extension SDKDump {
         var components = [String]()
         components += root.flatChildDescriptions()
         
-        return components.map { component in
-            return "```javascript\n\(component)\n```"
-        }.joined(separator: "\n")
+        return components.joined(separator: "\n")
     }
 }
 
@@ -69,8 +67,10 @@ private extension SDKDump.Element {
     func flatChildDescriptions() -> [String] {
         var definitions = [String]()
         children.forEach { child in
-            if child.declKind == nil { return }
-            definitions += [child.description] + child.flatChildDescriptions()
+            if child.declKind == nil { return } // Filtering out metadata
+            let parentPath = child.parentPath.isEmpty ? "Root" : child.parentPath
+            let formattedDescription = "```javascript\n// Parent: \(parentPath)\n\(child.description)\n```"
+            definitions += [formattedDescription] + child.flatChildDescriptions()
         }
         return definitions
     }

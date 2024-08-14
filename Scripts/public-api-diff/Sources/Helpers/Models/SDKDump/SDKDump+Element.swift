@@ -24,8 +24,10 @@ extension SDKDump {
         let isLet: Bool
         /// Indicates whether or not a function argument has a default value
         let hasDefaultArg: Bool
-        /// Whether or not an element is marked as internal (only observed when using an abi.json from a binary framework)
+        /// Whether or not an element is marked as `package` or `internal` (only observed when using an abi.json from a binary framework)
         let isInternal: Bool
+        /// Whether or not a class is marked as `open`
+        let isOpen: Bool
         /// Indicates whether or not a function is throwing
         let isThrowing: Bool
         /// Indicates whether or not an init is a `convenience` or a `designated` initializer
@@ -63,6 +65,7 @@ extension SDKDump {
             hasDefaultArg: Bool = false,
             isInternal: Bool = false,
             isThrowing: Bool = false,
+            isOpen: Bool = false,
             initKind: String? = nil,
             genericSig: String? = nil,
             paramValueOwnership: String? = nil,
@@ -83,6 +86,7 @@ extension SDKDump {
             self.hasDefaultArg = hasDefaultArg
             self.isInternal = isInternal
             self.isThrowing = isThrowing
+            self.isOpen = isOpen
             self.children = children
             self.spiGroupNames = spiGroupNames
             self.declAttributes = declAttributes
@@ -108,6 +112,7 @@ extension SDKDump {
             self.hasDefaultArg = (try? container.decode(Bool.self, forKey: CodingKeys.hasDefaultArg)) ?? false
             self.isInternal = (try? container.decode(Bool.self, forKey: CodingKeys.isInternal)) ?? false
             self.isThrowing = (try? container.decode(Bool.self, forKey: CodingKeys.isThrowing)) ?? false
+            self.isOpen = try container.decodeIfPresent(Bool.self, forKey: CodingKeys.isOpen) ?? false
             self.declAttributes = try container.decodeIfPresent([String].self, forKey: CodingKeys.declAttributes)
             self.conformances = try container.decodeIfPresent([Conformance].self, forKey: CodingKeys.conformances)
             self.accessors = try container.decodeIfPresent([SDKDump.Element].self, forKey: CodingKeys.accessors)
@@ -130,6 +135,7 @@ extension SDKDump {
             try container.encode(self.hasDefaultArg, forKey: SDKDump.Element.CodingKeys.hasDefaultArg)
             try container.encode(self.isInternal, forKey: SDKDump.Element.CodingKeys.isInternal)
             try container.encode(self.isThrowing, forKey: SDKDump.Element.CodingKeys.isThrowing)
+            try container.encode(self.isOpen, forKey: SDKDump.Element.CodingKeys.isOpen)
             try container.encodeIfPresent(self.declAttributes, forKey: SDKDump.Element.CodingKeys.declAttributes)
             try container.encodeIfPresent(self.conformances, forKey: SDKDump.Element.CodingKeys.conformances)
             try container.encodeIfPresent(self.accessors, forKey: SDKDump.Element.CodingKeys.accessors)
@@ -158,29 +164,12 @@ extension SDKDump {
             case genericSig
             case paramValueOwnership
             case funcSelfKind
+            case isOpen
         }
         
-        // Custom conformance as we have to use a `class` for the `Element`
         static func == (lhs: SDKDump.Element, rhs: SDKDump.Element) -> Bool {
-            lhs.kind == rhs.kind &&
-            lhs.name == rhs.name &&
-            lhs.printedName == rhs.printedName &&
-            lhs.declKind == rhs.declKind &&
-            lhs.isStatic == rhs.isStatic &&
-            lhs.isLet == rhs.isLet &&
-            lhs.hasDefaultArg == rhs.hasDefaultArg &&
-            lhs.isInternal == rhs.isInternal &&
-            lhs.isThrowing == rhs.isThrowing &&
-            lhs.children == rhs.children &&
-            lhs.spiGroupNames == rhs.spiGroupNames &&
-            lhs.declAttributes == rhs.declAttributes &&
-            lhs.accessors == rhs.accessors &&
-            lhs.conformances == rhs.conformances &&
             lhs.parent == rhs.parent &&
-            lhs.initKind == rhs.initKind &&
-            lhs.genericSig == rhs.genericSig &&
-            lhs.paramValueOwnership == rhs.paramValueOwnership &&
-            lhs.funcSelfKind == rhs.funcSelfKind
+            lhs.description == rhs.description
         }
     }
 }
@@ -229,6 +218,26 @@ extension SDKDump.Element {
     
     var isRequired: Bool {
         (declAttributes ?? []).contains("Required")
+    }
+    
+    var isPrefix: Bool {
+        (declAttributes ?? []).contains("Prefix")
+    }
+    
+    var isPostfix: Bool {
+        (declAttributes ?? []).contains("Postfix")
+    }
+    
+    var isInfix: Bool {
+        (declAttributes ?? []).contains("Infix")
+    }
+    
+    var isInlinable: Bool {
+        (declAttributes ?? []).contains("Inlinable")
+    }
+    
+    var isIndirect: Bool {
+        (declAttributes ?? []).contains("Indirect")
     }
     
     var isTypeInformation: Bool {

@@ -38,6 +38,8 @@ extension SDKDump.Element: CustomStringConvertible {
             return self.asFunction?.description ?? defaultVerboseName
         case .typeAlias:
             return self.asTypeAlias?.description ?? defaultVerboseName
+        case .infixOperator, .prefixOperator, .postfixOperator:
+            return self.asOperator?.description ?? defaultVerboseName
         }
     }
 }
@@ -53,14 +55,28 @@ private extension SDKDump.Element {
         spiGroupNames?.forEach { components += ["@_spi(\($0))"] }
         if hasDiscardableResult { components += ["@discardableResult"] }
         if isObjcAccessible { components += ["@objc"] }
+        if isInlinable { components += ["@inlinable"]}
+        
         if isOverride { components += ["override"] }
-        if declKind != .import { components += [isInternal ? "internal" : "public"] }
+        if declKind != .import {
+            if isOpen {
+                components += ["open"]
+            } else if isInternal {
+                components += ["internal"]
+            } else {
+                components += ["public"]
+            }
+        }
         if isFinal { components += ["final"] }
+        if isIndirect { components += ["indirect"] }
         if isRequired { components += ["required"] }
         if isStatic { components += ["static"] }
         if isConvenienceInit { components += ["convenience"] }
         if isDynamic { components += ["dynamic"] }
-        
+        if isPrefix  { components += ["prefix"] }
+        if isPostfix  { components += ["postfix"] }
+        if isInfix  { components += ["infix"] }
+
         return components
     }
     
