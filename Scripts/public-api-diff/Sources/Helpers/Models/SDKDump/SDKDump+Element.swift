@@ -176,11 +176,12 @@ extension SDKDump {
             lhs.declAttributes == rhs.declAttributes &&
             lhs.accessors == rhs.accessors &&
             lhs.conformances == rhs.conformances &&
-            lhs.parent == rhs.parent &&
             lhs.initKind == rhs.initKind &&
             lhs.genericSig == rhs.genericSig &&
             lhs.paramValueOwnership == rhs.paramValueOwnership &&
-            lhs.funcSelfKind == rhs.funcSelfKind
+            lhs.funcSelfKind == rhs.funcSelfKind &&
+            // Only comparing the printedName of the parent as using the whole element would lead to an infinite loop
+            lhs.parent?.printedName == rhs.parent?.printedName
         }
     }
 }
