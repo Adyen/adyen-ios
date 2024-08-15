@@ -46,7 +46,7 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
         // If both elements are spi internal we can ignore them as they are not in the public interface
         if lhs.isSpiInternal, rhs.isSpiInternal { return [] }
         
-        // If both elements are spi internal we can ignore them as they are not in the public interface
+        // If both elements are internal we can ignore them as they are not in the public interface
         if lhs.isInternal, rhs.isInternal { return [] }
         
         var changes = [IndependentChange]()
@@ -71,7 +71,7 @@ struct SDKDumpAnalyzer: SDKDumpAnalyzing {
                 // We found a comparable element so we check if the children changed
                 return recursiveCompare(element: lhsElement, to: rhsChildForName, oldFirst: oldFirst)
             }
-            
+    
             // No matching element was found so either it was removed or added
             
             // Type changes get caught during comparing the description and would only add noise to the output
@@ -137,7 +137,7 @@ private extension SDKDump.Element {
     /// If we used the `name` it could cause a false positive with other functions named `init` (e.g. convenience inits) when trying to find matching elements during this finding phase.
     /// In a later consolidation phase removals/additions are compared again based on their `name` to combine them to a `change`
     func isComparable(to otherElement: SDKDump.Element) -> Bool {
-        printedName == otherElement.printedName && 
+        printedName == otherElement.printedName &&
         declKind == otherElement.declKind &&
         parentPath == otherElement.parentPath
     }

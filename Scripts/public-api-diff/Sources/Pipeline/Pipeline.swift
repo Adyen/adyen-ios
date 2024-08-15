@@ -53,18 +53,96 @@ struct Pipeline {
             scheme: scheme
         )
         
-        let (oldAbiFiles, newAbiFiles) = try generateAbiFiles(
-            oldProjectUrl: oldProjectUrl,
-            newProjectUrl: newProjectUrl,
-            scheme: scheme
-        )
-        
         var changes = [String: [Change]]()
         
         try analyzeLibraryChanges(
             oldProjectUrl: oldProjectUrl,
             newProjectUrl: newProjectUrl,
             changes: &changes
+        )
+        
+        let allTargets = try analyzeApiChanges(
+            oldProjectUrl: oldProjectUrl,
+            newProjectUrl: newProjectUrl,
+            changes: &changes
+        )
+        
+        return try outputGenerator.generate(
+            from: changes,
+            allTargets: allTargets.sorted(),
+            oldSource: oldProjectSource,
+            newSource: newProjectSource
+        )
+    }
+}
+
+// MARK: - Convenience Methods
+
+private extension Pipeline {
+    
+    func buildProjects(oldSource: ProjectSource, newSource: ProjectSource, scheme: String?) async throws -> (URL, URL) {
+        async let oldBuildResult = try projectBuilder.build(
+            source: oldProjectSource,
+            scheme: scheme
+        )
+        
+        async let newBuildResult = try projectBuilder.build(
+            source: newProjectSource,
+            scheme: scheme
+        )
+        
+        // Awaiting the result of the async builds
+        let oldProjectUrl = try await oldBuildResult
+        let newProjectUrl = try await newBuildResult
+        
+        return (oldProjectUrl, newProjectUrl)
+    }
+    
+    func generateAbiFiles(
+        oldProjectUrl: URL,
+        newProjectUrl: URL,
+        scheme: String?
+    ) throws -> ([ABIGeneratorOutput], [ABIGeneratorOutput]) {
+        
+        let oldAbiFiles = try abiGenerator.generate(
+            for: oldProjectUrl,
+            scheme: scheme,
+            description: oldProjectSource.description
+        )
+        
+        let newAbiFiles = try abiGenerator.generate(
+            for: newProjectUrl,
+            scheme: scheme,
+            description: newProjectSource.description
+        )
+        
+        return (oldAbiFiles, newAbiFiles)
+    }
+    
+    func allTargetNames(from lhs: [ABIGeneratorOutput], and rhs: [ABIGeneratorOutput]) throws -> [String] {
+        let allTargets = Set(lhs.map(\.targetName)).union(Set(rhs.map(\.targetName)))
+        if allTargets.isEmpty { throw PipelineError.noTargetFound }
+        return allTargets.sorted()
+    }
+    
+    func analyzeLibraryChanges(oldProjectUrl: URL, newProjectUrl: URL, changes: inout [String: [Change]]) throws {
+        // Analyzing if there are any changes in available libraries between the project versions
+        let libraryChanges = try libraryAnalyzer.analyze(
+            oldProjectUrl: oldProjectUrl,
+            newProjectUrl: newProjectUrl
+        )
+        
+        if !libraryChanges.isEmpty {
+            changes[""] = libraryChanges
+        }
+    }
+    
+    func analyzeApiChanges(oldProjectUrl: URL, newProjectUrl: URL, changes: inout [String: [Change]]) throws -> [String] {
+        
+        let (oldAbiFiles, newAbiFiles) = try generateAbiFiles(
+            oldProjectUrl: oldProjectUrl,
+            newProjectUrl: newProjectUrl,
+            scheme: scheme
         )
         
         let allTargets = try allTargetNames(
@@ -108,69 +186,7 @@ struct Pipeline {
             }
         }
         
-        return try outputGenerator.generate(
-            from: changes,
-            allTargets: allTargets.sorted(),
-            oldSource: oldProjectSource,
-            newSource: newProjectSource
-        )
-    }
-}
-
-// MARK: - Convenience Methods
-
-private extension Pipeline {
-    
-    func buildProjects(oldSource: ProjectSource, newSource: ProjectSource, scheme: String?) async throws -> (URL, URL) {
-        async let oldBuildResult = try projectBuilder.build(
-            source: oldProjectSource,
-            scheme: scheme
-        )
-        
-        async let newBuildResult = try projectBuilder.build(
-            source: newProjectSource,
-            scheme: scheme
-        )
-        
-        // Awaiting the result of the async builds
-        let oldProjectUrl = try await oldBuildResult
-        let newProjectUrl = try await newBuildResult
-        
-        return (oldProjectUrl, newProjectUrl)
-    }
-    
-    func generateAbiFiles(oldProjectUrl: URL, newProjectUrl: URL, scheme: String?) throws -> ([ABIGeneratorOutput], [ABIGeneratorOutput]) {
-        let oldAbiFiles = try abiGenerator.generate(
-            for: oldProjectUrl,
-            scheme: scheme,
-            description: oldProjectSource.description
-        )
-        
-        let newAbiFiles = try abiGenerator.generate(
-            for: newProjectUrl,
-            scheme: scheme,
-            description: newProjectSource.description
-        )
-        
-        return (oldAbiFiles, newAbiFiles)
-    }
-    
-    func allTargetNames(from lhs: [ABIGeneratorOutput], and rhs: [ABIGeneratorOutput]) throws -> [String] {
-        let allTargets = Set(lhs.map(\.targetName)).union(Set(rhs.map(\.targetName)))
-        if allTargets.isEmpty { throw PipelineError.noTargetFound }
-        return allTargets.sorted()
-    }
-    
-    func analyzeLibraryChanges(oldProjectUrl: URL, newProjectUrl: URL, changes: inout [String: [Change]]) throws {
-        // Analyzing if there are any changes in available libraries between the project versions
-        let libraryChanges = try libraryAnalyzer.analyze(
-            oldProjectUrl: oldProjectUrl,
-            newProjectUrl: newProjectUrl
-        )
-        
-        if !libraryChanges.isEmpty {
-            changes[""] = libraryChanges
-        }
+        return allTargets
     }
 }
 
@@ -181,7 +197,7 @@ private extension Change {
     static var removedTarget: Self {
         .init(changeType: .removal(description: "Target was removed"), parentName: "")
     }
-    
+
     static var addedTarget: Self {
         .init(changeType: .addition(description: "Target was added"), parentName: "")
     }

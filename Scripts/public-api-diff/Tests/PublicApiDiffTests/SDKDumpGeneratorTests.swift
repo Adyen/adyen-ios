@@ -12,7 +12,7 @@ class SDKDumpGeneratorTests: XCTestCase {
     
     func test_loadFromJson_dummy() throws {
         let abiJsonPath = try XCTUnwrap(Bundle.module.path(forResource: "dummy.abi", ofType: "json"))
-        let abiFlatDefinitionPath = try XCTUnwrap(Bundle.module.path(forResource: "dummi-abi-flat-definition", ofType: "txt"))
+        let abiFlatDefinitionPath = try XCTUnwrap(Bundle.module.path(forResource: "dummi-abi-flat-definition", ofType: "md"))
         try compare(abiJsonFilePath: abiJsonPath, toFlatDefinition: abiFlatDefinitionPath)
     }
     
@@ -47,31 +47,8 @@ class SDKDumpGeneratorTests: XCTestCase {
             }
         }
         
-        // To update the dummi-abi-flat-definition.txt file
+        // To update the dummi-abi-flat-definition.md file
         // just print the flatDescription and copy the content over into the file
         // print(sdkDump.flatDescription)
-    }
-}
-
-// MARK: - Convenience
-
-extension SDKDump {
-    
-    var flatDescription: String {
-        var components = [String]()
-        components += root.flatChildDescriptions()
-        return components.joined(separator: "\n")
-    }
-}
-
-extension SDKDump.Element {
-    
-    func flatChildDescriptions() -> [String] {
-        var definitions = [String]()
-        children.forEach { child in
-            if child.declKind == nil { return }
-            definitions += [child.description] + child.flatChildDescriptions()
-        }
-        return definitions
     }
 }

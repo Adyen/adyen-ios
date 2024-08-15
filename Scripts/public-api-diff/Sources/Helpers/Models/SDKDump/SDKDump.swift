@@ -51,3 +51,27 @@ private extension SDKDump.Element {
         }
     }
 }
+
+internal extension SDKDump {
+    
+    var flatDescription: String {
+        var components = [String]()
+        components += root.flatChildDescriptions()
+        
+        return components.map { component in
+            return "```javascript\n\(component)\n```"
+        }.joined(separator: "\n")
+    }
+}
+
+private extension SDKDump.Element {
+    
+    func flatChildDescriptions() -> [String] {
+        var definitions = [String]()
+        children.forEach { child in
+            if child.declKind == nil { return }
+            definitions += [child.description] + child.flatChildDescriptions()
+        }
+        return definitions
+    }
+}
