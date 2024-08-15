@@ -5,12 +5,44 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AuthenticationServices
 import SafariServices
 import UIKit
 
 internal protocol BrowserComponentDelegate: AnyObject {
-    func didCancel()
+    func didFail(error: Error)
     func didOpenExternalApplication()
+}
+
+@available(iOS 17.4, *)
+internal final class ASWebComponent: NSObject, ASWebAuthenticationPresentationContextProviding {
+    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        UIApplication.shared.keyWindow!
+    }
+
+    internal weak var delegate: BrowserComponentDelegate?
+    private var session: ASWebAuthenticationSession?
+
+    internal init(url: URL) {
+        self.url = url
+    }
+    
+    private let url: URL
+
+    func start() {
+        session = ASWebAuthenticationSession(url: url,
+                                             callback: ASWebAuthenticationSession.Callback.customScheme("myapp"),
+                                             completionHandler: { [weak delegate] url, error in
+                                                 if let url {
+                                                     RedirectComponent.applicationDidOpen(from: url)
+                                                 } else {
+                                                     delegate?.didFail(error: error ?? ComponentError.cancelled)
+                                                 }
+                                             })
+        session?.presentationContextProvider = self
+        session?.start()
+    }
+
 }
 
 /// A component that opens a URL in web browsed and presents it.
@@ -24,6 +56,7 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
     private let componentName = "browser"
 
     internal lazy var viewController: UIViewController = {
+
         let safariViewController = SFSafariViewController(url: url)
         safariViewController.delegate = self
         safariViewController.modalPresentationStyle = style?.modalPresentationStyle ?? .formSheet
@@ -64,7 +97,7 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
             if didOpenExternalApp {
                 self.delegate?.didOpenExternalApplication()
             } else {
-                self.delegate?.didCancel()
+                self.delegate?.didFail(error: ComponentError.cancelled)
             }
         }
     }
@@ -82,7 +115,7 @@ extension BrowserComponent: SFSafariViewControllerDelegate, UIAdaptivePresentati
 
     /// Called when user drag VC down to dismiss.
     internal func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        self.delegate?.didCancel()
+        self.delegate?.didFail(error: ComponentError.cancelled)
     }
 
     /// Called when the user opens the current page in the default browser by tapping the toolbar button.

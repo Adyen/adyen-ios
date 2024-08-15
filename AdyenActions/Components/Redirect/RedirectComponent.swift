@@ -64,8 +64,8 @@ public final class RedirectComponent: ActionComponent {
         APIClient(apiContext: context.apiContext).retryAPIClient(with: SimpleScheduler(maximumCount: 2))
     }()
     
-    private var browserComponent: BrowserComponent?
-    
+    private var browserComponent: NSObject?
+
     /// The component configurations.
     public var configuration: Configuration
     
@@ -132,12 +132,19 @@ public final class RedirectComponent: ActionComponent {
     }
 
     private func openInAppBrowser(_ action: RedirectAction) {
-        let component = BrowserComponent(url: action.url,
-                                         context: context,
-                                         style: configuration.style)
-        component.delegate = self
-        browserComponent = component
-        presentationDelegate?.present(component: component)
+        if #available(iOS 17.4, *) {
+            let aswCOnponent = ASWebComponent(url: action.url)
+            aswCOnponent.delegate = self
+            aswCOnponent.start()
+            browserComponent = aswCOnponent
+        } else {
+            let component = BrowserComponent(url: action.url,
+                                             context: context,
+                                             style: configuration.style)
+            component.delegate = self
+            browserComponent = component
+            presentationDelegate?.present(component: component)
+        }
     }
     
     // MARK: - Custom scheme link handling
@@ -197,13 +204,13 @@ public final class RedirectComponent: ActionComponent {
 
 extension RedirectComponent: BrowserComponentDelegate {
 
-    internal func didCancel() {
+    func didFail(error: any Swift.Error) {
         if browserComponent != nil {
             browserComponent = nil
             delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
     }
-
+    
     internal func didOpenExternalApplication() {
         delegate?.didOpenExternalApplication(component: self)
     }
