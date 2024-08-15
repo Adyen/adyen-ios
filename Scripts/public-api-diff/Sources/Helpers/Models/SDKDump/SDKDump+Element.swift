@@ -168,8 +168,26 @@ extension SDKDump {
         }
         
         static func == (lhs: SDKDump.Element, rhs: SDKDump.Element) -> Bool {
-            lhs.parent == rhs.parent &&
-            lhs.description == rhs.description
+            lhs.kind == rhs.kind &&
+            lhs.name == rhs.name &&
+            lhs.printedName == rhs.printedName &&
+            lhs.declKind == rhs.declKind &&
+            lhs.isStatic == rhs.isStatic &&
+            lhs.isLet == rhs.isLet &&
+            lhs.hasDefaultArg == rhs.hasDefaultArg &&
+            lhs.isInternal == rhs.isInternal &&
+            lhs.isThrowing == rhs.isThrowing &&
+            lhs.children == rhs.children &&
+            lhs.spiGroupNames == rhs.spiGroupNames &&
+            lhs.declAttributes == rhs.declAttributes &&
+            lhs.accessors == rhs.accessors &&
+            lhs.conformances == rhs.conformances &&
+            lhs.initKind == rhs.initKind &&
+            lhs.genericSig == rhs.genericSig &&
+            lhs.paramValueOwnership == rhs.paramValueOwnership &&
+            lhs.funcSelfKind == rhs.funcSelfKind &&
+            // Only comparing the printedName of the parent as using the whole element would lead to an infinite loop
+            lhs.parent?.printedName == rhs.parent?.printedName
         }
     }
 }

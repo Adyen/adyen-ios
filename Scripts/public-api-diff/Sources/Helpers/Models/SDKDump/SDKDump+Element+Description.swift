@@ -56,7 +56,6 @@ private extension SDKDump.Element {
         if hasDiscardableResult { components += ["@discardableResult"] }
         if isObjcAccessible { components += ["@objc"] }
         if isInlinable { components += ["@inlinable"]}
-        
         if isOverride { components += ["override"] }
         if declKind != .import {
             if isOpen {
