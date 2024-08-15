@@ -92,7 +92,7 @@ let package = Package(
                 "Info.plist",
                 "Utilities/Non SPM Bundle Extension" // This is to exclude `BundleExtension.swift` file, since swift packages has different code to access internal resources.
             ],
-            resources: [.process("../PrivacyInfo.xcprivacy")]
+            resources: [.process("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "AdyenEncryption",
