@@ -444,4 +444,8 @@ extension UPIComponent: SubmitCustomizable {
 
         didSelectContinueButton()
     }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
 }

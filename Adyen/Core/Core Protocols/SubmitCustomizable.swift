@@ -20,4 +20,7 @@ public protocol SubmitCustomizable {
     ///    - Ensure that the payment component is properly configured before calling this method.
     ///    - Handle stopping the loading state after the payment process is completed.
     func submit()
+
+    /// A Boolean value that indicates whether a component's form is valid.
+    func validate() -> Bool
 }

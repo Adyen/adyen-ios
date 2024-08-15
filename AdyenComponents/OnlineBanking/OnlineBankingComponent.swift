@@ -161,4 +161,8 @@ extension OnlineBankingComponent: SubmitCustomizable {
 
         didSelectContinueButton()
     }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
 }

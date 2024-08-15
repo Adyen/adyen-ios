@@ -138,4 +138,8 @@ extension BLIKComponent: SubmitCustomizable {
 
         didSelectSubmitButton()
     }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
 }

@@ -271,4 +271,8 @@ extension CashAppPayComponent: SubmitCustomizable {
 
         didSelectSubmitButton()
     }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
 }

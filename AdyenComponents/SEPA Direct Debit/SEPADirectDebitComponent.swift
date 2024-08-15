@@ -158,4 +158,8 @@ extension SEPADirectDebitComponent: SubmitCustomizable {
 
         didSelectSubmitButton()
     }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
 }

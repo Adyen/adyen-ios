@@ -20,6 +20,7 @@ class CustomComponentViewController: UIViewController, CustomComponentViewProtoc
     private enum Content {
         static let title = "Checkout"
         static let submitButtonTitle = "Buy now"
+        static let validationButtonTitle = "Validate"
     }
 
     // MARK: - View components
@@ -65,6 +66,20 @@ class CustomComponentViewController: UIViewController, CustomComponentViewProtoc
 
         button.layer.cornerRadius = 8
         button.addTarget(self, action: #selector(performPayment), for: .touchUpInside)
+        return button
+    }()
+
+    private lazy var validityButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitle(Content.validationButtonTitle, for: .normal)
+
+        let coralColor = UIColor(red: 255 / 255, green: 127 / 255, blue: 80 / 255, alpha: 1.0)
+        button.backgroundColor = coralColor
+        button.titleLabel?.textColor = .white
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+
+        button.layer.cornerRadius = 8
+        button.addTarget(self, action: #selector(performValidation), for: .touchUpInside)
         return button
     }()
 
@@ -144,10 +159,13 @@ class CustomComponentViewController: UIViewController, CustomComponentViewProtoc
         scrollView.addSubview(stackView)
         stackView.addSubview(activityIndicator)
 
-        [topPlaceholderView,
-         cardComponentView,
-         payButton,
-         bottomPlaceholderView].forEach { subView in
+        [
+            topPlaceholderView,
+            cardComponentView,
+            payButton,
+            validityButton,
+            bottomPlaceholderView
+        ].forEach { subView in
             subView.translatesAutoresizingMaskIntoConstraints = false
             stackView.addArrangedSubview(subView)
         }
@@ -169,9 +187,12 @@ class CustomComponentViewController: UIViewController, CustomComponentViewProtoc
             payButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
             payButton.heightAnchor.constraint(equalToConstant: 48),
 
+            validityButton.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            validityButton.heightAnchor.constraint(equalToConstant: 48),
+
             topPlaceholderView.heightAnchor.constraint(equalToConstant: 450),
             topPlaceholderView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
-            bottomPlaceholderView.heightAnchor.constraint(equalToConstant: 450),
+            bottomPlaceholderView.heightAnchor.constraint(equalToConstant: 700),
             bottomPlaceholderView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
 
             activityIndicator.centerXAnchor.constraint(equalTo: stackView.centerXAnchor),
@@ -191,6 +212,11 @@ class CustomComponentViewController: UIViewController, CustomComponentViewProtoc
     private func setupNavigationBar() {
         navigationItem.title = Content.title
         navigationItem.largeTitleDisplayMode = .always
+    }
+
+    @objc
+    private func performValidation() {
+        presenter.performValidation()
     }
 
     @objc

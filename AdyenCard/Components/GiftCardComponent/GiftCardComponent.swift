@@ -446,4 +446,8 @@ extension GiftCardComponent: SubmitCustomizable {
 
         didSelectSubmitButton()
     }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
 }

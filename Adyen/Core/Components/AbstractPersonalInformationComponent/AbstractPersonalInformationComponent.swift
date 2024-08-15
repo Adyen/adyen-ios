@@ -286,4 +286,8 @@ extension AbstractPersonalInformationComponent: SubmitCustomizable {
 
         didSelectSubmitButton()
     }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
 }

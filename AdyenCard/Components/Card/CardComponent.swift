@@ -315,4 +315,8 @@ extension CardComponent: SubmitCustomizable {
 
         didSelectSubmitButton()
     }
+
+    public func validate() -> Bool {
+        cardViewController.validate()
+    }
 }
