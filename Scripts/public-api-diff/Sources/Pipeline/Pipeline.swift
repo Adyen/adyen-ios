@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Alexander Guretzki on 11/07/2024.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
@@ -161,15 +160,15 @@ private extension Pipeline {
             }
             
             /*
-            // Using `xcrun --sdk iphoneos swift-api-digester -diagnose-sdk` instead of the custom parser
-            let diagnose = XcodeTools().diagnoseSdk(
-                oldAbiJsonFilePath: oldAbiJson.path(),
-                newAbiJsonFilePath: newAbiJson.path(),
-                module: target
-            )
+             // Using `xcrun --sdk iphoneos swift-api-digester -diagnose-sdk` instead of the custom parser
+             let diagnose = XcodeTools().diagnoseSdk(
+                 oldAbiJsonFilePath: oldAbiJson.path(),
+                 newAbiJsonFilePath: newAbiJson.path(),
+                 module: target
+             )
             
-            print(diagnose)
-            */
+             print(diagnose)
+             */
             
             // Generate SDKDump objects
             let oldSDKDump = try sdkDumpGenerator.generate(for: oldAbiJson)

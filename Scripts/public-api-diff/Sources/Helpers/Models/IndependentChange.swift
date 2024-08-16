@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Alexander Guretzki on 07/08/2024.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
@@ -18,8 +17,8 @@ struct IndependentChange: Equatable {
 
         var description: String {
             switch self {
-            case .addition(let description): description
-            case .removal(let description): description
+            case let .addition(description): description
+            case let .removal(description): description
             }
         }
     }

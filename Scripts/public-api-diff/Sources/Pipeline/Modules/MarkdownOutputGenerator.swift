@@ -85,21 +85,15 @@ private extension MarkdownOutputGenerator {
                 
                 let additionLines = changeSectionLines(
                     title: "#### ❇️ Added",
-                    changes: changes.filter {
-                        $0.changeType.isAddition
-                    }
+                    changes: changes.filter(\.changeType.isAddition)
                 )
                 let changeLines = changeSectionLines(
                     title: "#### 🔀 Changed",
-                    changes: changes.filter {
-                        $0.changeType.isChange
-                    }
+                    changes: changes.filter(\.changeType.isChange)
                 )
                 let removalLines = changeSectionLines(
                     title: "#### 😶‍🌫️ Removed",
-                    changes: changes.filter {
-                        $0.changeType.isRemoval
-                    }
+                    changes: changes.filter(\.changeType.isRemoval)
                 )
                 
                 if !additionLines.isEmpty { lines += additionLines }
@@ -141,11 +135,11 @@ private extension MarkdownOutputGenerator {
     
     static func description(for change: Change) -> String {
         switch change.changeType {
-        case .addition(let description):
+        case let .addition(description):
             return description
-        case .removal(let description):
+        case let .removal(description):
             return description
-        case .change(let before, let after):
+        case let .change(before, after):
             return "// From\n\(before)\n\n// To\n\(after)"
         }
     }
