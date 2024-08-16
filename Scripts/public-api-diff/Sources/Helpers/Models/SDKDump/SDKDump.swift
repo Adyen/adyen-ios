@@ -59,7 +59,7 @@ internal extension SDKDump {
         components += root.flatChildDescriptions()
         
         return components.map { component in
-            return "```javascript\n\(component)\n```"
+            "```javascript\n\(component)\n```"
         }.joined(separator: "\n")
     }
 }

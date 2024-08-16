@@ -11,7 +11,7 @@ enum GitError: LocalizedError, Equatable {
     
     var errorDescription: String? {
         switch self {
-        case .couldNotClone(let branchOrTag, let repository):
+        case let .couldNotClone(branchOrTag, repository):
             "Could not clone \(repository) @ \(branchOrTag) - Please check the provided information"
         }
     }

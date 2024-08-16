@@ -10,7 +10,7 @@ extension SDKDump {
     
     /// Generic element node
     ///
-    /// The generic ``Element`` node contains all information from the abi.json 
+    /// The generic ``Element`` node contains all information from the abi.json
     /// which - due to it's recursive (children) nature leads to optional fields that are only available in a specific context.
     class Element: Codable, Equatable {
         
@@ -163,25 +163,25 @@ extension SDKDump {
         // Custom conformance as we have to use a `class` for the `Element`
         static func == (lhs: SDKDump.Element, rhs: SDKDump.Element) -> Bool {
             lhs.kind == rhs.kind &&
-            lhs.name == rhs.name &&
-            lhs.printedName == rhs.printedName &&
-            lhs.declKind == rhs.declKind &&
-            lhs.isStatic == rhs.isStatic &&
-            lhs.isLet == rhs.isLet &&
-            lhs.hasDefaultArg == rhs.hasDefaultArg &&
-            lhs.isInternal == rhs.isInternal &&
-            lhs.isThrowing == rhs.isThrowing &&
-            lhs.children == rhs.children &&
-            lhs.spiGroupNames == rhs.spiGroupNames &&
-            lhs.declAttributes == rhs.declAttributes &&
-            lhs.accessors == rhs.accessors &&
-            lhs.conformances == rhs.conformances &&
-            lhs.initKind == rhs.initKind &&
-            lhs.genericSig == rhs.genericSig &&
-            lhs.paramValueOwnership == rhs.paramValueOwnership &&
-            lhs.funcSelfKind == rhs.funcSelfKind &&
-            // Only comparing the printedName of the parent as using the whole element would lead to an infinite loop
-            lhs.parent?.printedName == rhs.parent?.printedName
+                lhs.name == rhs.name &&
+                lhs.printedName == rhs.printedName &&
+                lhs.declKind == rhs.declKind &&
+                lhs.isStatic == rhs.isStatic &&
+                lhs.isLet == rhs.isLet &&
+                lhs.hasDefaultArg == rhs.hasDefaultArg &&
+                lhs.isInternal == rhs.isInternal &&
+                lhs.isThrowing == rhs.isThrowing &&
+                lhs.children == rhs.children &&
+                lhs.spiGroupNames == rhs.spiGroupNames &&
+                lhs.declAttributes == rhs.declAttributes &&
+                lhs.accessors == rhs.accessors &&
+                lhs.conformances == rhs.conformances &&
+                lhs.initKind == rhs.initKind &&
+                lhs.genericSig == rhs.genericSig &&
+                lhs.paramValueOwnership == rhs.paramValueOwnership &&
+                lhs.funcSelfKind == rhs.funcSelfKind &&
+                // Only comparing the printedName of the parent as using the whole element would lead to an infinite loop
+                lhs.parent?.printedName == rhs.parent?.printedName
         }
     }
 }

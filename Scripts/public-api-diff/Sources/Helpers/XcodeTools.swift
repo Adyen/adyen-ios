@@ -48,7 +48,7 @@ struct XcodeTools {
             "xcodebuild -scheme \"\(scheme)\"",
             "-derivedDataPath \(Constants.derivedDataPath)",
             iOSTarget,
-            "-destination \"platform=iOS,name=Any iOS Device\"",
+            "-destination \"platform=iOS,name=Any iOS Device\""
         ]
         
         if isPackage {
