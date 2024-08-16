@@ -1,8 +1,7 @@
 //
-//  File.swift
-//  
+// Copyright (c) 2024 Adyen N.V.
 //
-//  Created by Alexander Guretzki on 07/08/2024.
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
@@ -81,9 +80,9 @@ extension IndependentChange {
     var toConsolidatedChange: Change {
         let changeType: Change.ChangeType = {
             switch self.changeType {
-            case .addition(let description):
+            case let .addition(description):
                 .addition(description: description)
-            case .removal(let description):
+            case let .removal(description):
                 .removal(description: description)
             }
         }()
@@ -117,9 +116,9 @@ extension IndependentChange {
     /// It could potentially still lead to false positives when having multiple functions with changes and the same name and parent but this is acceptable in this phase.
     func isConsolidatable(with otherChange: IndependentChange) -> Bool {
         element.name == otherChange.element.name &&
-        element.declKind == otherChange.element.declKind &&
-        element.parentPath == otherChange.element.parentPath &&
-        changeType.name != otherChange.changeType.name // We only want to match independent changes that are hava a different changeType
+            element.declKind == otherChange.element.declKind &&
+            element.parentPath == otherChange.element.parentPath &&
+            changeType.name != otherChange.changeType.name // We only want to match independent changes that are hava a different changeType
     }
 }
 

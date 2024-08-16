@@ -54,7 +54,7 @@ class SDKDumpTests: XCTestCase {
             )
         )
         
-        let expectedDefinition: String = "public static func foo(_: Swift.Int, bar: UNKNOWN_TYPE) -> Swift.Bool"
+        let expectedDefinition = "public static func foo(_: Swift.Int, bar: UNKNOWN_TYPE) -> Swift.Bool"
         
         XCTAssertEqual(
             dump.root.description,

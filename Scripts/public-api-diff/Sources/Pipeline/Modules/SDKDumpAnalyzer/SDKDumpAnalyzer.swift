@@ -138,7 +138,7 @@ private extension SDKDump.Element {
     /// In a later consolidation phase removals/additions are compared again based on their `name` to combine them to a `change`
     func isComparable(to otherElement: SDKDump.Element) -> Bool {
         printedName == otherElement.printedName &&
-        declKind == otherElement.declKind &&
-        parentPath == otherElement.parentPath
+            declKind == otherElement.declKind &&
+            parentPath == otherElement.parentPath
     }
 }
