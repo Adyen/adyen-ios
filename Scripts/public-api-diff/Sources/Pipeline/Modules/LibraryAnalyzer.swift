@@ -52,7 +52,7 @@ struct LibraryAnalyzer: LibraryAnalyzing {
         
         packageChanges += removedLibaries.map {
             .init(
-                changeType: .removal(description: "`.library(name: \"\($0)\", ...)` was removed"),
+                changeType: .removal(description: ".library(name: \"\($0)\", ...)"),
                 parentName: ""
             )
         }
@@ -60,7 +60,7 @@ struct LibraryAnalyzer: LibraryAnalyzing {
         let addedLibraries = newLibraries.subtracting(oldLibraries)
         packageChanges += addedLibraries.map {
             .init(
-                changeType: .addition(description: "`.library(name: \"\($0)\", ...)` was added"),
+                changeType: .addition(description: ".library(name: \"\($0)\", ...)"),
                 parentName: ""
             )
         }

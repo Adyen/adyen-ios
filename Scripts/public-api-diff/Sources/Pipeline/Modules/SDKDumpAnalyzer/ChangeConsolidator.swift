@@ -24,12 +24,12 @@ struct ChangeConsolidator: ChangeConsolidating {
     /// - Parameters:
     ///   - changes: The independent changes (`addition`/`removal`) to try to match
     ///
-    /// e.g. if we have a `removal` `init(foo: Int, bar: Int) -> Void` and an `addition` `init(foo: Int, bar: Int, baz: String) -> Void`
+    /// e.g. if we have a `removal` `init(foo: Int, bar: Int)` and an `addition` `init(foo: Int, bar: Int, baz: String)`
     /// It will get consolidated to a `change` based on the `name`, `parent` & `declKind`
     /// The changeType will be also respected so `removals` only get matched with `additions` and vice versa.
     ///
     /// This can lead to false positive matches in cases where one `removal` could potentially be matched to multiple `additions` or vice versa.
-    /// e.g. a second `addition` `init(unrelated: String) -> SomeType` might be matched as a change of `init(foo: Int, bar: Int) -> Void`
+    /// e.g. a second `addition` `init(unrelated: String)` might be matched as a change of `init(foo: Int, bar: Int)`
     /// as they share the same comparison features but might not be an actual change but a genuine addition.
     /// This is acceptable for now but might be improved in the future (e.g. calculating a matching-percentage)
     func consolidate(_ changes: [IndependentChange]) -> [Change] {
@@ -69,9 +69,9 @@ struct ChangeConsolidator: ChangeConsolidating {
     /// Compiles a list of changes between 2 independent changes
     func listOfChanges(between lhs: IndependentChange, and rhs: IndependentChange) -> [String] {
         if lhs.oldFirst {
-            lhs.element.difference(to: rhs.element)
+            lhs.element.differences(to: rhs.element)
         } else {
-            rhs.element.difference(to: lhs.element)
+            rhs.element.differences(to: lhs.element)
         }
     }
 }

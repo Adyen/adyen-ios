@@ -29,7 +29,7 @@ let package = Package(
                 // Use to retain directory structure.
                 // Will be at top level in bundle.
                 .copy("Resources/dummy.abi.json"),
-                .copy("Resources/dummi-abi-flat-definition.txt")
+                .copy("Resources/dummi-abi-flat-definition.md")
             ]
         )
     ]

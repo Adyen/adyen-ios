@@ -136,7 +136,7 @@ class SDKDumpAnalyzerTests: XCTestCase {
         let expectedChanges: [Change] = [
             .init(changeType: .removal(description: "public struct childPrintedName"), parentName: "parent"),
             .init(changeType: .removal(description: "public class spiChildPrintedName"), parentName: "parent"),
-            .init(changeType: .change(oldDescription: "public static var staticLetPrintedName", newDescription: "public static let staticLetPrintedName"), parentName: "parent.enumChild"),
+            .init(changeType: .change(oldDescription: "public static var staticLetPrintedName: UNKNOWN_TYPE", newDescription: "public static let staticLetPrintedName: UNKNOWN_TYPE"), parentName: "parent.enumChild"),
             .init(changeType: .removal(description: "public case oldCasePrintedName"), parentName: "parent.enumChild"),
             .init(changeType: .addition(description: "public class childPrintedName"), parentName: "parent"),
             .init(changeType: .addition(description: "public case newCasePrintedName"), parentName: "parent.enumChild")

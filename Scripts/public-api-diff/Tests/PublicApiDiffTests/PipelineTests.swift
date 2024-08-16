@@ -29,13 +29,13 @@ class PipelineTests: XCTestCase {
         
         var expectedSteps: [Any] = [
             URL(filePath: oldProjectSource.description),
+            URL(filePath: newProjectSource.description),
+            
+            URL(filePath: oldProjectSource.description),
             "old",
             
             URL(filePath: newProjectSource.description),
             "new",
-            
-            URL(filePath: oldProjectSource.description),
-            URL(filePath: newProjectSource.description),
             
             URL(filePath: oldProjectSource.description),
             URL(filePath: newProjectSource.description),

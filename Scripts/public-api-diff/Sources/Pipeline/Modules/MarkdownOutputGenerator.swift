@@ -116,22 +116,24 @@ private extension MarkdownOutputGenerator {
     
     static func changeSectionLines(title: String, changes: [Change]) -> [String] {
         if changes.isEmpty { return [] }
-        
+
         var lines = [title]
         changes.sorted { lhs, rhs in description(for: lhs) < description(for: rhs) }.forEach {
             // We're using `javascript` as it produces the nicest looking markdown output on Github
             // `swift` is available but sometimes produces unexpected syntax highlighting
             lines.append("```javascript")
             lines.append(description(for: $0))
-            
+
             if !$0.listOfChanges.isEmpty {
-                lines.append("\n/**")
+                lines.append("")
+                lines.append("/**")
+                lines.append("Changes:")
                 $0.listOfChanges.forEach {
                     lines.append("- \($0)")
                 }
                 lines.append("*/")
             }
-            
+
             lines.append("```")
         }
         return lines
