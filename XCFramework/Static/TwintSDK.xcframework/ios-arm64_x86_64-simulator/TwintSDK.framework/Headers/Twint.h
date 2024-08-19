@@ -38,10 +38,15 @@ typedef void (^TWAppChooserCancelHandler)(void);
 + (NSError *)registerForUOFWithCode:(NSString *)code appConfiguration:(TWAppConfiguration *)appConfiguration callback:(NSString *)callbackAppScheme;
 
 /**
- * Fetches all available app configurations from a remote and returns all that are installed on the device. If there is an error during the fetch, the cache will be used. If there is nothing in the cache yet, all Twint apps will be probed until one is found that is installed.
+ * Fetches all available app configurations from a remote and returns all that are potentially installed on the device. If there is an error during the fetch, the cache will be used. If there is nothing in the cache yet, all Twint apps will be probed until one is found that is installed.
+ * @param maxIssuerNumber The issuer number of the highest scheme you listed under `LSApplicationQueriesSchemes`. E.g. pass 39, if you listed all schemes from "twint-issuer1" up to and including "twint-issuer39". The value is clamped between 0 and 39.
  * @param completionHandler The block which will be executed once the fetch or probing is completed
+ *
+ * All apps above "twint-issuer39" will always be returned if one of these apps is installed. For this to work, `LSApplicationQueriesSchemes` must include "twint-extended".
+ *
+ * If you configure any `maxIssuerNumber` below 39, the result will always contain all apps above `maxIssuerNumber` up to and including 39, even if none of them are installed. Additionally, if the fetch fails and the cache is empty, none of these apps will be found when probing.
  */
-+ (void)fetchInstalledAppConfigurationsWithCompletionHandler:(TWInstalledAppFetchHandler)completionHandler;
++ (void)fetchInstalledAppConfigurationsWithMaxIssuerNumber:(NSInteger)maxIssuerNumber completionHandler:(TWInstalledAppFetchHandler)completionHandler;
 
 /**
  * The returned UIAlertController will show the given app configurations and a cancel button. After pressing a button, the corresponding handler will be called.
