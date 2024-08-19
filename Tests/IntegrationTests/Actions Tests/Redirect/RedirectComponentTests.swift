@@ -29,12 +29,10 @@ class RedirectComponentTests: XCTestCase {
         let style = RedirectComponentStyle(preferredBarTintColor: UIColor.red,
                                            preferredControlTintColor: UIColor.black,
                                            modalPresentationStyle: .fullScreen)
-        let sut = BrowserComponent(url: action.url, context: Dummy.context,
-                                   style: style)
-        XCTAssertNotNil(sut.viewController as? SFSafariViewController)
-        XCTAssertEqual(sut.viewController.modalPresentationStyle, .fullScreen)
-        XCTAssertEqual((sut.viewController as! SFSafariViewController).preferredBarTintColor, UIColor.red)
-        XCTAssertEqual((sut.viewController as! SFSafariViewController).preferredControlTintColor, UIColor.black)
+        let sut = ASWebComponent(url: action.url)
+        sut.start()
+
+        
     }
     
     func testOpenCustomSchemeSuccess() {

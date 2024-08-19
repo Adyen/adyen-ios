@@ -132,19 +132,10 @@ public final class RedirectComponent: ActionComponent {
     }
 
     private func openInAppBrowser(_ action: RedirectAction) {
-        if #available(iOS 17.4, *) {
-            let aswCOnponent = ASWebComponent(url: action.url)
-            aswCOnponent.delegate = self
-            aswCOnponent.start()
-            browserComponent = aswCOnponent
-        } else {
-            let component = BrowserComponent(url: action.url,
-                                             context: context,
-                                             style: configuration.style)
-            component.delegate = self
-            browserComponent = component
-            presentationDelegate?.present(component: component)
-        }
+        let aswComponent = ASWebComponent(url: action.url)
+        aswComponent.delegate = self
+        aswComponent.start()
+        browserComponent = aswComponent
     }
     
     // MARK: - Custom scheme link handling
