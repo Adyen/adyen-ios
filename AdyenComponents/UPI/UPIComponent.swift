@@ -179,14 +179,17 @@ public final class UPIComponent: PaymentComponent,
     }()
 
     /// The QRCode generation message item.
-    internal lazy var qrCodeGenerationLabelContainerItem: FormLabelItem = {
+    internal lazy var qrCodeGenerationLabelContainerItem: FormContainerItem<FormLabelItem> = {
         let item = FormLabelItem(text: localizedString(.UPIQrcodeGenerationMessage,
                                                        configuration.localizationParameters),
                                  style: configuration.style.footnoteLabel)
         item.style.textAlignment = .center
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
                                                       postfix: ViewIdentifier.generateQRCodeContainerItem)
-        return item
+        return FormContainerItem(
+            content: item,
+            contentInset: .init(top: 0, left: 8, bottom: 0, right: 8)
+        )
     }()
 
     /// The QRCode generation message view.
@@ -257,9 +260,9 @@ public final class UPIComponent: PaymentComponent,
         )
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
-        formViewController.append(instructionsLabelItem)
+        formViewController.append(FormContainerItem(content: instructionsLabelItem))
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
-        formViewController.append(upiFlowSelectionItem)
+        formViewController.append(FormContainerItem(content: upiFlowSelectionItem))
         formViewController.append(errorItem)
         formViewController.append(qrCodeGenerationImageItem)
         qrCodeGenerationLabelContainerItem.isHidden.wrappedValue = true
