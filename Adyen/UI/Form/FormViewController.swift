@@ -184,9 +184,10 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     }
 
     private func getAllValidatableItems() -> [ValidatableFormItem] {
-        let visibleItems = itemManager.topLevelItem.filter { !$0.isHidden.wrappedValue }
-        let validatableItems = visibleItems.flatMap(\.flatSubitems).compactMap { $0 as? ValidatableFormItem }
-        return validatableItems
+        itemManager.topLevelItem
+            .filter(\.isVisible)
+            .flatMap(\.flatSubitems)
+            .compactMap { $0 as? ValidatableFormItem }
     }
 
     private func formRequiresInputView() -> Bool {

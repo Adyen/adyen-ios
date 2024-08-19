@@ -160,10 +160,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
                 let item = FormSplitItem(
                     items: create(for: lhs, from: addressViewModel, subRegions: subRegions),
                     create(for: rhs, from: addressViewModel, subRegions: subRegions),
-                    style: .init(
-                        backgroundColor: style.backgroundColor,
-                        spacing: style.spacing
-                    )
+                    style: style
                 )
                 formItems.append(item)
             }
