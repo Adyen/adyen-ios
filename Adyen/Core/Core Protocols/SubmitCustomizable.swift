@@ -23,7 +23,7 @@ public protocol SubmitCustomizable {
 
     /// Validates the component's form and triggers the associated validation UI.
     ///
-    /// This method checks the validity of the form linked to the payment component. It ensures that all required fields are properly 
+    /// This method checks the validity of the form linked to the payment component. It ensures that all required fields are properly
     /// filled out and conform to expected formats.
     /// Additionally, it triggers the UI to visually indicate any validation errors to the user.
     ///
