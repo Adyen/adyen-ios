@@ -11,6 +11,8 @@ import UIKit
 @_spi(AdyenInternal)
 public final class FormSegmentedControlItem: FormItem {
 
+    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    
     public var subitems: [FormItem] = []
 
     public var identifier: String?

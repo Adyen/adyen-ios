@@ -7,9 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 
 /// A form item into which card expiry date is entered, formatted and validated.
-internal final class FormCardExpiryDateItem: FormTextItem, Hidable {
-    
-    internal var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+internal final class FormCardExpiryDateItem: FormTextItem {
     
     internal var localizationParameters: LocalizationParameters?
     

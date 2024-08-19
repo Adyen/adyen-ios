@@ -8,9 +8,7 @@ import Foundation
 
 /// A full address form, suitable for all countries.
 @_spi(AdyenInternal)
-public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, AdyenObserver, CompoundFormItem, Hidable {
-    
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, AdyenObserver, CompoundFormItem {
     
     private var context: AddressViewModelBuilderContext {
         didSet {
@@ -145,7 +143,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         let subRegions = RegionRepository.subRegions(for: context.countryCode)
         addressViewModel = addressViewModelBuilder.build(context: context)
         
-        let header: FormItem? = configuration.showsHeader ? headerItem.addingDefaultMargins() : nil
+        let header: FormItem? = configuration.showsHeader ? headerItem : nil
         
         var formItems: [FormItem?] = [
             FormSpacerItem(),
@@ -159,9 +157,14 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
                 let item = create(for: fieldType, from: addressViewModel, subRegions: subRegions)
                 formItems.append(item)
             case let .split(lhs, rhs):
-                let item = FormSplitItem(items: create(for: lhs, from: addressViewModel, subRegions: subRegions),
-                                         create(for: rhs, from: addressViewModel, subRegions: subRegions),
-                                         style: style)
+                let item = FormSplitItem(
+                    items: create(for: lhs, from: addressViewModel, subRegions: subRegions),
+                    create(for: rhs, from: addressViewModel, subRegions: subRegions),
+                    style: .init(
+                        backgroundColor: style.backgroundColor,
+                        spacing: style.spacing
+                    )
+                )
                 formItems.append(item)
             }
         }

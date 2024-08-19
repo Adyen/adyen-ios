@@ -10,6 +10,8 @@ import Foundation
 @_spi(AdyenInternal)
 public class ListItem: FormItem {
     
+    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    
     public var subitems: [FormItem] = []
     
     /// The list item style.
