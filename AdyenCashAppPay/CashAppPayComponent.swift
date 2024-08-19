@@ -173,7 +173,7 @@ public final class CashAppPayComponent: PaymentComponent,
             actions.append(oneTimeAction)
         }
     
-        if storePayment == true {
+        if storePayment {
             let onFileAction = PaymentAction.onFilePayment(scopeID: cashAppPayPaymentMethod.scopeId,
                                                            accountReferenceID: nil)
             actions.append(onFileAction)
