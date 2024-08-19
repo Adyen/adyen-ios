@@ -32,9 +32,6 @@ internal struct DropInSettingsView: View {
                     Toggle(isOn: $viewModel.allowPreselectedPaymentView) {
                         Text("Allow Preselected PaymentView")
                     }
-                    Toggle(isOn: $viewModel.cashAppPayEnabled) {
-                        Text("Enable CashApp Pay")
-                    }
                 }
             }
             .navigationBarTitle("")
