@@ -16,9 +16,8 @@ import XCTest
 
     extension TWAppConfiguration {
         static var dummy: TWAppConfiguration {
-            let twintAppConfiguration = TWAppConfiguration()
+            let twintAppConfiguration = TWAppConfiguration(appURLScheme: "scheme://")
             twintAppConfiguration.appDisplayName = "Test App"
-            twintAppConfiguration.appURLScheme = "scheme://"
             return twintAppConfiguration
         }
     }
