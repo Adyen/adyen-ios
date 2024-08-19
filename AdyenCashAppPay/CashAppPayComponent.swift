@@ -51,8 +51,8 @@ public final class CashAppPayComponent: PaymentComponent,
 
     private let cashAppPayPaymentMethod: CashAppPayPaymentMethod
 
-    private var storePayment: Bool? {
-        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : nil
+    private var storePayment: Bool {
+        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : configuration.storePaymentMethod
     }
 
     private lazy var cashAppPay: CashAppPay = {
@@ -146,8 +146,25 @@ public final class CashAppPayComponent: PaymentComponent,
                                                                              referenceID: configuration.referenceId,
                                                                              metadata: nil))
     }
+    
+    private func cashAppPayDetails(from grants: [CustomerRequest.Grant],
+                                   customerProfile: CustomerRequest.CustomerProfile?) throws -> CashAppPayDetails {
+        guard grants.isEmpty == false else {
+            throw Error.noGrant
+        }
+        let onFileGrant = grants.first { $0.type == .EXTENDED }
+        let oneTimeGrant = grants.first { $0.type == .ONE_TIME }
+        let cashtag = onFileGrant != nil ? customerProfile?.cashtag : nil
+        let customerId = customerProfile?.id
+    
+        return CashAppPayDetails(paymentMethod: cashAppPayPaymentMethod,
+                                 grantId: oneTimeGrant?.id,
+                                 onFileGrantId: onFileGrant?.id,
+                                 customerId: customerId,
+                                 cashtag: cashtag)
+    }
 
-    private func createPaymentActions() -> [PaymentAction] {
+    internal func createPaymentActions() -> [PaymentAction] {
         var actions = [PaymentAction]()
         if let amount = payment?.amount, amount.value > 0 {
             let moneyAmount = Money(amount: UInt(amount.value), currency: .USD)
@@ -165,23 +182,6 @@ public final class CashAppPayComponent: PaymentComponent,
         return actions
     }
 
-    private func cashAppPayDetails(from grants: [CustomerRequest.Grant],
-                                   customerProfile: CustomerRequest.CustomerProfile?) throws -> CashAppPayDetails {
-        guard grants.isEmpty == false else {
-            throw Error.noGrant
-        }
-        let onFileGrant = grants.first { $0.type == .EXTENDED }
-        let oneTimeGrant = grants.first { $0.type == .ONE_TIME }
-        let cashtag = onFileGrant != nil ? customerProfile?.cashtag : nil
-        let customerId = customerProfile?.id
-    
-        return CashAppPayDetails(paymentMethod: cashAppPayPaymentMethod,
-                                 grantId: oneTimeGrant?.id,
-                                 onFileGrantId: onFileGrant?.id,
-                                 customerId: customerId,
-                                 cashtag: cashtag)
-    }
-    
     internal func submitApprovedRequest(with grants: [CustomerRequest.Grant], profile: CustomerRequest.CustomerProfile?) {
         do {
             let details = try cashAppPayDetails(from: grants, customerProfile: profile)

@@ -241,5 +241,49 @@ import XCTest
             
             waitForExpectations(timeout: 10, handler: nil)
         }
+        
+        func test_StorePayment_NotIncluded_FromConfiguration() {
+            let config = CashAppPayConfiguration(
+                redirectURL: URL(string: "test")!,
+                showsStorePaymentMethodField: false
+            )
+            let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+            
+            // no recurring, only regular
+            let actions = sut.createPaymentActions()
+            XCTAssertEqual(actions.count, 1)
+            let oneTimeAction = actions[0]
+            XCTAssertEqual(oneTimeAction.type, .ONE_TIME_PAYMENT)
+        }
+        
+        func test_StorePayment_Included_FromConfiguration() {
+            let config = CashAppPayConfiguration(
+                redirectURL: URL(string: "test")!,
+                showsStorePaymentMethodField: false,
+                storePaymentMethod: true
+            )
+            let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+            
+            // stored and regular
+            let actions = sut.createPaymentActions()
+            XCTAssertEqual(actions.count, 2)
+            let onFileAction = actions[1]
+            XCTAssertEqual(onFileAction.type, .ON_FILE_PAYMENT)
+        }
+        
+        func test_StorePayment_FlagIgnored_DueToConfiguration() {
+            let config = CashAppPayConfiguration(
+                redirectURL: URL(string: "test")!,
+                showsStorePaymentMethodField: true,
+                storePaymentMethod: true
+            )
+            let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
+            
+            // no recurring, only regular
+            let actions = sut.createPaymentActions()
+            XCTAssertEqual(actions.count, 1)
+            let oneTimeAction = actions[0]
+            XCTAssertEqual(oneTimeAction.type, .ONE_TIME_PAYMENT)
+        }
     }
 #endif
