@@ -106,7 +106,7 @@ Pod::Spec.new do |s|
         'Adyen' => [
             'Adyen/Assets/**/*.strings',
             'Adyen/Assets/**/*.xcassets',
-            'PrivacyInfo.xcprivacy'
+            'Adyen/PrivacyInfo.xcprivacy'
         ]
     }
   end
