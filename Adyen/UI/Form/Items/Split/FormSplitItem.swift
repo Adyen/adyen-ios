@@ -10,6 +10,8 @@ import Foundation
 @_spi(AdyenInternal)
 public final class FormSplitItem: FormItem {
 
+    public var isHidden: AdyenObservable<Bool> = AdyenObservable(true)
+    
     internal var leftItem: FormItem
 
     internal var rightItem: FormItem

@@ -86,7 +86,6 @@ open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormI
     }
     
     private func addVisibilityObserver(for subItem: FormItem, view: UIView) {
-        guard let subItem = subItem as? Hidable else { return }
         let observation = observe(subItem.isHidden) { isHidden in
             view.adyen.hide(animationKey: String(describing: view), hidden: isHidden, animated: true)
         }

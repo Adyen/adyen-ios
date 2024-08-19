@@ -6,15 +6,11 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public protocol Hidable {
-
-    var isHidden: AdyenObservable<Bool> { get }
-}
-
 /// An item in a form.
 @_spi(AdyenInternal)
 public protocol FormItem: AnyObject {
+    
+    var isHidden: AdyenObservable<Bool> { get }
     
     /// An identifier for the `FormItem`,
     /// that  is set to the `FormItemView.accessibilityIdentifier` when the corresponding `FormItemView` is created.
@@ -68,7 +64,7 @@ internal protocol CompoundFormItem {
 }
 
 @_spi(AdyenInternal)
-extension Hidable {
+extension FormItem {
 
     public var isVisible: Bool {
         get {
@@ -79,5 +75,4 @@ extension Hidable {
             self.isHidden.wrappedValue = !newValue
         }
     }
-
 }

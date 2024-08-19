@@ -10,6 +10,8 @@ import Foundation
 @_spi(AdyenInternal)
 public final class FormSearchButtonItem: FormItem {
 
+    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    
     public var subitems: [FormItem] = []
     
     /// Indicates the item's UI styling.
