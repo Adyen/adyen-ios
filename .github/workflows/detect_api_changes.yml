@@ -28,16 +28,11 @@ jobs:
       with:
         xcode-version: '15.1'
         
-    - name: 🛠️ Run Tests
-      run: |
-        cd Scripts/public-api-diff
-        xcodebuild test -scheme public-api-diff -destination "platform=iOS,name=Any iOS Device" | xcpretty --utf --color && exit
-        
     - name: 🔍 Detect Changes
       run: |
         PROJECT_FOLDER=$PWD
-        cd Scripts/public-api-diff        
-        swift run public-api-diff --new "${source}" --old "${target}" --output "$PROJECT_FOLDER/api_comparison.md"
+        cd Scripts
+        ./public-api-diff --new "${source}" --old "${target}" --output "$PROJECT_FOLDER/api_comparison.md"
         cat "$PROJECT_FOLDER/api_comparison.md" >> $GITHUB_STEP_SUMMARY
       env:
         source: '${{ github.event.inputs.new || github.head_ref }}~${{github.server_url}}/${{github.repository}}.git'
