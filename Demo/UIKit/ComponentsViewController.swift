@@ -173,7 +173,6 @@ internal final class ComponentsViewController: UIViewController {
         let assembler = CustomComponentAssembler()
         let customComponentView = assembler.resolveCustomComponentView()
         let navigationController = UINavigationController(rootViewController: customComponentView)
-        navigationController.modalPresentationStyle = .fullScreen
         present(viewController: navigationController, completion: nil)
     }
 
