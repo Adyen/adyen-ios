@@ -143,7 +143,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         let subRegions = RegionRepository.subRegions(for: context.countryCode)
         addressViewModel = addressViewModelBuilder.build(context: context)
         
-        let header: FormItem? = configuration.showsHeader ? FormContainerItem(content: headerItem) : nil
+        let header: FormItem? = configuration.showsHeader ? headerItem.padding() : nil
         
         var formItems: [FormItem?] = [
             FormSpacerItem(),

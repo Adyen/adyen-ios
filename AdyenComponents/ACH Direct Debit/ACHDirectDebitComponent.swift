@@ -260,7 +260,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
 
         formViewController.append(FormSpacerItem())
-        formViewController.append(FormContainerItem(content: headerItem))
+        formViewController.append(headerItem.padding())
         formViewController.append(FormSpacerItem())
         formViewController.append(holderNameItem)
         formViewController.append(bankAccountNumberItem)
