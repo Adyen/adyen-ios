@@ -121,7 +121,7 @@ public final class CashAppPayComponent: PaymentComponent,
     }
 
     private func didSelectSubmitButton() {
-        guard formViewController.validate() else { return }
+        guard validate() else { return }
     
         startLoading()
         startCashAppPayFlow()

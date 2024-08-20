@@ -80,7 +80,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
     // MARK: - Private
     
     private func didSelectSubmitButton() {
-        guard formViewController.validate() else {
+        guard validate() else {
             return
         }
         

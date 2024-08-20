@@ -109,7 +109,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     // MARK: - Private
 
     private func didSelectSubmitButton() {
-        guard formViewController.validate() else { return }
+        guard validate() else { return }
 
         let details = BLIKDetails(paymentMethod: paymentMethod,
                                   blikCode: codeItem.value)

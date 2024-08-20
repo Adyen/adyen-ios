@@ -261,7 +261,7 @@ extension GiftCardComponent {
     
     internal func didSelectSubmitButton() {
         hideError()
-        guard formViewController.validate() else {
+        guard validate() else {
             return
         }
 
