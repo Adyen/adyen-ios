@@ -292,5 +292,26 @@ import XCTest
             // Then
             XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 0)
         }
+
+        func testValidateShouldReturnFormViewControllerValidateResult() throws {
+            // Given
+            let configuration = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsSubmitButton: false)
+            let sut = CashAppPayComponent(
+                paymentMethod: paymentMethod,
+                context: context,
+                configuration: configuration
+            )
+            setupRootViewController(sut.viewController)
+
+            let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+            let expectedResult = formViewController.validate()
+
+            // When
+            let validationResult = sut.validate()
+
+            // Then
+            XCTAssertTrue(validationResult)
+            XCTAssertEqual(expectedResult, validationResult)
+        }
     }
 #endif
