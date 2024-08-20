@@ -311,4 +311,56 @@ class SEPADirectDebitComponentTests: XCTestCase {
         // Then
         XCTAssertEqual(delegateMock.didSubmitCallsCount, 0)
     }
+
+    func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        let paymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
+        let configuration = SEPADirectDebitComponent.Configuration(showsSubmitButton: false)
+        let sut = SEPADirectDebitComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        setupRootViewController(sut.viewController)
+
+        let ibanItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem"))
+        let nameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem"))
+
+        self.populate(textItemView: ibanItemView, with: "NL13TEST0123456789")
+        self.populate(textItemView: nameItemView, with: "A. Klaassen")
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        let validationResult = sut.validate()
+
+        // Then
+        XCTAssertTrue(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
+
+    func testValidateGivenInvalidInputShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        let paymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
+        let configuration = SEPADirectDebitComponent.Configuration(showsSubmitButton: false)
+        let sut = SEPADirectDebitComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        setupRootViewController(sut.viewController)
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        let validationResult = sut.validate()
+
+        // Then
+        XCTAssertFalse(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
 }
