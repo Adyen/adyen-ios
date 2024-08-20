@@ -16,8 +16,6 @@ internal final class QRCodeViewController: UIViewController {
     
     internal lazy var qrCodeView = QRCodeView(model: viewModel)
     
-    private lazy var containerView = UIView(frame: .zero)
-    
     /// Initializes the `QRCodeViewController`.
     ///
     /// - Parameter viewModel: The view model.
@@ -34,33 +32,18 @@ internal final class QRCodeViewController: UIViewController {
     
     override internal func viewDidLoad() {
         super.viewDidLoad()
-        containerView.addSubview(qrCodeView)
-        view.addSubview(containerView)
-        configureConstraints()
+        // view.addSubview(qrCodeView)
+        // configureConstraints()
         view.backgroundColor = viewModel.style.backgroundColor
     }
     
-    private func configureConstraints() {
-        qrCodeView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        containerView.adyen.anchor(inside: view.safeAreaLayoutGuide)
-        let constraints = [
-            qrCodeView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-            
-            qrCodeView.topAnchor.constraint(greaterThanOrEqualTo: containerView.topAnchor),
-            qrCodeView.bottomAnchor.constraint(lessThanOrEqualTo: containerView.bottomAnchor),
-            
-            qrCodeView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            qrCodeView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
+    override func loadView() {
+        self.view = qrCodeView
     }
     
     override internal var preferredContentSize: CGSize {
         get {
-            containerView.adyen.minimalSize
+            .init(width: CGFloat.greatestFiniteMagnitude, height: .greatestFiniteMagnitude)
         }
         
         // swiftlint:disable:next unused_setter_value
@@ -70,5 +53,4 @@ internal final class QRCodeViewController: UIViewController {
         setter - no implemented.
         """) }
     }
-    
 }

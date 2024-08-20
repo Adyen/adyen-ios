@@ -63,6 +63,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     private func addLogo() {
         addSubview(logo)
         logo.translatesAutoresizingMaskIntoConstraints = false
+        instructionLabel.setContentHuggingPriority(.required, for: .vertical)
         NSLayoutConstraint.activate([
             logo.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
             logo.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor)
@@ -72,6 +73,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     private func addInstructionLabel() {
         addSubview(instructionLabel)
         instructionLabel.translatesAutoresizingMaskIntoConstraints = false
+        instructionLabel.setContentHuggingPriority(.required, for: .vertical)
         NSLayoutConstraint.activate([
             instructionLabel.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 20),
             instructionLabel.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 37),
@@ -82,9 +84,11 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     private func addQRCodeImage() {
         addSubview(qrCodeImageView)
         qrCodeImageView.translatesAutoresizingMaskIntoConstraints = false
+        qrCodeImageView.setContentCompressionResistancePriority(.required, for: .vertical)
+        qrCodeImageView.setContentCompressionResistancePriority(.required, for: .horizontal)
         NSLayoutConstraint.activate([
             qrCodeImageView.topAnchor.constraint(equalTo: instructionLabel.bottomAnchor, constant: 45),
-            qrCodeImageView.widthAnchor.constraint(equalToConstant: 145.0),
+            qrCodeImageView.widthAnchor.constraint(equalToConstant: 144.0),
             qrCodeImageView.heightAnchor.constraint(equalToConstant: 144.0),
             qrCodeImageView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor)
         ])
@@ -111,6 +115,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     private func addExpirationLabel() {
         addSubview(expirationLabel)
         expirationLabel.translatesAutoresizingMaskIntoConstraints = false
+        expirationLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         NSLayoutConstraint.activate([
             expirationLabel.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 13.0),
             expirationLabel.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 16),
@@ -124,8 +129,8 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         NSLayoutConstraint.activate([
             saveAsImageButton.heightAnchor.constraint(equalToConstant: 50.0),
             saveAsImageButton.topAnchor.constraint(equalTo: expirationLabel.bottomAnchor, constant: 40),
-            saveAsImageButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 16),
-            saveAsImageButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -16),
+            saveAsImageButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+            saveAsImageButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             saveAsImageButton.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
         ])
     }
@@ -135,9 +140,9 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         copyCodeButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             copyCodeButton.heightAnchor.constraint(equalToConstant: 50.0),
-            copyCodeButton.topAnchor.constraint(equalTo: expirationLabel.bottomAnchor, constant: 34),
-            copyCodeButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 16),
-            copyCodeButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -16),
+            copyCodeButton.topAnchor.constraint(equalTo: expirationLabel.bottomAnchor, constant: 40),
+            copyCodeButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+            copyCodeButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             copyCodeButton.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
         ])
     }
