@@ -188,7 +188,7 @@ public final class UPIComponent: PaymentComponent,
                                                       postfix: ViewIdentifier.generateQRCodeContainerItem)
         return FormContainerItem(
             content: item,
-            contentInset: .init(top: 0, left: 8, bottom: 0, right: 8)
+            contentInset: .init(top: 8, left: 8, bottom: 8, right: 8)
         )
     }()
 
