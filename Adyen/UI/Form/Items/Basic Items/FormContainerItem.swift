@@ -40,7 +40,7 @@ public class FormContainerItem<ContentItem: FormItem>: FormItem {
     }
 
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
-        let container = FormContainerView()
+        let container = FormContainerItemView()
         let contentView = content.build(with: builder)
         container.accessibilityIdentifier = identifier
         container.setup(
@@ -51,9 +51,9 @@ public class FormContainerItem<ContentItem: FormItem>: FormItem {
     }
 }
 
-// MARK: - FormContainerView
+// MARK: - FormContainerItemView
 
-private class FormContainerView: UIView, AnyFormItemView {
+private class FormContainerItemView: UIView, AnyFormItemView {
     
     var childItemViews: [AnyFormItemView] = []
 
