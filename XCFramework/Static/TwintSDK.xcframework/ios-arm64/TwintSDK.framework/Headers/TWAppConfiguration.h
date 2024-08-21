@@ -6,11 +6,14 @@
 //  Copyright (c) 2017 Monexio. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 @interface TWAppConfiguration : NSObject
 
-@property (strong, nonatomic) NSString* appDisplayName;
-@property (strong, nonatomic) NSString* appURLScheme;
+- (nonnull instancetype)init NS_UNAVAILABLE;
+- (nonnull instancetype)initWithAppURLScheme:(nonnull NSString *)appURLScheme NS_DESIGNATED_INITIALIZER;
+
+@property (nullable, nonatomic) NSString* appDisplayName;
+@property (nonnull, nonatomic) NSString* appURLScheme;
 
 @end
