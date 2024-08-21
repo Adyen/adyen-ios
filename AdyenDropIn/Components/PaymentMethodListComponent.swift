@@ -116,7 +116,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
         return listItem
     }
     
-    private func delete(component: PaymentComponent?, at indexPath: IndexPath, completion: @escaping Completion<Bool>) {
+    private func delete(component: PaymentComponent?, at indexPath: IndexPath, completion: @escaping (Bool) -> Void) {
         guard let component else { return }
         guard let paymentMethod = component.paymentMethod as? StoredPaymentMethod else { return }
         let completion: (Bool) -> Void = { [weak self] success in
@@ -201,7 +201,7 @@ internal protocol PaymentMethodListComponentDelegate: AnyObject {
     ///   it must be invoked by the delegate when the stored payment method is successfully deleted.
     func didDelete(_ paymentMethod: StoredPaymentMethod,
                    in paymentMethodListComponent: PaymentMethodListComponent,
-                   completion: @escaping Completion<Bool>)
+                   completion: @escaping (Bool) -> Void)
 }
 
 private extension [ComponentsSection] {

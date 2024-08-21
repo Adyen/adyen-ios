@@ -13,7 +13,7 @@ extension AdyenSession: SessionStoredPaymentMethodsDelegate {
     
     public var showRemovePaymentMethodButton: Bool { sessionContext.configuration.showRemovePaymentMethodButton }
     
-    public func disable(storedPaymentMethod: StoredPaymentMethod, dropInComponent: AnyDropInComponent, completion: @escaping Completion<Bool>) {
+    public func disable(storedPaymentMethod: StoredPaymentMethod, dropInComponent: AnyDropInComponent, completion: @escaping (Bool) -> Void) {
         let request = DisableStoredPaymentMethodRequest(sessionId: sessionContext.identifier,
                                                         sessionData: sessionContext.data,
                                                         storedPaymentMethodId: storedPaymentMethod.identifier)
@@ -45,7 +45,7 @@ extension AdyenSession: SessionStoredPaymentMethodsDelegate {
     }
     
     // empty implementation of the old method
-    public func disable(storedPaymentMethod: Adyen.StoredPaymentMethod, completion: @escaping Adyen.Completion<Bool>) {
+    public func disable(storedPaymentMethod: Adyen.StoredPaymentMethod, completion: @escaping (Bool) -> Void) {
         AdyenAssertion.assertionFailure(message: "Use the new delegate method from session.")
     }
 }

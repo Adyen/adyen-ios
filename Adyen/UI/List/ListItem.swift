@@ -33,7 +33,7 @@ public class ListItem: FormItem {
     public var selectionHandler: (() -> Void)?
     
     /// The handler to invoke when the item is deleted.
-    public var deletionHandler: ((IndexPath, @escaping Completion<Bool>) -> Void)?
+    public var deletionHandler: ((IndexPath, @escaping (Bool) -> Void) -> Void)?
     
     /// The `accessibilityIdentifier` to be used on the `ListItem`
     public var identifier: String?

@@ -16,5 +16,5 @@ public protocol StoredPaymentMethodsDelegate: AnyObject {
     ///   - storedPaymentMethod: The stored payment method that the user wants to disable.
     ///   - completion: The delegate needs to call back this closure when the disabling is done,
     ///    with a boolean parameter that indicates success or failure.
-    func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping Completion<Bool>)
+    func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping (Bool) -> Void)
 }

@@ -12,7 +12,7 @@ final class StoredPaymentMethodDelegateMock: StoredPaymentMethodsDelegate {
     var onDisableCallCount = 0
     var onDisable: ((_ paymentMethod: StoredPaymentMethod) -> Bool)?
     
-    func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping Completion<Bool>) {
+    func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping (Bool) -> Void) {
         let success = onDisable?(storedPaymentMethod)
         onDisableCallCount += 1
         completion(success!)
@@ -28,11 +28,11 @@ final class SessionStoredPaymentMethodDelegateMock: SessionStoredPaymentMethodsD
     var onDisableCallCount = 0
     var onDisable: ((_ paymentMethod: StoredPaymentMethod, _ dropIn: AnyDropInComponent) -> Bool)?
     
-    func disable(storedPaymentMethod: StoredPaymentMethod, dropInComponent: AnyDropInComponent, completion: @escaping Completion<Bool>) {
+    func disable(storedPaymentMethod: StoredPaymentMethod, dropInComponent: AnyDropInComponent, completion: @escaping (Bool) -> Void) {
         let success = onDisable?(storedPaymentMethod, dropInComponent)
         onDisableCallCount += 1
         completion(success!)
     }
     
-    func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping Completion<Bool>) {}
+    func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping (Bool) -> Void) {}
 }

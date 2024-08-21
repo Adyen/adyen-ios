@@ -64,7 +64,7 @@ internal final class CoreListDataSource: NSObject, ListViewControllerDataSource 
         
         startLoading(for: item, tableView)
         
-        let completion: Completion<Bool> = { [weak self] _ in
+        let completion: (Bool) -> Void = { [weak self] _ in
             self?.stopLoading(tableView)
         }
         

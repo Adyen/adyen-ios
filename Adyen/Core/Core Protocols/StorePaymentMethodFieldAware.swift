@@ -25,5 +25,5 @@ public protocol SessionStoredPaymentMethodsDelegate: AdyenSessionAware, StoredPa
     ///   - dropInComponent: The dropIn component containing the stored payment method list.
     ///   - completion: The delegate needs to call back this closure when the disabling is done,
     ///    with a boolean parameter that indicates success or failure.
-    func disable(storedPaymentMethod: StoredPaymentMethod, dropInComponent: AnyDropInComponent, completion: @escaping Completion<Bool>)
+    func disable(storedPaymentMethod: StoredPaymentMethod, dropInComponent: AnyDropInComponent, completion: @escaping (Bool) -> Void)
 }

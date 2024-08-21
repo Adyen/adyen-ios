@@ -21,9 +21,9 @@ internal final class PaymentMethodListComponentDelegateMock: PaymentMethodListCo
         onDidSelect?(component, paymentMethodListComponent)
     }
     
-    var onDidDelete: ((_ paymentMethod: StoredPaymentMethod, _ paymentMethodListComponent: PaymentMethodListComponent, _ completion: @escaping Completion<Bool>) -> Void)?
+    var onDidDelete: ((_ paymentMethod: StoredPaymentMethod, _ paymentMethodListComponent: PaymentMethodListComponent, _ completion: @escaping (Bool) -> Void) -> Void)?
     
-    func didDelete(_ paymentMethod: StoredPaymentMethod, in paymentMethodListComponent: PaymentMethodListComponent, completion: @escaping Completion<Bool>) {
+    func didDelete(_ paymentMethod: StoredPaymentMethod, in paymentMethodListComponent: PaymentMethodListComponent, completion: @escaping (Bool) -> Void) {
         onDidDelete?(paymentMethod, paymentMethodListComponent, completion)
     }
     

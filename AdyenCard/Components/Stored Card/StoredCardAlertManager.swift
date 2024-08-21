@@ -17,7 +17,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Adye
     private let amount: Amount?
 
     internal var publicKeyProvider: AnyPublicKeyProvider
-    internal var completionHandler: Completion<Result<CardDetails, Error>>?
+    internal var completionHandler: ((Result<CardDetails, Error>) -> Void)?
     internal var localizationParameters: LocalizationParameters?
     
     internal init(paymentMethod: StoredCardPaymentMethod,
