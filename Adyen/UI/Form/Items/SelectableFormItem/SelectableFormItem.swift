@@ -8,7 +8,7 @@ import Foundation
 
 /// Simple form item that represent a single selectable element.
 @_spi(AdyenInternal)
-public class SelectableFormItem: FormItem, Hidable {
+public class SelectableFormItem: FormItem {
 
     public var subitems: [FormItem] = []
 

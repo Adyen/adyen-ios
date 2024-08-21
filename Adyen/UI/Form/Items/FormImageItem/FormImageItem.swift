@@ -8,7 +8,7 @@ import UIKit
 
 /// Simple form item that represent a single UImage element.
 @_spi(AdyenInternal)
-public class FormImageItem: FormItem, Hidable {
+public class FormImageItem: FormItem {
 
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
 

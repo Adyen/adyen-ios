@@ -10,6 +10,8 @@ import UIKit
 @_spi(AdyenInternal)
 public class FormAttributedLabelItem: FormItem {
 
+    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    
     public var subitems: [FormItem] = []
 
     public init(originalText: String,
