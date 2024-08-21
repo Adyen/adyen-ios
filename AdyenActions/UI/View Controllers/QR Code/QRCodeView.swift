@@ -198,7 +198,7 @@ private extension QRCodeView {
             actionButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             actionButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             actionButton.heightAnchor.constraint(equalToConstant: 50.0),
-            // Stackview
+            // Stack View
             stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
