@@ -288,6 +288,7 @@
 		81DF94292BAAD8EB0001DCBC /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 81DF94072BAAD8EB0001DCBC /* SnapshotTesting */; };
 		81E031942A0A75F200EA965E /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67461F264262F000E9184D /* ConfigurationView.swift */; };
 		81E031952A0A75F800EA965E /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54600E264433CD00724A87 /* SearchBar.swift */; };
+		81E4231B2C74DC3600349A5E /* String+QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E4231A2C74DC3600349A5E /* String+QRCode.swift */; };
 		81EA6C122A44836E0071A141 /* FormAddressItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EA6C112A44836E0071A141 /* FormAddressItemTests.swift */; };
 		81EE958A2BB1D700006B21CB /* ImageLoader+DependencyKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE95892BB1D700006B21CB /* ImageLoader+DependencyKey.swift */; };
 		81EE958D2BB2DC98006B21CB /* UIImageView+ImageLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE958C2BB2DC98006B21CB /* UIImageView+ImageLoading.swift */; };
@@ -1685,6 +1686,7 @@
 		81DC5A5C2A7BADB200DBF2D1 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		81DF942E2BAAD8EB0001DCBC /* GenerateSnapshots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GenerateSnapshots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		81DF942F2BAAD9A20001DCBC /* GenerateSnapshots.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GenerateSnapshots.xctestplan; sourceTree = "<group>"; };
+		81E4231A2C74DC3600349A5E /* String+QRCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+QRCode.swift"; sourceTree = "<group>"; };
 		81EA6C112A44836E0071A141 /* FormAddressItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAddressItemTests.swift; sourceTree = "<group>"; };
 		81EE95892BB1D700006B21CB /* ImageLoader+DependencyKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageLoader+DependencyKey.swift"; sourceTree = "<group>"; };
 		81EE958C2BB2DC98006B21CB /* UIImageView+ImageLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+ImageLoading.swift"; sourceTree = "<group>"; };
@@ -2923,6 +2925,7 @@
 				0058691628B6450900B65A19 /* QRCodeViewController.swift */,
 				0058691828B6451000B65A19 /* QRCodeViewModel.swift */,
 				0058691428B644FB00B65A19 /* QRCodeView.swift */,
+				81E4231A2C74DC3600349A5E /* String+QRCode.swift */,
 			);
 			path = "QR Code";
 			sourceTree = "<group>";
@@ -7495,6 +7498,7 @@
 				F9175FD22594999600D653BE /* RedirectComponent.swift in Sources */,
 				00165FE02C05DA8600347399 /* RedireactableAwaitAction.swift in Sources */,
 				F9237D3D28CB470E004F9929 /* ThreeDS2ClassicActionHandler+Initializers.swift in Sources */,
+				81E4231B2C74DC3600349A5E /* String+QRCode.swift in Sources */,
 				8182AAB72B95D3560087568E /* Twint+Injectable.swift in Sources */,
 				F97C851625C192D000D7F85C /* VoucherViewController.swift in Sources */,
 				F95A78B925C4302A0032CF7E /* ShareableVoucherView.swift in Sources */,

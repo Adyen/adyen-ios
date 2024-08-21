@@ -22,7 +22,7 @@ internal final class QRCodeViewController: UIViewController {
     /// - Parameter style: The UI style.
     internal init(viewModel: QRCodeView.Model) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: Bundle(for: QRCodeViewController.self))
+        super.init(nibName: nil, bundle: nil)
     }
     
     @available(*, unavailable)
@@ -30,20 +30,21 @@ internal final class QRCodeViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override internal func viewDidLoad() {
-        super.viewDidLoad()
-        // view.addSubview(qrCodeView)
-        // configureConstraints()
-        view.backgroundColor = viewModel.style.backgroundColor
+    override internal func loadView() {
+        self.view = qrCodeView
     }
     
-    override func loadView() {
-        self.view = qrCodeView
+    override internal func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = viewModel.style.backgroundColor
     }
     
     override internal var preferredContentSize: CGSize {
         get {
-            .init(width: CGFloat.greatestFiniteMagnitude, height: .greatestFiniteMagnitude)
+            .init(
+                width: CGFloat.greatestFiniteMagnitude,
+                height: .greatestFiniteMagnitude
+            )
         }
         
         // swiftlint:disable:next unused_setter_value
