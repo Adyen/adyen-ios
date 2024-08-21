@@ -22,6 +22,8 @@ public protocol FormValueItemStyle: TintableStyle {
 @_spi(AdyenInternal)
 open class FormValueItem<ValueType: Equatable, StyleType: FormValueItemStyle>: FormItem {
 
+    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    
     public private(set) var subitems: [FormItem]
 
     public var identifier: String?

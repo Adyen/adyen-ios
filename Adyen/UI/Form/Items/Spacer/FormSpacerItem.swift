@@ -10,6 +10,8 @@ import Foundation
 @_spi(AdyenInternal)
 public final class FormSpacerItem: FormItem {
 
+    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    
     public var identifier: String?
 
     public let subitems: [FormItem] = []

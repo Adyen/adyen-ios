@@ -11,6 +11,8 @@ import UIKit
 @_spi(AdyenInternal)
 public final class FormSeparatorItem: FormItem {
 
+    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    
     public var subitems: [FormItem] = []
     
     /// Indicates the line color.
