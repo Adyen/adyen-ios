@@ -72,7 +72,7 @@ class CustomComponentPresenter: CustomComponentPresenterProtocol {
 
     private func performPayment(with data: PaymentComponentData,
                                 from component: PaymentComponent) {
-        guard cardComponent?.validate() ?? false else {
+        guard let cardComponent = cardComponent, cardComponent.validate() else {
             return
         }
         view?.startActivityIndicator()
