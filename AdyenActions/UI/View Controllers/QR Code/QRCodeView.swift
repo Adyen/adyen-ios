@@ -179,7 +179,10 @@ private extension QRCodeView {
         wrapperStackView.addArrangedSubview(scrollView)
         wrapperStackView.addArrangedSubview(actionButton)
         addSubview(wrapperStackView)
-        wrapperStackView.adyen.anchor(inside: self.safeAreaLayoutGuide)
+        wrapperStackView.adyen.anchor(
+            inside: self.safeAreaLayoutGuide,
+            with: .init(top: 0, left: 0, bottom: -8, right: 0)
+        )
         
         scrollView.addSubview(stackView)
         
@@ -195,8 +198,8 @@ private extension QRCodeView {
         
         NSLayoutConstraint.activate([
             // Action Button
-            actionButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            actionButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            actionButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            actionButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
             actionButton.heightAnchor.constraint(equalToConstant: 50.0),
             // Stack View
             stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
