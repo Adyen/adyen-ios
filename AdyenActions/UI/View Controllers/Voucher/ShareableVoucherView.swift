@@ -70,7 +70,7 @@ internal class ShareableVoucherView: UIView, Localizable {
     internal func createTopView() -> UIView {
         logoView.image = model.logo
         let textLabelWrapper = textLabel.adyen.wrapped(
-            with: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: -16)
+            with: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         )
         let stackView = UIStackView(arrangedSubviews: [logoView,
                                                        textLabelWrapper,
@@ -125,7 +125,7 @@ internal class ShareableVoucherView: UIView, Localizable {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         let containerView = stackView.adyen.wrapped(
-            with: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: -16)
+            with: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         )
         valueLabel.widthAnchor.constraint(
             lessThanOrEqualTo: containerView.widthAnchor,
