@@ -90,20 +90,21 @@ internal class VoucherCardView: UIView {
         buildContainerLayer()
 
         addSubview(stackView)
-        stackView.adyen.anchor(inside: self, with: innerViewsInset)
+        stackView.adyen.anchor(
+            inside: self,
+            with: .init(
+                top: containerInsets.top + 16,
+                left: containerInsets.left,
+                bottom: containerInsets.bottom + 16,
+                right: containerInsets.right
+            )
+        )
 
         separatorView.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
         separatorView.heightAnchor.constraint(equalToConstant: 20).isActive = true
 
         bottomView.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
         topView.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
-    }
-
-    private var innerViewsInset: UIEdgeInsets {
-        UIEdgeInsets(top: containerInsets.top + 16,
-                     left: containerInsets.left,
-                     bottom: -containerInsets.bottom - 16,
-                     right: -containerInsets.right)
     }
 
     private func buildContainerLayer() {

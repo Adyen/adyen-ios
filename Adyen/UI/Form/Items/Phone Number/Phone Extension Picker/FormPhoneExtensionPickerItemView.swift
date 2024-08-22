@@ -82,7 +82,7 @@ public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExten
         addSubview(button)
         
         stackView.adyen.anchor(inside: button)
-        button.adyen.anchor(inside: self, with: .init(top: 0, left: 0, bottom: -1, right: -6))
+        button.adyen.anchor(inside: self, with: .init(top: 0, left: 0, bottom: 1, right: 6))
     }
     
     internal func updateSelection() {
