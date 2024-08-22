@@ -142,12 +142,8 @@ public final class TwintComponent: PaymentComponent,
 
     // MARK: - Private
 
-    private var shouldStorePaymentMethod: Bool {
-        guard configuration.showsStorePaymentMethodField else {
-            return false
-        }
-
-        return storeDetailsItem.value
+    private var shouldStorePaymentMethod: Bool? {
+        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : nil
     }
 
     private func didSelectSubmitButton() {
