@@ -12,10 +12,6 @@ public struct TwintComponentConfiguration: AnyTwintComponentConfiguration, Local
     /// Indicates if the field for storing the payment method should be displayed in the form. Defaults to `true`.
     public var showsStorePaymentMethodField: Bool
 
-    /// Determines whether to store this payment method. Defaults to `false`.
-    /// Ignored if `showsStorePaymentMethodField` is `true`.
-    public var storePaymentMethod: Bool
-
     /// Describes the component's UI style.
     public var style: FormComponentStyle
 
@@ -25,18 +21,14 @@ public struct TwintComponentConfiguration: AnyTwintComponentConfiguration, Local
     /// Initializes an instance of `TwintComponent.Configuration`
     /// - Parameters:
     ///   - showsStorePaymentMethodField: Determines the visibility of the field for storing the payment method.
-    ///   - storePaymentMethod: Determines whether to store this payment method.
-    ///   Ignored if `showsStorePaymentMethodField` is `true`.
     ///   - style: The UI style of the component.
     ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
     public init(
         showsStorePaymentMethodField: Bool = true,
-        storePaymentMethod: Bool = false,
         style: FormComponentStyle = FormComponentStyle(),
         localizationParameters: LocalizationParameters? = nil
     ) {
         self.showsStorePaymentMethodField = showsStorePaymentMethodField
-        self.storePaymentMethod = storePaymentMethod
         self.style = style
         self.localizationParameters = localizationParameters
     }

@@ -10,8 +10,4 @@ import Foundation
 public protocol AnyTwintComponentConfiguration {
     /// Indicates if the field for storing the payment method should be displayed in the form. Defaults to `true`.
     var showsStorePaymentMethodField: Bool { get set }
-
-    /// Determines whether to store this payment method. Defaults to `false`.
-    /// Ignored if `showsStorePaymentMethodField` is `true`.
-    var storePaymentMethod: Bool { get set }
 }

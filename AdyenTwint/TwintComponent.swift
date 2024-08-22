@@ -144,7 +144,7 @@ public final class TwintComponent: PaymentComponent,
 
     private var shouldStorePaymentMethod: Bool {
         guard configuration.showsStorePaymentMethodField else {
-            return configuration.storePaymentMethod
+            return false
         }
 
         return storeDetailsItem.value
