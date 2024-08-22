@@ -72,17 +72,17 @@ extension AdyenScope where Base: UIView {
         }
         if let bottom = edgeInsets.bottom {
             constraints.append(
-                base.bottomAnchor.constraint(
-                    equalTo: anchorSource.anchorSet.bottomAnchor,
-                    constant: -bottom
+                anchorSource.anchorSet.bottomAnchor.constraint(
+                    equalTo: base.bottomAnchor,
+                    constant: bottom
                 )
             )
         }
         if let right = edgeInsets.right {
             constraints.append(
-                base.trailingAnchor.constraint(
-                    equalTo: anchorSource.anchorSet.trailingAnchor,
-                    constant: -right
+                anchorSource.anchorSet.trailingAnchor.constraint(
+                    equalTo: base.trailingAnchor,
+                    constant: right
                 )
             )
         }
