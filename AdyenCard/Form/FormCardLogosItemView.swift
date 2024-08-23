@@ -31,7 +31,7 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem> {
     internal required init(item: FormCardLogosItem) {
         super.init(item: item)
         addSubview(collectionView)
-        collectionView.adyen.anchor(inside: self, with: UIEdgeInsets(top: 4, left: 16, bottom: -8, right: -16))
+        collectionView.adyen.anchor(inside: self, with: UIEdgeInsets(top: 4, left: 16, bottom: 8, right: 16))
         collectionView.register(CardLogoCell.self, forCellWithReuseIdentifier: CardLogoCell.reuseIdentifier)
         collectionView.dataSource = self
     }

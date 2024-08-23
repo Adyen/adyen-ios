@@ -113,7 +113,7 @@ internal final class ComponentsView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(switchStackView)
         switchStackView.anchor(inside: view.layoutMarginsGuide,
-                               with: .init(top: 0, left: 20, bottom: 0, right: -20))
+                               with: .init(top: 0, left: 20, bottom: 0, right: 20))
         return view
     }()
     

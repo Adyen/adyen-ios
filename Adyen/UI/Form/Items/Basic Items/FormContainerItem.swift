@@ -62,14 +62,6 @@ private class FormContainerItemView: UIView, AnyFormItemView {
         addSubview(contentView)
         
         if let padding {
-            // Converting the contentInset because of the implementation of `AdyenScope.anchor`
-            let adjustedPadding = UIEdgeInsets(
-                top: padding.top,
-                left: padding.left,
-                bottom: -padding.bottom,
-                right: -padding.right
-            )
-            
             contentView.adyen.anchor(
                 inside: self,
                 with: padding
