@@ -20,4 +20,16 @@ public protocol SubmitCustomizable {
     ///    - Ensure that the payment component is properly configured before calling this method.
     ///    - Handle stopping the loading state after the payment process is completed.
     func submit()
+
+    /// Validates the component's form and triggers the associated validation UI.
+    ///
+    /// This method checks the validity of the form linked to the payment component. It ensures that all required fields are properly
+    /// filled out and conform to expected formats.
+    /// Additionally, it triggers the UI to visually indicate any validation errors to the user.
+    ///
+    /// - Returns: A Boolean value indicating whether the form is valid (`true`) or not (`false`).
+    ///
+    /// - Important:
+    ///    - Make sure to call this method before initiating the payment process to ensure that the form is correctly filled out.
+    func validate() -> Bool
 }

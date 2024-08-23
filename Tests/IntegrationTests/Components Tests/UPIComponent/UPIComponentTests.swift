@@ -107,4 +107,50 @@ class UPIComponentTests: XCTestCase {
         // Then
         XCTAssertEqual(delegateMock.didSubmitCallsCount, 0)
     }
+
+    func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upi)
+        let configuration = UPIComponent.Configuration(showsSubmitButton: false)
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: configuration
+        )
+
+        let vpaInputItem: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem"))
+        self.populate(textItemView: vpaInputItem, with: "testvpa@icici")
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        let validationResult = sut.validate()
+
+        // Then
+        XCTAssertTrue(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
+
+    func testValidateGivenInvalidInputShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upi)
+        let configuration = UPIComponent.Configuration(showsSubmitButton: false)
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: configuration
+        )
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        let validationResult = sut.validate()
+
+        // Then
+        XCTAssertFalse(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
+
 }

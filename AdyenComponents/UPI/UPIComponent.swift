@@ -301,7 +301,7 @@ extension UPIComponent {
     }
     
     private func didSelectContinueButton() {
-        guard formViewController.validate() else { return }
+        guard validate() else { return }
 
         guard canSubmit() else {
             showError()
@@ -443,5 +443,9 @@ extension UPIComponent: SubmitCustomizable {
         }
 
         didSelectContinueButton()
+    }
+
+    public func validate() -> Bool {
+        formViewController.validate()
     }
 }

@@ -13,6 +13,7 @@ import AdyenSession
 
 protocol CustomComponentPresenterProtocol {
     var cardViewController: UIViewController { get }
+    func performValidation()
     func performPayment()
     func viewDidLoad()
 }
@@ -50,6 +51,11 @@ class CustomComponentPresenter: CustomComponentPresenterProtocol {
 
     func viewDidLoad() {}
 
+    func performValidation() {
+        let isValid = cardComponent?.validate() ?? false
+        print("CARD COMPONENT VALIDITY: \(isValid)")
+    }
+
     func performPayment() {
         cardComponent?.submit()
     }
@@ -66,6 +72,9 @@ class CustomComponentPresenter: CustomComponentPresenterProtocol {
 
     private func performPayment(with data: PaymentComponentData,
                                 from component: PaymentComponent) {
+        guard let cardComponent = cardComponent, cardComponent.validate() else {
+            return
+        }
         view?.startActivityIndicator()
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 6) {

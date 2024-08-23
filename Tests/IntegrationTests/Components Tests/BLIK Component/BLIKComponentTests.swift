@@ -141,4 +141,54 @@ class BLIKComponentTests: XCTestCase {
         // Then
         XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 0)
     }
+
+    func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        let configuration = BLIKComponent.Configuration(showsSubmitButton: false)
+        let sut = BLIKComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        setupRootViewController(sut.viewController)
+
+        let codeItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem"))
+
+        self.populate(textItemView: codeItemView, with: "123456")
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        let validationResult = sut.validate()
+
+        // Then
+        XCTAssertTrue(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
+
+    func testValidateGivenInvalidInputShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        let configuration = BLIKComponent.Configuration(showsSubmitButton: false)
+        let sut = BLIKComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        setupRootViewController(sut.viewController)
+
+        let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        let validationResult = sut.validate()
+
+        // Then
+        XCTAssertFalse(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
 }

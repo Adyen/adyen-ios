@@ -111,4 +111,24 @@ class OnlineBankingComponentTests: XCTestCase {
         // Then
         XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 0)
     }
+
+    func testValidateShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        let configuration = OnlineBankingComponent.Configuration(showsSubmitButton: false)
+        let sut = OnlineBankingComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        let validationResult = sut.validate()
+
+        // Then
+        XCTAssertTrue(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
 }

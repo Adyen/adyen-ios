@@ -113,7 +113,7 @@ public final class OnlineBankingComponent: PaymentComponent,
     // MARK: - Private
 
     private func didSelectContinueButton() {
-        guard formViewController.validate() else { return }
+        guard validate() else { return }
 
         let details = OnlineBankingDetails(paymentMethod: paymentMethod,
                                            issuer: issuerListPickerItem.value.identifier)
@@ -160,5 +160,9 @@ extension OnlineBankingComponent: SubmitCustomizable {
         }
 
         didSelectContinueButton()
+    }
+
+    public func validate() -> Bool {
+        formViewController.validate()
     }
 }
