@@ -8,9 +8,7 @@ import UIKit
 
 /// An address form item that allows picking an address on a separate screen.
 @_spi(AdyenInternal)
-public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?>, Hidable {
-    
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?> {
     
     public enum AddressType {
         case billing

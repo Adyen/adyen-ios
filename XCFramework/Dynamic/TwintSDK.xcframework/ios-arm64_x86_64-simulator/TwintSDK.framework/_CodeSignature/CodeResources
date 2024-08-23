@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/TWAppConfiguration.h</key>
 		<data>
-		DSkmQDSTOH7vmZ7a2/eX8LhvYs8=
+		ac3JvnglNRoOZzrKl8cSLHvFHDU=
 		</data>
 		<key>Headers/TWError.h</key>
 		<data>
@@ -14,7 +14,7 @@
 		</data>
 		<key>Headers/Twint.h</key>
 		<data>
-		3ZJDxjCTa14RMQ78fzVzxchSeHc=
+		eGsfiep0hfeI/hPR7Ek9JweWYF4=
 		</data>
 		<key>Headers/TwintSDK.h</key>
 		<data>
@@ -22,7 +22,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		n0rgR8blkw3EjmOO598r/YXIjTk=
+		RXPumjmqXDWQI38ISau/dIeHNuo=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -35,7 +35,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			UZglz2+/owgFqGwFHrXO29hJvK62YBP1Ix4Eu+5WX4g=
+			q3opDr/Glp2qHhTYkTUKKDxFGkGYVNIP8cgK0OXnqps=
 			</data>
 		</dict>
 		<key>Headers/TWError.h</key>
@@ -49,7 +49,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			EoeClcuZUopdLWS2K9vRQvo3wXNvNRpxN8N3ni6pMKk=
+			3OzlhGy7FPXupLgoMRILhUboprpzN2llRyl9AMTu9vM=
 			</data>
 		</dict>
 		<key>Headers/TwintSDK.h</key>

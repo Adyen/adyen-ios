@@ -137,7 +137,6 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     }
 
     private func observerVisibility(of item: some FormItem, and itemView: UIView) {
-        guard let item = item as? Hidable else { return }
         itemView.adyen.hide(animationKey: String(describing: itemView),
                             hidden: item.isHidden.wrappedValue, animated: false)
 
@@ -185,12 +184,10 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     }
 
     private func getAllValidatableItems() -> [ValidatableFormItem] {
-        let visibleItems = itemManager.topLevelItem.filter {
-            !(($0 as? Hidable)?.isHidden.wrappedValue == true)
-        }
-
-        let validatableItems = visibleItems.flatMap(\.flatSubitems).compactMap { $0 as? ValidatableFormItem }
-        return validatableItems
+        itemManager.topLevelItem
+            .filter(\.isVisible)
+            .flatMap(\.flatSubitems)
+            .compactMap { $0 as? ValidatableFormItem }
     }
 
     private func formRequiresInputView() -> Bool {

@@ -39,9 +39,7 @@ public struct BasePickerElement<ElementType: CustomStringConvertible>: PickerEle
 /// Describes a picker item.
 @_spi(AdyenInternal)
 open class BaseFormPickerItem<ElementType: CustomStringConvertible>: FormValueItem<BasePickerElement<ElementType>, FormTextItemStyle>,
-    InputViewRequiringFormItem, Hidable {
-
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    InputViewRequiringFormItem {
     
     /// The complete list of selectable values, as observable.
     /// Updating this notifies the observing view `BaseFormPickerItemView`

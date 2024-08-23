@@ -21,7 +21,7 @@ internal final class FormSearchButtonItemView: FormItemView<FormSearchButtonItem
         preservesSuperviewLayoutMargins = true
         
         addSubview(searchBar)
-        searchBar.adyen.anchor(inside: self, with: .init(top: 0, left: 8, bottom: 0, right: -8))
+        searchBar.adyen.anchor(inside: self, with: .init(top: 0, left: 8, bottom: 0, right: 8))
         
         bind(item.$placeholder, to: searchBar, at: \.placeholder)
     }

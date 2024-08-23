@@ -12,6 +12,8 @@ import UIKit
 @available(iOS 13.0, *)
 internal class CashAppPayButtonItem: FormItem {
     
+    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    
     internal var subitems: [FormItem] = []
     
     internal var identifier: String?
