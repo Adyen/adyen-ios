@@ -77,9 +77,9 @@ class TwintComponentUITests: XCTestCase {
         XCTAssertNotNil(submitButton)
     }
 
-    func testSubmitWhenStorePaymentMethodEnabledShouldSendPaymentComponentDataWithStorePaymentMethodTrue() throws {
+    func testSubmitWhenShowsStorePaymentFielsDisabledShouldSendPaymentComponentDataWithStorePaymentMethodAsNil() throws {
         // Given
-        let configuration = TwintComponentConfiguration(showsStorePaymentMethodField: false, storePaymentMethod: true)
+        let configuration = TwintComponentConfiguration(showsStorePaymentMethodField: false)
         sut = TwintComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -96,7 +96,7 @@ class TwintComponentUITests: XCTestCase {
             XCTAssertTrue(component === self.sut)
 
             // Then
-            XCTAssertTrue(data.storePaymentMethod ?? false)
+            XCTAssertNil(data.storePaymentMethod)
 
             didSubmitExpectation.fulfill()
         }
@@ -109,9 +109,9 @@ class TwintComponentUITests: XCTestCase {
         wait(for: [didSubmitExpectation], timeout: 10)
     }
 
-    func testSubmitStoreDetailsIsEnabledShouldSendPaymentComponentDataWithStorePaymentMethodTrue() throws {
+    func testSubmitWhenShowsStoreDetailsIsEnabledAndToggleIsEnabledShouldSendPaymentComponentDataWithStorePaymentMethodTrue() throws {
         // Given
-        let configuration = TwintComponentConfiguration(showsStorePaymentMethodField: true, storePaymentMethod: false)
+        let configuration = TwintComponentConfiguration(showsStorePaymentMethodField: true)
         sut = TwintComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -144,9 +144,9 @@ class TwintComponentUITests: XCTestCase {
         wait(for: [didSubmitExpectation], timeout: 10)
     }
 
-    func testSubmitStoreDetailsIsDisabledShouldSendPaymentComponentDataWithStorePaymentMethodFalse() throws {
+    func testSubmitWhenShowsStoreDetailsIsEnabledAndToggleIsDisabledShouldSendPaymentComponentDataWithStorePaymentMethodFalse() throws {
         // Given
-        let configuration = TwintComponentConfiguration(showsStorePaymentMethodField: true, storePaymentMethod: false)
+        let configuration = TwintComponentConfiguration(showsStorePaymentMethodField: true)
         sut = TwintComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -163,7 +163,7 @@ class TwintComponentUITests: XCTestCase {
             XCTAssertTrue(component === self.sut)
 
             // Then
-            XCTAssertFalse(data.storePaymentMethod ?? false)
+            XCTAssertFalse(data.storePaymentMethod ?? true)
 
             didSubmitExpectation.fulfill()
         }
