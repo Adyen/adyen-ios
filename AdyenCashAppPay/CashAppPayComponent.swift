@@ -51,8 +51,8 @@ public final class CashAppPayComponent: PaymentComponent,
 
     private let cashAppPayPaymentMethod: CashAppPayPaymentMethod
 
-    private var storePayment: Bool? {
-        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : nil
+    private var storePayment: Bool {
+        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : configuration.storePaymentMethod
     }
 
     private lazy var cashAppPay: CashAppPay = {
@@ -146,25 +146,7 @@ public final class CashAppPayComponent: PaymentComponent,
                                                                              referenceID: configuration.referenceId,
                                                                              metadata: nil))
     }
-
-    private func createPaymentActions() -> [PaymentAction] {
-        var actions = [PaymentAction]()
-        if let amount = payment?.amount, amount.value > 0 {
-            let moneyAmount = Money(amount: UInt(amount.value), currency: .USD)
-            let oneTimeAction = PaymentAction.oneTimePayment(scopeID: cashAppPayPaymentMethod.scopeId,
-                                                             money: moneyAmount)
-            actions.append(oneTimeAction)
-        }
     
-        if storePayment == true {
-            let onFileAction = PaymentAction.onFilePayment(scopeID: cashAppPayPaymentMethod.scopeId,
-                                                           accountReferenceID: nil)
-            actions.append(onFileAction)
-        }
-    
-        return actions
-    }
-
     private func cashAppPayDetails(from grants: [CustomerRequest.Grant],
                                    customerProfile: CustomerRequest.CustomerProfile?) throws -> CashAppPayDetails {
         guard grants.isEmpty == false else {
@@ -181,7 +163,25 @@ public final class CashAppPayComponent: PaymentComponent,
                                  customerId: customerId,
                                  cashtag: cashtag)
     }
+
+    internal func createPaymentActions() -> [PaymentAction] {
+        var actions = [PaymentAction]()
+        if let amount = payment?.amount, amount.value > 0 {
+            let moneyAmount = Money(amount: UInt(amount.value), currency: .USD)
+            let oneTimeAction = PaymentAction.oneTimePayment(scopeID: cashAppPayPaymentMethod.scopeId,
+                                                             money: moneyAmount)
+            actions.append(oneTimeAction)
+        }
     
+        if storePayment {
+            let onFileAction = PaymentAction.onFilePayment(scopeID: cashAppPayPaymentMethod.scopeId,
+                                                           accountReferenceID: nil)
+            actions.append(onFileAction)
+        }
+    
+        return actions
+    }
+
     internal func submitApprovedRequest(with grants: [CustomerRequest.Grant], profile: CustomerRequest.CustomerProfile?) {
         do {
             let details = try cashAppPayDetails(from: grants, customerProfile: profile)
