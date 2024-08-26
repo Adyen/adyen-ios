@@ -172,3 +172,6 @@ extension TwintComponent: PresentableInitiableComponent {
 
 @_spi(AdyenInternal)
 extension TwintComponent: ViewControllerDelegate {}
+
+@_spi(AdyenInternal)
+extension TwintComponent: TrackableComponent {}

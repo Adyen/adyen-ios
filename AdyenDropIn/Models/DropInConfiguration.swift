@@ -64,6 +64,9 @@ public extension DropInComponent {
         /// Gift card component configuration
         public var giftCard: GiftCard = .init()
 
+        /// Twint component configuration.
+        public var twint: Twint = .init()
+
         /// Initializes the drop in configuration.
         /// - Parameters:
         ///   - style: The UI styles of the components.
@@ -264,7 +267,7 @@ public extension DropInComponent {
         ///
         /// - Parameters:
         ///   - showsStorePaymentMethodField: Determines the visibility of the field for storing the payment method.
-        public init(showsStorePaymentMethodField: Bool) {
+        public init(showsStorePaymentMethodField: Bool = true) {
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
         }
     }
