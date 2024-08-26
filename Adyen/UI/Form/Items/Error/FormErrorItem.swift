@@ -8,7 +8,7 @@ import Foundation
 
 /// A form item that represents an error.
 @_spi(AdyenInternal)
-public final class FormErrorItem: FormItem, Hidable {
+public final class FormErrorItem: FormItem {
 
     /// Indicates the error message.
     @AdyenObservable(nil) public var message: String?

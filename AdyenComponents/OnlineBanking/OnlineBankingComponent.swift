@@ -133,7 +133,7 @@ public final class OnlineBankingComponent: PaymentComponent,
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
         formViewController.append(issuerListPickerItem)
         formViewController.append(FormSpacerItem(numberOfSpaces: 4))
-        formViewController.append(termsAndConditionsLabelItem.addingDefaultMargins())
+        formViewController.append(termsAndConditionsLabelItem.padding())
         formViewController.append(FormSpacerItem())
 
         if configuration.showsSubmitButton {

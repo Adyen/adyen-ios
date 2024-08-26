@@ -61,7 +61,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
 
         formViewController.append(FormSpacerItem())
-        formViewController.append(hintLabelItem.addingDefaultMargins())
+        formViewController.append(hintLabelItem.padding())
         formViewController.append(FormSpacerItem())
         formViewController.append(codeItem)
         formViewController.append(FormSpacerItem())
