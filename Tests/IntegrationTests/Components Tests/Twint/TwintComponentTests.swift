@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
+@testable import AdyenDropIn
 @testable @_spi(AdyenInternal) import AdyenTwint
 import XCTest
 
@@ -51,6 +52,52 @@ class TwintComponentTests: XCTestCase {
         sut.initiatePayment()
 
         waitForExpectations(timeout: 2, handler: nil)
+    }
+
+    func testViewDidLoadWhenStorePaymentMethodFieldIsShownShouldSendInitialCall() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+
+        let configuration = TwintComponentConfiguration(showsStorePaymentMethodField: true)
+        sut = TwintComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        // When
+        sut.viewDidLoad(viewController: sut.viewController)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.infos.count, 1)
+        let infoType = analyticsProviderMock.infos.first?.type
+        XCTAssertEqual(infoType, .rendered)
+    }
+
+    func testViewDidLoadWhenStorePaymentMethodFieldIsNotShownShouldNotSendInitialCall() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+
+        let configuration = TwintComponentConfiguration(showsStorePaymentMethodField: false)
+        sut = TwintComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        let paymentMethods = PaymentMethods(regular: [paymentMethod], stored: [])
+        let dropInComponent = DropInComponent(paymentMethods: paymentMethods, context: context)
+        setupRootViewController(dropInComponent.viewController)
+        analyticsProviderMock.initialEventCallsCount = 0
+
+        // When
+        dropInComponent.didSelect(sut)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 0)
     }
 
     // MARK: - Private

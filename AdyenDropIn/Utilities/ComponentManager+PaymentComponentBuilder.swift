@@ -6,19 +6,19 @@
 
 @_spi(AdyenInternal) import Adyen
 #if canImport(AdyenCard)
-@_spi(AdyenInternal) import AdyenCard
+    @_spi(AdyenInternal) import AdyenCard
 #endif
 #if canImport(AdyenComponents)
-@_spi(AdyenInternal) import AdyenComponents
+    @_spi(AdyenInternal) import AdyenComponents
 #endif
 #if canImport(AdyenActions)
-@_spi(AdyenInternal) import AdyenActions
+    @_spi(AdyenInternal) import AdyenActions
 #endif
 #if canImport(AdyenCashAppPay)
-import AdyenCashAppPay
+    import AdyenCashAppPay
 #endif
 #if canImport(AdyenTwint)
-import AdyenTwint
+    import AdyenTwint
 #endif
 import Foundation
 
@@ -186,44 +186,44 @@ extension ComponentManager: PaymentComponentBuilder {
     }
 
     internal func build(paymentMethod: TwintPaymentMethod) -> PaymentComponent? {
-#if canImport(TwintSDK)
-        let twintDropInConfiguration = configuration.twint
-        let twintConfiguration = TwintComponentConfiguration(
-            showsStorePaymentMethodField: twintDropInConfiguration.showsStorePaymentMethodField,
-            style: configuration.style.formComponent,
-            localizationParameters: configuration.localizationParameters
-        )
-        return TwintComponent(paymentMethod: paymentMethod,
-                              context: context,
-                              configuration: twintConfiguration)
-#else
-        return nil
-#endif
+        #if canImport(TwintSDK)
+            let twintDropInConfiguration = configuration.twint
+            let twintConfiguration = TwintComponentConfiguration(
+                showsStorePaymentMethodField: twintDropInConfiguration.showsStorePaymentMethodField,
+                style: configuration.style.formComponent,
+                localizationParameters: configuration.localizationParameters
+            )
+            return TwintComponent(paymentMethod: paymentMethod,
+                                  context: context,
+                                  configuration: twintConfiguration)
+        #else
+            return nil
+        #endif
     }
 
     internal func build(paymentMethod: CashAppPayPaymentMethod) -> PaymentComponent? {
-#if canImport(PayKit)
-        guard let cashAppPayDropInConfig = configuration.cashAppPay else {
-            AdyenAssertion.assertionFailure(
-                message: "Cash App Pay configuration instance must not be nil in order to use CashAppPayComponent")
-            return nil
-        }
-        if #available(iOS 13.0, *) {
-            var cashAppPayConfiguration = CashAppPayConfiguration(redirectURL: cashAppPayDropInConfig.redirectURL,
-                                                                  referenceId: cashAppPayDropInConfig.referenceId)
-            cashAppPayConfiguration.showsStorePaymentMethodField = cashAppPayDropInConfig.showsStorePaymentMethodField
-            cashAppPayConfiguration.localizationParameters = configuration.localizationParameters
-            cashAppPayConfiguration.style = configuration.style.formComponent
+        #if canImport(PayKit)
+            guard let cashAppPayDropInConfig = configuration.cashAppPay else {
+                AdyenAssertion.assertionFailure(
+                    message: "Cash App Pay configuration instance must not be nil in order to use CashAppPayComponent")
+                return nil
+            }
+            if #available(iOS 13.0, *) {
+                var cashAppPayConfiguration = CashAppPayConfiguration(redirectURL: cashAppPayDropInConfig.redirectURL,
+                                                                      referenceId: cashAppPayDropInConfig.referenceId)
+                cashAppPayConfiguration.showsStorePaymentMethodField = cashAppPayDropInConfig.showsStorePaymentMethodField
+                cashAppPayConfiguration.localizationParameters = configuration.localizationParameters
+                cashAppPayConfiguration.style = configuration.style.formComponent
 
-            return CashAppPayComponent(paymentMethod: paymentMethod,
-                                       context: context,
-                                       configuration: cashAppPayConfiguration)
-        } else {
+                return CashAppPayComponent(paymentMethod: paymentMethod,
+                                           context: context,
+                                           configuration: cashAppPayConfiguration)
+            } else {
+                return nil
+            }
+        #else
             return nil
-        }
-#else
-        return nil
-#endif
+        #endif
     }
 
     private func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
