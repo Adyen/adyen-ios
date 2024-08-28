@@ -255,7 +255,7 @@ internal struct DemoAppSettings: Codable {
 
         dropInConfig.paymentMethodsList.allowDisablingStoredPaymentMethods = dropInSettings.allowDisablingStoredPaymentMethods
         if dropInSettings.cashAppPayEnabled {
-            dropInConfig.cashAppPay = .init(redirectURL: ConfigurationConstants.returnUrl)
+            dropInConfig.cashAppPay = .init(redirectURL: ConfigurationConstants.returnUrl, showsStorePaymentMethodField: false, storePaymentMethod: true)
         }
         dropInConfig.actionComponent.twint = .init(callbackAppScheme: ConfigurationConstants.returnUrl.scheme!)
 
