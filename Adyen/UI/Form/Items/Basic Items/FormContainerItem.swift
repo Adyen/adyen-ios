@@ -64,7 +64,7 @@ private class FormContainerItemView: UIView, AnyFormItemView {
         if let padding {
             contentView.adyen.anchor(
                 inside: self,
-                with: adjustedPadding
+                with: padding
             )
         } else {
             contentView.adyen.anchor(
