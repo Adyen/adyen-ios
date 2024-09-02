@@ -52,7 +52,7 @@ internal final class ListFooterView: UIView {
     }()
 
     private lazy var titleContainerView: UIView = {
-        titleBackgroundView.adyen.wrapped(with: UIEdgeInsets(top: 6, left: 16, bottom: -12, right: -16))
+        titleBackgroundView.adyen.wrapped(with: .init(top: 6, left: 16, bottom: 12, right: 16))
     }()
 
     private lazy var titleLabel: UILabel = {
@@ -67,7 +67,7 @@ internal final class ListFooterView: UIView {
     }()
 
     private lazy var titleBackgroundView: UIView = {
-        let view = titleLabel.adyen.wrapped(with: UIEdgeInsets(top: 8, left: 16, bottom: -8, right: -16))
+        let view = titleLabel.adyen.wrapped(with: .init(top: 8, left: 16, bottom: 8, right: 16))
         view.backgroundColor = style.title.backgroundColor
         view.adyen.round(using: style.title.cornerRounding)
         return view
