@@ -5,88 +5,60 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AuthenticationServices
 import SafariServices
 import UIKit
 
 internal protocol BrowserComponentDelegate: AnyObject {
-    func didCancel()
+    func didFail(error: Error)
     func didOpenExternalApplication()
 }
 
-/// A component that opens a URL in web browsed and presents it.
-internal final class BrowserComponent: NSObject, PresentableComponent {
+internal final class ASWebComponent: NSObject, ASWebAuthenticationPresentationContextProviding {
 
-    /// :nodoc
-    internal let context: AdyenContext
+    private enum Constants {
+        static var customScheme = "adyen-sdk"
+    }
+
+    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        UIApplication.shared.keyWindow!
+    }
+
+    internal weak var delegate: BrowserComponentDelegate?
+    private var session: ASWebAuthenticationSession?
+
+    internal init(url: URL) {
+        self.url = url
+    }
 
     private let url: URL
-    private let style: RedirectComponentStyle?
-    private let componentName = "browser"
 
-    internal lazy var viewController: UIViewController = {
-        let safariViewController = SFSafariViewController(url: url)
-        safariViewController.delegate = self
-        safariViewController.modalPresentationStyle = style?.modalPresentationStyle ?? .formSheet
-        safariViewController.presentationController?.delegate = self
-        safariViewController.dismissButtonStyle = .cancel
-
-        style.map {
-            safariViewController.preferredBarTintColor = $0.preferredBarTintColor
-            safariViewController.preferredControlTintColor = $0.preferredControlTintColor
+    func start() {
+        let session: ASWebAuthenticationSession?
+        if #available(iOS 17.4, *) {
+            let callback = ASWebAuthenticationSession.Callback.customScheme(Constants.customScheme)
+            session = ASWebAuthenticationSession(url: url,
+                                                 callback: callback,
+                                                 completionHandler: handle)
+        } else {
+            session = ASWebAuthenticationSession(url: url,
+                                                 callbackURLScheme: Constants.customScheme,
+                                                 completionHandler: handle)
         }
 
-        return safariViewController
-    }()
-    
-    internal weak var delegate: BrowserComponentDelegate?
-    
-    @AdyenDependency(\.openAppDetector) private var openAppDetector
-    
-    /// Initializes the component.
-    ///
-    /// - Parameter url: The URL to where the user should be redirected
-    /// - Parameter context: The context object for this component.
-    /// - Parameter style: The component's UI style.
-    internal init(url: URL,
-                  context: AdyenContext,
-                  style: RedirectComponentStyle? = nil) {
-        self.url = url
-        self.context = context
-        self.style = style
-        super.init()
+        if #available(iOS 13.0, *) {
+            session?.presentationContextProvider = self
+            session?.prefersEphemeralWebBrowserSession = true
+        }
+        session?.start()
     }
 
-    /// This allows us to assume one of the following scenarios:
-    /// - SFSafariViewController deliberately closed by user and current app still in foreground;
-    /// - SFSafariViewController finished due to a successful redirect to an external app and current app no longer in foreground.
-    private func finish() {
-        openAppDetector.checkIfExternalAppDidOpen { didOpenExternalApp in
-            if didOpenExternalApp {
-                self.delegate?.didOpenExternalApplication()
-            } else {
-                self.delegate?.didCancel()
-            }
+    func handle(url: URL?, error: Error?) {
+        if let url {
+            RedirectComponent.applicationDidOpen(from: url)
+        } else {
+            delegate?.didFail(error: error ?? ComponentError.cancelled)
         }
     }
 
-}
-
-// MARK: - SFSafariViewControllerDelegate
-
-extension BrowserComponent: SFSafariViewControllerDelegate, UIAdaptivePresentationControllerDelegate {
-    
-    /// Called when user clicks "Cancel" button or Safari redirects to other app.
-    internal func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        finish()
-    }
-
-    /// Called when user drag VC down to dismiss.
-    internal func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        self.delegate?.didCancel()
-    }
-
-    /// Called when the user opens the current page in the default browser by tapping the toolbar button.
-    internal func safariViewControllerWillOpenInBrowser(_ controller: SFSafariViewController) {
-        self.delegate?.didOpenExternalApplication()
-    }
 }
