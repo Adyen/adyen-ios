@@ -125,7 +125,11 @@ extension ApplePayComponent {
             if #available(iOS 15.0, *) {
                 paymentRequest.couponCode = couponCode
                 paymentRequest.supportsCouponCode = supportsCouponCode
-                paymentRequest.shippingContactEditingMode = allowShippingContactEditing ? .enabled : .storePickup
+                if #available(iOS 17.0, *) {
+                    paymentRequest.shippingContactEditingMode = allowShippingContactEditing ? .available : .storePickup
+                } else {
+                    paymentRequest.shippingContactEditingMode = allowShippingContactEditing ? .enabled : .storePickup
+                }
             }
             
             return paymentRequest
