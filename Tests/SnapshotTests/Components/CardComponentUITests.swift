@@ -20,7 +20,7 @@ class CardComponentUITests: XCTestCase {
     
     func test_all_fields() throws {
 
-        var configuration = CardComponent.Configuration.extendedConfiguration
+        let configuration = CardComponent.Configuration.extended
         
         let sut = CardComponent(
             paymentMethod: paymentMethod,
@@ -33,7 +33,7 @@ class CardComponentUITests: XCTestCase {
     
     func test_hidden_cvc() throws {
         
-        var configuration = CardComponent.Configuration.minimalConfiguration
+        var configuration = CardComponent.Configuration.minimal
         configuration.showsSecurityCodeField = false
         
         let sut = CardComponent(
@@ -47,7 +47,7 @@ class CardComponentUITests: XCTestCase {
     
     func test_billing_address_modes() throws {
         
-        var configuration = CardComponent.Configuration.minimalConfiguration
+        var configuration = CardComponent.Configuration.minimal
         
         [CardComponent.AddressFormType.none, .full, .postalCode].forEach { mode in
             configuration.billingAddress.mode = mode
@@ -71,7 +71,7 @@ class CardComponentUITests: XCTestCase {
 
 private extension CardComponent.Configuration {
     
-    static var minimalConfiguration: Self {
+    static var minimal: Self {
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = false
         configuration.koreanAuthenticationMode = .hide
@@ -80,7 +80,7 @@ private extension CardComponent.Configuration {
         return configuration
     }
     
-    static var extendedConfiguration: Self {
+    static var extended: Self {
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         configuration.billingAddress.mode = .full
