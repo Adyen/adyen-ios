@@ -32,7 +32,6 @@ public struct ActionComponentStyle {
     ///   - voucherComponentStyle: The UI configuration of the voucher component.
     ///   - qrCodeComponentStyle: The UI configuration of the QR code component.
     ///   - documentActionComponentStyle: The UI configuration of the document action component.
-    ///   - delegatedAuthenticationComponentStyle: The UI configuration of the delegated authentication component.
     public init(
         redirectComponentStyle: RedirectComponentStyle = RedirectComponentStyle(),
         awaitComponentStyle: AwaitComponentStyle = AwaitComponentStyle(),
