@@ -44,7 +44,7 @@ extension XCTestCase {
         matching viewController: @autoclosure () throws -> UIViewController,
         named name: String,
         precision: SnapshotPrecision = .default,
-        timeout: TimeInterval = 60,
+        timeout: TimeInterval = 10,
         file: StaticString = #file,
         caller: String = #function,
         line: UInt = #line
