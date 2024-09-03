@@ -24,9 +24,6 @@ public struct ActionComponentStyle {
     
     /// Indicates the UI configuration of the document action component.
     public var documentActionComponentStyle: DocumentComponentStyle
-    
-    /// Indicates the UI configuration of the delegated authentication screens.
-    public var delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle
 
     /// Initializes the
     /// - Parameters:
@@ -41,14 +38,12 @@ public struct ActionComponentStyle {
         awaitComponentStyle: AwaitComponentStyle = AwaitComponentStyle(),
         voucherComponentStyle: VoucherComponentStyle = VoucherComponentStyle(),
         qrCodeComponentStyle: QRCodeComponentStyle = QRCodeComponentStyle(),
-        documentActionComponentStyle: DocumentComponentStyle = DocumentComponentStyle(),
-        delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle = DelegatedAuthenticationComponentStyle()
+        documentActionComponentStyle: DocumentComponentStyle = DocumentComponentStyle()
     ) {
         self.redirectComponentStyle = redirectComponentStyle
         self.awaitComponentStyle = awaitComponentStyle
         self.voucherComponentStyle = voucherComponentStyle
         self.qrCodeComponentStyle = qrCodeComponentStyle
         self.documentActionComponentStyle = documentActionComponentStyle
-        self.delegatedAuthenticationComponentStyle = delegatedAuthenticationComponentStyle
     }
 }
