@@ -9,7 +9,8 @@ import UIKit
 /// An abstract view representing a validatable value item.
 @_spi(AdyenInternal)
 open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValueItem<ValueType>>:
-    FormValueItemView<ValueType, FormTextItemStyle, ItemType>, AnyFormValidatableValueItemView {
+    FormValueItemView<ValueType, FormTextItemStyle, ItemType>,
+    AnyFormValidatableValueItemView {
     
     private var itemObserver: Observation?
     

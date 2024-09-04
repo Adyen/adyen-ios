@@ -8,7 +8,9 @@ import UIKit
 
 /// A view representing a value item.
 @_spi(AdyenInternal)
-open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType, Style>>: FormItemView<ItemType>, AnyFormValueItemView {
+open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType, Style>>:
+    FormItemView<ItemType>,
+    AnyFormValueItemView {
 
     // MARK: - Title Label
 

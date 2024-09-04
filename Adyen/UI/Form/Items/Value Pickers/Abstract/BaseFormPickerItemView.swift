@@ -8,11 +8,8 @@ import UIKit
 
 /// Represents a picker item view.
 @_spi(AdyenInternal)
-open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormValueItemView<
-    BasePickerElement<T>,
-    FormTextItemStyle,
-    BaseFormPickerItem<T>
->,
+open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>:
+    FormValueItemView<BasePickerElement<T>, FormTextItemStyle, BaseFormPickerItem<T>>,
     UIPickerViewDelegate,
     UIPickerViewDataSource {
 
@@ -21,7 +18,10 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
         let pickerView = UIPickerView()
         pickerView.delegate = self
         pickerView.dataSource = self
-        pickerView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        pickerView.autoresizingMask = [
+            .flexibleHeight,
+            .flexibleWidth
+        ]
         return pickerView
     }()
     

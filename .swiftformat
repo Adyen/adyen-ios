@@ -4,8 +4,6 @@
 --ranges nospace
 --trimwhitespace nonblank-lines
 --decimalgrouping none
-# --funcattributes same-line
-# --typeattributes same-line
 --wrapcollections before-first
 --wraparguments before-first
 --header "\nCopyright (c) {year} Adyen N.V.\n\nThis file is open source and available under the MIT license. See the LICENSE file for more info.\n"

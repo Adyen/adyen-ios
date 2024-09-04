@@ -196,7 +196,8 @@ private extension QRCodeView {
         let logoSize = CGSize(width: 74.0, height: 48.0)
         let progressViewSize = CGSize(width: 120, height: 4)
         
-        NSLayoutConstraint.activate([ // Action Button
+        NSLayoutConstraint.activate([
+            // Action Button
             actionButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
             actionButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
             actionButton.heightAnchor.constraint(equalToConstant: 50.0),
