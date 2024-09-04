@@ -51,10 +51,12 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
             guard let self else { return }
             switch response {
             case let .success(configuration):
-                AdyenSession.initialize(with: configuration,
-                                        delegate: self,
-                                        presentationDelegate: self,
-                                        completion: completion)
+                AdyenSession.initialize(
+                    with: configuration,
+                    delegate: self,
+                    presentationDelegate: self,
+                    completion: completion
+                )
             case let .failure(error):
                 completion(.failure(error))
             }
@@ -142,9 +144,11 @@ private extension InstantPaymentComponentExample {
         }
 
         let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.leftBarButtonItem = .init(barButtonSystemItem: .cancel,
-                                                                          target: self,
-                                                                          action: #selector(cancelPressed))
+        component.viewController.navigationItem.leftBarButtonItem = .init(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(cancelPressed)
+        )
         return navigation
     }
 

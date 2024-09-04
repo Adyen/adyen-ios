@@ -25,9 +25,11 @@ public struct AppLauncher: AnyAppLauncher {
     }
     
     public func openUniversalAppUrl(_ url: URL, completion: ((Bool) -> Void)?) {
-        UIApplication.shared.open(url,
-                                  options: [UIApplication.OpenExternalURLOptionsKey.universalLinksOnly: true],
-                                  completionHandler: completion)
+        UIApplication.shared.open(
+            url,
+            options: [UIApplication.OpenExternalURLOptionsKey.universalLinksOnly: true],
+            completionHandler: completion
+        )
     }
     
 }

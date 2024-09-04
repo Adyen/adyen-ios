@@ -29,9 +29,11 @@ internal final class EmailFormItemInjector: FormItemInjector, Localizable {
         return item
     }()
 
-    internal init(value: String?,
-                  identifier: String,
-                  style: FormTextItemStyle) {
+    internal init(
+        value: String?,
+        identifier: String,
+        style: FormTextItemStyle
+    ) {
         self.value = value
         self.identifier = identifier
         self.style = style

@@ -80,21 +80,27 @@ extension UIColor {
         }
 
         public static var componentLoadingMessageColor: UIColor {
-            UIColor(named: "awaitLoadingMessageColor",
-                    in: Bundle.coreInternalResources,
-                    compatibleWith: nil) ?? componentPlaceholderText
+            UIColor(
+                named: "awaitLoadingMessageColor",
+                in: Bundle.coreInternalResources,
+                compatibleWith: nil
+            ) ?? componentPlaceholderText
         }
 
         public static var paidSectionFooterTitleColor: UIColor {
-            UIColor(named: "paidPartialPaymentSectionFooterTitleColor",
-                    in: Bundle.coreInternalResources,
-                    compatibleWith: nil) ?? orange
+            UIColor(
+                named: "paidPartialPaymentSectionFooterTitleColor",
+                in: Bundle.coreInternalResources,
+                compatibleWith: nil
+            ) ?? orange
         }
 
         public static var paidSectionFooterTitleBackgroundColor: UIColor {
-            UIColor(named: "paidPartialPaymentSectionFooterTitleBackgroundColor",
-                    in: Bundle.coreInternalResources,
-                    compatibleWith: nil) ?? yellow
+            UIColor(
+                named: "paidPartialPaymentSectionFooterTitleBackgroundColor",
+                in: Bundle.coreInternalResources,
+                compatibleWith: nil
+            ) ?? yellow
         }
 
         public static let defaultBlue = color(hex: 0x007AFF)
@@ -114,8 +120,10 @@ extension UIColor {
         /// Create new UIColor from hex value.
         /// - Parameter hex: The hex value of color. Should be between 0 and 0xFFFFFF.
         internal static func color(hex: UInt) -> UIColor {
-            assert(hex >= 0x000000 && hex <= 0xFFFFFF,
-                   "Invalid Hexadecimal color, Hexadecimal number should be between 0x0 and 0xFFFFFF")
+            assert(
+                hex >= 0x000000 && hex <= 0xFFFFFF,
+                "Invalid Hexadecimal color, Hexadecimal number should be between 0x0 and 0xFFFFFF"
+            )
             return UIColor(
                 red: CGFloat((hex >> 16) & 0xFF) / 255.0,
                 green: CGFloat((hex >> 8) & 0xFF) / 255.0,

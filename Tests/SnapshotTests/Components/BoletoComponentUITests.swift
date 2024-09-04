@@ -91,9 +91,11 @@ final class BoletoComponentUITests: XCTestCase {
         let mockConfiguration = Dummy.getConfiguration(with: mockInformation, showEmailAddress: true)
         let mockDelegate = PaymentComponentDelegateMock()
 
-        let sut = BoletoComponent(paymentMethod: paymentMethod,
-                                  context: context,
-                                  configuration: mockConfiguration)
+        let sut = BoletoComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: mockConfiguration
+        )
         sut.delegate = mockDelegate
         
         setupRootViewController(sut.viewController)
@@ -137,9 +139,11 @@ final class BoletoComponentUITests: XCTestCase {
         
         let mockConfiguration = Dummy.getConfiguration(with: mockInformation, showEmailAddress: true)
         
-        let sut = BoletoComponent(paymentMethod: paymentMethod,
-                                  context: context,
-                                  configuration: mockConfiguration)
+        let sut = BoletoComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: mockConfiguration
+        )
 
         let submitButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(by: "payButtonItem.button"))
         submitButton.sendActions(for: .touchUpInside)

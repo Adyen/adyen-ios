@@ -30,9 +30,11 @@ public class Analytics {
         }
         
         public init(component: String, flavor: Flavor, context: APIContext) {
-            self.init(component: component,
-                      flavor: flavor,
-                      environment: context.environment)
+            self.init(
+                component: component,
+                flavor: flavor,
+                environment: context.environment
+            )
         }
     }
 

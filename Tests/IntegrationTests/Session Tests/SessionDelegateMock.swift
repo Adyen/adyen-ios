@@ -43,10 +43,12 @@ class SessionAdvancedHandlerMock: AdyenSessionPaymentsHandler, AdyenSessionPayme
     var onDidSubmit: ((PaymentComponentData, Component, AdyenSession) -> Void)?
     var onDidProvide: ((ActionComponentData, Component, AdyenSession) -> Void)?
     
-    func didSubmit(_ paymentComponentData: PaymentComponentData,
-                   from component: Component,
-                   dropInComponent: AnyDropInComponent?,
-                   session: AdyenSession) {
+    func didSubmit(
+        _ paymentComponentData: PaymentComponentData,
+        from component: Component,
+        dropInComponent: AnyDropInComponent?,
+        session: AdyenSession
+    ) {
         onDidSubmit?(paymentComponentData, component, session)
     }
     

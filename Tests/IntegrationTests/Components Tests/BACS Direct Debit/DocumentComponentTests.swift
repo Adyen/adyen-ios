@@ -63,8 +63,12 @@ class DocumentComponentTests: XCTestCase {
             mainButtonExpectation.fulfill()
         }
         
-        let viewModel = DocumentActionViewModel(action: action,
-                                                message: "test", logoURL: URL(string: "www.adyen.com")!, buttonTitle: "pdf")
+        let viewModel = DocumentActionViewModel(
+            action: action,
+            message: "test",
+            logoURL: URL(string: "www.adyen.com")!,
+            buttonTitle: "pdf"
+        )
         let style = DocumentComponentStyle()
         
         let sut = DocumentActionView(viewModel: viewModel, style: style)

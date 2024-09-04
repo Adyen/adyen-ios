@@ -12,16 +12,20 @@ import UIKit
 public struct SelectableFormItemStyle: ViewStyle {
 
     /// The title style.
-    public var title = TextStyle(font: .preferredFont(forTextStyle: .body),
-                                 color: UIColor.Adyen.componentLabel,
-                                 textAlignment: .natural)
+    public var title = TextStyle(
+        font: .preferredFont(forTextStyle: .body),
+        color: UIColor.Adyen.componentLabel,
+        textAlignment: .natural
+    )
 
     /// The image style.
-    public var imageStyle = ImageStyle(borderColor: UIColor.Adyen.componentSeparator,
-                                       borderWidth: 1.0 / UIScreen.main.nativeScale,
-                                       cornerRadius: 4.0,
-                                       clipsToBounds: true,
-                                       contentMode: .scaleAspectFit)
+    public var imageStyle = ImageStyle(
+        borderColor: UIColor.Adyen.componentSeparator,
+        borderWidth: 1.0 / UIScreen.main.nativeScale,
+        cornerRadius: 4.0,
+        clipsToBounds: true,
+        contentMode: .scaleAspectFit
+    )
 
     public var backgroundColor: UIColor {
         get { title.backgroundColor }

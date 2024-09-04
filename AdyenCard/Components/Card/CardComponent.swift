@@ -84,19 +84,25 @@ public class CardComponent: PresentableComponent,
     ///   - paymentMethod: The card payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The configuration of the component.
-    public convenience init(paymentMethod: AnyCardPaymentMethod,
-                            context: AdyenContext,
-                            configuration: Configuration = .init()) {
+    public convenience init(
+        paymentMethod: AnyCardPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
-        let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: context.apiContext),
-                                              publicKeyProvider: publicKeyProvider,
-                                              minBinLength: Constant.thresholdBINLength,
-                                              binLookupType: configuration.binLookupType)
-        self.init(paymentMethod: paymentMethod,
-                  context: context,
-                  configuration: configuration,
-                  publicKeyProvider: publicKeyProvider,
-                  binProvider: binInfoProvider)
+        let binInfoProvider = BinInfoProvider(
+            apiClient: APIClient(apiContext: context.apiContext),
+            publicKeyProvider: publicKeyProvider,
+            minBinLength: Constant.thresholdBINLength,
+            binLookupType: configuration.binLookupType
+        )
+        self.init(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: publicKeyProvider,
+            binProvider: binInfoProvider
+        )
     }
     
     /// Initializes the card component.
@@ -107,11 +113,13 @@ public class CardComponent: PresentableComponent,
     ///   - configuration: The Card component configuration.
     ///   - publicKeyProvider: The public key provider
     ///   - binProvider: Any object capable to provide a BinInfo.
-    internal init(paymentMethod: AnyCardPaymentMethod,
-                  context: AdyenContext,
-                  configuration: Configuration,
-                  publicKeyProvider: AnyPublicKeyProvider,
-                  binProvider: AnyBinInfoProvider) {
+    internal init(
+        paymentMethod: AnyCardPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration,
+        publicKeyProvider: AnyPublicKeyProvider,
+        binProvider: AnyBinInfoProvider
+    ) {
         self.cardPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
@@ -155,9 +163,11 @@ public class CardComponent: PresentableComponent,
         } else {
             let storedConfiguration: StoredPaymentMethodComponent.Configuration
             storedConfiguration = .init(localizationParameters: configuration.localizationParameters)
-            let storedComponent = StoredPaymentMethodComponent(paymentMethod: paymentMethod,
-                                                               context: context,
-                                                               configuration: storedConfiguration)
+            let storedComponent = StoredPaymentMethodComponent(
+                paymentMethod: paymentMethod,
+                context: context,
+                configuration: storedConfiguration
+            )
             component = storedComponent
         }
         return component
@@ -180,15 +190,17 @@ public class CardComponent: PresentableComponent,
     
     internal lazy var cardViewController: CardViewController = {
         
-        let formViewController = CardViewController(configuration: configuration,
-                                                    shopperInformation: configuration.shopperInformation,
-                                                    formStyle: configuration.style,
-                                                    payment: payment,
-                                                    logoProvider: LogoURLProvider(environment: context.apiContext.environment),
-                                                    supportedCardTypes: supportedCardTypes,
-                                                    initialCountryCode: initialCountryCode,
-                                                    scope: String(describing: self),
-                                                    localizationParameters: configuration.localizationParameters)
+        let formViewController = CardViewController(
+            configuration: configuration,
+            shopperInformation: configuration.shopperInformation,
+            formStyle: configuration.style,
+            payment: payment,
+            logoProvider: LogoURLProvider(environment: context.apiContext.environment),
+            supportedCardTypes: supportedCardTypes,
+            initialCountryCode: initialCountryCode,
+            scope: String(describing: self),
+            localizationParameters: configuration.localizationParameters
+        )
         formViewController.delegate = self
         formViewController.cardDelegate = self
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title

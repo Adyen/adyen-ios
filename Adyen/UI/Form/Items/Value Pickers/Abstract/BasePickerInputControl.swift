@@ -48,9 +48,11 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
 
     override internal var canBecomeFirstResponder: Bool { true }
 
-    internal var accessoryImage: UIImage? { UIImage(named: "chevron_down",
-                                                    in: Bundle.coreInternalResources,
-                                                    compatibleWith: nil) }
+    internal var accessoryImage: UIImage? { UIImage(
+        named: "chevron_down",
+        in: Bundle.coreInternalResources,
+        compatibleWith: nil
+    ) }
 
     internal var customInputView: UIView
     

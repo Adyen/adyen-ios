@@ -159,13 +159,15 @@ public class GenericVoucherAction: Decodable, AnyVoucherAction {
         }
     }
 
-    internal init(paymentMethodType: VoucherPaymentMethod,
-                  initialAmount: Amount,
-                  totalAmount: Amount,
-                  reference: String,
-                  expiresAt: Date,
-                  merchantName: String,
-                  passCreationToken: String? = nil) {
+    internal init(
+        paymentMethodType: VoucherPaymentMethod,
+        initialAmount: Amount,
+        totalAmount: Amount,
+        reference: String,
+        expiresAt: Date,
+        merchantName: String,
+        passCreationToken: String? = nil
+    ) {
         self.paymentMethodType = paymentMethodType
         self.initialAmount = initialAmount
         self.totalAmount = totalAmount

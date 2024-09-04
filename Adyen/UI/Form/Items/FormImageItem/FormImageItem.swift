@@ -25,10 +25,12 @@ public class FormImageItem: FormItem {
     /// The style of the Image.
     public var style: ImageStyle?
     
-    public init(name: String,
-                size: CGSize? = nil,
-                style: ImageStyle? = nil,
-                identifier: String? = nil) {
+    public init(
+        name: String,
+        size: CGSize? = nil,
+        style: ImageStyle? = nil,
+        identifier: String? = nil
+    ) {
         self.name = name
         self.size = size ?? .init(width: 46, height: 46)
         self.style = style
@@ -48,18 +50,22 @@ internal class FormImageView: FormItemView<FormImageItem> {
     }
 
     internal func renderImage() {
-        let style = item.style ?? ImageStyle(borderColor: nil,
-                                             borderWidth: 0,
-                                             cornerRadius: 0,
-                                             clipsToBounds: false,
-                                             contentMode: .center)
+        let style = item.style ?? ImageStyle(
+            borderColor: nil,
+            borderWidth: 0,
+            cornerRadius: 0,
+            clipsToBounds: false,
+            contentMode: .center
+        )
 
         let imageView = UIImageView(style: style)
         self.addSubview(imageView)
 
-        imageView.image = UIImage(named: item.name,
-                                  in: Bundle.coreInternalResources,
-                                  compatibleWith: nil)
+        imageView.image = UIImage(
+            named: item.name,
+            in: Bundle.coreInternalResources,
+            compatibleWith: nil
+        )
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             self.widthAnchor.constraint(greaterThanOrEqualToConstant: item.size.width),

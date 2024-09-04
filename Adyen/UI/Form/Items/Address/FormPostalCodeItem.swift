@@ -17,8 +17,10 @@ public final class FormPostalCodeItem: FormTextItem {
     internal var localizationParameters: LocalizationParameters?
 
     /// Initializes the form postal code item.
-    public init(style: FormTextItemStyle = FormTextItemStyle(),
-                localizationParameters: LocalizationParameters? = nil) {
+    public init(
+        style: FormTextItemStyle = FormTextItemStyle(),
+        localizationParameters: LocalizationParameters? = nil
+    ) {
         self.localizationParameters = localizationParameters
         super.init(style: style)
         
@@ -32,9 +34,11 @@ public final class FormPostalCodeItem: FormTextItem {
     public func updateOptionalStatus(isOptional: Bool) {
         // when optional, if user enters anything it should be validated as regular entry.
         if isOptional {
-            title = localizedString(.postalCodeFieldTitle,
-                                    localizationParameters) + " " + localizedString(.fieldTitleOptional,
-                                                                                    localizationParameters)
+            title = localizedString(
+                .postalCodeFieldTitle,
+                localizationParameters
+            ) + " " + localizedString(.fieldTitleOptional,
+                                      localizationParameters)
             validator = PostalCodeValidator(minimumLength: 0, maximumLength: Constants.maxLength)
         } else {
             title = localizedString(.postalCodeFieldTitle, localizationParameters)

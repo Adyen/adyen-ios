@@ -60,12 +60,14 @@ public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadabl
         }
     }
     
-    internal init(paymentMethodType: VoucherPaymentMethod,
-                  totalAmount: Amount,
-                  reference: String,
-                  expiresAt: Date,
-                  downloadUrl: URL,
-                  passCreationToken: String? = nil) {
+    internal init(
+        paymentMethodType: VoucherPaymentMethod,
+        totalAmount: Amount,
+        reference: String,
+        expiresAt: Date,
+        downloadUrl: URL,
+        passCreationToken: String? = nil
+    ) {
         self.paymentMethodType = paymentMethodType
         self.totalAmount = totalAmount
         self.reference = reference

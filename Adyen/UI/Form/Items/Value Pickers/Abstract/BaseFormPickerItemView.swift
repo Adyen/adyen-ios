@@ -8,9 +8,11 @@ import UIKit
 
 /// Represents a picker item view.
 @_spi(AdyenInternal)
-open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormValueItemView<BasePickerElement<T>,
+open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormValueItemView<
+    BasePickerElement<T>,
     FormTextItemStyle,
-    BaseFormPickerItem<T>>,
+    BaseFormPickerItem<T>
+>,
     UIPickerViewDelegate,
     UIPickerViewDataSource {
 
@@ -62,9 +64,11 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
     // MARK: - Abstract
 
     internal func createInputControl() -> PickerTextInputControl {
-        BasePickerInputControl(inputView: pickerView,
-                               inputAccessoryView: pickerViewToolbar,
-                               style: item.style.text)
+        BasePickerInputControl(
+            inputView: pickerView,
+            inputAccessoryView: pickerViewToolbar,
+            style: item.style.text
+        )
     }
 
     internal func updateSelection() {

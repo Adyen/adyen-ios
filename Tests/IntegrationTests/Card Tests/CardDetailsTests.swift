@@ -12,16 +12,20 @@ class CardDetailsTests: XCTestCase {
     
     func testSerializeCreditCard() throws {
         let paymentMethod = CardPaymentMethodMock(fundingSource: .credit, type: .other("test_type"), name: "test name", brands: [.maestro, .accel])
-        let sut = CardDetails(paymentMethod: paymentMethod,
-                              encryptedCard: EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"),
-                              holderName: "holder",
-                              billingAddress: PostalAddress(city: "city",
-                                                            country: "country",
-                                                            houseNumberOrName: "numer",
-                                                            postalCode: "postal",
-                                                            stateOrProvince: "state",
-                                                            street: "street",
-                                                            apartment: "apartment"))
+        let sut = CardDetails(
+            paymentMethod: paymentMethod,
+            encryptedCard: EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"),
+            holderName: "holder",
+            billingAddress: PostalAddress(
+                city: "city",
+                country: "country",
+                houseNumberOrName: "numer",
+                postalCode: "postal",
+                stateOrProvince: "state",
+                street: "street",
+                apartment: "apartment"
+            )
+        )
         let data = try JSONEncoder().encode(sut)
         let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
         
@@ -37,9 +41,11 @@ class CardDetailsTests: XCTestCase {
     
     func testSerializeDebitCard() throws {
         let paymentMethod = CardPaymentMethodMock(fundingSource: .debit, type: .other("test_type"), name: "test name", brands: [.visa, .alphaBankBonusVISA])
-        let sut = CardDetails(paymentMethod: paymentMethod,
-                              encryptedCard: EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"),
-                              billingAddress: PostalAddress(postalCode: "postal"))
+        let sut = CardDetails(
+            paymentMethod: paymentMethod,
+            encryptedCard: EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year"),
+            billingAddress: PostalAddress(postalCode: "postal")
+        )
         let data = try JSONEncoder().encode(sut)
         let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
         
@@ -54,13 +60,15 @@ class CardDetailsTests: XCTestCase {
     }
 
     func testEncodingFullAddress() {
-        let data = try! JSONEncoder().encode(PostalAddress(city: "city",
-                                                           country: "country",
-                                                           houseNumberOrName: "numer",
-                                                           postalCode: "postal",
-                                                           stateOrProvince: "state",
-                                                           street: "street",
-                                                           apartment: "apartment"))
+        let data = try! JSONEncoder().encode(PostalAddress(
+            city: "city",
+            country: "country",
+            houseNumberOrName: "numer",
+            postalCode: "postal",
+            stateOrProvince: "state",
+            street: "street",
+            apartment: "apartment"
+        ))
         let dictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: String]
 
         XCTAssertEqual(dictionary["city"], "city")

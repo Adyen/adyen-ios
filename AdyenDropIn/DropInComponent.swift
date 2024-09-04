@@ -55,10 +55,12 @@ public final class DropInComponent: NSObject,
     ///   - configuration: The payment method specific configuration.
     ///   - title: Name of the application. To be displayed on a first payment page.
     ///            If no external value provided, the Main Bundle's name would be used.
-    public init(paymentMethods: PaymentMethods,
-                context: AdyenContext,
-                configuration: Configuration = .init(),
-                title: String? = nil) {
+    public init(
+        paymentMethods: PaymentMethods,
+        context: AdyenContext,
+        configuration: Configuration = .init(),
+        title: String? = nil
+    ) {
         self.title = title ?? Bundle.main.displayName
         self.configuration = configuration
         self.context = context
@@ -73,11 +75,13 @@ public final class DropInComponent: NSObject,
     }
     
     /// For testing only
-    internal init(paymentMethods: PaymentMethods,
-                  context: AdyenContext,
-                  configuration: Configuration = .init(),
-                  title: String? = nil,
-                  apiClient: APIClientProtocol) {
+    internal init(
+        paymentMethods: PaymentMethods,
+        context: AdyenContext,
+        configuration: Configuration = .init(),
+        title: String? = nil,
+        apiClient: APIClientProtocol
+    ) {
         self.title = title ?? Bundle.main.displayName
         self.configuration = configuration
         self.context = context
@@ -143,8 +147,10 @@ public final class DropInComponent: NSObject,
     /// - Parameter order: The partial payment order.
     /// - Parameter paymentMethods: The new payment methods.
     /// - Throws: `PartialPaymentError.missingOrderData` in case `order.orderData` is `nil`.
-    public func reload(with order: PartialPaymentOrder,
-                       _ paymentMethods: PaymentMethods) throws {
+    public func reload(
+        with order: PartialPaymentOrder,
+        _ paymentMethods: PaymentMethods
+    ) throws {
         guard let orderData = order.orderData else { throw PartialPaymentError.missingOrderData }
         let request = OrderStatusRequest(orderData: orderData)
         apiClient.perform(request) { [weak self] result in
@@ -179,13 +185,15 @@ public final class DropInComponent: NSObject,
     private lazy var componentManager = createComponentManager(nil)
 
     private func createComponentManager(_ order: PartialPaymentOrder?) -> ComponentManager {
-        ComponentManager(paymentMethods: paymentMethods,
-                         context: context,
-                         configuration: configuration,
-                         partialPaymentEnabled: partialPaymentDelegate != nil,
-                         order: order,
-                         supportsEditingStoredPaymentMethods: storedPaymentMethodsDelegate != nil,
-                         presentationDelegate: self)
+        ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            partialPaymentEnabled: partialPaymentDelegate != nil,
+            order: order,
+            supportsEditingStoredPaymentMethods: storedPaymentMethodsDelegate != nil,
+            presentationDelegate: self
+        )
     }
     
     internal lazy var rootComponent: PresentableComponent = {
@@ -223,9 +231,11 @@ public final class DropInComponent: NSObject,
     
     internal func paymentMethodListComponent(onCancel: (() -> Void)?) -> PaymentMethodListComponent {
         let paymentComponents = componentManager.sections
-        let component = PaymentMethodListComponent(context: context,
-                                                   components: paymentComponents,
-                                                   style: configuration.style.listComponent)
+        let component = PaymentMethodListComponent(
+            context: context,
+            components: paymentComponents,
+            style: configuration.style.listComponent
+        )
         component.onCancel = onCancel
         component.localizationParameters = configuration.localizationParameters
         component.delegate = self
@@ -233,12 +243,16 @@ public final class DropInComponent: NSObject,
         return component
     }
     
-    internal func preselectedPaymentMethodComponent(for paymentComponent: PaymentComponent,
-                                                    onCancel: (() -> Void)?) -> PreselectedPaymentMethodComponent {
-        let component = PreselectedPaymentMethodComponent(component: paymentComponent,
-                                                          title: title,
-                                                          style: configuration.style.formComponent,
-                                                          listItemStyle: configuration.style.listComponent.listItem)
+    internal func preselectedPaymentMethodComponent(
+        for paymentComponent: PaymentComponent,
+        onCancel: (() -> Void)?
+    ) -> PreselectedPaymentMethodComponent {
+        let component = PreselectedPaymentMethodComponent(
+            component: paymentComponent,
+            title: title,
+            style: configuration.style.formComponent,
+            listItemStyle: configuration.style.listComponent.listItem
+        )
         component.localizationParameters = configuration.localizationParameters
         component.delegate = self
         component.onCancel = onCancel

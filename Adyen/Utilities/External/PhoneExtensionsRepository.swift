@@ -18,31 +18,33 @@ public enum PhoneNumberPaymentMethod {
     internal var codes: [String] {
         switch self {
         case .qiwiWallet:
-            return ["RU",
-                    "GE",
-                    "PA",
-                    "GB",
-                    "TJ",
-                    "LT",
-                    "IL",
-                    "KG",
-                    "UA",
-                    "VN",
-                    "TR",
-                    "AZ",
-                    "AM",
-                    "LV",
-                    "IN",
-                    "TH",
-                    "MD",
-                    "US",
-                    "JP",
-                    "UZ",
-                    "KZ",
-                    "BY",
-                    "EE",
-                    "RO",
-                    "KR"]
+            return [
+                "RU",
+                "GE",
+                "PA",
+                "GB",
+                "TJ",
+                "LT",
+                "IL",
+                "KG",
+                "UA",
+                "VN",
+                "TR",
+                "AZ",
+                "AM",
+                "LV",
+                "IN",
+                "TH",
+                "MD",
+                "US",
+                "JP",
+                "UZ",
+                "KZ",
+                "BY",
+                "EE",
+                "RO",
+                "KR"
+            ]
         case .mbWay:
             return ["PT", "ES"]
         case .generic:
@@ -78,8 +80,10 @@ public enum PhoneExtensionsRepository {
             guard let phoneExtension = allCountriesPhoneExtensions[$0] else {
                 return nil
             }
-            return PhoneExtension(value: phoneExtension,
-                                  countryCode: $0)
+            return PhoneExtension(
+                value: phoneExtension,
+                countryCode: $0
+            )
         }
     }
 }

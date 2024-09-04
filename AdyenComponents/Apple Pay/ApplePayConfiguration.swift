@@ -77,8 +77,10 @@ extension ApplePayComponent {
         ///
         /// - Parameter payment: Instance of ApplePay Payment object.
         /// - Parameter merchantIdentifier: The merchant identifier.
-        public init(payment: ApplePayPayment,
-                    merchantIdentifier: String) {
+        public init(
+            payment: ApplePayPayment,
+            merchantIdentifier: String
+        ) {
             self.applePayPayment = payment
             self.merchantIdentifier = merchantIdentifier
         }
@@ -93,8 +95,10 @@ extension ApplePayComponent {
         ///  - Use this initializer to support any new additions to the `PKPaymentRequest` object,
         ///  such as recurring payments via its `recurringPaymentRequest` property.
         /// - Throws: An error object describing whether any required field in the request is missing.
-        public init(paymentRequest: PKPaymentRequest,
-                    allowOnboarding: Bool = false) throws {
+        public init(
+            paymentRequest: PKPaymentRequest,
+            allowOnboarding: Bool = false
+        ) throws {
             guard !paymentRequest.merchantIdentifier.isEmpty else {
                 throw ApplePayComponent.Error.emptyMerchantIdentifier
             }
@@ -102,9 +106,11 @@ extension ApplePayComponent {
             self.allowOnboarding = allowOnboarding
             
             self.merchantIdentifier = paymentRequest.merchantIdentifier
-            self.applePayPayment = try ApplePayPayment(countryCode: paymentRequest.countryCode,
-                                                       currencyCode: paymentRequest.currencyCode,
-                                                       summaryItems: paymentRequest.paymentSummaryItems)
+            self.applePayPayment = try ApplePayPayment(
+                countryCode: paymentRequest.countryCode,
+                currencyCode: paymentRequest.currencyCode,
+                summaryItems: paymentRequest.paymentSummaryItems
+            )
         }
         
         private func createPaymentRequest() -> PKPaymentRequest {

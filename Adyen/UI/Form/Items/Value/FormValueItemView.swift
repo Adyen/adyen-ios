@@ -113,19 +113,21 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         transitionView.frame.size.width = 0.0
         addSubview(transitionView)
         
-        let context = AnimationContext(animationKey: Animation.separatorHighlighting.rawValue,
-                                       duration: 0.25,
-                                       delay: 0.0,
-                                       options: [.curveEaseInOut],
-                                       animations: { [weak self] in
-                                           guard let self else { return }
-                                           transitionView.frame = self.separatorView.frame
-                                       },
-                                       completion: { [weak self] _ in
-                                           guard let self else { return }
-                                           self.separatorView.backgroundColor = color
-                                           transitionView.removeFromSuperview()
-                                       })
+        let context = AnimationContext(
+            animationKey: Animation.separatorHighlighting.rawValue,
+            duration: 0.25,
+            delay: 0.0,
+            options: [.curveEaseInOut],
+            animations: { [weak self] in
+                guard let self else { return }
+                transitionView.frame = self.separatorView.frame
+            },
+            completion: { [weak self] _ in
+                guard let self else { return }
+                self.separatorView.backgroundColor = color
+                transitionView.removeFromSuperview()
+            }
+        )
         
         adyen.animate(context: context)
     }
@@ -144,15 +146,17 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
             return
         }
         
-        let context = AnimationContext(animationKey: Animation.separatorHighlighting.rawValue,
-                                       duration: 0.0,
-                                       delay: 0.0,
-                                       animations: { [weak self] in
-                                           self?.separatorView.backgroundColor = self?.item.style.separatorColor
-                                       },
-                                       completion: { [weak self] _ in
-                                           self?.separatorView.backgroundColor = self?.item.style.separatorColor
-                                       })
+        let context = AnimationContext(
+            animationKey: Animation.separatorHighlighting.rawValue,
+            duration: 0.0,
+            delay: 0.0,
+            animations: { [weak self] in
+                self?.separatorView.backgroundColor = self?.item.style.separatorColor
+            },
+            completion: { [weak self] _ in
+                self?.separatorView.backgroundColor = self?.item.style.separatorColor
+            }
+        )
         
         adyen.animate(context: context)
         

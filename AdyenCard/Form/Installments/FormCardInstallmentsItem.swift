@@ -46,9 +46,11 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
         let showAmount = installmentConfiguration.showInstallmentAmount
         let monthValues = currentInstallmentOptions.regularInstallmentMonths.map {
             InstallmentElement(
-                kind: .month(InstallmentElement.InstallmentMonth(monthValue: Int($0),
-                                                                 amount: amount,
-                                                                 showAmount: showAmount)),
+                kind: .month(InstallmentElement.InstallmentMonth(
+                    monthValue: Int($0),
+                    amount: amount,
+                    showAmount: showAmount
+                )),
                 localizationParameters: localizationParameters
             )
         }
@@ -58,17 +60,21 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
 
     /// Initializes the installments element.
     /// There will be one element in the picker at initialization.
-    internal init(installmentConfiguration: InstallmentConfiguration,
-                  style: FormTextItemStyle,
-                  amount: Amount?,
-                  localizationParameters: LocalizationParameters? = nil) {
+    internal init(
+        installmentConfiguration: InstallmentConfiguration,
+        style: FormTextItemStyle,
+        amount: Amount?,
+        localizationParameters: LocalizationParameters? = nil
+    ) {
         self.installmentConfiguration = installmentConfiguration
         self.amount = amount
         self.localizationParameters = localizationParameters
         let oneTimePaymentElement = InstallmentElement(kind: .plan(.oneTime), localizationParameters: localizationParameters)
-        super.init(preselectedValue: oneTimePaymentElement.pickerElement,
-                   selectableValues: [oneTimePaymentElement.pickerElement],
-                   style: style)
+        super.init(
+            preselectedValue: oneTimePaymentElement.pickerElement,
+            selectableValues: [oneTimePaymentElement.pickerElement],
+            style: style
+        )
         isHidden.wrappedValue = true
         title = localizedString(.cardInstallmentsNumberOfInstallments, localizationParameters)
         updatePickerContent()

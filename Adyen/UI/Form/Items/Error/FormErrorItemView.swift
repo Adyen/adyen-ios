@@ -64,9 +64,11 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
     // MARK: - Icon
 
     private lazy var iconView: UIImageView = {
-        let view = UIImageView(image: UIImage(named: item.iconName,
-                                              in: Bundle.coreInternalResources,
-                                              compatibleWith: nil))
+        let view = UIImageView(image: UIImage(
+            named: item.iconName,
+            in: Bundle.coreInternalResources,
+            compatibleWith: nil
+        ))
         view.accessibilityIdentifier = item.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "iconView")
         }

@@ -16,8 +16,10 @@ extension AnyEncryptor {
         guard tokens.count == 2 else { throw EncryptionError.invalidKey }
         let secKey = try createSecKey(fromModulus: tokens[1], exponent: tokens[0])
         return try JSONWebEncryptionGenerator()
-            .generate(withPayload: payload.jsonData(),
-                      publicRSAKey: secKey,
-                      header: .defaultHeader).compactRepresentation
+            .generate(
+                withPayload: payload.jsonData(),
+                publicRSAKey: secKey,
+                header: .defaultHeader
+            ).compactRepresentation
     }
 }

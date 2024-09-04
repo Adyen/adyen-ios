@@ -191,8 +191,10 @@ public class SearchViewController: UIViewController, AdyenObserver {
         get {
             guard resultsListViewController.isViewLoaded else { return .zero }
             let innerSize = resultsListViewController.preferredContentSize
-            return CGSize(width: innerSize.width,
-                          height: .greatestFiniteMagnitude)
+            return CGSize(
+                width: innerSize.width,
+                height: .greatestFiniteMagnitude
+            )
         }
 
         // swiftlint:disable:next unused_setter_value

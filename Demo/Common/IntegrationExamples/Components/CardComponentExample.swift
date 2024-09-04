@@ -52,10 +52,12 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
             
             switch response {
             case let .success(configuration):
-                AdyenSession.initialize(with: configuration,
-                                        delegate: self,
-                                        presentationDelegate: self,
-                                        completion: completion)
+                AdyenSession.initialize(
+                    with: configuration,
+                    delegate: self,
+                    presentationDelegate: self,
+                    completion: completion
+                )
                 
             case let .failure(error):
                 completion(.failure(error))
@@ -83,9 +85,11 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
         }
 
-        let component = CardComponent(paymentMethod: paymentMethod,
-                                      context: context,
-                                      configuration: ConfigurationConstants.current.cardConfiguration)
+        let component = CardComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: ConfigurationConstants.current.cardConfiguration
+        )
         component.delegate = session
         return component
     }
@@ -150,9 +154,11 @@ private extension CardComponentExample {
         }
         
         let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.leftBarButtonItem = .init(barButtonSystemItem: .cancel,
-                                                                          target: self,
-                                                                          action: #selector(cancelPressed))
+        component.viewController.navigationItem.leftBarButtonItem = .init(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(cancelPressed)
+        )
         return navigation
     }
     

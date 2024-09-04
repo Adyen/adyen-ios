@@ -25,15 +25,19 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
         sendDidLoadEvent()
     }
     
-    internal func didSelect(_ component: PaymentComponent,
-                            in paymentMethodListComponent: PaymentMethodListComponent) {
+    internal func didSelect(
+        _ component: PaymentComponent,
+        in paymentMethodListComponent: PaymentMethodListComponent
+    ) {
         (rootComponent as? ComponentLoader)?.startLoading(for: component)
         didSelect(component)
     }
     
-    internal func didDelete(_ paymentMethod: StoredPaymentMethod,
-                            in paymentMethodListComponent: PaymentMethodListComponent,
-                            completion: @escaping (Bool) -> Void) {
+    internal func didDelete(
+        _ paymentMethod: StoredPaymentMethod,
+        in paymentMethodListComponent: PaymentMethodListComponent,
+        completion: @escaping (Bool) -> Void
+    ) {
         let deletionCompletion = { [weak self] (success: Bool) in
             defer {
                 completion(success)

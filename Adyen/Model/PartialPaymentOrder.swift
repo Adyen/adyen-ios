@@ -48,20 +48,24 @@ public struct PartialPaymentOrder: Codable, Equatable {
     /// - Parameter amount: The initial amount of the order.
     /// - Parameter remainingAmount: The remaining amount to be paid.
     /// - Parameter expiresAt: The expiry date.
-    public init(pspReference: String,
-                orderData: String?,
-                reference: String? = nil,
-                amount: Amount? = nil,
-                remainingAmount: Amount? = nil,
-                expiresAt: Date? = nil) {
+    public init(
+        pspReference: String,
+        orderData: String?,
+        reference: String? = nil,
+        amount: Amount? = nil,
+        remainingAmount: Amount? = nil,
+        expiresAt: Date? = nil
+    ) {
         self.pspReference = pspReference
         self.orderData = orderData
         self.reference = reference
         self.amount = amount
         self.remainingAmount = remainingAmount
         self.expiresAt = expiresAt
-        self.compactOrder = CompactOrder(pspReference: pspReference,
-                                         orderData: orderData)
+        self.compactOrder = CompactOrder(
+            pspReference: pspReference,
+            orderData: orderData
+        )
     }
 
     public init(from decoder: Decoder) throws {
@@ -72,8 +76,10 @@ public struct PartialPaymentOrder: Codable, Equatable {
         self.amount = try container.decodeIfPresent(Amount.self, forKey: .amount)
         self.remainingAmount = try container.decodeIfPresent(Amount.self, forKey: .remainingAmount)
         self.expiresAt = nil
-        self.compactOrder = CompactOrder(pspReference: pspReference,
-                                         orderData: orderData)
+        self.compactOrder = CompactOrder(
+            pspReference: pspReference,
+            orderData: orderData
+        )
     }
 
     private enum CodingKeys: String, CodingKey {

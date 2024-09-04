@@ -73,15 +73,19 @@ public final class RedirectComponent: ActionComponent {
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component configurations.
-    public init(context: AdyenContext,
-                configuration: Configuration = Configuration()) {
+    public init(
+        context: AdyenContext,
+        configuration: Configuration = Configuration()
+    ) {
         self.context = context
         self.configuration = configuration
     }
     
-    internal convenience init(context: AdyenContext,
-                              configuration: Configuration = Configuration(),
-                              apiClient: AnyRetryAPIClient) {
+    internal convenience init(
+        context: AdyenContext,
+        configuration: Configuration = Configuration(),
+        apiClient: AnyRetryAPIClient
+    ) {
         self.init(context: context, configuration: configuration)
         self.apiClient = apiClient
     }
@@ -90,9 +94,11 @@ public final class RedirectComponent: ActionComponent {
     ///
     /// - Parameter action: The redirect action object.
     public func handle(_ action: RedirectAction) {
-        Analytics.sendEvent(component: configuration.componentName,
-                            flavor: _isDropIn ? .dropin : .components,
-                            context: context.apiContext)
+        Analytics.sendEvent(
+            component: configuration.componentName,
+            flavor: _isDropIn ? .dropin : .components,
+            context: context.apiContext
+        )
         
         if action.url.adyen.isHttp {
             openHttpSchemeUrl(action)
@@ -132,9 +138,11 @@ public final class RedirectComponent: ActionComponent {
     }
 
     private func openInAppBrowser(_ action: RedirectAction) {
-        let component = BrowserComponent(url: action.url,
-                                         context: context,
-                                         style: configuration.style)
+        let component = BrowserComponent(
+            url: action.url,
+            context: context,
+            style: configuration.style
+        )
         component.delegate = self
         browserComponent = component
         presentationDelegate?.present(component: component)
@@ -175,8 +183,10 @@ public final class RedirectComponent: ActionComponent {
         guard let queryString = returnURL.query else {
             throw Error.invalidRedirectParameters
         }
-        let request = NativeRedirectResultRequest(redirectData: redirectStateData,
-                                                  returnQueryString: queryString)
+        let request = NativeRedirectResultRequest(
+            redirectData: redirectStateData,
+            returnQueryString: queryString
+        )
         apiClient.perform(request) { [weak self] result in
             guard let self else { return }
             switch result {

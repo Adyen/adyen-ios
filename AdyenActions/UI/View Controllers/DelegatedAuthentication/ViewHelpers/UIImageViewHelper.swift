@@ -17,8 +17,10 @@ extension UIImageView {
         self.contentMode = .scaleAspectFit
         
         NSLayoutConstraint.activate(
-            [self.widthAnchor.constraint(equalToConstant: 16),
-             self.heightAnchor.constraint(equalToConstant: 16)]
+            [
+                self.widthAnchor.constraint(equalToConstant: 16),
+                self.heightAnchor.constraint(equalToConstant: 16)
+            ]
         )
     }
 }

@@ -40,9 +40,11 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
 
     // MARK: - Initializers
 
-    internal init(styleProvider: FormComponentStyle,
-                  localizationParameters: LocalizationParameters?,
-                  scope: String) {
+    internal init(
+        styleProvider: FormComponentStyle,
+        localizationParameters: LocalizationParameters?,
+        scope: String
+    ) {
         self.styleProvider = styleProvider
         self.localizationParameters = localizationParameters
         self.scope = scope
@@ -64,8 +66,10 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
 
         textItem.autocapitalizationType = .words
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
-                                                     postfix: ViewIdentifier.holderNameItem)
+        let identifier = ViewIdentifierBuilder.build(
+            scopeInstance: scope,
+            postfix: ViewIdentifier.holderNameItem
+        )
         textItem.identifier = identifier
         return textItem
     }
@@ -86,8 +90,10 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         textItem.autocapitalizationType = .none
         textItem.keyboardType = .numberPad
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
-                                                     postfix: ViewIdentifier.bankAccountNumberItem)
+        let identifier = ViewIdentifierBuilder.build(
+            scopeInstance: scope,
+            postfix: ViewIdentifier.bankAccountNumberItem
+        )
         textItem.identifier = identifier
         return textItem
     }
@@ -108,8 +114,10 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         textItem.autocapitalizationType = .none
         textItem.keyboardType = .numberPad
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
-                                                     postfix: ViewIdentifier.sortCodeItem)
+        let identifier = ViewIdentifierBuilder.build(
+            scopeInstance: scope,
+            postfix: ViewIdentifier.sortCodeItem
+        )
         textItem.identifier = identifier
         return textItem
     }
@@ -129,8 +137,10 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         textItem.autocapitalizationType = .none
         textItem.keyboardType = .emailAddress
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
-                                                     postfix: ViewIdentifier.emailItem)
+        let identifier = ViewIdentifierBuilder.build(
+            scopeInstance: scope,
+            postfix: ViewIdentifier.emailItem
+        )
         textItem.identifier = identifier
         return textItem
     }
@@ -141,8 +151,10 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         let localizedTitle = localizedString(.continueTitle, localizationParameters)
         buttonItem.title = localizedTitle
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
-                                                     postfix: ViewIdentifier.continueButtonItem)
+        let identifier = ViewIdentifierBuilder.build(
+            scopeInstance: scope,
+            postfix: ViewIdentifier.continueButtonItem
+        )
         buttonItem.identifier = identifier
         return buttonItem
     }
@@ -153,8 +165,10 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         let localizedTitle = localizedString(.bacsPaymentButtonTitle, localizationParameters)
         buttonItem.title = localizedTitle
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
-                                                     postfix: ViewIdentifier.paymentButtonItem)
+        let identifier = ViewIdentifierBuilder.build(
+            scopeInstance: scope,
+            postfix: ViewIdentifier.paymentButtonItem
+        )
         buttonItem.identifier = identifier
         return buttonItem
     }
@@ -165,8 +179,10 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
 
         toggleItem.title = createConsentText(with: amount)
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
-                                                     postfix: ViewIdentifier.amountTermsToggleItem)
+        let identifier = ViewIdentifierBuilder.build(
+            scopeInstance: scope,
+            postfix: ViewIdentifier.amountTermsToggleItem
+        )
         toggleItem.identifier = identifier
         return toggleItem
     }
@@ -188,8 +204,10 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         let localizedTitle = localizedString(.bacsLegalConsentToggleTitle, localizationParameters)
         toggleItem.title = localizedTitle
 
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: scope,
-                                                     postfix: ViewIdentifier.legalTermsToggleItem)
+        let identifier = ViewIdentifierBuilder.build(
+            scopeInstance: scope,
+            postfix: ViewIdentifier.legalTermsToggleItem
+        )
         toggleItem.identifier = identifier
         return toggleItem
     }

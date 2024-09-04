@@ -32,10 +32,12 @@ internal class BACSConfirmationPresenter: BACSConfirmationPresenterProtocol {
 
     // MARK: - Initializers
 
-    internal init(data: BACSDirectDebitData,
-                  view: BACSConfirmationViewProtocol,
-                  router: BACSDirectDebitRouterProtocol,
-                  itemsFactory: BACSItemsFactoryProtocol) {
+    internal init(
+        data: BACSDirectDebitData,
+        view: BACSConfirmationViewProtocol,
+        router: BACSDirectDebitRouterProtocol,
+        itemsFactory: BACSItemsFactoryProtocol
+    ) {
         self.data = data
         self.router = router
         self.view = view

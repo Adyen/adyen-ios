@@ -19,13 +19,17 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
     ///   - paymentMethod: The payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
-    public init(paymentMethod: PaymentMethod,
-                context: AdyenContext,
-                configuration: Configuration = .init()) {
-        super.init(paymentMethod: paymentMethod,
-                   context: context,
-                   fields: [.firstName, .lastName, .phone, .email],
-                   configuration: configuration)
+    public init(
+        paymentMethod: PaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
+        super.init(
+            paymentMethod: paymentMethod,
+            context: context,
+            fields: [.firstName, .lastName, .phone, .email],
+            configuration: configuration
+        )
     }
 
     @_spi(AdyenInternal)
@@ -47,11 +51,13 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
               let phoneItem else {
             throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
-        return BasicPersonalInfoFormDetails(paymentMethod: paymentMethod,
-                                            firstName: firstNameItem.value,
-                                            lastName: lastNameItem.value,
-                                            emailAddress: emailItem.value,
-                                            telephoneNumber: phoneItem.phoneNumber)
+        return BasicPersonalInfoFormDetails(
+            paymentMethod: paymentMethod,
+            firstName: firstNameItem.value,
+            lastName: lastNameItem.value,
+            emailAddress: emailItem.value,
+            telephoneNumber: phoneItem.phoneNumber
+        )
     }
 }
 

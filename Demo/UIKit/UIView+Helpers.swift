@@ -33,26 +33,36 @@ extension UIView {
     ///   - anchorSource: The anchor source to contain this view.
     ///   - edgeInsets: Edges with inset values on which the views should be anchored. Defaults to all 4 edges with 0 inset each.
     @discardableResult
-    public func anchor(inside anchorSource: LayoutAnchorSource,
-                       edgeInsets: EdgeInsets = .zero) -> [NSLayoutConstraint] {
+    public func anchor(
+        inside anchorSource: LayoutAnchorSource,
+        edgeInsets: EdgeInsets = .zero
+    ) -> [NSLayoutConstraint] {
         translatesAutoresizingMaskIntoConstraints = false
         
         var constraints: [NSLayoutConstraint] = []
         if let top = edgeInsets.top {
-            constraints.append(topAnchor.constraint(equalTo: anchorSource.anchorSet.topAnchor,
-                                                    constant: top))
+            constraints.append(topAnchor.constraint(
+                equalTo: anchorSource.anchorSet.topAnchor,
+                constant: top
+            ))
         }
         if let left = edgeInsets.left {
-            constraints.append(leadingAnchor.constraint(equalTo: anchorSource.anchorSet.leadingAnchor,
-                                                        constant: left))
+            constraints.append(leadingAnchor.constraint(
+                equalTo: anchorSource.anchorSet.leadingAnchor,
+                constant: left
+            ))
         }
         if let bottom = edgeInsets.bottom {
-            constraints.append(bottomAnchor.constraint(equalTo: anchorSource.anchorSet.bottomAnchor,
-                                                       constant: bottom))
+            constraints.append(bottomAnchor.constraint(
+                equalTo: anchorSource.anchorSet.bottomAnchor,
+                constant: bottom
+            ))
         }
         if let right = edgeInsets.right {
-            constraints.append(trailingAnchor.constraint(equalTo: anchorSource.anchorSet.trailingAnchor,
-                                                         constant: right))
+            constraints.append(trailingAnchor.constraint(
+                equalTo: anchorSource.anchorSet.trailingAnchor,
+                constant: right
+            ))
         }
         
         NSLayoutConstraint.activate(constraints)

@@ -176,12 +176,16 @@ internal struct DemoAppSettings: Codable {
         showsInstallmentAmount: false
     )
 
-    internal static let defaultDropInSettings = DropInSettings(allowDisablingStoredPaymentMethods: false,
-                                                               allowsSkippingPaymentList: false,
-                                                               allowPreselectedPaymentView: true)
+    internal static let defaultDropInSettings = DropInSettings(
+        allowDisablingStoredPaymentMethods: false,
+        allowsSkippingPaymentList: false,
+        allowPreselectedPaymentView: true
+    )
 
-    internal static let defaultApplePaySettings = ApplePaySettings(merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier,
-                                                                   allowOnboarding: false)
+    internal static let defaultApplePaySettings = ApplePaySettings(
+        merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier,
+        allowOnboarding: false
+    )
 
     internal static let defaultAnalyticsSettings = AnalyticsSettings(isEnabled: true)
     
@@ -214,15 +218,17 @@ internal struct DemoAppSettings: Codable {
         
         let style = FormComponentStyle()
 
-        return .init(style: style,
-                     showsHolderNameField: cardSettings.showsHolderNameField,
-                     showsStorePaymentMethodField: cardSettings.showsStorePaymentMethodField,
-                     showsSecurityCodeField: cardSettings.showsSecurityCodeField,
-                     koreanAuthenticationMode: cardSettings.koreanAuthenticationMode,
-                     socialSecurityNumberMode: cardSettings.socialSecurityNumberMode,
-                     storedCardConfiguration: storedCardConfig,
-                     installmentConfiguration: installmentConfiguration,
-                     billingAddress: billingAddressConfig)
+        return .init(
+            style: style,
+            showsHolderNameField: cardSettings.showsHolderNameField,
+            showsStorePaymentMethodField: cardSettings.showsStorePaymentMethodField,
+            showsSecurityCodeField: cardSettings.showsSecurityCodeField,
+            koreanAuthenticationMode: cardSettings.koreanAuthenticationMode,
+            socialSecurityNumberMode: cardSettings.socialSecurityNumberMode,
+            storedCardConfiguration: storedCardConfig,
+            installmentConfiguration: installmentConfiguration,
+            billingAddress: billingAddressConfig
+        )
     }
 
     internal var cardDropInConfiguration: DropInComponent.Card {
@@ -232,14 +238,16 @@ internal struct DemoAppSettings: Codable {
         var billingAddressConfig = BillingAddressConfiguration()
         billingAddressConfig.mode = cardComponentAddressFormType(from: cardSettings.addressMode)
 
-        return .init(showsHolderNameField: cardSettings.showsHolderNameField,
-                     showsStorePaymentMethodField: cardSettings.showsStorePaymentMethodField,
-                     showsSecurityCodeField: cardSettings.showsSecurityCodeField,
-                     koreanAuthenticationMode: cardSettings.koreanAuthenticationMode,
-                     socialSecurityNumberMode: cardSettings.socialSecurityNumberMode,
-                     storedCardConfiguration: storedCardConfig,
-                     installmentConfiguration: installmentConfiguration,
-                     billingAddress: billingAddressConfig)
+        return .init(
+            showsHolderNameField: cardSettings.showsHolderNameField,
+            showsStorePaymentMethodField: cardSettings.showsStorePaymentMethodField,
+            showsSecurityCodeField: cardSettings.showsSecurityCodeField,
+            koreanAuthenticationMode: cardSettings.koreanAuthenticationMode,
+            socialSecurityNumberMode: cardSettings.socialSecurityNumberMode,
+            storedCardConfiguration: storedCardConfig,
+            installmentConfiguration: installmentConfiguration,
+            billingAddress: billingAddressConfig
+        )
 
     }
 
@@ -261,11 +269,15 @@ internal struct DemoAppSettings: Codable {
     }
 
     internal func applePayConfiguration() throws -> ApplePayComponent.Configuration {
-        let applePayPayment = try ApplePayPayment(payment: ConfigurationConstants.current.payment,
-                                                  brand: ConfigurationConstants.appName)
-        var config = ApplePayComponent.Configuration(payment: applePayPayment,
-                                                     merchantIdentifier:
-                                                     ConfigurationConstants.current.applePaySettings.merchantIdentifier)
+        let applePayPayment = try ApplePayPayment(
+            payment: ConfigurationConstants.current.payment,
+            brand: ConfigurationConstants.appName
+        )
+        var config = ApplePayComponent.Configuration(
+            payment: applePayPayment,
+            merchantIdentifier:
+            ConfigurationConstants.current.applePaySettings.merchantIdentifier
+        )
         config.allowOnboarding = applePaySettings.allowOnboarding
         return config
     }

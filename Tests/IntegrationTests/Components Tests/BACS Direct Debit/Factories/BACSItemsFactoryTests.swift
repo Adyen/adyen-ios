@@ -15,9 +15,11 @@ class BACSItemsFactoryTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         let styleProvider = FormComponentStyle()
-        sut = BACSItemsFactory(styleProvider: styleProvider,
-                               localizationParameters: LocalizationParameters(),
-                               scope: "")
+        sut = BACSItemsFactory(
+            styleProvider: styleProvider,
+            localizationParameters: LocalizationParameters(),
+            scope: ""
+        )
     }
 
     override func tearDownWithError() throws {

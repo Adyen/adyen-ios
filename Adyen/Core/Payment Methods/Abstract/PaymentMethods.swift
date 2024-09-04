@@ -117,8 +117,10 @@ public struct PaymentMethods: Codable {
     ///   its argument and returns a Boolean value indicating whether the
     ///   `PaymentMethod` is a match.
     /// - Returns: The first available payment method of the given type and passes the predicate closure, or `nil` if none could be found.
-    public func paymentMethod<T: PaymentMethod>(ofType type: T.Type,
-                                                where predicate: (T) -> Bool) -> T? {
+    public func paymentMethod<T: PaymentMethod>(
+        ofType type: T.Type,
+        where predicate: (T) -> Bool
+    ) -> T? {
         regular.compactMap { $0 as? T }.first(where: predicate)
     }
     
@@ -138,8 +140,10 @@ public struct PaymentMethods: Codable {
     ///   its argument and returns a Boolean value indicating whether the
     ///   `PaymentMethod` is a match.
     /// - Returns: The first available payment method of the given type and passes the predicate closure, or `nil` if none could be found.
-    public func paymentMethod<T: PaymentMethod>(ofType type: PaymentMethodType,
-                                                where predicate: (T) -> Bool) -> T? {
+    public func paymentMethod<T: PaymentMethod>(
+        ofType type: PaymentMethodType,
+        where predicate: (T) -> Bool
+    ) -> T? {
         regular.filter { $0.type == type }.compactMap { $0 as? T }.first(where: predicate)
     }
     

@@ -185,9 +185,11 @@ class QiwiWalletComponentTests: XCTestCase {
         let context = Dummy.context(with: analyticsProviderMock)
         let phoneExtensions = [PhoneExtension(value: "+3", countryCode: "UK")]
         let paymentMethod = QiwiWalletPaymentMethod(type: .qiwiWallet, name: "test_name", phoneExtensions: phoneExtensions)
-        let sut = QiwiWalletComponent(paymentMethod: paymentMethod,
-                                      context: context,
-                                      configuration: QiwiWalletComponent.Configuration())
+        let sut = QiwiWalletComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: QiwiWalletComponent.Configuration()
+        )
 
         // When
         sut.viewDidLoad(viewController: sut.viewController)

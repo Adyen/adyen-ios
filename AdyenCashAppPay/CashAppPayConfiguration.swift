@@ -39,12 +39,14 @@ public struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
     ///   Ignored if `showsStorePaymentMethodField` is `true`.
     ///   - style: The UI style of the component.
     ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
-    public init(redirectURL: URL,
-                referenceId: String? = nil,
-                showsStorePaymentMethodField: Bool = true,
-                storePaymentMethod: Bool = false,
-                style: FormComponentStyle = FormComponentStyle(),
-                localizationParameters: LocalizationParameters? = nil) {
+    public init(
+        redirectURL: URL,
+        referenceId: String? = nil,
+        showsStorePaymentMethodField: Bool = true,
+        storePaymentMethod: Bool = false,
+        style: FormComponentStyle = FormComponentStyle(),
+        localizationParameters: LocalizationParameters? = nil
+    ) {
         self.redirectURL = redirectURL
         self.referenceId = referenceId
         self.showsStorePaymentMethodField = showsStorePaymentMethodField

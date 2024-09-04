@@ -25,8 +25,10 @@ internal final class AwaitViewController: UIViewController {
     ///
     /// - Parameter viewModel: The view model.
     /// - Parameter style: The UI style.
-    internal init(viewModel: AwaitComponentViewModel,
-                  style: AwaitComponentStyle = AwaitComponentStyle()) {
+    internal init(
+        viewModel: AwaitComponentViewModel,
+        style: AwaitComponentStyle = AwaitComponentStyle()
+    ) {
         self.viewModel = viewModel
         self.style = style
         super.init(nibName: nil, bundle: Bundle(for: AwaitViewController.self))

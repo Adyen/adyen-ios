@@ -43,10 +43,12 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
 
     // MARK: - Initializers
 
-    internal init(view: BACSInputFormViewProtocol,
-                  router: BACSDirectDebitRouterProtocol,
-                  tracker: BACSDirectDebitComponentTrackerProtocol,
-                  itemsFactory: BACSItemsFactoryProtocol) {
+    internal init(
+        view: BACSInputFormViewProtocol,
+        router: BACSDirectDebitRouterProtocol,
+        tracker: BACSDirectDebitComponentTrackerProtocol,
+        itemsFactory: BACSItemsFactoryProtocol
+    ) {
         self.view = view
         self.router = router
         self.tracker = tracker
@@ -114,10 +116,12 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
             return false
         }
 
-        return [holderNameItem,
-                bankAccountNumberItem,
-                sortCodeItem,
-                emailItem].compactMap { $0 }
+        return [
+            holderNameItem,
+            bankAccountNumberItem,
+            sortCodeItem,
+            emailItem
+        ].compactMap { $0 }
             .allSatisfy { $0.isValid() }
     }
 
@@ -142,10 +146,12 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
             return
         }
 
-        let bacsDirectDebitData = BACSDirectDebitData(holderName: holderName,
-                                                      bankAccountNumber: bankAccountNumber,
-                                                      bankLocationId: sortCode,
-                                                      shopperEmail: shopperEmail)
+        let bacsDirectDebitData = BACSDirectDebitData(
+            holderName: holderName,
+            bankAccountNumber: bankAccountNumber,
+            bankLocationId: sortCode,
+            shopperEmail: shopperEmail
+        )
         self.data = bacsDirectDebitData
         router?.presentConfirmation(with: bacsDirectDebitData)
     }

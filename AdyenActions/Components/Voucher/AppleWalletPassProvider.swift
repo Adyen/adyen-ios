@@ -21,8 +21,10 @@ internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
     internal let context: AdyenContext
     
     internal convenience init(context: AdyenContext) {
-        self.init(context: context,
-                  apiClient: nil)
+        self.init(
+            context: context,
+            apiClient: nil
+        )
     }
     
     /// :nodoc:
@@ -53,8 +55,10 @@ internal final class AppleWalletPassProvider: AnyAppleWalletPassProvider,
 
     private let retryApiClient: AnyRetryAPIClient
 
-    private func handle(_ result: Result<AppleWalletPassResponse, Swift.Error>,
-                        completion: @escaping CompletionHandler) {
+    private func handle(
+        _ result: Result<AppleWalletPassResponse, Swift.Error>,
+        completion: @escaping CompletionHandler
+    ) {
         switch result {
         case let .success(response):
             completion(.success(response.passData))

@@ -7,11 +7,13 @@
 import CommonCrypto
 import Foundation
 
-internal func aesCrypt(operation: CCOperation,
-                       options: CCOptions,
-                       keyData: Data,
-                       initializationVector: Data?,
-                       dataIn: Data) throws -> Data {
+internal func aesCrypt(
+    operation: CCOperation,
+    options: CCOptions,
+    keyData: Data,
+    initializationVector: Data?,
+    dataIn: Data
+) throws -> Data {
     let dataOutLength = dataIn.count + kCCBlockSizeAES128
     guard let dataOut = NSMutableData(length: dataOutLength) else {
         throw EncryptionError.encryptionFailed
@@ -21,14 +23,19 @@ internal func aesCrypt(operation: CCOperation,
     let initializationVector = initializationVector as NSData?
     var numBytesOut: size_t = 0
     let algorithm = CCAlgorithm(kCCAlgorithmAES)
-    let status: CCCryptorStatus = CCCrypt(operation,
-                                          algorithm,
-                                          options,
-                                          keyData.bytes, keyData.length,
-                                          initializationVector?.bytes,
-                                          dataIn.bytes, dataIn.length,
-                                          dataOut.mutableBytes, dataOut.length,
-                                          &numBytesOut)
+    let status: CCCryptorStatus = CCCrypt(
+        operation,
+        algorithm,
+        options,
+        keyData.bytes,
+        keyData.length,
+        initializationVector?.bytes,
+        dataIn.bytes,
+        dataIn.length,
+        dataOut.mutableBytes,
+        dataOut.length,
+        &numBytesOut
+    )
     guard status == kCCSuccess else {
         throw EncryptionError.encryptionFailed
     }
@@ -43,12 +50,14 @@ internal func hmac(data: Data, withKey: Data) throws -> Data {
     }
     let dataIn = data as NSData
     let keyData = withKey as NSData
-    CCHmac(CCHmacAlgorithm(kCCHmacAlgSHA512),
-           keyData.bytes,
-           keyData.length,
-           dataIn.bytes,
-           dataIn.length,
-           dataOut.mutableBytes)
+    CCHmac(
+        CCHmacAlgorithm(kCCHmacAlgSHA512),
+        keyData.bytes,
+        keyData.length,
+        dataIn.bytes,
+        dataIn.length,
+        dataOut.mutableBytes
+    )
     return dataOut as Data
 }
 
@@ -64,12 +73,14 @@ internal func createSecKey(fromModulus modulus: String, exponent: String) throws
           let exponentHex = exponent.hexadecimal else { throw EncryptionError.invalidKey }
     let keyData = generateRSAPublicKey(with: modulusHex, exponent: exponentHex)
     var error: Unmanaged<CFError>?
-    let parsedKey = SecKeyCreateWithData(keyData as NSData,
-                                         [
-                                             kSecAttrKeyType: kSecAttrKeyTypeRSA,
-                                             kSecAttrKeyClass: kSecAttrKeyClassPublic
-                                         ] as NSDictionary,
-                                         &error)
+    let parsedKey = SecKeyCreateWithData(
+        keyData as NSData,
+        [
+            kSecAttrKeyType: kSecAttrKeyTypeRSA,
+            kSecAttrKeyClass: kSecAttrKeyClassPublic
+        ] as NSDictionary,
+        &error
+    )
     if let error {
         throw EncryptionError.other(error.takeRetainedValue())
     }

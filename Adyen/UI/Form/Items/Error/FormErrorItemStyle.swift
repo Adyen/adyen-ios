@@ -10,9 +10,11 @@ import UIKit
 public struct FormErrorItemStyle: ViewStyle {
 
     /// The message style.
-    public var message = TextStyle(font: .preferredFont(forTextStyle: .body),
-                                   color: UIColor.Adyen.componentLabel,
-                                   textAlignment: .natural)
+    public var message = TextStyle(
+        font: .preferredFont(forTextStyle: .body),
+        color: UIColor.Adyen.componentLabel,
+        textAlignment: .natural
+    )
 
     /// The corners style of the text item.
     public var cornerRounding: CornerRounding = .fixed(6)

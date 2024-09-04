@@ -40,10 +40,12 @@ public struct ApplePayPayment {
     /// - Throws: `ApplePayComponent.Error.invalidSummaryItem` if at least one of the summary items has an invalid amount.
     /// - Throws: `ApplePayComponent.Error.invalidCountryCode` if the `payment.countryCode` is not a valid ISO country code.
     /// - Throws: `ApplePayComponent.Error.invalidCurrencyCode` if the `Amount.currencyCode` is not a valid ISO currency code.
-    public init(countryCode: String,
-                currencyCode: String,
-                summaryItems: [PKPaymentSummaryItem],
-                localizationParameters: LocalizationParameters? = nil) throws {
+    public init(
+        countryCode: String,
+        currencyCode: String,
+        summaryItems: [PKPaymentSummaryItem],
+        localizationParameters: LocalizationParameters? = nil
+    ) throws {
         guard CountryCodeValidator().isValid(countryCode) else {
             throw ApplePayComponent.Error.invalidCountryCode
         }
@@ -60,15 +62,19 @@ public struct ApplePayPayment {
             throw ApplePayComponent.Error.invalidSummaryItem
         }
 
-        let amountInt = AmountFormatter.minorUnitAmount(from: lastItem.amount.decimalValue,
-                                                        currencyCode: currencyCode,
-                                                        localeIdentifier: localizationParameters?.locale)
-        self.init(amount: amountInt,
-                  currencyCode: currencyCode,
-                  countryCode: countryCode,
-                  summaryItems: summaryItems,
-                  brand: lastItem.label,
-                  localeIdentifier: localizationParameters?.locale)
+        let amountInt = AmountFormatter.minorUnitAmount(
+            from: lastItem.amount.decimalValue,
+            currencyCode: currencyCode,
+            localeIdentifier: localizationParameters?.locale
+        )
+        self.init(
+            amount: amountInt,
+            currencyCode: currencyCode,
+            countryCode: countryCode,
+            summaryItems: summaryItems,
+            brand: lastItem.label,
+            localeIdentifier: localizationParameters?.locale
+        )
     }
 
     /// Create a new instance of ApplePayPayment.
@@ -88,21 +94,25 @@ public struct ApplePayPayment {
             throw ApplePayComponent.Error.invalidCurrencyCode
         }
 
-        let decimalValue = AmountFormatter.decimalAmount(payment.amount.value,
-                                                         currencyCode: payment.amount.currencyCode,
-                                                         localeIdentifier: localizationParameters?.locale)
+        let decimalValue = AmountFormatter.decimalAmount(
+            payment.amount.value,
+            currencyCode: payment.amount.currencyCode,
+            localeIdentifier: localizationParameters?.locale
+        )
         guard decimalValue.doubleValue >= 0,
               decimalValue.isEqual(to: NSDecimalNumber.notANumber) == false
         else {
             throw ApplePayComponent.Error.negativeGrandTotal
         }
 
-        self.init(amount: payment.amount.value,
-                  currencyCode: payment.amount.currencyCode,
-                  countryCode: payment.countryCode,
-                  summaryItems: [PKPaymentSummaryItem(label: brand, amount: decimalValue)],
-                  brand: brand,
-                  localeIdentifier: localizationParameters?.locale)
+        self.init(
+            amount: payment.amount.value,
+            currencyCode: payment.amount.currencyCode,
+            countryCode: payment.countryCode,
+            summaryItems: [PKPaymentSummaryItem(label: brand, amount: decimalValue)],
+            brand: brand,
+            localeIdentifier: localizationParameters?.locale
+        )
     }
 
     /// Updates Apple Pay payment with new amount
@@ -114,20 +124,24 @@ public struct ApplePayPayment {
         guard let lastItem = newItems.last else { return }
 
         newItems = newItems.dropLast()
-        let decimalAmount = AmountFormatter.decimalAmount(amount.value,
-                                                          currencyCode: amount.currencyCode,
-                                                          localeIdentifier: amount.localeIdentifier)
+        let decimalAmount = AmountFormatter.decimalAmount(
+            amount.value,
+            currencyCode: amount.currencyCode,
+            localeIdentifier: amount.localeIdentifier
+        )
         newItems.append(PKPaymentSummaryItem(label: lastItem.label, amount: decimalAmount))
         summaryItems = newItems
         amountMinorUnits = amount.value
     }
 
-    private init(amount: Int,
-                 currencyCode: String,
-                 countryCode: String,
-                 summaryItems: [PKPaymentSummaryItem],
-                 brand: String,
-                 localeIdentifier: String?) {
+    private init(
+        amount: Int,
+        currencyCode: String,
+        countryCode: String,
+        summaryItems: [PKPaymentSummaryItem],
+        brand: String,
+        localeIdentifier: String?
+    ) {
         self.summaryItems = summaryItems
         amountMinorUnits = amount
         self.brand = brand
@@ -146,10 +160,12 @@ extension ApplePayPayment {
     }
 
     internal func replacing(summaryItems: [PKPaymentSummaryItem]) throws -> ApplePayPayment {
-        try ApplePayPayment(countryCode: self.countryCode,
-                            currencyCode: currencyCode,
-                            summaryItems: summaryItems,
-                            localizationParameters: .init(locale: self.localeIdentifier))
+        try ApplePayPayment(
+            countryCode: self.countryCode,
+            currencyCode: currencyCode,
+            summaryItems: summaryItems,
+            localizationParameters: .init(locale: self.localeIdentifier)
+        )
     }
 
 }

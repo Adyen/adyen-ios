@@ -38,12 +38,14 @@ public struct AffirmDetails: PaymentMethodDetails, ShopperInformation {
     ///   - emailAddress: The shopper's email address.
     ///   - billingAddress: The shopper's billing address.
     ///   - deliveryAddress: The shopper's delivery address.
-    public init(paymentMethod: PaymentMethod,
-                shopperName: ShopperName,
-                telephoneNumber: String,
-                emailAddress: String,
-                billingAddress: PostalAddress,
-                deliveryAddress: PostalAddress?) {
+    public init(
+        paymentMethod: PaymentMethod,
+        shopperName: ShopperName,
+        telephoneNumber: String,
+        emailAddress: String,
+        billingAddress: PostalAddress,
+        deliveryAddress: PostalAddress?
+    ) {
         self.type = paymentMethod.type
         self.shopperName = shopperName
         self.telephoneNumber = telephoneNumber

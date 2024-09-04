@@ -17,15 +17,19 @@ class BACSDirectDebitComponentTrackerTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        let paymentMethod = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit,
-                                                         name: "BACS Direct Debit")
+        let paymentMethod = BACSDirectDebitPaymentMethod(
+            type: .bacsDirectDebit,
+            name: "BACS Direct Debit"
+        )
 
         apiContext = Dummy.apiContext
         analyticsProvider = AnalyticsProviderMock()
         let adyenContext = AdyenContext(apiContext: apiContext, payment: Dummy.payment, analyticsProvider: analyticsProvider)
-        sut = BACSDirectDebitComponentTracker(paymentMethod: paymentMethod,
-                                              context: adyenContext,
-                                              isDropIn: false)
+        sut = BACSDirectDebitComponentTracker(
+            paymentMethod: paymentMethod,
+            context: adyenContext,
+            isDropIn: false
+        )
     }
 
     override func tearDownWithError() throws {

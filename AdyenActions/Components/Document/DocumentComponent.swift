@@ -51,8 +51,10 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The Component configurations.
-    public init(context: AdyenContext,
-                configuration: Configuration = .init()) {
+    public init(
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         self.context = context
         self.configuration = configuration
     }
@@ -63,13 +65,17 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     public func handle(_ action: DocumentAction) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         
-        let imageURL = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue,
-                                               environment: context.apiContext.environment,
-                                               size: .medium)
-        let viewModel = DocumentActionViewModel(action: action,
-                                                message: localizedString(.bacsDownloadMandate, configuration.localizationParameters),
-                                                logoURL: imageURL,
-                                                buttonTitle: localizedString(.boletoDownloadPdf, configuration.localizationParameters))
+        let imageURL = LogoURLProvider.logoURL(
+            withName: action.paymentMethodType.rawValue,
+            environment: context.apiContext.environment,
+            size: .medium
+        )
+        let viewModel = DocumentActionViewModel(
+            action: action,
+            message: localizedString(.bacsDownloadMandate, configuration.localizationParameters),
+            logoURL: imageURL,
+            buttonTitle: localizedString(.boletoDownloadPdf, configuration.localizationParameters)
+        )
         let view = DocumentActionView(viewModel: viewModel, style: configuration.style)
         view.delegate = self
         let viewController = ADYViewController(view: view)
@@ -77,8 +83,11 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
         setUpPresenterViewController(parentViewController: viewController)
 
         if let presentationDelegate {
-            let presentableComponent = PresentableComponentWrapper(component: self,
-                                                                   viewController: viewController, navBarType: navBarType())
+            let presentableComponent = PresentableComponentWrapper(
+                component: self,
+                viewController: viewController,
+                navBarType: navBarType()
+            )
             presentationDelegate.present(component: presentableComponent)
         } else {
             AdyenAssertion.assertionFailure(
@@ -88,11 +97,15 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     }
     
     private func navBarType() -> NavigationBarType {
-        let model = ActionNavigationBar.Model(leadingButtonTitle: nil,
-                                              trailingButtonTitle: Bundle.Adyen.localizedDoneCopy)
-        let style = ActionNavigationBar.Style(leadingButton: nil,
-                                              trailingButton: configuration.style.doneButton,
-                                              backgroundColor: configuration.style.backgroundColor)
+        let model = ActionNavigationBar.Model(
+            leadingButtonTitle: nil,
+            trailingButtonTitle: Bundle.Adyen.localizedDoneCopy
+        )
+        let style = ActionNavigationBar.Style(
+            leadingButton: nil,
+            trailingButton: configuration.style.doneButton,
+            backgroundColor: configuration.style.backgroundColor
+        )
         
         let navBar = ActionNavigationBar(model: model, style: style)
         navBar.trailingButtonHandler = { [weak self] in

@@ -142,8 +142,10 @@ extension VoucherComponent: VoucherViewDelegate, DocumentActionViewDelegate {
         view?.showCopyCodeConfirmation()
     }
     
-    private func handlePassProviderResult(_ result: Result<Data, Swift.Error>,
-                                          completion: @escaping () -> Void) {
+    private func handlePassProviderResult(
+        _ result: Result<Data, Swift.Error>,
+        completion: @escaping () -> Void
+    ) {
         switch result {
         case let .failure(error):
             delegate?.didFail(with: error, from: self)

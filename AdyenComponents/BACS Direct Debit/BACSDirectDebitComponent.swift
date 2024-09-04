@@ -58,27 +58,39 @@ public final class BACSDirectDebitComponent: PaymentComponent, PaymentAware, Pre
     ///   - paymentMethod: The BACS Direct Debit payment method.
     ///   - context: The context object for this component.
     ///   - configuration: Configuration for the component.
-    public init(paymentMethod: BACSDirectDebitPaymentMethod,
-                context: AdyenContext,
-                configuration: Configuration = .init()) {
+    public init(
+        paymentMethod: BACSDirectDebitPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         self.bacsPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
-        self.inputFormViewController = BACSInputFormViewController(title: paymentMethod.name,
-                                                                   styleProvider: configuration.style)
-        self.viewController = SecuredViewController(child: inputFormViewController,
-                                                    style: configuration.style)
+        self.inputFormViewController = BACSInputFormViewController(
+            title: paymentMethod.name,
+            styleProvider: configuration.style
+        )
+        self.viewController = SecuredViewController(
+            child: inputFormViewController,
+            style: configuration.style
+        )
         
-        let tracker = BACSDirectDebitComponentTracker(paymentMethod: bacsPaymentMethod,
-                                                      context: context,
-                                                      isDropIn: _isDropIn)
-        let itemsFactory = BACSItemsFactory(styleProvider: configuration.style,
-                                            localizationParameters: configuration.localizationParameters,
-                                            scope: String(describing: self))
-        self.inputPresenter = BACSInputPresenter(view: inputFormViewController,
-                                                 router: self,
-                                                 tracker: tracker,
-                                                 itemsFactory: itemsFactory)
+        let tracker = BACSDirectDebitComponentTracker(
+            paymentMethod: bacsPaymentMethod,
+            context: context,
+            isDropIn: _isDropIn
+        )
+        let itemsFactory = BACSItemsFactory(
+            styleProvider: configuration.style,
+            localizationParameters: configuration.localizationParameters,
+            scope: String(describing: self)
+        )
+        self.inputPresenter = BACSInputPresenter(
+            view: inputFormViewController,
+            router: self,
+            tracker: tracker,
+            itemsFactory: itemsFactory
+        )
         inputPresenter?.amount = payment?.amount
         inputFormViewController.presenter = inputPresenter
         
@@ -94,8 +106,10 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
         confirmationViewPresented = true
         let confirmationView = assembleConfirmationView(with: data)
 
-        let wrappedComponent = PresentableComponentWrapper(component: self,
-                                                           viewController: confirmationView)
+        let wrappedComponent = PresentableComponentWrapper(
+            component: self,
+            viewController: confirmationView
+        )
         presentationDelegate?.present(component: wrappedComponent)
     }
 
@@ -103,10 +117,12 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
         guard let bacsDirectDebitPaymentMethod = paymentMethod as? BACSDirectDebitPaymentMethod else {
             return
         }
-        let details = BACSDirectDebitDetails(paymentMethod: bacsDirectDebitPaymentMethod,
-                                             holderName: data.holderName,
-                                             bankAccountNumber: data.bankAccountNumber,
-                                             bankLocationId: data.bankLocationId)
+        let details = BACSDirectDebitDetails(
+            paymentMethod: bacsDirectDebitPaymentMethod,
+            holderName: data.holderName,
+            bankAccountNumber: data.bankAccountNumber,
+            bankLocationId: data.bankLocationId
+        )
         confirmationPresenter?.startLoading()
         submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
     }
@@ -114,16 +130,22 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
     // MARK: - Private
 
     private func assembleConfirmationView(with data: BACSDirectDebitData) -> UIViewController {
-        let confirmationViewController = BACSConfirmationViewController(title: paymentMethod.name,
-                                                                        styleProvider: configuration.style,
-                                                                        localizationParameters: configuration.localizationParameters)
-        let itemsFactory = BACSItemsFactory(styleProvider: configuration.style,
-                                            localizationParameters: configuration.localizationParameters,
-                                            scope: String(describing: self))
-        confirmationPresenter = BACSConfirmationPresenter(data: data,
-                                                          view: confirmationViewController,
-                                                          router: self,
-                                                          itemsFactory: itemsFactory)
+        let confirmationViewController = BACSConfirmationViewController(
+            title: paymentMethod.name,
+            styleProvider: configuration.style,
+            localizationParameters: configuration.localizationParameters
+        )
+        let itemsFactory = BACSItemsFactory(
+            styleProvider: configuration.style,
+            localizationParameters: configuration.localizationParameters,
+            scope: String(describing: self)
+        )
+        confirmationPresenter = BACSConfirmationPresenter(
+            data: data,
+            view: confirmationViewController,
+            router: self,
+            itemsFactory: itemsFactory
+        )
         confirmationViewController.presenter = confirmationPresenter
         return SecuredViewController(child: confirmationViewController, style: configuration.style)
     }

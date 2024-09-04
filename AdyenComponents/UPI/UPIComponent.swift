@@ -76,9 +76,11 @@ public final class UPIComponent: PaymentComponent,
     /// - Parameter paymentMethod: The UPI payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(paymentMethod: UPIPaymentMethod,
-                context: AdyenContext,
-                configuration: Configuration = .init()) {
+    public init(
+        paymentMethod: UPIPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         self.upiPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
@@ -97,12 +99,18 @@ public final class UPIComponent: PaymentComponent,
 
     /// The upi based payment instructions label item.
     internal lazy var instructionsLabelItem: FormLabelItem = {
-        let item = FormLabelItem(text: localizedString(.upiModeSelection,
-                                                       configuration.localizationParameters),
-                                 style: configuration.style.footnoteLabel)
+        let item = FormLabelItem(
+            text: localizedString(
+                .upiModeSelection,
+                configuration.localizationParameters
+            ),
+            style: configuration.style.footnoteLabel
+        )
         item.style.textAlignment = .left
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                      postfix: ViewIdentifier.instructionsItem)
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.instructionsItem
+        )
         return item
     }()
 
@@ -180,12 +188,18 @@ public final class UPIComponent: PaymentComponent,
 
     /// The QRCode generation message item.
     internal lazy var qrCodeGenerationLabelContainerItem: FormItem = {
-        let item = FormLabelItem(text: localizedString(.UPIQrcodeGenerationMessage,
-                                                       configuration.localizationParameters),
-                                 style: configuration.style.footnoteLabel)
+        let item = FormLabelItem(
+            text: localizedString(
+                .UPIQrcodeGenerationMessage,
+                configuration.localizationParameters
+            ),
+            style: configuration.style.footnoteLabel
+        )
         item.style.textAlignment = .center
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                      postfix: ViewIdentifier.generateQRCodeContainerItem)
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.generateQRCodeContainerItem
+        )
         
         return item.padding().padding()
     }()

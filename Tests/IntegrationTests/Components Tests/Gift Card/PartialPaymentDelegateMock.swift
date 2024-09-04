@@ -8,12 +8,16 @@
 import Foundation
 
 final class PartialPaymentDelegateMock: PartialPaymentDelegate {
-    var onCheckBalance: ((PaymentComponentData,
-                          (Result<Balance, Error>) -> Void) -> Void)?
+    var onCheckBalance: ((
+        PaymentComponentData,
+        (Result<Balance, Error>) -> Void
+    ) -> Void)?
 
-    func checkBalance(with data: PaymentComponentData,
-                      component: Component,
-                      completion: @escaping (Result<Balance, Error>) -> Void) {
+    func checkBalance(
+        with data: PaymentComponentData,
+        component: Component,
+        completion: @escaping (Result<Balance, Error>) -> Void
+    ) {
         onCheckBalance?(data, completion)
     }
 
