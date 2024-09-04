@@ -74,6 +74,9 @@ public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExten
         stackView.distribution = .fillProportionally
         stackView.spacing = 6
         stackView.isUserInteractionEnabled = false
+        // Phone numbers in RTL languages are still read left to right
+        // so we force it into this mode so the StackView order is consistent
+        stackView.semanticContentAttribute = .forceLeftToRight
         
         let button = UIButton(type: .custom)
         button.addTarget(self, action: #selector(handleSelection), for: .touchUpInside)
