@@ -12,9 +12,9 @@ import UIKit
 extension AdyenScope where Base: UIView {
     
     @discardableResult
-    public func snapShot(forceRedraw: Bool = false) -> UIImage? {
+    public func snapshot(forceRedraw: Bool = false) -> UIImage? {
         if forceRedraw {
-            snapShot(forceRedraw: false)
+            snapshot(forceRedraw: false)
         }
         
         UIGraphicsBeginImageContextWithOptions(base.bounds.size, false, 0.0)
