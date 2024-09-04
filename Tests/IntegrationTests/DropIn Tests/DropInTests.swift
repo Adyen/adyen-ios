@@ -552,12 +552,10 @@ class DropInTests: XCTestCase {
         let expectation = expectation(description: "Api Client Called")
         
         let apiClient = APIClientMock()
-        apiClient.mockedResults = [
-            .success(OrderStatusResponse(
-                remainingAmount: .init(value: 100, currencyCode: "EUR"),
-                paymentMethods: nil
-            ))
-        ]
+        apiClient.mockedResults = [.success(OrderStatusResponse(
+            remainingAmount: .init(value: 100, currencyCode: "EUR"),
+            paymentMethods: nil
+        ))]
         apiClient.onExecute = {
             XCTAssertTrue($0 is OrderStatusRequest)
             expectation.fulfill()
@@ -595,8 +593,7 @@ class DropInTests: XCTestCase {
         let failExpectation = expectation(description: "Delegate didFail Called")
         
         let apiClient = APIClientMock()
-        apiClient.mockedResults = [
-            // Returning a random error so the reload fails
+        apiClient.mockedResults = [ // Returning a random error so the reload fails
             .failure(APIError(status: nil, errorCode: "", errorMessage: "", type: .internal))
         ]
         apiClient.onExecute = {

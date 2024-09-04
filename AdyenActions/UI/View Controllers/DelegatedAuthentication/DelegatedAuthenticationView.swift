@@ -248,7 +248,7 @@ internal final class DelegatedAuthenticationView: UIView {
         
         NSLayoutConstraint.activate([
             logoImage.heightAnchor.constraint(equalToConstant: 40),
-                        
+            
             scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: Constants.topMargin),
             scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: Constants.leadingMargin),
             scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -Constants.trailingMargin),

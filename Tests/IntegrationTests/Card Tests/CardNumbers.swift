@@ -70,9 +70,7 @@ enum CardNumbers {
         "5066991111111118" // BR
     ]
     
-    static let dankort = [
-        "5019555544445555"
-    ]
+    static let dankort = ["5019555544445555"]
     
     static let unionPay = [
         "6250946000000016", // Debit
@@ -80,9 +78,7 @@ enum CardNumbers {
         "6243030000000001" // Express Pay
     ]
     
-    static let uatp = [
-        "135410014004955"
-    ]
+    static let uatp = ["135410014004955"]
     
     static let invalid = [
         "4111111111111112",

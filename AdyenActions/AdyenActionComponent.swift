@@ -221,8 +221,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     
     private func handle(_ action: ThreeDS2ChallengeAction) {
         guard let threeDS2Component = currentActionComponent as? ThreeDS2Component else {
-            AdyenAssertion.assertionFailure(
-                // swiftlint:disable:next line_length
+            AdyenAssertion.assertionFailure( // swiftlint:disable:next line_length
                 message: "ThreeDS2Component is nil. There must be a ThreeDS2FingerprintAction action preceding a ThreeDS2ChallengeAction action"
             )
             return

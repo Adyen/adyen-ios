@@ -108,21 +108,19 @@ internal func generateRSAPublicKey(with modulus: Data, exponent: Data) -> Data {
         exponentLengthOctets.count + exponentBytes.count + 2).encodedOctets()
     
     // Combine the two sets of data into a single container
-    let bytesArray: [UInt8] = [
-        // Container type and size
+    let bytesArray: [UInt8] = [ // Container type and size
         [0x30],
         totalLengthOctets,
-        
+                               
         // Modulus
         [0x02],
         modulusLengthOctets,
         modulusBytes,
-        
+                               
         // Exponent
         [0x02],
         exponentLengthOctets,
         exponentBytes
-        
     ].flatMap { $0 }
 
     return Data(bytes: bytesArray, count: bytesArray.count)

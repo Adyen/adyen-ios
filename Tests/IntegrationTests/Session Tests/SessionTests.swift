@@ -1140,21 +1140,19 @@ class SessionTests: XCTestCase {
         configuration: SessionSetupResponse.Configuration = .init(installmentOptions: nil, enableStoreDetails: true)
     ) throws -> AdyenSession {
         let apiClient = APIClientMock()
-        apiClient.mockedResults = [
-            .success(
-                SessionSetupResponse(
-                    countryCode: "US",
-                    shopperLocale: "US",
-                    paymentMethods: expectedPaymentMethods,
-                    amount: .init(
-                        value: 220,
-                        currencyCode: "USD"
-                    ),
-                    sessionData: "session_data_1",
-                    configuration: configuration
-                )
+        apiClient.mockedResults = [.success(
+            SessionSetupResponse(
+                countryCode: "US",
+                shopperLocale: "US",
+                paymentMethods: expectedPaymentMethods,
+                amount: .init(
+                    value: 220,
+                    currencyCode: "USD"
+                ),
+                sessionData: "session_data_1",
+                configuration: configuration
             )
-        ]
+        )]
         var sut: AdyenSession!
         let initializationExpectation = expectation(description: "Expect session object to be initialized")
         AdyenSession.initialize(

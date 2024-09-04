@@ -20,8 +20,15 @@ class QRCodeActionComponentUITests: XCTestCase {
     }
     
     func testUIConfigurationForPromptPay() {
-        lazy var method = InstantPaymentMethod(type: .other("promptpay"), name: "promptpay")
-        let action = QRCodeAction(paymentMethodType: .promptPay, qrCodeData: "DummyData", paymentData: "DummyData")
+        lazy var method = InstantPaymentMethod(
+            type: .other("promptpay"),
+            name: "promptpay"
+        )
+        let action = QRCodeAction(
+            paymentMethodType: .promptPay,
+            qrCodeData: "DummyData",
+            paymentData: "DummyData"
+        )
 
         let dummyExpectation = expectation(description: "Dummy Expectation")
         var style = QRCodeComponentStyle()
@@ -45,12 +52,14 @@ class QRCodeActionComponentUITests: XCTestCase {
         )
 
         style.progressView = ProgressViewStyle(
-            progressTintColor: .brown, trackTintColor: .cyan
+            progressTintColor: .brown,
+            trackTintColor: .cyan
         )
 
         style.expirationLabel = TextStyle(
             font: .boldSystemFont(ofSize: 25),
-            color: .blue, textAlignment: .right
+            color: .blue,
+            textAlignment: .right
         )
 
         style.logoCornerRounding = .fixed(10)
@@ -107,12 +116,14 @@ class QRCodeActionComponentUITests: XCTestCase {
         )
 
         style.progressView = ProgressViewStyle(
-            progressTintColor: .cyan, trackTintColor: .brown
+            progressTintColor: .cyan,
+            trackTintColor: .brown
         )
 
         style.expirationLabel = TextStyle(
             font: .boldSystemFont(ofSize: 25),
-            color: .magenta, textAlignment: .right
+            color: .magenta,
+            textAlignment: .right
         )
 
         style.logoCornerRounding = .fixed(10)
@@ -169,12 +180,14 @@ class QRCodeActionComponentUITests: XCTestCase {
         )
 
         style.progressView = ProgressViewStyle(
-            progressTintColor: .brown, trackTintColor: .cyan
+            progressTintColor: .brown,
+            trackTintColor: .cyan
         )
 
         style.expirationLabel = TextStyle(
             font: .boldSystemFont(ofSize: 25),
-            color: .blue, textAlignment: .right
+            color: .blue,
+            textAlignment: .right
         )
 
         style.logoCornerRounding = .fixed(10)
@@ -232,12 +245,14 @@ class QRCodeActionComponentUITests: XCTestCase {
         )
 
         style.progressView = ProgressViewStyle(
-            progressTintColor: .brown, trackTintColor: .cyan
+            progressTintColor: .brown,
+            trackTintColor: .cyan
         )
 
         style.expirationLabel = TextStyle(
             font: .boldSystemFont(ofSize: 25),
-            color: .blue, textAlignment: .right
+            color: .blue,
+            textAlignment: .right
         )
 
         style.logoCornerRounding = .fixed(10)

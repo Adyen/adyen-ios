@@ -18,7 +18,8 @@ class VoucherViewTests: XCTestCase {
             totalAmount: .init(value: 100, currencyCode: "EUR", localeIdentifier: nil),
             reference: "reference",
             expiresAt: Date(),
-            downloadUrl: URL(string: "https://google.com")!, passCreationToken: nil
+            downloadUrl: URL(string: "https://google.com")!,
+            passCreationToken: nil
         )
     )
 

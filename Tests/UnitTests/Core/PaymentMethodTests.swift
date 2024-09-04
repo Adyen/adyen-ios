@@ -45,9 +45,7 @@ class PaymentMethodTests: XCTestCase {
                     "type": "unknown",
                     "name": "Redirect Payment Method"
                 ],
-                [
-                    "name": "Invalid Payment Method"
-                ],
+                ["name": "Invalid Payment Method"],
                 bcmcCardDictionary,
                 applePayDictionary,
                 payPalDictionary,

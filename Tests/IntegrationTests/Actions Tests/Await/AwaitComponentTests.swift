@@ -94,19 +94,17 @@ class AwaitComponentTests: XCTestCase {
         let action = AwaitAction(paymentData: "data", paymentMethodType: .mbway)
 
         let handlerExpectation = expectation(description: "AwaitActionHandler.handle() must be called.")
-        let handlerProvider = AwaitActionHandlerProviderMock(
-            onAwaitHandler: { type in
-                XCTAssertEqual(type, AwaitPaymentMethod.mbway)
+        let handlerProvider = AwaitActionHandlerProviderMock(onAwaitHandler: { type in
+            XCTAssertEqual(type, AwaitPaymentMethod.mbway)
                 
-                let handler = PollingHandlerMock()
-                handler.onHandle = {
-                    XCTAssertTrue($0.paymentData == action.paymentData)
-                    handlerExpectation.fulfill()
-                }
+            let handler = PollingHandlerMock()
+            handler.onHandle = {
+                XCTAssertTrue($0.paymentData == action.paymentData)
+                handlerExpectation.fulfill()
+            }
                 
-                return handler
-            }, onQRHandler: nil
-        )
+            return handler
+        }, onQRHandler: nil)
 
         let sut = AwaitComponent(context: Dummy.context, awaitComponentBuilder: handlerProvider)
         sut.configuration.style = style

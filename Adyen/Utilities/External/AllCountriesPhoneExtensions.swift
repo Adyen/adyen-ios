@@ -7,7 +7,6 @@
 import Foundation
 
 internal let allCountriesPhoneExtensions: [String: String] = [
-
     "AF": "+93",
     
     "AL": "+355",
@@ -489,5 +488,4 @@ internal let allCountriesPhoneExtensions: [String: String] = [
     "VG": "+1 284",
     
     "VI": "+1 340"
-
 ]

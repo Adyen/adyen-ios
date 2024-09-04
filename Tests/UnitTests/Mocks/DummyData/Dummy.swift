@@ -110,7 +110,8 @@ enum Dummy: Error {
     }
 
     internal static func getConfiguration(
-        with shopperInfo: PrefilledShopperInformation? = nil, style: FormComponentStyle = FormComponentStyle(),
+        with shopperInfo: PrefilledShopperInformation? = nil,
+        style: FormComponentStyle = FormComponentStyle(),
         showEmailAddress: Bool
     ) -> BoletoComponent.Configuration {
         BoletoComponent.Configuration(

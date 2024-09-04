@@ -239,14 +239,12 @@ class ComponentManagerTests: XCTestCase {
         )
 
         var paymentMethods = paymentMethods
-        paymentMethods.paid = [
-            OrderPaymentMethod(
-                lastFour: "1234",
-                type: .other("type-1"),
-                transactionLimit: Amount(value: 123, currencyCode: "EUR"),
-                amount: Amount(value: 1234, currencyCode: "EUR")
-            )
-        ]
+        paymentMethods.paid = [OrderPaymentMethod(
+            lastFour: "1234",
+            type: .other("type-1"),
+            transactionLimit: Amount(value: 123, currencyCode: "EUR"),
+            amount: Amount(value: 1234, currencyCode: "EUR")
+        )]
 
         let sut = ComponentManager(
             paymentMethods: paymentMethods,

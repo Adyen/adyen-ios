@@ -167,9 +167,7 @@ class AnalyticsProviderTests: XCTestCase {
         let analyticsExpectation = expectation(description: "Initial request is triggered")
         
         let apiClient = APIClientMock()
-        apiClient.mockedResults = [
-            .success(InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptId))
-        ]
+        apiClient.mockedResults = [.success(InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptId))]
         apiClient.onExecute = { request in
             if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
                 XCTAssertNil(initialAnalyticsdRequest.amount)
@@ -431,9 +429,7 @@ class AnalyticsProviderTests: XCTestCase {
         let analyticsExpectation = expectation(description: "Initial request is triggered")
         
         let apiClient = APIClientMock()
-        apiClient.mockedResults = [
-            .success(InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptId))
-        ]
+        apiClient.mockedResults = [.success(InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptId))]
         apiClient.onExecute = { request in
             if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
                 XCTAssertEqual(initialAnalyticsdRequest.amount, amount)

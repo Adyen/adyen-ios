@@ -29,19 +29,9 @@ public struct PrefilledShopperInformation: ShopperInformation {
     
     /// The email address.
     public var emailAddress: String?
-
+    
     /// The telephone number.
-
-    /// The telephone number.
-    @available(
-        *,
-        deprecated,
-        message:
-        """
-        This property is no longer supported.
-        Please use phoneNumber instead.
-        """
-    )
+    @available(*, deprecated, renamed: "phoneNumber")
     public var telephoneNumber: String?
 
     /// The phone number.
@@ -68,21 +58,7 @@ public struct PrefilledShopperInformation: ShopperInformation {
     ///   - deliveryAddress: The delivery address of the shopper, optional.
     ///   - socialSecurityNumber: The social security number of the shopper, optional.
     ///   - card: Shopper's card basic information, optional.
-    @available(
-        *,
-        deprecated,
-        message:
-        """
-        This init is no longer supported.
-        Please use init(shopperName: ShopperName? = nil,
-                emailAddress: String? = nil,
-                phoneNumber: PhoneNumber? = nil,
-                billingAddress: PostalAddress? = nil,
-                deliveryAddress: PostalAddress? = nil,
-                socialSecurityNumber: String? = nil,
-                card: CardInformation? = nil) instead.
-        """
-    )
+    @available(*, deprecated, renamed: "init(shopperName:emailAddress:phoneNumber:billingAddress:deliveryAddress:socialSecurityNumber:card:)")
     public init(
         shopperName: ShopperName? = nil,
         emailAddress: String? = nil,

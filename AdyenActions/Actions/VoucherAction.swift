@@ -146,8 +146,12 @@ public class GenericVoucherAction: Decodable, AnyVoucherAction {
         let expiresAtString = try container.decode(String.self, forKey: .expiresAt)
         let dateFormatter = ISO8601DateFormatter()
         dateFormatter.formatOptions = [
-            .withYear, .withMonth, .withDay, .withTime,
-            .withDashSeparatorInDate, .withColonSeparatorInTime
+            .withYear,
+            .withMonth,
+            .withDay,
+            .withTime,
+            .withDashSeparatorInDate,
+            .withColonSeparatorInTime
         ]
 
         if let date = dateFormatter.date(from: expiresAtString) {

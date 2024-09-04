@@ -48,7 +48,8 @@ class SelfRetainingAPIClientTests: XCTestCase {
             with: apiClient,
             onDeinit: {
                 deinitExpectation.fulfill()
-            }, completion: { result in
+            },
+            completion: { result in
                 switch result {
                 case .failure:
                     XCTFail()
@@ -91,7 +92,8 @@ class SelfRetainingAPIClientTests: XCTestCase {
             with: apiClient,
             onDeinit: {
                 deinitExpectation.fulfill()
-            }, completion: { result in
+            },
+            completion: { result in
                 switch result {
                 case .failure:
                     XCTFail()

@@ -31,9 +31,7 @@ private struct PaymentMethodField: Decodable {
 
 internal enum AnyPaymentMethodDecoder {
     
-    private static var decoders: [PaymentMethodType: PaymentMethodDecoder] = [
-
-        // Unsupported payment methods
+    private static var decoders: [PaymentMethodType: PaymentMethodDecoder] = [ // Unsupported payment methods
         .bcmcMobileQR: UnsupportedPaymentMethodDecoder(),
         .weChatMiniProgram: UnsupportedPaymentMethodDecoder(),
         .weChatQR: UnsupportedPaymentMethodDecoder(),
@@ -46,7 +44,7 @@ internal enum AnyPaymentMethodDecoder {
         .upiQr: UnsupportedPaymentMethodDecoder(),
         .upiIntent: UnsupportedPaymentMethodDecoder(),
         .upiCollect: UnsupportedPaymentMethodDecoder(),
-
+                                                                              
         // Supported payment methods
         .card: CardPaymentMethodDecoder(),
         .scheme: CardPaymentMethodDecoder(),
