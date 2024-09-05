@@ -44,6 +44,9 @@ internal final class ExpirationTimer {
         timer = Timer.scheduledTimer(withTimeInterval: tickInterval, repeats: true) { [weak self] _ in
             self?.onTimerTick()
         }
+        
+        // Notify immediately
+        notify()
     }
     
     internal func stopTimer() {
@@ -52,8 +55,16 @@ internal final class ExpirationTimer {
     }
     
     private func onTimerTick() {
+        defer { notify() }
+        
         timeLeft -= 1
         
+        if timeLeft <= 0 {
+            stopTimer()
+        }
+    }
+    
+    private func notify() {
         if timeLeft > 0 {
             onTick(timeLeft)
         } else {
