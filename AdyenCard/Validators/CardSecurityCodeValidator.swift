@@ -8,8 +8,7 @@
 import Foundation
 
 /// Validates a card's security code.
-@_spi(AdyenInternal)
-public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObserver, StatusValidator {
+public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObserver {
     
     /// Initiate new instance of CardSecurityCodeValidator
     public init() {
@@ -42,6 +41,15 @@ public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObser
         minimumLength = length
     }
     
+    override public func isValid(_ value: String) -> Bool {
+        validate(value).isValid
+    }
+    
+}
+
+@_spi(AdyenInternal)
+extension CardSecurityCodeValidator: StatusValidator {
+    
     public func validate(_ value: String) -> ValidationStatus {
         if super.isValid(value) {
             return .valid
@@ -53,9 +61,4 @@ public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObser
         
         return .invalid(CardValidationError.securityCodePartial)
     }
-    
-    override public func isValid(_ value: String) -> Bool {
-        validate(value).isValid
-    }
-    
 }

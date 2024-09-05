@@ -10,8 +10,7 @@ import Foundation
 /// Validates a card's expiration date.
 /// The input is expected to be sanitized as "MMYY".
 /// Validation will fail when the format is invalid or the date is in the past.
-@_spi(AdyenInternal)
-public final class CardExpiryDateValidator: StatusValidator {
+public final class CardExpiryDateValidator: Validator {
     
     private enum Constants {
         static let maxYearsDifference = 30
@@ -30,6 +29,32 @@ public final class CardExpiryDateValidator: StatusValidator {
     internal init(referenceDate: Date = Date()) {
         self.referenceDate = referenceDate
     }
+    
+    public func isValid(_ string: String) -> Bool {
+        validate(string).isValid
+    }
+    
+    private var calendar: Calendar { Calendar(identifier: .gregorian) }
+    
+    private func calculateExpiryDate(fromYear year: Int, month: Int) -> Date? {
+        var expiryDateComponents = DateComponents()
+        expiryDateComponents.month = month
+        expiryDateComponents.year = year
+        expiryDateComponents.day = 1
+        guard let beginningOfMonthDate = calendar.date(from: expiryDateComponents) else { return nil }
+        guard let beginningNextMonthDate = calendar.date(byAdding: .month, value: 1, to: beginningOfMonthDate) else { return nil }
+        guard let endOfMonthDate = calendar.date(byAdding: .day, value: -1, to: beginningNextMonthDate) else { return nil }
+        
+        return endOfMonthDate
+    }
+    
+    public func maximumLength(for value: String) -> Int {
+        4
+    }
+}
+
+@_spi(AdyenInternal)
+extension CardExpiryDateValidator: StatusValidator {
     
     public func validate(_ value: String) -> ValidationStatus {
         guard !value.isEmpty else {
@@ -75,27 +100,4 @@ public final class CardExpiryDateValidator: StatusValidator {
         
         return .valid
     }
-    
-    public func isValid(_ string: String) -> Bool {
-        validate(string).isValid
-    }
-    
-    private var calendar: Calendar { Calendar(identifier: .gregorian) }
-    
-    private func calculateExpiryDate(fromYear year: Int, month: Int) -> Date? {
-        var expiryDateComponents = DateComponents()
-        expiryDateComponents.month = month
-        expiryDateComponents.year = year
-        expiryDateComponents.day = 1
-        guard let beginningOfMonthDate = calendar.date(from: expiryDateComponents) else { return nil }
-        guard let beginningNextMonthDate = calendar.date(byAdding: .month, value: 1, to: beginningOfMonthDate) else { return nil }
-        guard let endOfMonthDate = calendar.date(byAdding: .day, value: -1, to: beginningNextMonthDate) else { return nil }
-        
-        return endOfMonthDate
-    }
-    
-    public func maximumLength(for value: String) -> Int {
-        4
-    }
-    
 }
