@@ -97,7 +97,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         return amountToPayLabel
     }()
     
-    private lazy var progressView: UIProgressView = {
+    internal lazy var progressView: UIProgressView = {
         let progressView = UIProgressView(style: model.style.progressView)
         progressView.observedProgress = model.observedProgress
         progressView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "progressView")

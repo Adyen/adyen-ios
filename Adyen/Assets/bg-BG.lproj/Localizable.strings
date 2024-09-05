@@ -6,7 +6,7 @@
 "adyen.error.title" = "Грешка";
 "adyen.error.unknown" = "Възникна неизвестна грешка";
 "adyen.validationAlert.title" = "Невалидно въвеждане";
-"adyen.paymentMethods.otherMethods" = "други";
+"adyen.paymentMethods.otherMethods" = "Други";
 "adyen.paymentMethods.storedMethods" = "Съхранени";
 "adyen.paymentMethods.paidMethods" = "Приложено";
 "adyen.paymentMethods.title" = "Начини на плащане";

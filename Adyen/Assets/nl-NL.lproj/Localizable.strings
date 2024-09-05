@@ -6,7 +6,7 @@
 "adyen.error.title" = "Fout";
 "adyen.error.unknown" = "Er is een onbekende fout opgetreden";
 "adyen.validationAlert.title" = "Ongeldige invoer";
-"adyen.paymentMethods.otherMethods" = "overige";
+"adyen.paymentMethods.otherMethods" = "Overige";
 "adyen.paymentMethods.storedMethods" = "Opgeslagen";
 "adyen.paymentMethods.paidMethods" = "Toegepast";
 "adyen.paymentMethods.title" = "Betaalmethodes";

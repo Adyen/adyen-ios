@@ -6,7 +6,7 @@
 "adyen.error.title" = "Greška";
 "adyen.error.unknown" = "Dogodila se nepoznata greška";
 "adyen.validationAlert.title" = "Pogrešan unos";
-"adyen.paymentMethods.otherMethods" = "drugi";
+"adyen.paymentMethods.otherMethods" = "Drugi";
 "adyen.paymentMethods.storedMethods" = "Pohranjeno";
 "adyen.paymentMethods.paidMethods" = "Primijenjeni";
 "adyen.paymentMethods.title" = "Način plaćanja";
@@ -37,7 +37,7 @@
 "adyen.card.stored.expires" = "Istječe %@";
 "adyen.card.numberItem.unsupportedBrand" = "Kartica %@ nije podržana";
 "adyen.card.numberItem.unknownBrand" = "Unesena marka kartice nije podržana";
-"adyen.dropIn.stored.title" = "Potvrdite plaćanje: % @";
+"adyen.dropIn.stored.title" = "Potvrdite plaćanje: %@";
 "adyen.dropIn.preselected.openAll.title" = "Promijeni način plaćanja";
 "adyen.continueTo" = "Nastavi na %@";
 "adyen.continueTitle" = "Nastavi";
@@ -225,7 +225,7 @@
 "adyen.address.lookup.search.empty.title" = "Ne možeš potražiti svoju adresu?";
 "adyen.address.lookup.search.empty.subtitle" = "Uvijek možete #ručno unijeti svoju adresu#";
 "adyen.address.lookup.search.empty.title.noResults" = "Nisu pronađeni rezultati";
-"adyen.address.lookup.search.empty.subtitle.noResults" = "&#39;%@&#39; nije se podudarao s ničime, pokušajte ponovno ili upotrijebite #ručni unos adrese#";
+"adyen.address.lookup.search.empty.subtitle.noResults" = "'%@' nije se podudarao s ničime, pokušajte ponovno ili upotrijebite #ručni unos adrese#";
 "adyen.address.lookup.item.validationFailureMessage.empty" = "Potrebna je adresa";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Nevažeća adresa";
 "adyen.address.lookup.search.manualEntryItem.title" = "Ručno unesite adresu";
