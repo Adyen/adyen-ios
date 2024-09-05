@@ -26,8 +26,10 @@ internal final class StoredCardComponent: PaymentComponent, PaymentAware, Presen
     
     private let storedCardPaymentMethod: StoredCardPaymentMethod
     
-    internal init(storedCardPaymentMethod: StoredCardPaymentMethod,
-                  context: AdyenContext) {
+    internal init(
+        storedCardPaymentMethod: StoredCardPaymentMethod,
+        context: AdyenContext
+    ) {
         self.storedCardPaymentMethod = storedCardPaymentMethod
         self.context = context
     }
@@ -40,9 +42,11 @@ internal final class StoredCardComponent: PaymentComponent, PaymentAware, Presen
         sendInitialAnalytics()
         sendDidLoadEvent()
         
-        let manager = StoredCardAlertManager(paymentMethod: storedCardPaymentMethod,
-                                             context: context,
-                                             amount: payment?.amount)
+        let manager = StoredCardAlertManager(
+            paymentMethod: storedCardPaymentMethod,
+            context: context,
+            amount: payment?.amount
+        )
         
         manager.localizationParameters = localizationParameters
         manager.completionHandler = { [weak self] result in
@@ -50,9 +54,11 @@ internal final class StoredCardComponent: PaymentComponent, PaymentAware, Presen
             
             switch result {
             case let .success(details):
-                self.submit(data: PaymentComponentData(paymentMethodDetails: details,
-                                                       amount: self.payment?.amount,
-                                                       order: self.order))
+                self.submit(data: PaymentComponentData(
+                    paymentMethodDetails: details,
+                    amount: self.payment?.amount,
+                    order: self.order
+                ))
             case let .failure(error):
                 self.delegate?.didFail(with: error, from: self)
             }

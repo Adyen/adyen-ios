@@ -17,8 +17,10 @@ class BACSConfirmationViewControllerTests: XCTestCase {
         try super.setUpWithError()
         let styleProvider = FormComponentStyle()
         presenter = BACSConfirmationPresenterProtocolMock()
-        sut = BACSConfirmationViewController(title: "BACS Direct Debit",
-                                             styleProvider: styleProvider)
+        sut = BACSConfirmationViewController(
+            title: "BACS Direct Debit",
+            styleProvider: styleProvider
+        )
         sut.presenter = presenter
         
     }

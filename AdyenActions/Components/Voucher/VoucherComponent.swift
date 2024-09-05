@@ -74,22 +74,28 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The voucher component configurations.
-    public convenience init(context: AdyenContext,
-                            configuration: Configuration = Configuration()) {
-        self.init(context: context,
-                  voucherShareableViewProvider: nil,
-                  configuration: configuration,
-                  passProvider: AppleWalletPassProvider(context: context))
+    public convenience init(
+        context: AdyenContext,
+        configuration: Configuration = Configuration()
+    ) {
+        self.init(
+            context: context,
+            voucherShareableViewProvider: nil,
+            configuration: configuration,
+            passProvider: AppleWalletPassProvider(context: context)
+        )
     }
 
     /// Initializes the `AwaitComponent`.
     /// - Parameter context: The context object for this component.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter style: The Component UI style.
-    internal init(context: AdyenContext,
-                  voucherShareableViewProvider: AnyVoucherShareableViewProvider?,
-                  configuration: Configuration = Configuration(),
-                  passProvider: AnyAppleWalletPassProvider?) {
+    internal init(
+        context: AdyenContext,
+        voucherShareableViewProvider: AnyVoucherShareableViewProvider?,
+        configuration: Configuration = Configuration(),
+        passProvider: AnyAppleWalletPassProvider?
+    ) {
         self.context = context
         self.configuration = configuration
         self.voucherShareableViewProvider = voucherShareableViewProvider ??
@@ -132,11 +138,15 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     internal let presenterViewController = UIViewController()
         
     private func navBarType() -> NavigationBarType {
-        let model = ActionNavigationBar.Model(leadingButtonTitle: Bundle.Adyen.localizedEditCopy,
-                                              trailingButtonTitle: Bundle.Adyen.localizedDoneCopy)
-        let style = ActionNavigationBar.Style(leadingButton: configuration.style.editButton,
-                                              trailingButton: configuration.style.doneButton,
-                                              backgroundColor: configuration.style.backgroundColor)
+        let model = ActionNavigationBar.Model(
+            leadingButtonTitle: Bundle.Adyen.localizedEditCopy,
+            trailingButtonTitle: Bundle.Adyen.localizedDoneCopy
+        )
+        let style = ActionNavigationBar.Style(
+            leadingButton: configuration.style.editButton,
+            trailingButton: configuration.style.doneButton,
+            backgroundColor: configuration.style.backgroundColor
+        )
         
         let navBar = ActionNavigationBar(model: model, style: style)
         

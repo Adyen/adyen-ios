@@ -74,9 +74,11 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
         }
 
-        let component = CardComponent(paymentMethod: paymentMethod,
-                                      context: context,
-                                      configuration: ConfigurationConstants.current.cardConfiguration)
+        let component = CardComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: ConfigurationConstants.current.cardConfiguration
+        )
         component.cardComponentDelegate = self
         component.delegate = self
         return component
@@ -88,9 +90,11 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         }
 
         let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.leftBarButtonItem = .init(barButtonSystemItem: .cancel,
-                                                                          target: self,
-                                                                          action: #selector(cancelPressed))
+        component.viewController.navigationItem.leftBarButtonItem = .init(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(cancelPressed)
+        )
         return navigation
     }
 

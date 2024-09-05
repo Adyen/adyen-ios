@@ -52,19 +52,25 @@ class SessionTests: XCTestCase {
             ]
         ]
         let expectedPaymentMethods = try AdyenCoder.decode(dictionary) as PaymentMethods
-        apiClient.mockedResults = [.success(SessionSetupResponse(countryCode: "US",
-                                                                 shopperLocale: "US",
-                                                                 paymentMethods: expectedPaymentMethods,
-                                                                 amount: .init(value: 220, currencyCode: "USD"),
-                                                                 sessionData: "session_data_1",
-                                                                 configuration: .init(installmentOptions: nil, enableStoreDetails: false)))]
+        apiClient.mockedResults = [.success(SessionSetupResponse(
+            countryCode: "US",
+            shopperLocale: "US",
+            paymentMethods: expectedPaymentMethods,
+            amount: .init(value: 220, currencyCode: "USD"),
+            sessionData: "session_data_1",
+            configuration: .init(installmentOptions: nil, enableStoreDetails: false)
+        ))]
         let expectation = expectation(description: "Expect session object to be initialized")
-        AdyenSession.initialize(with: .init(sessionIdentifier: "session_id",
-                                            initialSessionData: "session_data_0",
-                                            context: context),
-                                delegate: SessionDelegateMock(),
-                                presentationDelegate: PresentationDelegateMock(),
-                                baseAPIClient: apiClient) { result in
+        AdyenSession.initialize(
+            with: .init(
+                sessionIdentifier: "session_id",
+                initialSessionData: "session_data_0",
+                context: context
+            ),
+            delegate: SessionDelegateMock(),
+            presentationDelegate: PresentationDelegateMock(),
+            baseAPIClient: apiClient
+        ) { result in
             switch result {
             case .failure:
                 XCTFail()
@@ -96,15 +102,19 @@ class SessionTests: XCTestCase {
             amount: nil,
             order: nil
         )
-        let component = MBWayComponent(paymentMethod: paymentMethod,
-                                       context: context)
+        let component = MBWayComponent(
+            paymentMethod: paymentMethod,
+            context: context
+        )
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
-        apiClient.mockedResults = [.success(PaymentsResponse(resultCode: .authorised,
-                                                             action: nil,
-                                                             order: nil,
-                                                             sessionData: "session_data",
-                                                             sessionResult: "sessionResultString"))]
+        apiClient.mockedResults = [.success(PaymentsResponse(
+            resultCode: .authorised,
+            action: nil,
+            order: nil,
+            sessionData: "session_data",
+            sessionResult: "sessionResultString"
+        ))]
         let didSubmitExpectation = expectation(description: "Expect payments call to be made")
         apiClient.onExecute = { _ in
             didSubmitExpectation.fulfill()
@@ -196,8 +206,10 @@ class SessionTests: XCTestCase {
             amount: nil,
             order: nil
         )
-        let component = MBWayComponent(paymentMethod: paymentMethod,
-                                       context: context)
+        let component = MBWayComponent(
+            paymentMethod: paymentMethod,
+            context: context
+        )
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
         let expectedAction = RedirectAction(
@@ -268,27 +280,33 @@ class SessionTests: XCTestCase {
             amount: nil,
             order: nil
         )
-        let component = MBWayComponent(paymentMethod: paymentMethod,
-                                       context: context)
-        let dropInComponent = DropInComponent(paymentMethods: expectedPaymentMethods,
-                                              context: Dummy.context,
-                                              title: nil)
+        let component = MBWayComponent(
+            paymentMethod: paymentMethod,
+            context: context
+        )
+        let dropInComponent = DropInComponent(
+            paymentMethods: expectedPaymentMethods,
+            context: Dummy.context,
+            title: nil
+        )
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
-        let expectedOrder = PartialPaymentOrder(pspReference: "pspReference",
-                                                orderData: "order_data",
-                                                reference: "reference",
-                                                amount: .init(
-                                                    value: 220,
-                                                    currencyCode: "USD",
-                                                    localeIdentifier: nil
-                                                ),
-                                                remainingAmount: .init(
-                                                    value: 20,
-                                                    currencyCode: "USD",
-                                                    localeIdentifier: nil
-                                                ),
-                                                expiresAt: Date())
+        let expectedOrder = PartialPaymentOrder(
+            pspReference: "pspReference",
+            orderData: "order_data",
+            reference: "reference",
+            amount: .init(
+                value: 220,
+                currencyCode: "USD",
+                localeIdentifier: nil
+            ),
+            remainingAmount: .init(
+                value: 20,
+                currencyCode: "USD",
+                localeIdentifier: nil
+            ),
+            expiresAt: Date()
+        )
         let expectedAmount = Amount(
             value: 440,
             currencyCode: "EGP",
@@ -305,12 +323,14 @@ class SessionTests: XCTestCase {
                 )
             ),
             .success(
-                SessionSetupResponse(countryCode: "EG",
-                                     shopperLocale: "EG",
-                                     paymentMethods: expectedPaymentMethods,
-                                     amount: expectedAmount,
-                                     sessionData: "session_data_xxx",
-                                     configuration: .init(installmentOptions: nil, enableStoreDetails: true, showRemovePaymentMethodButton: true))
+                SessionSetupResponse(
+                    countryCode: "EG",
+                    shopperLocale: "EG",
+                    paymentMethods: expectedPaymentMethods,
+                    amount: expectedAmount,
+                    sessionData: "session_data_xxx",
+                    configuration: .init(installmentOptions: nil, enableStoreDetails: true, showRemovePaymentMethodButton: true)
+                )
             )
         ]
         let apiCallsExpectation = expectation(description: "Expect two API calls to be made")
@@ -346,8 +366,10 @@ class SessionTests: XCTestCase {
             ),
             order: nil
         )
-        let component = MBWayComponent(paymentMethod: paymentMethod,
-                                       context: context)
+        let component = MBWayComponent(
+            paymentMethod: paymentMethod,
+            context: context
+        )
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
         
@@ -363,9 +385,11 @@ class SessionTests: XCTestCase {
     func testDidSubmitOrderRefused() throws {
         let expectedPaymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
         
-        let dropInComponent = DropInComponent(paymentMethods: expectedPaymentMethods,
-                                              context: context,
-                                              title: nil)
+        let dropInComponent = DropInComponent(
+            paymentMethods: expectedPaymentMethods,
+            context: context,
+            title: nil
+        )
         
         let viewController = dropInComponent.viewController
         viewController.loadViewIfNeeded()
@@ -384,25 +408,29 @@ class SessionTests: XCTestCase {
             ),
             order: nil
         )
-        let component = MBWayComponent(paymentMethod: paymentMethod,
-                                       context: context)
+        let component = MBWayComponent(
+            paymentMethod: paymentMethod,
+            context: context
+        )
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
         
-        let expectedOrder = PartialPaymentOrder(pspReference: "pspReference",
-                                                orderData: "order_data",
-                                                reference: "reference",
-                                                amount: .init(
-                                                    value: 220,
-                                                    currencyCode: "USD",
-                                                    localeIdentifier: nil
-                                                ),
-                                                remainingAmount: .init(
-                                                    value: 20,
-                                                    currencyCode: "USD",
-                                                    localeIdentifier: nil
-                                                ),
-                                                expiresAt: Date())
+        let expectedOrder = PartialPaymentOrder(
+            pspReference: "pspReference",
+            orderData: "order_data",
+            reference: "reference",
+            amount: .init(
+                value: 220,
+                currencyCode: "USD",
+                localeIdentifier: nil
+            ),
+            remainingAmount: .init(
+                value: 20,
+                currencyCode: "USD",
+                localeIdentifier: nil
+            ),
+            expiresAt: Date()
+        )
         
         let expectedAmount = Amount(
             value: 440,
@@ -421,12 +449,14 @@ class SessionTests: XCTestCase {
                 )
             ),
             .success(
-                SessionSetupResponse(countryCode: "EG",
-                                     shopperLocale: "EG",
-                                     paymentMethods: expectedPaymentMethods,
-                                     amount: expectedAmount,
-                                     sessionData: "session_data_xxx",
-                                     configuration: .init(installmentOptions: nil, enableStoreDetails: true))
+                SessionSetupResponse(
+                    countryCode: "EG",
+                    shopperLocale: "EG",
+                    paymentMethods: expectedPaymentMethods,
+                    amount: expectedAmount,
+                    sessionData: "session_data_xxx",
+                    configuration: .init(installmentOptions: nil, enableStoreDetails: true)
+                )
             )
         ]
         let didSubmitExpectation = expectation(description: "Expect payments call to be made")
@@ -447,9 +477,11 @@ class SessionTests: XCTestCase {
         let apiClient = APIClientMock()
         sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
         
-        apiClient.mockedResults = [.success(BalanceCheckResponse(sessionData: "session_data2",
-                                                                 balance: Amount(value: 50, currencyCode: "EUR"),
-                                                                 transactionLimit: Amount(value: 30, currencyCode: "EUR")))]
+        apiClient.mockedResults = [.success(BalanceCheckResponse(
+            sessionData: "session_data2",
+            balance: Amount(value: 50, currencyCode: "EUR"),
+            transactionLimit: Amount(value: 30, currencyCode: "EUR")
+        ))]
         
         let expectation = expectation(description: "Expect API call to be made")
         apiClient.onExecute = { _ in
@@ -473,9 +505,11 @@ class SessionTests: XCTestCase {
         let apiClient = APIClientMock()
         sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
         
-        apiClient.mockedResults = [.success(BalanceCheckResponse(sessionData: "session_data2",
-                                                                 balance: nil,
-                                                                 transactionLimit: nil))]
+        apiClient.mockedResults = [.success(BalanceCheckResponse(
+            sessionData: "session_data2",
+            balance: nil,
+            transactionLimit: nil
+        ))]
         
         let expectation = expectation(description: "Expect API call to be made")
         apiClient.onExecute = { _ in
@@ -519,9 +553,11 @@ class SessionTests: XCTestCase {
         sut.apiClient = SessionAPIClient(apiClient: apiClient, session: sut)
         let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
         
-        apiClient.mockedResults = [.success(CreateOrderResponse(pspReference: "ref",
-                                                                orderData: "data",
-                                                                sessionData: "session_data2"))]
+        apiClient.mockedResults = [.success(CreateOrderResponse(
+            pspReference: "ref",
+            orderData: "data",
+            sessionData: "session_data2"
+        ))]
         
         let expectation = expectation(description: "Expect API call to be made")
         apiClient.onExecute = { _ in
@@ -599,8 +635,10 @@ class SessionTests: XCTestCase {
         }
         
         let expectedPaymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
-        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods,
-                                        delegate: sessionDelegate)
+        let sut = try initializeSession(
+            expectedPaymentMethods: expectedPaymentMethods,
+            delegate: sessionDelegate
+        )
         let paymentMethod = expectedPaymentMethods.regular.last as! MBWayPaymentMethod
         let data = PaymentComponentData(
             paymentMethodDetails: MBWayDetails(
@@ -610,8 +648,10 @@ class SessionTests: XCTestCase {
             amount: nil,
             order: nil
         )
-        let component = MBWayComponent(paymentMethod: paymentMethod,
-                                       context: context)
+        let component = MBWayComponent(
+            paymentMethod: paymentMethod,
+            context: context
+        )
         sut.didSubmit(data, from: component)
         wait(for: [didSubmitExpectation], timeout: 10)
     }
@@ -654,9 +694,11 @@ class SessionTests: XCTestCase {
         
         let stored = expectedPaymentMethods.stored.first as! StoredCardPaymentMethod
         let config = DropInComponent.Configuration()
-        let dropIn = DropInComponent(paymentMethods: expectedPaymentMethods,
-                                     context: context,
-                                     configuration: config)
+        let dropIn = DropInComponent(
+            paymentMethods: expectedPaymentMethods,
+            context: context,
+            configuration: config
+        )
         sut.disable(storedPaymentMethod: stored, dropInComponent: dropIn) { success in
             XCTAssertTrue(success)
         }
@@ -680,9 +722,11 @@ class SessionTests: XCTestCase {
         
         let stored = expectedPaymentMethods.stored.first as! StoredCardPaymentMethod
         let config = DropInComponent.Configuration()
-        let dropIn = DropInComponent(paymentMethods: expectedPaymentMethods,
-                                     context: context,
-                                     configuration: config)
+        let dropIn = DropInComponent(
+            paymentMethods: expectedPaymentMethods,
+            context: context,
+            configuration: config
+        )
         sut.disable(storedPaymentMethod: stored, dropInComponent: dropIn) { success in
             XCTAssertFalse(success)
         }
@@ -694,9 +738,11 @@ class SessionTests: XCTestCase {
         let config = DropInComponent.Configuration()
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
-        let dropIn = DropInComponent(paymentMethods: paymenMethods,
-                                     context: context,
-                                     configuration: config)
+        let dropIn = DropInComponent(
+            paymentMethods: paymenMethods,
+            context: context,
+            configuration: config
+        )
         let expectedPaymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
         let sessionHandlerMock = SessionAdvancedHandlerMock()
         let sessionDelegate = SessionDelegateMock()
@@ -1088,33 +1134,37 @@ class SessionTests: XCTestCase {
         XCTAssertFalse(cardComponent.configuration.showsStorePaymentMethodField)
     }
     
-    private func initializeSession(expectedPaymentMethods: PaymentMethods,
-                                   delegate: AdyenSessionDelegate = SessionDelegateMock(),
-                                   configuration: SessionSetupResponse.Configuration = .init(installmentOptions: nil, enableStoreDetails: true)) throws -> AdyenSession {
+    private func initializeSession(
+        expectedPaymentMethods: PaymentMethods,
+        delegate: AdyenSessionDelegate = SessionDelegateMock(),
+        configuration: SessionSetupResponse.Configuration = .init(installmentOptions: nil, enableStoreDetails: true)
+    ) throws -> AdyenSession {
         let apiClient = APIClientMock()
-        apiClient.mockedResults = [
-            .success(
-                SessionSetupResponse(
-                    countryCode: "US",
-                    shopperLocale: "US",
-                    paymentMethods: expectedPaymentMethods,
-                    amount: .init(
-                        value: 220,
-                        currencyCode: "USD"
-                    ),
-                    sessionData: "session_data_1",
-                    configuration: configuration
-                )
+        apiClient.mockedResults = [.success(
+            SessionSetupResponse(
+                countryCode: "US",
+                shopperLocale: "US",
+                paymentMethods: expectedPaymentMethods,
+                amount: .init(
+                    value: 220,
+                    currencyCode: "USD"
+                ),
+                sessionData: "session_data_1",
+                configuration: configuration
             )
-        ]
+        )]
         var sut: AdyenSession!
         let initializationExpectation = expectation(description: "Expect session object to be initialized")
-        AdyenSession.initialize(with: .init(sessionIdentifier: "session_id",
-                                            initialSessionData: "session_data_0",
-                                            context: context),
-                                delegate: delegate,
-                                presentationDelegate: PresentationDelegateMock(),
-                                baseAPIClient: apiClient) { result in
+        AdyenSession.initialize(
+            with: .init(
+                sessionIdentifier: "session_id",
+                initialSessionData: "session_data_0",
+                context: context
+            ),
+            delegate: delegate,
+            presentationDelegate: PresentationDelegateMock(),
+            baseAPIClient: apiClient
+        ) { result in
             switch result {
             case let .success(session):
                 sut = session

@@ -101,15 +101,17 @@ class AssertsTests: XCTestCase {
             expectation.fulfill()
         }
 
-        sut.handle(VoucherAction.dokuAlfamart(DokuVoucherAction(paymentMethodType: .dokuAlfamart,
-                                                                initialAmount: Amount(value: 100, currencyCode: "USD"),
-                                                                totalAmount: Amount(value: 100, currencyCode: "USD"),
-                                                                reference: "",
-                                                                shopperEmail: "",
-                                                                expiresAt: .distantFuture,
-                                                                merchantName: "",
-                                                                shopperName: "",
-                                                                instructionsUrl: URL(string: "https://google.com")!)))
+        sut.handle(VoucherAction.dokuAlfamart(DokuVoucherAction(
+            paymentMethodType: .dokuAlfamart,
+            initialAmount: Amount(value: 100, currencyCode: "USD"),
+            totalAmount: Amount(value: 100, currencyCode: "USD"),
+            reference: "",
+            shopperEmail: "",
+            expiresAt: .distantFuture,
+            merchantName: "",
+            shopperName: "",
+            instructionsUrl: URL(string: "https://google.com")!
+        )))
 
         wait(for: [expectation], timeout: 10)
 

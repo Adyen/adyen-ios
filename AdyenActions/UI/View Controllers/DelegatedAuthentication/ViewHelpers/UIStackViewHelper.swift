@@ -9,14 +9,16 @@ import UIKit
 @_spi(AdyenInternal) import Adyen
 
 extension UIStackView {
-    convenience init(arrangedSubviews: [UIView],
-                     axis: NSLayoutConstraint.Axis = .vertical,
-                     distribution: UIStackView.Distribution = .fill,
-                     alignment: UIStackView.Alignment = .fill,
-                     spacing: CGFloat,
-                     view: UIView,
-                     withBackground: Bool = false,
-                     scopedInstance: Any) {
+    convenience init(
+        arrangedSubviews: [UIView],
+        axis: NSLayoutConstraint.Axis = .vertical,
+        distribution: UIStackView.Distribution = .fill,
+        alignment: UIStackView.Alignment = .fill,
+        spacing: CGFloat,
+        view: UIView,
+        withBackground: Bool = false,
+        scopedInstance: Any
+    ) {
         self.init(arrangedSubviews: arrangedSubviews)
         self.axis = axis
         self.alignment = alignment

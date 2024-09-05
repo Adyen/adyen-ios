@@ -126,7 +126,7 @@ public class SearchViewController: UIViewController, AdyenObserver {
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
             searchBar.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 0),
-
+            
             resultsListViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             resultsListViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             resultsListViewController.view.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
@@ -191,8 +191,10 @@ public class SearchViewController: UIViewController, AdyenObserver {
         get {
             guard resultsListViewController.isViewLoaded else { return .zero }
             let innerSize = resultsListViewController.preferredContentSize
-            return CGSize(width: innerSize.width,
-                          height: .greatestFiniteMagnitude)
+            return CGSize(
+                width: innerSize.width,
+                height: .greatestFiniteMagnitude
+            )
         }
 
         // swiftlint:disable:next unused_setter_value

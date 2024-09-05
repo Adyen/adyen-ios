@@ -54,17 +54,21 @@ final class DokuComponentUITests: XCTestCase {
         style.textField.backgroundColor = .red
 
         let config = DokuComponent.Configuration(style: style)
-        let sut = DokuComponent(paymentMethod: paymentMethod,
-                                context: context,
-                                configuration: config)
+        let sut = DokuComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
 
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
     func testSubmitForm() throws {
-        let sut = DokuComponent(paymentMethod: paymentMethod,
-                                context: context,
-                                configuration: DokuComponent.Configuration())
+        let sut = DokuComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: DokuComponent.Configuration()
+        )
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 

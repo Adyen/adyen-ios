@@ -23,11 +23,13 @@ class PaymentComponentSubjectTests: XCTestCase {
         analyticsProviderMock = AnalyticsProviderMock()
         context = Dummy.context(with: analyticsProviderMock)
         paymentComponentDelegate = PaymentComponentDelegateMock()
-        sut = PaymentComponentSubject(context: context,
-                                      delegate: paymentComponentDelegate,
-                                      payment: payment,
-                                      order: nil,
-                                      paymentMethod: paymentMethod)
+        sut = PaymentComponentSubject(
+            context: context,
+            delegate: paymentComponentDelegate,
+            payment: payment,
+            order: nil,
+            paymentMethod: paymentMethod
+        )
     }
 
     override func tearDownWithError() throws {
@@ -90,10 +92,12 @@ class PaymentComponentSubjectTests: XCTestCase {
         // Given
         let expectedBrowserInfo = BrowserInfo(userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)")
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails,
-                                                        amount: nil,
-                                                        order: nil,
-                                                        browserInfo: expectedBrowserInfo)
+        let paymentComponentData = PaymentComponentData(
+            paymentMethodDetails: paymentMethodDetails,
+            amount: nil,
+            order: nil,
+            browserInfo: expectedBrowserInfo
+        )
 
         // When
         sut.submit(data: paymentComponentData, component: sut)

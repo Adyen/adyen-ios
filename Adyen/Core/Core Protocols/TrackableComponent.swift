@@ -39,8 +39,10 @@ extension TrackableComponent {
         guard !_isDropIn else { return }
         let amount = context.payment?.amount
         let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AnalyticsForSession.sessionId)
-        context.analyticsProvider?.sendInitialAnalytics(with: analyticsFlavor,
-                                                        additionalFields: additionalFields)
+        context.analyticsProvider?.sendInitialAnalytics(
+            with: analyticsFlavor,
+            additionalFields: additionalFields
+        )
     }
 }
 

@@ -56,10 +56,12 @@ internal final class DropInExample: InitialDataFlowProtocol {
             
             switch response {
             case let .success(config):
-                AdyenSession.initialize(with: config,
-                                        delegate: self,
-                                        presentationDelegate: self,
-                                        completion: completion)
+                AdyenSession.initialize(
+                    with: config,
+                    delegate: self,
+                    presentationDelegate: self,
+                    completion: completion
+                )
                 
             case let .failure(error):
                 completion(.failure(error))
@@ -78,10 +80,12 @@ internal final class DropInExample: InitialDataFlowProtocol {
     private func dropInComponent(from session: AdyenSession) -> DropInComponent {
         let paymentMethods = session.sessionContext.paymentMethods
         let configuration = dropInConfiguration(from: paymentMethods)
-        let component = DropInComponent(paymentMethods: paymentMethods,
-                                        context: generateContext(),
-                                        configuration: configuration,
-                                        title: ConfigurationConstants.appName)
+        let component = DropInComponent(
+            paymentMethods: paymentMethods,
+            context: generateContext(),
+            configuration: configuration,
+            title: ConfigurationConstants.appName
+        )
         
         component.delegate = session
         component.storedPaymentMethodsDelegate = session

@@ -71,8 +71,10 @@ class LocalizationTests: XCTestCase {
     // MARK: - Custom Bundle
 
     func testLocalizationWithCustomRecognizedTableNameAndDefaultSeparatorAndCustomBundle() {
-        let parameters = LocalizationParameters(bundle: Bundle(for: LocalizationTests.self),
-                                                tableName: "AdyenTests")
+        let parameters = LocalizationParameters(
+            bundle: Bundle(for: LocalizationTests.self),
+            tableName: "AdyenTests"
+        )
         XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle-Confirm test payment")
         XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle-Verify your card")
 
@@ -83,24 +85,30 @@ class LocalizationTests: XCTestCase {
     }
 
     func testLocalizationWithCustomBundleFallbackToMainBundle() {
-        let parameters = LocalizationParameters(bundle: Bundle(for: LocalizationTests.self),
-                                                tableName: nil,
-                                                keySeparator: nil)
+        let parameters = LocalizationParameters(
+            bundle: Bundle(for: LocalizationTests.self),
+            tableName: nil,
+            keySeparator: nil
+        )
         XCTAssertEqual(localizedString(LocalizationKey(key: "any.key.1"), parameters, "test"), "value 1 test")
         XCTAssertEqual(localizedString(LocalizationKey(key: "any.key.2"), parameters), "value 2")
     }
 
     func testLocalizationWithCustomBundleFallbackToSDKBundle() {
-        let parameters = LocalizationParameters(bundle: Bundle(for: LocalizationTests.self),
-                                                tableName: nil,
-                                                keySeparator: nil)
+        let parameters = LocalizationParameters(
+            bundle: Bundle(for: LocalizationTests.self),
+            tableName: nil,
+            keySeparator: nil
+        )
         XCTAssertEqual(localizedString(.blikPlaceholder, parameters), "123–456")
     }
 
     func testLocalizationWithCustomRecognizedTableNameAndCustomRecognizedSeparatorAndCustomBundle() {
-        let parameters = LocalizationParameters(bundle: Bundle(for: LocalizationTests.self),
-                                                tableName: "AdyenTestsCustomSeparator",
-                                                keySeparator: "_")
+        let parameters = LocalizationParameters(
+            bundle: Bundle(for: LocalizationTests.self),
+            tableName: "AdyenTestsCustomSeparator",
+            keySeparator: "_"
+        )
         XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle-Confirm test payment")
         XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle-Verify your card")
     }

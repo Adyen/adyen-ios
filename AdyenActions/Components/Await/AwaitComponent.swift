@@ -37,8 +37,10 @@ public final class AwaitComponent: ActionComponent, Cancellable {
         /// - Parameters:
         ///   - style: The Component UI style.
         ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
-        public init(style: AwaitComponentStyle = .init(),
-                    localizationParameters: LocalizationParameters? = nil) {
+        public init(
+            style: AwaitComponentStyle = .init(),
+            localizationParameters: LocalizationParameters? = nil
+        ) {
             self.style = style
             self.localizationParameters = localizationParameters
         }
@@ -53,11 +55,15 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The await component configurations.
-    public convenience init(context: AdyenContext,
-                            configuration: Configuration = .init()) {
-        self.init(context: context,
-                  awaitComponentBuilder: PollingHandlerProvider(context: context),
-                  configuration: configuration)
+    public convenience init(
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
+        self.init(
+            context: context,
+            awaitComponentBuilder: PollingHandlerProvider(context: context),
+            configuration: configuration
+        )
     }
     
     /// Initializes the `AwaitComponent`.
@@ -65,9 +71,11 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     /// - Parameter context: The context object for this component.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
     /// - Parameter configuration: The Component UI style.
-    internal init(context: AdyenContext,
-                  awaitComponentBuilder: AnyPollingHandlerProvider,
-                  configuration: Configuration = .init()) {
+    internal init(
+        context: AdyenContext,
+        awaitComponentBuilder: AnyPollingHandlerProvider,
+        configuration: Configuration = .init()
+    ) {
         self.context = context
         self.configuration = configuration
         self.awaitComponentBuilder = awaitComponentBuilder
@@ -106,8 +114,10 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     public func handle(_ action: AwaitAction) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
 
-        let viewModel = AwaitComponentViewModel.viewModel(with: action.paymentMethodType,
-                                                          localizationParameters: configuration.localizationParameters)
+        let viewModel = AwaitComponentViewModel.viewModel(
+            with: action.paymentMethodType,
+            localizationParameters: configuration.localizationParameters
+        )
         let viewController = AwaitViewController(viewModel: viewModel, style: configuration.style)
 
         if let presentationDelegate {

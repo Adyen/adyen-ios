@@ -56,9 +56,11 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
             /// Initializes a new instance
             ///
             /// - Parameter requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
-            public init(requestorAppURL: URL? = nil,
-                        delegateAuthentication: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil,
-                        appearanceConfiguration: ADYAppearanceConfiguration = .init()) {
+            public init(
+                requestorAppURL: URL? = nil,
+                delegateAuthentication: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil,
+                appearanceConfiguration: ADYAppearanceConfiguration = .init()
+            ) {
                 self.requestorAppURL = requestorAppURL
                 self.delegateAuthentication = delegateAuthentication
                 self.appearanceConfiguration = appearanceConfiguration
@@ -126,8 +128,10 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     /// - Parameters:
     ///   - context: The context object.
     ///   - configuration: The configuration.
-    public init(context: AdyenContext,
-                configuration: Configuration = Configuration()) {
+    public init(
+        context: AdyenContext,
+        configuration: Configuration = Configuration()
+    ) {
         self.context = context
         self.configuration = configuration
     }
@@ -198,12 +202,16 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     }
     
     private func createThreeDS2Component() -> ThreeDS2Component {
-        let threeDS2Configuration = ThreeDS2Component.Configuration(redirectComponentStyle: configuration.style.redirectComponentStyle,
-                                                                    appearanceConfiguration: configuration.threeDS.appearanceConfiguration,
-                                                                    requestorAppURL: configuration.threeDS.requestorAppURL,
-                                                                    delegateAuthentication: configuration.threeDS.delegateAuthentication)
-        let component = ThreeDS2Component(context: context,
-                                          configuration: threeDS2Configuration)
+        let threeDS2Configuration = ThreeDS2Component.Configuration(
+            redirectComponentStyle: configuration.style.redirectComponentStyle,
+            appearanceConfiguration: configuration.threeDS.appearanceConfiguration,
+            requestorAppURL: configuration.threeDS.requestorAppURL,
+            delegateAuthentication: configuration.threeDS.delegateAuthentication
+        )
+        let component = ThreeDS2Component(
+            context: context,
+            configuration: threeDS2Configuration
+        )
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.presentationDelegate = presentationDelegate
@@ -213,8 +221,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     
     private func handle(_ action: ThreeDS2ChallengeAction) {
         guard let threeDS2Component = currentActionComponent as? ThreeDS2Component else {
-            AdyenAssertion.assertionFailure(
-                // swiftlint:disable:next line_length
+            AdyenAssertion.assertionFailure( // swiftlint:disable:next line_length
                 message: "ThreeDS2Component is nil. There must be a ThreeDS2FingerprintAction action preceding a ThreeDS2ChallengeAction action"
             )
             return

@@ -22,9 +22,11 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
 
     // MARK: - Initializers
 
-    internal init(paymentMethod: BACSDirectDebitPaymentMethod,
-                  context: AdyenContext,
-                  isDropIn: Bool) {
+    internal init(
+        paymentMethod: BACSDirectDebitPaymentMethod,
+        context: AdyenContext,
+        isDropIn: Bool
+    ) {
         self.paymentMethod = paymentMethod
         self.context = context
         self.isDropIn = isDropIn
@@ -38,8 +40,10 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
         let flavor: AnalyticsFlavor = .components(type: paymentMethod.type)
         let amount = context.payment?.amount
         let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AnalyticsForSession.sessionId)
-        context.analyticsProvider?.sendInitialAnalytics(with: flavor,
-                                                        additionalFields: additionalFields)
+        context.analyticsProvider?.sendInitialAnalytics(
+            with: flavor,
+            additionalFields: additionalFields
+        )
     }
     
     internal func sendDidLoadEvent() {

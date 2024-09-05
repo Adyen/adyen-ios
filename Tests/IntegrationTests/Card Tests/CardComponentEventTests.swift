@@ -23,9 +23,11 @@ final class CardComponentEventTests: XCTestCase {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: CardComponent.Configuration())
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardComponent.Configuration()
+        )
 
         // When
         sut.viewDidLoad(viewController: sut.cardViewController)
@@ -58,9 +60,11 @@ final class CardComponentEventTests: XCTestCase {
             sut.cardViewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         )
 
-        testFocusEvents(for: cardNumberItemView,
-                        target: .cardNumber,
-                        analyticsProviderMock: analyticsProviderMock)
+        testFocusEvents(
+            for: cardNumberItemView,
+            target: .cardNumber,
+            analyticsProviderMock: analyticsProviderMock
+        )
     }
 
     func testExpiryDateFocusEvents() throws {
@@ -69,9 +73,11 @@ final class CardComponentEventTests: XCTestCase {
 
         let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem"))
 
-        testFocusEvents(for: expiryDateItemView,
-                        target: .expiryDate,
-                        analyticsProviderMock: analyticsProviderMock)
+        testFocusEvents(
+            for: expiryDateItemView,
+            target: .expiryDate,
+            analyticsProviderMock: analyticsProviderMock
+        )
     }
 
     func testSecurityCodeFocusEvents() throws {
@@ -80,9 +86,11 @@ final class CardComponentEventTests: XCTestCase {
 
         let securityCodeItemView: FormCardSecurityCodeItemView = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
 
-        testFocusEvents(for: securityCodeItemView,
-                        target: .securityCode,
-                        analyticsProviderMock: analyticsProviderMock)
+        testFocusEvents(
+            for: securityCodeItemView,
+            target: .securityCode,
+            analyticsProviderMock: analyticsProviderMock
+        )
     }
 
     func testHolderNameFocusEvents() throws {
@@ -93,9 +101,11 @@ final class CardComponentEventTests: XCTestCase {
 
         let holderNameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem"))
 
-        testFocusEvents(for: holderNameItemView,
-                        target: .holderName,
-                        analyticsProviderMock: analyticsProviderMock)
+        testFocusEvents(
+            for: holderNameItemView,
+            target: .holderName,
+            analyticsProviderMock: analyticsProviderMock
+        )
     }
 
     func testKCPFieldFocusEvents() throws {
@@ -106,9 +116,11 @@ final class CardComponentEventTests: XCTestCase {
 
         let kcpItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.additionalAuthCodeItem"))
 
-        testFocusEvents(for: kcpItemView,
-                        target: .taxNumber,
-                        analyticsProviderMock: analyticsProviderMock)
+        testFocusEvents(
+            for: kcpItemView,
+            target: .taxNumber,
+            analyticsProviderMock: analyticsProviderMock
+        )
     }
 
     func testKCPPasswordFocusEvents() throws {
@@ -119,9 +131,11 @@ final class CardComponentEventTests: XCTestCase {
 
         let kcpPasswordItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.additionalAuthPasswordItem"))
 
-        testFocusEvents(for: kcpPasswordItemView,
-                        target: .authPassWord,
-                        analyticsProviderMock: analyticsProviderMock)
+        testFocusEvents(
+            for: kcpPasswordItemView,
+            target: .authPassWord,
+            analyticsProviderMock: analyticsProviderMock
+        )
     }
     
     func testSocialSecurityFocusEvents() throws {
@@ -132,9 +146,11 @@ final class CardComponentEventTests: XCTestCase {
         
         let socialSecurityItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem"))
         
-        testFocusEvents(for: socialSecurityItemView,
-                        target: .boletoSocialSecurityNumber,
-                        analyticsProviderMock: analyticsProviderMock)
+        testFocusEvents(
+            for: socialSecurityItemView,
+            target: .boletoSocialSecurityNumber,
+            analyticsProviderMock: analyticsProviderMock
+        )
     }
     
     func testPostalCodeFocusEvents() throws {
@@ -145,9 +161,11 @@ final class CardComponentEventTests: XCTestCase {
         
         let postalCodeItemView: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.postalCodeItem"))
         
-        testFocusEvents(for: postalCodeItemView,
-                        target: .addressPostalCode,
-                        analyticsProviderMock: analyticsProviderMock)
+        testFocusEvents(
+            for: postalCodeItemView,
+            target: .addressPostalCode,
+            analyticsProviderMock: analyticsProviderMock
+        )
     }
     
     private func testFocusEvents(
@@ -172,9 +190,11 @@ final class CardComponentEventTests: XCTestCase {
     
     private func makeSUT(with configuration: CardComponent.Configuration = .init(), analyticsProviderMock: AnalyticsProviderMock) -> CardComponent {
         let context = Dummy.context(with: analyticsProviderMock)
-        let cardComponent = CardComponent(paymentMethod: method,
-                                          context: context,
-                                          configuration: configuration)
+        let cardComponent = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
         cardComponent.viewController.loadViewIfNeeded()
         
         return cardComponent

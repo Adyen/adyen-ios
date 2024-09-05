@@ -17,8 +17,10 @@ class BACSDirectDebitComponentTests: XCTestCase {
     var context: AdyenContext!
     var sut: BACSDirectDebitComponent!
 
-    let paymentMethod = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit,
-                                                     name: "BACS Direct Debit")
+    let paymentMethod = BACSDirectDebitPaymentMethod(
+        type: .bacsDirectDebit,
+        name: "BACS Direct Debit"
+    )
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -28,8 +30,10 @@ class BACSDirectDebitComponentTests: XCTestCase {
         paymentComponentDelegate = PaymentComponentDelegateMock()
         context = Dummy.context
 
-        sut = BACSDirectDebitComponent(paymentMethod: paymentMethod,
-                                       context: context)
+        sut = BACSDirectDebitComponent(
+            paymentMethod: paymentMethod,
+            context: context
+        )
 
         sut.presentationDelegate = presentationDelegate
         sut.delegate = paymentComponentDelegate
@@ -55,9 +59,11 @@ class BACSDirectDebitComponentTests: XCTestCase {
     
     func testUpdatingAmount() throws {
         let payment = Payment(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
-        sut = BACSDirectDebitComponent(paymentMethod: paymentMethod,
-                                       context: context,
-                                       configuration: .init())
+        sut = BACSDirectDebitComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: .init()
+        )
 
         let presenter: BACSInputPresenter = sut.inputPresenter as! BACSInputPresenter
         let expectedConsentTitle1 = presenter.itemsFactory.createConsentText(with: payment.amount)
@@ -122,9 +128,11 @@ class BACSDirectDebitComponentTests: XCTestCase {
     // MARK: - Private
 
     private var bacsDataMock: BACSDirectDebitData {
-        BACSDirectDebitData(holderName: "Katrina del Mar",
-                            bankAccountNumber: "90583742",
-                            bankLocationId: "743082",
-                            shopperEmail: "katrina.mar@mail.com")
+        BACSDirectDebitData(
+            holderName: "Katrina del Mar",
+            bankAccountNumber: "90583742",
+            bankLocationId: "743082",
+            shopperEmail: "katrina.mar@mail.com"
+        )
     }
 }

@@ -21,9 +21,11 @@ extension SessionSetupResponse: Equatable {
 class SelfRetainingAPIClientTests: XCTestCase {
 
     func testSelfRetentionAndDestruction() throws {
-        let request = SessionSetupRequest(sessionId: "id",
-                                          sessionData: "data",
-                                          order: nil)
+        let request = SessionSetupRequest(
+            sessionId: "id",
+            sessionData: "data",
+            order: nil
+        )
         let successExpectation = expectation(description: "expect response to be received")
         let baseApiClient = APIClientMock()
         let expectedResponse = SessionSetupResponse(
@@ -46,7 +48,8 @@ class SelfRetainingAPIClientTests: XCTestCase {
             with: apiClient,
             onDeinit: {
                 deinitExpectation.fulfill()
-            }, completion: { result in
+            },
+            completion: { result in
                 switch result {
                 case .failure:
                     XCTFail()
@@ -60,9 +63,11 @@ class SelfRetainingAPIClientTests: XCTestCase {
     }
     
     func testSelfRetentionAndDestructionWithMultipleCalls() throws {
-        let request = SessionSetupRequest(sessionId: "id",
-                                          sessionData: "data",
-                                          order: nil)
+        let request = SessionSetupRequest(
+            sessionId: "id",
+            sessionData: "data",
+            order: nil
+        )
         let successExpectation = expectation(description: "expect response to be received")
         successExpectation.expectedFulfillmentCount = 4
         let apiClient = APIClientMock()
@@ -87,7 +92,8 @@ class SelfRetainingAPIClientTests: XCTestCase {
             with: apiClient,
             onDeinit: {
                 deinitExpectation.fulfill()
-            }, completion: { result in
+            },
+            completion: { result in
                 switch result {
                 case .failure:
                     XCTFail()
@@ -100,11 +106,13 @@ class SelfRetainingAPIClientTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
     
-    func performRequestWithLocalAPIClient<R: Request>(request: R,
-                                                      count: Int = 1,
-                                                      with apiClient: APIClientProtocol,
-                                                      onDeinit: (() -> Void)?,
-                                                      completion: @escaping (Result<R.ResponseType, Error>) -> Void) {
+    func performRequestWithLocalAPIClient<R: Request>(
+        request: R,
+        count: Int = 1,
+        with apiClient: APIClientProtocol,
+        onDeinit: (() -> Void)?,
+        completion: @escaping (Result<R.ResponseType, Error>) -> Void
+    ) {
         let sut = SelfRetainingAPIClient(apiClient: apiClient)
         sut.onDeinit = onDeinit
         (1...count).forEach { _ in

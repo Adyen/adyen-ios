@@ -26,9 +26,11 @@ internal struct CancelOrderRequest: APIRequest {
 
     internal let queryParameters: [URLQueryItem] = []
     
-    internal init(sessionId: String,
-                  sessionData: String,
-                  order: PartialPaymentOrder) {
+    internal init(
+        sessionId: String,
+        sessionData: String,
+        order: PartialPaymentOrder
+    ) {
         self.path = "checkoutshopper/v1/sessions/\(sessionId)/orders/cancel"
         self.sessionData = sessionData
         self.order = order

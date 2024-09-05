@@ -58,13 +58,15 @@ public struct CardBrand: Decodable {
     ///   - expiryDatePolicy: Indicates the expiry date policy of the brand.
     ///   - isLuhnCheckEnabled: Indicates whether Luhn check applies to card numbers of this brand.
     ///   - showsSocialSecurityNumber: Indicates whether to show social security number field or not.
-    internal init(type: CardType,
-                  isSupported: Bool = true,
-                  cvcPolicy: RequirementPolicy = .required,
-                  expiryDatePolicy: RequirementPolicy = .required,
-                  isLuhnCheckEnabled: Bool = true,
-                  showSocialSecurityNumber: Bool = false,
-                  panLength: Int? = nil) {
+    internal init(
+        type: CardType,
+        isSupported: Bool = true,
+        cvcPolicy: RequirementPolicy = .required,
+        expiryDatePolicy: RequirementPolicy = .required,
+        isLuhnCheckEnabled: Bool = true,
+        showSocialSecurityNumber: Bool = false,
+        panLength: Int? = nil
+    ) {
         self.type = type
         self.isSupported = isSupported
         self.cvcPolicy = cvcPolicy

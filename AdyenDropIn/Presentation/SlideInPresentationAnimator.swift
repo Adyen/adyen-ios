@@ -37,23 +37,29 @@ internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnim
         toShow.view.frame.origin.y = containerView.bounds.height
         toShow.updateFrame(keyboardRect: .zero)
 
-        let context = KeyFrameAnimationContext(animationKey: Animation.dropinTransitionPresentation.rawValue,
-                                               duration: duration,
-                                               delay: 0.0,
-                                               options: [.beginFromCurrentState],
-                                               animations: {
-                                                   UIView.addKeyframe(withRelativeStartTime: 0.0,
-                                                                      relativeDuration: hideDistance / distance) {
-                                                       toHide.view.frame.origin.y = containerView.bounds.height
-                                                   }
-                                                   UIView.addKeyframe(withRelativeStartTime: hideDistance / distance,
-                                                                      relativeDuration: showDistance / distance) {
-                                                       toShow.view.frame.origin.y = containerView.frame.origin.y
-                                                   }
-                                               },
-                                               completion: { finished in
-                                                   transitionContext.completeTransition(finished)
-                                               })
+        let context = KeyFrameAnimationContext(
+            animationKey: Animation.dropinTransitionPresentation.rawValue,
+            duration: duration,
+            delay: 0.0,
+            options: [.beginFromCurrentState],
+            animations: {
+                UIView.addKeyframe(
+                    withRelativeStartTime: 0.0,
+                    relativeDuration: hideDistance / distance
+                ) {
+                    toHide.view.frame.origin.y = containerView.bounds.height
+                }
+                UIView.addKeyframe(
+                    withRelativeStartTime: hideDistance / distance,
+                    relativeDuration: showDistance / distance
+                ) {
+                    toShow.view.frame.origin.y = containerView.frame.origin.y
+                }
+            },
+            completion: { finished in
+                transitionContext.completeTransition(finished)
+            }
+        )
         containerView.adyen.animate(context: context)
     }
 }

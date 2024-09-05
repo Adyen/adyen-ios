@@ -36,10 +36,12 @@ public final class AdyenSession {
         ///   - context: The context object for this component.
         ///   - localizationParameters: The localization parameters
         ///   - actionComponent: The action handling configuration.
-        public init(sessionIdentifier: String,
-                    initialSessionData: String,
-                    context: AdyenContext,
-                    actionComponent: AdyenActionComponent.Configuration = .init()) {
+        public init(
+            sessionIdentifier: String,
+            initialSessionData: String,
+            context: AdyenContext,
+            actionComponent: AdyenActionComponent.Configuration = .init()
+        ) {
             self.sessionIdentifier = sessionIdentifier
             self.initialSessionData = initialSessionData
             self.context = context
@@ -92,31 +94,41 @@ public final class AdyenSession {
     /// - Parameter delegate: The session delegate.
     /// - Parameter presentationDelegate: The presentation delegate.
     /// - Parameter completion: The completion closure, that delivers the new instance asynchronously.
-    public static func initialize(with configuration: Configuration,
-                                  delegate: AdyenSessionDelegate,
-                                  presentationDelegate: PresentationDelegate,
-                                  completion: @escaping ((Result<AdyenSession, Error>) -> Void)) {
+    public static func initialize(
+        with configuration: Configuration,
+        delegate: AdyenSessionDelegate,
+        presentationDelegate: PresentationDelegate,
+        completion: @escaping ((Result<AdyenSession, Error>) -> Void)
+    ) {
         let baseAPIClient = APIClient(apiContext: configuration.context.apiContext)
             .retryAPIClient(with: SimpleScheduler(maximumCount: 2))
             .retryOnErrorAPIClient()
-        initialize(with: configuration,
-                   delegate: delegate,
-                   presentationDelegate: presentationDelegate,
-                   baseAPIClient: baseAPIClient,
-                   completion: completion)
+        initialize(
+            with: configuration,
+            delegate: delegate,
+            presentationDelegate: presentationDelegate,
+            baseAPIClient: baseAPIClient,
+            completion: completion
+        )
     }
     
-    internal static func initialize(with configuration: Configuration,
-                                    delegate: AdyenSessionDelegate,
-                                    presentationDelegate: PresentationDelegate,
-                                    baseAPIClient: APIClientProtocol,
-                                    completion: @escaping ((Result<AdyenSession, Error>) -> Void)) {
-        makeSetupCall(with: configuration,
-                      baseAPIClient: baseAPIClient) { result in
+    internal static func initialize(
+        with configuration: Configuration,
+        delegate: AdyenSessionDelegate,
+        presentationDelegate: PresentationDelegate,
+        baseAPIClient: APIClientProtocol,
+        completion: @escaping ((Result<AdyenSession, Error>) -> Void)
+    ) {
+        makeSetupCall(
+            with: configuration,
+            baseAPIClient: baseAPIClient
+        ) { result in
             switch result {
             case let .success(sessionContext):
-                let session = AdyenSession(configuration: configuration,
-                                           sessionContext: sessionContext)
+                let session = AdyenSession(
+                    configuration: configuration,
+                    sessionContext: sessionContext
+                )
                 session.delegate = delegate
                 session.presentationDelegate = presentationDelegate
                 AnalyticsForSession.sessionId = sessionContext.identifier
@@ -127,10 +139,12 @@ public final class AdyenSession {
         }
     }
     
-    internal static func makeSetupCall(with configuration: Configuration,
-                                       baseAPIClient: APIClientProtocol,
-                                       order: PartialPaymentOrder? = nil,
-                                       completion: @escaping ((Result<Context, Error>) -> Void)) {
+    internal static func makeSetupCall(
+        with configuration: Configuration,
+        baseAPIClient: APIClientProtocol,
+        order: PartialPaymentOrder? = nil,
+        completion: @escaping ((Result<Context, Error>) -> Void)
+    ) {
         let sessionId = configuration.sessionIdentifier
         let sessionData = configuration.initialSessionData
         let request = SessionSetupRequest(
@@ -143,13 +157,15 @@ public final class AdyenSession {
         apiClient.perform(request) { result in
             switch result {
             case let .success(response):
-                let sessionContext = Context(data: response.sessionData,
-                                             identifier: sessionId,
-                                             countryCode: response.countryCode,
-                                             shopperLocale: response.shopperLocale,
-                                             amount: response.amount,
-                                             paymentMethods: response.paymentMethods,
-                                             configuration: response.configuration)
+                let sessionContext = Context(
+                    data: response.sessionData,
+                    identifier: sessionId,
+                    countryCode: response.countryCode,
+                    shopperLocale: response.shopperLocale,
+                    amount: response.amount,
+                    paymentMethods: response.paymentMethods,
+                    configuration: response.configuration
+                )
                 completion(.success(sessionContext))
             case let .failure(error):
                 completion(.failure(error))
@@ -160,8 +176,10 @@ public final class AdyenSession {
     // MARK: - Action Handling for Components
 
     internal lazy var actionComponent: ActionHandlingComponent = {
-        let handler = AdyenActionComponent(context: configuration.context,
-                                           configuration: configuration.actionComponent)
+        let handler = AdyenActionComponent(
+            context: configuration.context,
+            configuration: configuration.actionComponent
+        )
         handler.delegate = self
         handler.presentationDelegate = presentationDelegate
         return handler

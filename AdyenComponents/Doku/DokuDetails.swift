@@ -33,10 +33,12 @@ public struct DokuDetails: PaymentMethodDetails {
     ///   - firstName: The first Name.
     ///   - lastName: The last Name.
     ///   - emailAddress: The email address.
-    public init(paymentMethod: PaymentMethod,
-                firstName: String,
-                lastName: String,
-                emailAddress: String) {
+    public init(
+        paymentMethod: PaymentMethod,
+        firstName: String,
+        lastName: String,
+        emailAddress: String
+    ) {
         self.type = paymentMethod.type
         self.firstName = firstName
         self.lastName = lastName

@@ -76,9 +76,11 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
             return
         }
         
-        let analyticsData = AnalyticsData(flavor: flavor,
-                                          additionalFields: additionalFields,
-                                          context: configuration.context)
+        let analyticsData = AnalyticsData(
+            flavor: flavor,
+            additionalFields: additionalFields,
+            context: configuration.context
+        )
 
         let initialAnalyticsRequest = InitialAnalyticsRequest(data: analyticsData)
 

@@ -44,9 +44,11 @@ class OnlineBankingComponentUITests: XCTestCase {
         style.textField.text.color = .yellow
         style.textField.text.font = .systemFont(ofSize: 5)
         style.textField.text.textAlignment = .center
-        style.textField.placeholderText = TextStyle(font: .preferredFont(forTextStyle: .headline),
-                                                    color: .systemOrange,
-                                                    textAlignment: .center)
+        style.textField.placeholderText = TextStyle(
+            font: .preferredFont(forTextStyle: .headline),
+            color: .systemOrange,
+            textAlignment: .center
+        )
 
         style.textField.title.backgroundColor = .blue
         style.textField.title.color = .green
@@ -55,9 +57,11 @@ class OnlineBankingComponentUITests: XCTestCase {
         style.textField.backgroundColor = .blue
 
         let config = OnlineBankingComponent.Configuration(style: style)
-        let sut = OnlineBankingComponent(paymentMethod: paymentMethod,
-                                         context: context,
-                                         configuration: config)
+        let sut = OnlineBankingComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
         
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
@@ -65,9 +69,11 @@ class OnlineBankingComponentUITests: XCTestCase {
     func testPressContinueButton() {
         // Given
         let config = OnlineBankingComponent.Configuration(style: style)
-        let sut = OnlineBankingComponent(paymentMethod: paymentMethod,
-                                         context: context,
-                                         configuration: config)
+        let sut = OnlineBankingComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
@@ -96,9 +102,11 @@ class OnlineBankingComponentUITests: XCTestCase {
     func testContinueButtonLoading() throws {
         // Given
         let config = OnlineBankingComponent.Configuration(style: style)
-        let sut = OnlineBankingComponent(paymentMethod: paymentMethod,
-                                         context: context,
-                                         configuration: config)
+        let sut = OnlineBankingComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
 
         UIApplication.shared.adyen.mainKeyWindow?.rootViewController = sut.viewController
        

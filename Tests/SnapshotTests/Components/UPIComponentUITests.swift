@@ -45,9 +45,11 @@ class UPIComponentUITests: XCTestCase {
         style.textField.text.color = .yellow
         style.textField.text.font = .systemFont(ofSize: 5)
         style.textField.text.textAlignment = .center
-        style.textField.placeholderText = TextStyle(font: .preferredFont(forTextStyle: .headline),
-                                                    color: .systemOrange,
-                                                    textAlignment: .center)
+        style.textField.placeholderText = TextStyle(
+            font: .preferredFont(forTextStyle: .headline),
+            color: .systemOrange,
+            textAlignment: .center
+        )
         
         style.textField.title.backgroundColor = .blue
         style.textField.title.color = .green
@@ -56,9 +58,11 @@ class UPIComponentUITests: XCTestCase {
         style.textField.backgroundColor = .blue
     
         let config = UPIComponent.Configuration(style: style)
-        let sut = UPIComponent(paymentMethod: paymentMethod,
-                               context: context,
-                               configuration: config)
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
         
         self.wait(for: .aMoment)
     
@@ -81,9 +85,11 @@ class UPIComponentUITests: XCTestCase {
         style.textField.text.color = .yellow
         style.textField.text.font = .systemFont(ofSize: 5)
         style.textField.text.textAlignment = .center
-        style.textField.placeholderText = TextStyle(font: .preferredFont(forTextStyle: .headline),
-                                                    color: .systemOrange,
-                                                    textAlignment: .center)
+        style.textField.placeholderText = TextStyle(
+            font: .preferredFont(forTextStyle: .headline),
+            color: .systemOrange,
+            textAlignment: .center
+        )
         
         style.textField.title.backgroundColor = .blue
         style.textField.title.color = .green
@@ -100,9 +106,11 @@ class UPIComponentUITests: XCTestCase {
         style.segmentedControlStyle.textStyle.color = .red
     
         let config = UPIComponent.Configuration(style: style)
-        let sut = UPIComponent(paymentMethod: paymentMethod,
-                               context: context,
-                               configuration: config)
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
         
         let segmentedControl: UISegmentedControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.upiFlowSelectionSegmentedControlItem"))
         segmentedControl.selectedSegmentIndex = 1
@@ -208,9 +216,11 @@ class UPIComponentUITests: XCTestCase {
     func testUPIComponentDetailsForUPIQRCodeFlow() throws {
         // Given
         let config = UPIComponent.Configuration(style: style)
-        let sut = UPIComponent(paymentMethod: paymentMethod,
-                               context: context,
-                               configuration: config)
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
         
         let segmentedControl: UISegmentedControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.upiFlowSelectionSegmentedControlItem"))
         segmentedControl.selectedSegmentIndex = 1
@@ -249,9 +259,11 @@ class UPIComponentUITests: XCTestCase {
     func test_noAppSelectedSubmit_shouldShowError() throws {
         
         let config = UPIComponent.Configuration(style: style)
-        let sut = UPIComponent(paymentMethod: paymentMethod,
-                               context: context,
-                               configuration: config)
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
         
         let errorItem = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.errorItem") as? FormErrorItemView)
         XCTAssertTrue(errorItem.isHidden)

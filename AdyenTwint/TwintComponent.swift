@@ -120,9 +120,11 @@ public final class TwintComponent: PaymentComponent,
     /// - Parameter paymentMethod: The Twint  payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(paymentMethod: TwintPaymentMethod,
-                context: AdyenContext,
-                configuration: Configuration = .init()) {
+    public init(
+        paymentMethod: TwintPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         self.paymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration

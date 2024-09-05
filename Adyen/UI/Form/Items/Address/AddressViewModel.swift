@@ -43,10 +43,12 @@ public struct AddressViewModel {
     @_spi(AdyenInternal)
     public var scheme: [AddressFormScheme]
 
-    public init(labels: [AddressField: LocalizationKey],
-                placeholder: [AddressField: LocalizationKey],
-                optionalFields: [AddressField],
-                scheme: [AddressFormScheme]) {
+    public init(
+        labels: [AddressField: LocalizationKey],
+        placeholder: [AddressField: LocalizationKey],
+        optionalFields: [AddressField],
+        scheme: [AddressFormScheme]
+    ) {
         self.labels = labels
         self.placeholder = placeholder
         self.optionalFields = optionalFields

@@ -24,9 +24,11 @@ public struct SegmentedControlStyle: TintableStyle {
     /// - Parameter textStyle: the style of the text
     /// - Parameter backgroundColor: The background color.
     /// -  Parameter tintColor: The background color of the selected segment.
-    public init(textStyle: TextStyle,
-                backgroundColor: UIColor = .clear,
-                tintColor: UIColor = .white) {
+    public init(
+        textStyle: TextStyle,
+        backgroundColor: UIColor = .clear,
+        tintColor: UIColor = .white
+    ) {
         self.textStyle = textStyle
         self.backgroundColor = backgroundColor
         self.tintColor = tintColor

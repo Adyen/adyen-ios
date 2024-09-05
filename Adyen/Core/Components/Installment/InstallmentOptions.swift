@@ -97,9 +97,11 @@ public struct InstallmentConfiguration: Decodable {
     ///   - cardBasedOptions: Options based on the card type. Must not be empty.
     ///   - defaultOptions: Default options for cards that are not specified in `cardBasedOptions`.
     ///   - showInstallmentAmount: Determines whether to show the amount next to the installment value.
-    public init(cardBasedOptions: [CardType: InstallmentOptions],
-                defaultOptions: InstallmentOptions,
-                showInstallmentAmount: Bool = false) {
+    public init(
+        cardBasedOptions: [CardType: InstallmentOptions],
+        defaultOptions: InstallmentOptions,
+        showInstallmentAmount: Bool = false
+    ) {
         assert(!cardBasedOptions.isEmpty, "This dictionary must not be empty.")
         self.cardBasedOptions = cardBasedOptions
         self.defaultOptions = defaultOptions
@@ -110,8 +112,10 @@ public struct InstallmentConfiguration: Decodable {
     /// - Parameters:
     ///   - cardBasedOptions:  Options based on the card type. Must not be empty.
     ///   - showInstallmentAmount: Determines whether to show the amount next to the installment value.
-    public init(cardBasedOptions: [CardType: InstallmentOptions],
-                showInstallmentAmount: Bool = false) {
+    public init(
+        cardBasedOptions: [CardType: InstallmentOptions],
+        showInstallmentAmount: Bool = false
+    ) {
         assert(!cardBasedOptions.isEmpty, "This dictionary must not be empty.")
         self.defaultOptions = nil
         self.cardBasedOptions = cardBasedOptions
@@ -122,8 +126,10 @@ public struct InstallmentConfiguration: Decodable {
     /// - Parameters:
     ///   - defaultOptions: Default options to apply to all card types.
     ///   - showInstallmentAmount: Determines whether to show the amount next to the installment value.
-    public init(defaultOptions: InstallmentOptions,
-                showInstallmentAmount: Bool = false) {
+    public init(
+        defaultOptions: InstallmentOptions,
+        showInstallmentAmount: Bool = false
+    ) {
         self.defaultOptions = defaultOptions
         self.cardBasedOptions = nil
         self.showInstallmentAmount = showInstallmentAmount

@@ -29,21 +29,25 @@ internal final class VoucherCardLayer: CAShapeLayer {
     private func drawCardTop(path: UIBezierPath) {
         // Top Left corner
         let topLeftCornerCenter = CGPoint(x: cardCornerRadius + lineWidth, y: cardCornerRadius + lineWidth)
-        path.addArc(withCenter: topLeftCornerCenter,
-                    radius: cardCornerRadius,
-                    startAngle: .pi,
-                    endAngle: (.pi * 3) / 2,
-                    clockwise: true)
+        path.addArc(
+            withCenter: topLeftCornerCenter,
+            radius: cardCornerRadius,
+            startAngle: .pi,
+            endAngle: (.pi * 3) / 2,
+            clockwise: true
+        )
         // Top border
         path.addLine(to: CGPoint(x: bounds.width - cardCornerRadius - lineWidth, y: lineWidth))
 
         // Top right corner
         let topRightCornerCenter = CGPoint(x: bounds.width - cardCornerRadius - lineWidth, y: cardCornerRadius + lineWidth)
-        path.addArc(withCenter: topRightCornerCenter,
-                    radius: cardCornerRadius,
-                    startAngle: (.pi * 3) / 2,
-                    endAngle: 0,
-                    clockwise: true)
+        path.addArc(
+            withCenter: topRightCornerCenter,
+            radius: cardCornerRadius,
+            startAngle: (.pi * 3) / 2,
+            endAngle: 0,
+            clockwise: true
+        )
     }
 
     private func drawCardRightSide(path: UIBezierPath, cutoutCenterY: CGFloat) {
@@ -56,24 +60,30 @@ internal final class VoucherCardLayer: CAShapeLayer {
 
     private func drawCardBottomSide(path: UIBezierPath) {
         // Right Bottom corner
-        let bottomRightCornerCenter = CGPoint(x: bounds.width - cardCornerRadius - lineWidth,
-                                              y: bounds.height - cardCornerRadius - lineWidth)
-        path.addArc(withCenter: bottomRightCornerCenter,
-                    radius: cardCornerRadius,
-                    startAngle: 0,
-                    endAngle: .pi * 0.5,
-                    clockwise: true)
+        let bottomRightCornerCenter = CGPoint(
+            x: bounds.width - cardCornerRadius - lineWidth,
+            y: bounds.height - cardCornerRadius - lineWidth
+        )
+        path.addArc(
+            withCenter: bottomRightCornerCenter,
+            radius: cardCornerRadius,
+            startAngle: 0,
+            endAngle: .pi * 0.5,
+            clockwise: true
+        )
 
         // Bottom border
         path.addLine(to: CGPoint(x: cardCornerRadius + lineWidth, y: bounds.height - lineWidth))
 
         // Bottom left corner
         let bottomLeftCornerCenter = CGPoint(x: cardCornerRadius + lineWidth, y: bounds.height - cardCornerRadius - lineWidth)
-        path.addArc(withCenter: bottomLeftCornerCenter,
-                    radius: cardCornerRadius,
-                    startAngle: .pi * 0.5,
-                    endAngle: .pi,
-                    clockwise: true)
+        path.addArc(
+            withCenter: bottomLeftCornerCenter,
+            radius: cardCornerRadius,
+            startAngle: .pi * 0.5,
+            endAngle: .pi,
+            clockwise: true
+        )
     }
 
     private func drawCardLeftSide(path: UIBezierPath, cutoutCenterY: CGFloat) {

@@ -17,8 +17,10 @@ public final class AlreadyPaidPaymentComponent: PaymentComponent {
 
     public weak var delegate: PaymentComponentDelegate?
 
-    public init(paymentMethod: PaymentMethod,
-                context: AdyenContext) {
+    public init(
+        paymentMethod: PaymentMethod,
+        context: AdyenContext
+    ) {
         self.paymentMethod = paymentMethod
         self.context = context
     }

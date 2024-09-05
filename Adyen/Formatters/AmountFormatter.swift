@@ -45,12 +45,14 @@ public final class AmountFormatter {
     public static func minorUnitAmount(from majorUnitAmount: Decimal, currencyCode: String, localeIdentifier: String? = nil) -> Int {
         let maximumFractionDigits = defaultFormatter(currencyCode: currencyCode, localeIdentifier: localeIdentifier).maximumFractionDigits
         
-        let roundTowardsZero = NSDecimalNumberHandler(roundingMode: majorUnitAmount.isSignMinus ? .up : .down,
-                                                      scale: 0,
-                                                      raiseOnExactness: false,
-                                                      raiseOnOverflow: false,
-                                                      raiseOnUnderflow: false,
-                                                      raiseOnDivideByZero: false)
+        let roundTowardsZero = NSDecimalNumberHandler(
+            roundingMode: majorUnitAmount.isSignMinus ? .up : .down,
+            scale: 0,
+            raiseOnExactness: false,
+            raiseOnOverflow: false,
+            raiseOnUnderflow: false,
+            raiseOnDivideByZero: false
+        )
         
         return (majorUnitAmount as NSDecimalNumber)
             .multiplying(byPowerOf10: Int16(maximumFractionDigits))

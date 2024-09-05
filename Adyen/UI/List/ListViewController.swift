@@ -129,8 +129,10 @@ public final class ListViewController: UITableViewController {
         
         headerView.headerItem = headerItem
 
-        headerView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListViewController",
-                                                                         postfix: "headerView.\(section)")
+        headerView.accessibilityIdentifier = ViewIdentifierBuilder.build(
+            scopeInstance: "Adyen.ListViewController",
+            postfix: "headerView.\(section)"
+        )
         headerView.onTrailingButtonTap = { [weak self, weak headerView] in
             self?.toggleEditingMode(headerView)
         }
@@ -150,8 +152,10 @@ public final class ListViewController: UITableViewController {
             return nil
         }
         let footerView = ListFooterView(title: footer.title, style: footer.style)
-        footerView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListViewController",
-                                                                         postfix: "footerView.\(section)")
+        footerView.accessibilityIdentifier = ViewIdentifierBuilder.build(
+            scopeInstance: "Adyen.ListViewController",
+            postfix: "footerView.\(section)"
+        )
         return footerView
     }
 

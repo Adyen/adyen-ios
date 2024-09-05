@@ -71,9 +71,11 @@ public struct BalanceChecker {
 
         let amountToPay = min(expendableLimit, amount)
 
-        return Result(isBalanceEnough: expendableLimit >= amount,
-                      remainingBalanceAmount: balance.availableAmount - amountToPay,
-                      amountToPay: amountToPay)
+        return Result(
+            isBalanceEnough: expendableLimit >= amount,
+            remainingBalanceAmount: balance.availableAmount - amountToPay,
+            amountToPay: amountToPay
+        )
     }
 
     private func validateTransactionLimit(of balance: Balance) -> Bool {

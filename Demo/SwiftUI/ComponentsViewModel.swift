@@ -114,9 +114,7 @@ internal final class ComponentsViewModel: ObservableObject, Identifiable {
 
     internal func handleOnAppear() {
         items = [
-            [
-                ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
-            ],
+            [ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)],
             [
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
                 ComponentsItem(

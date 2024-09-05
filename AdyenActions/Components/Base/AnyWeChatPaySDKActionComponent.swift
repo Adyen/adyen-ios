@@ -26,6 +26,8 @@ public protocol AnyWeChatPaySDKActionComponent: ActionComponent, DeviceDependent
 /// Loads the concrete WeChatPaySDKActionComponent Class dynamically.
 @_spi(AdyenInternal)
 public func loadTheConcreteWeChatPaySDKActionComponentClass() -> AnyWeChatPaySDKActionComponent.Type? {
-    ["AdyenWeChatPay.WeChatPaySDKActionComponent",
-     "Adyen.WeChatPaySDKActionComponent"].compactMap { NSClassFromString($0) as? AnyWeChatPaySDKActionComponent.Type }.first
+    [
+        "AdyenWeChatPay.WeChatPaySDKActionComponent",
+        "Adyen.WeChatPaySDKActionComponent"
+    ].compactMap { NSClassFromString($0) as? AnyWeChatPaySDKActionComponent.Type }.first
 }

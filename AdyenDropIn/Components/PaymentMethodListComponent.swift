@@ -39,9 +39,11 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     /// - Parameter context: The context object for this component.
     /// - Parameter components: The components to display in the list.
     /// - Parameter style: The component's UI style.
-    internal init(context: AdyenContext,
-                  components: [ComponentsSection],
-                  style: ListComponentStyle = ListComponentStyle()) {
+    internal init(
+        context: AdyenContext,
+        components: [ComponentsSection],
+        style: ListComponentStyle = ListComponentStyle()
+    ) {
         self.context = context
         self.componentSections = components
         self.style = style
@@ -76,9 +78,11 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     
     private func createListSections() -> [ListSection] {
         componentSections.map { section in
-            ListSection(header: section.header,
-                        items: section.components.map(item(for:)),
-                        footer: section.footer)
+            ListSection(
+                header: section.header,
+                items: section.components.map(item(for:)),
+                footer: section.footer
+            )
         }
     }
     
@@ -199,9 +203,11 @@ internal protocol PaymentMethodListComponentDelegate: AnyObject {
     ///   - paymentMethodListComponent: The payment method list component in which the component was selected.
     ///   - completion: The completion block,
     ///   it must be invoked by the delegate when the stored payment method is successfully deleted.
-    func didDelete(_ paymentMethod: StoredPaymentMethod,
-                   in paymentMethodListComponent: PaymentMethodListComponent,
-                   completion: @escaping Completion<Bool>)
+    func didDelete(
+        _ paymentMethod: StoredPaymentMethod,
+        in paymentMethodListComponent: PaymentMethodListComponent,
+        completion: @escaping Completion<Bool>
+    )
 }
 
 private extension [ComponentsSection] {

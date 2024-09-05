@@ -29,9 +29,11 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
     ///   - paymentMethod: The stored payment method.
     ///   - context: The context object.
     ///   - configuration: The configuration for the component.
-    public init(paymentMethod: StoredPaymentMethod,
-                context: AdyenContext,
-                configuration: Configuration = .init()) {
+    public init(
+        paymentMethod: StoredPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         self.storedPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
@@ -47,11 +49,15 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
 
         let localizationParameters = configuration.localizationParameters
         let displayInformation = storedPaymentMethod.displayInformation(using: localizationParameters)
-        let alertController = UIAlertController(title: localizedString(.dropInStoredTitle,
-                                                                       localizationParameters,
-                                                                       storedPaymentMethod.name),
-                                                message: displayInformation.title,
-                                                preferredStyle: .alert)
+        let alertController = UIAlertController(
+            title: localizedString(
+                .dropInStoredTitle,
+                localizationParameters,
+                storedPaymentMethod.name
+            ),
+            message: displayInformation.title,
+            preferredStyle: .alert
+        )
 
         let cancelAction = UIAlertAction(title: localizedString(.cancelButton, localizationParameters), style: .cancel) { [weak self] _ in
             guard let self else { return }
@@ -59,15 +65,19 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
         }
         alertController.addAction(cancelAction)
         
-        let submitActionTitle = localizedSubmitButtonTitle(with: payment?.amount,
-                                                           style: .immediate,
-                                                           localizationParameters)
+        let submitActionTitle = localizedSubmitButtonTitle(
+            with: payment?.amount,
+            style: .immediate,
+            localizationParameters
+        )
         let submitAction = UIAlertAction(title: submitActionTitle, style: .default) { [weak self] _ in
             guard let self else { return }
             let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
-            self.submit(data: PaymentComponentData(paymentMethodDetails: details,
-                                                   amount: self.payment?.amount,
-                                                   order: self.order))
+            self.submit(data: PaymentComponentData(
+                paymentMethodDetails: details,
+                amount: self.payment?.amount,
+                order: self.order
+            ))
         }
         alertController.addAction(submitAction)
         

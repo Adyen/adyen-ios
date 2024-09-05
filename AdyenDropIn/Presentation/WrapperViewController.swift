@@ -38,15 +38,17 @@ internal final class WrapperViewController: UIViewController {
         guard let view = child.viewIfLoaded else { return }
         let finalFrame = child.finalPresentationFrame(with: keyboardRect)
 
-        view.adyen.animate(context: SpringAnimationContext(animationKey: "Update frame",
-                                                           duration: animated ? 0.3 : 0.0,
-                                                           delay: 0,
-                                                           dampingRatio: 0.8,
-                                                           velocity: 0.2,
-                                                           options: [.beginFromCurrentState, .curveEaseInOut],
-                                                           animations: { [weak self] in
-                                                               self?.update(finalFrame: finalFrame)
-                                                           }))
+        view.adyen.animate(context: SpringAnimationContext(
+            animationKey: "Update frame",
+            duration: animated ? 0.3 : 0.0,
+            delay: 0,
+            dampingRatio: 0.8,
+            velocity: 0.2,
+            options: [.beginFromCurrentState, .curveEaseInOut],
+            animations: { [weak self] in
+                self?.update(finalFrame: finalFrame)
+            }
+        ))
     }
 
     // MARK: - Private
@@ -67,10 +69,12 @@ internal final class WrapperViewController: UIViewController {
         let leftConstraint = childView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
         let rightConstraint = childView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
 
-        NSLayoutConstraint.activate([leftConstraint,
-                                     rightConstraint,
-                                     bottomConstraint,
-                                     topConstraint])
+        NSLayoutConstraint.activate([
+            leftConstraint,
+            rightConstraint,
+            bottomConstraint,
+            topConstraint
+        ])
 
         self.topConstraint = topConstraint
         self.bottomConstraint = bottomConstraint

@@ -19,11 +19,13 @@ class PaymentComponentSubject: PaymentComponent {
 
     // MARK: - Initializers
 
-    public init(context: AdyenContext,
-                delegate: PaymentComponentDelegate,
-                payment: Payment?,
-                order: PartialPaymentOrder?,
-                paymentMethod: PaymentMethod) {
+    public init(
+        context: AdyenContext,
+        delegate: PaymentComponentDelegate,
+        payment: Payment?,
+        order: PartialPaymentOrder?,
+        paymentMethod: PaymentMethod
+    ) {
         self.context = context
         self.delegate = delegate
         self.payment = payment

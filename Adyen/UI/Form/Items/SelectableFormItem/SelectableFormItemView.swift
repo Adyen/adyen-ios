@@ -167,7 +167,7 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
             contentStackView.bottomAnchor.constraint(equalTo: itemButton.bottomAnchor),
             contentStackView.leadingAnchor.constraint(equalTo: itemButton.layoutMarginsGuide.leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: itemButton.layoutMarginsGuide.trailingAnchor),
-
+            
             imageView.widthAnchor.constraint(equalToConstant: Constants.iconImageSize.width),
             imageView.heightAnchor.constraint(equalToConstant: Constants.iconImageSize.height),
             

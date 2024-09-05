@@ -19,19 +19,23 @@ class RSAOAEP256AlgorithmTests: XCTestCase {
         
         var error: Unmanaged<CFError>?
         let keyData = Data(base64Encoded: "MIIEpAIBAAKCAQEApD82S96KP2/LQX3yKJwvbx1vIC2jSzGoy8M/OfCREVjQ51CvJGt0ZZy9H3H6APHNLsgMwYtyyNAhLc+U9o5Naz3U4gaOf36VNH0bIdf0YiYCsI9208h3X8WkSHFyiJCd3th6EcO+Qv6IdRjpbrEfxF56N+i6W0p2Z9XJjVPotoCK+aTgsCdnH0HfqnIeq4pygmHtLwRJi0l8pMTZ2b1X439mmDlc2UVGliNvYWOYTejVNWPqCA9YEMAErdwTMvXJcNfl6qh0MSsGcMFua7OB4A58J9UXekJKIyqfBMbn6/WX8cvdaEDUoba8la68wAxce5FUsKerMgkshvOhPcZSsQIDAQABAoIBAQCdxLp7FkDlvpUXS8uYhq5ppXRhDHWWfRUO5XWOSi6O4ymHiFE0QqOEF5Ly6aCj16CoFzFpmHGhw4qbXpJQY1CqerJKitHGVeksih/N2oq83JYo0yXpON6x+D9d9tt1orSCop5fAg94etbI5C0WTr2c+sObgMnBdz1VcF4yiy82XabPR3IcrFBDxDBLuUdjupvhjJUocVubst14ao0ABD6MessG472oAZ/TzcVsyOB+AVkp+djpS5mx2INzAQ5a6up4A/YHK7J5en6b0Y46+lZeVCD2IBLh9xcO8s52dJb7IpStAhy7DjjtkKi6bjq9yCtlgqei2OaaFBW9ZBDrqlyhAoGBAOTgYsQ9U8+kOTd0W519gZMuYp9Mek5kqE2BxLK11ftJVoBz2rxdGvl6B8XbSjTfcYLyhs0lXJKoFbtB8QrSLdXO2o7TgEvDGOpjHEz4x2Uh8tLU/XwbIiXDvnewGl3orriFNgnz3HW5JDOdTVd2OOFjg7ELri+zx5eb8whcRIxnAoGBALe2GwiejpHaJDIeK4ISBA8iYgvbB6vIdB8eBeOf2S7sXU+r35nEnlias+C4schilYwwPiVtyjcOWGm2VatiJGuZ/jGqQ0iVcpnt5HaqjQvSqJiXtbQnOe+10mHJdDxCveknMqjALmpP488IfQcGV2VvxPkFPJdtOwsaddHIHjknAoGBAIaoNbO7WToLJtankNdB5iBP5BpRBoxk0Fh5ht6V+QVVCp2cjA7SwHITB8uyzx/4bnJaelDsMGDgn5iCnWx+aBUpFJF/gjYQ3PHZyebHX5jytkiwo0qHNDn/xmnopDqoEVPim/6TCRwCB3iOjdhtZ93DjNF3S84o+b8LM5uxnWr1AoGAcYGGenDczajmLEEPyLGw6FjqE0ElIDId7Qvzv4wH+EH59TvQT4V4AG61LOdwkMq4c4FrJF0NT68BWW9axyVAM2tV7wGvyKztvcWKHveJZgCmQoGZttF1rnG8psZ9lq32AJRDbJgxFWZ+7m/kL+7vGLFSFjnyEe1fSaDzosXuRokCgYBs/7I2We1oCHWQp3xx3aq5n+CyyZli5+vh2GvQEQmkraEpQOEx6f0rfBgrYB7KSdNz5j+Olxk3i5xZFa1i/C3M4KVoBUjp07sQWOmDic8nS3cZ3tkasZRsQe8BzJ+STDmz11pxZ/DVtrGIy5kgsK7hl5lYMZ0LYAkuhWBKydCPcA==")!
-        guard let privateKey = SecKeyCreateWithData(keyData as NSData,
-                                                    [
-                                                        kSecAttrKeyType: kSecAttrKeyTypeRSA,
-                                                        kSecAttrKeyClass: kSecAttrKeyClassPrivate
-                                                    ] as NSDictionary,
-                                                    &error) else {
+        guard let privateKey = SecKeyCreateWithData(
+            keyData as NSData,
+            [
+                kSecAttrKeyType: kSecAttrKeyTypeRSA,
+                kSecAttrKeyClass: kSecAttrKeyClassPrivate
+            ] as NSDictionary,
+            &error
+        ) else {
             XCTFail(error!.takeRetainedValue().localizedDescription)
             return
         }
-        guard let plainText = SecKeyCreateDecryptedData(privateKey,
-                                                        .rsaEncryptionOAEPSHA256,
-                                                        cipherText as CFData,
-                                                        &error) else {
+        guard let plainText = SecKeyCreateDecryptedData(
+            privateKey,
+            .rsaEncryptionOAEPSHA256,
+            cipherText as CFData,
+            &error
+        ) else {
             XCTFail(error!.takeRetainedValue().localizedDescription)
             return
         }

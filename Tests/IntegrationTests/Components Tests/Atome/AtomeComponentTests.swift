@@ -19,9 +19,11 @@ class AtomeComponentTests: XCTestCase {
         paymentMethod = AtomePaymentMethod(type: .atome, name: "Atome")
         context = Dummy.context
         style = FormComponentStyle()
-        sut = AtomeComponent(paymentMethod: paymentMethod,
-                             context: context,
-                             configuration: AtomeComponent.Configuration())
+        sut = AtomeComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: AtomeComponent.Configuration()
+        )
     }
 
     override func tearDownWithError() throws {
@@ -83,8 +85,10 @@ class AtomeComponentTests: XCTestCase {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
-        sut = AtomeComponent(paymentMethod: paymentMethod,
-                             context: context)
+        sut = AtomeComponent(
+            paymentMethod: paymentMethod,
+            context: context
+        )
         let mockViewController = UIViewController()
 
         // When

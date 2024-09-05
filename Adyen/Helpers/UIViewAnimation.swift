@@ -24,12 +24,14 @@ public class AnimationContext: NSObject {
     
     fileprivate let completion: ((Bool) -> Void)?
     
-    public init(animationKey: String,
-                duration: TimeInterval,
-                delay: TimeInterval = 0,
-                options: UIView.AnimationOptions = [],
-                animations: @escaping () -> Void,
-                completion: ((Bool) -> Void)? = nil) {
+    public init(
+        animationKey: String,
+        duration: TimeInterval,
+        delay: TimeInterval = 0,
+        options: UIView.AnimationOptions = [],
+        animations: @escaping () -> Void,
+        completion: ((Bool) -> Void)? = nil
+    ) {
         self.animationKey = animationKey
         self.duration = duration
         self.delay = delay
@@ -44,19 +46,23 @@ public final class KeyFrameAnimationContext: AnimationContext {
     
     fileprivate let keyFrameOptions: UIView.KeyframeAnimationOptions
     
-    public init(animationKey: String,
-                duration: TimeInterval,
-                delay: TimeInterval = 0,
-                options: UIView.KeyframeAnimationOptions = [],
-                animations: @escaping () -> Void,
-                completion: ((Bool) -> Void)? = nil) {
+    public init(
+        animationKey: String,
+        duration: TimeInterval,
+        delay: TimeInterval = 0,
+        options: UIView.KeyframeAnimationOptions = [],
+        animations: @escaping () -> Void,
+        completion: ((Bool) -> Void)? = nil
+    ) {
         self.keyFrameOptions = options
-        super.init(animationKey: animationKey,
-                   duration: duration,
-                   delay: delay,
-                   options: [],
-                   animations: animations,
-                   completion: completion)
+        super.init(
+            animationKey: animationKey,
+            duration: duration,
+            delay: delay,
+            options: [],
+            animations: animations,
+            completion: completion
+        )
     }
 }
 
@@ -66,22 +72,26 @@ public final class SpringAnimationContext: AnimationContext {
     fileprivate let dampingRatio: CGFloat
     fileprivate let velocity: CGFloat
 
-    public init(animationKey: String,
-                duration: TimeInterval,
-                delay: TimeInterval = 0,
-                dampingRatio: CGFloat,
-                velocity: CGFloat,
-                options: UIView.AnimationOptions = [],
-                animations: @escaping () -> Void,
-                completion: ((Bool) -> Void)? = nil) {
+    public init(
+        animationKey: String,
+        duration: TimeInterval,
+        delay: TimeInterval = 0,
+        dampingRatio: CGFloat,
+        velocity: CGFloat,
+        options: UIView.AnimationOptions = [],
+        animations: @escaping () -> Void,
+        completion: ((Bool) -> Void)? = nil
+    ) {
         self.dampingRatio = dampingRatio
         self.velocity = velocity
-        super.init(animationKey: animationKey,
-                   duration: duration,
-                   delay: delay,
-                   options: options,
-                   animations: animations,
-                   completion: completion)
+        super.init(
+            animationKey: animationKey,
+            duration: duration,
+            delay: delay,
+            options: options,
+            animations: animations,
+            completion: completion
+        )
     }
 }
 
@@ -110,25 +120,31 @@ extension AdyenScope where Base: UIView {
         }
 
         if let springContext = context as? SpringAnimationContext {
-            UIView.animate(withDuration: context.duration,
-                           delay: context.delay,
-                           usingSpringWithDamping: springContext.dampingRatio,
-                           initialSpringVelocity: springContext.velocity,
-                           options: context.options,
-                           animations: context.animations,
-                           completion: completion)
+            UIView.animate(
+                withDuration: context.duration,
+                delay: context.delay,
+                usingSpringWithDamping: springContext.dampingRatio,
+                initialSpringVelocity: springContext.velocity,
+                options: context.options,
+                animations: context.animations,
+                completion: completion
+            )
         } else if let keyFrameContext = context as? KeyFrameAnimationContext {
-            UIView.animateKeyframes(withDuration: keyFrameContext.duration,
-                                    delay: keyFrameContext.delay,
-                                    options: keyFrameContext.keyFrameOptions,
-                                    animations: keyFrameContext.animations,
-                                    completion: completion)
+            UIView.animateKeyframes(
+                withDuration: keyFrameContext.duration,
+                delay: keyFrameContext.delay,
+                options: keyFrameContext.keyFrameOptions,
+                animations: keyFrameContext.animations,
+                completion: completion
+            )
         } else {
-            UIView.animate(withDuration: context.duration,
-                           delay: context.delay,
-                           options: context.options,
-                           animations: context.animations,
-                           completion: completion)
+            UIView.animate(
+                withDuration: context.duration,
+                delay: context.delay,
+                options: context.options,
+                animations: context.animations,
+                completion: completion
+            )
         }
     }
 }

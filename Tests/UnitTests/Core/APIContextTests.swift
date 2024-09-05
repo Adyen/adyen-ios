@@ -22,8 +22,10 @@ class APIContextTests: XCTestCase {
         let environment = Environment(baseURL: URL(string: "https://adyen.com")!)
         let clientKey = "WrongClientKey"
 
-        XCTAssertThrowsError(try APIContext(environment: environment, clientKey: clientKey),
-                             "Testing Invalid client key") { error in
+        XCTAssertThrowsError(
+            try APIContext(environment: environment, clientKey: clientKey),
+            "Testing Invalid client key"
+        ) { error in
             XCTAssertTrue(error is ClientKeyError)
             XCTAssertEqual(error as! ClientKeyError, ClientKeyError.invalidClientKey)
         }

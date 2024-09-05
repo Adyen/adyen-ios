@@ -59,8 +59,10 @@ internal final class ListFooterView: UIView {
         let titleLabel = UILabel(style: style.title)
         titleLabel.numberOfLines = 0
         titleLabel.isAccessibilityElement = false
-        titleLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListFooterView.\(title)",
-                                                                         postfix: "titleLabel")
+        titleLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(
+            scopeInstance: "Adyen.ListFooterView.\(title)",
+            postfix: "titleLabel"
+        )
         titleLabel.text = title
 
         return titleLabel

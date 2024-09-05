@@ -59,9 +59,11 @@ class DropInActionsTests: XCTestCase {
         let mock = DropInDelegateMock()
 
         let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
-        sut = DropInComponent(paymentMethods: paymenMethods,
-                              context: context,
-                              configuration: config)
+        sut = DropInComponent(
+            paymentMethods: paymenMethods,
+            context: context,
+            configuration: config
+        )
         sut.delegate = mock
 
         mock.didOpenExternalApplicationHandler = { _ in

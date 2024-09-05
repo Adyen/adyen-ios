@@ -40,10 +40,12 @@ public final class SubmitButton: UIControl {
     // MARK: - Background View
     
     internal lazy var backgroundView: BackgroundView = {
-        let backgroundView = BackgroundView(cornerRounding: style.cornerRounding,
-                                            borderColor: style.borderColor,
-                                            borderWidth: style.borderWidth,
-                                            color: style.backgroundColor)
+        let backgroundView = BackgroundView(
+            cornerRounding: style.cornerRounding,
+            borderColor: style.borderColor,
+            borderWidth: style.borderWidth,
+            color: style.backgroundColor
+        )
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         
         return backgroundView
@@ -158,10 +160,12 @@ extension SubmitButton {
         private let color: UIColor
         private let rounding: CornerRounding
         
-        fileprivate init(cornerRounding: CornerRounding,
-                         borderColor: UIColor?,
-                         borderWidth: CGFloat,
-                         color: UIColor) {
+        fileprivate init(
+            cornerRounding: CornerRounding,
+            borderColor: UIColor?,
+            borderWidth: CGFloat,
+            color: UIColor
+        ) {
             self.color = color
             self.rounding = cornerRounding
             super.init(frame: .zero)

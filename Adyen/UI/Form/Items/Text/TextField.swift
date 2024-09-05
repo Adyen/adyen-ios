@@ -38,8 +38,10 @@ public final class TextField: UITextField {
 
     override public var font: UIFont? {
         didSet {
-            let sizeToFit = sizeThatFits(CGSize(width: bounds.width,
-                                                height: UIView.layoutFittingExpandedSize.height))
+            let sizeToFit = sizeThatFits(CGSize(
+                width: bounds.width,
+                height: UIView.layoutFittingExpandedSize.height
+            ))
             heightConstraint = heightConstraint ?? heightAnchor.constraint(equalToConstant: 0)
             heightConstraint?.constant = sizeToFit.height + 1
             heightConstraint?.priority = .defaultHigh

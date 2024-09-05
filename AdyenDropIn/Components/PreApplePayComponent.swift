@@ -22,8 +22,10 @@ internal final class PreApplePayComponent: PresentableComponent,
 
         internal var localizationParameters: LocalizationParameters?
 
-        internal init(style: ApplePayStyle = ApplePayStyle(),
-                      localizationParameters: LocalizationParameters? = nil) {
+        internal init(
+            style: ApplePayStyle = ApplePayStyle(),
+            localizationParameters: LocalizationParameters? = nil
+        ) {
             self.style = style
             self.localizationParameters = localizationParameters
         }
@@ -58,17 +60,21 @@ internal final class PreApplePayComponent: PresentableComponent,
     
     internal let requiresModalPresentation: Bool = true
     
-    internal init(paymentMethod: ApplePayPaymentMethod,
-                  context: AdyenContext,
-                  configuration: Configuration,
-                  applePayConfiguration: ApplePayComponent.Configuration) throws {
+    internal init(
+        paymentMethod: ApplePayPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration,
+        applePayConfiguration: ApplePayComponent.Configuration
+    ) throws {
         self.context = context
         self.paymentMethod = paymentMethod
         self.configuration = configuration
         self.amount = applePayConfiguration.applePayPayment.amount
-        self.applePayComponent = try ApplePayComponent(paymentMethod: paymentMethod,
-                                                       context: context,
-                                                       configuration: applePayConfiguration)
+        self.applePayComponent = try ApplePayComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: applePayConfiguration
+        )
         self.applePayComponent.delegate = self
     }
 

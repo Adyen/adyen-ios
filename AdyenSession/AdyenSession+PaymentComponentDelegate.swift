@@ -50,21 +50,27 @@ extension AdyenSession: PaymentComponentDelegate {
 
 @_spi(AdyenInternal)
 extension AdyenSession: AdyenSessionPaymentsHandler {
-    public func didSubmit(_ paymentComponentData: PaymentComponentData,
-                          from component: Component,
-                          dropInComponent: AnyDropInComponent?,
-                          session: AdyenSession) {
-        let request = PaymentsRequest(sessionId: sessionContext.identifier,
-                                      sessionData: sessionContext.data,
-                                      data: paymentComponentData)
+    public func didSubmit(
+        _ paymentComponentData: PaymentComponentData,
+        from component: Component,
+        dropInComponent: AnyDropInComponent?,
+        session: AdyenSession
+    ) {
+        let request = PaymentsRequest(
+            sessionId: sessionContext.identifier,
+            sessionData: sessionContext.data,
+            data: paymentComponentData
+        )
         apiClient.perform(request) { [weak self] in
             self?.handle(paymentResponseResult: $0, for: component, in: dropInComponent)
         }
     }
     
-    internal func handle(paymentResponseResult: Result<PaymentsResponse, Error>,
-                         for currentComponent: Component,
-                         in dropInComponent: AnyDropInComponent? = nil) {
+    internal func handle(
+        paymentResponseResult: Result<PaymentsResponse, Error>,
+        for currentComponent: Component,
+        in dropInComponent: AnyDropInComponent? = nil
+    ) {
         switch paymentResponseResult {
         case let .success(response):
             handle(paymentResponse: response, for: currentComponent, in: dropInComponent)
@@ -73,9 +79,11 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
         }
     }
     
-    private func handle(paymentResponse response: PaymentsResponse,
-                        for currentComponent: Component,
-                        in dropInComponent: AnyDropInComponent?) {
+    private func handle(
+        paymentResponse response: PaymentsResponse,
+        for currentComponent: Component,
+        in dropInComponent: AnyDropInComponent?
+    ) {
         if let action = response.action {
             handle(action: action, for: currentComponent, in: dropInComponent)
         } else if let order = response.order,
@@ -91,8 +99,10 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
                 handleOrderBlock()
             }
         } else {
-            let result = AdyenSessionResult(resultCode: SessionPaymentResultCode(paymentResultCode: response.resultCode),
-                                            encodedResult: response.sessionResult)
+            let result = AdyenSessionResult(
+                resultCode: SessionPaymentResultCode(paymentResultCode: response.resultCode),
+                encodedResult: response.sessionResult
+            )
             finish(with: result, component: currentComponent)
         }
     }
@@ -105,9 +115,11 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
         let localizationParameters = (dropInComponent as? Localizable)?.localizationParameters
         let title = localizedString(.errorTitle, localizationParameters)
         let message = localizedString(.paymentRefusedMessage, localizationParameters)
-        let alertController = UIAlertController(title: title,
-                                                message: message,
-                                                preferredStyle: .alert)
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
         
         let doneTitle = localizedString(.dismissButton, localizationParameters)
         let doneAction = UIAlertAction(title: doneTitle, style: .default) { _ in
@@ -118,9 +130,11 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
         dropInComponent.viewController.present(alertController, animated: true)
     }
     
-    private func handle(action: Action,
-                        for currentComponent: Component,
-                        in dropInComponent: AnyDropInComponent?) {
+    private func handle(
+        action: Action,
+        for currentComponent: Component,
+        in dropInComponent: AnyDropInComponent?
+    ) {
         if let dropInComponent = dropInComponent as? ActionHandlingComponent {
             dropInComponent.handle(action)
         } else {
@@ -128,21 +142,29 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
         }
     }
     
-    private func handle(order: PartialPaymentOrder,
-                        for currentComponent: Component,
-                        in dropInComponent: AnyDropInComponent?) {
+    private func handle(
+        order: PartialPaymentOrder,
+        for currentComponent: Component,
+        in dropInComponent: AnyDropInComponent?
+    ) {
         guard let dropInComponent else {
-            finish(with: PartialPaymentError.notSupportedForComponent,
-                   component: currentComponent)
+            finish(
+                with: PartialPaymentError.notSupportedForComponent,
+                component: currentComponent
+            )
             return
         }
-        Self.makeSetupCall(with: configuration,
-                           baseAPIClient: apiClient,
-                           order: order) { [weak self] result in
+        Self.makeSetupCall(
+            with: configuration,
+            baseAPIClient: apiClient,
+            order: order
+        ) { [weak self] result in
             self?.updateContext(with: result, component: currentComponent)
-            self?.reload(dropInComponent: dropInComponent,
-                         with: order,
-                         currentComponent: currentComponent)
+            self?.reload(
+                dropInComponent: dropInComponent,
+                with: order,
+                currentComponent: currentComponent
+            )
         }
     }
     
@@ -155,9 +177,11 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
         }
     }
     
-    private func reload(dropInComponent: AnyDropInComponent,
-                        with order: PartialPaymentOrder,
-                        currentComponent: Component) {
+    private func reload(
+        dropInComponent: AnyDropInComponent,
+        with order: PartialPaymentOrder,
+        currentComponent: Component
+    ) {
         do {
             try dropInComponent.reload(with: order, sessionContext.paymentMethods)
         } catch {

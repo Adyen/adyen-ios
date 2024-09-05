@@ -32,9 +32,11 @@ public final class CardNumberValidator: StatusValidator {
     ///   - isLuhnCheckEnabled: Indicates whether luhn check is enabled.
     ///   - isEnteredBrandSupported: Is the brand being validated supported.
     ///   - panLength: The PAN length.
-    public init(isLuhnCheckEnabled: Bool,
-                isEnteredBrandSupported: Bool,
-                panLength: Int? = nil) {
+    public init(
+        isLuhnCheckEnabled: Bool,
+        isEnteredBrandSupported: Bool,
+        panLength: Int? = nil
+    ) {
         self.isLuhnCheckEnabled = isLuhnCheckEnabled
         self.isEnteredBrandSupported = isEnteredBrandSupported
         self.panLength = panLength

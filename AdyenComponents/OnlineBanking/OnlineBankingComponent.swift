@@ -35,8 +35,10 @@ public final class OnlineBankingComponent: PaymentComponent,
 
     public weak var delegate: PaymentComponentDelegate?
 
-    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController,
-                                                                             style: configuration.style)
+    public lazy var viewController: UIViewController = SecuredViewController(
+        child: formViewController,
+        style: configuration.style
+    )
 
     public var requiresModalPresentation: Bool = true
 
@@ -54,20 +56,26 @@ public final class OnlineBankingComponent: PaymentComponent,
     /// The terms and condition message item.
     internal lazy var termsAndConditionsLabelItem: FormAttributedLabelItem = .init(
         originalText:
-        localizedString(.onlineBankingTermsAndConditions,
-                        configuration.localizationParameters),
+        localizedString(
+            .onlineBankingTermsAndConditions,
+            configuration.localizationParameters
+        ),
         links: [termsAndConditionsLink],
         style: configuration.style.footnoteLabel,
         linkTextStyle: configuration.style.linkTextLabel,
-        identifier: ViewIdentifierBuilder.build(scopeInstance: self,
-                                                postfix: ViewIdentifier.termsAndConditionsLabelItem)
+        identifier: ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.termsAndConditionsLabelItem
+        )
     )
 
     /// The continue button item.
     internal lazy var continueButton: FormButtonItem = {
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                      postfix: ViewIdentifier.continueButtonItem)
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.continueButtonItem
+        )
         item.title = localizedString(.continueTitle, configuration.localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectContinueButton()
@@ -83,12 +91,16 @@ public final class OnlineBankingComponent: PaymentComponent,
 
         AdyenAssertion.assert(message: "Issuer list should not be empty", condition: issuerListPickerItems.count <= 0)
 
-        let issuerPickerItem = FormIssuersPickerItem(preselectedValue: issuerListPickerItems[0],
-                                                     selectableValues: issuerListPickerItems,
-                                                     style: configuration.style.textField)
+        let issuerPickerItem = FormIssuersPickerItem(
+            preselectedValue: issuerListPickerItems[0],
+            selectableValues: issuerListPickerItems,
+            style: configuration.style.textField
+        )
         issuerPickerItem.title = localizedString(.selectFieldTitle, configuration.localizationParameters)
-        issuerPickerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                                  postfix: ViewIdentifier.issuerListItem)
+        issuerPickerItem.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.issuerListItem
+        )
         return issuerPickerItem
     }()
 
@@ -97,9 +109,11 @@ public final class OnlineBankingComponent: PaymentComponent,
     /// - Parameter paymentMethod: The Online Banking payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(paymentMethod: OnlineBankingPaymentMethod,
-                context: AdyenContext,
-                configuration: Configuration = .init()) {
+    public init(
+        paymentMethod: OnlineBankingPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         self.onlineBankingPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
@@ -115,8 +129,10 @@ public final class OnlineBankingComponent: PaymentComponent,
     private func didSelectContinueButton() {
         guard formViewController.validate() else { return }
 
-        let details = OnlineBankingDetails(paymentMethod: paymentMethod,
-                                           issuer: issuerListPickerItem.value.identifier)
+        let details = OnlineBankingDetails(
+            paymentMethod: paymentMethod,
+            issuer: issuerListPickerItem.value.identifier
+        )
         continueButton.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
