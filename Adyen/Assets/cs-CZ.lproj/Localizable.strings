@@ -37,7 +37,7 @@
 "adyen.card.stored.expires" = "Vyprší %@";
 "adyen.card.numberItem.unsupportedBrand" = "Karty %@ nejsou podporované";
 "adyen.card.numberItem.unknownBrand" = "Zadaná značka karet není podporovaná";
-"adyen.dropIn.stored.title" = "Potvrdit platbu";
+"adyen.dropIn.stored.title" = "Potvrdit platbu %@";
 "adyen.dropIn.preselected.openAll.title" = "Změnit způsob platby";
 "adyen.continueTo" = "Pokračovat k %@";
 "adyen.continueTitle" = "Pokračovat";

@@ -81,7 +81,7 @@
 "adyen.amount" = "المبلغ";
 "adyen.voucher.entity" = "الكيان";
 "adyen.pix.instructions" = "افتح التطبيق باستخدام مفتاح PIX المسجل، واختر الدفع باستخدام PIX وامسح رمز الاستجابة السريعة ضوئيًا أو انسخ الرمز والصقه";
-"adyen.pix.expirationLabel" = "لديك %@ للدفع";
+"adyen.pix.expirationLabel" = "لديك @% للدفع";
 "adyen.pix.copyButton" = "نسخ الرمز";
 "adyen.pix.instructions.copiedMessage" = "تم نسخ الرمز إلى الحافظة";
 "adyen.billingAddressSection.title" = "عنوان الفواتير";
@@ -129,7 +129,7 @@
 "adyen.giftcard.remove.message" = "هل ترغب في إزالة بطاقات الهدايا المضافة؟";
 "adyen.giftcard.paymentMethod.title" = "بطاقة هدايا مضافة";
 "adyen.partialPayment.remainingBalance" = "سيبلغ الرصيد المتبقي %@";
-"adyen.partialPayment.payRemainingAmount" = "تحديد طريقة الدفع لمبلغ %@ المتبقي";
+"adyen.partialPayment.payRemainingAmount" = "تحديد طريقة الدفع لمبلغ {amount}% المتبقي";
 "adyen.card.taxNumber.label" = "تاريخ ميلاد حامل البطاقة (يوم شهر سنة) أو رقم تسجيل الشركة (10 أرقام)";
 "adyen.card.taxNumber.placeholder" = "يوم شهر سنة / 0123456789";
 "adyen.card.taxNumber.invalid" = "تاريخ ميلاد حامل البطاقة أو رقم تسجيل الشركة غير صحيح";
@@ -152,7 +152,7 @@
 "adyen.bacs.bankLocationIdField.title" = "رمز تعريف البنك";
 "adyen.bacs.legalConsentToggle.title" = "أؤكد أن الحساب باسمي وأنا وحدي صاحب التوقيع المطالب بالإذن بالخصم المباشر في هذا الحساب.";
 "adyen.bacs.amountConsentToggle.title" = "أوافق على خصم المبلغ أعلاه من حسابي البنكي.";
-"adyen.bacs.specifiedAmountConsentToggle.title" = "أوافق على خصم %@ من حسابي البنكي.";
+"adyen.bacs.specifiedAmountConsentToggle.title" = "أوافق على خصم {amount}% من حسابي البنكي.";
 "adyen.bacs.holderNameField.invalidMessage" = "اسم صاحب حساب بنكي غير صحيح";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "رقم حساب بنكي غير صحيح";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "رمز تعريف بنك غير صحيح";
@@ -175,7 +175,7 @@
 "adyen.upi.modeSelection" = "كيف تود استخدام معرف واجهة المدفوعات الموحدة (UPI)؟";
 "adyen.UPIVpa.validationMessage" = "أدخل عنوان دفع افتراضي صحيح";
 "adyen.UPIQrcode.generationMessage" = "أنشئ رمز الاستجابة السريعة الذي يمكنك تنزيله أو خذ لقطة شاشة له وقم بتحميله على تطبيق UPI لإكمال الدفع.";
-"adyen.UPIQrcode.timerMessage" = "أمامك ٪@ للموافقة";
+"adyen.UPIQrcode.timerMessage" = "أمامك @% للموافقة";
 "adyen.upiCollect.confirmPayment" = "في انتظار تأكيدك…";
 "adyen.upi.vpaWaitingMessage" = "افتح تطبيق UPI لتأكيد الدفع";
 "adyen.QRCode.generateQRCode" = "إنشاء رمز استجابة سريعة";
@@ -195,7 +195,7 @@
 "adyen.threeds2.DA.opticID" = "بصمة العين";
 "adyen.threeds2.DA.registration.description" = "يمكنك في المرة القادمة إتمام عملية الدفع سريعًا، باستخدام هذه البطاقة";
 "adyen.threeds2.DA.registration.firstInfo" = "استمتع بسرعة عمليات الدفع.";
-"adyen.threeds2.DA.registration.secondInfo" = "استخدم %@ ورمز المرور؛ لاعتماد عمليات الدفع.";
+"adyen.threeds2.DA.registration.secondInfo" = "استخدم @% ورمز المرور؛ لاعتماد عمليات الدفع.";
 "adyen.threeds2.DA.registration.thirdInfo" = "أزِل بيانات الاعتماد الخاصة بك في أي وقتٍ تشاء.";
 "adyen.threeds2.DA.registration.positiveButton" = "استخدم الدفع الآمن";
 "adyen.threeds2.DA.registration.negativeButton" = "ليس الآن";
@@ -220,12 +220,12 @@
 "adyen.threeds2.DA.deletion.confirmation.message" = "لن يُطلبُ منك اعتماد المعاملات من خلال Secure Checkout بعد الآن.";
 "adyen.threeds2.DA.deletion.confirmation.buttonTitle" = "متابعة";
 "adyen.picker.search.empty.title" = "لم يتم العثور على نتائج";
-"adyen.picker.search.empty.subtitle" = "٪ @ لم يتطابق مع أي شيء";
+"adyen.picker.search.empty.subtitle" = "@% لم يتطابق مع أي شيء";
 "adyen.address.lookup.search.placeholder" = "ابحث عن عنوانك";
 "adyen.address.lookup.search.empty.title" = "لا تستطيع البحث عن عنوانك؟";
 "adyen.address.lookup.search.empty.subtitle" = "يمكنك دائمًا #إدخال عنوانك يدويًا#";
 "adyen.address.lookup.search.empty.title.noResults" = "لم يتم العثور على نتائج";
-"adyen.address.lookup.search.empty.subtitle.noResults" = "لم يتطابق '%@' مع أي شيء، حاول مرة أخرى أو استخدم #إدخال العنوان يدويًا#";
+"adyen.address.lookup.search.empty.subtitle.noResults" = "لم يتطابق '@%' مع أي شيء، حاول مرة أخرى أو استخدم #إدخال العنوان يدويًا#";
 "adyen.address.lookup.item.validationFailureMessage.empty" = "العنوان مطلوب";
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "عنوان غير صحيح";
 "adyen.address.lookup.search.manualEntryItem.title" = "أدخل العنوان يدويًا";

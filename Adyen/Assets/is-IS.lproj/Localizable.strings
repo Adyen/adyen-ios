@@ -6,7 +6,7 @@
 "adyen.error.title" = "Villa";
 "adyen.error.unknown" = "Óþekkt villa kom upp";
 "adyen.validationAlert.title" = "Ógilt inntak";
-"adyen.paymentMethods.otherMethods" = "aðrar";
+"adyen.paymentMethods.otherMethods" = "Aðrar";
 "adyen.paymentMethods.storedMethods" = "Geymt";
 "adyen.paymentMethods.paidMethods" = "Notaðar";
 "adyen.paymentMethods.title" = "Greiðslumátar";
