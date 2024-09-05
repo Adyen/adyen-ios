@@ -33,12 +33,16 @@ public struct ApplePayStyle {
     ///   - cornerRadius: Corner radius for the payment button. iOS 12 or above. Defaults to 4 points.
     ///   - backgroundColor: Background color for the Apple Pay component.
     ///   - hintLabel: Stying for the label that contains the formatted amount text.
-    public init(paymentButtonStyle: PKPaymentButtonStyle? = nil,
-                paymentButtonType: PKPaymentButtonType = .inStore,
-                cornerRadius: CGFloat = 4,
-                backgroundColor: UIColor = UIColor.Adyen.componentBackground,
-                hintLabel: TextStyle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
-                                                 color: UIColor.Adyen.componentSecondaryLabel)) {
+    public init(
+        paymentButtonStyle: PKPaymentButtonStyle? = nil,
+        paymentButtonType: PKPaymentButtonType = .inStore,
+        cornerRadius: CGFloat = 4,
+        backgroundColor: UIColor = UIColor.Adyen.componentBackground,
+        hintLabel: TextStyle = TextStyle(
+            font: .preferredFont(forTextStyle: .footnote),
+            color: UIColor.Adyen.componentSecondaryLabel
+        )
+    ) {
         self.paymentButtonStyle = paymentButtonStyle
         self.paymentButtonType = paymentButtonType
         self.cornerRadius = cornerRadius

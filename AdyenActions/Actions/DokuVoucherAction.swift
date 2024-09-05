@@ -27,24 +27,28 @@ public final class DokuVoucherAction: GenericVoucherAction, InstructionAwareVouc
         try super.init(from: decoder)
     }
 
-    internal init(paymentMethodType: VoucherPaymentMethod,
-                  initialAmount: Amount,
-                  totalAmount: Amount,
-                  reference: String,
-                  shopperEmail: String,
-                  expiresAt: Date,
-                  merchantName: String,
-                  shopperName: String,
-                  instructionsUrl: URL) {
+    internal init(
+        paymentMethodType: VoucherPaymentMethod,
+        initialAmount: Amount,
+        totalAmount: Amount,
+        reference: String,
+        shopperEmail: String,
+        expiresAt: Date,
+        merchantName: String,
+        shopperName: String,
+        instructionsUrl: URL
+    ) {
         self.shopperEmail = shopperEmail
         self.shopperName = shopperName
         self.instructionsURL = instructionsUrl
-        super.init(paymentMethodType: paymentMethodType,
-                   initialAmount: initialAmount,
-                   totalAmount: totalAmount,
-                   reference: reference,
-                   expiresAt: expiresAt,
-                   merchantName: merchantName)
+        super.init(
+            paymentMethodType: paymentMethodType,
+            initialAmount: initialAmount,
+            totalAmount: totalAmount,
+            reference: reference,
+            expiresAt: expiresAt,
+            merchantName: merchantName
+        )
     }
 
     private enum CodingKeys: String, CodingKey {

@@ -36,11 +36,13 @@ public struct ImageStyle: TintableStyle {
     /// - Parameter cornerRadius: The image's corner radius.
     /// - Parameter clipsToBounds: A boolean value that determines whether the image is confined to the bounds of the view.
     /// - Parameter contentMode: A flag used to determine how to lay out the image in its bounds.
-    public init(borderColor: UIColor?,
-                borderWidth: CGFloat,
-                cornerRadius: CGFloat,
-                clipsToBounds: Bool,
-                contentMode: UIView.ContentMode) {
+    public init(
+        borderColor: UIColor?,
+        borderWidth: CGFloat,
+        cornerRadius: CGFloat,
+        clipsToBounds: Bool,
+        contentMode: UIView.ContentMode
+    ) {
         self.borderColor = borderColor
         self.borderWidth = borderWidth
         self.cornerRounding = .fixed(cornerRadius)
@@ -55,11 +57,13 @@ public struct ImageStyle: TintableStyle {
     /// - Parameter cornerRounding: The image's corner style.
     /// - Parameter clipsToBounds: A boolean value that determines whether the image is confined to the bounds of the view.
     /// - Parameter contentMode: A flag used to determine how to lay out the image in its bounds.
-    public init(borderColor: UIColor?,
-                borderWidth: CGFloat,
-                cornerRounding: CornerRounding,
-                clipsToBounds: Bool,
-                contentMode: UIView.ContentMode) {
+    public init(
+        borderColor: UIColor?,
+        borderWidth: CGFloat,
+        cornerRounding: CornerRounding,
+        clipsToBounds: Bool,
+        contentMode: UIView.ContentMode
+    ) {
         self.borderColor = borderColor
         self.borderWidth = borderWidth
         self.cornerRounding = cornerRounding

@@ -32,9 +32,11 @@ internal class AnalyticsEventDataSource: AnyAnalyticsEventDataSource {
         if infos.isEmpty, logs.isEmpty, errors.isEmpty {
             return nil
         }
-        return AnalyticsEventWrapper(infos: infos,
-                                     logs: logs,
-                                     errors: errors)
+        return AnalyticsEventWrapper(
+            infos: infos,
+            logs: logs,
+            errors: errors
+        )
     }
     
     // MARK: - AnalyticsEventDataRemoval

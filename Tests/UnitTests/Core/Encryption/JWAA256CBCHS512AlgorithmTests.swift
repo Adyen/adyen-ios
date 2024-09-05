@@ -32,20 +32,26 @@ class JWAA256CBCHS512AlgorithmTests: XCTestCase {
 
         let additionalAuth: [UInt8] = byteArray(from: "84 104 101 32 115 101 99 111 110 100 32 112 114 105 110 99 105 112 108 101 32 111 102 32 65 117 103 117 115 116 101 32 75 101 114 99 107 104 111 102 102 115")
         let additionalAuthData = Data(bytes: additionalAuth, count: additionalAuth.count)
-        validInput = JWAInput(payload: payloadData,
-                              key: keyData,
-                              initializationVector: initializationVectorData,
-                              additionalAuthenticationData: additionalAuthData)
+        validInput = JWAInput(
+            payload: payloadData,
+            key: keyData,
+            initializationVector: initializationVectorData,
+            additionalAuthenticationData: additionalAuthData
+        )
 
-        invalidKeyLengthInput = JWAInput(payload: payloadData,
-                                         key: keyData[0...3],
-                                         initializationVector: initializationVectorData,
-                                         additionalAuthenticationData: additionalAuthData)
+        invalidKeyLengthInput = JWAInput(
+            payload: payloadData,
+            key: keyData[0...3],
+            initializationVector: initializationVectorData,
+            additionalAuthenticationData: additionalAuthData
+        )
 
-        invalidIVInput = JWAInput(payload: payloadData,
-                                  key: keyData,
-                                  initializationVector: initializationVectorData[0...5],
-                                  additionalAuthenticationData: additionalAuthData)
+        invalidIVInput = JWAInput(
+            payload: payloadData,
+            key: keyData,
+            initializationVector: initializationVectorData[0...5],
+            additionalAuthenticationData: additionalAuthData
+        )
     }
 
     func testSuccess() throws {

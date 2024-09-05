@@ -37,19 +37,25 @@ internal final class DelegatedAuthenticationErrorView: UIView {
         return imageView
     }()
 
-    internal lazy var titleLabel: UILabel = .init(style: style.errorTitleStyle,
-                                                  accessibilityPostfix: "titleLabel",
-                                                  scopeInstance: self)
+    internal lazy var titleLabel: UILabel = .init(
+        style: style.errorTitleStyle,
+        accessibilityPostfix: "titleLabel",
+        scopeInstance: self
+    )
     
-    internal lazy var descriptionLabel: UILabel = .init(style: style.errorDescription,
-                                                        accessibilityPostfix: "descriptionLabel",
-                                                        multiline: true,
-                                                        scopeInstance: self)
+    internal lazy var descriptionLabel: UILabel = .init(
+        style: style.errorDescription,
+        accessibilityPostfix: "descriptionLabel",
+        multiline: true,
+        scopeInstance: self
+    )
     
-    internal lazy var tileAndSubtitleStackView: UIStackView = .init(arrangedSubviews: [image, titleLabel, descriptionLabel],
-                                                                    spacing: 16,
-                                                                    view: self,
-                                                                    scopedInstance: self)
+    internal lazy var tileAndSubtitleStackView: UIStackView = .init(
+        arrangedSubviews: [image, titleLabel, descriptionLabel],
+        spacing: 16,
+        view: self,
+        scopedInstance: self
+    )
                     
     // MARK: Buttons
 
@@ -63,19 +69,23 @@ internal final class DelegatedAuthenticationErrorView: UIView {
         return button
     }()
 
-    internal lazy var buttonsStackView: UIStackView = .init(arrangedSubviews: [firstButton],
-                                                            distribution: .fillEqually,
-                                                            spacing: 5,
-                                                            view: self,
-                                                            scopedInstance: self)
+    internal lazy var buttonsStackView: UIStackView = .init(
+        arrangedSubviews: [firstButton],
+        distribution: .fillEqually,
+        spacing: 5,
+        view: self,
+        scopedInstance: self
+    )
     
     // MARK: - Container Views
     
     internal lazy var scrollView = UIScrollView(frame: .zero)
-    internal lazy var contentStackView: UIStackView = .init(arrangedSubviews: [tileAndSubtitleStackView, buttonsStackView],
-                                                            spacing: 16,
-                                                            view: self,
-                                                            scopedInstance: self)
+    internal lazy var contentStackView: UIStackView = .init(
+        arrangedSubviews: [tileAndSubtitleStackView, buttonsStackView],
+        spacing: 16,
+        view: self,
+        scopedInstance: self
+    )
 
     // MARK: - initializers
     

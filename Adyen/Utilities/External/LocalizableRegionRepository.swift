@@ -34,8 +34,10 @@ internal enum RegionRepository {
         with countryCodes: [String]? = nil
     ) -> [Region] {
         (countryCodes ?? NSLocale.isoCountryCodes).map { countryCode in
-            Region(identifier: countryCode,
-                   name: locale.displayName(forKey: .countryCode, value: countryCode) ?? countryCode)
+            Region(
+                identifier: countryCode,
+                name: locale.displayName(forKey: .countryCode, value: countryCode) ?? countryCode
+            )
         }
     }
 

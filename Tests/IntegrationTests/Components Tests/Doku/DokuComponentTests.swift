@@ -30,11 +30,15 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomTableName() throws {
-        let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost",
-                                                                                                keySeparator: nil))
-        let sut = DokuComponent(paymentMethod: paymentMethod,
-                                context: context,
-                                configuration: config)
+        let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(
+            tableName: "AdyenUIHost",
+            keySeparator: nil
+        ))
+        let sut = DokuComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
 
         XCTAssertEqual(sut.firstNameItem?.title, localizedString(.firstName, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.firstNameItem?.placeholder, localizedString(.firstName, sut.configuration.localizationParameters))
@@ -53,11 +57,15 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testLocalizationWithCustomKeySeparator() throws {
-        let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator",
-                                                                                                keySeparator: "_"))
-        let sut = DokuComponent(paymentMethod: paymentMethod,
-                                context: context,
-                                configuration: config)
+        let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(
+            tableName: "AdyenUIHostCustomSeparator",
+            keySeparator: "_"
+        ))
+        let sut = DokuComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
 
         XCTAssertEqual(sut.firstNameItem?.title, localizedString(LocalizationKey(key: "adyen_firstName"), sut.configuration.localizationParameters))
         XCTAssertEqual(sut.firstNameItem?.placeholder, localizedString(LocalizationKey(key: "adyen_firstName"), sut.configuration.localizationParameters))
@@ -76,9 +84,11 @@ class DokuComponentTests: XCTestCase {
     }
 
     func testBigTitle() {
-        let sut = DokuComponent(paymentMethod: paymentMethod,
-                                context: context,
-                                configuration: DokuComponent.Configuration())
+        let sut = DokuComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: DokuComponent.Configuration()
+        )
 
         setupRootViewController(sut.viewController)
 
@@ -90,18 +100,22 @@ class DokuComponentTests: XCTestCase {
 
     func testRequiresModalPresentation() {
         let dokuPaymentMethod = DokuPaymentMethod(type: .dokuWallet, name: "Test name")
-        let sut = DokuComponent(paymentMethod: dokuPaymentMethod,
-                                context: context,
-                                configuration: DokuComponent.Configuration())
+        let sut = DokuComponent(
+            paymentMethod: dokuPaymentMethod,
+            context: context,
+            configuration: DokuComponent.Configuration()
+        )
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
     func testDokuPrefilling() throws {
         // Given
         let config = DokuComponent.Configuration(shopperInformation: shopperInformation)
-        let prefillSut = DokuComponent(paymentMethod: paymentMethod,
-                                       context: context,
-                                       configuration: config)
+        let prefillSut = DokuComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
         
         setupRootViewController(prefillSut.viewController)
 
@@ -126,9 +140,11 @@ class DokuComponentTests: XCTestCase {
 
     func testDokuGivenNoShopperInformationShouldNotPrefill() throws {
         // Given
-        let sut = DokuComponent(paymentMethod: paymentMethod,
-                                context: context,
-                                configuration: DokuComponent.Configuration())
+        let sut = DokuComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: DokuComponent.Configuration()
+        )
         setupRootViewController(sut.viewController)
 
         wait(for: .milliseconds(300))
@@ -153,9 +169,11 @@ class DokuComponentTests: XCTestCase {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
-        let sut = DokuComponent(paymentMethod: paymentMethod,
-                                context: context,
-                                configuration: DokuComponent.Configuration())
+        let sut = DokuComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: DokuComponent.Configuration()
+        )
 
         // When
         sut.viewDidLoad(viewController: sut.viewController)

@@ -20,9 +20,11 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Adye
     internal var completionHandler: Completion<Result<CardDetails, Error>>?
     internal var localizationParameters: LocalizationParameters?
     
-    internal init(paymentMethod: StoredCardPaymentMethod,
-                  context: AdyenContext,
-                  amount: Amount?) {
+    internal init(
+        paymentMethod: StoredCardPaymentMethod,
+        context: AdyenContext,
+        amount: Amount?
+    ) {
         self.context = context
         self.paymentMethod = paymentMethod
         self.amount = amount
@@ -62,9 +64,11 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Adye
     }()
     
     private lazy var submitAction: UIAlertAction = {
-        let actionTitle = localizedSubmitButtonTitle(with: amount,
-                                                     style: .immediate,
-                                                     localizationParameters)
+        let actionTitle = localizedSubmitButtonTitle(
+            with: amount,
+            style: .immediate,
+            localizationParameters
+        )
         let action = UIAlertAction(title: actionTitle, style: .default) { [unowned self] _ in
             self.submit()
         }

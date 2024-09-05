@@ -28,39 +28,49 @@ import XCTest
             .init(relyingPartyIdentifier: relyingPartyIdentifier)
         }
     
-        lazy var analyticsEvent: Analytics.Event = .init(component: "Dropin",
-                                                         flavor: .dropin,
-                                                         context: Dummy.apiContext)
+        lazy var analyticsEvent: Analytics.Event = .init(
+            component: "Dropin",
+            flavor: .dropin,
+            context: Dummy.apiContext
+        )
         
         override func setUp() {
             super.setUp()
 
-            authenticationRequestParameters = AuthenticationRequestParametersMock(deviceInformation: "device_info",
-                                                                                  sdkApplicationIdentifier: "sdkApplicationIdentifier",
-                                                                                  sdkTransactionIdentifier: "sdkTransactionIdentifier",
-                                                                                  sdkReferenceNumber: "sdkReferenceNumber",
-                                                                                  sdkEphemeralPublicKey: sdkPublicKey,
-                                                                                  messageVersion: "messageVersion")
+            authenticationRequestParameters = AuthenticationRequestParametersMock(
+                deviceInformation: "device_info",
+                sdkApplicationIdentifier: "sdkApplicationIdentifier",
+                sdkTransactionIdentifier: "sdkTransactionIdentifier",
+                sdkReferenceNumber: "sdkReferenceNumber",
+                sdkEphemeralPublicKey: sdkPublicKey,
+                messageVersion: "messageVersion"
+            )
 
-            fingerprintAction = ThreeDS2FingerprintAction(fingerprintToken: fingerprintToken,
-                                                          authorisationToken: "AuthToken",
-                                                          paymentData: "paymentData")
+            fingerprintAction = ThreeDS2FingerprintAction(
+                fingerprintToken: fingerprintToken,
+                authorisationToken: "AuthToken",
+                paymentData: "paymentData"
+            )
 
             challengeAction = ThreeDS2ChallengeAction(challengeToken: challengeToken, authorisationToken: "authToken", paymentData: "paymentData")
         }
 
         func testSettingThreeDSRequestorAppURL() throws {
-            let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      appearanceConfiguration: ADYAppearanceConfiguration(),
-                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations)
+            let sut = ThreeDS2PlusDACoreActionHandler(
+                context: Dummy.context,
+                appearanceConfiguration: ADYAppearanceConfiguration(),
+                delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations
+            )
             sut.threeDSRequestorAppURL = URL(string: "https://google.com")
             XCTAssertEqual(sut.threeDSRequestorAppURL, URL(string: "https://google.com"))
         }
         
         func testWrappedComponent() throws {
-            let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      appearanceConfiguration: ADYAppearanceConfiguration(),
-                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations)
+            let sut = ThreeDS2PlusDACoreActionHandler(
+                context: Dummy.context,
+                appearanceConfiguration: ADYAppearanceConfiguration(),
+                delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations
+            )
             XCTAssertEqual(sut.context.apiContext.clientKey, Dummy.apiContext.clientKey)
         
             XCTAssertEqual(sut.context.apiContext.environment.baseURL, Dummy.apiContext.environment.baseURL)
@@ -85,11 +95,13 @@ import XCTest
             let authenticationServiceMock = AuthenticationServiceMock()
         
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-            let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      service: service,
-                                                      presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
-                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
-                                                      delegatedAuthenticationService: authenticationServiceMock)
+            let sut = ThreeDS2PlusDACoreActionHandler(
+                context: Dummy.context,
+                service: service,
+                presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
+                delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
+                delegatedAuthenticationService: authenticationServiceMock
+            )
             sut.handle(fingerprintAction, event: analyticsEvent) { fingerprintResult in
                 switch fingerprintResult {
                 case let .success(fingerprintString):
@@ -110,17 +122,24 @@ import XCTest
         
             let authenticationServiceMock = AuthenticationServiceMock()
 
-            let fingerprintAction = ThreeDS2FingerprintAction(fingerprintToken: "Invalid-token",
-                                                              authorisationToken: "AuthToken",
-                                                              paymentData: "paymentData")
+            let fingerprintAction = ThreeDS2FingerprintAction(
+                fingerprintToken: "Invalid-token",
+                authorisationToken: "AuthToken",
+                paymentData: "paymentData"
+            )
 
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-            let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      service: service,
-                                                      presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
-                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations, delegatedAuthenticationService: authenticationServiceMock)
-            sut.handle(fingerprintAction,
-                       event: analyticsEvent) { result in
+            let sut = ThreeDS2PlusDACoreActionHandler(
+                context: Dummy.context,
+                service: service,
+                presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
+                delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
+                delegatedAuthenticationService: authenticationServiceMock
+            )
+            sut.handle(
+                fingerprintAction,
+                event: analyticsEvent
+            ) { result in
                 switch result {
                 case .success:
                     XCTFail()
@@ -167,12 +186,14 @@ import XCTest
             )
             
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-            let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      service: service,
-                                                      presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .register, showApprovalScreenReturnState: .fallback),
-                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
-                                                      delegatedAuthenticationService: authenticationServiceMock,
-                                                      deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true))
+            let sut = ThreeDS2PlusDACoreActionHandler(
+                context: Dummy.context,
+                service: service,
+                presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .register, showApprovalScreenReturnState: .fallback),
+                delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
+                delegatedAuthenticationService: authenticationServiceMock,
+                deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
+            )
             sut.threeDSRequestorAppURL = URL(string: "https://google.com")
             sut.transaction = transaction
             sut.delegatedAuthenticationState.attemptRegistration = true
@@ -201,10 +222,12 @@ import XCTest
 
             let authenticationServiceMock = AuthenticationServiceMock()
         
-            let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
-                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
-                                                      delegatedAuthenticationService: authenticationServiceMock)
+            let sut = ThreeDS2PlusDACoreActionHandler(
+                context: Dummy.context,
+                presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
+                delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
+                delegatedAuthenticationService: authenticationServiceMock
+            )
             sut.transaction = mockedTransaction
 
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
@@ -232,9 +255,12 @@ import XCTest
             let service = AnyADYServiceMock()
         
             let authenticationServiceMock = AuthenticationServiceMock()
-            let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
-                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations, delegatedAuthenticationService: authenticationServiceMock)
+            let sut = ThreeDS2PlusDACoreActionHandler(
+                context: Dummy.context,
+                presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
+                delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
+                delegatedAuthenticationService: authenticationServiceMock
+            )
 
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
             sut.handle(challengeAction, event: analyticsEvent) { result in
@@ -267,9 +293,12 @@ import XCTest
 
             let authenticationServiceMock = AuthenticationServiceMock()
 
-            let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
-                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations, delegatedAuthenticationService: authenticationServiceMock)
+            let sut = ThreeDS2PlusDACoreActionHandler(
+                context: Dummy.context,
+                presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
+                delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
+                delegatedAuthenticationService: authenticationServiceMock
+            )
             sut.transaction = mockedTransaction
 
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
@@ -313,16 +342,22 @@ import XCTest
                 "OnAuthenticate"
             }
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-            let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      service: service,
-                                                      presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback,
-                                                                                               showApprovalScreenReturnState: .approve),
-                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
-                                                      delegatedAuthenticationService: authenticationServiceMock)
+            let sut = ThreeDS2PlusDACoreActionHandler(
+                context: Dummy.context,
+                service: service,
+                presenter: ThreeDS2DAScreenPresenterMock(
+                    showRegistrationReturnState: .fallback,
+                    showApprovalScreenReturnState: .approve
+                ),
+                delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
+                delegatedAuthenticationService: authenticationServiceMock
+            )
             
-            let fingerprintAction = ThreeDS2FingerprintAction(fingerprintToken: TestData.fingerprintToken,
-                                                              authorisationToken: "AuthToken",
-                                                              paymentData: "paymentData")
+            let fingerprintAction = ThreeDS2FingerprintAction(
+                fingerprintToken: TestData.fingerprintToken,
+                authorisationToken: "AuthToken",
+                paymentData: "paymentData"
+            )
             sut.handle(fingerprintAction, event: analyticsEvent) { fingerprintResult in
                 switch fingerprintResult {
                 case let .success(fingerprintString):
@@ -352,16 +387,22 @@ import XCTest
                 throw NSError(domain: "Error during Authentication", code: 123)
             }
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-            let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      service: service,
-                                                      presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback,
-                                                                                               showApprovalScreenReturnState: .approve),
-                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
-                                                      delegatedAuthenticationService: authenticationServiceMock)
+            let sut = ThreeDS2PlusDACoreActionHandler(
+                context: Dummy.context,
+                service: service,
+                presenter: ThreeDS2DAScreenPresenterMock(
+                    showRegistrationReturnState: .fallback,
+                    showApprovalScreenReturnState: .approve
+                ),
+                delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
+                delegatedAuthenticationService: authenticationServiceMock
+            )
             
-            let fingerprintAction = ThreeDS2FingerprintAction(fingerprintToken: TestData.fingerprintToken,
-                                                              authorisationToken: "AuthToken",
-                                                              paymentData: "paymentData")
+            let fingerprintAction = ThreeDS2FingerprintAction(
+                fingerprintToken: TestData.fingerprintToken,
+                authorisationToken: "AuthToken",
+                paymentData: "paymentData"
+            )
             sut.handle(fingerprintAction, event: analyticsEvent) { fingerprintResult in
                 switch fingerprintResult {
                 case let .success(fingerprintString):
@@ -393,16 +434,22 @@ import XCTest
                 "OnAuthenticate"
             }
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-            let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      service: service,
-                                                      presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback,
-                                                                                               showApprovalScreenReturnState: .fallback),
-                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
-                                                      delegatedAuthenticationService: authenticationServiceMock)
+            let sut = ThreeDS2PlusDACoreActionHandler(
+                context: Dummy.context,
+                service: service,
+                presenter: ThreeDS2DAScreenPresenterMock(
+                    showRegistrationReturnState: .fallback,
+                    showApprovalScreenReturnState: .fallback
+                ),
+                delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
+                delegatedAuthenticationService: authenticationServiceMock
+            )
             
-            let fingerprintAction = ThreeDS2FingerprintAction(fingerprintToken: TestData.fingerprintToken,
-                                                              authorisationToken: "AuthToken",
-                                                              paymentData: "paymentData")
+            let fingerprintAction = ThreeDS2FingerprintAction(
+                fingerprintToken: TestData.fingerprintToken,
+                authorisationToken: "AuthToken",
+                paymentData: "paymentData"
+            )
             sut.handle(fingerprintAction, event: analyticsEvent) { fingerprintResult in
                 switch fingerprintResult {
                 case let .success(fingerprintString):
@@ -444,16 +491,22 @@ import XCTest
             
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
 
-            let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      service: service,
-                                                      presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback,
-                                                                                               showApprovalScreenReturnState: .removeCredentials),
-                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
-                                                      delegatedAuthenticationService: authenticationServiceMock)
+            let sut = ThreeDS2PlusDACoreActionHandler(
+                context: Dummy.context,
+                service: service,
+                presenter: ThreeDS2DAScreenPresenterMock(
+                    showRegistrationReturnState: .fallback,
+                    showApprovalScreenReturnState: .removeCredentials
+                ),
+                delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
+                delegatedAuthenticationService: authenticationServiceMock
+            )
             
-            let fingerprintAction = ThreeDS2FingerprintAction(fingerprintToken: TestData.fingerprintToken,
-                                                              authorisationToken: "AuthToken",
-                                                              paymentData: "paymentData")
+            let fingerprintAction = ThreeDS2FingerprintAction(
+                fingerprintToken: TestData.fingerprintToken,
+                authorisationToken: "AuthToken",
+                paymentData: "paymentData"
+            )
             sut.handle(fingerprintAction, event: analyticsEvent) { fingerprintResult in
                 switch fingerprintResult {
                 case let .success(fingerprintString):
@@ -484,18 +537,25 @@ import XCTest
                 return self.expectedSDKRegistrationOutput
             }
         
-            let expectedResult = try XCTUnwrap(try? ThreeDSResult(from: AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTransactionIdentifier", transactionStatus: "Y"),
-                                                                  delegatedAuthenticationSDKOutput: nil,
-                                                                  authorizationToken: "authToken",
-                                                                  threeDS2SDKError: nil))
+            let expectedResult = try XCTUnwrap(try? ThreeDSResult(
+                from: AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTransactionIdentifier", transactionStatus: "Y"),
+                delegatedAuthenticationSDKOutput: nil,
+                authorizationToken: "authToken",
+                threeDS2SDKError: nil
+            ))
                         
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-            let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      service: service,
-                                                      presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback,
-                                                                                               showApprovalScreenReturnState: .fallback),
-                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations, delegatedAuthenticationService: authenticationServiceMock,
-                                                      deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true))
+            let sut = ThreeDS2PlusDACoreActionHandler(
+                context: Dummy.context,
+                service: service,
+                presenter: ThreeDS2DAScreenPresenterMock(
+                    showRegistrationReturnState: .fallback,
+                    showApprovalScreenReturnState: .fallback
+                ),
+                delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
+                delegatedAuthenticationService: authenticationServiceMock,
+                deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
+            )
             sut.transaction = transaction
             sut.delegatedAuthenticationState.attemptRegistration = true
             sut.handle(challengeAction, event: analyticsEvent) { challengeResult in
@@ -530,18 +590,22 @@ import XCTest
                 return self.expectedSDKRegistrationOutput
             }
         
-            let expectedResult = try XCTUnwrap(try? ThreeDSResult(from: AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTransactionIdentifier", transactionStatus: "Y"),
-                                                                  delegatedAuthenticationSDKOutput: nil, // // We shouldn't receive
-                                                                  authorizationToken: "authToken",
-                                                                  threeDS2SDKError: nil))
+            let expectedResult = try XCTUnwrap(try? ThreeDSResult(
+                from: AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTransactionIdentifier", transactionStatus: "Y"),
+                delegatedAuthenticationSDKOutput: nil, // // We shouldn't receive
+                authorizationToken: "authToken",
+                threeDS2SDKError: nil
+            ))
             
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-            let sut = ThreeDS2PlusDACoreActionHandler(context: Dummy.context,
-                                                      service: service,
-                                                      presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
-                                                      delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
-                                                      delegatedAuthenticationService: authenticationServiceMock,
-                                                      deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true))
+            let sut = ThreeDS2PlusDACoreActionHandler(
+                context: Dummy.context,
+                service: service,
+                presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
+                delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
+                delegatedAuthenticationService: authenticationServiceMock,
+                deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
+            )
             sut.threeDSRequestorAppURL = URL(string: "https://google.com")
             sut.transaction = transaction
             sut.delegatedAuthenticationState.attemptRegistration = true

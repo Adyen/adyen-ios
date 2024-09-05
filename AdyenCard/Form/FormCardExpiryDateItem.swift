@@ -34,8 +34,10 @@ internal final class FormCardExpiryDateItem: FormTextItem {
     
     /// Initiate new instance of `FormTextInputItem`
     /// - Parameter style: The `FormTextItemStyle` UI style.
-    internal init(style: FormTextItemStyle = FormTextItemStyle(),
-                  localizationParameters: LocalizationParameters? = nil) {
+    internal init(
+        style: FormTextItemStyle = FormTextItemStyle(),
+        localizationParameters: LocalizationParameters? = nil
+    ) {
         super.init(style: style)
         title = localizedString(.cardExpiryItemTitle, localizationParameters)
         placeholder = localizedString(.cardExpiryItemPlaceholder, localizationParameters)

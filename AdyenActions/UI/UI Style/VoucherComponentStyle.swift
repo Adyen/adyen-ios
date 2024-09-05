@@ -25,32 +25,40 @@ public struct VoucherComponentStyle: ViewStyle {
     
     /// The edit button style.
     public var editButton = ButtonStyle(
-        title: TextStyle(font: .preferredFont(forTextStyle: .headline),
-                         color: UIColor.Adyen.defaultBlue),
+        title: TextStyle(
+            font: .preferredFont(forTextStyle: .headline),
+            color: UIColor.Adyen.defaultBlue
+        ),
         cornerRounding: .none,
         background: UIColor.clear
     )
     
     /// The done button style.
     public var doneButton = ButtonStyle(
-        title: TextStyle(font: .preferredFont(forTextStyle: .headline),
-                         color: UIColor.Adyen.defaultBlue),
+        title: TextStyle(
+            font: .preferredFont(forTextStyle: .headline),
+            color: UIColor.Adyen.defaultBlue
+        ),
         cornerRounding: .none,
         background: UIColor.clear
     )
 
     /// The main button style.
     public var mainButton = ButtonStyle(
-        title: TextStyle(font: .preferredFont(forTextStyle: .headline),
-                         color: .white),
+        title: TextStyle(
+            font: .preferredFont(forTextStyle: .headline),
+            color: .white
+        ),
         cornerRadius: 8,
         background: UIColor.Adyen.defaultBlue
     )
 
     /// The secondary button style.
     public var secondaryButton = ButtonStyle(
-        title: TextStyle(font: .preferredFont(forTextStyle: .headline),
-                         color: UIColor.Adyen.defaultBlue),
+        title: TextStyle(
+            font: .preferredFont(forTextStyle: .headline),
+            color: UIColor.Adyen.defaultBlue
+        ),
         cornerRadius: 8,
         background: .clear
     )

@@ -22,9 +22,11 @@ class DropInInternalTests: XCTestCase {
         let config = DropInComponent.Configuration()
 
         let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
-        let sut = DropInComponent(paymentMethods: paymentMethods,
-                                  context: Dummy.context,
-                                  configuration: config)
+        let sut = DropInComponent(
+            paymentMethods: paymentMethods,
+            context: Dummy.context,
+            configuration: config
+        )
 
         presentOnRoot(sut.viewController)
 

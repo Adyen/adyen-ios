@@ -46,8 +46,10 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     /// Component configuration
     public var configuration: Configuration
 
-    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController,
-                                                                             style: configuration.style)
+    public lazy var viewController: UIViewController = SecuredViewController(
+        child: formViewController,
+        style: configuration.style
+    )
 
     public let requiresModalPresentation: Bool = true
     
@@ -67,19 +69,25 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     ///   - paymentMethod: The ACH Direct Debit payment method.
     ///   - context: The context object for this component.
     ///   - configuration: Configuration for the component.
-    public convenience init(paymentMethod: ACHDirectDebitPaymentMethod,
-                            context: AdyenContext,
-                            configuration: Configuration = .init()) {
-        self.init(paymentMethod: paymentMethod,
-                  context: context,
-                  configuration: configuration,
-                  publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext))
+    public convenience init(
+        paymentMethod: ACHDirectDebitPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
+        self.init(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext)
+        )
     }
     
-    internal init(paymentMethod: ACHDirectDebitPaymentMethod,
-                  context: AdyenContext,
-                  configuration: Configuration = .init(),
-                  publicKeyProvider: AnyPublicKeyProvider) {
+    internal init(
+        paymentMethod: ACHDirectDebitPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init(),
+        publicKeyProvider: AnyPublicKeyProvider
+    ) {
         self.configuration = configuration
         self.achDirectDebitPaymentMethod = paymentMethod
         self.context = context
@@ -109,21 +117,29 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     
     private func submitEncryptedData(publicKey: String) {
         do {
-            let encryptedBankAccountNumber = try BankDetailsEncryptor.encrypt(accountNumber: bankAccountNumberItem.value,
-                                                                              with: publicKey)
-            let encryptedBankRoutingNumber = try BankDetailsEncryptor.encrypt(routingNumber: bankRoutingNumberItem.value,
-                                                                              with: publicKey)
+            let encryptedBankAccountNumber = try BankDetailsEncryptor.encrypt(
+                accountNumber: bankAccountNumberItem.value,
+                with: publicKey
+            )
+            let encryptedBankRoutingNumber = try BankDetailsEncryptor.encrypt(
+                routingNumber: bankRoutingNumberItem.value,
+                with: publicKey
+            )
             
-            let details = ACHDirectDebitDetails(paymentMethod: achDirectDebitPaymentMethod,
-                                                holderName: holderNameItem.value,
-                                                encryptedBankAccountNumber: encryptedBankAccountNumber,
-                                                encryptedBankRoutingNumber: encryptedBankRoutingNumber,
-                                                billingAddress: billingAddressItem.value)
+            let details = ACHDirectDebitDetails(
+                paymentMethod: achDirectDebitPaymentMethod,
+                holderName: holderNameItem.value,
+                encryptedBankAccountNumber: encryptedBankAccountNumber,
+                encryptedBankRoutingNumber: encryptedBankRoutingNumber,
+                billingAddress: billingAddressItem.value
+            )
             
-            submit(data: PaymentComponentData(paymentMethodDetails: details,
-                                              amount: payment?.amount,
-                                              order: order,
-                                              storePaymentMethod: storePayment))
+            submit(data: PaymentComponentData(
+                paymentMethodDetails: details,
+                amount: payment?.amount,
+                order: order,
+                storePaymentMethod: storePayment
+            ))
         } catch {
             delegate?.didFail(with: error, from: self)
         }
@@ -136,10 +152,14 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     // MARK: - Form Items
     
     internal lazy var headerItem: FormLabelItem = {
-        let item = FormLabelItem(text: localizedString(.achBankAccountTitle, configuration.localizationParameters),
-                                 style: configuration.style.sectionHeader)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                      postfix: ViewIdentifier.headerItem)
+        let item = FormLabelItem(
+            text: localizedString(.achBankAccountTitle, configuration.localizationParameters),
+            style: configuration.style.sectionHeader
+        )
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.headerItem
+        )
         return item
     }()
     
@@ -156,8 +176,10 @@ public final class ACHDirectDebitComponent: PaymentComponent,
 
         textItem.autocapitalizationType = .words
 
-        textItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                          postfix: ViewIdentifier.holderNameItem)
+        textItem.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.holderNameItem
+        )
         return textItem
     }()
     
@@ -176,8 +198,10 @@ public final class ACHDirectDebitComponent: PaymentComponent,
         textItem.autocapitalizationType = .none
         textItem.keyboardType = .numberPad
 
-        textItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                          postfix: ViewIdentifier.bankAccountNumberItem)
+        textItem.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.bankAccountNumberItem
+        )
         return textItem
     }()
     
@@ -196,8 +220,10 @@ public final class ACHDirectDebitComponent: PaymentComponent,
         textItem.autocapitalizationType = .none
         textItem.keyboardType = .numberPad
 
-        textItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                          postfix: ViewIdentifier.bankRoutingNumberItem)
+        textItem.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.bankRoutingNumberItem
+        )
         return textItem
     }()
     
@@ -210,8 +236,10 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     }()
     
     internal lazy var billingAddressItem: FormAddressPickerItem = {
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                     postfix: ViewIdentifier.billingAddressItem)
+        let identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.billingAddressItem
+        )
 
         var initialCountry = defaultCountryCode
         
@@ -237,11 +265,15 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     
     internal lazy var payButton: FormButtonItem = {
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                      postfix: ViewIdentifier.payButtonItem)
-        item.title = localizedSubmitButtonTitle(with: payment?.amount,
-                                                style: .immediate,
-                                                configuration.localizationParameters)
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.payButtonItem
+        )
+        item.title = localizedSubmitButtonTitle(
+            with: payment?.amount,
+            style: .immediate,
+            configuration.localizationParameters
+        )
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }
@@ -341,12 +373,14 @@ extension ACHDirectDebitComponent {
         ///   Defaults to `true`.
         ///   - billingAddressCountryCodes: ISO country codes that is supported for the billing address.
         ///   Defaults to ["US", "PR"].
-        public init(style: FormComponentStyle = FormComponentStyle(),
-                    shopperInformation: PrefilledShopperInformation? = nil,
-                    localizationParameters: LocalizationParameters? = nil,
-                    showsStorePaymentMethodField: Bool = true,
-                    showsBillingAddress: Bool = true,
-                    billingAddressCountryCodes: [String] = ["US", "PR"]) {
+        public init(
+            style: FormComponentStyle = FormComponentStyle(),
+            shopperInformation: PrefilledShopperInformation? = nil,
+            localizationParameters: LocalizationParameters? = nil,
+            showsStorePaymentMethodField: Bool = true,
+            showsBillingAddress: Bool = true,
+            billingAddressCountryCodes: [String] = ["US", "PR"]
+        ) {
             self.style = style
             self.shopperInformation = shopperInformation
             self.localizationParameters = localizationParameters

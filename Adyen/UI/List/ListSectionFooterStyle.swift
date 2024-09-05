@@ -11,11 +11,13 @@ import UIKit
 public struct ListSectionFooterStyle: ViewStyle {
 
     /// The title style.
-    public var title = TextStyle(font: .preferredFont(forTextStyle: .footnote),
-                                 color: UIColor.Adyen.paidSectionFooterTitleColor,
-                                 textAlignment: .center,
-                                 cornerRounding: .fixed(6),
-                                 backgroundColor: UIColor.Adyen.paidSectionFooterTitleBackgroundColor)
+    public var title = TextStyle(
+        font: .preferredFont(forTextStyle: .footnote),
+        color: UIColor.Adyen.paidSectionFooterTitleColor,
+        textAlignment: .center,
+        cornerRounding: .fixed(6),
+        backgroundColor: UIColor.Adyen.paidSectionFooterTitleBackgroundColor
+    )
 
     /// Separator Color.
     public var separatorColor = UIColor.Adyen.componentSeparator

@@ -39,8 +39,10 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
         backgroundView?.backgroundColor = item.style.backgroundColor
         contentView.backgroundColor = item.style.backgroundColor
         titleLabel.adyen.apply(item.style.title)
-        titleLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListHeaderView.\(item.title)",
-                                                                         postfix: "titleLabel")
+        titleLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(
+            scopeInstance: "Adyen.ListHeaderView.\(item.title)",
+            postfix: "titleLabel"
+        )
         titleLabel.text = item.title.uppercased()
         
         trailingButton.adyen.apply(item.style.trailingButton)

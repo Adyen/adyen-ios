@@ -41,12 +41,14 @@ public struct ApplePayDetails: PaymentMethodDetails {
     ///   - billingContact: The user-selected billing address for this transaction.
     ///   - shippingContact: The user-selected shipping address for this transaction.
     ///   - shippingMethod: The shipping method that the user chose.
-    public init(paymentMethod: ApplePayPaymentMethod,
-                token: String,
-                network: String,
-                billingContact: PKContact?,
-                shippingContact: PKContact?,
-                shippingMethod: PKShippingMethod?) {
+    public init(
+        paymentMethod: ApplePayPaymentMethod,
+        token: String,
+        network: String,
+        billingContact: PKContact?,
+        shippingContact: PKContact?,
+        shippingMethod: PKShippingMethod?
+    ) {
         self.type = paymentMethod.type
         self.token = token
         self.network = network

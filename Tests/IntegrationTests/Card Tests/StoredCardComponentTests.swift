@@ -12,16 +12,18 @@ class StoredCardComponentTests: XCTestCase {
 
     private var context = Dummy.context
 
-    let method = StoredCardPaymentMethod(type: .card,
-                                         name: "name",
-                                         identifier: "id",
-                                         fundingSource: .credit,
-                                         supportedShopperInteractions: [.shopperPresent],
-                                         brand: .visa,
-                                         lastFour: "1234",
-                                         expiryMonth: "12",
-                                         expiryYear: "22",
-                                         holderName: "holderName")
+    let method = StoredCardPaymentMethod(
+        type: .card,
+        name: "name",
+        identifier: "id",
+        fundingSource: .credit,
+        supportedShopperInteractions: [.shopperPresent],
+        brand: .visa,
+        lastFour: "1234",
+        expiryMonth: "12",
+        expiryYear: "22",
+        holderName: "holderName"
+    )
 
     // let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
 
@@ -148,16 +150,18 @@ class StoredCardComponentTests: XCTestCase {
     }
 
     func testCVCLimitForAMEX() throws {
-        let method = StoredCardPaymentMethod(type: .card,
-                                             name: "name",
-                                             identifier: "id",
-                                             fundingSource: .credit,
-                                             supportedShopperInteractions: [.shopperPresent],
-                                             brand: .americanExpress,
-                                             lastFour: "1234",
-                                             expiryMonth: "12",
-                                             expiryYear: "22",
-                                             holderName: "holderName")
+        let method = StoredCardPaymentMethod(
+            type: .card,
+            name: "name",
+            identifier: "id",
+            fundingSource: .credit,
+            supportedShopperInteractions: [.shopperPresent],
+            brand: .americanExpress,
+            lastFour: "1234",
+            expiryMonth: "12",
+            expiryYear: "22",
+            holderName: "holderName"
+        )
         let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
 
         presentOnRoot(sut.viewController)
@@ -228,8 +232,10 @@ class StoredCardComponentTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
         let paymentMethod = storedCardPaymentMethod(brand: .masterCard)
-        let sut = StoredCardComponent(storedCardPaymentMethod: paymentMethod,
-                                      context: context)
+        let sut = StoredCardComponent(
+            storedCardPaymentMethod: paymentMethod,
+            context: context
+        )
 
         // When
         sut.viewController.viewDidLoad()
@@ -241,16 +247,18 @@ class StoredCardComponentTests: XCTestCase {
     // MARK: - Private
 
     private func storedCardPaymentMethod(brand: CardType) -> StoredCardPaymentMethod {
-        .init(type: .card,
-              name: "name",
-              identifier: "id",
-              fundingSource: .credit,
-              supportedShopperInteractions: [.shopperPresent],
-              brand: brand,
-              lastFour: "1234",
-              expiryMonth: "12",
-              expiryYear: "22",
-              holderName: "holderName")
+        .init(
+            type: .card,
+            name: "name",
+            identifier: "id",
+            fundingSource: .credit,
+            supportedShopperInteractions: [.shopperPresent],
+            brand: brand,
+            lastFour: "1234",
+            expiryMonth: "12",
+            expiryYear: "22",
+            holderName: "holderName"
+        )
     }
 }
 

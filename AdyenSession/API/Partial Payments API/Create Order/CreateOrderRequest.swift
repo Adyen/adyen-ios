@@ -24,8 +24,10 @@ internal struct CreateOrderRequest: APIRequest {
 
     internal let sessionData: String
     
-    internal init(sessionId: String,
-                  sessionData: String) {
+    internal init(
+        sessionId: String,
+        sessionData: String
+    ) {
         self.path = "checkoutshopper/v1/sessions/\(sessionId)/orders"
         self.sessionData = sessionData
     }

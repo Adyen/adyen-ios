@@ -18,10 +18,12 @@ internal struct ApplePaySettingsView: View {
         NavigationView {
             List {
                 Section {
-                    TextFieldItemView(title: "Merchant Identifier",
-                                      value: $viewModel.applePayMerchantIdentifier,
-                                      placeholder: ConfigurationSection.merchantIdentifier,
-                                      keyboardType: .default)
+                    TextFieldItemView(
+                        title: "Merchant Identifier",
+                        value: $viewModel.applePayMerchantIdentifier,
+                        placeholder: ConfigurationSection.merchantIdentifier,
+                        keyboardType: .default
+                    )
                     Toggle(isOn: $viewModel.allowOnboarding) {
                         Text("Allow OnBoarding")
                     }

@@ -24,14 +24,16 @@ internal final class DARegistrationViewController: UIViewController {
     
     private let localizationParameters: LocalizationParameters?
 
-    internal init(context: AdyenContext,
-                  style: DelegatedAuthenticationComponentStyle,
-                  localizationParameters: LocalizationParameters?,
-                  cardNumber: String?,
-                  cardType: CardType?,
-                  biometricName: String,
-                  enableCheckoutHandler: @escaping VoidHandler,
-                  notNowHandler: @escaping VoidHandler) {
+    internal init(
+        context: AdyenContext,
+        style: DelegatedAuthenticationComponentStyle,
+        localizationParameters: LocalizationParameters?,
+        cardNumber: String?,
+        cardType: CardType?,
+        biometricName: String,
+        enableCheckoutHandler: @escaping VoidHandler,
+        notNowHandler: @escaping VoidHandler
+    ) {
         self.style = style
         self.localizationParameters = localizationParameters
         self.cardNumber = cardNumber

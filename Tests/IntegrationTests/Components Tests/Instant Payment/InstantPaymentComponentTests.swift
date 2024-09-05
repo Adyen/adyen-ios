@@ -25,9 +25,11 @@ class InstantPaymentComponentTests: XCTestCase {
 
         delegate = PaymentComponentDelegateMock()
         paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "name", brand: "brand")
-        sut = InstantPaymentComponent(paymentMethod: paymentMethod,
-                                      context: context,
-                                      paymentData: paymentComponentData)
+        sut = InstantPaymentComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            paymentData: paymentComponentData
+        )
         sut.delegate = delegate
     }
 

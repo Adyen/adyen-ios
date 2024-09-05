@@ -44,11 +44,13 @@ public struct BasicPersonalInfoFormDetails: PaymentMethodDetails, ShopperInforma
     ///   - lastName: The last Name.
     ///   - emailAddress: The email address.
     ///   - telephoneNumber: The email address.
-    public init(paymentMethod: PaymentMethod,
-                firstName: String,
-                lastName: String,
-                emailAddress: String,
-                telephoneNumber: String) {
+    public init(
+        paymentMethod: PaymentMethod,
+        firstName: String,
+        lastName: String,
+        emailAddress: String,
+        telephoneNumber: String
+    ) {
         self.type = paymentMethod.type
         self.firstName = firstName
         self.lastName = lastName

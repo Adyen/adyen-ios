@@ -235,13 +235,11 @@ extension FormCardNumberItemView {
             
             guard let primaryLogoUrl, window != nil else { return }
             
-            var imageLoadingTasks = [
-                primaryLogoView.load(
-                    url: primaryLogoUrl,
-                    using: imageLoader,
-                    placeholder: Constant.placeholderImage
-                )
-            ]
+            var imageLoadingTasks = [primaryLogoView.load(
+                url: primaryLogoUrl,
+                using: imageLoader,
+                placeholder: Constant.placeholderImage
+            )]
             
             if let secondaryLogoUrl {
                 imageLoadingTasks.append(

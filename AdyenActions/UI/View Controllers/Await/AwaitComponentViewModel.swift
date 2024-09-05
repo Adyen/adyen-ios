@@ -34,24 +34,32 @@ internal struct AwaitComponentViewModel {
     ///
     /// - Parameter paymentMethodType: The `paymentMethodType` for which the await action is used.
     /// - Parameter localizationParameters: The localization parameters to control some aspects of how strings are localized
-    internal static func viewModel(with paymentMethodType: AwaitPaymentMethod,
-                                   localizationParameters: LocalizationParameters? = nil) -> AwaitComponentViewModel {
+    internal static func viewModel(
+        with paymentMethodType: AwaitPaymentMethod,
+        localizationParameters: LocalizationParameters? = nil
+    ) -> AwaitComponentViewModel {
         
         switch paymentMethodType {
         case .blik, .twint:
-            return AwaitComponentViewModel(icon: paymentMethodType.rawValue,
-                                           message: localizedString(.blikConfirmPayment, localizationParameters),
-                                           spinnerTitle: localizedString(.awaitWaitForConfirmation, localizationParameters))
+            return AwaitComponentViewModel(
+                icon: paymentMethodType.rawValue,
+                message: localizedString(.blikConfirmPayment, localizationParameters),
+                spinnerTitle: localizedString(.awaitWaitForConfirmation, localizationParameters)
+            )
 
         case .mbway:
-            return AwaitComponentViewModel(icon: paymentMethodType.rawValue,
-                                           message: localizedString(.mbwayConfirmPayment, localizationParameters),
-                                           spinnerTitle: localizedString(.awaitWaitForConfirmation, localizationParameters))
+            return AwaitComponentViewModel(
+                icon: paymentMethodType.rawValue,
+                message: localizedString(.mbwayConfirmPayment, localizationParameters),
+                spinnerTitle: localizedString(.awaitWaitForConfirmation, localizationParameters)
+            )
             
         case .upicollect, .upiIntent:
-            return AwaitComponentViewModel(icon: paymentMethodType.rawValue,
-                                           message: localizedString(.upiVpaWaitingMessage, localizationParameters),
-                                           spinnerTitle: localizedString(.upiCollectConfirmPayment, localizationParameters))
+            return AwaitComponentViewModel(
+                icon: paymentMethodType.rawValue,
+                message: localizedString(.upiVpaWaitingMessage, localizationParameters),
+                spinnerTitle: localizedString(.upiCollectConfirmPayment, localizationParameters)
+            )
         }
     }
 

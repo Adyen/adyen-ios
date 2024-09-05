@@ -21,39 +21,53 @@ internal final class DAApprovalViewController: UIViewController {
     private let imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
     
     private lazy var removeCredentialAlert: UIAlertController = {
-        let alertController = UIAlertController(title: localizedString(.threeds2DAApprovalRemoveAlertTitle, localizationParameters),
-                                                message: localizedString(.threeds2DAApprovalRemoveAlertDescription, localizationParameters),
-                                                preferredStyle: .alert)
-        let removeAction = UIAlertAction(title: localizedString(.threeds2DAApprovalRemoveAlertPositiveButton, localizationParameters),
-                                         style: .destructive,
-                                         handler: { [weak self] _ in
-                                             self?.removeCredentialsHandler()
-                                         })
-        let cancelAction = UIAlertAction(title: localizedString(.threeds2DAApprovalRemoveAlertNegativeButton, localizationParameters),
-                                         style: .default,
-                                         handler: nil)
+        let alertController = UIAlertController(
+            title: localizedString(.threeds2DAApprovalRemoveAlertTitle, localizationParameters),
+            message: localizedString(.threeds2DAApprovalRemoveAlertDescription, localizationParameters),
+            preferredStyle: .alert
+        )
+        let removeAction = UIAlertAction(
+            title: localizedString(.threeds2DAApprovalRemoveAlertPositiveButton, localizationParameters),
+            style: .destructive,
+            handler: { [weak self] _ in
+                self?.removeCredentialsHandler()
+            }
+        )
+        let cancelAction = UIAlertAction(
+            title: localizedString(.threeds2DAApprovalRemoveAlertNegativeButton, localizationParameters),
+            style: .default,
+            handler: nil
+        )
         alertController.addAction(cancelAction)
         alertController.addAction(removeAction)
         return alertController
     }()
     
     private lazy var actionSheet: UIAlertController = {
-        let alertController = UIAlertController(title: localizedString(.threeds2DAApprovalActionSheetTitle, localizationParameters),
-                                                message: nil,
-                                                preferredStyle: .actionSheet)
-        let removeAction = UIAlertAction(title: localizedString(.threeds2DAApprovalActionSheetRemove, localizationParameters),
-                                         style: .destructive,
-                                         handler: { [weak self] _ in
-                                             guard let self else { return }
-                                             self.present(self.removeCredentialAlert, animated: true)
-                                         })
-        let fallbackAction = UIAlertAction(title: localizedString(.threeds2DAApprovalActionSheetFallback, localizationParameters),
-                                           style: .default,
-                                           handler: { [weak self] _ in
-                                               self?.approveDifferentlyHandler()
-                                           })
-        let cancelAction = UIAlertAction(title: localizedString(.threeds2DAApprovalRemoveAlertNegativeButton, localizationParameters),
-                                         style: .cancel)
+        let alertController = UIAlertController(
+            title: localizedString(.threeds2DAApprovalActionSheetTitle, localizationParameters),
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+        let removeAction = UIAlertAction(
+            title: localizedString(.threeds2DAApprovalActionSheetRemove, localizationParameters),
+            style: .destructive,
+            handler: { [weak self] _ in
+                guard let self else { return }
+                self.present(self.removeCredentialAlert, animated: true)
+            }
+        )
+        let fallbackAction = UIAlertAction(
+            title: localizedString(.threeds2DAApprovalActionSheetFallback, localizationParameters),
+            style: .default,
+            handler: { [weak self] _ in
+                self?.approveDifferentlyHandler()
+            }
+        )
+        let cancelAction = UIAlertAction(
+            title: localizedString(.threeds2DAApprovalRemoveAlertNegativeButton, localizationParameters),
+            style: .cancel
+        )
         alertController.addAction(cancelAction)
         alertController.addAction(fallbackAction)
         alertController.addAction(removeAction)
@@ -64,15 +78,17 @@ internal final class DAApprovalViewController: UIViewController {
         
     // MARK: - init
     
-    internal init(context: AdyenContext,
-                  style: DelegatedAuthenticationComponentStyle,
-                  localizationParameters: LocalizationParameters?,
-                  amount: String?,
-                  cardNumber: String?,
-                  cardType: CardType?,
-                  useBiometricsHandler: @escaping VoidHandler,
-                  approveDifferentlyHandler: @escaping VoidHandler,
-                  removeCredentialsHandler: @escaping VoidHandler) {
+    internal init(
+        context: AdyenContext,
+        style: DelegatedAuthenticationComponentStyle,
+        localizationParameters: LocalizationParameters?,
+        amount: String?,
+        cardNumber: String?,
+        cardType: CardType?,
+        useBiometricsHandler: @escaping VoidHandler,
+        approveDifferentlyHandler: @escaping VoidHandler,
+        removeCredentialsHandler: @escaping VoidHandler
+    ) {
         self.style = style
         self.useBiometricsHandler = useBiometricsHandler
         self.approveDifferentlyHandler = approveDifferentlyHandler
@@ -118,8 +134,10 @@ internal final class DAApprovalViewController: UIViewController {
             approvalView.cardAndAmountDetailsStackView.isHidden = false
             approvalView.cardNumberStackView.isHidden = false
             approvalView.cardNumberLabel.text = cardNumber
-            let cardTypeURL = LogoURLProvider.logoURL(withName: cardType.rawValue,
-                                                      environment: context.apiContext.environment)
+            let cardTypeURL = LogoURLProvider.logoURL(
+                withName: cardType.rawValue,
+                environment: context.apiContext.environment
+            )
             imageLoader.load(url: cardTypeURL) { [weak self] image in
                 guard let self else { return }
                 self.approvalView.cardImage.image = image

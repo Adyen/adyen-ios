@@ -32,11 +32,13 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
     ///   - publicKeyProvider: Any instance of `AnyPublicKeyProvider`.
     ///   - fallbackCardTypeProvider: Any instance of `AnyCardBrandProvider` to be used as a fallback
     ///   if API not available or BIN too short.
-    internal init(apiClient: APIClientProtocol,
-                  publicKeyProvider: AnyPublicKeyProvider,
-                  fallbackCardTypeProvider: AnyBinInfoProvider = FallbackBinInfoProvider(),
-                  minBinLength: Int,
-                  binLookupType: BinLookupRequestType) {
+    internal init(
+        apiClient: APIClientProtocol,
+        publicKeyProvider: AnyPublicKeyProvider,
+        fallbackCardTypeProvider: AnyBinInfoProvider = FallbackBinInfoProvider(),
+        minBinLength: Int,
+        binLookupType: BinLookupRequestType
+    ) {
         self.apiClient = apiClient
         self.publicKeyProvider = publicKeyProvider
         self.fallbackCardTypeProvider = fallbackCardTypeProvider
@@ -51,9 +53,11 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
     ///   - completion:  Callback to notify about results.
     internal func provide(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void) {
         let fallback: () -> Void = { [weak fallbackCardTypeProvider] in
-            fallbackCardTypeProvider?.provide(for: bin,
-                                              supportedTypes: supportedTypes,
-                                              completion: completion)
+            fallbackCardTypeProvider?.provide(
+                for: bin,
+                supportedTypes: supportedTypes,
+                completion: completion
+            )
         }
 
         let bin = String(bin.prefix(minBinLength))

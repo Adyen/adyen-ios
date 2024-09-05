@@ -17,6 +17,8 @@ public protocol AnyDropInComponent: PresentableComponent {
     /// - Parameter order: The partial payment order.
     /// - Parameter paymentMethods: The new payment methods.
     /// - Throws: `PartialPaymentError.missingOrderData` in case `order.orderData` is `nil`.
-    func reload(with order: PartialPaymentOrder,
-                _ paymentMethods: PaymentMethods) throws
+    func reload(
+        with order: PartialPaymentOrder,
+        _ paymentMethods: PaymentMethods
+    ) throws
 }

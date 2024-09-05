@@ -45,9 +45,11 @@ internal class IssuerListEmptyView: UIView, SearchResultsEmptyView {
     
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "search",
-                                  in: Bundle.coreInternalResources,
-                                  compatibleWith: nil)
+        imageView.image = UIImage(
+            named: "search",
+            in: Bundle.coreInternalResources,
+            compatibleWith: nil
+        )
         imageView.heightAnchor.constraint(equalToConstant: 60).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: 60).isActive = true
         

@@ -270,9 +270,7 @@ class AdyenActionComponentTests: XCTestCase {
     
     func testTwintActionConfiguration() throws {
         
-        let validSchemes = [
-            "scheme"
-        ]
+        let validSchemes = ["scheme"]
         
         let invalidSchemes = [
             "scheme:",

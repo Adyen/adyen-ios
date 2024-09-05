@@ -8,7 +8,8 @@ import UIKit
 
 /// A view representing a switch item.
 @_spi(AdyenInternal)
-public final class FormToggleItemView: FormValueItemView<Bool, FormToggleItemStyle, FormToggleItem> {
+public final class FormToggleItemView:
+    FormValueItemView<Bool, FormToggleItemStyle, FormToggleItem> {
 
     // MARK: - UI elements
 

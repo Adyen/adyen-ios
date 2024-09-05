@@ -11,9 +11,11 @@ import UIKit
 public struct FormToggleItemStyle: FormValueItemStyle {
     
     /// The title style.
-    public var title = TextStyle(font: .preferredFont(forTextStyle: .body),
-                                 color: UIColor.Adyen.componentLabel,
-                                 textAlignment: .natural)
+    public var title = TextStyle(
+        font: .preferredFont(forTextStyle: .body),
+        color: UIColor.Adyen.componentLabel,
+        textAlignment: .natural
+    )
     
     /// The color of `onTintColor` of switch.
     public var tintColor: UIColor?

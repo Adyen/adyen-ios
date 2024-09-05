@@ -45,9 +45,13 @@ internal final class DropInNavigationController: UINavigationController, Preferr
     
     internal func present(asModal component: PresentableComponent) {
         if component.requiresModalPresentation {
-            pushViewController(wrapInModalController(component: component,
-                                                     isRoot: false),
-                               animated: true)
+            pushViewController(
+                wrapInModalController(
+                    component: component,
+                    isRoot: false
+                ),
+                animated: true
+            )
         } else {
             present(component.viewController, animated: true, completion: nil)
         }
@@ -92,10 +96,12 @@ internal final class DropInNavigationController: UINavigationController, Preferr
 
 extension DropInNavigationController: UINavigationControllerDelegate {
     
-    internal func navigationController(_ navigationController: UINavigationController,
-                                       animationControllerFor operation: UINavigationController.Operation,
-                                       from fromVC: UIViewController,
-                                       to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    internal func navigationController(
+        _ navigationController: UINavigationController,
+        animationControllerFor operation: UINavigationController.Operation,
+        from fromVC: UIViewController,
+        to toVC: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
         SlideInPresentationAnimator(duration: 0.6)
     }
     
@@ -103,14 +109,18 @@ extension DropInNavigationController: UINavigationControllerDelegate {
 
 extension DropInNavigationController: UIViewControllerTransitioningDelegate {
 
-    internal func presentationController(forPresented presented: UIViewController,
-                                         presenting: UIViewController?,
-                                         source: UIViewController) -> UIPresentationController? {
-        DimmingPresentationController(presented: presented,
-                                      presenting: presenting,
-                                      layoutDidChanged: { [weak self] in
-                                          self?.updateTopViewControllerIfNeeded(animated: false)
-                                      })
+    internal func presentationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController?,
+        source: UIViewController
+    ) -> UIPresentationController? {
+        DimmingPresentationController(
+            presented: presented,
+            presenting: presenting,
+            layoutDidChanged: { [weak self] in
+                self?.updateTopViewControllerIfNeeded(animated: false)
+            }
+        )
     }
     
 }

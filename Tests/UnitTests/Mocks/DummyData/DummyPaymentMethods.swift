@@ -554,9 +554,10 @@ let upiWithApps = [
             "id": "bhim",
             "name": "BHIM"
         ],
-        ["id":
-            "gpay", "name":
-            "Google Pay"],
+        [
+            "id": "gpay",
+            "name": "Google Pay"
+        ],
         [
             "id": "phonepe",
             "name": "PhonePe"

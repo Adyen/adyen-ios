@@ -221,7 +221,8 @@ internal final class VoucherView: UIView, Localizable {
                     self.model.style.codeConfirmationColor,
                     for: .normal
                 )
-            }, completion: { _ in
+            },
+            completion: { _ in
                 DispatchQueue.main.asyncAfter(
                     deadline: .now() + resetDelay
                 ) {

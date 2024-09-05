@@ -47,8 +47,12 @@ public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadabl
         let expiresAtString = try container.decode(String.self, forKey: .expiresAt)
         let dateFormatter = ISO8601DateFormatter()
         dateFormatter.formatOptions = [
-            .withYear, .withMonth, .withDay, .withTime,
-            .withDashSeparatorInDate, .withColonSeparatorInTime
+            .withYear,
+            .withMonth,
+            .withDay,
+            .withTime,
+            .withDashSeparatorInDate,
+            .withColonSeparatorInTime
         ]
 
         if let date = dateFormatter.date(from: expiresAtString) {
@@ -60,12 +64,14 @@ public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadabl
         }
     }
     
-    internal init(paymentMethodType: VoucherPaymentMethod,
-                  totalAmount: Amount,
-                  reference: String,
-                  expiresAt: Date,
-                  downloadUrl: URL,
-                  passCreationToken: String? = nil) {
+    internal init(
+        paymentMethodType: VoucherPaymentMethod,
+        totalAmount: Amount,
+        reference: String,
+        expiresAt: Date,
+        downloadUrl: URL,
+        passCreationToken: String? = nil
+    ) {
         self.paymentMethodType = paymentMethodType
         self.totalAmount = totalAmount
         self.reference = reference

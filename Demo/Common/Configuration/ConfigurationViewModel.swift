@@ -94,11 +94,15 @@ internal final class ConfigurationViewModel: ObservableObject {
                 enableInstallments: installmentsEnabled,
                 showsInstallmentAmount: showInstallmentAmount
             ),
-            dropInSettings: DropInSettings(allowDisablingStoredPaymentMethods: allowDisablingStoredPaymentMethods,
-                                           allowsSkippingPaymentList: allowsSkippingPaymentList,
-                                           allowPreselectedPaymentView: allowPreselectedPaymentView),
-            applePaySettings: ApplePaySettings(merchantIdentifier: applePayMerchantIdentifier,
-                                               allowOnboarding: allowOnboarding),
+            dropInSettings: DropInSettings(
+                allowDisablingStoredPaymentMethods: allowDisablingStoredPaymentMethods,
+                allowsSkippingPaymentList: allowsSkippingPaymentList,
+                allowPreselectedPaymentView: allowPreselectedPaymentView
+            ),
+            applePaySettings: ApplePaySettings(
+                merchantIdentifier: applePayMerchantIdentifier,
+                allowOnboarding: allowOnboarding
+            ),
             analyticsSettings: AnalyticsSettings(isEnabled: analyticsIsEnabled)
         )
     }

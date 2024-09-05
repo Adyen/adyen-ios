@@ -10,16 +10,20 @@ import LocalAuthentication
 import UIKit
 
 internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
-    func showRegistrationScreen(component: Component,
-                                cardDetails: (number: String?, type: CardType?),
-                                registerDelegatedAuthenticationHandler: @escaping () -> Void,
-                                fallbackHandler: @escaping () -> Void)
+    func showRegistrationScreen(
+        component: Component,
+        cardDetails: (number: String?, type: CardType?),
+        registerDelegatedAuthenticationHandler: @escaping () -> Void,
+        fallbackHandler: @escaping () -> Void
+    )
     
-    func showApprovalScreen(component: Component,
-                            cardDetails: (number: String?, type: CardType?),
-                            approveAuthenticationHandler: @escaping () -> Void,
-                            fallbackHandler: @escaping () -> Void,
-                            removeCredentialsHandler: @escaping () -> Void)
+    func showApprovalScreen(
+        component: Component,
+        cardDetails: (number: String?, type: CardType?),
+        approveAuthenticationHandler: @escaping () -> Void,
+        fallbackHandler: @escaping () -> Void,
+        removeCredentialsHandler: @escaping () -> Void
+    )
     
     func showAuthenticationError(component: Component, handler: @escaping () -> Void)
     func showRegistrationError(component: Component, handler: @escaping () -> Void)
@@ -38,89 +42,118 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
     /// Delegates `PresentableComponent`'s presentation.
     internal weak var presentationDelegate: PresentationDelegate?
     
-    internal init(style: DelegatedAuthenticationComponentStyle,
-                  localizedParameters: LocalizationParameters?,
-                  context: AdyenContext) {
+    internal init(
+        style: DelegatedAuthenticationComponentStyle,
+        localizedParameters: LocalizationParameters?,
+        context: AdyenContext
+    ) {
         self.style = style
         self.context = context
         self.localizedParameters = localizedParameters
     }
     
     internal func showAuthenticationError(component: Component, handler: @escaping () -> Void) {
-        let errorController = DAErrorViewController(style: style,
-                                                    screen: .authenticationFailed(localizationParameters: localizedParameters),
-                                                    completion: handler)
-        let presentableComponent = PresentableComponentWrapper(component: component,
-                                                               viewController: errorController,
-                                                               navBarType: .custom(EmptyNavigationBar()))
+        let errorController = DAErrorViewController(
+            style: style,
+            screen: .authenticationFailed(localizationParameters: localizedParameters),
+            completion: handler
+        )
+        let presentableComponent = PresentableComponentWrapper(
+            component: component,
+            viewController: errorController,
+            navBarType: .custom(EmptyNavigationBar())
+        )
         presentationDelegate?.present(component: presentableComponent)
     }
     
     internal func showRegistrationError(component: Component, handler: @escaping () -> Void) {
-        let errorController = DAErrorViewController(style: style,
-                                                    screen: .registrationFailed(localizationParameters: localizedParameters),
-                                                    completion: handler)
-        let presentableComponent = PresentableComponentWrapper(component: component,
-                                                               viewController: errorController,
-                                                               navBarType: .custom(EmptyNavigationBar()))
+        let errorController = DAErrorViewController(
+            style: style,
+            screen: .registrationFailed(localizationParameters: localizedParameters),
+            completion: handler
+        )
+        let presentableComponent = PresentableComponentWrapper(
+            component: component,
+            viewController: errorController,
+            navBarType: .custom(EmptyNavigationBar())
+        )
         presentationDelegate?.present(component: presentableComponent)
     }
     
     internal func showDeletionConfirmation(component: Component, handler: @escaping () -> Void) {
-        let errorController = DAErrorViewController(style: style,
-                                                    screen: .deletionConfirmation(localizationParameters: localizedParameters),
-                                                    completion: handler)
-        let presentableComponent = PresentableComponentWrapper(component: component,
-                                                               viewController: errorController,
-                                                               navBarType: .custom(EmptyNavigationBar()))
+        let errorController = DAErrorViewController(
+            style: style,
+            screen: .deletionConfirmation(localizationParameters: localizedParameters),
+            completion: handler
+        )
+        let presentableComponent = PresentableComponentWrapper(
+            component: component,
+            viewController: errorController,
+            navBarType: .custom(EmptyNavigationBar())
+        )
         presentationDelegate?.present(component: presentableComponent)
     }
 
-    internal func showRegistrationScreen(component: Component,
-                                         cardDetails: (number: String?, type: CardType?),
-                                         registerDelegatedAuthenticationHandler: @escaping () -> Void,
-                                         fallbackHandler: @escaping () -> Void) {
-        let registrationViewController = DARegistrationViewController(context: context,
-                                                                      style: style,
-                                                                      localizationParameters: localizedParameters,
-                                                                      cardNumber: cardDetails.number,
-                                                                      cardType: cardDetails.type,
-                                                                      biometricName: biometricName,
-                                                                      enableCheckoutHandler: {
-                                                                          registerDelegatedAuthenticationHandler()
-                                                                      }, notNowHandler: {
-                                                                          fallbackHandler()
-                                                                      })
+    internal func showRegistrationScreen(
+        component: Component,
+        cardDetails: (number: String?, type: CardType?),
+        registerDelegatedAuthenticationHandler: @escaping () -> Void,
+        fallbackHandler: @escaping () -> Void
+    ) {
+        let registrationViewController = DARegistrationViewController(
+            context: context,
+            style: style,
+            localizationParameters: localizedParameters,
+            cardNumber: cardDetails.number,
+            cardType: cardDetails.type,
+            biometricName: biometricName,
+            enableCheckoutHandler: {
+                registerDelegatedAuthenticationHandler()
+            },
+            notNowHandler: {
+                fallbackHandler()
+            }
+        )
         
-        let presentableComponent = PresentableComponentWrapper(component: component,
-                                                               viewController: registrationViewController,
-                                                               navBarType: .custom(EmptyNavigationBar()))
+        let presentableComponent = PresentableComponentWrapper(
+            component: component,
+            viewController: registrationViewController,
+            navBarType: .custom(EmptyNavigationBar())
+        )
 
         presentationDelegate?.present(component: presentableComponent)
     }
     
-    internal func showApprovalScreen(component: Component,
-                                     cardDetails: (number: String?, type: CardType?),
-                                     approveAuthenticationHandler: @escaping () -> Void,
-                                     fallbackHandler: @escaping () -> Void,
-                                     removeCredentialsHandler: @escaping () -> Void) {
-        let approvalViewController = DAApprovalViewController(context: context,
-                                                              style: style,
-                                                              localizationParameters: localizedParameters,
-                                                              amount: context.payment?.amount.formatted,
-                                                              cardNumber: cardDetails.number,
-                                                              cardType: cardDetails.type,
-                                                              useBiometricsHandler: {
-                                                                  approveAuthenticationHandler()
-                                                              }, approveDifferentlyHandler: {
-                                                                  fallbackHandler()
-                                                              }, removeCredentialsHandler: {
-                                                                  removeCredentialsHandler()
-                                                              })
+    internal func showApprovalScreen(
+        component: Component,
+        cardDetails: (number: String?, type: CardType?),
+        approveAuthenticationHandler: @escaping () -> Void,
+        fallbackHandler: @escaping () -> Void,
+        removeCredentialsHandler: @escaping () -> Void
+    ) {
+        let approvalViewController = DAApprovalViewController(
+            context: context,
+            style: style,
+            localizationParameters: localizedParameters,
+            amount: context.payment?.amount.formatted,
+            cardNumber: cardDetails.number,
+            cardType: cardDetails.type,
+            useBiometricsHandler: {
+                approveAuthenticationHandler()
+            },
+            approveDifferentlyHandler: {
+                fallbackHandler()
+            },
+            removeCredentialsHandler: {
+                removeCredentialsHandler()
+            }
+        )
         
-        let presentableComponent = PresentableComponentWrapper(component: component,
-                                                               viewController: approvalViewController,
-                                                               navBarType: .custom(EmptyNavigationBar()))
+        let presentableComponent = PresentableComponentWrapper(
+            component: component,
+            viewController: approvalViewController,
+            navBarType: .custom(EmptyNavigationBar())
+        )
         presentationDelegate?.present(component: presentableComponent)
     }
     

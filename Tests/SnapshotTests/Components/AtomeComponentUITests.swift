@@ -45,18 +45,22 @@ class AtomeComponentUITests: XCTestCase {
         style.textField.text.color = .yellow
         style.textField.text.font = .systemFont(ofSize: 5)
         style.textField.text.textAlignment = .center
-        style.textField.placeholderText = TextStyle(font: .preferredFont(forTextStyle: .headline),
-                                                    color: .systemOrange,
-                                                    textAlignment: .center)
+        style.textField.placeholderText = TextStyle(
+            font: .preferredFont(forTextStyle: .headline),
+            color: .systemOrange,
+            textAlignment: .center
+        )
         style.textField.title.backgroundColor = .blue
         style.textField.title.color = .green
         style.textField.title.font = .systemFont(ofSize: 18)
         style.textField.title.textAlignment = .left
         style.textField.backgroundColor = .blue
         let config = AtomeComponent.Configuration(style: style, shopperInformation: shopperInformation)
-        let sut = AtomeComponent(paymentMethod: paymentMethod,
-                                 context: context,
-                                 configuration: config)
+        let sut = AtomeComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
         
         XCTAssertNotNil(sut.viewController.view.findView(by: "AdyenComponents.AtomeComponent.addressItem"))
         
@@ -65,18 +69,22 @@ class AtomeComponentUITests: XCTestCase {
 
     func testAllRequiredTextField_shouldExist() throws {
         let config = AtomeComponent.Configuration(shopperInformation: shopperInformation)
-        let sut = AtomeComponent(paymentMethod: paymentMethod,
-                                 context: context,
-                                 configuration: config)
+        let sut = AtomeComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
 
         assertViewControllerImage(matching: sut.viewController, named: "all_required_fields_exist")
     }
 
     func testSubmitForm_shouldCallDelegateWithProperParameters() throws {
         let config = AtomeComponent.Configuration(shopperInformation: shopperInformation)
-        let sut = AtomeComponent(paymentMethod: paymentMethod,
-                                 context: context,
-                                 configuration: config)
+        let sut = AtomeComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
@@ -121,9 +129,11 @@ class AtomeComponentUITests: XCTestCase {
 
     func testAtome_givenNoShopperInformation_shouldNotPrefill() throws {
         // Given
-        let sut = AtomeComponent(paymentMethod: paymentMethod,
-                                 context: context,
-                                 configuration: AtomeComponent.Configuration(style: style))
+        let sut = AtomeComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: AtomeComponent.Configuration(style: style)
+        )
         
         // Then
         assertViewControllerImage(matching: sut.viewController, named: "empty_form")
@@ -147,10 +157,14 @@ class AtomeComponentUITests: XCTestCase {
 
     private var shopperInformation: PrefilledShopperInformation {
         let billingAddress = PostalAddressMocks.singaporePostalAddress
-        let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina",
-                                                                                      lastName: "Del Mar"),
-                                                             phoneNumber: PhoneNumber(value: "1234567", callingCode: "+1"),
-                                                             billingAddress: billingAddress)
+        let shopperInformation = PrefilledShopperInformation(
+            shopperName: ShopperName(
+                firstName: "Katrina",
+                lastName: "Del Mar"
+            ),
+            phoneNumber: PhoneNumber(value: "1234567", callingCode: "+1"),
+            billingAddress: billingAddress
+        )
         return shopperInformation
     }
 }

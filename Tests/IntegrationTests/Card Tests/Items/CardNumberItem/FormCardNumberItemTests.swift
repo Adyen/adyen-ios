@@ -18,10 +18,12 @@ class FormCardNumberItemTests: XCTestCase {
     override func setUp() {
         apiClient = APIClientMock()
         publicKeyProvider = PublicKeyProviderMock()
-        cardBrandProvider = BinInfoProvider(apiClient: apiClient,
-                                            publicKeyProvider: publicKeyProvider,
-                                            minBinLength: 11,
-                                            binLookupType: .card)
+        cardBrandProvider = BinInfoProvider(
+            apiClient: apiClient,
+            publicKeyProvider: publicKeyProvider,
+            minBinLength: 11,
+            binLookupType: .card
+        )
     }
 
     override func tearDown() {
@@ -114,8 +116,10 @@ class FormCardNumberItemTests: XCTestCase {
     func testExternalBinLookupHappyFlow() {
         publicKeyProvider.onFetch = { $0(.success("SOME_PUBLIC_KEY")) }
         let mockedBrands = [CardBrand(type: .masterCard)]
-        apiClient.mockedResults = [.success(BinLookupResponse(brands: mockedBrands)),
-                                   .success(BinLookupResponse(brands: []))]
+        apiClient.mockedResults = [
+            .success(BinLookupResponse(brands: mockedBrands)),
+            .success(BinLookupResponse(brands: []))
+        ]
 
         let cardTypeLogos = supportedCardTypes.map {
             FormCardLogosItem.CardTypeLogo(url: URL(string: "https://google.com")!, type: $0)

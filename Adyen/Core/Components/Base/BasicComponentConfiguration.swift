@@ -29,8 +29,10 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     /// - Parameters:
     ///   - style: The form style.
     ///   - localizationParameters: The localization parameters.
-    public init(style: FormComponentStyle = FormComponentStyle(),
-                localizationParameters: LocalizationParameters? = nil) {
+    public init(
+        style: FormComponentStyle = FormComponentStyle(),
+        localizationParameters: LocalizationParameters? = nil
+    ) {
         self.style = style
         self.localizationParameters = localizationParameters
     }
@@ -53,9 +55,11 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
     ///   - style: The form style.
     ///   - shopperInformation: The shopper information to be prefilled.
     ///   - localizationParameters: The localization parameters.
-    public init(style: FormComponentStyle = FormComponentStyle(),
-                shopperInformation: PrefilledShopperInformation? = nil,
-                localizationParameters: LocalizationParameters? = nil) {
+    public init(
+        style: FormComponentStyle = FormComponentStyle(),
+        shopperInformation: PrefilledShopperInformation? = nil,
+        localizationParameters: LocalizationParameters? = nil
+    ) {
         self.style = style
         self.shopperInformation = shopperInformation
         self.localizationParameters = localizationParameters

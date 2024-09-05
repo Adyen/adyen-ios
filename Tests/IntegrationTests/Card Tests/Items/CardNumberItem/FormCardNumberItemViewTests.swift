@@ -25,8 +25,10 @@ class FormCardNumberItemViewTests: XCTestCase {
     }
     
     override func setUp() {
-        item = FormCardNumberItem(cardTypeLogos: [.init(url: Self.url, type: .visa),
-                                                  .init(url: Self.url, type: .masterCard)])
+        item = FormCardNumberItem(cardTypeLogos: [
+            .init(url: Self.url, type: .visa),
+            .init(url: Self.url, type: .masterCard)
+        ])
         validator = ValidatorMock()
         
         item.validator = validator
@@ -84,8 +86,10 @@ class FormCardNumberItemViewTests: XCTestCase {
     func testTextFieldSanitizationGivenNonAllowedCharactersShouldSanitizeAndFormatInput() throws {
         // Given
         let cardNumberFormatter = CardNumberFormatter()
-        let cardNumberValidator = CardNumberValidator(isLuhnCheckEnabled: true,
-                                                      isEnteredBrandSupported: true)
+        let cardNumberValidator = CardNumberValidator(
+            isLuhnCheckEnabled: true,
+            isEnteredBrandSupported: true
+        )
         item.formatter = cardNumberFormatter
         item.validator = cardNumberValidator
         
@@ -109,8 +113,10 @@ class FormCardNumberItemViewTests: XCTestCase {
     func testTextFieldSanitizationGivenCorrectCardNumberShouldSanitizeAndFormatInput() throws {
         // Given
         let cardNumberFormatter = CardNumberFormatter()
-        let cardNumberValidator = CardNumberValidator(isLuhnCheckEnabled: true,
-                                                      isEnteredBrandSupported: true)
+        let cardNumberValidator = CardNumberValidator(
+            isLuhnCheckEnabled: true,
+            isEnteredBrandSupported: true
+        )
         item.formatter = cardNumberFormatter
         item.validator = cardNumberValidator
 
