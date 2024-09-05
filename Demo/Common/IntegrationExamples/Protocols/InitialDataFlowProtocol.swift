@@ -35,9 +35,11 @@ extension InitialDataFlowProtocol {
     func generateContext() -> AdyenContext {
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
-        return AdyenContext(apiContext: ConfigurationConstants.apiContext,
-                            payment: ConfigurationConstants.current.payment,
-                            analyticsConfiguration: analyticsConfiguration)
+        return AdyenContext(
+            apiContext: ConfigurationConstants.apiContext,
+            payment: ConfigurationConstants.current.payment,
+            analyticsConfiguration: analyticsConfiguration
+        )
     }
 
     private func initializeSession(with sessionId: String, data: String) -> AdyenSession.Configuration {

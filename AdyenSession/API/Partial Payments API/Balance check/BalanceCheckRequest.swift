@@ -25,9 +25,11 @@ internal struct BalanceCheckRequest: APIRequest {
     
     internal typealias ResponseType = BalanceCheckResponse
     
-    internal init(sessionId: String,
-                  sessionData: String,
-                  data: PaymentComponentData) {
+    internal init(
+        sessionId: String,
+        sessionData: String,
+        data: PaymentComponentData
+    ) {
         self.path = "checkoutshopper/v1/sessions/\(sessionId)/paymentMethodBalance"
         self.sessionData = sessionData
         self.data = data

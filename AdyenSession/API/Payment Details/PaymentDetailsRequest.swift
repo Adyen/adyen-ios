@@ -27,10 +27,12 @@ internal struct PaymentDetailsRequest: APIRequest {
     
     internal typealias ResponseType = PaymentsResponse
     
-    internal init(sessionId: String,
-                  sessionData: String,
-                  paymentData: String?,
-                  details: AdditionalDetails) {
+    internal init(
+        sessionId: String,
+        sessionData: String,
+        paymentData: String?,
+        details: AdditionalDetails
+    ) {
         self.path = "checkoutshopper/v1/sessions/\(sessionId)/paymentDetails"
         self.sessionData = sessionData
         self.paymentData = paymentData

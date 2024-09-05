@@ -32,9 +32,11 @@ public final class AffirmComponent: AbstractPersonalInformationComponent {
     ///   - paymentMethod: The Affirm payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
-    public init(paymentMethod: PaymentMethod,
-                context: AdyenContext,
-                configuration: Configuration = .init()) {
+    public init(
+        paymentMethod: PaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         personalDetailsHeaderItem = FormLabelItem(text: "", style: configuration.style.sectionHeader)
         deliveryAddressToggleItem = FormToggleItem(style: configuration.style.toggle)
         
@@ -51,10 +53,12 @@ public final class AffirmComponent: AbstractPersonalInformationComponent {
             .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 2)))
         ]
         
-        super.init(paymentMethod: paymentMethod,
-                   context: context,
-                   fields: fields,
-                   configuration: configuration)
+        super.init(
+            paymentMethod: paymentMethod,
+            context: context,
+            fields: fields,
+            configuration: configuration
+        )
 
         setupItems()
     }
@@ -78,8 +82,10 @@ public final class AffirmComponent: AbstractPersonalInformationComponent {
         guard let deliveryAddressItem else { return }
         deliveryAddressToggleItem.title = localizedString(.affirmDeliveryAddressToggleTitle, configuration.localizationParameters)
         deliveryAddressToggleItem.value = false
-        deliveryAddressToggleItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                                           postfix: ViewIdentifier.deliveryAddressToggle)
+        deliveryAddressToggleItem.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.deliveryAddressToggle
+        )
         bind(deliveryAddressToggleItem.publisher, to: deliveryAddressItem, at: \.isHidden.wrappedValue, with: { !$0 })
     }
     

@@ -54,9 +54,11 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     internal var isDualBranded: Bool = false
     
     /// Initializes the form card number item.
-    internal init(cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
-                  style: FormTextItemStyle = FormTextItemStyle(),
-                  localizationParameters: LocalizationParameters? = nil) {
+    internal init(
+        cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
+        style: FormTextItemStyle = FormTextItemStyle(),
+        localizationParameters: LocalizationParameters? = nil
+    ) {
         // these 4 US debit brands are not to be displayed
         // but should be supported so it's done here for now
         self.cardTypeLogos = cardTypeLogos.filter { logo in
@@ -156,9 +158,11 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
             validationFailureMessage = localizedString(.cardNumberItemUnknownBrand, localizationParameters)
         }
         
-        validator = CardNumberValidator(isLuhnCheckEnabled: brand?.isLuhnCheckEnabled ?? true,
-                                        isEnteredBrandSupported: isBrandSupported,
-                                        panLength: brand?.panLength)
+        validator = CardNumberValidator(
+            isLuhnCheckEnabled: brand?.isLuhnCheckEnabled ?? true,
+            isEnteredBrandSupported: isBrandSupported,
+            panLength: brand?.panLength
+        )
     }
     
 }

@@ -26,9 +26,11 @@ class AffirmComponentTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        sut = AffirmComponent(paymentMethod: paymentMethod,
-                              context: context,
-                              configuration: AffirmComponent.Configuration(style: style))
+        sut = AffirmComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: AffirmComponent.Configuration(style: style)
+        )
     }
     
     override func tearDownWithError() throws {
@@ -112,9 +114,11 @@ class AffirmComponentTests: XCTestCase {
     
     func testSubmitForm_shouldCallDelegateWithProperParameters() throws {
         // Given
-        let sut = AffirmComponent(paymentMethod: paymentMethod,
-                                  context: context,
-                                  configuration: AffirmComponent.Configuration(style: style))
+        let sut = AffirmComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: AffirmComponent.Configuration(style: style)
+        )
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
         let expectedBillingAddress = PostalAddressMocks.newYorkPostalAddress
@@ -184,11 +188,15 @@ class AffirmComponentTests: XCTestCase {
 
     func testAffirmPrefilling_givenDeliveryAddressIsSet() throws {
         // Given
-        let config = AffirmComponent.Configuration(style: style,
-                                                   shopperInformation: shopperInformation)
-        let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
-                                         context: context,
-                                         configuration: config)
+        let config = AffirmComponent.Configuration(
+            style: style,
+            shopperInformation: shopperInformation
+        )
+        let prefillSut = AffirmComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
         
         setupRootViewController(prefillSut.viewController)
 
@@ -231,11 +239,15 @@ class AffirmComponentTests: XCTestCase {
 
     func testAffirmPrefilling_givenDeliveryAddressIsNotSet() throws {
         // Given
-        let config = AffirmComponent.Configuration(style: style,
-                                                   shopperInformation: shopperInformationNoDeliveryAddress)
-        let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
-                                         context: context,
-                                         configuration: config)
+        let config = AffirmComponent.Configuration(
+            style: style,
+            shopperInformation: shopperInformationNoDeliveryAddress
+        )
+        let prefillSut = AffirmComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
         prefillSut.phoneItem?.value = "+1223434545"
 
         setupRootViewController(prefillSut.viewController)
@@ -341,23 +353,27 @@ class AffirmComponentTests: XCTestCase {
     private var shopperInformation: PrefilledShopperInformation {
         let billingAddress = PostalAddressMocks.newYorkPostalAddress
         let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
-        let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
-                                                             emailAddress: "katrina@mail.com",
-                                                             phoneNumber: PhoneNumber(value: "1234567", callingCode: "+1"),
-                                                             billingAddress: billingAddress,
-                                                             deliveryAddress: deliveryAddress,
-                                                             socialSecurityNumber: "78542134370")
+        let shopperInformation = PrefilledShopperInformation(
+            shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
+            emailAddress: "katrina@mail.com",
+            phoneNumber: PhoneNumber(value: "1234567", callingCode: "+1"),
+            billingAddress: billingAddress,
+            deliveryAddress: deliveryAddress,
+            socialSecurityNumber: "78542134370"
+        )
         return shopperInformation
     }
 
     private var shopperInformationNoDeliveryAddress: PrefilledShopperInformation {
         let billingAddress = PostalAddressMocks.newYorkPostalAddress
-        let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
-                                                             emailAddress: "katrina@mail.com",
-                                                             phoneNumber: nil,
-                                                             billingAddress: billingAddress,
-                                                             deliveryAddress: nil,
-                                                             socialSecurityNumber: "78542134370")
+        let shopperInformation = PrefilledShopperInformation(
+            shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
+            emailAddress: "katrina@mail.com",
+            phoneNumber: nil,
+            billingAddress: billingAddress,
+            deliveryAddress: nil,
+            socialSecurityNumber: "78542134370"
+        )
         return shopperInformation
     }
 

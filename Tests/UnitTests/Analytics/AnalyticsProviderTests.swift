@@ -31,9 +31,11 @@ class AnalyticsProviderTests: XCTestCase {
         analyticsConfiguration.isEnabled = true
 
         let apiClient = APIClientMock()
-        let sut = AnalyticsProvider(apiClient: apiClient,
-                                    configuration: analyticsConfiguration,
-                                    eventDataSource: eventDataSource)
+        let sut = AnalyticsProvider(
+            apiClient: apiClient,
+            configuration: analyticsConfiguration,
+            eventDataSource: eventDataSource
+        )
 
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
@@ -165,9 +167,7 @@ class AnalyticsProviderTests: XCTestCase {
         let analyticsExpectation = expectation(description: "Initial request is triggered")
         
         let apiClient = APIClientMock()
-        apiClient.mockedResults = [
-            .success(InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptId))
-        ]
+        apiClient.mockedResults = [.success(InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptId))]
         apiClient.onExecute = { request in
             if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
                 XCTAssertNil(initialAnalyticsdRequest.amount)
@@ -192,9 +192,11 @@ class AnalyticsProviderTests: XCTestCase {
     
     func testShouldNotSendEventsWhenNoAttemptId() {
         let apiClient = APIClientMock()
-        let sut = AnalyticsProvider(apiClient: apiClient,
-                                    configuration: AnalyticsConfiguration(),
-                                    eventDataSource: eventDataSource)
+        let sut = AnalyticsProvider(
+            apiClient: apiClient,
+            configuration: AnalyticsConfiguration(),
+            eventDataSource: eventDataSource
+        )
         
         let analyticsResponse = EmptyResponse()
         let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
@@ -215,9 +217,11 @@ class AnalyticsProviderTests: XCTestCase {
     
     func testShouldNotSendEventWhenAttemptIdButNoEvents() {
         let apiClient = APIClientMock()
-        let sut = AnalyticsProvider(apiClient: apiClient,
-                                    configuration: AnalyticsConfiguration(),
-                                    eventDataSource: eventDataSource)
+        let sut = AnalyticsProvider(
+            apiClient: apiClient,
+            configuration: AnalyticsConfiguration(),
+            eventDataSource: eventDataSource
+        )
 
         let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
@@ -246,9 +250,11 @@ class AnalyticsProviderTests: XCTestCase {
     
     func testEventShouldSendWhenAttemptIdAndEventsExist() {
         let apiClient = APIClientMock()
-        let sut = AnalyticsProvider(apiClient: apiClient,
-                                    configuration: AnalyticsConfiguration(),
-                                    eventDataSource: eventDataSource)
+        let sut = AnalyticsProvider(
+            apiClient: apiClient,
+            configuration: AnalyticsConfiguration(),
+            eventDataSource: eventDataSource
+        )
 
         let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
@@ -280,9 +286,11 @@ class AnalyticsProviderTests: XCTestCase {
     
     func testDeinitShouldAttemptToSendEvents() {
         let apiClient = APIClientMock()
-        var sut: AnalyticsProvider? = AnalyticsProvider(apiClient: apiClient,
-                                                        configuration: AnalyticsConfiguration(),
-                                                        eventDataSource: eventDataSource)
+        var sut: AnalyticsProvider? = AnalyticsProvider(
+            apiClient: apiClient,
+            configuration: AnalyticsConfiguration(),
+            eventDataSource: eventDataSource
+        )
 
         let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
@@ -314,9 +322,11 @@ class AnalyticsProviderTests: XCTestCase {
     
     func testAddingInfoShouldNotTriggerSend() {
         let apiClient = APIClientMock()
-        let sut = AnalyticsProvider(apiClient: apiClient,
-                                    configuration: AnalyticsConfiguration(),
-                                    eventDataSource: eventDataSource)
+        let sut = AnalyticsProvider(
+            apiClient: apiClient,
+            configuration: AnalyticsConfiguration(),
+            eventDataSource: eventDataSource
+        )
 
         let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
@@ -343,9 +353,11 @@ class AnalyticsProviderTests: XCTestCase {
     
     func testAddingLogEventShouldTriggerSend() {
         let apiClient = APIClientMock()
-        let sut = AnalyticsProvider(apiClient: apiClient,
-                                    configuration: AnalyticsConfiguration(),
-                                    eventDataSource: eventDataSource)
+        let sut = AnalyticsProvider(
+            apiClient: apiClient,
+            configuration: AnalyticsConfiguration(),
+            eventDataSource: eventDataSource
+        )
 
         let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
@@ -375,9 +387,11 @@ class AnalyticsProviderTests: XCTestCase {
     
     func testAddingErrorEventShouldTriggerSend() {
         let apiClient = APIClientMock()
-        let sut = AnalyticsProvider(apiClient: apiClient,
-                                    configuration: AnalyticsConfiguration(),
-                                    eventDataSource: eventDataSource)
+        let sut = AnalyticsProvider(
+            apiClient: apiClient,
+            configuration: AnalyticsConfiguration(),
+            eventDataSource: eventDataSource
+        )
 
         let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
@@ -415,9 +429,7 @@ class AnalyticsProviderTests: XCTestCase {
         let analyticsExpectation = expectation(description: "Initial request is triggered")
         
         let apiClient = APIClientMock()
-        apiClient.mockedResults = [
-            .success(InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptId))
-        ]
+        apiClient.mockedResults = [.success(InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptId))]
         apiClient.onExecute = { request in
             if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
                 XCTAssertEqual(initialAnalyticsdRequest.amount, amount)
@@ -445,9 +457,11 @@ class AnalyticsProviderTests: XCTestCase {
     
     func testInitialRequestEncoding() throws {
         
-        let analyticsData = AnalyticsData(flavor: .components(type: .achDirectDebit),
-                                          additionalFields: AdditionalAnalyticsFields(amount: .init(value: 1, currencyCode: "EUR"), sessionId: "test_session_id"),
-                                          context: AnalyticsContext(version: "version", platform: .flutter))
+        let analyticsData = AnalyticsData(
+            flavor: .components(type: .achDirectDebit),
+            additionalFields: AdditionalAnalyticsFields(amount: .init(value: 1, currencyCode: "EUR"), sessionId: "test_session_id"),
+            context: AnalyticsContext(version: "version", platform: .flutter)
+        )
         
         let request = InitialAnalyticsRequest(data: analyticsData)
         

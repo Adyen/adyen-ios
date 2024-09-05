@@ -26,9 +26,11 @@ internal struct DisableStoredPaymentMethodRequest: APIRequest {
     
     internal let storedPaymentMethodId: String
     
-    internal init(sessionId: String,
-                  sessionData: String,
-                  storedPaymentMethodId: String) {
+    internal init(
+        sessionId: String,
+        sessionData: String,
+        storedPaymentMethodId: String
+    ) {
         self.path = "checkoutshopper/v1/sessions/\(sessionId)/disableToken"
         self.sessionData = sessionData
         self.storedPaymentMethodId = storedPaymentMethodId

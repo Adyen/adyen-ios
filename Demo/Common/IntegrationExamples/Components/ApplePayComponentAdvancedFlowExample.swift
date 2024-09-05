@@ -68,9 +68,11 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         config.requiredBillingContactFields = [.postalAddress]
         config.shippingMethods = ConfigurationConstants.shippingMethods
 
-        let component = try ApplePayComponent(paymentMethod: paymentMethod,
-                                              context: context,
-                                              configuration: config)
+        let component = try ApplePayComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
         component.delegate = self
         component.applePayDelegate = self
         return component
@@ -141,38 +143,48 @@ extension ApplePayComponentAdvancedFlowExample: PaymentComponentDelegate {
 
 extension ApplePayComponentAdvancedFlowExample: ApplePayComponentDelegate {
 
-    func didUpdate(contact: PKContact,
-                   for payment: ApplePayPayment,
-                   completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void) {
+    func didUpdate(
+        contact: PKContact,
+        for payment: ApplePayPayment,
+        completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void
+    ) {
         var items = payment.summaryItems
         if let last = items.last {
             items = items.dropLast()
             // Below hard coded values are for testing purpose. Please add your own string and amount if you want to use these.
             let cityLabel = contact.postalAddress?.city ?? "Somewhere"
-            items.append(.init(label: "Shipping \(cityLabel)",
-                               amount: NSDecimalNumber(value: 5.0)))
+            items.append(.init(
+                label: "Shipping \(cityLabel)",
+                amount: NSDecimalNumber(value: 5.0)
+            ))
             items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue + 5.0)))
         }
         completion(.init(paymentSummaryItems: items))
     }
 
-    func didUpdate(shippingMethod: PKShippingMethod,
-                   for payment: ApplePayPayment,
-                   completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void) {
+    func didUpdate(
+        shippingMethod: PKShippingMethod,
+        for payment: ApplePayPayment,
+        completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void
+    ) {
         var items = payment.summaryItems
         if let last = items.last {
             items = items.dropLast()
             items.append(shippingMethod)
-            items.append(.init(label: last.label,
-                               amount: NSDecimalNumber(value: last.amount.floatValue + shippingMethod.amount.floatValue)))
+            items.append(.init(
+                label: last.label,
+                amount: NSDecimalNumber(value: last.amount.floatValue + shippingMethod.amount.floatValue)
+            ))
         }
         completion(.init(paymentSummaryItems: items))
     }
 
     @available(iOS 15.0, *)
-    func didUpdate(couponCode: String,
-                   for payment: ApplePayPayment,
-                   completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void) {
+    func didUpdate(
+        couponCode: String,
+        for payment: ApplePayPayment,
+        completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void
+    ) {
         var items = payment.summaryItems
         if let last = items.last {
             items = items.dropLast()

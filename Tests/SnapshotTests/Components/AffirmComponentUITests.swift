@@ -150,11 +150,15 @@ class AffirmComponentUITests: XCTestCase {
 
     func testAffirmPrefilling_givenDeliveryAddressIsNotSet() throws {
         // Given
-        let config = AffirmComponent.Configuration(style: style,
-                                                   shopperInformation: shopperInformationNoDeliveryAddress)
-        let prefillSut = AffirmComponent(paymentMethod: paymentMethod,
-                                         context: Dummy.context(with: nil),
-                                         configuration: config)
+        let config = AffirmComponent.Configuration(
+            style: style,
+            shopperInformation: shopperInformationNoDeliveryAddress
+        )
+        let prefillSut = AffirmComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context(with: nil),
+            configuration: config
+        )
         
         setupRootViewController(prefillSut.viewController)
 
@@ -195,10 +199,14 @@ class AffirmComponentUITests: XCTestCase {
 
     func testAffirm_givenNoShopperInformation_shouldNotPrefill() throws {
         // Given
-        let context = Dummy.context(with: Payment(amount: .init(value: 100, currencyCode: "USD"),
-                                                  countryCode: "US"))
-        let sut = AffirmComponent(paymentMethod: paymentMethod,
-                                  context: context)
+        let context = Dummy.context(with: Payment(
+            amount: .init(value: 100, currencyCode: "USD"),
+            countryCode: "US"
+        ))
+        let sut = AffirmComponent(
+            paymentMethod: paymentMethod,
+            context: context
+        )
         
         setupRootViewController(sut.viewController)
 
@@ -244,23 +252,27 @@ class AffirmComponentUITests: XCTestCase {
     private var shopperInformation: PrefilledShopperInformation {
         let billingAddress = PostalAddressMocks.newYorkPostalAddress
         let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
-        let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
-                                                             emailAddress: "katrina@mail.com",
-                                                             phoneNumber: PhoneNumber(value: "123456677", callingCode: "+1"),
-                                                             billingAddress: billingAddress,
-                                                             deliveryAddress: deliveryAddress,
-                                                             socialSecurityNumber: "78542134370")
+        let shopperInformation = PrefilledShopperInformation(
+            shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
+            emailAddress: "katrina@mail.com",
+            phoneNumber: PhoneNumber(value: "123456677", callingCode: "+1"),
+            billingAddress: billingAddress,
+            deliveryAddress: deliveryAddress,
+            socialSecurityNumber: "78542134370"
+        )
         return shopperInformation
     }
 
     private var shopperInformationNoDeliveryAddress: PrefilledShopperInformation {
         let billingAddress = PostalAddressMocks.newYorkPostalAddress
-        let shopperInformation = PrefilledShopperInformation(shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
-                                                             emailAddress: "katrina@mail.com",
-                                                             phoneNumber: PhoneNumber(value: "123456677", callingCode: "+1"),
-                                                             billingAddress: billingAddress,
-                                                             deliveryAddress: nil,
-                                                             socialSecurityNumber: "78542134370")
+        let shopperInformation = PrefilledShopperInformation(
+            shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
+            emailAddress: "katrina@mail.com",
+            phoneNumber: PhoneNumber(value: "123456677", callingCode: "+1"),
+            billingAddress: billingAddress,
+            deliveryAddress: nil,
+            socialSecurityNumber: "78542134370"
+        )
         return shopperInformation
     }
 

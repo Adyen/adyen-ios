@@ -24,7 +24,8 @@ internal final class DefaultAPIClient: AnyRetryAPIClient {
     }
     
     internal func perform<R>(
-        _ request: R, shouldRetry: ((Result<R.ResponseType, Error>) -> Bool)?,
+        _ request: R,
+        shouldRetry: ((Result<R.ResponseType, Error>) -> Bool)?,
         completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void
     ) where R: Request {
         apiClient.perform(request, shouldRetry: {

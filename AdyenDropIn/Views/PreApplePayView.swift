@@ -82,8 +82,10 @@ internal final class PreApplePayView: UIView, Localizable {
     }
     
     private lazy var payButton: PKPaymentButton = {
-        let payButton = PKPaymentButton(paymentButtonType: model.style.paymentButtonType,
-                                        paymentButtonStyle: model.style.paymentButtonStyle ?? paymentButtonStyleAuto)
+        let payButton = PKPaymentButton(
+            paymentButtonType: model.style.paymentButtonType,
+            paymentButtonStyle: model.style.paymentButtonStyle ?? paymentButtonStyleAuto
+        )
         
         payButton.addTarget(self, action: #selector(onPayButtonTap), for: .touchUpInside)
         

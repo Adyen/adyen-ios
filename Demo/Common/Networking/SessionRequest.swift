@@ -41,17 +41,23 @@ internal struct SessionRequest: APIRequest {
         try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
         
         if ConfigurationConstants.current.cardSettings.enableInstallments {
-            let installmentOptions = ["card": InstallmentOptions(monthValues: [2, 3, 5], includesRevolving: false),
-                                      "visa": InstallmentOptions(monthValues: [3, 6, 9], includesRevolving: true)]
+            let installmentOptions = [
+                "card": InstallmentOptions(monthValues: [2, 3, 5], includesRevolving: false),
+                "visa": InstallmentOptions(monthValues: [3, 6, 9], includesRevolving: true)
+            ]
     
             try container.encode(installmentOptions, forKey: .installmentOptions)
-            try container.encode(ConfigurationConstants.current.cardSettings.showsInstallmentAmount,
-                                 forKey: .showInstallmentAmount)
+            try container.encode(
+                ConfigurationConstants.current.cardSettings.showsInstallmentAmount,
+                forKey: .showInstallmentAmount
+            )
         }
 
         if ConfigurationConstants.current.cardSettings.showsStorePaymentMethodField {
-            AdyenAssertion.assert(message: "API version should be v70 or above to apply card component's store payment method field",
-                                  condition: ConfigurationConstants.current.apiVersion < 70)
+            AdyenAssertion.assert(
+                message: "API version should be v70 or above to apply card component's store payment method field",
+                condition: ConfigurationConstants.current.apiVersion < 70
+            )
             try container.encode("askForConsent", forKey: .storePaymentMethodMode)
             try container.encode("CardOnFile", forKey: .recurringProcessingModel)
         }

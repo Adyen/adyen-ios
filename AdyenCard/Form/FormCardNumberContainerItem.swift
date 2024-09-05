@@ -32,9 +32,11 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     }()
     
     internal lazy var numberItem: FormCardNumberItem = {
-        let item = FormCardNumberItem(cardTypeLogos: cardTypeLogos,
-                                      style: style,
-                                      localizationParameters: localizationParameters)
+        let item = FormCardNumberItem(
+            cardTypeLogos: cardTypeLogos,
+            style: style,
+            localizationParameters: localizationParameters
+        )
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "numberItem")
         return item
     }()
@@ -45,10 +47,12 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
         return item
     }()
     
-    internal init(cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
-                  showsSupportedCardLogos: Bool = true,
-                  style: FormTextItemStyle,
-                  localizationParameters: LocalizationParameters?) {
+    internal init(
+        cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
+        showsSupportedCardLogos: Bool = true,
+        style: FormTextItemStyle,
+        localizationParameters: LocalizationParameters?
+    ) {
         self.cardTypeLogos = cardTypeLogos
         self.showsSupportedCardLogos = showsSupportedCardLogos
         self.localizationParameters = localizationParameters

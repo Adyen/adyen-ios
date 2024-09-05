@@ -32,13 +32,15 @@ internal final class ComponentManager {
 
     internal weak var presentationDelegate: PresentationDelegate?
     
-    internal init(paymentMethods: PaymentMethods,
-                  context: AdyenContext,
-                  configuration: DropInComponent.Configuration,
-                  partialPaymentEnabled: Bool = true,
-                  order: PartialPaymentOrder?,
-                  supportsEditingStoredPaymentMethods: Bool = false,
-                  presentationDelegate: PresentationDelegate) {
+    internal init(
+        paymentMethods: PaymentMethods,
+        context: AdyenContext,
+        configuration: DropInComponent.Configuration,
+        partialPaymentEnabled: Bool = true,
+        order: PartialPaymentOrder?,
+        supportsEditingStoredPaymentMethods: Bool = false,
+        presentationDelegate: PresentationDelegate
+    ) {
         self.paymentMethods = paymentMethods
         self.configuration = configuration
         self.partialPaymentEnabled = partialPaymentEnabled
@@ -60,16 +62,26 @@ internal final class ComponentManager {
         // Paid section
         let amountString: String = order?.remainingAmount.map(\.formatted) ??
             localizedString(.amount, configuration.localizationParameters).lowercased()
-        let footerTitle = localizedString(.partialPaymentPayRemainingAmount,
-                                          configuration.localizationParameters,
-                                          amountString)
-        let paidFooter = ListSectionFooter(title: footerTitle,
-                                           style: configuration.style.listComponent.partialPaymentSectionFooter)
-        let paidSection = ComponentsSection(header: .init(title: localizedString(.paymentMethodsPaidMethods,
-                                                                                 configuration.localizationParameters),
-                                                          style: configuration.style.listComponent.sectionHeader),
-                                            components: paidComponents,
-                                            footer: paidFooter)
+        let footerTitle = localizedString(
+            .partialPaymentPayRemainingAmount,
+            configuration.localizationParameters,
+            amountString
+        )
+        let paidFooter = ListSectionFooter(
+            title: footerTitle,
+            style: configuration.style.listComponent.partialPaymentSectionFooter
+        )
+        let paidSection = ComponentsSection(
+            header: .init(
+                title: localizedString(
+                    .paymentMethodsPaidMethods,
+                    configuration.localizationParameters
+                ),
+                style: configuration.style.listComponent.sectionHeader
+            ),
+            components: paidComponents,
+            footer: paidFooter
+        )
 
         // Stored section
         let storedSection: ComponentsSection
@@ -77,12 +89,18 @@ internal final class ComponentManager {
         let allowDeleting = configuration.paymentMethodsList.allowDisablingStoredPaymentMethods
             && supportsEditingStoredPaymentMethods
         let editingStyle: EditingStyle = allowDeleting ? .delete : .none
-        storedSection = ComponentsSection(header: .init(title: localizedString(.paymentMethodsStoredMethods,
-                                                                               configuration.localizationParameters),
-                                                        editingStyle: editingStyle,
-                                                        style: configuration.style.listComponent.sectionHeader),
-                                          components: storedComponents,
-                                          footer: nil)
+        storedSection = ComponentsSection(
+            header: .init(
+                title: localizedString(
+                    .paymentMethodsStoredMethods,
+                    configuration.localizationParameters
+                ),
+                editingStyle: editingStyle,
+                style: configuration.style.listComponent.sectionHeader
+            ),
+            components: storedComponents,
+            footer: nil
+        )
         
         // Regular section
         let localizedTitle = localizedString(.paymentMethodsOtherMethods, configuration.localizationParameters)

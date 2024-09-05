@@ -35,10 +35,12 @@ import Foundation
         }
     
         let showRegistrationReturnState: ShowRegistrationScreenMockState
-        func showRegistrationScreen(component: any Adyen.Component,
-                                    cardDetails: (number: String?, type: Adyen.CardType?),
-                                    registerDelegatedAuthenticationHandler: @escaping () -> Void,
-                                    fallbackHandler: @escaping () -> Void) {
+        func showRegistrationScreen(
+            component: any Adyen.Component,
+            cardDetails: (number: String?, type: Adyen.CardType?),
+            registerDelegatedAuthenticationHandler: @escaping () -> Void,
+            fallbackHandler: @escaping () -> Void
+        ) {
             switch showRegistrationReturnState {
             case .register:
                 registerDelegatedAuthenticationHandler()
@@ -55,11 +57,13 @@ import Foundation
     
         let showApprovalScreenReturnState: ShowApprovalScreenMockState
     
-        func showApprovalScreen(component: any Adyen.Component,
-                                cardDetails: (number: String?, type: Adyen.CardType?),
-                                approveAuthenticationHandler: @escaping () -> Void,
-                                fallbackHandler: @escaping () -> Void,
-                                removeCredentialsHandler: @escaping () -> Void) {
+        func showApprovalScreen(
+            component: any Adyen.Component,
+            cardDetails: (number: String?, type: Adyen.CardType?),
+            approveAuthenticationHandler: @escaping () -> Void,
+            fallbackHandler: @escaping () -> Void,
+            removeCredentialsHandler: @escaping () -> Void
+        ) {
             switch showApprovalScreenReturnState {
             case .approve:
                 approveAuthenticationHandler()
@@ -70,8 +74,10 @@ import Foundation
             }
         }
     
-        init(showRegistrationReturnState: ShowRegistrationScreenMockState,
-             showApprovalScreenReturnState: ShowApprovalScreenMockState) {
+        init(
+            showRegistrationReturnState: ShowRegistrationScreenMockState,
+            showApprovalScreenReturnState: ShowApprovalScreenMockState
+        ) {
             self.showRegistrationReturnState = showRegistrationReturnState
             self.showApprovalScreenReturnState = showApprovalScreenReturnState
         }

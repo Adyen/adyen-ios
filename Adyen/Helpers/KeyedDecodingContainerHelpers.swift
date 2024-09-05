@@ -18,9 +18,11 @@ extension KeyedDecodingContainer {
     internal func decodeIntString(forKey key: K) throws -> Int {
         let stringValue = try decode(String.self, forKey: key)
         guard let intValue = Int(stringValue) else {
-            throw DecodingError.dataCorruptedError(forKey: key,
-                                                   in: self,
-                                                   debugDescription: "String was not convertible to an integer.")
+            throw DecodingError.dataCorruptedError(
+                forKey: key,
+                in: self,
+                debugDescription: "String was not convertible to an integer."
+            )
         }
 
         return intValue

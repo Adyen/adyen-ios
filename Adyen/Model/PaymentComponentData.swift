@@ -99,12 +99,14 @@ public struct PaymentComponentData {
     ///   - checkoutAttemptId: The checkoutAttempt identifier.
     ///   - installments: Installments selection if specified.
     @_spi(AdyenInternal)
-    public init(paymentMethodDetails: some PaymentMethodDetails,
-                amount: Amount?,
-                order: PartialPaymentOrder?,
-                storePaymentMethod: Bool? = nil,
-                browserInfo: BrowserInfo? = nil,
-                installments: Installments? = nil) {
+    public init(
+        paymentMethodDetails: some PaymentMethodDetails,
+        amount: Amount?,
+        order: PartialPaymentOrder?,
+        storePaymentMethod: Bool? = nil,
+        browserInfo: BrowserInfo? = nil,
+        installments: Installments? = nil
+    ) {
         self.amount = amount
         self.paymentMethod = paymentMethodDetails
         self.order = order
@@ -115,22 +117,26 @@ public struct PaymentComponentData {
 
     @_spi(AdyenInternal)
     public func replacing(order: PartialPaymentOrder) -> PaymentComponentData {
-        PaymentComponentData(paymentMethodDetails: paymentMethod,
-                             amount: amount,
-                             order: order,
-                             storePaymentMethod: storePaymentMethod,
-                             browserInfo: browserInfo,
-                             installments: installments)
+        PaymentComponentData(
+            paymentMethodDetails: paymentMethod,
+            amount: amount,
+            order: order,
+            storePaymentMethod: storePaymentMethod,
+            browserInfo: browserInfo,
+            installments: installments
+        )
     }
 
     @_spi(AdyenInternal)
     public func replacing(amount: Amount) -> PaymentComponentData {
-        PaymentComponentData(paymentMethodDetails: paymentMethod,
-                             amount: amount,
-                             order: order,
-                             storePaymentMethod: storePaymentMethod,
-                             browserInfo: browserInfo,
-                             installments: installments)
+        PaymentComponentData(
+            paymentMethodDetails: paymentMethod,
+            amount: amount,
+            order: order,
+            storePaymentMethod: storePaymentMethod,
+            browserInfo: browserInfo,
+            installments: installments
+        )
     }
 
     @_spi(AdyenInternal)
@@ -138,12 +144,14 @@ public struct PaymentComponentData {
         guard let checkoutAttemptId else { return self }
         var paymentMethod = paymentMethod
         paymentMethod.checkoutAttemptId = checkoutAttemptId
-        return PaymentComponentData(paymentMethodDetails: paymentMethod,
-                                    amount: amount,
-                                    order: order,
-                                    storePaymentMethod: storePaymentMethod,
-                                    browserInfo: browserInfo,
-                                    installments: installments)
+        return PaymentComponentData(
+            paymentMethodDetails: paymentMethod,
+            amount: amount,
+            order: order,
+            storePaymentMethod: storePaymentMethod,
+            browserInfo: browserInfo,
+            installments: installments
+        )
     }
     
     /// Creates a new `PaymentComponentData` by populating the `browserInfo`,
@@ -154,12 +162,14 @@ public struct PaymentComponentData {
     @_spi(AdyenInternal)
     public func dataByAddingBrowserInfo(completion: @escaping ((_ newData: PaymentComponentData) -> Void)) {
         BrowserInfo.initialize {
-            completion(PaymentComponentData(paymentMethodDetails: paymentMethod,
-                                            amount: amount,
-                                            order: order,
-                                            storePaymentMethod: storePaymentMethod,
-                                            browserInfo: $0,
-                                            installments: installments))
+            completion(PaymentComponentData(
+                paymentMethodDetails: paymentMethod,
+                amount: amount,
+                order: order,
+                storePaymentMethod: storePaymentMethod,
+                browserInfo: $0,
+                installments: installments
+            ))
         }
     }
     

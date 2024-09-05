@@ -67,8 +67,10 @@ private func enforceLocalizedString(key: String, locale: String) -> String? {
         .map { NSLocalizedString(key, tableName: nil, bundle: $0, comment: "") }
 }
 
-private func buildPossibleInputs(_ key: String,
-                                 _ parameters: LocalizationParameters?) -> [LocalizationInput] {
+private func buildPossibleInputs(
+    _ key: String,
+    _ parameters: LocalizationParameters?
+) -> [LocalizationInput] {
     var possibleInputs = buildPossibleInputs(for: Bundle.main, key, parameters)
 
     if let customBundle = parameters?.bundle {
@@ -79,9 +81,11 @@ private func buildPossibleInputs(_ key: String,
     return possibleInputs
 }
 
-private func buildPossibleInputs(for bundle: Bundle,
-                                 _ key: String,
-                                 _ parameters: LocalizationParameters?) -> [LocalizationInput] {
+private func buildPossibleInputs(
+    for bundle: Bundle,
+    _ key: String,
+    _ parameters: LocalizationParameters?
+) -> [LocalizationInput] {
     var possibleInputs = [LocalizationInput]()
     
     if let customKey = updated(key, withSeparator: parameters?.keySeparator) {
@@ -126,9 +130,11 @@ public enum PaymentStyle {
 /// - Parameter paymentMethodName: The payment method name.
 /// - Parameter parameters: The localization parameters.
 @_spi(AdyenInternal)
-public func localizedSubmitButtonTitle(with amount: Amount?,
-                                       style: PaymentStyle,
-                                       _ parameters: LocalizationParameters?) -> String {
+public func localizedSubmitButtonTitle(
+    with amount: Amount?,
+    style: PaymentStyle,
+    _ parameters: LocalizationParameters?
+) -> String {
     guard let amount else {
         return localizedString(.submitButton, parameters)
     }
@@ -142,8 +148,10 @@ public func localizedSubmitButtonTitle(with amount: Amount?,
     return localizedString(.submitButtonFormatted, parameters, tempAmount.formatted)
 }
 
-private func localizedZeroPaymentAuthorisationButtonTitle(style: PaymentStyle,
-                                                          _ parameters: LocalizationParameters?) -> String {
+private func localizedZeroPaymentAuthorisationButtonTitle(
+    style: PaymentStyle,
+    _ parameters: LocalizationParameters?
+) -> String {
     switch style {
     case let .needsRedirectToThirdParty(name):
         return localizedString(.preauthorizeWith, parameters, name)

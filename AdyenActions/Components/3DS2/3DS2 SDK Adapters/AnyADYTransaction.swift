@@ -18,11 +18,15 @@ extension ADYTransaction: AnyADYTransaction {
 
     internal var authenticationParameters: AnyAuthenticationRequestParameters { authenticationRequestParameters }
 
-    internal func performChallenge(with parameters: ADYChallengeParameters,
-                                   completionHandler: @escaping (AnyChallengeResult?, Error?) -> Void) {
-        performChallenge(with: parameters,
-                         completionHandler: { (result: ADYChallengeResult?, error: Error?) in
-                             completionHandler(result, error)
-                         })
+    internal func performChallenge(
+        with parameters: ADYChallengeParameters,
+        completionHandler: @escaping (AnyChallengeResult?, Error?) -> Void
+    ) {
+        performChallenge(
+            with: parameters,
+            completionHandler: { (result: ADYChallengeResult?, error: Error?) in
+                completionHandler(result, error)
+            }
+        )
     }
 }

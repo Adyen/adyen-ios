@@ -32,10 +32,12 @@ internal final class ModalViewController: UIViewController {
     /// - Parameter style: The navigation level UI style.
     /// - Parameter navBarType: The type of the navigation bar.
     /// - Parameter cancelButtonHandler: An optional callback for the cancel button.
-    internal init(rootViewController: UIViewController,
-                  style: NavigationStyle = NavigationStyle(),
-                  navBarType: NavigationBarType,
-                  cancelButtonHandler: ((Bool) -> Void)? = nil) {
+    internal init(
+        rootViewController: UIViewController,
+        style: NavigationStyle = NavigationStyle(),
+        navBarType: NavigationBarType,
+        cancelButtonHandler: ((Bool) -> Void)? = nil
+    ) {
         self.innerController = rootViewController
         self.navBarType = navBarType
         self.style = style
@@ -73,8 +75,10 @@ internal final class ModalViewController: UIViewController {
         get {
             guard innerController.isViewLoaded else { return .zero }
             let innerSize = innerController.preferredContentSize
-            return CGSize(width: innerSize.width,
-                          height: navigationBarHeight + innerSize.height + (1.0 / UIScreen.main.scale))
+            return CGSize(
+                width: innerSize.width,
+                height: navigationBarHeight + innerSize.height + (1.0 / UIScreen.main.scale)
+            )
         }
         
         // swiftlint:disable:next unused_setter_value

@@ -47,9 +47,11 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
     /// - Parameter url: The URL to where the user should be redirected
     /// - Parameter context: The context object for this component.
     /// - Parameter style: The component's UI style.
-    internal init(url: URL,
-                  context: AdyenContext,
-                  style: RedirectComponentStyle? = nil) {
+    internal init(
+        url: URL,
+        context: AdyenContext,
+        style: RedirectComponentStyle? = nil
+    ) {
         self.url = url
         self.context = context
         self.style = style

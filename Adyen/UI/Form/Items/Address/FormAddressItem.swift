@@ -63,11 +63,13 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     ///   - configuration: The configuration of the FormAddressItem
     ///   - identifier: The item identifier
     ///   - addressViewModelBuilder: The Address view model builder
-    public init(initialCountry: String,
-                configuration: Configuration,
-                identifier: String? = nil,
-                presenter: ViewControllerPresenter?,
-                addressViewModelBuilder: AddressViewModelBuilder) {
+    public init(
+        initialCountry: String,
+        configuration: Configuration,
+        identifier: String? = nil,
+        presenter: ViewControllerPresenter?,
+        addressViewModelBuilder: AddressViewModelBuilder
+    ) {
         self.initialCountry = initialCountry
         self.configuration = configuration
         self.presenter = presenter
@@ -86,8 +88,10 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     }
     
     internal lazy var headerItem: FormLabelItem = {
-        let item = FormLabelItem(text: localizedString(.billingAddressSectionTitle, configuration.localizationParameters),
-                                 style: style.title)
+        let item = FormLabelItem(
+            text: localizedString(.billingAddressSectionTitle, configuration.localizationParameters),
+            style: style.title
+        )
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
         return item
     }()

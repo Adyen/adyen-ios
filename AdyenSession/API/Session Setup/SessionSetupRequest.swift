@@ -38,9 +38,11 @@ internal struct SessionSetupRequest: Request {
     
     internal typealias ErrorResponseType = APIError
     
-    internal init(sessionId: String,
-                  sessionData: String,
-                  order: PartialPaymentOrder?) {
+    internal init(
+        sessionId: String,
+        sessionData: String,
+        order: PartialPaymentOrder?
+    ) {
         self.path = "checkoutshopper/v1/sessions/\(sessionId)/setup"
         self.sessionData = sessionData
         self.order = order
@@ -105,9 +107,11 @@ extension SessionSetupResponse {
             self.installmentOptions = installmentOptions
         }
         
-        internal init(installmentOptions: InstallmentConfiguration? = nil,
-                      enableStoreDetails: Bool,
-                      showRemovePaymentMethodButton: Bool = false) {
+        internal init(
+            installmentOptions: InstallmentConfiguration? = nil,
+            enableStoreDetails: Bool,
+            showRemovePaymentMethodButton: Bool = false
+        ) {
             self.installmentOptions = installmentOptions
             self.enableStoreDetails = enableStoreDetails
             self.showRemovePaymentMethodButton = showRemovePaymentMethodButton

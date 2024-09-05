@@ -90,8 +90,10 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
             var localizedText: String
             if showAmount,
                let amount,
-               let formatted = AmountFormatter.formatted(amount: amount.value / monthValue,
-                                                         currencyCode: amount.currencyCode) {
+               let formatted = AmountFormatter.formatted(
+                   amount: amount.value / monthValue,
+                   currencyCode: amount.currencyCode
+               ) {
                 localizedText = localizedString(.cardInstallmentsMonthsAndPrice, localizationParameters, String(monthValue), formatted)
             } else {
                 localizedText = localizedString(.cardInstallmentsMonths, localizationParameters, String(monthValue))

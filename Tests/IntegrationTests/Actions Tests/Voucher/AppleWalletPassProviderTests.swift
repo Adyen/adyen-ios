@@ -27,8 +27,10 @@ class AppleWalletPassProviderTests: XCTestCase {
     func testMultipleFetchCallsAndOneRequestDispatched() throws {
         let baseApiClient = APIClientMock()
         let apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
-        let sut = AppleWalletPassProvider(context: context,
-                                          apiClient: apiClient)
+        let sut = AppleWalletPassProvider(
+            context: context,
+            apiClient: apiClient
+        )
 
         baseApiClient.mockedResults = [.success(try! AppleWalletPassResponse(passBase64String: "123".data(using: .utf8)!.base64EncodedString()))]
 

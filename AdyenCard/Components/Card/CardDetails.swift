@@ -75,14 +75,16 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
     ///   - selectedBrand: Brand of the card.
     ///   - billingAddress: The billing address information.
     ///   - kcpDetails: The additional details for KCP authentication.
-    public init(paymentMethod: AnyCardPaymentMethod,
-                encryptedCard: EncryptedCard,
-                holderName: String? = nil,
-                selectedBrand: String? = nil,
-                billingAddress: PostalAddress? = nil,
-                kcpDetails: KCPDetails? = nil,
-                socialSecurityNumber: String? = nil,
-                delegatedAuthenticationData: DelegatedAuthenticationData? = nil) {
+    public init(
+        paymentMethod: AnyCardPaymentMethod,
+        encryptedCard: EncryptedCard,
+        holderName: String? = nil,
+        selectedBrand: String? = nil,
+        billingAddress: PostalAddress? = nil,
+        kcpDetails: KCPDetails? = nil,
+        socialSecurityNumber: String? = nil,
+        delegatedAuthenticationData: DelegatedAuthenticationData? = nil
+    ) {
         self.type = paymentMethod.type
         self.encryptedCardNumber = encryptedCard.number
         self.encryptedExpiryMonth = encryptedCard.expiryMonth

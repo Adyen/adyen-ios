@@ -37,9 +37,11 @@ public struct FormButtonItemStyle: ViewStyle {
     ///   - mainColor: The filling color of a button..
     ///   - cornerRadius: The corner radius of the button.
     public static func main(font: UIFont, textColor: UIColor, mainColor: UIColor, cornerRadius: CGFloat) -> FormButtonItemStyle {
-        FormButtonItemStyle(button: ButtonStyle(title: TextStyle(font: font, color: textColor),
-                                                cornerRadius: cornerRadius,
-                                                background: mainColor))
+        FormButtonItemStyle(button: ButtonStyle(
+            title: TextStyle(font: font, color: textColor),
+            cornerRadius: cornerRadius,
+            background: mainColor
+        ))
     }
     
     /// Get instance of `FormButtonItemStyle` styled as filled button with default corner radius.
@@ -48,9 +50,11 @@ public struct FormButtonItemStyle: ViewStyle {
     ///   - textColor: The color of button's title.
     ///   - mainColor: The filling color of a button..
     public static func main(font: UIFont, textColor: UIColor, mainColor: UIColor) -> FormButtonItemStyle {
-        FormButtonItemStyle(button: ButtonStyle(title: TextStyle(font: font, color: textColor),
-                                                cornerRounding: .fixed(8),
-                                                background: mainColor))
+        FormButtonItemStyle(button: ButtonStyle(
+            title: TextStyle(font: font, color: textColor),
+            cornerRounding: .fixed(8),
+            background: mainColor
+        ))
     }
     
     /// Get instance of `FormButtonItemStyle` styled as filled button with corner radius.
@@ -60,9 +64,11 @@ public struct FormButtonItemStyle: ViewStyle {
     ///   - mainColor: The filling color of a button..
     ///   - cornerRounding: The corner style of the button.
     public static func main(font: UIFont, textColor: UIColor, mainColor: UIColor, cornerRounding: CornerRounding) -> FormButtonItemStyle {
-        FormButtonItemStyle(button: ButtonStyle(title: TextStyle(font: font, color: textColor),
-                                                cornerRounding: cornerRounding,
-                                                background: mainColor))
+        FormButtonItemStyle(button: ButtonStyle(
+            title: TextStyle(font: font, color: textColor),
+            cornerRounding: cornerRounding,
+            background: mainColor
+        ))
     }
     
     /// Get instance of `FormButtonItemStyle` styled as plane button transparent background.
@@ -70,9 +76,11 @@ public struct FormButtonItemStyle: ViewStyle {
     ///   - font: The font of button's title.
     ///   - textColor: The color of button's title.
     public static func secondary(font: UIFont, textColor: UIColor) -> FormButtonItemStyle {
-        FormButtonItemStyle(button: ButtonStyle(title: TextStyle(font: font, color: textColor),
-                                                cornerRadius: 0,
-                                                background: .clear))
+        FormButtonItemStyle(button: ButtonStyle(
+            title: TextStyle(font: font, color: textColor),
+            cornerRadius: 0,
+            background: .clear
+        ))
     }
     
 }

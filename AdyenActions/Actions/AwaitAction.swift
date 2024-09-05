@@ -40,8 +40,10 @@ public struct AwaitAction: PaymentDataAware, Decodable {
     ///   - paymentData: The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     ///   - paymentMethodType: The `paymentMethodType` for which the await action is used.
     ///   - redirectUrl: The URL to which to redirect the user.
-    public init(paymentData: String,
-                paymentMethodType: AwaitPaymentMethod) {
+    public init(
+        paymentData: String,
+        paymentMethodType: AwaitPaymentMethod
+    ) {
         self.paymentData = paymentData
         self.paymentMethodType = paymentMethodType
     }

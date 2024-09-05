@@ -83,16 +83,20 @@ internal final class CoreListDataSource: NSObject, ListViewControllerDataSource 
         return cell
     }
     
-    internal func reload(newSections: [ListSection],
-                         tableView: UITableView,
-                         animated: Bool = false) {
+    internal func reload(
+        newSections: [ListSection],
+        tableView: UITableView,
+        animated: Bool = false
+    ) {
         sections = newSections.filter { $0.items.isEmpty == false }
         tableView.reloadData()
     }
     
-    internal func deleteItem(at indexPath: IndexPath,
-                             tableView: UITableView,
-                             animated: Bool = true) {
+    internal func deleteItem(
+        at indexPath: IndexPath,
+        tableView: UITableView,
+        animated: Bool = true
+    ) {
         sections.deleteItem(at: indexPath)
         tableView.reloadData()
     }

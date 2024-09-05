@@ -6,9 +6,7 @@ import PackageDescription
 let package = Package(
     name: "Adyen",
     defaultLocalization: "en-us",
-    platforms: [
-        .iOS(.v12)
-    ],
+    platforms: [.iOS(.v12)],
     products: [
         .library(
             name: "Adyen",
@@ -84,9 +82,7 @@ let package = Package(
     targets: [
         .target(
             name: "Adyen",
-            dependencies: [
-                .product(name: "AdyenNetworking", package: "adyen-networking-ios")
-            ],
+            dependencies: [.product(name: "AdyenNetworking", package: "adyen-networking-ios")],
             path: "Adyen",
             exclude: [
                 "Info.plist",
@@ -96,21 +92,15 @@ let package = Package(
         ),
         .target(
             name: "AdyenEncryption",
-            dependencies: [
-                .target(name: "Adyen")
-            ],
+            dependencies: [.target(name: "Adyen")],
             path: "AdyenEncryption",
-            exclude: [
-                "Info.plist"
-            ]
+            exclude: ["Info.plist"]
         ),
         .target(
             name: "AdyenSwiftUI",
             dependencies: [],
             path: "AdyenSwiftUI",
-            exclude: [
-                "Info.plist"
-            ]
+            exclude: ["Info.plist"]
         ),
         .target(
             name: "AdyenActions",
@@ -197,9 +187,7 @@ let package = Package(
         ),
         .target(
             name: "AdyenDelegatedAuthentication",
-            dependencies: [
-                .product(name: "AdyenAuthentication", package: "adyen-authentication-ios")
-            ],
+            dependencies: [.product(name: "AdyenAuthentication", package: "adyen-authentication-ios")],
             path: "AdyenDelegatedAuthentication",
             exclude: ["Info.plist"]
         )

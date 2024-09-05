@@ -72,17 +72,21 @@ internal struct ConfigurationView: View {
     }
     
     private var apiVersionSection: some View {
-        TextFieldItemView(title: "API Version",
-                          value: $viewModel.apiVersion,
-                          placeholder: ConfigurationSection.apiVersion.rawValue,
-                          keyboardType: .numberPad)
+        TextFieldItemView(
+            title: "API Version",
+            value: $viewModel.apiVersion,
+            placeholder: ConfigurationSection.apiVersion.rawValue,
+            keyboardType: .numberPad
+        )
     }
     
     private var merchantAccountSection: some View {
-        TextFieldItemView(title: "Merchant Account",
-                          value: $viewModel.merchantAccount,
-                          placeholder: ConfigurationSection.merchantAccount.rawValue,
-                          keyboardType: .default)
+        TextFieldItemView(
+            title: "Merchant Account",
+            value: $viewModel.merchantAccount,
+            placeholder: ConfigurationSection.merchantAccount.rawValue,
+            keyboardType: .default
+        )
     }
     
     private var regionSection: some View {
@@ -121,10 +125,12 @@ internal struct ConfigurationView: View {
                 rows: filteredCurrencies,
                 transform: { ListItemView(viewModel: $0.toListItemViewModel) }
             )
-            TextFieldItemView(title: "Amount ",
-                              value: $viewModel.value,
-                              placeholder: "Amount",
-                              keyboardType: .numberPad)
+            TextFieldItemView(
+                title: "Amount ",
+                value: $viewModel.value,
+                placeholder: "Amount",
+                keyboardType: .numberPad
+            )
         }
 
     }

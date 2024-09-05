@@ -22,11 +22,7 @@ public struct Environment: AnyAPIEnvironment {
     public static let local = Environment(baseURL: URL(string: "http://localhost:8080/")!)
 
     /// Adyen's default live environment.
-    @available(*, deprecated, message:
-        """
-        This property is no longer supported.
-        Please explicitly select the environment matching your region.
-        """)
+    @available(*, deprecated, message: "Please explicitly select the environment matching your region.")
     public static let live = liveEurope
 
     /// Adyen's European live environment.

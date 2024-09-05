@@ -68,11 +68,15 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component configurations
-    public convenience init(context: AdyenContext,
-                            configuration: Configuration = .init()) {
-        self.init(context: context,
-                  configuration: configuration,
-                  pollingComponentBuilder: PollingHandlerProvider(context: context))
+    public convenience init(
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
+        self.init(
+            context: context,
+            configuration: configuration,
+            pollingComponentBuilder: PollingHandlerProvider(context: context)
+        )
     }
 
     /// Initializes the `QRCodeComponent`.
@@ -80,9 +84,11 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component configurations
     /// - Parameter pollingComponentBuilder: The payment method specific await action handler provider.
-    internal init(context: AdyenContext,
-                  configuration: Configuration = .init(),
-                  pollingComponentBuilder: AnyPollingHandlerProvider? = nil) {
+    internal init(
+        context: AdyenContext,
+        configuration: Configuration = .init(),
+        pollingComponentBuilder: AnyPollingHandlerProvider? = nil
+    ) {
         self.context = context
         self.configuration = configuration
         self.pollingComponentBuilder = pollingComponentBuilder
@@ -164,17 +170,23 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
 
         switch qrCodeAction?.paymentMethodType {
         case .promptPay, .duitNow, .payNow:
-            expirationText = localizedString(.qrCodeTimerExpirationMessage,
-                                             configuration.localizationParameters,
-                                             timeLeftString)
+            expirationText = localizedString(
+                .qrCodeTimerExpirationMessage,
+                configuration.localizationParameters,
+                timeLeftString
+            )
         case .pix:
-            expirationText = localizedString(.pixExpirationLabel,
-                                             configuration.localizationParameters,
-                                             timeLeftString)
+            expirationText = localizedString(
+                .pixExpirationLabel,
+                configuration.localizationParameters,
+                timeLeftString
+            )
         case .upiQRCode:
-            expirationText = localizedString(.UPIQrcodeTimerMessage,
-                                             configuration.localizationParameters,
-                                             timeLeftString)
+            expirationText = localizedString(
+                .UPIQrcodeTimerMessage,
+                configuration.localizationParameters,
+                timeLeftString
+            )
         case .none:
             expirationText = ""
         }
@@ -195,14 +207,20 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     private func QRCodeInstruction(with action: QRCodeAction) -> String {
         switch action.paymentMethodType {
         case .promptPay, .duitNow, .payNow:
-            return localizedString(.qrCodeInstructionMessage,
-                                   configuration.localizationParameters)
+            return localizedString(
+                .qrCodeInstructionMessage,
+                configuration.localizationParameters
+            )
         case .pix:
-            return localizedString(.pixInstructions,
-                                   configuration.localizationParameters)
+            return localizedString(
+                .pixInstructions,
+                configuration.localizationParameters
+            )
         case .upiQRCode:
-            return localizedString(.UPIQRCodeInstructions,
-                                   configuration.localizationParameters)
+            return localizedString(
+                .UPIQRCodeInstructions,
+                configuration.localizationParameters
+            )
         }
     }
 

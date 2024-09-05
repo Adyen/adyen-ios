@@ -8,15 +8,19 @@ import Foundation
 @_spi(AdyenInternal) import Adyen
 
 internal protocol AnyJSONWebEncryptionGenerator {
-    func generate(withPayload: Data,
-                  publicRSAKey: SecKey,
-                  header: JSONWebEncryption.Header) throws -> JSONWebEncryption
+    func generate(
+        withPayload: Data,
+        publicRSAKey: SecKey,
+        header: JSONWebEncryption.Header
+    ) throws -> JSONWebEncryption
 }
 
 internal struct JSONWebEncryptionGenerator: AnyJSONWebEncryptionGenerator {
-    internal func generate(withPayload: Data,
-                           publicRSAKey: SecKey,
-                           header: JSONWebEncryption.Header) throws -> JSONWebEncryption {
+    internal func generate(
+        withPayload: Data,
+        publicRSAKey: SecKey,
+        header: JSONWebEncryption.Header
+    ) throws -> JSONWebEncryption {
         let keyEncryptionAlgorithm = header.keyEncryptionAlgorithm.algorithm
         let contentEncryptionAlgorithm = header.contentEncryptionAlgorithm.algorithm
         
@@ -30,16 +34,20 @@ internal struct JSONWebEncryptionGenerator: AnyJSONWebEncryptionGenerator {
             throw EncryptionError.encryptionFailed
         }
         
-        let contentEncryptionInput = JWAInput(payload: withPayload,
-                                              key: contentEncryptionKey,
-                                              initializationVector: initializationVector,
-                                              additionalAuthenticationData: additionalAuthenticationData)
+        let contentEncryptionInput = JWAInput(
+            payload: withPayload,
+            key: contentEncryptionKey,
+            initializationVector: initializationVector,
+            additionalAuthenticationData: additionalAuthenticationData
+        )
         let contentEncryptionOutput = try contentEncryptionAlgorithm.encrypt(input: contentEncryptionInput)
         
-        return JSONWebEncryption(encodedHeader: encodedHeader,
-                                 encryptedKey: encryptedKey,
-                                 encryptedPayload: contentEncryptionOutput.encryptedPayload,
-                                 initializationVector: initializationVector,
-                                 authenticationTag: contentEncryptionOutput.authenticationTag)
+        return JSONWebEncryption(
+            encodedHeader: encodedHeader,
+            encryptedKey: encryptedKey,
+            encryptedPayload: contentEncryptionOutput.encryptedPayload,
+            initializationVector: initializationVector,
+            authenticationTag: contentEncryptionOutput.authenticationTag
+        )
     }
 }

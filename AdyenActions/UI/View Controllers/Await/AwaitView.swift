@@ -75,8 +75,10 @@ internal final class AwaitView: UIView {
     ///
     /// - Parameter viewModel: The view model.
     /// - Parameter style: The UI style.
-    internal init(viewModel: AwaitComponentViewModel,
-                  style: AwaitComponentStyle = AwaitComponentStyle()) {
+    internal init(
+        viewModel: AwaitComponentViewModel,
+        style: AwaitComponentStyle = AwaitComponentStyle()
+    ) {
         self.viewModel = viewModel
         self.style = style
         super.init(frame: .zero)

@@ -100,14 +100,18 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
 
     private func listenToBackgroundNotifications() {
         var array = [Any]()
-        array.append(notificationCenter.addObserver(forName: UIApplication.willResignActiveNotification,
-                                                    object: nil,
-                                                    queue: OperationQueue.main,
-                                                    using: { [weak self] _ in self?.addBlur() }))
-        array.append(notificationCenter.addObserver(forName: UIApplication.didBecomeActiveNotification,
-                                                    object: nil,
-                                                    queue: OperationQueue.main,
-                                                    using: { [weak self] _ in self?.removeBlur() }))
+        array.append(notificationCenter.addObserver(
+            forName: UIApplication.willResignActiveNotification,
+            object: nil,
+            queue: OperationQueue.main,
+            using: { [weak self] _ in self?.addBlur() }
+        ))
+        array.append(notificationCenter.addObserver(
+            forName: UIApplication.didBecomeActiveNotification,
+            object: nil,
+            queue: OperationQueue.main,
+            using: { [weak self] _ in self?.removeBlur() }
+        ))
         backgroundObservers = array
     }
 
@@ -123,16 +127,18 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
     }
 
     private func removeBlur() {
-        UIView.animate(withDuration: 0.2,
-                       animations: { [weak self] in self?.blurEffectView.effect = nil },
-                       completion: { [weak self] _ in
-                           if let blurConstraints = self?.blurConstraints {
-                               NSLayoutConstraint.deactivate(blurConstraints)
-                           }
-                           self?.blurEffectView.removeFromSuperview()
-                           self?.$blurEffectView.reset()
+        UIView.animate(
+            withDuration: 0.2,
+            animations: { [weak self] in self?.blurEffectView.effect = nil },
+            completion: { [weak self] _ in
+                if let blurConstraints = self?.blurConstraints {
+                    NSLayoutConstraint.deactivate(blurConstraints)
+                }
+                self?.blurEffectView.removeFromSuperview()
+                self?.$blurEffectView.reset()
 
-                           self?.view.backgroundColor = self?.style.backgroundColor
-                       })
+                self?.view.backgroundColor = self?.style.backgroundColor
+            }
+        )
     }
 }

@@ -85,11 +85,13 @@ class ComponentManagerTests: XCTestCase {
     }
 
     func testClientKeyInjectionAndProtocolConformance() throws {
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
 
         XCTAssertEqual(sut.storedComponents.count, 5)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
@@ -104,11 +106,13 @@ class ComponentManagerTests: XCTestCase {
 
     func testApplePayPaymentMethod() {
         configuration.applePay = .init(payment: Dummy.createTestApplePayPayment(), merchantIdentifier: "merchant.com.test")
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
 
         XCTAssertEqual(sut.storedComponents.count, 5)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents + 1)
@@ -119,11 +123,13 @@ class ComponentManagerTests: XCTestCase {
     }
     
     func testCashAppShouldFailWithoutConfig() {
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
         
         let paymentComponent = sut.regularComponents.first { $0.paymentMethod.type.rawValue == "cashapp" }
 
@@ -132,11 +138,13 @@ class ComponentManagerTests: XCTestCase {
     
     func testCashAppShouldSucceedWithConfig() throws {
         configuration.cashAppPay = .init(redirectURL: URL(string: "test")!)
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
         
         // When
         let paymentComponent = sut.regularComponents.first { $0.paymentMethod.type.rawValue == "cashapp" }
@@ -153,11 +161,13 @@ class ComponentManagerTests: XCTestCase {
     func testLocalizationWithCustomTableName() throws {
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
         
         XCTAssertEqual(sut.storedComponents.count, 5)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
@@ -168,11 +178,13 @@ class ComponentManagerTests: XCTestCase {
     func testLocalizationWithCustomKeySeparator() throws {
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
         
         XCTAssertEqual(sut.storedComponents.count, 5)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
@@ -185,21 +197,27 @@ class ComponentManagerTests: XCTestCase {
 
         var paymentMethods = paymentMethods
         paymentMethods.paid = [
-            OrderPaymentMethod(lastFour: "1234",
-                               type: .other("type-1"),
-                               transactionLimit: Amount(value: 123, currencyCode: "EUR"),
-                               amount: Amount(value: 1234, currencyCode: "EUR")),
-            OrderPaymentMethod(lastFour: "1234",
-                               type: .other("type-2"),
-                               transactionLimit: Amount(value: 123, currencyCode: "EUR"),
-                               amount: Amount(value: 1234, currencyCode: "EUR"))
+            OrderPaymentMethod(
+                lastFour: "1234",
+                type: .other("type-1"),
+                transactionLimit: Amount(value: 123, currencyCode: "EUR"),
+                amount: Amount(value: 1234, currencyCode: "EUR")
+            ),
+            OrderPaymentMethod(
+                lastFour: "1234",
+                type: .other("type-2"),
+                transactionLimit: Amount(value: 123, currencyCode: "EUR"),
+                amount: Amount(value: 1234, currencyCode: "EUR")
+            )
         ]
 
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: order,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: order,
+            presentationDelegate: presentationDelegate
+        )
 
         XCTAssertEqual(sut.paidComponents.count, 2)
         XCTAssertEqual(sut.storedComponents.count, 5)
@@ -214,23 +232,27 @@ class ComponentManagerTests: XCTestCase {
         let payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
         configuration.applePay = try .init(payment: .init(payment: payment, brand: "TEST"), merchantIdentifier: "test_test")
 
-        let order = PartialPaymentOrder(pspReference: "test pspRef",
-                                        orderData: "test order data",
-                                        remainingAmount: Amount(value: 123456, currencyCode: "EUR"))
+        let order = PartialPaymentOrder(
+            pspReference: "test pspRef",
+            orderData: "test order data",
+            remainingAmount: Amount(value: 123456, currencyCode: "EUR")
+        )
 
         var paymentMethods = paymentMethods
-        paymentMethods.paid = [
-            OrderPaymentMethod(lastFour: "1234",
-                               type: .other("type-1"),
-                               transactionLimit: Amount(value: 123, currencyCode: "EUR"),
-                               amount: Amount(value: 1234, currencyCode: "EUR"))
-        ]
+        paymentMethods.paid = [OrderPaymentMethod(
+            lastFour: "1234",
+            type: .other("type-1"),
+            transactionLimit: Amount(value: 123, currencyCode: "EUR"),
+            amount: Amount(value: 1234, currencyCode: "EUR")
+        )]
 
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: order,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: order,
+            presentationDelegate: presentationDelegate
+        )
 
         // Test Pre-ApplePay
         let preApplepayComponent = (sut.regularComponents.first(where: { $0.paymentMethod.type == .applePay }) as! PreApplePayComponent)
@@ -240,11 +262,13 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnAffirmComponent() throws {
         // Given
         configuration.shopperInformation = shopperInformation
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "affirm" })
@@ -257,11 +281,13 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnDokuComponent() throws {
         // Given
         configuration.shopperInformation = shopperInformation
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "doku_wallet" })
@@ -274,11 +300,13 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnMBWayComponent() throws {
         // Given
         configuration.shopperInformation = shopperInformation
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "mbway" })
@@ -291,11 +319,13 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnBasicPersonalInfoFormComponent() throws {
         // Given
         configuration.shopperInformation = shopperInformation
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "econtext_online" })
@@ -308,11 +338,13 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnBoletoComponent() throws {
         // Given
         configuration.shopperInformation = shopperInformation
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "boletobancario_santander" })
@@ -325,11 +357,13 @@ class ComponentManagerTests: XCTestCase {
     func testShopperInformationInjectionShouldSetShopperInformationOnCardComponent() throws {
         // Given
         configuration.shopperInformation = shopperInformation
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "scheme" })
@@ -343,11 +377,13 @@ class ComponentManagerTests: XCTestCase {
         // Given
 
         configuration.shopperInformation = shopperInformation
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
 
         // Action
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "atome" })
@@ -360,11 +396,13 @@ class ComponentManagerTests: XCTestCase {
     func testBoletoConfiguration() throws {
         // Given
         configuration.boleto.showEmailAddress = false
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .boleto })
@@ -376,11 +414,13 @@ class ComponentManagerTests: XCTestCase {
     
     func testGiftCardConfiguration() throws {
         // Given
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .giftcard })
@@ -395,11 +435,13 @@ class ComponentManagerTests: XCTestCase {
     func testGiftCardSecurityCodeHiddenConfiguration() throws {
         // Given
         configuration.giftCard.showsSecurityCodeField = false
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .giftcard })
@@ -411,11 +453,13 @@ class ComponentManagerTests: XCTestCase {
     
     func testMealVoucherConfiguration() throws {
         // Given
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .mealVoucherSodexo })
@@ -430,11 +474,13 @@ class ComponentManagerTests: XCTestCase {
     func testMealVoucherSecurityCodeHiddenConfiguration() throws {
         // Given
         configuration.giftCard.showsSecurityCodeField = false
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .mealVoucherSodexo })
@@ -450,11 +496,13 @@ class ComponentManagerTests: XCTestCase {
         configuration.ach.showsBillingAddress = false
         configuration.ach.billingAddressCountryCodes = ["US", "UK"]
         
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
 
         // When
         let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .achDirectDebit })

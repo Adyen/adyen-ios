@@ -64,9 +64,11 @@ import SwiftUI
             }
         }
 
-        private func dismissIfNeededThenPresent(viewController: UIViewController,
-                                                presenter: UIViewController,
-                                                context: UIViewControllerRepresentableContext<FullScreenView>) {
+        private func dismissIfNeededThenPresent(
+            viewController: UIViewController,
+            presenter: UIViewController,
+            context: UIViewControllerRepresentableContext<FullScreenView>
+        ) {
             if context.coordinator.currentlyPresentedViewController != nil {
                 dismiss(presenter: presenter, context: context) {
                     Self.present(viewController: viewController, presenter: presenter, context: context)
@@ -76,18 +78,22 @@ import SwiftUI
             }
         }
 
-        private static func present(viewController: UIViewController,
-                                    presenter: UIViewController,
-                                    context: UIViewControllerRepresentableContext<FullScreenView>) {
+        private static func present(
+            viewController: UIViewController,
+            presenter: UIViewController,
+            context: UIViewControllerRepresentableContext<FullScreenView>
+        ) {
             guard !viewController.isBeingPresented, !viewController.isBeingDismissed else { return }
             presenter.present(viewController, animated: true) {
                 context.coordinator.currentlyPresentedViewController = viewController
             }
         }
 
-        private func dismiss(presenter: UIViewController,
-                             context: UIViewControllerRepresentableContext<FullScreenView>,
-                             completion: (() -> Void)?) {
+        private func dismiss(
+            presenter: UIViewController,
+            context: UIViewControllerRepresentableContext<FullScreenView>,
+            completion: (() -> Void)?
+        ) {
             guard let viewController = context.coordinator.currentlyPresentedViewController else { return }
             guard !viewController.isBeingPresented, !viewController.isBeingDismissed else { return }
 

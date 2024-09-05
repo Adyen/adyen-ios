@@ -51,9 +51,11 @@ public struct NavigationStyle: TintableStyle {
     public var cornerRadius: CGFloat = 10
     
     /// Indicates the bar title text style.
-    public var barTitle = TextStyle(font: UIFont.AdyenCore.barTitle,
-                                    color: UIColor.Adyen.componentLabel,
-                                    textAlignment: .natural)
+    public var barTitle = TextStyle(
+        font: UIFont.AdyenCore.barTitle,
+        color: UIColor.Adyen.componentLabel,
+        textAlignment: .natural
+    )
 
     /// The style of cancelButton. This property is not applicable to SFViewController in redirect component.
     public var cancelButton = CancelButtonStyle.system

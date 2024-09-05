@@ -37,13 +37,17 @@ internal extension ThreeDS2Component {
 internal extension ADYChallengeParameters {
     
     // swiftlint:disable:next explicit_acl
-    convenience init(challengeToken: ThreeDS2Component.ChallengeToken,
-                     threeDSRequestorAppURL: URL?) {
-        self.init(serverTransactionIdentifier: challengeToken.serverTransactionIdentifier,
-                  threeDSRequestorAppURL: threeDSRequestorAppURL,
-                  acsTransactionIdentifier: challengeToken.acsTransactionIdentifier,
-                  acsReferenceNumber: challengeToken.acsReferenceNumber,
-                  acsSignedContent: challengeToken.acsSignedContent)
+    convenience init(
+        challengeToken: ThreeDS2Component.ChallengeToken,
+        threeDSRequestorAppURL: URL?
+    ) {
+        self.init(
+            serverTransactionIdentifier: challengeToken.serverTransactionIdentifier,
+            threeDSRequestorAppURL: threeDSRequestorAppURL,
+            acsTransactionIdentifier: challengeToken.acsTransactionIdentifier,
+            acsReferenceNumber: challengeToken.acsReferenceNumber,
+            acsSignedContent: challengeToken.acsSignedContent
+        )
     }
     
 }

@@ -21,14 +21,18 @@ public final class MBWayComponent: AbstractPersonalInformationComponent {
     ///   - paymentMethod: The MB Way payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
-    public init(paymentMethod: MBWayPaymentMethod,
-                context: AdyenContext,
-                configuration: Configuration = .init()) {
+    public init(
+        paymentMethod: MBWayPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         self.mbWayPaymentMethod = paymentMethod
-        super.init(paymentMethod: paymentMethod,
-                   context: context,
-                   fields: [.phone],
-                   configuration: configuration)
+        super.init(
+            paymentMethod: paymentMethod,
+            context: context,
+            fields: [.phone],
+            configuration: configuration
+        )
     }
 
     @_spi(AdyenInternal)
@@ -47,7 +51,9 @@ public final class MBWayComponent: AbstractPersonalInformationComponent {
         guard let phoneItem else {
             throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
-        return MBWayDetails(paymentMethod: paymentMethod,
-                            telephoneNumber: phoneItem.phoneNumber)
+        return MBWayDetails(
+            paymentMethod: paymentMethod,
+            telephoneNumber: phoneItem.phoneNumber
+        )
     }
 }

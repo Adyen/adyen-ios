@@ -107,10 +107,12 @@ extension CardViewController {
         }()
 
         internal lazy var numberContainerItem: FormCardNumberContainerItem = {
-            let item = FormCardNumberContainerItem(cardTypeLogos: cardLogos,
-                                                   showsSupportedCardLogos: configuration.showsSupportedCardLogos,
-                                                   style: formStyle.textField,
-                                                   localizationParameters: localizationParameters)
+            let item = FormCardNumberContainerItem(
+                cardTypeLogos: cardLogos,
+                showsSupportedCardLogos: configuration.showsSupportedCardLogos,
+                style: formStyle.textField,
+                localizationParameters: localizationParameters
+            )
             item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "numberContainerItem")
             
             setupEventTriggers(for: item.numberItem, target: .cardNumber)
@@ -119,8 +121,10 @@ extension CardViewController {
         }()
 
         internal lazy var expiryDateItem: FormCardExpiryDateItem = {
-            let expiryDateItem = FormCardExpiryDateItem(style: formStyle.textField,
-                                                        localizationParameters: localizationParameters)
+            let expiryDateItem = FormCardExpiryDateItem(
+                style: formStyle.textField,
+                localizationParameters: localizationParameters
+            )
             expiryDateItem.localizationParameters = localizationParameters
             expiryDateItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "expiryDateItem")
             
@@ -130,8 +134,10 @@ extension CardViewController {
         }()
 
         internal lazy var securityCodeItem: FormCardSecurityCodeItem = {
-            let securityCodeItem = FormCardSecurityCodeItem(style: formStyle.textField,
-                                                            localizationParameters: localizationParameters)
+            let securityCodeItem = FormCardSecurityCodeItem(
+                style: formStyle.textField,
+                localizationParameters: localizationParameters
+            )
             securityCodeItem.localizationParameters = localizationParameters
             securityCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "securityCodeItem")
             
@@ -215,10 +221,12 @@ extension CardViewController {
         /// If there is a configuration for installments, this item is created. Otherwise it will be nil.
         internal lazy var installmentsItem: FormCardInstallmentsItem? = {
             guard let installmentsConfiguration = configuration.installmentConfiguration else { return nil }
-            let installmentsItem = FormCardInstallmentsItem(installmentConfiguration: installmentsConfiguration,
-                                                            style: formStyle.textField,
-                                                            amount: amount,
-                                                            localizationParameters: localizationParameters)
+            let installmentsItem = FormCardInstallmentsItem(
+                installmentConfiguration: installmentsConfiguration,
+                style: formStyle.textField,
+                amount: amount,
+                localizationParameters: localizationParameters
+            )
             installmentsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "installmentsItem")
             return installmentsItem
         }()
@@ -226,9 +234,11 @@ extension CardViewController {
         internal lazy var button: FormButtonItem = {
             let item = FormButtonItem(style: formStyle.mainButtonItem)
             item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "payButtonItem")
-            item.title = localizedSubmitButtonTitle(with: amount,
-                                                    style: .immediate,
-                                                    localizationParameters)
+            item.title = localizedSubmitButtonTitle(
+                with: amount,
+                style: .immediate,
+                localizationParameters
+            )
             return item
         }()
         

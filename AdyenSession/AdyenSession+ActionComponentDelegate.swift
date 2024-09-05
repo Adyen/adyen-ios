@@ -25,8 +25,10 @@ extension AdyenSession: ActionComponentDelegate {
             AdyenAssertion.assertionFailure(message: "Missing resultCode.")
             return
         }
-        let result = AdyenSessionResult(resultCode: SessionPaymentResultCode(paymentResultCode: resultCode),
-                                        encodedResult: sessionContext.sessionResult)
+        let result = AdyenSessionResult(
+            resultCode: SessionPaymentResultCode(paymentResultCode: resultCode),
+            encodedResult: sessionContext.sessionResult
+        )
         delegate?.didComplete(with: result, component: currentComponent, session: self)
     }
 
@@ -46,14 +48,18 @@ extension AdyenSession: ActionComponentDelegate {
 
 @_spi(AdyenInternal)
 extension AdyenSession: AdyenSessionPaymentDetailsHandler {
-    public func didProvide(_ actionComponentData: ActionComponentData,
-                           from component: ActionComponent,
-                           session: AdyenSession) {
+    public func didProvide(
+        _ actionComponentData: ActionComponentData,
+        from component: ActionComponent,
+        session: AdyenSession
+    ) {
         (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
-        let request = PaymentDetailsRequest(sessionId: sessionContext.identifier,
-                                            sessionData: sessionContext.data,
-                                            paymentData: actionComponentData.paymentData,
-                                            details: actionComponentData.details)
+        let request = PaymentDetailsRequest(
+            sessionId: sessionContext.identifier,
+            sessionData: sessionContext.data,
+            paymentData: actionComponentData.paymentData,
+            details: actionComponentData.details
+        )
         apiClient.perform(request) { [weak self] in
             self?.handle(paymentResponseResult: $0, for: component)
         }

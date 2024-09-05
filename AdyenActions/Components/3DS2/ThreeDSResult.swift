@@ -20,24 +20,32 @@ public struct ThreeDSResult: Decodable {
         internal let transStatus: String?
     }
 
-    internal init(authorizationToken: String?,
-                  threeDS2SDKError: String?,
-                  transStatus: String) throws {
-        let payload = Payload(authorisationToken: authorizationToken,
-                              delegatedAuthenticationSDKOutput: nil,
-                              threeDS2SDKError: threeDS2SDKError,
-                              transStatus: transStatus)
+    internal init(
+        authorizationToken: String?,
+        threeDS2SDKError: String?,
+        transStatus: String
+    ) throws {
+        let payload = Payload(
+            authorisationToken: authorizationToken,
+            delegatedAuthenticationSDKOutput: nil,
+            threeDS2SDKError: threeDS2SDKError,
+            transStatus: transStatus
+        )
         self.payload = try AdyenCoder.encode(payload).base64EncodedString()
     }
     
-    internal init(from challengeResult: AnyChallengeResult,
-                  delegatedAuthenticationSDKOutput: String?,
-                  authorizationToken: String?,
-                  threeDS2SDKError: String?) throws {
-        let payload = Payload(authorisationToken: authorizationToken,
-                              delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
-                              threeDS2SDKError: threeDS2SDKError,
-                              transStatus: challengeResult.transactionStatus)
+    internal init(
+        from challengeResult: AnyChallengeResult,
+        delegatedAuthenticationSDKOutput: String?,
+        authorizationToken: String?,
+        threeDS2SDKError: String?
+    ) throws {
+        let payload = Payload(
+            authorisationToken: authorizationToken,
+            delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
+            threeDS2SDKError: threeDS2SDKError,
+            transStatus: challengeResult.transactionStatus
+        )
 
         self.payload = try AdyenCoder.encode(payload).base64EncodedString()
     }
@@ -49,10 +57,12 @@ public struct ThreeDSResult: Decodable {
     
     internal func withDelegatedAuthenticationSDKOutput(delegatedAuthenticationSDKOutput: String?) throws -> ThreeDSResult {
         let oldPayload: Payload = try AdyenCoder.decodeBase64(payload)
-        let newPayload = Payload(authorisationToken: oldPayload.authorisationToken,
-                                 delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
-                                 threeDS2SDKError: oldPayload.threeDS2SDKError,
-                                 transStatus: oldPayload.transStatus)
+        let newPayload = Payload(
+            authorisationToken: oldPayload.authorisationToken,
+            delegatedAuthenticationSDKOutput: delegatedAuthenticationSDKOutput,
+            threeDS2SDKError: oldPayload.threeDS2SDKError,
+            transStatus: oldPayload.transStatus
+        )
         return try .init(payload: AdyenCoder.encode(newPayload).base64EncodedString())
     }
     
@@ -63,8 +73,10 @@ public struct ThreeDSResult: Decodable {
             payloadJson["authorisationToken"] = authorizationToken
         }
 
-        let payloadData = try JSONSerialization.data(withJSONObject: payloadJson,
-                                                     options: [])
+        let payloadData = try JSONSerialization.data(
+            withJSONObject: payloadJson,
+            options: []
+        )
 
         self.payload = payloadData.base64EncodedString()
     }

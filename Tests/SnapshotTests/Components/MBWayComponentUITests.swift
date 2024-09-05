@@ -55,9 +55,11 @@ final class MBWayComponentUITests: XCTestCase {
         style.textField.backgroundColor = .red
         
         let config = MBWayComponent.Configuration(style: style)
-        let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 context: context,
-                                 configuration: config)
+        let sut = MBWayComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
 
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }

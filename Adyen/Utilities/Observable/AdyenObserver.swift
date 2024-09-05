@@ -32,9 +32,11 @@ public extension AdyenObserver {
     ///   - keyPath: The key path to set the new values.
     /// - Returns: An observation that represents the binding. Can be used to remove the binding later.
     @discardableResult
-    func bind<Value, Target: AnyObject>(_ observable: AdyenObservable<Value>,
-                                        to target: Target,
-                                        at keyPath: ReferenceWritableKeyPath<Target, Value>) -> Observation {
+    func bind<Value, Target: AnyObject>(
+        _ observable: AdyenObservable<Value>,
+        to target: Target,
+        at keyPath: ReferenceWritableKeyPath<Target, Value>
+    ) -> Observation {
         // Set the initial value.
         target[keyPath: keyPath] = observable.wrappedValue
         
@@ -52,9 +54,11 @@ public extension AdyenObserver {
     ///   - keyPath: The key path to set the new values.
     /// - Returns: An observation that represents the binding. Can be used to remove the binding later.
     @discardableResult
-    func bind<Value, Target: AnyObject>(_ observable: AdyenObservable<Value>,
-                                        to target: Target,
-                                        at keyPath: ReferenceWritableKeyPath<Target, Value?>) -> Observation {
+    func bind<Value, Target: AnyObject>(
+        _ observable: AdyenObservable<Value>,
+        to target: Target,
+        at keyPath: ReferenceWritableKeyPath<Target, Value?>
+    ) -> Observation {
         // Set the initial value.
         target[keyPath: keyPath] = observable.wrappedValue
 
@@ -73,10 +77,12 @@ public extension AdyenObserver {
     ///   - transformation: The transformation closure.
     /// - Returns: An observation that represents the binding. Can be used to remove the binding later.
     @discardableResult
-    func bind<Value, Result, Target: AnyObject>(_ observable: AdyenObservable<Value>,
-                                                to target: Target,
-                                                at keyPath: ReferenceWritableKeyPath<Target, Result>,
-                                                with transformation: @escaping ((Value) -> Result)) -> Observation {
+    func bind<Value, Result, Target: AnyObject>(
+        _ observable: AdyenObservable<Value>,
+        to target: Target,
+        at keyPath: ReferenceWritableKeyPath<Target, Result>,
+        with transformation: @escaping ((Value) -> Result)
+    ) -> Observation {
         // Set the initial value.
         target[keyPath: keyPath] = transformation(observable.wrappedValue)
 
@@ -95,10 +101,12 @@ public extension AdyenObserver {
     ///   - keyPath: The key path to set the new values.
     /// - Returns: An observation that represents the binding. Can be used to remove the binding later.
     @discardableResult
-    func bind<Value, Result, Target: AnyObject>(_ observable: AdyenObservable<Value>,
-                                                at originKeyPath: KeyPath<Value, Result>,
-                                                to target: Target,
-                                                at keyPath: ReferenceWritableKeyPath<Target, Result>) -> Observation {
+    func bind<Value, Result, Target: AnyObject>(
+        _ observable: AdyenObservable<Value>,
+        at originKeyPath: KeyPath<Value, Result>,
+        to target: Target,
+        at keyPath: ReferenceWritableKeyPath<Target, Result>
+    ) -> Observation {
         // Set the initial value.
         target[keyPath: keyPath] = observable.wrappedValue[keyPath: originKeyPath]
 
@@ -117,10 +125,12 @@ public extension AdyenObserver {
     ///   - keyPath: The key path to set the new values.
     /// - Returns: An observation that represents the binding. Can be used to remove the binding later.
     @discardableResult
-    func bind<Value, Result, Target: AnyObject>(_ observable: AdyenObservable<Value>,
-                                                at originKeyPath: KeyPath<Value, Result>,
-                                                to target: Target,
-                                                at keyPath: ReferenceWritableKeyPath<Target, Result?>) -> Observation {
+    func bind<Value, Result, Target: AnyObject>(
+        _ observable: AdyenObservable<Value>,
+        at originKeyPath: KeyPath<Value, Result>,
+        to target: Target,
+        at keyPath: ReferenceWritableKeyPath<Target, Result?>
+    ) -> Observation {
         // Set the initial value.
         target[keyPath: keyPath] = observable.wrappedValue[keyPath: originKeyPath]
 
@@ -146,10 +156,12 @@ public extension AdyenObserver {
         }
         
         let observationManager = ObservationManager()
-        objc_setAssociatedObject(self,
-                                 &AssociatedKeys.observationManager,
-                                 observationManager,
-                                 .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        objc_setAssociatedObject(
+            self,
+            &AssociatedKeys.observationManager,
+            observationManager,
+            .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+        )
         
         return observationManager
     }

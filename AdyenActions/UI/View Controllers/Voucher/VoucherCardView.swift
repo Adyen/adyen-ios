@@ -38,9 +38,11 @@ internal class VoucherCardView: UIView {
 
     private let model: VoucherSeparatorView.Model
 
-    internal init(model: VoucherSeparatorView.Model,
-                  topView: UIView,
-                  bottomView: UIView) {
+    internal init(
+        model: VoucherSeparatorView.Model,
+        topView: UIView,
+        bottomView: UIView
+    ) {
         self.model = model
         self.topView = topView
         self.bottomView = bottomView
@@ -129,10 +131,12 @@ internal class VoucherCardView: UIView {
     }
 
     private var containerLayerFrame: CGRect {
-        CGRect(x: containerInsets.left,
-               y: containerInsets.top,
-               width: bounds.size.width - containerInsets.left - containerInsets.right,
-               height: bounds.size.height - containerInsets.top - containerInsets.bottom)
+        CGRect(
+            x: containerInsets.left,
+            y: containerInsets.top,
+            width: bounds.size.width - containerInsets.left - containerInsets.right,
+            height: bounds.size.height - containerInsets.top - containerInsets.bottom
+        )
     }
 
     private let containerInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)

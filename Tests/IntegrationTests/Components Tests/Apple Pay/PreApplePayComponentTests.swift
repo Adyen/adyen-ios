@@ -26,15 +26,19 @@ class PreApplePayComponentTests: XCTestCase {
         context = Dummy.context(with: analyticsProviderMock)
         paymentComponentDelegate = PaymentComponentDelegateMock()
 
-        let configuration = ApplePayComponent.Configuration(payment: applePayPayment,
-                                                            merchantIdentifier: "test_id")
+        let configuration = ApplePayComponent.Configuration(
+            payment: applePayPayment,
+            merchantIdentifier: "test_id"
+        )
         var applePayStyle = ApplePayStyle()
         applePayStyle.paymentButtonType = .inStore
         let preApplePayConfig = PreApplePayComponent.Configuration(style: applePayStyle)
-        sut = try! PreApplePayComponent(paymentMethod: ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil),
-                                        context: Dummy.context,
-                                        configuration: preApplePayConfig,
-                                        applePayConfiguration: configuration)
+        sut = try! PreApplePayComponent(
+            paymentMethod: ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil),
+            context: Dummy.context,
+            configuration: preApplePayConfig,
+            applePayConfiguration: configuration
+        )
         sut.delegate = paymentComponentDelegate
     }
 
@@ -47,15 +51,21 @@ class PreApplePayComponentTests: XCTestCase {
     }
     
     func testUIConfiguration() {
-        let applePayStyle = ApplePayStyle(paymentButtonStyle: .whiteOutline,
-                                          paymentButtonType: .donate,
-                                          cornerRadius: 10,
-                                          backgroundColor: .orange,
-                                          hintLabel: .init(font: .boldSystemFont(ofSize: 16),
-                                                           color: .red,
-                                                           textAlignment: .center))
-        let model = PreApplePayView.Model(hint: applePayPayment.amount.formatted,
-                                          style: applePayStyle)
+        let applePayStyle = ApplePayStyle(
+            paymentButtonStyle: .whiteOutline,
+            paymentButtonType: .donate,
+            cornerRadius: 10,
+            backgroundColor: .orange,
+            hintLabel: .init(
+                font: .boldSystemFont(ofSize: 16),
+                color: .red,
+                textAlignment: .center
+            )
+        )
+        let model = PreApplePayView.Model(
+            hint: applePayPayment.amount.formatted,
+            style: applePayStyle
+        )
         
         let view = PreApplePayView(model: model)
         let viewController = UIViewController()
@@ -120,15 +130,19 @@ class PreApplePayComponentTests: XCTestCase {
         // Given
         let expectedCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
         analyticsProviderMock._checkoutAttemptId = expectedCheckoutAttemptId
-        let paymentMethodDetails = ApplePayDetails(paymentMethod: paymentMethod,
-                                                   token: "test_token",
-                                                   network: "test_network",
-                                                   billingContact: nil,
-                                                   shippingContact: nil,
-                                                   shippingMethod: nil)
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails,
-                                                        amount: nil,
-                                                        order: nil)
+        let paymentMethodDetails = ApplePayDetails(
+            paymentMethod: paymentMethod,
+            token: "test_token",
+            network: "test_network",
+            billingContact: nil,
+            shippingContact: nil,
+            shippingMethod: nil
+        )
+        let paymentComponentData = PaymentComponentData(
+            paymentMethodDetails: paymentMethodDetails,
+            amount: nil,
+            order: nil
+        )
 
         // When
         XCTAssertNil(paymentComponentData.checkoutAttemptId)
@@ -143,15 +157,19 @@ class PreApplePayComponentTests: XCTestCase {
     func testSubmitWithAnalyticsDisabledShouldNotSetCheckoutAttemptIdInPaymentComponentData() throws {
         // Given
         analyticsProviderMock._checkoutAttemptId = nil
-        let paymentMethodDetails = ApplePayDetails(paymentMethod: paymentMethod,
-                                                   token: "test_token",
-                                                   network: "test_network",
-                                                   billingContact: nil,
-                                                   shippingContact: nil,
-                                                   shippingMethod: nil)
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails,
-                                                        amount: nil,
-                                                        order: nil)
+        let paymentMethodDetails = ApplePayDetails(
+            paymentMethod: paymentMethod,
+            token: "test_token",
+            network: "test_network",
+            billingContact: nil,
+            shippingContact: nil,
+            shippingMethod: nil
+        )
+        let paymentComponentData = PaymentComponentData(
+            paymentMethodDetails: paymentMethodDetails,
+            amount: nil,
+            order: nil
+        )
 
         // When
         XCTAssertNil(paymentComponentData.checkoutAttemptId)

@@ -44,11 +44,13 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
         }
     }
     
-    internal init(context: AdyenContext,
-                  service: AnyADYService = ADYServiceAdapter(),
-                  appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
-                  coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
-                  delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil) {
+    internal init(
+        context: AdyenContext,
+        service: AnyADYService = ADYServiceAdapter(),
+        appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
+        coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
+        delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil
+    ) {
         self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
             context: context,
             appearanceConfiguration: appearanceConfiguration,
@@ -64,8 +66,10 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     ///
     /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
     /// - Parameter completionHandler: The completion closure.
-    internal func handle(_ fingerprintAction: ThreeDS2FingerprintAction,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+    internal func handle(
+        _ fingerprintAction: ThreeDS2FingerprintAction,
+        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void
+    ) {
         let event = Analytics.Event(
             component: fingerprintEventName,
             flavor: _isDropIn ? .dropin : .components,
@@ -89,8 +93,10 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     ///
     /// - Parameter challengeAction: The challenge action as received from the Checkout API.
     /// - Parameter completionHandler: The completion closure.
-    internal func handle(_ challengeAction: ThreeDS2ChallengeAction,
-                         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+    internal func handle(
+        _ challengeAction: ThreeDS2ChallengeAction,
+        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void
+    ) {
         let event = Analytics.Event(
             component: challengeEventName,
             flavor: _isDropIn ? .dropin : .components,

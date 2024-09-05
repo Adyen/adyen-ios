@@ -30,10 +30,12 @@ public struct AtomeDetails: PaymentMethodDetails, ShopperInformation {
     ///   - shopperName: The shopper's name.
     ///   - telephoneNumber: The shopper's telephone number.
     ///   - billingAddress: The shopper's billing address.
-    public init(paymentMethod: PaymentMethod,
-                shopperName: ShopperName,
-                telephoneNumber: String,
-                billingAddress: PostalAddress) {
+    public init(
+        paymentMethod: PaymentMethod,
+        shopperName: ShopperName,
+        telephoneNumber: String,
+        billingAddress: PostalAddress
+    ) {
         self.type = paymentMethod.type
         self.shopperName = shopperName
         self.telephoneNumber = telephoneNumber
