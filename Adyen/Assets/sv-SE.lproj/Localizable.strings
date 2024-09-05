@@ -6,7 +6,7 @@
 "adyen.error.title" = "Fel";
 "adyen.error.unknown" = "Ett okänt fel uppstod";
 "adyen.validationAlert.title" = "Ogiltig inmatning";
-"adyen.paymentMethods.otherMethods" = "andra";
+"adyen.paymentMethods.otherMethods" = "Andra";
 "adyen.paymentMethods.storedMethods" = "Lagrat";
 "adyen.paymentMethods.paidMethods" = "Tillämpade";
 "adyen.paymentMethods.title" = "Betalningsmetoder";

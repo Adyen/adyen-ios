@@ -1,12 +1,12 @@
 "adyen.submitButton" = "Maksāt";
-"adyen.submitButton.formatted" = "Maksāt % @";
+"adyen.submitButton.formatted" = "Maksāt %@";
 "adyen.cancelButton" = "Atcelt";
 "adyen.dismissButton" = "Labi";
 "adyen.removeButton" = "Noņemt";
 "adyen.error.title" = "Kļūda";
 "adyen.error.unknown" = "Radās nezināma kļūda";
 "adyen.validationAlert.title" = "Nederīga ievade";
-"adyen.paymentMethods.otherMethods" = "citi";
+"adyen.paymentMethods.otherMethods" = "Citi";
 "adyen.paymentMethods.storedMethods" = "Saglabāts";
 "adyen.paymentMethods.paidMethods" = "Piemērots";
 "adyen.paymentMethods.title" = "Samaksas veidi";

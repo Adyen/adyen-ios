@@ -6,7 +6,7 @@
 "adyen.error.title" = "Klaida";
 "adyen.error.unknown" = "Įvyko nežinoma klaida";
 "adyen.validationAlert.title" = "Netinkama įvestis";
-"adyen.paymentMethods.otherMethods" = "kiti";
+"adyen.paymentMethods.otherMethods" = "Kiti";
 "adyen.paymentMethods.storedMethods" = "Išsaugoti";
 "adyen.paymentMethods.paidMethods" = "Taikomi";
 "adyen.paymentMethods.title" = "Mokėjimo būdai";
