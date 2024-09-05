@@ -6,7 +6,7 @@
 "adyen.error.title" = "Fehler";
 "adyen.error.unknown" = "Es ist ein unbekannter Fehler aufgetreten.";
 "adyen.validationAlert.title" = "Ungültige Eingabe";
-"adyen.paymentMethods.otherMethods" = "andere";
+"adyen.paymentMethods.otherMethods" = "Andere";
 "adyen.paymentMethods.storedMethods" = "Gespeichert";
 "adyen.paymentMethods.paidMethods" = "Angewandt";
 "adyen.paymentMethods.title" = "Zahlungsmethoden";
@@ -188,7 +188,7 @@
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Auf diesem Gerät ist keine oder eine veraltete Version von TWINT installiert. Bitte aktualisieren oder installieren Sie die TWINT-App.";
-"adyen.threeds2.DA.registration.title" = "Secure Checkout";
+"adyen.threeds2.DA.registration.title" = "Sichererer Checkout";
 "adyen.threeds2.DA.biometrics" = "biometrisch";
 "adyen.threeds2.DA.faceID" = "FaceID";
 "adyen.threeds2.DA.touchID" = "TouchID";

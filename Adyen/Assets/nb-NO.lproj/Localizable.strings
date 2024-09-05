@@ -6,7 +6,7 @@
 "adyen.error.title" = "Feil";
 "adyen.error.unknown" = "En ukjent feil oppstod";
 "adyen.validationAlert.title" = "Ugyldige inndata";
-"adyen.paymentMethods.otherMethods" = "andre";
+"adyen.paymentMethods.otherMethods" = "Andre";
 "adyen.paymentMethods.storedMethods" = "Lagret";
 "adyen.paymentMethods.paidMethods" = "Anvendt";
 "adyen.paymentMethods.title" = "Betalingsmetoder";

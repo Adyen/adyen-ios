@@ -6,7 +6,7 @@
 "adyen.error.title" = "Eroare";
 "adyen.error.unknown" = "S-a produs o eroare necunoscută";
 "adyen.validationAlert.title" = "Informațiile sunt incorecte";
-"adyen.paymentMethods.otherMethods" = "altele";
+"adyen.paymentMethods.otherMethods" = "Altele";
 "adyen.paymentMethods.storedMethods" = "Salvat";
 "adyen.paymentMethods.paidMethods" = "Aplicate";
 "adyen.paymentMethods.title" = "Metode de plată";

@@ -175,7 +175,7 @@
 "adyen.upi.modeSelection" = "كيف تود استخدام معرف واجهة المدفوعات الموحدة (UPI)؟";
 "adyen.UPIVpa.validationMessage" = "أدخل عنوان دفع افتراضي صحيح";
 "adyen.UPIQrcode.generationMessage" = "أنشئ رمز الاستجابة السريعة الذي يمكنك تنزيله أو خذ لقطة شاشة له وقم بتحميله على تطبيق UPI لإكمال الدفع.";
-"adyen.UPIQrcode.timerMessage" = "أمامك ٪@ للموافقة";
+"adyen.UPIQrcode.timerMessage" = "أمامك %@ للموافقة";
 "adyen.upiCollect.confirmPayment" = "في انتظار تأكيدك…";
 "adyen.upi.vpaWaitingMessage" = "افتح تطبيق UPI لتأكيد الدفع";
 "adyen.QRCode.generateQRCode" = "إنشاء رمز استجابة سريعة";
@@ -220,7 +220,7 @@
 "adyen.threeds2.DA.deletion.confirmation.message" = "لن يُطلبُ منك اعتماد المعاملات من خلال Secure Checkout بعد الآن.";
 "adyen.threeds2.DA.deletion.confirmation.buttonTitle" = "متابعة";
 "adyen.picker.search.empty.title" = "لم يتم العثور على نتائج";
-"adyen.picker.search.empty.subtitle" = "٪ @ لم يتطابق مع أي شيء";
+"adyen.picker.search.empty.subtitle" = "%@ لم يتطابق مع أي شيء";
 "adyen.address.lookup.search.placeholder" = "ابحث عن عنوانك";
 "adyen.address.lookup.search.empty.title" = "لا تستطيع البحث عن عنوانك؟";
 "adyen.address.lookup.search.empty.subtitle" = "يمكنك دائمًا #إدخال عنوانك يدويًا#";

@@ -6,7 +6,7 @@
 "adyen.error.title" = "Virhe";
 "adyen.error.unknown" = "Tapahtui tuntematon virhe";
 "adyen.validationAlert.title" = "Ei-kelvollinen syöte";
-"adyen.paymentMethods.otherMethods" = "muut";
+"adyen.paymentMethods.otherMethods" = "Muut";
 "adyen.paymentMethods.storedMethods" = "Tallennettu";
 "adyen.paymentMethods.paidMethods" = "Käytetyt";
 "adyen.paymentMethods.title" = "Maksutavat";
