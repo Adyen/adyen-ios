@@ -68,7 +68,6 @@ class QRCodeActionComponentUITests: XCTestCase {
             self.setupRootViewController(qrCodeViewController)
             
             let qrCodeView = qrCodeViewController.qrCodeView
-            self.wait { qrCodeView.expirationLabel.text?.isEmpty == false }
             self.wait { qrCodeView.logo.image != nil }
             
             self.assertViewControllerImage(matching: qrCodeViewController, named: "promptPay")
@@ -130,7 +129,6 @@ class QRCodeActionComponentUITests: XCTestCase {
             self.setupRootViewController(qrCodeViewController)
             
             let qrCodeView = qrCodeViewController.qrCodeView
-            self.wait { qrCodeView.expirationLabel.text?.isEmpty == false }
             self.wait { qrCodeView.logo.image != nil }
             
             self.verifyViewControllerImage(matching: qrCodeViewController, named: "pix")
@@ -192,7 +190,6 @@ class QRCodeActionComponentUITests: XCTestCase {
             self.setupRootViewController(qrCodeViewController)
             
             let qrCodeView = qrCodeViewController.qrCodeView
-            self.wait { qrCodeView.expirationLabel.text?.isEmpty == false }
             self.wait { qrCodeView.logo.image != nil }
             
             self.verifyViewControllerImage(matching: qrCodeViewController, named: "upi")
@@ -268,7 +265,6 @@ class QRCodeActionComponentUITests: XCTestCase {
             self.setupRootViewController(wrapper)
             
             let qrCodeView = qrCodeViewController.qrCodeView
-            self.wait { qrCodeView.expirationLabel.text?.isEmpty == false }
             self.wait { qrCodeView.logo.image != nil }
             
             self.verifyViewControllerImage(matching: wrapper, named: "upi_cancel_button")
