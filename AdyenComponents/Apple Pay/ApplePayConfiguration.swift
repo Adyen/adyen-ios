@@ -131,7 +131,10 @@ extension ApplePayComponent {
             if #available(iOS 15.0, *) {
                 paymentRequest.couponCode = couponCode
                 paymentRequest.supportsCouponCode = supportsCouponCode
-                paymentRequest.shippingContactEditingMode = allowShippingContactEditing ? .available : .storePickup
+                
+                // Even though there is a deprecation warning and `.available` looks to be available since iOS 15,
+                // it does not compile when using older versions of Xcode - so we have to ignore this warning for now
+                paymentRequest.shippingContactEditingMode = allowShippingContactEditing ? .enabled : .storePickup
             }
             
             return paymentRequest
