@@ -6,7 +6,7 @@
 "adyen.error.title" = "Chyba";
 "adyen.error.unknown" = "Vyskytla sa neznáma chyba";
 "adyen.validationAlert.title" = "Neplatný vstup";
-"adyen.paymentMethods.otherMethods" = "ďalšie";
+"adyen.paymentMethods.otherMethods" = "Ďalšie";
 "adyen.paymentMethods.storedMethods" = "Uložené";
 "adyen.paymentMethods.paidMethods" = "Použité";
 "adyen.paymentMethods.title" = "Spôsob platby";

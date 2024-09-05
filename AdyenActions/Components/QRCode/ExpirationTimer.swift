@@ -13,8 +13,6 @@ internal final class ExpirationTimer {
     
     private var timeLeft: TimeInterval
     
-    private let tickInterval: TimeInterval
-    
     private var timer: Timer?
     
     private let onTick: (TimeInterval) -> Void
@@ -29,21 +27,23 @@ internal final class ExpirationTimer {
     ///   - onExpiration: The closure called on timer expiration.
     internal init(
         expirationTimeout: TimeInterval,
-        tickInterval: TimeInterval = 1.0,
         onTick: @escaping (TimeInterval) -> Void,
         onExpiration: @escaping () -> Void
     ) {
         self.expirationTimeout = expirationTimeout
-        self.tickInterval = tickInterval
         self.timeLeft = expirationTimeout
         self.onTick = onTick
         self.onExpiration = onExpiration
     }
     
     internal func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: tickInterval, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
+            guard timer.isValid else { return }
             self?.onTimerTick()
         }
+        
+        // Notify immediately
+        notify()
     }
     
     internal func stopTimer() {
@@ -52,8 +52,16 @@ internal final class ExpirationTimer {
     }
     
     private func onTimerTick() {
+        defer { notify() }
+        
         timeLeft -= 1
         
+        if timeLeft <= 0 {
+            stopTimer()
+        }
+    }
+    
+    private func notify() {
         if timeLeft > 0 {
             onTick(timeLeft)
         } else {

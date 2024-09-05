@@ -6,7 +6,7 @@
 "adyen.error.title" = "Error";
 "adyen.error.unknown" = "An unknown error occurred";
 "adyen.validationAlert.title" = "Invalid Input";
-"adyen.paymentMethods.otherMethods" = "others";
+"adyen.paymentMethods.otherMethods" = "Others";
 "adyen.paymentMethods.storedMethods" = "Stored";
 "adyen.paymentMethods.paidMethods" = "Applied";
 "adyen.paymentMethods.title" = "Payment Methods";

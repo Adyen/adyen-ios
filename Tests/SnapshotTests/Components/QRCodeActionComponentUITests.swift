@@ -24,41 +24,9 @@ class QRCodeActionComponentUITests: XCTestCase {
         let action = QRCodeAction(paymentMethodType: .promptPay, qrCodeData: "DummyData", paymentData: "DummyData")
 
         let dummyExpectation = expectation(description: "Dummy Expectation")
-        var style = QRCodeComponentStyle()
-
-        style.saveAsImageButton = ButtonStyle(
-            title: TextStyle(font: .preferredFont(forTextStyle: .callout), color: .blue, textAlignment: .justified),
-            cornerRadius: 4,
-            background: .black
-        )
-
-        style.instructionLabel = TextStyle(
-            font: .systemFont(ofSize: 20, weight: .semibold),
-            color: .red,
-            textAlignment: .left
-        )
-
-        style.amountToPayLabel = TextStyle(
-            font: .systemFont(ofSize: 20, weight: .semibold),
-            color: .yellow,
-            textAlignment: .left
-        )
-
-        style.progressView = ProgressViewStyle(
-            progressTintColor: .brown, trackTintColor: .cyan
-        )
-
-        style.expirationLabel = TextStyle(
-            font: .boldSystemFont(ofSize: 25),
-            color: .blue, textAlignment: .right
-        )
-
-        style.logoCornerRounding = .fixed(10)
-
-        style.backgroundColor = UIColor.Adyen.componentSeparator
 
         let sut = QRCodeActionComponent(context: Dummy.context)
-        sut.configuration.style = style
+        sut.configuration.style = customStyle()
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
 
@@ -66,11 +34,7 @@ class QRCodeActionComponentUITests: XCTestCase {
             let qrCodeViewController = try XCTUnwrap(component.viewController as? QRCodeViewController)
             
             self.setupRootViewController(qrCodeViewController)
-            
-            let qrCodeView = qrCodeViewController.qrCodeView
-            self.wait { qrCodeView.expirationLabel.text?.isEmpty == false }
-            self.wait { qrCodeView.logo.image != nil }
-            
+            self.wait(for: qrCodeViewController.qrCodeView)
             self.assertViewControllerImage(matching: qrCodeViewController, named: "promptPay")
 
             dummyExpectation.fulfill()
@@ -78,7 +42,7 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         sut.handle(action)
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
 
     func testUIConfigurationForPix() {
@@ -86,41 +50,9 @@ class QRCodeActionComponentUITests: XCTestCase {
         let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
 
         let dummyExpectation = expectation(description: "Dummy Expectation")
-        var style = QRCodeComponentStyle()
-
-        style.copyCodeButton = ButtonStyle(
-            title: TextStyle(font: .preferredFont(forTextStyle: .callout), color: .blue, textAlignment: .justified),
-            cornerRadius: 4,
-            background: .black
-        )
-
-        style.instructionLabel = TextStyle(
-            font: .systemFont(ofSize: 20, weight: .semibold),
-            color: .red,
-            textAlignment: .left
-        )
-
-        style.amountToPayLabel = TextStyle(
-            font: .systemFont(ofSize: 20, weight: .semibold),
-            color: .yellow,
-            textAlignment: .left
-        )
-
-        style.progressView = ProgressViewStyle(
-            progressTintColor: .cyan, trackTintColor: .brown
-        )
-
-        style.expirationLabel = TextStyle(
-            font: .boldSystemFont(ofSize: 25),
-            color: .magenta, textAlignment: .right
-        )
-
-        style.logoCornerRounding = .fixed(10)
-
-        style.backgroundColor = UIColor.Adyen.componentSeparator
-
+     
         let sut = QRCodeActionComponent(context: Dummy.context)
-        sut.configuration.style = style
+        sut.configuration.style = customStyle()
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
 
@@ -128,11 +60,7 @@ class QRCodeActionComponentUITests: XCTestCase {
             let qrCodeViewController = try XCTUnwrap(component.viewController as? QRCodeViewController)
             
             self.setupRootViewController(qrCodeViewController)
-            
-            let qrCodeView = qrCodeViewController.qrCodeView
-            self.wait { qrCodeView.expirationLabel.text?.isEmpty == false }
-            self.wait { qrCodeView.logo.image != nil }
-            
+            self.wait(for: qrCodeViewController.qrCodeView)
             self.verifyViewControllerImage(matching: qrCodeViewController, named: "pix")
 
             dummyExpectation.fulfill()
@@ -140,7 +68,7 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         sut.handle(action)
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
 
     func testUIConfigurationForUPIQRCode() {
@@ -148,41 +76,9 @@ class QRCodeActionComponentUITests: XCTestCase {
         let action = QRCodeAction(paymentMethodType: .upiQRCode, qrCodeData: "DummyData", paymentData: "DummyData")
 
         let dummyExpectation = expectation(description: "Dummy Expectation")
-        var style = QRCodeComponentStyle()
-
-        style.saveAsImageButton = ButtonStyle(
-            title: TextStyle(font: .preferredFont(forTextStyle: .callout), color: .blue, textAlignment: .justified),
-            cornerRadius: 4,
-            background: .black
-        )
-
-        style.instructionLabel = TextStyle(
-            font: .systemFont(ofSize: 20, weight: .semibold),
-            color: .red,
-            textAlignment: .left
-        )
-
-        style.amountToPayLabel = TextStyle(
-            font: .systemFont(ofSize: 20, weight: .semibold),
-            color: .yellow,
-            textAlignment: .left
-        )
-
-        style.progressView = ProgressViewStyle(
-            progressTintColor: .brown, trackTintColor: .cyan
-        )
-
-        style.expirationLabel = TextStyle(
-            font: .boldSystemFont(ofSize: 25),
-            color: .blue, textAlignment: .right
-        )
-
-        style.logoCornerRounding = .fixed(10)
-
-        style.backgroundColor = UIColor.Adyen.componentSeparator
 
         let sut = QRCodeActionComponent(context: Dummy.context)
-        sut.configuration.style = style
+        sut.configuration.style = customStyle()
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
 
@@ -190,11 +86,7 @@ class QRCodeActionComponentUITests: XCTestCase {
             let qrCodeViewController = try XCTUnwrap(component.viewController as? QRCodeViewController)
             
             self.setupRootViewController(qrCodeViewController)
-            
-            let qrCodeView = qrCodeViewController.qrCodeView
-            self.wait { qrCodeView.expirationLabel.text?.isEmpty == false }
-            self.wait { qrCodeView.logo.image != nil }
-            
+            self.wait(for: qrCodeViewController.qrCodeView)
             self.verifyViewControllerImage(matching: qrCodeViewController, named: "upi")
 
             dummyExpectation.fulfill()
@@ -202,7 +94,7 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         sut.handle(action)
 
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
 
     func testQRCodeCancelButtonOnUPI() {
@@ -211,9 +103,63 @@ class QRCodeActionComponentUITests: XCTestCase {
         let action = QRCodeAction(paymentMethodType: .upiQRCode, qrCodeData: "DummyData", paymentData: "DummyData")
 
         let dummyExpectation = expectation(description: "Dummy Expectation")
+        
+        let sut = QRCodeActionComponent(context: Dummy.context)
+        sut.configuration.style = customStyle()
+        let presentationDelegate = PresentationDelegateMock()
+        sut.presentationDelegate = presentationDelegate
+
+        presentationDelegate.doPresent = { component in
+            
+            let qrCodeViewController = try XCTUnwrap(component.viewController as? QRCodeViewController)
+            
+            let pollingComponentToolBar = CancellingToolBar(
+                title: qrCodeViewController.title,
+                style: NavigationStyle()
+            )
+            
+            let wrapper = WrapperViewController(
+                child: ModalViewController(
+                    rootViewController: qrCodeViewController,
+                    navBarType: .custom(pollingComponentToolBar)
+                )
+            )
+            
+            self.setupRootViewController(wrapper)
+            self.wait(for: qrCodeViewController.qrCodeView)
+            self.verifyViewControllerImage(matching: wrapper, named: "upi_cancel_button")
+
+            dummyExpectation.fulfill()
+        }
+
+        sut.handle(action)
+
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+}
+
+// MARK: - Convenience
+
+private extension QRCodeActionComponentUITests {
+    
+    func wait(for qrCodeView: QRCodeView) {
+        self.wait { qrCodeView.expirationLabel.text?.isEmpty == false }
+        self.wait { qrCodeView.logo.image != nil }
+        // Allow the ui to reflect all changes
+        self.wait(for: .aMoment)
+    }
+    
+    func customStyle() -> QRCodeComponentStyle {
+        
         var style = QRCodeComponentStyle()
 
         style.saveAsImageButton = ButtonStyle(
+            title: TextStyle(font: .preferredFont(forTextStyle: .callout), color: .blue, textAlignment: .justified),
+            cornerRadius: 4,
+            background: .black
+        )
+        
+        style.copyCodeButton = ButtonStyle(
             title: TextStyle(font: .preferredFont(forTextStyle: .callout), color: .blue, textAlignment: .justified),
             cornerRadius: 4,
             background: .black
@@ -244,41 +190,6 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         style.backgroundColor = UIColor.Adyen.componentSeparator
         
-        let sut = QRCodeActionComponent(context: Dummy.context)
-        sut.configuration.style = style
-        let presentationDelegate = PresentationDelegateMock()
-        sut.presentationDelegate = presentationDelegate
-
-        presentationDelegate.doPresent = { component in
-            
-            let qrCodeViewController = try XCTUnwrap(component.viewController as? QRCodeViewController)
-            
-            let pollingComponentToolBar = CancellingToolBar(
-                title: qrCodeViewController.title,
-                style: NavigationStyle()
-            )
-            
-            let wrapper = WrapperViewController(
-                child: ModalViewController(
-                    rootViewController: qrCodeViewController,
-                    navBarType: .custom(pollingComponentToolBar)
-                )
-            )
-            
-            self.setupRootViewController(wrapper)
-            
-            let qrCodeView = qrCodeViewController.qrCodeView
-            self.wait { qrCodeView.expirationLabel.text?.isEmpty == false }
-            self.wait { qrCodeView.logo.image != nil }
-            
-            self.verifyViewControllerImage(matching: wrapper, named: "upi_cancel_button")
-
-            dummyExpectation.fulfill()
-        }
-
-        sut.handle(action)
-
-        waitForExpectations(timeout: 10, handler: nil)
-
+        return style
     }
 }
