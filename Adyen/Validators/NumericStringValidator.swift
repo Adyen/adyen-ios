@@ -7,7 +7,6 @@
 import Foundation
 
 /// Validates a numeric string.
-@_spi(AdyenInternal)
 open class NumericStringValidator: LengthValidator {
     
     override open func isValid(_ value: String) -> Bool {

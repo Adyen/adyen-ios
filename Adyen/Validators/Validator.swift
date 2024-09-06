@@ -7,7 +7,6 @@
 import Foundation
 
 /// Validates a value.
-@_spi(AdyenInternal)
 public protocol Validator {
     
     /// Returns a boolean value indicating if the given value is valid.
@@ -45,7 +44,6 @@ public func && (lhs: Validator, rhs: Validator) -> Validator {
 }
 
 /// Interface to allow for two validators.
-@_spi(AdyenInternal)
 public protocol CombinedValidator: Validator {
     var firstValidator: Validator { get }
     var secondValidator: Validator { get }
