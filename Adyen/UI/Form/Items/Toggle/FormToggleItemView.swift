@@ -8,10 +8,17 @@ import UIKit
 
 /// A view representing a switch item.
 @_spi(AdyenInternal)
-public final class FormToggleItemView:
-    FormValueItemView<Bool, FormToggleItemStyle, FormToggleItem> {
+public final class FormToggleItemView: FormItemView<FormToggleItem> {
 
     // MARK: - UI elements
+    
+    private lazy var label: UILabel = {
+        let label = UILabel(style: item.style.title)
+        label.accessibilityIdentifier = item.identifier.map {
+            ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel")
+        }
+        return label
+    }()
 
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
@@ -19,7 +26,6 @@ public final class FormToggleItemView:
         stackView.alignment = .center
         stackView.distribution = .fill
         stackView.spacing = 8.0
-
         return stackView
     }()
 
@@ -32,8 +38,9 @@ public final class FormToggleItemView:
         switchControl.setContentHuggingPriority(.required, for: .horizontal)
         switchControl.setContentCompressionResistancePriority(.required, for: .horizontal)
         switchControl.addTarget(self, action: #selector(switchControlValueChanged), for: .valueChanged)
-        switchControl.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "switch") }
-
+        switchControl.accessibilityIdentifier = item.identifier.map {
+            ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "switch")
+        }
         return switchControl
     }()
 
@@ -42,8 +49,8 @@ public final class FormToggleItemView:
     /// - Parameter item: The item represented by the view.
     public required init(item: FormToggleItem) {
         super.init(item: item)
-
-        showsSeparator = false
+        
+        bind(item.$title, to: label, at: \.text)
 
         isAccessibilityElement = true
         accessibilityLabel = item.title
@@ -57,36 +64,33 @@ public final class FormToggleItemView:
         addSubviews()
     }
 
-    // MARK: - Private
-
-    private func addSubviews() {
-        addSubview(stackView)
-        [titleLabel, switchControl].forEach(stackView.addArrangedSubview)
-
-        setupLayout()
-    }
-
-    private func setupLayout() {
-        stackView.adyen.anchor(inside: layoutMarginsGuide)
-    }
-
-    @objc private func switchControlValueChanged() {
-        accessibilityValue = switchControl.accessibilityValue
-        accessibilityTraits = switchControl.accessibilityTraits
-        item.value = switchControl.isOn
-    }
-
     // MARK: - Public
 
     @discardableResult
     override public func accessibilityActivate() -> Bool {
-        switchControl.isOn = !switchControl.isOn
+        switchControl.isOn.toggle()
         switchControlValueChanged()
-
         return true
     }
 
     override public func reset() {
         item.value = false
+    }
+}
+
+// MARK: - Private
+
+private extension FormToggleItemView {
+    
+    func addSubviews() {
+        addSubview(stackView)
+        [label, switchControl].forEach(stackView.addArrangedSubview)
+        stackView.adyen.anchor(inside: layoutMarginsGuide)
+    }
+
+    @objc func switchControlValueChanged() {
+        accessibilityValue = switchControl.accessibilityValue
+        accessibilityTraits = switchControl.accessibilityTraits
+        item.value = switchControl.isOn
     }
 }
