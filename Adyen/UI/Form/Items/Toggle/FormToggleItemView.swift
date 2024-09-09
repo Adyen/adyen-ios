@@ -57,15 +57,7 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
         accessibilityTraits = switchControl.accessibilityTraits
         accessibilityValue = switchControl.accessibilityValue
         
-        observe(item.$title) { [weak self] value in
-            self?.label.text = value
-            self?.accessibilityLabel = value
-        }
-        
-        observe(item.publisher) { [weak self] value in
-            self?.switchControl.isOn = value
-        }
-
+        setupObservation()
         addSubviews()
     }
 
@@ -91,6 +83,17 @@ private extension FormToggleItemView {
         addSubview(stackView)
         [label, switchControl].forEach(stackView.addArrangedSubview)
         stackView.adyen.anchor(inside: layoutMarginsGuide)
+    }
+    
+    func setupObservation() {
+        observe(item.$title) { [weak self] value in
+            self?.label.text = value
+            self?.accessibilityLabel = value
+        }
+        
+        observe(item.publisher) { [weak self] value in
+            self?.switchControl.isOn = value
+        }
     }
 
     @objc func switchControlValueChanged() {
