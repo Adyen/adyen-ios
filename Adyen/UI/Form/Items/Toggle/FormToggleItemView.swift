@@ -14,6 +14,7 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
     
     private lazy var label: UILabel = {
         let label = UILabel(style: item.style.title)
+        label.text = item.title
         label.accessibilityIdentifier = item.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel")
         }
@@ -50,13 +51,17 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
     public required init(item: FormToggleItem) {
         super.init(item: item)
         
-        bind(item.$title, to: label, at: \.text)
+        backgroundColor = item.style.backgroundColor
 
         isAccessibilityElement = true
-        accessibilityLabel = item.title
         accessibilityTraits = switchControl.accessibilityTraits
         accessibilityValue = switchControl.accessibilityValue
-
+        
+        observe(item.$title) { [weak self] value in
+            self?.label.text = value
+            self?.accessibilityLabel = value
+        }
+        
         observe(item.publisher) { [weak self] value in
             self?.switchControl.isOn = value
         }
