@@ -32,11 +32,20 @@ jobs:
       run: |
         PROJECT_FOLDER=$PWD
         cd Scripts
+        NEW="${source}~${githubRepo}"
+        if [[ ${{ github.head_ref }} == release/* ]]
+        then
+            OLD="${githubRepo}~${githubRepo}"
+        else
+            OLD="${source}~${githubRepo}"
+        fi
         ./public-api-diff --new "${source}" --old "${target}" --output "$PROJECT_FOLDER/api_comparison.md"
         cat "$PROJECT_FOLDER/api_comparison.md" >> $GITHUB_STEP_SUMMARY
       env:
-        source: '${{ github.event.inputs.new || github.head_ref }}~${{github.server_url}}/${{github.repository}}.git'
-        target: '${{ github.event.inputs.old || github.event.pull_request.base.ref }}~${{github.server_url}}/${{github.repository}}.git'
+        source: '${{ github.event.inputs.new || github.head_ref }}'
+        target: '${{ github.event.inputs.old || github.event.pull_request.base.ref }}'
+        latestVersion: '${{ github.event.inputs.latestVersion }}'
+        githubRepo: '${{github.server_url}}/${{github.repository}}.git'
        
     - if: ${{ github.event.pull_request.base.ref != '' }}
       name: 📝 Comment on PR
