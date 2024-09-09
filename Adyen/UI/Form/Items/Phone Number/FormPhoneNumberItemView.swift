@@ -14,7 +14,6 @@ internal final class FormPhoneNumberItemView: FormTextItemView<FormPhoneNumberIt
     /// - Parameter item: The item represented by the view.
     internal required init(item: FormPhoneNumberItem) {
         super.init(item: item)
-        showsSeparator = true
         applyTextFieldLeftAccessoryView(textField: textField)
         textField.textContentType = .telephoneNumber
     }
