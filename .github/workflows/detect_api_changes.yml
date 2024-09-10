@@ -1,4 +1,4 @@
-name: Detect public API changes
+name: 👀 Detect public API changes
 
 on:
   pull_request:
