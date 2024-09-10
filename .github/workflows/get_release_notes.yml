@@ -1,4 +1,4 @@
-name: Get Release notes
+name: 📝 Get Release notes
 on: [workflow_dispatch]
 jobs:
   release_notes:
