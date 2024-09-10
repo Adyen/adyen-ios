@@ -31,22 +31,25 @@ jobs:
     - name: 🔍 Detect Changes
       run: |
         PROJECT_FOLDER=$PWD
-        cd Scripts
+        LATEST_TAG=$(git describe --tags --abbrev=0)
+        
         NEW="${source}~${githubRepo}"
         if [[ ${{ github.head_ref }} == release/* ]]
         then
-            OLD="${latestVersion}~${githubRepo}"
+            OLD="$LATEST_TAG~${githubRepo}"
         else
             OLD="${source}~${githubRepo}"
         fi
+        
         echo $NEW
         echo $OLD
-        ./public-api-diff --new "${source}" --old "${target}" --output "$PROJECT_FOLDER/api_comparison.md"
+        
+        cd Scripts
+        ./public-api-diff --new "$NEW" --old "$OLD" --output "$PROJECT_FOLDER/api_comparison.md"
         cat "$PROJECT_FOLDER/api_comparison.md" >> $GITHUB_STEP_SUMMARY
       env:
         source: '${{ github.event.inputs.new || github.head_ref }}'
         target: '${{ github.event.inputs.old || github.event.pull_request.base.ref }}'
-        latestVersion: '${{ github.event.inputs.latestVersion }}'
         githubRepo: '${{github.server_url}}/${{github.repository}}.git'
        
     - if: ${{ github.event.pull_request.base.ref != '' }}
