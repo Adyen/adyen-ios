@@ -31,7 +31,6 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>:
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleDoneButtonTap))
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         toolbar.setItems([space, doneButton], animated: false)
-        print("Hello")
         return toolbar
     }()
 
@@ -88,7 +87,9 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>:
     public lazy var inputControl: PickerTextInputControl = {
         let view = createInputControl()
         view.showChevron = item.selectableValues.count > 1
-        view.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "inputControl") }
+        view.accessibilityIdentifier = item.identifier.map {
+            ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "inputControl")
+        }
         view.onDidBecomeFirstResponder = { [weak self] in
             self?.isEditing = true
             self?.titleLabel.textColor = self?.tintColor
