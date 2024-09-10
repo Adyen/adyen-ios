@@ -31,6 +31,7 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>:
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleDoneButtonTap))
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         toolbar.setItems([space, doneButton], animated: false)
+        print("Hello")
         return toolbar
     }()
 
