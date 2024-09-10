@@ -32,6 +32,16 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
     
     // MARK: - Views
     
+    private lazy var titleLabel: FormItemContentTitleView = {
+        let titleView = FormItemContentTitleView(title: item.$title, accessoryView: nil)
+        // TODO: Hide this setup somehow
+        titleView.titleLabel.adyen.apply(item.style.title)
+        titleView.titleLabel.accessibilityIdentifier = item.identifier.map {
+            ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel")
+        }
+        return titleView
+    }()
+    
     private lazy var selectionButton: UIButton = {
         let button = UIButton(type: .custom)
         button.addTarget(self, action: #selector(selectionButtonTapped), for: .touchUpInside)

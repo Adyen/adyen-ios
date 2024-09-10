@@ -10,7 +10,7 @@ import UIKit
 /// A view representing a vertical stack of items.
 /// Items are created from the `subitems` property of the `item`
 @_spi(AdyenInternal)
-open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormItemType> {
+public final class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormItemType> {
 
     public private(set) var views: [AnyFormItemView] = []
 
@@ -97,6 +97,13 @@ open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormI
         observations = []
     }
 
+    override public var canBecomeFirstResponder: Bool {
+        views.first { $0.canBecomeFirstResponder } != nil
+    }
+
+    override public  func becomeFirstResponder() -> Bool {
+        views.first { $0.canBecomeFirstResponder }?.becomeFirstResponder() ?? super.becomeFirstResponder()
+    }
 }
 
 extension FormVerticalStackItemView: SelfRenderingFormItemDelegate {

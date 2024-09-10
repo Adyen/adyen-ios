@@ -104,6 +104,8 @@ internal final class FormCardLogosItem: FormItem {
     
 }
 
+typealias FormCardNumberContainerItemView = FormVerticalStackItemView<FormCardNumberContainerItem>
+
 extension FormItemViewBuilder {
     internal func build(with item: FormCardLogosItem) -> FormItemView<FormCardLogosItem> {
         FormCardLogosItemView(item: item)

@@ -32,9 +32,17 @@ public protocol AnyFormTextItemView: AnyFormItemView {
 
 /// A view representing a basic logic of text item.
 @_spi(AdyenInternal)
-open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemView<String, ItemType>,
+public final class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemView<String, ItemType>,
     UITextFieldDelegate,
     AnyFormTextItemView {
+    
+    private lazy var titleLabel: FormItemContentTitleView = {
+        let titleView = FormItemContentTitleView(title: item.$title)
+        // TODO: Hide this setup somehow
+        titleView.titleLabel.adyen.apply(item.style.title)
+        titleView.titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
+        return titleView
+    }()
     
     override public var accessibilityLabelView: UIView? { textField }
     
@@ -71,16 +79,16 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     // MARK: - Stack View
     
-    private lazy var textStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, entryTextStackView, alertLabel])
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.spacing = 8.0
-        stackView.preservesSuperviewLayoutMargins = true
-        stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return stackView
+    private lazy var textStackView: UIView = {
+        let contentView = FormItemContentView(
+            content: [
+                titleLabel,
+                entryTextStackView,
+                alertLabel
+            ]
+        )
+        contentView.preservesSuperviewLayoutMargins = true
+        return contentView
     }()
     
     private lazy var entryTextStackView: UIStackView = {
@@ -185,7 +193,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     // MARK: - Layout
     
-    override open func configureSeparatorView() {
+    override public func configureSeparatorView() {
         let constraints = [
             separatorView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -200,29 +208,29 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         separatorView.bottomAnchor.constraint(equalTo: accessoryStackView.bottomAnchor, constant: 4).isActive = true
     }
     
-    override open var lastBaselineAnchor: NSLayoutYAxisAnchor {
+    override public var lastBaselineAnchor: NSLayoutYAxisAnchor {
         textField.lastBaselineAnchor
     }
     
     // MARK: - Interaction
     
-    override open var canBecomeFirstResponder: Bool {
+    override public var canBecomeFirstResponder: Bool {
         if isHidden { return false }
         return textField.canBecomeFirstResponder
     }
     
     @discardableResult
-    override open func becomeFirstResponder() -> Bool {
+    override public func becomeFirstResponder() -> Bool {
         if isHidden { return false }
         return textField.becomeFirstResponder()
     }
     
     @discardableResult
-    override open func resignFirstResponder() -> Bool {
+    override public func resignFirstResponder() -> Bool {
         textField.resignFirstResponder()
     }
     
-    override open var isFirstResponder: Bool {
+    override public var isFirstResponder: Bool {
         textField.isFirstResponder
     }
     
@@ -235,19 +243,19 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     /// This method updates UI according to a validity state.
     /// Subclasses can override this method to stay notified when the text field resigns its first responder status.
-    open func textFieldDidEndEditing(_ textField: UITextField) {
+    public func textFieldDidEndEditing(_ textField: UITextField) {
         isEditing = false
         item.onDidEndEditing?()
     }
     
     /// This method hides validation accessories icons.
     /// Subclasses can override this method to stay notified when textField became the first responder.
-    open func textFieldDidBeginEditing(_ textField: UITextField) {
+    public func textFieldDidBeginEditing(_ textField: UITextField) {
         isEditing = true
         item.onDidBeginEditing?()
     }
 
-    override open func updateValidationStatus(forced: Bool = false) {
+    override public func updateValidationStatus(forced: Bool = false) {
         let textFieldNotEmpty = !(textField.text ?? "").isEmpty
         
         // if validation check is allowed during editing, ignore editing check

@@ -13,6 +13,16 @@ public final class BaseFormPickerItemView<T: CustomStringConvertible & Equatable
     UIPickerViewDelegate,
     UIPickerViewDataSource {
 
+    private lazy var titleView: FormItemContentTitleView = {
+        let titleView = FormItemContentTitleView(title: item.$title)
+        // TODO: Hide this setup somehow
+        titleView.titleLabel.adyen.apply(item.style.title)
+        titleView.titleLabel.accessibilityIdentifier = item.identifier.map {
+            ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel")
+        }
+        return titleView
+    }()
+    
     /// The underlying `UIPickerView`.
     internal lazy var pickerView: UIPickerView = {
         let pickerView = UIPickerView()
@@ -78,7 +88,7 @@ public final class BaseFormPickerItemView<T: CustomStringConvertible & Equatable
     /// Function called right after `init` for additional initialization of controls.
     private func initialize() {
         inputControl.preservesSuperviewLayoutMargins = true
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, inputControl])
+        let stackView = UIStackView(arrangedSubviews: [titleView, inputControl])
         stackView.axis = .vertical
         stackView.spacing = 8
         addSubview(stackView)
@@ -95,12 +105,14 @@ public final class BaseFormPickerItemView<T: CustomStringConvertible & Equatable
         view.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "inputControl") }
         view.onDidBecomeFirstResponder = { [weak self] in
             self?.isEditing = true
-            self?.titleLabel.textColor = self?.tintColor
+            // TODO: Handle `isSelected` on the contentView
+            self?.titleView.titleLabel.textColor = self?.tintColor
         }
 
         view.onDidResignFirstResponder = { [weak self] in
             self?.isEditing = false
-            self?.titleLabel.textColor = self?.item.style.title.color
+            // TODO: Handle `isSelected` on the contentView
+            self?.titleView.titleLabel.textColor = self?.item.style.title.color
         }
 
         view.onDidTap = { [weak self] in

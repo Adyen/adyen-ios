@@ -12,19 +12,6 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     FormItemView<ItemType>,
     AnyFormValueItemView {
 
-    // MARK: - Title Label
-
-    /// The top label view.
-    public lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel(style: item.style.title)
-        titleLabel.text = item.title
-        titleLabel.numberOfLines = 0
-        titleLabel.isAccessibilityElement = false
-        titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
-
-        return titleLabel
-    }()
-
     /// Initializes the value item view.
     ///
     /// - Parameter item: The item represented by the view.
@@ -32,8 +19,6 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         super.init(item: item)
         addSubview(separatorView)
         configureSeparatorView()
-
-        bind(item.$title, to: self.titleLabel, at: \.text)
         
         tintColor = item.style.tintColor
         backgroundColor = item.style.backgroundColor

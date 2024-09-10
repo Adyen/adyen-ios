@@ -147,6 +147,8 @@
 		8109FF4F2AD84496000748C8 /* MapkitAddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA3B372AD040D800F5719D /* MapkitAddressLookupProvider.swift */; };
 		8109FF502AD84498000748C8 /* MapkitAddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA3B372AD040D800F5719D /* MapkitAddressLookupProvider.swift */; };
 		81129AE62A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81129AE52A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift */; };
+		81135C8D2C8F24D3008AC8E4 /* FormItemContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81135C8C2C8F24D3008AC8E4 /* FormItemContentView.swift */; };
+		81135C902C8F2C4F008AC8E4 /* FormItemContentTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81135C8F2C8F2C4F008AC8E4 /* FormItemContentTitleView.swift */; };
 		8122B9BD2B9A0FF3002FC4D6 /* ErrorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122B9BC2B9A0FF3002FC4D6 /* ErrorMock.swift */; };
 		8136619E2BE0F6F7009AA0CD /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = 8136619D2BE0F6F7009AA0CD /* Adyen3DS2 */; };
 		813BF1122B2365400096940E /* XCTestCase+FirstResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813BF1102B2364E00096940E /* XCTestCase+FirstResponder.swift */; };
@@ -340,7 +342,6 @@
 		A02AF3DF274FB30200E1636C /* ApplePayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3DE274FB30200E1636C /* ApplePayStyle.swift */; };
 		A02AF3E8275A0D0900E1636C /* DocumentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3E7275A0D0900E1636C /* DocumentComponent.swift */; };
 		A02AF3EA275A3A5100E1636C /* DocumentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3E9275A3A5100E1636C /* DocumentAction.swift */; };
-		A030E7952823B2A200C463F1 /* FormCardNumberContainerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A030E7942823B2A200C463F1 /* FormCardNumberContainerItemView.swift */; };
 		A03EE72F2760A2E300470561 /* DocumentActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE72E2760A2E300470561 /* DocumentActionViewModel.swift */; };
 		A03EE7312761297800470561 /* DocumentComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE7302761297800470561 /* DocumentComponentStyle.swift */; };
 		A03EE73327612BF300470561 /* DocumentActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE73227612BF300470561 /* DocumentActionView.swift */; };
@@ -1605,6 +1606,8 @@
 		8109FF4B2AD5AD0C000748C8 /* OpenExternalAppDetector+DependencyKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenExternalAppDetector+DependencyKey.swift"; sourceTree = "<group>"; };
 		8109FF4D2AD6D8A9000748C8 /* MockAddressLookupProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAddressLookupProvider.swift; sourceTree = "<group>"; };
 		81129AE52A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchViewController+InterfaceState.swift"; sourceTree = "<group>"; };
+		81135C8C2C8F24D3008AC8E4 /* FormItemContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItemContentView.swift; sourceTree = "<group>"; };
+		81135C8F2C8F2C4F008AC8E4 /* FormItemContentTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItemContentTitleView.swift; sourceTree = "<group>"; };
 		8122B9BC2B9A0FF3002FC4D6 /* ErrorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMock.swift; sourceTree = "<group>"; };
 		813BF1102B2364E00096940E /* XCTestCase+FirstResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FirstResponder.swift"; sourceTree = "<group>"; };
 		813EF9DD2A5DA0BC00C65D15 /* FormPickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerItem.swift; sourceTree = "<group>"; };
@@ -1729,7 +1732,6 @@
 		A02AF3DE274FB30200E1636C /* ApplePayStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayStyle.swift; sourceTree = "<group>"; };
 		A02AF3E7275A0D0900E1636C /* DocumentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentComponent.swift; sourceTree = "<group>"; };
 		A02AF3E9275A3A5100E1636C /* DocumentAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAction.swift; sourceTree = "<group>"; };
-		A030E7942823B2A200C463F1 /* FormCardNumberContainerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardNumberContainerItemView.swift; sourceTree = "<group>"; };
 		A03B7C9129B0C61500FDDDFC /* CashAppPayComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPayComponent.swift; sourceTree = "<group>"; };
 		A03EE72E2760A2E300470561 /* DocumentActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentActionViewModel.swift; sourceTree = "<group>"; };
 		A03EE7302761297800470561 /* DocumentComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentComponentStyle.swift; sourceTree = "<group>"; };
@@ -2977,6 +2979,15 @@
 			path = SearchViewController;
 			sourceTree = "<group>";
 		};
+		81135C8E2C8F2797008AC8E4 /* Composition */ = {
+			isa = PBXGroup;
+			children = (
+				81135C8C2C8F24D3008AC8E4 /* FormItemContentView.swift */,
+				81135C8F2C8F2C4F008AC8E4 /* FormItemContentTitleView.swift */,
+			);
+			path = Composition;
+			sourceTree = "<group>";
+		};
 		813EF9DF2A5DA2A300C65D15 /* Picker */ = {
 			isa = PBXGroup;
 			children = (
@@ -3577,6 +3588,7 @@
 		E216D3B42217096E0013CBCF /* Items */ = {
 			isa = PBXGroup;
 			children = (
+				81135C8E2C8F2797008AC8E4 /* Composition */,
 				00BC8F4F2BF255CA00EBE0EB /* SelectableFormItem */,
 				0067E73B29658C97005B8D76 /* FormImageItem */,
 				002B93062951F0DA000B93F4 /* Segmented Control */,
@@ -3822,7 +3834,6 @@
 				A01DCF0A26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift */,
 				A018094726FDD345003A8DE3 /* FormCardNumberContainerItem.swift */,
 				A09C704227032870004C01AA /* FormCardLogosItemView.swift */,
-				A030E7942823B2A200C463F1 /* FormCardNumberContainerItemView.swift */,
 			);
 			path = Form;
 			sourceTree = "<group>";
@@ -6849,6 +6860,7 @@
 				0067E73D29658CB6005B8D76 /* FormImageItem.swift in Sources */,
 				E7D5311524462D87000046B4 /* FormButtonItem.swift in Sources */,
 				F9639B2224DC2FF50073F38A /* PresentableComponentWrapper.swift in Sources */,
+				81135C902C8F2C4F008AC8E4 /* FormItemContentTitleView.swift in Sources */,
 				F9838D452631AD3700963483 /* BalanceChecker.swift in Sources */,
 				E2C0B55022A6AA0700D3367B /* AmountFormatter.swift in Sources */,
 				F9EDB782239149AF00CFB3C9 /* CountryCodeValidator.swift in Sources */,
@@ -6960,6 +6972,7 @@
 				F9639B3524DD97A30073F38A /* PaymentStatusResponse.swift in Sources */,
 				A0DB486E2AFD0BFC00348C83 /* AnalyticsEventError.swift in Sources */,
 				F9BA21C2246E82EE00D36A63 /* SizeUtilities.swift in Sources */,
+				81135C8D2C8F24D3008AC8E4 /* FormItemContentView.swift in Sources */,
 				F97C829225BB156600D7F85C /* AbstractPersonalInformationComponent+Extensions.swift in Sources */,
 				81BA08372A49C93100308160 /* FormSelectableValueItemView.swift in Sources */,
 				A0DE8F6D26CEA04500F2F1E8 /* Installments.swift in Sources */,
@@ -7290,7 +7303,6 @@
 				E745175525FB6A59000BDCCF /* CardViewController.swift in Sources */,
 				E9240D6C2265EFE900FB57D0 /* StoredCardAlertManager.swift in Sources */,
 				A0F455A12968472B001742C7 /* PartialPaymentMethodDetails.swift in Sources */,
-				A030E7952823B2A200C463F1 /* FormCardNumberContainerItemView.swift in Sources */,
 				E7B627FD24ED32CC000CEC6E /* BinLookupService.swift in Sources */,
 				F9B8C49123FC286D00C4D0FB /* FormCardNumberItem.swift in Sources */,
 				E76EC682241125F5009C6E2F /* FormCardSecurityCodeItemView.swift in Sources */,
