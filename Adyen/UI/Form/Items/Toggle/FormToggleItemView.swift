@@ -15,6 +15,7 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
     private lazy var label: UILabel = {
         let label = UILabel(style: item.style.title)
         label.text = item.title
+        label.numberOfLines = 0
         label.accessibilityIdentifier = item.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel")
         }
