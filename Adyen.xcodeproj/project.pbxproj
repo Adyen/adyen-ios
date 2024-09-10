@@ -62,7 +62,6 @@
 		00EACBAE2872EDEC0082B360 /* OnlineBankingDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBAD2872EDEC0082B360 /* OnlineBankingDetails.swift */; };
 		00EACBB02872F0D90082B360 /* OnlineBankingPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBAF2872F0D90082B360 /* OnlineBankingPaymentMethod.swift */; };
 		00EACBB3287327C00082B360 /* FormIssuerPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBB2287327C00082B360 /* FormIssuerPickerItem.swift */; };
-		00EACBBA28737E540082B360 /* FormIssuersPickerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBB928737E540082B360 /* FormIssuersPickerItemView.swift */; };
 		00EACBBD2876F9DC0082B360 /* FormAttributedLabelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBBC2876F9DC0082B360 /* FormAttributedLabelItem.swift */; };
 		00EACBC0287EF1D50082B360 /* OnlineBankingComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBBF287EF1D50082B360 /* OnlineBankingComponentTests.swift */; };
 		00EACBC9288013AE0082B360 /* XCTestCase+Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBC5288013990082B360 /* XCTestCase+Coder.swift */; };
@@ -402,7 +401,6 @@
 		A0F4559B295F0F58001742C7 /* MealVoucherPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F4559A295F0F58001742C7 /* MealVoucherPaymentMethod.swift */; };
 		A0F455A12968472B001742C7 /* PartialPaymentMethodDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F455A02968472B001742C7 /* PartialPaymentMethodDetails.swift */; };
 		A0FA143F26D65A5300627127 /* InstallmentPickerElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */; };
-		A0FA145726D65B6200627127 /* FormCardInstallmentsItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA145626D65B6200627127 /* FormCardInstallmentsItemView.swift */; };
 		B62D48B42BBE8DBE001EF01A /* AnalyticsFlavorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16AB280702B200534419 /* AnalyticsFlavorTests.swift */; };
 		B62D48B52BBE8DBE001EF01A /* AnalyticsEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16A928059A5A00534419 /* AnalyticsEventTests.swift */; };
 		B62D48B72BBE8DBE001EF01A /* AnalyticsProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0005B280468E100CE2EEC /* AnalyticsProviderMock.swift */; };
@@ -1536,7 +1534,6 @@
 		00EACBAD2872EDEC0082B360 /* OnlineBankingDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineBankingDetails.swift; sourceTree = "<group>"; };
 		00EACBAF2872F0D90082B360 /* OnlineBankingPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineBankingPaymentMethod.swift; sourceTree = "<group>"; };
 		00EACBB2287327C00082B360 /* FormIssuerPickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormIssuerPickerItem.swift; sourceTree = "<group>"; };
-		00EACBB928737E540082B360 /* FormIssuersPickerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormIssuersPickerItemView.swift; sourceTree = "<group>"; };
 		00EACBBC2876F9DC0082B360 /* FormAttributedLabelItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAttributedLabelItem.swift; sourceTree = "<group>"; };
 		00EACBBF287EF1D50082B360 /* OnlineBankingComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineBankingComponentTests.swift; sourceTree = "<group>"; };
 		00EACBC5288013990082B360 /* XCTestCase+Coder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Coder.swift"; sourceTree = "<group>"; };
@@ -1791,7 +1788,6 @@
 		A0F4559A295F0F58001742C7 /* MealVoucherPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealVoucherPaymentMethod.swift; sourceTree = "<group>"; };
 		A0F455A02968472B001742C7 /* PartialPaymentMethodDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialPaymentMethodDetails.swift; sourceTree = "<group>"; };
 		A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallmentPickerElement.swift; sourceTree = "<group>"; };
-		A0FA145626D65B6200627127 /* FormCardInstallmentsItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardInstallmentsItemView.swift; sourceTree = "<group>"; };
 		B62D48AC2BBE8D79001EF01A /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
 		B62D48CA2BBE9059001EF01A /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
@@ -2802,7 +2798,6 @@
 			isa = PBXGroup;
 			children = (
 				00EACBB2287327C00082B360 /* FormIssuerPickerItem.swift */,
-				00EACBB928737E540082B360 /* FormIssuersPickerItemView.swift */,
 			);
 			path = "Issuer List Picker";
 			sourceTree = "<group>";
@@ -3220,7 +3215,6 @@
 			children = (
 				A0F41EAB26CD4AA50089AD6C /* FormCardInstallmentsItem.swift */,
 				A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */,
-				A0FA145626D65B6200627127 /* FormCardInstallmentsItemView.swift */,
 			);
 			path = Installments;
 			sourceTree = "<group>";
@@ -6992,7 +6986,6 @@
 				F95A788825C416A60032CF7E /* CopyLabelView.swift in Sources */,
 				5AD40EFB26303D490090E01C /* UILabelHelpers.swift in Sources */,
 				F9172F742643E0D200985310 /* OrderStatusResponse.swift in Sources */,
-				00EACBBA28737E540082B360 /* FormIssuersPickerItemView.swift in Sources */,
 				E270FDE9225CC4B1006C2CD0 /* ObservationManager.swift in Sources */,
 				81B001C22A55C5C10015BFA3 /* UISearchBar+Prominent.swift in Sources */,
 				F99D453E2627165400880D72 /* FormErrorItem.swift in Sources */,
@@ -7289,7 +7282,6 @@
 				A0290DFD2C4FD6D5005BE269 /* CardAnalyticsConfiguration.swift in Sources */,
 				F919DF9724E6E2810027976E /* StoredCardComponent.swift in Sources */,
 				A0B180312A2DE445003C608E /* MealVoucherDetails.swift in Sources */,
-				A0FA145726D65B6200627127 /* FormCardInstallmentsItemView.swift in Sources */,
 				A00167732BD15A390099A6AE /* CardKCPValidators.swift in Sources */,
 				E76EEDA7267CEA3F00BEB3C6 /* CardComponentDelegate.swift in Sources */,
 				A0F41EAC26CD4AA50089AD6C /* FormCardInstallmentsItem.swift in Sources */,
