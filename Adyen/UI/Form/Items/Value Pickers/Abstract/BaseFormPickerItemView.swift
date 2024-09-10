@@ -8,7 +8,7 @@ import UIKit
 
 /// Represents a picker item view.
 @_spi(AdyenInternal)
-open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>:
+public final class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>:
     FormValueItemView<BasePickerElement<T>, FormTextItemStyle, BaseFormPickerItem<T>>,
     UIPickerViewDelegate,
     UIPickerViewDataSource {
@@ -49,15 +49,15 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>:
         }
     }
 
-    override open var canBecomeFirstResponder: Bool { true }
+    override public var canBecomeFirstResponder: Bool { true }
 
     @discardableResult
-    override open func becomeFirstResponder() -> Bool {
+    override public func becomeFirstResponder() -> Bool {
         inputControl.becomeFirstResponder()
     }
 
     @discardableResult
-    override open func resignFirstResponder() -> Bool {
+    override public func resignFirstResponder() -> Bool {
         inputControl.resignFirstResponder()
     }
 
@@ -76,10 +76,15 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>:
     }
 
     /// Function called right after `init` for additional initialization of controls.
-    open func initialize() {
-        addSubview(inputControl)
+    private func initialize() {
         inputControl.preservesSuperviewLayoutMargins = true
-        (inputControl as UIView).adyen.anchor(inside: self)
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, inputControl])
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        addSubview(stackView)
+        stackView.preservesSuperviewLayoutMargins = true
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.adyen.anchor(inside: self)
     }
 
     /// The main control of the picker element that
