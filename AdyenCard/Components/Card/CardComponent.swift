@@ -259,7 +259,6 @@ extension CardComponent: PublicKeyConsumer {}
 private extension CardComponent {
     
     private var initialCountryCode: String {
-        
         if
             let preferredCountry = configuration.shopperInformation?.billingAddress?.country,
             let supportedCountryCodes = configuration.billingAddress.countryCodes,
