@@ -5,7 +5,6 @@
 //
 
 import Foundation
-@_spi(AdyenInternal) import Adyen
 
 internal struct JSONWebEncryption {
     internal struct Header: Encodable {
