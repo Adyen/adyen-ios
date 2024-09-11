@@ -8,6 +8,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          
       - name: Get the list of allowed pull request labels
         run: |
           RED='\033[0;31m'
@@ -22,6 +23,7 @@ jobs:
         id: get-allowed_labels
         env:
           PROJECT_ROOT: ${{ github.workspace }}
+          
       - name: Generate release notes
         run: |
           LATEST_TAG=$(git describe --tags --abbrev=0)
@@ -39,8 +41,7 @@ jobs:
              if [ ! -z "$LABEL_OUTPUT" ]; then
                 REMOVE_TAG_CMD="sed 's/<$LABEL>//g' | sed 's/<\/$LABEL>//g'"
                 OUTPUT=$(echo "$OUTPUT
-
-                # $LABEL:
+            # "${LABEL^}"
                 $LABEL_OUTPUT" | eval $REMOVE_TAG_CMD)
              fi
           done
