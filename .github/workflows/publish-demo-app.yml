@@ -1,4 +1,4 @@
-name: Publish Demo App
+name: 🚀 Publish Demo App
 on: [workflow_dispatch]
 jobs:
 
