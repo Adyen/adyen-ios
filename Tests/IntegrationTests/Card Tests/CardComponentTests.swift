@@ -1195,7 +1195,7 @@ class CardComponentTests: XCTestCase {
         )
         setupRootViewController(sut.viewController)
         
-        let installmentItemView: FormCardInstallmentsItemView? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
+        let installmentItemView: BaseFormPickerItemView<InstallmentElement>? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
         XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
         XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
         XCTAssertFalse(installmentItemView!.isHidden)
@@ -1238,7 +1238,7 @@ class CardComponentTests: XCTestCase {
         )
         setupRootViewController(sut.viewController)
         
-        let installmentItemView: FormCardInstallmentsItemView? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
+        let installmentItemView: BaseFormPickerItemView<InstallmentElement>? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
         XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
         XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
         XCTAssertFalse(installmentItemView!.isHidden)
@@ -1277,7 +1277,7 @@ class CardComponentTests: XCTestCase {
         )
         setupRootViewController(sut.viewController)
         
-        let installmentItemView: FormCardInstallmentsItemView? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
+        let installmentItemView: BaseFormPickerItemView<InstallmentElement>? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
         XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
         XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
         XCTAssertTrue(installmentItemView!.isHidden)
@@ -1329,7 +1329,7 @@ class CardComponentTests: XCTestCase {
         )
         setupRootViewController(sut.viewController)
         
-        let installmentItemView: FormCardInstallmentsItemView? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
+        let installmentItemView: BaseFormPickerItemView<InstallmentElement>? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
         XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
         XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
         XCTAssertTrue(installmentItemView!.isHidden)

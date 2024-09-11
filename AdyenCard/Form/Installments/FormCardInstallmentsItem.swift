@@ -103,9 +103,3 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
         builder.build(with: self)
     }
 }
-
-extension FormItemViewBuilder {
-    internal func build(with item: FormCardInstallmentsItem) -> BaseFormPickerItemView<InstallmentElement> {
-        FormCardInstallmentsItemView(item: item)
-    }
-}

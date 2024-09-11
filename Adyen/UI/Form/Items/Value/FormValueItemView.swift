@@ -61,18 +61,10 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     }
     
     internal func didChangeEditingStatus() {
-        guard showsSeparator else { return }
         isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
     }
     
     // MARK: - Separator View
-    
-    /// Indicates if the separator should be shown.
-    public var showsSeparator = true {
-        didSet {
-            separatorView.isHidden = !showsSeparator
-        }
-    }
     
     internal lazy var separatorView: UIView = {
         let separatorView = UIView()
