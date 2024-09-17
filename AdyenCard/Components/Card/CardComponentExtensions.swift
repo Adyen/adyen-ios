@@ -64,7 +64,7 @@ extension CardComponent {
 }
 
 @_spi(AdyenInternal)
-extension CardComponent: TrackableComponent {
+extension CardComponent: PaymentComponent, TrackableComponent {
     
     public func sendDidLoadEvent() {
         var infoEvent = AnalyticsEventInfo(component: paymentMethod.type.rawValue, type: .rendered)

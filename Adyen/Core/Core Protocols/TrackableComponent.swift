@@ -9,7 +9,7 @@ import UIKit
 
 /// A component that can send analytics events.
 @_spi(AdyenInternal)
-public protocol TrackableComponent: Component {
+public protocol TrackableComponent{
     
     /// Analytics flavor to determine the component / dropIn that initiates the events.
     var analyticsFlavor: AnalyticsFlavor { get }
@@ -32,7 +32,7 @@ extension TrackableComponent where Self: ViewControllerDelegate {
 
 // Generic extension to send events for all components and dropIn.
 @_spi(AdyenInternal)
-extension TrackableComponent {
+extension TrackableComponent where Self: Component {
     
     public func sendInitialAnalytics() {
         // initial call is not needed again if inside dropIn
@@ -47,7 +47,7 @@ extension TrackableComponent {
 }
 
 @_spi(AdyenInternal)
-extension TrackableComponent where Self: PaymentMethodAware {
+extension TrackableComponent where Self: PaymentMethodAware & Component {
     
     public var analyticsFlavor: AnalyticsFlavor {
         .components(type: paymentMethod.type)
