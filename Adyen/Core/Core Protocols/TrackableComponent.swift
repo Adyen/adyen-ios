@@ -9,7 +9,7 @@ import UIKit
 
 /// A component that can send analytics events.
 @_spi(AdyenInternal)
-public protocol TrackableComponent{
+public protocol TrackableComponent {
     
     /// Analytics flavor to determine the component / dropIn that initiates the events.
     var analyticsFlavor: AnalyticsFlavor { get }
