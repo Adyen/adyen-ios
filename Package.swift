@@ -34,7 +34,7 @@ let package = Package(
         ),
         .library(
             name: "AdyenSession",
-            targets: ["AdyenSession"]
+            targets: ["AdyenSessionModule"]
         ),
         .library(
             name: "AdyenDropIn",
@@ -135,7 +135,7 @@ let package = Package(
             exclude: ["Info.plist"]
         ),
         .target(
-            name: "AdyenSession",
+            name: "AdyenSessionModule",
             dependencies: [
                 .target(name: "Adyen"),
                 .target(name: "AdyenActions")
