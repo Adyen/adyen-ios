@@ -7,7 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem> {
+internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem>, UICollectionViewDataSource {
     
     private enum Constants {
         static let cardSpacing: CGFloat = 3
@@ -35,9 +35,7 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem> {
         collectionView.register(CardLogoCell.self, forCellWithReuseIdentifier: CardLogoCell.reuseIdentifier)
         collectionView.dataSource = self
     }
-}
 
-extension FormCardLogosItemView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         item.cardLogos.count
     }
