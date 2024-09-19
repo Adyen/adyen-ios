@@ -85,6 +85,9 @@ public class ModalToolbar: UIView, AnyNavigationBar {
             addSubview(stackView)
             stackView.adyen.anchor(inside: self)
         }
+        
+        self.accessibilityIdentifier = "adyen.ModalToolbar"
+        cancelButton.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "closeButton")
 
         setupStyle()
     }
