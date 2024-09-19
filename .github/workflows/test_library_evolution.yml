@@ -28,13 +28,12 @@ jobs:
     - name: "xcodebuild clean archive BUILD_LIBRARY_FOR_DISTRIBUTION=YES"
       run: |
         xcodebuild -version
-        xcodebuild clean archive -project "${project}" -scheme "${scheme}" -destination '${destination}' -archivePath "${archivePath}" -skipPackagePluginValidation SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES
+        xcodebuild clean archive -project "${project}" -scheme "${scheme}" -destination 'generic/platform=iOS Simulator' -archivePath "${archivePath}" -skipPackagePluginValidation SKIP_INSTALL=NO BUILD_LIBRARY_FOR_DISTRIBUTION=YES
         ./Scripts/validate-library-evolution.swift "${archivePath}" "${validationProjectName}"
         cd ${validationProjectName}
-        xcodebuild clean build -scheme "${validationProjectName}" -destination '${destination}' | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        xcodebuild clean build -scheme "${validationProjectName}" -destination 'generic/platform=iOS Simulator' | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         project: 'Adyen.xcodeproj'
         archivePath: 'LibraryEvolutionValidationArchive.xcarchive'
         scheme: 'AdyenDropIn'
         validationProjectName: 'LibraryEvolutionValidation'
-        destination: 'generic/platform=iOS Simulator'
