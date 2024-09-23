@@ -61,10 +61,12 @@ class FormItemViewBuilderTests: XCTestCase {
     }
 
     func testFormSAddressItemViewUS() {
-        let item = FormAddressItem(initialCountry: "US",
-                                   configuration: .init(),
-                                   presenter: nil,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
+        let item = FormAddressItem(
+            initialCountry: "US",
+            configuration: .init(),
+            presenter: nil,
+            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+        )
         let view = item.build(with: FormItemViewBuilder())
 
         XCTAssertNotNil(view as? FormVerticalStackItemView<FormAddressItem>)
@@ -72,10 +74,12 @@ class FormItemViewBuilderTests: XCTestCase {
     }
 
     func testFormSAddressItemViewNL() {
-        let item = FormAddressItem(initialCountry: "NL",
-                                   configuration: .init(),
-                                   presenter: nil,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
+        let item = FormAddressItem(
+            initialCountry: "NL",
+            configuration: .init(),
+            presenter: nil,
+            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+        )
         let view = item.build(with: FormItemViewBuilder())
 
         XCTAssertNotNil(view as? FormVerticalStackItemView<FormAddressItem>)
@@ -83,10 +87,12 @@ class FormItemViewBuilderTests: XCTestCase {
     }
 
     func testFormSAddressItemViewGB() {
-        let item = FormAddressItem(initialCountry: "GB",
-                                   configuration: .init(),
-                                   presenter: nil,
-                                   addressViewModelBuilder: DefaultAddressViewModelBuilder())
+        let item = FormAddressItem(
+            initialCountry: "GB",
+            configuration: .init(),
+            presenter: nil,
+            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+        )
         let view = item.build(with: FormItemViewBuilder())
 
         XCTAssertNotNil(view as? FormVerticalStackItemView<FormAddressItem>)

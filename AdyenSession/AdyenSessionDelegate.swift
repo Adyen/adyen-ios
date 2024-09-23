@@ -79,10 +79,12 @@ public protocol AdyenSessionPaymentsHandler {
     ///   - component: The payment component from which the payment details were submitted.
     ///   - dropInComponent: The DropIn Component instance if any.
     ///   - session: The ``AdyenSession`` instance.
-    func didSubmit(_ paymentComponentData: PaymentComponentData,
-                   from component: Component,
-                   dropInComponent: AnyDropInComponent?,
-                   session: AdyenSession)
+    func didSubmit(
+        _ paymentComponentData: PaymentComponentData,
+        from component: Component,
+        dropInComponent: AnyDropInComponent?,
+        session: AdyenSession
+    )
 }
 
 /// Describes the interface to take over the step where additional data is provided for making the payment details call.

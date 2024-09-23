@@ -57,10 +57,12 @@ class GiftCardComponentTests: XCTestCase {
 
         context = Dummy.context
 
-        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
-                                context: context,
-                                amount: amountToPay,
-                                publicKeyProvider: publicKeyProvider)
+        sut = GiftCardComponent(
+            partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
+            context: context,
+            amount: amountToPay,
+            publicKeyProvider: publicKeyProvider
+        )
         delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
         partialPaymentDelegate = PartialPaymentDelegateMock()
@@ -83,11 +85,13 @@ class GiftCardComponentTests: XCTestCase {
 
         // Given
         let paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
-        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(paymentMethod),
-                                context: context,
-                                amount: amountToPay,
-                                publicKeyProvider: publicKeyProvider)
-
+        sut = GiftCardComponent(
+            partialPaymentMethodType: .giftCard(paymentMethod),
+            context: context,
+            amount: amountToPay,
+            publicKeyProvider: publicKeyProvider
+        )
+        
         // When
         setupRootViewController(sut.viewController)
         wait(for: .milliseconds(300))
@@ -102,11 +106,13 @@ class GiftCardComponentTests: XCTestCase {
 
         // Given
         let paymentMethod = MealVoucherPaymentMethod(type: .mealVoucherSodexo, name: "Sodexo")
-        sut = GiftCardComponent(partialPaymentMethodType: .mealVoucher(paymentMethod),
-                                context: context,
-                                amount: amountToPay,
-                                publicKeyProvider: publicKeyProvider)
-
+        sut = GiftCardComponent(
+            partialPaymentMethodType: .mealVoucher(paymentMethod),
+            context: context,
+            amount: amountToPay,
+            publicKeyProvider: publicKeyProvider
+        )
+        
         // When
         setupRootViewController(sut.viewController)
         wait(for: .milliseconds(300))
@@ -562,10 +568,12 @@ class GiftCardComponentTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
 
-        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
-                                context: context,
-                                amount: amountToPay,
-                                publicKeyProvider: publicKeyProvider)
+        sut = GiftCardComponent(
+            partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
+            context: context,
+            amount: amountToPay,
+            publicKeyProvider: publicKeyProvider
+        )
 
         let mockViewController = UIViewController()
 
@@ -582,11 +590,13 @@ class GiftCardComponentTests: XCTestCase {
     func testGiftCardHidingSecurityCodeItemView() throws {
 
         // Given
-        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
-                                context: context,
-                                amount: amountToPay,
-                                showsSecurityCodeField: false,
-                                publicKeyProvider: publicKeyProvider)
+        sut = GiftCardComponent(
+            partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
+            context: context,
+            amount: amountToPay,
+            showsSecurityCodeField: false,
+            publicKeyProvider: publicKeyProvider
+        )
 
         // When
         let mockViewController = UIViewController()
@@ -601,12 +611,14 @@ class GiftCardComponentTests: XCTestCase {
 
         // Given
         let paymentMethod = MealVoucherPaymentMethod(type: .mealVoucherSodexo, name: "Sodexo")
-        sut = GiftCardComponent(partialPaymentMethodType: .mealVoucher(paymentMethod),
-                                context: context,
-                                amount: amountToPay,
-                                showsSecurityCodeField: false,
-                                publicKeyProvider: publicKeyProvider)
-
+        sut = GiftCardComponent(
+            partialPaymentMethodType: .mealVoucher(paymentMethod),
+            context: context,
+            amount: amountToPay,
+            showsSecurityCodeField: false,
+            publicKeyProvider: publicKeyProvider
+        )
+        
         // When
         let mockViewController = UIViewController()
         sut.viewWillAppear(viewController: mockViewController)
@@ -661,10 +673,12 @@ class GiftCardComponentTests: XCTestCase {
 
     func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
         // Given
-        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
-                                context: context,
-                                amount: amountToPay,
-                                publicKeyProvider: publicKeyProvider)
+        sut = GiftCardComponent(
+            partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
+            context: context,
+            amount: amountToPay,
+            publicKeyProvider: publicKeyProvider
+        )
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
         let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
@@ -680,10 +694,12 @@ class GiftCardComponentTests: XCTestCase {
 
     func testValidateGivenInvalidInputShouldReturnFormViewControllerValidateResult() throws {
         // Given
-        sut = GiftCardComponent(partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
-                                context: context,
-                                amount: amountToPay,
-                                publicKeyProvider: publicKeyProvider)
+        sut = GiftCardComponent(
+            partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
+            context: context,
+            amount: amountToPay,
+            publicKeyProvider: publicKeyProvider
+        )
 
         let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
         let expectedResult = formViewController.validate()

@@ -49,10 +49,12 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
             guard let self else { return }
             switch response {
             case let .success(configuration):
-                AdyenSession.initialize(with: configuration,
-                                        delegate: self,
-                                        presentationDelegate: self,
-                                        completion: completion)
+                AdyenSession.initialize(
+                    with: configuration,
+                    delegate: self,
+                    presentationDelegate: self,
+                    completion: completion
+                )
             case let .failure(error):
                 completion(.failure(error))
             }
@@ -82,9 +84,11 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
         config.requiredShippingContactFields = [.postalAddress]
         config.requiredBillingContactFields = [.postalAddress]
 
-        let component = try ApplePayComponent(paymentMethod: paymentMethod,
-                                              context: context,
-                                              configuration: config)
+        let component = try ApplePayComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
         component.delegate = session
         return component
     }

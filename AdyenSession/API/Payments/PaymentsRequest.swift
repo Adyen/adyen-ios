@@ -29,9 +29,11 @@ internal struct PaymentsRequest: APIRequest {
     
     internal typealias ResponseType = PaymentsResponse
     
-    internal init(sessionId: String,
-                  sessionData: String,
-                  data: PaymentComponentData) {
+    internal init(
+        sessionId: String,
+        sessionData: String,
+        data: PaymentComponentData
+    ) {
         self.path = "checkoutshopper/v1/sessions/\(sessionId)/payments"
         self.sessionData = sessionData
         self.data = data
@@ -44,8 +46,10 @@ internal struct PaymentsRequest: APIRequest {
         try container.encode(sessionData, forKey: .sessionData)
         try container.encode(data.supportNativeRedirect, forKey: .supportNativeRedirect)
         try container.encode(data.storePaymentMethod, forKey: .storePaymentMethod)
-        try container.encodeIfPresent(data.delegatedAuthenticationData,
-                                      forKey: .delegatedAuthenticationData)
+        try container.encodeIfPresent(
+            data.delegatedAuthenticationData,
+            forKey: .delegatedAuthenticationData
+        )
         try container.encodeIfPresent(data.shopperName, forKey: .shopperName)
         try container.encodeIfPresent(data.emailAddress, forKey: .shopperEmail)
         try container.encodeIfPresent(data.telephoneNumber, forKey: .telephoneNumber)

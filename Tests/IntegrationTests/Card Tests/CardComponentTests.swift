@@ -69,9 +69,11 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
         let items = sut.cardViewController.items
 
         XCTAssertEqual(items.expiryDateItem.title, localizedString(.cardExpiryItemTitle, nil))
@@ -96,9 +98,11 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
 
         let items = sut.cardViewController.items
         XCTAssertEqual(items.expiryDateItem.title, localizedString(.cardExpiryItemTitle, nil))
@@ -134,9 +138,11 @@ class CardComponentTests: XCTestCase {
         cardComponentStyle.textField.text.color = .yellow
         cardComponentStyle.textField.text.font = .systemFont(ofSize: 5)
         cardComponentStyle.textField.text.textAlignment = .center
-        cardComponentStyle.textField.placeholderText = TextStyle(font: .preferredFont(forTextStyle: .headline),
-                                                                 color: .systemOrange,
-                                                                 textAlignment: .center)
+        cardComponentStyle.textField.placeholderText = TextStyle(
+            font: .preferredFont(forTextStyle: .headline),
+            color: .systemOrange,
+            textAlignment: .center
+        )
         cardComponentStyle.textField.title.backgroundColor = .blue
         cardComponentStyle.textField.title.color = .green
         cardComponentStyle.textField.title.font = .systemFont(ofSize: 18)
@@ -153,9 +159,11 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         configuration.style = cardComponentStyle
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
 
         setupRootViewController(sut.viewController)
         
@@ -265,9 +273,11 @@ class CardComponentTests: XCTestCase {
     func testHideCVVField() {
         var configuration = CardComponent.Configuration()
         configuration.showsSecurityCodeField = false
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
 
         setupRootViewController(sut.viewController)
         
@@ -321,11 +331,13 @@ class CardComponentTests: XCTestCase {
             $0(BinLookupResponse(brands: [CardBrand(type: .americanExpress)]))
         }
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: CardComponent.Configuration(),
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardComponent.Configuration(),
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: cardTypeProviderMock
+        )
 
         setupRootViewController(sut.viewController)
 
@@ -457,9 +469,11 @@ class CardComponentTests: XCTestCase {
         style.textField.title.color = .gray
         var configuration = CardComponent.Configuration()
         configuration.style = style
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
 
         // When
         setupRootViewController(sut.viewController)
@@ -483,11 +497,13 @@ class CardComponentTests: XCTestCase {
             completion(.success("key"))
         }
         
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: CardComponent.Configuration(),
-                                publicKeyProvider: publicKeyProvider,
-                                binProvider: BinInfoProviderMock())
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardComponent.Configuration(),
+            publicKeyProvider: publicKeyProvider,
+            binProvider: BinInfoProviderMock()
+        )
 
         sut.viewDidLoad(viewController: sut.cardViewController)
 
@@ -496,8 +512,10 @@ class CardComponentTests: XCTestCase {
 
     func testStoredCardPaymentWithNoPayment() {
         let context = Dummy.context(with: nil)
-        let sut = CardComponent(paymentMethod: storedMethod,
-                                context: context)
+        let sut = CardComponent(
+            paymentMethod: storedMethod,
+            context: context
+        )
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
@@ -509,8 +527,10 @@ class CardComponentTests: XCTestCase {
     }
 
     func testStoredCardPaymentWithPayment() throws {
-        let sut = CardComponent(paymentMethod: storedMethod,
-                                context: context)
+        let sut = CardComponent(
+            paymentMethod: storedMethod,
+            context: context
+        )
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
@@ -524,9 +544,11 @@ class CardComponentTests: XCTestCase {
     func testStoredCardPaymentLocalization() throws {
         var configuration = CardComponent.Configuration()
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-        let sut = CardComponent(paymentMethod: storedMethod,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: storedMethod,
+            context: context,
+            configuration: configuration
+        )
 
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
@@ -542,9 +564,11 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.stored.showsSecurityCodeField = false
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-        let sut = CardComponent(paymentMethod: storedMethod,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: storedMethod,
+            context: context,
+            configuration: configuration
+        )
 
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
@@ -559,9 +583,11 @@ class CardComponentTests: XCTestCase {
     func testStoredCardPaymentWithNoCVV() throws {
         var configuration = CardComponent.Configuration()
         configuration.stored.showsSecurityCodeField = false
-        let sut = CardComponent(paymentMethod: storedMethod,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: storedMethod,
+            context: context,
+            configuration: configuration
+        )
 
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
@@ -577,9 +603,11 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.stored.showsSecurityCodeField = false
         let context = Dummy.context(with: nil)
-        let sut = CardComponent(paymentMethod: storedMethod,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: storedMethod,
+            context: context,
+            configuration: configuration
+        )
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
         XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
@@ -593,9 +621,11 @@ class CardComponentTests: XCTestCase {
     func testOneClickPayment() {
         var configuration = CardComponent.Configuration()
         configuration.stored.showsSecurityCodeField = false
-        let sut = CardComponent(paymentMethod: storedMethod,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: storedMethod,
+            context: context,
+            configuration: configuration
+        )
         XCTAssertNotNil(sut.viewController as? UIAlertController)
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
@@ -604,8 +634,10 @@ class CardComponentTests: XCTestCase {
     func testShouldShow4CardTypesOnInit() {
         // Given
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard, .maestro, .jcb, .chinaUnionPay])
-        let sut = CardComponent(paymentMethod: method,
-                                context: context)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context
+        )
         setupRootViewController(sut.viewController)
 
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
@@ -647,11 +679,13 @@ class CardComponentTests: XCTestCase {
         // Given
         var configuration = CardComponent.Configuration()
         configuration.billingAddress.mode = .full
-        let sut = CardComponent(paymentMethod: method,
-                                context: Dummy.context(with: nil),
-                                configuration: configuration,
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: BinInfoProviderMock())
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: Dummy.context(with: nil),
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: BinInfoProviderMock()
+        )
 
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -784,11 +818,13 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.billingAddress.mode = .postalCode
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration,
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: BinInfoProviderMock())
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: BinInfoProviderMock()
+        )
         setupRootViewController(sut.viewController)
 
         let delegate = PaymentComponentDelegateMock()
@@ -831,15 +867,19 @@ class CardComponentTests: XCTestCase {
         configuration.koreanAuthenticationMode = .auto
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(brands: [CardBrand(type: .koreanLocalCard)],
-                                 issuingCountryCode: "KR"))
+            $0(BinLookupResponse(
+                brands: [CardBrand(type: .koreanLocalCard)],
+                issuingCountryCode: "KR"
+            ))
         }
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration,
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: cardTypeProviderMock
+        )
         setupRootViewController(sut.viewController)
 
         let delegate = PaymentComponentDelegateMock()
@@ -888,15 +928,19 @@ class CardComponentTests: XCTestCase {
         configuration.socialSecurityNumberMode = .auto
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: true)],
-                                 issuingCountryCode: "BR"))
+            $0(BinLookupResponse(
+                brands: [CardBrand(type: .elo, showSocialSecurityNumber: true)],
+                issuingCountryCode: "BR"
+            ))
         }
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration,
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: cardTypeProviderMock
+        )
         setupRootViewController(sut.viewController)
 
         let delegate = PaymentComponentDelegateMock()
@@ -938,9 +982,11 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.socialSecurityNumberMode = .hide
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
         
         let brazilSSNItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem")
         XCTAssertNil(brazilSSNItemView)
@@ -958,9 +1004,11 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.socialSecurityNumberMode = .show
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
         
         let brazilSSNItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem")
         XCTAssertFalse(brazilSSNItemView!.isHidden)
@@ -979,8 +1027,10 @@ class CardComponentTests: XCTestCase {
             configuration: CardComponent.Configuration()
         )
         
-        let brands = [CardBrand(type: .visa, isLuhnCheckEnabled: true),
-                      CardBrand(type: .masterCard, isLuhnCheckEnabled: false)]
+        let brands = [
+            CardBrand(type: .visa, isLuhnCheckEnabled: true),
+            CardBrand(type: .masterCard, isLuhnCheckEnabled: false)
+        ]
         
         let cardNumberItem = sut.cardViewController.items.numberContainerItem.numberItem
         cardNumberItem.update(brands: brands)
@@ -997,9 +1047,11 @@ class CardComponentTests: XCTestCase {
     
     func testCardLogos() throws {
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: CardComponent.Configuration())
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardComponent.Configuration()
+        )
         
         XCTAssertTrue(sut.cardViewController.items.numberContainerItem.showsSupportedCardLogos)
         
@@ -1021,18 +1073,24 @@ class CardComponentTests: XCTestCase {
     }
 
     func testCVCDisplayMode() {
-        let brands = [CardBrand(type: .visa, cvcPolicy: .required),
-                      CardBrand(type: .americanExpress, cvcPolicy: .optional),
-                      CardBrand(type: .masterCard, cvcPolicy: .hidden)]
+        let brands = [
+            CardBrand(type: .visa, cvcPolicy: .required),
+            CardBrand(type: .americanExpress, cvcPolicy: .optional),
+            CardBrand(type: .masterCard, cvcPolicy: .hidden)
+        ]
 
-        let method = CardPaymentMethod(type: .card,
-                                       name: "Test name",
-                                       fundingSource: .credit,
-                                       brands: [.visa, .americanExpress, .masterCard])
+        let method = CardPaymentMethod(
+            type: .card,
+            name: "Test name",
+            fundingSource: .credit,
+            brands: [.visa, .americanExpress, .masterCard]
+        )
         let config = CardComponent.Configuration()
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: config)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: config
+        )
 
         let cvcItem = sut.cardViewController.items.securityCodeItem
         cvcItem.value = ""
@@ -1070,9 +1128,11 @@ class CardComponentTests: XCTestCase {
             configuration: CardComponent.Configuration()
         )
         
-        let brands = [CardBrand(type: .visa, expiryDatePolicy: .required),
-                      CardBrand(type: .americanExpress, expiryDatePolicy: .optional),
-                      CardBrand(type: .masterCard, expiryDatePolicy: .hidden)]
+        let brands = [
+            CardBrand(type: .visa, expiryDatePolicy: .required),
+            CardBrand(type: .americanExpress, expiryDatePolicy: .optional),
+            CardBrand(type: .masterCard, expiryDatePolicy: .hidden)
+        ]
         
         let expDateItem = sut.cardViewController.items.expiryDateItem
         expDateItem.value = ""
@@ -1113,23 +1173,29 @@ class CardComponentTests: XCTestCase {
     }
     
     func testInstallmentsWithDefaultAndCardBasedOptions() {
-        let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
-            InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
+        let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [
+            .visa:
+                InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
+        ]
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
 
         var configuration = CardComponent.Configuration()
-        configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions,
-                                                                          defaultOptions: defaultInstallmentOptions)
+        configuration.installmentConfiguration = InstallmentConfiguration(
+            cardBasedOptions: cardBasedInstallmentOptions,
+            defaultOptions: defaultInstallmentOptions
+        )
         let cardTypeProviderMock = BinInfoProviderMock()
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration,
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: cardTypeProviderMock
+        )
         setupRootViewController(sut.viewController)
         
-        let installmentItemView: FormCardInstallmentsItemView? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
+        let installmentItemView: BaseFormPickerItemView<InstallmentElement>? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
         XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
         XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
         XCTAssertFalse(installmentItemView!.isHidden)
@@ -1163,14 +1229,16 @@ class CardComponentTests: XCTestCase {
         configuration.installmentConfiguration = InstallmentConfiguration(defaultOptions: defaultInstallmentOptions)
         let cardTypeProviderMock = BinInfoProviderMock()
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration,
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: cardTypeProviderMock
+        )
         setupRootViewController(sut.viewController)
         
-        let installmentItemView: FormCardInstallmentsItemView? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
+        let installmentItemView: BaseFormPickerItemView<InstallmentElement>? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
         XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
         XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
         XCTAssertFalse(installmentItemView!.isHidden)
@@ -1192,20 +1260,24 @@ class CardComponentTests: XCTestCase {
     }
 
     func testInstallmentsWitCardBasedOptions() {
-        let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
-            InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
+        let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [
+            .visa:
+                InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
+        ]
         var configuration = CardComponent.Configuration()
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions)
         let cardTypeProviderMock = BinInfoProviderMock()
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration,
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: cardTypeProviderMock
+        )
         setupRootViewController(sut.viewController)
         
-        let installmentItemView: FormCardInstallmentsItemView? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
+        let installmentItemView: BaseFormPickerItemView<InstallmentElement>? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
         XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
         XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
         XCTAssertTrue(installmentItemView!.isHidden)
@@ -1239,21 +1311,25 @@ class CardComponentTests: XCTestCase {
     }
     
     func testInstallmentsWithAmountShown() {
-        let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [.visa:
-            InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)]
+        let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [
+            .visa:
+                InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
+        ]
 
         var configuration = CardComponent.Configuration()
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions, showInstallmentAmount: true)
         let cardTypeProviderMock = BinInfoProviderMock()
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration,
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: cardTypeProviderMock
+        )
         setupRootViewController(sut.viewController)
         
-        let installmentItemView: FormCardInstallmentsItemView? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
+        let installmentItemView: BaseFormPickerItemView<InstallmentElement>? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
         XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
         XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
         XCTAssertTrue(installmentItemView!.isHidden)
@@ -1366,9 +1442,11 @@ class CardComponentTests: XCTestCase {
         // Given
         var configuration = CardComponent.Configuration()
         configuration.billingAddress.mode = .postalCode
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
         sut.cardViewController.items.postalCodeItem.value = "1501 NH"
 
         // show view controller
@@ -1386,9 +1464,11 @@ class CardComponentTests: XCTestCase {
         // Given
         var configuration = CardComponent.Configuration()
         configuration.billingAddress.mode = .postalCode
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
         sut.cardViewController.items.numberContainerItem.numberItem.value = "4111 1111 1111 1111"
         
         // show view controller
@@ -1406,9 +1486,11 @@ class CardComponentTests: XCTestCase {
         // Given
         var configuration = CardComponent.Configuration()
         configuration.billingAddress.mode = .postalCode
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
         sut.cardViewController.items.expiryDateItem.value = "03/24"
 
         // show view controller
@@ -1426,9 +1508,11 @@ class CardComponentTests: XCTestCase {
         // Given
         var configuration = CardComponent.Configuration()
         configuration.billingAddress.mode = .postalCode
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
         sut.cardViewController.items.securityCodeItem.value = "935"
 
         // show view controller
@@ -1447,9 +1531,11 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponent.Configuration()
         configuration.showsHolderNameField = true
         configuration.billingAddress.mode = .postalCode
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
         sut.cardViewController.items.holderNameItem.value = "Katrina del Mar"
 
         // show view controller
@@ -1468,9 +1554,11 @@ class CardComponentTests: XCTestCase {
 
         var configuration = CardComponent.Configuration()
         configuration.billingAddress.mode = .postalCode
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
         sut.cardViewController.items.storeDetailsItem.value = true
 
         // show view controller
@@ -1529,9 +1617,11 @@ class CardComponentTests: XCTestCase {
         configuration.billingAddress.mode = .full
         configuration.shopperInformation = shopperInformation
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
 
         // When
         setupRootViewController(sut.cardViewController)
@@ -1563,9 +1653,11 @@ class CardComponentTests: XCTestCase {
         configuration.billingAddress.mode = .postalCode
         configuration.shopperInformation = shopperInformation
 
-        let prefilledSut = CardComponent(paymentMethod: method,
-                                         context: context,
-                                         configuration: configuration)
+        let prefilledSut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
 
         // When
         setupRootViewController(prefilledSut.cardViewController)
@@ -1595,9 +1687,11 @@ class CardComponentTests: XCTestCase {
         configuration.showsHolderNameField = true
         configuration.billingAddress.mode = .full
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: Dummy.context(with: nil),
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: Dummy.context(with: nil),
+            configuration: configuration
+        )
 
         // When
         setupRootViewController(sut.cardViewController)
@@ -1624,9 +1718,11 @@ class CardComponentTests: XCTestCase {
         configuration.showsHolderNameField = true
         configuration.billingAddress.mode = .postalCode
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
 
         // When
         setupRootViewController(sut.cardViewController)
@@ -1754,15 +1850,19 @@ class CardComponentTests: XCTestCase {
 
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(brands: [CardBrand(type: .visa)],
-                                 issuingCountryCode: "US"))
+            $0(BinLookupResponse(
+                brands: [CardBrand(type: .visa)],
+                issuingCountryCode: "US"
+            ))
         }
         
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration,
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: cardTypeProviderMock
+        )
         
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -1818,15 +1918,19 @@ class CardComponentTests: XCTestCase {
 
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(brands: [CardBrand(type: .visa)],
-                                 issuingCountryCode: "US"))
+            $0(BinLookupResponse(
+                brands: [CardBrand(type: .visa)],
+                issuingCountryCode: "US"
+            ))
         }
         
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration,
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: cardTypeProviderMock
+        )
         
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -1870,15 +1974,19 @@ class CardComponentTests: XCTestCase {
         
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(brands: [CardBrand(type: .visa)],
-                                 issuingCountryCode: "US"))
+            $0(BinLookupResponse(
+                brands: [CardBrand(type: .visa)],
+                issuingCountryCode: "US"
+            ))
         }
         
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration,
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: cardTypeProviderMock
+        )
         
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -1923,15 +2031,19 @@ class CardComponentTests: XCTestCase {
 
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(brands: [CardBrand(type: .visa)],
-                                 issuingCountryCode: "US"))
+            $0(BinLookupResponse(
+                brands: [CardBrand(type: .visa)],
+                issuingCountryCode: "US"
+            ))
         }
         
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration,
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: cardTypeProviderMock
+        )
         
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -1973,9 +2085,11 @@ class CardComponentTests: XCTestCase {
         configuration.showsHolderNameField = true
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
 
         let items = sut.cardViewController.items
         XCTAssertFalse(items.holderNameItem.isValid())
@@ -1988,9 +2102,11 @@ class CardComponentTests: XCTestCase {
         // When
         var configuration = CardComponent.Configuration()
         configuration.localizationParameters = LocalizationParameters(locale: "ko-KR")
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
 
         // Then
         let items = sut.cardViewController.items
@@ -2004,9 +2120,11 @@ class CardComponentTests: XCTestCase {
         // When
         var configuration = CardComponent.Configuration()
         configuration.localizationParameters = LocalizationParameters(enforcedLocale: "ru-RU")
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
 
         // Then
         let items = sut.cardViewController.items
@@ -2018,9 +2136,11 @@ class CardComponentTests: XCTestCase {
         configuration.showsHolderNameField = true
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
 
         let items = sut.cardViewController.items
         items.holderNameItem.value = "A"
@@ -2034,15 +2154,19 @@ class CardComponentTests: XCTestCase {
 
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(brands: [CardBrand(type: .visa)],
-                                 issuingCountryCode: "US"))
+            $0(BinLookupResponse(
+                brands: [CardBrand(type: .visa)],
+                issuingCountryCode: "US"
+            ))
         }
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration,
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: cardTypeProviderMock
+        )
 
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -2086,15 +2210,19 @@ class CardComponentTests: XCTestCase {
 
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(brands: [CardBrand(type: .visa)],
-                                 issuingCountryCode: "US"))
+            $0(BinLookupResponse(
+                brands: [CardBrand(type: .visa)],
+                issuingCountryCode: "US"
+            ))
         }
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration,
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: cardTypeProviderMock
+        )
 
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -2144,15 +2272,19 @@ class CardComponentTests: XCTestCase {
 
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(brands: [CardBrand(type: .bijenkorfCard)],
-                                 issuingCountryCode: "GB"))
+            $0(BinLookupResponse(
+                brands: [CardBrand(type: .bijenkorfCard)],
+                issuingCountryCode: "GB"
+            ))
         }
 
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: configuration,
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: cardTypeProviderMock)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: cardTypeProviderMock
+        )
 
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
@@ -2195,9 +2327,11 @@ class CardComponentTests: XCTestCase {
     }
     
     func testExpiryFieldValues() {
-        let sut = CardComponent(paymentMethod: method,
-                                context: context,
-                                configuration: CardComponent.Configuration())
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardComponent.Configuration()
+        )
         
         let expiryDateItem = sut.cardViewController.items.expiryDateItem
         
@@ -2214,11 +2348,13 @@ class CardComponentTests: XCTestCase {
         // Given
         var configuration = CardComponent.Configuration()
         configuration.billingAddress.mode = .none
-        let sut = CardComponent(paymentMethod: method,
-                                context: Dummy.context(with: nil),
-                                configuration: configuration,
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: BinInfoProviderMock())
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: Dummy.context(with: nil),
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: BinInfoProviderMock()
+        )
 
         setupRootViewController(sut.viewController)
 
@@ -2239,11 +2375,13 @@ class CardComponentTests: XCTestCase {
         // Given
         var configuration = CardComponent.Configuration()
         configuration.billingAddress.mode = .none
-        let sut = CardComponent(paymentMethod: method,
-                                context: Dummy.context(with: nil),
-                                configuration: configuration,
-                                publicKeyProvider: PublicKeyProviderMock(),
-                                binProvider: BinInfoProviderMock())
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: Dummy.context(with: nil),
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: BinInfoProviderMock()
+        )
 
         setupRootViewController(sut.viewController)
 

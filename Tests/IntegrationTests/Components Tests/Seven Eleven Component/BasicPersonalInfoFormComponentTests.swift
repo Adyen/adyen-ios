@@ -16,9 +16,11 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() throws {
         let localization = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let config = BasicPersonalInfoFormComponent.Configuration(localizationParameters: localization)
-        let sut = SevenElevenComponent(paymentMethod: paymentMethod,
-                                       context: Dummy.context,
-                                       configuration: config)
+        let sut = SevenElevenComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: config
+        )
 
         XCTAssertEqual(sut.firstNameItem?.title, localizedString(.firstName, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.firstNameItem?.placeholder, localizedString(.firstName, sut.configuration.localizationParameters))
@@ -38,9 +40,11 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
 
     func testLocalizationWithCustomKeySeparator() {
         let config = BasicPersonalInfoFormComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
-        let sut = SevenElevenComponent(paymentMethod: paymentMethod,
-                                       context: Dummy.context,
-                                       configuration: config)
+        let sut = SevenElevenComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: config
+        )
 
         XCTAssertEqual(sut.firstNameItem?.title, localizedString(LocalizationKey(key: "adyen_firstName"), sut.configuration.localizationParameters))
         XCTAssertEqual(sut.firstNameItem?.placeholder, localizedString(LocalizationKey(key: "adyen_firstName"), sut.configuration.localizationParameters))
@@ -85,31 +89,39 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         style.textField.backgroundColor = .red
 
         let config = BasicPersonalInfoFormComponent.Configuration(style: style)
-        let sut = SevenElevenComponent(paymentMethod: paymentMethod,
-                                       context: Dummy.context,
-                                       configuration: config)
+        let sut = SevenElevenComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: config
+        )
 
         setupRootViewController(sut.viewController)
         
         wait(for: .milliseconds(300))
         
         /// Test firstName field
-        self.assertTextInputUI(ViewIdentifier.firstName,
-                               view: sut.viewController.view,
-                               style: style.textField,
-                               isFirstField: true)
+        self.assertTextInputUI(
+            ViewIdentifier.firstName,
+            view: sut.viewController.view,
+            style: style.textField,
+            isFirstField: true
+        )
 
         /// Test lastName field
-        self.assertTextInputUI(ViewIdentifier.lastName,
-                               view: sut.viewController.view,
-                               style: style.textField,
-                               isFirstField: false)
+        self.assertTextInputUI(
+            ViewIdentifier.lastName,
+            view: sut.viewController.view,
+            style: style.textField,
+            isFirstField: false
+        )
 
         /// Test email field
-        self.assertTextInputUI(ViewIdentifier.email,
-                               view: sut.viewController.view,
-                               style: style.textField,
-                               isFirstField: false)
+        self.assertTextInputUI(
+            ViewIdentifier.email,
+            view: sut.viewController.view,
+            style: style.textField,
+            isFirstField: false
+        )
 
         let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: ViewIdentifier.phone)
         let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: ViewIdentifier.phoneTitleLabel)
@@ -137,10 +149,12 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         XCTAssertEqual(phoneNumberViewTextField?.font, .systemFont(ofSize: 13))
     }
 
-    private func assertTextInputUI(_ identifier: String,
-                                   view: UIView,
-                                   style: FormTextItemStyle,
-                                   isFirstField: Bool) {
+    private func assertTextInputUI(
+        _ identifier: String,
+        view: UIView,
+        style: FormTextItemStyle,
+        isFirstField: Bool
+    ) {
 
         let textView: FormTextInputItemView? = view.findView(with: identifier)
         let textViewTitleLabel: UILabel? = view.findView(with: "\(identifier).titleLabel")
@@ -158,9 +172,11 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     }
 
     func testSubmitForm() throws {
-        let sut = SevenElevenComponent(paymentMethod: paymentMethod,
-                                       context: Dummy.context,
-                                       configuration: BasicPersonalInfoFormComponent.Configuration())
+        let sut = SevenElevenComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: BasicPersonalInfoFormComponent.Configuration()
+        )
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
@@ -204,9 +220,11 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     }
 
     func testBigTitle() {
-        let sut = SevenElevenComponent(paymentMethod: paymentMethod,
-                                       context: Dummy.context,
-                                       configuration: BasicPersonalInfoFormComponent.Configuration())
+        let sut = SevenElevenComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: BasicPersonalInfoFormComponent.Configuration()
+        )
 
         setupRootViewController(sut.viewController)
 
@@ -218,18 +236,22 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
 
     func testRequiresModalPresentation() {
         let paymentMethod = SevenElevenPaymentMethod(type: .econtextSevenEleven, name: "Test name")
-        let sut = SevenElevenComponent(paymentMethod: paymentMethod,
-                                       context: Dummy.context,
-                                       configuration: BasicPersonalInfoFormComponent.Configuration())
+        let sut = SevenElevenComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: BasicPersonalInfoFormComponent.Configuration()
+        )
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
     func testBasicPersonalInfoFormPrefilling() throws {
         // Given
         let config = BasicPersonalInfoFormComponent.Configuration(shopperInformation: shopperInformation)
-        let prefillSut = SevenElevenComponent(paymentMethod: paymentMethod,
-                                              context: Dummy.context,
-                                              configuration: config)
+        let prefillSut = SevenElevenComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: config
+        )
         
         setupRootViewController(prefillSut.viewController)
 
@@ -259,9 +281,11 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
 
     func testBasicPersonalInfoForm_givenNoShopperInformation_shouldNotPrefill() throws {
         // Given
-        let sut = SevenElevenComponent(paymentMethod: paymentMethod,
-                                       context: Dummy.context,
-                                       configuration: BasicPersonalInfoFormComponent.Configuration())
+        let sut = SevenElevenComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: BasicPersonalInfoFormComponent.Configuration()
+        )
         setupRootViewController(sut.viewController)
 
         wait(for: .milliseconds(300))

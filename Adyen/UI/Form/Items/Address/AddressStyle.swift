@@ -11,9 +11,11 @@ import UIKit
 public struct AddressStyle: FormValueItemStyle {
 
     /// The section header style.
-    public var title = TextStyle(font: .preferredFont(forTextStyle: .headline),
-                                 color: UIColor.Adyen.componentLabel,
-                                 textAlignment: .natural)
+    public var title = TextStyle(
+        font: .preferredFont(forTextStyle: .headline),
+        color: UIColor.Adyen.componentLabel,
+        textAlignment: .natural
+    )
 
     /// The text field style.
     public var textField = FormTextItemStyle()

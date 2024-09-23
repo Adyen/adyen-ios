@@ -6,7 +6,7 @@
 "adyen.error.title" = "Viga";
 "adyen.error.unknown" = "Ilmnes tundmatu tõrge";
 "adyen.validationAlert.title" = "Vale sisend";
-"adyen.paymentMethods.otherMethods" = "muud";
+"adyen.paymentMethods.otherMethods" = "Muud";
 "adyen.paymentMethods.storedMethods" = "Salvestatud";
 "adyen.paymentMethods.paidMethods" = "Rakendatud";
 "adyen.paymentMethods.title" = "Makseviisid";

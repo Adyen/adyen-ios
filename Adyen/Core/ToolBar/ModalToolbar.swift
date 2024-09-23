@@ -85,6 +85,9 @@ public class ModalToolbar: UIView, AnyNavigationBar {
             addSubview(stackView)
             stackView.adyen.anchor(inside: self)
         }
+        
+        self.accessibilityIdentifier = "adyen.ModalToolbar"
+        cancelButton.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "closeButton")
 
         setupStyle()
     }
@@ -93,10 +96,14 @@ public class ModalToolbar: UIView, AnyNavigationBar {
         backgroundColor = style.backgroundColor
         cancelButton.tintColor = style.tintColor
         guard let title = titleLabel.text, !title.isEmpty else { return }
-        titleLabel.attributedText = NSAttributedString(string: title,
-                                                       attributes: [NSAttributedString.Key.font: style.barTitle.font,
-                                                                    NSAttributedString.Key.foregroundColor: style.barTitle.color,
-                                                                    NSAttributedString.Key.backgroundColor: style.barTitle.backgroundColor])
+        titleLabel.attributedText = NSAttributedString(
+            string: title,
+            attributes: [
+                NSAttributedString.Key.font: style.barTitle.font,
+                NSAttributedString.Key.foregroundColor: style.barTitle.color,
+                NSAttributedString.Key.backgroundColor: style.barTitle.backgroundColor
+            ]
+        )
     }
 
     private func setupLayoutForCenteredMode() {
@@ -128,14 +135,20 @@ public class ModalToolbar: UIView, AnyNavigationBar {
 
         switch style.toolbarMode {
         case .rightCancel:
-            cancelPositionConstraint = rightAnchor.constraint(equalTo: cancelButton.rightAnchor,
-                                                              constant: paddingWithMarginCorrection)
+            cancelPositionConstraint = rightAnchor.constraint(
+                equalTo: cancelButton.rightAnchor,
+                constant: paddingWithMarginCorrection
+            )
         case .leftCancel:
-            cancelPositionConstraint = leftAnchor.constraint(equalTo: cancelButton.leftAnchor,
-                                                             constant: -paddingWithMarginCorrection)
+            cancelPositionConstraint = leftAnchor.constraint(
+                equalTo: cancelButton.leftAnchor,
+                constant: -paddingWithMarginCorrection
+            )
         case .natural:
-            cancelPositionConstraint = trailingAnchor.constraint(equalTo: cancelButton.trailingAnchor,
-                                                                 constant: paddingWithMarginCorrection)
+            cancelPositionConstraint = trailingAnchor.constraint(
+                equalTo: cancelButton.trailingAnchor,
+                constant: paddingWithMarginCorrection
+            )
         }
 
         return cancelPositionConstraint

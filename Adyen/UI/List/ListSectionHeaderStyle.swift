@@ -11,14 +11,18 @@ import UIKit
 public struct ListSectionHeaderStyle: ViewStyle {
     
     /// The title style.
-    public var title = TextStyle(font: .preferredFont(forTextStyle: .subheadline),
-                                 color: UIColor.Adyen.componentSecondaryLabel,
-                                 textAlignment: .natural)
+    public var title = TextStyle(
+        font: .preferredFont(forTextStyle: .subheadline),
+        color: UIColor.Adyen.componentSecondaryLabel,
+        textAlignment: .natural
+    )
     
     /// The trailing button style.
     public var trailingButton = ButtonStyle(
-        title: TextStyle(font: .preferredFont(forTextStyle: .body),
-                         color: UIColor.Adyen.defaultBlue),
+        title: TextStyle(
+            font: .preferredFont(forTextStyle: .body),
+            color: UIColor.Adyen.defaultBlue
+        ),
         cornerRounding: .none,
         background: UIColor.clear
     )

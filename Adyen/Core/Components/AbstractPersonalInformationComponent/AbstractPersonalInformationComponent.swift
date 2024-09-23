@@ -23,8 +23,10 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
 
     public weak var delegate: PaymentComponentDelegate?
 
-    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController,
-                                                                             style: configuration.style)
+    public lazy var viewController: UIViewController = SecuredViewController(
+        child: formViewController,
+        style: configuration.style
+    )
 
     public let requiresModalPresentation: Bool = true
 
@@ -56,10 +58,12 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     /// - Parameter fields: The component's fields.
     /// - Parameter configuration: The Component's configuration.
     @_spi(AdyenInternal)
-    public init(paymentMethod: PaymentMethod,
-                context: AdyenContext,
-                fields: [PersonalInformation],
-                configuration: Configuration) {
+    public init(
+        paymentMethod: PaymentMethod,
+        context: AdyenContext,
+        fields: [PersonalInformation],
+        configuration: Configuration
+    ) {
         self.paymentMethod = paymentMethod
         self.context = context
         self.fields = fields
@@ -105,11 +109,13 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     internal lazy var firstNameItemInjector: NameFormItemInjector? = {
         guard fields.contains(.firstName) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "firstNameItem")
-        let injector = NameFormItemInjector(value: configuration.shopperInformation?.shopperName?.firstName,
-                                            identifier: identifier,
-                                            localizationKey: .firstName,
-                                            style: configuration.style.textField,
-                                            contentType: .givenName)
+        let injector = NameFormItemInjector(
+            value: configuration.shopperInformation?.shopperName?.firstName,
+            identifier: identifier,
+            localizationKey: .firstName,
+            style: configuration.style.textField,
+            contentType: .givenName
+        )
         injector.localizationParameters = configuration.localizationParameters
         return injector
     }()
@@ -120,11 +126,13 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     internal lazy var lastNameItemInjector: NameFormItemInjector? = {
         guard fields.contains(.lastName) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "lastNameItem")
-        let injector = NameFormItemInjector(value: configuration.shopperInformation?.shopperName?.lastName,
-                                            identifier: identifier,
-                                            localizationKey: .lastName,
-                                            style: configuration.style.textField,
-                                            contentType: .familyName)
+        let injector = NameFormItemInjector(
+            value: configuration.shopperInformation?.shopperName?.lastName,
+            identifier: identifier,
+            localizationKey: .lastName,
+            style: configuration.style.textField,
+            contentType: .familyName
+        )
         injector.localizationParameters = configuration.localizationParameters
         return injector
     }()
@@ -135,9 +143,11 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     internal lazy var emailItemInjector: EmailFormItemInjector? = {
         guard fields.contains(.email) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "emailItem")
-        let injector = EmailFormItemInjector(value: configuration.shopperInformation?.emailAddress,
-                                             identifier: identifier,
-                                             style: configuration.style.textField)
+        let injector = EmailFormItemInjector(
+            value: configuration.shopperInformation?.emailAddress,
+            identifier: identifier,
+            style: configuration.style.textField
+        )
         injector.localizationParameters = configuration.localizationParameters
         return injector
     }()
@@ -149,13 +159,15 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         guard fields.contains(.address) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "addressItem")
         let initialCountry = configuration.shopperInformation?.billingAddress?.country ?? defaultCountryCode
-        return AddressFormItemInjector(value: configuration.shopperInformation?.billingAddress,
-                                       initialCountry: initialCountry,
-                                       identifier: identifier,
-                                       style: configuration.style,
-                                       presenter: self,
-                                       addressViewModelBuilder: addressViewModelBuilder(),
-                                       addressType: .billing)
+        return AddressFormItemInjector(
+            value: configuration.shopperInformation?.billingAddress,
+            initialCountry: initialCountry,
+            identifier: identifier,
+            style: configuration.style,
+            presenter: self,
+            addressViewModelBuilder: addressViewModelBuilder(),
+            addressType: .billing
+        )
     }()
     
     @_spi(AdyenInternal)
@@ -165,13 +177,15 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         guard fields.contains(.deliveryAddress) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "deliveryAddressItem")
         let initialCountry = configuration.shopperInformation?.deliveryAddress?.country ?? defaultCountryCode
-        return AddressFormItemInjector(value: configuration.shopperInformation?.deliveryAddress,
-                                       initialCountry: initialCountry,
-                                       identifier: identifier,
-                                       style: configuration.style,
-                                       presenter: self,
-                                       addressViewModelBuilder: addressViewModelBuilder(),
-                                       addressType: .delivery)
+        return AddressFormItemInjector(
+            value: configuration.shopperInformation?.deliveryAddress,
+            initialCountry: initialCountry,
+            identifier: identifier,
+            style: configuration.style,
+            presenter: self,
+            addressViewModelBuilder: addressViewModelBuilder(),
+            addressType: .delivery
+        )
     }()
     
     @_spi(AdyenInternal)

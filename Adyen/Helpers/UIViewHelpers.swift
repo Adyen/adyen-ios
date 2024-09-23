@@ -12,9 +12,9 @@ import UIKit
 extension AdyenScope where Base: UIView {
     
     @discardableResult
-    public func snapShot(forceRedraw: Bool = false) -> UIImage? {
+    public func snapshot(forceRedraw: Bool = false) -> UIImage? {
         if forceRedraw {
-            snapShot(forceRedraw: false)
+            snapshot(forceRedraw: false)
         }
         
         UIGraphicsBeginImageContextWithOptions(base.bounds.size, false, 0.0)
@@ -26,35 +26,44 @@ extension AdyenScope where Base: UIView {
         return image
     }
     
-    public func hide(animationKey: String,
-                     hidden: Bool,
-                     animated: Bool) {
+    public func hide(
+        animationKey: String,
+        hidden: Bool,
+        animated: Bool
+    ) {
         if animated {
-            hideWithAnimation(animationKey: animationKey,
-                              hidden)
+            hideWithAnimation(
+                animationKey: animationKey,
+                hidden
+            )
         } else {
             hideWithoutAnimation(hidden)
         }
     }
 
-    private func hideWithAnimation(animationKey: String,
-                                   _ hidden: Bool) {
-        let context = KeyFrameAnimationContext(animationKey: animationKey,
-                                               duration: 0.35,
-                                               delay: 0,
-                                               options: [.calculationModeCubicPaced, .beginFromCurrentState],
-                                               animations: { [weak base] in
-                                                   UIView.addKeyframe(withRelativeStartTime: hidden ? 0.5 : 0, relativeDuration: 0.5) {
-                                                       base?.isHidden = hidden
-                                                   }
-                                                   UIView.addKeyframe(withRelativeStartTime: hidden ? 0 : 0.5, relativeDuration: 0.5) {
-                                                       base?.alpha = hidden ? 0 : 1
-                                                   }
-                                               }, completion: { [weak base] _ in
-                                                   base?.isHidden = hidden
-                                                   base?.alpha = hidden ? 0 : 1
-                                                   base?.adyen.updatePreferredContentSize()
-                                               })
+    private func hideWithAnimation(
+        animationKey: String,
+        _ hidden: Bool
+    ) {
+        let context = KeyFrameAnimationContext(
+            animationKey: animationKey,
+            duration: 0.35,
+            delay: 0,
+            options: [.calculationModeCubicPaced, .beginFromCurrentState],
+            animations: { [weak base] in
+                UIView.addKeyframe(withRelativeStartTime: hidden ? 0.5 : 0, relativeDuration: 0.5) {
+                    base?.isHidden = hidden
+                }
+                UIView.addKeyframe(withRelativeStartTime: hidden ? 0 : 0.5, relativeDuration: 0.5) {
+                    base?.alpha = hidden ? 0 : 1
+                }
+            },
+            completion: { [weak base] _ in
+                base?.isHidden = hidden
+                base?.alpha = hidden ? 0 : 1
+                base?.adyen.updatePreferredContentSize()
+            }
+        )
         animate(context: context)
     }
     
@@ -67,10 +76,14 @@ extension AdyenScope where Base: UIView {
     }
 
     public var minimalSize: CGSize {
-        let targetSize = CGSize(width: Dimensions.expectedWidth(for: base.window),
-                                height: UIView.layoutFittingCompressedSize.height)
-        return base.systemLayoutSizeFitting(targetSize,
-                                            withHorizontalFittingPriority: .required,
-                                            verticalFittingPriority: .fittingSizeLevel)
+        let targetSize = CGSize(
+            width: Dimensions.expectedWidth(for: base.window),
+            height: UIView.layoutFittingCompressedSize.height
+        )
+        return base.systemLayoutSizeFitting(
+            targetSize,
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
     }
 }

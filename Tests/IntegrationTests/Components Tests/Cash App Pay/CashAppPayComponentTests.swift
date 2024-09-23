@@ -34,13 +34,17 @@ import XCTest
         
         var oneTimeAction: PaymentAction {
             let moneyAmount = Money(amount: UInt(5000), currency: .USD)
-            return PaymentAction.oneTimePayment(scopeID: "test",
-                                                money: moneyAmount)
+            return PaymentAction.oneTimePayment(
+                scopeID: "test",
+                money: moneyAmount
+            )
         }
         
         var onFileAction: PaymentAction {
-            PaymentAction.onFilePayment(scopeID: "test",
-                                        accountReferenceID: nil)
+            PaymentAction.onFilePayment(
+                scopeID: "test",
+                accountReferenceID: nil
+            )
         }
         
         var oneTimeGrant: CustomerRequest.Grant {
@@ -138,9 +142,11 @@ import XCTest
             
             // Given
             let analyticsProviderMock = AnalyticsProviderMock()
-            let context = AdyenContext(apiContext: Dummy.apiContext,
-                                       payment: Dummy.payment,
-                                       analyticsProvider: analyticsProviderMock)
+            let context = AdyenContext(
+                apiContext: Dummy.apiContext,
+                payment: Dummy.payment,
+                analyticsProvider: analyticsProviderMock
+            )
             let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 

@@ -54,8 +54,10 @@ internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
     }
 
     private func createPollingComponent() -> AnyPollingHandler {
-        PollingComponent(context: context,
-                         apiClient: apiClient)
+        PollingComponent(
+            context: context,
+            apiClient: apiClient
+        )
     }
     
 }

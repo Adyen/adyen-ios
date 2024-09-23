@@ -21,8 +21,10 @@ public struct OrderStatusResponse: Response {
     /// - Parameters:
     ///   - remainingAmount: The remaining amount to be paid.
     ///   - paymentMethods: The payment methods already used to partially pay.
-    public init(remainingAmount: Amount,
-                paymentMethods: [OrderPaymentMethod]?) {
+    public init(
+        remainingAmount: Amount,
+        paymentMethods: [OrderPaymentMethod]?
+    ) {
         self.remainingAmount = remainingAmount
         self.paymentMethods = paymentMethods
     }
@@ -50,10 +52,12 @@ public struct OrderPaymentMethod: PaymentMethod {
 
     public let amount: Amount
 
-    public init(lastFour: String,
-                type: PaymentMethodType,
-                transactionLimit: Amount?,
-                amount: Amount) {
+    public init(
+        lastFour: String,
+        type: PaymentMethodType,
+        transactionLimit: Amount?,
+        amount: Amount
+    ) {
         self.lastFour = lastFour
         self.type = type
         self.transactionLimit = transactionLimit
@@ -62,9 +66,11 @@ public struct OrderPaymentMethod: PaymentMethod {
 
     @_spi(AdyenInternal)
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        let disclosureText = AmountFormatter.formatted(amount: -amount.value,
-                                                       currencyCode: amount.currencyCode,
-                                                       localeIdentifier: parameters?.locale)
+        let disclosureText = AmountFormatter.formatted(
+            amount: -amount.value,
+            currencyCode: amount.currencyCode,
+            localeIdentifier: parameters?.locale
+        )
         let lastFourSeparated = lastFour.map { String($0) }.joined(separator: ", ")
         let accessibilityLabel = [
             self.type.name,
@@ -72,17 +78,21 @@ public struct OrderPaymentMethod: PaymentMethod {
             "\(localizedString(.accessibilityLastFourDigits, parameters)): \(lastFourSeparated)"
         ].compactMap { $0 }.joined(separator: ", ")
         
-        return DisplayInformation(title: name,
-                                  subtitle: nil,
-                                  logoName: type.rawValue,
-                                  disclosureText: disclosureText,
-                                  accessibilityLabel: accessibilityLabel)
+        return DisplayInformation(
+            title: name,
+            subtitle: nil,
+            logoName: type.rawValue,
+            disclosureText: disclosureText,
+            accessibilityLabel: accessibilityLabel
+        )
     }
 
     @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        AlreadyPaidPaymentComponent(paymentMethod: self,
-                                    context: builder.context)
+        AlreadyPaidPaymentComponent(
+            paymentMethod: self,
+            context: builder.context
+        )
     }
 
     private enum CodingKeys: String, CodingKey {

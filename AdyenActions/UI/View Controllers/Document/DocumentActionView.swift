@@ -98,9 +98,11 @@ internal final class DocumentActionView: UIView {
         backgroundColor = style.backgroundColor
         addSubview(stackView)
         stackView.adyen.anchor(inside: .view(self), edgeInsets: .init(left: 20, right: 20))
-        NSLayoutConstraint.activate([stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-                                     stackView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
-                                     stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -30)])
+        NSLayoutConstraint.activate([
+            stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            stackView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
+            stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -30)
+        ])
         
     }
     

@@ -44,12 +44,14 @@ public struct DisplayInformation: Equatable {
     /// - Parameter footnoteText: The footnote text if any.
     /// - Parameter accessibilityLabel: An optional custom `accessibilityLabel` to use.
     /// Set this if the title / subtitle might not be sufficient enough to provide a good accessibility
-    public init(title: String,
-                subtitle: String?,
-                logoName: String,
-                disclosureText: String? = nil,
-                footnoteText: String? = nil,
-                accessibilityLabel: String? = nil) {
+    public init(
+        title: String,
+        subtitle: String?,
+        logoName: String,
+        disclosureText: String? = nil,
+        footnoteText: String? = nil,
+        accessibilityLabel: String? = nil
+    ) {
         self.title = title
         self.subtitle = subtitle
         self.logoName = logoName

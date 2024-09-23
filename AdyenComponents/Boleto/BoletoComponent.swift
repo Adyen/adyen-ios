@@ -35,9 +35,11 @@ public final class BoletoComponent: PaymentComponent,
     ///   - paymentMethod: Boleto Payment Method
     ///   - context: The context object for this component.
     ///   - configuration: The Component's configuration.
-    public init(paymentMethod: BoletoPaymentMethod,
-                context: AdyenContext,
-                configuration: Configuration) {
+    public init(
+        paymentMethod: BoletoPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration
+    ) {
         self.boletoPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
@@ -68,22 +70,26 @@ public final class BoletoComponent: PaymentComponent,
     }()
     
     private lazy var formComponent: FormComponent = {
-        let configuration = AbstractPersonalInformationComponent.Configuration(style: configuration.style,
-                                                                               shopperInformation: configuration.shopperInformation,
-                                                                               localizationParameters: configuration.localizationParameters)
-        let component = FormComponent(paymentMethod: paymentMethod,
-                                      context: context,
-                                      fields: formFields,
-                                      configuration: configuration,
-                                      onCreatePaymentDetails: { [weak self] in
-                                          var paymentMethodDetails: PaymentMethodDetails?
-                                          do {
-                                              paymentMethodDetails = try self?.createPaymentDetails()
-                                          } catch {
-                                              adyenPrint(error)
-                                          }
-                                          return paymentMethodDetails
-                                      })
+        let configuration = AbstractPersonalInformationComponent.Configuration(
+            style: configuration.style,
+            shopperInformation: configuration.shopperInformation,
+            localizationParameters: configuration.localizationParameters
+        )
+        let component = FormComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            fields: formFields,
+            configuration: configuration,
+            onCreatePaymentDetails: { [weak self] in
+                var paymentMethodDetails: PaymentMethodDetails?
+                do {
+                    paymentMethodDetails = try self?.createPaymentDetails()
+                } catch {
+                    adyenPrint(error)
+                }
+                return paymentMethodDetails
+            }
+        )
 
         if let emailItem = component.emailItem {
             bind(sendCopyByEmailItem.publisher, to: emailItem, at: \.isHidden.wrappedValue, with: { !$0 })
@@ -197,17 +203,21 @@ extension BoletoComponent {
         
         private let onCreatePaymentDetails: () -> PaymentMethodDetails?
         
-        fileprivate init(paymentMethod: PaymentMethod,
-                         context: AdyenContext,
-                         fields: [PersonalInformation],
-                         configuration: AbstractPersonalInformationComponent.Configuration,
-                         onCreatePaymentDetails: @escaping () -> PaymentMethodDetails?) {
+        fileprivate init(
+            paymentMethod: PaymentMethod,
+            context: AdyenContext,
+            fields: [PersonalInformation],
+            configuration: AbstractPersonalInformationComponent.Configuration,
+            onCreatePaymentDetails: @escaping () -> PaymentMethodDetails?
+        ) {
             self.onCreatePaymentDetails = onCreatePaymentDetails
             
-            super.init(paymentMethod: paymentMethod,
-                       context: context,
-                       fields: fields,
-                       configuration: configuration)
+            super.init(
+                paymentMethod: paymentMethod,
+                context: context,
+                fields: fields,
+                configuration: configuration
+            )
         }
         
         @_spi(AdyenInternal)

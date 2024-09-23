@@ -62,10 +62,12 @@ public struct StoredACHDirectDebitPaymentMethod: StoredPaymentMethod {
             "\(localizedString(.accessibilityLastFourDigits, parameters)): \(lastFourSeparated)"
         ].joined(separator: ", ")
         
-        return DisplayInformation(title: String.Adyen.securedString + bankAccountLastFour,
-                                  subtitle: localizedString(.achBankAccountTitle, parameters),
-                                  logoName: type.rawValue,
-                                  accessibilityLabel: accessibilityLabel)
+        return DisplayInformation(
+            title: String.Adyen.securedString + bankAccountLastFour,
+            subtitle: localizedString(.achBankAccountTitle, parameters),
+            logoName: type.rawValue,
+            accessibilityLabel: accessibilityLabel
+        )
     }
     
     /// Number of the stored account

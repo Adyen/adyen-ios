@@ -14,9 +14,11 @@ extension AdyenSession: SessionStoredPaymentMethodsDelegate {
     public var showRemovePaymentMethodButton: Bool { sessionContext.configuration.showRemovePaymentMethodButton }
     
     public func disable(storedPaymentMethod: StoredPaymentMethod, dropInComponent: AnyDropInComponent, completion: @escaping Completion<Bool>) {
-        let request = DisableStoredPaymentMethodRequest(sessionId: sessionContext.identifier,
-                                                        sessionData: sessionContext.data,
-                                                        storedPaymentMethodId: storedPaymentMethod.identifier)
+        let request = DisableStoredPaymentMethodRequest(
+            sessionId: sessionContext.identifier,
+            sessionData: sessionContext.data,
+            storedPaymentMethodId: storedPaymentMethod.identifier
+        )
         apiClient.perform(request) { [weak self] result in
             switch result {
             case .success:
@@ -34,9 +36,11 @@ extension AdyenSession: SessionStoredPaymentMethodsDelegate {
         let message = localizedString(.errorUnknown, localizationParameters)
         let doneTitle = localizedString(.dismissButton, localizationParameters)
         
-        let alertController = UIAlertController(title: title,
-                                                message: message,
-                                                preferredStyle: .alert)
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
         
         let doneAction = UIAlertAction(title: doneTitle, style: .default)
         alertController.addAction(doneAction)

@@ -55,11 +55,13 @@ public extension PaymentMethod {
         let defaultDisplayInformation = defaultDisplayInformation(using: parameters)
         if let merchantProvidedDisplayInformation {
             let subtitle = merchantProvidedDisplayInformation.subtitle ?? defaultDisplayInformation.subtitle
-            return DisplayInformation(title: merchantProvidedDisplayInformation.title,
-                                      subtitle: subtitle,
-                                      logoName: defaultDisplayInformation.logoName,
-                                      disclosureText: defaultDisplayInformation.disclosureText,
-                                      footnoteText: defaultDisplayInformation.footnoteText)
+            return DisplayInformation(
+                title: merchantProvidedDisplayInformation.title,
+                subtitle: subtitle,
+                logoName: defaultDisplayInformation.logoName,
+                disclosureText: defaultDisplayInformation.disclosureText,
+                footnoteText: defaultDisplayInformation.footnoteText
+            )
         }
         return defaultDisplayInformation
     }

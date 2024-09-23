@@ -17,9 +17,11 @@ class BACSConfirmationViewControllerTests: XCTestCase {
         try super.setUpWithError()
         let styleProvider = FormComponentStyle()
         presenter = BACSConfirmationPresenterProtocolMock()
-        sut = BACSConfirmationViewController(title: "BACS Direct Debit",
-                                             scrollEnabled: true,
-                                             styleProvider: styleProvider)
+        sut = BACSConfirmationViewController(
+            title: "BACS Direct Debit",
+            scrollEnabled: true,
+            styleProvider: styleProvider
+        )
         sut.presenter = presenter
         
     }

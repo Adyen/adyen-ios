@@ -34,11 +34,13 @@ public struct CashAppPayDetails: PaymentMethodDetails {
     ///   - onFileGrantId: Grant id for recurring payments.
     ///   - customerId: Unique identifier for this customer issued by Cash App.
     ///   - cashtag: Public identifier for the customer on Cash App.
-    public init(paymentMethod: CashAppPayPaymentMethod,
-                grantId: String?,
-                onFileGrantId: String?,
-                customerId: String?,
-                cashtag: String?) {
+    public init(
+        paymentMethod: CashAppPayPaymentMethod,
+        grantId: String?,
+        onFileGrantId: String?,
+        customerId: String?,
+        cashtag: String?
+    ) {
         self.type = paymentMethod.type
         self.grantId = grantId
         self.onFileGrantId = onFileGrantId

@@ -106,9 +106,11 @@ class SEPADirectDebitComponentTests: XCTestCase {
         
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
         let configuration = SEPADirectDebitComponent.Configuration(style: sepaComponentStyle)
-        let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod,
-                                           context: context,
-                                           configuration: configuration)
+        let sut = SEPADirectDebitComponent(
+            paymentMethod: sepaPaymentMethod,
+            context: context,
+            configuration: configuration
+        )
         
         setupRootViewController(sut.viewController)
         
@@ -246,8 +248,10 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let context = Dummy.context(with: analyticsProviderMock)
         let mockViewController = UIViewController()
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
-        let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod,
-                                           context: context)
+        let sut = SEPADirectDebitComponent(
+            paymentMethod: sepaPaymentMethod,
+            context: context
+        )
 
         // When
         sut.viewDidLoad(viewController: mockViewController)

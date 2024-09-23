@@ -25,20 +25,26 @@ public struct DefaultAddressViewModelBuilder: AddressViewModelBuilder {
     // swiftlint:disable function_body_length
     @_spi(AdyenInternal)
     public func build(context: AddressViewModelBuilderContext) -> AddressViewModel {
-        var viewModel = AddressViewModel(labels: [.city: .cityFieldTitle,
-                                                  .houseNumberOrName: .houseNumberFieldTitle,
-                                                  .street: .streetFieldTitle,
-                                                  .stateOrProvince: .provinceOrTerritoryFieldTitle,
-                                                  .postalCode: .postalCodeFieldTitle,
-                                                  .apartment: .apartmentSuiteFieldTitle],
-                                         placeholder: [.city: .cityFieldPlaceholder,
-                                                       .houseNumberOrName: .houseNumberFieldPlaceholder,
-                                                       .street: .streetFieldPlaceholder,
-                                                       .stateOrProvince: .provinceOrTerritoryFieldPlaceholder,
-                                                       .postalCode: .postalCodeFieldPlaceholder,
-                                                       .apartment: .apartmentSuiteFieldPlaceholder],
-                                         optionalFields: context.isOptional ? AddressField.allCases : [.apartment],
-                                         scheme: AddressField.allCases.filter { $0 != .country }.map { .item($0) })
+        var viewModel = AddressViewModel(
+            labels: [
+                .city: .cityFieldTitle,
+                .houseNumberOrName: .houseNumberFieldTitle,
+                .street: .streetFieldTitle,
+                .stateOrProvince: .provinceOrTerritoryFieldTitle,
+                .postalCode: .postalCodeFieldTitle,
+                .apartment: .apartmentSuiteFieldTitle
+            ],
+            placeholder: [
+                .city: .cityFieldPlaceholder,
+                .houseNumberOrName: .houseNumberFieldPlaceholder,
+                .street: .streetFieldPlaceholder,
+                .stateOrProvince: .provinceOrTerritoryFieldPlaceholder,
+                .postalCode: .postalCodeFieldPlaceholder,
+                .apartment: .apartmentSuiteFieldPlaceholder
+            ],
+            optionalFields: context.isOptional ? AddressField.allCases : [.apartment],
+            scheme: AddressField.allCases.filter { $0 != .country }.map { .item($0) }
+        )
         switch context.countryCode {
         case "BR":
             viewModel.labels[.stateOrProvince] = .stateFieldTitle
@@ -66,10 +72,12 @@ public struct DefaultAddressViewModelBuilder: AddressViewModelBuilder {
             viewModel.placeholder[.stateOrProvince] = .selectStateFieldPlaceholder
             viewModel.placeholder[.street] = .addressFieldPlaceholder
             viewModel.optionalFields = context.isOptional ? AddressField.allCases : [.houseNumberOrName]
-            viewModel.scheme = [.item(.street),
-                                .item(.houseNumberOrName),
-                                .item(.city),
-                                .split(.stateOrProvince, .postalCode)]
+            viewModel.scheme = [
+                .item(.street),
+                .item(.houseNumberOrName),
+                .item(.city),
+                .split(.stateOrProvince, .postalCode)
+            ]
         default:
             break
         }

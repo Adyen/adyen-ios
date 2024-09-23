@@ -16,10 +16,12 @@ public class KeyboardObserver {
     
     public init() {
         
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleKeyboardWillChangeFrameNotification),
-                                               name: UIResponder.keyboardWillChangeFrameNotification,
-                                               object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleKeyboardWillChangeFrameNotification),
+            name: UIResponder.keyboardWillChangeFrameNotification,
+            object: nil
+        )
     }
     
     @objc

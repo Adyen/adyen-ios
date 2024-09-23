@@ -14,11 +14,13 @@ public class FormAttributedLabelItem: FormItem {
     
     public var subitems: [FormItem] = []
 
-    public init(originalText: String,
-                links: [String],
-                style: TextStyle,
-                linkTextStyle: TextStyle,
-                identifier: String? = nil) {
+    public init(
+        originalText: String,
+        links: [String],
+        style: TextStyle,
+        linkTextStyle: TextStyle,
+        identifier: String? = nil
+    ) {
         self.identifier = identifier
         self.style = style
         self.linkTextStyle = linkTextStyle

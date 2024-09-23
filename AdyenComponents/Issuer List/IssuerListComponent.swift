@@ -41,9 +41,11 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     /// - Parameter paymentMethod: The issuer list payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(paymentMethod: IssuerListPaymentMethod,
-                context: AdyenContext,
-                configuration: Configuration = .init()) {
+    public init(
+        paymentMethod: IssuerListPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         self.issuerListPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
@@ -127,11 +129,15 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
             )
             listItem.selectionHandler = { [weak self, weak listItem] in
                 guard let self, let listItem else { return }
-                let details = IssuerListDetails(paymentMethod: self.issuerListPaymentMethod,
-                                                issuer: issuer.identifier)
-                self.submit(data: PaymentComponentData(paymentMethodDetails: details,
-                                                       amount: self.payment?.amount,
-                                                       order: self.order))
+                let details = IssuerListDetails(
+                    paymentMethod: self.issuerListPaymentMethod,
+                    issuer: issuer.identifier
+                )
+                self.submit(data: PaymentComponentData(
+                    paymentMethodDetails: details,
+                    amount: self.payment?.amount,
+                    order: self.order
+                ))
                 
                 self.sendIssuerSelectedEvent(issuer)
                 
@@ -175,8 +181,10 @@ extension IssuerListComponent {
         /// - Parameters:
         ///   - style: The UI style of the component.
         ///   - localizationParameters: Localization parameters.
-        public init(style: ListComponentStyle = .init(),
-                    localizationParameters: LocalizationParameters? = nil) {
+        public init(
+            style: ListComponentStyle = .init(),
+            localizationParameters: LocalizationParameters? = nil
+        ) {
             self.style = style
             self.localizationParameters = localizationParameters
         }

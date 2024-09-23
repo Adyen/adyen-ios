@@ -69,9 +69,11 @@ public extension DropInComponent {
         ///   - style: The UI styles of the components.
         ///   - allowsSkippingPaymentList: Boolean to enable skipping payment list when there is only one one non-instant payment method.
         ///   - allowPreselectedPaymentView: Boolean to enable the preselected stored payment method view step.
-        public init(style: Style = Style(),
-                    allowsSkippingPaymentList: Bool = false,
-                    allowPreselectedPaymentView: Bool = true) {
+        public init(
+            style: Style = Style(),
+            allowsSkippingPaymentList: Bool = false,
+            allowPreselectedPaymentView: Bool = true
+        ) {
             self.style = style
             self.allowsSkippingPaymentList = allowsSkippingPaymentList
             self.allowPreselectedPaymentView = allowPreselectedPaymentView
@@ -120,9 +122,11 @@ public extension DropInComponent {
         ///   Defaults to `true`.
         ///   - billingAddressCountryCodes: List of ISO country codes that is supported for the billing address.
         ///   Defaults to `["US", "PR"].
-        public init(showsStorePaymentMethodField: Bool = true,
-                    showsBillingAddress: Bool = true,
-                    billingAddressCountryCodes: [String] = ["US", "PR"]) {
+        public init(
+            showsStorePaymentMethodField: Bool = true,
+            showsBillingAddress: Bool = true,
+            billingAddressCountryCodes: [String] = ["US", "PR"]
+        ) {
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
             self.showsBillingAddress = showsBillingAddress
             self.billingAddressCountryCodes = billingAddressCountryCodes
@@ -185,15 +189,17 @@ public extension DropInComponent {
         ///   - allowedCardTypes: The enforced list of allowed card types.
         ///   - installmentConfiguration: Configuration for installments. Defaults to `nil`.
         ///   - billingAddress: Billing address fields configurations.
-        public init(showsHolderNameField: Bool = false,
-                    showsStorePaymentMethodField: Bool = true,
-                    showsSecurityCodeField: Bool = true,
-                    koreanAuthenticationMode: CardComponent.FieldVisibility = .auto,
-                    socialSecurityNumberMode: CardComponent.FieldVisibility = .auto,
-                    storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
-                    allowedCardTypes: [CardType]? = nil,
-                    installmentConfiguration: InstallmentConfiguration? = nil,
-                    billingAddress: BillingAddressConfiguration = .init()) {
+        public init(
+            showsHolderNameField: Bool = false,
+            showsStorePaymentMethodField: Bool = true,
+            showsSecurityCodeField: Bool = true,
+            koreanAuthenticationMode: CardComponent.FieldVisibility = .auto,
+            socialSecurityNumberMode: CardComponent.FieldVisibility = .auto,
+            storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
+            allowedCardTypes: [CardType]? = nil,
+            installmentConfiguration: InstallmentConfiguration? = nil,
+            billingAddress: BillingAddressConfiguration = .init()
+        ) {
             self.showsHolderNameField = showsHolderNameField
             self.showsSecurityCodeField = showsSecurityCodeField
             self.showsStorePaymentMethodField = showsStorePaymentMethodField
@@ -206,15 +212,17 @@ public extension DropInComponent {
         }
         
         internal var cardComponentConfiguration: CardComponent.Configuration {
-            CardComponent.Configuration(showsHolderNameField: showsHolderNameField,
-                                        showsStorePaymentMethodField: showsStorePaymentMethodField,
-                                        showsSecurityCodeField: showsSecurityCodeField,
-                                        koreanAuthenticationMode: koreanAuthenticationMode,
-                                        socialSecurityNumberMode: socialSecurityNumberMode,
-                                        storedCardConfiguration: stored,
-                                        allowedCardTypes: allowedCardTypes,
-                                        installmentConfiguration: installmentConfiguration,
-                                        billingAddress: billingAddress)
+            CardComponent.Configuration(
+                showsHolderNameField: showsHolderNameField,
+                showsStorePaymentMethodField: showsStorePaymentMethodField,
+                showsSecurityCodeField: showsSecurityCodeField,
+                koreanAuthenticationMode: koreanAuthenticationMode,
+                socialSecurityNumberMode: socialSecurityNumberMode,
+                storedCardConfiguration: stored,
+                allowedCardTypes: allowedCardTypes,
+                installmentConfiguration: installmentConfiguration,
+                billingAddress: billingAddress
+            )
         }
         
     }
@@ -243,10 +251,12 @@ public extension DropInComponent {
         ///   - showsStorePaymentMethodField: Determines the visibility of the field for storing the payment method.
         ///   - storePaymentMethod: Determines whether to store this payment method.
         ///   Ignored if `showsStorePaymentMethodField` is `true`.
-        public init(redirectURL: URL,
-                    referenceId: String? = nil,
-                    showsStorePaymentMethodField: Bool = true,
-                    storePaymentMethod: Bool = false) {
+        public init(
+            redirectURL: URL,
+            referenceId: String? = nil,
+            showsStorePaymentMethodField: Bool = true,
+            storePaymentMethod: Bool = false
+        ) {
             self.redirectURL = redirectURL
             self.referenceId = referenceId
             self.showsStorePaymentMethodField = showsStorePaymentMethodField

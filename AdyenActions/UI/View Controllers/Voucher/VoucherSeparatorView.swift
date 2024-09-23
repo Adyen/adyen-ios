@@ -13,9 +13,11 @@ extension VoucherSeparatorView {
     internal struct Model {
         internal var separatorTitle: String
 
-        internal var separatorStyle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
-                                                color: UIColor.Adyen.componentLabel,
-                                                textAlignment: .center)
+        internal var separatorStyle = TextStyle(
+            font: .preferredFont(forTextStyle: .footnote),
+            color: UIColor.Adyen.componentLabel,
+            textAlignment: .center
+        )
     }
 }
 
@@ -41,22 +43,34 @@ internal final class VoucherSeparatorView: UIView {
     }
 
     internal var rightCutoutFrame: CGRect {
-        CGRect(origin: CGPoint(x: bounds.size.width - arcLayerSize.width,
-                               y: bounds.height / 2 - arcLayerSize.height / 2),
-               size: arcLayerSize)
+        CGRect(
+            origin: CGPoint(
+                x: bounds.size.width - arcLayerSize.width,
+                y: bounds.height / 2 - arcLayerSize.height / 2
+            ),
+            size: arcLayerSize
+        )
     }
 
     private var rightSeparatorLayerFrame: CGRect {
         let xCoordinate = bounds.size.width - arcLayerSize.width - halfSeparatorBreadth - halfSeparatorLineWidth
-        return CGRect(origin: CGPoint(x: xCoordinate,
-                                      y: bounds.height / 2 - halfSeparatorLineWidth / 2),
-                      size: CGSize(width: halfSeparatorBreadth, height: halfSeparatorLineWidth))
+        return CGRect(
+            origin: CGPoint(
+                x: xCoordinate,
+                y: bounds.height / 2 - halfSeparatorLineWidth / 2
+            ),
+            size: CGSize(width: halfSeparatorBreadth, height: halfSeparatorLineWidth)
+        )
     }
 
     private var leftSeparatorLayerFrame: CGRect {
-        CGRect(origin: CGPoint(x: arcLayerSize.width + halfSeparatorLineWidth,
-                               y: bounds.height / 2 - halfSeparatorLineWidth / 2),
-               size: CGSize(width: halfSeparatorBreadth, height: halfSeparatorLineWidth))
+        CGRect(
+            origin: CGPoint(
+                x: arcLayerSize.width + halfSeparatorLineWidth,
+                y: bounds.height / 2 - halfSeparatorLineWidth / 2
+            ),
+            size: CGSize(width: halfSeparatorBreadth, height: halfSeparatorLineWidth)
+        )
     }
 
     private var halfSeparatorBreadth: CGFloat {
@@ -119,9 +133,13 @@ internal final class VoucherSeparatorView: UIView {
     }
 
     private var separatorTextLayerFrame: CGRect {
-        CGRect(origin: CGPoint(x: leftSeparatorLayerFrame.maxX,
-                               y: bounds.height / 2 - 9),
-               size: CGSize(width: separatorTextLayerWidth, height: 18))
+        CGRect(
+            origin: CGPoint(
+                x: leftSeparatorLayerFrame.maxX,
+                y: bounds.height / 2 - 9
+            ),
+            size: CGSize(width: separatorTextLayerWidth, height: 18)
+        )
     }
 
     private var separatorTextLayerWidth: CGFloat {

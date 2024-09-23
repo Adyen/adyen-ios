@@ -42,10 +42,12 @@ public enum CardEncryptor: AnyEncryptor {
             encryptedYear = try encrypt(CardPayload().add(expiryYear: expiryYear), with: publicKey)
         }
 
-        return EncryptedCard(number: encryptedNumber,
-                             securityCode: encryptedCode,
-                             expiryMonth: encryptedMonth,
-                             expiryYear: encryptedYear)
+        return EncryptedCard(
+            number: encryptedNumber,
+            securityCode: encryptedCode,
+            expiryMonth: encryptedMonth,
+            expiryYear: encryptedYear
+        )
     }
 
     /// Encrypts card number.

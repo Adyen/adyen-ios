@@ -109,22 +109,26 @@ extension FormCardSecurityCodeItemView {
         private func flipCard(toFront: Bool) {
             guard showFront != toFront else { return }
             showFront = toFront
-            UIView.transition(with: self,
-                              duration: 0.5,
-                              options: .transitionFlipFromRight,
-                              animations: {
-                                  self.image = UIImage(named: self.logoResource, in: self.bundle, compatibleWith: nil)
-                                  self.hintImage.image = UIImage(named: self.hintResource, in: self.bundle, compatibleWith: nil)
-                              },
-                              completion: nil)
+            UIView.transition(
+                with: self,
+                duration: 0.5,
+                options: .transitionFlipFromRight,
+                animations: {
+                    self.image = UIImage(named: self.logoResource, in: self.bundle, compatibleWith: nil)
+                    self.hintImage.image = UIImage(named: self.hintResource, in: self.bundle, compatibleWith: nil)
+                },
+                completion: nil
+            )
         }
         
         private func animateHint() {
-            UIView.animate(withDuration: blinkDuration,
-                           delay: 0,
-                           options: [.repeat, .autoreverse],
-                           animations: { self.hintImage.alpha = self.minimumAlpha },
-                           completion: nil)
+            UIView.animate(
+                withDuration: blinkDuration,
+                delay: 0,
+                options: [.repeat, .autoreverse],
+                animations: { self.hintImage.alpha = self.minimumAlpha },
+                completion: nil
+            )
         }
         
         override public var accessibilityIdentifier: String? {
@@ -139,8 +143,10 @@ extension FormCardSecurityCodeItemView {
             hintImage.adyen.anchor(inside: self)
         }
         
-        private lazy var hintImage = UIImageView(image: UIImage(named: self.hintResource,
-                                                                in: self.bundle,
-                                                                compatibleWith: nil))
+        private lazy var hintImage = UIImageView(image: UIImage(
+            named: self.hintResource,
+            in: self.bundle,
+            compatibleWith: nil
+        ))
     }
 }

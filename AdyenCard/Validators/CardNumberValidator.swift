@@ -9,8 +9,7 @@ import Foundation
 
 /// Validates a card's number.
 /// The input is expected to be sanitized.
-@_spi(AdyenInternal)
-public final class CardNumberValidator: StatusValidator {
+public final class CardNumberValidator: Validator {
     
     private enum Constants {
         static let maxPanLength = 19
@@ -32,34 +31,14 @@ public final class CardNumberValidator: StatusValidator {
     ///   - isLuhnCheckEnabled: Indicates whether luhn check is enabled.
     ///   - isEnteredBrandSupported: Is the brand being validated supported.
     ///   - panLength: The PAN length.
-    public init(isLuhnCheckEnabled: Bool,
-                isEnteredBrandSupported: Bool,
-                panLength: Int? = nil) {
+    public init(
+        isLuhnCheckEnabled: Bool,
+        isEnteredBrandSupported: Bool,
+        panLength: Int? = nil
+    ) {
         self.isLuhnCheckEnabled = isLuhnCheckEnabled
         self.isEnteredBrandSupported = isEnteredBrandSupported
         self.panLength = panLength
-    }
-    
-    public func validate(_ value: String) -> ValidationStatus {
-        // order of checks are important to return the correct error.
-        
-        if value.isEmpty {
-            return .invalid(CardValidationError.cardNumberEmpty)
-        }
-        
-        if !isEnteredBrandSupported {
-            return .invalid(CardValidationError.cardUnsupported)
-        }
-        
-        if value.count < Constants.minLength {
-            return .invalid(CardValidationError.cardNumberPartial)
-        }
-        
-        if isLuhnCheckEnabled, !luhnCheck(value) {
-            return .invalid(CardValidationError.cardLuhnCheckFailed)
-        }
-        
-        return .valid
     }
     
     public func isValid(_ value: String) -> Bool {
@@ -91,5 +70,31 @@ public final class CardNumberValidator: StatusValidator {
         }
         
         return sum % 10 == 0
+    }
+}
+
+@_spi(AdyenInternal)
+extension CardNumberValidator: StatusValidator {
+    
+    public func validate(_ value: String) -> ValidationStatus {
+        // order of checks are important to return the correct error.
+        
+        if value.isEmpty {
+            return .invalid(CardValidationError.cardNumberEmpty)
+        }
+        
+        if !isEnteredBrandSupported {
+            return .invalid(CardValidationError.cardUnsupported)
+        }
+        
+        if value.count < Constants.minLength {
+            return .invalid(CardValidationError.cardNumberPartial)
+        }
+        
+        if isLuhnCheckEnabled, !luhnCheck(value) {
+            return .invalid(CardValidationError.cardLuhnCheckFailed)
+        }
+        
+        return .valid
     }
 }

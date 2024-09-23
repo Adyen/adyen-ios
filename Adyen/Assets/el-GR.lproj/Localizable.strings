@@ -6,7 +6,7 @@
 "adyen.error.title" = "Σφάλμα";
 "adyen.error.unknown" = "Προέκυψε άγνωστο σφάλμα";
 "adyen.validationAlert.title" = "Μη έγκυρη είσοδος";
-"adyen.paymentMethods.otherMethods" = "άλλοι";
+"adyen.paymentMethods.otherMethods" = "Άλλοι";
 "adyen.paymentMethods.storedMethods" = "Αποθηκευμένοι";
 "adyen.paymentMethods.paidMethods" = "Εφαρμοσμένες";
 "adyen.paymentMethods.title" = "Τρόποι πληρωμής";

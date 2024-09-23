@@ -34,9 +34,11 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
     /// - Parameter paymentMethod: The SEPA Direct Debit payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: Configuration for the component.
-    public init(paymentMethod: SEPADirectDebitPaymentMethod,
-                context: AdyenContext,
-                configuration: Configuration = .init()) {
+    public init(
+        paymentMethod: SEPADirectDebitPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         self.sepaDirectDebitPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
@@ -46,8 +48,10 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
     
     // MARK: - Presentable Component Protocol
     
-    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController,
-                                                                             style: configuration.style)
+    public lazy var viewController: UIViewController = SecuredViewController(
+        child: formViewController,
+        style: configuration.style
+    )
     
     public var requiresModalPresentation: Bool = true
     
@@ -84,9 +88,11 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
             return
         }
         
-        let details = SEPADirectDebitDetails(paymentMethod: sepaDirectDebitPaymentMethod,
-                                             iban: ibanItem.value,
-                                             ownerName: nameItem.value)
+        let details = SEPADirectDebitDetails(
+            paymentMethod: sepaDirectDebitPaymentMethod,
+            iban: ibanItem.value,
+            ownerName: nameItem.value
+        )
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
         
@@ -129,9 +135,11 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
     internal lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
-        item.title = localizedSubmitButtonTitle(with: payment?.amount,
-                                                style: .immediate,
-                                                configuration.localizationParameters)
+        item.title = localizedSubmitButtonTitle(
+            with: payment?.amount,
+            style: .immediate,
+            configuration.localizationParameters
+        )
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }

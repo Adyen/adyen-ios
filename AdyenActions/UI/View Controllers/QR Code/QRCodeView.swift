@@ -23,151 +23,49 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     
     public var localizationParameters: LocalizationParameters?
     
-    private var imageLoadingTask: AdyenCancellable?
+    private var imageLoadingTask: AdyenCancellable? {
+        willSet { imageLoadingTask?.cancel() }
+    }
     
     internal init(model: Model) {
         self.model = model
         super.init(frame: .zero)
-        buildUI()
-        backgroundColor = model.style.backgroundColor
         
+        backgroundColor = model.style.backgroundColor
         accessibilityIdentifier = "adyen.QRCode"
+        
+        setupUI()
     }
     
     @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
+    internal required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func buildUI() {
-        addLogo()
-        addInstructionLabel()
-        addQRCodeImage()
-        addAmountToPay()
-        addProgressView()
-        addExpirationLabel()
-        switch model.actionButtonType {
-        case .copyCode:
-            addCopyCodeButton()
-        case .saveAsImage:
-            addSaveAsImageButton()
-        }
-    }
+    // MARK: Views
     
-    override internal func layoutSubviews() {
-        super.layoutSubviews()
-        
-        saveAsImageButton.adyen.round(using: model.style.saveAsImageButton.cornerRounding)
-    }
-    
-    private func addLogo() {
-        addSubview(logo)
-        logo.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            logo.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
-            logo.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor)
-        ])
-    }
-    
-    private func addInstructionLabel() {
-        addSubview(instructionLabel)
-        instructionLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            instructionLabel.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 20),
-            instructionLabel.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 37),
-            instructionLabel.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -37.0)
-        ])
-    }
-
-    private func addQRCodeImage() {
-        addSubview(qrCodeImageView)
-        qrCodeImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            qrCodeImageView.topAnchor.constraint(equalTo: instructionLabel.bottomAnchor, constant: 45),
-            qrCodeImageView.widthAnchor.constraint(equalToConstant: 145.0),
-            qrCodeImageView.heightAnchor.constraint(equalToConstant: 144.0),
-            qrCodeImageView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor)
-        ])
-    }
-
-    private func addAmountToPay() {
-        addSubview(amountToPayLabel)
-        amountToPayLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            amountToPayLabel.topAnchor.constraint(equalTo: qrCodeImageView.bottomAnchor, constant: 22.0),
-            amountToPayLabel.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor)
-        ])
-    }
-
-    private func addProgressView() {
-        addSubview(progressView)
-        progressView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            progressView.topAnchor.constraint(equalTo: amountToPayLabel.bottomAnchor, constant: 24.0),
-            progressView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor)
-        ])
-    }
-    
-    private func addExpirationLabel() {
-        addSubview(expirationLabel)
-        expirationLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            expirationLabel.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 13.0),
-            expirationLabel.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 16),
-            expirationLabel.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -16)
-        ])
-    }
-    
-    private func addSaveAsImageButton() {
-        addSubview(saveAsImageButton)
-        saveAsImageButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            saveAsImageButton.heightAnchor.constraint(equalToConstant: 50.0),
-            saveAsImageButton.topAnchor.constraint(equalTo: expirationLabel.bottomAnchor, constant: 40),
-            saveAsImageButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 16),
-            saveAsImageButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -16),
-            saveAsImageButton.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
-        ])
-    }
-
-    private func addCopyCodeButton() {
-        addSubview(copyCodeButton)
-        copyCodeButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            copyCodeButton.heightAnchor.constraint(equalToConstant: 50.0),
-            copyCodeButton.topAnchor.constraint(equalTo: expirationLabel.bottomAnchor, constant: 34),
-            copyCodeButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 16),
-            copyCodeButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: -16),
-            copyCodeButton.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
-        ])
-    }
-
-    private lazy var saveAsImageButton: SubmitButton = {
-        let button = SubmitButton(style: model.style.saveAsImageButton)
-        button.title = localizedString(.voucherSaveImage, localizationParameters)
-        button.addTarget(self, action: #selector(saveQRCodeAsImage), for: .touchUpInside)
-        button.accessibilityIdentifier = "saveAsImageButton"
-
-        return button
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
     }()
-
-    private lazy var copyCodeButton: SubmitButton = {
-        let button = SubmitButton(style: model.style.copyCodeButton)
-        button.title = localizedString(.pixCopyButton, localizationParameters)
-        button.addTarget(self, action: #selector(copyCode), for: .touchUpInside)
-        button.accessibilityIdentifier = "copyCodeButton"
-        
-        return button
+    
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.alignment = .center
+        stackView.spacing = 20
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
 
     internal lazy var logo: UIImageView = {
         let logo = UIImageView()
-        let logoSize = CGSize(width: 74.0, height: 48.0)
         logo.adyen.round(using: model.style.logoCornerRounding)
         logo.clipsToBounds = true
-        logo.widthAnchor.constraint(equalToConstant: logoSize.width).isActive = true
-        logo.heightAnchor.constraint(equalToConstant: logoSize.height).isActive = true
         logo.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "logo")
+        logo.translatesAutoresizingMaskIntoConstraints = false
         return logo
     }()
     
@@ -176,22 +74,15 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         instructionLabel.text = model.instruction
         instructionLabel.numberOfLines = 0
         instructionLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "instructionLabel")
-        
+        instructionLabel.translatesAutoresizingMaskIntoConstraints = false
         return instructionLabel
     }()
     
     private lazy var qrCodeImageView: UIImageView = {
-        let data = model.action.qrCodeData.data(using: String.Encoding.ascii)
-        guard let filter = CIFilter(name: "CIQRCodeGenerator") else {
-            return UIImageView()
-        }
-        filter.setValue(data, forKey: "inputMessage")
-        let transform = CGAffineTransform(scaleX: 3, y: 3)
-
-        guard let output = filter.outputImage?.transformed(by: transform) else {
-            return UIImageView()
-        }
-        return UIImageView(image: UIImage(ciImage: output))
+        let qrCode = model.action.qrCodeData.generateQRCode()
+        let qrCodeView = UIImageView(image: qrCode)
+        qrCodeView.translatesAutoresizingMaskIntoConstraints = false
+        return qrCodeView
     }()
 
     private lazy var amountToPayLabel: UILabel = {
@@ -202,18 +93,15 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
             amountToPayLabel.text = model.payment?.amount.formatted
         }
         amountToPayLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "amountToPayLabel")
-        
+        amountToPayLabel.translatesAutoresizingMaskIntoConstraints = false
         return amountToPayLabel
     }()
     
-    private lazy var progressView: UIProgressView = {
-        let progressViewSize = CGSize(width: 120, height: 4)
+    internal lazy var progressView: UIProgressView = {
         let progressView = UIProgressView(style: model.style.progressView)
         progressView.observedProgress = model.observedProgress
-        progressView.widthAnchor.constraint(equalToConstant: progressViewSize.width).isActive = true
-        progressView.heightAnchor.constraint(equalToConstant: progressViewSize.height).isActive = true
         progressView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "progressView")
-        
+        progressView.translatesAutoresizingMaskIntoConstraints = false
         return progressView
     }()
     
@@ -221,19 +109,51 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         let expirationLabel = UILabel(style: model.style.expirationLabel)
         expirationLabel.numberOfLines = 0
         expirationLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "expirationLabel")
-        
-        bind(model.expiration, to: expirationLabel, at: \.text)
-        
+        bind(model.expiration, to: expirationLabel, at: \.text) { string in
+            let expirationString: String
+            if let string, !string.isEmpty {
+                expirationLabel.alpha = 1
+                expirationString = string
+            } else {
+                expirationLabel.alpha = 0
+                expirationString = " "
+            }
+            return expirationString
+        }
+        expirationLabel.translatesAutoresizingMaskIntoConstraints = false
         return expirationLabel
     }()
+    
+    private lazy var actionButton: SubmitButton = {
+        switch model.actionButtonType {
+        case .copyCode:
+            let button = SubmitButton(style: model.style.copyCodeButton)
+            button.title = localizedString(.pixCopyButton, localizationParameters)
+            button.addTarget(self, action: #selector(copyCode), for: .touchUpInside)
+            button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "copyCodeButton")
+            button.translatesAutoresizingMaskIntoConstraints = false
+            return button
+        case .saveAsImage:
+            let button = SubmitButton(style: model.style.saveAsImageButton)
+            button.title = localizedString(.voucherSaveImage, localizationParameters)
+            button.addTarget(self, action: #selector(saveQRCodeAsImage), for: .touchUpInside)
+            button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "saveAsImageButton")
+            button.translatesAutoresizingMaskIntoConstraints = false
+            return button
+        }
+    }()
+    
+    // MARK: Action Handling
 
     @objc private func saveQRCodeAsImage() {
-        delegate?.saveAsImage(qrCodeImage: qrCodeImageView.adyen.snapShot(), sourceView: saveAsImageButton)
+        delegate?.saveAsImage(qrCodeImage: qrCodeImageView.adyen.snapshot(), sourceView: actionButton)
     }
 
     @objc private func copyCode() {
         delegate?.copyToPasteboard(with: model.action)
     }
+    
+    // MARK: UI Handling
     
     override public func didMoveToWindow() {
         super.didMoveToWindow()
@@ -246,5 +166,57 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         } else {
             imageLoadingTask = nil
         }
+    }
+}
+
+// MARK: - Setup
+
+private extension QRCodeView {
+    
+    func setupUI() {
+        let wrapperStackView = UIStackView()
+        wrapperStackView.axis = .vertical
+        wrapperStackView.addArrangedSubview(scrollView)
+        wrapperStackView.addArrangedSubview(actionButton)
+        addSubview(wrapperStackView)
+        wrapperStackView.adyen.anchor(
+            inside: self.safeAreaLayoutGuide,
+            with: .init(top: 0, left: 0, bottom: -8, right: 0)
+        )
+        
+        scrollView.addSubview(stackView)
+        
+        stackView.addArrangedSubview(logo)
+        stackView.addArrangedSubview(instructionLabel)
+        stackView.addArrangedSubview(qrCodeImageView)
+        stackView.addArrangedSubview(amountToPayLabel)
+        stackView.addArrangedSubview(progressView)
+        stackView.addArrangedSubview(expirationLabel)
+        
+        let logoSize = CGSize(width: 74.0, height: 48.0)
+        let progressViewSize = CGSize(width: 120, height: 4)
+        
+        NSLayoutConstraint.activate([
+            // Action Button
+            actionButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            actionButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            actionButton.heightAnchor.constraint(equalToConstant: 50.0),
+            // Stack View
+            stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -16),
+            // Logo
+            logo.widthAnchor.constraint(equalToConstant: logoSize.width),
+            logo.heightAnchor.constraint(equalToConstant: logoSize.height),
+            // Instruction Label
+            instructionLabel.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 0.9),
+            // QR Code
+            qrCodeImageView.widthAnchor.constraint(equalToConstant: 170),
+            qrCodeImageView.heightAnchor.constraint(equalTo: qrCodeImageView.widthAnchor),
+            // Progress View
+            progressView.widthAnchor.constraint(equalToConstant: progressViewSize.width),
+            progressView.heightAnchor.constraint(equalToConstant: progressViewSize.height)
+        ])
     }
 }

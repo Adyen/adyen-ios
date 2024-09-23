@@ -97,12 +97,14 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
         super.viewDidAppear(animated)
         delegate?.viewDidAppear(viewController: self)
 
-        view.adyen.animate(context: AnimationContext(animationKey: Animations.firstResponder,
-                                                     duration: 0,
-                                                     options: [.layoutSubviews, .beginFromCurrentState],
-                                                     animations: { [weak self] in
-                                                         self?.assignInitialFirstResponder()
-                                                     }))
+        view.adyen.animate(context: AnimationContext(
+            animationKey: Animations.firstResponder,
+            duration: 0,
+            options: [.layoutSubviews, .beginFromCurrentState],
+            animations: { [weak self] in
+                self?.assignInitialFirstResponder()
+            }
+        ))
     }
 
     override open func viewWillDisappear(_ animated: Bool) {
@@ -136,12 +138,14 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
 
     public func didUpdatePreferredContentSize() {
         let bottomInset: CGFloat = keyboardObserver.keyboardRect.height - view.safeAreaInsets.bottom
-        let context = AnimationContext(animationKey: Animations.keyboardBottomInset,
-                                       duration: 0.25,
-                                       options: [.beginFromCurrentState, .layoutSubviews],
-                                       animations: { [weak self] in
-                                           self?.scrollView.contentInset.bottom = bottomInset
-                                       })
+        let context = AnimationContext(
+            animationKey: Animations.keyboardBottomInset,
+            duration: 0.25,
+            options: [.beginFromCurrentState, .layoutSubviews],
+            animations: { [weak self] in
+                self?.scrollView.contentInset.bottom = bottomInset
+            }
+        )
         view.adyen.animate(context: context)
     }
 
@@ -165,12 +169,18 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     }
 
     private func observerVisibility(of item: some FormItem, and itemView: UIView) {
-        itemView.adyen.hide(animationKey: String(describing: itemView),
-                            hidden: item.isHidden.wrappedValue, animated: false)
+        itemView.adyen.hide(
+            animationKey: String(describing: itemView),
+            hidden: item.isHidden.wrappedValue,
+            animated: false
+        )
 
         observe(item.isHidden) { isHidden in
-            itemView.adyen.hide(animationKey: String(describing: itemView),
-                                hidden: isHidden, animated: true)
+            itemView.adyen.hide(
+                animationKey: String(describing: itemView),
+                hidden: isHidden,
+                animated: true
+            )
         }
     }
 

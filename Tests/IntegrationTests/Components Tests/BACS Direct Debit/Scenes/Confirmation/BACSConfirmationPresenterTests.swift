@@ -21,10 +21,12 @@ class BACSConfirmationPresenterTests: XCTestCase {
         view = BACSConfirmationViewProtocolMock()
         router = BACSRouterProtocolMock()
         itemsFactory = itemsFactoryMock
-        sut = BACSConfirmationPresenter(data: bacsDataMock,
-                                        view: view,
-                                        router: router,
-                                        itemsFactory: itemsFactory)
+        sut = BACSConfirmationPresenter(
+            data: bacsDataMock,
+            view: view,
+            router: router,
+            itemsFactory: itemsFactory
+        )
     }
 
     override func tearDownWithError() throws {
@@ -162,10 +164,12 @@ class BACSConfirmationPresenterTests: XCTestCase {
     // MARK: - Private
 
     private var bacsDataMock: BACSDirectDebitData {
-        BACSDirectDebitData(holderName: "Katrina del Mar",
-                            bankAccountNumber: "90583742",
-                            bankLocationId: "743082",
-                            shopperEmail: "katrina.mar@mail.com")
+        BACSDirectDebitData(
+            holderName: "Katrina del Mar",
+            bankAccountNumber: "90583742",
+            bankLocationId: "743082",
+            shopperEmail: "katrina.mar@mail.com"
+        )
     }
 
     private var itemsFactoryMock: BACSItemsFactoryProtocolMock {

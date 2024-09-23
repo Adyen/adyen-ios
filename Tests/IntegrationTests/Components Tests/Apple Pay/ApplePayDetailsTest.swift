@@ -12,12 +12,14 @@ class ApplePayDetailsTest: XCTestCase {
     
     func testSerialization() throws {
         let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
-        let sut = ApplePayDetails(paymentMethod: paymentMethod,
-                                  token: "test_token",
-                                  network: "test_network",
-                                  billingContact: nil,
-                                  shippingContact: nil,
-                                  shippingMethod: nil)
+        let sut = ApplePayDetails(
+            paymentMethod: paymentMethod,
+            token: "test_token",
+            network: "test_network",
+            billingContact: nil,
+            shippingContact: nil,
+            shippingMethod: nil
+        )
         
         let data = try AdyenCoder.encode(sut.encodable) as Data
         

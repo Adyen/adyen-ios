@@ -70,8 +70,10 @@ class CustomComponentPresenter: CustomComponentPresenterProtocol {
 
     // MARK: - Private
 
-    private func performPayment(with data: PaymentComponentData,
-                                from component: PaymentComponent) {
+    private func performPayment(
+        with data: PaymentComponentData,
+        from component: PaymentComponent
+    ) {
         guard let cardComponent, cardComponent.validate() else {
             return
         }
@@ -109,18 +111,22 @@ class CustomComponentPresenter: CustomComponentPresenterProtocol {
     }
 
     private func resolveCardComponent() -> CardComponent {
-        let paymentMethod = CardPaymentMethod(type: .scheme,
-                                              name: "Card",
-                                              fundingSource: .debit,
-                                              brands: [.visa])
+        let paymentMethod = CardPaymentMethod(
+            type: .scheme,
+            name: "Card",
+            fundingSource: .debit,
+            brands: [.visa]
+        )
         var billingAddressConfiguration = BillingAddressConfiguration()
         billingAddressConfiguration.mode = .none
 
         let configuration = CardComponent.Configuration(showsSubmitButton: false, billingAddress: billingAddressConfiguration)
 
-        let cardComponent = CardComponent(paymentMethod: paymentMethod,
-                                          context: adyenContext,
-                                          configuration: configuration)
+        let cardComponent = CardComponent(
+            paymentMethod: paymentMethod,
+            context: adyenContext,
+            configuration: configuration
+        )
         cardComponent.delegate = self
         return cardComponent
     }
@@ -128,13 +134,17 @@ class CustomComponentPresenter: CustomComponentPresenterProtocol {
 
 extension CustomComponentPresenter: PaymentComponentDelegate {
 
-    func didSubmit(_ data: Adyen.PaymentComponentData,
-                   from component: any Adyen.PaymentComponent) {
+    func didSubmit(
+        _ data: Adyen.PaymentComponentData,
+        from component: any Adyen.PaymentComponent
+    ) {
         performPayment(with: data, from: component)
     }
     
-    func didFail(with error: any Error,
-                 from component: any Adyen.PaymentComponent) {
+    func didFail(
+        with error: any Error,
+        from component: any Adyen.PaymentComponent
+    ) {
         handlePayment(error: error)
     }
 
@@ -142,9 +152,11 @@ extension CustomComponentPresenter: PaymentComponentDelegate {
 
     private func handlePayment(error: Error?) {
         stopLoading()
-        let alertViewController = UIAlertController(title: "Payment failed",
-                                                    message: "There was error processing the payment. \(error?.localizedDescription ?? "")",
-                                                    preferredStyle: .alert)
+        let alertViewController = UIAlertController(
+            title: "Payment failed",
+            message: "There was error processing the payment. \(error?.localizedDescription ?? "")",
+            preferredStyle: .alert
+        )
         let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
             alertViewController.dismiss(animated: true)
         }

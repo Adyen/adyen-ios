@@ -51,10 +51,12 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     /// - Parameter title: The title.
     /// - Parameter style: The component's UI style.
     /// - Parameter listItemStyle: The list item UI style.
-    internal init(component: PaymentComponent,
-                  title: String,
-                  style: FormComponentStyle,
-                  listItemStyle: ListItemStyle) {
+    internal init(
+        component: PaymentComponent,
+        title: String,
+        style: FormComponentStyle,
+        listItemStyle: ListItemStyle
+    ) {
         self.title = title
         self.style = style
         self.listItemStyle = listItemStyle
@@ -121,9 +123,11 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     private lazy var submitButtonItem: FormButtonItem = {
         let component = self.defaultComponent
         let item = FormButtonItem(style: style.mainButtonItem)
-        item.title = localizedSubmitButtonTitle(with: component.context.payment?.amount,
-                                                style: .immediate,
-                                                localizationParameters)
+        item.title = localizedSubmitButtonTitle(
+            with: component.context.payment?.amount,
+            style: .immediate,
+            localizationParameters
+        )
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "submitButton")
 
         item.buttonSelectionHandler = { [weak self] in

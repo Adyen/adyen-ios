@@ -25,10 +25,12 @@ class BACSInputPresenterTests: XCTestCase {
         itemsFactory = itemsFactoryMock
         let amount = Amount(value: 105.7, currencyCode: "USD", localeIdentifier: nil)
 
-        sut = BACSInputPresenter(view: view,
-                                 router: router,
-                                 tracker: tracker,
-                                 itemsFactory: itemsFactory)
+        sut = BACSInputPresenter(
+            view: view,
+            router: router,
+            tracker: tracker,
+            itemsFactory: itemsFactory
+        )
         sut.amount = amount
     }
 
@@ -285,10 +287,12 @@ class BACSInputPresenterTests: XCTestCase {
     }
 
     private var bacsDataMock: BACSDirectDebitData {
-        BACSDirectDebitData(holderName: "Katrina del Mar",
-                            bankAccountNumber: "90583742",
-                            bankLocationId: "743082",
-                            shopperEmail: "katrina.mar@mail.com")
+        BACSDirectDebitData(
+            holderName: "Katrina del Mar",
+            bankAccountNumber: "90583742",
+            bankLocationId: "743082",
+            shopperEmail: "katrina.mar@mail.com"
+        )
     }
 
 }

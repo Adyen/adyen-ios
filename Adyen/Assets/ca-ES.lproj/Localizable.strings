@@ -6,7 +6,7 @@
 "adyen.error.title" = "Error";
 "adyen.error.unknown" = "S'ha produït un error desconegut";
 "adyen.validationAlert.title" = "Entrada incorrecta";
-"adyen.paymentMethods.otherMethods" = "altres";
+"adyen.paymentMethods.otherMethods" = "Altres";
 "adyen.paymentMethods.storedMethods" = "Emmagatzemat";
 "adyen.paymentMethods.paidMethods" = "Aplicat";
 "adyen.paymentMethods.title" = "Mètodes de pagament";

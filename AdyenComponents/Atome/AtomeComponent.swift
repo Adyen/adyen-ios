@@ -28,9 +28,11 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
     ///   - paymentMethod: The Atome payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
-    public init(paymentMethod: PaymentMethod,
-                context: AdyenContext,
-                configuration: Configuration = .init()) {
+    public init(
+        paymentMethod: PaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         personalDetailsHeaderItem = FormLabelItem(text: "", style: configuration.style.sectionHeader)
 
         let fields: [PersonalInformation] = [
@@ -42,10 +44,12 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
             .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1)))
         ]
 
-        super.init(paymentMethod: paymentMethod,
-                   context: context,
-                   fields: fields,
-                   configuration: configuration)
+        super.init(
+            paymentMethod: paymentMethod,
+            context: context,
+            fields: fields,
+            configuration: configuration
+        )
 
         setupItems()
     }
@@ -74,10 +78,12 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
         }
 
         let shopperName = ShopperName(firstName: firstName, lastName: lastName)
-        let atomeDetails = AtomeDetails(paymentMethod: paymentMethod,
-                                        shopperName: shopperName,
-                                        telephoneNumber: telephoneNumber,
-                                        billingAddress: billingAddress)
+        let atomeDetails = AtomeDetails(
+            paymentMethod: paymentMethod,
+            shopperName: shopperName,
+            telephoneNumber: telephoneNumber,
+            billingAddress: billingAddress
+        )
         return atomeDetails
     }
 

@@ -84,9 +84,7 @@ internal final class ComponentsViewController: UIViewController {
         navigationItem.title = "Components"
         
         componentsView.items = [
-            [
-                ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)
-            ],
+            [ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)],
             [
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
                 ComponentsItem(
@@ -100,12 +98,7 @@ internal final class ComponentsViewController: UIViewController {
                     selectionHandler: presentInstantPaymentComponent
                 )
             ],
-            [
-                ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)
-            ],
-            [
-                ComponentsItem(title: "Configurable Pay Button", selectionHandler: presentCustomComponentView)
-            ]
+            [ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)]
         ]
         
         if #available(iOS 13.0.0, *) {

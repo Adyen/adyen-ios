@@ -35,12 +35,14 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
     ///   Defaults to `true`.
     ///   - localizationParameters: The localization parameters.
-    public init(style: FormComponentStyle = FormComponentStyle(),
-                showsSubmitButton: Bool = true,
-                localizationParameters: LocalizationParameters? = nil) {
+    public init(
+        style: FormComponentStyle = FormComponentStyle(),
+        showsSubmitButton: Bool = true,
+        localizationParameters: LocalizationParameters? = nil
+    ) {
         self.style = style
-        self.localizationParameters = localizationParameters
         self.showsSubmitButton = showsSubmitButton
+        self.localizationParameters = localizationParameters
     }
 
 }
@@ -66,10 +68,12 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
     ///   Defaults to `true`.
     ///   - shopperInformation: The shopper information to be prefilled.
     ///   - localizationParameters: The localization parameters.
-    public init(style: FormComponentStyle = FormComponentStyle(),
-                showsSubmitButton: Bool = true,
-                shopperInformation: PrefilledShopperInformation? = nil,
-                localizationParameters: LocalizationParameters? = nil) {
+    public init(
+        style: FormComponentStyle = FormComponentStyle(),
+        showsSubmitButton: Bool = true,
+        shopperInformation: PrefilledShopperInformation? = nil,
+        localizationParameters: LocalizationParameters? = nil
+    ) {
         self.style = style
         self.showsSubmitButton = showsSubmitButton
         self.shopperInformation = shopperInformation

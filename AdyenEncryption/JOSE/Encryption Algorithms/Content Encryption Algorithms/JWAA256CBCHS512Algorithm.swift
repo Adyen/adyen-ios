@@ -26,15 +26,19 @@ internal struct JWAA256CBCHS512Algorithm: JWAEncryptionAlgorithm {
         
         let operation = CCOperation(kCCEncrypt)
         let option = CCOptions(kCCOptionPKCS7Padding)
-        let encryptedPayload = try aesCrypt(operation: operation,
-                                            options: option,
-                                            keyData: aesKey,
-                                            initializationVector: input.initializationVector,
-                                            dataIn: input.payload)
-        let authenticationTag = try createAuthenticationTag(withAdditionalAuthenticationData: input.additionalAuthenticationData,
-                                                            initializationVector: input.initializationVector,
-                                                            encryptedPayload: encryptedPayload,
-                                                            hmacKey: hmacKey)
+        let encryptedPayload = try aesCrypt(
+            operation: operation,
+            options: option,
+            keyData: aesKey,
+            initializationVector: input.initializationVector,
+            dataIn: input.payload
+        )
+        let authenticationTag = try createAuthenticationTag(
+            withAdditionalAuthenticationData: input.additionalAuthenticationData,
+            initializationVector: input.initializationVector,
+            encryptedPayload: encryptedPayload,
+            hmacKey: hmacKey
+        )
         return JWAOutput(encryptedPayload: encryptedPayload, authenticationTag: authenticationTag)
     }
     
@@ -51,10 +55,12 @@ internal struct JWAA256CBCHS512Algorithm: JWAEncryptionAlgorithm {
         return (aesKey, hmacKey)
     }
     
-    private func createAuthenticationTag(withAdditionalAuthenticationData: Data,
-                                         initializationVector: Data,
-                                         encryptedPayload: Data,
-                                         hmacKey: Data) throws -> Data {
+    private func createAuthenticationTag(
+        withAdditionalAuthenticationData: Data,
+        initializationVector: Data,
+        encryptedPayload: Data,
+        hmacKey: Data
+    ) throws -> Data {
         var hmacData = Data()
         hmacData.append(withAdditionalAuthenticationData)
         hmacData.append(initializationVector)

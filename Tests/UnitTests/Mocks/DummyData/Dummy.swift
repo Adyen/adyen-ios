@@ -37,35 +37,45 @@ enum Dummy: Error {
         )
     }
 
-    internal static let visaCard = Card(number: "4917 6100 0000 0000",
-                                        securityCode: "737",
-                                        expiryMonth: "03",
-                                        expiryYear: "30",
-                                        holder: nil)
+    internal static let visaCard = Card(
+        number: "4917 6100 0000 0000",
+        securityCode: "737",
+        expiryMonth: "03",
+        expiryYear: "30",
+        holder: nil
+    )
 
-    internal static let amexCard = Card(number: "3714 4963 5398 431",
-                                        securityCode: "7373",
-                                        expiryMonth: "03",
-                                        expiryYear: "30",
-                                        holder: nil)
+    internal static let amexCard = Card(
+        number: "3714 4963 5398 431",
+        securityCode: "7373",
+        expiryMonth: "03",
+        expiryYear: "30",
+        holder: nil
+    )
 
-    internal static let bancontactCard = Card(number: "6703 4444 4444 4449",
-                                              securityCode: nil,
-                                              expiryMonth: "03",
-                                              expiryYear: "30",
-                                              holder: nil)
+    internal static let bancontactCard = Card(
+        number: "6703 4444 4444 4449",
+        securityCode: nil,
+        expiryMonth: "03",
+        expiryYear: "30",
+        holder: nil
+    )
     
-    internal static let longBancontactCard = Card(number: "6703 0000 0000 0000 003",
-                                                  securityCode: nil,
-                                                  expiryMonth: "03",
-                                                  expiryYear: "30",
-                                                  holder: nil)
+    internal static let longBancontactCard = Card(
+        number: "6703 0000 0000 0000 003",
+        securityCode: nil,
+        expiryMonth: "03",
+        expiryYear: "30",
+        holder: nil
+    )
 
-    internal static let kcpCard = Card(number: "9490 2200 0661 1406",
-                                       securityCode: "637",
-                                       expiryMonth: "03",
-                                       expiryYear: "30",
-                                       holder: nil)
+    internal static let kcpCard = Card(
+        number: "9490 2200 0661 1406",
+        securityCode: "637",
+        expiryMonth: "03",
+        expiryYear: "30",
+        holder: nil
+    )
 
     internal static func createTestApplePayPayment() -> ApplePayPayment {
         try! .init(countryCode: "US", currencyCode: "USD", summaryItems: createTestSummaryItems())
@@ -100,12 +110,15 @@ enum Dummy: Error {
     }
 
     internal static func getConfiguration(
-        with shopperInfo: PrefilledShopperInformation? = nil, style: FormComponentStyle = FormComponentStyle(),
+        with shopperInfo: PrefilledShopperInformation? = nil,
+        style: FormComponentStyle = FormComponentStyle(),
         showEmailAddress: Bool
     ) -> BoletoComponent.Configuration {
-        BoletoComponent.Configuration(style: style,
-                                      shopperInformation: shopperInfo,
-                                      showEmailAddress: showEmailAddress)
+        BoletoComponent.Configuration(
+            style: style,
+            shopperInformation: shopperInfo,
+            showEmailAddress: showEmailAddress
+        )
     }
 
     internal static func createTestSummaryItems() -> [PKPaymentSummaryItem] {

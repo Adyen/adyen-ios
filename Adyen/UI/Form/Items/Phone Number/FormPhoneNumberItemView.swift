@@ -14,7 +14,6 @@ internal final class FormPhoneNumberItemView: FormTextItemView<FormPhoneNumberIt
     /// - Parameter item: The item represented by the view.
     internal required init(item: FormPhoneNumberItem) {
         super.init(item: item)
-        showsSeparator = true
         applyTextFieldLeftAccessoryView(textField: textField)
         textField.textContentType = .telephoneNumber
     }
@@ -34,7 +33,14 @@ internal final class FormPhoneNumberItemView: FormTextItemView<FormPhoneNumberIt
     }()
     
     private func applyTextFieldLeftAccessoryView(textField: UITextField) {
-        textField.leftViewMode = .always
-        textField.leftView = phoneExtensionView
+        if UIView.userInterfaceLayoutDirection(for: textField.semanticContentAttribute) == .rightToLeft {
+            // If the interface direction is right to left we set the `rightView` so it shows up on the left side
+            // as in RTL languages the phone number still gets read from left to right
+            textField.rightViewMode = .always
+            textField.rightView = phoneExtensionView
+        } else {
+            textField.leftViewMode = .always
+            textField.leftView = phoneExtensionView
+        }
     }
 }

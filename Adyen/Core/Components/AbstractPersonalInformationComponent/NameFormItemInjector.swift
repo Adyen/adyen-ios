@@ -34,11 +34,13 @@ internal final class NameFormItemInjector: FormItemInjector, Localizable {
         return item
     }()
 
-    internal init(value: String?,
-                  identifier: String,
-                  localizationKey: LocalizationKey,
-                  style: FormTextItemStyle,
-                  contentType: UITextContentType = .name) {
+    internal init(
+        value: String?,
+        identifier: String,
+        localizationKey: LocalizationKey,
+        style: FormTextItemStyle,
+        contentType: UITextContentType = .name
+    ) {
         self.value = value
         self.identifier = identifier
         self.localizationKey = localizationKey

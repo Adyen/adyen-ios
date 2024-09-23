@@ -14,13 +14,15 @@ public struct PostalAddress: Equatable, Encodable {
     internal static let invalidValue = "null"
 
     /// Create new instance of postal address.
-    public init(city: String? = nil,
-                country: String? = nil,
-                houseNumberOrName: String? = nil,
-                postalCode: String? = nil,
-                stateOrProvince: String? = nil,
-                street: String? = nil,
-                apartment: String? = nil) {
+    public init(
+        city: String? = nil,
+        country: String? = nil,
+        houseNumberOrName: String? = nil,
+        postalCode: String? = nil,
+        stateOrProvince: String? = nil,
+        street: String? = nil,
+        apartment: String? = nil
+    ) {
         self.city = city
         self.country = country
         self.houseNumberOrName = houseNumberOrName
@@ -82,23 +84,27 @@ public struct PostalAddress: Equatable, Encodable {
     }
 
     public static func == (lhs: PostalAddress, rhs: PostalAddress) -> Bool {
-        let lhsFields = [lhs.city,
-                         lhs.postalCode,
-                         lhs.street,
-                         lhs.stateOrProvince,
-                         lhs.country,
-                         lhs.apartment,
-                         lhs.houseNumberOrName]
-            .map { $0?.trimmingCharacters(in: .whitespaces).adyen.nilIfEmpty }
+        let lhsFields = [
+            lhs.city,
+            lhs.postalCode,
+            lhs.street,
+            lhs.stateOrProvince,
+            lhs.country,
+            lhs.apartment,
+            lhs.houseNumberOrName
+        ]
+        .map { $0?.trimmingCharacters(in: .whitespaces).adyen.nilIfEmpty }
         
-        let rhsFields = [rhs.city,
-                         rhs.postalCode,
-                         rhs.street,
-                         rhs.stateOrProvince,
-                         rhs.country,
-                         rhs.apartment,
-                         rhs.houseNumberOrName]
-            .map { $0?.trimmingCharacters(in: .whitespaces).adyen.nilIfEmpty }
+        let rhsFields = [
+            rhs.city,
+            rhs.postalCode,
+            rhs.street,
+            rhs.stateOrProvince,
+            rhs.country,
+            rhs.apartment,
+            rhs.houseNumberOrName
+        ]
+        .map { $0?.trimmingCharacters(in: .whitespaces).adyen.nilIfEmpty }
         return zip(lhsFields, rhsFields).allSatisfy { $0 == $1 }
     }
     

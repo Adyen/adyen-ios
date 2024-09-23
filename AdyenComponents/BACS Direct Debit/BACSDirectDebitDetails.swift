@@ -30,10 +30,12 @@ public struct BACSDirectDebitDetails: PaymentMethodDetails {
     ///   - holderName: The BACS account's holder name.
     ///   - bankAccountNumber: The BACS account's number.
     ///   - bankLocationId: The BACS location's ID.
-    public init(paymentMethod: BACSDirectDebitPaymentMethod,
-                holderName: String,
-                bankAccountNumber: String,
-                bankLocationId: String) {
+    public init(
+        paymentMethod: BACSDirectDebitPaymentMethod,
+        holderName: String,
+        bankAccountNumber: String,
+        bankLocationId: String
+    ) {
         self.type = paymentMethod.type
         self.holderName = holderName
         self.bankAccountNumber = bankAccountNumber

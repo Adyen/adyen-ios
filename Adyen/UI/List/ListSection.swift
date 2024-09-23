@@ -36,9 +36,11 @@ public struct ListSection: Hashable {
     ///   - header: The section header.
     ///   - items: The items inside the section.
     ///   - footer: The section footer.
-    public init(header: ListSectionHeader? = nil,
-                items: [ListItem],
-                footer: ListSectionFooter? = nil) {
+    public init(
+        header: ListSectionHeader? = nil,
+        items: [ListItem],
+        footer: ListSectionFooter? = nil
+    ) {
         self.header = header
         self.items = items
         self.footer = footer

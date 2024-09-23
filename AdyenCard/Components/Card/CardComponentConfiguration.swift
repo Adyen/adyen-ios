@@ -186,19 +186,21 @@ extension CardComponent {
         ///   - allowedCardTypes: The enforced list of allowed card types.
         ///   - installmentConfiguration: Configuration for installments. Defaults to `nil`.
         ///   - billingAddress: Billing address fields configurations.
-        public init(style: FormComponentStyle = FormComponentStyle(),
-                    showsSubmitButton: Bool = true,
-                    shopperInformation: PrefilledShopperInformation? = nil,
-                    localizationParameters: LocalizationParameters? = nil,
-                    showsHolderNameField: Bool = false,
-                    showsStorePaymentMethodField: Bool = true,
-                    showsSecurityCodeField: Bool = true,
-                    koreanAuthenticationMode: FieldVisibility = .auto,
-                    socialSecurityNumberMode: FieldVisibility = .auto,
-                    storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
-                    allowedCardTypes: [CardType]? = nil,
-                    installmentConfiguration: InstallmentConfiguration? = nil,
-                    billingAddress: BillingAddressConfiguration = .init()) {
+        public init(
+            style: FormComponentStyle = FormComponentStyle(),
+            showsSubmitButton: Bool = true,
+            shopperInformation: PrefilledShopperInformation? = nil,
+            localizationParameters: LocalizationParameters? = nil,
+            showsHolderNameField: Bool = false,
+            showsStorePaymentMethodField: Bool = true,
+            showsSecurityCodeField: Bool = true,
+            koreanAuthenticationMode: FieldVisibility = .auto,
+            socialSecurityNumberMode: FieldVisibility = .auto,
+            storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
+            allowedCardTypes: [CardType]? = nil,
+            installmentConfiguration: InstallmentConfiguration? = nil,
+            billingAddress: BillingAddressConfiguration = .init()
+        ) {
             self.style = style
             self.showsSubmitButton = showsSubmitButton
             self.shopperInformation = shopperInformation

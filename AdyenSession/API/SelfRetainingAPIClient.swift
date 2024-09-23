@@ -32,10 +32,14 @@ internal final class SelfRetainingAPIClient: APIClientProtocol {
         self.apiClient = apiClient
     }
     
-    internal func perform<R>(_ request: R,
-                             completionHandler: @escaping CompletionHandler<R.ResponseType>) where R: Request {
-        AdyenAssertion.assert(message: "This function must be called on the main thread",
-                              condition: !Thread.isMainThread)
+    internal func perform<R>(
+        _ request: R,
+        completionHandler: @escaping CompletionHandler<R.ResponseType>
+    ) where R: Request {
+        AdyenAssertion.assert(
+            message: "This function must be called on the main thread",
+            condition: !Thread.isMainThread
+        )
         instance = self
         retainCount += 1
         apiClient.perform(request) { [weak self] in
@@ -46,8 +50,10 @@ internal final class SelfRetainingAPIClient: APIClientProtocol {
     
     /// Destroy the retain cycle to enable `self` to be deallocated.
     private func destroyIfNeeded() {
-        AdyenAssertion.assert(message: "This function must be called on the main thread",
-                              condition: !Thread.isMainThread)
+        AdyenAssertion.assert(
+            message: "This function must be called on the main thread",
+            condition: !Thread.isMainThread
+        )
         retainCount -= 1
         
         if retainCount == 0 {

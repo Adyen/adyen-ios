@@ -33,9 +33,11 @@ internal struct PartialConfirmationPaymentMethod: PaymentMethod {
     }
     
     internal func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        let footnote = localizedString(.partialPaymentRemainingBalance,
-                                       parameters,
-                                       remainingAmount.formatted)
+        let footnote = localizedString(
+            .partialPaymentRemainingBalance,
+            parameters,
+            remainingAmount.formatted
+        )
         let lastFourSeparated = lastFour.map { String($0) }.joined(separator: ", ")
         
         let accessibilityLabel = [
@@ -44,16 +46,20 @@ internal struct PartialConfirmationPaymentMethod: PaymentMethod {
             footnote
         ].joined(separator: ", ")
         
-        return DisplayInformation(title: String.Adyen.securedString + lastFour,
-                                  subtitle: nil,
-                                  logoName: paymentMethod.displayInformation(using: parameters).logoName,
-                                  footnoteText: footnote,
-                                  accessibilityLabel: accessibilityLabel)
+        return DisplayInformation(
+            title: String.Adyen.securedString + lastFour,
+            subtitle: nil,
+            logoName: paymentMethod.displayInformation(using: parameters).logoName,
+            footnoteText: footnote,
+            accessibilityLabel: accessibilityLabel
+        )
     }
     
-    internal init(paymentMethod: some PartialPaymentMethod,
-                  lastFour: String,
-                  remainingAmount: Amount) {
+    internal init(
+        paymentMethod: some PartialPaymentMethod,
+        lastFour: String,
+        remainingAmount: Amount
+    ) {
         self.paymentMethod = paymentMethod
         self.lastFour = lastFour
         self.remainingAmount = remainingAmount

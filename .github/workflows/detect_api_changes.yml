@@ -1,4 +1,4 @@
-name: Detect public API changes
+name: 👀 Detect public API changes
 
 on:
   pull_request:
@@ -28,15 +28,31 @@ jobs:
       with:
         xcode-version: '15.1'
         
+    - name: 🚚 Fetch repo
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
     - name: 🔍 Detect Changes
       run: |
         PROJECT_FOLDER=$PWD
+        
+        NEW="${source}~${githubRepo}"
+        if [[ ${{ github.head_ref }} == release/* ]]
+        then
+            LATEST_TAG=$(git describe --tags --abbrev=0)
+            OLD="$LATEST_TAG~${githubRepo}"
+        else
+            OLD="${target}~${githubRepo}"
+        fi
+        
         cd Scripts
-        ./public-api-diff --new "${source}" --old "${target}" --output "$PROJECT_FOLDER/api_comparison.md"
+        ./public-api-diff --new "$NEW" --old "$OLD" --output "$PROJECT_FOLDER/api_comparison.md"
         cat "$PROJECT_FOLDER/api_comparison.md" >> $GITHUB_STEP_SUMMARY
       env:
-        source: '${{ github.event.inputs.new || github.head_ref }}~${{github.server_url}}/${{github.repository}}.git'
-        target: '${{ github.event.inputs.old || github.event.pull_request.base.ref }}~${{github.server_url}}/${{github.repository}}.git'
+        source: '${{ github.event.inputs.new || github.head_ref }}'
+        target: '${{ github.event.inputs.old || github.event.pull_request.base.ref }}'
+        githubRepo: '${{github.server_url}}/${{github.repository}}.git'
        
     - if: ${{ github.event.pull_request.base.ref != '' }}
       name: 📝 Comment on PR

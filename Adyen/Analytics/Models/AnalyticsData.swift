@@ -89,9 +89,11 @@ internal struct AnalyticsData: Encodable {
 
     // MARK: - Initializers
 
-    internal init(flavor: AnalyticsFlavor,
-                  additionalFields: AdditionalAnalyticsFields?,
-                  context: AnalyticsContext) {
+    internal init(
+        flavor: AnalyticsFlavor,
+        additionalFields: AdditionalAnalyticsFields?,
+        context: AnalyticsContext
+    ) {
         self.flavor = flavor.value
         self.amount = additionalFields?.amount
         self.sessionId = additionalFields?.sessionId

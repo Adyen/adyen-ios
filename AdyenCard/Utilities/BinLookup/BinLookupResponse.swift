@@ -18,10 +18,12 @@ internal struct BinLookupResponse: Response {
 
     internal var isCreatedLocally: Bool = false
     
-    internal init(brands: [CardBrand]? = nil,
-                  requestId: String = UUID().uuidString,
-                  issuingCountryCode: String? = "NL",
-                  isCreatedLocally: Bool = true) {
+    internal init(
+        brands: [CardBrand]? = nil,
+        requestId: String = UUID().uuidString,
+        issuingCountryCode: String? = "NL",
+        isCreatedLocally: Bool = true
+    ) {
         self.brands = brands
         self.requestId = requestId
         self.issuingCountryCode = issuingCountryCode

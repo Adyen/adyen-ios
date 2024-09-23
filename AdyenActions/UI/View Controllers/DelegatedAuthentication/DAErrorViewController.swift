@@ -13,13 +13,19 @@ internal final class DAErrorViewController: UIViewController {
     internal enum Screen {
         
         private enum Constant {
-            static let feedbackImage = UIImage(named: "feedback",
-                                               in: Bundle.actionsInternalResources,
-                                               compatibleWith: nil)
-            static let checkmarkImage = UIImage(systemName: "checkmark.circle",
-                                                withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight))
-            static let thrashImage = UIImage(systemName: "trash",
-                                             withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight))
+            static let feedbackImage = UIImage(
+                named: "feedback",
+                in: Bundle.actionsInternalResources,
+                compatibleWith: nil
+            )
+            static let checkmarkImage = UIImage(
+                systemName: "checkmark.circle",
+                withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight)
+            )
+            static let thrashImage = UIImage(
+                systemName: "trash",
+                withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight)
+            )
         }
         
         case authenticationFailed(localizationParameters: LocalizationParameters?)
@@ -42,11 +48,15 @@ internal final class DAErrorViewController: UIViewController {
             case .authenticationFailed:
                 return Constant.feedbackImage
             case .registrationFailed:
-                return Constant.checkmarkImage?.withTintColor(.systemGreen,
-                                                              renderingMode: .alwaysOriginal)
+                return Constant.checkmarkImage?.withTintColor(
+                    .systemGreen,
+                    renderingMode: .alwaysOriginal
+                )
             case .deletionConfirmation:
-                return Constant.thrashImage?.withTintColor(.systemGray,
-                                                           renderingMode: .alwaysOriginal)
+                return Constant.thrashImage?.withTintColor(
+                    .systemGray,
+                    renderingMode: .alwaysOriginal
+                )
             }
         }
         
@@ -80,9 +90,11 @@ internal final class DAErrorViewController: UIViewController {
     
     // MARK: - Init
 
-    internal init(style: DelegatedAuthenticationComponentStyle,
-                  screen: Screen,
-                  completion: @escaping () -> Void) {
+    internal init(
+        style: DelegatedAuthenticationComponentStyle,
+        screen: Screen,
+        completion: @escaping () -> Void
+    ) {
         self.style = style
         self.screen = screen
         self.continueHandler = completion

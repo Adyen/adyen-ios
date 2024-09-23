@@ -54,16 +54,20 @@ final class ListViewControllerUITests: XCTestCase {
         item11.identifier = "11"
         let item12 = ListItem(title: "test title 12", style: listComponentStyle.listItem)
         item12.identifier = "12"
-        let section1 = ListSection(header: ListSectionHeader(title: "section 1", style: listComponentStyle.sectionHeader),
-                                   items: [item11, item12],
-                                   footer: ListSectionFooter(title: "section 1 footer", style: footerStyle))
+        let section1 = ListSection(
+            header: ListSectionHeader(title: "section 1", style: listComponentStyle.sectionHeader),
+            items: [item11, item12],
+            footer: ListSectionFooter(title: "section 1 footer", style: footerStyle)
+        )
         
         let item21 = ListItem(title: "test title 21", style: listComponentStyle.listItem)
         item21.identifier = "21"
         let item22 = ListItem(title: "test title 22", style: listComponentStyle.listItem)
         item22.identifier = "22"
-        let section2 = ListSection(header: ListSectionHeader(title: "section 2", style: listComponentStyle.sectionHeader),
-                                   items: [item21, item22])
+        let section2 = ListSection(
+            header: ListSectionHeader(title: "section 2", style: listComponentStyle.sectionHeader),
+            items: [item21, item22]
+        )
         
         sut.reload(newSections: [section1, section2])
         

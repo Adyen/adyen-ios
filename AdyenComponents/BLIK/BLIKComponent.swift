@@ -22,8 +22,10 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
 
     public weak var delegate: PaymentComponentDelegate?
 
-    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController,
-                                                                             style: configuration.style)
+    public lazy var viewController: UIViewController = SecuredViewController(
+        child: formViewController,
+        style: configuration.style
+    )
     
     /// Component's configuration
     public var configuration: Configuration
@@ -37,9 +39,11 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     /// - Parameter paymentMethod: The BLIK payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(paymentMethod: BLIKPaymentMethod,
-                context: AdyenContext,
-                configuration: Configuration = .init()) {
+    public init(
+        paymentMethod: BLIKPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         self.blikPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
@@ -75,10 +79,14 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     }()
 
     /// The helper message item.
-    internal lazy var hintLabelItem: FormLabelItem = .init(text: localizedString(.blikHelp, configuration.localizationParameters),
-                                                           style: configuration.style.hintLabel,
-                                                           identifier: ViewIdentifierBuilder.build(scopeInstance: self,
-                                                                                                   postfix: "blikCodeHintLabel"))
+    internal lazy var hintLabelItem: FormLabelItem = .init(
+        text: localizedString(.blikHelp, configuration.localizationParameters),
+        style: configuration.style.hintLabel,
+        identifier: ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: "blikCodeHintLabel"
+        )
+    )
 
     /// The BLIK code item.
     internal lazy var codeItem: FormTextInputItem = {
@@ -97,9 +105,11 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     internal lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
-        item.title = localizedSubmitButtonTitle(with: payment?.amount,
-                                                style: .immediate,
-                                                configuration.localizationParameters)
+        item.title = localizedSubmitButtonTitle(
+            with: payment?.amount,
+            style: .immediate,
+            configuration.localizationParameters
+        )
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }
@@ -111,8 +121,10 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     private func didSelectSubmitButton() {
         guard validate() else { return }
 
-        let details = BLIKDetails(paymentMethod: paymentMethod,
-                                  blikCode: codeItem.value)
+        let details = BLIKDetails(
+            paymentMethod: paymentMethod,
+            blikCode: codeItem.value
+        )
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 

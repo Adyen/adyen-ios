@@ -55,8 +55,10 @@ class FormTextItemViewTests: XCTestCase {
         sut.textField.text = "123456"
         sut.textField.sendActions(for: .editingChanged)
         
-        wait(for: [didReachMaximumLengthExpectation,
-                   didChangeValueExpectation], timeout: 10)
+        wait(for: [
+            didReachMaximumLengthExpectation,
+            didChangeValueExpectation
+        ], timeout: 10)
     }
     
     func testValidatorIsCalled() {
@@ -77,8 +79,10 @@ class FormTextItemViewTests: XCTestCase {
         sut.textField.text = "123456H"
         sut.textField.sendActions(for: .editingChanged)
         
-        wait(for: [formattedTextExpectation,
-                   sanitizedValueExpectation], timeout: 10)
+        wait(for: [
+            formattedTextExpectation,
+            sanitizedValueExpectation
+        ], timeout: 10)
         XCTAssertEqual(sut.textField.text, "1234-56", "sut.textField.text must be the sanitized and formatted text")
         XCTAssertEqual(item.value, "123456", "item.value must be the sanitized non-formatted text")
     }

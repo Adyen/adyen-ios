@@ -34,11 +34,13 @@ extension BoletoComponent {
         ///   - localizationParameters: Localization parameters.
         ///   - shopperInformation: Pre-filled optional personal information about the shopper
         ///   - showEmailAddress: Indicates whether to show `sendCopyByEmail` checkbox and email text field
-        public init(style: FormComponentStyle = FormComponentStyle(),
-                    showsSubmitButton: Bool = true,
-                    localizationParameters: LocalizationParameters? = nil,
-                    shopperInformation: PrefilledShopperInformation?,
-                    showEmailAddress: Bool) {
+        public init(
+            style: FormComponentStyle = FormComponentStyle(),
+            showsSubmitButton: Bool = true,
+            localizationParameters: LocalizationParameters? = nil,
+            shopperInformation: PrefilledShopperInformation?,
+            showEmailAddress: Bool
+        ) {
             self.style = style
             self.showsSubmitButton = showsSubmitButton
             self.localizationParameters = localizationParameters

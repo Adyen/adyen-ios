@@ -65,15 +65,17 @@ internal class CardViewController: FormViewController {
     ///   - initialCountryCode: The initially used country code for the billing address
     ///   - scope: The view's scope.
     ///   - localizationParameters: Localization parameters.
-    internal init(configuration: CardComponent.Configuration,
-                  shopperInformation: PrefilledShopperInformation?,
-                  formStyle: FormComponentStyle,
-                  payment: Payment?,
-                  logoProvider: LogoURLProvider,
-                  supportedCardTypes: [CardType],
-                  initialCountryCode: String,
-                  scope: String,
-                  localizationParameters: LocalizationParameters?) {
+    internal init(
+        configuration: CardComponent.Configuration,
+        shopperInformation: PrefilledShopperInformation?,
+        formStyle: FormComponentStyle,
+        payment: Payment?,
+        logoProvider: LogoURLProvider,
+        supportedCardTypes: [CardType],
+        initialCountryCode: String,
+        scope: String,
+        localizationParameters: LocalizationParameters?
+    ) {
         self.configuration = configuration
         self.shopperInformation = shopperInformation
         self.supportedCardTypes = supportedCardTypes
@@ -115,11 +117,13 @@ internal class CardViewController: FormViewController {
         let expiryMonth = items.expiryDateItem.expiryMonth
         let expiryYear = items.expiryDateItem.expiryYear
         
-        return Card(number: items.numberContainerItem.numberItem.value,
-                    securityCode: configuration.showsSecurityCodeField ? items.securityCodeItem.nonEmptyValue : nil,
-                    expiryMonth: expiryMonth,
-                    expiryYear: expiryYear,
-                    holder: configuration.showsHolderNameField ? items.holderNameItem.nonEmptyValue : nil)
+        return Card(
+            number: items.numberContainerItem.numberItem.value,
+            securityCode: configuration.showsSecurityCodeField ? items.securityCodeItem.nonEmptyValue : nil,
+            expiryMonth: expiryMonth,
+            expiryYear: expiryYear,
+            holder: configuration.showsHolderNameField ? items.holderNameItem.nonEmptyValue : nil
+        )
     }
     
     internal var selectedBrand: String? {

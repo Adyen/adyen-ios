@@ -21,14 +21,18 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
     ///   - paymentMethod: The Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
-    public init(paymentMethod: DokuPaymentMethod,
-                context: AdyenContext,
-                configuration: Configuration = .init()) {
+    public init(
+        paymentMethod: DokuPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         self.dokuPaymentMethod = paymentMethod
-        super.init(paymentMethod: paymentMethod,
-                   context: context,
-                   fields: [.firstName, .lastName, .email],
-                   configuration: configuration)
+        super.init(
+            paymentMethod: paymentMethod,
+            context: context,
+            fields: [.firstName, .lastName, .email],
+            configuration: configuration
+        )
     }
 
     @_spi(AdyenInternal)
@@ -43,9 +47,11 @@ public final class DokuComponent: AbstractPersonalInformationComponent {
               let emailItem else {
             throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
-        return DokuDetails(paymentMethod: paymentMethod,
-                           firstName: firstNameItem.value,
-                           lastName: lastNameItem.value,
-                           emailAddress: emailItem.value)
+        return DokuDetails(
+            paymentMethod: paymentMethod,
+            firstName: firstNameItem.value,
+            lastName: lastNameItem.value,
+            emailAddress: emailItem.value
+        )
     }
 }

@@ -54,7 +54,7 @@ extension VoucherComponent: VoucherViewDelegate, DocumentActionViewDelegate {
         
         shareableView.frame = CGRect(origin: .zero, size: shareableView.adyen.minimalSize)
 
-        guard let image = shareableView.adyen.snapShot(forceRedraw: true) else { return }
+        guard let image = shareableView.adyen.snapshot(forceRedraw: true) else { return }
 
         presentSharePopover(
             with: image,
@@ -142,8 +142,10 @@ extension VoucherComponent: VoucherViewDelegate, DocumentActionViewDelegate {
         view?.showCopyCodeConfirmation()
     }
     
-    private func handlePassProviderResult(_ result: Result<Data, Swift.Error>,
-                                          completion: @escaping () -> Void) {
+    private func handlePassProviderResult(
+        _ result: Result<Data, Swift.Error>,
+        completion: @escaping () -> Void
+    ) {
         switch result {
         case let .failure(error):
             delegate?.didFail(with: error, from: self)

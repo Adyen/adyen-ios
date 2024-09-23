@@ -50,11 +50,13 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
 
     private func dropInComponent(from paymentMethods: PaymentMethods) -> DropInComponent {
         let configuration = dropInConfiguration(from: paymentMethods)
-        let component = DropInComponent(paymentMethods: paymentMethods,
-                                        context: context,
-                                        configuration: configuration,
-                                        title: ConfigurationConstants.appName)
-
+        let component = DropInComponent(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            title: ConfigurationConstants.appName
+        )
+        
         component.delegate = self
         component.partialPaymentDelegate = self
         component.storedPaymentMethodsDelegate = self
@@ -202,17 +204,21 @@ extension DropInAdvancedFlowExample: PartialPaymentDelegate {
         }
     }
 
-    internal func checkBalance(with data: PaymentComponentData,
-                               component: Component,
-                               completion: @escaping (Result<Balance, Error>) -> Void) {
+    internal func checkBalance(
+        with data: PaymentComponentData,
+        component: Component,
+        completion: @escaping (Result<Balance, Error>) -> Void
+    ) {
         let request = BalanceCheckRequest(data: data)
         apiClient.perform(request) { [weak self] result in
             self?.handle(result: result, completion: completion)
         }
     }
 
-    private func handle(result: Result<BalanceCheckResponse, Error>,
-                        completion: @escaping (Result<Balance, Error>) -> Void) {
+    private func handle(
+        result: Result<BalanceCheckResponse, Error>,
+        completion: @escaping (Result<Balance, Error>) -> Void
+    ) {
         switch result {
         case let .success(response):
             handle(response: response, completion: completion)
@@ -230,17 +236,23 @@ extension DropInAdvancedFlowExample: PartialPaymentDelegate {
         completion(.success(balance))
     }
 
-    internal func requestOrder(for component: Component,
-                               completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
-        let request = CreateOrderRequest(amount: ConfigurationConstants.current.amount,
-                                         reference: UUID().uuidString)
+    internal func requestOrder(
+        for component: Component,
+        completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void
+    ) {
+        let request = CreateOrderRequest(
+            amount: ConfigurationConstants.current.amount,
+            reference: UUID().uuidString
+        )
         apiClient.perform(request) { [weak self] result in
             self?.handle(result: result, completion: completion)
         }
     }
 
-    private func handle(result: Result<CreateOrderResponse, Error>,
-                        completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
+    private func handle(
+        result: Result<CreateOrderResponse, Error>,
+        completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void
+    ) {
         switch result {
         case let .success(response):
             completion(.success(response.order))

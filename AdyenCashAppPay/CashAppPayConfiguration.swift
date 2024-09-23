@@ -44,13 +44,15 @@ public struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
     ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
     ///   Defaults to `true`.
     ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
-    public init(redirectURL: URL,
-                referenceId: String? = nil,
-                showsStorePaymentMethodField: Bool = true,
-                storePaymentMethod: Bool = false,
-                style: FormComponentStyle = FormComponentStyle(),
-                showsSubmitButton: Bool = true,
-                localizationParameters: LocalizationParameters? = nil) {
+    public init(
+        redirectURL: URL,
+        referenceId: String? = nil,
+        showsStorePaymentMethodField: Bool = true,
+        storePaymentMethod: Bool = false,
+        style: FormComponentStyle = FormComponentStyle(),
+        showsSubmitButton: Bool = true,
+        localizationParameters: LocalizationParameters? = nil
+    ) {
         self.redirectURL = redirectURL
         self.referenceId = referenceId
         self.showsStorePaymentMethodField = showsStorePaymentMethodField

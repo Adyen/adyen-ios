@@ -21,14 +21,18 @@ public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
     ///   - paymentMethod: The Qiwi Wallet payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
-    public init(paymentMethod: QiwiWalletPaymentMethod,
-                context: AdyenContext,
-                configuration: Configuration = .init()) {
+    public init(
+        paymentMethod: QiwiWalletPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         self.qiwiWalletPaymentMethod = paymentMethod
-        super.init(paymentMethod: paymentMethod,
-                   context: context,
-                   fields: [.phone],
-                   configuration: configuration)
+        super.init(
+            paymentMethod: paymentMethod,
+            context: context,
+            fields: [.phone],
+            configuration: configuration
+        )
     }
 
     @_spi(AdyenInternal)
@@ -45,9 +49,11 @@ public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
         guard let phoneItem else {
             throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
-        return QiwiWalletDetails(paymentMethod: paymentMethod,
-                                 phonePrefix: phoneItem.prefix,
-                                 phoneNumber: phoneItem.value)
+        return QiwiWalletDetails(
+            paymentMethod: paymentMethod,
+            phonePrefix: phoneItem.prefix,
+            phoneNumber: phoneItem.value
+        )
     }
     
 }

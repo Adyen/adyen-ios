@@ -74,10 +74,15 @@ class PaymentMethodListComponentTests: XCTestCase {
     }
     
     func testDeletionSuccess() throws {
-        let section = ComponentsSection(header: .init(title: "title",
-                                                      editingStyle: .delete,
-                                                      style: ListSectionHeaderStyle()),
-                                        components: [storedComponent], footer: nil)
+        let section = ComponentsSection(
+            header: .init(
+                title: "title",
+                editingStyle: .delete,
+                style: ListSectionHeaderStyle()
+            ),
+            components: [storedComponent],
+            footer: nil
+        )
         let sut = PaymentMethodListComponent(context: Dummy.context, components: [section, ComponentsSection(components: [regularComponent])])
 
         setupRootViewController(sut.listViewController)
@@ -100,9 +105,11 @@ class PaymentMethodListComponentTests: XCTestCase {
         }
         sut.delegate = delegateMock
         
-        sut.listViewController.tableView.dataSource?.tableView?(sut.listViewController.tableView,
-                                                                commit: .delete,
-                                                                forRowAt: IndexPath(item: 0, section: 0))
+        sut.listViewController.tableView.dataSource?.tableView?(
+            sut.listViewController.tableView,
+            commit: .delete,
+            forRowAt: IndexPath(item: 0, section: 0)
+        )
         
         wait(for: .milliseconds(300))
         
@@ -113,10 +120,15 @@ class PaymentMethodListComponentTests: XCTestCase {
     }
     
     func testDeletionFailure() throws {
-        let section = ComponentsSection(header: .init(title: "title",
-                                                      editingStyle: .delete,
-                                                      style: ListSectionHeaderStyle()),
-                                        components: [storedComponent], footer: nil)
+        let section = ComponentsSection(
+            header: .init(
+                title: "title",
+                editingStyle: .delete,
+                style: ListSectionHeaderStyle()
+            ),
+            components: [storedComponent],
+            footer: nil
+        )
         let sut = PaymentMethodListComponent(context: Dummy.context, components: [section, ComponentsSection(components: [regularComponent])])
 
         setupRootViewController(sut.listViewController)
@@ -139,9 +151,11 @@ class PaymentMethodListComponentTests: XCTestCase {
         }
         sut.delegate = delegateMock
         
-        sut.listViewController.tableView.dataSource?.tableView?(sut.listViewController.tableView,
-                                                                commit: .delete,
-                                                                forRowAt: IndexPath(item: 0, section: 0))
+        sut.listViewController.tableView.dataSource?.tableView?(
+            sut.listViewController.tableView,
+            commit: .delete,
+            forRowAt: IndexPath(item: 0, section: 0)
+        )
         
         wait(for: .milliseconds(300))
         

@@ -25,8 +25,10 @@ class TwintComponentTests: XCTestCase {
 
         delegate = PaymentComponentDelegateMock()
         paymentMethod = TwintPaymentMethod(type: .twint, name: "twint")
-        sut = TwintComponent(paymentMethod: paymentMethod,
-                             context: context)
+        sut = TwintComponent(
+            paymentMethod: paymentMethod,
+            context: context
+        )
         sut.delegate = delegate
     }
 
@@ -56,11 +58,15 @@ class TwintComponentTests: XCTestCase {
     // MARK: - Private
 
     private var paymentComponentData: PaymentComponentData {
-        let details = TwintDetails(type: paymentMethod,
-                                   subType: "sdk")
-        return PaymentComponentData(paymentMethodDetails: details,
-                                    amount: context.payment?.amount,
-                                    order: nil)
+        let details = TwintDetails(
+            type: paymentMethod,
+            subType: "sdk"
+        )
+        return PaymentComponentData(
+            paymentMethodDetails: details,
+            amount: context.payment?.amount,
+            order: nil
+        )
     }
 
 }

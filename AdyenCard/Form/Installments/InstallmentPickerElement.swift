@@ -40,12 +40,12 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
     }
     
     /// Value to be represented in a BaseFormPickerItem
-    internal var pickerElement: InstallmentPickerElement {
+    internal var pickerElement: BasePickerElement<InstallmentElement> {
         switch kind {
         case let .plan(plan):
-            return InstallmentPickerElement(identifier: plan.installmentPlan.rawValue, element: self)
+            return .init(identifier: plan.installmentPlan.rawValue, element: self)
         case let .month(month):
-            return InstallmentPickerElement(identifier: String(month.monthValue), element: self)
+            return .init(identifier: String(month.monthValue), element: self)
         }
     }
     
@@ -90,8 +90,10 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
             var localizedText: String
             if showAmount,
                let amount,
-               let formatted = AmountFormatter.formatted(amount: amount.value / monthValue,
-                                                         currencyCode: amount.currencyCode) {
+               let formatted = AmountFormatter.formatted(
+                   amount: amount.value / monthValue,
+                   currencyCode: amount.currencyCode
+               ) {
                 localizedText = localizedString(.cardInstallmentsMonthsAndPrice, localizationParameters, String(monthValue), formatted)
             } else {
                 localizedText = localizedString(.cardInstallmentsMonths, localizationParameters, String(monthValue))

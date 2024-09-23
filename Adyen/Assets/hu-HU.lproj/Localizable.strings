@@ -6,7 +6,7 @@
 "adyen.error.title" = "Hiba";
 "adyen.error.unknown" = "Ismeretlen hiba történt";
 "adyen.validationAlert.title" = "Érvénytelen bevitel";
-"adyen.paymentMethods.otherMethods" = "egyéb";
+"adyen.paymentMethods.otherMethods" = "Egyéb";
 "adyen.paymentMethods.storedMethods" = "Tárolt";
 "adyen.paymentMethods.paidMethods" = "Alkalmazott";
 "adyen.paymentMethods.title" = "Fizetési módok";

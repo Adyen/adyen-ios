@@ -32,9 +32,11 @@ class MBWayComponentTests: XCTestCase {
 
     func testLocalizationWithCustomTableName() throws {
         let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
-        let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 context: context,
-                                 configuration: config)
+        let sut = MBWayComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
 
         XCTAssertEqual(sut.phoneItem?.title, localizedString(.phoneNumberTitle, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.phoneItem?.placeholder, localizedString(.phoneNumberPlaceholder, sut.configuration.localizationParameters))
@@ -47,9 +49,11 @@ class MBWayComponentTests: XCTestCase {
 
     func testLocalizationWithCustomKeySeparator() throws {
         let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
-        let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 context: context,
-                                 configuration: config)
+        let sut = MBWayComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
 
         XCTAssertEqual(sut.phoneItem?.title, localizedString(LocalizationKey(key: "adyen_phoneNumber_title"), sut.configuration.localizationParameters))
         XCTAssertEqual(sut.phoneItem?.placeholder, localizedString(LocalizationKey(key: "adyen_phoneNumber_placeholder"), sut.configuration.localizationParameters))
@@ -60,8 +64,10 @@ class MBWayComponentTests: XCTestCase {
     }
 
     func testBigTitle() {
-        let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 context: context)
+        let sut = MBWayComponent(
+            paymentMethod: paymentMethod,
+            context: context
+        )
 
         setupRootViewController(sut.viewController)
 
@@ -80,9 +86,11 @@ class MBWayComponentTests: XCTestCase {
     func testMBWayPrefilling() throws {
         // Given
         let config = MBWayComponent.Configuration(shopperInformation: shopperInformation)
-        let prefillSut = MBWayComponent(paymentMethod: paymentMethod,
-                                        context: context,
-                                        configuration: config)
+        let prefillSut = MBWayComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: config
+        )
         
         setupRootViewController(prefillSut.viewController)
 
@@ -97,9 +105,11 @@ class MBWayComponentTests: XCTestCase {
 
     func testMBWayGivenNoShopperInformationShouldNotPrefill() throws {
         // Given
-        let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 context: context,
-                                 configuration: MBWayComponent.Configuration())
+        let sut = MBWayComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: MBWayComponent.Configuration()
+        )
         setupRootViewController(sut.viewController)
 
         wait(for: .milliseconds(300))
@@ -116,9 +126,11 @@ class MBWayComponentTests: XCTestCase {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
-        let sut = MBWayComponent(paymentMethod: paymentMethod,
-                                 context: context,
-                                 configuration: MBWayComponent.Configuration())
+        let sut = MBWayComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: MBWayComponent.Configuration()
+        )
 
         // When
         sut.viewDidLoad(viewController: sut.viewController)

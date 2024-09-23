@@ -5,13 +5,14 @@
 //
 
 import Foundation
-@_spi(AdyenInternal) import Adyen
 
 internal struct JSONWebEncryption {
     internal struct Header: Encodable {
         
-        internal static let defaultHeader: Header = .init(contentEncryptionAlgorithm: .AESCBC,
-                                                          keyEncryptionAlgorithm: .rsaOAEP256)
+        internal static let defaultHeader: Header = .init(
+            contentEncryptionAlgorithm: .AESCBC,
+            keyEncryptionAlgorithm: .rsaOAEP256
+        )
         
         internal let contentEncryptionAlgorithm: ContentEncryptionAlgorithm
         
@@ -58,20 +59,24 @@ internal struct JSONWebEncryption {
     
     internal let compactRepresentation: String
     
-    internal init(encodedHeader: Data,
-                  encryptedKey: Data,
-                  encryptedPayload: Data,
-                  initializationVector: Data,
-                  authenticationTag: Data) {
+    internal init(
+        encodedHeader: Data,
+        encryptedKey: Data,
+        encryptedPayload: Data,
+        initializationVector: Data,
+        authenticationTag: Data
+    ) {
         self.encryptedKey = encryptedKey
         self.encryptedPayload = encryptedPayload
         self.initializationVector = initializationVector
         self.authenticationTag = authenticationTag
-        self.compactRepresentation = [encodedHeader.base64URLString(),
-                                      encryptedKey.base64URLString(),
-                                      initializationVector.base64URLString(),
-                                      encryptedPayload.base64URLString(),
-                                      authenticationTag.base64URLString()].joined(separator: ".")
+        self.compactRepresentation = [
+            encodedHeader.base64URLString(),
+            encryptedKey.base64URLString(),
+            initializationVector.base64URLString(),
+            encryptedPayload.base64URLString(),
+            authenticationTag.base64URLString()
+        ].joined(separator: ".")
     }
 
 }

@@ -25,8 +25,10 @@ public struct ListComponentStyle: ViewStyle {
     ///
     /// - Parameter listItem: The style of any of the items in the list.
     /// - Parameter sectionHeader: The style of any of the section headers in the list.
-    public init(listItem: ListItemStyle,
-                sectionHeader: ListSectionHeaderStyle) {
+    public init(
+        listItem: ListItemStyle,
+        sectionHeader: ListSectionHeaderStyle
+    ) {
         self.listItem = listItem
         self.sectionHeader = sectionHeader
     }

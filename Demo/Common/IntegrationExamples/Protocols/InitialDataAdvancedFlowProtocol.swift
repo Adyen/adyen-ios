@@ -11,18 +11,22 @@ import AdyenSession
 internal protocol InitialDataAdvancedFlowProtocol: AnyObject {
     var context: AdyenContext { get }
     var apiClient: APIClientProtocol { get }
-    func requestPaymentMethods(order: PartialPaymentOrder?,
-                               amount: Amount,
-                               completion: @escaping (Result<PaymentMethods, Error>) -> Void)
+    func requestPaymentMethods(
+        order: PartialPaymentOrder?,
+        amount: Amount,
+        completion: @escaping (Result<PaymentMethods, Error>) -> Void
+    )
     func generateContext() -> AdyenContext
     func start()
 }
 
 extension InitialDataAdvancedFlowProtocol {
 
-    internal func requestPaymentMethods(order: PartialPaymentOrder?,
-                                        amount: Amount = ConfigurationConstants.current.amount,
-                                        completion: @escaping (Result<PaymentMethods, Error>) -> Void) {
+    internal func requestPaymentMethods(
+        order: PartialPaymentOrder?,
+        amount: Amount = ConfigurationConstants.current.amount,
+        completion: @escaping (Result<PaymentMethods, Error>) -> Void
+    ) {
         let request = PaymentMethodsRequest(order: order, amount: amount)
         apiClient.perform(request) { result in
             switch result {
@@ -37,9 +41,11 @@ extension InitialDataAdvancedFlowProtocol {
     func generateContext() -> AdyenContext {
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
-        return AdyenContext(apiContext: ConfigurationConstants.apiContext,
-                            payment: ConfigurationConstants.current.payment,
-                            analyticsConfiguration: analyticsConfiguration)
+        return AdyenContext(
+            apiContext: ConfigurationConstants.apiContext,
+            payment: ConfigurationConstants.current.payment,
+            analyticsConfiguration: analyticsConfiguration
+        )
     }
 
 }

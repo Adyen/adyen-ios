@@ -46,8 +46,10 @@ class QRCodeActionComponentTests: XCTestCase {
             }
         )
         
-        let sut = QRCodeActionComponent(context: context,
-                                        pollingComponentBuilder: builder)
+        let sut = QRCodeActionComponent(
+            context: context,
+            pollingComponentBuilder: builder
+        )
         
         XCTAssertEqual(sut.timeoutDuration(for: action), 900)
         
@@ -94,8 +96,10 @@ class QRCodeActionComponentTests: XCTestCase {
             }
         )
         
-        let sut = QRCodeActionComponent(context: context,
-                                        pollingComponentBuilder: builder)
+        let sut = QRCodeActionComponent(
+            context: context,
+            pollingComponentBuilder: builder
+        )
         
         handler.onHandle = {
             XCTAssertEqual($0.paymentData, self.action.paymentData)
@@ -188,7 +192,24 @@ class QRCodeActionComponentTests: XCTestCase {
 
         let sut = QRCodeActionComponent(context: context)
 
-        let qrCodeViewModel = QRCodeView.Model(action: action, instruction: localizedString(.qrCodeInstructionMessage, sut.configuration.localizationParameters), payment: nil, logoUrl: LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment), observedProgress: nil, expiration: AdyenObservable(nil), style: QRCodeView.Model.Style(copyCodeButton: .init(title: .init(font: UIFont(), color: .red)), saveAsImageButton: .init(title: .init(font: UIFont(), color: .red)), instructionLabel: .init(font: UIFont(), color: .red), amountToPayLabel: .init(font: UIFont(), color: .red), progressView: .init(progressTintColor: .red, trackTintColor: .red), expirationLabel: .init(font: UIFont(), color: .red), logoCornerRounding: .fixed(5.0), backgroundColor: .red))
+        let qrCodeViewModel = QRCodeView.Model(
+            action: action,
+            instruction: localizedString(.qrCodeInstructionMessage, sut.configuration.localizationParameters),
+            payment: nil,
+            logoUrl: LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment),
+            observedProgress: nil,
+            expiration: AdyenObservable(nil),
+            style: QRCodeView.Model.Style(
+                copyCodeButton: .init(title: .init(font: UIFont(), color: .red)),
+                saveAsImageButton: .init(title: .init(font: UIFont(), color: .red)),
+                instructionLabel: .init(font: UIFont(), color: .red),
+                amountToPayLabel: .init(font: UIFont(), color: .red),
+                progressView: .init(progressTintColor: .red, trackTintColor: .red),
+                expirationLabel: .init(font: UIFont(), color: .red),
+                logoCornerRounding: .fixed(5.0),
+                backgroundColor: .red
+            )
+        )
 
         XCTAssertEqual(qrCodeViewModel.actionButtonType, .saveAsImage)
     }
@@ -199,7 +220,24 @@ class QRCodeActionComponentTests: XCTestCase {
 
         let sut = QRCodeActionComponent(context: context)
 
-        let qrCodeViewModel = QRCodeView.Model(action: action, instruction: localizedString(.qrCodeTimerExpirationMessage, sut.configuration.localizationParameters), payment: nil, logoUrl: LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment), observedProgress: nil, expiration: AdyenObservable(nil), style: QRCodeView.Model.Style(copyCodeButton: .init(title: .init(font: UIFont(), color: .red)), saveAsImageButton: .init(title: .init(font: UIFont(), color: .red)), instructionLabel: .init(font: UIFont(), color: .red), amountToPayLabel: .init(font: UIFont(), color: .red), progressView: .init(progressTintColor: .red, trackTintColor: .red), expirationLabel: .init(font: UIFont(), color: .red), logoCornerRounding: .fixed(5.0), backgroundColor: .red))
+        let qrCodeViewModel = QRCodeView.Model(
+            action: action,
+            instruction: localizedString(.qrCodeTimerExpirationMessage, sut.configuration.localizationParameters),
+            payment: nil,
+            logoUrl: LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment),
+            observedProgress: nil,
+            expiration: AdyenObservable(nil),
+            style: QRCodeView.Model.Style(
+                copyCodeButton: .init(title: .init(font: UIFont(), color: .red)),
+                saveAsImageButton: .init(title: .init(font: UIFont(), color: .red)),
+                instructionLabel: .init(font: UIFont(), color: .red),
+                amountToPayLabel: .init(font: UIFont(), color: .red),
+                progressView: .init(progressTintColor: .red, trackTintColor: .red),
+                expirationLabel: .init(font: UIFont(), color: .red),
+                logoCornerRounding: .fixed(5.0),
+                backgroundColor: .red
+            )
+        )
 
         XCTAssertEqual(qrCodeViewModel.actionButtonType, .copyCode)
     }
@@ -217,4 +255,39 @@ class QRCodeActionComponentTests: XCTestCase {
         XCTAssertEqual(sut.timeoutDuration(for: payNow), 180)
     }
 
+    func testExpiryTimer() {
+        let tickExpectation = expectation(description: "onTick is called")
+        let expirationExpectation = expectation(description: "onExpiration is called")
+        
+        let expiryTimer = ExpirationTimer(expirationTimeout: 1) { timeLeft in
+            XCTAssertEqual(timeLeft, 1)
+            tickExpectation.fulfill()
+        } onExpiration: {
+            expirationExpectation.fulfill()
+        }
+
+        expiryTimer.startTimer()
+        
+        wait(for: [tickExpectation, expirationExpectation], timeout: 1.1)
+    }
+    
+    func testExpiryTimerCancellation() {
+        
+        let tickExpectation = expectation(description: "onTick is called")
+        
+        let expiryTimer = ExpirationTimer(expirationTimeout: 1) { timeLeft in
+            XCTAssertEqual(timeLeft, 1)
+            tickExpectation.fulfill()
+        } onExpiration: {
+            XCTFail("Timer was cancelled so onExpiration should not have been called")
+        }
+
+        expiryTimer.startTimer()
+        wait(for: .milliseconds(10))
+        expiryTimer.stopTimer()
+        
+        wait(for: [tickExpectation], timeout: 0)
+        
+        wait(for: .seconds(1)) // Waiting a bit longer to make sure the expiration block is not called
+    }
 }
