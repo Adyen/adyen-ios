@@ -457,3 +457,4 @@ extension GiftCardComponent: PartialPaymentComponent {}
 
 @_spi(AdyenInternal)
 extension GiftCardComponent: PublicKeyConsumer {}
+
