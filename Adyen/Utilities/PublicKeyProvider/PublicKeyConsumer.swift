@@ -7,14 +7,14 @@
 import Foundation
 
 @_spi(AdyenInternal)
-public protocol PublicKeyConsumer: PaymentComponent {
+public protocol PublicKeyConsumer {
 
     /// Provider for fetching the public key.
     var publicKeyProvider: AnyPublicKeyProvider { get }
 }
 
 @_spi(AdyenInternal)
-extension PublicKeyConsumer {
+extension PublicKeyConsumer where Self: PaymentComponent {
     
     public typealias PublicKeySuccessHandler = (_ publicKey: String) -> Void
 
