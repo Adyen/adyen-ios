@@ -105,7 +105,7 @@ public class ListItem: FormItem {
 
     // MARK: - Private
     
-    private let listIdentifier: UUID = UUID()
+    private let listIdentifier: UUID = .init()
 }
 
 // MARK: - Hashable & Equatable
