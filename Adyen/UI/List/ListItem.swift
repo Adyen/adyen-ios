@@ -102,6 +102,10 @@ public class ListItem: FormItem {
         
         loadingHandler(isLoading, self)
     }
+
+    // MARK: - Private
+    
+    private let listIdentifier: UUID = .init()
 }
 
 // MARK: - Hashable & Equatable
@@ -110,12 +114,10 @@ public class ListItem: FormItem {
 extension ListItem: Hashable {
     
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(title)
-        hasher.combine(icon)
-        hasher.combine(trailingText)
+        hasher.combine(listIdentifier)
     }
     
     public static func == (lhs: ListItem, rhs: ListItem) -> Bool {
-        lhs.title == rhs.title && lhs.icon == rhs.icon && lhs.trailingText == rhs.trailingText
+        lhs.listIdentifier == rhs.listIdentifier
     }
 }
