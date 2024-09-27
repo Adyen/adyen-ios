@@ -105,7 +105,7 @@ public class ListItem: FormItem {
 
     // MARK: - Private
     
-    internal var listIdentifier: UUID = UUID()
+    private let listIdentifier: UUID = UUID()
 }
 
 // MARK: - Hashable & Equatable
@@ -118,6 +118,6 @@ extension ListItem: Hashable {
     }
     
     public static func == (lhs: ListItem, rhs: ListItem) -> Bool {
-        lhs.listIdentifier == rhs.listIdentifier && lhs.title == rhs.title
+        lhs.listIdentifier == rhs.listIdentifier
     }
 }
