@@ -166,11 +166,13 @@ class ComponentManagerTests: XCTestCase {
 
     func testTwintShouldSucceedWithConfig() throws {
         // Given
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
 
         // When
         let paymentComponent = sut.regularComponents.first { $0.paymentMethod.type.rawValue == "twint" }
@@ -187,11 +189,13 @@ class ComponentManagerTests: XCTestCase {
 
     func testStoredTwintShouldSucceedWithConfig() throws {
         // Given
-        let sut = ComponentManager(paymentMethods: paymentMethods,
-                                   context: context,
-                                   configuration: configuration,
-                                   order: nil,
-                                   presentationDelegate: presentationDelegate)
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
 
         // When
         let paymentComponent = sut.storedComponents.first { $0.paymentMethod.type.rawValue == "twint" }
