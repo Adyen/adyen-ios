@@ -418,7 +418,7 @@ extension ACHDirectDebitComponent: PublicKeyConsumer {}
 
 // MARK: - SubmitCustomizable
 
-extension ACHDirectDebitComponent: SubmitableComponent {
+extension ACHDirectDebitComponent: SubmittableComponent {
 
     public func submit() {
         didSelectSubmitButton()

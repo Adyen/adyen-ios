@@ -449,7 +449,7 @@ extension UPIComponent: AdyenObserver {}
 
 // MARK: - SubmitCustomizable
 
-extension UPIComponent: SubmitableComponent {
+extension UPIComponent: SubmittableComponent {
 
     public func submit() {
         didSelectContinueButton()

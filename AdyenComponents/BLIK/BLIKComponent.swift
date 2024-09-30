@@ -140,7 +140,7 @@ extension BLIKComponent: ViewControllerDelegate {}
 
 // MARK: - SubmitCustomizable
 
-extension BLIKComponent: SubmitableComponent {
+extension BLIKComponent: SubmittableComponent {
 
     public func submit() {
         didSelectSubmitButton()

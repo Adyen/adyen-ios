@@ -167,7 +167,7 @@ extension OnlineBankingComponent: AdyenObserver {}
 
 // MARK: - SubmitCustomizable
 
-extension OnlineBankingComponent: SubmitableComponent {
+extension OnlineBankingComponent: SubmittableComponent {
 
     public func submit() {
         didSelectContinueButton()

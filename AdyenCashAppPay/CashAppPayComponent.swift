@@ -277,7 +277,7 @@ extension CashAppPayComponent: ViewControllerDelegate {}
 // MARK: - SubmitCustomizable
 
 @available(iOS 13.0, *)
-extension CashAppPayComponent: SubmitableComponent {
+extension CashAppPayComponent: SubmittableComponent {
 
     public func submit() {
         didSelectSubmitButton()
