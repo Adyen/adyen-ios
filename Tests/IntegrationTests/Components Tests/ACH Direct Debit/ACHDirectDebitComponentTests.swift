@@ -336,9 +336,11 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testSubmitShouldCallPaymentDelegateDidSubmit() throws {
         // Given
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
+        let configuration = ACHDirectDebitComponent.Configuration(showsBillingAddress: false)
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
+            configuration: configuration,
             publicKeyProvider: PublicKeyProviderMock()
         )
 
