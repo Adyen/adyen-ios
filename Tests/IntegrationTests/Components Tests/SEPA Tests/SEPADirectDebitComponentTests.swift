@@ -263,14 +263,12 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(infoType, .rendered)
     }
 
-    func testSubmitWithDefaultSubmitHiddenShouldCallPaymentDelegateDidSubmit() throws {
+    func testSubmitShouldCallPaymentDelegateDidSubmit() throws {
         // Given
         let paymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
-        let configuration = SEPADirectDebitComponent.Configuration(showsSubmitButton: false)
         let sut = SEPADirectDebitComponent(
             paymentMethod: paymentMethod,
-            context: context,
-            configuration: configuration
+            context: context
         )
 
         setupRootViewController(sut.viewController)
@@ -295,25 +293,6 @@ class SEPADirectDebitComponentTests: XCTestCase {
         // Then
         wait(for: [didSubmitExpectation], timeout: 10)
         XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
-    }
-
-    func testSubmitWithDefaultSubmitShownShouldNotCallPaymentDelegateDidSubmit() throws {
-        // Given
-        let paymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
-        let configuration = SEPADirectDebitComponent.Configuration(showsSubmitButton: false)
-        let sut = SEPADirectDebitComponent(
-            paymentMethod: paymentMethod,
-            context: context,
-            configuration: configuration
-        )
-        let delegateMock = PaymentComponentDelegateMock()
-        sut.delegate = delegateMock
-
-        // When
-        sut.submit()
-
-        // Then
-        XCTAssertEqual(delegateMock.didSubmitCallsCount, 0)
     }
 
     func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {

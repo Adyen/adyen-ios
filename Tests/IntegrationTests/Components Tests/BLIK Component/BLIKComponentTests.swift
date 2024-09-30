@@ -91,13 +91,11 @@ class BLIKComponentTests: XCTestCase {
 
     // MARK: - submit
 
-    func testSubmit_withDefaultSubmitButtonHidden_shouldCallPaymentDelegateDidSubmit() throws {
+    func testSubmit_shouldCallPaymentDelegateDidSubmit() throws {
         // Given
-        let configuration = BLIKComponent.Configuration(showsSubmitButton: false)
         let sut = BLIKComponent(
             paymentMethod: paymentMethod,
-            context: context,
-            configuration: configuration
+            context: context
         )
 
         setupRootViewController(sut.viewController)
@@ -121,25 +119,6 @@ class BLIKComponentTests: XCTestCase {
         // Then
         wait(for: [didSubmitExpectation], timeout: 10)
         XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
-    }
-
-    func testSubmit_withDefaultSubmitButtonShown_shouldNotCallPaymentDelegateDidSubmit() throws {
-        // Given
-        let configuration = BLIKComponent.Configuration(showsSubmitButton: true)
-        let sut = BLIKComponent(
-            paymentMethod: paymentMethod,
-            context: context,
-            configuration: configuration
-        )
-
-        let paymentDelegateMock = PaymentComponentDelegateMock()
-        sut.delegate = paymentDelegateMock
-
-        // When
-        sut.submit()
-
-        // Then
-        XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 0)
     }
 
     func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
