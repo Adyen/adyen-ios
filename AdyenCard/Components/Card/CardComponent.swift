@@ -318,7 +318,7 @@ private extension CardComponent.Configuration {
 
 // MARK: - SubmitCustomizable
 
-extension CardComponent: SubmitCustomizable {
+extension CardComponent: SubmitableComponent {
 
     public func submit() {
         guard !configuration.showsSubmitButton else {

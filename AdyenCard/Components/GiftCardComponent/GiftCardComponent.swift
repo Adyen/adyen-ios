@@ -478,7 +478,7 @@ extension GiftCardComponent: PublicKeyConsumer {}
 
 // MARK: - SubmitCustomizable
 
-extension GiftCardComponent: SubmitCustomizable {
+extension GiftCardComponent: SubmitableComponent {
 
     public func submit() {
         guard !showsSubmitButton else {

@@ -156,7 +156,7 @@ extension SEPADirectDebitComponent: ViewControllerDelegate {}
 
 // MARK: - SubmitCustomizable
 
-extension SEPADirectDebitComponent: SubmitCustomizable {
+extension SEPADirectDebitComponent: SubmitableComponent {
 
     public func submit() {
         guard !configuration.showsSubmitButton else {

@@ -290,7 +290,7 @@ extension AbstractPersonalInformationComponent: ViewControllerDelegate {
 
 // MARK: - SubmitCustomizable
 
-extension AbstractPersonalInformationComponent: SubmitCustomizable {
+extension AbstractPersonalInformationComponent: SubmitableComponent {
 
     public func submit() {
         guard !configuration.showsSubmitButton else {
