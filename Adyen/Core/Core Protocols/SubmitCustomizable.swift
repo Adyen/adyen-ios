@@ -7,7 +7,7 @@
 import Foundation
 
 /// A protocol that provides control over the submission process in a payment component.
-public protocol SubmitableComponent {
+public protocol SubmitableComponent: PaymentComponent {
     /// Submits the payment request to initiate the payment process.
     ///
     /// This method starts the payment flow in the payment component. It triggers the validation of the form associated
