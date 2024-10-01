@@ -32,6 +32,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
         static let infoLimit = 50
         static let logLimit = 5
         static let errorLimit = 5
+        static let attemptIdFetchFailed = "fetch-checkoutAttemptId-failed"
     }
 
     // MARK: - Properties
@@ -45,6 +46,10 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     
     private var batchTimer: Timer?
     private let batchInterval: TimeInterval
+    
+    private var isValidAttemptId: Bool {
+        checkoutAttemptId != Constants.attemptIdFetchFailed
+    }
 
     // MARK: - Initializers
 
@@ -71,11 +76,6 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     // MARK: - AnalyticsProviderProtocol
 
     internal func sendInitialAnalytics(with flavor: AnalyticsFlavor, additionalFields: AdditionalAnalyticsFields?) {
-        guard configuration.isEnabled else {
-            checkoutAttemptId = "do-not-track"
-            return
-        }
-        
         let analyticsData = AnalyticsData(
             flavor: flavor,
             additionalFields: additionalFields,
@@ -90,20 +90,27 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     }
     
     internal func add(info: AnalyticsEventInfo) {
+        guard configuration.isEnabled else { return }
+        
         eventDataSource.add(info: info)
     }
     
     internal func add(log: AnalyticsEventLog) {
+        guard configuration.isEnabled else { return }
+        
         eventDataSource.add(log: log)
         sendEventsIfNeeded()
     }
     
     internal func add(error: AnalyticsEventError) {
+        guard configuration.isEnabled else { return }
+        
         eventDataSource.add(error: error)
         sendEventsIfNeeded()
     }
     
     internal func sendEventsIfNeeded() {
+        guard configuration.isEnabled else { return }
         guard let request = requestWithAllEvents() else { return }
         
         apiClient.perform(request) { [weak self] result in
@@ -123,7 +130,8 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     
     /// Checks the event arrays safely and creates the request with them if there is any to send.
     private func requestWithAllEvents() -> AnalyticsRequest? {
-        guard let checkoutAttemptId,
+        guard isValidAttemptId,
+              let checkoutAttemptId,
               let events = eventDataSource.allEvents() else { return nil }
         
         // as per this call's limitation, we only send up to the
@@ -144,7 +152,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
         case let .success(response):
             checkoutAttemptId = response.checkoutAttemptId
         case .failure:
-            checkoutAttemptId = nil
+            checkoutAttemptId = Constants.attemptIdFetchFailed
         }
     }
     
