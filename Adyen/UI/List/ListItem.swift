@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) 2018 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -69,6 +69,9 @@ public class ListItem: FormItem {
         builder.build(with: self)
     }
     
+    // MARK: - Private
+        
+    private let listIdentifier: UUID = .init()
 }
 
 // MARK: - Hashable & Equatable
@@ -77,13 +80,10 @@ public class ListItem: FormItem {
 extension ListItem: Hashable {
     
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(title)
-        hasher.combine(imageURL)
-        hasher.combine(trailingText)
+        hasher.combine(listIdentifier)
     }
     
     public static func == (lhs: ListItem, rhs: ListItem) -> Bool {
-        lhs.title == rhs.title && lhs.imageURL == rhs.imageURL && lhs.trailingText == rhs.trailingText
+        lhs.listIdentifier == rhs.listIdentifier
     }
-    
 }
