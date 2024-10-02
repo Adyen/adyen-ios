@@ -71,11 +71,6 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     // MARK: - AnalyticsProviderProtocol
 
     internal func sendInitialAnalytics(with flavor: AnalyticsFlavor, additionalFields: AdditionalAnalyticsFields?) {
-        guard configuration.isEnabled else {
-            checkoutAttemptId = "do-not-track"
-            return
-        }
-        
         let analyticsData = AnalyticsData(
             flavor: flavor,
             additionalFields: additionalFields,
@@ -90,20 +85,27 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     }
     
     internal func add(info: AnalyticsEventInfo) {
+        guard configuration.isEnabled else { return }
+        
         eventDataSource.add(info: info)
     }
     
     internal func add(log: AnalyticsEventLog) {
+        guard configuration.isEnabled else { return }
+        
         eventDataSource.add(log: log)
         sendEventsIfNeeded()
     }
     
     internal func add(error: AnalyticsEventError) {
+        guard configuration.isEnabled else { return }
+        
         eventDataSource.add(error: error)
         sendEventsIfNeeded()
     }
     
     internal func sendEventsIfNeeded() {
+        guard configuration.isEnabled else { return }
         guard let request = requestWithAllEvents() else { return }
         
         apiClient.perform(request) { [weak self] result in
