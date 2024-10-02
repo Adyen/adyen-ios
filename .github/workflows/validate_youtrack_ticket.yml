@@ -5,11 +5,10 @@ on:
     types: [opened, synchronize, reopened, edited]
   branches:
     - develop
-  paths-ignore:
-    - 'release/*'
 jobs:
   validate-ticket:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.base.ref == 'develop' && !startsWith(github.event.pull_request.head.ref, 'release/')
     steps:
       - name: Check ticket reference
       - env:
