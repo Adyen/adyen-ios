@@ -3,8 +3,6 @@ name: 🎫 Validate ticket reference
 on:
   pull_request:
     types: [opened, synchronize, reopened, edited]
-  branches:
-    - develop
 jobs:
   validate-ticket:
     runs-on: ubuntu-latest
