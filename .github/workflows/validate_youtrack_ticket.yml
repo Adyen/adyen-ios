@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.base.ref == 'develop' && !startsWith(github.event.pull_request.head.ref, 'release/')
     steps:
+      - uses: actions/checkout@v2
       - name: Check ticket reference
       - env:
         PR_BODY: ${{github.event.pull_request.body}}
