@@ -32,7 +32,6 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
         static let infoLimit = 50
         static let logLimit = 5
         static let errorLimit = 5
-        static let attemptIdFetchFailed = "fetch-checkoutAttemptId-failed"
     }
 
     // MARK: - Properties
@@ -46,10 +45,6 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     
     private var batchTimer: Timer?
     private let batchInterval: TimeInterval
-    
-    private var isValidAttemptId: Bool {
-        checkoutAttemptId != Constants.attemptIdFetchFailed
-    }
 
     // MARK: - Initializers
 
@@ -130,8 +125,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     
     /// Checks the event arrays safely and creates the request with them if there is any to send.
     private func requestWithAllEvents() -> AnalyticsRequest? {
-        guard isValidAttemptId,
-              let checkoutAttemptId,
+        guard let checkoutAttemptId,
               let events = eventDataSource.allEvents() else { return nil }
         
         // as per this call's limitation, we only send up to the
@@ -152,7 +146,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
         case let .success(response):
             checkoutAttemptId = response.checkoutAttemptId
         case .failure:
-            checkoutAttemptId = Constants.attemptIdFetchFailed
+            checkoutAttemptId = nil
         }
     }
     

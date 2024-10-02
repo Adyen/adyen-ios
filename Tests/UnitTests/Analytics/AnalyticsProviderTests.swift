@@ -70,28 +70,6 @@ class AnalyticsProviderTests: XCTestCase {
         sut.sendInitialAnalytics(with: .components(type: .affirm), additionalFields: nil)
         wait(until: sut, at: \.checkoutAttemptId, is: expectedCheckoutAttemptId)
     }
-    
-    func testFetchCheckoutAttemptIdFailedResult() throws {
-        // Given
-        var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isEnabled = true
-
-        let apiClient = APIClientMock()
-        let sut = AnalyticsProvider(
-            apiClient: apiClient,
-            configuration: analyticsConfiguration,
-            eventDataSource: eventDataSource
-        )
-
-        let failedResult: Result<Response, Error> = .failure(Dummy.error)
-        apiClient.mockedResults = [failedResult]
-
-        // When
-        sut.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
-        
-        // Then
-        wait(until: sut, at: \.checkoutAttemptId, is: "fetch-checkoutAttemptId-failed")
-    }
 
     func testFetchCheckoutAttemptIdWhenRequestSucceedShouldCallCompletionWithNonNilValue() throws {
         // Given
