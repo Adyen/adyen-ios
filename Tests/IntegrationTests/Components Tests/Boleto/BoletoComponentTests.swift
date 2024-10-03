@@ -173,6 +173,82 @@ class BoletoComponentTests: XCTestCase {
         XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
     }
 
+    func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        let context = Dummy.context(with: AnalyticsProviderMock())
+        let configuration = BoletoComponent.Configuration(shopperInformation: nil, showEmailAddress: false)
+        let sut = BoletoComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+
+        setupRootViewController(sut.viewController)
+
+        let firstNameItem: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
+            sut.viewController.view.findView(by: ViewIdentifier.firstNameItem)
+        )
+        populate(textItemView: firstNameItem, with: "Katrina")
+
+        let lastNameItem: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
+            sut.viewController.view.findView(by: ViewIdentifier.lastNameItem)
+        )
+        populate(textItemView: lastNameItem, with: "Del Mar")
+
+        let socialSecurityNumberItem: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
+            sut.viewController.view.findView(by: ViewIdentifier.socialSecurityNumberItem)
+        )
+        populate(textItemView: socialSecurityNumberItem, with: "351.843.385-78")
+
+        let addressPickerItem: FormAddressPickerItemView = try XCTUnwrap(
+            sut.viewController.view.findView(
+                by: ViewIdentifier.addressItem
+            )
+        )
+        addressPickerItem.item.value = PostalAddressMocks.newYorkPostalAddress
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        sut.submit()
+
+        // Then
+        let validationResult = sut.validate()
+        XCTAssertTrue(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
+
+    func testValidateGivenInvalidInputShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        let context = Dummy.context(with: AnalyticsProviderMock())
+        let configuration = BoletoComponent.Configuration(shopperInformation: nil, showEmailAddress: false)
+        let sut = BoletoComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+
+        setupRootViewController(sut.viewController)
+
+        // Only first name filled
+        let firstNameItem: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
+            sut.viewController.view.findView(by: ViewIdentifier.firstNameItem)
+        )
+        populate(textItemView: firstNameItem, with: "Katrina")
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        sut.submit()
+
+        // Then
+        let validationResult = sut.validate()
+        XCTAssertFalse(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
+
     func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
