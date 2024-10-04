@@ -449,14 +449,9 @@ extension UPIComponent: AdyenObserver {}
 
 // MARK: - SubmitCustomizable
 
-extension UPIComponent: SubmitCustomizable {
+extension UPIComponent: SubmittableComponent {
 
     public func submit() {
-        guard !configuration.showsSubmitButton else {
-            AdyenAssertion.assertionFailure(message: "Default submit button must be hidden in order to call submit.")
-            return
-        }
-
         didSelectContinueButton()
     }
 

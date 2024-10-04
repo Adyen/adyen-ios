@@ -333,13 +333,10 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(infoType, .rendered)
     }
 
-    func testSubmitWithDefaultSubmitHiddenShouldCallPaymentDelegateDidSubmit() throws {
+    func testSubmitShouldCallPaymentDelegateDidSubmit() throws {
         // Given
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
-        let configuration = ACHDirectDebitComponent.Configuration(
-            showsSubmitButton: false,
-            showsBillingAddress: false
-        )
+        let configuration = ACHDirectDebitComponent.Configuration(showsBillingAddress: false)
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -372,33 +369,6 @@ class ACHDirectDebitComponentTests: XCTestCase {
         // Then
         wait(for: [didSubmitExpectation], timeout: 10)
         XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
-    }
-
-    func testSubmitWithDefaultSubmitShownShouldNotCallPaymentDelegateDidSubmit() throws {
-        // Given
-        let analyticsProviderMock = AnalyticsProviderMock()
-        let context = AdyenContext(
-            apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
-            analyticsProvider: analyticsProviderMock
-        )
-        let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
-
-        let configuration = ACHDirectDebitComponent.Configuration(showsSubmitButton: false)
-        let sut = ACHDirectDebitComponent(
-            paymentMethod: paymentMethod,
-            context: context,
-            configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock()
-        )
-        let delegateMock = PaymentComponentDelegateMock()
-        sut.delegate = delegateMock
-
-        // When
-        sut.submit()
-
-        // Then
-        XCTAssertEqual(delegateMock.didSubmitCallsCount, 0)
     }
 
     func testValidateWithValidInputSubmitShouldReturnFormViewControllerValidateResult() throws {

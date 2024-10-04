@@ -468,9 +468,6 @@ extension GiftCardComponent {
 }
 
 @_spi(AdyenInternal)
-extension GiftCardComponent: PaymentComponent {}
-
-@_spi(AdyenInternal)
 extension GiftCardComponent: PartialPaymentComponent {}
 
 @_spi(AdyenInternal)
@@ -478,14 +475,9 @@ extension GiftCardComponent: PublicKeyConsumer {}
 
 // MARK: - SubmitCustomizable
 
-extension GiftCardComponent: SubmitCustomizable {
+extension GiftCardComponent: SubmittableComponent {
 
     public func submit() {
-        guard !showsSubmitButton else {
-            AdyenAssertion.assertionFailure(message: "Default submit button must be hidden in order to call submit.")
-            return
-        }
-
         didSelectSubmitButton()
     }
 

@@ -107,13 +107,11 @@ final class DokuComponentUITests: XCTestCase {
         wait(for: [delegateExpectation], timeout: 60)
     }
 
-    func testSubmitWithDefaultSubmitButtonHiddenShouldCallPaymentDelegateDidSubmit() throws {
+    func testSubmitShouldCallPaymentDelegateDidSubmit() throws {
         // Given
-        let configuration = AbstractPersonalInformationComponent.Configuration(showsSubmitButton: false)
         let sut = DokuComponent(
             paymentMethod: paymentMethod,
-            context: context,
-            configuration: configuration
+            context: context
         )
 
         let paymentDelegateMock = PaymentComponentDelegateMock()
@@ -139,25 +137,6 @@ final class DokuComponentUITests: XCTestCase {
         // Then
         waitForExpectations(timeout: 10)
         XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
-    }
-
-    func testSubmitWithDefaultSubmitButtonShownShouldNotCallPaymentDelegateDidSubmit() throws {
-        // Given
-        let configuration = AbstractPersonalInformationComponent.Configuration(showsSubmitButton: true)
-        let sut = DokuComponent(
-            paymentMethod: paymentMethod,
-            context: context,
-            configuration: configuration
-        )
-
-        let paymentDelegateMock = PaymentComponentDelegateMock()
-        sut.delegate = paymentDelegateMock
-
-        // When
-        sut.submit()
-
-        // Then
-        XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 0)
     }
     
     func testValidateWitValidInputShouldReturnFormViewControllerValidateResult() throws {

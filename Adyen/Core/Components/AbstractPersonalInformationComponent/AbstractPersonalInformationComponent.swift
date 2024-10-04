@@ -290,14 +290,9 @@ extension AbstractPersonalInformationComponent: ViewControllerDelegate {
 
 // MARK: - SubmitCustomizable
 
-extension AbstractPersonalInformationComponent: SubmitCustomizable {
+extension AbstractPersonalInformationComponent: SubmittableComponent {
 
     public func submit() {
-        guard !configuration.showsSubmitButton else {
-            AdyenAssertion.assertionFailure(message: "Default submit button must be hidden in order to call submit.")
-            return
-        }
-
         didSelectSubmitButton()
     }
 

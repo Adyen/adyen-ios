@@ -140,14 +140,9 @@ extension BLIKComponent: ViewControllerDelegate {}
 
 // MARK: - SubmitCustomizable
 
-extension BLIKComponent: SubmitCustomizable {
+extension BLIKComponent: SubmittableComponent {
 
     public func submit() {
-        guard !configuration.showsSubmitButton else {
-            AdyenAssertion.assertionFailure(message: "Default submit button must be hidden in order to call submit.")
-            return
-        }
-
         didSelectSubmitButton()
     }
 

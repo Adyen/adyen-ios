@@ -418,14 +418,9 @@ extension ACHDirectDebitComponent: PublicKeyConsumer {}
 
 // MARK: - SubmitCustomizable
 
-extension ACHDirectDebitComponent: SubmitCustomizable {
+extension ACHDirectDebitComponent: SubmittableComponent {
 
     public func submit() {
-        guard !configuration.showsSubmitButton else {
-            AdyenAssertion.assertionFailure(message: "Default submit button must be hidden in order to call submit.")
-            return
-        }
-
         didSelectSubmitButton()
     }
 

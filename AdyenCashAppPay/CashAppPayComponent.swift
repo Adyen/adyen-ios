@@ -277,14 +277,9 @@ extension CashAppPayComponent: ViewControllerDelegate {}
 // MARK: - SubmitCustomizable
 
 @available(iOS 13.0, *)
-extension CashAppPayComponent: SubmitCustomizable {
+extension CashAppPayComponent: SubmittableComponent {
 
     public func submit() {
-        guard !configuration.showsSubmitButton else {
-            AdyenAssertion.assertionFailure(message: "Default submit button must be hidden in order to call submit.")
-            return
-        }
-
         didSelectSubmitButton()
     }
 

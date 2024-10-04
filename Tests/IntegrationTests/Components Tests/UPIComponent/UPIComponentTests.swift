@@ -58,14 +58,12 @@ class UPIComponentTests: XCTestCase {
         XCTAssertTrue(childViewController.requiresKeyboardInput)
     }
 
-    func testSubmit_withDefaultSubmitHidden_shouldCallPaymentDelegateDidSubmit() throws {
+    func testSubmit_shouldCallPaymentDelegateDidSubmit() throws {
         // Given
         let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upi)
-        let configuration = UPIComponent.Configuration(showsSubmitButton: false)
         let sut = UPIComponent(
             paymentMethod: paymentMethod,
-            context: Dummy.context,
-            configuration: configuration
+            context: Dummy.context
         )
 
         setupRootViewController(sut.viewController)
@@ -87,25 +85,6 @@ class UPIComponentTests: XCTestCase {
         // Then
         wait(for: [didSubmitExpectation], timeout: 10)
         XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
-    }
-
-    func test_submitWithDefaultSubmitShown_shouldNotCallPaymentDelegateDidSubmit() throws {
-        // Given
-        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upi)
-        let configuration = UPIComponent.Configuration(showsSubmitButton: true)
-        let sut = UPIComponent(
-            paymentMethod: paymentMethod,
-            context: Dummy.context,
-            configuration: configuration
-        )
-        let delegateMock = PaymentComponentDelegateMock()
-        sut.delegate = delegateMock
-
-        // When
-        sut.submit()
-
-        // Then
-        XCTAssertEqual(delegateMock.didSubmitCallsCount, 0)
     }
 
     func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
