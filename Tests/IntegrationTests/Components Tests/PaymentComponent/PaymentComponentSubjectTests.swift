@@ -43,34 +43,46 @@ class PaymentComponentSubjectTests: XCTestCase {
     func testSubmitWithAnalyticsEnabledShouldSetCheckoutAttemptIdInPaymentComponentData() throws {
         // Given
         let expectedCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
-        analyticsProviderMock._checkoutAttemptId = expectedCheckoutAttemptId
+        analyticsProviderMock.checkoutAttemptId = expectedCheckoutAttemptId
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
 
+        let didSubmitExpectation = expectation(description: "didSubmit should get called")
+        
         // When
         XCTAssertNil(paymentComponentData.checkoutAttemptId)
-        sut.submit(data: paymentComponentData, component: sut)
 
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
             XCTAssertEqual(expectedCheckoutAttemptId, data.checkoutAttemptId)
+            didSubmitExpectation.fulfill()
         }
+        
+        sut.submit(data: paymentComponentData, component: sut)
+        
+        wait(for: [didSubmitExpectation], timeout: 3)
     }
 
-    func testSubmitWithAnalyticsDisabledShouldNotSetCheckoutAttemptIdInPaymentComponentData() throws {
+    func testSubmitWithNoAttemptIdShouldSetConstantInPaymentComponentData() throws {
         // Given
-        analyticsProviderMock._checkoutAttemptId = nil
+        analyticsProviderMock.checkoutAttemptId = nil
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
 
+        let didSubmitExpectation = expectation(description: "didSubmit should get called")
+        
         // When
         XCTAssertNil(paymentComponentData.checkoutAttemptId)
-        sut.submit(data: paymentComponentData, component: sut)
-
+        
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
-            XCTAssertNil(data.checkoutAttemptId)
+            XCTAssertEqual(data.checkoutAttemptId, "fetch-checkoutAttemptId-failed")
+            didSubmitExpectation.fulfill()
         }
+        
+        sut.submit(data: paymentComponentData, component: sut)
+        
+        wait(for: [didSubmitExpectation], timeout: 3)
     }
 
     func testSubmitWhenBrowserInfoIsNilShouldSetBrowserInfoInPaymentComponentData() throws {
@@ -78,14 +90,20 @@ class PaymentComponentSubjectTests: XCTestCase {
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
 
+        let didSubmitExpectation = expectation(description: "didSubmit should get called")
+        
         // When
         XCTAssertNil(paymentComponentData.browserInfo)
-        sut.submit(data: paymentComponentData, component: sut)
 
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
             XCTAssertNotNil(data.browserInfo)
+            didSubmitExpectation.fulfill()
         }
+        
+        sut.submit(data: paymentComponentData, component: sut)
+        
+        wait(for: [didSubmitExpectation], timeout: 3)
     }
 
     func testSubmitWhenBrowserInfoIsNotNilShouldNotSetBrowserInfoInPaymentComponentData() throws {
@@ -98,15 +116,18 @@ class PaymentComponentSubjectTests: XCTestCase {
             order: nil,
             browserInfo: expectedBrowserInfo
         )
+        
+        let didSubmitExpectation = expectation(description: "didSubmit should get called")
 
-        // When
-        sut.submit(data: paymentComponentData, component: sut)
-
-        // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
             XCTAssertNotNil(data.browserInfo)
             XCTAssertEqual(expectedBrowserInfo.userAgent, data.browserInfo?.userAgent)
+            didSubmitExpectation.fulfill()
         }
+        
+        sut.submit(data: paymentComponentData, component: sut)
+        
+        wait(for: [didSubmitExpectation], timeout: 3)
     }
     
     func testSubmitEvent() throws {
@@ -115,11 +136,16 @@ class PaymentComponentSubjectTests: XCTestCase {
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
         
+        let didSubmitExpectation = expectation(description: "didSubmit should get called")
+        
         paymentComponentDelegate.onDidSubmit = { data, _ in
             let submitEvent = self.analyticsProviderMock.logs[0]
             XCTAssertEqual(submitEvent.type, .submit)
+            didSubmitExpectation.fulfill()
         }
 
         sut.submit(data: paymentComponentData, component: sut)
+        
+        wait(for: [didSubmitExpectation], timeout: 3)
     }
 }
