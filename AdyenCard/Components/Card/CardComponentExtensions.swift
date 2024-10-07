@@ -100,7 +100,6 @@ internal enum CardBrandSorter {
             return [secondBrand, firstBrand]
         default:
             return brands
-            
         }
     }
 }
