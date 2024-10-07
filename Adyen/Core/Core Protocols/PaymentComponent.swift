@@ -33,8 +33,8 @@ extension PaymentComponent {
         sendSubmitEvent()
         
         let component = component ?? self
-        
-        let updatedData = data.replacing(checkoutAttemptId: component.context.analyticsProvider?.checkoutAttemptId)
+        let checkoutAttemptId = component.context.analyticsProvider?.checkoutAttemptId ?? AnalyticsConstants.fetchCheckoutAttemptIdFailed
+        let updatedData = data.replacing(checkoutAttemptId: checkoutAttemptId)
 
         guard updatedData.browserInfo == nil else {
             delegate?.didSubmit(updatedData, from: component)
