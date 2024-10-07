@@ -7,9 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import TwintSDK
 
-public final class TwintComponent: PaymentComponent,
-    PresentableComponent,
-    LoadingComponent {
+public final class TwintComponent: PaymentComponent {
 
     private enum ViewIdentifier {
         static let storeDetailsItem = "storeDetailsItem"
@@ -54,65 +52,6 @@ public final class TwintComponent: PaymentComponent,
         }
     }
 
-    // MARK: - Form items
-
-    internal lazy var storeDetailsItem: FormToggleItem = {
-        let formToggleItem = FormToggleItem(style: configuration.style.toggle)
-
-        let title = localizedString(.cardStoreDetailsButton, configuration.localizationParameters)
-        formToggleItem.title = title
-
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.storeDetailsItem)
-        formToggleItem.identifier = identifier
-
-        return formToggleItem
-    }()
-
-    internal lazy var submitButtonItem: FormButtonItem = {
-        let item = FormButtonItem(style: configuration.style.mainButtonItem)
-
-        let title = localizedString(.continueTitle, configuration.localizationParameters)
-        item.title = title
-
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.submitButtonItem)
-        item.identifier = identifier
-
-        item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectSubmitButton()
-        }
-        return item
-    }()
-
-    // MARK: - Properties
-
-    private lazy var formViewController: FormViewController = {
-        let style = configuration.style
-        let localizationParameters = configuration.localizationParameters
-        let formViewController = FormViewController(style: style, localizationParameters: localizationParameters)
-        formViewController.delegate = self
-
-        let title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
-        formViewController.title = title
-
-        if configuration.showsStorePaymentMethodField {
-            formViewController.append(storeDetailsItem)
-        }
-
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
-        formViewController.append(submitButtonItem)
-
-        return formViewController
-    }()
-
-    public var requiresModalPresentation: Bool = true
-
-    // MARK: - PresentableComponent
-
-    public lazy var viewController: UIViewController = SecuredViewController(
-        child: formViewController,
-        style: configuration.style
-    )
-
     // MARK: - Initializers
 
     /// Initializes the Twint component.
@@ -130,50 +69,22 @@ public final class TwintComponent: PaymentComponent,
         self.configuration = configuration
     }
 
+    // MARK: - PaymentInitiable
+
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
     public func initiatePayment() {
         submit(data: paymentData)
     }
 
-    // MARK: - LoadingComponent
-
-    public func stopLoading() {
-        submitButtonItem.showsActivityIndicator = false
-        formViewController.view.isUserInteractionEnabled = true
-    }
-
     // MARK: - Private
 
     private var shouldStorePaymentMethod: Bool? {
-        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : nil
-    }
-
-    private func didSelectSubmitButton() {
-        guard formViewController.validate() else { return }
-
-        startLoading()
-        initiatePayment()
-    }
-
-    private func startLoading() {
-        submitButtonItem.showsActivityIndicator = true
-        formViewController.view.isUserInteractionEnabled = false
-    }
-}
-
-@_spi(AdyenInternal)
-extension TwintComponent: PaymentInitiable {}
-
-@_spi(AdyenInternal)
-extension TwintComponent: PresentableInitiableComponent {
-
-    public var requiresPresentation: Bool {
         configuration.showsStorePaymentMethodField
     }
 }
 
 @_spi(AdyenInternal)
-extension TwintComponent: ViewControllerDelegate {}
+extension TwintComponent: PaymentInitiable {}
 
 @_spi(AdyenInternal)
 extension TwintComponent: TrackableComponent {}
