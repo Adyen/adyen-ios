@@ -12,6 +12,6 @@ internal protocol Payload: Encodable {
 
 extension Payload {
     internal func jsonData() throws -> Data {
-        return try JSONEncoder.encodeWithSortedKeys(self)
+        try JSONEncoder.encodeWithSortedKeys(self)
     }
 }

@@ -43,11 +43,8 @@ jobs:
             LATEST_TAG=$(git describe --tags --abbrev=0)
             OLD="$LATEST_TAG~${githubRepo}"
         else
-            OLD="${source}~${githubRepo}"
+            OLD="${target}~${githubRepo}"
         fi
-        
-        echo $NEW
-        echo $OLD
         
         cd Scripts
         ./public-api-diff --new "$NEW" --old "$OLD" --output "$PROJECT_FOLDER/api_comparison.md"

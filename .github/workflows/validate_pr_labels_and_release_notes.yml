@@ -1,4 +1,4 @@
-name: Validate PR labels and release notes
+name: 🏷️ Validate PR labels and release notes
 
 on:
   pull_request:

@@ -9,6 +9,9 @@ import Foundation
 @_spi(AdyenInternal)
 public enum AnalyticsConstants {
     
+    /// A constant to pass into the payment data object in the case where fetching the checkout attempt Id fails.
+    public static let fetchCheckoutAttemptIdFailed = "fetch-checkoutAttemptId-failed"
+    
     public enum ValidationErrorCodes {
         
         public static let cardNumberEmpty = 900
