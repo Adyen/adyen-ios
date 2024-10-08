@@ -229,9 +229,7 @@ extension ComponentManager: PaymentComponentBuilder {
 
     internal func build(paymentMethod: TwintPaymentMethod) -> PaymentComponent? {
         #if canImport(TwintSDK)
-            let twintDropInConfiguration = configuration.twint
-            let twintConfiguration = TwintComponentConfiguration(
-                showsStorePaymentMethodField: twintDropInConfiguration.showsStorePaymentMethodField,
+            let twintConfiguration = TwintComponent.Configuration(
                 style: configuration.style.formComponent,
                 localizationParameters: configuration.localizationParameters
             )

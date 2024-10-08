@@ -504,8 +504,6 @@
 		C98125502851E9E4006D1374 /* PaymentComponentSubjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981254F2851E9E4006D1374 /* PaymentComponentSubjectTests.swift */; };
 		C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFD726946F0800AED849 /* AffirmComponent.swift */; };
 		C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */; };
-		C98FF6632C59202300B0050D /* TwintComponentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98FF6622C59202300B0050D /* TwintComponentConfiguration.swift */; };
-		C98FF6652C59211E00B0050D /* AnyTwintComponentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98FF6642C59211E00B0050D /* AnyTwintComponentConfiguration.swift */; };
 		C98FF6672C5A793A00B0050D /* StoredTwintPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98FF6662C5A793A00B0050D /* StoredTwintPaymentMethod.swift */; };
 		C98FF66A2C5BBBEC00B0050D /* TwintComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98FF6682C5BBBDE00B0050D /* TwintComponentUITests.swift */; };
 		C98FF66B2C5BBBEC00B0050D /* TwintComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98FF6682C5BBBDE00B0050D /* TwintComponentUITests.swift */; };
@@ -1821,8 +1819,6 @@
 		C981254F2851E9E4006D1374 /* PaymentComponentSubjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentSubjectTests.swift; sourceTree = "<group>"; };
 		C982FFD726946F0800AED849 /* AffirmComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponent.swift; sourceTree = "<group>"; };
 		C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmPaymentMethod.swift; sourceTree = "<group>"; };
-		C98FF6622C59202300B0050D /* TwintComponentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwintComponentConfiguration.swift; sourceTree = "<group>"; };
-		C98FF6642C59211E00B0050D /* AnyTwintComponentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyTwintComponentConfiguration.swift; sourceTree = "<group>"; };
 		C98FF6662C5A793A00B0050D /* StoredTwintPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredTwintPaymentMethod.swift; sourceTree = "<group>"; };
 		C98FF6682C5BBBDE00B0050D /* TwintComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwintComponentUITests.swift; sourceTree = "<group>"; };
 		C9B6683427C7CB7A006950B9 /* AnalyticsFlavor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsFlavor.swift; sourceTree = "<group>"; };
@@ -2786,7 +2782,6 @@
 				00FAE54D2B21CE1B0059A6F5 /* TwintDetails.swift */,
 				00E5D6542AF4E99B00CDE118 /* AdyenTwint.docc */,
 				C9B88ABA2BF63D610033F500 /* Info.plist */,
-				C98FF6622C59202300B0050D /* TwintComponentConfiguration.swift */,
 			);
 			path = AdyenTwint;
 			sourceTree = "<group>";
@@ -3764,7 +3759,6 @@
 				E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */,
 				F9A6C41C26550B7100D8CD3E /* AlreadyPaidPaymentComponent.swift */,
 				A06B7A9B2A1CEEAE008FC09D /* AnyCashAppPayConfiguration.swift */,
-				C98FF6642C59211E00B0050D /* AnyTwintComponentConfiguration.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -6627,7 +6621,6 @@
 				00E5D6552AF4E99B00CDE118 /* AdyenTwint.docc in Sources */,
 				00E5D65F2AF4EA2D00CDE118 /* TwintComponent.swift in Sources */,
 				00FAE54E2B21CE1B0059A6F5 /* TwintDetails.swift in Sources */,
-				C98FF6632C59202300B0050D /* TwintComponentConfiguration.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6994,7 +6987,6 @@
 				A0BDF3F42BD6A82C001FF7E5 /* AnalyticsConstants.swift in Sources */,
 				F9A6C4D12657B0D700D8CD3E /* FormSpacerItemView.swift in Sources */,
 				E24FED0822704C9800A65122 /* ComponentError.swift in Sources */,
-				C98FF6652C59211E00B0050D /* AnyTwintComponentConfiguration.swift in Sources */,
 				C94632BE27BA6985003DD81F /* AnalyticsProvider.swift in Sources */,
 				81C400672A3B0D8F007EC51C /* FormSearchButtonItemView.swift in Sources */,
 				F95A788825C416A60032CF7E /* CopyLabelView.swift in Sources */,

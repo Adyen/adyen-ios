@@ -15,7 +15,7 @@ public final class TwintComponent: PaymentComponent {
     }
 
     /// Configuration for Twint Component.
-    public typealias Configuration = TwintComponentConfiguration
+    public typealias Configuration = BasicComponentConfiguration
 
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -35,7 +35,7 @@ public final class TwintComponent: PaymentComponent {
             paymentMethodDetails: details,
             amount: context.payment?.amount,
             order: nil,
-            storePaymentMethod: shouldStorePaymentMethod
+            storePaymentMethod: nil
         )
     }
 
@@ -43,14 +43,7 @@ public final class TwintComponent: PaymentComponent {
     public var configuration: Configuration
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate? {
-        didSet {
-            if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
-               storePaymentMethodAware.isSession {
-                configuration.showsStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
-            }
-        }
-    }
+    public weak var delegate: PaymentComponentDelegate?
 
     // MARK: - Initializers
 
@@ -74,12 +67,6 @@ public final class TwintComponent: PaymentComponent {
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
     public func initiatePayment() {
         submit(data: paymentData)
-    }
-
-    // MARK: - Private
-
-    private var shouldStorePaymentMethod: Bool? {
-        configuration.showsStorePaymentMethodField
     }
 }
 

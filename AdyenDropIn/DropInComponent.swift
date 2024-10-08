@@ -6,17 +6,17 @@
 
 @_spi(AdyenInternal) import Adyen
 #if canImport(AdyenComponents)
-import AdyenComponents
+    import AdyenComponents
 #endif
 #if canImport(AdyenActions)
-@_spi(AdyenInternal) import AdyenActions
+    @_spi(AdyenInternal) import AdyenActions
 #endif
 #if canImport(AdyenCard)
-@_spi(AdyenInternal) import AdyenCard
+    @_spi(AdyenInternal) import AdyenCard
 #endif
 import AdyenNetworking
 #if canImport(AdyenTwint)
-import AdyenTwint
+    import AdyenTwint
 #endif
 import UIKit
 
@@ -27,9 +27,9 @@ import UIKit
  [Implementation Reference](https://docs.adyen.com/online-payments/ios/drop-in)
  */
 public final class DropInComponent: NSObject,
-                                    AnyDropInComponent,
-                                    ActionHandlingComponent,
-                                    LoadingComponent {
+    AnyDropInComponent,
+    ActionHandlingComponent,
+    LoadingComponent {
 
     internal var configuration: Configuration
 
@@ -322,7 +322,7 @@ private extension Bundle {
     // Name of the app - title under the icon.
     var displayName: String {
         object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ??
-        object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
+            object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
     }
 
 }
