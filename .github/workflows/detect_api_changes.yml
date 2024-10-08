@@ -26,7 +26,7 @@ jobs:
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '15.1'
+        xcode-version: '15.4'
         
     - name: 🚚 Fetch repo
       uses: actions/checkout@v4
@@ -37,13 +37,13 @@ jobs:
       run: |
         PROJECT_FOLDER=$PWD
         
-        NEW="${source}~${githubRepo}"
-        if [[ ${{ github.head_ref }} == release/* ]]
+        NEW="${{ env.source }}~${{ env.githubRepo }}"
+        if [[ '${{ github.head_ref || env.noTargetBranch }}' == 'release/*' ]]
         then
             LATEST_TAG=$(git describe --tags --abbrev=0)
-            OLD="$LATEST_TAG~${githubRepo}"
+            OLD="$LATEST_TAG~${{ env.githubRepo }}"
         else
-            OLD="${target}~${githubRepo}"
+            OLD="${{ env.target }}~${{ env.githubRepo }}"
         fi
         
         cd Scripts
@@ -53,6 +53,7 @@ jobs:
         source: '${{ github.event.inputs.new || github.head_ref }}'
         target: '${{ github.event.inputs.old || github.event.pull_request.base.ref }}'
         githubRepo: '${{github.server_url}}/${{github.repository}}.git'
+        noTargetBranch: 'no target branch'
        
     - if: ${{ github.event.pull_request.base.ref != '' }}
       name: 📝 Comment on PR
