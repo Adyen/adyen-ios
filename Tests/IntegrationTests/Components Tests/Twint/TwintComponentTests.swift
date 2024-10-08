@@ -56,6 +56,26 @@ class TwintComponentTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
+    func testInitiatePaymentShouldCallPaymentComponentDelegateDidSubmit() throws {
+        // Given
+        let sut = TwintComponent(paymentMethod: paymentMethod, context: context)
+
+        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called.")
+        let paymentComponentDelegate = PaymentComponentDelegateMock()
+        paymentComponentDelegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+
+            didSubmitExpectation.fulfill()
+        }
+        sut.delegate = paymentComponentDelegate
+
+        // When
+        sut.initiatePayment()
+
+        // Then
+        wait(for: [didSubmitExpectation], timeout: 10)
+    }
+
     // MARK: - Private
 
     private var paymentComponentData: PaymentComponentData {

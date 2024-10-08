@@ -19,40 +19,6 @@ class PaymentComponentMock: PaymentComponent {
     }
 }
 
-class PresentableInitiableComponentMock: PaymentComponentMock, PresentableInitiableComponent {
-
-    // MARK: - Properties
-
-    var requiresPresentation: Bool
-    var viewController: UIViewController
-
-    // MARK: - Initalizers
-
-    init(
-        paymentMethod: PaymentMethod,
-        requiresPresentation: Bool,
-        viewController: UIViewController
-    ) {
-        self.requiresPresentation = requiresPresentation
-        self.viewController = viewController
-        super.init(paymentMethod: paymentMethod)
-    }
-
-    // MARK: - initiatePayment
-
-    var initiatePaymentCallsCount = 0
-    var initiatePaymentCalled: Bool {
-        initiatePaymentCallsCount > 0
-    }
-
-    var onInitiatePayment: (() -> Void)?
-
-    func initiatePayment() {
-        initiatePaymentCallsCount += 1
-        onInitiatePayment?()
-    }
-}
-
 class PresentableComponentMock: PaymentComponentMock, PresentableComponent {
 
     // MARK: - Properties

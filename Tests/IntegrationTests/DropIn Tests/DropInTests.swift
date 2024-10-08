@@ -91,7 +91,7 @@ class DropInTests: XCTestCase {
           "groups" : []
         }
         """
-    
+
     static let paymentMethodsWithSingleInstant =
         """
         {
@@ -106,7 +106,7 @@ class DropInTests: XCTestCase {
           "groups" : []
         }
         """
-    
+
     static let paymentMethodsWithSingleNonInstant =
         """
         {
@@ -121,7 +121,7 @@ class DropInTests: XCTestCase {
           "groups" : []
         }
         """
-    
+
     override func run() {
         AdyenDependencyValues.runTestWithValues {
             $0.openAppDetector = MockOpenExternalAppDetector(didOpenExternalApp: false)
@@ -130,7 +130,7 @@ class DropInTests: XCTestCase {
             super.run()
         }
     }
-    
+
     func testDropInStyle() throws {
         var style = DropInComponent.Style(tintColor: .brown)
 
@@ -138,7 +138,7 @@ class DropInTests: XCTestCase {
         XCTAssertEqual(style.navigation.tintColor, .brown)
 
         // MARK: Update separatorColor
-        
+
         style.separatorColor = .yellow
 
         XCTAssertEqual(style.formComponent.separatorColor, .yellow)
@@ -166,7 +166,7 @@ class DropInTests: XCTestCase {
         XCTAssertEqual(style.formComponent.separatorColor, .green)
         XCTAssertEqual(style.navigation.separatorColor, .green)
     }
-    
+
     func testViewDidLoadShouldSendRenderCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
@@ -185,17 +185,17 @@ class DropInTests: XCTestCase {
 
         // Then
         XCTAssertEqual(analyticsProviderMock.infos.count, 1)
-        
+
         let info = analyticsProviderMock.infos.first
         XCTAssertEqual(info?.type, .rendered)
-        
+
         let configDataDict = try XCTUnwrap(info?.configData?.stringOnlyDictionary)
         XCTAssertNotNil(configDataDict)
         XCTAssertEqual(configDataDict["skipPaymentMethodList"], "false")
         XCTAssertEqual(configDataDict["openFirstStoredPaymentMethod"], "false")
         XCTAssertEqual(configDataDict.keys.count, 2)
     }
-    
+
     func testOpenDropInAsList() throws {
         let config = DropInComponent.Configuration()
 
@@ -224,10 +224,10 @@ class DropInTests: XCTestCase {
         )
 
         presentOnRoot(sut.viewController)
-        
+
         XCTAssertNil(sut.viewController.findChild(of: ListViewController.self))
     }
-    
+
     func testDeletingStoredPaymentSuccessWithSession() throws {
         let config = DropInComponent.Configuration()
         config.allowPreselectedPaymentView = false
@@ -235,13 +235,13 @@ class DropInTests: XCTestCase {
         var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
         paymentMethods.stored = [storedPaymentMethod]
-        
+
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
             configuration: config
         )
-        
+
         let storedPaymentMethodsDelegate = SessionStoredPaymentMethodDelegateMock()
         storedPaymentMethodsDelegate.onDisable = { storedPM, dropIn in
             XCTAssertEqual(storedPM.identifier, storedPaymentMethod.identifier)
@@ -250,7 +250,7 @@ class DropInTests: XCTestCase {
         }
         sut.storedPaymentMethodsDelegate = storedPaymentMethodsDelegate
         XCTAssertNotNil(sut.sessionAsStoredPaymentMethodsDelegate)
-        
+
         let expectation = expectation(description: "deletion delegate should be called")
         let paymentMethodsListComponent = sut.paymentMethodListComponent(onCancel: nil)
 
@@ -260,10 +260,10 @@ class DropInTests: XCTestCase {
             XCTAssertTrue(sut.paymentMethods.stored.isEmpty)
             expectation.fulfill()
         }
-        
+
         waitForExpectations(timeout: 2)
     }
-    
+
     func testDeletingStoredPaymentFailureWithSession() throws {
         let config = DropInComponent.Configuration()
         config.allowPreselectedPaymentView = false
@@ -271,13 +271,13 @@ class DropInTests: XCTestCase {
         var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
         paymentMethods.stored = [storedPaymentMethod]
-        
+
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
             configuration: config
         )
-        
+
         let storedPaymentMethodsDelegate = SessionStoredPaymentMethodDelegateMock()
         storedPaymentMethodsDelegate.onDisable = { storedPM, dropIn in
             XCTAssertEqual(storedPM.identifier, storedPaymentMethod.identifier)
@@ -285,7 +285,7 @@ class DropInTests: XCTestCase {
         }
         sut.storedPaymentMethodsDelegate = storedPaymentMethodsDelegate
         XCTAssertNotNil(sut.sessionAsStoredPaymentMethodsDelegate)
-        
+
         let expectation = expectation(description: "deletion delegate should be called")
         let paymentMethodsListComponent = sut.paymentMethodListComponent(onCancel: nil)
 
@@ -295,10 +295,10 @@ class DropInTests: XCTestCase {
             XCTAssertFalse(sut.paymentMethods.stored.isEmpty)
             expectation.fulfill()
         }
-        
+
         waitForExpectations(timeout: 2)
     }
-    
+
     func testDeletingStoredPaymentSuccessAdvanced() throws {
         let config = DropInComponent.Configuration()
         config.allowPreselectedPaymentView = false
@@ -306,13 +306,13 @@ class DropInTests: XCTestCase {
         var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
         paymentMethods.stored = [storedPaymentMethod]
-        
+
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
             configuration: config
         )
-        
+
         let storedPaymentMethodsDelegate = StoredPaymentMethodDelegateMock()
         storedPaymentMethodsDelegate.onDisable = { storedPM in
             XCTAssertEqual(storedPM.identifier, storedPaymentMethod.identifier)
@@ -320,7 +320,7 @@ class DropInTests: XCTestCase {
         }
         sut.storedPaymentMethodsDelegate = storedPaymentMethodsDelegate
         XCTAssertNil(sut.sessionAsStoredPaymentMethodsDelegate)
-        
+
         let expectation = expectation(description: "deletion delegate should be called")
         let paymentMethodsListComponent = sut.paymentMethodListComponent(onCancel: nil)
 
@@ -330,10 +330,10 @@ class DropInTests: XCTestCase {
             XCTAssertTrue(sut.paymentMethods.stored.isEmpty)
             expectation.fulfill()
         }
-        
+
         waitForExpectations(timeout: 2)
     }
-    
+
     func testDeletingStoredPaymentFailureAdvanced() throws {
         let config = DropInComponent.Configuration()
         config.allowPreselectedPaymentView = false
@@ -341,13 +341,13 @@ class DropInTests: XCTestCase {
         var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
         paymentMethods.stored = [storedPaymentMethod]
-        
+
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
             configuration: config
         )
-        
+
         let storedPaymentMethodsDelegate = StoredPaymentMethodDelegateMock()
         storedPaymentMethodsDelegate.onDisable = { storedPM in
             XCTAssertEqual(storedPM.identifier, storedPaymentMethod.identifier)
@@ -355,7 +355,7 @@ class DropInTests: XCTestCase {
         }
         sut.storedPaymentMethodsDelegate = storedPaymentMethodsDelegate
         XCTAssertNil(sut.sessionAsStoredPaymentMethodsDelegate)
-        
+
         let expectation = expectation(description: "deletion delegate should be called")
         let paymentMethodsListComponent = sut.paymentMethodListComponent(onCancel: nil)
 
@@ -365,7 +365,7 @@ class DropInTests: XCTestCase {
             XCTAssertFalse(sut.paymentMethods.stored.isEmpty)
             expectation.fulfill()
         }
-        
+
         waitForExpectations(timeout: 2)
     }
 
@@ -380,7 +380,7 @@ class DropInTests: XCTestCase {
         )
 
         presentOnRoot(sut.viewController)
-        
+
         XCTAssertNotNil(sut.viewController.findChild(of: ListViewController.self))
     }
 
@@ -396,7 +396,7 @@ class DropInTests: XCTestCase {
         )
 
         presentOnRoot(sut.viewController)
-        
+
         let topVC = try XCTUnwrap(sut.viewController.findChild(of: ListViewController.self))
         topVC.tableView(topVC.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
 
@@ -446,14 +446,14 @@ class DropInTests: XCTestCase {
             context: Dummy.context,
             configuration: config
         )
-        
+
         presentOnRoot(sut.viewController)
-        
+
         // presented screen is SEPA (payment list is skipped)
         let topVC = try XCTUnwrap(sut.viewController.findChild(of: SecuredViewController<FormViewController>.self))
         XCTAssertEqual(topVC.title, "SEPA Direct Debit")
     }
-    
+
     func testSinglePaymentMethodNotSkippingPaymentList() throws {
         let config = DropInComponent.Configuration(allowsSkippingPaymentList: true)
 
@@ -463,9 +463,9 @@ class DropInTests: XCTestCase {
             context: Dummy.context,
             configuration: config
         )
-        
+
         presentOnRoot(sut.viewController)
-        
+
         // presented screen should be payment list with 1 instant payment element
         let topVC = try XCTUnwrap(sut.viewController.findChild(of: ListViewController.self))
         XCTAssertEqual(topVC.sections.count, 1)
@@ -483,7 +483,7 @@ class DropInTests: XCTestCase {
         )
 
         presentOnRoot(sut.viewController)
-        
+
         let waitExpectation = expectation(description: "Expect Drop-In to finalize")
 
         sut.finalizeIfNeeded(with: true) {
@@ -492,10 +492,10 @@ class DropInTests: XCTestCase {
 
         waitForExpectations(timeout: 5, handler: nil)
     }
-    
+
     func testDidCancelOnRedirectAction() throws {
         let config = DropInComponent.Configuration()
-        
+
         let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
         let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: paymentMethodsData)
 
@@ -514,7 +514,7 @@ class DropInTests: XCTestCase {
         delegateMock.didCancelHandler = { _, _ in
             waitExpectation.fulfill()
         }
-        
+
         delegateMock.didOpenExternalApplicationHandler = { component in
             XCTFail("didOpenExternalApplication() should not have been called")
         }
@@ -533,60 +533,6 @@ class DropInTests: XCTestCase {
         delegate.safariViewControllerDidFinish?(safari)
 
         wait(for: [waitExpectation], timeout: 30)
-    }
-
-    func testDidSelectWithPresentableInitiableComponentWhenPresentationIsNotRequiredShouldInitiatePayment() throws {
-        // Given
-        let configuration = DropInComponent.Configuration()
-
-        let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
-        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: paymentMethodsData)
-
-        let sut = DropInComponent(
-            paymentMethods: paymentMethods,
-            context: Dummy.context,
-            configuration: configuration
-        )
-
-        // When
-        let paymentMethod = PaymentMethodMock(type: .twint, name: "Twint")
-        let viewController = UIViewController()
-        let presentableInitiableComponent = PresentableInitiableComponentMock(
-            paymentMethod: paymentMethod,
-            requiresPresentation: false,
-            viewController: viewController
-        )
-        sut.didSelect(presentableInitiableComponent)
-
-        // Then
-        XCTAssertEqual(presentableInitiableComponent.initiatePaymentCallsCount, 1)
-    }
-
-    func testDidSelectWithPresentableInitiableComponentWhenPresentationIsRequiredShouldNotInitiatePayment() throws {
-        // Given
-        let configuration = DropInComponent.Configuration()
-
-        let paymentMethodsData = try XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
-        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: paymentMethodsData)
-
-        let sut = DropInComponent(
-            paymentMethods: paymentMethods,
-            context: Dummy.context,
-            configuration: configuration
-        )
-
-        // When
-        let paymentMethod = PaymentMethodMock(type: .twint, name: "Twint")
-        let viewControllerMock = UIViewController()
-        let presentableInitiableComponent = PresentableInitiableComponentMock(
-            paymentMethod: paymentMethod,
-            requiresPresentation: true,
-            viewController: viewControllerMock
-        )
-        sut.didSelect(presentableInitiableComponent)
-
-        // Then
-        XCTAssertEqual(presentableInitiableComponent.initiatePaymentCallsCount, 0)
     }
 
     func testDidSelectWithInitiableComponentShouldInitiatePayment() throws {
@@ -612,21 +558,21 @@ class DropInTests: XCTestCase {
     }
 
     func testReload() throws {
-        
+
         let config = DropInComponent.Configuration()
-        
+
         let paymentMethods = try JSONDecoder().decode(
             PaymentMethods.self,
             from: XCTUnwrap(DropInTests.paymentMethods.data(using: .utf8))
         )
-        
+
         let updatedPaymentMethods = try JSONDecoder().decode(
             PaymentMethods.self,
             from: XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
         )
-        
+
         let expectation = expectation(description: "Api Client Called")
-        
+
         let apiClient = APIClientMock()
         apiClient.mockedResults = [.success(OrderStatusResponse(
             remainingAmount: .init(value: 100, currencyCode: "EUR"),
@@ -636,38 +582,38 @@ class DropInTests: XCTestCase {
             XCTAssertTrue($0 is OrderStatusRequest)
             expectation.fulfill()
         }
-        
+
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
             configuration: config,
             apiClient: apiClient
         )
-        
+
         try sut.reload(with: .init(pspReference: "", orderData: ""), updatedPaymentMethods)
-        
+
         wait(for: [expectation], timeout: 10)
-        
+
         XCTAssertEqual(sut.paymentMethods, updatedPaymentMethods)
     }
-    
+
     func testReloadFailure() throws {
-        
+
         let config = DropInComponent.Configuration()
-        
+
         let paymentMethods = try JSONDecoder().decode(
             PaymentMethods.self,
             from: XCTUnwrap(DropInTests.paymentMethods.data(using: .utf8))
         )
-        
+
         let updatedPaymentMethods = try JSONDecoder().decode(
             PaymentMethods.self,
             from: XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8))
         )
-        
+
         let apiClientExpectation = expectation(description: "Api Client Called")
         let failExpectation = expectation(description: "Delegate didFail Called")
-        
+
         let apiClient = APIClientMock()
         apiClient.mockedResults = [ // Returning a random error so the reload fails
             .failure(APIError(status: nil, errorCode: "", errorMessage: "", type: .internal))
@@ -676,25 +622,25 @@ class DropInTests: XCTestCase {
             XCTAssertTrue($0 is OrderStatusRequest)
             apiClientExpectation.fulfill()
         }
-        
+
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
             configuration: config,
             apiClient: apiClient
         )
-        
+
         let delegateMock = DropInDelegateMock(
             didFailHandler: { _, _ in
                 failExpectation.fulfill()
             })
-        
+
         sut.delegate = delegateMock
-        
+
         try sut.reload(with: .init(pspReference: "", orderData: ""), updatedPaymentMethods)
-        
+
         wait(for: [apiClientExpectation, failExpectation], timeout: 10)
-        
+
         XCTAssertEqual(sut.paymentMethods, paymentMethods) // Should still be the old paymentMethods
     }
 }
