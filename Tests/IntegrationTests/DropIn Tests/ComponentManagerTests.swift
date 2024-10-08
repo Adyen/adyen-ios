@@ -105,8 +105,8 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.storedComponents.filter { $0.context.apiContext.clientKey == Dummy.apiContext.clientKey }.count, 6)
         XCTAssertEqual(sut.regularComponents.filter { $0.context.apiContext.clientKey == Dummy.apiContext.clientKey }.count, numberOfExpectedRegularComponents)
 
-        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 20)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 20)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 19)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 19)
         XCTAssertEqual(sut.regularComponents.filter { $0 is FinalizableComponent }.count, 0)
     }
 
@@ -123,8 +123,8 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.storedComponents.count, 6)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents + 1)
 
-        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 20)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 21)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 19)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 20)
         XCTAssertEqual(sut.regularComponents.filter { $0 is FinalizableComponent }.count, 1)
     }
     
