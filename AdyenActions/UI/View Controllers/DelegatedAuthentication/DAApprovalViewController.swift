@@ -9,12 +9,12 @@ import UIKit
 
 @available(iOS 16.0, *)
 internal final class DAApprovalViewController: UIViewController {
-    private let context: AdyenContext
     private let style: DelegatedAuthenticationComponentStyle
     private let localizationParameters: LocalizationParameters?
     private let cardNumber: String?
     private let cardType: CardType?
     private let amount: String?
+    private let cardLogoURL: URL?
     private let useBiometricsHandler: VoidHandler
     private let approveDifferentlyHandler: VoidHandler
     private let removeCredentialsHandler: VoidHandler
@@ -79,9 +79,9 @@ internal final class DAApprovalViewController: UIViewController {
     // MARK: - init
     
     internal init(
-        context: AdyenContext,
         style: DelegatedAuthenticationComponentStyle,
         localizationParameters: LocalizationParameters?,
+        logoProvider: LogoURLProvider,
         amount: String?,
         cardNumber: String?,
         cardType: CardType?,
@@ -97,7 +97,7 @@ internal final class DAApprovalViewController: UIViewController {
         self.amount = amount
         self.cardType = cardType
         self.cardNumber = cardNumber
-        self.context = context
+        self.cardLogoURL = cardType.map(\.rawValue).map { logoProvider.logoURL(withName: $0) }
         super.init(nibName: nil, bundle: Bundle(for: DAApprovalViewController.self))
         approvalView.delegate = self
     }
@@ -130,16 +130,14 @@ internal final class DAApprovalViewController: UIViewController {
         approvalView.cardAndAmountDetailsStackView.isHidden = true
         approvalView.cardNumberStackView.isHidden = true
 
-        if let cardNumber, let cardType {
+        if let cardNumber, let cardLogoURL {
             approvalView.cardAndAmountDetailsStackView.isHidden = false
             approvalView.cardNumberStackView.isHidden = false
             approvalView.cardNumberLabel.text = cardNumber
-            let cardTypeURL = LogoURLProvider.logoURL(
-                withName: cardType.rawValue,
-                environment: context.apiContext.environment
-            )
-            imageLoader.load(url: cardTypeURL) { [weak self] image in
-                guard let self else { return }
+            self.approvalView.cardImage.isHidden = true
+            imageLoader.load(url: cardLogoURL) { [weak self] image in
+                guard let self, let image else { return }
+                self.approvalView.cardImage.isHidden = false
                 self.approvalView.cardImage.image = image
             }
         }
