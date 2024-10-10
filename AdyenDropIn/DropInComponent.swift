@@ -242,7 +242,7 @@ public final class DropInComponent: NSObject,
         component._isDropIn = true
         return component
     }
-
+    
     internal func preselectedPaymentMethodComponent(
         for paymentComponent: PaymentComponent,
         onCancel: (() -> Void)?

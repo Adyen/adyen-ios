@@ -235,13 +235,13 @@ class DropInTests: XCTestCase {
         var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
         paymentMethods.stored = [storedPaymentMethod]
-
+        
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
             configuration: config
         )
-
+        
         let storedPaymentMethodsDelegate = SessionStoredPaymentMethodDelegateMock()
         storedPaymentMethodsDelegate.onDisable = { storedPM, dropIn in
             XCTAssertEqual(storedPM.identifier, storedPaymentMethod.identifier)
@@ -271,13 +271,13 @@ class DropInTests: XCTestCase {
         var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
         paymentMethods.stored = [storedPaymentMethod]
-
+        
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
             configuration: config
         )
-
+        
         let storedPaymentMethodsDelegate = SessionStoredPaymentMethodDelegateMock()
         storedPaymentMethodsDelegate.onDisable = { storedPM, dropIn in
             XCTAssertEqual(storedPM.identifier, storedPaymentMethod.identifier)
@@ -306,13 +306,13 @@ class DropInTests: XCTestCase {
         var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
         paymentMethods.stored = [storedPaymentMethod]
-
+        
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
             configuration: config
         )
-
+        
         let storedPaymentMethodsDelegate = StoredPaymentMethodDelegateMock()
         storedPaymentMethodsDelegate.onDisable = { storedPM in
             XCTAssertEqual(storedPM.identifier, storedPaymentMethod.identifier)
@@ -341,13 +341,13 @@ class DropInTests: XCTestCase {
         var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
         paymentMethods.stored = [storedPaymentMethod]
-
+        
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
             configuration: config
         )
-
+        
         let storedPaymentMethodsDelegate = StoredPaymentMethodDelegateMock()
         storedPaymentMethodsDelegate.onDisable = { storedPM in
             XCTAssertEqual(storedPM.identifier, storedPaymentMethod.identifier)
@@ -446,7 +446,7 @@ class DropInTests: XCTestCase {
             context: Dummy.context,
             configuration: config
         )
-
+        
         presentOnRoot(sut.viewController)
 
         // presented screen is SEPA (payment list is skipped)
@@ -463,7 +463,7 @@ class DropInTests: XCTestCase {
             context: Dummy.context,
             configuration: config
         )
-
+        
         presentOnRoot(sut.viewController)
 
         // presented screen should be payment list with 1 instant payment element
