@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import TwintSDK
 
+/// A component that handles a Twint payment.
 public final class TwintComponent: PaymentComponent {
 
     private enum ViewIdentifier {
