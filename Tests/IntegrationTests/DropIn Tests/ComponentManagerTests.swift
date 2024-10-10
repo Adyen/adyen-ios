@@ -12,7 +12,7 @@
     @testable import AdyenCashAppPay
 #endif
 
-#if canImport(AdyenCashAppPay)
+#if canImport(AdyenTwint)
     @testable import AdyenTwint
 #endif
 import PassKit
