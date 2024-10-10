@@ -10,11 +10,6 @@ import TwintSDK
 /// A component that handles a Twint payment.
 public final class TwintComponent: PaymentComponent {
 
-    private enum ViewIdentifier {
-        static let storeDetailsItem = "storeDetailsItem"
-        static let submitButtonItem = "submitButtonItem"
-    }
-
     /// Configuration for Twint Component.
     public typealias Configuration = BasicComponentConfiguration
 
