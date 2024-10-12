@@ -130,6 +130,7 @@
 		5AD40EFB26303D490090E01C /* UILabelHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40EFA26303D490090E01C /* UILabelHelpers.swift */; };
 		5AD755DB268E11DA0040B919 /* VoucherComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD755DA268E11DA0040B919 /* VoucherComponentExtensions.swift */; };
 		5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF8CD4C26691D3A00102339 /* Dummy.swift */; };
+		75295A8F2CBA76C10046BBB1 /* DummyAnalyticsEventDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75295A8E2CBA76C10046BBB1 /* DummyAnalyticsEventDataSource.swift */; };
 		8100F2BD2A4C3407008C09E7 /* FormValidatableItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8100F2BC2A4C3407008C09E7 /* FormValidatableItemViewTests.swift */; };
 		8100F2C02A4C37E4008C09E7 /* FormSelectableItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8100F2BF2A4C37E3008C09E7 /* FormSelectableItemViewTests.swift */; };
 		810470772B2720DC0049B522 /* AdyenTwint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */; };
@@ -1592,6 +1593,7 @@
 		5AD755DA268E11DA0040B919 /* VoucherComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherComponentExtensions.swift; sourceTree = "<group>"; };
 		5AF730E92667C3F10091C573 /* APIContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContextTests.swift; sourceTree = "<group>"; };
 		5AF8CD4C26691D3A00102339 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
+		75295A8E2CBA76C10046BBB1 /* DummyAnalyticsEventDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyAnalyticsEventDataSource.swift; sourceTree = "<group>"; };
 		8100F2BC2A4C3407008C09E7 /* FormValidatableItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidatableItemViewTests.swift; sourceTree = "<group>"; };
 		8100F2BF2A4C37E3008C09E7 /* FormSelectableItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableItemViewTests.swift; sourceTree = "<group>"; };
 		8107F4832BB1CE8A007745FC /* String+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+UIImage.swift"; sourceTree = "<group>"; };
@@ -2946,6 +2948,16 @@
 			path = Boleto;
 			sourceTree = "<group>";
 		};
+		75295A8D2CBA76930046BBB1 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				A09FB2EC2B86051000270D51 /* AnalyticsEventDataSource.swift */,
+				75295A8E2CBA76C10046BBB1 /* DummyAnalyticsEventDataSource.swift */,
+				A01DFBBE2BA887BF00205881 /* ThreadSafeAnalyticsEventDataSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
 		8100F2BE2A4C3410008C09E7 /* Validatable */ = {
 			isa = PBXGroup;
 			children = (
@@ -3417,6 +3429,7 @@
 		C96C400E27CCC94500CDBAB8 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
+				75295A8D2CBA76930046BBB1 /* DataSource */,
 				C9CA0B69282E7E5D00C4E9C2 /* Models */,
 				C9CA0B68282E7E4A00C4E9C2 /* Requests */,
 				C94632BC27BA6968003DD81F /* AnalyticsProvider */,
@@ -3519,8 +3532,6 @@
 				A0DB48692AFD0BDC00348C83 /* AnalyticsEventInfo.swift */,
 				A0DB486B2AFD0BEE00348C83 /* AnalyticsEventLog.swift */,
 				A0DB486D2AFD0BFC00348C83 /* AnalyticsEventError.swift */,
-				A09FB2EC2B86051000270D51 /* AnalyticsEventDataSource.swift */,
-				A01DFBBE2BA887BF00205881 /* ThreadSafeAnalyticsEventDataSource.swift */,
 				A00167692BC9567B0099A6AE /* AnalyticsValidationError.swift */,
 				A0BDF3F32BD6A82C001FF7E5 /* AnalyticsConstants.swift */,
 			);
@@ -6783,6 +6794,7 @@
 				00A25E602A404342001B32B6 /* AdyenSdkVersion.swift in Sources */,
 				F9D644DE24D2D9950059CBE3 /* MBWayPaymentMethod.swift in Sources */,
 				E7085B142628B29600D0153B /* BaseFormPickerItem.swift in Sources */,
+				75295A8F2CBA76C10046BBB1 /* DummyAnalyticsEventDataSource.swift in Sources */,
 				E216D3C3221AEDBE0013CBCF /* Formatter.swift in Sources */,
 				F9B798CB23AB706D00A2103C /* ListComponentStyle.swift in Sources */,
 				E2B3C216233507030067891D /* UIColorHelpers.swift in Sources */,
