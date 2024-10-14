@@ -57,7 +57,7 @@ jobs:
        
     - if: ${{ github.event.pull_request.base.ref != '' }}
       name: 📝 Comment on PR
-      uses: thollander/actions-comment-pull-request@v2
+      uses: thollander/actions-comment-pull-request@v3
       with:
         filePath: "${{ github.workspace }}/api_comparison.md"
         comment_tag: api_changes
