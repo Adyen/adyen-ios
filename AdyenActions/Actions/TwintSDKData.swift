@@ -12,16 +12,28 @@ public struct TwintSDKData: Decodable {
     /// SDK token.
     public let token: String
 
+    // Determines if the Twint payment is tokenized.
+    public let isStored: Bool
+
     private enum CodingKeys: String, CodingKey {
         case token
+        case isStored
     }
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         token = try container.decode(String.self, forKey: .token)
+
+        // `isStored` field comes a String instead of Bool due to technical limitations
+        // on the API side. This is the reason it is necessary to parse it from String to
+        // Bool.
+        // This is the ticket where the field was added: FOC-77001
+        let isStoredString = try container.decode(String.self, forKey: .isStored)
+        isStored = Bool(isStoredString) ?? false
     }
 
-    internal init(token: String) {
+    internal init(token: String, isStored: Bool) {
         self.token = token
+        self.isStored = isStored
     }
 }

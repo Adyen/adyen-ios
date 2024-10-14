@@ -7,11 +7,12 @@
 @_spi(AdyenInternal) import Adyen
 import TwintSDK
 
+/// A component that handles a Twint payment.
 public final class TwintComponent: PaymentComponent {
 
     /// Configuration for Twint Component.
     public typealias Configuration = BasicComponentConfiguration
-    
+
     /// The context object for this component.
     @_spi(AdyenInternal)
     public let context: AdyenContext
@@ -20,13 +21,27 @@ public final class TwintComponent: PaymentComponent {
     public let paymentMethod: PaymentMethod
 
     /// The ready to submit payment data.
-    public let paymentData: PaymentComponentData
+    public var paymentData: PaymentComponentData {
+        let details = TwintDetails(
+            type: paymentMethod,
+            subType: "sdk"
+        )
+
+        return PaymentComponentData(
+            paymentMethodDetails: details,
+            amount: context.payment?.amount,
+            order: nil,
+            storePaymentMethod: nil
+        )
+    }
 
     /// Component's configuration
     public var configuration: Configuration
 
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
+
+    // MARK: - Initializers
 
     /// Initializes the Twint component.
     ///
@@ -41,17 +56,9 @@ public final class TwintComponent: PaymentComponent {
         self.paymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
-
-        let details = TwintDetails(
-            type: paymentMethod,
-            subType: "sdk"
-        )
-        self.paymentData = PaymentComponentData(
-            paymentMethodDetails: details,
-            amount: context.payment?.amount,
-            order: nil
-        )
     }
+
+    // MARK: - PaymentInitiable
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
     public func initiatePayment() {
@@ -61,3 +68,6 @@ public final class TwintComponent: PaymentComponent {
 
 @_spi(AdyenInternal)
 extension TwintComponent: PaymentInitiable {}
+
+@_spi(AdyenInternal)
+extension TwintComponent: TrackableComponent {}

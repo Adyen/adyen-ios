@@ -50,7 +50,6 @@ import Foundation
             ///   - style: The Component UI style.
             ///   - callbackAppScheme: The callback app scheme invoked once the Twint app is done with the payment
             ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
-            ///
             /// - Important: The value of ``callbackAppScheme`` is  required to only provide the scheme,
             /// without a host/path/... (e.g. "my-app", not a url "my-app://...")
             public init(
@@ -59,8 +58,8 @@ import Foundation
                 localizationParameters: LocalizationParameters? = nil
             ) {
                 self.style = style
-                self.localizationParameters = localizationParameters
                 self.callbackAppScheme = callbackAppScheme
+                self.localizationParameters = localizationParameters
             }
         }
 
@@ -121,12 +120,21 @@ import Foundation
         }
 
         private func invokeTwint(app: TWAppConfiguration, action: TwintSDKAction) {
+            let error: Error?
 
-            let error = twint.pay(
-                withCode: action.sdkData.token,
-                appConfiguration: app,
-                callback: configuration.callbackAppScheme
-            )
+            if action.sdkData.isStored {
+                error = twint.registerForUOF(
+                    withCode: action.sdkData.token,
+                    appConfiguration: app,
+                    callback: configuration.callbackAppScheme
+                )
+            } else {
+                error = twint.pay(
+                    withCode: action.sdkData.token,
+                    appConfiguration: app,
+                    callback: configuration.callbackAppScheme
+                )
+            }
 
             if let error {
                 handleShowError(error.localizedDescription)

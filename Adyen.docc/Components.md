@@ -186,3 +186,4 @@ func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpe
 - ``UPIComponent``
 - ``QRCodeActionComponent``
 - ``CashAppPayComponent``
+- ``TwintComponent``
