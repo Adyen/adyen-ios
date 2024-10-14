@@ -209,7 +209,7 @@ The Adyen DropIn/Components SDK API Reference.
 - ``CashAppPayComponent``
 - ``CashAppPayDetails``
 
-### Twint
+### Twint Component
 
 - ``TwintPaymentMethod``
 - ``TwintComponent``
