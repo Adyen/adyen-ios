@@ -36,7 +36,7 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
         switchControl.translatesAutoresizingMaskIntoConstraints = false
         switchControl.isOn = item.value
         switchControl.onTintColor = item.style.tintColor
-        switchControl.isAccessibilityElement = false
+        switchControl.isAccessibilityElement = true
         switchControl.setContentHuggingPriority(.required, for: .horizontal)
         switchControl.setContentCompressionResistancePriority(.required, for: .horizontal)
         switchControl.addTarget(self, action: #selector(switchControlValueChanged), for: .valueChanged)
