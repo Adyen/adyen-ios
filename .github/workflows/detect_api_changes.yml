@@ -47,7 +47,7 @@ jobs:
         fi
         
         cd Scripts
-        ./public-api-diff --new "$NEW" --old "$OLD" --output "$PROJECT_FOLDER/api_comparison.md" --log-output "$PROJECT_FOLDER/logs.txt"
+        ./public-api-diff project --new "$NEW" --old "$OLD" --output "$PROJECT_FOLDER/api_comparison.md" --log-output "$PROJECT_FOLDER/logs.txt"
         cat "$PROJECT_FOLDER/logs.txt"
         cat "$PROJECT_FOLDER/api_comparison.md" >> $GITHUB_STEP_SUMMARY
       env:
