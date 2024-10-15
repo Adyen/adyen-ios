@@ -31,7 +31,7 @@ import XCTest
     extension TwintSDKAction {
         static var dummy: TwintSDKAction {
             .init(
-                sdkData: .init(token: "token"),
+                sdkData: .init(token: "token", isStored: false),
                 paymentData: "paymentData",
                 paymentMethodType: "paymentMethodType",
                 type: "type"
