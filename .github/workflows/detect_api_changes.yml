@@ -47,7 +47,8 @@ jobs:
         fi
         
         cd Scripts
-        ./public-api-diff --new "$NEW" --old "$OLD" --output "$PROJECT_FOLDER/api_comparison.md"
+        ./public-api-diff project --new "$NEW" --old "$OLD" --output "$PROJECT_FOLDER/api_comparison.md" --log-output "$PROJECT_FOLDER/logs.txt"
+        cat "$PROJECT_FOLDER/logs.txt"
         cat "$PROJECT_FOLDER/api_comparison.md" >> $GITHUB_STEP_SUMMARY
       env:
         source: '${{ github.event.inputs.new || github.head_ref }}'
@@ -57,8 +58,8 @@ jobs:
        
     - if: ${{ github.event.pull_request.base.ref != '' }}
       name: 📝 Comment on PR
-      uses: thollander/actions-comment-pull-request@v2
+      uses: thollander/actions-comment-pull-request@v3
       with:
-        filePath: "${{ github.workspace }}/api_comparison.md"
-        comment_tag: api_changes
+        file-path: "${{ github.workspace }}/api_comparison.md"
+        comment-tag: api_changes
         mode: recreate
