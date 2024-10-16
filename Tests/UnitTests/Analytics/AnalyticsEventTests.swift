@@ -36,7 +36,7 @@ class AnalyticsEventTests: XCTestCase {
         sut.sendInitialAnalytics(with: flavor, additionalFields: nil)
     }
 
-    func testSendInitialEventGivenAnalyticsIsDisabledShouldNotSendAnyRequest() throws {
+    func testSendInitialEventGivenAnalyticsIsDisabledShouldNotSendRequest() throws {
         // Given
         var analyticsConfiguration = AnalyticsConfiguration()
         analyticsConfiguration.isEnabled = false
@@ -45,15 +45,18 @@ class AnalyticsEventTests: XCTestCase {
             configuration: analyticsConfiguration,
             eventDataSource: AnalyticsEventDataSource()
         )
-
-        let expectedRequestCalls = 0
+        
+        let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
+        apiClient.mockedResults = [checkoutAttemptIdResult]
 
         // When
         sendInitialAnalytics()
 
         // Then
-        XCTAssertEqual(expectedRequestCalls, apiClient.counter, "One or more analytics requests were sent.")
-        XCTAssertEqual(sut.checkoutAttemptId, "do-not-track")
+        // Then
+        wait(for: .milliseconds(1))
+        XCTAssertEqual(apiClient.counter, 1, "One or more analytics requests were sent.")
+        XCTAssertEqual(sut.checkoutAttemptId, "cb3eef98-978e-4f6f-b299-937a4450be1f1648546838056be73d8f38ee8bcc3a65ec14e41b037a59f255dcd9e83afe8c06bd3e7abcad993")
     }
 
     func testSendInitialEventGivenEnabledAndFlavorIsComponentsShouldSendInitialRequest() throws {

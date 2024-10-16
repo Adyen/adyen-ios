@@ -263,5 +263,4 @@ public extension DropInComponent {
             self.storePaymentMethod = storePaymentMethod
         }
     }
-    
 }

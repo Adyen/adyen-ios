@@ -43,7 +43,7 @@ extension ComponentManager: PaymentComponentBuilder {
             configuration: .init(localizationParameters: configuration.localizationParameters)
         )
     }
-    
+
     internal func build(paymentMethod: StoredACHDirectDebitPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(
             paymentMethod: paymentMethod,
@@ -51,8 +51,16 @@ extension ComponentManager: PaymentComponentBuilder {
             configuration: .init(localizationParameters: configuration.localizationParameters)
         )
     }
-    
+
     internal func build(paymentMethod: StoredCashAppPayPaymentMethod) -> PaymentComponent? {
+        StoredPaymentMethodComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: .init(localizationParameters: configuration.localizationParameters)
+        )
+    }
+
+    internal func build(paymentMethod: StoredTwintPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -153,7 +161,7 @@ extension ComponentManager: PaymentComponentBuilder {
             showsSecurityCodeField: configuration.giftCard.showsSecurityCodeField
         )
     }
-    
+
     internal func build(paymentMethod: MealVoucherPaymentMethod) -> PaymentComponent? {
         guard let amount = context.payment?.amount, partialPaymentEnabled else { return nil }
         return GiftCardComponent(
@@ -221,10 +229,14 @@ extension ComponentManager: PaymentComponentBuilder {
 
     internal func build(paymentMethod: TwintPaymentMethod) -> PaymentComponent? {
         #if canImport(TwintSDK)
-            TwintComponent(
+            let twintConfiguration = TwintComponent.Configuration(
+                style: configuration.style.formComponent,
+                localizationParameters: configuration.localizationParameters
+            )
+            return TwintComponent(
                 paymentMethod: paymentMethod,
                 context: context,
-                configuration: .init(style: configuration.style.formComponent)
+                configuration: twintConfiguration
             )
         #else
             return nil

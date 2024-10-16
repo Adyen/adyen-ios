@@ -109,6 +109,9 @@ import XCTest
             } handlePay: { code, appConfiguration, callbackAppScheme in
                 payBlockExpectation.fulfill()
                 return nil
+            } handleRegisterForUOF: { _, _, _ in
+                XCTFail("RegisterForUOF should not have been called.")
+                return nil
             } handleController: { installedAppConfigurations, selectionHandler, cancelHandler in
                 XCTFail("Twint controller should not have been shown")
                 return nil
