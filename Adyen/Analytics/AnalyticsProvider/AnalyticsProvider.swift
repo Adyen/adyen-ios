@@ -59,7 +59,6 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
         self.uniqueAssetAPIClient = UniqueAssetAPIClient<InitialAnalyticsResponse>(apiClient: apiClient)
         self.eventDataSource = eventDataSource
         self.batchInterval = batchInterval
-        startNextTimer()
     }
     
     deinit {
@@ -145,6 +144,7 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
         switch result {
         case let .success(response):
             checkoutAttemptId = response.checkoutAttemptId
+            startNextTimer()
         case .failure:
             checkoutAttemptId = nil
         }
@@ -160,6 +160,8 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     }
     
     private func startNextTimer() {
+        guard configuration.isEnabled else { return }
+        
         batchTimer?.invalidate()
         batchTimer = Timer.scheduledTimer(withTimeInterval: batchInterval, repeats: true) { [weak self] _ in
             self?.sendEventsIfNeeded()
