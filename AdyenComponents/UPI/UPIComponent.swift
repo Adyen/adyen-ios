@@ -14,8 +14,10 @@ public final class UPIComponent: PaymentComponent,
     LoadingComponent {
 
     /// The flow types for UPI component.
-    internal enum UPIFlowType: Int {
+    public enum UPIFlowType: Int {
+        /// Transaction handled through UPI-enabled apps.
         case upiApps = 0
+        /// Transaction initiated by scanning a QR code.
         case qrCode = 1
     }
 
@@ -31,13 +33,12 @@ public final class UPIComponent: PaymentComponent,
     }
 
     internal enum Constants {
-        static let upiCollect = "upi_collect"
-        static let upiQRCode = "upi_qr"
-        static let upiIntent = "upi_intent"
-        static let vpaFlowIdentifier = "UPI/VPA"
-        static let noAppsVpaSegmentTitle = "VPA"
-        
-        static let qrCodeIcon = "qrcode"
+        internal static let upiCollect = "upi_collect"
+        internal static let upiQRCode = "upi_qr"
+        internal static let upiIntent = "upi_intent"
+        internal static let vpaFlowIdentifier = "UPI/VPA"
+        internal static let noAppsVpaSegmentTitle = "VPA"
+        internal static let qrCodeIcon = "qrcode"
     }
 
     /// Configuration for UPI Component.
@@ -69,7 +70,9 @@ public final class UPIComponent: PaymentComponent,
     
     internal private(set) var currentSelectedItemIdentifier: String?
 
-    internal private(set) var selectedUPIFlow: UPIFlowType = .upiApps
+    /// Represents the selected UPI (Unified Payments Interface) flow for the payment component.
+    /// Determines the specific UPI transaction process to follow.
+    @AdyenObservable(.upiApps) public private(set) var selectedUPIFlow: UPIFlowType
 
     /// Initializes the UPI  component.
     ///
@@ -89,6 +92,8 @@ public final class UPIComponent: PaymentComponent,
             self.currentSelectedItemIdentifier = Constants.vpaFlowIdentifier
         }
     }
+
+    // MARK: - LoadingComponent
 
     public func stopLoading() {
         continueButton.showsActivityIndicator = false
@@ -267,6 +272,7 @@ public final class UPIComponent: PaymentComponent,
 
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
+            scrollEnabled: configuration.showsSubmitButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
@@ -286,8 +292,11 @@ public final class UPIComponent: PaymentComponent,
         vpaInputItem.isVisible = upiAppsList.isEmpty
         
         formViewController.append(vpaInputItem)
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
-        formViewController.append(continueButton)
+
+        if configuration.showsSubmitButton {
+            formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+            formViewController.append(continueButton)
+        }
 
         return formViewController
     }()
@@ -307,7 +316,7 @@ extension UPIComponent {
     }
     
     private func didSelectContinueButton() {
-        guard formViewController.validate() else { return }
+        guard validate() else { return }
 
         guard canSubmit() else {
             showError()
@@ -317,7 +326,7 @@ extension UPIComponent {
         continueButton.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
-        submit()
+        submitPayment()
     }
 
     private func didChangeSegmentedControlIndex(_ index: Int) {
@@ -408,7 +417,7 @@ private extension UPIComponent {
         }
     }
     
-    func submit() {
+    func submitPayment() {
         switch selectedUPIFlow {
         case .upiApps:
             let details: UPIComponentDetails
@@ -437,3 +446,16 @@ private extension UPIComponent {
 
 @_spi(AdyenInternal)
 extension UPIComponent: AdyenObserver {}
+
+// MARK: - SubmitCustomizable
+
+extension UPIComponent: SubmittableComponent {
+
+    public func submit() {
+        didSelectContinueButton()
+    }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
+}

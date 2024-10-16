@@ -20,6 +20,7 @@ class BACSInputFormViewControllerTests: XCTestCase {
         let styleProvider = FormComponentStyle()
         sut = BACSInputFormViewController(
             title: "BACS Direct Debit",
+            scrollEnabled: true,
             styleProvider: styleProvider
         )
         sut.presenter = presenter

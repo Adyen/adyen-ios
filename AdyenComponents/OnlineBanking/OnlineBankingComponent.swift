@@ -127,7 +127,7 @@ public final class OnlineBankingComponent: PaymentComponent,
     // MARK: - Private
 
     private func didSelectContinueButton() {
-        guard formViewController.validate() else { return }
+        guard validate() else { return }
 
         let details = OnlineBankingDetails(
             paymentMethod: paymentMethod,
@@ -141,6 +141,7 @@ public final class OnlineBankingComponent: PaymentComponent,
 
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
+            scrollEnabled: configuration.showsSubmitButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
@@ -150,8 +151,11 @@ public final class OnlineBankingComponent: PaymentComponent,
         formViewController.append(FormSpacerItem(numberOfSpaces: 4))
         formViewController.append(termsAndConditionsLabelItem.padding())
         formViewController.append(FormSpacerItem())
-        formViewController.append(continueButton)
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+
+        if configuration.showsSubmitButton {
+            formViewController.append(continueButton)
+            formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+        }
 
         return formViewController
     }()
@@ -160,3 +164,16 @@ public final class OnlineBankingComponent: PaymentComponent,
 
 @_spi(AdyenInternal)
 extension OnlineBankingComponent: AdyenObserver {}
+
+// MARK: - SubmitCustomizable
+
+extension OnlineBankingComponent: SubmittableComponent {
+
+    public func submit() {
+        didSelectContinueButton()
+    }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
+}

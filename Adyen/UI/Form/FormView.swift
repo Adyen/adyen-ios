@@ -7,16 +7,27 @@
 import UIKit
 
 /// Displays a form for the user to enter details.
-internal final class FormView: UIScrollView {
+internal final class FormView: UIView {
+
+    // MARK: - UI elements
+
+    private let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+
+    // MARK: - Properties
+    
+    /// A Boolean value that determines whether the `FormView` is embedded in a `UIScrollView`
+    internal var isEmbeddedInScrollView: Bool = true
 
     /// Initializes the form view.
     internal init() {
         super.init(frame: .zero)
-        
-        preservesSuperviewLayoutMargins = true
-        addSubview(stackView)
-
-        configureConstraints()
+        setup()
     }
     
     @available(*, unavailable)
@@ -25,7 +36,7 @@ internal final class FormView: UIScrollView {
     }
     
     override internal var intrinsicContentSize: CGSize {
-        stackView.adyen.minimalSize
+        isEmbeddedInScrollView ? stackView.adyen.minimalSize : super.intrinsicContentSize
     }
     
     // MARK: - Item Views
@@ -37,21 +48,23 @@ internal final class FormView: UIScrollView {
         stackView.addArrangedSubview(itemView)
     }
 
-    // MARK: - Stack View
-    
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.preservesSuperviewLayoutMargins = true
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
+    // MARK: - Private
 
-    // MARK: - Layout
+    private func setup() {
+        addSubviews()
+        setupLayout()
+    }
 
-    private func configureConstraints() {
-        stackView.adyen.anchor(inside: self)
-        stackView.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
+    private func addSubviews() {
+        addSubview(stackView)
+    }
+
+    private func setupLayout() {
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
+        ])
     }
 }
