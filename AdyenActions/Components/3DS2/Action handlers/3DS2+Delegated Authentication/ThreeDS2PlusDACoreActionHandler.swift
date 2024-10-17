@@ -106,9 +106,10 @@ internal typealias VoidHandler = () -> Void
                     }
                     
                     self.startApprovalFlow(
-                        payloadForDA,
-                        cardType: nil,
-                        cardNumber: nil
+                        payloadForDA.sdkInput,
+                        cardType: payloadForDA.cardType,
+                        cardNumber: securedCardNumber(lastFour: payloadForDA.lastFour),
+                        amount: amount(amountFromPaymentInfo: payloadForDA.amount)
                     ) { [weak self] result in
                         guard let self else { return }
                         
@@ -135,11 +136,33 @@ internal typealias VoidHandler = () -> Void
             }
         }
         
-        private func daPayload(_ fingerprintAction: ThreeDS2FingerprintAction) -> String? {
-            guard let token: ThreeDS2Component.FingerprintToken = try? AdyenCoder.decodeBase64(fingerprintAction.fingerprintToken) else {
+        private func amount(amountFromPaymentInfo: Amount?) -> Amount? {
+            guard let amount = amountFromPaymentInfo else {
+                return context.payment?.amount
+            }
+            return amount
+        }
+        
+        private struct DAApprovalPayload {
+            let sdkInput: String
+            let lastFour: String?
+            let cardType: CardType?
+            let amount: Amount?
+        }
+        
+        private func daPayload(
+            _ fingerprintAction: ThreeDS2FingerprintAction
+        ) -> DAApprovalPayload? {
+            guard let token: ThreeDS2Component.FingerprintToken = try? AdyenCoder.decodeBase64(fingerprintAction.fingerprintToken),
+                  let sdkInput = token.delegatedAuthenticationSDKInput else {
                 return nil
             }
-            return token.delegatedAuthenticationSDKInput
+            return DAApprovalPayload(
+                sdkInput: sdkInput,
+                lastFour: token.paymentInfo?.lastFour,
+                cardType: token.paymentInfo?.cardType,
+                amount: token.paymentInfo?.amount
+            )
         }
         
         /// Adds the authenticationSDK output into the fingerprint result to approve the transaction/delete the credential in the backend.
@@ -167,6 +190,7 @@ internal typealias VoidHandler = () -> Void
             _ delegatedAuthenticationInput: String,
             cardType: CardType?,
             cardNumber: String?,
+            amount: Amount?,
             completion: @escaping (Result<(daOutput: String, delete: Bool?), ApprovalFlowError>) -> Void
         ) {
             isDeviceRegistered(delegatedAuthenticationInput: delegatedAuthenticationInput) { [weak self] registered in
@@ -176,6 +200,7 @@ internal typealias VoidHandler = () -> Void
                         delegatedAuthenticationInput: delegatedAuthenticationInput,
                         cardType: cardType,
                         cardNumber: cardNumber,
+                        amount: amount,
                         completion: completion
                     )
                 } else {
@@ -199,12 +224,14 @@ internal typealias VoidHandler = () -> Void
             delegatedAuthenticationInput: String,
             cardType: CardType?,
             cardNumber: String?,
+            amount: Amount?,
             completion: @escaping (Result<(daOutput: String, delete: Bool?), ApprovalFlowError>
             ) -> Void
         ) {
             presenter.showApprovalScreen(
                 component: self,
                 cardDetails: (cardNumber, cardType),
+                amount: amount,
                 approveAuthenticationHandler: { [weak self] in
                     guard let self else { return }
                     self.userApprovedTransaction(
@@ -373,9 +400,9 @@ internal typealias VoidHandler = () -> Void
                     }
                     
                     self.startRegistrationFlow(
-                        delegatedAuthenticationInput: registrationPayload,
-                        cardNumber: nil,
-                        cardType: nil
+                        delegatedAuthenticationInput: registrationPayload.sdkInput,
+                        cardNumber: securedCardNumber(lastFour: registrationPayload.lastFour),
+                        cardType: registrationPayload.cardType
                     ) { result in
                         switch result {
                         case let .success(registrationSDKOutput):
@@ -447,11 +474,29 @@ internal typealias VoidHandler = () -> Void
             }
         }
 
-        private func daPayload(_ challengeAction: ThreeDS2ChallengeAction) -> String? {
-            guard let token: ThreeDS2Component.ChallengeToken = try? AdyenCoder.decodeBase64(challengeAction.challengeToken) else {
+        private struct DARegistrationPayload {
+            let sdkInput: String
+            let lastFour: String?
+            let cardType: CardType?
+        }
+        
+        private func daPayload(_ challengeAction: ThreeDS2ChallengeAction) -> DARegistrationPayload? {
+            guard let token: ThreeDS2Component.ChallengeToken = try? AdyenCoder.decodeBase64(challengeAction.challengeToken),
+                  let sdkInput = token.delegatedAuthenticationSDKInput else {
                 return nil
             }
-            return token.delegatedAuthenticationSDKInput
+            return DARegistrationPayload(
+                sdkInput: sdkInput,
+                lastFour: token.paymentInfo?.lastFour,
+                cardType: token.paymentInfo?.cardType
+            )
+        }
+        
+        private func securedCardNumber(lastFour: String?) -> String? {
+            guard let lastFour else {
+                return nil
+            }
+            return String.Adyen.securedString + lastFour
         }
     }
 
