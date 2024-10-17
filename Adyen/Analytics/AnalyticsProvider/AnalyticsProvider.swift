@@ -85,21 +85,15 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     }
     
     internal func add(info: AnalyticsEventInfo) {
-        guard configuration.isEnabled else { return }
-        
         eventDataSource.add(info: info)
     }
     
     internal func add(log: AnalyticsEventLog) {
-        guard configuration.isEnabled else { return }
-        
         eventDataSource.add(log: log)
         sendEventsIfNeeded()
     }
     
     internal func add(error: AnalyticsEventError) {
-        guard configuration.isEnabled else { return }
-        
         eventDataSource.add(error: error)
         sendEventsIfNeeded()
     }
