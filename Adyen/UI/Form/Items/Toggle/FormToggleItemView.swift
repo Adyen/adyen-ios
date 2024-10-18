@@ -57,7 +57,6 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
         isAccessibilityElement = false
         accessibilityTraits = switchControl.accessibilityTraits
         accessibilityValue = switchControl.accessibilityValue
-        accessibilityActivationPoint = switchControl.center
         
         setupObservation()
         addSubviews()
