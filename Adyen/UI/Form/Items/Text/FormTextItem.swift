@@ -76,6 +76,51 @@ open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFor
         formattedValue = formatter?.formattedValue(for: value) ?? value
         return formattedValue
     }
+    
+    @discardableResult
+    internal func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard
+            let text = textField.text,
+            let textRange = Range(range, in: text),
+            let selectedTextRange = textField.selectedTextRange
+        else { return true }
+        
+        /// 1234 56|31 0
+        /// 1234 567|3 10 // Adding 7 -> move 1 to the right
+        /// 1234 5678 |310 // Adding 8 -> move 2 to the right
+        /// 1234 5678 9|310 // Adding 9 -> move 1 to the right
+        /// 1234 5678| 310 // Removing 9 -> move 2 to the left
+        /// 1234 567|3 10 // Removing 8 -> move 1 to the left
+        /// 1234 56|31 0 // Removing 7 -> move 1 to the left
+        
+        let updatedText = text.replacingCharacters(in: textRange, with: string)
+
+        let sanitizedText = formatter?.sanitizedValue(for: updatedText) ?? updatedText
+        let formattedText = formatter?.formattedValue(for: sanitizedText) ?? sanitizedText
+        
+        let oldCursorOffset = textField.offset(from: textField.beginningOfDocument, to: selectedTextRange.end)
+        let replacementLength = string.count - range.length
+        
+        let isAdding = formattedText.count > text.count
+        
+        func numberOfSpaces(in text: String, beforeOffset offset: Int) -> Int {
+            max(0, text.prefix(max(0, offset)).split(separator: " ").count - 1)
+        }
+        
+        let oldNumberOfSpacesBeforeCursor = numberOfSpaces(in: text, beforeOffset: oldCursorOffset)
+        let newNumberOfSpacesBeforeCursor = numberOfSpaces(in: formattedText, beforeOffset: oldCursorOffset + replacementLength + (isAdding ? 1 : 0))
+        
+        let spaceDifference = newNumberOfSpacesBeforeCursor - oldNumberOfSpacesBeforeCursor
+        let newCursorOffset = oldCursorOffset + replacementLength + spaceDifference
+        
+        textField.text = formattedText
+        
+        if let newPosition = textField.position(from: textField.beginningOfDocument, offset: newCursorOffset) {
+            textField.selectedTextRange = textField.textRange(from: newPosition, to: newPosition)
+        }
+        
+        return false
+    }
 
 }
 

@@ -161,8 +161,11 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     // MARK: - Private
     
     @objc private func textDidChange(textField: UITextField) {
-        textField.text = item.textDidChange(value: textField.text ?? "")
         notifyDelegateOfMaxLengthIfNeeded()
+    }
+    
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        item.textField(textField, shouldChangeCharactersIn: range, replacementString: string)
     }
     
     // MARK: - Validation
@@ -265,7 +268,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     public func notifyDelegateOfMaxLengthIfNeeded() {
         let maximumLength = item.validator?.maximumLength(for: item.value) ?? .max
-        if item.value.count == maximumLength {
+        if item.value.count >= maximumLength {
             delegate?.didReachMaximumLength(in: self)
         }
     }
