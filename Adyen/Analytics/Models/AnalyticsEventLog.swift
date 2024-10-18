@@ -29,6 +29,7 @@ public struct AnalyticsEventLog: AnalyticsEvent {
         case submit = "Submit"
         case redirect = "Redirect"
         case threeDS2 = "ThreeDS2"
+        case closed = "Closed"
     }
     
     public enum LogSubType: String, Encodable {

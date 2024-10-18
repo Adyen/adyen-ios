@@ -279,7 +279,8 @@ public final class DropInComponent: NSObject,
         userDidCancel(component)
 
         if isRoot {
-            self.delegate?.didFail(with: ComponentError.cancelled, from: self)
+            sendExitEvent()
+            delegate?.didFail(with: ComponentError.cancelled, from: self)
         } else {
             navigationController.popViewController(animated: true)
         }
@@ -314,6 +315,11 @@ public final class DropInComponent: NSObject,
         (component as? PreApplePayComponent)?.presentationDelegate = self
 
         component._isDropIn = true
+    }
+    
+    private func sendExitEvent() {
+        let logEvent = AnalyticsEventLog(component: "dropin", type: .closed)
+        context.analyticsProvider?.add(log: logEvent)
     }
 }
 
