@@ -8,6 +8,7 @@ opt_in_rules:
 
 excluded:
   - Build
+  - .build
   - Tests
   - Internal
   - Docs
@@ -26,7 +27,7 @@ line_length:
 file_length:
   warning: 500
   
-variable_name:
+identifier_name:
   min_length:
     warning: 2
   max_length:
