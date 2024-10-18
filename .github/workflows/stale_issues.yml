@@ -22,4 +22,3 @@ jobs:
           close-issue-message: 'This issue is now closed because it has been stalled for 14 days with no activity.'
           days-before-issue-stale: 0
           days-before-issue-close: 0
-          debug-only: true
