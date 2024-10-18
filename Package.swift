@@ -76,7 +76,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/cashapp/cash-app-pay-ios-sdk",
-            exact: "0.5.1"
+            exact: "0.6.2"
         )
     ],
     targets: [
