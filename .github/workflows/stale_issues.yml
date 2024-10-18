@@ -1,0 +1,25 @@
+# This workflow warns and then closes issues that have had no activity for a specified amount of time.
+#
+# You can adjust the behavior by modifying this file.
+# For more information, see:
+# https://github.com/actions/stale
+name: Manage stale issues
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Run every day at midnight
+  workflow_dispatch:
+
+jobs:
+  close_stale_prs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close stale issues
+        uses: actions/stale@v9
+        with:
+          any-of-labels: 'awaiting feedback'
+          stale-issue-message: 'This issue is now stale because it has been open for 14 days with no activity. Please provide the requested information or the issue will be closed automatically.'
+          close-issue-message: 'This issue is now closed because it has been stalled for 14 days with no activity.'
+          days-before-issue-stale: 0
+          days-before-issue-close: 0
+          debug-only: true
