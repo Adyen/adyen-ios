@@ -40,6 +40,7 @@ internal final class DelegatedAuthenticationErrorView: UIView {
     internal lazy var titleLabel: UILabel = .init(
         style: style.errorTitleStyle,
         accessibilityPostfix: "titleLabel",
+        textAlignment: .center,
         scopeInstance: self
     )
     
@@ -47,6 +48,7 @@ internal final class DelegatedAuthenticationErrorView: UIView {
         style: style.errorDescription,
         accessibilityPostfix: "descriptionLabel",
         multiline: true,
+        textAlignment: .center,
         scopeInstance: self
     )
     
