@@ -20,7 +20,12 @@ import Foundation
         @objc func pay(withCode code: String, appConfiguration: TWAppConfiguration, callback: String) -> Error? {
             Twint.pay(withCode: code, appConfiguration: appConfiguration, callback: callback)
         }
-        
+
+        @objc
+        func registerForUOF(withCode code: String, appConfiguration: TWAppConfiguration, callback: String) -> Error? {
+            Twint.registerForUOF(withCode: code, appConfiguration: appConfiguration, callback: callback)
+        }
+
         @objc func controller(
             for installedAppConfigurations: [TWAppConfiguration],
             selectionHandler: @escaping (TWAppConfiguration?) -> Void,

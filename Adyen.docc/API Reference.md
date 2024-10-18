@@ -63,6 +63,7 @@ The Adyen DropIn/Components SDK API Reference.
 - ``StoredBLIKPaymentMethod``
 - ``StoredACHDirectDebitPaymentMethod``
 - ``StoredCashAppPayPaymentMethod``
+- ``StoredTwintPaymentMethod``
 
 ## Actions
 
@@ -85,6 +86,7 @@ The Adyen DropIn/Components SDK API Reference.
 - ``WeChatPaySDKAction``
 - ``DocumentAction``
 - ``AppleWalletError``
+- ``TwintSDKAction``
 
 ### Action-handling components
 
@@ -97,6 +99,7 @@ The Adyen DropIn/Components SDK API Reference.
 - ``RedirectDetails``
 - ``WeChatPaySDKActionComponent``
 - ``DocumentComponent``
+- ``TwintSDKActionComponent``
 
 ## Card Component
 
@@ -205,6 +208,13 @@ The Adyen DropIn/Components SDK API Reference.
 - ``CashAppPayPaymentMethod``
 - ``CashAppPayComponent``
 - ``CashAppPayDetails``
+
+### Twint Component
+
+- ``TwintPaymentMethod``
+- ``TwintComponent``
+- ``TwintDetails``
+- ``TwintSDKData``
     
 ### WeChat Pay
   

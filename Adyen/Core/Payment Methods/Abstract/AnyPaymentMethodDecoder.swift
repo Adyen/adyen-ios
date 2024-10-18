@@ -512,7 +512,11 @@ private struct TwintPaymentMethodDecoder: PaymentMethodDecoder {
 
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         #if canImport(TwintSDK)
-            try .twint(TwintPaymentMethod(from: decoder))
+            if isStored {
+                return try .storedTwint(StoredTwintPaymentMethod(from: decoder))
+            } else {
+                return try .twint(TwintPaymentMethod(from: decoder))
+            }
         #else
             return AnyPaymentMethod(InstantPaymentMethod(type: .twint, name: "Twint"))
         #endif
@@ -520,9 +524,14 @@ private struct TwintPaymentMethodDecoder: PaymentMethodDecoder {
 
     func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
         #if canImport(TwintSDK)
-            (paymentMethod as? TwintPaymentMethod).map { .twint($0) }
-        #else
-            return nil
+            if let method = paymentMethod as? TwintPaymentMethod {
+                return .twint(method)
+            }
+            if let method = paymentMethod as? StoredTwintPaymentMethod {
+                return .storedTwint(method)
+            }
         #endif
+            
+        return nil
     }
 }

@@ -436,6 +436,21 @@ let storedACHDictionary = [
     "name": "ACH Direct Debit"
 ] as [String: Any]
 
+let storedTwintDictionary = [
+    "id": "JQDWGV3LDJK94875",
+    "supportedShopperInteractions": [
+        "Ecommerce",
+        "ContAuth"
+    ],
+    "name": "TWINT",
+    "supportedRecurringProcessingModels": [
+        "CardOnFile",
+        "Subscription",
+        "UnscheduledCardOnFile"
+    ],
+    "type": "twint"
+] as [String: Any]
+
 let qiwiWallet = [
     "details": [
         [
