@@ -90,6 +90,7 @@ public final class CashAppPayComponent: PaymentComponent,
 
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
+            scrollEnabled: configuration.showsSubmitButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
@@ -100,8 +101,10 @@ public final class CashAppPayComponent: PaymentComponent,
             formViewController.append(storeDetailsItem)
         }
     
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
-        formViewController.append(cashAppPayButton)
+        if configuration.showsSubmitButton {
+            formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+            formViewController.append(cashAppPayButton)
+        }
 
         return formViewController
     }()
@@ -122,7 +125,7 @@ public final class CashAppPayComponent: PaymentComponent,
     }
 
     private func didSelectSubmitButton() {
-        guard formViewController.validate() else { return }
+        guard validate() else { return }
     
         startLoading()
         startCashAppPayFlow()
@@ -270,3 +273,17 @@ extension CashAppPayComponent: TrackableComponent {}
 @available(iOS 13.0, *)
 @_spi(AdyenInternal)
 extension CashAppPayComponent: ViewControllerDelegate {}
+
+// MARK: - SubmitCustomizable
+
+@available(iOS 13.0, *)
+extension CashAppPayComponent: SubmittableComponent {
+
+    public func submit() {
+        didSelectSubmitButton()
+    }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
+}

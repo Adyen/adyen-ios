@@ -21,7 +21,7 @@ public extension DropInComponent {
     
     /// Contains the configuration for the drop in component and the embedded payment method components.
     final class Configuration: AnyPersonalInformationConfiguration {
-        
+
         /// Card component related configuration.
         public var card = Card()
         
@@ -229,7 +229,7 @@ public extension DropInComponent {
     
     /// Cash App Pay component configuration.
     struct CashAppPay: AnyCashAppPayConfiguration {
-        
+
         /// The URL for Cash App to call in order to redirect back to your application.
         public let redirectURL: URL
 

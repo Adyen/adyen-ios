@@ -262,4 +262,88 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let infoType = analyticsProviderMock.infos.first?.type
         XCTAssertEqual(infoType, .rendered)
     }
+
+    func testSubmitShouldCallPaymentDelegateDidSubmit() throws {
+        // Given
+        let paymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
+        let sut = SEPADirectDebitComponent(
+            paymentMethod: paymentMethod,
+            context: context
+        )
+
+        setupRootViewController(sut.viewController)
+
+        let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
+
+        let delegateMock = PaymentComponentDelegateMock()
+        sut.delegate = delegateMock
+        delegateMock.onDidSubmit = { data, component in
+            didSubmitExpectation.fulfill()
+        }
+
+        let ibanItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem"))
+        let nameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem"))
+
+        self.populate(textItemView: ibanItemView, with: "NL13TEST0123456789")
+        self.populate(textItemView: nameItemView, with: "A. Klaassen")
+
+        // When
+        sut.submit()
+
+        // Then
+        wait(for: [didSubmitExpectation], timeout: 10)
+        XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
+    }
+
+    func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        let paymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
+        let configuration = SEPADirectDebitComponent.Configuration(showsSubmitButton: false)
+        let sut = SEPADirectDebitComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        setupRootViewController(sut.viewController)
+
+        let ibanItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem"))
+        let nameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem"))
+
+        self.populate(textItemView: ibanItemView, with: "NL13TEST0123456789")
+        self.populate(textItemView: nameItemView, with: "A. Klaassen")
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        let validationResult = sut.validate()
+
+        // Then
+        XCTAssertTrue(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
+
+    func testValidateGivenInvalidInputShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        let paymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
+        let configuration = SEPADirectDebitComponent.Configuration(showsSubmitButton: false)
+        let sut = SEPADirectDebitComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        setupRootViewController(sut.viewController)
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        let validationResult = sut.validate()
+
+        // Then
+        XCTAssertFalse(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
 }

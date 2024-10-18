@@ -37,6 +37,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
 
     internal lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
+            scrollEnabled: configuration.showsSubmitButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
@@ -75,9 +76,12 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         fields.forEach { field in
             self.add(field, into: formViewController)
         }
-        formViewController.append(FormSpacerItem())
-        formViewController.append(button)
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+
+        if configuration.showsSubmitButton {
+            formViewController.append(FormSpacerItem())
+            formViewController.append(button)
+        }
+        formViewController.append(FormSpacerItem(numberOfSpaces: 4))
     }
 
     private func add(
@@ -281,5 +285,18 @@ extension AbstractPersonalInformationComponent: ViewControllerDelegate {
     public func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
         sendDidLoadEvent()
+    }
+}
+
+// MARK: - SubmitCustomizable
+
+extension AbstractPersonalInformationComponent: SubmittableComponent {
+
+    public func submit() {
+        didSelectSubmitButton()
+    }
+
+    public func validate() -> Bool {
+        formViewController.validate()
     }
 }
