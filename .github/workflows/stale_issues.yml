@@ -20,6 +20,6 @@ jobs:
           any-of-labels: 'awaiting feedback'
           stale-issue-message: 'This issue is now stale because it has been open for 14 days with no activity. Please provide the requested information or the issue will be closed automatically.'
           close-issue-message: 'This issue is now closed because it has been stalled for 14 days with no activity.'
-          days-before-issue-stale: 0
-          days-before-issue-close: 0
-          debug-only: true
+          days-before-issue-stale: 14
+          days-before-issue-close: 14
+          stale-issue-label: 'stale'
