@@ -22,6 +22,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         textField.textContentType = .creditCardNumber
         textField.returnKeyType = .default
         textField.allowsEditingActions = false
+        textField.delegate = self
         
         observe(item.$initialBrand) { [weak self] _ in
             guard let self else { return }
@@ -32,6 +33,17 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         observe(item.$detectedBrandLogos) { [weak self] newValue in
             self?.detectedBrandsView.updateCurrentLogos(newValue)
         }
+    }
+    
+    @_spi(AdyenInternal)
+    override public func textDidChange(textField: UITextField) {
+        // Overriding to not use the default behavior of the super class
+        notifyDelegateOfMaxLengthIfNeeded()
+    }
+    
+    @_spi(AdyenInternal)
+    override public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        item.textField(textField, shouldChangeCharactersIn: range, replacementString: string)
     }
     
     override internal func textFieldDidBeginEditing(_ text: UITextField) {

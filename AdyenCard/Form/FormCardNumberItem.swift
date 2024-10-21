@@ -105,6 +105,50 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         builder.build(with: self)
     }
     
+    @discardableResult
+    internal func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard
+            let text = textField.text,
+            let textRange = Range(range, in: text),
+            let selectedTextRange = textField.selectedTextRange
+        else { return true }
+        
+        let editingDirection = string.count - range.length
+        
+        let replacementLength: Int = replacementStringLength(
+            range: range,
+            replacementString: string,
+            in: text,
+            editingDirection: editingDirection
+        )
+        
+        let updatedText = text.replacingCharacters(in: textRange, with: string)
+        
+        let sanitizedText = formatter?.sanitizedValue(for: updatedText) ?? updatedText
+        let formattedText = formatter?.formattedValue(for: sanitizedText) ?? sanitizedText
+        
+        let oldCursorOffset = textField.offset(from: textField.beginningOfDocument, to: selectedTextRange.end)
+        
+        let isAdding = formattedText.count > text.count
+        
+        let oldNumberOfSpacesBeforeCursor = text.numberOfSpaces(beforeOffset: oldCursorOffset)
+        
+        let newNumberOfSpacesBeforeCursor = formattedText.numberOfSpaces(
+            beforeOffset: oldCursorOffset + replacementLength + (isAdding ? 1 : 0)
+        )
+        
+        let spaceDifference = newNumberOfSpacesBeforeCursor - oldNumberOfSpacesBeforeCursor
+        let newCursorOffset = oldCursorOffset + replacementLength + spaceDifference
+        
+        textField.text = formattedText
+        
+        if let newPosition = textField.position(from: textField.beginningOfDocument, offset: newCursorOffset) {
+            textField.selectedTextRange = textField.textRange(from: newPosition, to: newPosition)
+        }
+        
+        return false
+    }
+    
     /// Updates the item with the detected brands.
     /// and sets the first supported one as the `initialBrand`.
     internal func update(brands: [CardBrand]) {
@@ -165,10 +209,44 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         )
     }
     
+    /// Calculates the length of the string being replaced
+    ///
+    /// e.g. if the range is `2` characters long and the replacementString is `1` character the replacementStringLength would be `-1`
+    private func replacementStringLength(
+        range: NSRange,
+        replacementString: String,
+        in text: String,
+        editingDirection: Int
+    ) -> Int {
+        // Special case to allow "deleting" a space
+        // (can only be triggered when the user manually moves the cursor)
+        //
+        // 1234 5678 |310 // Deleting a character
+        if range.length == 1, replacementString.isEmpty, editingDirection == -1 {
+            return -1
+        }
+        
+        var length = (formatter?.sanitizedValue(for: replacementString).count) ?? 0
+        
+        if let rangeIndexes = Range(range, in: text) {
+            let replacedText = String(text[rangeIndexes])
+            length -= (formatter?.sanitizedValue(for: replacedText).count) ?? 0
+        } else {
+            length -= range.length
+        }
+        
+        return length
+    }
 }
 
 extension FormItemViewBuilder {
     internal func build(with item: FormCardNumberItem) -> FormItemView<FormCardNumberItem> {
         FormCardNumberItemView(item: item)
+    }
+}
+
+private extension String {
+    func numberOfSpaces(beforeOffset offset: Int) -> Int {
+        max(0, prefix(max(0, offset)).split(separator: " ").count - 1)
     }
 }
