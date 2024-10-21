@@ -85,6 +85,7 @@
 		00FAE54E2B21CE1B0059A6F5 /* TwintDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FAE54D2B21CE1B0059A6F5 /* TwintDetails.swift */; };
 		00FFD8F02A865BFB008D4A5A /* ApplePaySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FFD8EF2A865BFB008D4A5A /* ApplePaySettingsView.swift */; };
 		00FFD8F12A865BFB008D4A5A /* ApplePaySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FFD8EF2A865BFB008D4A5A /* ApplePaySettingsView.swift */; };
+		21099B0D2CB7276E0096502C /* PaymentInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21099B0C2CB7276E0096502C /* PaymentInfo.swift */; };
 		2159173A2A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215917392A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift */; };
 		2172F8152C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2172F8142C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift */; };
 		2172F8172C20B93400BE0369 /* DAErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2172F8162C20B93400BE0369 /* DAErrorViewController.swift */; };
@@ -1545,6 +1546,7 @@
 		00FAE54B2B21CBAD0059A6F5 /* TwintPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwintPaymentMethod.swift; sourceTree = "<group>"; };
 		00FAE54D2B21CE1B0059A6F5 /* TwintDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwintDetails.swift; sourceTree = "<group>"; };
 		00FFD8EF2A865BFB008D4A5A /* ApplePaySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePaySettingsView.swift; sourceTree = "<group>"; };
+		21099B0C2CB7276E0096502C /* PaymentInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentInfo.swift; sourceTree = "<group>"; };
 		215917392A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2PlusDAScreenPresenter.swift; sourceTree = "<group>"; };
 		2159173B2A0D2B6E0004081E /* ThreeDS2DAScreenPresenterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2DAScreenPresenterMock.swift; sourceTree = "<group>"; };
 		2172F8142C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedAuthenticationErrorView.swift; sourceTree = "<group>"; };
@@ -3654,6 +3656,7 @@
 				E2345C07229BDA46000F2C94 /* ThreeDS2ComponentChallengeToken.swift */,
 				E2345C0D229BDD2D000F2C94 /* ThreeDS2Details.swift */,
 				F9842C58256D72B60063CE5A /* ThreeDSResult.swift */,
+				21099B0C2CB7276E0096502C /* PaymentInfo.swift */,
 			);
 			path = 3DS2;
 			sourceTree = "<group>";
@@ -7545,6 +7548,7 @@
 				A03EE72F2760A2E300470561 /* DocumentActionViewModel.swift in Sources */,
 				F94F0DEB28AA3FB400C0923D /* ThreeDS2PlusDACoreActionHandler.swift in Sources */,
 				F9B018032608F648001F23FC /* EContextStoresVoucherAction.swift in Sources */,
+				21099B0D2CB7276E0096502C /* PaymentInfo.swift in Sources */,
 				F917613825A30B5700D653BE /* ThreeDS2ComponentFingerprint.swift in Sources */,
 				F970143925D139BE007E74D9 /* VoucherComponentStyle.swift in Sources */,
 				F917613925A30B5700D653BE /* ThreeDS2ComponentFingerprintToken.swift in Sources */,
