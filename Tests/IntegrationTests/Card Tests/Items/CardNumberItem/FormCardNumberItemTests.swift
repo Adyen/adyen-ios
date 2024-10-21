@@ -185,6 +185,8 @@ class FormCardNumberItemTests: XCTestCase {
         
         let item = FormCardNumberItem(cardTypeLogos: [])
         
+        /// Desired behavior
+        ///
         /// 1234 56|31 0
         /// 1234 567|3 10 // Adding 7 -> move 1 to the right
         /// 1234 5678 |310 // Adding 8 -> move 2 to the right
