@@ -17,13 +17,16 @@ internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
         fallbackHandler: @escaping () -> Void
     )
     
+    // swiftlint:disable function_parameter_count
     func showApprovalScreen(
         component: Component,
         cardDetails: (number: String?, type: CardType?),
+        amount: Amount?,
         approveAuthenticationHandler: @escaping () -> Void,
         fallbackHandler: @escaping () -> Void,
         removeCredentialsHandler: @escaping () -> Void
     )
+    // swiftlint:enable function_parameter_count
     
     func showAuthenticationError(component: Component, handler: @escaping () -> Void)
     func showRegistrationError(component: Component, handler: @escaping () -> Void)
@@ -101,9 +104,9 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         fallbackHandler: @escaping () -> Void
     ) {
         let registrationViewController = DARegistrationViewController(
-            context: context,
             style: style,
             localizationParameters: localizedParameters,
+            logoProvider: LogoURLProvider(environment: context.apiContext.environment),
             cardNumber: cardDetails.number,
             cardType: cardDetails.type,
             biometricName: biometricName,
@@ -124,18 +127,21 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         presentationDelegate?.present(component: presentableComponent)
     }
     
+    // swiftlint:disable function_parameter_count
     internal func showApprovalScreen(
         component: Component,
         cardDetails: (number: String?, type: CardType?),
+        amount: Amount?,
         approveAuthenticationHandler: @escaping () -> Void,
         fallbackHandler: @escaping () -> Void,
         removeCredentialsHandler: @escaping () -> Void
     ) {
+        // swiftlint:enable function_parameter_count
         let approvalViewController = DAApprovalViewController(
-            context: context,
             style: style,
             localizationParameters: localizedParameters,
-            amount: context.payment?.amount.formatted,
+            logoProvider: LogoURLProvider(environment: context.apiContext.environment),
+            amount: amount?.formatted,
             cardNumber: cardDetails.number,
             cardType: cardDetails.type,
             useBiometricsHandler: {
