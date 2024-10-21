@@ -9451,7 +9451,7 @@
 			repositoryURL = "https://github.com/cashapp/cash-app-pay-ios-sdk";
 			requirement = {
 				kind = exactVersion;
-				version = 0.5.1;
+				version = 0.6.2;
 			};
 		};
 		E72375CC27AAB7760020DCF9 /* XCRemoteSwiftPackageReference "adyen-wechatpay-ios" */ = {
