@@ -36,7 +36,7 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
         switchControl.translatesAutoresizingMaskIntoConstraints = false
         switchControl.isOn = item.value
         switchControl.onTintColor = item.style.tintColor
-        switchControl.isAccessibilityElement = false
+        switchControl.isAccessibilityElement = true
         switchControl.setContentHuggingPriority(.required, for: .horizontal)
         switchControl.setContentCompressionResistancePriority(.required, for: .horizontal)
         switchControl.addTarget(self, action: #selector(switchControlValueChanged), for: .valueChanged)
@@ -54,12 +54,16 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
         
         backgroundColor = item.style.backgroundColor
 
-        isAccessibilityElement = true
+        isAccessibilityElement = false
         accessibilityTraits = switchControl.accessibilityTraits
         accessibilityValue = switchControl.accessibilityValue
         
         setupObservation()
         addSubviews()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - Public
@@ -95,11 +99,23 @@ private extension FormToggleItemView {
         observe(item.publisher) { [weak self] value in
             self?.switchControl.isOn = value
         }
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(onVoiceOverStatusUpdate),
+            name: UIAccessibility.voiceOverStatusDidChangeNotification,
+            object: nil
+        )
     }
 
     @objc func switchControlValueChanged() {
         accessibilityValue = switchControl.accessibilityValue
         accessibilityTraits = switchControl.accessibilityTraits
         item.value = switchControl.isOn
+    }
+    
+    @objc private func onVoiceOverStatusUpdate() {
+        switchControl.isAccessibilityElement = !UIAccessibility.isVoiceOverRunning
+        self.isAccessibilityElement = UIAccessibility.isVoiceOverRunning
     }
 }
