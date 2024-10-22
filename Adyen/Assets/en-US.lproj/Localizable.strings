@@ -210,6 +210,13 @@
 "adyen.threeds2.DA.approval.remove.alert.description" = "Are you sure that you want to remove your Secure Checkout credentials?";
 "adyen.threeds2.DA.approval.remove.alert.positiveButton" = "Remove";
 "adyen.threeds2.DA.approval.remove.alert.negativeButton" = "Cancel";
+"adyen.threeds2.DA.error.troubleshootingTitle" = "Troubleshooting";
+"adyen.threeds2.DA.error.troubleshootingDescription" = "Ongoing login issues may be resolved by resetting your Secure Checkout details.";
+"adyen.threeds2.DA.error.troubleshootingButtonTitle" = "Reset Secure Checkout";
+"adyen.threeds2.DA.error.reset.alert.title" = "Reset Secure Checkout?";
+"adyen.threeds2.DA.error.reset.alert.description" = "You will have to set up Secure Checkout again to use it in future.";
+"adyen.threeds2.DA.error.reset.alert.positiveButton" = "Reset";
+"adyen.threeds2.DA.error.reset.alert.negativeButton" = "Cancel";
 "adyen.threeds2.DA.approval.error.title" = "Authenticating…";
 "adyen.threeds2.DA.approval.error.message" = "Authentication with Secure Checkout has failed, please attempt an alternative authentication.";
 "adyen.threeds2.DA.approval.error.buttonTitle" = "Approve the transaction";

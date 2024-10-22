@@ -81,24 +81,86 @@ internal final class DAErrorViewController: UIViewController {
                 return localizedString(.threeds2DADeletionConfirmationButtonTitle, localizationParameters)
             }
         }
+        
+        internal var troubleshootingTitle: String? {
+            switch self {
+            case let .authenticationFailed(localizationParameters):
+                return localizedString(.threeds2DAErrorTroubleshootingTitle, localizationParameters)
+            case .registrationFailed:
+                return nil
+            case .deletionConfirmation:
+                return nil // TODO: Robert: maybe it is required here.
+            }
+        }
+        
+        internal var troubleshootingDescription: String? {
+            switch self {
+            case let .authenticationFailed(localizationParameters):
+                return localizedString(.threeds2DAErrorTroubleshootingDescription, localizationParameters)
+            case .registrationFailed:
+                return nil
+            case .deletionConfirmation:
+                return nil // TODO: Robert: maybe it is required here.
+            }
+        }
+        
+        internal var troubleshootingButtonTitle: String? {
+            switch self {
+            case let .authenticationFailed(localizationParameters):
+                return localizedString(.threeds2DAErrorTroubleshootingButtonTitle, localizationParameters)
+            case .registrationFailed:
+                return nil
+            case .deletionConfirmation:
+                return nil // TODO: Robert: maybe it is required here.
+            }
+        }
     }
 
     private lazy var errorView: DelegatedAuthenticationErrorView = .init(style: style)
     private let style: DelegatedAuthenticationComponentStyle
     private let continueHandler: VoidHandler
+    private let troubleshootingHandler: VoidHandler?
     private let screen: Screen
+    private let localizationParameters: LocalizationParameters?
     
+    private lazy var resetCredentialAlert: UIAlertController = {
+        let alertController = UIAlertController(
+            title: localizedString(.threeds2DAErrorResetAlertTitle, localizationParameters),
+            message: localizedString(.threeds2DAErrorResetAlertDescription, localizationParameters),
+            preferredStyle: .alert
+        )
+        let removeAction = UIAlertAction(
+            title: localizedString(.threeds2DAErrorResetAlertPositiveButton, localizationParameters),
+            style: .destructive,
+            handler: { [weak self] _ in
+                self?.troubleshootingHandler?()
+            }
+        )
+        let cancelAction = UIAlertAction(
+            title: localizedString(.threeds2DAErrorResetAlertNegativeButton, localizationParameters),
+            style: .default,
+            handler: nil
+        )
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(removeAction)
+        return alertController
+    }()
+
     // MARK: - Init
 
     internal init(
         style: DelegatedAuthenticationComponentStyle,
         screen: Screen,
-        completion: @escaping () -> Void
+        localizationParameters: LocalizationParameters?,
+        completion: @escaping () -> Void,
+        troubleShootingHandler: (() -> Void)?
     ) {
         self.style = style
         self.screen = screen
+        self.localizationParameters = localizationParameters
         self.continueHandler = completion
-
+        self.troubleshootingHandler = troubleShootingHandler
         super.init(nibName: nil, bundle: Bundle(for: DAErrorViewController.self))
         errorView.delegate = self
     }
@@ -126,6 +188,16 @@ internal final class DAErrorViewController: UIViewController {
         errorView.descriptionLabel.text = screen.message
         errorView.firstButton.title = screen.buttonTitle
         errorView.image.image = screen.image
+        if let title = screen.troubleshootingTitle,
+           let description = screen.troubleshootingDescription,
+           let buttonTitle = screen.troubleshootingButtonTitle {
+            errorView.troubleshootingStackView.isHidden = false
+            errorView.troubleshootingTitle.text = title
+            errorView.troubleshootingDescription.text = description
+            errorView.troubleShootingButton.title = buttonTitle
+        } else {
+            errorView.troubleshootingStackView.isHidden = true
+        }
     }
     
     private func buildUI() {
@@ -150,6 +222,10 @@ internal final class DAErrorViewController: UIViewController {
 
 @available(iOS 16.0, *)
 extension DAErrorViewController: DelegatedAuthenticationErrorViewDelegate {
+    internal func troubleshootingButtonTapped() {
+        present(resetCredentialAlert, animated: true)
+    }
+    
     internal func firstButtonTapped() {
         errorView.firstButton.showsActivityIndicator = true
         continueHandler()

@@ -438,6 +438,20 @@ public struct LocalizationKey {
     public static let threeds2DAApprovalErrorMessage = LocalizationKey(key: "adyen.threeds2.DA.approval.error.message")
     /// Approve the transaction
     public static let threeds2DAApprovalErrorButtonTitle = LocalizationKey(key: "adyen.threeds2.DA.approval.error.buttonTitle")
+    /// Troubleshooting
+    public static let threeds2DAErrorTroubleshootingTitle = LocalizationKey(key: "adyen.threeds2.DA.error.troubleshootingTitle")
+    /// Ongoing login issues may be resolved by resetting your Secure Checkout details.
+    public static let threeds2DAErrorTroubleshootingDescription = LocalizationKey(key: "adyen.threeds2.DA.error.troubleshootingDescription")
+    /// Reset Secure Checkout
+    public static let threeds2DAErrorTroubleshootingButtonTitle = LocalizationKey(key: "adyen.threeds2.DA.error.troubleshootingButtonTitle")
+    /// Reset Secure Checkout?
+    public static let threeds2DAErrorResetAlertTitle = LocalizationKey(key: "adyen.threeds2.DA.error.reset.alert.title")
+    /// You will have to set up Secure Checkout again to use it in future.
+    public static let threeds2DAErrorResetAlertDescription = LocalizationKey(key: "adyen.threeds2.DA.error.reset.alert.description")
+    /// Reset
+    public static let threeds2DAErrorResetAlertPositiveButton = LocalizationKey(key: "adyen.threeds2.DA.error.reset.alert.positiveButton")
+    /// Cancel
+    public static let threeds2DAErrorResetAlertNegativeButton = LocalizationKey(key: "adyen.threeds2.DA.error.reset.alert.negativeButton")
     /// Let’s try next time!
     public static let threeds2DARegistrationErrorTitle = LocalizationKey(key: "adyen.threeds2.DA.registration.error.title")
     /// Your payment has still been authenticated successfully but the Secure Checkout service was unavailable.

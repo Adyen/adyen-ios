@@ -28,7 +28,12 @@ internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
     )
     // swiftlint:enable function_parameter_count
     
-    func showAuthenticationError(component: Component, handler: @escaping () -> Void)
+    func showAuthenticationError(
+        component: Component,
+        handler: @escaping () -> Void,
+        troubleshootingHandler: @escaping () -> Void
+    )
+    
     func showRegistrationError(component: Component, handler: @escaping () -> Void)
     func showDeletionConfirmation(component: Component, handler: @escaping () -> Void)
 
@@ -55,11 +60,17 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         self.localizedParameters = localizedParameters
     }
     
-    internal func showAuthenticationError(component: Component, handler: @escaping () -> Void) {
+    internal func showAuthenticationError(
+        component: Component,
+        handler: @escaping () -> Void,
+        troubleshootingHandler: @escaping () -> Void
+    ) {
         let errorController = DAErrorViewController(
             style: style,
             screen: .authenticationFailed(localizationParameters: localizedParameters),
-            completion: handler
+            localizationParameters: localizedParameters,
+            completion: handler,
+            troubleShootingHandler: troubleshootingHandler
         )
         let presentableComponent = PresentableComponentWrapper(
             component: component,
@@ -69,11 +80,16 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         presentationDelegate?.present(component: presentableComponent)
     }
     
-    internal func showRegistrationError(component: Component, handler: @escaping () -> Void) {
+    internal func showRegistrationError(
+        component: Component,
+        handler: @escaping () -> Void
+    ) {
         let errorController = DAErrorViewController(
             style: style,
             screen: .registrationFailed(localizationParameters: localizedParameters),
-            completion: handler
+            localizationParameters: localizedParameters,
+            completion: handler,
+            troubleShootingHandler: nil
         )
         let presentableComponent = PresentableComponentWrapper(
             component: component,
@@ -87,7 +103,9 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         let errorController = DAErrorViewController(
             style: style,
             screen: .deletionConfirmation(localizationParameters: localizedParameters),
-            completion: handler
+            localizationParameters: localizedParameters,
+            completion: handler,
+            troubleShootingHandler: nil
         )
         let presentableComponent = PresentableComponentWrapper(
             component: component,

@@ -10,6 +10,7 @@ import UIKit
 
 internal protocol DelegatedAuthenticationErrorViewDelegate: AnyObject {
     func firstButtonTapped()
+    func troubleshootingButtonTapped()
 }
 
 @available(iOS 16.0, *)
@@ -52,6 +53,50 @@ internal final class DelegatedAuthenticationErrorView: UIView {
         scopeInstance: self
     )
     
+    internal lazy var troubleshootingTitle: UILabel = .init(
+        style: style.troubleshootingTitleStyle, // TODO: Change this.
+        accessibilityPostfix: "troubleshootingTitle",
+        multiline: false,
+        textAlignment: .center,
+        scopeInstance: self
+    )
+    
+    internal lazy var troubleshootingDescription: UILabel = .init(
+        style: style.troubleshootingDescriptionStyle, // TODO: Change this.
+        accessibilityPostfix: "troubleshootingDescription",
+        multiline: true,
+        textAlignment: .center,
+        scopeInstance: self
+    )
+    
+    internal lazy var troubleShootingButton: SubmitButton = {
+        let button = SubmitButton(style: self.style.troubleshootingButtonStyle) // TODO: Change this
+        button.addTarget(self, action: #selector(troubleShootingButtonTapped), for: .touchUpInside)
+        button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "TroubleshootingSecondaryButton")
+        button.preservesSuperviewLayoutMargins = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    internal lazy var troubleshootingStackView: UIStackView = {
+        let stackView = UIStackView(
+            arrangedSubviews: [
+                troubleshootingTitle,
+                troubleshootingDescription,
+                troubleShootingButton
+            ],
+            distribution: .fill,
+            alignment: .center,
+            spacing: 8,
+            view: self,
+            withBackground: true,
+            scopedInstance: self
+        )
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16)
+        return stackView
+    }()
+    
     internal lazy var tileAndSubtitleStackView: UIStackView = .init(
         arrangedSubviews: [image, titleLabel, descriptionLabel],
         spacing: 16,
@@ -83,7 +128,11 @@ internal final class DelegatedAuthenticationErrorView: UIView {
     
     internal lazy var scrollView = UIScrollView(frame: .zero)
     internal lazy var contentStackView: UIStackView = .init(
-        arrangedSubviews: [tileAndSubtitleStackView, buttonsStackView],
+        arrangedSubviews: [
+            tileAndSubtitleStackView,
+            troubleshootingStackView,
+            buttonsStackView
+        ],
         spacing: 16,
         view: self,
         scopedInstance: self
@@ -131,5 +180,9 @@ internal final class DelegatedAuthenticationErrorView: UIView {
 
     @objc private func firstButtonTapped() {
         delegate?.firstButtonTapped()
+    }
+    
+    @objc private func troubleShootingButtonTapped() {
+        delegate?.troubleshootingButtonTapped()
     }
 }

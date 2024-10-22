@@ -100,7 +100,29 @@ public struct DelegatedAuthenticationComponentStyle {
         color: UIColor.Adyen.componentSecondaryLabel,
         textAlignment: .center
     )
-        
+    
+    /// The error title style for the error screen
+    public var troubleshootingTitleStyle = TextStyle(
+        font: .preferredFont(forTextStyle: .subheadline),
+        color: UIColor.Adyen.componentLabel,
+        textAlignment: .center
+    )
+    /// The error title style for the error screen
+    public var troubleshootingDescriptionStyle = TextStyle(
+        font: .preferredFont(forTextStyle: .caption1),
+        color: UIColor.Adyen.componentSecondaryLabel,
+        textAlignment: .center
+    )
+    /// The error title style for the error screen
+    public var troubleshootingButtonStyle = ButtonStyle(
+        title: TextStyle(
+            font: .preferredFont(forTextStyle: .headline),
+            color: UIColor.Adyen.defaultBlue
+        ),
+        cornerRadius: 8,
+        background: .clear
+    )
+
     /// The primary button style for the register & approve screens.
     public var primaryButton = ButtonStyle(
         title: TextStyle(
