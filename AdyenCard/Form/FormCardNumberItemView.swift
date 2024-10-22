@@ -22,7 +22,6 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         textField.textContentType = .creditCardNumber
         textField.returnKeyType = .default
         textField.allowsEditingActions = false
-        textField.delegate = self
         
         observe(item.$initialBrand) { [weak self] _ in
             guard let self else { return }
@@ -38,12 +37,30 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     @_spi(AdyenInternal)
     override public func textDidChange(textField: UITextField) {
         // Overriding to not use the default behavior of the super class
+        _ = item.textDidChange(value: textField.text ?? "")
         notifyDelegateOfMaxLengthIfNeeded()
     }
     
     @_spi(AdyenInternal)
-    override public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        item.textField(textField, shouldChangeCharactersIn: range, replacementString: string)
+    override public func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        
+        let shouldChange = item.textField(
+            textField,
+            shouldChangeCharactersIn: range,
+            replacementString: string
+        )
+        
+        if !shouldChange {
+            // If shouldChange is false, textDidChange(textField:) is not triggered
+            // So we need to trigger the logic ourselves
+            textDidChange(textField: textField)
+        }
+        
+        return shouldChange
     }
     
     override internal func textFieldDidBeginEditing(_ text: UITextField) {
