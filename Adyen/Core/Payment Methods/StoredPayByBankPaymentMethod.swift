@@ -32,9 +32,7 @@ public struct StoredPayByBankPlaidPaymentMethod: StoredPaymentMethod {
         let subtitle: String?
         
         if let label {
-            // The label masks the account number with `*` 
-            // so we replace them with `•` to be consistent with the rest
-            title = label.replacingOccurrences(of: "*", with: "•")
+            title = label
             subtitle = name
         } else {
             title = name
