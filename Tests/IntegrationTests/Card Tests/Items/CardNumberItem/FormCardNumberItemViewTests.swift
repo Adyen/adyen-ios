@@ -98,7 +98,6 @@ class FormCardNumberItemViewTests: XCTestCase {
         // When
         sut.textField.text = ""
         _ = sut.textField(sut.textField, shouldChangeCharactersIn: .init(location: 0, length: 0), replacementString: "4111kdhr456")
-        sut.textField.sendActions(for: .editingChanged)
 
         // Then
         let expectedItemValue = "4111456"
@@ -124,7 +123,6 @@ class FormCardNumberItemViewTests: XCTestCase {
         // When
         sut.textField.text = ""
         _ = sut.textField(sut.textField, shouldChangeCharactersIn: .init(location: 0, length: 0), replacementString: "5555341244441115")
-        sut.textField.sendActions(for: .editingChanged)
 
         // Then
         let expectedItemValue = "5555341244441115"
