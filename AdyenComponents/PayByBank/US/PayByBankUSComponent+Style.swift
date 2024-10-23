@@ -18,7 +18,7 @@ extension PayByBankUSComponent {
         }()
         
         public var subtitle: TextStyle = {
-            let subtitleSize: CGFloat = UIFont.preferredFont(forTextStyle: .callout).pointSize
+            let subtitleSize: CGFloat = UIFont.preferredFont(forTextStyle: .subheadline).pointSize
             return TextStyle(
                 font: .systemFont(ofSize: subtitleSize, weight: .medium),
                 color: UIColor.Adyen.componentLabel
@@ -26,7 +26,7 @@ extension PayByBankUSComponent {
         }()
         
         public var message: TextStyle = {
-            let messageSize: CGFloat = UIFont.preferredFont(forTextStyle: .callout).pointSize
+            let messageSize: CGFloat = UIFont.preferredFont(forTextStyle: .subheadline).pointSize
             return TextStyle(
                 font: .systemFont(ofSize: messageSize, weight: .regular),
                 color: UIColor.Adyen.componentSecondaryLabel
