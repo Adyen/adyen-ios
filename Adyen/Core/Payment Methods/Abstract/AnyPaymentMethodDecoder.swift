@@ -85,7 +85,8 @@ internal enum AnyPaymentMethodDecoder {
         .onlineBankingSK: OnlineBankingPaymentMethodDecoder(),
         .upi: UPIPaymentMethodDecoder(),
         .cashAppPay: CashAppPayPaymentMethodDecoder(),
-        .twint: TwintPaymentMethodDecoder()
+        .twint: TwintPaymentMethodDecoder(),
+        .payByBankAISDD: PayByBankUSPaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = InstantPaymentMethodDecoder()
@@ -335,6 +336,26 @@ private struct BLIKPaymentMethodDecoder: PaymentMethodDecoder {
         }
         if let method = paymentMethod as? BLIKPaymentMethod {
             return .blik(method)
+        }
+        return nil
+    }
+}
+
+private struct PayByBankUSPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
+        if isStored {
+            return try .storedPayByBankUS(.init(from: decoder))
+        } else {
+            return try .payByBankUS(.init(from: decoder))
+        }
+    }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        if let method = paymentMethod as? StoredPayByBankUSPaymentMethod {
+            return .storedPayByBankUS(method)
+        }
+        if let method = paymentMethod as? PayByBankUSPaymentMethod {
+            return .payByBankUS(method)
         }
         return nil
     }
