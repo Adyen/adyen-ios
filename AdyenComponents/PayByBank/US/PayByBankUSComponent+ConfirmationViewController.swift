@@ -132,8 +132,6 @@ extension PayByBankUSComponent {
             NSLayoutConstraint.activate(constraints)
         }
         
-        // MARK: - Trait Collection
-        
         override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
             super.traitCollectionDidChange(previousTraitCollection)
             headerImageView.layer.borderColor = model.style.headerImage.borderColor?.cgColor ?? UIColor.Adyen.componentSeparator.cgColor
@@ -141,9 +139,12 @@ extension PayByBankUSComponent {
     }
 }
 
+// MARK: - Model
+
 extension PayByBankUSComponent.ConfirmationViewController {
     
     internal class Model {
+        
         internal let headerImageUrl: URL
         internal let title: String
         internal let subtitle: String

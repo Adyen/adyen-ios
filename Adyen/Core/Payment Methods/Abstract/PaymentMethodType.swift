@@ -263,7 +263,7 @@ extension PaymentMethodType {
         case .cashAppPay: return "cash app"
         case .bizum: return "bizum"
         case .twint: return "twint"
-        case .payByBankAISDD: return "Pay By Bank US"
+        case .payByBankAISDD: return "Pay By Bank Direct Debit"
         case let .other(name): return name.replacingOccurrences(of: "_", with: " ")
         }
     }

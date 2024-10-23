@@ -46,15 +46,13 @@ public final class PayByBankUSComponent: PaymentComponent, PresentableComponent 
             environment: context.apiContext.environment
         )
         
-        return .init(
-            model: .init(
-                headerImageUrl: headerImageUrl,
-                style: configuration.style,
-                continueHandler: { [weak self] in
-                    self?.initiatePayment()
-                }
-            )
-        )
+        return .init(model: .init(
+            headerImageUrl: headerImageUrl,
+            style: configuration.style,
+            continueHandler: { [weak self] in
+                self?.initiatePayment()
+            }
+        ))
     }()
 
     // MARK: - Initializers

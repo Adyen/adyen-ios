@@ -47,11 +47,11 @@ internal enum ConfigurationConstants {
 
     static let clientKey = "{YOUR_CLIENT_KEY}"
 
-    static let demoServerAPIKey = "{YOUR_DEMO_SERVER_API_KEY}"
+    static let demoServerAPIKey = "AQEthmfxKo7MbhFLw0m/n3Q5qf3VfI5eGbBFVXVXyGHNhisxSHQZLQhnJZKhUXeVEMFdWw2+5HzctViMSCJMYAc=-mof6lEtrIK7VOoRNDWlFWzlZbpSVQS6Njr+W65WmTW8=-i1ixAD%zjL3^8kf7eMQ"
 
-    static let merchantAccount = "{YOUR_MERCHANT_ACCOUNT}"
+    static let merchantAccount = "TestMerchantCheckout"
 
-    static let appleTeamIdentifier = "{YOUR_APPLE_DEVELOPMENT_TEAM_ID}"
+    static let appleTeamIdentifier = "B2NYSS5932"
 
     static let applePayMerchantIdentifier = "{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}"
 
