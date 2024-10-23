@@ -114,13 +114,13 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
             let selectedTextRange = textField.selectedTextRange
         else { return true }
         
-        let editingDirection = string.count - range.length
+        let isDeletingSingleCharacter = (string.count - range.length) == -1
         
         let replacementLength: Int = replacementStringLength(
             range: range,
             replacementString: string,
             in: text,
-            editingDirection: editingDirection
+            isDeletingSingleCharacter: isDeletingSingleCharacter
         )
         
         let updatedText = text.replacingCharacters(in: textRange, with: string)
@@ -217,13 +217,13 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         range: NSRange,
         replacementString: String,
         in text: String,
-        editingDirection: Int
+        isDeletingSingleCharacter: Bool
     ) -> Int {
         // Special case to allow "deleting" a space
         // (can only be triggered when the user manually moves the cursor)
         //
         // 1234 5678 |310 // Deleting a character
-        if range.length == 1, replacementString.isEmpty, editingDirection == -1 {
+        if range.length == 1, replacementString.isEmpty, isDeletingSingleCharacter {
             return -1
         }
         
