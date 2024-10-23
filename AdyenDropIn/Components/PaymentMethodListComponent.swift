@@ -100,7 +100,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
                 url: imageURL,
                 canBeModified: !isProtected
             ),
-            trailingText: displayInformation.disclosureText,
+            trailingInfo: displayInformation.trailingInfo,
             style: style.listItem,
             accessibilityLabel: displayInformation.accessibilityLabel
         )

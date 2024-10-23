@@ -47,7 +47,10 @@ public final class ListItemView: UIView, AnyFormItemView {
                 updateImageView(style: style)
                 titleLabel.adyen.apply(style.title)
                 subtitleLabel.adyen.apply(style.subtitle)
-                trailingTextLabel.adyen.apply(style.trailingText)
+                
+                if let trailingTextLabel = trailingView as? UILabel {
+                    trailingTextLabel.adyen.apply(style.trailingText)
+                }
             }
         }
     }
@@ -67,11 +70,26 @@ public final class ListItemView: UIView, AnyFormItemView {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "subtitleLabel")
         }
 
-        trailingTextLabel.text = item?.trailingText
-        trailingTextLabel.isHidden = item?.trailingText?.isEmpty ?? true
-        trailingTextLabel.accessibilityIdentifier = item?.identifier.map {
-            ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "trailingTextLabel")
+        contentStackView.removeArrangedSubview(trailingView)
+        
+        switch item?.trailingInfo {
+        case let .text(string):
+            let trailingTextLabel = UILabel()
+            trailingTextLabel.translatesAutoresizingMaskIntoConstraints = false
+            trailingTextLabel.text = string
+            trailingTextLabel.accessibilityIdentifier = item?.identifier.map {
+                ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "trailingTextLabel")
+            }
+            trailingView = trailingTextLabel
+            trailingView.isHidden = string.isEmpty
+        case let .view(view):
+            trailingView = view
+        case nil:
+            trailingView = UIView()
+            trailingView.isHidden = true
         }
+        
+        contentStackView.addArrangedSubview(trailingView)
         
         imageView.isHidden = item?.icon == nil
         updateIcon()
@@ -140,11 +158,10 @@ public final class ListItemView: UIView, AnyFormItemView {
         return subtitleLabel
     }()
 
-    private lazy var trailingTextLabel: UILabel = {
-        let trailingTextLabel = UILabel()
-        trailingTextLabel.translatesAutoresizingMaskIntoConstraints = false
-        trailingTextLabel.isHidden = true
-        return trailingTextLabel
+    private var trailingView: UIView = {
+        let view = UIView()
+        view.isHidden = true
+        return view
     }()
     
     // MARK: - Text Stack View
@@ -160,7 +177,7 @@ public final class ListItemView: UIView, AnyFormItemView {
     }()
     
     private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [imageView, titleSubtitleStackView, trailingTextLabel])
+        let stackView = UIStackView(arrangedSubviews: [imageView, titleSubtitleStackView, trailingView])
         stackView.setCustomSpacing(16, after: imageView)
         stackView.spacing = 8
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -188,7 +205,7 @@ public final class ListItemView: UIView, AnyFormItemView {
             self.heightAnchor.constraint(greaterThanOrEqualToConstant: 48)
         ]
 
-        trailingTextLabel.setContentHuggingPriority(.required, for: .horizontal)
+        trailingView.setContentHuggingPriority(.required, for: .horizontal)
         imageView.setContentHuggingPriority(.required, for: .horizontal)
         
         NSLayoutConstraint.activate(constraints)

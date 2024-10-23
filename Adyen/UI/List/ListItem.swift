@@ -27,7 +27,7 @@ public class ListItem: FormItem {
     public var icon: Icon?
 
     /// The trailing text of the item.
-    public var trailingText: String?
+    public var trailingInfo: DisplayInformation.TrailingInfoType?
     
     /// The handler to invoke when the item is selected.
     public var selectionHandler: (() -> Void)?
@@ -61,7 +61,7 @@ public class ListItem: FormItem {
         title: String,
         subtitle: String? = nil,
         icon: Icon? = nil,
-        trailingText: String? = nil,
+        trailingInfo: DisplayInformation.TrailingInfoType? = nil,
         style: ListItemStyle = ListItemStyle(),
         identifier: String? = nil,
         accessibilityLabel: String? = nil,
@@ -70,10 +70,10 @@ public class ListItem: FormItem {
         self.title = title
         self.subtitle = subtitle
         self.icon = icon
-        self.trailingText = trailingText
+        self.trailingInfo = trailingInfo
         self.style = style
         self.identifier = identifier
-        self.accessibilityLabel = accessibilityLabel ?? [title, subtitle, trailingText].compactMap { $0 }.joined(separator: ", ")
+        self.accessibilityLabel = accessibilityLabel ?? [title, subtitle, trailingInfo?.accessibilityLabel].compactMap { $0 }.joined(separator: ", ")
         self.selectionHandler = selectionHandler
     }
     
