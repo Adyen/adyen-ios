@@ -68,7 +68,6 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         let errorController = DAErrorViewController(
             style: style,
             screen: .authenticationFailed(localizationParameters: localizedParameters),
-            localizationParameters: localizedParameters,
             completion: handler,
             troubleShootingHandler: troubleshootingHandler
         )
@@ -87,7 +86,6 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         let errorController = DAErrorViewController(
             style: style,
             screen: .registrationFailed(localizationParameters: localizedParameters),
-            localizationParameters: localizedParameters,
             completion: handler,
             troubleShootingHandler: nil
         )
@@ -103,7 +101,6 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         let errorController = DAErrorViewController(
             style: style,
             screen: .deletionConfirmation(localizationParameters: localizedParameters),
-            localizationParameters: localizedParameters,
             completion: handler,
             troubleShootingHandler: nil
         )
