@@ -150,6 +150,7 @@
 		81129AE62A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81129AE52A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift */; };
 		81135C922C903DA4008AC8E4 /* JSONEncoder+SortedKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81135C912C903DA4008AC8E4 /* JSONEncoder+SortedKeys.swift */; };
 		8122B9BD2B9A0FF3002FC4D6 /* ErrorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122B9BC2B9A0FF3002FC4D6 /* ErrorMock.swift */; };
+		812897782CC924CE00275487 /* AdyenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812897772CC924CB00275487 /* AdyenTheme.swift */; };
 		8136619E2BE0F6F7009AA0CD /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = 8136619D2BE0F6F7009AA0CD /* Adyen3DS2 */; };
 		813BF1122B2365400096940E /* XCTestCase+FirstResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813BF1102B2364E00096940E /* XCTestCase+FirstResponder.swift */; };
 		813BF1132B2365400096940E /* XCTestCase+FirstResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813BF1102B2364E00096940E /* XCTestCase+FirstResponder.swift */; };
@@ -1604,6 +1605,7 @@
 		81129AE52A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchViewController+InterfaceState.swift"; sourceTree = "<group>"; };
 		81135C912C903DA4008AC8E4 /* JSONEncoder+SortedKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+SortedKeys.swift"; sourceTree = "<group>"; };
 		8122B9BC2B9A0FF3002FC4D6 /* ErrorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMock.swift; sourceTree = "<group>"; };
+		812897772CC924CB00275487 /* AdyenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenTheme.swift; sourceTree = "<group>"; };
 		813BF1102B2364E00096940E /* XCTestCase+FirstResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FirstResponder.swift"; sourceTree = "<group>"; };
 		813EF9DD2A5DA0BC00C65D15 /* FormPickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerItem.swift; sourceTree = "<group>"; };
 		813EF9E12A5DA2D400C65D15 /* FormPickerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerItemView.swift; sourceTree = "<group>"; };
@@ -3939,6 +3941,7 @@
 		E2C0E093220B04E5008616F6 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				812897772CC924CB00275487 /* AdyenTheme.swift */,
 				F9354BE523A7B4AE00A6760B /* Styles */,
 				E2C0E094220B04E9008616F6 /* Form */,
 				E28098B9220DB9E70087928F /* List */,
@@ -7031,6 +7034,7 @@
 				A0C9B59B288AE34600D6BDAB /* InstallmentOptions.swift in Sources */,
 				81BA08412A4AD97400308160 /* FormValidatableValueItemView.swift in Sources */,
 				E9093401228C54CD00C9F04B /* LogoURLProvider.swift in Sources */,
+				812897782CC924CE00275487 /* AdyenTheme.swift in Sources */,
 				81BBB3492A66DD5800AF1F9E /* AddressLookupStyle.swift in Sources */,
 				F99E7278261F6C6F00EA5B78 /* KeyboardObserver.swift in Sources */,
 				81DC5A5D2A7BADB200DBF2D1 /* EmptyStateView.swift in Sources */,
