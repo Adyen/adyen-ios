@@ -11,10 +11,14 @@ import Foundation
 /// The input is expected to be sanitized as "MMYY", which will result in "MM / YY".
 public final class CardExpiryDateFormatter: NumericFormatter {
     
+    override public func sanitizedValue(for value: String) -> String {
+        super.sanitizedValue(for: value).adyen.truncate(to: maxLength)
+    }
+    
     override public func formattedValue(for value: String) -> String {
         let separator = " / "
         
-        let sanitizedString = sanitizedValue(for: value).adyen.truncate(to: maxLength)
+        let sanitizedString = sanitizedValue(for: value)
         
         var formattedDate = sanitizedString
         var month = 0

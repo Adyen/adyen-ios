@@ -120,6 +120,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
             range: range,
             replacementString: string,
             in: text,
+            editingDirection: editingDirection
             isDeletingSingleCharacter: isDeletingSingleCharacter
         )
         
@@ -133,7 +134,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         let isAdding = formattedText.count > text.count
         
         let oldNumberOfSpacesBeforeCursor = text.numberOfSpaces(beforeOffset: oldCursorOffset)
-        
+
         let projectedNewCursorOffset = oldCursorOffset + replacementLength + (isAdding ? 1 : 0)
         let newNumberOfSpacesBeforeCursor = formattedText.numberOfSpaces(
             beforeOffset: projectedNewCursorOffset
