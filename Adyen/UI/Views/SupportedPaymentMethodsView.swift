@@ -13,7 +13,7 @@ internal class SupportedPaymentMethodLogosView: UIView {
     internal let imageUrls: [URL]
     internal let trailingText: String?
     
-    private var content: UIView? {
+    internal var content: UIView? {
         willSet {
             content?.removeFromSuperview()
         }
