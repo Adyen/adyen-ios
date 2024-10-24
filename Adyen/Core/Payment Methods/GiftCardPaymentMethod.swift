@@ -24,7 +24,7 @@ public struct GiftCardPaymentMethod: PartialPaymentMethod {
     }
 
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: brand)
+        DisplayInformation(title: name, subtitle: nil, logoName: brand, trailingInfo: nil)
     }
 
     // MARK: - Decoding

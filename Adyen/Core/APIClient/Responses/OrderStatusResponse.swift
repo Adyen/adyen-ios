@@ -82,7 +82,7 @@ public struct OrderPaymentMethod: PaymentMethod {
             title: name,
             subtitle: nil,
             logoName: type.rawValue,
-            disclosureText: disclosureText,
+            trailingInfo: disclosureText.map { .text($0) },
             accessibilityLabel: accessibilityLabel
         )
     }

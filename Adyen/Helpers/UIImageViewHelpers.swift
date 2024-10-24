@@ -31,5 +31,6 @@ public extension AdyenScope where Base: UIImageView {
         base.layer.borderWidth = style.borderWidth
         base.backgroundColor = style.backgroundColor
         base.tintColor = style.tintColor
+        base.clipsToBounds = style.clipsToBounds
     }
 }

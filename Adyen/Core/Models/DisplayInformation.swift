@@ -11,12 +11,12 @@ public struct DisplayInformation: Equatable {
 
     public enum TrailingInfoType: Equatable {
         case text(String)
-        case view(UIView)
+        case logos(named: [String])
         
-        var accessibilityLabel: String? {
+        internal var accessibilityLabel: String? {
             switch self {
             case let .text(text): return text
-            case .view: return nil
+            case .logos: return nil
             }
         }
     }
@@ -83,17 +83,10 @@ public struct DisplayInformation: Equatable {
         footnoteText: String? = nil,
         accessibilityLabel: String? = nil
     ) {
-        let spinner = UIView()
-        spinner.backgroundColor = .red
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-
-        spinner.startAnimating()
-        spinner.sizeToFit()
-        
         self.title = title
         self.subtitle = subtitle
         self.logoName = logoName
-        self.trailingInfo = .view(spinner)
+        self.trailingInfo = trailingInfo
         self.footnoteText = footnoteText
         self.accessibilityLabel = accessibilityLabel
     }

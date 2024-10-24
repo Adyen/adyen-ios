@@ -50,6 +50,7 @@ internal struct PartialConfirmationPaymentMethod: PaymentMethod {
             title: String.Adyen.securedString + lastFour,
             subtitle: nil,
             logoName: paymentMethod.displayInformation(using: parameters).logoName,
+            trailingInfo: nil,
             footnoteText: footnote,
             accessibilityLabel: accessibilityLabel
         )

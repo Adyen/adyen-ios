@@ -10,6 +10,18 @@ import Foundation
 @_spi(AdyenInternal)
 public class ListItem: FormItem {
     
+    public enum TrailingInfoType {
+        case text(String)
+        case logos(urls: [URL])
+        
+        internal var accessibilityLabel: String? {
+            switch self {
+            case let .text(text): return text
+            case .logos: return nil
+            }
+        }
+    }
+    
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
     public var subitems: [FormItem] = []
@@ -27,7 +39,7 @@ public class ListItem: FormItem {
     public var icon: Icon?
 
     /// The trailing text of the item.
-    public var trailingInfo: DisplayInformation.TrailingInfoType?
+    public var trailingInfo: TrailingInfoType?
     
     /// The handler to invoke when the item is selected.
     public var selectionHandler: (() -> Void)?
@@ -61,7 +73,7 @@ public class ListItem: FormItem {
         title: String,
         subtitle: String? = nil,
         icon: Icon? = nil,
-        trailingInfo: DisplayInformation.TrailingInfoType? = nil,
+        trailingInfo: TrailingInfoType? = nil,
         style: ListItemStyle = ListItemStyle(),
         identifier: String? = nil,
         accessibilityLabel: String? = nil,

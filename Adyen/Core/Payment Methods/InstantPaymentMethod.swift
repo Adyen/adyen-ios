@@ -19,6 +19,21 @@ public struct InstantPaymentMethod: PaymentMethod {
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
+    
+    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        DisplayInformation(
+            title: name,
+            subtitle: nil,
+            logoName: type.rawValue,
+            trailingInfo: .logos(named: [
+                "US-1",
+                "US-2",
+                "US-3",
+                "US-4",
+                "US-5"
+            ])
+        )
+    }
 
     private enum CodingKeys: String, CodingKey {
         case type

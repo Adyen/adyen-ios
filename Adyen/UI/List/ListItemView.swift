@@ -71,6 +71,7 @@ public final class ListItemView: UIView, AnyFormItemView {
         }
 
         contentStackView.removeArrangedSubview(trailingView)
+        trailingView.removeFromSuperview()
         
         switch item?.trailingInfo {
         case let .text(string):
@@ -82,8 +83,8 @@ public final class ListItemView: UIView, AnyFormItemView {
             }
             trailingView = trailingTextLabel
             trailingView.isHidden = string.isEmpty
-        case let .view(view):
-            trailingView = view
+        case let .logos(urls):
+            trailingView = SupportedPaymentMethodsView(imageUrls: urls, trailingText: "+")
         case nil:
             trailingView = UIView()
             trailingView.isHidden = true
