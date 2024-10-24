@@ -7,7 +7,7 @@
 import AdyenNetworking
 import UIKit
 
-internal class SupportedPaymentMethodsView: UIView {
+internal class SupportedPaymentMethodLogosView: UIView {
     
     internal let imageSize: CGSize
     internal let imageUrls: [URL]

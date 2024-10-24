@@ -70,27 +70,7 @@ public final class ListItemView: UIView, AnyFormItemView {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "subtitleLabel")
         }
 
-        contentStackView.removeArrangedSubview(trailingView)
-        trailingView.removeFromSuperview()
-        
-        switch item?.trailingInfo {
-        case let .text(string):
-            let trailingTextLabel = UILabel()
-            trailingTextLabel.translatesAutoresizingMaskIntoConstraints = false
-            trailingTextLabel.text = string
-            trailingTextLabel.accessibilityIdentifier = item?.identifier.map {
-                ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "trailingTextLabel")
-            }
-            trailingView = trailingTextLabel
-            trailingView.isHidden = string.isEmpty
-        case let .logos(urls, trailingText):
-            trailingView = SupportedPaymentMethodsView(imageUrls: urls, trailingText: trailingText)
-        case nil:
-            trailingView = UIView()
-            trailingView.isHidden = true
-        }
-        
-        contentStackView.addArrangedSubview(trailingView)
+        updateTrailingView(for: item)
         
         imageView.isHidden = item?.icon == nil
         updateIcon()
@@ -107,6 +87,37 @@ public final class ListItemView: UIView, AnyFormItemView {
         } else {
             imageLoadingTask = nil
         }
+    }
+    
+    private func updateTrailingView(for item: ListItem?) {
+        contentStackView.removeArrangedSubview(trailingView)
+        trailingView.removeFromSuperview()
+        
+        switch item?.trailingInfo {
+        case let .text(string):
+            let trailingTextLabel = UILabel()
+            trailingTextLabel.translatesAutoresizingMaskIntoConstraints = false
+            trailingTextLabel.text = string
+            trailingTextLabel.accessibilityIdentifier = item?.identifier.map {
+                ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "trailingTextLabel")
+            }
+            trailingView = trailingTextLabel
+            trailingView.isHidden = string.isEmpty
+        case let .logos(urls, trailingText):
+            let trailingLogosView = SupportedPaymentMethodLogosView(
+                imageUrls: urls,
+                trailingText: trailingText
+            )
+            trailingLogosView.accessibilityIdentifier = item?.identifier.map {
+                ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "trailingLogosView")
+            }
+            trailingView = trailingLogosView
+        case nil:
+            trailingView = UIView()
+            trailingView.isHidden = true
+        }
+        
+        contentStackView.addArrangedSubview(trailingView)
     }
     
     private func updateImageView(style: ListItemStyle) {
