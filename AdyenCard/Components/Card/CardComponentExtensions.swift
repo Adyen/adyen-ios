@@ -16,7 +16,7 @@ import UIKit
 extension CardComponent {
     
     internal func didSelectSubmitButton() {
-        guard cardViewController.validate() else {
+        guard validate() else {
             return
         }
         
@@ -64,7 +64,7 @@ extension CardComponent {
 }
 
 @_spi(AdyenInternal)
-extension CardComponent: PaymentComponent, TrackableComponent {
+extension CardComponent: TrackableComponent {
     
     public func sendDidLoadEvent() {
         var infoEvent = AnalyticsEventInfo(component: paymentMethod.type.rawValue, type: .rendered)

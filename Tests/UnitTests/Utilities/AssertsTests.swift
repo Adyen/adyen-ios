@@ -48,7 +48,11 @@ class AssertsTests: XCTestCase {
     }
 
     func testFormViewControllerPreferredContentSizeAssertion() {
-        let sut = FormViewController(style: FormComponentStyle(), localizationParameters: nil)
+        let sut = FormViewController(
+            scrollEnabled: true,
+            style: FormComponentStyle(),
+            localizationParameters: nil
+        )
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in

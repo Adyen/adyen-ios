@@ -19,6 +19,7 @@ class BACSConfirmationViewControllerTests: XCTestCase {
         presenter = BACSConfirmationPresenterProtocolMock()
         sut = BACSConfirmationViewController(
             title: "BACS Direct Debit",
+            scrollEnabled: true,
             styleProvider: styleProvider
         )
         sut.presenter = presenter

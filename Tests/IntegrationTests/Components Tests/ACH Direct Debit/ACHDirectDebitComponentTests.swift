@@ -332,4 +332,104 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let infoType = analyticsProviderMock.infos.first?.type
         XCTAssertEqual(infoType, .rendered)
     }
+
+    func testSubmitShouldCallPaymentDelegateDidSubmit() throws {
+        // Given
+        let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
+        let configuration = ACHDirectDebitComponent.Configuration(showsBillingAddress: false)
+        let sut = ACHDirectDebitComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock()
+        )
+
+        setupRootViewController(sut.viewController)
+
+        let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
+
+        let paymentDelegateMock = PaymentComponentDelegateMock()
+        sut.delegate = paymentDelegateMock
+        paymentDelegateMock.onDidSubmit = { _, component in
+            XCTAssertTrue(component === sut)
+            didSubmitExpectation.fulfill()
+        }
+
+        let nameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem"))
+        let accountNumberItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.bankAccountNumberItem"))
+        let routingNumberItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.bankRoutingNumberItem"))
+
+        self.populate(textItemView: nameItemView, with: "test")
+        self.populate(textItemView: accountNumberItemView, with: "123456789")
+        self.populate(textItemView: routingNumberItemView, with: "121000358")
+
+        // When
+        sut.submit()
+
+        // Then
+        wait(for: [didSubmitExpectation], timeout: 10)
+        XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
+    }
+
+    func testValidateWithValidInputSubmitShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
+        let configuration = ACHDirectDebitComponent.Configuration(
+            showsSubmitButton: false,
+            showsBillingAddress: false
+        )
+        let sut = ACHDirectDebitComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock()
+        )
+
+        setupRootViewController(sut.viewController)
+
+        let nameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem"))
+        let accountNumberItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.bankAccountNumberItem"))
+        let routingNumberItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.bankRoutingNumberItem"))
+
+        self.populate(textItemView: nameItemView, with: "test")
+        self.populate(textItemView: accountNumberItemView, with: "123456789")
+        self.populate(textItemView: routingNumberItemView, with: "121000358")
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        let validationResult = sut.validate()
+
+        // Then
+        XCTAssertTrue(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
+
+    func testValidateWithInvalidInputSubmitShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
+        let configuration = ACHDirectDebitComponent.Configuration(
+            showsSubmitButton: false,
+            showsBillingAddress: false
+        )
+        let sut = ACHDirectDebitComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock()
+        )
+
+        setupRootViewController(sut.viewController)
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        let validationResult = sut.validate()
+
+        // Then
+        XCTAssertFalse(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
 }

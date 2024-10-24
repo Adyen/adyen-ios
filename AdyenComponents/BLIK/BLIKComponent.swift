@@ -56,6 +56,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
 
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
+            scrollEnabled: configuration.showsSubmitButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
@@ -68,8 +69,11 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
         formViewController.append(FormSpacerItem())
         formViewController.append(codeItem)
         formViewController.append(FormSpacerItem())
-        formViewController.append(button)
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+
+        if configuration.showsSubmitButton {
+            formViewController.append(button)
+            formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+        }
 
         return formViewController
     }()
@@ -115,7 +119,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     // MARK: - Private
 
     private func didSelectSubmitButton() {
-        guard formViewController.validate() else { return }
+        guard validate() else { return }
 
         let details = BLIKDetails(
             paymentMethod: paymentMethod,
@@ -133,3 +137,16 @@ extension BLIKComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)
 extension BLIKComponent: ViewControllerDelegate {}
+
+// MARK: - SubmitCustomizable
+
+extension BLIKComponent: SubmittableComponent {
+
+    public func submit() {
+        didSelectSubmitButton()
+    }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
+}
