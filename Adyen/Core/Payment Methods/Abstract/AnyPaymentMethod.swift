@@ -12,7 +12,7 @@ internal enum AnyPaymentMethod: Codable {
     case storedPayPal(StoredPayPalPaymentMethod)
     case storedBCMC(StoredBCMCPaymentMethod)
     case storedBlik(StoredBLIKPaymentMethod)
-    case storedPayByBankPlaid(StoredPayByBankPlaidPaymentMethod)
+    case storedPayByBankUS(StoredPayByBankUSPaymentMethod)
     case storedAchDirectDebit(StoredACHDirectDebitPaymentMethod)
     case storedCashAppPay(StoredCashAppPayPaymentMethod)
     case storedTwint(StoredTwintPaymentMethod)
@@ -42,6 +42,7 @@ internal enum AnyPaymentMethod: Codable {
     case upi(UPIPaymentMethod)
     case cashAppPay(CashAppPayPaymentMethod)
     case twint(TwintPaymentMethod)
+    case payByBankUS(PayByBankUSPaymentMethod)
 
     case none
     
@@ -80,13 +81,14 @@ internal enum AnyPaymentMethod: Codable {
         case let .upi(paymentMethod): return paymentMethod
         case let .cashAppPay(paymentMethod): return paymentMethod
         case let .twint(paymentMethod): return paymentMethod
-        case let .storedPayByBankPlaid(paymentMethod): return paymentMethod
+        case let .storedPayByBankUS(paymentMethod): return paymentMethod
+        case let .payByBankUS(paymentMethod): return paymentMethod
         case .none: return nil
         }
     }
 
     // MARK: - Decoding
-
+    
     internal init(from decoder: Decoder) throws {
         self = AnyPaymentMethodDecoder.decode(from: decoder)
     }
