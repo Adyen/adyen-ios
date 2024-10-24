@@ -134,10 +134,10 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         
         let oldNumberOfSpacesBeforeCursor = text.numberOfSpaces(beforeOffset: oldCursorOffset)
         
-let projectedNewCursorOffset = oldCursorOffset + replacementLength + (isAdding ? 1 : 0)
-let newNumberOfSpacesBeforeCursor = formattedText.numberOfSpaces(
-    beforeOffset: projectedNewCursorOffset
-)
+        let projectedNewCursorOffset = oldCursorOffset + replacementLength + (isAdding ? 1 : 0)
+        let newNumberOfSpacesBeforeCursor = formattedText.numberOfSpaces(
+            beforeOffset: projectedNewCursorOffset
+        )
         
         let spaceDifference = newNumberOfSpacesBeforeCursor - oldNumberOfSpacesBeforeCursor
         let newCursorOffset = oldCursorOffset + replacementLength + spaceDifference
