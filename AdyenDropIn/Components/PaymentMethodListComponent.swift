@@ -222,8 +222,8 @@ private extension DisplayInformation.TrailingInfoType {
         switch self {
         case let .text(string):
             return .text(string)
-        case let .logos(logoNames):
-            return .logos(urls: logoNames.map { urlProvider.logoURL(withName: $0) })
+        case let .logos(logoNames, trailingText):
+            return .logos(urls: logoNames.map { urlProvider.logoURL(withName: $0) }, trailingText: trailingText)
         }
     }
 }

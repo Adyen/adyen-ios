@@ -11,7 +11,7 @@ public struct DisplayInformation: Equatable {
 
     public enum TrailingInfoType: Equatable {
         case text(String)
-        case logos(named: [String])
+        case logos(named: [String], trailingText: String?)
         
         internal var accessibilityLabel: String? {
             switch self {

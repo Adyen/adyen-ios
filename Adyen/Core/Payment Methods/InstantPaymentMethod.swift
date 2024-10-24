@@ -25,13 +25,7 @@ public struct InstantPaymentMethod: PaymentMethod {
             title: name,
             subtitle: nil,
             logoName: type.rawValue,
-            trailingInfo: .logos(named: [
-                "US-1",
-                "US-2",
-                "US-3",
-                "US-4",
-                "US-5"
-            ])
+            trailingInfo: .logos(named: Array(1...4).map { "US-\($0)" }, trailingText: "+")
         )
     }
 

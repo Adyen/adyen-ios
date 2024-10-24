@@ -61,7 +61,7 @@ internal class SupportedPaymentMethodsView: UIView {
             contentMode: .scaleAspectFit
         )
         
-        let imageViews = imageUrls.prefix(4).map { url in
+        let imageViews = imageUrls.map { url in
             let imageView = UIImageView()
             imageView.adyen.apply(imageStyle)
             imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -84,16 +84,5 @@ internal class SupportedPaymentMethodsView: UIView {
         stackView.spacing = 6
         stackView.axis = .horizontal
         content = stackView
-    }
-}
-
-extension SupportedPaymentMethodsView {
-    
-    static func withLogos(named logoNames: [String], environment: AnyAPIEnvironment, trailingText: String?) -> SupportedPaymentMethodsView {
-        let imageUrls = logoNames.map { LogoURLProvider(environment: environment).logoURL(withName: $0) }
-        return SupportedPaymentMethodsView(
-            imageUrls: imageUrls,
-            trailingText: trailingText
-        )
     }
 }

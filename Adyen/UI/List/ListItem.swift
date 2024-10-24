@@ -12,7 +12,7 @@ public class ListItem: FormItem {
     
     public enum TrailingInfoType {
         case text(String)
-        case logos(urls: [URL])
+        case logos(urls: [URL], trailingText: String?)
         
         internal var accessibilityLabel: String? {
             switch self {

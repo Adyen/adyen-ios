@@ -83,8 +83,8 @@ public final class ListItemView: UIView, AnyFormItemView {
             }
             trailingView = trailingTextLabel
             trailingView.isHidden = string.isEmpty
-        case let .logos(urls):
-            trailingView = SupportedPaymentMethodsView(imageUrls: urls, trailingText: "+")
+        case let .logos(urls, trailingText):
+            trailingView = SupportedPaymentMethodsView(imageUrls: urls, trailingText: trailingText)
         case nil:
             trailingView = UIView()
             trailingView.isHidden = true
