@@ -152,7 +152,7 @@
 		8122B9BD2B9A0FF3002FC4D6 /* ErrorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122B9BC2B9A0FF3002FC4D6 /* ErrorMock.swift */; };
 		81272F182CC7E1DD00D8773A /* PayByBankUSComponent+ConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81272F172CC7E1CF00D8773A /* PayByBankUSComponent+ConfirmationViewController.swift */; };
 		81272F1A2CC8FD4600D8773A /* PayByBankUSComponent+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81272F192CC8FD4600D8773A /* PayByBankUSComponent+Style.swift */; };
-		812897762CC8FEC100275487 /* StoredPayByBankPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812897752CC8FEC100275487 /* StoredPayByBankPaymentMethod.swift */; };
+		8128977C2CCA660A00275487 /* StoredPayByBankUSPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812897752CC8FEC100275487 /* StoredPayByBankUSPaymentMethod.swift */; };
 		8136619E2BE0F6F7009AA0CD /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = 8136619D2BE0F6F7009AA0CD /* Adyen3DS2 */; };
 		813BF1122B2365400096940E /* XCTestCase+FirstResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813BF1102B2364E00096940E /* XCTestCase+FirstResponder.swift */; };
 		813BF1132B2365400096940E /* XCTestCase+FirstResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813BF1102B2364E00096940E /* XCTestCase+FirstResponder.swift */; };
@@ -1612,7 +1612,7 @@
 		8122B9BC2B9A0FF3002FC4D6 /* ErrorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMock.swift; sourceTree = "<group>"; };
 		81272F172CC7E1CF00D8773A /* PayByBankUSComponent+ConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PayByBankUSComponent+ConfirmationViewController.swift"; sourceTree = "<group>"; };
 		81272F192CC8FD4600D8773A /* PayByBankUSComponent+Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PayByBankUSComponent+Style.swift"; sourceTree = "<group>"; };
-		812897752CC8FEC100275487 /* StoredPayByBankPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPayByBankPaymentMethod.swift; sourceTree = "<group>"; };
+		812897752CC8FEC100275487 /* StoredPayByBankUSPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPayByBankUSPaymentMethod.swift; sourceTree = "<group>"; };
 		813BF1102B2364E00096940E /* XCTestCase+FirstResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FirstResponder.swift"; sourceTree = "<group>"; };
 		813EF9DD2A5DA0BC00C65D15 /* FormPickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerItem.swift; sourceTree = "<group>"; };
 		813EF9E12A5DA2D400C65D15 /* FormPickerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerItemView.swift; sourceTree = "<group>"; };
@@ -1651,6 +1651,7 @@
 		81A6B4E22AD53E3300A089A1 /* OpenExternalAppDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenExternalAppDetector.swift; sourceTree = "<group>"; };
 		81A6B4E52AD54F4F00A089A1 /* OpenExternalAppDetector+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenExternalAppDetector+Mock.swift"; sourceTree = "<group>"; };
 		81A6B4EA2AD5546500A089A1 /* AdyenDependencies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdyenDependencies.swift; sourceTree = "<group>"; };
+		81A741202C8B1E5700EB393D /* StoredPayByBankPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPayByBankPaymentMethod.swift; sourceTree = "<group>"; };
 		81A91AB62BEBEA21001E00C8 /* OpenExternalAppDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenExternalAppDetectorTests.swift; sourceTree = "<group>"; };
 		81AA3B332ACD9CE800F5719D /* AddressLookupProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupProvider.swift; sourceTree = "<group>"; };
 		81AA3B352AD02EAE00F5719D /* AddressLookupSearchViewController+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressLookupSearchViewController+ViewModel.swift"; sourceTree = "<group>"; };
@@ -2866,6 +2867,7 @@
 		210CC97D2A5FC11900F8F672 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
+				81A741202C8B1E5700EB393D /* StoredPayByBankPaymentMethod.swift */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -3739,7 +3741,7 @@
 				E224088622AFA3A80058923E /* StoredInstantPaymentMethod.swift */,
 				F9D57529237C6084009C18B5 /* StoredBCMCPaymentMethod.swift */,
 				E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */,
-				812897752CC8FEC100275487 /* StoredPayByBankPaymentMethod.swift */,
+				812897752CC8FEC100275487 /* StoredPayByBankUSPaymentMethod.swift */,
 				81D218672CC7D23400B7FC4C /* PayByBankUSPaymentMethod.swift */,
 				E224088C22B0FD220058923E /* StoredPayPalPaymentMethod.swift */,
 				F9620D9E23C7457F005209FC /* WeChatPayPaymentMethod.swift */,
@@ -6852,7 +6854,6 @@
 				E7B3DE9F25A61B9200CA4D2B /* UIViewConstraintsHelper.swift in Sources */,
 				E795A27626404E9400321C48 /* AddressViewModel.swift in Sources */,
 				F9354BE923A7B5AC00A6760B /* ViewStyle.swift in Sources */,
-				812897762CC8FEC100275487 /* StoredPayByBankPaymentMethod.swift in Sources */,
 				E9B36C9D223FDE4F00EAA368 /* PaymentMethods.swift in Sources */,
 				F9620DB023C75430005209FC /* WeChatPayPaymentMethod.swift in Sources */,
 				E7E0E2382762005B001DF0C9 /* NSConstraintHelper.swift in Sources */,
@@ -6935,6 +6936,7 @@
 				F9354BE723A7B4E200A6760B /* TextStyle.swift in Sources */,
 				F9A6C41D26550B7100D8CD3E /* AlreadyPaidPaymentComponent.swift in Sources */,
 				F9D644E024D2E4210059CBE3 /* EmailValidator.swift in Sources */,
+				8128977C2CCA660A00275487 /* StoredPayByBankUSPaymentMethod.swift in Sources */,
 				F9639B3324DD96990073F38A /* PaymentStatusRequest.swift in Sources */,
 				A0DB48662AFD020400348C83 /* AnalyticsRequest.swift in Sources */,
 				5AD40E75262F04440090E01C /* UIProgressViewHelpers.swift in Sources */,
