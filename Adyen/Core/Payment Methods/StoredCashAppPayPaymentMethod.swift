@@ -36,6 +36,7 @@ public struct StoredCashAppPayPaymentMethod: StoredPaymentMethod {
             title: cashtag,
             subtitle: name,
             logoName: type.rawValue,
+            trailingInfo: nil,
             accessibilityLabel: accessibilityLabel
         )
     }

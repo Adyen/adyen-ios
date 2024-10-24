@@ -150,6 +150,8 @@
 		81129AE62A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81129AE52A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift */; };
 		81135C922C903DA4008AC8E4 /* JSONEncoder+SortedKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81135C912C903DA4008AC8E4 /* JSONEncoder+SortedKeys.swift */; };
 		8122B9BD2B9A0FF3002FC4D6 /* ErrorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122B9BC2B9A0FF3002FC4D6 /* ErrorMock.swift */; };
+		8128977B2CC93CB100275487 /* SupportedPaymentMethodsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8128977A2CC93CB000275487 /* SupportedPaymentMethodsView.swift */; };
+		8128977E2CCA6FE900275487 /* SupportedPaymentMethodLogosViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8128977D2CCA6FE400275487 /* SupportedPaymentMethodLogosViewTests.swift */; };
 		8136619E2BE0F6F7009AA0CD /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = 8136619D2BE0F6F7009AA0CD /* Adyen3DS2 */; };
 		813BF1122B2365400096940E /* XCTestCase+FirstResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813BF1102B2364E00096940E /* XCTestCase+FirstResponder.swift */; };
 		813BF1132B2365400096940E /* XCTestCase+FirstResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813BF1102B2364E00096940E /* XCTestCase+FirstResponder.swift */; };
@@ -1604,6 +1606,8 @@
 		81129AE52A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchViewController+InterfaceState.swift"; sourceTree = "<group>"; };
 		81135C912C903DA4008AC8E4 /* JSONEncoder+SortedKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+SortedKeys.swift"; sourceTree = "<group>"; };
 		8122B9BC2B9A0FF3002FC4D6 /* ErrorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMock.swift; sourceTree = "<group>"; };
+		8128977A2CC93CB000275487 /* SupportedPaymentMethodsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportedPaymentMethodsView.swift; sourceTree = "<group>"; };
+		8128977D2CCA6FE400275487 /* SupportedPaymentMethodLogosViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportedPaymentMethodLogosViewTests.swift; sourceTree = "<group>"; };
 		813BF1102B2364E00096940E /* XCTestCase+FirstResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FirstResponder.swift"; sourceTree = "<group>"; };
 		813EF9DD2A5DA0BC00C65D15 /* FormPickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerItem.swift; sourceTree = "<group>"; };
 		813EF9E12A5DA2D400C65D15 /* FormPickerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPickerItemView.swift; sourceTree = "<group>"; };
@@ -3015,6 +3019,7 @@
 			children = (
 				F9FE39E22679E09200F02A9B /* LoadingViewTests.swift */,
 				81A2E3BD2A5C453200CF5F9C /* LinkTextViewTests.swift */,
+				8128977D2CCA6FE400275487 /* SupportedPaymentMethodLogosViewTests.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3968,6 +3973,7 @@
 				81B001C12A55C5C10015BFA3 /* UISearchBar+Prominent.swift */,
 				81BBB6732A82792100C1A04B /* UIView+Accessibility.swift */,
 				E2C0E0C0220D7E5E008616F6 /* SubmitButton.swift */,
+				8128977A2CC93CB000275487 /* SupportedPaymentMethodsView.swift */,
 				81A2E3BF2A5C453F00CF5F9C /* LinkTextView.swift */,
 				F95A788725C416A60032CF7E /* CopyLabelView.swift */,
 				F99D2F852665211600BB5B2F /* LoadingView.swift */,
@@ -6761,6 +6767,7 @@
 				E216D3C5221AEF450013CBCF /* IBANFormatter.swift in Sources */,
 				5A4702182664E9440023F264 /* APIContext.swift in Sources */,
 				E9AFF87A224A4C9C005A0D8D /* PaymentComponent.swift in Sources */,
+				8128977B2CC93CB100275487 /* SupportedPaymentMethodsView.swift in Sources */,
 				006DCC03295C3E930015EA79 /* SegmentedControlStyle.swift in Sources */,
 				E216D3C0221AD0620013CBCF /* FormViewItemManager.swift in Sources */,
 				00EACBB3287327C00082B360 /* FormIssuerPickerItem.swift in Sources */,
@@ -7225,6 +7232,7 @@
 				E7085C1E2629FDD700D0153B /* RedirectListnerTests.swift in Sources */,
 				E74CE3DF26727EB1008231D2 /* DropInDelegateMock.swift in Sources */,
 				A020EC5A29ED33F90050B2FE /* CashAppPayComponentTests.swift in Sources */,
+				8128977E2CCA6FE900275487 /* SupportedPaymentMethodLogosViewTests.swift in Sources */,
 				F967581527D25B1600A16FB6 /* SelfRetainingAPIClientTests.swift in Sources */,
 				81088A252BDBC2DD007FCDB9 /* CancellableMock.swift in Sources */,
 				81DA70892BDA6075006CE5D5 /* TwintSDKActionTests+Convenience.swift in Sources */,

@@ -59,7 +59,7 @@ public extension PaymentMethod {
                 title: merchantProvidedDisplayInformation.title,
                 subtitle: subtitle,
                 logoName: defaultDisplayInformation.logoName,
-                disclosureText: defaultDisplayInformation.disclosureText,
+                trailingInfo: defaultDisplayInformation.trailingInfo,
                 footnoteText: defaultDisplayInformation.footnoteText
             )
         }
@@ -68,7 +68,7 @@ public extension PaymentMethod {
 
     @_spi(AdyenInternal)
     func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
+        DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue, trailingInfo: nil)
     }
     
 }

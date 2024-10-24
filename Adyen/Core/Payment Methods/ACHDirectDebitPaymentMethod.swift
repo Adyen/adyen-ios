@@ -22,7 +22,7 @@ public struct ACHDirectDebitPaymentMethod: PaymentMethod {
     
     @_spi(AdyenInternal)
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue)
+        DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue, trailingInfo: nil)
     }
 
     // MARK: - Private
@@ -66,6 +66,7 @@ public struct StoredACHDirectDebitPaymentMethod: StoredPaymentMethod {
             title: String.Adyen.securedString + bankAccountLastFour,
             subtitle: localizedString(.achBankAccountTitle, parameters),
             logoName: type.rawValue,
+            trailingInfo: nil,
             accessibilityLabel: accessibilityLabel
         )
     }

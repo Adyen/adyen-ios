@@ -21,7 +21,7 @@ public struct MealVoucherPaymentMethod: PartialPaymentMethod {
     }
 
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
+        DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue, trailingInfo: nil)
     }
 
     // MARK: - Decoding
