@@ -5,6 +5,8 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import UIKit
+import Foundation
 
 /// A component that handles a Twint payment.
 public final class PayByBankUSComponent: PaymentComponent, PresentableComponent {
