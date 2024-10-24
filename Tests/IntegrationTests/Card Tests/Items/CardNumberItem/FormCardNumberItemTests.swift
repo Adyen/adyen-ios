@@ -178,4 +178,101 @@ class FormCardNumberItemTests: XCTestCase {
         XCTAssertEqual(sut.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_numberItem_invalid"), expectedLocalizationParameters))
     }
     
+    func testCursorMovement() throws {
+        
+        let textField = UITextField()
+        textField.becomeFirstResponder()
+        
+        let item = FormCardNumberItem(cardTypeLogos: [])
+        
+        /// Desired behavior
+        ///
+        /// 1234 56|31 0
+        /// 1234 567|3 10 // Adding 7 -> move 1 to the right
+        /// 1234 5678 |310 // Adding 8 -> move 2 to the right
+        /// 1234 5678 9|310 // Adding 9 -> move 1 to the right
+        /// 1234 5678| 310 // Removing 9 -> move 2 to the left
+        /// 1234 567|3 10 // Removing 8 -> move 1 to the left
+        /// 1234 56|31 0 // Removing 7 -> move 1 to the left
+        
+        // Adding a character
+        
+        textField.text = ""
+        textField.selectedTextRange = UITextRange.textRange(startOffset: 0, in: textField)
+        XCTAssertEqual(item.textField(textField, shouldChangeCharactersIn: .init(location: 0, length: 0), replacementString: "1"), false)
+        XCTAssertEqual(textField.text, "1")
+        XCTAssertEqual(textField.selectedTextRange, UITextRange.textRange(startOffset: 1, in: textField))
+        
+        textField.text = "1234"
+        textField.selectedTextRange = UITextRange.textRange(startOffset: 4, in: textField)
+        XCTAssertEqual(item.textField(textField, shouldChangeCharactersIn: .init(location: 4, length: 0), replacementString: "5"), false)
+        XCTAssertEqual(textField.text, "1234 5")
+        XCTAssertEqual(textField.selectedTextRange, UITextRange.textRange(startOffset: 6, in: textField))
+        
+        // Removing a character
+        
+        textField.text = "1"
+        textField.selectedTextRange = UITextRange.textRange(startOffset: 1, in: textField)
+        XCTAssertEqual(item.textField(textField, shouldChangeCharactersIn: .init(location: 0, length: 1), replacementString: ""), false)
+        XCTAssertEqual(textField.text, "")
+        XCTAssertEqual(textField.selectedTextRange, UITextRange.textRange(startOffset: 0, in: textField))
+        
+        textField.text = "1234 5"
+        textField.selectedTextRange = UITextRange.textRange(startOffset: 6, in: textField)
+        XCTAssertEqual(item.textField(textField, shouldChangeCharactersIn: .init(location: 5, length: 1), replacementString: ""), false)
+        XCTAssertEqual(textField.text, "1234")
+        XCTAssertEqual(textField.selectedTextRange, UITextRange.textRange(startOffset: 4, in: textField))
+        
+        // Replacing multiple characters with 1 (1234 56 -> 1239 6)
+        
+        textField.text = "1234 56"
+        textField.selectedTextRange = UITextRange.textRange(startOffset: 6, in: textField)
+        XCTAssertEqual(item.textField(textField, shouldChangeCharactersIn: .init(location: 3, length: 3), replacementString: "9"), false)
+        XCTAssertEqual(textField.text, "1239 6")
+        XCTAssertEqual(textField.selectedTextRange, UITextRange.textRange(startOffset: 4, in: textField))
+        
+        // Replacing 1 character with multiple (1234 56 -> 1234 9996)
+        
+        textField.text = "1234 56"
+        textField.selectedTextRange = UITextRange.textRange(startOffset: 6, in: textField)
+        XCTAssertEqual(item.textField(textField, shouldChangeCharactersIn: .init(location: 5, length: 1), replacementString: "999"), false)
+        XCTAssertEqual(textField.text, "1234 9996")
+        XCTAssertEqual(textField.selectedTextRange, UITextRange.textRange(startOffset: 8, in: textField))
+        
+        // Manually moving cursor to after a space and deleting
+        
+        textField.text = "1234 56"
+        textField.selectedTextRange = UITextRange.textRange(startOffset: 5, in: textField)
+        XCTAssertEqual(item.textField(textField, shouldChangeCharactersIn: .init(location: 4, length: 1), replacementString: ""), false)
+        XCTAssertEqual(textField.text, "1234 56")
+        XCTAssertEqual(textField.selectedTextRange, UITextRange.textRange(startOffset: 4, in: textField))
+    }
+    
+}
+
+// MARK: - Helper Extensions
+
+private extension UITextField {
+    func cursorOffset() throws -> Int {
+        let rangeEnd = try XCTUnwrap(selectedTextRange?.end)
+        return offset(from: beginningOfDocument, to: rangeEnd)
+    }
+}
+
+private extension UITextRange {
+    
+    static func textRange(from start: UITextPosition, to end: UITextPosition, in textField: UITextField) -> UITextRange {
+        textField.textRange(from: start, to: end)!
+    }
+    
+    static func textRange(from start: UITextPosition, length: Int = 0, in textField: UITextField) -> UITextRange {
+        let end = textField.position(from: start, offset: length)!
+        return Self.textRange(from: start, to: end, in: textField)
+    }
+    
+    static func textRange(startOffset: Int, length: Int = 0, in textField: UITextField) -> UITextRange {
+        let start = textField.position(from: textField.beginningOfDocument, offset: startOffset)!
+        let end = textField.position(from: start, offset: length)!
+        return Self.textRange(from: start, to: end, in: textField)
+    }
 }
