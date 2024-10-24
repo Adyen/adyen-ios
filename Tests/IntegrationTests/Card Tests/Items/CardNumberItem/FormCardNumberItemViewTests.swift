@@ -96,8 +96,8 @@ class FormCardNumberItemViewTests: XCTestCase {
         XCTAssertEqual(sut.textField.allowsEditingActions, false)
 
         // When
-        sut.textField.text = "4111kdhr456"
-        sut.textField.sendActions(for: .editingChanged)
+        sut.textField.text = ""
+        _ = sut.textField(sut.textField, shouldChangeCharactersIn: .init(location: 0, length: 0), replacementString: "4111kdhr456")
 
         // Then
         let expectedItemValue = "4111456"
@@ -121,8 +121,8 @@ class FormCardNumberItemViewTests: XCTestCase {
         item.validator = cardNumberValidator
 
         // When
-        sut.textField.text = "5555341244441115"
-        sut.textField.sendActions(for: .editingChanged)
+        sut.textField.text = ""
+        _ = sut.textField(sut.textField, shouldChangeCharactersIn: .init(location: 0, length: 0), replacementString: "5555341244441115")
 
         // Then
         let expectedItemValue = "5555341244441115"

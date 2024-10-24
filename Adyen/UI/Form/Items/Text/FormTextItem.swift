@@ -68,15 +68,15 @@ open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFor
         textDidChange(value: value)
     }
 
+    @_spi(AdyenInternal)
     @discardableResult
-    internal func textDidChange(value: String) -> String {
+    public func textDidChange(value: String) -> String {
         let sanitizedValue = formatter?.sanitizedValue(for: value) ?? value
         
         publisher.wrappedValue = sanitizedValue
         formattedValue = formatter?.formattedValue(for: value) ?? value
         return formattedValue
     }
-
 }
 
 @_spi(AdyenInternal)
