@@ -5,6 +5,8 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import Foundation
+import UIKit
 
 extension PayByBankUSComponent {
     
