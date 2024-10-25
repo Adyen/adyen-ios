@@ -329,7 +329,7 @@ import XCTest
             
             // The token and result are base 64 encoded.
             enum TestData {
-                static let fingerprintToken = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES0lucHV0IjoiIyNTb21lZGVsZWdhdGVkQXV0aGVudGljYXRpb25TREtJbnB1dCMjIiwiZGlyZWN0b3J5U2VydmVySWQiOiJGMDEzMzcxMzM3IiwiZGlyZWN0b3J5U2VydmVyUHVibGljS2V5IjoiI0RpcmVjdG9yeVNlcnZlclB1YmxpY0tleSMiLCJkaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIjoiIyNEaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIyMiLCJ0aHJlZURTTWVzc2FnZVZlcnNpb24iOiIyLjIuMCIsInRocmVlRFNTZXJ2ZXJUcmFuc0lEIjoiMTUwZmEzYjgtZTZjOC00N2ExLTk2ZTAtOTEwNzYzYmVlYzU3In0="
+                static let fingerprintToken = "ewogICJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES0lucHV0IjogIiMjU29tZWRlbGVnYXRlZEF1dGhlbnRpY2F0aW9uU0RLSW5wdXQjIyIsCiAgImRpcmVjdG9yeVNlcnZlcklkIjogIkYwMTMzNzEzMzciLAogICJkaXJlY3RvcnlTZXJ2ZXJQdWJsaWNLZXkiOiAiI0RpcmVjdG9yeVNlcnZlclB1YmxpY0tleSMiLAogICJkaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIjogIiMjRGlyZWN0b3J5U2VydmVyUm9vdENlcnRpZmljYXRlcyMjIiwKICAidGhyZWVEU01lc3NhZ2VWZXJzaW9uIjogIjIuMi4wIiwKICAidGhyZWVEU1NlcnZlclRyYW5zSUQiOiAiMTUwZmEzYjgtZTZjOC00N2ExLTk2ZTAtOTEwNzYzYmVlYzU3IiwKICAicGF5bWVudEluZm8iOiB7CiAgICAiYW1vdW50IjogewogICAgICAiY3VycmVuY3kiOiAiRVVSIiwKICAgICAgInZhbHVlIjogMQogICAgfSwKICAgICJicmFuZCI6ICJ2aXNhY3JlZGl0IiwKICAgICJsYXN0Rm91ciI6ICI2NzQ2IgogIH0KfQ=="
                             
                 static let expectedFingerprintResult = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES091dHB1dCI6Ik9uQXV0aGVudGljYXRlIiwic2RrQXBwSUQiOiJzZGtBcHBsaWNhdGlvbklkZW50aWZpZXIiLCJzZGtFbmNEYXRhIjoiZGV2aWNlX2luZm8iLCJzZGtFcGhlbVB1YktleSI6eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6IjNiM21QZldodU94d09XeWRMZWpTM0RKRVVQaU1WRnh0ekdDVjY5MDZyZmMiLCJ5IjoienYwa3oxU0tmTnZUM3FsNzVMMjE3ZGU2WnN6eGZMQThMVUtPSUtlNVpmNCJ9LCJzZGtSZWZlcmVuY2VOdW1iZXIiOiJzZGtSZWZlcmVuY2VOdW1iZXIiLCJzZGtUcmFuc0lEIjoic2RrVHJhbnNhY3Rpb25JZGVudGlmaWVyIn0="
             }
@@ -341,14 +341,22 @@ import XCTest
             authenticationServiceMock.onAuthenticate = { input in
                 "OnAuthenticate"
             }
+            var capturedCardDetails: (number: String?, type: Adyen.CardType?)?
+            var capturedAmount: Amount?
+            let presenterMock = ThreeDS2DAScreenPresenterMock(
+                showRegistrationReturnState: .fallback,
+                showApprovalScreenReturnState: .approve
+            )
+            presenterMock.onShowApprovalScreen = {
+                capturedCardDetails = $0
+                capturedAmount = $1
+            }
+            
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
             let sut = ThreeDS2PlusDACoreActionHandler(
                 context: Dummy.context,
                 service: service,
-                presenter: ThreeDS2DAScreenPresenterMock(
-                    showRegistrationReturnState: .fallback,
-                    showApprovalScreenReturnState: .approve
-                ),
+                presenter: presenterMock,
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock
             )
@@ -369,6 +377,11 @@ import XCTest
             }
         
             waitForExpectations(timeout: 20, handler: nil)
+            
+            let shownCardDetails = try XCTUnwrap(capturedCardDetails)
+            let shownAmount = try XCTUnwrap(capturedAmount)
+            XCTAssertEqual(shownCardDetails.number, "•••• 6746")
+            XCTAssertEqual(shownAmount, Amount(value: 1, currencyCode: "EUR"))
         }
 
         func testDelegatedAuthenticationApprovalFlowWhenUserApprovesButVerificationFails() throws {
@@ -597,11 +610,17 @@ import XCTest
                 threeDS2SDKError: nil
             ))
             
+            let presenterMock = ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback)
+            var capturedCardDetails: (number: String?, type: Adyen.CardType?)?
+            presenterMock.onShowRegistrationScreen = {
+                capturedCardDetails = $0
+            }
+            
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
             let sut = ThreeDS2PlusDACoreActionHandler(
                 context: Dummy.context,
                 service: service,
-                presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
+                presenter: presenterMock,
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock,
                 deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
@@ -620,6 +639,8 @@ import XCTest
             }
 
             waitForExpectations(timeout: 2, handler: nil)
+            let shownCardDetails = try XCTUnwrap(capturedCardDetails)
+            XCTAssertEqual(shownCardDetails.number, "•••• 6746")
         }
     }
 

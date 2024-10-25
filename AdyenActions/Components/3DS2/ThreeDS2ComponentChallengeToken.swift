@@ -18,7 +18,8 @@ internal extension ThreeDS2Component {
         internal let serverTransactionIdentifier: String
         internal let threeDSRequestorAppURL: URL?
         internal let delegatedAuthenticationSDKInput: String?
-        
+        internal let paymentInfo: PaymentInfo?
+
         // MARK: - Decoding
         
         private enum CodingKeys: String, CodingKey {
@@ -28,6 +29,7 @@ internal extension ThreeDS2Component {
             case serverTransactionIdentifier = "threeDSServerTransID"
             case threeDSRequestorAppURL
             case delegatedAuthenticationSDKInput
+            case paymentInfo
         }
         
     }
