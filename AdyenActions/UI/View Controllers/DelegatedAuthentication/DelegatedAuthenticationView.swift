@@ -44,12 +44,18 @@ internal final class DelegatedAuthenticationView: UIView {
         return imageView
     }()
 
-    internal lazy var titleLabel: UILabel = .init(style: style.headerTextStyle, accessibilityPostfix: "titleLabel", scopeInstance: self)
+    internal lazy var titleLabel: UILabel = .init(
+        style: style.headerTextStyle,
+        accessibilityPostfix: "titleLabel",
+        textAlignment: .center,
+        scopeInstance: self
+    )
     
     internal lazy var descriptionLabel: UILabel = .init(
         style: style.descriptionTextStyle,
         accessibilityPostfix: "descriptionLabel",
         multiline: true,
+        textAlignment: .center,
         scopeInstance: self
     )
     
@@ -62,7 +68,12 @@ internal final class DelegatedAuthenticationView: UIView {
     
     // MARK: Payment Information
     
-    internal lazy var amount: UILabel = .init(style: style.amountTextStyle, accessibilityPostfix: "amountLabel", scopeInstance: self)
+    internal lazy var amount: UILabel = .init(
+        style: style.amountTextStyle,
+        accessibilityPostfix: "amountLabel",
+        textAlignment: .center,
+        scopeInstance: self
+    )
     
     internal lazy var cardImage: UIImageView = {
         let imageView = UIImageView(style: style.cardImageStyle)
@@ -80,7 +91,12 @@ internal final class DelegatedAuthenticationView: UIView {
         return imageView
     }()
 
-    internal lazy var cardNumberLabel: UILabel = .init(style: style.cardNumberTextStyle, accessibilityPostfix: "cardNumber", scopeInstance: self)
+    internal lazy var cardNumberLabel: UILabel = .init(
+        style: style.cardNumberTextStyle,
+        accessibilityPostfix: "cardNumber",
+        textAlignment: .center,
+        scopeInstance: self
+    )
     
     internal lazy var cardNumberStackView: UIStackView = .init(
         arrangedSubviews: [cardImage, cardNumberLabel],
@@ -114,6 +130,8 @@ internal final class DelegatedAuthenticationView: UIView {
     internal lazy var firstInfoLabel: UILabel = .init(
         style: style.additionalInformationTextStyle,
         accessibilityPostfix: "additionalInformationLabel",
+        multiline: true,
+        textAlignment: .left,
         scopeInstance: self
     )
 
@@ -130,6 +148,8 @@ internal final class DelegatedAuthenticationView: UIView {
     internal lazy var secondInfoLabel: UILabel = .init(
         style: style.additionalInformationTextStyle,
         accessibilityPostfix: "additionalInformationLabel",
+        multiline: true,
+        textAlignment: .left,
         scopeInstance: self
     )
     
@@ -147,6 +167,8 @@ internal final class DelegatedAuthenticationView: UIView {
     internal lazy var thirdInfoLabel: UILabel = .init(
         style: style.additionalInformationTextStyle,
         accessibilityPostfix: "additionalInformationLabel",
+        multiline: true,
+        textAlignment: .left,
         scopeInstance: self
     )
 

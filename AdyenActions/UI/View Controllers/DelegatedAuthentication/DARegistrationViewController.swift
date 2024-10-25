@@ -9,13 +9,13 @@ import UIKit
 
 @available(iOS 16.0, *)
 internal final class DARegistrationViewController: UIViewController {
-    private let context: AdyenContext
     private let cardNumber: String?
     private let cardType: CardType?
     private let biometricName: String
     private let enableCheckoutHandler: VoidHandler
     private let notNowHandler: VoidHandler
     private let imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
+    private let cardLogoURL: URL?
     private lazy var containerView = UIView(frame: .zero)
     
     private lazy var registrationView: DelegatedAuthenticationView = .init(style: style)
@@ -25,9 +25,9 @@ internal final class DARegistrationViewController: UIViewController {
     private let localizationParameters: LocalizationParameters?
 
     internal init(
-        context: AdyenContext,
         style: DelegatedAuthenticationComponentStyle,
         localizationParameters: LocalizationParameters?,
+        logoProvider: LogoURLProvider,
         cardNumber: String?,
         cardType: CardType?,
         biometricName: String,
@@ -39,9 +39,9 @@ internal final class DARegistrationViewController: UIViewController {
         self.cardNumber = cardNumber
         self.cardType = cardType
         self.enableCheckoutHandler = enableCheckoutHandler
-        self.context = context
         self.biometricName = biometricName
         self.notNowHandler = notNowHandler
+        self.cardLogoURL = cardType.map(\.rawValue).map { logoProvider.logoURL(withName: $0) }
         super.init(nibName: nil, bundle: Bundle(for: DARegistrationViewController.self))
         registrationView.delegate = self
     }
@@ -74,11 +74,12 @@ internal final class DARegistrationViewController: UIViewController {
         registrationView.thirdInfoImage.image = UIImage(systemName: "trash")?.withRenderingMode(.alwaysTemplate)
         registrationView.thirdInfoLabel.text = localizedString(.threeds2DARegistrationThirdInfo, localizationParameters)
         
-        if let cardNumber, let cardType {
+        if let cardNumber, let cardLogoURL {
             registrationView.cardNumberLabel.text = cardNumber
-            let cardTypeURL = LogoURLProvider.logoURL(withName: cardType.rawValue, environment: context.apiContext.environment)
-            imageLoader.load(url: cardTypeURL) { [weak self] image in
-                guard let self else { return }
+            self.registrationView.cardImage.isHidden = true
+            imageLoader.load(url: cardLogoURL) { [weak self] image in
+                guard let self, let image else { return }
+                self.registrationView.cardImage.isHidden = false
                 self.registrationView.cardImage.image = image
             }
         } else {
