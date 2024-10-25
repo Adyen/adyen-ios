@@ -62,10 +62,6 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
         addSubviews()
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     // MARK: - Public
 
     @discardableResult
