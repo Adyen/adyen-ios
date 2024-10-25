@@ -120,7 +120,6 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
             range: range,
             replacementString: string,
             in: text,
-            editingDirection: editingDirection
             isDeletingSingleCharacter: isDeletingSingleCharacter
         )
         
