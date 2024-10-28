@@ -6,6 +6,8 @@
 
 internal typealias VoidHandler = () -> Void
 
+// swiftlint:disable file_length
+
 #if canImport(AdyenAuthentication)
     @_spi(AdyenInternal) import Adyen
     import Adyen3DS2
@@ -15,6 +17,7 @@ internal typealias VoidHandler = () -> Void
     
     /// Handles the 3D Secure 2 fingerprint and challenge actions separately + Delegated Authentication.
     @available(iOS 16.0, *)
+    // swiftlint:disable:next type_body_length
     internal class ThreeDS2PlusDACoreActionHandler: ThreeDS2CoreActionHandler {
         
         internal var delegatedAuthenticationState: DelegatedAuthenticationState = .init()
@@ -324,7 +327,8 @@ internal typealias VoidHandler = () -> Void
                 switch result {
                 case .failure:
                     // If there is an error then we assume that the device is not registered and we try registration.
-                    // Improvement: we could alternatively check the individual errors from AuthenticationSDK and based on which decide if we would like to call out if it is registered or not.
+                    // Improvement: we could alternatively check the individual errors from AuthenticationSDK
+                    // and based on which decide if we would like to call out if it is registered or not.
                     handler(false)
                 case let .success(isRegistered):
                     handler(isRegistered)
@@ -502,3 +506,5 @@ internal typealias VoidHandler = () -> Void
     }
 
 #endif
+
+// swiftlint:enable file_length

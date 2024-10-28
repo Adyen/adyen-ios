@@ -75,6 +75,7 @@ class CardExpiryDateFormatterTests: XCTestCase {
         XCTAssertEqual(sut.sanitizedValue(for: "09 / "), "09")
         XCTAssertEqual(sut.sanitizedValue(for: "10 / 1"), "101")
         XCTAssertEqual(sut.sanitizedValue(for: "09 / 21"), "0921")
+        XCTAssertEqual(sut.sanitizedValue(for: "09 / 213"), "0921")
     }
     
     func testNonDecimalDigitSanitizing() {
