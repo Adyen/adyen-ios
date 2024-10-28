@@ -6,8 +6,8 @@
 
 import Foundation
 
-internal extension JSONEncoder {
-    static func encodeWithSortedKeys(_ encodable: Encodable) throws -> Data {
+extension JSONEncoder {
+    internal static func encodeWithSortedKeys(_ encodable: Encodable) throws -> Data {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
         encoder.outputFormatting = .sortedKeys

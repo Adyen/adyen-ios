@@ -105,7 +105,7 @@ private extension CardComponent.AddressFormType {
     
     var description: String {
         switch self {
-        case let .lookup(provider):
+        case .lookup:
             "lookup"
         case .full:
             "full"

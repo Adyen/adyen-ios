@@ -29,6 +29,7 @@ private struct PaymentMethodField: Decodable {
     }
 }
 
+// swiftlint:disable file_length
 internal enum AnyPaymentMethodDecoder {
     
     private static var decoders: [PaymentMethodType: PaymentMethodDecoder] = [
@@ -514,3 +515,5 @@ private struct TwintPaymentMethodDecoder: PaymentMethodDecoder {
         return nil
     }
 }
+
+// swiftlint:enable file_length
