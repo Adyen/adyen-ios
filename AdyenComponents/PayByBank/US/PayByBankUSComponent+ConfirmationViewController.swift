@@ -11,6 +11,11 @@ extension PayByBankUSComponent {
     
     internal class ConfirmationViewController: UIViewController {
         
+        private enum Constants {
+            static let topPadding: CGFloat = 16
+            static let bottomPadding: CGFloat = 8
+        }
+        
         private let model: Model
         
         internal lazy var headerImageView: UIImageView = {
@@ -90,7 +95,15 @@ extension PayByBankUSComponent {
             contentButtonStack.alignment = .fill
             
             view.addSubview(contentButtonStack)
-            contentButtonStack.adyen.anchor(inside: view.layoutMarginsGuide, with: .init(top: 16, left: 0, bottom: 8, right: 0))
+            contentButtonStack.adyen.anchor(
+                inside: view.layoutMarginsGuide,
+                with: .init(
+                    top: Constants.topPadding,
+                    left: 0,
+                    bottom: Constants.bottomPadding,
+                    right: 0
+                )
+            )
             
             model.loadHeaderImage(for: headerImageView)
             
