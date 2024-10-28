@@ -9,6 +9,7 @@ import Foundation
 /// Describes a payment method display information.
 public struct DisplayInformation: Equatable {
 
+    @_spi(AdyenInternal)
     public enum TrailingInfoType: Equatable {
         case text(String)
         case logos(named: [String], trailingText: String?)
@@ -56,7 +57,6 @@ public struct DisplayInformation: Equatable {
     /// - Parameter footnoteText: The footnote text if any.
     /// - Parameter accessibilityLabel: An optional custom `accessibilityLabel` to use.
     /// Set this if the title / subtitle might not be sufficient enough to provide a good accessibility
-    @available(*, deprecated, renamed: "init(title:subtitle:logoName:trailingInfo:footnoteText:accessibilityLabel:)")
     public init(
         title: String,
         subtitle: String?,
@@ -75,6 +75,7 @@ public struct DisplayInformation: Equatable {
         )
     }
     
+    @_spi(AdyenInternal)
     public init(
         title: String,
         subtitle: String?,

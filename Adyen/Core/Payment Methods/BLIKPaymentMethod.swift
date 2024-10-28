@@ -21,7 +21,7 @@ public struct BLIKPaymentMethod: PaymentMethod {
     }
     
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue, trailingInfo: nil)
+        DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue)
     }
 
     private enum CodingKeys: String, CodingKey {

@@ -36,7 +36,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
     }
     
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: "card", trailingInfo: nil)
+        DisplayInformation(title: name, subtitle: nil, logoName: "card")
     }
     
     internal init(type: PaymentMethodType, name: String, fundingSource: CardFundingSource, brands: [CardType]) {
@@ -85,7 +85,6 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
             title: String.Adyen.securedString + lastFour,
             subtitle: localizedExpiryDate,
             logoName: brand.rawValue,
-            trailingInfo: nil,
             accessibilityLabel: accessibilityLabel
         )
     }

@@ -29,8 +29,7 @@ public struct StoredTwintPaymentMethod: StoredPaymentMethod {
         DisplayInformation(
             title: name,
             subtitle: nil,
-            logoName: type.rawValue,
-            trailingInfo: nil
+            logoName: type.rawValue
         )
     }
 

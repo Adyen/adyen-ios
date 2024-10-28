@@ -22,7 +22,7 @@ public struct ACHDirectDebitPaymentMethod: PaymentMethod {
     
     @_spi(AdyenInternal)
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue, trailingInfo: nil)
+        DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue)
     }
 
     // MARK: - Private

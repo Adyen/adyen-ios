@@ -85,7 +85,11 @@ public class ListItem: FormItem {
         self.trailingInfo = trailingInfo
         self.style = style
         self.identifier = identifier
-        self.accessibilityLabel = accessibilityLabel ?? [title, subtitle, trailingInfo?.accessibilityLabel].compactMap { $0 }.joined(separator: ", ")
+        self.accessibilityLabel = accessibilityLabel ?? [
+            title,
+            subtitle,
+            trailingInfo?.accessibilityLabel
+        ].compactMap { $0 }.joined(separator: ", ")
         self.selectionHandler = selectionHandler
     }
     

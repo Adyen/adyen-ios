@@ -9,9 +9,27 @@ import UIKit
 
 internal class SupportedPaymentMethodLogosView: UIView {
     
+    struct Style: ViewStyle {
+        var backgroundColor: UIColor = .clear
+        
+        var images: ImageStyle = .init(
+            borderColor: UIColor.Adyen.componentSeparator,
+            borderWidth: 1.0 / UIScreen.main.nativeScale,
+            cornerRadius: 3.0,
+            clipsToBounds: true,
+            contentMode: .scaleAspectFit
+        )
+        
+        var trailingText: TextStyle = .init(
+            font: .preferredFont(forTextStyle: .callout),
+            color: UIColor.Adyen.componentSecondaryLabel
+        )
+    }
+    
     internal let imageSize: CGSize
     internal let imageUrls: [URL]
     internal let trailingText: String?
+    internal let style: Style
     
     internal var content: UIView? {
         willSet {
@@ -29,11 +47,13 @@ internal class SupportedPaymentMethodLogosView: UIView {
     internal init(
         imageSize: CGSize = .init(width: 24, height: 16),
         imageUrls: [URL],
-        trailingText: String?
+        trailingText: String?,
+        style: Style = .init()
     ) {
         self.imageSize = imageSize
         self.imageUrls = imageUrls
         self.trailingText = trailingText
+        self.style = style
         super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
         
@@ -53,17 +73,11 @@ internal class SupportedPaymentMethodLogosView: UIView {
     private func updateContent() {
         guard window != nil else { return }
         
-        let imageStyle = ImageStyle(
-            borderColor: UIColor.Adyen.componentSeparator,
-            borderWidth: 1.0 / UIScreen.main.nativeScale,
-            cornerRadius: 3.0,
-            clipsToBounds: true,
-            contentMode: .scaleAspectFit
-        )
+        backgroundColor = style.backgroundColor
         
         let imageViews = imageUrls.map { url in
             let imageView = UIImageView()
-            imageView.adyen.apply(imageStyle)
+            imageView.adyen.apply(style.images)
             imageView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 imageView.widthAnchor.constraint(equalToConstant: imageSize.width),
@@ -77,8 +91,7 @@ internal class SupportedPaymentMethodLogosView: UIView {
         label.text = trailingText
         label.isHidden = (trailingText ?? "").isEmpty
         label.setContentHuggingPriority(.required, for: .horizontal)
-        label.font = .preferredFont(forTextStyle: .callout)
-        label.textColor = UIColor.Adyen.componentSecondaryLabel
+        label.adyen.apply(style.trailingText)
         
         let stackView = UIStackView(arrangedSubviews: imageViews + [label])
         stackView.spacing = 6
