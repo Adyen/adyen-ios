@@ -11,7 +11,7 @@ import XCTest
 class AnalyticsEventTests: XCTestCase {
 
     var apiClient: APIClientMock!
-    var sut: AnalyticsProviderProtocol!
+    var sut: AnyAnalyticsProvider!
 
     override func setUpWithError() throws {
         try super.setUpWithError()

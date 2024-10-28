@@ -7,7 +7,7 @@
 import Foundation
 @_spi(AdyenInternal) @testable import Adyen
 
-class AnalyticsProviderMock: AnalyticsProviderProtocol {
+class AnalyticsProviderMock: AnyAnalyticsProvider {
     
     var checkoutAttemptId: String?
 
