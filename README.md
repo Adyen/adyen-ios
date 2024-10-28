@@ -27,11 +27,11 @@ You can integrate with Adyen iOS in two ways:
 
 ## SDK lifecycle
 
-| Major version | State      | Deprecated   | End-of-life  |
-|---------------|------------|--------------|--------------|
-| 5.x.x         | Active     | ---          | ---          |
-| 4.x.x         | Inactive   | TBA          | TBA          |
-| 3.x.x         | Deprecated | October 2024 | October 2025 |
+| Major version | State      | Deprecated    | End-of-life   |
+|---------------|------------|---------------|---------------|
+| 5.x.x         | Active     | ---           | ---           |
+| 4.x.x         | Inactive   | TBA           | TBA           |
+| 3.x.x         | Deprecated | November 2021 | November 2022 |
 
 
 ## Installation
