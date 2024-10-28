@@ -473,6 +473,14 @@ public struct LocalizationKey {
     /// Last 4 digits
     public static let accessibilityLastFourDigits = LocalizationKey(key: "adyen.accessibility.lastFourDigits")
     
+    public static let payByBankConfirmationSheetTitle = LocalizationKey(key: "adyen.payByBank.confirmationSheet.title")
+    
+    public static let payByBankConfirmationSheetSubtitle = LocalizationKey(key: "adyen.payByBank.confirmationSheet.subtitle")
+    
+    public static let payByBankConfirmationSheetMessage = LocalizationKey(key: "adyen.payByBank.confirmationSheet.message")
+    
+    public static let payByBankConfirmationSheetButtonTitle = LocalizationKey(key: "adyen.payByBank.confirmationSheet.buttonTitle")
+    
     internal let key: String
     
     /// :nodoc:

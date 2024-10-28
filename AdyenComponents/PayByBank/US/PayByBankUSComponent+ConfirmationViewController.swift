@@ -164,19 +164,14 @@ extension PayByBankUSComponent.ConfirmationViewController {
         internal init(
             headerImageUrl: URL,
             style: PayByBankUSComponent.Style,
+            localizationParameters: LocalizationParameters?,
             continueHandler: @escaping () -> Void
         ) {
-            let message: [String] = [
-                "By connecting your bank account you are authorizing debits",
-                "to your account for any amount owed for use of our services",
-                "and/or purchase of our products, until this authorization is revoked."
-            ]
-            
             self.headerImageUrl = headerImageUrl
-            self.title = "Pay by Bank"
-            self.subtitle = "Use Pay by Bank to pay instantly from any bank account."
-            self.message = message.joined(separator: " ")
-            self.submitTitle = "Continue to Pay by Bank"
+            self.title = localizedString(.payByBankConfirmationSheetTitle, localizationParameters)
+            self.subtitle = localizedString(.payByBankConfirmationSheetSubtitle, localizationParameters)
+            self.message = localizedString(.payByBankConfirmationSheetMessage, localizationParameters)
+            self.submitTitle = localizedString(.payByBankConfirmationSheetButtonTitle, localizationParameters)
             self.style = style
             self.continueHandler = continueHandler
         }

@@ -5,8 +5,8 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import UIKit
 import Foundation
+import UIKit
 
 /// A component that handles a Twint payment.
 public final class PayByBankUSComponent: PaymentComponent, PresentableComponent {
@@ -51,6 +51,7 @@ public final class PayByBankUSComponent: PaymentComponent, PresentableComponent 
         return .init(model: .init(
             headerImageUrl: headerImageUrl,
             style: configuration.style,
+            localizationParameters: configuration.localizationParameters,
             continueHandler: { [weak self] in
                 self?.initiatePayment()
             }
