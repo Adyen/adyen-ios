@@ -66,7 +66,6 @@ public struct StoredACHDirectDebitPaymentMethod: StoredPaymentMethod {
             title: String.Adyen.securedString + bankAccountLastFour,
             subtitle: localizedString(.achBankAccountTitle, parameters),
             logoName: type.rawValue,
-            trailingInfo: nil,
             accessibilityLabel: accessibilityLabel
         )
     }

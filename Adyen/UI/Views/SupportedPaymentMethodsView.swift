@@ -7,29 +7,29 @@
 import AdyenNetworking
 import UIKit
 
-internal class SupportedPaymentMethodLogosView: UIView {
+public struct SupportedPaymentMethodLogosViewStyle: ViewStyle {
+    public var backgroundColor: UIColor = .clear
     
-    struct Style: ViewStyle {
-        var backgroundColor: UIColor = .clear
-        
-        var images: ImageStyle = .init(
-            borderColor: UIColor.Adyen.componentSeparator,
-            borderWidth: 1.0 / UIScreen.main.nativeScale,
-            cornerRadius: 3.0,
-            clipsToBounds: true,
-            contentMode: .scaleAspectFit
-        )
-        
-        var trailingText: TextStyle = .init(
-            font: .preferredFont(forTextStyle: .callout),
-            color: UIColor.Adyen.componentSecondaryLabel
-        )
-    }
+    public var images: ImageStyle = .init(
+        borderColor: UIColor.Adyen.componentSeparator,
+        borderWidth: 1.0 / UIScreen.main.nativeScale,
+        cornerRadius: 3.0,
+        clipsToBounds: true,
+        contentMode: .scaleAspectFit
+    )
+    
+    public var trailingText: TextStyle = .init(
+        font: .preferredFont(forTextStyle: .callout),
+        color: UIColor.Adyen.componentSecondaryLabel
+    )
+}
+
+internal class SupportedPaymentMethodLogosView: UIView {
     
     internal let imageSize: CGSize
     internal let imageUrls: [URL]
     internal let trailingText: String?
-    internal let style: Style
+    internal let style: SupportedPaymentMethodLogosViewStyle
     
     internal var content: UIView? {
         willSet {
@@ -48,7 +48,7 @@ internal class SupportedPaymentMethodLogosView: UIView {
         imageSize: CGSize = .init(width: 24, height: 16),
         imageUrls: [URL],
         trailingText: String?,
-        style: Style = .init()
+        style: SupportedPaymentMethodLogosViewStyle = .init()
     ) {
         self.imageSize = imageSize
         self.imageUrls = imageUrls
