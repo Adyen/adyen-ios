@@ -60,9 +60,12 @@ internal class SupportedPaymentMethodLogosView: UIView {
         self.setContentHuggingPriority(.required, for: .horizontal)
     }
     
-    override internal func didMoveToWindow() {
-        super.didMoveToWindow()
-        updateContent()
+    override internal func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+        
+        if newSuperview != nil {
+            updateContent()
+        }
     }
     
     @available(*, unavailable)
@@ -71,8 +74,6 @@ internal class SupportedPaymentMethodLogosView: UIView {
     }
     
     private func updateContent() {
-        guard window != nil else { return }
-        
         backgroundColor = style.backgroundColor
         
         let imageViews = imageUrls.map { url in

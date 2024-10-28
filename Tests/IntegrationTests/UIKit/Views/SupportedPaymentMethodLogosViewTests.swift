@@ -26,8 +26,8 @@ class SupportedPaymentMethodLogosViewTests: XCTestCase {
         XCTAssertEqual(supportedLogosView.subviews.count, 0)
         XCTAssertNil(supportedLogosView.content)
         
-        let viewController = ADYViewController(view: supportedLogosView)
-        setupRootViewController(viewController) // Providing a window
+        let view = UIView(frame: .zero)
+        view.addSubview(supportedLogosView)
         
         XCTAssertEqual(supportedLogosView.subviews.count, 1)
         XCTAssertTrue(supportedLogosView.subviews.first === supportedLogosView.content)
