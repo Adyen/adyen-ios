@@ -41,7 +41,7 @@ Adyen iOS are available through either [CocoaPods](http://cocoapods.org), [Carth
 ### Minimum Requirements
 
 - iOS 12.0
-- Xcode 14.0
+- Xcode 15.0
 - Swift 5.7
 
 ### CocoaPods
