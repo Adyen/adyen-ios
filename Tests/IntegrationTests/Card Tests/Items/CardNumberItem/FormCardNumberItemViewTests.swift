@@ -124,28 +124,42 @@ class FormCardNumberItemViewTests: XCTestCase {
     
     func test_notifyDelegateOfMaxLengthIfNeeded() {
         
+        let panLength = 5
+        
         let cardNumberValidator = CardNumberValidator(
             isLuhnCheckEnabled: true,
             isEnteredBrandSupported: true,
-            panLength: 5
+            panLength: panLength
         )
 
         let sut = setupSut(validator: cardNumberValidator)
         
-        let expectation = expectation(description: "Handle did reach maximum length was called once")
-        
-        let delegate = FormTextItemViewDelegateMock<FormCardNumberItem, FormCardNumberItemView>()
-        delegate.handleDidReachMaximumLength = { itemView in
-            expectation.fulfill()
+        func setupDelegateExpectation() -> (delegate: FormTextItemViewDelegate, expectation: XCTestExpectation) {
+            let expectation = expectation(description: "Handle did reach maximum length was called once")
+            let delegate = FormTextItemViewDelegateMock<FormCardNumberItem, FormCardNumberItemView>()
+            delegate.handleDidReachMaximumLength = { itemView in
+                XCTAssertEqual(itemView.textField.text?.count, panLength)
+                expectation.fulfill()
+            }
+            sut.delegate = delegate
+            return (delegate, expectation)
         }
-        sut.delegate = delegate
         
+        let perCharacterSetup = setupDelegateExpectation()
+        
+        // Testing "typing" text
         "5555341244".forEach { character in
             sut.textField.text = sut.item.value + String(character)
             sut.textDidChange(textField: sut.textField)
         }
         
-        wait(for: [expectation], timeout: 0.1)
+        let pasteSetup = setupDelegateExpectation()
+        
+        // Testing setting the text with the exact panLength
+        sut.textField.text = (0..<panLength).reduce("") { $0 + "\($1)" }
+        sut.textDidChange(textField: sut.textField)
+        
+        wait(for: [perCharacterSetup.expectation, pasteSetup.expectation], timeout: 0.1)
     }
 }
 
