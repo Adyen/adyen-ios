@@ -89,10 +89,9 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     private func item(for component: PaymentComponent) -> ListItem {
         let displayInformation = component.paymentMethod.displayInformation(using: localizationParameters)
         let isProtected = brandProtectedComponents.contains(component.paymentMethod.type)
-        let imageURL = LogoURLProvider.logoURL(
-            withName: displayInformation.logoName,
-            environment: context.apiContext.environment
-        )
+        let logoUrlProvider = LogoURLProvider(environment: context.apiContext.environment)
+        let imageURL = logoUrlProvider.logoURL(withName: displayInformation.logoName)
+        
         let listItem = ListItem(
             title: displayInformation.title,
             subtitle: displayInformation.subtitle,
@@ -100,7 +99,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
                 url: imageURL,
                 canBeModified: !isProtected
             ),
-            trailingText: displayInformation.disclosureText,
+            trailingInfo: displayInformation.trailingInfo?.forListItem(urlProvider: logoUrlProvider),
             style: style.listItem,
             accessibilityLabel: displayInformation.accessibilityLabel
         )
@@ -214,5 +213,17 @@ private extension [ComponentsSection] {
     mutating func deleteItem(at indexPath: IndexPath) {
         self[indexPath.section].components.remove(at: indexPath.item)
         self = self.filter { $0.components.isEmpty == false }
+    }
+}
+
+private extension DisplayInformation.TrailingInfoType {
+    
+    func forListItem(urlProvider: LogoURLProvider) -> ListItem.TrailingInfoType {
+        switch self {
+        case let .text(string):
+            return .text(string)
+        case let .logos(logoNames, trailingText):
+            return .logos(urls: logoNames.map { urlProvider.logoURL(withName: $0) }, trailingText: trailingText)
+        }
     }
 }

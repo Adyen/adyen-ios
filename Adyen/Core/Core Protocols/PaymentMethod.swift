@@ -59,7 +59,7 @@ public extension PaymentMethod {
                 title: merchantProvidedDisplayInformation.title,
                 subtitle: subtitle,
                 logoName: defaultDisplayInformation.logoName,
-                disclosureText: defaultDisplayInformation.disclosureText,
+                trailingInfo: defaultDisplayInformation.trailingInfo,
                 footnoteText: defaultDisplayInformation.footnoteText
             )
         }
