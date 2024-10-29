@@ -5,18 +5,19 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+@testable @_spi(AdyenInternal) import AdyenCard
 import Foundation
 
-final class FormTextItemViewDelegateMock: FormTextItemViewDelegate {
+final class FormTextItemViewDelegateMock<ItemType: FormTextItem, TextViewType: FormTextItemView<ItemType>>: FormTextItemViewDelegate {
     
-    var handleDidReachMaximumLength: ((_ itemView: FormTextItemView<FormTextInputItem>) -> Void)?
+    var handleDidReachMaximumLength: ((_ itemView: TextViewType) -> Void)?
     func didReachMaximumLength(in itemView: FormTextItemView<some FormTextItem>) {
-        handleDidReachMaximumLength?(itemView as! FormTextItemView<FormTextInputItem>)
+        handleDidReachMaximumLength?(itemView as! TextViewType)
     }
     
-    var handleDidSelectReturnKey: ((_ itemView: FormTextItemView<FormTextInputItem>) -> Void)?
+    var handleDidSelectReturnKey: ((_ itemView: TextViewType) -> Void)?
     func didSelectReturnKey(in itemView: FormTextItemView<some FormTextItem>) {
-        handleDidSelectReturnKey?(itemView as! FormTextItemView<FormTextInputItem>)
+        handleDidSelectReturnKey?(itemView as! TextViewType)
     }
     
 }

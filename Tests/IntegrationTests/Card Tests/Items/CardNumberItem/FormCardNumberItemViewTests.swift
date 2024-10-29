@@ -10,12 +10,6 @@ import XCTest
 
 class FormCardNumberItemViewTests: XCTestCase {
     
-    var item: FormCardNumberItem!
-    var sut: FormCardNumberItemView!
-    var validator: ValidatorMock!
-    
-    private static let url = URL(string: "https://google.com")!
-    
     override func run() {
         AdyenDependencyValues.runTestWithValues {
             $0.imageLoader = ImageLoaderMock()
@@ -24,25 +18,8 @@ class FormCardNumberItemViewTests: XCTestCase {
         }
     }
     
-    override func setUp() {
-        item = FormCardNumberItem(cardTypeLogos: [
-            .init(url: Self.url, type: .visa),
-            .init(url: Self.url, type: .masterCard)
-        ])
-        validator = ValidatorMock()
-        
-        item.validator = validator
-        sut = FormCardNumberItemView(item: item)
-        
-    }
-    
-    override func tearDown() {
-        item = nil
-        sut = nil
-        validator = nil
-    }
-    
     func testCustomAccessoryViewWhenValueIsEmpty() {
+        let sut = setupSut()
         sut.isEditing = true
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
@@ -52,12 +29,15 @@ class FormCardNumberItemViewTests: XCTestCase {
     }
     
     func testValidationAccessoryIsInvalidWhenValueIsInvalid() {
+        let validator = ValidatorMock()
+        
         let validationExpectation = XCTestExpectation(description: "Expect validator.isValid() to be called.")
         validator.handleIsValid = { _ in
             validationExpectation.fulfill()
             return false
         }
         
+        let sut = setupSut(validator: validator)
         sut.isEditing = true
         sut.textField.text = "123456"
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
@@ -67,12 +47,15 @@ class FormCardNumberItemViewTests: XCTestCase {
     }
     
     func testCustomAccessoryViewWhenValueIsValid() {
+        let validator = ValidatorMock()
+        
         let validationExpectation = XCTestExpectation(description: "Expect validator.isValid() to be called.")
         validator.handleIsValid = { _ in
             validationExpectation.fulfill()
             return true
         }
         
+        let sut = setupSut(validator: validator)
         sut.isEditing = true
         sut.textField.text = "5454545454545454"
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
@@ -90,8 +73,11 @@ class FormCardNumberItemViewTests: XCTestCase {
             isLuhnCheckEnabled: true,
             isEnteredBrandSupported: true
         )
-        item.formatter = cardNumberFormatter
-        item.validator = cardNumberValidator
+        
+        let sut = setupSut(
+            validator: cardNumberValidator,
+            formatter: cardNumberFormatter
+        )
         
         XCTAssertEqual(sut.textField.allowsEditingActions, false)
 
@@ -117,8 +103,11 @@ class FormCardNumberItemViewTests: XCTestCase {
             isLuhnCheckEnabled: true,
             isEnteredBrandSupported: true
         )
-        item.formatter = cardNumberFormatter
-        item.validator = cardNumberValidator
+        
+        let sut = setupSut(
+            validator: cardNumberValidator,
+            formatter: cardNumberFormatter
+        )
 
         // When
         sut.textField.text = ""
@@ -130,8 +119,50 @@ class FormCardNumberItemViewTests: XCTestCase {
 
         let expectedItemFormattedValue = "5555 3412 4444 1115"
         XCTAssertEqual(expectedItemFormattedValue, sut.item.formattedValue)
+        XCTAssertEqual(expectedItemFormattedValue, sut.textField.text)
+    }
+    
+    func test_notifyDelegateOfMaxLengthIfNeeded() {
+        
+        let cardNumberValidator = CardNumberValidator(
+            isLuhnCheckEnabled: true,
+            isEnteredBrandSupported: true,
+            panLength: 5
+        )
 
-        let expectedTextFieldText = sut.item.formattedValue
-        XCTAssertEqual(expectedTextFieldText, sut.textField.text)
+        let sut = setupSut(validator: cardNumberValidator)
+        
+        let expectation = expectation(description: "Handle did reach maximum length was called once")
+        
+        let delegate = FormTextItemViewDelegateMock<FormCardNumberItem, FormCardNumberItemView>()
+        delegate.handleDidReachMaximumLength = { itemView in
+            expectation.fulfill()
+        }
+        sut.delegate = delegate
+        
+        "5555341244".forEach { character in
+            sut.textField.text = sut.item.value + String(character)
+            sut.textDidChange(textField: sut.textField)
+        }
+        
+        wait(for: [expectation], timeout: 0.1)
+    }
+}
+
+private extension FormCardNumberItemViewTests {
+    
+    private static let url = URL(string: "https://google.com")!
+    
+    func setupSut(
+        validator: Validator = ValidatorMock(),
+        formatter: Adyen.Formatter = CardNumberFormatter()
+    ) -> FormCardNumberItemView {
+        let item = FormCardNumberItem(cardTypeLogos: [
+            .init(url: Self.url, type: .visa),
+            .init(url: Self.url, type: .masterCard)
+        ])
+        item.validator = validator
+        item.formatter = formatter
+        return FormCardNumberItemView(item: item)
     }
 }
