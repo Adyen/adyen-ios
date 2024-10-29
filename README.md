@@ -25,6 +25,15 @@ You can integrate with Adyen iOS in two ways:
 * [iOS Components](https://docs.adyen.com/online-payments/build-your-integration/?platform=iOS&integration=Components): one Component per payment method and combine with your own payments flow.
 
 
+## SDK lifecycle
+
+| Major version | State      | Deprecated    | End-of-life   |
+|---------------|------------|---------------|---------------|
+| 5.x.x         | Active     | ---           | ---           |
+| 4.x.x         | Inactive   | TBA           | TBA           |
+| 3.x.x         | Deprecated | November 2021 | November 2022 |
+
+
 ## Installation
 
 Adyen iOS are available through either [CocoaPods](http://cocoapods.org), [Carthage](https://github.com/Carthage/Carthage) or [Swift Package Manager](https://swift.org/package-manager/).
@@ -32,7 +41,7 @@ Adyen iOS are available through either [CocoaPods](http://cocoapods.org), [Carth
 ### Minimum Requirements
 
 - iOS 12.0
-- Xcode 14.0
+- Xcode 15.0
 - Swift 5.7
 
 ### CocoaPods
