@@ -222,6 +222,10 @@ class FormCardNumberItemViewTests: XCTestCase {
         let cardNumberWithExactPanLength = (0..<(panLength + 2)).reduce("") { $0 + "\($1)" }
         sut.textField.text = cardNumberWithExactPanLength
         sut.textDidChange(textField: sut.textField)
+        
+        // We have to hold onto the setup as otherwise
+        // the delegate would be released before the end of the test
+        _ = setup
     }
 }
 
