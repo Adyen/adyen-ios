@@ -122,7 +122,7 @@ class FormCardNumberItemViewTests: XCTestCase {
         XCTAssertEqual(expectedItemFormattedValue, sut.textField.text)
     }
     
-    func test_notifyDelegateOfMaxLengthIfNeeded() {
+    func test_pasteCardNumberWithExactlyPanLength_shouldCallNotifyDelegateOfMaxLength_Once() {
         
         let panLength = 5
         
@@ -134,38 +134,100 @@ class FormCardNumberItemViewTests: XCTestCase {
 
         let sut = setupSut(validator: cardNumberValidator)
         
-        func setupDelegateExpectation() -> (delegate: FormTextItemViewDelegate, expectation: XCTestExpectation) {
-            let expectation = expectation(description: "Handle did reach maximum length was called once")
-            let delegate = FormTextItemViewDelegateMock<FormCardNumberItem, FormCardNumberItemView>()
-            delegate.handleDidReachMaximumLength = { itemView in
-                XCTAssertEqual(itemView.textField.text?.count, panLength)
-                expectation.fulfill()
-            }
-            sut.delegate = delegate
-            return (delegate, expectation)
-        }
+        let setup = setupSingleCallDidReachMaximumLengthExpectation(
+            for: sut,
+            panLength: panLength
+        )
         
-        let perCharacterSetup = setupDelegateExpectation()
+        // Testing pasting text that's exactly the panLength
+        let cardNumberWithExactPanLength = (0..<panLength).reduce("") { $0 + "\($1)" }
+        sut.textField.text = cardNumberWithExactPanLength
+        sut.textDidChange(textField: sut.textField)
+        
+        wait(for: [setup.expectation], timeout: 0.1)
+    }
+    
+    func test_enterCardNumberLongerThanPanLength_shouldCallNotifyDelegateOfMaxLength_Once() {
+        
+        let panLength = 5
+        
+        let cardNumberValidator = CardNumberValidator(
+            isLuhnCheckEnabled: true,
+            isEnteredBrandSupported: true,
+            panLength: panLength
+        )
+
+        let sut = setupSut(validator: cardNumberValidator)
+        
+        let setup = setupSingleCallDidReachMaximumLengthExpectation(
+            for: sut,
+            panLength: panLength
+        )
         
         // Testing "typing" text
-        "5555341244".forEach { character in
+        let cardNumberLongerThanPanLength = "5555341244"
+        cardNumberLongerThanPanLength.forEach { character in
             sut.textField.text = sut.item.value + String(character)
             sut.textDidChange(textField: sut.textField)
         }
         
-        let pasteSetup = setupDelegateExpectation()
+        wait(for: [setup.expectation], timeout: 0.1)
+    }
+    
+    func test_deletingCaractersStartingFromLongerThanPanLength_shouldCallNotifyDelegateOfMaxLength_Once() {
         
-        // Testing setting the text with the exact panLength
-        sut.textField.text = (0..<panLength).reduce("") { $0 + "\($1)" }
+        let panLength = 5
+        
+        let cardNumberValidator = CardNumberValidator(
+            isLuhnCheckEnabled: true,
+            isEnteredBrandSupported: true,
+            panLength: panLength
+        )
+
+        let sut = setupSut(validator: cardNumberValidator)
+        
+        let setup = setupSingleCallDidReachMaximumLengthExpectation(
+            for: sut,
+            panLength: panLength
+        )
+        
+        // Testing "deleting" text character by character
+        let cardNumberLongerThanPanLength = "5555341244"
+        sut.item.value = cardNumberLongerThanPanLength
+        cardNumberLongerThanPanLength.forEach { character in
+            sut.textField.text = String(sut.item.value.prefix(max(0, sut.item.value.count - 1)))
+            sut.textDidChange(textField: sut.textField)
+        }
+        
+        wait(for: [setup.expectation], timeout: 0.1)
+    }
+    
+    func test_pasteCardNumberLongerThanPanLength_shouldCallNotifyDelegateOfMaxLength_Never() {
+        
+        let panLength = 5
+        
+        let cardNumberValidator = CardNumberValidator(
+            isLuhnCheckEnabled: true,
+            isEnteredBrandSupported: true,
+            panLength: panLength
+        )
+
+        let sut = setupSut(validator: cardNumberValidator)
+        
+        let setup = setupNeverCallDidReachMaximumLengthExpectation(
+            for: sut
+        )
+        
+        // Testing pasting text that's longer than the panLength
+        let cardNumberWithExactPanLength = (0..<(panLength + 2)).reduce("") { $0 + "\($1)" }
+        sut.textField.text = cardNumberWithExactPanLength
         sut.textDidChange(textField: sut.textField)
-        
-        wait(for: [perCharacterSetup.expectation, pasteSetup.expectation], timeout: 0.1)
     }
 }
 
 private extension FormCardNumberItemViewTests {
     
-    private static let url = URL(string: "https://google.com")!
+    static let url = URL(string: "https://google.com")!
     
     func setupSut(
         validator: Validator = ValidatorMock(),
@@ -178,5 +240,32 @@ private extension FormCardNumberItemViewTests {
         item.validator = validator
         item.formatter = formatter
         return FormCardNumberItemView(item: item)
+    }
+    
+    func setupSingleCallDidReachMaximumLengthExpectation(
+        for sut: FormCardNumberItemView,
+        panLength: Int
+    ) -> (delegate: FormTextItemViewDelegate, expectation: XCTestExpectation) {
+        
+        let expectation = expectation(description: "Handle did reach maximum length was called once")
+        let delegate = FormTextItemViewDelegateMock<FormCardNumberItem, FormCardNumberItemView>()
+        delegate.handleDidReachMaximumLength = { itemView in
+            XCTAssertEqual(itemView.textField.text?.count, panLength)
+            expectation.fulfill()
+        }
+        sut.delegate = delegate
+        return (delegate, expectation)
+    }
+    
+    func setupNeverCallDidReachMaximumLengthExpectation(
+        for sut: FormCardNumberItemView
+    ) -> FormTextItemViewDelegate {
+        
+        let delegate = FormTextItemViewDelegateMock<FormCardNumberItem, FormCardNumberItemView>()
+        delegate.handleDidReachMaximumLength = { itemView in
+            XCTFail("Should not have called `handleDidReachMaximumLength`")
+        }
+        sut.delegate = delegate
+        return delegate
     }
 }

@@ -250,6 +250,7 @@
 		81C5D0CE2AC4170A002E918F /* IssuerListComponentExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C5D0CC2AC4170A002E918F /* IssuerListComponentExample.swift */; };
 		81C5D0D02AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C5D0CF2AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift */; };
 		81C5D0D12AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C5D0CF2AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift */; };
+		81D7EC902CD24147005159F6 /* FormViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7EC8F2CD24143005159F6 /* FormViewControllerTests.swift */; };
 		81DA70812BDA5F66006CE5D5 /* PaymentMethods+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DA70802BDA5F66006CE5D5 /* PaymentMethods+Equatable.swift */; };
 		81DA70872BDA6075006CE5D5 /* Twint+Spy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DA70822BDA6075006CE5D5 /* Twint+Spy.swift */; };
 		81DA70882BDA6075006CE5D5 /* TwintSDKActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DA70832BDA6075006CE5D5 /* TwintSDKActionTests.swift */; };
@@ -1676,6 +1677,7 @@
 		81C4006F2A4347FD007EC51C /* FormErrorItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormErrorItemTests.swift; sourceTree = "<group>"; };
 		81C5D0CC2AC4170A002E918F /* IssuerListComponentExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuerListComponentExample.swift; sourceTree = "<group>"; };
 		81C5D0CF2AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuerListComponentAdvancedFlowExample.swift; sourceTree = "<group>"; };
+		81D7EC8F2CD24143005159F6 /* FormViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormViewControllerTests.swift; sourceTree = "<group>"; };
 		81D8E2E82A5C06AC00BC12FD /* KeyboardObserverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardObserverTests.swift; sourceTree = "<group>"; };
 		81DA70802BDA5F66006CE5D5 /* PaymentMethods+Equatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PaymentMethods+Equatable.swift"; sourceTree = "<group>"; };
 		81DA70822BDA6075006CE5D5 /* Twint+Spy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Twint+Spy.swift"; sourceTree = "<group>"; };
@@ -4667,6 +4669,7 @@
 				F919DF9F24EABCC10027976E /* StoredCardComponentTests.swift */,
 				F9EDB799239664B500CFB3C9 /* StoredPaymentMethodComponentTests.swift */,
 				F919DF9824EA64680027976E /* CardPublicKeyProviderTests.swift */,
+				81D7EC8F2CD24143005159F6 /* FormViewControllerTests.swift */,
 			);
 			path = "Card Tests";
 			sourceTree = "<group>";
@@ -7186,6 +7189,7 @@
 				E773EA3A25221C4600119499 /* ThrottlerTests.swift in Sources */,
 				F97842D926C3D55200677458 /* OXXOShareableVoucherViewProviderTests.swift in Sources */,
 				F9838CCC26315E6E00963483 /* PartialPaymentDelegateMock.swift in Sources */,
+				81D7EC902CD24147005159F6 /* FormViewControllerTests.swift in Sources */,
 				A001677B2BD278410099A6AE /* BrazilSocialSecurityNumberValidatorTests.swift in Sources */,
 				C978F5EF2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift in Sources */,
 				F9E4725F28CF1A2100FF9550 /* ThreeDS2PlusDACoreActionHandlerTests.swift in Sources */,
