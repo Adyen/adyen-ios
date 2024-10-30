@@ -229,6 +229,8 @@ class FormCardNumberItemViewTests: XCTestCase {
     }
 }
 
+// MARK: - Helpers
+
 private extension FormCardNumberItemViewTests {
     
     static let url = URL(string: "https://google.com")!
@@ -246,7 +248,8 @@ private extension FormCardNumberItemViewTests {
         return FormCardNumberItemView(item: item)
     }
     
-    func setupSingleCallDidReachMaximumLengthExpectation(
+    /// Sets up an expectation that the `handleDidReachMaximumLength` is called exactly once
+    func makeExpectation_didReachMaximumLength_once(
         for sut: FormCardNumberItemView,
         panLength: Int
     ) -> (delegate: FormTextItemViewDelegate, expectation: XCTestExpectation) {
@@ -261,7 +264,8 @@ private extension FormCardNumberItemViewTests {
         return (delegate, expectation)
     }
     
-    func setupNeverCallDidReachMaximumLengthExpectation(
+    /// Sets up an expectation that the `handleDidReachMaximumLength` is never called
+    func makeExpectation_didReachMaximumLength_never(
         for sut: FormCardNumberItemView
     ) -> FormTextItemViewDelegate {
         
