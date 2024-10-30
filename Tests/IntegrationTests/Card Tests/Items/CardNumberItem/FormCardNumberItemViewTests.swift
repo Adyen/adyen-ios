@@ -134,7 +134,7 @@ class FormCardNumberItemViewTests: XCTestCase {
 
         let sut = setupSut(validator: cardNumberValidator)
         
-        let setup = setupSingleCallDidReachMaximumLengthExpectation(
+        let setup = makeExpectation_didReachMaximumLength_once(
             for: sut,
             panLength: panLength
         )
@@ -159,7 +159,7 @@ class FormCardNumberItemViewTests: XCTestCase {
 
         let sut = setupSut(validator: cardNumberValidator)
         
-        let setup = setupSingleCallDidReachMaximumLengthExpectation(
+        let setup = makeExpectation_didReachMaximumLength_once(
             for: sut,
             panLength: panLength
         )
@@ -186,7 +186,7 @@ class FormCardNumberItemViewTests: XCTestCase {
 
         let sut = setupSut(validator: cardNumberValidator)
         
-        let setup = setupSingleCallDidReachMaximumLengthExpectation(
+        let setup = makeExpectation_didReachMaximumLength_once(
             for: sut,
             panLength: panLength
         )
@@ -214,7 +214,7 @@ class FormCardNumberItemViewTests: XCTestCase {
 
         let sut = setupSut(validator: cardNumberValidator)
         
-        let setup = setupNeverCallDidReachMaximumLengthExpectation(
+        let setup = makeExpectation_didReachMaximumLength_never(
             for: sut
         )
         
