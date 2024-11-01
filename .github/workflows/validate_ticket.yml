@@ -15,9 +15,9 @@ jobs:
       - name: Check ticket reference
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
-          TICKET_REGEX: '<ticket>\s*COIOS-[0-9]+\s*</ticket>'
+          TICKET_REGEX: '<ticket>\s*[A-Z]+-[0-9]+\s*</ticket>'
         run: |
           if ! grep -zqP "$TICKET_REGEX" <<< "$PR_BODY"; then
-            echo "::error::Pull requests must have a ticket number in the pull request body in the format '<ticket>COIOS-XXX</ticket>' where XXX is a numeric ticket number"
+            echo "::error::Pull requests must have a ticket number in the pull request body in the format '<ticket>STRING-XXX</ticket>' where XXX is a numeric ticket number"
             exit 1
           fi
