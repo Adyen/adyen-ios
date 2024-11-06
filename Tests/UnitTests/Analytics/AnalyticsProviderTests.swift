@@ -9,23 +9,22 @@ import XCTest
 @testable import AdyenNetworking
 
 class AnalyticsProviderTests: XCTestCase {
-
-    var eventDataSource = AnalyticsEventDataSource()
     
     func testAnalyticsProviderIsInitializedWithCorrectDefaultConfigurationValues() throws {
         // Given
         let analyticsConfiguration = AnalyticsConfiguration()
         let sut = AnalyticsProvider(
             apiClient: APIClientMock(),
-            configuration: analyticsConfiguration,
-            eventDataSource: eventDataSource
+            context: AnalyticsContext(),
+            eventAnalyticsProvider: nil
         )
 
         // Then
-        XCTAssertTrue(sut.configuration.isEnabled)
+        XCTAssertNil(sut.checkoutAttemptId)
+        XCTAssertNil(sut.eventAnalyticsProvider)
     }
 
-    func testFetchCheckoutAttemptIdWhenAnalyticsIsEnabledShouldTriggerRequest() throws {
+    func testFetchCheckoutAttemptIdShouldTriggerRequest() throws {
         // Given
         let apiClient = APIClientMock()
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
@@ -38,26 +37,6 @@ class AnalyticsProviderTests: XCTestCase {
         // When
         sut.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
         
-        wait(until: sut, at: \.checkoutAttemptId, is: expectedCheckoutAttemptId)
-    }
-
-    func testFetchCheckoutAttemptIdWhenAnalyticsIsDisabledShouldTriggerCheckoutAttemptIdRequest() throws {
-        // Given
-        let apiClient = APIClientMock()
-        
-        let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
-
-        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: expectedCheckoutAttemptId)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
-        apiClient.mockedResults = [checkoutAttemptIdResult]
-
-        let sut = createSUT(
-            analyticsEnabled: false,
-            apiClient: apiClient
-        )
-        
-        // When
-        sut.sendInitialAnalytics(with: .components(type: .affirm), additionalFields: nil)
         wait(until: sut, at: \.checkoutAttemptId, is: expectedCheckoutAttemptId)
     }
 
@@ -78,7 +57,7 @@ class AnalyticsProviderTests: XCTestCase {
         wait(until: sut, at: \.checkoutAttemptId, is: expectedCheckoutAttemptId)
     }
 
-    func testFetchCheckoutAttemptIdWhenAnalyticsIsEnabledGivenFailureShouldCallCompletionWithNilValue() throws {
+    func testFetchCheckoutAttemptIdGivenFailureShouldCallCompletionWithNilValue() throws {
         // Given
         let apiClient = APIClientMock()
 
@@ -93,7 +72,7 @@ class AnalyticsProviderTests: XCTestCase {
         XCTAssertNil(sut.checkoutAttemptId, "The checkoutAttemptId is not nil.")
     }
 
-    func testFetchCheckoutAttemptIdWhenAnalyticsIsEnabledShouldSetCheckoutAttemptIdProperty() throws {
+    func testFetchCheckoutAttemptIdShouldSetCheckoutAttemptIdProperty() throws {
         // Given
         let apiClient = APIClientMock()
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
@@ -128,11 +107,7 @@ class AnalyticsProviderTests: XCTestCase {
             }
         }
         
-        let analyticsProvider = AnalyticsProvider(
-            apiClient: apiClient,
-            configuration: AnalyticsConfiguration(),
-            eventDataSource: eventDataSource
-        )
+        let analyticsProvider = createSUT(apiClient: apiClient)
         
         // When
         
@@ -141,214 +116,34 @@ class AnalyticsProviderTests: XCTestCase {
         wait(for: [analyticsExpectation], timeout: 10)
     }
     
-    func testShouldNotSendEventsWhenNoAttemptId() {
-        let apiClient = APIClientMock()
+    func testFollowUpEventsWhenEnabled() {
+        let eventApiClient = APIClientMock()
         let analyticsResponse = EmptyResponse()
         let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
+        eventApiClient.mockedResults = [analyticsResult]
         
-        apiClient.mockedResults = [analyticsResult]
-        
-        let expectation = expectation(description: "should not be called")
-        expectation.isInverted = true
-        
-        apiClient.onExecute = { _ in
-            expectation.fulfill()
-        }
-        
-        let sut = createSUT(apiClient: apiClient)
-
-        sut.sendEventsIfNeeded()
-        
-        wait(for: [expectation], timeout: 0.1)
-    }
-    
-    func testShouldNotSendEventWhenAttemptIdButNoEvents() {
-        let apiClient = APIClientMock()
-        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
-        
-        let analyticsResponse = EmptyResponse()
-        let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
-        
-        apiClient.mockedResults = [checkoutAttemptIdResult, analyticsResult]
-        
-        let expectation = expectation(description: "should not be called")
-        expectation.isInverted = true
-        
-        apiClient.onExecute = { request in
-            if request is AnalyticsRequest {
-                expectation.fulfill()
-            }
-        }
-        
-        let sut = createSUT(apiClient: apiClient)
-        
-        sut.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
-        wait(for: .milliseconds(100))
-        
-        sut.sendEventsIfNeeded()
-        
-        wait(for: [expectation], timeout: 0.1)
-    }
-    
-    func testEventShouldSendWhenAttemptIdAndEventsExist() {
-        let apiClient = APIClientMock()
-
-        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
-        
-        let analyticsResponse = EmptyResponse()
-        let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
-        
-        apiClient.mockedResults = [checkoutAttemptIdResult, analyticsResult]
-        
-        let sut = createSUT(apiClient: apiClient)
-        
-        sut.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
-        wait(for: .milliseconds(100))
-        
-        let infoEvent = AnalyticsEventInfo(component: "card", type: .rendered)
-        sut.add(info: infoEvent)
-        
-        let shouldSendExpectation = expectation(description: "send event is called")
-        let expectedId = infoEvent.id
-        apiClient.onExecute = { request in
-            if let analyticsRequest = request as? AnalyticsRequest,
-               let capturedId = analyticsRequest.infos.first?.id {
-                XCTAssertEqual(capturedId, expectedId, "Expected event ID does not match the sent event id")
-                shouldSendExpectation.fulfill()
-            }
-        }
-        
-        sut.sendEventsIfNeeded()
-        wait(for: [shouldSendExpectation], timeout: 1)
-    }
-    
-    func testDeinitShouldAttemptToSendEvents() {
-        let apiClient = APIClientMock()
-
-        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
-        
-        let analyticsResponse = EmptyResponse()
-        let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
-        
-        apiClient.mockedResults = [checkoutAttemptIdResult, analyticsResult]
-        
-        var sut: AnalyticsProvider? = AnalyticsProvider(
-            apiClient: apiClient,
-            configuration: AnalyticsConfiguration(),
-            eventDataSource: eventDataSource
+        let eventAnalyticsProvider = EventAnalyticsProvider(
+            apiClient: eventApiClient,
+            context: AnalyticsContext(),
+            eventDataSource: AnalyticsEventDataSource()
+        )
+        let sut = AnalyticsProvider(
+            apiClient: APIClientMock(),
+            context: AnalyticsContext(),
+            eventAnalyticsProvider: eventAnalyticsProvider
         )
         
-        sut?.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
-        wait(for: .milliseconds(100))
-        
-        for _ in 0...2 {
-            sut?.add(info: AnalyticsEventInfo(component: "card", type: .rendered))
-        }
-        
-        let shouldSendExpectation = expectation(description: "send event is called")
-        apiClient.onExecute = { request in
-            if let analyticsRequest = request as? AnalyticsRequest {
-                XCTAssertEqual(analyticsRequest.infos.count, 3)
-                shouldSendExpectation.fulfill()
-            }
-        }
-        
-        sut = nil
-        
-        wait(for: [shouldSendExpectation], timeout: 1)
-    }
-    
-    func testAddingInfoShouldNotTriggerSend() {
-        let apiClient = APIClientMock()
-
-        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
-        
-        let analyticsResponse = EmptyResponse()
-        let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
-        
-        apiClient.mockedResults = [checkoutAttemptIdResult, analyticsResult]
-        
-        let sut = createSUT(apiClient: apiClient)
-        
-        sut.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
-        wait(for: .milliseconds(100))
+        sut.checkoutAttemptId = checkoutAttemptIdMockValue
         
         let networkRequestExpectation = expectation(description: "send event should not be called")
-        networkRequestExpectation.isInverted = true
-        apiClient.onExecute = { request in
+        eventApiClient.onExecute = { request in
             networkRequestExpectation.fulfill()
         }
         
-        let infoEvent = AnalyticsEventInfo(component: "card", type: .rendered)
-        sut.add(info: infoEvent)
-        
-        wait(for: [networkRequestExpectation], timeout: 1)
-    }
-    
-    func testAddingLogEventShouldTriggerSend() {
-        let apiClient = APIClientMock()
-
-        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
-        
-        let analyticsResponse = EmptyResponse()
-        let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
-        
-        apiClient.mockedResults = [checkoutAttemptIdResult, analyticsResult]
-        
-        let sut = createSUT(apiClient: apiClient)
-        
-        sut.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
-        wait(for: .milliseconds(100))
-        
-        let logEvent = AnalyticsEventLog(component: "card", type: .submit, subType: .sdk)
-        
-        let expectation = expectation(description: "send event is called")
-        apiClient.onExecute = { request in
-            if let analyticsRequest = request as? AnalyticsRequest {
-                XCTAssertEqual(analyticsRequest.logs.first?.id, logEvent.id)
-                expectation.fulfill()
-            }
-        }
-        
+        let logEvent = AnalyticsEventLog(component: "threeds", type: .submit)
         sut.add(log: logEvent)
         
-        wait(for: [expectation], timeout: 1)
-    }
-    
-    func testAddingErrorEventShouldTriggerSend() {
-        let apiClient = APIClientMock()
-
-        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
-        
-        let analyticsResponse = EmptyResponse()
-        let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
-        
-        apiClient.mockedResults = [checkoutAttemptIdResult, analyticsResult]
-        
-        let sut = createSUT(apiClient: apiClient)
-        
-        sut.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
-        wait(for: .milliseconds(100))
-        
-        let errorEvent = AnalyticsEventError(component: "card", type: .implementation)
-        
-        let expectation = expectation(description: "send event is called")
-        apiClient.onExecute = { request in
-            if let analyticsRequest = request as? AnalyticsRequest {
-                XCTAssertEqual(analyticsRequest.errors.first?.id, errorEvent.id)
-                expectation.fulfill()
-            }
-        }
-        
-        sut.add(error: errorEvent)
-        
-        wait(for: [expectation], timeout: 1)
+        wait(for: [networkRequestExpectation], timeout: 1)
     }
     
     func eventsShouldNotBeSentWhenDisabled() throws {
@@ -362,10 +157,7 @@ class AnalyticsProviderTests: XCTestCase {
         
         apiClient.mockedResults = [checkoutAttemptIdResult, analyticsResult]
         
-        let sut = createSUT(
-            analyticsEnabled: false,
-            apiClient: apiClient
-        )
+        let sut = createSUT(apiClient: apiClient)
         
         sut.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
         wait(for: .milliseconds(100))
@@ -407,13 +199,10 @@ class AnalyticsProviderTests: XCTestCase {
             }
         }
         
-        var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.context = .init(version: "version", platform: .reactNative)
-        
         let analyticsProvider = AnalyticsProvider(
             apiClient: apiClient,
-            configuration: analyticsConfiguration,
-            eventDataSource: eventDataSource
+            context: .init(version: "version", platform: .reactNative),
+            eventAnalyticsProvider: nil
         )
         
         // When
@@ -468,14 +257,11 @@ class AnalyticsProviderTests: XCTestCase {
         "cb3eef98-978e-4f6f-b299-937a4450be1f1648546838056be73d8f38ee8bcc3a65ec14e41b037a59f255dcd9e83afe8c06bd3e7abcad993"
     }
     
-    private func createSUT(analyticsEnabled: Bool = true, apiClient: APIClientMock) -> AnalyticsProvider {
-        var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isEnabled = analyticsEnabled
-        
+    private func createSUT(apiClient: APIClientMock) -> AnalyticsProvider {
         let sut = AnalyticsProvider(
             apiClient: apiClient,
-            configuration: analyticsConfiguration,
-            eventDataSource: eventDataSource
+            context: AnalyticsContext(),
+            eventAnalyticsProvider: nil
         )
         
         return sut

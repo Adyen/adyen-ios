@@ -11,27 +11,25 @@ internal final class AnalyticsProvider: AnyAnalyticsProvider {
 
     // MARK: - Properties
 
-    internal let configuration: AnalyticsConfiguration
     internal var checkoutAttemptId: String? {
-        get {
-            eventAnalyticsProvider?.checkoutAttemptId
-        }
-        set {
-            eventAnalyticsProvider?.checkoutAttemptId = newValue
+        didSet {
+            eventAnalyticsProvider?.checkoutAttemptId = checkoutAttemptId
         }
     }
+
+    internal var eventAnalyticsProvider: AnyEventAnalyticsProvider?
     
-    private var eventAnalyticsProvider: AnyEventAnalyticsProvider?
     private let uniqueAssetAPIClient: UniqueAssetAPIClient<InitialAnalyticsResponse>
+    private let context: AnalyticsContext
 
     // MARK: - Initializers
 
     internal init(
         apiClient: APIClientProtocol,
-        configuration: AnalyticsConfiguration,
+        context: AnalyticsContext,
         eventAnalyticsProvider: AnyEventAnalyticsProvider?
     ) {
-        self.configuration = configuration
+        self.context = context
         self.eventAnalyticsProvider = eventAnalyticsProvider
         self.uniqueAssetAPIClient = UniqueAssetAPIClient<InitialAnalyticsResponse>(apiClient: apiClient)
     }
@@ -42,7 +40,7 @@ internal final class AnalyticsProvider: AnyAnalyticsProvider {
         let analyticsData = AnalyticsData(
             flavor: flavor,
             additionalFields: additionalFields,
-            context: configuration.context
+            context: context
         )
 
         let initialAnalyticsRequest = InitialAnalyticsRequest(data: analyticsData)

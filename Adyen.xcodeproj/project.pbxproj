@@ -317,6 +317,7 @@
 		A00167752BD164A20099A6AE /* CardKCPValidatorsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00167742BD164A20099A6AE /* CardKCPValidatorsTests.swift */; };
 		A00167792BD274E40099A6AE /* BrazilSocialSecurityNumberValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00167782BD274E40099A6AE /* BrazilSocialSecurityNumberValidator.swift */; };
 		A001677B2BD278410099A6AE /* BrazilSocialSecurityNumberValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A001677A2BD278410099A6AE /* BrazilSocialSecurityNumberValidatorTests.swift */; };
+		A00580A62CD8CBC300294F2E /* EventAnalyticsProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00580A52CD8CBC300294F2E /* EventAnalyticsProviderTests.swift */; };
 		A009837D279859DC007E68C4 /* ACHDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */; };
 		A00F73A32B3DA38A00E9252B /* DisableStoredPaymentMethodRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00F73A22B3DA38A00E9252B /* DisableStoredPaymentMethodRequest.swift */; };
 		A00F73A52B3DB67B00E9252B /* AdyenSession+StoredPaymentMethodsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00F73A42B3DB67B00E9252B /* AdyenSession+StoredPaymentMethodsDelegate.swift */; };
@@ -1708,6 +1709,7 @@
 		A00167742BD164A20099A6AE /* CardKCPValidatorsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardKCPValidatorsTests.swift; sourceTree = "<group>"; };
 		A00167782BD274E40099A6AE /* BrazilSocialSecurityNumberValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberValidator.swift; sourceTree = "<group>"; };
 		A001677A2BD278410099A6AE /* BrazilSocialSecurityNumberValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberValidatorTests.swift; sourceTree = "<group>"; };
+		A00580A52CD8CBC300294F2E /* EventAnalyticsProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAnalyticsProviderTests.swift; sourceTree = "<group>"; };
 		A009837C279859DC007E68C4 /* ACHDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankDetailsEncryptorTests.swift; sourceTree = "<group>"; };
 		A00F73A22B3DA38A00E9252B /* DisableStoredPaymentMethodRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisableStoredPaymentMethodRequest.swift; sourceTree = "<group>"; };
@@ -3508,6 +3510,7 @@
 				C97C16A928059A5A00534419 /* AnalyticsEventTests.swift */,
 				C97C16AB280702B200534419 /* AnalyticsFlavorTests.swift */,
 				A05A9B7D2B8F8DF300E5E178 /* AnalyticsEventDataSourceTests.swift */,
+				A00580A52CD8CBC300294F2E /* EventAnalyticsProviderTests.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -6704,6 +6707,7 @@
 				B6D808042BCD147600F3F5EB /* UILabelHelpersTests.swift in Sources */,
 				B62D48B72BBE8DBE001EF01A /* AnalyticsProviderMock.swift in Sources */,
 				B6D808112BCD147D00F3F5EB /* BankDetailsEncryptorTests.swift in Sources */,
+				A00580A62CD8CBC300294F2E /* EventAnalyticsProviderTests.swift in Sources */,
 				B6D808332BCD1F8900F3F5EB /* LogoGeneratorTests.swift in Sources */,
 				B6D808302BCD1F8900F3F5EB /* DateValidationTests.swift in Sources */,
 				B6D808442BCD2B0600F3F5EB /* JWAA256CBCHS512AlgorithmTests.swift in Sources */,

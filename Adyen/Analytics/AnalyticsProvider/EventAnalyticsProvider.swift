@@ -34,6 +34,7 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
         self.eventDataSource = eventDataSource
         self.context = context
         self.batchInterval = batchInterval
+        startNextTimer()
     }
     
     deinit {

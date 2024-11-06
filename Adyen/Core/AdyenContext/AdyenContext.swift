@@ -69,7 +69,6 @@ public final class AdyenContext: PaymentAware {
         
         var eventAnalyticsProvider: AnyEventAnalyticsProvider?
         
-        
         if analyticsConfiguration.isEnabled {
             let eventDataSource = AnalyticsEventDataSource()
             let syncEventDataSource = ThreadSafeAnalyticsEventDataSource(dataSource: eventDataSource)
@@ -82,7 +81,7 @@ public final class AdyenContext: PaymentAware {
         
         return AnalyticsProvider(
             apiClient: APIClient(apiContext: analyticsApiContext),
-            configuration: analyticsConfiguration,
+            context: analyticsConfiguration.context,
             eventAnalyticsProvider: eventAnalyticsProvider
         )
     }

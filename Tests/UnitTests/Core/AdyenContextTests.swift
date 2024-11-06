@@ -54,6 +54,31 @@ class AdyenContextTests: XCTestCase {
         let context = AdyenContext(apiContext: apiContext, payment: Dummy.payment)
         XCTAssertNil(context.analyticsProvider)
     }
+    
+    func testBothAnalyticsProviderShouldBeCreated() {
+        let context = AdyenContext(
+            apiContext: Dummy.apiContext,
+            payment: Dummy.payment,
+            analyticsConfiguration: AnalyticsConfiguration()
+        )
+        
+        XCTAssertNotNil(context.analyticsProvider)
+        XCTAssertNotNil((context.analyticsProvider as? AnalyticsProvider)?.eventAnalyticsProvider)
+    }
+    
+    func testOnlyAnalyticsProviderShouldBeCreated() {
+        var config = AnalyticsConfiguration()
+        config.isEnabled = false
+        
+        let context = AdyenContext(
+            apiContext: Dummy.apiContext,
+            payment: Dummy.payment,
+            analyticsConfiguration: config
+        )
+        
+        XCTAssertNotNil(context.analyticsProvider)
+        XCTAssertNil((context.analyticsProvider as? AnalyticsProvider)?.eventAnalyticsProvider)
+    }
 }
 
 enum TestEnvironment: AnyAPIEnvironment {
