@@ -46,8 +46,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
 
         bind(item.$placeholder, to: textField, at: \.placeholder)
         observe(item.$formattedValue) { [weak self] newValue in
-            self?.textField.text = newValue
-            self?.updateValidationStatus()
+            self?.handleFormattedValueDidChange(newValue)
         }
         
         updateValidationStatus()
@@ -159,6 +158,11 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     }
     
     // MARK: - Private
+    
+    open func handleFormattedValueDidChange(_ newValue: String) {
+        textField.text = newValue
+        updateValidationStatus()
+    }
     
     @_spi(AdyenInternal)
     @objc open func textDidChange(textField: UITextField) {
@@ -272,7 +276,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     public func notifyDelegateOfMaxLengthIfNeeded() {
         let maximumLength = item.validator?.maximumLength(for: item.value) ?? .max
-        if item.value.count >= maximumLength {
+        if item.value.count == maximumLength {
             delegate?.didReachMaximumLength(in: self)
         }
     }

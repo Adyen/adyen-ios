@@ -58,6 +58,7 @@ public struct PrefilledShopperInformation: ShopperInformation {
     ///   - deliveryAddress: The delivery address of the shopper, optional.
     ///   - socialSecurityNumber: The social security number of the shopper, optional.
     ///   - card: Shopper's card basic information, optional.
+    // swiftlint:disable:next line_length
     @available(*, deprecated, renamed: "init(shopperName:emailAddress:phoneNumber:billingAddress:deliveryAddress:socialSecurityNumber:card:)")
     public init(
         shopperName: ShopperName? = nil,

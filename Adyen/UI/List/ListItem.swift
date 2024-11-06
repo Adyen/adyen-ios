@@ -10,6 +10,18 @@ import Foundation
 @_spi(AdyenInternal)
 public class ListItem: FormItem {
     
+    public enum TrailingInfoType {
+        case text(String)
+        case logos(urls: [URL], trailingText: String?)
+        
+        internal var accessibilityLabel: String? {
+            switch self {
+            case let .text(text): return text
+            case .logos: return nil
+            }
+        }
+    }
+    
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
     public var subitems: [FormItem] = []
@@ -27,7 +39,7 @@ public class ListItem: FormItem {
     public var icon: Icon?
 
     /// The trailing text of the item.
-    public var trailingText: String?
+    public var trailingInfo: TrailingInfoType?
     
     /// The handler to invoke when the item is selected.
     public var selectionHandler: (() -> Void)?
@@ -61,7 +73,7 @@ public class ListItem: FormItem {
         title: String,
         subtitle: String? = nil,
         icon: Icon? = nil,
-        trailingText: String? = nil,
+        trailingInfo: TrailingInfoType? = nil,
         style: ListItemStyle = ListItemStyle(),
         identifier: String? = nil,
         accessibilityLabel: String? = nil,
@@ -70,10 +82,14 @@ public class ListItem: FormItem {
         self.title = title
         self.subtitle = subtitle
         self.icon = icon
-        self.trailingText = trailingText
+        self.trailingInfo = trailingInfo
         self.style = style
         self.identifier = identifier
-        self.accessibilityLabel = accessibilityLabel ?? [title, subtitle, trailingText].compactMap { $0 }.joined(separator: ", ")
+        self.accessibilityLabel = accessibilityLabel ?? [
+            title,
+            subtitle,
+            trailingInfo?.accessibilityLabel
+        ].compactMap { $0 }.joined(separator: ", ")
         self.selectionHandler = selectionHandler
     }
     

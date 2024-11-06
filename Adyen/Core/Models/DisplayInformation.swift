@@ -9,6 +9,19 @@ import Foundation
 /// Describes a payment method display information.
 public struct DisplayInformation: Equatable {
 
+    @_spi(AdyenInternal)
+    public enum TrailingInfoType: Equatable {
+        case text(String)
+        case logos(named: [String], trailingText: String?)
+        
+        internal var accessibilityLabel: String? {
+            switch self {
+            case let .text(text): return text
+            case .logos: return nil
+            }
+        }
+    }
+    
     /// The title for the payment method, adapted for displaying in a list.
     /// In the case of stored payment methods, this will include information identifying the stored payment method.
     /// For example, this could be the last 4 digits of the card number, or the used email address.
@@ -23,9 +36,9 @@ public struct DisplayInformation: Equatable {
     @_spi(AdyenInternal)
     public let logoName: String
 
-    /// The trailing disclosure text.
+    /// The trailing info element
     @_spi(AdyenInternal)
-    public let disclosureText: String?
+    public let trailingInfo: TrailingInfoType?
 
     /// The footnote if any.
     @_spi(AdyenInternal)
@@ -35,7 +48,7 @@ public struct DisplayInformation: Equatable {
     @_spi(AdyenInternal)
     public let accessibilityLabel: String?
 
-    /// Initializes a`DisplayInformation`.
+    /// Initializes a `DisplayInformation`
     ///
     /// - Parameter title: The title.
     /// - Parameter subtitle: The subtitle.
@@ -52,10 +65,29 @@ public struct DisplayInformation: Equatable {
         footnoteText: String? = nil,
         accessibilityLabel: String? = nil
     ) {
+        self.init(
+            title: title,
+            subtitle: subtitle,
+            logoName: logoName,
+            trailingInfo: disclosureText.map { .text($0) },
+            footnoteText: footnoteText,
+            accessibilityLabel: accessibilityLabel
+        )
+    }
+    
+    @_spi(AdyenInternal)
+    public init(
+        title: String,
+        subtitle: String?,
+        logoName: String,
+        trailingInfo: TrailingInfoType?,
+        footnoteText: String? = nil,
+        accessibilityLabel: String? = nil
+    ) {
         self.title = title
         self.subtitle = subtitle
         self.logoName = logoName
-        self.disclosureText = disclosureText
+        self.trailingInfo = trailingInfo
         self.footnoteText = footnoteText
         self.accessibilityLabel = accessibilityLabel
     }

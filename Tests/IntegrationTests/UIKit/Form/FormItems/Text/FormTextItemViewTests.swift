@@ -14,7 +14,7 @@ class FormTextItemViewTests: XCTestCase {
     var validator: ValidatorMock!
     var formatter: FormatterMock!
     var sut: FormTextItemView<FormTextInputItem>!
-    var delegate: FormTextItemViewDelegateMock!
+    var delegate: FormTextItemViewDelegateMock<FormTextInputItem, FormTextItemView<FormTextInputItem>>!
     
     override func setUp() {
         item = FormTextInputItem()

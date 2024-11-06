@@ -66,7 +66,7 @@ private extension FormPickable {
             title: title,
             subtitle: subtitle,
             icon: listItemIcon,
-            trailingText: trailingText,
+            trailingInfo: trailingText.map { .text($0) },
             identifier: identifier,
             selectionHandler: { selectionHandler(self) }
         )

@@ -34,6 +34,10 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         }
     }
     
+    override public func handleFormattedValueDidChange(_ newValue: String) {
+        updateValidationStatus()
+    }
+    
     @_spi(AdyenInternal)
     override public func textDidChange(textField: UITextField) {
         // Overriding to not use the default behavior of the super class

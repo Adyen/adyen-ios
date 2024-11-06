@@ -90,16 +90,16 @@ public class AddressInputFormViewController: FormViewController {
     }()
 }
 
-internal extension AddressInputFormViewController {
+extension AddressInputFormViewController {
     
     @objc
-    func submitTapped() {
+    internal func submitTapped() {
         guard validate() else { return }
         viewModel.handleSubmit(validAddress: addressItem.value)
     }
     
     @objc
-    func dismissAddressLookup() {
+    internal func dismissAddressLookup() {
         viewModel.handleDismiss()
     }
 }
