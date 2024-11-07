@@ -71,6 +71,7 @@ extension VoucherComponent: VoucherViewDelegate, DocumentActionViewDelegate {
         )
         createAlertActions(for: action, sourceView: sourceView).forEach { alert.addAction($0) }
         
+        alert.popoverPresentationController?.sourceView = sourceView
         presenterViewController.present(alert, animated: true, completion: nil)
     }
     
