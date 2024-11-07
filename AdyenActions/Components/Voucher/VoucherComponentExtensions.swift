@@ -85,7 +85,7 @@ extension VoucherComponent: VoucherViewDelegate, DocumentActionViewDelegate {
         ].compactMap { $0 }
     }
     
-    private func createSaveAlertAction(for action: VoucherAction, sourceView: UIView) -> UIAlertAction? {
+    private func createSaveAlertAction(for action: VoucherAction, sourceView: UIView) -> UIAlertAction {
         if let downloadable = action.anyAction as? Downloadable {
             return createDownloadPDFAlertAction(for: downloadable.downloadUrl, sourceView: sourceView)
         } else {
