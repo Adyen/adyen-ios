@@ -122,11 +122,17 @@ class VoucherComponentTests: XCTestCase {
             wait(for: .milliseconds(300))
             
             let alertSheet = try! XCTUnwrap(UIViewController.topPresenter() as? UIAlertController)
-            XCTAssertEqual(alertSheet.actions.count, 4)
-            XCTAssertEqual(alertSheet.actions[0].title, "Copy code")
-            XCTAssertEqual(alertSheet.actions[1].title, "Download PDF")
-            XCTAssertEqual(alertSheet.actions[2].title, "Read instructions")
-            XCTAssertEqual(alertSheet.actions[3].title, "Cancel")
+            
+            let expectedActionTitles: [String]
+            
+            if sut.canAddPasses(action: action.anyAction) {
+                expectedActionTitles = ["Copy code", "Download PDF", "Read instructions", "Cancel"]
+            } else {
+                expectedActionTitles = ["Copy code", "Read instructions", "Cancel"]
+            }
+            
+            XCTAssertEqual(alertSheet.actions.map(\.title), expectedActionTitles)
+            XCTAssertEqual(alertSheet.actions.count, expectedActionTitles.count)
             
             presentationDelegateExpectation.fulfill()
         }
@@ -158,12 +164,18 @@ class VoucherComponentTests: XCTestCase {
             
             optionsButton.sendActions(for: .touchUpInside)
             
-            let alertSheet = try! waitUntilTopPresenter(isOfType: UIAlertController.self)
-            XCTAssertNotNil(alertSheet)
-            XCTAssertEqual(alertSheet.actions.count, 3)
-            XCTAssertEqual(alertSheet.actions[0].title, "Copy code")
-            XCTAssertEqual(alertSheet.actions[1].title, "Save as image")
-            XCTAssertEqual(alertSheet.actions[2].title, "Cancel")
+            let alertSheet = try waitUntilTopPresenter(isOfType: UIAlertController.self)
+            
+            let expectedActionTitles: [String]
+            
+            if sut.canAddPasses(action: action.anyAction) {
+                expectedActionTitles = ["Copy code", "Save as image", "Cancel"]
+            } else {
+                expectedActionTitles = ["Copy code", "Cancel"]
+            }
+            
+            XCTAssertEqual(alertSheet.actions.map(\.title), expectedActionTitles)
+            XCTAssertEqual(alertSheet.actions.count, expectedActionTitles.count)
             
             presentationDelegateExpectation.fulfill()
         }
