@@ -86,8 +86,6 @@ extension VoucherComponent: VoucherViewDelegate, DocumentActionViewDelegate {
     }
     
     private func createSaveAlertAction(for action: VoucherAction, sourceView: UIView) -> UIAlertAction? {
-        guard canAddPasses(action: action.anyAction) else { return nil }
-        
         if let downloadable = action.anyAction as? Downloadable {
             return createDownloadPDFAlertAction(for: downloadable.downloadUrl, sourceView: sourceView)
         } else {
