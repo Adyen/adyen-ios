@@ -39,7 +39,8 @@ jobs:
         
         NEW="${{ env.source }}~${{ env.githubRepo }}"
         echo "${{ github.head_ref }}"
-        if [[ '${{ github.head_ref || env.noTargetBranch }}' == 'release/*' ]]
+        echo "[[ '${{ github.head_ref || env.noTargetBranch }}' == release/* ]]"
+        if [[ '${{ github.head_ref || env.noTargetBranch }}' == release/* ]]
         then
             LATEST_TAG=$(git describe --tags --abbrev=0)
             OLD="$LATEST_TAG~${{ env.githubRepo }}"
