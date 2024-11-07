@@ -446,12 +446,13 @@ class CardComponentTests: XCTestCase {
             configuration: configuration
         )
 
-        presentOnRoot(component.viewController)
+        setupRootViewController(component.viewController)
 
         let switchView: UISwitch = try XCTUnwrap(component.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch"))
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> = try XCTUnwrap(component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
 
         wait(until: switchView, at: \.onTintColor, is: tintColor)
+
         wait(until: securityCodeItemView, at: \.titleLabel.textColor, is: titleColor)
         
         try withoutAnimation {
