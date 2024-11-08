@@ -32,10 +32,11 @@ final class EventAnalyticsProviderTests: XCTestCase {
         
         wait(for: [expectation], timeout: 0.1)
     }
-
-    func testShouldNotSendEventWhenAttemptIdButNoEvents() {
+    
+    func testShouldNotSendEventsWhenNoEvents() {
         let apiClient = APIClientMock()
         let sut = createSUT(apiClient: apiClient)
+        sut.checkoutAttemptId = checkoutAttemptIdMockValue
         
         let expectation = expectation(description: "should not be called")
         expectation.isInverted = true
@@ -93,7 +94,7 @@ final class EventAnalyticsProviderTests: XCTestCase {
         wait(for: [shouldSendExpectation], timeout: 1)
     }
     
-    func testAddingInfoShouldNotTriggerSend() {
+    func testAddingInfoEventShouldNotTriggerSend() {
         let apiClient = APIClientMock()
         let sut = createSUTWithSuccessMock(apiClient: apiClient)
         
