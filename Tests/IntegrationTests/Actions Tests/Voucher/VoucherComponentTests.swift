@@ -123,13 +123,12 @@ class VoucherComponentTests: XCTestCase {
             
             let alertSheet = try! XCTUnwrap(UIViewController.topPresenter() as? UIAlertController)
             
-            let expectedActionTitles: [String]
-            
-            if sut.canAddPasses(action: action.anyAction) {
-                expectedActionTitles = ["Copy code", "Download PDF", "Read instructions", "Cancel"]
-            } else {
-                expectedActionTitles = ["Copy code", "Read instructions", "Cancel"]
-            }
+            let expectedActionTitles = [
+                "Copy code",
+                "Download PDF",
+                "Read instructions",
+                "Cancel"
+            ]
             
             XCTAssertEqual(alertSheet.actions.map(\.title), expectedActionTitles)
             XCTAssertEqual(alertSheet.actions.count, expectedActionTitles.count)
@@ -166,13 +165,11 @@ class VoucherComponentTests: XCTestCase {
             
             let alertSheet = try waitUntilTopPresenter(isOfType: UIAlertController.self)
             
-            let expectedActionTitles: [String]
-            
-            if sut.canAddPasses(action: action.anyAction) {
-                expectedActionTitles = ["Copy code", "Save as image", "Cancel"]
-            } else {
-                expectedActionTitles = ["Copy code", "Cancel"]
-            }
+            let expectedActionTitles = [
+                "Copy code",
+                "Save as image",
+                "Cancel"
+            ]
             
             XCTAssertEqual(alertSheet.actions.map(\.title), expectedActionTitles)
             XCTAssertEqual(alertSheet.actions.count, expectedActionTitles.count)
