@@ -7,73 +7,40 @@
 import AdyenNetworking
 import Foundation
 
-@_spi(AdyenInternal)
-public protocol AnalyticsProviderProtocol {
-    
-    var checkoutAttemptId: String? { get }
-    
-    /// Sends the initial data and retrieves the checkout attempt id as a response.
-    func sendInitialAnalytics(with flavor: AnalyticsFlavor, additionalFields: AdditionalAnalyticsFields?)
-    
-    /// Adds an info event to be sent.
-    func add(info: AnalyticsEventInfo)
-    
-    /// Adds a log event to be sent.
-    func add(log: AnalyticsEventLog)
-    
-    /// Adds an error event to be sent.
-    func add(error: AnalyticsEventError)
-}
-
-internal final class AnalyticsProvider: AnalyticsProviderProtocol {
-    
-    private enum Constants {
-        static let batchInterval: TimeInterval = 10
-        static let infoLimit = 50
-        static let logLimit = 5
-        static let errorLimit = 5
-    }
+internal final class AnalyticsProvider: AnyAnalyticsProvider {
 
     // MARK: - Properties
 
-    internal let apiClient: APIClientProtocol
-    internal let configuration: AnalyticsConfiguration
-    internal private(set) var checkoutAttemptId: String?
-    internal let eventDataSource: AnyAnalyticsEventDataSource
+    internal var checkoutAttemptId: String? {
+        didSet {
+            eventAnalyticsProvider?.checkoutAttemptId = checkoutAttemptId
+        }
+    }
+
+    internal var eventAnalyticsProvider: AnyEventAnalyticsProvider?
     
     private let uniqueAssetAPIClient: UniqueAssetAPIClient<InitialAnalyticsResponse>
-    
-    private var batchTimer: Timer?
-    private let batchInterval: TimeInterval
+    private let context: AnalyticsContext
 
     // MARK: - Initializers
 
     internal init(
         apiClient: APIClientProtocol,
-        configuration: AnalyticsConfiguration,
-        eventDataSource: AnyAnalyticsEventDataSource,
-        batchInterval: TimeInterval = Constants.batchInterval
+        context: AnalyticsContext,
+        eventAnalyticsProvider: AnyEventAnalyticsProvider?
     ) {
-        self.apiClient = apiClient
-        self.configuration = configuration
+        self.context = context
+        self.eventAnalyticsProvider = eventAnalyticsProvider
         self.uniqueAssetAPIClient = UniqueAssetAPIClient<InitialAnalyticsResponse>(apiClient: apiClient)
-        self.eventDataSource = eventDataSource
-        self.batchInterval = batchInterval
-    }
-    
-    deinit {
-        // attempt to send remaining events on deallocation
-        batchTimer?.invalidate()
-        sendEventsIfNeeded()
     }
 
-    // MARK: - AnalyticsProviderProtocol
+    // MARK: - AnyAnalyticsProvider
 
     internal func sendInitialAnalytics(with flavor: AnalyticsFlavor, additionalFields: AdditionalAnalyticsFields?) {
         let analyticsData = AnalyticsData(
             flavor: flavor,
             additionalFields: additionalFields,
-            context: configuration.context
+            context: context
         )
 
         let initialAnalyticsRequest = InitialAnalyticsRequest(data: analyticsData)
@@ -84,87 +51,25 @@ internal final class AnalyticsProvider: AnalyticsProviderProtocol {
     }
     
     internal func add(info: AnalyticsEventInfo) {
-        guard configuration.isEnabled else { return }
-        
-        eventDataSource.add(info: info)
+        eventAnalyticsProvider?.add(info: info)
     }
     
     internal func add(log: AnalyticsEventLog) {
-        guard configuration.isEnabled else { return }
-        
-        eventDataSource.add(log: log)
-        sendEventsIfNeeded()
+        eventAnalyticsProvider?.add(log: log)
     }
     
     internal func add(error: AnalyticsEventError) {
-        guard configuration.isEnabled else { return }
-        
-        eventDataSource.add(error: error)
-        sendEventsIfNeeded()
-    }
-    
-    internal func sendEventsIfNeeded() {
-        guard configuration.isEnabled else { return }
-        guard let request = requestWithAllEvents() else { return }
-        
-        apiClient.perform(request) { [weak self] result in
-            guard let self else { return }
-            // clear the sent events on successful send
-            switch result {
-            case .success:
-                self.removeEvents(sentBy: request)
-                self.startNextTimer()
-            case .failure:
-                break
-            }
-        }
+        eventAnalyticsProvider?.add(error: error)
     }
     
     // MARK: - Private
-    
-    /// Checks the event arrays safely and creates the request with them if there is any to send.
-    private func requestWithAllEvents() -> AnalyticsRequest? {
-        guard let checkoutAttemptId,
-              let events = eventDataSource.allEvents() else { return nil }
-        
-        // as per this call's limitation, we only send up to the
-        // limit of each event and discard the older ones
-        let platform = configuration.context.platform.rawValue
-        var request = AnalyticsRequest(
-            checkoutAttemptId: checkoutAttemptId,
-            platform: platform
-        )
-        request.infos = events.infos.suffix(Constants.infoLimit)
-        request.logs = events.logs.suffix(Constants.logLimit)
-        request.errors = events.errors.suffix(Constants.errorLimit)
-        return request
-    }
     
     private func saveCheckoutAttemptId(from result: Result<InitialAnalyticsResponse, Error>) {
         switch result {
         case let .success(response):
             checkoutAttemptId = response.checkoutAttemptId
-            startNextTimer()
         case .failure:
             checkoutAttemptId = nil
-        }
-    }
-    
-    private func removeEvents(sentBy request: AnalyticsRequest) {
-        let collection = AnalyticsEventWrapper(
-            infos: request.infos,
-            logs: request.logs,
-            errors: request.errors
-        )
-        eventDataSource.removeEvents(matching: collection)
-    }
-    
-    private func startNextTimer() {
-        guard configuration.isEnabled else { return }
-        
-        batchTimer?.invalidate()
-        batchTimer = Timer.scheduledTimer(withTimeInterval: batchInterval, repeats: true) { [weak self] _ in
-            self?.sendEventsIfNeeded()
         }
     }
 }

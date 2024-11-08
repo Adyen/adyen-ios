@@ -11,7 +11,7 @@ import XCTest
 class AnalyticsEventTests: XCTestCase {
 
     var apiClient: APIClientMock!
-    var sut: AnalyticsProviderProtocol!
+    var sut: AnyAnalyticsProvider!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -21,8 +21,8 @@ class AnalyticsEventTests: XCTestCase {
         apiClient.mockedResults = [checkoutAttemptIdResult]
         sut = AnalyticsProvider(
             apiClient: apiClient,
-            configuration: .init(),
-            eventDataSource: AnalyticsEventDataSource()
+            context: .init(),
+            eventAnalyticsProvider: nil
         )
     }
 
@@ -36,36 +36,12 @@ class AnalyticsEventTests: XCTestCase {
         sut.sendInitialAnalytics(with: flavor, additionalFields: nil)
     }
 
-    func testSendInitialEventGivenAnalyticsIsDisabledShouldNotSendRequest() throws {
-        // Given
-        var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isEnabled = false
-        sut = AnalyticsProvider(
-            apiClient: apiClient,
-            configuration: analyticsConfiguration,
-            eventDataSource: AnalyticsEventDataSource()
-        )
-        
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
-        apiClient.mockedResults = [checkoutAttemptIdResult]
-
-        // When
-        sendInitialAnalytics()
-
-        // Then
-        // Then
-        wait(for: .milliseconds(1))
-        XCTAssertEqual(apiClient.counter, 1, "One or more analytics requests were sent.")
-        XCTAssertEqual(sut.checkoutAttemptId, "cb3eef98-978e-4f6f-b299-937a4450be1f1648546838056be73d8f38ee8bcc3a65ec14e41b037a59f255dcd9e83afe8c06bd3e7abcad993")
-    }
-
     func testSendInitialEventGivenEnabledAndFlavorIsComponentsShouldSendInitialRequest() throws {
         // Given
-        let analyticsConfiguration = AnalyticsConfiguration()
         sut = AnalyticsProvider(
             apiClient: apiClient,
-            configuration: analyticsConfiguration,
-            eventDataSource: AnalyticsEventDataSource()
+            context: .init(),
+            eventAnalyticsProvider: nil
         )
 
         let flavor: AnalyticsFlavor = .components(type: .affirm)
@@ -88,8 +64,8 @@ class AnalyticsEventTests: XCTestCase {
         let analyticsConfiguration = AnalyticsConfiguration()
         sut = AnalyticsProvider(
             apiClient: apiClient,
-            configuration: analyticsConfiguration,
-            eventDataSource: AnalyticsEventDataSource()
+            context: .init(),
+            eventAnalyticsProvider: nil
         )
 
         let flavor: AnalyticsFlavor = .dropIn(paymentMethods: ["scheme", "paypal", "affirm"])

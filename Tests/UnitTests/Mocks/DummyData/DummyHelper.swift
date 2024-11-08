@@ -9,7 +9,7 @@
 
 extension Dummy {
 
-    internal static func context(with analyticsProvider: AnalyticsProviderProtocol) -> AdyenContext {
+    internal static func context(with analyticsProvider: AnyAnalyticsProvider) -> AdyenContext {
         AdyenContext(
             apiContext: apiContext,
             payment: payment,

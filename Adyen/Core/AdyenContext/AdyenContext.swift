@@ -19,7 +19,7 @@ public final class AdyenContext: PaymentAware {
     public private(set) var payment: Payment?
     
     @_spi(AdyenInternal)
-    public let analyticsProvider: AnalyticsProviderProtocol?
+    public let analyticsProvider: AnyAnalyticsProvider?
     
     // MARK: - Initializers
     
@@ -46,7 +46,7 @@ public final class AdyenContext: PaymentAware {
     internal init(
         apiContext: APIContext,
         payment: Payment?,
-        analyticsProvider: AnalyticsProviderProtocol?
+        analyticsProvider: AnyAnalyticsProvider?
     ) {
         self.apiContext = apiContext
         self.analyticsProvider = analyticsProvider
@@ -58,7 +58,7 @@ public final class AdyenContext: PaymentAware {
         self.payment = payment
     }
     
-    private static func createAnalyticsProvider(apiContext: APIContext, analyticsConfiguration: AnalyticsConfiguration) -> AnalyticsProviderProtocol? {
+    private static func createAnalyticsProvider(apiContext: APIContext, analyticsConfiguration: AnalyticsConfiguration) -> AnyAnalyticsProvider? {
         guard
             let analyticsEnvironment = (apiContext.environment as? Environment)?.toAnalyticsEnvironment(),
             let analyticsApiContext = try? APIContext(
@@ -67,13 +67,22 @@ public final class AdyenContext: PaymentAware {
             )
         else { return nil }
         
-        let eventDataSource = AnalyticsEventDataSource()
-        let syncEventDataSource = ThreadSafeAnalyticsEventDataSource(dataSource: eventDataSource)
+        var eventAnalyticsProvider: AnyEventAnalyticsProvider?
+        
+        if analyticsConfiguration.isEnabled {
+            let eventDataSource = AnalyticsEventDataSource()
+            let syncEventDataSource = ThreadSafeAnalyticsEventDataSource(dataSource: eventDataSource)
+            eventAnalyticsProvider = EventAnalyticsProvider(
+                apiClient: APIClient(apiContext: analyticsApiContext),
+                context: analyticsConfiguration.context,
+                eventDataSource: syncEventDataSource
+            )
+        }
         
         return AnalyticsProvider(
             apiClient: APIClient(apiContext: analyticsApiContext),
-            configuration: analyticsConfiguration,
-            eventDataSource: syncEventDataSource
+            context: analyticsConfiguration.context,
+            eventAnalyticsProvider: eventAnalyticsProvider
         )
     }
 }
