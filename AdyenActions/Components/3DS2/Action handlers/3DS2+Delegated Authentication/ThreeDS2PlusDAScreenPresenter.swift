@@ -13,8 +13,8 @@ internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
     func showRegistrationScreen(
         component: Component,
         cardDetails: (number: String?, type: CardType?),
-        registerDelegatedAuthenticationHandler: @escaping () -> Void,
-        fallbackHandler: @escaping () -> Void
+        registerDelegatedAuthenticationHandler: @escaping VoidHandler,
+        fallbackHandler: @escaping VoidHandler
     )
     
     // swiftlint:disable function_parameter_count
@@ -22,15 +22,20 @@ internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
         component: Component,
         cardDetails: (number: String?, type: CardType?),
         amount: Amount?,
-        approveAuthenticationHandler: @escaping () -> Void,
-        fallbackHandler: @escaping () -> Void,
-        removeCredentialsHandler: @escaping () -> Void
+        approveAuthenticationHandler: @escaping VoidHandler,
+        fallbackHandler: @escaping VoidHandler,
+        removeCredentialsHandler: @escaping VoidHandler
     )
     // swiftlint:enable function_parameter_count
     
-    func showAuthenticationError(component: Component, handler: @escaping () -> Void)
-    func showRegistrationError(component: Component, handler: @escaping () -> Void)
-    func showDeletionConfirmation(component: Component, handler: @escaping () -> Void)
+    func showAuthenticationError(
+        component: Component,
+        handler: @escaping VoidHandler,
+        troubleshootingHandler: @escaping VoidHandler
+    )
+    
+    func showRegistrationError(component: Component, handler: @escaping VoidHandler)
+    func showDeletionConfirmation(component: Component, handler: @escaping VoidHandler)
 
     var presentationDelegate: PresentationDelegate? { get set }
 }
@@ -55,11 +60,16 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         self.localizedParameters = localizedParameters
     }
     
-    internal func showAuthenticationError(component: Component, handler: @escaping () -> Void) {
+    internal func showAuthenticationError(
+        component: Component,
+        handler: @escaping VoidHandler,
+        troubleshootingHandler: @escaping VoidHandler
+    ) {
         let errorController = DAErrorViewController(
             style: style,
             screen: .authenticationFailed(localizationParameters: localizedParameters),
-            completion: handler
+            completion: handler,
+            troubleshootingHandler: troubleshootingHandler
         )
         let presentableComponent = PresentableComponentWrapper(
             component: component,
@@ -69,11 +79,15 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         presentationDelegate?.present(component: presentableComponent)
     }
     
-    internal func showRegistrationError(component: Component, handler: @escaping () -> Void) {
+    internal func showRegistrationError(
+        component: Component,
+        handler: @escaping VoidHandler
+    ) {
         let errorController = DAErrorViewController(
             style: style,
             screen: .registrationFailed(localizationParameters: localizedParameters),
-            completion: handler
+            completion: handler,
+            troubleshootingHandler: nil
         )
         let presentableComponent = PresentableComponentWrapper(
             component: component,
@@ -83,11 +97,12 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         presentationDelegate?.present(component: presentableComponent)
     }
     
-    internal func showDeletionConfirmation(component: Component, handler: @escaping () -> Void) {
+    internal func showDeletionConfirmation(component: Component, handler: @escaping VoidHandler) {
         let errorController = DAErrorViewController(
             style: style,
             screen: .deletionConfirmation(localizationParameters: localizedParameters),
-            completion: handler
+            completion: handler,
+            troubleshootingHandler: nil
         )
         let presentableComponent = PresentableComponentWrapper(
             component: component,
@@ -100,8 +115,8 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
     internal func showRegistrationScreen(
         component: Component,
         cardDetails: (number: String?, type: CardType?),
-        registerDelegatedAuthenticationHandler: @escaping () -> Void,
-        fallbackHandler: @escaping () -> Void
+        registerDelegatedAuthenticationHandler: @escaping VoidHandler,
+        fallbackHandler: @escaping VoidHandler
     ) {
         let registrationViewController = DARegistrationViewController(
             style: style,
@@ -132,9 +147,9 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
         component: Component,
         cardDetails: (number: String?, type: CardType?),
         amount: Amount?,
-        approveAuthenticationHandler: @escaping () -> Void,
-        fallbackHandler: @escaping () -> Void,
-        removeCredentialsHandler: @escaping () -> Void
+        approveAuthenticationHandler: @escaping VoidHandler,
+        fallbackHandler: @escaping VoidHandler,
+        removeCredentialsHandler: @escaping VoidHandler
     ) {
         // swiftlint:enable function_parameter_count
         let approvalViewController = DAApprovalViewController(
@@ -180,5 +195,5 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
 }
 
 internal class EmptyNavigationBar: UIView, AnyNavigationBar {
-    internal var onCancelHandler: (() -> Void)?
+    internal var onCancelHandler: VoidHandler?
 }

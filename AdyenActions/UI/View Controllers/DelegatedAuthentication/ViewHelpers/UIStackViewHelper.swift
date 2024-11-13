@@ -16,8 +16,7 @@ extension UIStackView {
         alignment: UIStackView.Alignment = .fill,
         spacing: CGFloat,
         view: UIView,
-        withBackground: Bool = false,
-        scopedInstance: Any
+        withBackground: Bool = false
     ) {
         self.init(arrangedSubviews: arrangedSubviews)
         self.axis = axis
@@ -34,6 +33,7 @@ extension UIStackView {
             subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             self.insertSubview(subView, at: 0)
             subView.layer.cornerRadius = 10.0
+            self.layer.cornerRadius = 10.0
             subView.layer.masksToBounds = true
             subView.clipsToBounds = true
         }

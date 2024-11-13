@@ -266,9 +266,17 @@ internal typealias VoidHandler = () -> Void
                 },
                 failedAuthenticationHandler: { [weak self] error in
                     guard let self else { return }
-                    self.presenter.showAuthenticationError(component: self) {
-                        completion(.failure(.authenticationServiceFailed(underlyingError: error)))
-                    }
+                    
+                    self.presenter.showAuthenticationError(
+                        component: self,
+                        handler: {
+                            completion(.failure(.authenticationServiceFailed(underlyingError: error)))
+                        },
+                        troubleshootingHandler: { [weak self] in
+                            try? self?.service(cardNumber: cardNumber).reset()
+                            completion(.failure(.authenticationServiceFailed(underlyingError: error)))
+                        }
+                    )
                 }
             )
         }

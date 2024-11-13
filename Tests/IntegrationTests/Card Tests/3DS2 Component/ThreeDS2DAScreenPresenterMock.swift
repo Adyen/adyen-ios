@@ -16,15 +16,19 @@ import Foundation
 
     final class ThreeDS2DAScreenPresenterMock: ThreeDS2PlusDAScreenPresenterProtocol {
     
-        func showDeletionConfirmation(component: any Adyen.Component, handler: @escaping () -> Void) {
+        func showDeletionConfirmation(component: any Adyen.Component, handler: @escaping VoidHandler) {
             handler()
         }
         
-        func showAuthenticationError(component: any Adyen.Component, handler: @escaping () -> Void) {
+        func showAuthenticationError(
+            component: any Adyen.Component,
+            handler: @escaping VoidHandler,
+            troubleshootingHandler: @escaping VoidHandler
+        ) {
             handler()
         }
     
-        func showRegistrationError(component: any Adyen.Component, handler: () -> Void) {
+        func showRegistrationError(component: any Adyen.Component, handler: VoidHandler) {
             handler()
         }
     
@@ -43,8 +47,8 @@ import Foundation
         func showRegistrationScreen(
             component: any Adyen.Component,
             cardDetails: (number: String?, type: Adyen.CardType?),
-            registerDelegatedAuthenticationHandler: @escaping () -> Void,
-            fallbackHandler: @escaping () -> Void
+            registerDelegatedAuthenticationHandler: @escaping VoidHandler,
+            fallbackHandler: @escaping VoidHandler
         ) {
             onShowRegistrationScreen?(cardDetails)
             switch showRegistrationReturnState {
@@ -72,9 +76,9 @@ import Foundation
             component: any Adyen.Component,
             cardDetails: (number: String?, type: Adyen.CardType?),
             amount: Adyen.Amount?,
-            approveAuthenticationHandler: @escaping () -> Void,
-            fallbackHandler: @escaping () -> Void,
-            removeCredentialsHandler: @escaping () -> Void
+            approveAuthenticationHandler: @escaping VoidHandler,
+            fallbackHandler: @escaping VoidHandler,
+            removeCredentialsHandler: @escaping VoidHandler
         ) {
             onShowApprovalScreen?(cardDetails, amount)
             switch showApprovalScreenReturnState {

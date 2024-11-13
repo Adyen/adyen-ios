@@ -9,7 +9,7 @@ import UIKit
 @_spi(AdyenInternal) import Adyen
 
 extension UIImageView {
-    convenience init(infoImageStyle: ImageStyle, scopedInstance: Any) {
+    convenience init(infoImageStyle: ImageStyle) {
         self.init(style: infoImageStyle)
         self.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "infoImage")
         self.translatesAutoresizingMaskIntoConstraints = false

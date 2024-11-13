@@ -534,7 +534,9 @@ class ThreeDS2ComponentTests: XCTestCase {
             enum TestData {
                 static let fingerprintToken = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES0lucHV0IjoiIyNTb21lZGVsZWdhdGVkQXV0aGVudGljYXRpb25TREtJbnB1dCMjIiwiZGlyZWN0b3J5U2VydmVySWQiOiJGMDEzMzcxMzM3IiwiZGlyZWN0b3J5U2VydmVyUHVibGljS2V5IjoiI0RpcmVjdG9yeVNlcnZlclB1YmxpY0tleSMiLCJkaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIjoiIyNEaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIyMiLCJ0aHJlZURTTWVzc2FnZVZlcnNpb24iOiIyLjIuMCIsInRocmVlRFNTZXJ2ZXJUcmFuc0lEIjoiMTUwZmEzYjgtZTZjOC00N2ExLTk2ZTAtOTEwNzYzYmVlYzU3In0="
             }
-        
+            let rootViewController = UIViewController()
+            self.presentOnRoot(rootViewController)
+
             let redirectComponent = AnyRedirectComponentMock()
             redirectComponent.onHandle = { action in
                 XCTFail("RedirectComponent should never be invoked.")
@@ -619,10 +621,19 @@ class ThreeDS2ComponentTests: XCTestCase {
                     approvalPresentationExpectation.fulfill()
                     approvalViewController.firstButtonTapped()
                 } else if let errorViewController = component.viewController as? DAErrorViewController {
+                    rootViewController.present(errorViewController, animated: false)
                     XCTAssertNotNil(errorViewController)
                     self.verifyApprovalErrorView(controller: errorViewController)
-                    approvalErrorPresentationExpectation.fulfill()
-                    errorViewController.firstButtonTapped()
+                    errorViewController.troubleshootingButtonTapped()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        if let alertController = errorViewController.presentedViewController as? UIAlertController {
+                            self.verifyTroubleshootingAlert(controller: alertController)
+                        } else {
+                            XCTFail("Troubleshooting alert not presented")
+                        }
+                        approvalErrorPresentationExpectation.fulfill()
+                        errorViewController.firstButtonTapped()
+                    }
                 }
             }
 
@@ -631,7 +642,12 @@ class ThreeDS2ComponentTests: XCTestCase {
             let fingerprintAction = ThreeDS2FingerprintAction(fingerprintToken: TestData.fingerprintToken, authorisationToken: "AuthToken", paymentData: "data")
             sut.handle(fingerprintAction)
             wait(
-                for: [approvalPresentationExpectation, onAuthenticateExpectation, approvalErrorPresentationExpectation, delegateExpectation],
+                for: [
+                    approvalPresentationExpectation,
+                    onAuthenticateExpectation,
+                    approvalErrorPresentationExpectation,
+                    delegateExpectation
+                ],
                 timeout: 2,
                 enforceOrder: true
             )
@@ -887,13 +903,33 @@ class ThreeDS2ComponentTests: XCTestCase {
 
             let descriptionLabel: UILabel? = controller.view.findView(by: "descriptionLabel")
             XCTAssertNotNil(descriptionLabel)
-            XCTAssertEqual(descriptionLabel?.text, "Authentication with Secure Checkout has failed, please attempt an alternative authentication.")
+            XCTAssertEqual(descriptionLabel?.text, "Couldn’t approve payment with Secure Checkout")
+
+            let troubleshootingTitle: UILabel? = controller.view.findView(by: "troubleshootingTitle")
+            XCTAssertNotNil(troubleshootingTitle)
+            XCTAssertEqual(troubleshootingTitle?.text, "Troubleshooting")
+
+            let troubleshootingDescriptionLabel: UILabel? = controller.view.findView(by: "troubleshootingDescription")
+            XCTAssertNotNil(troubleshootingDescriptionLabel)
+            XCTAssertEqual(troubleshootingDescriptionLabel?.text, "Ongoing payment issues may be resolved by resetting your Secure Checkout details.")
+
+            let troubleshootingButton: SubmitButton? = controller.view.findView(by: "troubleshootingButton")
+            XCTAssertNotNil(troubleshootingButton)
+            XCTAssertEqual(troubleshootingButton?.title, "Reset Secure Checkout")
 
             let firstButton: SubmitButton? = controller.view.findView(by: "primaryButton")
             XCTAssertNotNil(firstButton)
-            XCTAssertEqual(firstButton?.title, "Approve the transaction")
+            XCTAssertEqual(firstButton?.title, "Approve differently")
         }
     
+        func verifyTroubleshootingAlert(controller: UIAlertController) {
+            XCTAssertEqual(controller.actions.count, 2)
+            XCTAssertEqual(controller.title, "Reset Secure Checkout")
+            XCTAssertEqual(controller.message, "You will be redirected to complete this payment in a different way.")
+            XCTAssertEqual(controller.actions.first?.title, "Cancel")
+            XCTAssertEqual(controller.actions.last?.title, "Reset")
+        }
+
         func verifyRegistrationView(viewController: DARegistrationViewController?) {
             guard let viewController else { XCTFail("No DAApprovalViewController passed"); return }
             let image: UIImageView? = viewController.view.findView(by: "image")
@@ -904,7 +940,7 @@ class ThreeDS2ComponentTests: XCTestCase {
 
             let descriptionLabel: UILabel? = viewController.view.findView(by: "descriptionLabel")
             XCTAssertNotNil(descriptionLabel)
-            XCTAssertEqual(descriptionLabel?.text, "You can check out faster next time with this card")
+            XCTAssertEqual(descriptionLabel?.text, "Check out faster next time with this card")
 
             let firstButton: SubmitButton? = viewController.view.findView(by: "primaryButton")
             XCTAssertNotNil(firstButton)

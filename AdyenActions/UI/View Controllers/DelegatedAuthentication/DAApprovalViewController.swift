@@ -35,7 +35,7 @@ internal final class DAApprovalViewController: UIViewController {
         )
         let cancelAction = UIAlertAction(
             title: localizedString(.threeds2DAApprovalRemoveAlertNegativeButton, localizationParameters),
-            style: .default,
+            style: .cancel,
             handler: nil
         )
         alertController.addAction(cancelAction)
@@ -170,15 +170,12 @@ internal final class DAApprovalViewController: UIViewController {
 
 @available(iOS 16.0, *)
 extension DAApprovalViewController: DelegatedAuthenticationViewDelegate {
-    internal func removeCredential() {
-        present(removeCredentialAlert, animated: true)
-    }
-    
     internal func firstButtonTapped() {
         useBiometricsHandler()
     }
     
     internal func secondButtonTapped() {
+        actionSheet.popoverPresentationController?.sourceView = approvalView.secondButton
         present(actionSheet, animated: true)
     }
 }
