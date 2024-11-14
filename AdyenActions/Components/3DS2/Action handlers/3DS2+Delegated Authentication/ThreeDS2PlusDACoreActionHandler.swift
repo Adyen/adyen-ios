@@ -272,7 +272,7 @@ internal typealias VoidHandler = () -> Void
                     
                     if case let AdyenAuthenticationError.consecutiveCancellationOnApproval(count) = error,
                        count >= Constants.consecutiveCancellationTolerance {
-                        try? service(cardNumber: nil).reset()
+                        try? self.service(cardNumber: nil).reset()
                     }
                     
                     self.presenter.showAuthenticationError(
