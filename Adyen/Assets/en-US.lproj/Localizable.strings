@@ -172,6 +172,10 @@
 "adyen.paybybank.subtitle" = "No banks found with your search query…";
 "adyen.paybybank.title" = "No results for";
 "adyen.search.placeholder" = "Search…";
+"adyen.payByBankAISDD.disclaimer.header" = "Use Pay by Bank to pay instantly from any bank account.";
+"adyen.payByBankAISDD.disclaimer.body" = "By connecting your bank account you are authorizing debits to your account for any amount owed for use of our services and/or purchase of our products, until this authorization is revoked.";
+"adyen.payByBankAISDD.submit" = "Continue to Pay by Bank";
+"adyen.payByBankAISDD.more" = "+ more";
 "adyen.upi.modeSelection" = "How would you like to use UPI?";
 "adyen.UPIVpa.validationMessage" = "Enter a correct virtual payment address";
 "adyen.UPIQrcode.generationMessage" = "Generate the QR code that you can download or screenshot and upload it into the UPI app to complete the payment.";
