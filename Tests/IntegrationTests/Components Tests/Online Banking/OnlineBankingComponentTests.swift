@@ -68,4 +68,48 @@ class OnlineBankingComponentTests: XCTestCase {
     private func getFormViewController() -> FormViewController {
         (sut.viewController as! SecuredViewController<FormViewController>).childViewController
     }
+
+    func testSubmit_shouldCallPaymentDelegateDidSubmit() throws {
+        // Given
+        let sut = OnlineBankingComponent(
+            paymentMethod: paymentMethod,
+            context: context
+        )
+
+        let didSubmitExpectation = XCTestExpectation(description: "Expected delegate.didSubmit() to be called.")
+
+        let paymentDelegateMock = PaymentComponentDelegateMock()
+        sut.delegate = paymentDelegateMock
+
+        paymentDelegateMock.onDidSubmit = { _, component in
+            didSubmitExpectation.fulfill()
+        }
+
+        // When
+        sut.submit()
+
+        // Then
+        wait(for: [didSubmitExpectation], timeout: 10)
+        XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
+    }
+
+    func testValidateShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        let configuration = OnlineBankingComponent.Configuration(showsSubmitButton: false)
+        let sut = OnlineBankingComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        let validationResult = sut.validate()
+
+        // Then
+        XCTAssertTrue(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
 }

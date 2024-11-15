@@ -95,7 +95,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
         view.addSubview(childViewController.view)
         childViewController.didMove(toParent: self)
 
-        childViewController.view.adyen.anchor(inside: view.safeAreaLayoutGuide)
+        childViewController.view.adyen.anchor(inside: view)
     }
 
     private func listenToBackgroundNotifications() {

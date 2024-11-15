@@ -49,7 +49,6 @@ extension PaymentComponent {
         let logEvent = AnalyticsEventLog(component: paymentMethod.type.rawValue, type: .submit)
         context.analyticsProvider?.add(log: logEvent)
     }
-
 }
 
 extension AdyenContextAware where Self: PaymentAware {

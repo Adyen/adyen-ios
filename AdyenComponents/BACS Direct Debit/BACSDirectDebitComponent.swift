@@ -68,6 +68,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PaymentAware, Pre
         self.configuration = configuration
         self.inputFormViewController = BACSInputFormViewController(
             title: paymentMethod.name,
+            scrollEnabled: configuration.showsSubmitButton,
             styleProvider: configuration.style
         )
         self.viewController = SecuredViewController(
@@ -132,6 +133,7 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
     private func assembleConfirmationView(with data: BACSDirectDebitData) -> UIViewController {
         let confirmationViewController = BACSConfirmationViewController(
             title: paymentMethod.name,
+            scrollEnabled: configuration.showsSubmitButton,
             styleProvider: configuration.style,
             localizationParameters: configuration.localizationParameters
         )

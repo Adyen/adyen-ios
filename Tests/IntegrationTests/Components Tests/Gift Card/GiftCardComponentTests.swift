@@ -37,11 +37,11 @@ class GiftCardComponentTests: XCTestCase {
     var securityCodeItemTitleLabel: UILabel? {
         sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.securityCodeItem.titleLabel")
     }
-    
+
     var securityCodeItemView: FormTextInputItemView? {
         sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.securityCodeItem")
     }
-    
+
     var expiryDateItemView: FormItemView<FormCardExpiryDateItem>? {
         sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.expiryDateItem")
     }
@@ -80,9 +80,9 @@ class GiftCardComponentTests: XCTestCase {
         sut = nil
         try super.tearDownWithError()
     }
-    
+
     func testGiftCardUI() {
-        
+
         // Given
         let paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
         sut = GiftCardComponent(
@@ -95,15 +95,15 @@ class GiftCardComponentTests: XCTestCase {
         // When
         setupRootViewController(sut.viewController)
         wait(for: .milliseconds(300))
-        
+
         // Then
         XCTAssertNil(expiryDateItemView, "should not have expiry date field for gift card")
         XCTAssertNotNil(securityCodeItemView, "security code should be shown by default")
         XCTAssertEqual(securityCodeItemTitleLabel?.text, "Pin", "cvc title changes based on payment method")
     }
-    
+
     func testMealVoucherUI() {
-        
+
         // Given
         let paymentMethod = MealVoucherPaymentMethod(type: .mealVoucherSodexo, name: "Sodexo")
         sut = GiftCardComponent(
@@ -116,7 +116,7 @@ class GiftCardComponentTests: XCTestCase {
         // When
         setupRootViewController(sut.viewController)
         wait(for: .milliseconds(300))
-        
+
         // Then
         XCTAssertNotNil(expiryDateItemView, "should have expiry date field for meal voucher")
         XCTAssertNotNil(securityCodeItemView, "security code should be shown by default")
@@ -586,9 +586,9 @@ class GiftCardComponentTests: XCTestCase {
         let infoType = analyticsProviderMock.infos.first?.type
         XCTAssertEqual(infoType, .rendered)
     }
-    
+
     func testGiftCardHidingSecurityCodeItemView() throws {
-        
+
         // Given
         sut = GiftCardComponent(
             partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
@@ -606,9 +606,9 @@ class GiftCardComponentTests: XCTestCase {
         XCTAssertNotNil(numberItemView)
         XCTAssertNil(securityCodeItemView)
     }
-    
+
     func testMealVoucherHidingSecurityCodeItemView() {
-        
+
         // Given
         let paymentMethod = MealVoucherPaymentMethod(type: .mealVoucherSodexo, name: "Sodexo")
         sut = GiftCardComponent(
@@ -622,34 +622,34 @@ class GiftCardComponentTests: XCTestCase {
         // When
         let mockViewController = UIViewController()
         sut.viewWillAppear(viewController: mockViewController)
-        
+
         // Then
         XCTAssertNotNil(numberItemView)
         XCTAssertNotNil(expiryDateItemView, "expiry date should still be shown when security code item is hidden")
         XCTAssertNil(securityCodeItemView)
     }
-    
+
     func testPartialConfirmationPaymentMethod() {
-        
+
         let giftCard = GiftCardPaymentMethod(type: .giftcard, name: "Giftcard", brand: "giftcard")
-        
+
         let paymentMethod = PartialConfirmationPaymentMethod(
             paymentMethod: giftCard,
             lastFour: "1234",
             remainingAmount: .init(value: 1000, currencyCode: "USD")
         )
-        
+
         XCTAssertEqual(paymentMethod.type, giftCard.type)
-        
+
         let displayInformation = paymentMethod.defaultDisplayInformation(using: nil)
-        
+
         XCTAssertEqual(displayInformation.title, "•••• 1234")
         XCTAssertEqual(displayInformation.logoName, giftCard.brand)
         XCTAssertEqual(displayInformation.accessibilityLabel, "Giftcard, Last 4 digits: 1, 2, 3, 4, Remaining balance will be $10.00")
     }
-    
+
     func testPartialPaymentOrder() throws {
-        
+
         let order = PartialPaymentOrder(
             pspReference: "psp-reference",
             orderData: "order-data",
@@ -658,10 +658,10 @@ class GiftCardComponentTests: XCTestCase {
             remainingAmount: .init(value: 500, currencyCode: "USD"),
             expiresAt: Date()
         )
-        
+
         let encodedOrder = try JSONEncoder().encode(order)
         let decodedOrder = try JSONDecoder().decode(PartialPaymentOrder.self, from: encodedOrder)
-        
+
         XCTAssertEqual(order.pspReference, decodedOrder.pspReference)
         XCTAssertEqual(order.orderData, decodedOrder.orderData)
         XCTAssertEqual(order.reference, decodedOrder.reference)
@@ -670,10 +670,51 @@ class GiftCardComponentTests: XCTestCase {
         XCTAssertNil(decodedOrder.expiresAt)
         XCTAssertEqual(order.compactOrder, decodedOrder.compactOrder)
     }
+
+    func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        sut = GiftCardComponent(
+            partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
+            context: context,
+            amount: amountToPay,
+            publicKeyProvider: publicKeyProvider
+        )
+        populate(cardNumber: "60643650100000000000", pin: "73737")
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        let validationResult = sut.validate()
+
+        // Then
+        XCTAssertTrue(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
+
+    func testValidateGivenInvalidInputShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        sut = GiftCardComponent(
+            partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
+            context: context,
+            amount: amountToPay,
+            publicKeyProvider: publicKeyProvider
+        )
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        let validationResult = sut.validate()
+
+        // Then
+        XCTAssertFalse(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
 }
 
 private extension GiftCardComponentTests {
-    
+
     func populate(cardNumber: String, pin: String) {
         populate(textItemView: numberItemView!, with: cardNumber)
         populate(textItemView: securityCodeItemView!, with: pin)

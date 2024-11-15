@@ -173,6 +173,16 @@ public final class BoletoComponent: PaymentComponent,
     }
 }
 
+extension BoletoComponent: SubmittableComponent {
+    public func submit() {
+        formComponent.submit()
+    }
+    
+    public func validate() -> Bool {
+        formComponent.validate()
+    }
+}
+
 @_spi(AdyenInternal)
 extension BoletoComponent: TrackableComponent {}
 

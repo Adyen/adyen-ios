@@ -15,8 +15,8 @@ class FormViewControllerTests: XCTestCase {
         
         let style = FormComponentStyle()
         
-        let formViewController = FormViewController(style: style, localizationParameters: nil)
-        
+        let formViewController = FormViewController(scrollEnabled: true, style: style, localizationParameters: nil)
+
         let cardNumberItem = FormCardNumberItem(cardTypeLogos: [])
         let securityCodeItem = FormCardSecurityCodeItem(style: style.textField)
         
@@ -24,8 +24,9 @@ class FormViewControllerTests: XCTestCase {
         formViewController.append(securityCodeItem)
         
         setupRootViewController(formViewController)
-        
-        let formView = try XCTUnwrap(formViewController.view.subviews.filter { $0 is FormView }.first)
+
+        let scrollView = try XCTUnwrap(formViewController.view.subviews.filter { $0 is UIScrollView }.first)
+        let formView = try XCTUnwrap(scrollView.subviews.filter { $0 is FormView }.first)
         let stackView = try XCTUnwrap(formView.subviews.filter { $0 is UIStackView }.first)
         let cardNumberItemView = try XCTUnwrap(stackView.subviews.first as? FormCardNumberItemView)
         let securityCodeItemView = try XCTUnwrap(stackView.subviews.last as? FormCardSecurityCodeItemView)

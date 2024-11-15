@@ -161,7 +161,6 @@ internal final class ComponentsViewController: UIViewController {
             start(applePayComponentAdvancedFlowExample)
         }
     }
-
 }
 
 // MARK: - Presenter

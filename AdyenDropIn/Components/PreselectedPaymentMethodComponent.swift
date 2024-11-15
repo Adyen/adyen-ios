@@ -73,6 +73,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
     public lazy var viewController: UIViewController = {
         let formViewController = FormViewController(
+            scrollEnabled: true,
             style: style,
             localizationParameters: localizationParameters
         )

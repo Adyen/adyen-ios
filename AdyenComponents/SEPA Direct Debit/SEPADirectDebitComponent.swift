@@ -59,11 +59,12 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
-    
+
     // MARK: - View Controller
     
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
+            scrollEnabled: configuration.showsSubmitButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
@@ -72,7 +73,10 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.append(nameItem)
         formViewController.append(ibanItem)
-        formViewController.append(button)
+
+        if configuration.showsSubmitButton {
+            formViewController.append(button)
+        }
 
         return formViewController
     }()
@@ -80,7 +84,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
     // MARK: - Private
     
     private func didSelectSubmitButton() {
-        guard formViewController.validate() else {
+        guard validate() else {
             return
         }
         
@@ -149,3 +153,16 @@ extension SEPADirectDebitComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)
 extension SEPADirectDebitComponent: ViewControllerDelegate {}
+
+// MARK: - SubmitCustomizable
+
+extension SEPADirectDebitComponent: SubmittableComponent {
+
+    public func submit() {
+        didSelectSubmitButton()
+    }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
+}

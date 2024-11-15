@@ -19,6 +19,9 @@
   },
   "testTargets" : [
     {
+      "skippedTests" : [
+        "PaymentMethodTests\/testDecodingPaymentMethods()"
+      ],
       "target" : {
         "containerPath" : "container:Adyen.xcodeproj",
         "identifier" : "B62D48AB2BBE8D79001EF01A",

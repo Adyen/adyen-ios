@@ -107,6 +107,99 @@ final class DokuComponentUITests: XCTestCase {
         wait(for: [delegateExpectation], timeout: 60)
     }
 
+    func testSubmitShouldCallPaymentDelegateDidSubmit() throws {
+        // Given
+        let sut = DokuComponent(
+            paymentMethod: paymentMethod,
+            context: context
+        )
+
+        let paymentDelegateMock = PaymentComponentDelegateMock()
+        sut.delegate = paymentDelegateMock
+
+        let firstNameView: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: DokuViewIdentifier.firstName))
+        self.populate(textItemView: firstNameView, with: "Katrina")
+
+        let lastNameView: FormTextInputItemView! = try XCTUnwrap(sut.viewController.view.findView(with: DokuViewIdentifier.lastName))
+        self.populate(textItemView: lastNameView, with: "Del Mar")
+
+        let emailView: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: DokuViewIdentifier.email))
+        self.populate(textItemView: emailView, with: "katrina.mar@mail.com")
+
+        let didSubmitExpectation = expectation(description: "didSubmitExpectation")
+        paymentDelegateMock.onDidSubmit = { _, _ in
+            didSubmitExpectation.fulfill()
+        }
+
+        // When
+        sut.submit()
+
+        // Then
+        waitForExpectations(timeout: 10)
+        XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
+    }
+    
+    func testValidateWitValidInputShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        let configuration = AbstractPersonalInformationComponent.Configuration(showsSubmitButton: false)
+        let sut = DokuComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        let paymentDelegateMock = PaymentComponentDelegateMock()
+        sut.delegate = paymentDelegateMock
+
+        let firstNameView: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: DokuViewIdentifier.firstName))
+        self.populate(textItemView: firstNameView, with: "Katrina")
+
+        let lastNameView: FormTextInputItemView! = try XCTUnwrap(sut.viewController.view.findView(with: DokuViewIdentifier.lastName))
+        self.populate(textItemView: lastNameView, with: "Del Mar")
+
+        let emailView: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: DokuViewIdentifier.email))
+        self.populate(textItemView: emailView, with: "katrina.mar@mail.com")
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        let validationResult = sut.validate()
+
+        // Then
+        XCTAssertTrue(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
+
+    func testValidateWitInvalidInputShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        let configuration = AbstractPersonalInformationComponent.Configuration(showsSubmitButton: false)
+        let sut = DokuComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        let paymentDelegateMock = PaymentComponentDelegateMock()
+        sut.delegate = paymentDelegateMock
+
+        let firstNameView: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: DokuViewIdentifier.firstName))
+        self.populate(textItemView: firstNameView, with: "Katrina")
+
+        let lastNameView: FormTextInputItemView! = try XCTUnwrap(sut.viewController.view.findView(with: DokuViewIdentifier.lastName))
+        self.populate(textItemView: lastNameView, with: "Del Mar")
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        let validationResult = sut.validate()
+
+        // Then
+        XCTAssertFalse(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
+
     private enum DokuViewIdentifier {
         static let firstName = "AdyenComponents.DokuComponent.firstNameItem"
         static let lastName = "AdyenComponents.DokuComponent.lastNameItem"
