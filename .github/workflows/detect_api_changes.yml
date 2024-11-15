@@ -32,11 +32,9 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-        
-    - name: 🔍 Detect Changes
+       
+    - name: 👾 Define Diff Versions
       run: |
-        PROJECT_FOLDER=$PWD
-        
         NEW="${{ env.source }}~${{ env.githubRepo }}"
         if [[ '${{ github.head_ref || env.noTargetBranch }}' == release/* ]]
         then
@@ -46,20 +44,19 @@ jobs:
             OLD="${{ env.target }}~${{ env.githubRepo }}"
         fi
         
-        cd Scripts
-        ./public-api-diff project --new "$NEW" --old "$OLD" --platform iOS --output "$PROJECT_FOLDER/api_comparison.md" --log-output "$PROJECT_FOLDER/logs.txt"
-        cat "$PROJECT_FOLDER/logs.txt"
-        cat "$PROJECT_FOLDER/api_comparison.md" >> $GITHUB_STEP_SUMMARY
+        # Providing the output to the environment
+        echo "OLD_VERSION=$OLD" >> $GITHUB_ENV
+        echo "NEW_VERSION=$NEW" >> $GITHUB_ENV
       env:
         source: '${{ github.event.inputs.new || github.head_ref }}'
         target: '${{ github.event.inputs.old || github.event.pull_request.base.ref }}'
         githubRepo: '${{github.server_url}}/${{github.repository}}.git'
         noTargetBranch: 'no target branch'
-       
-    - if: ${{ github.event.pull_request.base.ref != '' }}
-      name: 📝 Comment on PR
-      uses: thollander/actions-comment-pull-request@v3
+
+    - name: 🔍 Detect Changes
+      uses: Adyen/adyen-swift-public-api-diff@main
+      id: public_api_diff
       with:
-        file-path: "${{ github.workspace }}/api_comparison.md"
-        comment-tag: api_changes
-        mode: recreate
+        platform: "iOS"
+        new: ${{ env.NEW_VERSION }}
+        old: ${{ env.OLD_VERSION }}
