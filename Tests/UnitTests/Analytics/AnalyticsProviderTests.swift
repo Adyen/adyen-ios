@@ -12,10 +12,9 @@ class AnalyticsProviderTests: XCTestCase {
     
     func testAnalyticsProviderIsInitializedWithCorrectDefaultConfigurationValues() throws {
         // Given
-        let analyticsConfiguration = AnalyticsConfiguration()
         let sut = AnalyticsProvider(
             apiClient: APIClientMock(),
-            context: AnalyticsContext(),
+            configuration: AnalyticsConfiguration(),
             eventAnalyticsProvider: nil
         )
 
@@ -103,6 +102,7 @@ class AnalyticsProviderTests: XCTestCase {
                 XCTAssertNil(initialAnalyticsdRequest.amount)
                 XCTAssertEqual(initialAnalyticsdRequest.version, adyenSdkVersion)
                 XCTAssertEqual(initialAnalyticsdRequest.platform, "iOS")
+                XCTAssertEqual(initialAnalyticsdRequest.level, "all")
                 analyticsExpectation.fulfill()
             }
         }
@@ -129,7 +129,7 @@ class AnalyticsProviderTests: XCTestCase {
         )
         let sut = AnalyticsProvider(
             apiClient: APIClientMock(),
-            context: AnalyticsContext(),
+            configuration: AnalyticsConfiguration(),
             eventAnalyticsProvider: eventAnalyticsProvider
         )
         
@@ -199,9 +199,11 @@ class AnalyticsProviderTests: XCTestCase {
             }
         }
         
+        var configuration = AnalyticsConfiguration()
+        configuration.context = AnalyticsContext(version: "version", platform: .reactNative)
         let analyticsProvider = AnalyticsProvider(
             apiClient: apiClient,
-            context: .init(version: "version", platform: .reactNative),
+            configuration: configuration,
             eventAnalyticsProvider: nil
         )
         
@@ -214,10 +216,13 @@ class AnalyticsProviderTests: XCTestCase {
     
     func testInitialRequestEncoding() throws {
         
+        var configuration = AnalyticsConfiguration()
+        configuration.context = AnalyticsContext(version: "version", platform: .flutter)
+        
         let analyticsData = AnalyticsData(
             flavor: .components(type: .achDirectDebit),
             additionalFields: AdditionalAnalyticsFields(amount: .init(value: 1, currencyCode: "EUR"), sessionId: "test_session_id"),
-            context: AnalyticsContext(version: "version", platform: .flutter)
+            configuration: configuration
         )
         
         let request = InitialAnalyticsRequest(data: analyticsData)
@@ -237,6 +242,7 @@ class AnalyticsProviderTests: XCTestCase {
             "referrer": analyticsData.referrer,
             "deviceBrand": analyticsData.deviceBrand,
             "deviceModel": analyticsData.deviceModel,
+            "level": analyticsData.level.rawValue,
             "amount": [
                 "currency": "EUR",
                 "value": 1
@@ -260,7 +266,7 @@ class AnalyticsProviderTests: XCTestCase {
     private func createSUT(apiClient: APIClientMock) -> AnalyticsProvider {
         let sut = AnalyticsProvider(
             apiClient: apiClient,
-            context: AnalyticsContext(),
+            configuration: AnalyticsConfiguration(),
             eventAnalyticsProvider: nil
         )
         

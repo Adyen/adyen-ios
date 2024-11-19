@@ -74,3 +74,20 @@ public struct AdditionalAnalyticsFields {
         self.sessionId = sessionId
     }
 }
+
+/// Describes the levels that determine which analytics calls are made.
+internal enum AnalyticsLevel: String, Encodable {
+    
+    /// Indicates all analytics are enabled.
+    case all
+    
+    /// Indicates only the initial call is enabled.
+    case initial
+}
+
+extension AnalyticsConfiguration {
+    
+    internal var analyticsLevel: AnalyticsLevel {
+        isEnabled ? .all : .initial
+    }
+}

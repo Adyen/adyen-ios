@@ -47,6 +47,7 @@ internal struct InitialAnalyticsRequest: APIRequest {
     private let containerWidth: Int?
     private let paymentMethods: [String]
     private let component: String
+    internal let level: String
     internal let amount: Amount?
     internal let sessionId: String?
 
@@ -67,6 +68,7 @@ internal struct InitialAnalyticsRequest: APIRequest {
         self.containerWidth = data.containerWidth
         self.paymentMethods = data.paymentMethods
         self.component = data.component
+        self.level = data.level.rawValue
         self.amount = data.amount
         self.sessionId = data.sessionId
     }
@@ -86,6 +88,7 @@ internal struct InitialAnalyticsRequest: APIRequest {
         case containerWidth
         case paymentMethods
         case component
+        case level
         case amount
         case sessionId
     }

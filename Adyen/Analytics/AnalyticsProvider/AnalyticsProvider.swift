@@ -20,16 +20,16 @@ internal final class AnalyticsProvider: AnyAnalyticsProvider {
     internal var eventAnalyticsProvider: AnyEventAnalyticsProvider?
     
     private let uniqueAssetAPIClient: UniqueAssetAPIClient<InitialAnalyticsResponse>
-    private let context: AnalyticsContext
+    private let configuration: AnalyticsConfiguration
 
     // MARK: - Initializers
 
     internal init(
         apiClient: APIClientProtocol,
-        context: AnalyticsContext,
+        configuration: AnalyticsConfiguration,
         eventAnalyticsProvider: AnyEventAnalyticsProvider?
     ) {
-        self.context = context
+        self.configuration = configuration
         self.eventAnalyticsProvider = eventAnalyticsProvider
         self.uniqueAssetAPIClient = UniqueAssetAPIClient<InitialAnalyticsResponse>(apiClient: apiClient)
     }
@@ -40,7 +40,7 @@ internal final class AnalyticsProvider: AnyAnalyticsProvider {
         let analyticsData = AnalyticsData(
             flavor: flavor,
             additionalFields: additionalFields,
-            context: context
+            configuration: configuration
         )
 
         let initialAnalyticsRequest = InitialAnalyticsRequest(data: analyticsData)

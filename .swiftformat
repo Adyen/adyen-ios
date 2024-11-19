@@ -1,4 +1,4 @@
---disable blankLinesAtStartOfScope,blankLinesAtEndOfScope,unusedArguments,redundantSelf,wrapMultilineStatementBraces,extensionAccessControl,redundantClosure,redundantInternal,preferForLoop,redundantRawValues
+--disable blankLinesAtStartOfScope,blankLinesAtEndOfScope,unusedArguments,redundantSelf,wrapMultilineStatementBraces,extensionAccessControl,redundantClosure,redundantInternal,preferForLoop,redundantRawValues,docCommentsBeforeModifiers
 --swiftversion "5.7"
 --commas inline
 --ranges nospace

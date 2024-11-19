@@ -21,7 +21,7 @@ class AnalyticsEventTests: XCTestCase {
         apiClient.mockedResults = [checkoutAttemptIdResult]
         sut = AnalyticsProvider(
             apiClient: apiClient,
-            context: .init(),
+            configuration: .init(),
             eventAnalyticsProvider: nil
         )
     }
@@ -40,7 +40,7 @@ class AnalyticsEventTests: XCTestCase {
         // Given
         sut = AnalyticsProvider(
             apiClient: apiClient,
-            context: .init(),
+            configuration: .init(),
             eventAnalyticsProvider: nil
         )
 
@@ -61,10 +61,9 @@ class AnalyticsEventTests: XCTestCase {
 
     func testSendInitialEventGivenEnabledAndFlavorIsDropInShouldSendInitialRequest() throws {
         // Given
-        let analyticsConfiguration = AnalyticsConfiguration()
         sut = AnalyticsProvider(
             apiClient: apiClient,
-            context: .init(),
+            configuration: .init(),
             eventAnalyticsProvider: nil
         )
 

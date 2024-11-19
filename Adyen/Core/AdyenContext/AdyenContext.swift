@@ -81,7 +81,7 @@ public final class AdyenContext: PaymentAware {
         
         return AnalyticsProvider(
             apiClient: APIClient(apiContext: analyticsApiContext),
-            context: analyticsConfiguration.context,
+            configuration: analyticsConfiguration,
             eventAnalyticsProvider: eventAnalyticsProvider
         )
     }
