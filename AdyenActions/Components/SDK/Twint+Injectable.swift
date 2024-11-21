@@ -17,21 +17,33 @@ import Foundation
             }
         }
         
-        @objc func pay(withCode code: String, appConfiguration: TWAppConfiguration, callback: String) -> Error? {
-            Twint.pay(withCode: code, appConfiguration: appConfiguration, callback: callback) { error in
-                print(error)
-            }
-
-            return nil
+        @objc func pay(
+            withCode code: String,
+            appConfiguration: TWAppConfiguration,
+            callback: String,
+            completionHandler: @escaping (Error?) -> Void
+        ) {
+            Twint.pay(
+                withCode: code,
+                appConfiguration: appConfiguration,
+                callback: callback,
+                completionHandler: completionHandler
+            )
         }
 
         @objc
-        func registerForUOF(withCode code: String, appConfiguration: TWAppConfiguration, callback: String) -> Error? {
-            Twint.registerForUOF(withCode: code, appConfiguration: appConfiguration, callback: callback) { error in
-                print(error)
-            }
-
-            return nil
+        func registerForUOF(
+            withCode code: String,
+            appConfiguration: TWAppConfiguration,
+            callback: String,
+            completionHandler: @escaping (Error?) -> Void
+        ) {
+            Twint.registerForUOF(
+                withCode: code,
+                appConfiguration: appConfiguration,
+                callback: callback,
+                completionHandler: completionHandler
+            )
         }
 
         @objc func controller(

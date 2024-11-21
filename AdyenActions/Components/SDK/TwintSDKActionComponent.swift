@@ -120,31 +120,34 @@ import Foundation
         }
 
         private func invokeTwint(app: TWAppConfiguration, action: TwintSDKAction) {
-            let error: Error?
+            let completionHandler: (Error?) -> Void = { [weak self] error in
+                guard let self else { return }
+                if let error {
+                    self.handleShowError(error.localizedDescription)
+                    return
+                }
+
+                RedirectListener.registerForURL { [weak self] url in
+                    self?.twint.handleOpen(url) { [weak self] error in
+                        self?.handlePaymentResult(error: error, action: action)
+                    }
+                }
+            }
 
             if action.sdkData.isStored {
-                error = twint.registerForUOF(
+                twint.registerForUOF(
                     withCode: action.sdkData.token,
                     appConfiguration: app,
-                    callback: configuration.callbackAppScheme
+                    callback: configuration.callbackAppScheme,
+                    completionHandler: completionHandler
                 )
             } else {
-                error = twint.pay(
+                twint.pay(
                     withCode: action.sdkData.token,
                     appConfiguration: app,
-                    callback: configuration.callbackAppScheme
+                    callback: configuration.callbackAppScheme,
+                    completionHandler: completionHandler
                 )
-            }
-
-            if let error {
-                handleShowError(error.localizedDescription)
-                return
-            }
-
-            RedirectListener.registerForURL { [weak self] url in
-                self?.twint.handleOpen(url) { [weak self] error in
-                    self?.handlePaymentResult(error: error, action: action)
-                }
             }
         }
 
