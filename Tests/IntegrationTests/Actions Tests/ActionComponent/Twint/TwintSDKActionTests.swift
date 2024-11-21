@@ -31,12 +31,12 @@ import XCTest
             let twintSpy = TwintSpy { configurationsBlock in
                 fetchBlockExpectation.fulfill()
                 configurationsBlock([])
-            } handlePay: { code, appConfiguration, callbackAppScheme in
+            } handlePay: { code, appConfiguration, callbackAppScheme, completionHandler in
                 XCTFail("Pay should not have been called")
-                return nil
-            } handleRegisterForUOF: { _, _, _ in
+                completionHandler(nil)
+            } handleRegisterForUOF: { _, _, _, completionHandler in
                 XCTFail("RegisterForUOF should not have been called.")
-                return nil
+                completionHandler(nil)
             } handleController: { installedAppConfigurations, selectionHandler, cancelHandler in
                 XCTFail("Twint controller should not have been shown")
                 return nil
@@ -86,16 +86,16 @@ import XCTest
             let twintSpy = TwintSpy { configurationsBlock in
                 fetchBlockExpectation.fulfill()
                 configurationsBlock([.dummy])
-            } handlePay: { code, appConfiguration, callbackAppScheme in
+            } handlePay: { code, appConfiguration, callbackAppScheme, completionHandler in
                 payBlockExpectation.fulfill()
                 XCTAssertEqual(code, TwintSDKAction.dummy.sdkData.token)
                 XCTAssertEqual(appConfiguration.appDisplayName, TWAppConfiguration.dummy.appDisplayName)
                 XCTAssertEqual(appConfiguration.appURLScheme, TWAppConfiguration.dummy.appURLScheme)
                 XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.callbackAppScheme)
-                return nil
-            } handleRegisterForUOF: { _, _, _ in
+                completionHandler(nil)
+            } handleRegisterForUOF: { _, _, _, completionHandler in
                 XCTFail("RegisterForUOF should not have been called.")
-                return nil
+                completionHandler(nil)
             } handleController: { installedAppConfigurations, selectionHandler, cancelHandler in
                 XCTFail("Twint controller should not have been shown")
                 return nil
@@ -139,16 +139,16 @@ import XCTest
             let twintSpy = TwintSpy { configurationsBlock in
                 fetchBlockExpectation.fulfill()
                 configurationsBlock(expectedAppConfigurations)
-            } handlePay: { code, appConfiguration, callbackAppScheme in
+            } handlePay: { code, appConfiguration, callbackAppScheme, completionHandler in
                 payBlockExpectation.fulfill()
                 XCTAssertEqual(code, TwintSDKAction.dummy.sdkData.token)
                 XCTAssertEqual(appConfiguration.appDisplayName, TWAppConfiguration.dummy.appDisplayName)
                 XCTAssertEqual(appConfiguration.appURLScheme, TWAppConfiguration.dummy.appURLScheme)
                 XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.callbackAppScheme)
-                return nil
-            } handleRegisterForUOF: { _, _, _ in
+                completionHandler(nil)
+            } handleRegisterForUOF: { _, _, _, completionHandler in
                 XCTFail("RegisterForUOF should not have been called.")
-                return nil
+                completionHandler(nil)
             } handleController: { installedAppConfigurations, selectionHandler, cancelHandler in
                 XCTAssertEqual(installedAppConfigurations, expectedAppConfigurations)
                 appSelectionHandler = selectionHandler
@@ -222,12 +222,13 @@ import XCTest
             let twintSpy = TwintSpy { configurationsBlock in
                 fetchBlockExpectation.fulfill()
                 configurationsBlock([.dummy])
-            } handlePay: { code, appConfiguration, callbackAppScheme in
+            } handlePay: { code, appConfiguration, callbackAppScheme, completionHandler in
                 payBlockExpectation.fulfill()
-                return MockError(errorDescription: expectedAlertMessage)
-            } handleRegisterForUOF: { _, _, _ in
+                let error = MockError(errorDescription: expectedAlertMessage)
+                completionHandler(error)
+            } handleRegisterForUOF: { _, _, _, completionHandler in
                 XCTFail("RegisterForUOF should not have been called.")
-                return nil
+                completionHandler(nil)
             } handleController: { installedAppConfigurations, selectionHandler, cancelHandler in
                 XCTFail("Twint controller should not have been shown")
                 return nil
@@ -270,16 +271,16 @@ import XCTest
             let twintSpy = TwintSpy { configurationsBlock in
                 fetchBlockExpectation.fulfill()
                 configurationsBlock([.dummy])
-            } handlePay: { _, _, _ in
+            } handlePay: { _, _, _, completionHandler in
                 XCTFail("Pay should not have been called.")
-                return nil
-            } handleRegisterForUOF: { code, appConfiguration, callbackAppScheme in
+                completionHandler(nil)
+            } handleRegisterForUOF: { code, appConfiguration, callbackAppScheme, completionHandler in
                 registerForUFO.fulfill()
                 XCTAssertEqual(code, TwintSDKAction.dummy.sdkData.token)
                 XCTAssertEqual(appConfiguration.appDisplayName, TWAppConfiguration.dummy.appDisplayName)
                 XCTAssertEqual(appConfiguration.appURLScheme, TWAppConfiguration.dummy.appURLScheme)
                 XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.callbackAppScheme)
-                return nil
+                completionHandler(nil)
             } handleController: { installedAppConfigurations, selectionHandler, cancelHandler in
                 XCTFail("Twint controller should not have been shown")
                 return nil
@@ -327,16 +328,16 @@ import XCTest
             let twintSpy = TwintSpy { configurationsBlock in
                 fetchBlockExpectation.fulfill()
                 configurationsBlock(expectedAppConfigurations)
-            } handlePay: { _, _, _ in
+            } handlePay: { _, _, _, completionHandler in
                 XCTFail("Pay should not have been called.")
-                return nil
-            } handleRegisterForUOF: { code, appConfiguration, callbackAppScheme in
+                completionHandler(nil)
+            } handleRegisterForUOF: { code, appConfiguration, callbackAppScheme, completionHandler in
                 registerForUFO.fulfill()
                 XCTAssertEqual(code, TwintSDKAction.dummy.sdkData.token)
                 XCTAssertEqual(appConfiguration.appDisplayName, TWAppConfiguration.dummy.appDisplayName)
                 XCTAssertEqual(appConfiguration.appURLScheme, TWAppConfiguration.dummy.appURLScheme)
                 XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.callbackAppScheme)
-                return nil
+                completionHandler(nil)
             } handleController: { installedAppConfigurations, selectionHandler, cancelHandler in
                 XCTAssertEqual(installedAppConfigurations, expectedAppConfigurations)
                 appSelectionHandler = selectionHandler
