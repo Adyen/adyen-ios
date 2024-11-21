@@ -70,12 +70,11 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>twint-issuer24</string>
+			<string></string>
 			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>twint-issuer24</string>
-			</array>
+			<array/>
 		</dict>
+		<dict/>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
