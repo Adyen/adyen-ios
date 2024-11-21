@@ -11,7 +11,7 @@
 
 @interface Twint : NSObject
 
-typedef void(^TWResponseHandler)(NSError *error);
+typedef void (^TWResponseHandler)(NSError *error);
 
 typedef void (^TWInstalledAppFetchHandler)(NSArray<TWAppConfiguration *>* installedAppConfigurations);
 
@@ -19,23 +19,29 @@ typedef void (^TWAppChooserSelectionHandler)(TWAppConfiguration* selectedConfigu
 
 typedef void (^TWAppChooserCancelHandler)(void);
 
+typedef void (^TWOpenTwintAppResultHandler)(NSError *error);
+
 /** 
  * Calls the Twint app to execute a payment for a known code
  * @param code The transaction code
  * @param appConfiguration The app configuration with which the payment will be executed
  * @param callbackAppScheme The callback app scheme invoked once the Twint app is done with the payment
- * @return Returns a NSError object which is nil in case of successful call
+ * @param completionHandler The block which will be executed with an NSError object or nil in case of success
  */
-+ (NSError*)payWithCode:(NSString*)code appConfiguration:(TWAppConfiguration *)appConfiguration callback:(NSString*)callbackAppScheme;
++ (void)payWithCode:(NSString*)code appConfiguration:(TWAppConfiguration *)appConfiguration callback:(NSString*)callbackAppScheme completionHandler:(TWOpenTwintAppResultHandler)completionHandler;
+
++ (NSError*)payWithCode:(NSString*)code appConfiguration:(TWAppConfiguration *)appConfiguration callback:(NSString*)callbackAppScheme __attribute__((deprecated("Use payWithCode:appConfiguration:callback:completionHandler: instead. This one fails on iOS 18 when using Xcode 16.")));
 
 /**
  * This method starts the registration process in the Twint app with a given code
  * @param code The transaction code
  * @param appConfiguration The app configuration with which the registration will be executed
  * @param callbackAppScheme The callback app scheme invoked once the Twint app is done with the registration
- * @return Returns a NSError object which is nil in case of successful call
+ * @param completionHandler The block which will be executed with an NSError object or nil in case of success
  */
-+ (NSError *)registerForUOFWithCode:(NSString *)code appConfiguration:(TWAppConfiguration *)appConfiguration callback:(NSString *)callbackAppScheme;
++ (void)registerForUOFWithCode:(NSString *)code appConfiguration:(TWAppConfiguration *)appConfiguration callback:(NSString *)callbackAppScheme completionHandler:(TWOpenTwintAppResultHandler)completionHandler;
+
++ (NSError *)registerForUOFWithCode:(NSString *)code appConfiguration:(TWAppConfiguration *)appConfiguration callback:(NSString *)callbackAppScheme __attribute__((deprecated("Use registerForUOFWithCode:appConfiguration:callback:completionHandler: instead. This one fails on iOS 18 when using Xcode 16.")));
 
 /**
  * Fetches all available app configurations from a remote and returns all that are potentially installed on the device. If there is an error during the fetch, the cache will be used. If there is nothing in the cache yet, all Twint apps will be probed until one is found that is installed.
