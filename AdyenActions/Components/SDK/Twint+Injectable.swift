@@ -18,12 +18,20 @@ import Foundation
         }
         
         @objc func pay(withCode code: String, appConfiguration: TWAppConfiguration, callback: String) -> Error? {
-            Twint.pay(withCode: code, appConfiguration: appConfiguration, callback: callback)
+            Twint.pay(withCode: code, appConfiguration: appConfiguration, callback: callback) { error in
+                print(error)
+            }
+
+            return nil
         }
 
         @objc
         func registerForUOF(withCode code: String, appConfiguration: TWAppConfiguration, callback: String) -> Error? {
-            Twint.registerForUOF(withCode: code, appConfiguration: appConfiguration, callback: callback)
+            Twint.registerForUOF(withCode: code, appConfiguration: appConfiguration, callback: callback) { error in
+                print(error)
+            }
+
+            return nil
         }
 
         @objc func controller(
