@@ -51,7 +51,7 @@ public final class PayByBankUSComponent: PaymentComponent, PresentableComponent 
             supportedBankLogoNames: PayByBankUSPaymentMethod.logoNames,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters,
-            logoUrlProvider: LogoURLProvider(environment: context.apiContext.environment),
+            logoUrlProvider: logoUrlProvider,
             continueHandler: { [weak self] in
                 self?.initiatePayment()
             }
