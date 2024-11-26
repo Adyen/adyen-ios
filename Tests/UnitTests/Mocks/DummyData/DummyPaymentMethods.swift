@@ -504,9 +504,24 @@ let mealVoucherSodexo = [
     "type": "mealVoucher_FR_sodexo"
 ] as [String: Any]
 
-let boleto = [
+let boletoBancarioSantander = [
     "name": "Boleto Bancario",
     "type": "boletobancario_santander"
+]
+
+let primeiroPayBoleto = [
+    "name": "Boleto Bancario",
+    "type": "primeiropay_boleto"
+]
+
+let boletoBancario = [
+    "name": "Boleto Bancario",
+    "type": "boletobancario"
+]
+
+let boletoBancarioItau = [
+    "name": "Boleto Bancario",
+    "type": "boletobancario_itau"
 ]
 
 let bacsDirectDebit = [

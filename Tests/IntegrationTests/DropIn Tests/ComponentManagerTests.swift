@@ -57,7 +57,10 @@ class ComponentManagerTests: XCTestCase {
             econtextOnline,
             oxxo,
             multibanco,
-            boleto,
+            boletoBancario,
+            boletoBancarioSantander,
+            primeiroPayBoleto,
+            boletoBancarioItau,
             affirm,
             atome,
             achDirectDebit,
@@ -69,7 +72,7 @@ class ComponentManagerTests: XCTestCase {
         ]
     ]
     
-    let numberOfExpectedRegularComponents = 24
+    let numberOfExpectedRegularComponents = 27
 
     var presentationDelegate: PresentationDelegateMock!
     var context: AdyenContext!
@@ -105,8 +108,8 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.storedComponents.filter { $0.context.apiContext.clientKey == Dummy.apiContext.clientKey }.count, 6)
         XCTAssertEqual(sut.regularComponents.filter { $0.context.apiContext.clientKey == Dummy.apiContext.clientKey }.count, numberOfExpectedRegularComponents)
 
-        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 19)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 19)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 22)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 22)
         XCTAssertEqual(sut.regularComponents.filter { $0 is FinalizableComponent }.count, 0)
     }
 
@@ -123,8 +126,8 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.storedComponents.count, 6)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents + 1)
 
-        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 19)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 20)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 22)
+        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 23)
         XCTAssertEqual(sut.regularComponents.filter { $0 is FinalizableComponent }.count, 1)
     }
     
@@ -452,7 +455,7 @@ class ComponentManagerTests: XCTestCase {
         )
 
         // When
-        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .boleto })
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .boletoBancarioSantander })
 
         // Then
         let boletoComponent = try XCTUnwrap(paymentComponent as? BoletoComponent)

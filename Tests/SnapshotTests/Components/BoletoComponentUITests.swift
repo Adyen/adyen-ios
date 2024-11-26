@@ -20,7 +20,7 @@ final class BoletoComponentUITests: XCTestCase {
     }
     
     private var paymentMethod: BoletoPaymentMethod {
-        .init(type: .boleto, name: "Boleto Bancario")
+        .init(type: .boletoBancarioSantander, name: "Boleto Bancario")
     }
 
     func testUIConfiguration() {

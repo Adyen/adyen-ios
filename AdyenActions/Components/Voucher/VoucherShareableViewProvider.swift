@@ -48,6 +48,12 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
             view = createGenericView(with: action, fields: createOXXOVoucherFields(for: action))
         case let .boletoBancairoSantander(action):
             view = createBoletoView(with: action)
+        case let .boletoBancario(action):
+            view = createBoletoView(with: action)
+        case let .boletoBancarioItau(action):
+            view = createBoletoView(with: action)
+        case let .primeiroPayBoleto(action):
+            view = createBoletoView(with: action)
         case let .multibanco(action):
             view = createGenericView(with: action, fields: createMultibancoVoucherFields(for: action))
         }

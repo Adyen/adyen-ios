@@ -11,8 +11,8 @@ import XCTest
 
 class BoletoComponentTests: XCTestCase {
 
-    private var method = BoletoPaymentMethod(type: .boleto, name: "Boleto Bancario")
-
+    private var method = BoletoPaymentMethod(type: .boletoBancarioSantander, name: "Boleto Bancario")
+    
     func testFullPrefilledInfo() throws {
         // Given
 

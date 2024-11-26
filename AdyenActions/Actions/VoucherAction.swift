@@ -24,7 +24,16 @@ public enum VoucherPaymentMethod: String, Codable, CaseIterable {
     
     /// Boleto Bancairo Santander
     case boletoBancairoSantander = "boletobancario_santander"
-    
+
+    /// Boleto Bancario
+    case boletoBancario = "boletobancario"
+
+    /// Boleto Bancario Itau
+    case boletoBancarioItau = "boletobancario_itau"
+
+    /// Primeiro Pay Boleto
+    case primeiroPayBoleto = "primeiropay_boleto"
+
     /// OXXO
     case oxxo
     
@@ -49,7 +58,16 @@ public enum VoucherAction: Decodable {
     
     /// Indicates a Boleto Bancairo Santander Voucher type.
     case boletoBancairoSantander(BoletoVoucherAction)
-    
+
+    /// Indicates a Boleto Bancario Voucher type.
+    case boletoBancario(BoletoVoucherAction)
+
+    /// Indicates a Boleto Bancario Itau Voucher type.
+    case boletoBancarioItau(BoletoVoucherAction)
+
+    /// Indicates a Primeiro Pay Boleto Voucher type.
+    case primeiroPayBoleto(BoletoVoucherAction)
+
     /// Indicates an OXXO voucher type
     case oxxo(OXXOVoucherAction)
     
@@ -71,6 +89,12 @@ public enum VoucherAction: Decodable {
             self = try .econtextATM(EContextATMVoucherAction(from: decoder))
         case .boletoBancairoSantander:
             self = try .boletoBancairoSantander(BoletoVoucherAction(from: decoder))
+        case .boletoBancario:
+            self = try .boletoBancario(BoletoVoucherAction(from: decoder))
+        case .boletoBancarioItau:
+            self = try .boletoBancarioItau(BoletoVoucherAction(from: decoder))
+        case .primeiroPayBoleto:
+            self = try .primeiroPayBoleto(BoletoVoucherAction(from: decoder))
         case .oxxo:
             self = try .oxxo(OXXOVoucherAction(from: decoder))
         case .multibanco:
@@ -86,6 +110,12 @@ public enum VoucherAction: Decodable {
     public var anyAction: AnyVoucherAction {
         switch self {
         case let .boletoBancairoSantander(action):
+            return action
+        case let .boletoBancario(action):
+            return action
+        case let .boletoBancarioItau(action):
+            return action
+        case let .primeiroPayBoleto(action):
             return action
         case let .dokuAlfamart(action):
             return action

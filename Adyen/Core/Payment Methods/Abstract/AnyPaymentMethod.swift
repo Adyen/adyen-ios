@@ -35,7 +35,10 @@ internal enum AnyPaymentMethod: Codable {
     case econtextStores(EContextPaymentMethod)
     case econtextATM(EContextPaymentMethod)
     case econtextOnline(EContextPaymentMethod)
-    case boleto(BoletoPaymentMethod)
+    case boletoBancario(BoletoPaymentMethod)
+    case boletoBancarioSantander(BoletoPaymentMethod)
+    case boletoBancarioItau(BoletoPaymentMethod)
+    case primeiroPayBoleto(BoletoPaymentMethod)
     case affirm(AffirmPaymentMethod)
     case atome(AtomePaymentMethod)
     case onlineBanking(OnlineBankingPaymentMethod)
@@ -74,7 +77,10 @@ internal enum AnyPaymentMethod: Codable {
         case let .econtextStores(paymentMethod): return paymentMethod
         case let .econtextATM(paymentMethod): return paymentMethod
         case let .econtextOnline(paymentMethod): return paymentMethod
-        case let .boleto(paymentMethod): return paymentMethod
+        case let .boletoBancario(paymentMethod): return paymentMethod
+        case let .boletoBancarioSantander(paymentMethod): return paymentMethod
+        case let .boletoBancarioItau(paymentMethod): return paymentMethod
+        case let .primeiroPayBoleto(paymentMethod): return paymentMethod
         case let .affirm(paymentMethod): return paymentMethod
         case let .atome(paymentMethod): return paymentMethod
         case let .onlineBanking(paymentMethod): return paymentMethod

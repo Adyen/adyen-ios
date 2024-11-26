@@ -79,7 +79,10 @@ internal enum AnyPaymentMethodDecoder {
         .econtextStores: EContextStoresPaymentMethodDecoder(),
         .econtextATM: EContextATMPaymentMethodDecoder(),
         .econtextOnline: EContextOnlinePaymentMethodDecoder(),
-        .boleto: BoletoPaymentMethodDecoder(),
+        .boletoBancario: BoletoPaymentMethodDecoder(),
+        .boletoBancarioSantander: BoletoPaymentMethodDecoder(),
+        .boletoBancarioItau: BoletoPaymentMethodDecoder(),
+        .primeiroPayBoleto: BoletoPaymentMethodDecoder(),
         .affirm: AffirmPaymentMethodDecoder(),
         .atome: AtomePaymentMethodDecoder(),
         .onlineBankingCZ: OnlineBankingPaymentMethodDecoder(),
@@ -434,11 +437,11 @@ private struct EContextOnlinePaymentMethodDecoder: PaymentMethodDecoder {
 
 private struct BoletoPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
-        try .boleto(BoletoPaymentMethod(from: decoder))
+        try .boletoBancarioSantander(BoletoPaymentMethod(from: decoder))
     }
 
     func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
-        (paymentMethod as? BoletoPaymentMethod).map { .boleto($0) }
+        (paymentMethod as? BoletoPaymentMethod).map { .boletoBancarioSantander($0) }
     }
 }
 
