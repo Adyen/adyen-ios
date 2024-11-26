@@ -14,8 +14,6 @@ public protocol SubmittableComponent: PaymentComponent {
     /// with the payment component and initiates the loading state.
     /// Ensure that the loading state is appropriately stopped once the payment process is complete.
     ///
-    /// If the `showsSubmitButton` of the payment component is enabled, calling this method will have no effect and will simply return.
-    ///
     /// - Important:
     ///    - Ensure that the payment component is properly configured before calling this method.
     ///    - Handle stopping the loading state after the payment process is completed.
