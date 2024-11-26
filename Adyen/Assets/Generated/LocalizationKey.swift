@@ -356,6 +356,14 @@ public struct LocalizationKey {
     public static let paybybankTitle = LocalizationKey(key: "adyen.paybybank.title")
     /// Search…
     public static let searchPlaceholder = LocalizationKey(key: "adyen.search.placeholder")
+    /// Use Pay by Bank to pay instantly from any bank account.
+    public static let payByBankAISDDDisclaimerHeader = LocalizationKey(key: "adyen.payByBankAISDD.disclaimer.header")
+    /// By connecting your bank account you are authorizing debits to your account for any amount owed for use of our services and/or purchase of our products, until this authorization is revoked.
+    public static let payByBankAISDDDisclaimerBody = LocalizationKey(key: "adyen.payByBankAISDD.disclaimer.body")
+    /// Continue to Pay by Bank
+    public static let payByBankAISDDSubmit = LocalizationKey(key: "adyen.payByBankAISDD.submit")
+    /// + more
+    public static let payByBankAISDDMore = LocalizationKey(key: "adyen.payByBankAISDD.more")
     /// How would you like to use UPI?
     public static let upiModeSelection = LocalizationKey(key: "adyen.upi.modeSelection")
     /// Enter a correct virtual payment address

@@ -7,9 +7,10 @@
 import AdyenNetworking
 import UIKit
 
-internal class SupportedPaymentMethodLogosView: UIView {
+@_spi(AdyenInternal)
+public class SupportedPaymentMethodLogosView: UIView {
     
-    struct Style: ViewStyle {
+    public struct Style: ViewStyle {
         public var backgroundColor: UIColor = .clear
         
         public var images: ImageStyle = .init(
@@ -24,6 +25,8 @@ internal class SupportedPaymentMethodLogosView: UIView {
             font: .preferredFont(forTextStyle: .callout),
             color: UIColor.Adyen.componentSecondaryLabel
         )
+        
+        public init() {}
     }
     
     internal let imageSize: CGSize
@@ -44,7 +47,7 @@ internal class SupportedPaymentMethodLogosView: UIView {
     
     @AdyenDependency(\.imageLoader) private var imageLoader
     
-    internal init(
+    public init(
         imageSize: CGSize = .init(width: 24, height: 16),
         imageUrls: [URL],
         trailingText: String?,
@@ -60,7 +63,7 @@ internal class SupportedPaymentMethodLogosView: UIView {
         self.setContentHuggingPriority(.required, for: .horizontal)
     }
     
-    override internal func willMove(toSuperview newSuperview: UIView?) {
+    override public func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
         
         if newSuperview != nil {
