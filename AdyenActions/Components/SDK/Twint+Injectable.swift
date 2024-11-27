@@ -11,8 +11,11 @@ import Foundation
 
 #if canImport(TwintSDK)
     extension Twint {
-        @objc func fetchInstalledAppConfigurations(completion: @escaping ([TWAppConfiguration]) -> Void) {
-            Twint.fetchInstalledAppConfigurations(withMaxIssuerNumber: .max) { configurations in
+        @objc func fetchInstalledAppConfigurations(
+            maxIssuerNumber: Int,
+            completion: @escaping ([TWAppConfiguration]) -> Void
+        ) {
+            Twint.fetchInstalledAppConfigurations(withMaxIssuerNumber: maxIssuerNumber) { configurations in
                 completion(configurations ?? [])
             }
         }

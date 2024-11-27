@@ -43,6 +43,14 @@ import Foundation
             /// - Important: This value is  required to only provide the scheme,
             /// without a host/path/.... (e.g. "my-app", not a url "my-app://...")
             public let callbackAppScheme: String
+            
+            /// The issuer number of the highest scheme you listed under `LSApplicationQueriesSchemes`.
+            /// E.g. pass 39, if you listed all schemes from "twint-issuer1" up to and including "twint-issuer39". The value is clamped between 0 and 39.
+            ///
+            /// - Important: All apps above "twint-issuer39" will always be returned if one of these apps is installed. For this to work, `LSApplicationQueriesSchemes` must include "twint-extended".
+            /// If you configure any `maxIssuerNumber` below 39, the result will always contain all apps above `maxIssuerNumber` up to and including 39, even if none of them are installed.
+            /// Additionally, if the fetch fails and the cache is empty, none of these apps will be found when probing.
+            public let maxIssuerNumber: Int
 
             /// Initializes an instance of `Configuration`
             ///
@@ -55,10 +63,12 @@ import Foundation
             public init(
                 style: AwaitComponentStyle = .init(),
                 callbackAppScheme: String,
+                maxIssuerNumber: Int = .max,
                 localizationParameters: LocalizationParameters? = nil
             ) {
                 self.style = style
                 self.callbackAppScheme = callbackAppScheme
+                self.maxIssuerNumber = maxIssuerNumber
                 self.localizationParameters = localizationParameters
             }
         }
@@ -99,7 +109,7 @@ import Foundation
         /// - Parameter action: The Twint SDK action object.
         public func handle(_ action: TwintSDKAction) {
             AdyenAssertion.assert(message: "presentationDelegate is nil", condition: presentationDelegate == nil)
-            twint.fetchInstalledAppConfigurations { [weak self] installedApps in
+            twint.fetchInstalledAppConfigurations(maxIssuerNumber: configuration.maxIssuerNumber) { [weak self] installedApps in
                 guard let self else { return }
 
                 guard let firstApp = installedApps.first else {
