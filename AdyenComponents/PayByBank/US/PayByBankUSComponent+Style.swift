@@ -37,7 +37,7 @@ extension PayByBankUSComponent {
         
         public var headerImage: ImageStyle = .init(
             borderColor: UIColor.Adyen.componentSeparator,
-            borderWidth: 1.0 / UIScreen.main.nativeScale,
+            borderWidth: 0,
             cornerRadius: 8.0,
             clipsToBounds: true,
             contentMode: .scaleAspectFit
