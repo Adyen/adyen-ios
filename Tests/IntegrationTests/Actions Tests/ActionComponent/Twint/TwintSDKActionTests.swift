@@ -28,7 +28,8 @@ import XCTest
 
             let expectedAlertMessage = "No or an outdated version of TWINT is installed on this device. Please update or install the TWINT app."
 
-            let twintSpy = TwintSpy { configurationsBlock in
+            let twintSpy = TwintSpy { maxIssuerNumber, configurationsBlock in
+                XCTAssertEqual(maxIssuerNumber, .max)
                 fetchBlockExpectation.fulfill()
                 configurationsBlock([])
             } handlePay: { code, appConfiguration, callbackAppScheme, completionHandler in
@@ -80,10 +81,12 @@ import XCTest
 
         func testSingleAppFound() throws {
 
+            let expectedMaxIssuerNumber = 5
             let fetchBlockExpectation = expectation(description: "Fetch was called")
             let payBlockExpectation = expectation(description: "Pay was called")
 
-            let twintSpy = TwintSpy { configurationsBlock in
+            let twintSpy = TwintSpy { maxIssuerNumber, configurationsBlock in
+                XCTAssertEqual(maxIssuerNumber, expectedMaxIssuerNumber)
                 fetchBlockExpectation.fulfill()
                 configurationsBlock([.dummy])
             } handlePay: { code, appConfiguration, callbackAppScheme, completionHandler in
@@ -108,6 +111,7 @@ import XCTest
 
             let twintActionComponent = Self.actionComponent(
                 with: twintSpy,
+                configuration: .dummy(maxIssuerNumber: expectedMaxIssuerNumber),
                 presentationDelegate: presentationDelegate,
                 delegate: nil
             )
@@ -136,7 +140,8 @@ import XCTest
             var appSelectionHandler: ((TWAppConfiguration?) -> Void)? = nil
             var appCancelHandler: (() -> Void)? = nil
 
-            let twintSpy = TwintSpy { configurationsBlock in
+            let twintSpy = TwintSpy { maxIssuerNumber, configurationsBlock in
+                XCTAssertEqual(maxIssuerNumber, .max)
                 fetchBlockExpectation.fulfill()
                 configurationsBlock(expectedAppConfigurations)
             } handlePay: { code, appConfiguration, callbackAppScheme, completionHandler in
@@ -219,7 +224,8 @@ import XCTest
 
             let expectedAlertMessage = "Error Message"
 
-            let twintSpy = TwintSpy { configurationsBlock in
+            let twintSpy = TwintSpy { maxIssuerNumber, configurationsBlock in
+                XCTAssertEqual(maxIssuerNumber, .max)
                 fetchBlockExpectation.fulfill()
                 configurationsBlock([.dummy])
             } handlePay: { code, appConfiguration, callbackAppScheme, completionHandler in
@@ -268,7 +274,8 @@ import XCTest
             let fetchBlockExpectation = expectation(description: "Fetch was called")
             let registerForUFO = expectation(description: "registerForUFO was called")
 
-            let twintSpy = TwintSpy { configurationsBlock in
+            let twintSpy = TwintSpy { maxIssuerNumber, configurationsBlock in
+                XCTAssertEqual(maxIssuerNumber, .max)
                 fetchBlockExpectation.fulfill()
                 configurationsBlock([.dummy])
             } handlePay: { _, _, _, completionHandler in
@@ -325,7 +332,8 @@ import XCTest
             var appSelectionHandler: ((TWAppConfiguration?) -> Void)? = nil
             var appCancelHandler: (() -> Void)? = nil
 
-            let twintSpy = TwintSpy { configurationsBlock in
+            let twintSpy = TwintSpy { maxIssuerNumber, configurationsBlock in
+                XCTAssertEqual(maxIssuerNumber, .max)
                 fetchBlockExpectation.fulfill()
                 configurationsBlock(expectedAppConfigurations)
             } handlePay: { _, _, _, completionHandler in

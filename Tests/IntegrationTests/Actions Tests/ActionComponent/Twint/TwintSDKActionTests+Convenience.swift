@@ -26,6 +26,10 @@ import XCTest
         static var dummy: Self {
             .init(callbackAppScheme: "ui-host")
         }
+        
+        static func dummy(maxIssuerNumber: Int) -> Self {
+            .init(callbackAppScheme: "ui-host", maxIssuerNumber: maxIssuerNumber)
+        }
     }
 
     extension TwintSDKAction {
@@ -45,6 +49,7 @@ import XCTest
     
         static func actionComponent(
             with twintSpy: TwintSpy,
+            configuration: TwintSDKActionComponent.Configuration = .dummy,
             presentationDelegate: PresentationDelegate?,
             delegate: ActionComponentDelegate?,
             shouldFailPolling: Bool = false
@@ -60,7 +65,7 @@ import XCTest
         
             let component = TwintSDKActionComponent(
                 context: Dummy.context,
-                configuration: .dummy,
+                configuration: configuration,
                 twint: twintSpy,
                 pollingComponentBuilder: pollingBuilder
             )

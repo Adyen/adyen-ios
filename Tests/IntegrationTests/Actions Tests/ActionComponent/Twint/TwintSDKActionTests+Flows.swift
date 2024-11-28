@@ -103,7 +103,8 @@ import XCTest
         
             var twintResponseHandler: ((Error?) -> Void)?
         
-            let twintSpy = TwintSpy { configurationsBlock in
+            let twintSpy = TwintSpy { maxIssuerNumber, configurationsBlock in
+                XCTAssertEqual(maxIssuerNumber, .max)
                 fetchBlockExpectation.fulfill()
                 configurationsBlock([.dummy])
             } handlePay: { code, appConfiguration, callbackAppScheme, completionHandler in

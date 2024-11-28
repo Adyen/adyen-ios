@@ -14,7 +14,7 @@ import Foundation
 
     internal class TwintSpy: Twint {
     
-        internal typealias HandleFetchBlock = (@escaping ([TWAppConfiguration]) -> Void) -> Void
+        internal typealias HandleFetchBlock = (Int, @escaping ([TWAppConfiguration]) -> Void) -> Void
     
         internal typealias HandlePayBlock = (
             _ code: String,
@@ -62,9 +62,10 @@ import Foundation
         }
     
         @objc override internal func fetchInstalledAppConfigurations(
+            maxIssuerNumber: Int,
             completion: @escaping ([TWAppConfiguration]) -> Void
         ) {
-            handleFetchInstalledAppConfigurations(completion)
+            handleFetchInstalledAppConfigurations(maxIssuerNumber, completion)
         }
 
         @objc override internal func pay(
