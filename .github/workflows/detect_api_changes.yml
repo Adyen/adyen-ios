@@ -15,7 +15,7 @@ on:
 jobs:
 
   build:
-    permissions: write-all
+    permissions: read-all
     runs-on: macos-14 # Apple Silicon Runner
 
     steps:
