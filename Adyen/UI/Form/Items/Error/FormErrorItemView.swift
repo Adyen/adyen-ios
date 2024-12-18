@@ -80,4 +80,10 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
         return view
     }()
 
+    override internal func reset() {
+        super.reset()
+        
+        item.message = nil
+        item.isHidden.wrappedValue = true
+    }
 }
