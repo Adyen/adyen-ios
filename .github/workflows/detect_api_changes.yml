@@ -11,11 +11,13 @@ on:
       old:
         description: 'Branch/tag of the old/comparison version'
         required: true
+
+permissions:
+  pull-requests: write
+  contents: read
       
 jobs:
-
   build:
-    permissions: read-all
     runs-on: macos-14 # Apple Silicon Runner
 
     steps:
