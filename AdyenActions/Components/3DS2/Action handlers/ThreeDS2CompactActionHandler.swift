@@ -11,6 +11,14 @@ import Foundation
 /// Handles the 3D Secure 2 fingerprint and challenge in one call using a `fingerprintSubmitter`.
 internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, ComponentWrapper {
     
+    // MARK: - Private
+
+    private let fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter
+
+    private let threeDS2EventName = "3ds2"
+    
+    // MARK: - Internal
+    
     internal weak var presentationDelegate: Adyen.PresentationDelegate? {
         didSet {
             coreActionHandler.presentationDelegate = presentationDelegate
@@ -42,6 +50,8 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
         }
     }
     
+    internal var context: AdyenContext
+    
     /// Initializes the 3D Secure 2 action handler.
     ///
     /// - Parameter context: The context object for this component.
@@ -57,12 +67,13 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
         coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
         delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil
     ) {
+        self.context = context
         self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
             context: context,
             appearanceConfiguration: appearanceConfiguration,
             delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
         )
-        self.fingerprintSubmitter = fingerprintSubmitter ?? ThreeDS2FingerprintSubmitter(apiContext: context.apiContext)
+        self.fingerprintSubmitter = fingerprintSubmitter ?? ThreeDS2FingerprintSubmitter(context: context)
         self.coreActionHandler.service = service
     }
 
@@ -120,11 +131,4 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
             }
         }
     }
-
-    // MARK: - Private
-
-    private let fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter
-
-    private let threeDS2EventName = "3ds2"
-
 }

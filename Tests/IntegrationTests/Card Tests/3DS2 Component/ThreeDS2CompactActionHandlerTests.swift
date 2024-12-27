@@ -77,12 +77,32 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         )
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service)
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = ThreeDS2CompactActionHandler(
+            context: Dummy.context(with: analyticsProviderMock),
+            fingerprintSubmitter: submitter,
+            service: service
+        )
         sut.handle(fingerprintAction) { result in
             switch result {
             case .success:
                 XCTFail()
             case let .failure(error):
+                let errorEvent1 = analyticsProviderMock.errors[0]
+                XCTAssertEqual(errorEvent1.errorType, .threeDS2)
+                XCTAssertEqual(errorEvent1.component, "threeDS2Fingerprint")
+                XCTAssertEqual(
+                    errorEvent1.code,
+                    AnalyticsConstants.ErrorCode.threeDS2DecodingFailed.stringValue
+                )
+                
+                let errorEvent2 = analyticsProviderMock.errors[1]
+                XCTAssertEqual(errorEvent2.errorType, .threeDS2)
+                XCTAssertEqual(errorEvent2.component, "threeDS2Fingerprint")
+                XCTAssertEqual(
+                    errorEvent2.code,
+                    AnalyticsConstants.ErrorCode.threeDS2FingerprintHandlingFailed.stringValue
+                )
                 let decodingError = error as? DecodingError
                 switch decodingError {
                 case .dataCorrupted?: ()
@@ -164,7 +184,12 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             completion(nil, Dummy.error)
         }
 
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service)
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = ThreeDS2CompactActionHandler(
+            context: Dummy.context(with: analyticsProviderMock),
+            fingerprintSubmitter: submitter,
+            service: service
+        )
         sut.transaction = mockedTransaction
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
@@ -181,6 +206,14 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
                         // Check if there is a threeDS2SDKError in the payload.
                         let payload: Payload? = try? AdyenCoder.decodeBase64(threeDSResult.payload)
                         XCTAssertNotNil(payload?.threeDS2SDKError)
+                        
+                        let errorEvent = analyticsProviderMock.errors[0]
+                        XCTAssertEqual(errorEvent.errorType, .threeDS2)
+                        XCTAssertEqual(errorEvent.component, "threeDS2Challenge")
+                        XCTAssertEqual(
+                            errorEvent.code,
+                            AnalyticsConstants.ErrorCode.threeDS2ChallengeHandlingFailed.stringValue
+                        )
                     default:
                         XCTFail()
                     }
@@ -209,7 +242,12 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             completion(nil, Dummy.error)
         }
 
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service)
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = ThreeDS2CompactActionHandler(
+            context: Dummy.context(with: analyticsProviderMock),
+            fingerprintSubmitter: submitter,
+            service: service
+        )
         sut.transaction = mockedTransaction
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
@@ -218,6 +256,13 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             case .success:
                 XCTFail()
             case let .failure(error):
+                let errorEvent = analyticsProviderMock.errors[0]
+                XCTAssertEqual(errorEvent.errorType, .threeDS2)
+                XCTAssertEqual(errorEvent.component, "threeDS2Challenge")
+                XCTAssertEqual(
+                    errorEvent.code,
+                    AnalyticsConstants.ErrorCode.threeDS2DecodingFailed.stringValue
+                )
                 let decodingError = error as? DecodingError
                 switch decodingError {
                 case .dataCorrupted?: ()
@@ -236,7 +281,12 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
 
         let service = AnyADYServiceMock()
 
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service)
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = ThreeDS2CompactActionHandler(
+            context: Dummy.context(with: analyticsProviderMock),
+            fingerprintSubmitter: submitter,
+            service: service
+        )
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         sut.handle(challengeAction) { result in
@@ -244,6 +294,13 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             case .success:
                 XCTFail()
             case let .failure(error):
+                let errorEvent = analyticsProviderMock.errors[0]
+                XCTAssertEqual(errorEvent.errorType, .threeDS2)
+                XCTAssertEqual(errorEvent.component, "threeDS2Challenge")
+                XCTAssertEqual(
+                    errorEvent.code,
+                    AnalyticsConstants.ErrorCode.threeDS2TransactionMissing.stringValue
+                )
                 
                 let decodingError = error as? ThreeDS2Component.Error
                 switch decodingError {
@@ -275,12 +332,34 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         )
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service)
+        
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = ThreeDS2CompactActionHandler(
+            context: Dummy.context(with: analyticsProviderMock),
+            fingerprintSubmitter: submitter,
+            service: service
+        )
         sut.handle(fingerprintAction) { result in
             switch result {
             case .success:
                 XCTFail()
             case let .failure(error):
+                let errorEvent1 = analyticsProviderMock.errors[0]
+                XCTAssertEqual(errorEvent1.errorType, .threeDS2)
+                XCTAssertEqual(errorEvent1.component, "threeDS2Fingerprint")
+                XCTAssertEqual(
+                    errorEvent1.code,
+                    AnalyticsConstants.ErrorCode.threeDS2FingerprintCreationFailed.stringValue
+                )
+                
+                let errorEvent2 = analyticsProviderMock.errors[1]
+                XCTAssertEqual(errorEvent2.errorType, .threeDS2)
+                XCTAssertEqual(errorEvent2.component, "threeDS2Fingerprint")
+                XCTAssertEqual(
+                    errorEvent2.code,
+                    AnalyticsConstants.ErrorCode.threeDS2FingerprintHandlingFailed.stringValue
+                )
+                
                 let decodingError = error as? DecodingError
                 switch decodingError {
                 case .dataCorrupted?: ()

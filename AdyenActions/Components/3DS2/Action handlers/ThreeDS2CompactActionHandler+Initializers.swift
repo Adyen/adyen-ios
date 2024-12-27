@@ -20,7 +20,7 @@ extension ThreeDS2CompactActionHandler {
         delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?
     ) {
         
-        let fingerprintSubmitter = ThreeDS2FingerprintSubmitter(apiContext: context.apiContext)
+        let fingerprintSubmitter = ThreeDS2FingerprintSubmitter(context: context)
         self.init(
             context: context,
             fingerprintSubmitter: fingerprintSubmitter,

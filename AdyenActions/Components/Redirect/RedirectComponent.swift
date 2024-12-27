@@ -69,6 +69,8 @@ public final class RedirectComponent: ActionComponent {
     /// The component configurations.
     public var configuration: Configuration
     
+    private var action: RedirectAction?
+    
     /// Initializes the component.
     ///
     /// - Parameter context: The context object for this component.
@@ -99,6 +101,8 @@ public final class RedirectComponent: ActionComponent {
             flavor: _isDropIn ? .dropin : .components,
             context: context.apiContext
         )
+        
+        self.action = action
         
         if action.url.adyen.isHttp {
             openHttpSchemeUrl(action)
@@ -157,6 +161,7 @@ public final class RedirectComponent: ActionComponent {
                 self.registerRedirectBounceBackListener(action)
                 self.delegate?.didOpenExternalApplication(component: self)
             } else {
+                self.sendErrorEvent(.redirectFailed, type: .redirect)
                 self.delegate?.didFail(with: RedirectComponent.Error.appNotFound, from: self)
             }
         }
@@ -181,6 +186,7 @@ public final class RedirectComponent: ActionComponent {
     
     private func handleNativeMobileRedirect(withReturnURL returnURL: URL, redirectStateData: String, _ action: RedirectAction) throws {
         guard let queryString = returnURL.query else {
+            sendErrorEvent(.redirectParseFailed, type: .redirect)
             throw Error.invalidRedirectParameters
         }
         let request = NativeRedirectResultRequest(
@@ -191,6 +197,7 @@ public final class RedirectComponent: ActionComponent {
             guard let self else { return }
             switch result {
             case let .failure(error):
+                self.sendErrorEvent(.apiErrorNativeRedirect, type: .api)
                 self.delegate?.didFail(with: error, from: self)
             case let .success(response):
                 self.notifyDelegateDidProvide(redirectDetails: response, action)
@@ -201,6 +208,16 @@ public final class RedirectComponent: ActionComponent {
     private func notifyDelegateDidProvide(redirectDetails: RedirectDetails, _ action: RedirectAction) {
         let actionData = ActionComponentData(details: redirectDetails, paymentData: action.paymentData)
         delegate?.didProvide(actionData, from: self)
+    }
+    
+    private func sendErrorEvent(_ code: AnalyticsConstants.ErrorCode, type: AnalyticsEventError.ErrorType) {
+        let componentName = action?.paymentMethodType ?? configuration.componentName
+        var errorEvent = AnalyticsEventError(
+            component: componentName,
+            type: type
+        )
+        errorEvent.code = code.stringValue
+        context.analyticsProvider?.add(error: errorEvent)
     }
     
 }

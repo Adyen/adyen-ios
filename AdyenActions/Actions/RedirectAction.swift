@@ -18,15 +18,24 @@ public struct RedirectAction: Decodable {
     /// Native redirect data.
     public let nativeRedirectData: String?
     
+    internal let paymentMethodType: String?
+    
     /// Initializes a redirect action.
     ///
     /// - Parameters:
     ///   - url: The URL to which to redirect the user.
     ///   - paymentData: The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     ///   - nativeRedirectData: Native redirect data.
-    public init(url: URL, paymentData: String?, nativeRedirectData: String? = nil) {
+    ///   - paymentMethodType: The type of the payment method.
+    public init(
+        url: URL,
+        paymentData: String?,
+        nativeRedirectData: String? = nil,
+        paymentMethodType: String? = nil
+    ) {
         self.url = url
         self.paymentData = paymentData
         self.nativeRedirectData = nativeRedirectData
+        self.paymentMethodType = paymentMethodType
     }
 }

@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+@_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenActions
 @testable @_spi(AdyenInternal) import AdyenCard
 import XCTest
@@ -24,7 +25,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
 
     func testRedirect() throws {
         let apiClient = APIClientMock()
-        let sut = ThreeDS2FingerprintSubmitter(apiContext: Dummy.apiContext, apiClient: apiClient)
+        let sut = ThreeDS2FingerprintSubmitter(context: Dummy.context, apiClient: apiClient)
 
         let mockedRedirectAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "data")
         let mockedAction = Action.redirect(mockedRedirectAction)
@@ -57,7 +58,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
 
     func testThreeDSChallenge() throws {
         let apiClient = APIClientMock()
-        let sut = ThreeDS2FingerprintSubmitter(apiContext: Dummy.apiContext, apiClient: apiClient)
+        let sut = ThreeDS2FingerprintSubmitter(context: Dummy.context, apiClient: apiClient)
 
         let mockedChallengeAction = ThreeDS2ChallengeAction(challengeToken: "token", authorisationToken: "authToken", paymentData: "data")
         let mockedAction = Action.threeDS2Challenge(mockedChallengeAction)
@@ -90,7 +91,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
 
     func testNoAction() throws {
         let apiClient = APIClientMock()
-        let sut = ThreeDS2FingerprintSubmitter(apiContext: Dummy.apiContext, apiClient: apiClient)
+        let sut = ThreeDS2FingerprintSubmitter(context: Dummy.context, apiClient: apiClient)
 
         let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
         let mockedResponse = Submit3DS2FingerprintResponse(result: .details(mockedDetails))
@@ -124,7 +125,8 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
 
     func testFailure() throws {
         let apiClient = APIClientMock()
-        let sut = ThreeDS2FingerprintSubmitter(apiContext: Dummy.apiContext, apiClient: apiClient)
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = ThreeDS2FingerprintSubmitter(context: Dummy.context(with: analyticsProviderMock), apiClient: apiClient)
 
         apiClient.mockedResults = [.failure(Dummy.error)]
 
@@ -134,6 +136,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
             switch result {
             case let .failure(error):
                 XCTAssertEqual(error as? Dummy, Dummy.error)
+                XCTAssertEqual(analyticsProviderMock.errors[0].errorType, .api)
             case .success:
                 XCTFail()
             }

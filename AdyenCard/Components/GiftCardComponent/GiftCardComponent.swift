@@ -462,8 +462,18 @@ extension GiftCardComponent {
                 storePaymentMethod: false
             ))
         } catch {
+            sendEncryptionErrorEvent()
             return .failure(error)
         }
+    }
+    
+    private func sendEncryptionErrorEvent() {
+        var errorEvent = AnalyticsEventError(
+            component: paymentMethod.type.rawValue,
+            type: .internal
+        )
+        errorEvent.code = AnalyticsConstants.ErrorCode.encryptionError.stringValue
+        context.analyticsProvider?.add(error: errorEvent)
     }
 }
 

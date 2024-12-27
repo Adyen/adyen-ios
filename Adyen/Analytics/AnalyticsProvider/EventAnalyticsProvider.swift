@@ -16,7 +16,14 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
         static let errorLimit = 5
     }
     
-    internal var checkoutAttemptId: String?
+    internal var checkoutAttemptId: String? {
+        didSet {
+            if checkoutAttemptId != nil {
+                startNextTimer()
+            }
+        }
+    }
+
     internal let apiClient: APIClientProtocol
     internal let eventDataSource: AnyAnalyticsEventDataSource
     
@@ -34,7 +41,6 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
         self.eventDataSource = eventDataSource
         self.context = context
         self.batchInterval = batchInterval
-        startNextTimer()
     }
     
     deinit {

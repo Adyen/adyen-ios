@@ -73,7 +73,8 @@ class RedirectComponentTests: XCTestCase {
     }
     
     func testOpenCustomSchemeFailure() {
-        let sut = RedirectComponent(context: Dummy.context)
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = RedirectComponent(context: Dummy.context(with: analyticsProviderMock))
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
         let appLauncher = AppLauncherMock()
@@ -94,13 +95,21 @@ class RedirectComponentTests: XCTestCase {
             XCTFail("delegate.didOpenExternalApplication() must not to be called")
         }
         
+        let testPaymentMethodName = "testRedirectPaymentMethod"
         delegate.onDidFail = { error, component in
+            let errorEvent = analyticsProviderMock.errors[0]
+            XCTAssertEqual(errorEvent.errorType, .redirect)
+            XCTAssertEqual(errorEvent.component, testPaymentMethodName)
+            XCTAssertEqual(
+                errorEvent.code,
+                AnalyticsConstants.ErrorCode.redirectFailed.stringValue
+            )
             XCTAssertTrue(error is RedirectComponent.Error)
             XCTAssertEqual(error as! RedirectComponent.Error, RedirectComponent.Error.appNotFound)
             XCTAssertTrue(component === sut)
         }
         
-        let action = RedirectAction(url: URL(string: "bla://")!, paymentData: "test_data")
+        let action = RedirectAction(url: URL(string: "bla://")!, paymentData: "test_data", paymentMethodType: testPaymentMethodName)
         sut.handle(action)
         
         waitForExpectations(timeout: 10, handler: nil)
@@ -320,7 +329,11 @@ class RedirectComponentTests: XCTestCase {
     
     func testNativeRedirectEndpointCallFails() {
         let apiClient = APIClientMock()
-        let sut = RedirectComponent(context: Dummy.context, apiClient: apiClient.retryAPIClient(with: SimpleScheduler(maximumCount: 2)))
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = RedirectComponent(
+            context: Dummy.context(with: analyticsProviderMock),
+            apiClient: apiClient.retryAPIClient(with: SimpleScheduler(maximumCount: 2))
+        )
         apiClient.mockedResults = [.failure(Dummy.error)]
         
         let appLauncher = AppLauncherMock()
@@ -339,6 +352,13 @@ class RedirectComponentTests: XCTestCase {
             XCTFail("Should not call onDidProvide")
         }
         delegate.onDidFail = { error, _ in
+            let errorEvent = analyticsProviderMock.errors[0]
+            XCTAssertEqual(errorEvent.errorType, .api)
+            XCTAssertEqual(errorEvent.component, "redirect")
+            XCTAssertEqual(
+                errorEvent.code,
+                AnalyticsConstants.ErrorCode.apiErrorNativeRedirect.stringValue
+            )
             XCTAssertEqual(error as! Dummy, .error)
             redirectExpectation.fulfill()
         }
