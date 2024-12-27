@@ -1,6 +1,6 @@
 name: 🏷️ Validate PR labels and release notes
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, reopened, labeled, unlabeled, edited]
 permissions:
   pull-requests: write
