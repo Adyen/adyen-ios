@@ -37,6 +37,7 @@ jobs:
         # Disabling this check from PRs of forked repositories because of insufficient access permissions
         if [[ "${{ env.headGithubRepo }}" != "${{ env.baseGithubRepo }}" ]]; then
           echo "The head repository is different from the base repository. Exiting..."
+          echo "skip_workflow=true" >> $GITHUB_ENV
           exit 0
         fi
         
@@ -60,6 +61,7 @@ jobs:
         noTargetBranch: 'no target branch'
 
     - name: 🔍 Detect Changes
+      if: env.skip_workflow != 'true'
       uses: Adyen/adyen-swift-public-api-diff@0.5.0
       id: public_api_diff
       with:
