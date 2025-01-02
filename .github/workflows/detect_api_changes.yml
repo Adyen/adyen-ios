@@ -68,8 +68,3 @@ jobs:
         platform: "iOS"
         new: ${{ env.NEW_VERSION }}
         old: ${{ env.OLD_VERSION }}
-        
-    - name: Output Github Step Summary
-      run: |
-        echo "Step summary incomming:"
-        cat $GITHUB_STEP_SUMMARY
