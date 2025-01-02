@@ -11,20 +11,24 @@ on:
       old:
         description: 'Branch/tag of the old/comparison version'
         required: true
-
-permissions:
-  pull-requests: write
-  contents: read
       
 jobs:
   build:
     runs-on: macos-14 # Apple Silicon Runner
-
+    
     steps:
     - uses: actions/checkout@v4
     - uses: n1hility/cancel-previous-runs@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Exit if fork PR
+      run: |
+        # Disabling this check from PRs of forked repositories because of insufficient access permissions
+        if [[ "${{ env.headGithubRepo }}" != "${{ env.baseGithubRepo }}" ]]; then
+          echo "The head repository is different from the base repository. Exiting..."
+          exit 0
+        fi
 
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
