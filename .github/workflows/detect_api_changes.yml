@@ -22,14 +22,6 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Exit if fork PR
-      run: |
-        # Disabling this check from PRs of forked repositories because of insufficient access permissions
-        if [[ "${{ env.headGithubRepo }}" != "${{ env.baseGithubRepo }}" ]]; then
-          echo "The head repository is different from the base repository. Exiting..."
-          exit 0
-        fi
-
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
@@ -42,6 +34,12 @@ jobs:
        
     - name: 👾 Define Diff Versions
       run: |
+        # Disabling this check from PRs of forked repositories because of insufficient access permissions
+        if [[ "${{ env.headGithubRepo }}" != "${{ env.baseGithubRepo }}" ]]; then
+          echo "The head repository is different from the base repository. Exiting..."
+          exit 0
+        fi
+        
         NEW="${{ env.source }}~${{ env.headGithubRepo }}"
         OLD="${{ env.target }}~${{ env.baseGithubRepo }}"
         
