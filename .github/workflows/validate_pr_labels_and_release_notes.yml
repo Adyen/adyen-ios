@@ -1,9 +1,13 @@
 name: 🏷️ Validate PR labels and release notes
-
 on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, labeled, unlabeled, edited]
   pull_request:
     types: [opened, synchronize, reopened, labeled, unlabeled, edited]
-
+    
+permissions:
+  pull-requests: write
+  issues: write
 jobs:
   get-pr-labels:
     runs-on: ubuntu-latest
@@ -14,6 +18,7 @@ jobs:
           fetch-depth: 0
 
       - name: Get the list of allowed pull request labels
+        id: get-allowed_labels
         run: |
           RED='\033[0;31m'
           NC='\033[0m'
@@ -24,29 +29,53 @@ jobs:
              exit 1
           fi 
           echo "LABELS=$(cat $FILE_PATH),chore,improvement" >> $GITHUB_OUTPUT
-        id: get-allowed_labels
         env:
           PROJECT_ROOT: ${{ github.workspace }}
 
-      - name: Validate labels
-        uses: jesusvasquez333/verify-pr-label-action@v1.4.0
-        with:
-          github-token: '${{ secrets.GITHUB_TOKEN }}'
-          valid-labels: ${{ steps.get-allowed_labels.outputs.LABELS }}
-
       - name: Get PR labels
-        uses: joerick/pr-labels-action@v1.0.9
         id: pr-labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = context.payload.pull_request.labels.map(l => l.name).join(',');
+            console.log('Debug: Found PR labels:', labels); 
+            core.setOutput('labels', labels);
+          result-encoding: string
 
-      - run: |
-          ALLOWED_LABELS="$ALLOWED_LABELS,chore,improvement"
+      - name: Validate labels and release notes
+        id: validate
+        run: |
+          ALLOWED_LABELS="$ALLOWED_LABELS"
           IFS=',' read -r -a ALLOWED_LABELS_ARRAY <<< "$ALLOWED_LABELS"
-
-          SHOULD_FAIL_JOB="false"
+          IFS=',' read -r -a PR_LABELS_ARRAY <<< "$PR_LABELS"
+          FORMATTED_LABELS=$(printf "'%s', " "${ALLOWED_LABELS_ARRAY[@]}" | sed 's/, $//')
+          
+          echo "Debug info:"
+          echo "Allowed labels: ${ALLOWED_LABELS_ARRAY[@]}"
+          echo "PR labels: ${PR_LABELS_ARRAY[@]}"
+          
+          SHOULD_FAIL=false
+          ERROR_MESSAGE=""
 
           RED='\033[0;31m'
           NC='\033[0m'
 
+          # Check if PR has any labels
+          if [ ${#PR_LABELS_ARRAY[@]} -eq 0 ]; then
+            ERROR_MESSAGE="❌ This pull request does not contain a valid label. Please add one of the following labels: [${FORMATTED_LABELS}]"
+            SHOULD_FAIL=true
+          fi
+
+          # Validate labels exist in allowed list
+          for LABEL in "${PR_LABELS_ARRAY[@]}"; do
+            if [[ ! " ${ALLOWED_LABELS_ARRAY[@]} " =~ " ${LABEL} " ]]; then
+              ERROR_MESSAGE="❌ This pull request contains invalid label: '${LABEL}'. Please use one of the following labels: [${FORMATTED_LABELS}]"
+              SHOULD_FAIL=true
+              break
+            fi
+          done
+
+          # Validate release notes
           for LABEL in "${ALLOWED_LABELS_ARRAY[@]}"; do
             LABEL=$(echo "$LABEL" | sed 's/^ *//g' | sed 's/ *$//g')
             if [[ "$LABEL" == "chore"  || "$LABEL" == "improvement" ]]; then
@@ -56,15 +85,85 @@ jobs:
               cmd="awk '/<$LABEL>.*<\/$LABEL>/'"
               FEATURE_RELEASE_NOTE="$(echo $PR_BODY | eval $cmd)"
               if [[ -z "$FEATURE_RELEASE_NOTE" ]]; then
-                 echo -e "${RED}Pull requests labeled with '$LABEL' must have the release note in the pull request body in the following format '<$LABEL> {THE RELEASE NOTE}  </$LABEL>'${NC}"
-                 SHOULD_FAIL_JOB="true"
+                 ERROR_MESSAGE="❌ Pull requests labeled with '${LABEL}' must have the release note wrapped in the same xml tag."
+                 SHOULD_FAIL=true
+                 break
               fi
             fi
           done
-          if [[ "$SHOULD_FAIL_JOB" == "true" ]]; then
+
+          if [ "$SHOULD_FAIL" = true ]; then
+            echo "$ERROR_MESSAGE"
+            echo "error_message=${ERROR_MESSAGE}" >> $GITHUB_OUTPUT
             exit 1
           fi
+          
         env:
           PR_BODY: ${{github.event.pull_request.body}}
           PR_LABELS: ${{steps.pr-labels.outputs.labels}}
           ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}
+
+      - name: Post or update error comment
+        if: failure() && steps.validate.outputs.error_message != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const commentIdentifier = '<!-- pr-labels-check -->';
+            const errorMessage = `${commentIdentifier}\n${`${{ steps.validate.outputs.error_message }}`}`;
+
+            // First find if we already have a comment from the bot
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            
+            const botComment = comments.find(comment => 
+              comment.user.login === 'github-actions[bot]' &&
+              comment.body.includes(commentIdentifier)
+            );
+            
+            
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: errorMessage
+              });
+            } else {
+              // Create new comment if none exists
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: errorMessage
+              });
+            }
+
+      - name: Remove error comment if exists
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const commentIdentifier = '<!-- pr-labels-check -->';
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+            
+            const botComment = comments.find(comment => 
+              comment.user.login === 'github-actions[bot]' &&
+              comment.body.includes(commentIdentifier)
+            );
+            
+            if (botComment) {
+              await github.rest.issues.deleteComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id
+              });
+            }
