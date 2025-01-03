@@ -274,6 +274,8 @@ extension CashAppPayComponent {
         /// Payment was declined by the Cash App Pay app.
         case declined
     
+        public var errorDescription: String? { localizedDescription }
+        
         public var localizedDescription: String? {
             switch self {
             case .noGrant:
