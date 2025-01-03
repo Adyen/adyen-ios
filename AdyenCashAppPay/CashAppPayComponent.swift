@@ -274,9 +274,7 @@ extension CashAppPayComponent {
         /// Payment was declined by the Cash App Pay app.
         case declined
     
-        public var errorDescription: String? { localizedDescription }
-        
-        public var localizedDescription: String? {
+        public var errorDescription: String? {
             switch self {
             case .noGrant:
                 return "There was no grant object in the customer request."

@@ -323,6 +323,7 @@ import XCTest
                     errorEvent.code,
                     AnalyticsConstants.ErrorCode.thirdPartyError.stringValue
                 )
+                XCTAssertEqual(errorEvent.message, "There was no grant object in the customer request.")
                 failureExpectation.fulfill()
             }
             
