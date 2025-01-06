@@ -13,10 +13,9 @@ on:
         required: true
       
 jobs:
-
   build:
     runs-on: macos-14 # Apple Silicon Runner
-
+    
     steps:
     - uses: actions/checkout@v4
     - uses: n1hility/cancel-previous-runs@v3
@@ -35,13 +34,20 @@ jobs:
        
     - name: 👾 Define Diff Versions
       run: |
-        NEW="${{ env.source }}~${{ env.githubRepo }}"
+        # Disabling this check from PRs of forked repositories because of insufficient access permissions
+        if [[ "${{ env.headGithubRepo }}" != "${{ env.baseGithubRepo }}" ]]; then
+          echo "The head repository is different from the base repository. Exiting..."
+          echo "skip_workflow=true" >> $GITHUB_ENV
+          exit 0
+        fi
+        
+        NEW="${{ env.source }}~${{ env.headGithubRepo }}"
+        OLD="${{ env.target }}~${{ env.baseGithubRepo }}"
+        
         if [[ '${{ github.head_ref || env.noTargetBranch }}' == release/* ]]
         then
             LATEST_TAG=$(git describe --tags --abbrev=0)
-            OLD="$LATEST_TAG~${{ env.githubRepo }}"
-        else
-            OLD="${{ env.target }}~${{ env.githubRepo }}"
+            OLD="$LATEST_TAG~${{ env.baseGithubRepo }}" 
         fi
         
         # Providing the output to the environment
@@ -50,11 +56,13 @@ jobs:
       env:
         source: '${{ github.event.inputs.new || github.head_ref }}'
         target: '${{ github.event.inputs.old || github.event.pull_request.base.ref }}'
-        githubRepo: '${{github.server_url}}/${{github.repository}}.git'
+        headGithubRepo: '${{github.server_url}}/${{ github.event.pull_request.head.repo.full_name || github.repository}}.git'
+        baseGithubRepo: '${{github.server_url}}/${{github.repository}}.git'
         noTargetBranch: 'no target branch'
 
     - name: 🔍 Detect Changes
-      uses: Adyen/adyen-swift-public-api-diff@0.6.0
+      if: env.skip_workflow != 'true'
+      uses: Adyen/adyen-swift-public-api-diff@0.5.0
       id: public_api_diff
       with:
         platform: "iOS"
