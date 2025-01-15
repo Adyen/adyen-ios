@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -49,22 +49,5 @@ public struct RedirectAction: Decodable {
         self.paymentData = paymentData
         self.type = type
         self.nativeRedirectData = nativeRedirectData
-    }
-
-    public init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.url = try container.decode(URL.self, forKey: .url)
-        self.paymentData = try container.decodeIfPresent(String.self, forKey: .paymentData)
-        self.type = try container.decode(RedirectType.self, forKey: .type)
-        self.nativeRedirectData = try container.decodeIfPresent(String.self, forKey: .nativeRedirectData)
-    }
-
-    // MARK: - Private
-
-    private enum CodingKeys: CodingKey {
-        case url
-        case paymentData
-        case type
-        case nativeRedirectData
     }
 }
