@@ -56,23 +56,4 @@ public struct RedirectAction: Decodable {
         self.nativeRedirectData = nativeRedirectData
         self.paymentMethodType = paymentMethodType
     }
-
-    public init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.url = try container.decode(URL.self, forKey: .url)
-        self.paymentData = try container.decodeIfPresent(String.self, forKey: .paymentData)
-        self.type = try container.decode(RedirectType.self, forKey: .type)
-        self.nativeRedirectData = try container.decodeIfPresent(String.self, forKey: .nativeRedirectData)
-        self.paymentMethodType = try container.decodeIfPresent(String.self, forKey: .paymentMethodType)
-    }
-
-    // MARK: - Private
-
-    private enum CodingKeys: CodingKey {
-        case url
-        case paymentData
-        case type
-        case nativeRedirectData
-        case paymentMethodType
-    }
 }
