@@ -36,12 +36,11 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Test Comment PR
+    - if: ${{ github.event.pull_request.base.ref != '' }}
+      name: Test Comment PR
       uses: thollander/actions-comment-pull-request@v3
       with:
-        message: |
-          Hello 
-          World
+        message: "Hello World"
         comment_tag: test_comment
 
     - name: 👾 Define Diff Versions
