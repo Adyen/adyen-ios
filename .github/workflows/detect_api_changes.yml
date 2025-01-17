@@ -35,18 +35,17 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-       
+
     - name: 👾 Define Diff Versions
       run: |
-        NEW="${{ env.source }}~${{ env.githubRepo }}"
-        
+        NEW="${{ env.source }}~${{ env.headGithubRepo }}"
+        OLD="${{ env.target }}~${{ env.baseGithubRepo }}"
+
         # Release branches get compared to the last tag instead of the target branch
         if [[ '${{ github.head_ref || env.noTargetBranch }}' == release/* ]]
         then
             LATEST_TAG=$(git describe --tags --abbrev=0)
-            OLD="$LATEST_TAG~${{ env.githubRepo }}"
-        else
-            OLD="${{ env.target }}~${{ env.githubRepo }}"
+            OLD="$LATEST_TAG~${{ env.baseGithubRepo }}" 
         fi
         
         # Providing the output to the environment
@@ -55,7 +54,8 @@ jobs:
       env:
         source: '${{ github.event.inputs.new || github.head_ref }}'
         target: '${{ github.event.inputs.old || github.event.pull_request.base.ref }}'
-        githubRepo: '${{github.server_url}}/${{github.repository}}.git'
+        headGithubRepo: '${{github.server_url}}/${{ github.event.pull_request.head.repo.full_name || github.repository}}.git'
+        baseGithubRepo: '${{github.server_url}}/${{github.repository}}.git'
         noTargetBranch: 'no target branch'
 
     - uses: actions/checkout@v4
@@ -97,7 +97,7 @@ jobs:
       with:
         path: ${{ env.BINARY_PATH }}
         key: build-cache-${{ runner.os }}-0.7.0
-        
+
     - name: "🏃 Run Diff"
       run: |
         NEW=${{ env.NEW_VERSION }}
