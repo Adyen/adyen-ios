@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -49,7 +49,7 @@ public struct AddressViewModel {
     /// :nodoc:
     public private(set) var schema: [FormScheme]
 
-    // swiftlint:disable function_body_length explicit_acl
+    // swiftlint:disable function_body_length
     internal static subscript(context: AddressViewModelBuilderContext) -> AddressViewModel {
         var viewModel = AddressViewModel(labels: [.city: .cityFieldTitle,
                                                   .houseNumberOrName: .houseNumberFieldTitle,
