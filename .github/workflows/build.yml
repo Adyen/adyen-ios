@@ -40,15 +40,6 @@ jobs:
           os: 'macos-14-xlarge'
           xcode_version: '16.1'
           needs_custom_sim: false # Takes the shipped simulator that comes with Xcode 16
-          
-        # - destination: 'name=iPhone 11 Pro'
-        #   scheme: AdyenUIHost
-        # - destination: 'name=iPhone-6,OS=11.4'
-        #   scheme: AdyenUIHost
-        # - destination: 'name=iPhone-X,OS=12.4'
-        #   scheme: AdyenUIKitTests
-        # - destination: 'name=iPhone 8,OS=13.7'
-        #   scheme: AdyenUIHost
     steps:
     - uses: actions/checkout@v3
     - uses: n1hility/cancel-previous-runs@v3
