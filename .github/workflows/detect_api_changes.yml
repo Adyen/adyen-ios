@@ -3,6 +3,10 @@ name: 👀 Detect public API changes
 on:
   pull_request_target:
     types: [opened, synchronize, reopened, labeled, unlabeled, edited]
+
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled, edited]
+    
   workflow_dispatch:
     inputs:
       new:
