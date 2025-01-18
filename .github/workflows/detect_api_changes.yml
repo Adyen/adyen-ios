@@ -62,7 +62,7 @@ jobs:
 
     - name: 🔍 Detect Changes
       if: env.skip_workflow != 'true'
-      uses: Adyen/adyen-swift-public-api-diff@0.7.0
+      uses: Adyen/adyen-swift-public-api-diff@0.8.1
       id: public_api_diff
       with:
         platform: "iOS"
