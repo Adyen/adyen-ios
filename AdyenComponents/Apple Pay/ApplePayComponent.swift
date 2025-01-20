@@ -82,8 +82,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     }
 
     public var viewController: UIViewController {
-        sendDidLoadEvent()
-        return createPaymentAuthorizationViewController()
+        createPaymentAuthorizationViewController()
     }
 
     public func didFinalize(with success: Bool, completion: (() -> Void)?) {
@@ -112,6 +111,10 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
             paymentAuthorizationViewController?.delegate = self
             state = .initial
         }
+        if paymentAuthorizationViewController?.isViewLoaded == false {
+            sendDidLoadEvent()
+        }
+        
         return paymentAuthorizationViewController!
     }
 

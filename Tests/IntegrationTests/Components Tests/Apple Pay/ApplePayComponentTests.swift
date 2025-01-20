@@ -431,6 +431,12 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertEqual(analyticsProviderMock.infos.count, 1)
         let infoType = analyticsProviderMock.infos.first?.type
         XCTAssertEqual(infoType, .rendered)
+        
+        // access view controller again but not trigger render
+        sut.viewController.loadViewIfNeeded()
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.infos.count, 1)
+        
     }
     
     private func getRandomContactFieldSet() -> Set<PKContactField> {
