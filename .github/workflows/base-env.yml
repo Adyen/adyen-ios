@@ -8,7 +8,7 @@ env:
 
 jobs:
   setup:
-    runs-on: macos-latest
+    runs-on: macos-14-xlarge
     steps:
       - name: Print Xcode version
         run: echo "The selected Xcode version is $XCODE_VERSION"
