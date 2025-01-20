@@ -136,9 +136,9 @@ extension ApplePayComponent {
                 // it does not compile when using older versions of Xcode - so we have to ignore this warning for now
                 
                 #if compiler(>=5.7)
-                paymentRequest.shippingContactEditingMode = allowShippingContactEditing ? .available : .storePickup
+                    paymentRequest.shippingContactEditingMode = allowShippingContactEditing ? .available : .storePickup
                 #else
-                paymentRequest.shippingContactEditingMode = allowShippingContactEditing ? .enabled : .storePickup
+                    paymentRequest.shippingContactEditingMode = allowShippingContactEditing ? .enabled : .storePickup
                 #endif
             }
             
