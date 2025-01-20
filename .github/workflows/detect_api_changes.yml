@@ -18,7 +18,9 @@ jobs:
     runs-on: macos-14
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: n1hility/cancel-previous-runs@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
