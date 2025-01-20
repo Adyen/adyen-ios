@@ -1101,9 +1101,9 @@ class CardComponentTests: XCTestCase {
             XCTAssertTrue(component === sut)
             let paymentDetails = data.paymentMethod as? CardDetails
             XCTAssertNotNil(paymentDetails)
-            
+
             XCTAssertNotEqual(paymentDetails?.password, "12")
-            XCTAssertTrue(paymentDetails!.password!.starts(with: "eyJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwiYWxnIjoiUlNBLU9BRVAtMjU2IiwidmVyc2lvbiI6IjEifQ"))
+            XCTAssertTrue(paymentDetails!.password!.starts(with: "eyJhbGciOiJSU0EtT0FFUC0yNTYiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwidmVyc2lvbiI6IjEifQ"))
             XCTAssertEqual(paymentDetails?.taxNumber, "121212")
             
             sut.stopLoadingIfNeeded()
