@@ -12,17 +12,17 @@ jobs:
       destination: "name=iPhone 16 Pro,OS=18.1"
       project: "Adyen.xcodeproj"
       params: "-derivedDataPath ./DerivedData -skipPackagePluginValidation"
-    runs-on: macos-14-xlarge # Apple Silicon Runner
+    runs-on: macos-14-xlarge
 
     steps:
     - uses: actions/checkout@v3
     - uses: n1hility/cancel-previous-runs@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-    - uses: actions/setup-java@v1
-      with:
-        java-version: '11'
-
+    # - uses: actions/setup-java@v1
+    #   with:
+    #     java-version: '11'
+    
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
