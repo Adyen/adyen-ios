@@ -5,6 +5,8 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
+  call-base-workflow:
+    uses: ./select-xcode.yml
 
   build:
     env:
@@ -23,10 +25,10 @@ jobs:
       with:
         java-version: '17'
 
-    - name: Select latest Xcode
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: '16.1'
+    # - name: Select latest Xcode
+    #   uses: maxim-lobanov/setup-xcode@v1
+    #   with:
+    #     xcode-version: '16.1'
 
     - name: Install Tools
       run: |
