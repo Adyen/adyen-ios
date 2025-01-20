@@ -37,7 +37,7 @@ public extension UIViewController {
     }
 }
 
-extension UIViewController: PresentationDelegate {
+extension UIViewController: @retroactive PresentationDelegate {
     public func present(component: PresentableComponent) {
         self.present(component.viewController, animated: false, completion: nil)
     }

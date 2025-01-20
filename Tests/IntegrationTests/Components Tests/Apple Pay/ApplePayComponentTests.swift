@@ -411,7 +411,6 @@ class ApplePayComponentTest: XCTestCase {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
-        let mockViewController = UIViewController()
 
         let configuration = ApplePayComponent.Configuration(
             payment: Dummy.createTestApplePayPayment(),

@@ -6,7 +6,7 @@
 
 import Adyen
 
-extension PaymentMethods: Equatable {
+extension PaymentMethods: @retroactive Equatable {
     public static func == (lhs: PaymentMethods, rhs: PaymentMethods) -> Bool {
         guard lhs.regular.count == rhs.regular.count else { return false }
         guard lhs.stored.count == rhs.stored.count else { return false }

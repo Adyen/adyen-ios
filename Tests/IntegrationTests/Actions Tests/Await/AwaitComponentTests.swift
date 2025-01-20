@@ -44,7 +44,7 @@ struct AwaitActionHandlerProviderMock: AnyPollingHandlerProvider {
     }
 }
 
-extension AwaitAction: Equatable {
+extension AwaitAction: @retroactive Equatable {
     public static func == (lhs: AwaitAction, rhs: AwaitAction) -> Bool {
         lhs.paymentData == rhs.paymentData && lhs.paymentMethodType == rhs.paymentMethodType
     }
@@ -112,8 +112,7 @@ class AwaitComponentTests: XCTestCase {
 
         let presentationDelegate = PresentationDelegateMock()
         let waitExpectation = expectation(description: "Wait for the presentationDelegate to be called.")
-        presentationDelegate.doPresent = { [weak self] component in
-            guard let self else { return }
+        presentationDelegate.doPresent = { component in
             
             XCTAssertNotNil(component.viewController as? AwaitViewController)
             let viewController = component.viewController as! AwaitViewController

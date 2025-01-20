@@ -158,8 +158,6 @@ class BLIKComponentTests: XCTestCase {
 
         setupRootViewController(sut.viewController)
 
-        let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
-
         let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
         let expectedResult = formViewController.validate()
 

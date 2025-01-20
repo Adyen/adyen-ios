@@ -681,7 +681,6 @@ class SessionTests: XCTestCase {
     func testRemoveStoredPaymentMethodSuccess() throws {
         let expectedPaymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
-        let paymentMethod = expectedPaymentMethods.regular.last as! MBWayPaymentMethod
         
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
@@ -709,7 +708,6 @@ class SessionTests: XCTestCase {
     func testRemoveStoredPaymentMethodFailure() throws {
         let expectedPaymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
-        let paymentMethod = expectedPaymentMethods.regular.last as! MBWayPaymentMethod
         
         let apiClient = APIClientMock()
         sut.apiClient = apiClient

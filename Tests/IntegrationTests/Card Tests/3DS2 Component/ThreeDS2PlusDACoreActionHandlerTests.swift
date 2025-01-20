@@ -252,8 +252,6 @@ import XCTest
         }
 
         func testChallengeFlowMissingTransaction() throws {
-            let service = AnyADYServiceMock()
-        
             let authenticationServiceMock = AuthenticationServiceMock()
             let sut = ThreeDS2PlusDACoreActionHandler(
                 context: Dummy.context,
