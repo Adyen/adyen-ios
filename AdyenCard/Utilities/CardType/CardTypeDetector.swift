@@ -8,8 +8,13 @@
 import Foundation
 
 /// So that any `Array` instance will inherit the `adyen` scope.
+#if compiler(>=6)
 @_spi(AdyenInternal)
 extension Array: @retroactive AdyenCompatible {}
+#else
+@_spi(AdyenInternal)
+extension Array: AdyenCompatible {}
+#endif
 
 /// Adds helper functionality to any `[CardType]` instance through the `adyen` property.
 @_spi(AdyenInternal)

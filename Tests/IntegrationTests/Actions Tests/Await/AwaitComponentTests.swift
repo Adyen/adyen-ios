@@ -44,7 +44,13 @@ struct AwaitActionHandlerProviderMock: AnyPollingHandlerProvider {
     }
 }
 
-extension AwaitAction: @retroactive Equatable {
+#if compiler(>=6)
+extension AwaitAction: @retroactive Equatable {}
+#else
+extension AwaitAction: Equatable {}
+#endif
+
+extension AwaitAction {
     public static func == (lhs: AwaitAction, rhs: AwaitAction) -> Bool {
         lhs.paymentData == rhs.paymentData && lhs.paymentMethodType == rhs.paymentMethodType
     }
