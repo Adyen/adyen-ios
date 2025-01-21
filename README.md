@@ -33,6 +33,7 @@ You can integrate with Adyen iOS in two ways:
 | 4.x.x         | Inactive   | TBA           | TBA           |
 | 3.x.x         | Deprecated | November 2021 | November 2022 |
 
+More information about our versioning and the Drop-in/Components lifecycle can be found [here](https://docs.adyen.com/online-payments/upgrade-your-integration/).
 
 ## Installation
 
