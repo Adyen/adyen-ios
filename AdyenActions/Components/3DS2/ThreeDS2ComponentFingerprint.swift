@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,8 +9,8 @@ import Foundation
 
 internal extension ThreeDS2Component {
     
-    struct Fingerprint: Encodable { // swiftlint:disable:this explicit_acl
-        
+    struct Fingerprint: Encodable, Equatable { // swiftlint:disable:this explicit_acl
+
         private let deviceInformation: String?
         private let sdkEphemeralPublicKey: EphemeralPublicKey?
         private let sdkReferenceNumber: String?
@@ -55,7 +55,7 @@ internal extension ThreeDS2Component {
 
 extension ThreeDS2Component.Fingerprint {
     
-    internal struct EphemeralPublicKey: Codable {
+    internal struct EphemeralPublicKey: Codable, Equatable {
         
         private let keyType: String
         private let curve: String

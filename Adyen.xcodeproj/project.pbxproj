@@ -124,6 +124,7 @@
 		C978F5EF2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */; };
 		C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFD726946F0800AED849 /* AffirmComponent.swift */; };
 		C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */; };
+		C9B506C32D3E776200AAE686 /* JSONEncoder+SortedKeys.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B506C22D3E776200AAE686 /* JSONEncoder+SortedKeys.swift.swift */; };
 		C9BB460427622D9B00E6730B /* BACSConfirmationViewProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB460327622D9B00E6730B /* BACSConfirmationViewProtocolMock.swift */; };
 		C9BB460627622E9600E6730B /* BACSConfirmationPresenterProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB460527622E9600E6730B /* BACSConfirmationPresenterProtocolMock.swift */; };
 		C9BB460927622F4100E6730B /* BACSConfirmationPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB460827622F4100E6730B /* BACSConfirmationPresenterTests.swift */; };
@@ -1066,6 +1067,7 @@
 		C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardSecurityCodeItemViewTests.swift; sourceTree = "<group>"; };
 		C982FFD726946F0800AED849 /* AffirmComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponent.swift; sourceTree = "<group>"; };
 		C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmPaymentMethod.swift; sourceTree = "<group>"; };
+		C9B506C22D3E776200AAE686 /* JSONEncoder+SortedKeys.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSONEncoder+SortedKeys.swift.swift"; sourceTree = "<group>"; };
 		C9BB460327622D9B00E6730B /* BACSConfirmationViewProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationViewProtocolMock.swift; sourceTree = "<group>"; };
 		C9BB460527622E9600E6730B /* BACSConfirmationPresenterProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationPresenterProtocolMock.swift; sourceTree = "<group>"; };
 		C9BB460827622F4100E6730B /* BACSConfirmationPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationPresenterTests.swift; sourceTree = "<group>"; };
@@ -2661,6 +2663,7 @@
 				E736497E25277B6500AB76AE /* StringExtension.swift */,
 				E736498125277B9100AB76AE /* DataExtension.swift */,
 				E736498325277BAA00AB76AE /* IntegerExtension.swift */,
+				C9B506C22D3E776200AAE686 /* JSONEncoder+SortedKeys.swift.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -5461,6 +5464,7 @@
 				E74517A425FB834C000BDCCF /* EncryptedCard.swift in Sources */,
 				F9F1A98F26CD15C30005CB1D /* RSAOAEP256Algorithm.swift in Sources */,
 				A0414C342791D9EC00DF3FE9 /* BankDetailsEncryptor.swift in Sources */,
+				C9B506C32D3E776200AAE686 /* JSONEncoder+SortedKeys.swift.swift in Sources */,
 				F9F1A98926CD0CCF0005CB1D /* CommonCryptoHelpers.swift in Sources */,
 				E745179925FB8340000BDCCF /* Card.swift in Sources */,
 				F92326BD25A366D9002C5BC4 /* CardPayload.swift in Sources */,

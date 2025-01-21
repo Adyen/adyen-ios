@@ -48,5 +48,5 @@ extension APIClientAware {
 }
 
 private enum AssociatedKeys {
-    internal static var apiClient = "apiClient"
+    internal static var apiClient: Void?
 }

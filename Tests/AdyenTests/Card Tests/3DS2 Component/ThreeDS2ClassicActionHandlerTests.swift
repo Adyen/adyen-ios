@@ -44,7 +44,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
     func testWrappedComponent() {
         let sut = ThreeDS2ClassicActionHandler(apiContext: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration())
         XCTAssertEqual(sut.wrappedComponent.apiContext.clientKey, Dummy.context.clientKey)
-        
+
         XCTAssertEqual(sut.wrappedComponent.apiContext.environment.baseURL, Dummy.context.environment.baseURL)
 
         sut._isDropIn = false
@@ -55,15 +55,15 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
     }
 
     func testFingerprintFlowSuccess() throws {
-        
+
         let service = AnyADYServiceMock()
         service.authenticationRequestParameters = authenticationRequestParameters
-        
+
         let fingerprint = try ThreeDS2Component.Fingerprint(
             authenticationRequestParameters: authenticationRequestParameters
         )
         let expectedFingerprint = try Coder.encodeBase64(fingerprint)
-        
+
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         let sut = ThreeDS2ClassicActionHandler(apiContext: Dummy.context, service: service)
         sut.handle(fingerprintAction) { fingerprintResult in
@@ -87,7 +87,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
             }
             resultExpectation.fulfill()
         }
-        
+
         waitForExpectations(timeout: 2, handler: nil)
     }
 
@@ -268,5 +268,4 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
     }
-
 }

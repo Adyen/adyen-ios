@@ -27,31 +27,31 @@ class CoderTests: XCTestCase {
         XCTAssertEqual(sampleObject.date.description, "2015-02-28 21:30:00 +0000")
         XCTAssertEqual(sampleObject.nestedObject.nestedValue, "value")
     }
-    
-    func testEncodeToString() {
-        let encodedString = try! Coder.encode(sampleObject) as String
-        
+
+    func testEncodeToString() throws {
+        let encodedString = try Coder.encode(sampleObject) as String
+
         XCTAssertEqual(encodedString, sampleObjectRawString)
     }
-    
-    func testEncodeToData() {
-        let encodedData = try! Coder.encode(sampleObject) as Data
+
+    func testEncodeToData() throws {
+        let encodedData = try Coder.encode(sampleObject) as Data
         let expectedData = sampleObjectRawString.data(using: .utf8)
-        
+
         XCTAssertEqual(encodedData, expectedData)
     }
-    
+
     // MARK: - Private
-    
-    private let sampleObjectRawString = "{\"nested\":{\"nestedValue\":\"value\"},\"string\":\"someString\",\"some_integer\":99,\"date\":\"2015-02-28T21:30:00Z\"}"
-    
+
+    private let sampleObjectRawString = "{\"date\":\"2015-02-28T21:30:00Z\",\"nested\":{\"nestedValue\":\"value\"},\"some_integer\":99,\"string\":\"someString\"}"
+
     private lazy var sampleObject: SampleObject = {
         let nestedObject = NestedObject(nestedValue: "value")
         let date = Date(timeIntervalSince1970: 1425159000)
         return SampleObject(string: "someString", integer: 99, date: date, nestedObject: nestedObject)
     }()
     
-    private struct SampleObject: Decodable, Encodable {
+    private struct SampleObject: Codable {
         var string: String
         var integer: Int
         var date: Date
@@ -65,7 +65,7 @@ class CoderTests: XCTestCase {
         }
     }
     
-    private struct NestedObject: Decodable, Encodable {
+    private struct NestedObject: Codable {
         var nestedValue: String
         
         enum CodingKeys: String, CodingKey {
