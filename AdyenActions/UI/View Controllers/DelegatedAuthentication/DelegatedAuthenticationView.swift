@@ -15,7 +15,6 @@ internal protocol DelegatedAuthenticationViewDelegate: AnyObject {
 }
 
 @available(iOS 16.0, *)
-// swiftlint:disable:next type_body_length
 internal final class DelegatedAuthenticationView: UIView {
     
     private enum Constants {

@@ -96,6 +96,14 @@ open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormI
         observations.forEach(remove)
         observations = []
     }
+    
+    override open var canBecomeFirstResponder: Bool {
+        views.first { $0.canBecomeFirstResponder } != nil
+    }
+
+    override open func becomeFirstResponder() -> Bool {
+        views.first { $0.canBecomeFirstResponder }?.becomeFirstResponder() ?? super.becomeFirstResponder()
+    }
 
 }
 
