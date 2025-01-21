@@ -12,8 +12,7 @@ jobs:
       destination: "name=iPhone 16 Pro,OS=18.1"
       project: "Adyen.xcodeproj"
       params: "-derivedDataPath ./DerivedData -skipPackagePluginValidation"
-    runs-on: macos-latest # Apple Silicon Runner
-    - uses: ./.github/workflows/select-xcode.yml
+    runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v3
@@ -24,10 +23,10 @@ jobs:
       with:
         java-version: '17'
 
-    # - name: Select latest Xcode
-    #   uses: maxim-lobanov/setup-xcode@v1
-    #   with:
-    #     xcode-version: '16.1'
+    - name: Select latest Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '16.1'
 
     - name: Install Tools
       run: |
