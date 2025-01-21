@@ -13,6 +13,7 @@ jobs:
       project: "Adyen.xcodeproj"
       params: "-derivedDataPath ./DerivedData -skipPackagePluginValidation"
     runs-on: macos-latest # Apple Silicon Runner
+    - uses: ./.github/workflows/select-xcode.yml
 
     steps:
     - uses: actions/checkout@v3
@@ -23,10 +24,10 @@ jobs:
       with:
         java-version: '17'
 
-    - name: Select latest Xcode
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: '16.1'
+    # - name: Select latest Xcode
+    #   uses: maxim-lobanov/setup-xcode@v1
+    #   with:
+    #     xcode-version: '16.1'
 
     - name: Install Tools
       run: |
