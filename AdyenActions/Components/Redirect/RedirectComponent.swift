@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -137,15 +137,19 @@ public final class RedirectComponent: ActionComponent {
     private func registerRedirectBounceBackListener(_ action: RedirectAction) {
         RedirectListener.registerForURL { [weak self] returnURL in
             guard let self else { return }
-            
             self.didOpen(url: returnURL, action)
         }
     }
     
     private func didOpen(url returnURL: URL, _ action: RedirectAction) {
-        if let redirectStateData = action.nativeRedirectData {
-            handleNativeMobileRedirect(withReturnURL: returnURL, redirectStateData: redirectStateData, action)
-        } else {
+        switch action.type {
+        case .nativeRedirect:
+            handleNativeMobileRedirect(
+                withReturnURL: returnURL,
+                redirectStateData: action.nativeRedirectData,
+                action
+            )
+        case .redirect:
             do {
                 try notifyDelegateDidProvide(redirectDetails: RedirectDetails(returnURL: returnURL), action)
             } catch {
@@ -154,7 +158,7 @@ public final class RedirectComponent: ActionComponent {
         }
     }
     
-    private func handleNativeMobileRedirect(withReturnURL returnURL: URL, redirectStateData: String, _ action: RedirectAction) {
+    private func handleNativeMobileRedirect(withReturnURL returnURL: URL, redirectStateData: String?, _ action: RedirectAction) {
         guard let queryString = returnURL.query else {
             delegate?.didFail(with: Error.invalidRedirectParameters, from: self)
             return

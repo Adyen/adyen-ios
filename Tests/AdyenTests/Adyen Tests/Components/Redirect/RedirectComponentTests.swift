@@ -13,7 +13,11 @@ import XCTest
 class RedirectComponentTests: XCTestCase {
 
     func testUIConfiguration() {
-        let action = RedirectAction(url: URL(string: "https://adyen.com")!, paymentData: "data")
+        let action = RedirectAction(
+            url: URL(string: "https://adyen.com")!,
+            paymentData: "data",
+            type: .redirect
+        )
         let style = RedirectComponentStyle(preferredBarTintColor: UIColor.red,
                                            preferredControlTintColor: UIColor.black,
                                            modalPresentationStyle: .fullScreen)
@@ -48,7 +52,11 @@ class RedirectComponentTests: XCTestCase {
             delegateExpectation.fulfill()
         }
         
-        let action = RedirectAction(url: URL(string: "bla://")!, paymentData: "test_data")
+        let action = RedirectAction(
+            url: URL(string: "bla://")!,
+            paymentData: "test_data",
+            type: .redirect
+        )
         sut.handle(action)
         
         waitForExpectations(timeout: 10, handler: nil)
@@ -82,7 +90,11 @@ class RedirectComponentTests: XCTestCase {
             XCTAssertTrue(component === sut)
         }
         
-        let action = RedirectAction(url: URL(string: "bla://")!, paymentData: "test_data")
+        let action = RedirectAction(
+            url: URL(string: "bla://")!,
+            paymentData: "test_data",
+            type: .redirect
+        )
         sut.handle(action)
         
         waitForExpectations(timeout: 10, handler: nil)
@@ -112,7 +124,11 @@ class RedirectComponentTests: XCTestCase {
             delegateExpectation.fulfill()
         }
         
-        let action = RedirectAction(url: URL(string: "http://maps.apple.com")!, paymentData: "test_data")
+        let action = RedirectAction(
+            url: URL(string: "http://maps.apple.com")!,
+            paymentData: "test_data",
+            type: .redirect
+        )
         sut.handle(action)
         
         waitForExpectations(timeout: 10, handler: nil)
@@ -152,7 +168,11 @@ class RedirectComponentTests: XCTestCase {
             XCTFail("delegate.didOpenExternalApplication() must not to be called")
         }
         
-        let action = RedirectAction(url: URL(string: "http://maps.apple.com")!, paymentData: "test_data")
+        let action = RedirectAction(
+            url: URL(string: "http://maps.apple.com")!,
+            paymentData: "test_data",
+            type: .redirect
+        )
         sut.handle(action)
         
         waitForExpectations(timeout: 10, handler: nil)
@@ -178,7 +198,11 @@ class RedirectComponentTests: XCTestCase {
             XCTFail("delegate.didOpenExternalApplication() must not to be called")
         }
 
-        let action = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data")
+        let action = RedirectAction(
+            url: URL(string: "https://www.adyen.com")!,
+            paymentData: "test_data",
+            type: .redirect
+        )
         sut.handle(action)
 
         let waitExpectation = expectation(description: "Expect in app browser to be presented and then dismissed")
@@ -200,7 +224,11 @@ class RedirectComponentTests: XCTestCase {
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
 
-        let action = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data")
+        let action = RedirectAction(
+            url: URL(string: "https://www.adyen.com")!,
+            paymentData: "test_data",
+            type: .redirect
+        )
         sut.handle(action)
 
         let waitExpectation = expectation(description: "Expect in app browser to be presented and then dismissed")
@@ -228,7 +256,11 @@ class RedirectComponentTests: XCTestCase {
         sut.presentationDelegate = presentationDelegate
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
-        let action = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data")
+        let action = RedirectAction(
+            url: URL(string: "https://www.adyen.com")!,
+            paymentData: "test_data",
+            type: .redirect
+        )
 
         let presentExpectation = expectation(description: "Expect in app browser to be presented")
         presentationDelegate.doPresent = { component in
@@ -279,7 +311,14 @@ class RedirectComponentTests: XCTestCase {
         }
         delegate.onDidFail = { _, _ in XCTFail("Should not call onDidFail") }
         
-        let action = RedirectAction(url: URL(string: "http://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
+        let action = RedirectAction(
+            url: URL(
+                string: "http://google.com"
+            )!,
+            paymentData: nil,
+            type: .nativeRedirect,
+            nativeRedirectData: "test_nativeRedirectData"
+        )
         sut.handle(action)
         _ = RedirectListener.applicationDidOpen(from: URL(string: "url://?queryParam=value")!)
         
@@ -309,7 +348,12 @@ class RedirectComponentTests: XCTestCase {
             redirectExpectation.fulfill()
         }
         
-        let action = RedirectAction(url: URL(string: "http://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
+        let action = RedirectAction(
+            url: URL(string: "http://google.com")!,
+            paymentData: nil,
+            type: .nativeRedirect,
+            nativeRedirectData: "test_nativeRedirectData"
+        )
         sut.handle(action)
         _ = RedirectListener.applicationDidOpen(from: URL(string: "url://")!)
         
@@ -341,12 +385,56 @@ class RedirectComponentTests: XCTestCase {
             redirectExpectation.fulfill()
         }
         
-        let action = RedirectAction(url: URL(string: "http://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
+        let action = RedirectAction(
+            url: URL(string: "http://google.com")!,
+            paymentData: nil,
+            type: .nativeRedirect,
+            nativeRedirectData: "test_nativeRedirectData"
+        )
         sut.handle(action)
         _ = RedirectListener.applicationDidOpen(from: URL(string: "url://?queryParam=value")!)
         
         waitForExpectations(timeout: 2)
     }
+
+    func testNativeRedirectWithNativeRedirectDataNilShouldPerformNativeRedirectResultRequest() {
+            // Given
+            let apiClient = APIClientMock()
+            let sut = RedirectComponent(apiContext: Dummy.context, apiClient: apiClient.retryAPIClient(with: SimpleScheduler(maximumCount: 2)))
+            apiClient.mockedResults = [.success(try! RedirectDetails(returnURL: URL(string: "url://?redirectResult=test_redirectResult")!))]
+
+            let appLauncher = AppLauncherMock()
+            sut.appLauncher = appLauncher
+            let appLauncherExpectation = expectation(description: "Expect appLauncher.openUniversalAppUrl() to be called")
+            appLauncher.onOpenUniversalAppUrl = { url, completion in
+                XCTAssertEqual(url, URL(string: "https://google.com")!)
+                completion?(true)
+                appLauncherExpectation.fulfill()
+            }
+
+            let delegate = ActionComponentDelegateMock()
+            sut.delegate = delegate
+            let redirectExpectation = expectation(description: "Expect redirect to be proccessed")
+            delegate.onDidProvide = { data, component in
+                XCTAssertTrue(component === sut)
+                XCTAssertNotNil(data.details)
+                redirectExpectation.fulfill()
+            }
+            delegate.onDidFail = { _, _ in XCTFail("Should not call onDidFail") }
+
+            // When
+            let action = RedirectAction(
+                url: URL(string: "https://google.com")!,
+                paymentData: nil,
+                type: .nativeRedirect,
+                nativeRedirectData: nil
+            )
+            sut.handle(action)
+
+            // Then
+            XCTAssertTrue(RedirectComponent.applicationDidOpen(from: URL(string: "url://?queryParam=value")!))
+            waitForExpectations(timeout: 10)
+        }
 }
 
 extension UIViewController {
