@@ -212,7 +212,6 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     }
     
     /// Invoked to handle the error flow of a challenge handling by the 3ds2sdk.
-    /// For challenge cancelled we return the control back to the merchant immediately as an error.
     private func didReceiveErrorOnChallenge(
         error: Error?,
         challengeAction: ThreeDS2ChallengeAction,
@@ -232,18 +231,14 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                 for: Constants.challengeEvent,
                 message: "cancelled"
             )
-            didFail(
-                with: error,
-                completionHandler: completionHandler
-            )
         default:
             sendErrorEvent(.threeDS2ChallengeHandlingFailed, for: Constants.challengeEvent)
-            didFinish(
-                threeDS2SDKError: error.base64Representation(),
-                authorizationToken: challengeAction.authorisationToken,
-                completionHandler: completionHandler
-            )
         }
+        didFinish(
+            threeDS2SDKError: error.base64Representation(),
+            authorizationToken: challengeAction.authorisationToken,
+            completionHandler: completionHandler
+        )
     }
     
     private func didFinish(
