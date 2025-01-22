@@ -177,14 +177,19 @@ public final class RedirectComponent: ActionComponent {
     }
     
     private func didOpen(url returnURL: URL, _ action: RedirectAction) throws {
-        if let redirectStateData = action.nativeRedirectData {
-            try handleNativeMobileRedirect(withReturnURL: returnURL, redirectStateData: redirectStateData, action)
-        } else {
+        switch action.type {
+        case .nativeRedirect:
+            try handleNativeMobileRedirect(
+                withReturnURL: returnURL,
+                redirectStateData: action.nativeRedirectData,
+                action
+            )
+        case .redirect:
             try notifyDelegateDidProvide(redirectDetails: RedirectDetails(returnURL: returnURL), action)
         }
     }
     
-    private func handleNativeMobileRedirect(withReturnURL returnURL: URL, redirectStateData: String, _ action: RedirectAction) throws {
+    private func handleNativeMobileRedirect(withReturnURL returnURL: URL, redirectStateData: String?, _ action: RedirectAction) throws {
         guard let queryString = returnURL.query else {
             sendErrorEvent(.redirectParseFailed, type: .redirect)
             throw Error.invalidRedirectParameters

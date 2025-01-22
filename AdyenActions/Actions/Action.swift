@@ -11,7 +11,7 @@ public enum Action: Decodable {
     
     /// Indicates the user should be redirected to a URL.
     case redirect(RedirectAction)
-    
+
     /// Indicates the user should be redirected to an SDK.
     case sdk(SDKAction)
     
