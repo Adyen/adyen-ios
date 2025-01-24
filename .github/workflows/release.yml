@@ -6,16 +6,20 @@ on:
 
 jobs:
 
-  Format Project:
+  format-project:
+    name: "Format Project"
     uses: ./.github/workflows/format_project.yml
     
-  Generate Docs:
+  generate-docs:
+    name: "Generate Docs"
     uses: ./.github/workflows/regenerate_docs.yml
 
-  Get Release Notes:
+  get-release-notes:
+    name: "Get Release Notes"
     uses: ./.github/workflows/get_release_notes.yml
 
-  Post Release Notes:
+  post-release-notes:
+    name: "Post Release Notes"
     needs: get-release-notes
     runs-on: macos-14
     steps:
