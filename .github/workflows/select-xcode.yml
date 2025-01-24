@@ -13,4 +13,4 @@ jobs:
           xcode-version: '16.1'
       - name: update xcode
         run:
-          echo "XCODE_VERSION=16.1" >> $GITHUB_ENV"
+          echo "XCODE_VERSION=16.1" >> "$GITHUB_ENV"
