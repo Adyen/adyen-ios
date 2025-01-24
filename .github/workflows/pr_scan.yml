@@ -38,7 +38,10 @@ jobs:
 
     - name: Validate 3DS2 SDK version
       run: |
+        echo ${{ env.xcode }}
         Scripts/validate-3ds2-SDK-version.sh
+      env:
+        xcode: '${{ env.XCODE_VERSION }}'
         
     - name: Validate Adyen SDK version
       run: |
