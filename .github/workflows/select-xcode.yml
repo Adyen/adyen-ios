@@ -2,20 +2,24 @@ name: Base Xcode Setup
 
 on:
   workflow_call:
+    outputs:
+        XCODE_VERSION:
+            description: "The shared Xcode version to use"
+            value: ${{ jobs.setup-xcode.outputs.XCODE_VERSION }}
 
 jobs:
   setup-xcode:
     runs-on: macos-14-xlarge
+    outputs:
+        XCODE_VERSION: ${{ steps.define-xcode-version.outputs.XCODE_VERSION }}
     steps:
       - name: Define Xcode Version
         id: define-xcode-version
         run: |
-          echo "XCODE_VERSION=16.1" >> "$GITHUB_ENV"
           echo "XCODE_VERSION=16.1" >> "$GITHUB_OUTPUT"
           
       - name: Check Xcode Version
         run: |
-          echo "env.XCODE_VERSION: ${{ env.XCODE_VERSION }}"
-          echo "outputs.XCODE_VERSION: $XCODE_VERSION"
+          echo "outputs.XCODE_VERSION: ${{ env.XCODE_VERSION }}"
         env:
           XCODE_VERSION: ${{ steps.define-xcode-version.outputs.XCODE_VERSION }}
