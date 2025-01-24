@@ -61,8 +61,9 @@ jobs:
              IFS="" echo "$OUTPUT" 
              IFS="" echo "$OUTPUT" >> $GITHUB_STEP_SUMMARY
              
-             SANITIZED_OUTPUT=$(tr '\n' '[NEW_LINE]' < $OUTPUT)
-             IFS="" $SANITIZED_OUTPUT > $GITHUB_OUTPUT
+             SANITIZED_OUTPUT=$($OUTPUT | sed "s/\n/[NEW_LINE]/")
+             echo "Sanitized Output: $SANITIZED_OUTPUT"
+             # IFS="" $SANITIZED_OUTPUT > $GITHUB_OUTPUT
           fi
         env:
           ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}
