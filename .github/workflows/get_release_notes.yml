@@ -63,7 +63,7 @@ jobs:
              
              SANITIZED_OUTPUT=$(echo "Hello \n World" | sed 'H;1h;$!d;x;s/\n/[NEW_LINE]/g' )
              echo "Sanitized Output: $SANITIZED_OUTPUT"
-             # IFS="" $SANITIZED_OUTPUT > $GITHUB_OUTPUT
+             IFS="" $SANITIZED_OUTPUT > $GITHUB_OUTPUT
           fi
         env:
           ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}

@@ -24,7 +24,7 @@ jobs:
         
     - name: Prepare Release Notes
       run: |
-        FORMATTED_RELEASE_NOTES=$("# Release Notes\n\n${{ env.RELEASE_NOTES }}" | sed "s/[NEW_LINE]/\n/")
+        FORMATTED_RELEASE_NOTES="# Release Notes\n\n${{ env.RELEASE_NOTES }}"
         echo "$FORMATTED_RELEASE_NOTES" >> "${{ github.workspace }}/release_notes.md"
       env:
         RELEASE_NOTES: '${{ needs.get-release-notes.outputs.RELEASE_NOTES }}'
