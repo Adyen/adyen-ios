@@ -5,9 +5,11 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
+  select-xcode:
+    uses: ./.github/workflows/select-xcode.yml
   
   build:
-    uses: ./.github/workflows/select-xcode.yml
+    needs: select-xcode
     env:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
       destination: "name=iPhone 16 Pro,OS=18.1"
