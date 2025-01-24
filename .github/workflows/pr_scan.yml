@@ -26,10 +26,10 @@ jobs:
       with:
         java-version: '17'
 
-    # - name: Select latest Xcode
-    #   uses: maxim-lobanov/setup-xcode@v1
-    #   with:
-    #     xcode-version: '16.1'
+    - name: Select latest Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '${{ needs.select-xcode.outputs.XCODE_VERSION }}'
 
     - name: Install Tools
       run: |
@@ -38,13 +38,10 @@ jobs:
 
     - name: Validate 3DS2 SDK version
       run: |
-        echo $ENV_XCODE_VERSION
-        echo $OUTPUTS_XCODE_VERSION
+        echo "Preferred Xcode Version: $OUTPUTS_XCODE_VERSION"
         Scripts/validate-3ds2-SDK-version.sh
       env:
-        ENV_XCODE_VERSION: '${{ env.XCODE_VERSION }}'
         OUTPUTS_XCODE_VERSION: '${{ needs.select-xcode.outputs.XCODE_VERSION }}'
-        
         
     - name: Validate Adyen SDK version
       run: |
