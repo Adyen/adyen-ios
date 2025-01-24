@@ -5,6 +5,15 @@ on:
       latestVersion:
         description: 'Whats the latest version of the SDK?'
         required: true
+        
+  workflow_call:
+    inputs:
+      username:
+        description: 'SDK Version for the Release'
+        default: '1.2.3' # TODO: Provide via the callsite
+        required: false
+        type: string
+        
 jobs:
 
   Generate:

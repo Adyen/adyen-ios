@@ -8,6 +8,12 @@ jobs:
 
   get-release-notes:
     uses: ./.github/workflows/get_release_notes.yml
+    
+  format-project:
+    uses: ./.github/workflows/format_project.yml
+    
+  generate-docs:
+    uses: ./.github/workflows/regenerate_docs.yml
 
   Pre-Release:
     needs: get-release-notes
