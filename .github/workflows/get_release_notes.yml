@@ -60,7 +60,7 @@ jobs:
           if [ ! -z "$OUTPUT" ]; then
              IFS="" echo "$OUTPUT" 
              IFS="" echo "$OUTPUT" >> $GITHUB_STEP_SUMMARY
-             IFS="" echo "RELEASE_NOTES=$OUTPUT" >> $GITHUB_OUTPUT
+             IFS="" echo "RELEASE_NOTES='$OUTPUT'" >> $GITHUB_OUTPUT
           fi
         env:
           ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}
