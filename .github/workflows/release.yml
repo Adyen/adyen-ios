@@ -26,8 +26,7 @@ jobs:
       run: |
         SANITIZED_RELEASE_NOTES=$(echo "$RELEASE_NOTES" | sed 'H;1h;$!d;x;s/NEW_LINE_TOKEN/\n/g' )
         echo "# Changes since last release
-        
-        $SANITIZED_RELEASE_NOTES" >> "${{ github.workspace }}/release_notes.md"
+       $SANITIZED_RELEASE_NOTES" >> "${{ github.workspace }}/release_notes.md"
       env:
         RELEASE_NOTES: ${{ needs.get-release-notes.outputs.RELEASE_NOTES }}
         
