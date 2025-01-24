@@ -7,10 +7,15 @@ jobs:
   setup-xcode:
     runs-on: macos-14-xlarge
     steps:
-      - name: Select Xcode 16.1
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: '16.1'
-      - name: update xcode
-        run:
+      - name: Define Xcode Version
+        id: define-xcode-version
+        run: |
           echo "XCODE_VERSION=16.1" >> "$GITHUB_ENV"
+          echo "XCODE_VERSION=16.1" >> "$GITHUB_OUTPUT"
+          
+      - name: Check Xcode Version
+        run: |
+          echo "env.XCODE_VERSION: ${{ env.XCODE_VERSION }}"
+          echo "outputs.XCODE_VERSION: $XCODE_VERSION"
+        env:
+          XCODE_VERSION: ${{ steps.define-xcode-version.outputs.XCODE_VERSION }}
