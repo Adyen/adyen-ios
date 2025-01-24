@@ -11,6 +11,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
+        
     - uses: n1hility/cancel-previous-runs@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}

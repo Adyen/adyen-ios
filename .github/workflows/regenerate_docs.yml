@@ -8,7 +8,7 @@ on:
         
   workflow_call:
     inputs:
-      username:
+      latestVersion:
         description: 'SDK Version for the Release'
         default: '1.2.3' # TODO: Provide via the callsite
         required: false
