@@ -61,7 +61,7 @@ jobs:
              IFS="" echo "$OUTPUT" 
              IFS="" echo "$OUTPUT" >> $GITHUB_STEP_SUMMARY
              
-             SANITIZED_OUTPUT=$($OUTPUT | sed "s/\n/[NEW_LINE]/")
+             SANITIZED_OUTPUT=$("Hello \n World" | sed "s/\n/[NEW_LINE]/")
              echo "Sanitized Output: $SANITIZED_OUTPUT"
              # IFS="" $SANITIZED_OUTPUT > $GITHUB_OUTPUT
           fi
