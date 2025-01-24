@@ -24,7 +24,7 @@ jobs:
         
     - name: Prepare Release Notes
       run: |
-        SANITIZED_RELEASE_NOTES=$(echo "$RELEASE_NOTES" | sed 'H;1h;$!d;x;s/[NEW_LINE]/\n/g' )
+        SANITIZED_RELEASE_NOTES=$(echo "$RELEASE_NOTES" | sed 'H;1h;$!d;x;s/NEW_LINE_TOKEN/\n/g' )
         echo "# Changes since last release
         
         $SANITIZED_RELEASE_NOTES" >> "${{ github.workspace }}/release_notes.md"
