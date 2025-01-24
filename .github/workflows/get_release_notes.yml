@@ -1,14 +1,25 @@
 name: 📝 Get Release notes
-on: [workflow_dispatch]
+on:
+    workflow_dispatch:
+    workflow_call:
+      outputs:
+        RELEASE_NOTES:
+            description: "The Release Notes of the Release"
+            value: ${{ jobs.generate-release-notes.outputs.RELEASE_NOTES }}
+    
 jobs:
-  release_notes:
+  generate-release-notes:
     runs-on: ubuntu-latest
+    outputs:
+      RELEASE_NOTES: ${{ steps.generate-release-notes.outputs.RELEASE_NOTES }}
     steps:
       - name: Fetch repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          
       - name: Get the list of allowed pull request labels
+        id: get-allowed_labels
         run: |
           RED='\033[0;31m'
           NC='\033[0m'
@@ -19,10 +30,11 @@ jobs:
              exit 1
           fi 
           echo "LABELS=$(cat $FILE_PATH)" >> $GITHUB_OUTPUT
-        id: get-allowed_labels
         env:
           PROJECT_ROOT: ${{ github.workspace }}
+          
       - name: Generate release notes
+        id: generate-release-notes
         run: |
           LATEST_TAG=$(git describe --tags --abbrev=0)
           NUMBER_OF_COMMITS_SINCE_LAST_RELEASE=$(git log --oneline $LATEST_TAG..HEAD | wc -l | sed 's/^ *//g' | sed 's/ *$//g')
@@ -44,9 +56,11 @@ jobs:
                 $LABEL_OUTPUT" | eval $REMOVE_TAG_CMD)
              fi
           done
+          
           if [ ! -z "$OUTPUT" ]; then
              IFS="" echo "$OUTPUT" 
              IFS="" echo "$OUTPUT" >> $GITHUB_STEP_SUMMARY
+             IFS="" echo "RELEASE_NOTES=$OUTPUT" >> $GITHUB_OUTPUT
           fi
         env:
           ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}

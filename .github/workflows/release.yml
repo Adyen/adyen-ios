@@ -1,0 +1,39 @@
+name: Pre-Release Workflow
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    # TODO: Make sure this only runs on release/* branches
+
+jobs:
+
+  get-release-notes:
+    uses: ./.github/workflows/get_release_notes.yml
+
+  Pre-Release:
+    needs: get-release-notes
+    runs-on: macos-14
+    steps:
+    
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - uses: n1hility/cancel-previous-runs@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Prepare Release Notes
+      run: |
+        echo "${{ env.RELEASE_NOTES }}" >> "${{ github.workspace }}/release_notes.md"
+      env:
+        RELEASE_NOTES: '${{ needs.get-release-notes.outputs.RELEASE_NOTES }}'
+        
+    - if: ${{ github.event.pull_request.base.ref != '' }}
+      name: 📝 Comment on PR
+      uses: thollander/actions-comment-pull-request@v3
+      with:
+        file-path: "${{ github.workspace }}/release_notes.md"
+        comment-tag: api_changes
+        mode: recreate
+
+    
