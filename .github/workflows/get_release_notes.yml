@@ -50,12 +50,12 @@ jobs:
              LABEL_OUTPUT="$(eval "$GIT_LOG_CMD | $FIND_CMD")"
              
              if [ ! -z "$LABEL_OUTPUT" ]; then
-                LABEL_CONTENT="## $LABEL
+                LABEL_CONTENT="
+         ## $LABEL
          $LABEL_OUTPUT"
                 
                 REMOVE_TAG_CMD="sed 's/<$LABEL>//g' | sed 's/<\/$LABEL>//g'"
                 OUTPUT=$(echo "$OUTPUT
-
          $LABEL_CONTENT" | eval $REMOVE_TAG_CMD)
              fi
           done
