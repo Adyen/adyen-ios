@@ -1,17 +1,21 @@
-name: Pre-Release Workflow
+name: Prepare Release Workflow
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-    branches:
-      - 'releases/**'
+  workflow_dispatch:
+    inputs:
+      sdk-version:
+        description: 'SDK Version'
+        required: true
 
 jobs:
+
+  # WORKFLOW
+  # - Check if Version number is already "sdk-version" - if not -> run bump build number script
+  # - Get release notes -> (Use them as PR description)
+  # - Generate Docs
+  # - Branch off to release/[sdk-version]
     
-  generate-docs:
-    name: "Generate Docs"
-    uses: ./.github/workflows/regenerate_docs.yml
-    with:
-      sdk-version: "1.1.1"
+  # version-number-update:
+  #   name: "Update version number if needed"
 
   get-release-notes:
     name: "Get Release Notes"
@@ -31,6 +35,12 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         
+    - name: Generate Docs
+      run: |
+        Scripts/generate_docc_documentation.sh
+      env:
+        LATEST_VERSION: ${{ github.event.inputs.sdk-version }}
+        
     - name: Prepare Release Notes
       run: |
         SANITIZED_RELEASE_NOTES=$(echo "$RELEASE_NOTES" | sed 'H;1h;$!d;x;s/NEW_LINE_TOKEN/\n/g' )
@@ -39,12 +49,12 @@ jobs:
       env:
         RELEASE_NOTES: ${{ needs.get-release-notes.outputs.RELEASE_NOTES }}
         
-    - if: ${{ github.event.pull_request.base.ref != '' }}
-      name: 📝 Comment on PR
-      uses: thollander/actions-comment-pull-request@v3
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v7
       with:
-        file-path: "${{ github.workspace }}/release_notes.md"
-        comment-tag: api_changes
-        mode: recreate
-
-    
+        delete-branch: true
+        branch: "release/${{ github.event.inputs.sdk-version }}"
+        commit-message: "chore: updating documentation"
+        title: "[Release] ${{ github.event.inputs.sdk-version }}"
+        body: ${{ needs.get-release-notes.outputs.RELEASE_NOTES }}
+        token: ${{ secrets.GITHUB_TOKEN }}
