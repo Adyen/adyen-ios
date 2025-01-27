@@ -1,6 +1,7 @@
-name: Publish Adyen.podspec
+name: 🫛 Publish Adyen.podspec
 on:
   workflow_dispatch:
+  workflow_call:
   
 jobs:
 
