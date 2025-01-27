@@ -21,7 +21,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         repository: ${{ env.BASE_REPO }}
-        ref: ${{ env.BASE_REF }}
+        ref: ${{ env.HEAD_REF }}
         
     - uses: n1hility/cancel-previous-runs@v3
       with:
