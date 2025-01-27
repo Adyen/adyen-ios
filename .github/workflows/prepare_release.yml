@@ -8,16 +8,6 @@ on:
 
 jobs:
 
-  # WORKFLOW
-  # - Ask for the base branch (Otherwise this would only work for the latest develop - e.g. not v4 or v5 once develop represents v6)
-  # - Check if Version number is already "sdk-version" - if not -> run bump build number script
-  # - Get release notes -> (Use them as PR description)
-  # - Generate Docs
-  # - Branch off to release/[sdk-version]
-    
-  # version-number-update:
-  #   name: "Update version number if needed"
-
   get-release-notes:
     name: "Get Release Notes"
     uses: ./.github/workflows/get_release_notes.yml
@@ -37,6 +27,8 @@ jobs:
     - uses: n1hility/cancel-previous-runs@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+        
+    # TODO: Bump build number if needed
         
     # Generating Docs (will show up as changes in the PR)
     - name: Generate Docs
@@ -62,5 +54,5 @@ jobs:
         branch: "release/${{ github.event.inputs.sdk-version }}"
         commit-message: "chore: updating documentation"
         title: "[Release] ${{ github.event.inputs.sdk-version }}"
-        body: ${{ needs.get-release-notes.outputs.RELEASE_NOTES }}
+        body-path: "${{ github.workspace }}/release_notes.md"
         token: ${{ secrets.GITHUB_TOKEN }}
