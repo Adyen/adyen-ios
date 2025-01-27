@@ -1,5 +1,7 @@
-name: Deploy Docs
-on: [workflow_dispatch]
+name: 📝 Deploy Docs
+on:
+  workflow_dispatch:
+  workflow_call:
 
 jobs:
 
