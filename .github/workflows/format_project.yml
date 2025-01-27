@@ -13,6 +13,8 @@ jobs:
         echo "BASE_REPO=${{ github.repository }}" >> $GITHUB_ENV
         echo "BASE_REF=${{ env.target }}" >> $GITHUB_ENV
       shell: bash
+      env:
+        target: '${{ github.event.inputs.old || github.event.pull_request.base.ref }}'
     
     - uses: actions/checkout@v4
       with:
@@ -38,6 +40,7 @@ jobs:
       with:
         delete-branch: true
         branch: format-project-github-action
+        base: ${{ env.BASE_REF }}
         commit-message: "chore: format project"
         title: Format project
         body: Format project.
