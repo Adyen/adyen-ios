@@ -35,6 +35,7 @@ jobs:
     - name: Format project
       run: |
         brew install swiftformat
+        cat .swiftformat
         swiftformat .
         
     - name: Create Pull Request
