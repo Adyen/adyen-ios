@@ -1,16 +1,60 @@
-# This workflow will public Cocoapods and Docs
-
-name: Prepare Release
-
+name: Prepare Release Workflow
 on:
   workflow_dispatch:
+    inputs:
+      sdk-version:
+        description: 'SDK Version'
+        required: true
 
 jobs:
 
-  prepare-release:
-    runs-on: macos-14-xlarge # Apple Silicon Runner
+  # WORKFLOW
+  # - Check if Version number is already "sdk-version" - if not -> run bump build number script
+  # - Get release notes -> (Use them as PR description)
+  # - Generate Docs
+  # - Branch off to release/[sdk-version]
     
+  # version-number-update:
+  #   name: "Update version number if needed"
+
+  get-release-notes:
+    name: "Get Release Notes"
+    uses: ./.github/workflows/get_release_notes.yml
+
+  post-release-notes:
+    name: "Post Release Notes"
+    needs: get-release-notes
+    runs-on: macos-14
     steps:
-      - name: 🍱 Prepare Release
-        run: |
-          echo "Preparing Release"
+    
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - uses: n1hility/cancel-previous-runs@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Generate Docs
+      run: |
+        Scripts/generate_docc_documentation.sh
+      env:
+        LATEST_VERSION: ${{ github.event.inputs.sdk-version }}
+        
+    - name: Prepare Release Notes
+      run: |
+        SANITIZED_RELEASE_NOTES=$(echo "$RELEASE_NOTES" | sed 'H;1h;$!d;x;s/NEW_LINE_TOKEN/\n/g' )
+        echo "# Changes since last release
+        $SANITIZED_RELEASE_NOTES" >> "${{ github.workspace }}/release_notes.md"
+      env:
+        RELEASE_NOTES: ${{ needs.get-release-notes.outputs.RELEASE_NOTES }}
+        
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v7
+      with:
+        delete-branch: true
+        branch: "release/${{ github.event.inputs.sdk-version }}"
+        commit-message: "chore: updating documentation"
+        title: "[Release] ${{ github.event.inputs.sdk-version }}"
+        body: ${{ needs.get-release-notes.outputs.RELEASE_NOTES }}
+        token: ${{ secrets.GITHUB_TOKEN }}
