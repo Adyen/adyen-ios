@@ -1,20 +1,22 @@
 # This workflow will public Cocoapods and Docs
 
-name: Release publisher
+name: 🗣️ Post Release
 
 on:
+  workflow_dispatch:
   release:
     types: [published]
 
 jobs:
-  publish-cocoapods:
-    name: 🥜 Publish Cocoapods
-    uses: ./.github/workflows/publich_podspec.yml
 
-  publish-docs:
-    name: 📝 Publish Docs
+  publish-cocoapods:
+    name: 🫛 Publish Cocoapods
+    uses: ./.github/workflows/publish_podspec.yml
+
+  deploy-docs:
+    name: 📝 Deploy Docs
     uses: ./.github/workflows/deploy-docs.yml
 
   publish-app:
-    name: 🚀 Publish Test App
+    name: 🚀 Publish Demo App
     uses: ./.github/workflows/publish-demo-app.yml
