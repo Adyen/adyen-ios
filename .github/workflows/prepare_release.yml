@@ -1,0 +1,16 @@
+# This workflow will public Cocoapods and Docs
+
+name: Prepare Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  prepare-release:
+    runs-on: macos-14-xlarge # Apple Silicon Runner
+    
+    steps:
+      - name: 🍱 Prepare Release
+        run: |
+          echo "Preparing Release"
