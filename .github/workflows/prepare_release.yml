@@ -27,8 +27,13 @@ jobs:
     - uses: n1hility/cancel-previous-runs@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        
-    # TODO: Bump build number if needed
+    
+    # Update Version
+    - name: Updating Version Number
+      run: |
+        Scripts/increment_version.sh ${{ env.SDK_VERSION }}
+      env:
+        SDK_VERSION: ${{ github.event.inputs.sdk-version }}
         
     # Generating Docs (will show up as changes in the PR)
     - name: Generate Docs
