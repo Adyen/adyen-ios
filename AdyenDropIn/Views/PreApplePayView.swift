@@ -52,6 +52,8 @@ internal final class PreApplePayView: UIView, Localizable {
     }
     
     private func buildUI() {
+        accessibilityIdentifier = "adyen.preApplePay"
+        
         addButton()
         addHintLabel()
     }
