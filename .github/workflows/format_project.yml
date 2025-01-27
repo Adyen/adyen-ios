@@ -43,7 +43,7 @@ jobs:
         delete-branch: true
         branch: "format-project-github-action-${{ env.HEAD_REF }}"
         base: ${{ env.HEAD_REF }}
-        commit-message: "chore: format project"
+        commit-message: "chore: formatting project"
         title: "[${{ env.HEAD_REF }}] Format project"
         body: "Formatting project for `${{ env.HEAD_REF }}`"
         token: ${{ secrets.GITHUB_TOKEN }}

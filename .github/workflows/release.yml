@@ -13,6 +13,8 @@ jobs:
   generate-docs:
     name: "Generate Docs"
     uses: ./.github/workflows/regenerate_docs.yml
+    with:
+      latestVersion: "1.1.1"
 
   get-release-notes:
     name: "Get Release Notes"
