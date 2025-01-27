@@ -8,9 +8,16 @@ jobs:
   Update:
     runs-on: macos-14
     steps:
+    - name: 🍱 Compute prerequisites
+      run: |
+        echo "BASE_REPO=${{ github.repository }}" >> $GITHUB_ENV
+        echo "BASE_REF=${{ env.target }}" >> $GITHUB_ENV
+      shell: bash
+    
     - uses: actions/checkout@v4
       with:
-        fetch-depth: 0
+        repository: ${{ env.BASE_REPO }}
+        ref: ${{ env.BASE_REF }}
         
     - uses: n1hility/cancel-previous-runs@v3
       with:
