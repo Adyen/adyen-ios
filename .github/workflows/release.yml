@@ -2,13 +2,10 @@ name: Pre-Release Workflow
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    # TODO: Make sure this only runs on release/* branches
+    branches:
+      - 'releases/**'
 
 jobs:
-
-  format-project:
-    name: "Format Project"
-    uses: ./.github/workflows/format_project.yml
     
   generate-docs:
     name: "Generate Docs"
