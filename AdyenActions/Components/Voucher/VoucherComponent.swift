@@ -86,10 +86,11 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
         )
     }
 
-    /// Initializes the `AwaitComponent`.
+    /// Initializes the `VoucherComponent`.
     /// - Parameter context: The context object for this component.
-    /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
-    /// - Parameter style: The Component UI style.
+    /// - Parameter voucherShareableViewProvider: Provides view for this component.
+    /// - Parameter configuration: The voucher component configurations.
+    /// - Parameter passProvider: Object to save the voucher pass in the AppleWallet.
     internal init(
         context: AdyenContext,
         voucherShareableViewProvider: AnyVoucherShareableViewProvider?,
