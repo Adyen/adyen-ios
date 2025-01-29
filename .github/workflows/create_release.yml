@@ -28,5 +28,5 @@ jobs:
 
     - name: Create Release
       run: |
-        echo "Creating Release for Version: XXX"
+        echo "Creating Release for Version: ???"
         echo "Description: ${{ env.PR_DESCRIPTION }}"
