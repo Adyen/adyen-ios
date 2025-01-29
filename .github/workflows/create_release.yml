@@ -48,7 +48,7 @@ jobs:
         
         echo "$PR_DESCRIPTION" >> "${{ github.workspace }}/release_notes.md"
         
-    - name: Create Release
+    - name: Release Info
       run: |
         echo "Creating Release for Version: ${{ env.VERSION_NUMBER }}"
         echo "Description:"
