@@ -30,8 +30,14 @@ jobs:
         echo "MERGE_COMMIT_SHA=$MERGE_COMMIT_SHA" >> $GITHUB_ENV
         
         PR_NUMBER=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-        PR_DESCRIPTION=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER} | jq --raw-output .body)
+        echo "PR Number: $PR_NUMBER"
+        
+        CURL_OUTPUT=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER})
+        echo "CURL Output: $CURL_OUTPUT"
+        
+        PR_DESCRIPTION=$(jq --raw-output .body "$CURL_OUTPUT")
+        echo "PR Description: $PR_DESCRIPTION"
+        
         echo "$PR_DESCRIPTION" >> "${{ github.workspace }}/release_notes.md"
         
     - name: Create Release
