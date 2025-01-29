@@ -60,6 +60,6 @@ jobs:
       with:
         body_path: "${{ github.workspace }}/release_notes.md"
         draft: true
-        target_commitish: ${{ env.SOURCE_BRANCH }}
+        target_commitish: ${{ env.MERGE_COMMIT_SHA }}
         tag_name: ${{ env.VERSION_NUMBER }}
         token: ${{ secrets.GITHUB_TOKEN }}
