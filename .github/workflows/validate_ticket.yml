@@ -7,7 +7,11 @@ on:
 jobs:
   validate-ticket:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.base.ref == 'develop' && !startsWith(github.event.pull_request.head.ref, 'release/') && !contains(github.actor, 'renovate')
+    if: |
+      github.event.pull_request.base.ref == 'develop' && 
+      !startsWith(github.event.pull_request.head.ref, 'release/') && 
+      !contains(github.actor, 'renovate') &&
+      github.event.pull_request.head.repo.full_name == github.repository
     steps:
       - name: Check out
         uses: actions/checkout@v4

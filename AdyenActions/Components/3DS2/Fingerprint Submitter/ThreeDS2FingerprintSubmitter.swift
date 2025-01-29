@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -18,13 +18,17 @@ internal protocol AnyThreeDS2FingerprintSubmitter {
 
 internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitter {
     
+    private enum Constants {
+        static let fingerprintEvent = "threeDS2Fingerprint"
+    }
+    
     private let apiClient: APIClientProtocol
     
-    private let apiContext: APIContext
+    private let context: AdyenContext
 
-    internal init(apiContext: APIContext, apiClient: APIClientProtocol? = nil) {
-        self.apiContext = apiContext
-        self.apiClient = apiClient ?? APIClient(apiContext: apiContext)
+    internal init(context: AdyenContext, apiClient: APIClientProtocol? = nil) {
+        self.context = context
+        self.apiClient = apiClient ?? APIClient(apiContext: context.apiContext)
     }
 
     internal func submit(
@@ -34,7 +38,7 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
     ) {
 
         let request = Submit3DS2FingerprintRequest(
-            clientKey: apiContext.clientKey,
+            clientKey: context.apiContext.clientKey,
             fingerprint: fingerprint,
             paymentData: paymentData
         )
@@ -52,7 +56,14 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
         case let .success(response):
             completionHandler(.success(response.result))
         case let .failure(error):
+            sendApiErrorEvent()
             completionHandler(.failure(error))
         }
+    }
+    
+    private func sendApiErrorEvent() {
+        var errorEvent = AnalyticsEventError(component: Constants.fingerprintEvent, type: .api)
+        errorEvent.code = AnalyticsConstants.ErrorCode.apiErrorThreeDS2.stringValue
+        context.analyticsProvider?.add(error: errorEvent)
     }
 }

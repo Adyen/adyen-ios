@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,7 +16,14 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
         static let errorLimit = 5
     }
     
-    internal var checkoutAttemptId: String?
+    internal var checkoutAttemptId: String? {
+        didSet {
+            if checkoutAttemptId != nil {
+                startNextTimer()
+            }
+        }
+    }
+
     internal let apiClient: APIClientProtocol
     internal let eventDataSource: AnyAnalyticsEventDataSource
     
@@ -34,7 +41,6 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
         self.eventDataSource = eventDataSource
         self.context = context
         self.batchInterval = batchInterval
-        startNextTimer()
     }
     
     deinit {

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -20,7 +20,7 @@ extension ThreeDS2CompactActionHandler {
         delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?
     ) {
         
-        let fingerprintSubmitter = ThreeDS2FingerprintSubmitter(apiContext: context.apiContext)
+        let fingerprintSubmitter = ThreeDS2FingerprintSubmitter(context: context)
         self.init(
             context: context,
             fingerprintSubmitter: fingerprintSubmitter,

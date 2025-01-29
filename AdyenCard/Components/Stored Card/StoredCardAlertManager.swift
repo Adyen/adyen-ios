@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -115,8 +115,18 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Adye
             let details = CardDetails(paymentMethod: paymentMethod, encryptedSecurityCode: encryptedSecurityCode)
             completionHandler?(.success(details))
         } catch {
+            sendEncryptionErrorEvent()
             completionHandler?(.failure(error))
         }
+    }
+    
+    private func sendEncryptionErrorEvent() {
+        var errorEvent = AnalyticsEventError(
+            component: paymentMethod.type.rawValue,
+            type: .internal
+        )
+        errorEvent.code = AnalyticsConstants.ErrorCode.encryptionError.stringValue
+        context.analyticsProvider?.add(error: errorEvent)
     }
     
     // MARK: - UITextFieldDelegate

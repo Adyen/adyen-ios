@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -78,6 +78,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         super.init()
 
         paymentAuthorizationViewController?.delegate = self
+        sendInitialAnalytics()
     }
 
     public var viewController: UIViewController {
@@ -110,6 +111,10 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
             paymentAuthorizationViewController?.delegate = self
             state = .initial
         }
+        if paymentAuthorizationViewController?.isViewLoaded == false {
+            sendDidLoadEvent()
+        }
+        
         return paymentAuthorizationViewController!
     }
 
@@ -130,6 +135,3 @@ extension ApplePayComponent {
 
 @_spi(AdyenInternal)
 extension ApplePayComponent: TrackableComponent {}
-
-@_spi(AdyenInternal)
-extension ApplePayComponent: ViewControllerDelegate {}

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -73,7 +73,8 @@ class RedirectComponentTests: XCTestCase {
     }
     
     func testOpenCustomSchemeFailure() {
-        let sut = RedirectComponent(context: Dummy.context)
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = RedirectComponent(context: Dummy.context(with: analyticsProviderMock))
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
         let appLauncher = AppLauncherMock()
@@ -94,13 +95,21 @@ class RedirectComponentTests: XCTestCase {
             XCTFail("delegate.didOpenExternalApplication() must not to be called")
         }
         
+        let testPaymentMethodName = "testRedirectPaymentMethod"
         delegate.onDidFail = { error, component in
+            let errorEvent = analyticsProviderMock.errors[0]
+            XCTAssertEqual(errorEvent.errorType, .redirect)
+            XCTAssertEqual(errorEvent.component, testPaymentMethodName)
+            XCTAssertEqual(
+                errorEvent.code,
+                AnalyticsConstants.ErrorCode.redirectFailed.stringValue
+            )
             XCTAssertTrue(error is RedirectComponent.Error)
             XCTAssertEqual(error as! RedirectComponent.Error, RedirectComponent.Error.appNotFound)
             XCTAssertTrue(component === sut)
         }
         
-        let action = RedirectAction(url: URL(string: "bla://")!, paymentData: "test_data")
+        let action = RedirectAction(url: URL(string: "bla://")!, paymentData: "test_data", paymentMethodType: testPaymentMethodName)
         sut.handle(action)
         
         waitForExpectations(timeout: 10, handler: nil)
@@ -283,7 +292,12 @@ class RedirectComponentTests: XCTestCase {
         }
         delegate.onDidFail = { _, _ in XCTFail("Should not call onDidFail") }
         
-        let action = RedirectAction(url: URL(string: "https://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
+        let action = RedirectAction(
+            url: URL(string: "https://google.com")!,
+            paymentData: nil,
+            type: .nativeRedirect,
+            nativeRedirectData: "test_nativeRedirectData"
+        )
         sut.handle(action)
         XCTAssertTrue(RedirectComponent.applicationDidOpen(from: URL(string: "url://?queryParam=value")!))
         
@@ -311,7 +325,12 @@ class RedirectComponentTests: XCTestCase {
             XCTFail("Should not call onDidProvide")
         }
         
-        let action = RedirectAction(url: URL(string: "https://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
+        let action = RedirectAction(
+            url: URL(string: "https://google.com")!,
+            paymentData: nil,
+            type: .nativeRedirect,
+            nativeRedirectData: "test_nativeRedirectData"
+        )
         sut.handle(action)
         XCTAssertFalse(RedirectComponent.applicationDidOpen(from: URL(string: "url://")!))
         
@@ -320,7 +339,11 @@ class RedirectComponentTests: XCTestCase {
     
     func testNativeRedirectEndpointCallFails() {
         let apiClient = APIClientMock()
-        let sut = RedirectComponent(context: Dummy.context, apiClient: apiClient.retryAPIClient(with: SimpleScheduler(maximumCount: 2)))
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = RedirectComponent(
+            context: Dummy.context(with: analyticsProviderMock),
+            apiClient: apiClient.retryAPIClient(with: SimpleScheduler(maximumCount: 2))
+        )
         apiClient.mockedResults = [.failure(Dummy.error)]
         
         let appLauncher = AppLauncherMock()
@@ -339,14 +362,65 @@ class RedirectComponentTests: XCTestCase {
             XCTFail("Should not call onDidProvide")
         }
         delegate.onDidFail = { error, _ in
+            let errorEvent = analyticsProviderMock.errors[0]
+            XCTAssertEqual(errorEvent.errorType, .api)
+            XCTAssertEqual(errorEvent.component, "redirect")
+            XCTAssertEqual(
+                errorEvent.code,
+                AnalyticsConstants.ErrorCode.apiErrorNativeRedirect.stringValue
+            )
             XCTAssertEqual(error as! Dummy, .error)
             redirectExpectation.fulfill()
         }
         
-        let action = RedirectAction(url: URL(string: "https://google.com")!, paymentData: nil, nativeRedirectData: "test_nativeRedirectData")
+        let action = RedirectAction(
+            url: URL(string: "https://google.com")!,
+            paymentData: nil,
+            type: .nativeRedirect,
+            nativeRedirectData: "test_nativeRedirectData"
+        )
         sut.handle(action)
         XCTAssertTrue(RedirectComponent.applicationDidOpen(from: URL(string: "url://?queryParam=value")!))
         
+        waitForExpectations(timeout: 10)
+    }
+
+    func testNativeRedirectWithNativeRedirectDataNilShouldPerformNativeRedirectResultRequest() {
+        // Given
+        let apiClient = APIClientMock()
+        let sut = RedirectComponent(context: Dummy.context, apiClient: apiClient.retryAPIClient(with: SimpleScheduler(maximumCount: 2)))
+        apiClient.mockedResults = [.success(try! RedirectDetails(returnURL: URL(string: "url://?redirectResult=test_redirectResult")!))]
+
+        let appLauncher = AppLauncherMock()
+        sut.appLauncher = appLauncher
+        let appLauncherExpectation = expectation(description: "Expect appLauncher.openUniversalAppUrl() to be called")
+        appLauncher.onOpenUniversalAppUrl = { url, completion in
+            XCTAssertEqual(url, URL(string: "https://google.com")!)
+            completion?(true)
+            appLauncherExpectation.fulfill()
+        }
+
+        let delegate = ActionComponentDelegateMock()
+        sut.delegate = delegate
+        let redirectExpectation = expectation(description: "Expect redirect to be proccessed")
+        delegate.onDidProvide = { data, component in
+            XCTAssertTrue(component === sut)
+            XCTAssertNotNil(data.details)
+            redirectExpectation.fulfill()
+        }
+        delegate.onDidFail = { _, _ in XCTFail("Should not call onDidFail") }
+
+        // When
+        let action = RedirectAction(
+            url: URL(string: "https://google.com")!,
+            paymentData: nil,
+            type: .nativeRedirect,
+            nativeRedirectData: nil
+        )
+        sut.handle(action)
+
+        // Then
+        XCTAssertTrue(RedirectComponent.applicationDidOpen(from: URL(string: "url://?queryParam=value")!))
         waitForExpectations(timeout: 10)
     }
 }

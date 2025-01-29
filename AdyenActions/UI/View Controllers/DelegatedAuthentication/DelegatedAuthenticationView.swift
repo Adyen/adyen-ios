@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,7 +15,6 @@ internal protocol DelegatedAuthenticationViewDelegate: AnyObject {
 }
 
 @available(iOS 16.0, *)
-// swiftlint:disable:next type_body_length
 internal final class DelegatedAuthenticationView: UIView {
     
     private enum Constants {

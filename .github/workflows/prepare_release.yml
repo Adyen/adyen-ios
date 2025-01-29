@@ -1,0 +1,63 @@
+name: 🥘 Prepare Release
+on:
+  workflow_dispatch:
+    inputs:
+      sdk-version:
+        description: 'SDK Version'
+        required: true
+
+jobs:
+
+  get-release-notes:
+    name: "Get Release Notes"
+    uses: ./.github/workflows/get_release_notes.yml
+
+  post-release-notes:
+    name: "Create Release Pull Request"
+    needs: get-release-notes
+    runs-on: macos-14
+    steps:
+    
+    # Checking out the current branch
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    # Cancel previous runs
+    - uses: n1hility/cancel-previous-runs@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    # Update Version
+    - name: Updating Version Number
+      run: |
+        Scripts/increment_version.sh ${{ env.SDK_VERSION }}
+      env:
+        SDK_VERSION: ${{ github.event.inputs.sdk-version }}
+        
+    # Generating Docs (will show up as changes in the PR)
+    - name: Generate Docs
+      run: |
+        Scripts/generate_docc_documentation.sh
+      env:
+        LATEST_VERSION: ${{ github.event.inputs.sdk-version }}
+        
+    # Sanitizing the Release Notes from the get-release-notes job
+    - name: Prepare Release Notes
+      run: |
+        SANITIZED_RELEASE_NOTES=$(echo "$RELEASE_NOTES" | sed 'H;1h;$!d;x;s/NEW_LINE_TOKEN/\n/g' )
+        echo "# Changes since last release
+        $SANITIZED_RELEASE_NOTES" >> "${{ github.workspace }}/release_notes.md"
+      env:
+        RELEASE_NOTES: ${{ needs.get-release-notes.outputs.RELEASE_NOTES }}
+    
+    # Creates a release/[sdk-version] branch with a PR to develop
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v7
+      with:
+        delete-branch: true
+        branch: "release/${{ github.event.inputs.sdk-version }}"
+        commit-message: "chore: updating documentation"
+        title: "[Release] ${{ github.event.inputs.sdk-version }}"
+        body-path: "${{ github.workspace }}/release_notes.md"
+        token: ${{ secrets.GITHUB_TOKEN }}

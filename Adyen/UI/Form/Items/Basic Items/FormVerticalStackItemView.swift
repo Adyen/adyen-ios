@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -95,6 +95,14 @@ open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormI
     private func removeObservers() {
         observations.forEach(remove)
         observations = []
+    }
+    
+    override open var canBecomeFirstResponder: Bool {
+        views.first { $0.canBecomeFirstResponder } != nil
+    }
+
+    override open func becomeFirstResponder() -> Bool {
+        views.first { $0.canBecomeFirstResponder }?.becomeFirstResponder() ?? super.becomeFirstResponder()
     }
 
 }

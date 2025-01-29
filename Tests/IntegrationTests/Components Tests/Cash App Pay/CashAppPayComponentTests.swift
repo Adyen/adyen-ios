@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,6 +15,12 @@ import XCTest
 
     final class CashAppPayComponentTests: XCTestCase {
         
+        private enum ErrorOption {
+            case apiError(PayKit.APIError)
+            case integrationError(PayKit.IntegrationError)
+            case networkError(PayKit.NetworkError)
+        }
+    
         var paymentMethodString = """
             {
               "configuration" : {
@@ -25,10 +31,24 @@ import XCTest
               "type" : "cashapp"
             }
         """
-        
+    
         lazy var paymentMethod: CashAppPayPaymentMethod = {
             try! JSONDecoder().decode(CashAppPayPaymentMethod.self, from: paymentMethodString.data(using: .utf8)!)
         }()
+    
+        private static var integrationError: PayKit.IntegrationError = .init(
+            category: .MERCHANT_ERROR,
+            code: .BRAND_NOT_FOUND,
+            detail: "integrationError",
+            field: "error"
+        )
+    
+        private static var apiError: PayKit.APIError = .init(
+            category: .API_ERROR,
+            code: .GATEWAY_TIMEOUT,
+            detail: "apiError",
+            field: nil
+        )
         
         var context: AdyenContext!
         
@@ -278,6 +298,157 @@ import XCTest
             // Then
             wait(for: [finalizationExpectation, didSubmitExpectation], timeout: 10)
             XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
+        }
+        
+        func testSubmitFailure() throws {
+            let analyticsProviderMock = AnalyticsProviderMock()
+            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+            let sut = CashAppPayComponent(
+                paymentMethod: paymentMethod,
+                context: Dummy.context(with: analyticsProviderMock),
+                configuration: config
+            )
+            
+            setupRootViewController(sut.viewController)
+            
+            let paymentDelegateMock = PaymentComponentDelegateMock()
+            sut.delegate = paymentDelegateMock
+            
+            let failureExpectation = expectation(description: "didFail must be called when submitting fails.")
+            paymentDelegateMock.onDidFail = { _, _ in
+                let errorEvent = analyticsProviderMock.errors[0]
+                XCTAssertEqual(errorEvent.component, "cashapp")
+                XCTAssertEqual(errorEvent.errorType, .thirdParty)
+                XCTAssertEqual(
+                    errorEvent.code,
+                    AnalyticsConstants.ErrorCode.thirdPartyError.stringValue
+                )
+                XCTAssertEqual(errorEvent.message, "There was no grant object in the customer request.")
+                failureExpectation.fulfill()
+            }
+            
+            sut.submitApprovedRequest(with: [], profile: .init(id: "test", cashtag: "test"))
+            wait(for: [failureExpectation], timeout: 5)
+        }
+        
+        func testIntegrationError() throws {
+            let analyticsProviderMock = AnalyticsProviderMock()
+            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+            let sut = CashAppPayComponent(
+                paymentMethod: paymentMethod,
+                context: Dummy.context(with: analyticsProviderMock),
+                configuration: config
+            )
+            
+            let paymentDelegateMock = PaymentComponentDelegateMock()
+            sut.delegate = paymentDelegateMock
+            
+            let errorExpectation = expectation(description: "should fail with integration error")
+            
+            paymentDelegateMock.onDidFail = { _, _ in
+                let errorEvent = analyticsProviderMock.errors[0]
+                XCTAssertEqual(errorEvent.component, "cashapp")
+                XCTAssertEqual(errorEvent.errorType, .thirdParty)
+                XCTAssertEqual(
+                    errorEvent.code,
+                    AnalyticsConstants.ErrorCode.thirdPartyError.stringValue
+                )
+                XCTAssertEqual(errorEvent.message, "CashApp integration error")
+                errorExpectation.fulfill()
+            }
+            
+            sut.stateDidChange(to: .integrationError(Self.integrationError))
+            wait(for: [errorExpectation], timeout: 5)
+        }
+        
+        func testApiError() throws {
+            let analyticsProviderMock = AnalyticsProviderMock()
+            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+            let sut = CashAppPayComponent(
+                paymentMethod: paymentMethod,
+                context: Dummy.context(with: analyticsProviderMock),
+                configuration: config
+            )
+            
+            let paymentDelegateMock = PaymentComponentDelegateMock()
+            sut.delegate = paymentDelegateMock
+            
+            let errorExpectation = expectation(description: "should fail with integration error")
+            
+            paymentDelegateMock.onDidFail = { _, _ in
+                let errorEvent = analyticsProviderMock.errors[0]
+                XCTAssertEqual(errorEvent.component, "cashapp")
+                XCTAssertEqual(errorEvent.errorType, .thirdParty)
+                XCTAssertEqual(
+                    errorEvent.code,
+                    AnalyticsConstants.ErrorCode.thirdPartyError.stringValue
+                )
+                XCTAssertEqual(errorEvent.message, "CashApp api error")
+                errorExpectation.fulfill()
+            }
+            
+            sut.stateDidChange(to: .apiError(Self.apiError))
+            wait(for: [errorExpectation], timeout: 5)
+        }
+        
+        func testUnexpectedError() throws {
+            let analyticsProviderMock = AnalyticsProviderMock()
+            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+            let sut = CashAppPayComponent(
+                paymentMethod: paymentMethod,
+                context: Dummy.context(with: analyticsProviderMock),
+                configuration: config
+            )
+            
+            let paymentDelegateMock = PaymentComponentDelegateMock()
+            sut.delegate = paymentDelegateMock
+            
+            let errorExpectation = expectation(description: "should fail with integration error")
+            
+            paymentDelegateMock.onDidFail = { _, _ in
+                let errorEvent = analyticsProviderMock.errors[0]
+                XCTAssertEqual(errorEvent.component, "cashapp")
+                XCTAssertEqual(errorEvent.errorType, .thirdParty)
+                XCTAssertEqual(
+                    errorEvent.code,
+                    AnalyticsConstants.ErrorCode.thirdPartyError.stringValue
+                )
+                XCTAssertEqual(errorEvent.message, "CashApp unexpected error")
+                errorExpectation.fulfill()
+            }
+            
+            sut.stateDidChange(to: .unexpectedError(.emptyErrorArray))
+            wait(for: [errorExpectation], timeout: 5)
+        }
+        
+        func testNetworkError() throws {
+            let analyticsProviderMock = AnalyticsProviderMock()
+            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+            let sut = CashAppPayComponent(
+                paymentMethod: paymentMethod,
+                context: Dummy.context(with: analyticsProviderMock),
+                configuration: config
+            )
+            
+            let paymentDelegateMock = PaymentComponentDelegateMock()
+            sut.delegate = paymentDelegateMock
+            
+            let errorExpectation = expectation(description: "should fail with integration error")
+            
+            paymentDelegateMock.onDidFail = { _, _ in
+                let errorEvent = analyticsProviderMock.errors[0]
+                XCTAssertEqual(errorEvent.component, "cashapp")
+                XCTAssertEqual(errorEvent.errorType, .thirdParty)
+                XCTAssertEqual(
+                    errorEvent.code,
+                    AnalyticsConstants.ErrorCode.thirdPartyError.stringValue
+                )
+                XCTAssertNotNil(errorEvent.message)
+                errorExpectation.fulfill()
+            }
+            
+            sut.stateDidChange(to: .networkError(.noResponse))
+            wait(for: [errorExpectation], timeout: 5)
         }
         
         func testValidateShouldReturnFormViewControllerValidateResult() throws {

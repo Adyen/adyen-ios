@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,7 +11,7 @@ public enum Action: Decodable {
     
     /// Indicates the user should be redirected to a URL.
     case redirect(RedirectAction)
-    
+
     /// Indicates the user should be redirected to an SDK.
     case sdk(SDKAction)
     
