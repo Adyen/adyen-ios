@@ -3,8 +3,6 @@ name: Pull Request Merge
 on:
   pull_request:
     types: [closed]
-    branches:
-      - 'release/*'
 
 jobs:
   create_release:
@@ -19,14 +17,34 @@ jobs:
         fetch-depth: 0
 
     # Getting the description for the pull request that was merged
-    - name: Fetch Pull Request Description
+    - name: Fetch Pull Request Details
       run: |
+        SOURCE_BRANCH=$(jq --raw-output .pull_request.head.ref "$GITHUB_EVENT_PATH")
+        if [[ "$SOURCE_BRANCH" != release/* ]]; then
+          echo "Source branch does not match pattern. Exiting."
+        else
+          echo "Source branch was 'release/*'"
+        fi
+        
+        MERGE_COMMIT_SHA=$(jq --raw-output .pull_request.merge_commit_sha "$GITHUB_EVENT_PATH")
+        echo "MERGE_COMMIT_SHA=$MERGE_COMMIT_SHA" >> $GITHUB_ENV
+        
         PR_NUMBER=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
         PR_DESCRIPTION=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER} | jq --raw-output .body)
-        echo "PR_DESCRIPTION=$PR_DESCRIPTION" >> $GITHUB_ENV
-
+        echo "$PR_DESCRIPTION" >> "${{ github.workspace }}/release_notes.md"
+        
     - name: Create Release
       run: |
         echo "Creating Release for Version: ???"
         echo "Description: ${{ env.PR_DESCRIPTION }}"
+        echo "The merge commit is: ${{ env.MERGE_COMMIT_SHA }}"
+        
+    # - name: Draft Release
+    #   uses: softprops/action-gh-release@v2
+    #   with:
+    #     body_path: "${{ github.workspace }}/release_notes.md"
+    #     draft: true
+    #     target_commitish: "develop" # Needs to be replaced by the merge commit of the PR
+    #     tag_name: "X.X.X"
+    #     token: ${{ secrets.GITHUB_TOKEN }}
