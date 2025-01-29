@@ -26,6 +26,9 @@ jobs:
           echo "Source branch was 'release/*'"
         fi
         
+        VERSION_NUMBER=${SOURCE_BRANCH#release/}
+        echo "VERSION_NUMBER=$VERSION_NUMBER" >> $GITHUB_ENV
+        
         MERGE_COMMIT_SHA=$(jq --raw-output .pull_request.merge_commit_sha "$GITHUB_EVENT_PATH")
         echo "MERGE_COMMIT_SHA=$MERGE_COMMIT_SHA" >> $GITHUB_ENV
         
@@ -42,8 +45,9 @@ jobs:
         
     - name: Create Release
       run: |
-        echo "Creating Release for Version: ???"
-        echo "Description: ${{ env.PR_DESCRIPTION }}"
+        echo "Creating Release for Version: ${{ env.VERSION_NUMBER }}"
+        echo "Description:"
+        cat "${{ github.workspace }}/release_notes.md"
         echo "The merge commit is: ${{ env.MERGE_COMMIT_SHA }}"
         
     # - name: Draft Release
