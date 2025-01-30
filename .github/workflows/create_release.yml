@@ -11,12 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    # Checking out the current branch
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
-    # Getting the description for the pull request that was merged
     - name: Fetch Pull Request Details
       run: |
         SOURCE_BRANCH=${{ github.event.pull_request.head.ref }}
@@ -41,15 +39,16 @@ jobs:
         echo "VERSION_NUMBER=$VERSION_NUMBER" >> $GITHUB_ENV
         echo "MERGE_COMMIT_SHA=$MERGE_COMMIT_SHA" >> $GITHUB_ENV
         
-        CURL_OUTPUT=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER})
-        echo "CURL Output: $CURL_OUTPUT"
+        # Requesting the PR info
+        PR_INFO=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER})
         
-        PR_DESCRIPTION=$(jq --raw-output .body <<< "$CURL_OUTPUT")
-        echo "PR Description: $PR_DESCRIPTION"
+        # Extracting the PR body from the PR info
+        PR_BODY=$(jq --raw-output .body <<< "$PR_INFO")
+        echo "PR Body: $PR_BODY"
         
-        echo "$PR_DESCRIPTION" >> "${{ github.workspace }}/release_content.md"
+        echo "$PR_BODY" >> "${{ github.workspace }}/release_content.md"
         
-    - name: Drafting Release
+    - name: Create Release
       uses: softprops/action-gh-release@v2
       with:
         body_path: "${{ github.workspace }}/release_content.md"
