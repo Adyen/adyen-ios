@@ -19,26 +19,27 @@ jobs:
     # Getting the description for the pull request that was merged
     - name: Fetch Pull Request Details
       run: |
-        SOURCE_BRANCH=$(jq --raw-output .pull_request.head.ref "$GITHUB_EVENT_PATH")
+        SOURCE_BRANCH=${{ github.event.pull_request.head.ref }}
+        
+        # Checking if the source branch was a release
         if [[ "$SOURCE_BRANCH" != release/* ]]; then
           echo "Source branch does not match pattern. Exiting."
           exit 1
         fi
         
+        # Extracting the version number from the source branch name
         VERSION_NUMBER=${SOURCE_BRANCH#release/}
         if [[ ! "$VERSION_NUMBER" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-          echo "SUFFIX does not match semantic versioning format. Exiting."
+          echo "'$VERSION_NUMBER' does not match semantic versioning format. Exiting."
           exit 1
         fi
         
+        MERGE_COMMIT_SHA=${{ github.event.pull_request.merge_commit_sha }}
+        PR_NUMBER=${{ github.event.pull_request.number }}
+        
         echo "SOURCE_BRANCH=$SOURCE_BRANCH" >> $GITHUB_ENV
         echo "VERSION_NUMBER=$VERSION_NUMBER" >> $GITHUB_ENV
-        
-        MERGE_COMMIT_SHA=$(jq --raw-output .pull_request.merge_commit_sha "$GITHUB_EVENT_PATH")
         echo "MERGE_COMMIT_SHA=$MERGE_COMMIT_SHA" >> $GITHUB_ENV
-        
-        PR_NUMBER=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-        echo "PR Number: $PR_NUMBER"
         
         CURL_OUTPUT=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER})
         echo "CURL Output: $CURL_OUTPUT"
