@@ -47,12 +47,12 @@ jobs:
         PR_DESCRIPTION=$(jq --raw-output .body <<< "$CURL_OUTPUT")
         echo "PR Description: $PR_DESCRIPTION"
         
-        echo "$PR_DESCRIPTION" >> "${{ github.workspace }}/release_body.md"
+        echo "$PR_DESCRIPTION" >> "${{ github.workspace }}/release_content.md"
         
     - name: Drafting Release
       uses: softprops/action-gh-release@v2
       with:
-        body_path: "${{ github.workspace }}/release_body.md"
+        body_path: "${{ github.workspace }}/release_content.md"
         draft: true
         target_commitish: ${{ env.MERGE_COMMIT_SHA }}
         tag_name: ${{ env.VERSION_NUMBER }}
