@@ -37,3 +37,10 @@
     - For gift cards, error messages.
     - For cards, brand logos.
     
+# Changes since last release
+
+
+## fixed
+    
+    -  Fixed Action jobs.
+    
