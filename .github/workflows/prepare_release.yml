@@ -46,9 +46,8 @@ jobs:
     - name: Prepare Release Notes
       run: |
         RELEASE_NOTES=$(echo "$BASE_64_RELEASE_NOTES" | base64 --decode)
-        rm -rf "${{ github.workspace }}/release_notes.md"
-        echo "# Changes since last release
-        $RELEASE_NOTES" >> "${{ github.workspace }}/release_notes.md"
+        rm -rf "${{ github.workspace }}/release_notes.md" # Making sure we start a fresh document
+        echo "$RELEASE_NOTES" >> "${{ github.workspace }}/release_notes.md"
       env:
         BASE_64_RELEASE_NOTES: ${{ needs.get-release-notes.outputs.RELEASE_NOTES }}
     
@@ -58,7 +57,7 @@ jobs:
       with:
         delete-branch: true
         branch: "release/${{ github.event.inputs.sdk-version }}"
-        commit-message: "chore: updating documentation"
+        commit-message: "chore: prepare '${{ github.event.inputs.sdk-version }}' release"
         title: "[Release] ${{ github.event.inputs.sdk-version }}"
         body-path: "${{ github.workspace }}/release_notes.md"
         token: ${{ secrets.GITHUB_TOKEN }}
