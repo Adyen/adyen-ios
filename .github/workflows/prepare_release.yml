@@ -45,11 +45,12 @@ jobs:
     # Sanitizing the Release Notes from the get-release-notes job
     - name: Prepare Release Notes
       run: |
-        SANITIZED_RELEASE_NOTES=$(echo "$RELEASE_NOTES" | sed 'H;1h;$!d;x;s/NEW_LINE_TOKEN/\n/g' )
+        RELEASE_NOTES=$(printf '%b' "$ESCAPED_RELEASE_NOTES")
+        rm -rf "${{ github.workspace }}/release_notes.md"
         echo "# Changes since last release
-        $SANITIZED_RELEASE_NOTES" >> "${{ github.workspace }}/release_notes.md"
+        $RELEASE_NOTES" >> "${{ github.workspace }}/release_notes.md"
       env:
-        RELEASE_NOTES: ${{ needs.get-release-notes.outputs.RELEASE_NOTES }}
+        ESCAPED_RELEASE_NOTES: ${{ needs.get-release-notes.outputs.RELEASE_NOTES }}
     
     # Creates a release/[sdk-version] branch with a PR to develop
     - name: Create Pull Request
