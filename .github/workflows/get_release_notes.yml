@@ -64,10 +64,10 @@ jobs:
              IFS="" echo "$OUTPUT" 
              IFS="" echo "$OUTPUT" >> $GITHUB_STEP_SUMMARY
 
-             
-             ESCAPED_RELEASE_NOTES=$(printf '%q' "$OUTPUT")
-             echo "Escaped Release Notes: $ESCAPED_RELEASE_NOTES"
-             IFS="" echo "RELEASE_NOTES=$ESCAPED_RELEASE_NOTES" >> $GITHUB_OUTPUT
+             # Converting the output to Base64 to get a single line required by the GITHUB_OUTPUT
+             BASE64_RELEASE_NOTES=$(echo "$OUTPUT" | base64)
+             echo "Base64 Release Notes: $BASE64_RELEASE_NOTES"
+             IFS="" echo "RELEASE_NOTES=$BASE64_RELEASE_NOTES" >> $GITHUB_OUTPUT
           fi
         env:
           ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}
