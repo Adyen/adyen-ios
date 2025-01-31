@@ -63,10 +63,11 @@ jobs:
           if [ ! -z "$OUTPUT" ]; then
              IFS="" echo "$OUTPUT" 
              IFS="" echo "$OUTPUT" >> $GITHUB_STEP_SUMMARY
+
              
-             SANITIZED_OUTPUT=$(echo "$OUTPUT" | sed 'H;1h;$!d;x;s/\n/NEW_LINE_TOKEN/g' )
-             echo "Sanitized Output: $SANITIZED_OUTPUT"
-             IFS="" echo "RELEASE_NOTES=$SANITIZED_OUTPUT" >> $GITHUB_OUTPUT
+             ESCAPED_RELEASE_NOTES=$(printf '%q' "$OUTPUT")
+             echo "Escaped Release Notes: $ESCAPED_RELEASE_NOTES"
+             IFS="" echo "RELEASE_NOTES=$ESCAPED_RELEASE_NOTES" >> $GITHUB_OUTPUT
           fi
         env:
           ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}
