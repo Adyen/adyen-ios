@@ -13,7 +13,7 @@ jobs:
   build:
     env:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
-      destination: "name=iPhone 16 Pro,OS=18.0"
+      destination: "name=iPhone 16 Pro,OS=18.1"
       project: "Adyen.xcodeproj"
       params: "-derivedDataPath ./DerivedData -skipPackagePluginValidation"
     runs-on: macos-14-xlarge # Apple Silicon Runner
@@ -71,7 +71,7 @@ jobs:
           -enableCodeCoverage YES \
           -resultBundlePath "${resultPath}" \
           ${params} \
-          -destination "name=iPhone 16 Pro,OS=18.0" -destination "name=iPad (10th generation),OS=18.0" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+          -destination "name=iPhone 16 Pro,OS=18.1" -destination "name=iPad (10th generation),OS=18.1" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         params: '${{env.params}}'
         scheme: 'SnapshotTests'
