@@ -38,11 +38,9 @@ jobs:
         run: |
           # Get the latest tag
           LATEST_TAG=$(git describe --tags --abbrev=0)
-          echo "Latest Tag: $LATEST_TAG"
           
           # Get the commit messages since the latest tag
           COMMITS=$(git log "$LATEST_TAG"..HEAD)
-          echo "Commits: $COMMITS"
           
           # Convert the labels string to an array
           IFS=',' read -r -a ALLOWED_LABELS_ARRAY <<< "$ALLOWED_LABELS"
@@ -51,9 +49,10 @@ jobs:
           # Loop through each label and find matching commits
           for LABEL in "${ALLOWED_LABELS_ARRAY[@]}"; do
             LABEL=$(echo "$LABEL" | xargs)  # Trim spaces
-            echo "Label: $LABEL"
+            
+            # Finding content inside of <$LABEL> & </$LABEL> + trimming leading/trailling spaces/newlines
             LABEL_OUTPUT=$(echo "$COMMITS" | awk "/<$LABEL>/,/<\/$LABEL>/" | sed "s/<$LABEL>//g; s/<\/$LABEL>//g" | xargs)
-            echo "Output: $LABEL_OUTPUT"
+            
             if [ -n "$LABEL_OUTPUT" ]; then
               OUTPUT="$OUTPUT
           ## $LABEL
