@@ -23,7 +23,7 @@ jobs:
     - name: 📸 Generate Snapshots
       continue-on-error: true
       run: |
-        xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "name=iPhone 16 Pro,OS=18.0" -destination "name=iPad (10th generation),OS=18.0"
+        xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "name=iPhone 16 Pro,OS=18.1" -destination "name=iPad (10th generation),OS=18.1"
       env:
         project: 'Adyen.xcodeproj'
         params: '-skipPackagePluginValidation'
