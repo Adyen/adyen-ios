@@ -55,7 +55,9 @@ jobs:
             LABEL_OUTPUT=$(echo "$COMMITS" | awk "/<$LABEL>/,/<\/$LABEL>/" | sed "s/<$LABEL>//g; s/<\/$LABEL>//g" | xargs)
             echo "Output: $LABEL_OUTPUT"
             if [ -n "$LABEL_OUTPUT" ]; then
-              OUTPUT="$OUTPUT\n## $LABEL\n$LABEL_OUTPUT"
+              OUTPUT="$OUTPUT
+          ## $LABEL
+          $LABEL_OUTPUT"
             fi
           done
           
