@@ -36,28 +36,24 @@ jobs:
       - name: Generate release notes
         id: generate-release-notes
         run: |
+          # Get the latest tag
           LATEST_TAG=$(git describe --tags --abbrev=0)
-          NUMBER_OF_COMMITS_SINCE_LAST_RELEASE=$(git log --oneline $LATEST_TAG..HEAD | wc -l | sed 's/^ *//g' | sed 's/ *$//g')
-
+          
+          # Get the commit messages since the latest tag
+          COMMITS=$(git log --oneline "$LATEST_TAG"..HEAD)
+          
+          # Convert the labels string to an array
           IFS=',' read -r -a ALLOWED_LABELS_ARRAY <<< "$ALLOWED_LABELS"
 
           OUTPUT=""
-
+          # Loop through each label and find matching commits
           for LABEL in "${ALLOWED_LABELS_ARRAY[@]}"; do
-             LABEL=$(echo "$LABEL" | sed 's/^ *//g' | sed 's/ *$//g')
-             GIT_LOG_CMD="git log -$NUMBER_OF_COMMITS_SINCE_LAST_RELEASE"
-             FIND_CMD="awk '/<$LABEL>/,/<\/$LABEL>/'"
-             LABEL_OUTPUT="$(eval "$GIT_LOG_CMD | $FIND_CMD")"
-             
-             if [ ! -z "$LABEL_OUTPUT" ]; then
-                LABEL_CONTENT="
-          ## $LABEL
-          $LABEL_OUTPUT"
-                
-                REMOVE_TAG_CMD="sed 's/<$LABEL>//g' | sed 's/<\/$LABEL>//g'"
-                OUTPUT=$(echo "$OUTPUT
-          $LABEL_CONTENT" | eval $REMOVE_TAG_CMD)
-             fi
+            LABEL=$(echo "$LABEL" | xargs)  # Trim spaces
+            LABEL_OUTPUT=$(echo "$COMMITS" | awk "/<$LABEL>/,/<\/$LABEL>/" | sed "s/<$LABEL>//g; s/<\/$LABEL>//g" | xargs)
+            
+            if [ -n "$LABEL_OUTPUT" ]; then
+              OUTPUT="$OUTPUT\n## $LABEL\n$LABEL_OUTPUT"
+            fi
           done
           
           if [ ! -z "$OUTPUT" ]; then
