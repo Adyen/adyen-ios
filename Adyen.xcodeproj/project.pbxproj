@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		000888742D4CF597009C03E1 /* PayToPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000888732D4CF58D009C03E1 /* PayToPaymentMethod.swift */; };
+		000888782D4CF5FC009C03E1 /* PayToComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000888772D4CF5F5009C03E1 /* PayToComponent.swift */; };
+		0008887C2D4CFA73009C03E1 /* PayToComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0008887A2D4CFA67009C03E1 /* PayToComponentTests.swift */; };
 		00165FE02C05DA8600347399 /* RedireactableAwaitAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00165FDF2C05DA8600347399 /* RedireactableAwaitAction.swift */; };
 		001BFF422A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */; };
 		001BFF432A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */; };
@@ -1495,6 +1498,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		000888732D4CF58D009C03E1 /* PayToPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToPaymentMethod.swift; sourceTree = "<group>"; };
+		000888772D4CF5F5009C03E1 /* PayToComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToComponent.swift; sourceTree = "<group>"; };
+		0008887A2D4CFA67009C03E1 /* PayToComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToComponentTests.swift; sourceTree = "<group>"; };
 		00165FDF2C05DA8600347399 /* RedireactableAwaitAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedireactableAwaitAction.swift; sourceTree = "<group>"; };
 		001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInSettingsView.swift; sourceTree = "<group>"; };
 		00220953299B885600B2BACD /* BLIKComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentUITests.swift; sourceTree = "<group>"; };
@@ -2684,6 +2690,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		000888762D4CF5DB009C03E1 /* PayTo */ = {
+			isa = PBXGroup;
+			children = (
+				000888772D4CF5F5009C03E1 /* PayToComponent.swift */,
+			);
+			path = PayTo;
+			sourceTree = "<group>";
+		};
+		0008887D2D4CFA7E009C03E1 /* PayTo */ = {
+			isa = PBXGroup;
+			children = (
+				0008887A2D4CFA67009C03E1 /* PayToComponentTests.swift */,
+			);
+			path = PayTo;
+			sourceTree = "<group>";
+		};
 		002B92EF294B2596000B93F4 /* UPI */ = {
 			isa = PBXGroup;
 			children = (
@@ -3748,6 +3770,7 @@
 				00F621C127EB1E3100C04097 /* AtomePaymentMethod.swift */,
 				00EACBAF2872F0D90082B360 /* OnlineBankingPaymentMethod.swift */,
 				002B92F0294B2627000B93F4 /* UPIPaymentMethod.swift */,
+				000888732D4CF58D009C03E1 /* PayToPaymentMethod.swift */,
 				A0414C1E278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift */,
 				E95E24BF22C2593900973184 /* ApplePayPaymentMethod.swift */,
 				C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */,
@@ -4560,6 +4583,7 @@
 				813F21C72CEB64E40072D193 /* PayByBankUSComponentTests.swift */,
 				81DA708F2BDA60F6006CE5D5 /* Twint */,
 				A020EC5829ED33CF0050B2FE /* Cash App Pay */,
+				0008887D2D4CFA7E009C03E1 /* PayTo */,
 				0067E73E296C15F6005B8D76 /* UPIComponent */,
 				A009837B279859BE007E68C4 /* ACH Direct Debit */,
 				C96688BD26A6F72900DC7297 /* Affirm */,
@@ -4811,6 +4835,7 @@
 				00EACBAA2872E8CA0082B360 /* OnlineBanking */,
 				C982FFD626945FCE00AED849 /* Affirm */,
 				002B92EF294B2596000B93F4 /* UPI */,
+				000888762D4CF5DB009C03E1 /* PayTo */,
 				00F621BC27EB12FA00C04097 /* Atome */,
 				E97B971B229E83E300505476 /* Apple Pay */,
 				C9BF0DB1273539EB00DCAA1E /* BACS Direct Debit */,
@@ -6858,6 +6883,7 @@
 				F9D644DE24D2D9950059CBE3 /* MBWayPaymentMethod.swift in Sources */,
 				E7085B142628B29600D0153B /* BaseFormPickerItem.swift in Sources */,
 				E216D3C3221AEDBE0013CBCF /* Formatter.swift in Sources */,
+				000888742D4CF597009C03E1 /* PayToPaymentMethod.swift in Sources */,
 				F9B798CB23AB706D00A2103C /* ListComponentStyle.swift in Sources */,
 				E2B3C216233507030067891D /* UIColorHelpers.swift in Sources */,
 				81BBB6742A82792100C1A04B /* UIView+Accessibility.swift in Sources */,
@@ -7297,6 +7323,7 @@
 				E7620EAD23C3466B00A492C3 /* ModalViewControllerTests.swift in Sources */,
 				C9C21914276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift in Sources */,
 				E7085C1E2629FDD700D0153B /* RedirectListnerTests.swift in Sources */,
+				0008887C2D4CFA73009C03E1 /* PayToComponentTests.swift in Sources */,
 				E74CE3DF26727EB1008231D2 /* DropInDelegateMock.swift in Sources */,
 				A020EC5A29ED33F90050B2FE /* CashAppPayComponentTests.swift in Sources */,
 				8128977E2CCA6FE900275487 /* SupportedPaymentMethodLogosViewTests.swift in Sources */,
@@ -7503,6 +7530,7 @@
 				F9175E9B259394F200D653BE /* IssuerListComponent.swift in Sources */,
 				A0414C21278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift in Sources */,
 				00EACBAE2872EDEC0082B360 /* OnlineBankingDetails.swift in Sources */,
+				000888782D4CF5FC009C03E1 /* PayToComponent.swift in Sources */,
 				812B24872CDE56D90074A5D9 /* PayByBankUSComponent+ConfirmationViewController+Model.swift in Sources */,
 				C933801E276A06E1005B66CD /* BACSDirectDebitComponentTracker.swift in Sources */,
 				5A9889C8264E71210007F4C0 /* BoletoDetails.swift in Sources */,
