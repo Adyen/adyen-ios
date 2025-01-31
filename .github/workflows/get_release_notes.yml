@@ -41,7 +41,7 @@ jobs:
           echo "Latest Tag: $LATEST_TAG"
           
           # Get the commit messages since the latest tag
-          COMMITS=$(git log --oneline "$LATEST_TAG"..HEAD)
+          COMMITS=$(git log "$LATEST_TAG"..HEAD)
           echo "Commits: $COMMITS"
           
           # Convert the labels string to an array
