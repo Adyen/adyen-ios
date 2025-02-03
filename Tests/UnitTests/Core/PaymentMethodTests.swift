@@ -82,7 +82,8 @@ class PaymentMethodTests: XCTestCase {
                 atome,
                 upi,
                 cashAppPay,
-                idealDictionary
+                idealDictionary,
+                payto
             ]
         ]
     }
@@ -333,6 +334,10 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.regular[34] is InstantPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[34].type.rawValue, "ideal")
         XCTAssertEqual(paymentMethods.regular[34].name, "iDeal")
+
+        XCTAssertTrue(paymentMethods.regular[35] is PayToPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[35].name, "payto")
+        XCTAssertEqual(paymentMethods.regular[35].type.rawValue, "payto")
     }
     
     // MARK: - Display Information Override
