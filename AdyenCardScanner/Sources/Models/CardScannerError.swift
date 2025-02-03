@@ -5,3 +5,19 @@
 //
 
 import Foundation
+
+public struct CardScannerError: LocalizedError {
+
+    public enum Kind {
+        case cameraSetup
+        case photoProcessing
+        case authorizationDenied
+        case capture
+    }
+
+    // MARK: - Properties
+
+    public var kind: Kind
+    public var underlyingError: Error?
+    public var errorDescription: String? { (underlyingError as? LocalizedError)?.errorDescription }
+}
