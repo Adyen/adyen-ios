@@ -5,3 +5,9 @@
 //
 
 import Foundation
+
+extension String {
+    var isOnlyNumbers: Bool {
+        !isEmpty && range(of: "[^0-9]", options: .regularExpression) == nil
+    }
+}
