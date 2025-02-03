@@ -613,3 +613,8 @@ let twint = [
     "name": "Twint",
     "type": "twint"
 ]
+
+let payto = [
+    "name": "payto",
+    "type": "payto"
+]
