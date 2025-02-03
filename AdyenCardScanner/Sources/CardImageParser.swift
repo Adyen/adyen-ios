@@ -87,35 +87,14 @@ class CardImageParser: CardImageParsing {
     // MARK: - Private
 
     private func transform(image: CIImage) -> CIImage? {
-        var outputImage: CIImage? = image
-
-        // Apply noise reduction filter.
-        let noiseReductionFilter = CIFilter(name: "CINoiseReduction")
-        noiseReductionFilter?.setValue(outputImage, forKey: kCIInputImageKey)
-        noiseReductionFilter?.setValue(0.02, forKey: "inputNoiseLevel")
-        noiseReductionFilter?.setValue(0.4, forKey: "inputSharpness")
-        outputImage = noiseReductionFilter?.outputImage
-
-        // Apply CIColorControls filter.
-        let colorControlsFilter = CIFilter(name: "CIColorControls")
-        colorControlsFilter?.setValue(outputImage, forKey: kCIInputImageKey)
-        colorControlsFilter?.setValue(0.2, forKey: kCIInputBrightnessKey)
-        colorControlsFilter?.setValue(1.5, forKey: kCIInputContrastKey)
-        colorControlsFilter?.setValue(1.2, forKey: kCIInputSaturationKey)
-        outputImage = colorControlsFilter?.outputImage
-
-        // Apply sharpness enhancement filter.
-        let sharpenFilter = CIFilter(name: "CISharpenLuminance")
-        sharpenFilter?.setValue(outputImage, forKey: kCIInputImageKey)
-        sharpenFilter?.setValue(0.5, forKey: kCIInputSharpnessKey)
-        outputImage = sharpenFilter?.outputImage
-
-//        outputImage = convertToGrayscale(image: outputImage!)
-
-        return outputImage
+        return image
+            .applyNoiseReductionFilter()?
+            .applyColorControlsFilter()?
+            .applySharpnessEnhancementFilter()
     }
 
     // ================== DO NOT REMOVE ==================
+    // TODO: - This is logic to grey-scale can image. We want to continue experimenting with it.
 
     func processImageForTextRecognition(image: CIImage?, threshold: CGFloat) -> CIImage? {
         guard let image else { return nil }
@@ -229,5 +208,32 @@ class CardImageParser: CardImageParsing {
         let matches = regex?.matches(in: text, range: NSRange(text.startIndex..., in: text))
         guard let match = matches?.first, let range = Range(match.range, in: text) else { return nil }
         return String(text[range])
+    }
+}
+
+private extension CIImage {
+
+    func applyNoiseReductionFilter() -> CIImage? {
+        let noiseReductionFilter = CIFilter(name: "CINoiseReduction")
+        noiseReductionFilter?.setValue(self, forKey: kCIInputImageKey)
+        noiseReductionFilter?.setValue(0.02, forKey: "inputNoiseLevel")
+        noiseReductionFilter?.setValue(0.4, forKey: "inputSharpness")
+        return noiseReductionFilter?.outputImage
+    }
+
+    func applyColorControlsFilter() -> CIImage? {
+        let colorControlsFilter = CIFilter(name: "CIColorControls")
+        colorControlsFilter?.setValue(self, forKey: kCIInputImageKey)
+        colorControlsFilter?.setValue(0.2, forKey: kCIInputBrightnessKey)
+        colorControlsFilter?.setValue(1.5, forKey: kCIInputContrastKey)
+        colorControlsFilter?.setValue(1.2, forKey: kCIInputSaturationKey)
+        return colorControlsFilter?.outputImage
+    }
+
+    func applySharpnessEnhancementFilter() -> CIImage? {
+        let sharpenFilter = CIFilter(name: "CISharpenLuminance")
+        sharpenFilter?.setValue(self, forKey: kCIInputImageKey)
+        sharpenFilter?.setValue(0.5, forKey: kCIInputSharpnessKey)
+        return sharpenFilter?.outputImage
     }
 }
