@@ -27,18 +27,15 @@ class CardImageParser: CardImageParsing {
 
     // MARK: - Properties
 
-    private let dateFormatter: DateFormatter
+    private lazy var dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale.current
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        return dateFormatter
+    }()
 
     private var cardNumber: String?
     private var expireDate: Date?
-
-    // MARK: - Initializers
-
-    init() {
-        self.dateFormatter = DateFormatter()
-        self.dateFormatter.locale = Locale.current
-        self.dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-    }
 
     // MARK: - CardImageParsing
 
