@@ -90,15 +90,13 @@ extension XCTestCase {
     
     func testName(for callingFunction: String) -> String {
         let simulatorName = ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "Unknown_Simulator"
-        let systemName = UIDevice.current.systemName
-        let versionName = UIDevice.current.systemVersion
+        let operatingSystem = "\(UIDevice.current.systemName)_\(UIDevice.current.systemVersion)"
         let locale = Locale.current.identifier
         
         return [
             callingFunction,
             simulatorName,
-            systemName,
-            // versionName,
+            //operatingSystem,
             locale
         ].joined(separator: "-")
     }
