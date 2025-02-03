@@ -15,6 +15,8 @@ public final class PayToComponent: PaymentComponent,
         static let flowSelectionTitleLabelItem = "flowSelectionTitleLabelItem"
         static let flowSelectionItem = "flowSelectionSegmentedControlItem"
         static let continueButtonItem = "continueButton"
+        static let firstNameInputItem = "firstNameInputItem"
+        static let lastNameInputItem = "lastNameInputItem"
     }
 
     /// Configuration for PayTo Component.
@@ -104,6 +106,30 @@ public final class PayToComponent: PaymentComponent,
         return item
     }()
 
+    /// The  acount holder firstname text input item.
+    internal lazy var firstNameInputItem: FormTextInputItem = {
+        let item = FormTextInputItem(style: configuration.style.textField)
+        item.title = "Account holder first name"
+        item.placeholder = "Account holder first name"
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.firstNameInputItem
+        )
+        return item
+    }()
+
+    /// The  acount holder lastname text input item.
+    internal lazy var lastNameInputItem: FormTextInputItem = {
+        let item = FormTextInputItem(style: configuration.style.textField)
+        item.title = "Account holder last name"
+        item.placeholder = "Account holder last name"
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.lastNameInputItem
+        )
+        return item
+    }()
+
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
             scrollEnabled: configuration.showsSubmitButton,
@@ -116,6 +142,9 @@ public final class PayToComponent: PaymentComponent,
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
         formViewController.append(flowSelectionItem.padding())
 
+        formViewController.append(FormSpacerItem(numberOfSpaces: 1))
+        contentView(formVC: formViewController)
+
         if configuration.showsSubmitButton {
             formViewController.append(FormSpacerItem(numberOfSpaces: 2))
             formViewController.append(continueButton)
@@ -123,6 +152,17 @@ public final class PayToComponent: PaymentComponent,
 
         return formViewController
     }()
+
+    // MARK: - Private
+
+    private func contentView(formVC: FormViewController) {
+        addStaticContentView(formVC)
+    }
+
+    private func addStaticContentView(_ formVC: FormViewController) {
+        formVC.append(firstNameInputItem)
+        formVC.append(lastNameInputItem)
+    }
 }
 
 // MARK: - Event Handling
