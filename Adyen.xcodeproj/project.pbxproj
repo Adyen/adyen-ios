@@ -10,6 +10,8 @@
 		000888742D4CF597009C03E1 /* PayToPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000888732D4CF58D009C03E1 /* PayToPaymentMethod.swift */; };
 		000888782D4CF5FC009C03E1 /* PayToComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000888772D4CF5F5009C03E1 /* PayToComponent.swift */; };
 		0008887C2D4CFA73009C03E1 /* PayToComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0008887A2D4CFA67009C03E1 /* PayToComponentTests.swift */; };
+		000888822D510414009C03E1 /* PayToComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000888812D510412009C03E1 /* PayToComponentUITests.swift */; };
+		000888832D510414009C03E1 /* PayToComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000888812D510412009C03E1 /* PayToComponentUITests.swift */; };
 		00165FE02C05DA8600347399 /* RedireactableAwaitAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00165FDF2C05DA8600347399 /* RedireactableAwaitAction.swift */; };
 		001BFF422A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */; };
 		001BFF432A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */; };
@@ -1501,6 +1503,7 @@
 		000888732D4CF58D009C03E1 /* PayToPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToPaymentMethod.swift; sourceTree = "<group>"; };
 		000888772D4CF5F5009C03E1 /* PayToComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToComponent.swift; sourceTree = "<group>"; };
 		0008887A2D4CFA67009C03E1 /* PayToComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToComponentTests.swift; sourceTree = "<group>"; };
+		000888812D510412009C03E1 /* PayToComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToComponentUITests.swift; sourceTree = "<group>"; };
 		00165FDF2C05DA8600347399 /* RedireactableAwaitAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedireactableAwaitAction.swift; sourceTree = "<group>"; };
 		001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInSettingsView.swift; sourceTree = "<group>"; };
 		00220953299B885600B2BACD /* BLIKComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentUITests.swift; sourceTree = "<group>"; };
@@ -2805,6 +2808,7 @@
 				007D790B2812C81400382D31 /* AtomeComponentUITests.swift */,
 				007D791E2823A84C00382D31 /* AffirmComponentUITests.swift */,
 				814E15492C87407F00D90D4B /* CardComponentUITests.swift */,
+				000888812D510412009C03E1 /* PayToComponentUITests.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -6741,6 +6745,7 @@
 				81DF94182BAAD8EB0001DCBC /* DummyPaymentMethods.swift in Sources */,
 				81DF94192BAAD8EB0001DCBC /* DokuComponentUITests.swift in Sources */,
 				81DF941A2BAAD8EB0001DCBC /* IssuerListComponentUITests.swift in Sources */,
+				000888832D510414009C03E1 /* PayToComponentUITests.swift in Sources */,
 				81DF941B2BAAD8EB0001DCBC /* AffirmComponentUITests.swift in Sources */,
 				81BE48362BB6D1BE003A51F6 /* String+UIImage.swift in Sources */,
 				81DF941C2BAAD8EB0001DCBC /* XCTestCase+FormAddressItem.swift in Sources */,
@@ -7835,6 +7840,7 @@
 				81825CC22AC59C6400F91912 /* XCTestCase+RootViewController.swift in Sources */,
 				F9CCA3D7296ECDB200AD643D /* XCTestCase+Coder.swift in Sources */,
 				F9CCA3C5296ECB9900AD643D /* ListViewControllerUITests.swift in Sources */,
+				000888822D510414009C03E1 /* PayToComponentUITests.swift in Sources */,
 				F9CCA3D3296ECD0700AD643D /* PostalAddressMocks.swift in Sources */,
 				817C90822C3D59B30072A202 /* PartialPaymentDelegateMock.swift in Sources */,
 				81FC2C992BB1BB69007F1316 /* URLProtocolMock.swift in Sources */,
