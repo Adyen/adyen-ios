@@ -5,3 +5,8 @@
 //
 
 import Foundation
+
+enum CardExpireDateFormat: String {
+    case short = "MM/yy"
+    case long = "MM/yyyy"
+}
