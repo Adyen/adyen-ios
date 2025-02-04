@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import CoreImage
+import CoreImage.CIFilterBuiltins
 import Foundation
 import Vision
 
@@ -211,26 +211,26 @@ class CardImageParser: CardImageParsing {
 private extension CIImage {
 
     func applyNoiseReductionFilter() -> CIImage? {
-        let noiseReductionFilter = CIFilter(name: "CINoiseReduction")
-        noiseReductionFilter?.setValue(self, forKey: kCIInputImageKey)
-        noiseReductionFilter?.setValue(0.02, forKey: "inputNoiseLevel")
-        noiseReductionFilter?.setValue(0.4, forKey: "inputSharpness")
-        return noiseReductionFilter?.outputImage
+        let noiseReductionFilter = CIFilter.noiseReduction()
+        noiseReductionFilter.inputImage = self
+        noiseReductionFilter.noiseLevel = 0.02
+        noiseReductionFilter.sharpness = 0.4
+        return noiseReductionFilter.outputImage
     }
 
     func applyColorControlsFilter() -> CIImage? {
-        let colorControlsFilter = CIFilter(name: "CIColorControls")
-        colorControlsFilter?.setValue(self, forKey: kCIInputImageKey)
-        colorControlsFilter?.setValue(0.2, forKey: kCIInputBrightnessKey)
-        colorControlsFilter?.setValue(1.5, forKey: kCIInputContrastKey)
-        colorControlsFilter?.setValue(1.2, forKey: kCIInputSaturationKey)
-        return colorControlsFilter?.outputImage
+        let colorControlsFilter = CIFilter.colorControls()
+        colorControlsFilter.inputImage = self
+        colorControlsFilter.brightness = 0.2
+        colorControlsFilter.contrast = 1.5
+        colorControlsFilter.saturation = 1.2
+        return colorControlsFilter.outputImage
     }
 
     func applySharpnessEnhancementFilter() -> CIImage? {
-        let sharpenFilter = CIFilter(name: "CISharpenLuminance")
-        sharpenFilter?.setValue(self, forKey: kCIInputImageKey)
-        sharpenFilter?.setValue(0.5, forKey: kCIInputSharpnessKey)
-        return sharpenFilter?.outputImage
+        let sharpenFilter = CIFilter.sharpenLuminance()
+        sharpenFilter.inputImage = self
+        sharpenFilter.sharpness = 0.5
+        return sharpenFilter.outputImage
     }
 }
