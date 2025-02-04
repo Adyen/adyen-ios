@@ -12,8 +12,8 @@ public final class PayToComponent: PaymentComponent,
                                    PresentableComponent {
 
     private enum ViewIdentifier {
-        static let flowSelectionTitleLabelItem = "flowSelectionTitleLabelItem"
-        static let flowSelectionItem = "flowSelectionSegmentedControlItem"
+        static let flowSelectionTitleLabelItem = "flowSelectionTitleLabel"
+        static let flowSelectionItem = "flowSelectionSegmentedControl"
         static let continueButtonItem = "continueButton"
     }
 
@@ -61,6 +61,7 @@ public final class PayToComponent: PaymentComponent,
 
     /// The payment flow selection title  label item.
     internal lazy var flowSelectionTitleLabelItem: FormLabelItem = {
+        // TODO: Add translation
         let item = FormLabelItem(
             text: "How would you like to use Payto?",
             style: configuration.style.footnoteLabel
