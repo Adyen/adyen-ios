@@ -27,4 +27,54 @@ class PayToComponentTests: XCTestCase {
 
         XCTAssertEqual(sut.paymentMethod.type, .payto)
     }
+
+    func test_flowSelection_titleLabel_exists() throws {
+        // Given
+        let sut = try PayToComponent(
+            paymentMethod: AdyenCoder.decode(payto),
+            context: Dummy.context
+        )
+
+        setupRootViewController(sut.viewController)
+
+        // Check by accessibility identifier
+        let flowSelectionTitleLabelItem = sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.flowSelectionTitleLabel") as? UILabel
+
+        // Then
+        XCTAssertNotNil(flowSelectionTitleLabelItem, "Flow selection title label should exist")
+    }
+
+    func test_flowSelectionItem_exists() throws {
+        // Given
+        let sut = try PayToComponent(
+            paymentMethod: AdyenCoder.decode(payto),
+            context: Dummy.context
+        )
+
+        setupRootViewController(sut.viewController)
+
+        // Check by accessibility identifier
+        let flowSelectionItem = sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.flowSelectionSegmentedControl") as? UISegmentedControl
+        flowSelectionItem?.selectedSegmentIndex = 1
+
+        // Then
+        XCTAssertNotNil(flowSelectionItem, "Flow selection item should exist")
+    }
+
+    func test_continueButton_exists() throws {
+        // Given
+        let sut = try PayToComponent(
+            paymentMethod: AdyenCoder.decode(payto),
+            context: Dummy.context
+        )
+
+        setupRootViewController(sut.viewController)
+
+        // Check by accessibility identifier
+        let continueButton: FormButtonItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.continueButton"))
+
+        // Then
+        XCTAssertNotNil(continueButton, "ContinueButton should exist")
+    }
+
 }

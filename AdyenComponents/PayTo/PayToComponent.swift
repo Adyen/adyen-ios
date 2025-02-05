@@ -11,6 +11,12 @@ import UIKit
 public final class PayToComponent: PaymentComponent,
                                    PresentableComponent {
 
+    private enum ViewIdentifier {
+        static let flowSelectionTitleLabelItem = "flowSelectionTitleLabel"
+        static let flowSelectionItem = "flowSelectionSegmentedControl"
+        static let continueButtonItem = "continueButton"
+    }
+
     /// Configuration for PayTo Component.
     public typealias Configuration = BasicComponentConfiguration
 
@@ -30,7 +36,13 @@ public final class PayToComponent: PaymentComponent,
     private let payToPaymentMethod: PayToPaymentMethod
 
     /// The viewController for the component.
-    public lazy var viewController: UIViewController = .init()
+    public lazy var viewController: UIViewController = SecuredViewController(
+        child: formViewController,
+        style: configuration.style
+    )
+
+    /// This indicates that `viewController` expected to be presented modally,
+    public var requiresModalPresentation: Bool = true
 
     /// Initializes the PayTo  component.
     ///
@@ -46,4 +58,76 @@ public final class PayToComponent: PaymentComponent,
         self.context = context
         self.configuration = configuration
     }
+
+    /// The payment flow selection title  label item.
+    internal lazy var flowSelectionTitleLabelItem: FormLabelItem = {
+        // TODO: Add translation
+        let item = FormLabelItem(
+            text: "How would you like to use Payto?",
+            style: configuration.style.footnoteLabel
+        )
+        item.style.textAlignment = .left
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.flowSelectionTitleLabelItem
+        )
+        return item
+    }()
+
+    /// The segment control item to choose the payTo flow.
+    internal lazy var flowSelectionItem: FormSegmentedControlItem = {
+        let item = FormSegmentedControlItem(
+            items: ["PayID", "BSB"],
+            style: configuration.style.segmentedControlStyle,
+            identifier: ViewIdentifierBuilder.build(
+                scopeInstance: self,
+                postfix: ViewIdentifier.flowSelectionItem
+            )
+        )
+        return item
+    }()
+
+    /// The continue button item.
+    internal lazy var continueButton: FormButtonItem = {
+        let item = FormButtonItem(style: configuration.style.mainButtonItem)
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.continueButtonItem
+        )
+        item.title = localizedString(.continueTitle, configuration.localizationParameters)
+        item.buttonSelectionHandler = { [weak self] in
+            self?.didSelectContinueButton()
+        }
+        return item
+    }()
+
+    private lazy var formViewController: FormViewController = {
+        let formViewController = FormViewController(
+            scrollEnabled: configuration.showsSubmitButton,
+            style: configuration.style,
+            localizationParameters: configuration.localizationParameters
+        )
+        formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
+        formViewController.append(FormSpacerItem(numberOfSpaces: 1))
+        formViewController.append(flowSelectionTitleLabelItem.padding())
+        formViewController.append(FormSpacerItem(numberOfSpaces: 1))
+        formViewController.append(flowSelectionItem.padding())
+
+        if configuration.showsSubmitButton {
+            formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+            formViewController.append(continueButton)
+        }
+
+        return formViewController
+    }()
+}
+
+// MARK: - Event Handling
+
+extension PayToComponent {
+
+    private func didSelectContinueButton() {
+        // TODO: Implement
+    }
+
 }
