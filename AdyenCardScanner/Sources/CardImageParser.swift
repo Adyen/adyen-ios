@@ -34,8 +34,8 @@ class CardImageParser: CardImageParsing {
         return dateFormatter
     }()
 
-    private var cardNumber: String?
-    private var expireDate: Date?
+    private var cachedCardNumber: String?
+    private var cachedExpireDate: Date?
 
     // MARK: - CardImageParsing
 
@@ -60,22 +60,22 @@ class CardImageParser: CardImageParsing {
 
         dispatchGroup.enter()
         DispatchQueue.global().async {
-            if self.cardNumber == nil {
-                self.cardNumber = self.extractCardNumber(from: results)
+            if self.cachedCardNumber == nil {
+                self.cachedCardNumber = self.extractCardNumber(from: results)
             }
             dispatchGroup.leave()
         }
 
         dispatchGroup.enter()
         DispatchQueue.global().async {
-            if self.expireDate == nil {
-                self.expireDate = self.extractExpireDate(from: results)
+            if self.cachedExpireDate == nil {
+                self.cachedExpireDate = self.extractExpireDate(from: results)
             }
             dispatchGroup.leave()
         }
 
         dispatchGroup.notify(queue: .main) {
-            guard let cardNumber = self.cardNumber, let expireDate = self.expireDate else { return }
+            guard let cardNumber = self.cachedCardNumber, let expireDate = self.cachedExpireDate else { return }
             let card = CreditCard(number: cardNumber, expireDate: expireDate)
             completion(card)
         }
@@ -90,84 +90,36 @@ class CardImageParser: CardImageParsing {
             .applySharpnessEnhancementFilter()
     }
 
-    // ================== DO NOT REMOVE ==================
-    // TODO: - This is logic to grey-scale can image. We want to continue experimenting with it.
-
-    func processImageForTextRecognition(image: CIImage?, threshold: CGFloat) -> CIImage? {
-        guard let image else { return nil }
-        if let grayscaleImage = convertToGrayscale(image: image) {
-            return applyThreshold(image: grayscaleImage, threshold: threshold)
-        }
-        return nil
-    }
-
-    private func convertToGrayscale(image: CIImage) -> CIImage? {
-        let colorControlsFilter = CIFilter(name: "CIColorControls")
-        colorControlsFilter?.setValue(image, forKey: kCIInputImageKey)
-        colorControlsFilter?.setValue(0.0, forKey: kCIInputSaturationKey) // No color
-        colorControlsFilter?.setValue(1.0, forKey: kCIInputBrightnessKey) // Full brightness
-        colorControlsFilter?.setValue(1.0, forKey: kCIInputContrastKey) // Full contrast
-        return colorControlsFilter?.outputImage
-    }
-
-    private func applyThreshold(image: CIImage, threshold: CGFloat) -> CIImage? {
-        let colorMatrixFilter = CIFilter(name: "CIColorMatrix")
-        colorMatrixFilter?.setValue(image, forKey: kCIInputImageKey)
-
-        // Set the threshold value
-        let thresholdVector = CIVector(x: threshold, y: threshold, z: threshold, w: 1)
-        colorMatrixFilter?.setValue(thresholdVector, forKey: "inputRVector")
-        colorMatrixFilter?.setValue(thresholdVector, forKey: "inputGVector")
-        colorMatrixFilter?.setValue(thresholdVector, forKey: "inputBVector")
-
-        // Keeping alpha channel as is
-        colorMatrixFilter?.setValue(CIVector(x: 0, y: 0, z: 0, w: 1), forKey: "inputAVector")
-
-        // Biasing the output so that it’s either black or white
-        let biasVector = CIVector(x: -threshold, y: -threshold, z: -threshold, w: 0)
-        colorMatrixFilter?.setValue(biasVector, forKey: "inputBiasVector")
-
-        return colorMatrixFilter?.outputImage
-    }
-
-    // ==================================================
-
     private func extractCardNumber(from textObservations: [VNRecognizedTextObservation]) -> String? {
-        for observation in textObservations {
-            let candidates = observation.topCandidates(Constants.topCandidates)
-            guard let topCandidate = candidates.first,
-                  topCandidate.confidence > Constants.cardNumberConfidence else { continue }
+        if let cachedCardNumber { return cachedCardNumber }
 
-            debugPrint("candidates >> \(topCandidate.string)")
+        let cardNumberMatch = textObservations
+            .compactMap { $0.topCandidates(Constants.topCandidates).first }
+            .filter { $0.confidence > Constants.cardNumberConfidence }
+            .map { $0.string.replacingOccurrences(of: " ", with: "") }
+            .filter { $0.isOnlyNumbers }
+            .filter { $0.count >= 13 && $0.count <= 19 }
+            .filter { isValidLuhn($0) }
+            .first
+        guard let cardNumberMatch else { return nil }
+        self.cachedCardNumber = cardNumberMatch
 
-            let sanitizedCardNumber = topCandidate.string.replacingOccurrences(of: " ", with: "")
-
-            guard sanitizedCardNumber.isOnlyNumbers else { continue }
-            guard sanitizedCardNumber.count >= 13, sanitizedCardNumber.count <= 19 else { continue }
-            guard isValidLuhn(sanitizedCardNumber) else { continue }
-
-            debugPrint("VALID CARD: \(sanitizedCardNumber)")
-
-            return sanitizedCardNumber
-        }
-
-        return nil
+        return cardNumberMatch
     }
 
     private func extractExpireDate(from textObservations: [VNRecognizedTextObservation]) -> Date? {
-        for observation in textObservations {
-            let candidates = observation.topCandidates(Constants.topCandidates)
-            guard let topCandidate = candidates.first,
-                  topCandidate.confidence > Constants.expireDateConfidence else { continue }
+        if let cachedExpireDate { return cachedExpireDate }
 
-            let expireDateMatch = extractMatch(from: topCandidate.string, using: Constants.expireDateRegex)
-            guard let expireDateMatch else { continue }
+        let match = textObservations
+            .compactMap { $0.topCandidates(Constants.topCandidates).first }
+            .filter { $0.confidence > Constants.expireDateConfidence }
+            .compactMap { extractMatch(from: $0.string, using: Constants.expireDateRegex) }
+            .first
+        guard let match else { return nil }
+        let expireDate = date(from: match)
+        self.cachedExpireDate = expireDate
 
-            debugPrint("VALID DATE: \(expireDateMatch)")
-            return date(from: expireDateMatch)
-        }
-
-        return nil
+        return expireDate
     }
 
     private func isValidLuhn(_ number: String) -> Bool {
