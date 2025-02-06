@@ -6,11 +6,11 @@
 
 import Foundation
 
-protocol ExpireDateFormatting {
+protocol ExpirationDateFormatting {
     func date(from string: String) -> Date?
 }
 
-class ExpireDateFormatter: ExpireDateFormatting {
+class ExpirationDateFormatter: ExpirationDateFormatting {
 
     enum CardExpireDateFormat {
         static let short = "MM/yy"

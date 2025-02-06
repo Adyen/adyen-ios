@@ -18,23 +18,23 @@ protocol CardImageParsing {
 class CardImageParser: CardImageParsing {
 
     private enum Constants {
-        static let expireDateRegex = "\\d{2}\\/\\d{2,4}"
+        static let expirationDateRegex = "\\d{2}\\/\\d{2,4}"
         static let topCandidates = 10
 
         static let cardNumberConfidence: Float = 0.4
-        static let expireDateConfidence: Float = 0.4
+        static let expirationDateConfidence: Float = 0.4
     }
 
     // MARK: - Properties
 
-    private let expireDateFormatter: ExpireDateFormatting
+    private let expirationDateFormatter: ExpirationDateFormatting
     private var cachedCardNumber: String?
-    private var cachedExpireDate: Date?
+    private var cachedExpirationDate: Date?
 
     // MARK: - Initializers
 
-    init(expireDateFormatter: ExpireDateFormatting) {
-        self.expireDateFormatter = expireDateFormatter
+    init(expirationDateFormatter: ExpirationDateFormatting) {
+        self.expirationDateFormatter = expirationDateFormatter
     }
 
     // MARK: - CardImageParsing
@@ -68,15 +68,18 @@ class CardImageParser: CardImageParsing {
 
         dispatchGroup.enter()
         DispatchQueue.global().async {
-            if self.cachedExpireDate == nil {
-                self.cachedExpireDate = self.extractExpireDate(from: results)
+            if self.cachedExpirationDate == nil {
+                self.cachedExpirationDate = self.extractExpirationDate(from: results)
             }
             dispatchGroup.leave()
         }
 
         dispatchGroup.notify(queue: .main) {
-            guard let cardNumber = self.cachedCardNumber, let expireDate = self.cachedExpireDate else { return }
-            let card = CreditCard(number: cardNumber, expireDate: expireDate)
+            guard let cardNumber = self.cachedCardNumber,
+                  let expirationDate = self.cachedExpirationDate else {
+                return
+            }
+            let card = CreditCard(number: cardNumber, expirationDate: expirationDate)
             completion(card)
         }
     }
@@ -97,28 +100,26 @@ class CardImageParser: CardImageParsing {
             .compactMap { $0.topCandidates(Constants.topCandidates).first }
             .filter { $0.confidence > Constants.cardNumberConfidence }
             .map { $0.string.replacingOccurrences(of: " ", with: "") }
-            .filter { $0.isCardNumber }
-            .filter { isValidLuhn($0) }
-            .first
+            .first(where: { $0.isCardNumber && isValidLuhn($0) })
         guard let cardNumberMatch else { return nil }
         self.cachedCardNumber = cardNumberMatch
 
         return cardNumberMatch
     }
 
-    private func extractExpireDate(from textObservations: [VNRecognizedTextObservation]) -> Date? {
-        if let cachedExpireDate { return cachedExpireDate }
+    private func extractExpirationDate(from textObservations: [VNRecognizedTextObservation]) -> Date? {
+        if let cachedExpirationDate { return cachedExpirationDate }
 
         let match = textObservations
             .compactMap { $0.topCandidates(Constants.topCandidates).first }
-            .filter { $0.confidence > Constants.expireDateConfidence }
-            .compactMap { extractMatch(from: $0.string, using: Constants.expireDateRegex) }
+            .filter { $0.confidence > Constants.expirationDateConfidence }
+            .compactMap { extractMatch(from: $0.string, using: Constants.expirationDateRegex) }
             .first
         guard let match else { return nil }
-        let expireDate = expireDateFormatter.date(from: match)
-        self.cachedExpireDate = expireDate
+        let expirationDate = expirationDateFormatter.date(from: match)
+        self.cachedExpirationDate = expirationDate
 
-        return expireDate
+        return expirationDate
     }
 
     private func isValidLuhn(_ number: String) -> Bool {

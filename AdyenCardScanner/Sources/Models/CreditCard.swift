@@ -10,6 +10,6 @@ public struct CreditCard {
 
     // MARK: - Properties
 
-    public var number: String?
-    public var expireDate: Date?
+    public let number: String?
+    public let expirationDate: Date?
 }
