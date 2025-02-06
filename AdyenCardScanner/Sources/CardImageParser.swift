@@ -27,15 +27,15 @@ class CardImageParser: CardImageParsing {
 
     // MARK: - Properties
 
-    private lazy var dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale.current
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        return dateFormatter
-    }()
-
+    private let expireDateFormatter: ExpireDateFormatting
     private var cachedCardNumber: String?
     private var cachedExpireDate: Date?
+
+    // MARK: - Initializers
+
+    init(expireDateFormatter: ExpireDateFormatting) {
+        self.expireDateFormatter = expireDateFormatter
+    }
 
     // MARK: - CardImageParsing
 
@@ -97,8 +97,7 @@ class CardImageParser: CardImageParsing {
             .compactMap { $0.topCandidates(Constants.topCandidates).first }
             .filter { $0.confidence > Constants.cardNumberConfidence }
             .map { $0.string.replacingOccurrences(of: " ", with: "") }
-            .filter { $0.isOnlyNumbers }
-            .filter { $0.count >= 13 && $0.count <= 19 }
+            .filter { $0.isCardNumber }
             .filter { isValidLuhn($0) }
             .first
         guard let cardNumberMatch else { return nil }
@@ -116,7 +115,7 @@ class CardImageParser: CardImageParsing {
             .compactMap { extractMatch(from: $0.string, using: Constants.expireDateRegex) }
             .first
         guard let match else { return nil }
-        let expireDate = date(from: match)
+        let expireDate = expireDateFormatter.date(from: match)
         self.cachedExpireDate = expireDate
 
         return expireDate
@@ -140,23 +139,20 @@ class CardImageParser: CardImageParsing {
         return sum % 10 == 0
     }
 
-    private func date(from dateString: String) -> Date? {
-        // First, try the short ("MM/YY") format
-        dateFormatter.dateFormat = CardExpireDateFormat.short.rawValue
-        if let shortYearDate = dateFormatter.date(from: dateString) {
-            return shortYearDate
-        }
-
-        // Then, try the long ("MM/YYYY") format
-        dateFormatter.dateFormat = CardExpireDateFormat.long.rawValue
-        return dateFormatter.date(from: dateString)
-    }
-
     private func extractMatch(from text: String, using regex: String) -> String? {
         let regex = try? NSRegularExpression(pattern: regex)
         let matches = regex?.matches(in: text, range: NSRange(text.startIndex..., in: text))
         guard let match = matches?.first, let range = Range(match.range, in: text) else { return nil }
         return String(text[range])
+    }
+}
+
+private extension String {
+
+    var isCardNumber: Bool {
+        let isOnlyNumbers = !isEmpty && range(of: "[^0-9]", options: .regularExpression) == nil
+        let isLengthValid = count >= 12 && count <= 19
+        return isOnlyNumbers && isLengthValid
     }
 }
 
