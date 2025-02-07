@@ -12,7 +12,7 @@ protocol ExpirationDateFormatting {
 
 class ExpirationDateFormatter: ExpirationDateFormatting {
 
-    enum CardExpireDateFormat {
+    enum ExpirationDateFormat {
         static let short = "MM/yy"
         static let long = "MM/yyyy"
     }
@@ -30,11 +30,11 @@ class ExpirationDateFormatter: ExpirationDateFormatting {
 
         shortDateFormatter.locale = locale
         shortDateFormatter.timeZone = timeZone
-        shortDateFormatter.dateFormat = CardExpireDateFormat.short
+        shortDateFormatter.dateFormat = ExpirationDateFormat.short
 
         longFormatter.locale = locale
         longFormatter.timeZone = timeZone
-        longFormatter.dateFormat = CardExpireDateFormat.long
+        longFormatter.dateFormat = ExpirationDateFormat.long
     }
 
     // MARK: - ExpireDateFormatting

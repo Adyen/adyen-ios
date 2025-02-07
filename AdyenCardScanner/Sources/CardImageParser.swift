@@ -87,7 +87,7 @@ class CardImageParser: CardImageParsing {
     // MARK: - Private
 
     private func transform(image: CIImage) -> CIImage? {
-        return image
+        image
             .applyNoiseReductionFilter()?
             .applyColorControlsFilter()?
             .applySharpnessEnhancementFilter()
