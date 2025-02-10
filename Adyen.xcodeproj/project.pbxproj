@@ -3578,12 +3578,12 @@
 		C99FF2B62D50E872007179C5 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				C9EEEFEB2D5516B300B7AFFC /* Formatters */,
-				C99FF2B42D50E872007179C5 /* Models */,
 				C99FF2B52D50E872007179C5 /* CardImageParser.swift */,
-				C9037F0F2D563DCD003A5154 /* CardScannerViewModel.swift */,
 				C9037F112D5A1976003A5154 /* CardScannerOverlayView.swift */,
 				C9037F152D5A1AC0003A5154 /* CardScannerViewController.swift */,
+				C9037F0F2D563DCD003A5154 /* CardScannerViewModel.swift */,
+				C9EEEFEB2D5516B300B7AFFC /* Formatters */,
+				C99FF2B42D50E872007179C5 /* Models */,
 				C9037F132D5A19BD003A5154 /* ROIView.swift */,
 			);
 			path = Sources;
