@@ -10,10 +10,12 @@ import AVFoundation
 import UIKit
 
 protocol CardScannerViewModelProtocol {
-    func viewDidLoad()
-    func viewWillAppear()
-    func viewDidDisappear()
-    var videoPreviewLayer: CALayer { get }
+    var videoPreviewLayer: AVCaptureVideoPreviewLayer { get }
+
+    func configureSession()
+    func startSession()
+    func stopSession()
+    func updateVideoOrientation()
     func update(previewLayerFrame: CGRect, roiInPreviewLayer: CGRect)
 }
 
@@ -21,9 +23,13 @@ class CardScannerViewModel: NSObject, CardScannerViewModelProtocol {
 
     // MARK: - Properties
 
+    private let sessionQueue = DispatchQueue(label: "com.cardscanner.sessionQueue", qos: .userInitiated) // For session config
+    private let videoOutputQueue = DispatchQueue(label: "com.cardscanner.videoOutputQueue") // For frame processing
+
     private let cardImageParser: CardImageParsing
     private let captureSession: AVCaptureSession
     private let captureDevice: AVCaptureDevice
+    private(set) var videoPreviewLayer: AVCaptureVideoPreviewLayer
 
     private let completion: (Result<CreditCard, CardScannerError>) -> ()
 
@@ -41,118 +47,117 @@ class CardScannerViewModel: NSObject, CardScannerViewModelProtocol {
         self.cardImageParser = cardImageParser
         self.captureSession = captureSession
         self.captureDevice = captureDevice
+        self.videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         self.completion = completion
     }
 
     // MARK: - CardScannerViewModelProtocol
 
-    func viewDidLoad() {
-        self.setupCaptureDevice()
-        self.setupCaptureSession()
+    func configureSession() {
+        sessionQueue.async {
+            self.configureCaptureSession()
+        }
     }
 
-    func viewWillAppear() {
-        DispatchQueue.global(qos: .userInitiated).async {
+    func startSession() {
+        sessionQueue.async {
+            guard !self.captureSession.isRunning else { return }
             self.captureSession.startRunning()
         }
     }
 
-    func viewDidDisappear() {
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            self?.captureSession.stopRunning()
+    func stopSession() {
+        sessionQueue.async {
+            guard self.captureSession.isRunning else { return }
+            self.captureSession.stopRunning()
         }
     }
 
-    var videoPreviewLayer: CALayer {
-        let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewLayer.videoGravity = .resizeAspectFill
-        return previewLayer
-    }
-
     func update(previewLayerFrame: CGRect, roiInPreviewLayer: CGRect) {
-        debugPrint("Preview layer frame: \(previewLayerFrame)")
-        debugPrint("ROI layer frame: \(roiInPreviewLayer)")
-
         self.previewFrame = previewLayerFrame
         self.roiInPreviewFrame = roiInPreviewLayer
     }
 
-    // MARK: - Private
-
-    private func setupCaptureDevice() {
-        try? captureDevice.lockForConfiguration()
-
-        // Adjust Frame Rate
-        captureDevice.activeVideoMinFrameDuration = CMTime(value: 1, timescale: 15) // 15 fps
-        captureDevice.activeVideoMaxFrameDuration = CMTime(value: 1, timescale: 30) // 30 fps
-
-        // Focus and Exposure Settings
-        if captureDevice.isFocusModeSupported(.continuousAutoFocus) {
-            captureDevice.focusMode = .continuousAutoFocus
-        }
-
-        // Auto Exposure
-        if captureDevice.isExposureModeSupported(.continuousAutoExposure) {
-            captureDevice.exposureMode = .continuousAutoExposure
-        }
-
-        // Lighting Conditions
-        if captureDevice.hasTorch, captureDevice.isTorchModeSupported(.auto) {
-            captureDevice.torchMode = .auto
-        }
-
-        captureDevice.unlockForConfiguration()
-    }
-
-    private func setupCaptureSession() {
-        captureSession.beginConfiguration()
-
-        // Set up input
-        do {
-            let videoInput = try AVCaptureDeviceInput(device: captureDevice)
-
-            if captureSession.canAddInput(videoInput) {
-                captureSession.addInput(videoInput)
-            } else {
-                let cardScannerError = CardScannerError(kind: .capture)
-                completion(.failure(cardScannerError))
-                return
-            }
-        } catch {
-            let cardScannerError = CardScannerError(kind: .capture, underlyingError: error)
-            completion(.failure(cardScannerError))
+    func updateVideoOrientation() {
+        guard
+            let connection = videoPreviewLayer.connection,
+            connection.isVideoOrientationSupported else {
             return
         }
 
-        // Set up output
-        let videoOutput = AVCaptureVideoDataOutput()
-        let videoSettings = [(kCVPixelBufferPixelFormatTypeKey as NSString) : NSNumber(value: kCVPixelFormatType_32BGRA)] as [String : Any]
-        videoOutput.videoSettings = videoSettings
-        let videoQueue = DispatchQueue(label: "my.image.handling.queue")
-        videoOutput.setSampleBufferDelegate(self, queue: videoQueue)
+        connection.videoOrientation = .currentVideoOrientation
+        videoPreviewLayer.removeAllAnimations()
+    }
 
-        if captureSession.canAddOutput(videoOutput) {
-            captureSession.addOutput(videoOutput)
-        } else {
+    // MARK: - Private
+
+    private func configureCaptureSession() {
+        captureSession.beginConfiguration()
+
+        // Set up input
+        guard
+            let videoInput = try? AVCaptureDeviceInput(device: captureDevice),
+            captureSession.canAddInput(videoInput)
+        else {
             let cardScannerError = CardScannerError(kind: .capture)
             completion(.failure(cardScannerError))
             return
         }
 
-        guard let connection = videoOutput.connection(with: AVMediaType.video), connection.isVideoOrientationSupported else { return }
-        connection.videoOrientation = currentVideoOrientation
+        // Configure capture device settings
+        configureCaptureDevice(captureDevice)
 
-        if let connection = videoOutput.connection(with: .video) {
-            if connection.isVideoStabilizationSupported {
-                connection.preferredVideoStabilizationMode = .auto
-            } else {
-                let cardScannerError = CardScannerError(kind: .capture)
-                completion(.failure(cardScannerError))
-                return
-            }
+        captureSession.addInput(videoInput)
+
+        // Set up output
+        let videoOutput = AVCaptureVideoDataOutput()
+        let videoSettings = [(kCVPixelBufferPixelFormatTypeKey as NSString) : NSNumber(value: kCVPixelFormatType_32BGRA)] as [String : Any]
+        videoOutput.videoSettings = videoSettings
+        videoOutput.setSampleBufferDelegate(self, queue: videoOutputQueue)
+
+        guard captureSession.canAddOutput(videoOutput) else {
+            let cardScannerError = CardScannerError(kind: .capture)
+            completion(.failure(cardScannerError))
+            return
         }
 
+        captureSession.addOutput(videoOutput)
+
+        guard
+            let connection = videoOutput.connection(with: .video),
+            connection.isVideoStabilizationSupported else {
+            let cardScannerError = CardScannerError(kind: .capture)
+            completion(.failure(cardScannerError))
+            return
+        }
+        connection.preferredVideoStabilizationMode = .auto
+
         captureSession.commitConfiguration()
+    }
+
+    private func configureCaptureDevice(_ device: AVCaptureDevice) {
+        try? device.lockForConfiguration()
+
+        // Adjust Frame Rate
+        device.activeVideoMinFrameDuration = CMTime(value: 1, timescale: 15) // 15 fps
+        device.activeVideoMaxFrameDuration = CMTime(value: 1, timescale: 30) // 30 fps
+
+        // Focus and Exposure Settings
+        if device.isFocusModeSupported(.continuousAutoFocus) {
+            device.focusMode = .continuousAutoFocus
+        }
+
+        // Auto Exposure
+        if device.isExposureModeSupported(.continuousAutoExposure) {
+            device.exposureMode = .continuousAutoExposure
+        }
+
+        // Lighting Conditions
+        if device.hasTorch, device.isTorchModeSupported(.auto) {
+            device.torchMode = .auto
+        }
+
+        device.unlockForConfiguration()
     }
 
     private func getCardData(
@@ -170,22 +175,6 @@ class CardScannerViewModel: NSObject, CardScannerViewModelProtocol {
 
         cardImageParser.parse(image: croppedImage) { creditCard in
             self.completion(.success(creditCard))
-        }
-    }
-
-    private var currentVideoOrientation: AVCaptureVideoOrientation {
-        let orientation = UIDevice.current.orientation
-        switch orientation {
-        case .portrait:
-            return .portrait
-        case .landscapeRight:
-            return .landscapeLeft // Camera flips the orientation
-        case .landscapeLeft:
-            return .landscapeRight
-        case .portraitUpsideDown:
-            return .portraitUpsideDown
-        default:
-            return .portrait // Default to portrait if unknown
         }
     }
 
@@ -266,6 +255,25 @@ extension CardScannerViewModel: AVCaptureVideoDataOutputSampleBufferDelegate {
                 roiInPreviewFrame: roiInPreviewLayer,
                 previewFrame: previewLayerFrame
             )
+        }
+    }
+}
+
+extension AVCaptureVideoOrientation {
+
+    static var currentVideoOrientation: AVCaptureVideoOrientation {
+        let orientation = UIDevice.current.orientation
+        switch orientation {
+        case .portrait:
+            return .portrait
+        case .landscapeRight:
+            return .landscapeLeft // Camera flips the orientation
+        case .landscapeLeft:
+            return .landscapeRight
+        case .portraitUpsideDown:
+            return .portraitUpsideDown
+        default:
+            return .portrait // Default to portrait if unknown
         }
     }
 }
