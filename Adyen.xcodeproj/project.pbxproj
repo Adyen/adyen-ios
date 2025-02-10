@@ -495,6 +495,8 @@
 		B6EE0F442BBEC94F00B9810D /* AnalyticsProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0005B280468E100CE2EEC /* AnalyticsProviderMock.swift */; };
 		B6EE0F452BBECBEF00B9810D /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; platformFilter = ios; };
 		C9037F102D563DCD003A5154 /* CardScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F0F2D563DCD003A5154 /* CardScannerViewModel.swift */; };
+		C9037F122D5A1976003A5154 /* CardScannerOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F112D5A1976003A5154 /* CardScannerOverlayView.swift */; };
+		C9037F142D5A19BD003A5154 /* ROIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F132D5A19BD003A5154 /* ROIView.swift */; };
 		C90D26A727565750001A488F /* FormViewController+ViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */; };
 		C9126051275A3A2800C03DC4 /* BACSItemsFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9126050275A3A2800C03DC4 /* BACSItemsFactoryTests.swift */; };
 		C92665362C49346200D3D852 /* SubmittableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92665352C49346200D3D852 /* SubmittableComponent.swift */; };
@@ -1840,6 +1842,8 @@
 		B6C9DA7A2D102C91005D65C7 /* DualBrandViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualBrandViewTests.swift; sourceTree = "<group>"; };
 		B6EE0F432BBEBFD000B9810D /* IntegrationTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = IntegrationTests.xctestplan; sourceTree = "<group>"; };
 		C9037F0F2D563DCD003A5154 /* CardScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerViewModel.swift; sourceTree = "<group>"; };
+		C9037F112D5A1976003A5154 /* CardScannerOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerOverlayView.swift; sourceTree = "<group>"; };
+		C9037F132D5A19BD003A5154 /* ROIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ROIView.swift; sourceTree = "<group>"; };
 		C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormViewController+ViewProtocol.swift"; sourceTree = "<group>"; };
 		C90D26B1275900B9001A488F /* BACSInputFormViewProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewProtocolMock.swift; sourceTree = "<group>"; };
 		C90D26B32759048C001A488F /* BACSInputPresenterProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputPresenterProtocolMock.swift; sourceTree = "<group>"; };
@@ -3576,6 +3580,8 @@
 				C99FF2B42D50E872007179C5 /* Models */,
 				C99FF2B52D50E872007179C5 /* CardImageParser.swift */,
 				C9037F0F2D563DCD003A5154 /* CardScannerViewModel.swift */,
+				C9037F112D5A1976003A5154 /* CardScannerOverlayView.swift */,
+				C9037F132D5A19BD003A5154 /* ROIView.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -6935,8 +6941,10 @@
 			files = (
 				C99FF2BB2D50E872007179C5 /* CardScannerError.swift in Sources */,
 				C99FF2BC2D50E872007179C5 /* CreditCard.swift in Sources */,
+				C9037F142D5A19BD003A5154 /* ROIView.swift in Sources */,
 				C9037F102D563DCD003A5154 /* CardScannerViewModel.swift in Sources */,
 				C9EEEFEC2D5516B300B7AFFC /* ExpirationDateFormatter.swift in Sources */,
+				C9037F122D5A1976003A5154 /* CardScannerOverlayView.swift in Sources */,
 				C99FF2BD2D50E872007179C5 /* CardImageParser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
