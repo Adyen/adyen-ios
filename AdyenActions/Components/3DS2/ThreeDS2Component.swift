@@ -21,7 +21,7 @@ public final class ThreeDS2Component: ActionComponent {
     
     /// The delegate of the component.
     public weak var delegate: ActionComponentDelegate?
-
+    
     /// Delegates `PresentableComponent`'s presentation.  This property must be set if you wish to use delegated authentication.
     public weak var presentationDelegate: PresentationDelegate? {
         didSet {
@@ -229,6 +229,7 @@ public final class ThreeDS2Component: ActionComponent {
     internal lazy var threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler = {
         let handler = ThreeDS2CompactActionHandler(
             context: context,
+            serviceFactory: nil,
             appearanceConfiguration: configuration.appearanceConfiguration,
             delegatedAuthenticationConfiguration: configuration.delegateAuthentication
         )
@@ -242,6 +243,7 @@ public final class ThreeDS2Component: ActionComponent {
     internal lazy var threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler = {
         let handler = ThreeDS2ClassicActionHandler(
             context: context,
+            serviceFactory: nil,
             appearanceConfiguration: configuration.appearanceConfiguration,
             delegatedAuthenticationConfiguration: configuration.delegateAuthentication
         )

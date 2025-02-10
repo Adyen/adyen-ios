@@ -16,16 +16,19 @@ extension ThreeDS2ClassicActionHandler {
     /// Initializes the 3D Secure 2 action handler.
     internal convenience init(
         context: AdyenContext,
+        serviceFactory: ThreeDSServiceFactory?,
         appearanceConfiguration: ADYAppearanceConfiguration,
         delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?
     ) {
         let defaultHandler = createDefaultThreeDS2CoreActionHandler(
             context: context,
+            serviceFactory: serviceFactory,
             appearanceConfiguration: appearanceConfiguration,
             delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
         )
         self.init(
             context: context,
+            serviceFactory: serviceFactory,
             appearanceConfiguration: appearanceConfiguration,
             coreActionHandler: defaultHandler,
             delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration

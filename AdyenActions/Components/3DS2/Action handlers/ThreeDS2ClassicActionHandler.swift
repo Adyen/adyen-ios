@@ -22,16 +22,6 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
             coreActionHandler.presentationDelegate = presentationDelegate
         }
     }
-
-    internal var transaction: AnyADYTransaction? {
-        get {
-            coreActionHandler.transaction
-        }
-
-        set {
-            coreActionHandler.transaction = newValue
-        }
-    }
     
     /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
     internal var threeDSRequestorAppURL: URL? {
@@ -46,18 +36,18 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     
     internal init(
         context: AdyenContext,
-        service: AnyADYService = ADYServiceAdapter(),
+        serviceFactory: ThreeDSServiceFactory?,
         appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
         coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
         delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil
     ) {
         self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
             context: context,
+            serviceFactory: serviceFactory,
             appearanceConfiguration: appearanceConfiguration,
             delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
         )
         self.context = context
-        self.coreActionHandler.service = service
     }
 
     // MARK: - Fingerprint

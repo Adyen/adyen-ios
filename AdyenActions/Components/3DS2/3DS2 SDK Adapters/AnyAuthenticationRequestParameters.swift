@@ -18,8 +18,4 @@ internal protocol AnyAuthenticationRequestParameters {
     var sdkReferenceNumber: String { get }
 
     var sdkEphemeralPublicKey: String { get }
-
-    var messageVersion: String { get }
 }
-
-extension ADYAuthenticationRequestParameters: AnyAuthenticationRequestParameters {}

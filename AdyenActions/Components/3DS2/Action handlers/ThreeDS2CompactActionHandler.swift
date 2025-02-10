@@ -39,16 +39,6 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
             coreActionHandler.threeDSRequestorAppURL = newValue
         }
     }
-
-    internal var transaction: AnyADYTransaction? {
-        get {
-            coreActionHandler.transaction
-        }
-
-        set {
-            coreActionHandler.transaction = newValue
-        }
-    }
     
     internal var context: AdyenContext
     
@@ -56,13 +46,13 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter fingerprintSubmitter: The fingerprint submitter.
-    /// - Parameter service: The 3DS2 Service.
+    /// - Parameter serviceFactory: The 3DS2 Service.
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
     /// - Parameter delegatedAuthenticationConfiguration: The delegated authentication configuration.
     internal init(
         context: AdyenContext,
         fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter? = nil,
-        service: AnyADYService = ADYServiceAdapter(),
+        serviceFactory: ThreeDSServiceFactory?,
         appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
         coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
         delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil
@@ -70,11 +60,11 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
         self.context = context
         self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
             context: context,
+            serviceFactory: serviceFactory,
             appearanceConfiguration: appearanceConfiguration,
             delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
         )
         self.fingerprintSubmitter = fingerprintSubmitter ?? ThreeDS2FingerprintSubmitter(context: context)
-        self.coreActionHandler.service = service
     }
 
     // MARK: - Fingerprint

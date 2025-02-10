@@ -16,6 +16,7 @@ internal extension ThreeDS2Component {
         internal let directoryServerRootCertificates: String
         internal let delegatedAuthenticationSDKInput: String?
         internal let paymentInfo: PaymentInfo?
+        internal var useSwiftSDK: Bool? = true
         
         private enum CodingKeys: String, CodingKey {
             case directoryServerIdentifier = "directoryServerId"
@@ -24,6 +25,7 @@ internal extension ThreeDS2Component {
             case directoryServerRootCertificates
             case delegatedAuthenticationSDKInput
             case paymentInfo
+            case useSwiftSDK
         }
     }
     
