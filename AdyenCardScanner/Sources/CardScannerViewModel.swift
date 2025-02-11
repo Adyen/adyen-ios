@@ -4,15 +4,15 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
-import CoreImage
 import AVFoundation
+import CoreImage
+import Foundation
 
 protocol CardScannerViewModelProtocol {
     var videoPreviewLayer: AVCaptureVideoPreviewLayer { get }
     func configureSession()
-    func startSession()
-    func stopSession()
+    func startCaptureSession()
+    func stopCaptureSession()
     func updateVideoOrientation()
     func update(previewLayerFrame: CGRect, roiInPreviewLayer: CGRect)
 }
@@ -29,7 +29,7 @@ class CardScannerViewModel: NSObject, CardScannerViewModelProtocol {
     private let captureDevice: AVCaptureDevice
     private(set) var videoPreviewLayer: AVCaptureVideoPreviewLayer
 
-    private let completion: (Result<CreditCard, CardScannerError>) -> ()
+    private let completion: (Result<CreditCard, CardScannerError>) -> Void
 
     private var previewFrame: CGRect = .zero
     private var roiInPreviewFrame: CGRect = .zero
@@ -40,7 +40,7 @@ class CardScannerViewModel: NSObject, CardScannerViewModelProtocol {
         cardImageParser: CardImageParsing,
         captureSession: AVCaptureSession,
         captureDevice: AVCaptureDevice,
-        completion: @escaping (Result<CreditCard, CardScannerError>) -> ()
+        completion: @escaping (Result<CreditCard, CardScannerError>) -> Void
     ) {
         self.cardImageParser = cardImageParser
         self.captureSession = captureSession
@@ -57,14 +57,14 @@ class CardScannerViewModel: NSObject, CardScannerViewModelProtocol {
         }
     }
 
-    func startSession() {
+    func startCaptureSession() {
         sessionQueue.async {
             guard !self.captureSession.isRunning else { return }
             self.captureSession.startRunning()
         }
     }
 
-    func stopSession() {
+    func stopCaptureSession() {
         sessionQueue.async {
             guard self.captureSession.isRunning else { return }
             self.captureSession.stopRunning()
@@ -109,7 +109,7 @@ class CardScannerViewModel: NSObject, CardScannerViewModelProtocol {
 
         // Set up output
         let videoOutput = AVCaptureVideoDataOutput()
-        let videoSettings = [(kCVPixelBufferPixelFormatTypeKey as NSString) : NSNumber(value: kCVPixelFormatType_32BGRA)] as [String : Any]
+        let videoSettings = [kCVPixelBufferPixelFormatTypeKey as NSString: NSNumber(value: kCVPixelFormatType_32BGRA)] as [String: Any]
         videoOutput.videoSettings = videoSettings
         videoOutput.setSampleBufferDelegate(self, queue: videoOutputQueue)
 
@@ -171,9 +171,11 @@ class CardScannerViewModel: NSObject, CardScannerViewModelProtocol {
         }
     }
 
-    private func cropRegionOfInterest(from image: CIImage,
-                                      roiInPreviewFrame: CGRect,
-                                      previewFrame: CGRect) -> CIImage? {
+    private func cropRegionOfInterest(
+        from image: CIImage,
+        roiInPreviewFrame: CGRect,
+        previewFrame: CGRect
+    ) -> CIImage? {
         // Scale factors between CIImage and preview frame
         let imageWidth = image.extent.width
         let imageHeight = image.extent.height
@@ -218,9 +220,11 @@ class CardScannerViewModel: NSObject, CardScannerViewModelProtocol {
 
 extension CardScannerViewModel: AVCaptureVideoDataOutputSampleBufferDelegate {
 
-    func captureOutput(_ output: AVCaptureOutput,
-                       didOutput sampleBuffer: CMSampleBuffer,
-                       from connection: AVCaptureConnection) {
+    func captureOutput(
+        _ output: AVCaptureOutput,
+        didOutput sampleBuffer: CMSampleBuffer,
+        from connection: AVCaptureConnection
+    ) {
         guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
             debugPrint("Unable to get image from sample buffer")
             let cardScannerError = CardScannerError(kind: .photoProcessing)

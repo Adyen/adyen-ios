@@ -42,6 +42,7 @@ class CardScannerOverlayView: UIView {
         setupMasksLayout()
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -85,7 +86,7 @@ class CardScannerOverlayView: UIView {
             rightMask.topAnchor.constraint(equalTo: topMask.bottomAnchor),
             rightMask.leadingAnchor.constraint(equalTo: roiView.trailingAnchor),
             rightMask.trailingAnchor.constraint(equalTo: trailingAnchor),
-            rightMask.bottomAnchor.constraint(equalTo: bottomMask.topAnchor),
+            rightMask.bottomAnchor.constraint(equalTo: bottomMask.topAnchor)
         ])
     }
 

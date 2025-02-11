@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
-import Combine
 import AVFoundation
+import Combine
+import UIKit
 
 class CardScannerViewController: UIViewController {
 
@@ -33,6 +33,7 @@ class CardScannerViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -50,12 +51,12 @@ class CardScannerViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.startSession()
+        viewModel.startCaptureSession()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        viewModel.stopSession()
+        viewModel.stopCaptureSession()
     }
 
     override func viewDidLayoutSubviews() {
@@ -68,7 +69,6 @@ class CardScannerViewController: UIViewController {
 
     private func setupPreviewLayer() {
         previewLayer.videoGravity = .resizeAspectFill
-        view.layer.addSublayer(previewLayer)
         view.layer.insertSublayer(previewLayer, at: 0)
     }
 
@@ -92,4 +92,3 @@ class CardScannerViewController: UIViewController {
         }.store(in: &cancellables)
     }
 }
-

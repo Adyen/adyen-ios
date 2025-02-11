@@ -39,7 +39,7 @@ class ROIView: UIView {
         let borderLayer = CAShapeLayer()
         borderLayer.path = holePath.cgPath
         borderLayer.fillColor = UIColor.clear.cgColor
-        borderLayer.strokeColor = borderColor.cgColor  // Change border color as needed
+        borderLayer.strokeColor = borderColor.cgColor // Change border color as needed
         borderLayer.lineWidth = borderWidth
         layer.addSublayer(borderLayer)
     }
