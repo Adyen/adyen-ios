@@ -7,11 +7,9 @@
 import Foundation
 import CoreImage
 import AVFoundation
-import UIKit
 
 protocol CardScannerViewModelProtocol {
     var videoPreviewLayer: AVCaptureVideoPreviewLayer { get }
-
     func configureSession()
     func startSession()
     func stopSession()
@@ -23,8 +21,8 @@ class CardScannerViewModel: NSObject, CardScannerViewModelProtocol {
 
     // MARK: - Properties
 
-    private let sessionQueue = DispatchQueue(label: "com.cardscanner.sessionQueue", qos: .userInitiated) // For session config
-    private let videoOutputQueue = DispatchQueue(label: "com.cardscanner.videoOutputQueue") // For frame processing
+    private let sessionQueue = DispatchQueue(label: "com.example.sessionQueue", qos: .userInitiated) // For session config
+    private let videoOutputQueue = DispatchQueue(label: "com.example.videoOutputQueue") // For frame processing
 
     private let cardImageParser: CardImageParsing
     private let captureSession: AVCaptureSession
@@ -152,11 +150,6 @@ class CardScannerViewModel: NSObject, CardScannerViewModelProtocol {
             device.exposureMode = .continuousAutoExposure
         }
 
-        // Lighting Conditions
-        if device.hasTorch, device.isTorchModeSupported(.auto) {
-            device.torchMode = .auto
-        }
-
         device.unlockForConfiguration()
     }
 
@@ -228,26 +221,28 @@ extension CardScannerViewModel: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput,
                        didOutput sampleBuffer: CMSampleBuffer,
                        from connection: AVCaptureConnection) {
-        guard let frame = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+        guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
             debugPrint("Unable to get image from sample buffer")
             let cardScannerError = CardScannerError(kind: .photoProcessing)
             completion(.failure(cardScannerError))
             return
         }
 
-        self.processImage(
-            frame,
-            previewLayerFrame: self.previewFrame,
-            roiInPreviewLayer: self.roiInPreviewFrame
+        process(
+            imageBuffer,
+            in: previewFrame,
+            for: roiInPreviewFrame
         )
     }
 
     // MARK: - Private
 
-    private func processImage(_ frame: CVImageBuffer,
-                              previewLayerFrame: CGRect,
-                              roiInPreviewLayer: CGRect) {
-        let image = CIImage(cvImageBuffer: frame)
+    private func process(
+        _ imageBuffer: CVImageBuffer,
+        in previewLayerFrame: CGRect,
+        for roiInPreviewLayer: CGRect
+    ) {
+        let image = CIImage(cvImageBuffer: imageBuffer)
 
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             self?.getCardData(
@@ -255,25 +250,6 @@ extension CardScannerViewModel: AVCaptureVideoDataOutputSampleBufferDelegate {
                 roiInPreviewFrame: roiInPreviewLayer,
                 previewFrame: previewLayerFrame
             )
-        }
-    }
-}
-
-extension AVCaptureVideoOrientation {
-
-    static var currentVideoOrientation: AVCaptureVideoOrientation {
-        let orientation = UIDevice.current.orientation
-        switch orientation {
-        case .portrait:
-            return .portrait
-        case .landscapeRight:
-            return .landscapeLeft // Camera flips the orientation
-        case .landscapeLeft:
-            return .landscapeRight
-        case .portraitUpsideDown:
-            return .portraitUpsideDown
-        default:
-            return .portrait // Default to portrait if unknown
         }
     }
 }

@@ -507,6 +507,7 @@
 		C927083E27590BDB00D15EA0 /* BACSInputFormViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C927083D27590BDB00D15EA0 /* BACSInputFormViewControllerTests.swift */; };
 		C927084027590FE800D15EA0 /* BACSInputPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C927083F27590FE800D15EA0 /* BACSInputPresenterTests.swift */; };
 		C92708422759106500D15EA0 /* BACSRouterProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92708412759106500D15EA0 /* BACSRouterProtocolMock.swift */; };
+		C92B807C2D5B69CF0020A099 /* AVCaptureVideoOrientation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92B807A2D5B69CF0020A099 /* AVCaptureVideoOrientation+Extensions.swift */; };
 		C92F6DBE26AFF336004BD516 /* PostalAddressMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */; };
 		C92F6DC126B04B63004BD516 /* XCTestCase+FormAddressItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */; };
 		C930FB6E269D79E0006A26D2 /* AffirmDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */; };
@@ -1855,6 +1856,7 @@
 		C927083D27590BDB00D15EA0 /* BACSInputFormViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewControllerTests.swift; sourceTree = "<group>"; };
 		C927083F27590FE800D15EA0 /* BACSInputPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputPresenterTests.swift; sourceTree = "<group>"; };
 		C92708412759106500D15EA0 /* BACSRouterProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSRouterProtocolMock.swift; sourceTree = "<group>"; };
+		C92B807A2D5B69CF0020A099 /* AVCaptureVideoOrientation+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVCaptureVideoOrientation+Extensions.swift"; sourceTree = "<group>"; };
 		C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostalAddressMocks.swift; sourceTree = "<group>"; };
 		C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FormAddressItem.swift"; sourceTree = "<group>"; };
 		C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmDetails.swift; sourceTree = "<group>"; };
@@ -3441,6 +3443,14 @@
 			path = Input;
 			sourceTree = "<group>";
 		};
+		C92B807B2D5B69CF0020A099 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C92B807A2D5B69CF0020A099 /* AVCaptureVideoOrientation+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		C92F6DBC26AFF289004BD516 /* DummyData */ = {
 			isa = PBXGroup;
 			children = (
@@ -3582,6 +3592,7 @@
 				C9037F112D5A1976003A5154 /* CardScannerOverlayView.swift */,
 				C9037F152D5A1AC0003A5154 /* CardScannerViewController.swift */,
 				C9037F0F2D563DCD003A5154 /* CardScannerViewModel.swift */,
+				C92B807B2D5B69CF0020A099 /* Extensions */,
 				C9EEEFEB2D5516B300B7AFFC /* Formatters */,
 				C99FF2B42D50E872007179C5 /* Models */,
 				C9037F132D5A19BD003A5154 /* ROIView.swift */,
@@ -6949,6 +6960,7 @@
 				C9EEEFEC2D5516B300B7AFFC /* ExpirationDateFormatter.swift in Sources */,
 				C9037F162D5A1AC0003A5154 /* CardScannerViewController.swift in Sources */,
 				C9037F122D5A1976003A5154 /* CardScannerOverlayView.swift in Sources */,
+				C92B807C2D5B69CF0020A099 /* AVCaptureVideoOrientation+Extensions.swift in Sources */,
 				C99FF2BD2D50E872007179C5 /* CardImageParser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -12,8 +12,6 @@ class CardScannerViewController: UIViewController {
 
     // MARK: - UI elements
 
-    private let previewLayer: AVCaptureVideoPreviewLayer
-
     private let overlayView: CardScannerOverlayView = {
         let view = CardScannerOverlayView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -24,6 +22,7 @@ class CardScannerViewController: UIViewController {
     // MARK: - Properties
 
     private let viewModel: CardScannerViewModelProtocol
+    private let previewLayer: AVCaptureVideoPreviewLayer
     private var cancellables: Set<AnyCancellable> = []
 
     // MARK: - Initializers
