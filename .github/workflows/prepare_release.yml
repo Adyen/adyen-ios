@@ -46,8 +46,14 @@ jobs:
     - name: Prepare Release Notes
       run: |
         RELEASE_NOTES=$(echo "$BASE_64_RELEASE_NOTES" | base64 --decode)
-        rm -rf "${{ github.workspace }}/.tmp/release_notes.md" # Making sure we start a fresh document
-        echo "$RELEASE_NOTES" >> "${{ github.workspace }}/.tmp/release_notes.md"
+        RELEASE_NOTES_FILE_PATH="${{ github.workspace }}/.tmp/release_notes.md"
+        
+        if [ -e $RELEASE_NOTES_FILE_PATH ]
+        then
+            rm -rf $RELEASE_NOTES_FILE_PATH # Making sure we start a fresh document
+        fi
+        
+        echo "$RELEASE_NOTES" >> $RELEASE_NOTES_FILE_PATH
       env:
         BASE_64_RELEASE_NOTES: ${{ needs.get-release-notes.outputs.RELEASE_NOTES }}
     
