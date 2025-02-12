@@ -51,17 +51,17 @@ jobs:
         if [ -e $RELEASE_NOTES_FILE_PATH ]
         then
             echo "OLD RELEASE NOTES"
-            cat $RELEASE_NOTES_FILE_PATH
+            cat "$RELEASE_NOTES_FILE_PATH"
             rm -rf $RELEASE_NOTES_FILE_PATH # Making sure we start a fresh document
         fi
         
         echo "UPDATED RELEASE NOTES (GENERATED)"
-        cat $RELEASE_NOTES
+        echo "$RELEASE_NOTES"
         
         echo "$RELEASE_NOTES" >> $RELEASE_NOTES_FILE_PATH
         
         echo "UPDATED RELEASE NOTES (FILE)"
-        cat $RELEASE_NOTES_FILE_PATH
+        cat "$RELEASE_NOTES_FILE_PATH"
       env:
         BASE_64_RELEASE_NOTES: ${{ needs.get-release-notes.outputs.RELEASE_NOTES }}
     
