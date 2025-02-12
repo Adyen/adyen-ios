@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		000633D92D5A307E004C3FBF /* FormAccountIdentifierPickerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000633D82D5A307C004C3FBF /* FormAccountIdentifierPickerItem.swift */; };
 		000888742D4CF597009C03E1 /* PayToPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000888732D4CF58D009C03E1 /* PayToPaymentMethod.swift */; };
 		000888782D4CF5FC009C03E1 /* PayToComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000888772D4CF5F5009C03E1 /* PayToComponent.swift */; };
 		0008887C2D4CFA73009C03E1 /* PayToComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0008887A2D4CFA67009C03E1 /* PayToComponentTests.swift */; };
@@ -1500,6 +1501,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		000633D82D5A307C004C3FBF /* FormAccountIdentifierPickerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAccountIdentifierPickerItem.swift; sourceTree = "<group>"; };
 		000888732D4CF58D009C03E1 /* PayToPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToPaymentMethod.swift; sourceTree = "<group>"; };
 		000888772D4CF5F5009C03E1 /* PayToComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToComponent.swift; sourceTree = "<group>"; };
 		0008887A2D4CFA67009C03E1 /* PayToComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToComponentTests.swift; sourceTree = "<group>"; };
@@ -2693,6 +2695,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		000633D72D5A306A004C3FBF /* Identifier Picker */ = {
+			isa = PBXGroup;
+			children = (
+				000633D82D5A307C004C3FBF /* FormAccountIdentifierPickerItem.swift */,
+			);
+			path = "Identifier Picker";
+			sourceTree = "<group>";
+		};
 		000888762D4CF5DB009C03E1 /* PayTo */ = {
 			isa = PBXGroup;
 			children = (
@@ -4196,6 +4206,7 @@
 		E7085B062628B29600D0153B /* Value Pickers */ = {
 			isa = PBXGroup;
 			children = (
+				000633D72D5A306A004C3FBF /* Identifier Picker */,
 				E7085B082628B29600D0153B /* Abstract */,
 				00EACBBB2876C7D10082B360 /* Issuer List Picker */,
 			);
@@ -6981,6 +6992,7 @@
 				E7085B132628B29600D0153B /* BaseFormPickerItemView.swift in Sources */,
 				81C400642A3B0C58007EC51C /* FormSearchButtonItem.swift in Sources */,
 				F9976BA526D654ED00D2D7CE /* Throttler.swift in Sources */,
+				000633D92D5A307E004C3FBF /* FormAccountIdentifierPickerItem.swift in Sources */,
 				A0414C302790429A00DF3FE9 /* PublicKeyConsumer.swift in Sources */,
 				813EF9E82A5FE03B00C65D15 /* ListItem+Icon.swift in Sources */,
 				E28098C4220DC66E0087928F /* ListItemView.swift in Sources */,

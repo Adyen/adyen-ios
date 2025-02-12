@@ -15,6 +15,29 @@ public final class PayToComponent: PaymentComponent,
         static let flowSelectionTitleLabelItem = "flowSelectionTitleLabel"
         static let flowSelectionItem = "flowSelectionSegmentedControl"
         static let continueButtonItem = "continueButton"
+        static let identifierPickerItem = "identifierPicker"
+        static let firstNameInputItem = "firstNameTextfield"
+        static let lastNameInputItem = "lastNameTextfield"
+    }
+
+    private enum AccountIdentifier: CustomStringConvertible, CaseIterable {
+        case phone
+        case email
+        case abn
+        case organizationID
+
+        public var description: String {
+            switch self {
+            case .phone:
+                return "Phone"
+            case .email:
+                return "Email"
+            case .abn:
+                return "ABN"
+            case .organizationID:
+                return "Organization ID"
+            }
+        }
     }
 
     /// Configuration for PayTo Component.
@@ -63,7 +86,7 @@ public final class PayToComponent: PaymentComponent,
     internal lazy var flowSelectionTitleLabelItem: FormLabelItem = {
         // TODO: Add translation
         let item = FormLabelItem(
-            text: "How would you like to use Payto?",
+            text: localizedString(LocalizationKey(key: "How would you like to use Payto?"), configuration.localizationParameters),
             style: configuration.style.footnoteLabel
         )
         item.style.textAlignment = .left
@@ -76,6 +99,7 @@ public final class PayToComponent: PaymentComponent,
 
     /// The segment control item to choose the payTo flow.
     internal lazy var flowSelectionItem: FormSegmentedControlItem = {
+        // TODO: Add translation
         let item = FormSegmentedControlItem(
             items: ["PayID", "BSB"],
             style: configuration.style.segmentedControlStyle,
@@ -88,7 +112,7 @@ public final class PayToComponent: PaymentComponent,
     }()
 
     /// The continue button item.
-    internal lazy var continueButton: FormButtonItem = {
+    internal lazy var continueButtonItem: FormButtonItem = {
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
@@ -101,6 +125,58 @@ public final class PayToComponent: PaymentComponent,
         return item
     }()
 
+    /// The  account holder firstname text input item.
+    internal lazy var firstNameInputItem: FormTextInputItem = {
+        let item = FormTextInputItem(style: configuration.style.textField)
+        // TODO: Add translation
+        item.title = localizedString(LocalizationKey(key: "Account holder first name"), configuration.localizationParameters)
+        item.placeholder = localizedString(LocalizationKey(key: "Account holder first name"), configuration.localizationParameters)
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.firstNameInputItem
+        )
+        return item
+    }()
+
+    /// The  account holder lastname text input item.
+    internal lazy var lastNameInputItem: FormTextInputItem = {
+        let item = FormTextInputItem(style: configuration.style.textField)
+        // TODO: Add translation
+        item.title = localizedString(LocalizationKey(key: "Account holder last name"), configuration.localizationParameters)
+        item.placeholder = localizedString(LocalizationKey(key: "Account holder last name"), configuration.localizationParameters)
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.lastNameInputItem
+        )
+        return item
+    }()
+
+    /// The identifier picker item.
+    internal lazy var identifierPickerItem: FormIdentifierPickerItem = {
+        let selectableValues = AccountIdentifier.allCases.map { account in
+            BasePickerElement(
+                identifier: account.description,
+                element: FormIdentifierPickerElement(
+                    identifier: account.description,
+                    title: account.description
+                )
+            )
+        }
+
+        let item = FormIdentifierPickerItem(
+            preselectedValue: selectableValues[0],
+            selectableValues: selectableValues,
+            style: configuration.style.textField
+        )
+        // TODO: Add translation
+        item.title = localizedString(LocalizationKey(key: "Identifier"), configuration.localizationParameters)
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.identifierPickerItem
+        )
+        return item
+    }()
+
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
             scrollEnabled: configuration.showsSubmitButton,
@@ -109,17 +185,36 @@ public final class PayToComponent: PaymentComponent,
         )
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
+
         formViewController.append(flowSelectionTitleLabelItem.padding())
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
+
         formViewController.append(flowSelectionItem.padding())
+        formViewController.append(FormSpacerItem(numberOfSpaces: 1))
+
+        formViewController.append(identifierPickerItem.padding())
+        formViewController.append(FormSpacerItem(numberOfSpaces: 1))
+
+        contentView(formVC: formViewController)
 
         if configuration.showsSubmitButton {
             formViewController.append(FormSpacerItem(numberOfSpaces: 2))
-            formViewController.append(continueButton)
+            formViewController.append(continueButtonItem)
         }
 
         return formViewController
     }()
+
+    // MARK: - Private
+
+    private func contentView(formVC: FormViewController) {
+        staticContent(formVC)
+    }
+
+    private func staticContent(_ formVC: FormViewController) {
+        formVC.append(firstNameInputItem)
+        formVC.append(lastNameInputItem)
+    }
 }
 
 // MARK: - Event Handling
