@@ -210,3 +210,5 @@ whiteList:
   - SDKs
   - ks
   - payto
+  - abn
+  - firstname
