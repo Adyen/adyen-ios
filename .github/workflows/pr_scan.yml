@@ -36,6 +36,7 @@ jobs:
 
     - name: 🛠️ Install Tools
       run: |
+        brew update
         brew install sonar-scanner
         
     - name: 👷 Clean Build
