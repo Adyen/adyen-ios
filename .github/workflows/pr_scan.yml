@@ -96,6 +96,6 @@ jobs:
       run: |
         git fetch --unshallow --no-tags
         sonar-scanner --version
-        sonar-scanner -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.coverageReportPaths=sonarqube_updated_CI.xml,sonarqube_updated_snapshots.xml -X
+        sonar-scanner -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.coverageReportPaths=sonarqube_updated_CI.xml,sonarqube_updated_snapshots.xml -Dsonar.scanner.skipSystemTruststore=true -X
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
