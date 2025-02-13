@@ -36,9 +36,11 @@ jobs:
 
     - name: 🛠️ Install Tools
       run: |
+        brew update
         brew search sonar-scanner
-        brew install sonar-scanner@6.2.1.4610
+        brew install sonar-scanner
         sonar-scanner --version
+        exit 1
         
     - name: 👷 Clean Build
       run: |
