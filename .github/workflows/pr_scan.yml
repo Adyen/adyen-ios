@@ -36,7 +36,8 @@ jobs:
 
     - name: 🛠️ Install Tools
       run: |
-        brew install sonar-scanner
+        brew install sonar-scanner@6.2.1.4610
+        sonar-scanner --version
         
     - name: 👷 Clean Build
       run: |
@@ -95,9 +96,6 @@ jobs:
       if: ${{ env.sonarToken != 0 }}
       run: |
         git fetch --unshallow --no-tags
-        sonar-scanner --version
-        brew install sonar-scanner@6.2.1.4610
-        sonar-scanner --version
         sonar-scanner -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.coverageReportPaths=sonarqube_updated_CI.xml,sonarqube_updated_snapshots.xml -Dsonar.scanner.skipSystemTruststore=true -X
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
