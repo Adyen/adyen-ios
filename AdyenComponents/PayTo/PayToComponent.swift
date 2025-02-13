@@ -40,7 +40,7 @@ public final class PayToComponent: PaymentComponent,
             }
         }
 
-        public var identifer: String {
+        public var identifier: String {
             switch self {
             case .phone:
                 return "phone"
@@ -169,7 +169,7 @@ public final class PayToComponent: PaymentComponent,
     /// The identifier picker item.
     internal lazy var identifierPickerItem: FormIdentifierPickerItem = {
         let selectableValues = AccountIdentifiers.allCases.map { accountIdentifier in
-            FormIdentifierPickerElement(identifier: accountIdentifier.identifer, title: accountIdentifier.description)
+            FormIdentifierPickerElement(identifier: accountIdentifier.identifier, title: accountIdentifier.description)
         }
 
         let item = FormIdentifierPickerItem(
