@@ -4,15 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal)
-public protocol AccountIdentifier: CustomStringConvertible, Equatable {
-    var identifier: String { get }
-    var title: String { get }
-}
-
 /// A wrapper struct to use as item in ``FormIdentifierPickerItem``
 @_spi(AdyenInternal)
-public struct FormIdentifierPickerElement: AccountIdentifier {
+public struct FormIdentifierPickerElement: CustomStringConvertible, Equatable {
 
     public let identifier: String
     public let title: String
@@ -30,19 +24,26 @@ public struct FormIdentifierPickerElement: AccountIdentifier {
 @_spi(AdyenInternal)
 public final class FormIdentifierPickerItem: BaseFormPickerItem<FormIdentifierPickerElement> {
 
-    override public init(
-        preselectedValue: BasePickerElement<FormIdentifierPickerElement>,
-        selectableValues: [BasePickerElement<FormIdentifierPickerElement>],
+    public init(
+        preselectedIdentifier: FormIdentifierPickerElement,
+        selectableIdentifiers: [FormIdentifierPickerElement],
         style: FormTextItemStyle
     ) {
         super.init(
-            preselectedValue: preselectedValue,
-            selectableValues: selectableValues,
+            preselectedValue: .init(identifier: preselectedIdentifier.identifier, element: preselectedIdentifier),
+            selectableValues: selectableIdentifiers.map { $0.toBaseFormPickerElement() },
             style: style
         )
     }
 
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
+    }
+}
+
+private extension FormIdentifierPickerElement {
+
+    func toBaseFormPickerElement() -> BasePickerElement<FormIdentifierPickerElement> {
+        .init(identifier: identifier, element: self)
     }
 }

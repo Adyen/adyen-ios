@@ -9,7 +9,7 @@ import UIKit
 
 /// A component that provides PayTo flows for PayTo component.
 public final class PayToComponent: PaymentComponent,
-                                   PresentableComponent {
+    PresentableComponent {
 
     private enum ViewIdentifier {
         static let flowSelectionTitleLabelItem = "flowSelectionTitleLabel"
@@ -20,12 +20,13 @@ public final class PayToComponent: PaymentComponent,
         static let lastNameInputItem = "lastNameTextfield"
     }
 
-    private enum AccountIdentifier: CustomStringConvertible, CaseIterable {
+    private enum AccountIdentifiers: CustomStringConvertible, CaseIterable {
         case phone
         case email
         case abn
         case organizationID
 
+        // TODO: Add translation
         public var description: String {
             switch self {
             case .phone:
@@ -38,6 +39,20 @@ public final class PayToComponent: PaymentComponent,
                 return "Organization ID"
             }
         }
+
+        public var identifer: String {
+            switch self {
+            case .phone:
+                return "phone"
+            case .email:
+                return "email"
+            case .abn:
+                return "abn"
+            case .organizationID:
+                return "organizationID"
+            }
+        }
+
     }
 
     /// Configuration for PayTo Component.
@@ -153,19 +168,13 @@ public final class PayToComponent: PaymentComponent,
 
     /// The identifier picker item.
     internal lazy var identifierPickerItem: FormIdentifierPickerItem = {
-        let selectableValues = AccountIdentifier.allCases.map { account in
-            BasePickerElement(
-                identifier: account.description,
-                element: FormIdentifierPickerElement(
-                    identifier: account.description,
-                    title: account.description
-                )
-            )
+        let selectableValues = AccountIdentifiers.allCases.map { accountIdentifier in
+            FormIdentifierPickerElement(identifier: accountIdentifier.identifer, title: accountIdentifier.description)
         }
 
         let item = FormIdentifierPickerItem(
-            preselectedValue: selectableValues[0],
-            selectableValues: selectableValues,
+            preselectedIdentifier: selectableValues[0],
+            selectableIdentifiers: selectableValues,
             style: configuration.style.textField
         )
         // TODO: Add translation
