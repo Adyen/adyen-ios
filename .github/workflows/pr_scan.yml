@@ -36,6 +36,7 @@ jobs:
 
     - name: 🛠️ Install Tools
       run: |
+        brew versions sonar-scanner
         brew install sonar-scanner@6.2.1.4610
         sonar-scanner --version
         
