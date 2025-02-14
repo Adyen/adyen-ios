@@ -68,7 +68,7 @@ public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExten
     }
     
     internal func setupView() {
-        var arrangedSubviews: [UIView] = []
+        let arrangedSubviews: [UIView]
         if item.allowsSelection {
             arrangedSubviews = [countryCodeLabel, chevronView, valueLabel]
         } else {

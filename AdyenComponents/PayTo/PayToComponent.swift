@@ -14,6 +14,7 @@ public final class PayToComponent: PaymentComponent,
     private enum ViewIdentifier {
         static let flowSelectionTitleLabelItem = "flowSelectionTitleLabel"
         static let flowSelectionItem = "flowSelectionSegmentedControl"
+        static let phoneNumberItem = "phoneNumberItem"
         static let continueButtonItem = "continueButton"
     }
 
@@ -100,7 +101,10 @@ public final class PayToComponent: PaymentComponent,
             localizationParameters: configuration.localizationParameters,
             presenter: .init(self)
         )
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneNumberItem")
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.phoneNumberItem
+        )
         return item
     }()
 

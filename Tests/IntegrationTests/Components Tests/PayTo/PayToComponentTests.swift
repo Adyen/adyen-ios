@@ -35,7 +35,7 @@ class PayToComponentTests: XCTestCase {
             context: Dummy.context
         )
 
-        setupRootViewController(sut.viewController)
+        sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
         let flowSelectionTitleLabelItem = sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.flowSelectionTitleLabel") as? UILabel
@@ -51,7 +51,7 @@ class PayToComponentTests: XCTestCase {
             context: Dummy.context
         )
 
-        setupRootViewController(sut.viewController)
+        sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
         let flowSelectionItem = sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.flowSelectionSegmentedControl") as? UISegmentedControl
@@ -68,7 +68,7 @@ class PayToComponentTests: XCTestCase {
             context: Dummy.context
         )
 
-        setupRootViewController(sut.viewController)
+        sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
         let phoneNumberItem: FormPhoneNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.phoneNumberItem"))
@@ -84,7 +84,7 @@ class PayToComponentTests: XCTestCase {
             context: Dummy.context
         )
 
-        setupRootViewController(sut.viewController)
+        sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
         let continueButton: FormButtonItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.continueButton"))
