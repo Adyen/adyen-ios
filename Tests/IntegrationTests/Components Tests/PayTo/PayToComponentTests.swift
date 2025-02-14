@@ -60,6 +60,22 @@ class PayToComponentTests: XCTestCase {
         // Then
         XCTAssertNotNil(flowSelectionItem, "Flow selection item should exist")
     }
+    
+    func test_phoneNumberItem_exists() throws {
+        // Given
+        let sut = try PayToComponent(
+            paymentMethod: AdyenCoder.decode(payto),
+            context: Dummy.context
+        )
+
+        setupRootViewController(sut.viewController)
+
+        // Check by accessibility identifier
+        let phoneNumberItem: FormPhoneNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.phoneNumberItem"))
+
+        // Then
+        XCTAssertNotNil(phoneNumberItem, "Phone number item should exist")
+    }
 
     func test_continueButton_exists() throws {
         // Given

@@ -68,7 +68,13 @@ public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExten
     }
     
     internal func setupView() {
-        let stackView = UIStackView(arrangedSubviews: [countryCodeLabel, chevronView, valueLabel])
+        var arrangedSubviews: [UIView] = []
+        if item.allowsSelection {
+            arrangedSubviews = [countryCodeLabel, chevronView, valueLabel]
+        } else {
+            arrangedSubviews = [valueLabel]
+        }
+        let stackView = UIStackView(arrangedSubviews: arrangedSubviews)
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .fillProportionally
@@ -79,7 +85,11 @@ public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExten
         stackView.semanticContentAttribute = .forceLeftToRight
         
         let button = UIButton(type: .custom)
-        button.addTarget(self, action: #selector(handleSelection), for: .touchUpInside)
+        if item.allowsSelection {
+            button.addTarget(self, action: #selector(handleSelection), for: .touchUpInside)
+        } else {
+            button.isUserInteractionEnabled = false
+        }
         
         button.addSubview(stackView)
         addSubview(button)

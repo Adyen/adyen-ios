@@ -9,7 +9,7 @@ import UIKit
 
 /// A component that provides PayTo flows for PayTo component.
 public final class PayToComponent: PaymentComponent,
-                                   PresentableComponent {
+    PresentableComponent {
 
     private enum ViewIdentifier {
         static let flowSelectionTitleLabelItem = "flowSelectionTitleLabel"
@@ -43,6 +43,11 @@ public final class PayToComponent: PaymentComponent,
 
     /// This indicates that `viewController` expected to be presented modally,
     public var requiresModalPresentation: Bool = true
+    
+    private var payToExtensions: [PhoneExtension] {
+        let query = PhoneExtensionsQuery(paymentMethod: .payTo)
+        return PhoneExtensionsRepository.get(with: query)
+    }
 
     /// Initializes the PayTo  component.
     ///
@@ -86,6 +91,18 @@ public final class PayToComponent: PaymentComponent,
         )
         return item
     }()
+    
+    internal lazy var phoneNumberItem: FormPhoneNumberItem = {
+        let item = FormPhoneNumberItem(
+            phoneNumber: nil,
+            selectableValues: payToExtensions,
+            style: configuration.style.textField,
+            localizationParameters: configuration.localizationParameters,
+            presenter: .init(self)
+        )
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneNumberItem")
+        return item
+    }()
 
     /// The continue button item.
     internal lazy var continueButton: FormButtonItem = {
@@ -108,10 +125,14 @@ public final class PayToComponent: PaymentComponent,
             localizationParameters: configuration.localizationParameters
         )
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
+        formViewController.delegate = self
+        
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
         formViewController.append(flowSelectionTitleLabelItem.padding())
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
         formViewController.append(flowSelectionItem.padding())
+        
+        formViewController.append(phoneNumberItem)
 
         if configuration.showsSubmitButton {
             formViewController.append(FormSpacerItem(numberOfSpaces: 2))
@@ -120,6 +141,24 @@ public final class PayToComponent: PaymentComponent,
 
         return formViewController
     }()
+}
+
+@_spi(AdyenInternal)
+extension PayToComponent: ViewControllerDelegate {}
+
+@_spi(AdyenInternal)
+extension PayToComponent: TrackableComponent {}
+
+@_spi(AdyenInternal)
+extension PayToComponent: ViewControllerPresenter {
+    
+    public func presentViewController(_ viewController: UIViewController, animated: Bool) {
+        self.viewController.presentViewController(viewController, animated: animated)
+    }
+    
+    public func dismissViewController(animated: Bool) {
+        self.viewController.dismissViewController(animated: animated)
+    }
 }
 
 // MARK: - Event Handling

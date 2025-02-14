@@ -14,6 +14,8 @@ public enum PhoneNumberPaymentMethod {
     case mbWay
 
     case generic
+    
+    case payTo
 
     internal var codes: [String] {
         switch self {
@@ -47,6 +49,8 @@ public enum PhoneNumberPaymentMethod {
             ]
         case .mbWay:
             return ["PT", "ES"]
+        case .payTo:
+            return ["AU"]
         case .generic:
             return Array(allCountriesPhoneExtensions.keys).sorted { lhs, rhs in
                 let localizedLhs = Locale.current.localizedString(forRegionCode: lhs) ?? lhs
