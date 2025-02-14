@@ -23,6 +23,12 @@ protocol CaptureSessionManaging {
 
 class CaptureSessionManager: NSObject, CaptureSessionManaging {
 
+    enum Constants {
+        static let videoSettings = [
+            kCVPixelBufferPixelFormatTypeKey as NSString: NSNumber(value: kCVPixelFormatType_32BGRA)
+        ] as [String: Any]
+    }
+
     // MARK: - Properties
 
     private let sessionQueue = DispatchQueue(label: "com.cardscanner.sessionQueue", qos: .userInitiated)
@@ -100,7 +106,7 @@ class CaptureSessionManager: NSObject, CaptureSessionManaging {
 
         // Set up output
         let videoOutput = AVCaptureVideoDataOutput()
-        let videoSettings = [kCVPixelBufferPixelFormatTypeKey as NSString: NSNumber(value: kCVPixelFormatType_32BGRA)] as [String: Any]
+        let videoSettings = Constants.videoSettings
         videoOutput.videoSettings = videoSettings
         videoOutput.setSampleBufferDelegate(self, queue: videoOutputQueue)
 
