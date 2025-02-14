@@ -209,3 +209,5 @@ whiteList:
   - primeiropay
   - SDKs
   - ks
+  - cancellables
+  - qos
