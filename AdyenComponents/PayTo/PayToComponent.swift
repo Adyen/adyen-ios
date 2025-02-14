@@ -167,12 +167,12 @@ public final class PayToComponent: PaymentComponent,
     }()
 
     /// The identifier picker item.
-    internal lazy var identifierPickerItem: FormIdentifierPickerItem = {
+    internal lazy var identifierPickerItem: FormStringPickerItem = {
         let selectableValues = AccountIdentifiers.allCases.map { accountIdentifier in
-            FormIdentifierPickerElement(identifier: accountIdentifier.identifier, title: accountIdentifier.description)
+            FormStringPickerElement(identifier: accountIdentifier.identifier, title: accountIdentifier.description)
         }
 
-        let item = FormIdentifierPickerItem(
+        let item = FormStringPickerItem(
             preselectedIdentifier: selectableValues[0],
             selectableIdentifiers: selectableValues,
             style: configuration.style.textField

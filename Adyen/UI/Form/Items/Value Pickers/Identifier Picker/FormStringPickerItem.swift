@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-/// A wrapper struct to use as item in ``FormIdentifierPickerItem``
+/// A wrapper struct to use as item in ``FormStringPickerItem``
 @_spi(AdyenInternal)
-public struct FormIdentifierPickerElement: CustomStringConvertible, Equatable {
+public struct FormStringPickerElement: CustomStringConvertible, Equatable {
 
     public let identifier: String
     public let title: String
@@ -22,11 +22,11 @@ public struct FormIdentifierPickerElement: CustomStringConvertible, Equatable {
 
 /// A identifier picker form item
 @_spi(AdyenInternal)
-public final class FormIdentifierPickerItem: BaseFormPickerItem<FormIdentifierPickerElement> {
+public final class FormStringPickerItem: BaseFormPickerItem<FormStringPickerElement> {
 
     public init(
-        preselectedIdentifier: FormIdentifierPickerElement,
-        selectableIdentifiers: [FormIdentifierPickerElement],
+        preselectedIdentifier: FormStringPickerElement,
+        selectableIdentifiers: [FormStringPickerElement],
         style: FormTextItemStyle
     ) {
         super.init(
@@ -41,9 +41,9 @@ public final class FormIdentifierPickerItem: BaseFormPickerItem<FormIdentifierPi
     }
 }
 
-private extension FormIdentifierPickerElement {
+private extension FormStringPickerElement {
 
-    func toBaseFormPickerElement() -> BasePickerElement<FormIdentifierPickerElement> {
+    func toBaseFormPickerElement() -> BasePickerElement<FormStringPickerElement> {
         .init(identifier: identifier, element: self)
     }
 }
