@@ -211,3 +211,4 @@ whiteList:
   - ks
   - cancellables
   - qos
+  - cardscanner
