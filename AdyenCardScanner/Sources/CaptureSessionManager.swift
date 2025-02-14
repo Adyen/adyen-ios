@@ -24,9 +24,9 @@ protocol CaptureSessionManaging {
 class CaptureSessionManager: NSObject, CaptureSessionManaging {
 
     enum Constants {
-        static let videoSettings = [
-            kCVPixelBufferPixelFormatTypeKey as NSString: NSNumber(value: kCVPixelFormatType_32BGRA)
-        ] as [String: Any]
+        static let videoSettings: [String: Any] = [
+            kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
+        ]
     }
 
     // MARK: - Properties
