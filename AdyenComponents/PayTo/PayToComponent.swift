@@ -173,8 +173,8 @@ public final class PayToComponent: PaymentComponent,
         }
 
         let item = FormStringPickerItem(
-            preselectedIdentifier: selectableValues[0],
-            selectableIdentifiers: selectableValues,
+            preselectedStringValue: selectableValues[0],
+            selectableStringValues: selectableValues,
             style: configuration.style.textField
         )
         // TODO: Add translation

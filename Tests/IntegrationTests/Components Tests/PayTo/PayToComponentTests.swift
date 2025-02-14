@@ -87,7 +87,7 @@ class PayToComponentTests: XCTestCase {
         setupRootViewController(sut.viewController)
 
         // Check by accessibility identifier
-        let identifierPickerItem: BaseFormPickerItemView<FormIdentifierPickerElement> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.identifierPicker"))
+        let identifierPickerItem: BaseFormPickerItemView<FormStringPickerElement> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.identifierPicker"))
 
         // Then
         XCTAssertNotNil(identifierPickerItem, "identifier picker should exist")

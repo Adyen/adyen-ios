@@ -25,13 +25,19 @@ public struct FormStringPickerElement: CustomStringConvertible, Equatable {
 public final class FormStringPickerItem: BaseFormPickerItem<FormStringPickerElement> {
 
     public init(
-        preselectedIdentifier: FormStringPickerElement,
-        selectableIdentifiers: [FormStringPickerElement],
+        preselectedStringValue: FormStringPickerElement,
+        selectableStringValues: [FormStringPickerElement],
         style: FormTextItemStyle
     ) {
         super.init(
-            preselectedValue: .init(identifier: preselectedIdentifier.identifier, element: preselectedIdentifier),
-            selectableValues: selectableIdentifiers.map { $0.toBaseFormPickerElement() },
+            preselectedValue: .init(
+                identifier: preselectedStringValue.identifier,
+                element: preselectedStringValue
+            ),
+            selectableValues: selectableStringValues
+                .map {
+                    $0.toBaseFormPickerElement()
+                },
             style: style
         )
     }
