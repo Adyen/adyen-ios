@@ -204,7 +204,7 @@ public final class PayToComponent: PaymentComponent,
         formViewController.append(identifierPickerItem.padding())
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
 
-        contentView(formVC: formViewController)
+        payIDContentView(formVC: formViewController)
 
         if configuration.showsSubmitButton {
             formViewController.append(FormSpacerItem(numberOfSpaces: 2))
@@ -216,7 +216,7 @@ public final class PayToComponent: PaymentComponent,
 
     // MARK: - Private
 
-    private func contentView(formVC: FormViewController) {
+    private func payIDContentView(formVC: FormViewController) {
         staticContent(formVC)
     }
 
