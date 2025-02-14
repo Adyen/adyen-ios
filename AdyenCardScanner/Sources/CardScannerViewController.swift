@@ -22,7 +22,7 @@ class CardScannerViewController: UIViewController {
     // MARK: - Properties
 
     private let viewModel: CardScannerViewModelProtocol
-    private let previewLayer: AVCaptureVideoPreviewLayer
+    private let previewLayer: CALayer
     private var cancellables: Set<AnyCancellable> = []
 
     // MARK: - Initializers
@@ -46,17 +46,17 @@ class CardScannerViewController: UIViewController {
         addOverlayView()
         observeRoiLayoutChanges()
 
-        viewModel.configureSession()
+        viewModel.viewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.startCaptureSession()
+        viewModel.viewWillAppear()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        viewModel.stopCaptureSession()
+        viewModel.viewWillDisappear()
     }
 
     override func viewDidLayoutSubviews() {
@@ -68,7 +68,6 @@ class CardScannerViewController: UIViewController {
     // MARK: - Private
 
     private func setupPreviewLayer() {
-        previewLayer.videoGravity = .resizeAspectFill
         view.layer.insertSublayer(previewLayer, at: 0)
     }
 
@@ -92,3 +91,4 @@ class CardScannerViewController: UIViewController {
         }.store(in: &cancellables)
     }
 }
+
