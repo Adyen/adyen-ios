@@ -121,12 +121,11 @@ internal final class ThreeDSService: ThreeDSServiceable, SecurityWarningsDelegat
                 errorPayload: opaqueErrorObject(error: error)
             )))
         }
-
     }
     
     internal func opaqueErrorObject(error: Error) -> String {
         guard let threedsError = error as? ThreeDSError else {
-            return (error as NSError).base64Representation
+            return (error as NSError).opaqueBase64StringRepresentation()
         }
         return threedsError.base64Representation
     }
@@ -167,9 +166,9 @@ internal final class ThreeDSService: ThreeDSServiceable, SecurityWarningsDelegat
 extension ChallengeResult: AnyChallengeResult {}
 extension Adyen3DS2_Swift.AuthenticationRequestParameters: AnyAuthenticationRequestParameters {}
 
-extension NSError {
-    var base64Representation: String {
-        // TODO: Use the public api from the sdk.
-        fatalError("Should never come here, should never have been pushed to production")
-    }
-}
+// extension NSError {
+//    var base64Representation: String {
+//        // TODO: Use the public api from the sdk.
+//        fatalError("Should never come here, should never have been pushed to production")
+//    }
+// }

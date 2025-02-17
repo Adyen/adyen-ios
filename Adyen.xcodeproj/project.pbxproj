@@ -88,7 +88,6 @@
 		21099B0D2CB7276E0096502C /* PaymentInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21099B0C2CB7276E0096502C /* PaymentInfo.swift */; };
 		210F708B2D49937F009D6A91 /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = 210F708A2D49937F009D6A91 /* Adyen3DS2 */; };
 		210F708D2D49937F009D6A91 /* Adyen3DS2_Swift in Frameworks */ = {isa = PBXBuildFile; productRef = 210F708C2D49937F009D6A91 /* Adyen3DS2_Swift */; };
-		211790DD2D4CE8F600ED1246 /* Adyen3DS2_Swift in Frameworks */ = {isa = PBXBuildFile; productRef = 211790DC2D4CE8F600ED1246 /* Adyen3DS2_Swift */; };
 		211790E02D4CE90A00ED1246 /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = 211790DF2D4CE90A00ED1246 /* Adyen3DS2 */; };
 		2159173A2A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215917392A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift */; };
 		215E16CF2D5F3E3400EA654C /* ADYAppearanceConfiguration+Adaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215E16CE2D5F3E3400EA654C /* ADYAppearanceConfiguration+Adaptor.swift */; };
@@ -2628,7 +2627,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				211790E02D4CE90A00ED1246 /* Adyen3DS2 in Frameworks */,
-				211790DD2D4CE8F600ED1246 /* Adyen3DS2_Swift in Frameworks */,
 				210F708B2D49937F009D6A91 /* Adyen3DS2 in Frameworks */,
 				F9175F9E259498C300D653BE /* Adyen.framework in Frameworks */,
 				210F708D2D49937F009D6A91 /* Adyen3DS2_Swift in Frameworks */,
@@ -6158,7 +6156,6 @@
 			packageProductDependencies = (
 				210F708A2D49937F009D6A91 /* Adyen3DS2 */,
 				210F708C2D49937F009D6A91 /* Adyen3DS2_Swift */,
-				211790DC2D4CE8F600ED1246 /* Adyen3DS2_Swift */,
 				211790DF2D4CE90A00ED1246 /* Adyen3DS2 */,
 			);
 			productName = AdyenActions;
@@ -6435,8 +6432,8 @@
 				F9CCA3D8296ECDF900AD643D /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				A03B7C9329B21C3D00FDDDFC /* XCRemoteSwiftPackageReference "cash-app-pay-ios-sdk" */,
 				F94D65E42B0365C30095D61E /* XCRemoteSwiftPackageReference "adyen-authentication-ios" */,
-				211790DB2D4CE8F600ED1246 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios-sdk" */,
 				211790DE2D4CE90A00ED1246 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios" */,
+				214942252D63FC2300C8C9C9 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios-sdk" */,
 			);
 			productRefGroup = E2C0E03422097917008616F6 /* Products */;
 			projectDirPath = "";
@@ -9584,20 +9581,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		211790DB2D4CE8F600ED1246 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/robertdalmeida/adyen-3ds2-ios-sdk";
-			requirement = {
-				kind = exactVersion;
-				version = 3.0.0;
-			};
-		};
 		211790DE2D4CE90A00ED1246 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Adyen/adyen-3ds2-ios";
 			requirement = {
 				kind = exactVersion;
 				version = 2.4.2;
+			};
+		};
+		214942252D63FC2300C8C9C9 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/robertdalmeida/adyen-3ds2-ios-sdk";
+			requirement = {
+				branch = master;
+				kind = branch;
 			};
 		};
 		81DF94082BAAD8EB0001DCBC /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
@@ -9657,11 +9654,6 @@
 		};
 		210F708C2D49937F009D6A91 /* Adyen3DS2_Swift */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Adyen3DS2_Swift;
-		};
-		211790DC2D4CE8F600ED1246 /* Adyen3DS2_Swift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 211790DB2D4CE8F600ED1246 /* XCRemoteSwiftPackageReference "adyen-3ds2-ios-sdk" */;
 			productName = Adyen3DS2_Swift;
 		};
 		211790DF2D4CE90A00ED1246 /* Adyen3DS2 */ = {
