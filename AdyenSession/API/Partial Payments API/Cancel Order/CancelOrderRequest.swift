@@ -22,7 +22,7 @@ internal struct CancelOrderRequest: APIRequest {
 
     internal let method: HTTPMethod = .post
 
-    internal let headers: [String: String] = [:]
+    internal var headers: [String: String] = [:]
 
     internal let queryParameters: [URLQueryItem] = []
     
