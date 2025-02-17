@@ -286,7 +286,7 @@ public final class PayToComponent: PaymentComponent,
     }
 
     private func dynamicContent(_ formVC: FormViewController) {
-        // TODO: Add bussiness logic to show/hide these
+        // TODO: Add business logic to show/hide these
         formVC.append(emailInputItem)
         formVC.append(abnInputItem)
         formVC.append(organizationIDInputItem)
