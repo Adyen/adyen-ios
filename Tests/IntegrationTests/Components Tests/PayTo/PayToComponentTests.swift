@@ -35,7 +35,7 @@ class PayToComponentTests: XCTestCase {
             context: Dummy.context
         )
 
-        setupRootViewController(sut.viewController)
+        sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
         let flowSelectionTitleLabelItem = sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.flowSelectionTitleLabel") as? UILabel
@@ -51,7 +51,7 @@ class PayToComponentTests: XCTestCase {
             context: Dummy.context
         )
 
-        setupRootViewController(sut.viewController)
+        sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
         let flowSelectionItem = sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.flowSelectionSegmentedControl") as? UISegmentedControl
@@ -59,6 +59,22 @@ class PayToComponentTests: XCTestCase {
 
         // Then
         XCTAssertNotNil(flowSelectionItem, "Flow selection item should exist")
+    }
+    
+    func test_phoneNumberItem_exists() throws {
+        // Given
+        let sut = try PayToComponent(
+            paymentMethod: AdyenCoder.decode(payto),
+            context: Dummy.context
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
+        // Check by accessibility identifier
+        let phoneNumberItem: FormPhoneNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.phoneNumberItem"))
+
+        // Then
+        XCTAssertNotNil(phoneNumberItem, "Phone number item should exist")
     }
 
     func test_continueButton_exists() throws {
@@ -68,7 +84,7 @@ class PayToComponentTests: XCTestCase {
             context: Dummy.context
         )
 
-        setupRootViewController(sut.viewController)
+        sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
         let continueButton: FormButtonItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.continueButton"))

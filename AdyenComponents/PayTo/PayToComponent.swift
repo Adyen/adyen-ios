@@ -14,6 +14,7 @@ public final class PayToComponent: PaymentComponent,
     private enum ViewIdentifier {
         static let flowSelectionTitleLabelItem = "flowSelectionTitleLabel"
         static let flowSelectionItem = "flowSelectionSegmentedControl"
+        static let phoneNumberItem = "phoneNumberItem"
         static let continueButtonItem = "continueButton"
         static let identifierPickerItem = "identifierPicker"
         static let firstNameInputItem = "firstNameTextfield"
@@ -68,6 +69,11 @@ public final class PayToComponent: PaymentComponent,
 
     /// This indicates that `viewController` expected to be presented modally,
     public var requiresModalPresentation: Bool = true
+    
+    private var payToExtensions: [PhoneExtension] {
+        let query = PhoneExtensionsQuery(paymentMethod: .payTo)
+        return PhoneExtensionsRepository.get(with: query)
+    }
 
     /// Initializes the PayTo  component.
     ///
@@ -110,6 +116,23 @@ public final class PayToComponent: PaymentComponent,
                 postfix: ViewIdentifier.flowSelectionItem
             )
         )
+        return item
+    }()
+    
+    internal lazy var phoneNumberItem: FormPhoneNumberItem = {
+        let item = FormPhoneNumberItem(
+            phoneNumber: nil,
+            selectableValues: payToExtensions,
+            style: configuration.style.textField,
+            localizationParameters: configuration.localizationParameters,
+            presenter: .init(self)
+        )
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.phoneNumberItem
+        )
+        item.title = localizedString(LocalizationKey(key: "Phone"), configuration.localizationParameters)
+        item.placeholder = localizedString(LocalizationKey(key: "Mobile number"), configuration.localizationParameters)
         return item
     }()
 
@@ -182,6 +205,8 @@ public final class PayToComponent: PaymentComponent,
             localizationParameters: configuration.localizationParameters
         )
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
+        formViewController.delegate = self
+        
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
 
         formViewController.append(flowSelectionTitleLabelItem.padding())
@@ -192,6 +217,8 @@ public final class PayToComponent: PaymentComponent,
 
         formViewController.append(identifierPickerItem.padding())
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
+
+        formViewController.append(phoneNumberItem)
 
         appendItemsTo(formVC: formViewController)
 
@@ -212,6 +239,24 @@ public final class PayToComponent: PaymentComponent,
     private func staticContent(_ formVC: FormViewController) {
         formVC.append(firstNameInputItem)
         formVC.append(lastNameInputItem)
+    }
+}
+
+@_spi(AdyenInternal)
+extension PayToComponent: ViewControllerDelegate {}
+
+@_spi(AdyenInternal)
+extension PayToComponent: TrackableComponent {}
+
+@_spi(AdyenInternal)
+extension PayToComponent: ViewControllerPresenter {
+    
+    public func presentViewController(_ viewController: UIViewController, animated: Bool) {
+        self.viewController.presentViewController(viewController, animated: animated)
+    }
+    
+    public func dismissViewController(animated: Bool) {
+        self.viewController.dismissViewController(animated: animated)
     }
 }
 
