@@ -20,7 +20,7 @@ public final class PayToComponent: PaymentComponent,
         static let lastNameInputItem = "lastNameTextfield"
     }
 
-    private enum AccountIdentifiers: CustomStringConvertible, CaseIterable {
+    private enum AccountIdentifiers: String, CustomStringConvertible, CaseIterable {
         case phone
         case email
         case abn
@@ -37,19 +37,6 @@ public final class PayToComponent: PaymentComponent,
                 return "ABN"
             case .organizationID:
                 return "Organization ID"
-            }
-        }
-
-        public var identifier: String {
-            switch self {
-            case .phone:
-                return "phone"
-            case .email:
-                return "email"
-            case .abn:
-                return "abn"
-            case .organizationID:
-                return "organizationID"
             }
         }
 
@@ -169,7 +156,7 @@ public final class PayToComponent: PaymentComponent,
     /// The identifier picker item.
     internal lazy var identifierPickerItem: FormStringPickerItem = {
         let selectableValues = AccountIdentifiers.allCases.map { accountIdentifier in
-            FormStringPickerElement(identifier: accountIdentifier.identifier, title: accountIdentifier.description)
+            FormStringPickerElement(identifier: accountIdentifier.rawValue, title: accountIdentifier.description)
         }
 
         AdyenAssertion.assert(message: "selectableValues should be greater than 0", condition: selectableValues.count <= 0)
