@@ -93,4 +93,52 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(continueButton, "ContinueButton should exist")
     }
 
+    func test_identifierPicker_exists() throws {
+        // Given
+        let sut = try PayToComponent(
+            paymentMethod: AdyenCoder.decode(payto),
+            context: Dummy.context
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
+        // Check by accessibility identifier
+        let identifierPickerItem: BaseFormPickerItemView<FormStringPickerElement> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.identifierPicker"))
+
+        // Then
+        XCTAssertNotNil(identifierPickerItem, "identifier picker should exist")
+    }
+
+    func test_firstname_textfield_exists() throws {
+        // Given
+        let sut = try PayToComponent(
+            paymentMethod: AdyenCoder.decode(payto),
+            context: Dummy.context
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
+        // Check by accessibility identifier
+        let firstNameInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.firstNameTextfield"))
+
+        // Then
+        XCTAssertNotNil(firstNameInputItem, "first name input field should exist")
+    }
+
+    func test_lastname_textfield_exists() throws {
+        // Given
+        let sut = try PayToComponent(
+            paymentMethod: AdyenCoder.decode(payto),
+            context: Dummy.context
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
+        // Check by accessibility identifier
+        let lastNameInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.lastNameTextfield"))
+
+        // Then
+        XCTAssertNotNil(lastNameInputItem, "last name input field should exist")
+    }
+
 }
