@@ -206,8 +206,8 @@ public final class PayToComponent: PaymentComponent,
     internal lazy var emailInputItem: FormTextInputItem = {
         let item = FormTextInputItem(style: configuration.style.textField)
         // TODO: Add translation
-        item.title = localizedString(LocalizationKey(key: "Email"), configuration.localizationParameters)
-        item.placeholder = localizedString(LocalizationKey(key: "Email"), configuration.localizationParameters)
+        item.title = localizedString(.emailItemTitle, configuration.localizationParameters)
+        item.placeholder = localizedString(.emailItemPlaceHolder, configuration.localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifier.emailInputItem
@@ -263,7 +263,7 @@ public final class PayToComponent: PaymentComponent,
 
         formViewController.append(phoneNumberItem)
 
-        appendItemsTo(formVC: formViewController)
+        appendItems(to: formViewController)
 
         if configuration.showsSubmitButton {
             formViewController.append(FormSpacerItem(numberOfSpaces: 2))
@@ -275,21 +275,21 @@ public final class PayToComponent: PaymentComponent,
 
     // MARK: - Private
 
-    private func appendItemsTo(formVC: FormViewController) {
-        dynamicContent(formVC)
-        staticContent(formVC)
+    private func appendItems(to formViewController: FormViewController) {
+        addDynamicContent(to: formViewController)
+        addStaticContent(to: formViewController)
     }
 
-    private func staticContent(_ formVC: FormViewController) {
-        formVC.append(firstNameInputItem)
-        formVC.append(lastNameInputItem)
+    private func addStaticContent(to formViewController: FormViewController) {
+        formViewController.append(firstNameInputItem)
+        formViewController.append(lastNameInputItem)
     }
 
-    private func dynamicContent(_ formVC: FormViewController) {
+    private func addDynamicContent(to formViewController: FormViewController) {
         // TODO: Add business logic to show/hide these
-        formVC.append(emailInputItem)
-        formVC.append(abnInputItem)
-        formVC.append(organizationIDInputItem)
+        formViewController.append(emailInputItem)
+        formViewController.append(abnInputItem)
+        formViewController.append(organizationIDInputItem)
     }
 }
 
