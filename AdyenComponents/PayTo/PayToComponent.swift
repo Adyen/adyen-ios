@@ -172,6 +172,8 @@ public final class PayToComponent: PaymentComponent,
             FormStringPickerElement(identifier: accountIdentifier.identifier, title: accountIdentifier.description)
         }
 
+        AdyenAssertion.assert(message: "selectableValues should be greater than 0", condition: selectableValues.count <= 0)
+
         let item = FormStringPickerItem(
             preselectedStringValue: selectableValues[0],
             selectableStringValues: selectableValues,
