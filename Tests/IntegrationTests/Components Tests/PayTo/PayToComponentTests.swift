@@ -100,7 +100,7 @@ class PayToComponentTests: XCTestCase {
             context: Dummy.context
         )
 
-        setupRootViewController(sut.viewController)
+        sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
         let identifierPickerItem: BaseFormPickerItemView<FormStringPickerElement> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.identifierPicker"))
@@ -116,7 +116,7 @@ class PayToComponentTests: XCTestCase {
             context: Dummy.context
         )
 
-        setupRootViewController(sut.viewController)
+        sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
         let firstNameInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.firstNameTextfield"))
@@ -132,7 +132,7 @@ class PayToComponentTests: XCTestCase {
             context: Dummy.context
         )
 
-        setupRootViewController(sut.viewController)
+        sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
         let lastNameInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.lastNameTextfield"))
