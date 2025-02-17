@@ -27,7 +27,7 @@ class FormItemViewBuilderTests: XCTestCase {
     
     func testPhoneExtensionMultiple() {
         let presenter = UIViewController()
-        let query = PhoneExtensionsQuery(paymentMethod: .payTo)
+        let query = PhoneExtensionsQuery(paymentMethod: .generic)
         let selectableValues = PhoneExtensionsRepository.get(with: query)
         let item = FormPhoneExtensionPickerItem(
             preselectedExtension: selectableValues[0],
