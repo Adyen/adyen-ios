@@ -46,7 +46,8 @@ jobs:
     - name: Prepare Release Notes
       run: |
         RELEASE_NOTES=$(echo "$BASE_64_RELEASE_NOTES" | base64 --decode)
-        RELEASE_NOTES_FILE_PATH="${{ github.workspace }}/.tmp/release_notes.md"
+        TMP_DIR="${{ github.workspace }}/.tmp"
+        RELEASE_NOTES_FILE_PATH="$TMP_DIR/release_notes.md"
         
         if [ -e $RELEASE_NOTES_FILE_PATH ]
         then
@@ -54,7 +55,9 @@ jobs:
             cat "$RELEASE_NOTES_FILE_PATH"
             rm -rf $RELEASE_NOTES_FILE_PATH # Making sure we start a fresh document
         fi
-        
+
+        mkdir -p "$TMP_DIR"
+
         echo "UPDATED RELEASE NOTES (GENERATED)"
         echo "$RELEASE_NOTES"
         
