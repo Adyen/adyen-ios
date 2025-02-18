@@ -17,7 +17,7 @@ public struct PaymentStatusRequest: APIRequest {
     
     public var counter: UInt = 0
     
-    public let headers: [String: String] = [:]
+    public var headers: [String: String] = [:]
     
     public let queryParameters: [URLQueryItem] = []
     
