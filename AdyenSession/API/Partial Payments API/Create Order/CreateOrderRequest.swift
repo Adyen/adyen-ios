@@ -18,7 +18,7 @@ internal struct CreateOrderRequest: APIRequest {
 
     internal let method: HTTPMethod = .post
 
-    internal let headers: [String: String] = [:]
+    internal var headers: [String: String] = [:]
 
     internal let queryParameters: [URLQueryItem] = []
 
