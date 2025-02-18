@@ -36,11 +36,11 @@ jobs:
         SDK_VERSION: ${{ github.event.inputs.sdk-version }}
         
     # Generating Docs (will show up as changes in the PR)
-    # - name: Generate Docs
-    #   run: |
-    #     Scripts/generate_docc_documentation.sh
-    #   env:
-    #     LATEST_VERSION: ${{ github.event.inputs.sdk-version }}
+    - name: Generate Docs
+      run: |
+        Scripts/generate_docc_documentation.sh
+      env:
+        LATEST_VERSION: ${{ github.event.inputs.sdk-version }}
         
     # Sanitizing the Release Notes from the get-release-notes job
     - name: Prepare Release Notes
@@ -57,14 +57,7 @@ jobs:
         fi
 
         mkdir -p "$TMP_DIR"
-
-        echo "UPDATED RELEASE NOTES (GENERATED)"
-        echo "$RELEASE_NOTES"
-        
         echo "$RELEASE_NOTES" >> $RELEASE_NOTES_FILE_PATH
-        
-        echo "UPDATED RELEASE NOTES (FILE)"
-        cat "$RELEASE_NOTES_FILE_PATH"
       env:
         BASE_64_RELEASE_NOTES: ${{ needs.get-release-notes.outputs.RELEASE_NOTES }}
     
