@@ -19,6 +19,9 @@ public final class PayToComponent: PaymentComponent,
         static let identifierPickerItem = "identifierPicker"
         static let firstNameInputItem = "firstNameTextfield"
         static let lastNameInputItem = "lastNameTextfield"
+        static let emailInputItem = "emailTextfield"
+        static let abnInputItem = "abnTextfield"
+        static let organizationIDInputItem = "organizationIDTextfield"
     }
 
     private enum AccountIdentifiers: String, CustomStringConvertible, CaseIterable {
@@ -131,6 +134,7 @@ public final class PayToComponent: PaymentComponent,
             scopeInstance: self,
             postfix: ViewIdentifier.phoneNumberItem
         )
+        // TODO: Add translation
         item.title = localizedString(LocalizationKey(key: "Phone"), configuration.localizationParameters)
         item.placeholder = localizedString(LocalizationKey(key: "Mobile number"), configuration.localizationParameters)
         return item
@@ -198,6 +202,45 @@ public final class PayToComponent: PaymentComponent,
         return item
     }()
 
+    /// The  account holder email text input item.
+    internal lazy var emailInputItem: FormTextInputItem = {
+        let item = FormTextInputItem(style: configuration.style.textField)
+        // TODO: Add translation
+        item.title = localizedString(.emailItemTitle, configuration.localizationParameters)
+        item.placeholder = localizedString(.emailItemPlaceHolder, configuration.localizationParameters)
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.emailInputItem
+        )
+        return item
+    }()
+
+    /// The  account holder abn text input item.
+    internal lazy var abnInputItem: FormTextInputItem = {
+        let item = FormTextInputItem(style: configuration.style.textField)
+        // TODO: Add translation
+        item.title = localizedString(LocalizationKey(key: "ABN"), configuration.localizationParameters)
+        item.placeholder = localizedString(LocalizationKey(key: "ABN"), configuration.localizationParameters)
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.abnInputItem
+        )
+        return item
+    }()
+
+    /// The  account holder organization ID text input item.
+    internal lazy var organizationIDInputItem: FormTextInputItem = {
+        let item = FormTextInputItem(style: configuration.style.textField)
+        // TODO: Add translation
+        item.title = localizedString(LocalizationKey(key: "Organization ID"), configuration.localizationParameters)
+        item.placeholder = localizedString(LocalizationKey(key: "Organization ID"), configuration.localizationParameters)
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.organizationIDInputItem
+        )
+        return item
+    }()
+
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
             scrollEnabled: configuration.showsSubmitButton,
@@ -220,7 +263,7 @@ public final class PayToComponent: PaymentComponent,
 
         formViewController.append(phoneNumberItem)
 
-        appendItemsTo(formVC: formViewController)
+        appendItems(to: formViewController)
 
         if configuration.showsSubmitButton {
             formViewController.append(FormSpacerItem(numberOfSpaces: 2))
@@ -232,13 +275,21 @@ public final class PayToComponent: PaymentComponent,
 
     // MARK: - Private
 
-    private func appendItemsTo(formVC: FormViewController) {
-        staticContent(formVC)
+    private func appendItems(to formViewController: FormViewController) {
+        addDynamicContent(to: formViewController)
+        addStaticContent(to: formViewController)
     }
 
-    private func staticContent(_ formVC: FormViewController) {
-        formVC.append(firstNameInputItem)
-        formVC.append(lastNameInputItem)
+    private func addStaticContent(to formViewController: FormViewController) {
+        formViewController.append(firstNameInputItem)
+        formViewController.append(lastNameInputItem)
+    }
+
+    private func addDynamicContent(to formViewController: FormViewController) {
+        // TODO: Add business logic to show/hide these
+        formViewController.append(emailInputItem)
+        formViewController.append(abnInputItem)
+        formViewController.append(organizationIDInputItem)
     }
 }
 

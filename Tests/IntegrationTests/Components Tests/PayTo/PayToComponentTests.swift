@@ -141,4 +141,52 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(lastNameInputItem, "last name input field should exist")
     }
 
+    func test_email_textfield_exists() throws {
+        // Given
+        let sut = try PayToComponent(
+            paymentMethod: AdyenCoder.decode(payto),
+            context: Dummy.context
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
+        // Check by accessibility identifier
+        let emailInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.emailTextfield"))
+
+        // Then
+        XCTAssertNotNil(emailInputItem, "email input field should exist")
+    }
+
+    func test_abn_textfield_exists() throws {
+        // Given
+        let sut = try PayToComponent(
+            paymentMethod: AdyenCoder.decode(payto),
+            context: Dummy.context
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
+        // Check by accessibility identifier
+        let abnInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.abnTextfield"))
+
+        // Then
+        XCTAssertNotNil(abnInputItem, "abn input field should exist")
+    }
+
+    func test_organizationID_textfield_exists() throws {
+        // Given
+        let sut = try PayToComponent(
+            paymentMethod: AdyenCoder.decode(payto),
+            context: Dummy.context
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
+        // Check by accessibility identifier
+        let organizationIDInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.organizationIDTextfield"))
+
+        // Then
+        XCTAssertNotNil(organizationIDInputItem, "organizationID input field should exist")
+    }
+
 }
