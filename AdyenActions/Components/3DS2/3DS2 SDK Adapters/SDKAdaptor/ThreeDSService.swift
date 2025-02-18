@@ -14,7 +14,6 @@ import UIKit
 internal final class ThreeDSService: ThreeDSServiceable, SecurityWarningsDelegate {
     internal var transaction: Adyen3DS2_Swift.Transaction?
     
-    @MainActor
     internal func authenticationParameters(
         parameters: ServiceParameters,
         completionHandler: @escaping (Result<AnyAuthenticationRequestParameters, ThreeDSServiceFingerprintError>) -> Void
@@ -29,38 +28,40 @@ internal final class ThreeDSService: ThreeDSServiceable, SecurityWarningsDelegat
             ))
             return
         }
-
+        
         do {
             let serviceParameters = try Adyen3DS2_Swift.ServiceParameters(
                 directoryServerIdentifier: parameters.directoryServerIdentifier,
                 directoryServerPublicKey: parameters.directoryServerPublicKey,
                 directoryServerRootCertificates: parameters.directoryServerRootCertificates
             )
-            Adyen3DS2_Swift.Transaction.initialize(
-                serviceParameters: serviceParameters,
-                messageVersion: messageVersion,
-                securityDelegate: self,
-                appearanceConfiguration: transform(config: parameters.appearanceConfiguration)
-            ) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(transaction):
-                    self.transaction = transaction
-                    do {
-                        try completionHandler(.success(transaction.authenticationRequestParameters))
-                    } catch {
+            transform(config: parameters.appearanceConfiguration) { appearanceConfiguration in
+                Adyen3DS2_Swift.Transaction.initialize(
+                    serviceParameters: serviceParameters,
+                    messageVersion: messageVersion,
+                    securityDelegate: self,
+                    appearanceConfiguration: appearanceConfiguration
+                ) { [weak self] result in
+                    guard let self else { return }
+                    switch result {
+                    case let .success(transaction):
+                        self.transaction = transaction
+                        do {
+                            try completionHandler(.success(transaction.authenticationRequestParameters))
+                        } catch {
+                            completionHandler(.failure(
+                                .fingerprintingError(
+                                    errorPayload: self.opaqueErrorObject(error: error)
+                                )
+                            ))
+                        }
+                    case let .failure(error):
                         completionHandler(.failure(
-                            .fingerprintingError(
+                            .transactionCreationError(
                                 errorPayload: self.opaqueErrorObject(error: error)
                             )
                         ))
                     }
-                case let .failure(error):
-                    completionHandler(.failure(
-                        .transactionCreationError(
-                            errorPayload: self.opaqueErrorObject(error: error)
-                        )
-                    ))
                 }
             }
 
@@ -134,16 +135,20 @@ internal final class ThreeDSService: ThreeDSServiceable, SecurityWarningsDelegat
         guard let threedsError = error as? ThreeDSError else {
             return false
         }
-        return threedsError.errorCode == "1001"
+        return threedsError.isCancellation
     }
 
     internal func resetTransaction() {
         self.transaction = nil
     }
     
-    @MainActor
-    internal func transform(config: Adyen3DS2.ADYAppearanceConfiguration) -> Adyen3DS2_Swift.AppearanceConfiguration {
-        config.appearanceConfiguration
+    internal func transform(
+        config: Adyen3DS2.ADYAppearanceConfiguration,
+        completion: @escaping (Adyen3DS2_Swift.AppearanceConfiguration) -> Void
+    ) {
+        DispatchQueue.main.async {
+            completion(.init())
+        }
     }
     
     private func getPresenterViewController() -> Result<UIViewController, ThreeDSServiceError> {
@@ -165,10 +170,3 @@ internal final class ThreeDSService: ThreeDSServiceable, SecurityWarningsDelegat
 
 extension ChallengeResult: AnyChallengeResult {}
 extension Adyen3DS2_Swift.AuthenticationRequestParameters: AnyAuthenticationRequestParameters {}
-
-// extension NSError {
-//    var base64Representation: String {
-//        // TODO: Use the public api from the sdk.
-//        fatalError("Should never come here, should never have been pushed to production")
-//    }
-// }
