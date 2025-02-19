@@ -11,6 +11,13 @@ import UIKit
 public final class PayToComponent: PaymentComponent,
     PresentableComponent {
 
+    /// The flow types for PayTo component.
+    public enum PayToFlowType: Int {
+        // TODO: Add comments
+        case payID = 0
+        case BSB = 1
+    }
+
     private enum ViewIdentifier {
         static let flowSelectionTitleLabelItem = "flowSelectionTitleLabel"
         static let flowSelectionItem = "flowSelectionSegmentedControl"
@@ -22,6 +29,9 @@ public final class PayToComponent: PaymentComponent,
         static let emailInputItem = "emailTextfield"
         static let abnInputItem = "abnTextfield"
         static let organizationIDInputItem = "organizationIDTextfield"
+        static let accountNumberInputItem = "accountNumberTextfield"
+        static let bankStateBranchInputItem = "bankStateBranchTextfield"
+        static let paymentInstructionTitleLabelItem = "paymentInstructionTitle"
     }
 
     private enum AccountIdentifiers: String, CustomStringConvertible, CaseIterable {
@@ -63,6 +73,10 @@ public final class PayToComponent: PaymentComponent,
     public var paymentMethod: PaymentMethod { payToPaymentMethod }
 
     private let payToPaymentMethod: PayToPaymentMethod
+
+    /// Represents the selected payTo flow for the payment component.
+    /// Determines the specific payTo transaction process to follow.
+    @AdyenObservable(.payID) public private(set) var selectedPayToFlow: PayToFlowType
 
     /// The viewController for the component.
     public lazy var viewController: UIViewController = SecuredViewController(
@@ -119,6 +133,9 @@ public final class PayToComponent: PaymentComponent,
                 postfix: ViewIdentifier.flowSelectionItem
             )
         )
+        item.selectionHandler = { [weak self] in
+            self?.didChangeSegmentedControlIndex($0)
+        }
         return item
     }()
     
@@ -220,7 +237,7 @@ public final class PayToComponent: PaymentComponent,
         let item = FormTextInputItem(style: configuration.style.textField)
         // TODO: Add translation
         item.title = localizedString(LocalizationKey(key: "ABN"), configuration.localizationParameters)
-        item.placeholder = localizedString(LocalizationKey(key: "ABN"), configuration.localizationParameters)
+        item.placeholder = localizedString(LocalizationKey(key: "Australian Business Number"), configuration.localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifier.abnInputItem
@@ -233,10 +250,51 @@ public final class PayToComponent: PaymentComponent,
         let item = FormTextInputItem(style: configuration.style.textField)
         // TODO: Add translation
         item.title = localizedString(LocalizationKey(key: "Organization ID"), configuration.localizationParameters)
-        item.placeholder = localizedString(LocalizationKey(key: "Organization ID"), configuration.localizationParameters)
+        item.placeholder = localizedString(LocalizationKey(key: "Organization ID number"), configuration.localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifier.organizationIDInputItem
+        )
+        return item
+    }()
+
+    /// The  payment instructions label item.
+    internal lazy var paymentInstructionTitleLabelItem: FormLabelItem = {
+        // TODO: Add translation
+        let item = FormLabelItem(
+            text: localizedString(LocalizationKey(key: "Enter the bank account number and the Bank State Branch that is connected to your account to continue"), configuration.localizationParameters),
+            style: configuration.style.footnoteLabel
+        )
+        item.style.textAlignment = .left
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.paymentInstructionTitleLabelItem
+        )
+        return item
+    }()
+
+    /// The  bank account number  text input item.
+    internal lazy var accountNumberInputItem: FormTextInputItem = {
+        let item = FormTextInputItem(style: configuration.style.textField)
+        // TODO: Add translation
+        item.title = localizedString(.bacsBankAccountNumberFieldTitle, configuration.localizationParameters)
+        item.placeholder = localizedString(.bacsBankAccountNumberFieldTitle, configuration.localizationParameters)
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.accountNumberInputItem
+        )
+        return item
+    }()
+
+    /// The  bank state branch  input item.
+    internal lazy var bankStateBranchInputItem: FormTextInputItem = {
+        let item = FormTextInputItem(style: configuration.style.textField)
+        // TODO: Add translation
+        item.title = localizedString(LocalizationKey(key: "Bank state branch"), configuration.localizationParameters)
+        item.placeholder = localizedString(LocalizationKey(key: "Bank State Branch"), configuration.localizationParameters)
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.bankStateBranchInputItem
         )
         return item
     }()
@@ -290,6 +348,9 @@ public final class PayToComponent: PaymentComponent,
         formViewController.append(emailInputItem)
         formViewController.append(abnInputItem)
         formViewController.append(organizationIDInputItem)
+        formViewController.append(paymentInstructionTitleLabelItem)
+        formViewController.append(accountNumberInputItem)
+        formViewController.append(bankStateBranchInputItem)
     }
 }
 
@@ -319,4 +380,25 @@ extension PayToComponent {
         // TODO: Implement
     }
 
+    private func didChangeSegmentedControlIndex(_ index: Int) {
+        AdyenAssertion.assert(message: "PayTo flow type is out of range", condition: PayToFlowType(rawValue: index) == nil)
+        selectedPayToFlow = PayToFlowType(rawValue: index) ?? .payID
+        updateInterface()
+    }
+
+}
+
+// MARK: - Private
+
+private extension PayToComponent {
+
+    func updateInterface() {
+        switch selectedPayToFlow {
+        // TODO: Add logic
+        case .payID:
+            break
+        case .BSB:
+            break
+        }
+    }
 }
