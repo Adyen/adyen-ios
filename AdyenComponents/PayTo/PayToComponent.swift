@@ -248,6 +248,7 @@ public final class PayToComponent: PaymentComponent,
             scopeInstance: self,
             postfix: ViewIdentifier.identifierPickerItem
         )
+        // we return a container item to prevent the picker from becoming firstResponder
         return item.padding(.zero)
     }()
 
