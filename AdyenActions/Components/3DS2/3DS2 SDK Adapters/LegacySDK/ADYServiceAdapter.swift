@@ -36,7 +36,7 @@ internal final class ADYServiceAdapter: AnyADYService {
 
     internal func transaction(withMessageVersion: String) throws -> AnyADYTransaction {
         guard let service else {
-            throw UnknownError(errorDescription: "ADYService is nil.")
+            throw UnknownError.serviceIsNil
         }
         return try service.transaction(withMessageVersion: withMessageVersion)
     }
