@@ -305,7 +305,7 @@ public final class PayToComponent: PaymentComponent,
         return item.padding()
     }()
 
-    /// The  bank account number  text input item.
+    /// The  bank account number text input item.
     internal lazy var accountNumberInputItem: FormTextInputItem = {
         let item = FormTextInputItem(style: configuration.style.textField)
         // TODO: Add translation
@@ -318,7 +318,7 @@ public final class PayToComponent: PaymentComponent,
         return item
     }()
 
-    /// The  bank state branch  input item.
+    /// The  bank state branch input item.
     internal lazy var bankStateBranchInputItem: FormTextInputItem = {
         let item = FormTextInputItem(style: configuration.style.textField)
         // TODO: Add translation
