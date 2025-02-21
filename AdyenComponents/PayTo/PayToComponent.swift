@@ -342,7 +342,7 @@ public final class PayToComponent: PaymentComponent,
         addTopItems(to: formViewController)
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
         
-        addDynamicitems(to: formViewController)
+        addDynamicItems(to: formViewController)
         addBottomItems(to: formViewController)
 
         // continue button last
@@ -423,7 +423,7 @@ private extension PayToComponent {
         add(topItems, to: formViewController, spacing: 1)
     }
     
-    func addDynamicitems(to formViewController: FormViewController) {
+    func addDynamicItems(to formViewController: FormViewController) {
         add(
             payIdDynamicItems,
             to: formViewController,
