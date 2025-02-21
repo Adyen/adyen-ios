@@ -35,9 +35,7 @@ public final class FormStringPickerItem: BaseFormPickerItem<FormStringPickerElem
                 element: preselectedStringValue
             ),
             selectableValues: selectableStringValues
-                .map {
-                    $0.toBaseFormPickerElement()
-                },
+                .map { $0.toBaseFormPickerElement() },
             style: style
         )
     }

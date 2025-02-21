@@ -231,7 +231,7 @@ class PayToComponentTests: XCTestCase {
         sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
-        let paymentInstructionTitleLabelItem = sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.paymentInstructionTitle") as? UILabel
+        let paymentInstructionTitleLabelItem = sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.paymentInstructionTitleLabel") as? UILabel
 
         // Then
         XCTAssertNotNil(paymentInstructionTitleLabelItem, "Payment instruction title label should exist")
