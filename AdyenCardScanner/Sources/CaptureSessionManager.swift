@@ -91,7 +91,6 @@ class CaptureSessionManager: NSObject, CaptureSessionManaging {
     private func configureCaptureSession() throws {
         captureSession.beginConfiguration()
 
-        // Set up input
         guard
             let videoInput = try? AVCaptureDeviceInput(device: captureDevice),
             captureSession.canAddInput(videoInput)
@@ -99,12 +98,10 @@ class CaptureSessionManager: NSObject, CaptureSessionManaging {
             throw CardScannerError(kind: .capture)
         }
 
-        // Configure capture device settings
         configureCaptureDevice(captureDevice)
 
         captureSession.addInput(videoInput)
 
-        // Set up output
         let videoOutput = AVCaptureVideoDataOutput()
         let videoSettings = Constants.videoSettings
         videoOutput.videoSettings = videoSettings
@@ -131,16 +128,13 @@ class CaptureSessionManager: NSObject, CaptureSessionManaging {
     private func configureCaptureDevice(_ device: AVCaptureDevice) {
         try? device.lockForConfiguration()
 
-        // Adjust Frame Rate
         device.activeVideoMinFrameDuration = CMTime(value: 1, timescale: 15) // 15 fps
         device.activeVideoMaxFrameDuration = CMTime(value: 1, timescale: 30) // 30 fps
 
-        // Focus and Exposure Settings
         if device.isFocusModeSupported(.continuousAutoFocus) {
             device.focusMode = .continuousAutoFocus
         }
 
-        // Auto Exposure
         if device.isExposureModeSupported(.continuousAutoExposure) {
             device.exposureMode = .continuousAutoExposure
         }
