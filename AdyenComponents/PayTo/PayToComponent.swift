@@ -142,7 +142,7 @@ public final class PayToComponent: PaymentComponent,
         // TODO: Add translation
         let item = FormLabelItem(
             text: localizedString(LocalizationKey(key: "How would you like to use Payto?"), configuration.localizationParameters),
-            style: configuration.style.textField.title
+            style: configuration.style.textField.text
         )
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
@@ -295,8 +295,11 @@ public final class PayToComponent: PaymentComponent,
     internal lazy var paymentInstructionTitleItem: FormContainerItem<FormLabelItem> = {
         // TODO: Add translation
         let item = FormLabelItem(
-            text: localizedString(LocalizationKey(key: "Enter the bank account number and the Bank State Branch that is connected to your account to continue"), configuration.localizationParameters),
-            style: configuration.style.textField.title
+            text: localizedString(
+                LocalizationKey(key: "Enter the bank account number and the Bank State Branch that is connected to your account to continue"),
+                configuration.localizationParameters
+            ),
+            style: configuration.style.textField.text
         )
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
