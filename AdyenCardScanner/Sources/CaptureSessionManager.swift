@@ -27,6 +27,8 @@ class CaptureSessionManager: NSObject, CaptureSessionManaging {
         static let videoSettings: [String: Any] = [
             kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
         ]
+        static let captureDeviceMinFrameDuration = CMTime(value: 1, timescale: 15) // 15 fps
+        static let captureDeviceMaxFrameDuration = CMTime(value: 1, timescale: 30) // 30 fps
     }
 
     // MARK: - Properties
@@ -128,8 +130,8 @@ class CaptureSessionManager: NSObject, CaptureSessionManaging {
     private func configureCaptureDevice(_ device: AVCaptureDevice) {
         try? device.lockForConfiguration()
 
-        device.activeVideoMinFrameDuration = CMTime(value: 1, timescale: 15) // 15 fps
-        device.activeVideoMaxFrameDuration = CMTime(value: 1, timescale: 30) // 30 fps
+        device.activeVideoMinFrameDuration = Constants.captureDeviceMinFrameDuration
+        device.activeVideoMaxFrameDuration = Constants.captureDeviceMaxFrameDuration
 
         if device.isFocusModeSupported(.continuousAutoFocus) {
             device.focusMode = .continuousAutoFocus
