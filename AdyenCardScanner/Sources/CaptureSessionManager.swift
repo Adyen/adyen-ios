@@ -144,7 +144,8 @@ class CaptureSessionManager: NSObject, CaptureSessionManaging {
 
             device.unlockForConfiguration()
         } catch {
-            debugPrint(error)
+            // Intentional empty error handling.
+            // The card scanning can continue even if the capture device is not configured.
         }
     }
 }
