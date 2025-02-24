@@ -128,20 +128,24 @@ class CaptureSessionManager: NSObject, CaptureSessionManaging {
     }
 
     private func configureCaptureDevice(_ device: AVCaptureDevice) {
-        try? device.lockForConfiguration()
+        do {
+            try device.lockForConfiguration()
 
-        device.activeVideoMinFrameDuration = Constants.captureDeviceMinFrameDuration
-        device.activeVideoMaxFrameDuration = Constants.captureDeviceMaxFrameDuration
+            device.activeVideoMinFrameDuration = Constants.captureDeviceMinFrameDuration
+            device.activeVideoMaxFrameDuration = Constants.captureDeviceMaxFrameDuration
 
-        if device.isFocusModeSupported(.continuousAutoFocus) {
-            device.focusMode = .continuousAutoFocus
+            if device.isFocusModeSupported(.continuousAutoFocus) {
+                device.focusMode = .continuousAutoFocus
+            }
+
+            if device.isExposureModeSupported(.continuousAutoExposure) {
+                device.exposureMode = .continuousAutoExposure
+            }
+
+            device.unlockForConfiguration()
+        } catch {
+            debugPrint(error)
         }
-
-        if device.isExposureModeSupported(.continuousAutoExposure) {
-            device.exposureMode = .continuousAutoExposure
-        }
-
-        device.unlockForConfiguration()
     }
 }
 
