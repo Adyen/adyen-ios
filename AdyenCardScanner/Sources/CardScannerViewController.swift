@@ -46,17 +46,17 @@ class CardScannerViewController: UIViewController {
         addOverlayView()
         observeRoiLayoutChanges()
 
-        viewModel.viewDidLoad()
+        viewModel.configureSession()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.viewWillAppear()
+        viewModel.startCaptureSession()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        viewModel.viewWillDisappear()
+        viewModel.stopCaptureSession()
     }
 
     override func viewDidLayoutSubviews() {

@@ -10,9 +10,9 @@ import QuartzCore
 
 protocol CardScannerViewModelProtocol {
     var videoPreviewLayer: CALayer { get }
-    func viewDidLoad()
-    func viewWillAppear()
-    func viewWillDisappear()
+    func configureSession()
+    func startCaptureSession()
+    func stopCaptureSession()
     func updateVideoOrientation()
     func update(previewLayerFrame: CGRect, roiInPreviewLayer: CGRect)
 }
@@ -47,15 +47,15 @@ class CardScannerViewModel: CardScannerViewModelProtocol {
         return captureSessionManager.videoPreviewLayer
     }
 
-    func viewDidLoad() {
+    func configureSession() {
         captureSessionManager.configureSession()
     }
 
-    func viewWillAppear() {
+    func startCaptureSession() {
         captureSessionManager.startCaptureSession()
     }
 
-    func viewWillDisappear() {
+    func stopCaptureSession() {
         captureSessionManager.stopCaptureSession()
     }
 
