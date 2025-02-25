@@ -18,9 +18,10 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
 
     // MARK: - UI elements
 
-    private let scrollView: UIScrollView = {
+    private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.preservesSuperviewLayoutMargins = true
         return scrollView
     }()
 
@@ -256,8 +257,8 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
 
             NSLayoutConstraint.activate([
                 formView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-                formView.leadingAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.leadingAnchor),
-                formView.trailingAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.trailingAnchor),
+                formView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+                formView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
                 formView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
             ])
         } else {

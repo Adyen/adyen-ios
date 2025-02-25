@@ -22,7 +22,11 @@ internal final class FormView: UIView {
     // MARK: - Properties
     
     /// A Boolean value that determines whether the `FormView` is embedded in a `UIScrollView`
-    internal var isEmbeddedInScrollView: Bool = true
+    internal var isEmbeddedInScrollView: Bool = true {
+        didSet {
+            updateLayoutGuidePreservation()
+        }
+    }
 
     /// Initializes the form view.
     internal init() {
@@ -51,8 +55,14 @@ internal final class FormView: UIView {
     // MARK: - Private
 
     private func setup() {
+        updateLayoutGuidePreservation()
         addSubviews()
         setupLayout()
+    }
+    
+    private func updateLayoutGuidePreservation() {
+        stackView.preservesSuperviewLayoutMargins = isEmbeddedInScrollView
+        self.preservesSuperviewLayoutMargins = isEmbeddedInScrollView
     }
 
     private func addSubviews() {
