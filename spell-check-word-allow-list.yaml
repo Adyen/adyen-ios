@@ -212,3 +212,4 @@ whiteList:
   - payto
   - abn
   - firstname
+  - bsb

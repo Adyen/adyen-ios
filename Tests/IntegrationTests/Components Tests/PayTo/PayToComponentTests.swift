@@ -189,4 +189,52 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(organizationIDInputItem, "organizationID input field should exist")
     }
 
+    func test_accountNumber_textfield_exists() throws {
+        // Given
+        let sut = try PayToComponent(
+            paymentMethod: AdyenCoder.decode(payto),
+            context: Dummy.context
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
+        // Check by accessibility identifier
+        let accountNumberInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.accountNumberTextfield"))
+
+        // Then
+        XCTAssertNotNil(accountNumberInputItem, "Bank account number input field should exist")
+    }
+
+    func test_bank_state_number_textfield_exists() throws {
+        // Given
+        let sut = try PayToComponent(
+            paymentMethod: AdyenCoder.decode(payto),
+            context: Dummy.context
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
+        // Check by accessibility identifier
+        let bankStateNumberInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.bankStateBranchTextfield"))
+
+        // Then
+        XCTAssertNotNil(bankStateNumberInputItem, "Bank state number input field should exist")
+    }
+
+    func test_payment_instruction_titleLabel_exists() throws {
+        // Given
+        let sut = try PayToComponent(
+            paymentMethod: AdyenCoder.decode(payto),
+            context: Dummy.context
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
+        // Check by accessibility identifier
+        let paymentInstructionTitleLabelItem = sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.paymentInstructionTitleLabel") as? UILabel
+
+        // Then
+        XCTAssertNotNil(paymentInstructionTitleLabelItem, "Payment instruction title label should exist")
+    }
+
 }
