@@ -521,6 +521,7 @@
 		C94639D02D5F68BC004A1B0C /* CaptureSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94639CF2D5F68BC004A1B0C /* CaptureSessionManager.swift */; };
 		C95903DE275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95903DD275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift */; };
 		C96688BF26A6FC1C00DC7297 /* AffirmComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */; };
+		C9680BE62D6CAD590076B93D /* CardScannerAssembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9680BE52D6CAD590076B93D /* CardScannerAssembler.swift */; };
 		C96E07A3283B92E300345732 /* BACSDirectDebitComponentTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96E07A1283B92D500345732 /* BACSDirectDebitComponentTrackerTests.swift */; };
 		C978F5EF2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */; };
 		C981254E2851E9AF006D1374 /* PaymentComponentSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981254C2851E903006D1374 /* PaymentComponentSubject.swift */; };
@@ -1871,6 +1872,7 @@
 		C95903DD275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		C95C89312BF63A3500C47296 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentTests.swift; sourceTree = "<group>"; };
+		C9680BE52D6CAD590076B93D /* CardScannerAssembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerAssembler.swift; sourceTree = "<group>"; };
 		C96E07A1283B92D500345732 /* BACSDirectDebitComponentTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTrackerTests.swift; sourceTree = "<group>"; };
 		C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardSecurityCodeItemViewTests.swift; sourceTree = "<group>"; };
 		C97C16A928059A5A00534419 /* AnalyticsEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEventTests.swift; sourceTree = "<group>"; };
@@ -3590,7 +3592,9 @@
 		C99FF2B62D50E872007179C5 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C94639CF2D5F68BC004A1B0C /* CaptureSessionManager.swift */,
 				C99FF2B52D50E872007179C5 /* CardImageParser.swift */,
+				C9680BE52D6CAD590076B93D /* CardScannerAssembler.swift */,
 				C9037F112D5A1976003A5154 /* CardScannerOverlayView.swift */,
 				C9037F152D5A1AC0003A5154 /* CardScannerViewController.swift */,
 				C9037F0F2D563DCD003A5154 /* CardScannerViewModel.swift */,
@@ -3598,7 +3602,6 @@
 				C9EEEFEB2D5516B300B7AFFC /* Formatters */,
 				C99FF2B42D50E872007179C5 /* Models */,
 				C9037F132D5A19BD003A5154 /* ROIView.swift */,
-				C94639CF2D5F68BC004A1B0C /* CaptureSessionManager.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -6963,6 +6966,7 @@
 				C9EEEFEC2D5516B300B7AFFC /* ExpirationDateFormatter.swift in Sources */,
 				C9037F162D5A1AC0003A5154 /* CardScannerViewController.swift in Sources */,
 				C9037F122D5A1976003A5154 /* CardScannerOverlayView.swift in Sources */,
+				C9680BE62D6CAD590076B93D /* CardScannerAssembler.swift in Sources */,
 				C94639D02D5F68BC004A1B0C /* CaptureSessionManager.swift in Sources */,
 				C92B807C2D5B69CF0020A099 /* AVCaptureVideoOrientation+Extensions.swift in Sources */,
 				C99FF2BD2D50E872007179C5 /* CardImageParser.swift in Sources */,
