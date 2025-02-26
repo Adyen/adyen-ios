@@ -11,23 +11,29 @@ import UIKit
 protocol CardScannerAssembling {
     func resolveCardScannerViewController(
         completion: @escaping (Result<CreditCard, CardScannerError>) -> Void
-    ) throws -> UIViewController
+    ) -> UIViewController?
 }
 
 class CardScannerAssembler: CardScannerAssembling {
 
     // MARK: - Initializers
 
-    init() { /* Empty initializer */ }
+    let captureDevice: AVCaptureDevice?
+
+    init() {
+        self.captureDevice = AVCaptureDevice.default(
+            .builtInWideAngleCamera,
+            for: .video,
+            position: .back
+        )
+    }
 
     // MARK: - CardScannerAssemblerProtocol
 
     func resolveCardScannerViewController(
         completion: @escaping (Result<CreditCard, CardScannerError>) -> Void
-    ) throws -> UIViewController {
-        guard let captureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
-            throw CardScannerError(kind: .cameraSetup)
-        }
+    ) -> UIViewController? {
+        guard let captureDevice else { return nil }
 
         let expireDateFormatter = ExpirationDateFormatter()
         let cardImageParser = CardImageParser(expirationDateFormatter: expireDateFormatter)
