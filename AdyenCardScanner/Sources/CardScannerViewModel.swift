@@ -44,7 +44,7 @@ class CardScannerViewModel: CardScannerViewModelProtocol {
     // MARK: - CardScannerViewModelProtocol
 
     var videoPreviewLayer: CALayer {
-        return captureSessionManager.videoPreviewLayer
+        captureSessionManager.videoPreviewLayer
     }
 
     func configureSession() {
@@ -138,7 +138,7 @@ class CardScannerViewModel: CardScannerViewModelProtocol {
 extension CardScannerViewModel: CaptureSessionDelegate {
 
     func didCapture(image: CIImage?) {
-        guard let image = image else { return }
+        guard let image else { return }
 
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self else { return }
