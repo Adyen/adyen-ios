@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
 import AVFoundation
 import CoreImage
+import Foundation
 
 protocol CaptureSessionDelegate: AnyObject {
     func didCapture(image: CIImage?)
