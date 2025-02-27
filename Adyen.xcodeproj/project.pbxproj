@@ -408,6 +408,8 @@
 		A0BDF3F42BD6A82C001FF7E5 /* AnalyticsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BDF3F32BD6A82C001FF7E5 /* AnalyticsConstants.swift */; };
 		A0BDF3F72BEB9CCF001FF7E5 /* AnalyticsProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0005D280474DF00CE2EEC /* AnalyticsProviderTests.swift */; };
 		A0BDF3F82BEB9CF6001FF7E5 /* AnalyticsEventDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05A9B7D2B8F8DF300E5E178 /* AnalyticsEventDataSourceTests.swift */; };
+		A0BFBB542D6F267A003F543E /* PayToItemsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BFBB532D6F2670003F543E /* PayToItemsProvider.swift */; };
+		A0BFBB562D6F45C1003F543E /* PayToPayIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BFBB552D6F45AB003F543E /* PayToPayIdentifier.swift */; };
 		A0C9B59B288AE34600D6BDAB /* InstallmentOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41E5526CBCA6E0089AD6C /* InstallmentOptions.swift */; };
 		A0D48FB827109B0200C0B82C /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */; };
 		A0DB48662AFD020400348C83 /* AnalyticsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB48652AFD020400348C83 /* AnalyticsRequest.swift */; };
@@ -1814,6 +1816,8 @@
 		A0BDF3EF2BD28817001FF7E5 /* AddressAnalyticsValidationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressAnalyticsValidationError.swift; sourceTree = "<group>"; };
 		A0BDF3F12BD29E69001FF7E5 /* PostalCodeValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostalCodeValidatorTests.swift; sourceTree = "<group>"; };
 		A0BDF3F32BD6A82C001FF7E5 /* AnalyticsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsConstants.swift; sourceTree = "<group>"; };
+		A0BFBB532D6F2670003F543E /* PayToItemsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToItemsProvider.swift; sourceTree = "<group>"; };
+		A0BFBB552D6F45AB003F543E /* PayToPayIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToPayIdentifier.swift; sourceTree = "<group>"; };
 		A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayHelpers.swift; sourceTree = "<group>"; };
 		A0DB48652AFD020400348C83 /* AnalyticsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsRequest.swift; sourceTree = "<group>"; };
 		A0DB48672AFD068400348C83 /* AdyenAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenAnalytics.swift; sourceTree = "<group>"; };
@@ -2707,6 +2711,8 @@
 			isa = PBXGroup;
 			children = (
 				000888772D4CF5F5009C03E1 /* PayToComponent.swift */,
+				A0BFBB532D6F2670003F543E /* PayToItemsProvider.swift */,
+				A0BFBB552D6F45AB003F543E /* PayToPayIdentifier.swift */,
 			);
 			path = PayTo;
 			sourceTree = "<group>";
@@ -7545,6 +7551,7 @@
 				00EACBAC2872E8EB0082B360 /* OnlineBankingComponent.swift in Sources */,
 				F9175ED22593951800D653BE /* MBWayComponent.swift in Sources */,
 				F9175E9B259394F200D653BE /* IssuerListComponent.swift in Sources */,
+				A0BFBB562D6F45C1003F543E /* PayToPayIdentifier.swift in Sources */,
 				A0414C21278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift in Sources */,
 				00EACBAE2872EDEC0082B360 /* OnlineBankingDetails.swift in Sources */,
 				000888782D4CF5FC009C03E1 /* PayToComponent.swift in Sources */,
@@ -7560,6 +7567,7 @@
 				5A54603F264A5CEC00724A87 /* BoletoComponent.swift in Sources */,
 				C93B01B72760B03400D311A1 /* BACSConfirmationViewController.swift in Sources */,
 				C9D8EB9927452355006D8CA1 /* BACSInputFormViewController.swift in Sources */,
+				A0BFBB542D6F267A003F543E /* PayToItemsProvider.swift in Sources */,
 				81272F1A2CC8FD4600D8773A /* PayByBankUSComponent+Style.swift in Sources */,
 				C93B01B92760B06300D311A1 /* BACSConfirmationPresenter.swift in Sources */,
 				A0414C1D278C275C00DF3FE9 /* ACHDirectDebitComponent.swift in Sources */,

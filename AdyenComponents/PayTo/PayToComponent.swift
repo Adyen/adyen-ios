@@ -11,55 +11,6 @@ import UIKit
 public final class PayToComponent: PaymentComponent,
     PresentableComponent, AdyenObserver {
 
-    private enum ViewIdentifier {
-        static let flowSelectionTitleItem = "flowSelectionTitleLabel"
-        static let flowSelectionItem = "flowSelectionSegmentedControl"
-        static let phoneNumberItem = "phoneNumberItem"
-        static let continueButtonItem = "continueButton"
-        static let identifierPickerItem = "identifierPicker"
-        static let firstNameInputItem = "firstNameTextfield"
-        static let lastNameInputItem = "lastNameTextfield"
-        static let emailInputItem = "emailTextfield"
-        static let abnInputItem = "abnTextfield"
-        static let organizationIDInputItem = "organizationIDTextfield"
-        static let accountNumberInputItem = "accountNumberTextfield"
-        static let bankStateBranchInputItem = "bankStateBranchTextfield"
-        static let paymentInstructionTitleItem = "paymentInstructionTitleLabel"
-    }
-    
-    /// The payment options for PayTo component.
-    /// PayId contains 4 inner selection options.
-    private enum PaymentOption {
-        
-        /// Pay with PayId options (mobile, email etc)
-        case payID(PayIDIdentifier)
-        
-        /// Pay with BSB
-        case BSB
-    }
-
-    private enum PayIDIdentifier: String, CustomStringConvertible, CaseIterable {
-        case phone
-        case email
-        case abn
-        case organizationID
-
-        // TODO: Add translation
-        public var description: String {
-            switch self {
-            case .phone:
-                return "Phone"
-            case .email:
-                return "Email"
-            case .abn:
-                return "ABN"
-            case .organizationID:
-                return "Organization ID"
-            }
-        }
-
-    }
-
     /// Configuration for PayTo Component.
     public typealias Configuration = BasicComponentConfiguration
 
@@ -78,6 +29,15 @@ public final class PayToComponent: PaymentComponent,
 
     private let payToPaymentMethod: PayToPaymentMethod
     
+    internal lazy var itemsProvider: PayToItemsProviding = {
+        PayToItemsProvider(
+            style: configuration.style,
+            localizationParameters: configuration.localizationParameters,
+            scope: String(describing: self),
+            presenter: .init(self)
+        )
+    }()
+    
     /// The viewController for the component.
     public lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
@@ -90,29 +50,30 @@ public final class PayToComponent: PaymentComponent,
     // MARK: Component specific
     
     /// Currently selected PayId identifier
-    private var selectedIdentifier: PayIDIdentifier = .phone
+    private var selectedIdentifier: PayToPayIdentifier = .phone
 
     /// Represents the selected payTo flow for the payment component.
     /// Determines the specific payTo transaction process to follow.
-    private lazy var selectedPaymentOption: PaymentOption = .payID(selectedIdentifier) {
+    private lazy var selectedPaymentOption: PayToPaymentOption = .payId(selectedIdentifier) {
         didSet {
             UIView.performWithoutAnimation {
                 updateInterface()
             }
-            
         }
     }
     
+    /// Items on PayId segment that can be shown/hidden
     private lazy var payIdDynamicItems: [FormItem] = [
         identifierPickerItem,
         phoneNumberItem,
         emailInputItem,
         abnInputItem,
-        organizationIDInputItem
+        organizationIdInputItem
     ]
     
+    /// Items on BSB segment that can be shown/hidden
     private lazy var bsbDynamicItems: [FormItem] = [
-        paymentInstructionTitleItem,
+        bsbInstructionTitleItem,
         accountNumberInputItem,
         bankStateBranchInputItem
     ]
@@ -139,29 +100,12 @@ public final class PayToComponent: PaymentComponent,
 
     /// The payment flow selection title  label item.
     internal lazy var flowSelectionTitleItem: FormLabelItem = {
-        // TODO: Add translation
-        let item = FormLabelItem(
-            text: localizedString(LocalizationKey(key: "How would you like to use Payto?"), configuration.localizationParameters),
-            style: configuration.style.textField.text
-        )
-        item.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: ViewIdentifier.flowSelectionTitleItem
-        )
-        return item
+        itemsProvider.flowSelectionTitleItem
     }()
 
     /// The segment control item to choose the payTo flow.
     internal lazy var flowSelectionItem: FormSegmentedControlItem = {
-        // TODO: Add translation
-        let item = FormSegmentedControlItem(
-            items: ["PayID", "BSB"],
-            style: configuration.style.segmentedControlStyle,
-            identifier: ViewIdentifierBuilder.build(
-                scopeInstance: self,
-                postfix: ViewIdentifier.flowSelectionItem
-            )
-        )
+        let item = itemsProvider.flowSelectionItem
         item.selectionHandler = { [weak self] in
             self?.didChangeSegment($0)
         }
@@ -169,168 +113,60 @@ public final class PayToComponent: PaymentComponent,
     }()
     
     internal lazy var phoneNumberItem: FormPhoneNumberItem = {
-        let item = FormPhoneNumberItem(
-            phoneNumber: nil,
-            selectableValues: payToPhoneCodes,
-            style: configuration.style.textField,
-            localizationParameters: configuration.localizationParameters,
-            presenter: .init(self)
-        )
-        item.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: ViewIdentifier.phoneNumberItem
-        )
-        // TODO: Add translation
-        item.title = localizedString(LocalizationKey(key: "Phone"), configuration.localizationParameters)
-        item.placeholder = localizedString(LocalizationKey(key: "Mobile number"), configuration.localizationParameters)
-        return item
-    }()
-
-    /// The continue button item.
-    internal lazy var continueButtonItem: FormButtonItem = {
-        let item = FormButtonItem(style: configuration.style.mainButtonItem)
-        item.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: ViewIdentifier.continueButtonItem
-        )
-        item.title = localizedString(.continueTitle, configuration.localizationParameters)
-        item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectContinueButton()
-        }
-        return item
+        itemsProvider.phoneNumberItem
     }()
 
     /// The  account holder firstname text input item.
     internal lazy var firstNameInputItem: FormTextInputItem = {
-        let item = FormTextInputItem(style: configuration.style.textField)
-        // TODO: Add translation
-        item.title = localizedString(LocalizationKey(key: "Account holder first name"), configuration.localizationParameters)
-        item.placeholder = localizedString(LocalizationKey(key: "Account holder first name"), configuration.localizationParameters)
-        item.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: ViewIdentifier.firstNameInputItem
-        )
-        return item
+        itemsProvider.firstNameInputItem
     }()
 
     /// The  account holder lastname text input item.
     internal lazy var lastNameInputItem: FormTextInputItem = {
-        let item = FormTextInputItem(style: configuration.style.textField)
-        // TODO: Add translation
-        item.title = localizedString(LocalizationKey(key: "Account holder last name"), configuration.localizationParameters)
-        item.placeholder = localizedString(LocalizationKey(key: "Account holder last name"), configuration.localizationParameters)
-        item.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: ViewIdentifier.lastNameInputItem
-        )
-        return item
+        itemsProvider.lastNameInputItem
     }()
 
     /// The identifier picker item.
-    internal lazy var identifierPickerItem: FormContainerItem<FormStringPickerItem> = {
-        let selectableValues = PayIDIdentifier.allCases.map { payIDIdentifier in
-            FormStringPickerElement(
-                identifier: payIDIdentifier.rawValue,
-                title: payIDIdentifier.description
-            )
-        }
-
-        AdyenAssertion.assert(message: "selectableValues should be greater than 0", condition: selectableValues.isEmpty)
-
-        let item = FormStringPickerItem(
-            preselectedStringValue: selectableValues[0],
-            selectableStringValues: selectableValues,
-            style: configuration.style.textField
-        )
-        // TODO: Add translation
-        item.title = localizedString(LocalizationKey(key: "Identifier"), configuration.localizationParameters)
-        item.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: ViewIdentifier.identifierPickerItem
-        )
-        // we return a container item to prevent the picker from becoming firstResponder
-        return item.padding(.zero)
+    internal lazy var identifierPickerItem: FormStringPickerItem = {
+        itemsProvider.identifierPickerItem
     }()
 
     /// The  account holder email text input item.
     internal lazy var emailInputItem: FormTextInputItem = {
-        let item = FormTextInputItem(style: configuration.style.textField)
-        // TODO: Add translation
-        item.title = localizedString(.emailItemTitle, configuration.localizationParameters)
-        item.placeholder = localizedString(.emailItemPlaceHolder, configuration.localizationParameters)
-        item.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: ViewIdentifier.emailInputItem
-        )
-        return item
+        itemsProvider.emailInputItem
     }()
 
     /// The  account holder abn text input item.
     internal lazy var abnInputItem: FormTextInputItem = {
-        let item = FormTextInputItem(style: configuration.style.textField)
-        // TODO: Add translation
-        item.title = localizedString(LocalizationKey(key: "ABN"), configuration.localizationParameters)
-        item.placeholder = localizedString(LocalizationKey(key: "Australian Business Number"), configuration.localizationParameters)
-        item.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: ViewIdentifier.abnInputItem
-        )
-        return item
+        itemsProvider.abnInputItem
     }()
 
     /// The  account holder organization ID text input item.
-    internal lazy var organizationIDInputItem: FormTextInputItem = {
-        let item = FormTextInputItem(style: configuration.style.textField)
-        // TODO: Add translation
-        item.title = localizedString(LocalizationKey(key: "Organization ID"), configuration.localizationParameters)
-        item.placeholder = localizedString(LocalizationKey(key: "Organization ID number"), configuration.localizationParameters)
-        item.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: ViewIdentifier.organizationIDInputItem
-        )
-        return item
+    internal lazy var organizationIdInputItem: FormTextInputItem = {
+        itemsProvider.organizationIdInputItem
     }()
 
     /// The  payment instructions label item.
-    internal lazy var paymentInstructionTitleItem: FormContainerItem<FormLabelItem> = {
-        // TODO: Add translation
-        let item = FormLabelItem(
-            text: localizedString(
-                LocalizationKey(key: "Enter the bank account number and the Bank State Branch that is connected to your account to continue"),
-                configuration.localizationParameters
-            ),
-            style: configuration.style.textField.text
-        )
-        item.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: ViewIdentifier.paymentInstructionTitleItem
-        )
-        return item.padding()
+    internal lazy var bsbInstructionTitleItem: FormContainerItem<FormLabelItem> = {
+        itemsProvider.bsbInstructionTitleItem
     }()
 
     /// The  bank account number text input item.
     internal lazy var accountNumberInputItem: FormTextInputItem = {
-        let item = FormTextInputItem(style: configuration.style.textField)
-        // TODO: Add translation
-        item.title = localizedString(.bacsBankAccountNumberFieldTitle, configuration.localizationParameters)
-        item.placeholder = localizedString(.bacsBankAccountNumberFieldTitle, configuration.localizationParameters)
-        item.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: ViewIdentifier.accountNumberInputItem
-        )
-        return item
+        itemsProvider.accountNumberInputItem
     }()
 
     /// The  bank state branch input item.
     internal lazy var bankStateBranchInputItem: FormTextInputItem = {
-        let item = FormTextInputItem(style: configuration.style.textField)
-        // TODO: Add translation
-        item.title = localizedString(LocalizationKey(key: "Bank state branch"), configuration.localizationParameters)
-        item.placeholder = localizedString(LocalizationKey(key: "Bank State Branch"), configuration.localizationParameters)
-        item.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: ViewIdentifier.bankStateBranchInputItem
-        )
+        itemsProvider.bsbInputItem
+    }()
+    
+    /// The continue button item.
+    internal lazy var continueButtonItem: FormButtonItem = {
+        let item = itemsProvider.continueButtonItem
+        item.buttonSelectionHandler = { [weak self] in
+            self?.didSelectContinueButton()
+        }
         return item
     }()
 
@@ -355,7 +191,7 @@ public final class PayToComponent: PaymentComponent,
             formViewController.append(continueButtonItem)
         }
         
-        observe(identifierPickerItem.content.publisher) { [weak self] newValue in
+        observe(identifierPickerItem.publisher) { [weak self] newValue in
             self?.updatePayIdIdentifier(newValue.element.identifier)
         }
         
@@ -394,9 +230,9 @@ private extension PayToComponent {
     }
     
     func updatePayIdIdentifier(_ newValue: String) {
-        guard let newIdentifier = PayIDIdentifier(rawValue: newValue) else { return }
+        guard let newIdentifier = PayToPayIdentifier(rawValue: newValue) else { return }
         selectedIdentifier = newIdentifier
-        selectedPaymentOption = .payID(selectedIdentifier)
+        selectedPaymentOption = .payId(selectedIdentifier)
     }
 
     func didChangeSegment(_ index: Int) {
@@ -404,7 +240,7 @@ private extension PayToComponent {
         formViewController.view.endEditing(true)
         switch index {
         case 0:
-            selectedPaymentOption = .payID(selectedIdentifier)
+            selectedPaymentOption = .payId(selectedIdentifier)
         case 1:
             selectedPaymentOption = .BSB
         default:
@@ -434,7 +270,7 @@ private extension PayToComponent {
             isHidden: true
         )
         
-        formViewController.append(paymentInstructionTitleItem)
+        formViewController.append(bsbInstructionTitleItem)
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
         formViewController.append(accountNumberInputItem)
         formViewController.append(bankStateBranchInputItem)
@@ -467,7 +303,7 @@ private extension PayToComponent {
     
     func updateInterface() {
         switch selectedPaymentOption {
-        case let .payID(identifier):
+        case let .payId(identifier):
             resetPayIdItemsVisibility()
             
             switch identifier {
@@ -477,8 +313,8 @@ private extension PayToComponent {
                 emailInputItem.isHidden.wrappedValue = false
             case .abn:
                 abnInputItem.isHidden.wrappedValue = false
-            case .organizationID:
-                organizationIDInputItem.isHidden.wrappedValue = false
+            case .organizationId:
+                organizationIdInputItem.isHidden.wrappedValue = false
             }
         case .BSB:
             payIdDynamicItems.forEach { $0.isHidden.wrappedValue = true }
@@ -491,11 +327,19 @@ private extension PayToComponent {
             phoneNumberItem,
             emailInputItem,
             abnInputItem,
-            organizationIDInputItem
+            organizationIdInputItem
         ]
         payIdItemsToHide.forEach { $0.isHidden.wrappedValue = true }
         bsbDynamicItems.forEach { $0.isHidden.wrappedValue = true }
         
         identifierPickerItem.isHidden.wrappedValue = false
+        
+        let items: [PayToPayIdentifier: FormItem] = [
+            .phone: phoneNumberItem,
+            .email: emailInputItem,
+            .abn: abnInputItem,
+            .organizationId: organizationIdInputItem
+        ]
+        items[.abn]?.isHidden.wrappedValue = true
     }
 }
