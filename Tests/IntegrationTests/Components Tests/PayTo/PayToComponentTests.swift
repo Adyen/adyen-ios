@@ -9,6 +9,16 @@
 import XCTest
 
 class PayToComponentTests: XCTestCase {
+    
+    var sut: PayToComponent!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        sut = try PayToComponent(
+            paymentMethod: AdyenCoder.decode(payto),
+            context: Dummy.context
+        )
+    }
 
     func test_init() throws {
         let sut = try PayToComponent(
@@ -20,21 +30,11 @@ class PayToComponentTests: XCTestCase {
     }
 
     func test_paymentMethodType_isPayto() throws {
-        let sut = try PayToComponent(
-            paymentMethod: AdyenCoder.decode(payto),
-            context: Dummy.context
-        )
-
         XCTAssertEqual(sut.paymentMethod.type, .payto)
     }
 
     func test_flowSelection_titleLabel_exists() throws {
         // Given
-        let sut = try PayToComponent(
-            paymentMethod: AdyenCoder.decode(payto),
-            context: Dummy.context
-        )
-
         sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
@@ -46,11 +46,6 @@ class PayToComponentTests: XCTestCase {
 
     func test_flowSelectionItem_exists() throws {
         // Given
-        let sut = try PayToComponent(
-            paymentMethod: AdyenCoder.decode(payto),
-            context: Dummy.context
-        )
-
         sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
@@ -61,13 +56,24 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(flowSelectionItem, "Flow selection item should exist")
     }
     
-    func test_phoneNumberItem_exists() throws {
+    func test_phoneNumberItem() throws {
+        // test validity
+        XCTAssertFalse(sut.phoneNumberItem.isValid())
+        sut.phoneNumberItem.value = "01231"
+        XCTAssertFalse(sut.phoneNumberItem.isValid())
+        sut.phoneNumberItem.value = "05"
+        XCTAssertFalse(sut.phoneNumberItem.isValid())
+        sut.phoneNumberItem.value = "9"
+        XCTAssertFalse(sut.phoneNumberItem.isValid())
+        
+        sut.phoneNumberItem.value = "10"
+        XCTAssertTrue(sut.phoneNumberItem.isValid())
+        sut.phoneNumberItem.value = "99"
+        XCTAssertTrue(sut.phoneNumberItem.isValid())
+        sut.phoneNumberItem.value = "41124123"
+        XCTAssertTrue(sut.phoneNumberItem.isValid())
+        
         // Given
-        let sut = try PayToComponent(
-            paymentMethod: AdyenCoder.decode(payto),
-            context: Dummy.context
-        )
-
         sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
@@ -77,29 +83,8 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(phoneNumberItem, "Phone number item should exist")
     }
 
-    func test_continueButton_exists() throws {
-        // Given
-        let sut = try PayToComponent(
-            paymentMethod: AdyenCoder.decode(payto),
-            context: Dummy.context
-        )
-
-        sut.viewController.loadViewIfNeeded()
-
-        // Check by accessibility identifier
-        let continueButton: FormButtonItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.continueButton"))
-
-        // Then
-        XCTAssertNotNil(continueButton, "ContinueButton should exist")
-    }
-
     func test_identifierPicker_exists() throws {
         // Given
-        let sut = try PayToComponent(
-            paymentMethod: AdyenCoder.decode(payto),
-            context: Dummy.context
-        )
-
         sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
@@ -109,13 +94,12 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(identifierPickerItem, "identifier picker should exist")
     }
 
-    func test_firstname_textfield_exists() throws {
+    func test_firstname_textfield() throws {
+        XCTAssertFalse(sut.firstNameInputItem.isValid())
+        sut.firstNameInputItem.value = "test"
+        XCTAssertTrue(sut.firstNameInputItem.isValid())
+        
         // Given
-        let sut = try PayToComponent(
-            paymentMethod: AdyenCoder.decode(payto),
-            context: Dummy.context
-        )
-
         sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
@@ -125,13 +109,12 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(firstNameInputItem, "first name input field should exist")
     }
 
-    func test_lastname_textfield_exists() throws {
+    func test_lastname_textfield() throws {
+        XCTAssertFalse(sut.lastNameInputItem.isValid())
+        sut.lastNameInputItem.value = "test"
+        XCTAssertTrue(sut.lastNameInputItem.isValid())
+        
         // Given
-        let sut = try PayToComponent(
-            paymentMethod: AdyenCoder.decode(payto),
-            context: Dummy.context
-        )
-
         sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
@@ -141,13 +124,21 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(lastNameInputItem, "last name input field should exist")
     }
 
-    func test_email_textfield_exists() throws {
+    func test_email_textfield() throws {
+        
+        XCTAssertFalse(sut.emailInputItem.isValid())
+        sut.emailInputItem.value = "test"
+        XCTAssertFalse(sut.emailInputItem.isValid())
+        sut.emailInputItem.value = "test@"
+        XCTAssertFalse(sut.emailInputItem.isValid())
+        sut.emailInputItem.value = "aa@aa.com"
+        XCTAssertTrue(sut.emailInputItem.isValid())
+        sut.emailInputItem.value = "user@example.com"
+        XCTAssertTrue(sut.emailInputItem.isValid())
+        sut.emailInputItem.value = "test-test@example.co.uk"
+        XCTAssertTrue(sut.emailInputItem.isValid())
+        
         // Given
-        let sut = try PayToComponent(
-            paymentMethod: AdyenCoder.decode(payto),
-            context: Dummy.context
-        )
-
         sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
@@ -157,13 +148,21 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(emailInputItem, "email input field should exist")
     }
 
-    func test_abn_textfield_exists() throws {
+    func test_abn_textfield() throws {
+        XCTAssertFalse(sut.abnInputItem.isValid())
+        // only 9 or 11 integers are valid
+        sut.abnInputItem.value = "12345678"
+        XCTAssertFalse(sut.abnInputItem.isValid())
+        sut.abnInputItem.value = "1234567890"
+        XCTAssertFalse(sut.abnInputItem.isValid())
+        sut.abnInputItem.value = "123asd123"
+        XCTAssertFalse(sut.abnInputItem.isValid())
+        sut.abnInputItem.value = "123456789"
+        XCTAssertTrue(sut.abnInputItem.isValid())
+        sut.abnInputItem.value = "12345678900"
+        XCTAssertTrue(sut.abnInputItem.isValid())
+        
         // Given
-        let sut = try PayToComponent(
-            paymentMethod: AdyenCoder.decode(payto),
-            context: Dummy.context
-        )
-
         sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
@@ -173,13 +172,33 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(abnInputItem, "abn input field should exist")
     }
 
-    func test_organizationID_textfield_exists() throws {
+    func test_organizationID_textfield() throws {
+        // invalid
+        XCTAssertFalse(sut.organizationIdInputItem.isValid())
+        sut.organizationIdInputItem.value = "A!B"
+        XCTAssertFalse(sut.organizationIdInputItem.isValid())
+        sut.organizationIdInputItem.value = "12345"
+        XCTAssertFalse(sut.organizationIdInputItem.isValid())
+        sut.organizationIdInputItem.value = "!!"
+        XCTAssertFalse(sut.organizationIdInputItem.isValid())
+        sut.organizationIdInputItem.value = "#hello#"
+        XCTAssertFalse(sut.organizationIdInputItem.isValid())
+        sut.organizationIdInputItem.value = "+"
+        XCTAssertFalse(sut.organizationIdInputItem.isValid())
+        
+        // valid
+        sut.organizationIdInputItem.value = "!@"
+        XCTAssertTrue(sut.organizationIdInputItem.isValid())
+        sut.organizationIdInputItem.value = "!34ff34?"
+        XCTAssertTrue(sut.organizationIdInputItem.isValid())
+        sut.organizationIdInputItem.value = "% $&"
+        XCTAssertTrue(sut.organizationIdInputItem.isValid())
+        sut.organizationIdInputItem.value = "#-----#"
+        XCTAssertTrue(sut.organizationIdInputItem.isValid())
+        sut.organizationIdInputItem.value = "{ }"
+        XCTAssertTrue(sut.organizationIdInputItem.isValid())
+        
         // Given
-        let sut = try PayToComponent(
-            paymentMethod: AdyenCoder.decode(payto),
-            context: Dummy.context
-        )
-
         sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
@@ -191,11 +210,6 @@ class PayToComponentTests: XCTestCase {
 
     func test_accountNumber_textfield_exists() throws {
         // Given
-        let sut = try PayToComponent(
-            paymentMethod: AdyenCoder.decode(payto),
-            context: Dummy.context
-        )
-
         sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
@@ -207,11 +221,6 @@ class PayToComponentTests: XCTestCase {
 
     func test_bank_state_number_textfield_exists() throws {
         // Given
-        let sut = try PayToComponent(
-            paymentMethod: AdyenCoder.decode(payto),
-            context: Dummy.context
-        )
-
         sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
@@ -223,11 +232,6 @@ class PayToComponentTests: XCTestCase {
 
     func test_payment_instruction_titleLabel_exists() throws {
         // Given
-        let sut = try PayToComponent(
-            paymentMethod: AdyenCoder.decode(payto),
-            context: Dummy.context
-        )
-
         sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
@@ -235,6 +239,17 @@ class PayToComponentTests: XCTestCase {
 
         // Then
         XCTAssertNotNil(paymentInstructionTitleLabelItem, "Payment instruction title label should exist")
+    }
+    
+    func test_continueButton_exists() throws {
+        // Given
+        sut.viewController.loadViewIfNeeded()
+
+        // Check by accessibility identifier
+        let continueButton: FormButtonItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.continueButton"))
+
+        // Then
+        XCTAssertNotNil(continueButton, "ContinueButton should exist")
     }
 
 }

@@ -26,6 +26,7 @@ public class RegularExpressionValidator: LengthValidator {
     override public func isValid(_ value: String) -> Bool {
         guard super.isValid(value) else { return false }
         guard let range = value.range(of: regularExpression, options: .regularExpression) else { return false }
+        
         return range == (value.startIndex..<value.endIndex)
     }
     

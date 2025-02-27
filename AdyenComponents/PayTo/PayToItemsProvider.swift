@@ -44,7 +44,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
     }
     
     private enum ValidationRegex {
-        static let phone = #"^\+[0-9]{1,3}-[1-9]{1,1}[0-9]{1,29}$"#
+        static let phone = #"^[1-9]{1,1}[0-9]{1,29}$"#
         static let abn = #"^((\d{9})|(\d{11}))$"#
         static let organizationId = #"^[!-@\[-~][ -@\[-~]{0,254}[!-@\[-~]$"#
         static let bsb = #"^\d{6}"#
@@ -96,6 +96,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
             scopeInstance: scope,
             postfix: ViewIdentifier.phoneNumberItem
         )
+        item.validator = RegularExpressionValidator(regularExpression: ValidationRegex.phone)
         // TODO: Add translation
         item.title = localizedString(LocalizationKey(key: "Phone"), localizationParameters)
         item.placeholder = localizedString(LocalizationKey(key: "Mobile number"), localizationParameters)
@@ -108,6 +109,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
         // TODO: Add translation
         item.title = localizedString(LocalizationKey(key: "Account holder first name"), localizationParameters)
         item.placeholder = localizedString(LocalizationKey(key: "Account holder first name"), localizationParameters)
+        item.validator = LengthValidator(minimumLength: 1)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.firstNameInputItem
@@ -121,6 +123,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
         // TODO: Add translation
         item.title = localizedString(LocalizationKey(key: "Account holder last name"), localizationParameters)
         item.placeholder = localizedString(LocalizationKey(key: "Account holder last name"), localizationParameters)
+        item.validator = LengthValidator(minimumLength: 1)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.lastNameInputItem
@@ -160,6 +163,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
         // TODO: Add translation
         item.title = localizedString(.emailItemTitle, localizationParameters)
         item.placeholder = localizedString(.emailItemPlaceHolder, localizationParameters)
+        item.validator = EmailValidator()
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.emailInputItem
@@ -173,6 +177,9 @@ internal class PayToItemsProvider: PayToItemsProviding {
         // TODO: Add translation
         item.title = localizedString(LocalizationKey(key: "ABN"), localizationParameters)
         item.placeholder = localizedString(LocalizationKey(key: "Australian Business Number"), localizationParameters)
+        item.formatter = NumericFormatter()
+        item.validator = RegularExpressionValidator(regularExpression: ValidationRegex.abn)
+        item.keyboardType = .numberPad
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.abnInputItem
@@ -186,6 +193,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
         // TODO: Add translation
         item.title = localizedString(LocalizationKey(key: "Organization ID"), localizationParameters)
         item.placeholder = localizedString(LocalizationKey(key: "Organization ID number"), localizationParameters)
+        item.validator = RegularExpressionValidator(regularExpression: ValidationRegex.organizationId, minimumLength: 2)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.organizationIDInputItem
