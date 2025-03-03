@@ -175,18 +175,18 @@ class PayToComponentTests: XCTestCase {
     func test_organizationID_textfield() throws {
         // invalid
         XCTAssertFalse(sut.organizationIdInputItem.isValid())
-        sut.organizationIdInputItem.value = "A!B"
+        sut.organizationIdInputItem.value = " Hello"
         XCTAssertFalse(sut.organizationIdInputItem.isValid())
-        sut.organizationIdInputItem.value = "12345"
+        sut.organizationIdInputItem.value = "Hello world "
         XCTAssertFalse(sut.organizationIdInputItem.isValid())
-        sut.organizationIdInputItem.value = "!!"
+        sut.organizationIdInputItem.value = "A valid sentence?"
         XCTAssertFalse(sut.organizationIdInputItem.isValid())
-        sut.organizationIdInputItem.value = "#hello#"
-        XCTAssertFalse(sut.organizationIdInputItem.isValid())
-        sut.organizationIdInputItem.value = "+"
+        sut.organizationIdInputItem.value = "A!V"
         XCTAssertFalse(sut.organizationIdInputItem.isValid())
         
         // valid
+        sut.organizationIdInputItem.value = "123123"
+        XCTAssertTrue(sut.organizationIdInputItem.isValid())
         sut.organizationIdInputItem.value = "!@"
         XCTAssertTrue(sut.organizationIdInputItem.isValid())
         sut.organizationIdInputItem.value = "!34ff34?"
@@ -208,7 +208,24 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(organizationIDInputItem, "organizationID input field should exist")
     }
 
-    func test_accountNumber_textfield_exists() throws {
+    func test_accountNumber_textfield() throws {
+        // invalid
+        XCTAssertFalse(sut.accountNumberInputItem.isValid())
+        sut.accountNumberInputItem.value = "This string is too long for the limit of 28 characters."
+        XCTAssertFalse(sut.accountNumberInputItem.isValid())
+        sut.accountNumberInputItem.value = "\nNew line"
+        XCTAssertFalse(sut.accountNumberInputItem.isValid())
+        
+        // valid
+        sut.accountNumberInputItem.value = "Hello!"
+        XCTAssertTrue(sut.accountNumberInputItem.isValid())
+        sut.accountNumberInputItem.value = " 123 "
+        XCTAssertTrue(sut.accountNumberInputItem.isValid())
+        sut.accountNumberInputItem.value = "password123!@#"
+        XCTAssertTrue(sut.accountNumberInputItem.isValid())
+        sut.accountNumberInputItem.value = " this_is valid -~ "
+        XCTAssertTrue(sut.accountNumberInputItem.isValid())
+        
         // Given
         sut.viewController.loadViewIfNeeded()
 
@@ -219,7 +236,29 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(accountNumberInputItem, "Bank account number input field should exist")
     }
 
-    func test_bank_state_number_textfield_exists() throws {
+    func test_bank_state_number_textfield() throws {
+        
+        // invalud
+        XCTAssertFalse(sut.bsbInputItem.isValid())
+        sut.bsbInputItem.value = "12345"
+        XCTAssertFalse(sut.bsbInputItem.isValid())
+        sut.bsbInputItem.value = "12345667"
+        XCTAssertFalse(sut.bsbInputItem.isValid())
+        sut.bsbInputItem.value = "abcabc"
+        XCTAssertFalse(sut.bsbInputItem.isValid())
+        sut.bsbInputItem.value = "  12345"
+        XCTAssertFalse(sut.bsbInputItem.isValid())
+        sut.bsbInputItem.value = "12345    "
+        XCTAssertFalse(sut.bsbInputItem.isValid())
+        
+        // valid
+        sut.bsbInputItem.value = "123456"
+        XCTAssertTrue(sut.bsbInputItem.isValid())
+        sut.bsbInputItem.value = "666666"
+        XCTAssertTrue(sut.bsbInputItem.isValid())
+        sut.bsbInputItem.value = "000000"
+        XCTAssertTrue(sut.bsbInputItem.isValid())
+        
         // Given
         sut.viewController.loadViewIfNeeded()
 

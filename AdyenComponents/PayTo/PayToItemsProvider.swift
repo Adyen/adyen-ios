@@ -9,20 +9,20 @@ import UIKit
 
 internal protocol PayToItemsProviding {
     
-    var flowSelectionTitleItem: FormLabelItem { get }
-    var flowSelectionItem: FormSegmentedControlItem { get }
-    var phoneNumberItem: FormPhoneNumberItem { get }
-    var firstNameInputItem: FormTextInputItem { get }
-    var lastNameInputItem: FormTextInputItem { get }
-    var identifierPickerItem: FormStringPickerItem { get }
-    var emailInputItem: FormTextInputItem { get }
-    var abnInputItem: FormTextInputItem { get }
-    var organizationIdInputItem: FormTextInputItem { get }
-    var bsbInstructionTitleItem: FormContainerItem<FormLabelItem> { get }
-    var accountNumberInputItem: FormTextInputItem { get }
-    var bsbInputItem: FormTextInputItem { get }
+    func flowSelectionTitleItem() -> FormLabelItem
+    func flowSelectionItem() -> FormSegmentedControlItem
+    func phoneNumberItem() -> FormPhoneNumberItem
+    func firstNameInputItem() -> FormTextInputItem
+    func lastNameInputItem() -> FormTextInputItem
+    func identifierPickerItem() -> FormStringPickerItem
+    func emailInputItem() -> FormTextInputItem
+    func abnInputItem() -> FormTextInputItem
+    func organizationIdInputItem() -> FormTextInputItem
+    func bsbInstructionTitleItem() -> FormContainerItem<FormLabelItem>
+    func accountNumberInputItem() -> FormTextInputItem
+    func bsbInputItem() -> FormTextInputItem
     
-    var continueButtonItem: FormButtonItem { get }
+    func continueButtonItem() -> FormButtonItem
 }
 
 internal class PayToItemsProvider: PayToItemsProviding {
@@ -47,8 +47,12 @@ internal class PayToItemsProvider: PayToItemsProviding {
         static let phone = #"^[1-9]{1,1}[0-9]{1,29}$"#
         static let abn = #"^((\d{9})|(\d{11}))$"#
         static let organizationId = #"^[!-@\[-~][ -@\[-~]{0,254}[!-@\[-~]$"#
-        static let bsb = #"^\d{6}"#
-        static let accountNumber = #"^\[ -~]{1,28}$"#
+        static let bsb = #"^\d{6}$"#
+        static let accountNumber = #"^[ -~]{1,28}$"#
+    }
+    
+    private enum Constants {
+        static let bsbDigitLength = 6
     }
     
     private var payToPhoneCodes: [PhoneExtension] {
@@ -56,8 +60,25 @@ internal class PayToItemsProvider: PayToItemsProviding {
         return PhoneExtensionsRepository.get(with: query)
     }
     
+    private let style: FormComponentStyle
+    private let localizationParameters: LocalizationParameters?
+    private let scope: String
+    private let presenter: WeakReferenceViewControllerPresenter
+    
+    internal init(
+        style: FormComponentStyle,
+        localizationParameters: LocalizationParameters?,
+        scope: String,
+        presenter: WeakReferenceViewControllerPresenter
+    ) {
+        self.style = style
+        self.localizationParameters = localizationParameters
+        self.scope = scope
+        self.presenter = presenter
+    }
+    
     /// The payment flow selection title  label item.
-    internal lazy var flowSelectionTitleItem: FormLabelItem = {
+    internal func flowSelectionTitleItem() -> FormLabelItem {
         // TODO: Add translation
         let item = FormLabelItem(
             text: localizedString(LocalizationKey(key: "How would you like to use Payto?"), localizationParameters),
@@ -68,10 +89,10 @@ internal class PayToItemsProvider: PayToItemsProviding {
             postfix: ViewIdentifier.flowSelectionTitleItem
         )
         return item
-    }()
+    }
 
     /// The segment control item to choose the payTo flow.
-    internal lazy var flowSelectionItem: FormSegmentedControlItem = {
+    internal func flowSelectionItem() -> FormSegmentedControlItem {
         // TODO: Add translation
         let item = FormSegmentedControlItem(
             items: ["PayID", "BSB"],
@@ -82,9 +103,9 @@ internal class PayToItemsProvider: PayToItemsProviding {
             )
         )
         return item
-    }()
+    }
     
-    internal lazy var phoneNumberItem: FormPhoneNumberItem = {
+    internal func phoneNumberItem() -> FormPhoneNumberItem {
         let item = FormPhoneNumberItem(
             phoneNumber: nil,
             selectableValues: payToPhoneCodes,
@@ -101,10 +122,10 @@ internal class PayToItemsProvider: PayToItemsProviding {
         item.title = localizedString(LocalizationKey(key: "Phone"), localizationParameters)
         item.placeholder = localizedString(LocalizationKey(key: "Mobile number"), localizationParameters)
         return item
-    }()
+    }
 
     /// The  account holder firstname text input item.
-    internal lazy var firstNameInputItem: FormTextInputItem = {
+    internal func firstNameInputItem() -> FormTextInputItem {
         let item = FormTextInputItem(style: style.textField)
         // TODO: Add translation
         item.title = localizedString(LocalizationKey(key: "Account holder first name"), localizationParameters)
@@ -115,10 +136,10 @@ internal class PayToItemsProvider: PayToItemsProviding {
             postfix: ViewIdentifier.firstNameInputItem
         )
         return item
-    }()
+    }
 
     /// The  account holder lastname text input item.
-    internal lazy var lastNameInputItem: FormTextInputItem = {
+    internal func lastNameInputItem() -> FormTextInputItem {
         let item = FormTextInputItem(style: style.textField)
         // TODO: Add translation
         item.title = localizedString(LocalizationKey(key: "Account holder last name"), localizationParameters)
@@ -129,10 +150,10 @@ internal class PayToItemsProvider: PayToItemsProviding {
             postfix: ViewIdentifier.lastNameInputItem
         )
         return item
-    }()
+    }
 
     /// The identifier picker item.
-    internal lazy var identifierPickerItem: FormStringPickerItem = {
+    internal func identifierPickerItem() -> FormStringPickerItem {
         let selectableValues = PayToPayIdentifier.allCases.map { identifier in
             FormStringPickerElement(
                 identifier: identifier.rawValue,
@@ -155,10 +176,10 @@ internal class PayToItemsProvider: PayToItemsProviding {
         )
         
         return item
-    }()
+    }
 
     /// The  account holder email text input item.
-    internal lazy var emailInputItem: FormTextInputItem = {
+    internal func emailInputItem() -> FormTextInputItem {
         let item = FormTextInputItem(style: style.textField)
         // TODO: Add translation
         item.title = localizedString(.emailItemTitle, localizationParameters)
@@ -169,10 +190,10 @@ internal class PayToItemsProvider: PayToItemsProviding {
             postfix: ViewIdentifier.emailInputItem
         )
         return item
-    }()
+    }
 
     /// The  account holder abn text input item.
-    internal lazy var abnInputItem: FormTextInputItem = {
+    internal func abnInputItem() -> FormTextInputItem {
         let item = FormTextInputItem(style: style.textField)
         // TODO: Add translation
         item.title = localizedString(LocalizationKey(key: "ABN"), localizationParameters)
@@ -185,24 +206,27 @@ internal class PayToItemsProvider: PayToItemsProviding {
             postfix: ViewIdentifier.abnInputItem
         )
         return item
-    }()
+    }
 
     /// The  account holder organization ID text input item.
-    internal lazy var organizationIdInputItem: FormTextInputItem = {
+    internal func organizationIdInputItem() -> FormTextInputItem {
         let item = FormTextInputItem(style: style.textField)
         // TODO: Add translation
         item.title = localizedString(LocalizationKey(key: "Organization ID"), localizationParameters)
         item.placeholder = localizedString(LocalizationKey(key: "Organization ID number"), localizationParameters)
-        item.validator = RegularExpressionValidator(regularExpression: ValidationRegex.organizationId, minimumLength: 2)
+        item.validator = RegularExpressionValidator(
+            regularExpression: ValidationRegex.organizationId,
+            minimumLength: 2
+        )
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.organizationIDInputItem
         )
         return item
-    }()
+    }
 
     /// The  payment instructions label item.
-    internal lazy var bsbInstructionTitleItem: FormContainerItem<FormLabelItem> = {
+    internal func bsbInstructionTitleItem() -> FormContainerItem<FormLabelItem> {
         // TODO: Add translation
         let item = FormLabelItem(
             text: localizedString(
@@ -216,36 +240,43 @@ internal class PayToItemsProvider: PayToItemsProviding {
             postfix: ViewIdentifier.paymentInstructionTitleItem
         )
         return item.padding()
-    }()
+    }
 
     /// The  bank account number text input item.
-    internal lazy var accountNumberInputItem: FormTextInputItem = {
+    internal func accountNumberInputItem() -> FormTextInputItem {
         let item = FormTextInputItem(style: style.textField)
         // TODO: Add translation
         item.title = localizedString(.bacsBankAccountNumberFieldTitle, localizationParameters)
         item.placeholder = localizedString(.bacsBankAccountNumberFieldTitle, localizationParameters)
+        item.validator = RegularExpressionValidator(regularExpression: ValidationRegex.accountNumber)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.accountNumberInputItem
         )
         return item
-    }()
+    }
 
     /// The  bank state branch input item.
-    internal lazy var bsbInputItem: FormTextInputItem = {
+    internal func bsbInputItem() -> FormTextInputItem {
         let item = FormTextInputItem(style: style.textField)
         // TODO: Add translation
         item.title = localizedString(LocalizationKey(key: "Bank state branch"), localizationParameters)
         item.placeholder = localizedString(LocalizationKey(key: "Bank State Branch"), localizationParameters)
+        item.validator = RegularExpressionValidator(
+            regularExpression: ValidationRegex.bsb,
+            minimumLength: Constants.bsbDigitLength,
+            maximumLength: Constants.bsbDigitLength
+        )
+        item.formatter = NumericFormatter()
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.bankStateBranchInputItem
         )
         return item
-    }()
+    }
     
     /// The continue button item.
-    internal lazy var continueButtonItem: FormButtonItem = {
+    internal func continueButtonItem() -> FormButtonItem {
         let item = FormButtonItem(style: style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
@@ -253,23 +284,6 @@ internal class PayToItemsProvider: PayToItemsProviding {
         )
         item.title = localizedString(.continueTitle, localizationParameters)
         return item
-    }()
-    
-    private let style: FormComponentStyle
-    private let localizationParameters: LocalizationParameters?
-    private let scope: String
-    private let presenter: WeakReferenceViewControllerPresenter
-    
-    internal init(
-        style: FormComponentStyle,
-        localizationParameters: LocalizationParameters?,
-        scope: String,
-        presenter: WeakReferenceViewControllerPresenter
-    ) {
-        self.style = style
-        self.localizationParameters = localizationParameters
-        self.scope = scope
-        self.presenter = presenter
     }
     
 }

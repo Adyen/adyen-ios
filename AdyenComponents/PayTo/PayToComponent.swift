@@ -75,7 +75,7 @@ public final class PayToComponent: PaymentComponent,
     private lazy var bsbDynamicItems: [FormItem] = [
         bsbInstructionTitleItem,
         accountNumberInputItem,
-        bankStateBranchInputItem
+        bsbInputItem
     ]
 
     private var payToPhoneCodes: [PhoneExtension] {
@@ -100,12 +100,12 @@ public final class PayToComponent: PaymentComponent,
 
     /// The payment flow selection title  label item.
     internal lazy var flowSelectionTitleItem: FormLabelItem = {
-        itemsProvider.flowSelectionTitleItem
+        itemsProvider.flowSelectionTitleItem()
     }()
 
     /// The segment control item to choose the payTo flow.
     internal lazy var flowSelectionItem: FormSegmentedControlItem = {
-        let item = itemsProvider.flowSelectionItem
+        let item = itemsProvider.flowSelectionItem()
         item.selectionHandler = { [weak self] in
             self?.didChangeSegment($0)
         }
@@ -113,57 +113,57 @@ public final class PayToComponent: PaymentComponent,
     }()
     
     internal lazy var phoneNumberItem: FormPhoneNumberItem = {
-        itemsProvider.phoneNumberItem
+        itemsProvider.phoneNumberItem()
     }()
 
     /// The  account holder firstname text input item.
     internal lazy var firstNameInputItem: FormTextInputItem = {
-        itemsProvider.firstNameInputItem
+        itemsProvider.firstNameInputItem()
     }()
 
     /// The  account holder lastname text input item.
     internal lazy var lastNameInputItem: FormTextInputItem = {
-        itemsProvider.lastNameInputItem
+        itemsProvider.lastNameInputItem()
     }()
 
     /// The identifier picker item.
     internal lazy var identifierPickerItem: FormStringPickerItem = {
-        itemsProvider.identifierPickerItem
+        itemsProvider.identifierPickerItem()
     }()
 
     /// The  account holder email text input item.
     internal lazy var emailInputItem: FormTextInputItem = {
-        itemsProvider.emailInputItem
+        itemsProvider.emailInputItem()
     }()
 
     /// The  account holder abn text input item.
     internal lazy var abnInputItem: FormTextInputItem = {
-        itemsProvider.abnInputItem
+        itemsProvider.abnInputItem()
     }()
 
     /// The  account holder organization ID text input item.
     internal lazy var organizationIdInputItem: FormTextInputItem = {
-        itemsProvider.organizationIdInputItem
+        itemsProvider.organizationIdInputItem()
     }()
 
     /// The  payment instructions label item.
     internal lazy var bsbInstructionTitleItem: FormContainerItem<FormLabelItem> = {
-        itemsProvider.bsbInstructionTitleItem
+        itemsProvider.bsbInstructionTitleItem()
     }()
 
     /// The  bank account number text input item.
     internal lazy var accountNumberInputItem: FormTextInputItem = {
-        itemsProvider.accountNumberInputItem
+        itemsProvider.accountNumberInputItem()
     }()
 
     /// The  bank state branch input item.
-    internal lazy var bankStateBranchInputItem: FormTextInputItem = {
-        itemsProvider.bsbInputItem
+    internal lazy var bsbInputItem: FormTextInputItem = {
+        itemsProvider.bsbInputItem()
     }()
     
     /// The continue button item.
     internal lazy var continueButtonItem: FormButtonItem = {
-        let item = itemsProvider.continueButtonItem
+        let item = itemsProvider.continueButtonItem()
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectContinueButton()
         }
@@ -273,7 +273,7 @@ private extension PayToComponent {
         formViewController.append(bsbInstructionTitleItem)
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
         formViewController.append(accountNumberInputItem)
-        formViewController.append(bankStateBranchInputItem)
+        formViewController.append(bsbInputItem)
         bsbDynamicItems.forEach { $0.isHidden.wrappedValue = true }
     }
 
