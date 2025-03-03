@@ -13,7 +13,7 @@ internal struct PaymentDetailsRequest: APIRequest {
     
     internal var counter: UInt = 0
     
-    internal let headers: [String: String] = [:]
+    internal var headers: [String: String] = [:]
     
     internal let queryParameters: [URLQueryItem] = []
     
