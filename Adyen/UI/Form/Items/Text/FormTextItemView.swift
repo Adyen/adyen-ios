@@ -199,7 +199,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     override open func configureSeparatorView() {
         let constraints = [
             separatorView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             separatorView.heightAnchor.constraint(equalToConstant: 1.0)
         ]
 
