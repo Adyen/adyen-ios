@@ -57,7 +57,8 @@ class PayToComponentTests: XCTestCase {
     }
     
     func test_phoneNumberItem() throws {
-        // test validity
+        // invalid
+        sut.phoneNumberItem.value = ""
         XCTAssertFalse(sut.phoneNumberItem.isValid())
         sut.phoneNumberItem.value = "01231"
         XCTAssertFalse(sut.phoneNumberItem.isValid())
@@ -66,6 +67,7 @@ class PayToComponentTests: XCTestCase {
         sut.phoneNumberItem.value = "9"
         XCTAssertFalse(sut.phoneNumberItem.isValid())
         
+        // valid
         sut.phoneNumberItem.value = "10"
         XCTAssertTrue(sut.phoneNumberItem.isValid())
         sut.phoneNumberItem.value = "99"
@@ -95,6 +97,7 @@ class PayToComponentTests: XCTestCase {
     }
 
     func test_firstname_textfield() throws {
+        sut.firstNameInputItem.value = ""
         XCTAssertFalse(sut.firstNameInputItem.isValid())
         sut.firstNameInputItem.value = "test"
         XCTAssertTrue(sut.firstNameInputItem.isValid())
@@ -110,6 +113,7 @@ class PayToComponentTests: XCTestCase {
     }
 
     func test_lastname_textfield() throws {
+        sut.lastNameInputItem.value = ""
         XCTAssertFalse(sut.lastNameInputItem.isValid())
         sut.lastNameInputItem.value = "test"
         XCTAssertTrue(sut.lastNameInputItem.isValid())
@@ -126,12 +130,16 @@ class PayToComponentTests: XCTestCase {
 
     func test_email_textfield() throws {
         
+        // invalid
+        sut.emailInputItem.value = ""
         XCTAssertFalse(sut.emailInputItem.isValid())
         sut.emailInputItem.value = "test"
         XCTAssertFalse(sut.emailInputItem.isValid())
         sut.emailInputItem.value = "test@"
         XCTAssertFalse(sut.emailInputItem.isValid())
         sut.emailInputItem.value = "aa@aa.com"
+        
+        // valid
         XCTAssertTrue(sut.emailInputItem.isValid())
         sut.emailInputItem.value = "user@example.com"
         XCTAssertTrue(sut.emailInputItem.isValid())
@@ -149,8 +157,12 @@ class PayToComponentTests: XCTestCase {
     }
 
     func test_abn_textfield() throws {
-        XCTAssertFalse(sut.abnInputItem.isValid())
+        
         // only 9 or 11 integers are valid
+        
+        // invalid
+        sut.abnInputItem.value = ""
+        XCTAssertFalse(sut.abnInputItem.isValid())
         sut.abnInputItem.value = "12345678"
         XCTAssertFalse(sut.abnInputItem.isValid())
         sut.abnInputItem.value = "1234567890"
@@ -158,6 +170,8 @@ class PayToComponentTests: XCTestCase {
         sut.abnInputItem.value = "123asd123"
         XCTAssertFalse(sut.abnInputItem.isValid())
         sut.abnInputItem.value = "123456789"
+        
+        // valid
         XCTAssertTrue(sut.abnInputItem.isValid())
         sut.abnInputItem.value = "12345678900"
         XCTAssertTrue(sut.abnInputItem.isValid())
@@ -174,6 +188,7 @@ class PayToComponentTests: XCTestCase {
 
     func test_organizationID_textfield() throws {
         // invalid
+        sut.organizationIdInputItem.value = ""
         XCTAssertFalse(sut.organizationIdInputItem.isValid())
         sut.organizationIdInputItem.value = " Hello"
         XCTAssertFalse(sut.organizationIdInputItem.isValid())
@@ -181,19 +196,19 @@ class PayToComponentTests: XCTestCase {
         XCTAssertFalse(sut.organizationIdInputItem.isValid())
         sut.organizationIdInputItem.value = "A valid sentence?"
         XCTAssertFalse(sut.organizationIdInputItem.isValid())
-        sut.organizationIdInputItem.value = "A!V"
+        sut.organizationIdInputItem.value = "!"
         XCTAssertFalse(sut.organizationIdInputItem.isValid())
         
         // valid
         sut.organizationIdInputItem.value = "123123"
         XCTAssertTrue(sut.organizationIdInputItem.isValid())
-        sut.organizationIdInputItem.value = "!@"
+        sut.organizationIdInputItem.value = "*hello123.world*"
         XCTAssertTrue(sut.organizationIdInputItem.isValid())
-        sut.organizationIdInputItem.value = "!34ff34?"
+        sut.organizationIdInputItem.value = "34ff34?"
         XCTAssertTrue(sut.organizationIdInputItem.isValid())
-        sut.organizationIdInputItem.value = "% $&"
+        sut.organizationIdInputItem.value = ".valid."
         XCTAssertTrue(sut.organizationIdInputItem.isValid())
-        sut.organizationIdInputItem.value = "#-----#"
+        sut.organizationIdInputItem.value = "+abc+"
         XCTAssertTrue(sut.organizationIdInputItem.isValid())
         sut.organizationIdInputItem.value = "{ }"
         XCTAssertTrue(sut.organizationIdInputItem.isValid())
@@ -210,6 +225,7 @@ class PayToComponentTests: XCTestCase {
 
     func test_accountNumber_textfield() throws {
         // invalid
+        sut.accountNumberInputItem.value = ""
         XCTAssertFalse(sut.accountNumberInputItem.isValid())
         sut.accountNumberInputItem.value = "This string is too long for the limit of 28 characters."
         XCTAssertFalse(sut.accountNumberInputItem.isValid())
@@ -238,7 +254,8 @@ class PayToComponentTests: XCTestCase {
 
     func test_bank_state_number_textfield() throws {
         
-        // invalud
+        // invalid
+        sut.bsbInputItem.value = ""
         XCTAssertFalse(sut.bsbInputItem.isValid())
         sut.bsbInputItem.value = "12345"
         XCTAssertFalse(sut.bsbInputItem.isValid())
