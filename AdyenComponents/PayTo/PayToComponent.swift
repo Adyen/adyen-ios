@@ -333,13 +333,5 @@ private extension PayToComponent {
         bsbDynamicItems.forEach { $0.isHidden.wrappedValue = true }
         
         identifierPickerItem.isHidden.wrappedValue = false
-        
-        let items: [PayToPayIdentifier: FormItem] = [
-            .phone: phoneNumberItem,
-            .email: emailInputItem,
-            .abn: abnInputItem,
-            .organizationId: organizationIdInputItem
-        ]
-        items[.abn]?.isHidden.wrappedValue = true
     }
 }
