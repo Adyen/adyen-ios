@@ -23,7 +23,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     
     private let localizationParameters: LocalizationParameters?
     
-    private let scanCardHandler: () -> Void
+    private let scanCardHandler: (() -> Void)?
    
     internal lazy var subitems: [FormItem] = {
         var subItems: [FormItem] = [numberItem]
@@ -55,7 +55,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
         showsSupportedCardLogos: Bool = true,
         style: FormTextItemStyle,
         localizationParameters: LocalizationParameters?,
-        scanCardHandler: @escaping (() -> Void)
+        scanCardHandler: (() -> Void)?
     ) {
         self.cardTypeLogos = cardTypeLogos
         self.showsSupportedCardLogos = showsSupportedCardLogos

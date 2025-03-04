@@ -98,6 +98,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     }()
     
     @objc private func openCardScanner() {
-        item.scanCardHandler()
+        guard let scanCardHandler = item.scanCardHandler else { return }
+        scanCardHandler()
     }
 }

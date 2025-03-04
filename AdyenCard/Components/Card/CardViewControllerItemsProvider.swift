@@ -28,7 +28,7 @@ extension CardViewController {
         private let addressViewModelBuilder: AddressViewModelBuilder
         private let presenter: WeakReferenceViewControllerPresenter
         private let addressMode: CardComponent.AddressFormType
-        private let scanCardHandler: () -> Void
+        private let scanCardHandler: (() -> Void)?
         
         /// Closure that is called when an event is triggered via the field items.
         internal var onDidTriggerInfoEvent: ((InfoEventData) -> Void)?
@@ -45,7 +45,7 @@ extension CardViewController {
             addressViewModelBuilder: AddressViewModelBuilder,
             presenter: ViewControllerPresenter,
             addressMode: CardComponent.AddressFormType,
-            scanCardHandler: @escaping (() -> Void)
+            scanCardHandler: (() -> Void)?
         ) {
             self.formStyle = formStyle
             self.amount = payment?.amount

@@ -45,7 +45,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     
     private let localizationParameters: LocalizationParameters?
     
-    internal let scanCardHandler: () -> Void
+    internal let scanCardHandler: (() -> Void)?
     
     /// Returns the initial brand for single brand cases
     /// or `selectedDualBrand` for dual brand cases
@@ -60,7 +60,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
         style: FormTextItemStyle = FormTextItemStyle(),
         localizationParameters: LocalizationParameters? = nil,
-        scanCardHandler: @escaping (() -> Void)
+        scanCardHandler: (() -> Void)?
     ) {
         // these 4 US debit brands are not to be displayed
         // but should be supported so it's done here for now

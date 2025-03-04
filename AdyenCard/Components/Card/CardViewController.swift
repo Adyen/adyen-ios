@@ -37,7 +37,14 @@ internal class CardViewController: FormViewController {
     
     internal lazy var items = {
         
-        ItemsProvider(
+        let scanCardHandler: (() -> Void)?
+        if #available(iOS 13.0, *) {
+            scanCardHandler = { [weak self] in self?.openCardScanner() }
+        } else {
+            scanCardHandler = nil
+        }
+        
+        return ItemsProvider(
             formStyle: formStyle,
             payment: payment,
             configuration: configuration,
@@ -49,7 +56,7 @@ internal class CardViewController: FormViewController {
             addressViewModelBuilder: DefaultAddressViewModelBuilder(),
             presenter: self,
             addressMode: configuration.billingAddress.mode,
-            scanCardHandler: { [weak self] in self?.openCardScanner() }
+            scanCardHandler: scanCardHandler
         )
     }()
 
@@ -410,7 +417,7 @@ extension CardViewController {
     }
     
     private func openCardScanner() {
-        print("Open card scanner")
+        // TODO: Use CardScanning module
     }
 }
 
