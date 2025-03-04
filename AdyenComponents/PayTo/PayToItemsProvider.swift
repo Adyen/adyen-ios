@@ -131,6 +131,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
         item.title = localizedString(LocalizationKey(key: "Account holder first name"), localizationParameters)
         item.placeholder = localizedString(LocalizationKey(key: "Account holder first name"), localizationParameters)
         item.validator = LengthValidator(minimumLength: 1)
+        item.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.firstNameInputItem
@@ -145,6 +146,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
         item.title = localizedString(LocalizationKey(key: "Account holder last name"), localizationParameters)
         item.placeholder = localizedString(LocalizationKey(key: "Account holder last name"), localizationParameters)
         item.validator = LengthValidator(minimumLength: 1)
+        item.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.lastNameInputItem
@@ -185,6 +187,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
         item.title = localizedString(.emailItemTitle, localizationParameters)
         item.placeholder = localizedString(.emailItemPlaceHolder, localizationParameters)
         item.validator = EmailValidator()
+        item.validationFailureMessage = localizedString(.emailItemInvalid, localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.emailInputItem
@@ -200,6 +203,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
         item.placeholder = localizedString(LocalizationKey(key: "Australian Business Number"), localizationParameters)
         item.formatter = NumericFormatter()
         item.validator = RegularExpressionValidator(regularExpression: ValidationRegex.abn)
+        item.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
         item.keyboardType = .numberPad
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
@@ -218,6 +222,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
             regularExpression: ValidationRegex.organizationId,
             minimumLength: 2
         )
+        item.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.organizationIDInputItem
@@ -249,6 +254,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
         item.title = localizedString(.bacsBankAccountNumberFieldTitle, localizationParameters)
         item.placeholder = localizedString(.bacsBankAccountNumberFieldTitle, localizationParameters)
         item.validator = RegularExpressionValidator(regularExpression: ValidationRegex.accountNumber)
+        item.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.accountNumberInputItem
@@ -267,6 +273,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
             minimumLength: Constants.bsbDigitLength,
             maximumLength: Constants.bsbDigitLength
         )
+        item.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
         item.formatter = NumericFormatter()
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,

@@ -63,7 +63,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     case cashAppPay
     case twint
     case payByBankAISDD
-    case payto
+    case payTo
     case other(String)
     
     // Unsupported
@@ -145,7 +145,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case "bizum": self = .bizum
         case "twint": self = .twint
         case "paybybank_AIS_DD": self = .payByBankAISDD
-        case "payto": self = .payto
+        case "payto": self = .payTo
         default: self = .other(rawValue)
         }
     }
@@ -213,7 +213,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case .bizum: return "bizum"
         case .twint: return "twint"
         case .payByBankAISDD: return "paybybank_AIS_DD"
-        case .payto: return "payto"
+        case .payTo: return "payto"
         case let .other(value): return value
         }
     }
@@ -288,7 +288,7 @@ extension PaymentMethodType {
         case .bizum: return "bizum"
         case .twint: return "twint"
         case .payByBankAISDD: return "Pay By Bank Direct Debit"
-        case .payto: return "payto"
+        case .payTo: return "payto"
         case let .other(name): return name.replacingOccurrences(of: "_", with: " ")
         }
     }

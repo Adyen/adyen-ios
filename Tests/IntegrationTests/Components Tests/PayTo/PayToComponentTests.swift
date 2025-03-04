@@ -30,7 +30,7 @@ class PayToComponentTests: XCTestCase {
     }
 
     func test_paymentMethodType_isPayto() throws {
-        XCTAssertEqual(sut.paymentMethod.type, .payto)
+        XCTAssertEqual(sut.paymentMethod.type, .payTo)
     }
 
     func test_flowSelection_titleLabel_exists() throws {
