@@ -22,6 +22,8 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     internal let showsSupportedCardLogos: Bool
     
     private let localizationParameters: LocalizationParameters?
+    
+    private let scanCardHandler: () -> Void
    
     internal lazy var subitems: [FormItem] = {
         var subItems: [FormItem] = [numberItem]
@@ -35,7 +37,8 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
         let item = FormCardNumberItem(
             cardTypeLogos: cardTypeLogos,
             style: style,
-            localizationParameters: localizationParameters
+            localizationParameters: localizationParameters,
+            scanCardHandler: scanCardHandler
         )
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "numberItem")
         return item
@@ -51,12 +54,14 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
         cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
         showsSupportedCardLogos: Bool = true,
         style: FormTextItemStyle,
-        localizationParameters: LocalizationParameters?
+        localizationParameters: LocalizationParameters?,
+        scanCardHandler: @escaping (() -> Void)
     ) {
         self.cardTypeLogos = cardTypeLogos
         self.showsSupportedCardLogos = showsSupportedCardLogos
         self.localizationParameters = localizationParameters
         self.style = style
+        self.scanCardHandler = scanCardHandler
         
         if showsSupportedCardLogos {
             observe(numberItem.$isActive) { [weak self] _ in

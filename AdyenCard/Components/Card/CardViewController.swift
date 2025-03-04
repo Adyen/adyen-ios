@@ -48,7 +48,8 @@ internal class CardViewController: FormViewController {
             localizationParameters: localizationParameters,
             addressViewModelBuilder: DefaultAddressViewModelBuilder(),
             presenter: self,
-            addressMode: configuration.billingAddress.mode
+            addressMode: configuration.billingAddress.mode,
+            scanCardHandler: { [weak self] in self?.openCardScanner() }
         )
     }()
 
@@ -100,6 +101,7 @@ internal class CardViewController: FormViewController {
     override internal func viewDidLoad() {
         setupView()
         setupViewRelations()
+        setupCardScanning()
         observeNumberItem()
         super.viewDidLoad()
     }
@@ -252,32 +254,32 @@ extension CardViewController {
         items.socialSecurityNumberItem.isHidden.wrappedValue = shouldHideSocialSecurityItem(with: brand)
         items.installmentsItem?.update(cardType: brand?.type)
     }
-
+    
     // MARK: Private methods
-
+    
     private func setupView() {
         append(items.numberContainerItem)
-
+        
         if configuration.showsSecurityCodeField {
             let splitTextItem = FormSplitItem(items: items.expiryDateItem, items.securityCodeItem, style: formStyle.textField)
             append(splitTextItem)
         } else {
             append(items.expiryDateItem)
         }
-
+        
         if configuration.showsHolderNameField {
             append(items.holderNameItem)
         }
-
+        
         if configuration.koreanAuthenticationMode != .hide {
             append(items.additionalAuthCodeItem)
             append(items.additionalAuthPasswordItem)
         }
-
+        
         if configuration.socialSecurityNumberMode != .hide {
             append(items.socialSecurityNumberItem)
         }
-
+        
         if let installmentsItem = items.installmentsItem {
             append(installmentsItem)
         }
@@ -290,7 +292,7 @@ extension CardViewController {
         if let billingAddressItem {
             append(billingAddressItem)
         }
-
+        
         if configuration.showsSubmitButton {
             append(FormSpacerItem())
             append(items.button)
@@ -303,7 +305,7 @@ extension CardViewController {
         switch configuration.billingAddress.mode {
         case .lookup:
             return items.billingAddressPickerItem
-
+            
         case .full:
             return items.billingAddressPickerItem
             
@@ -314,10 +316,10 @@ extension CardViewController {
             return nil
         }
     }
-
+    
     private func prefill() {
         guard let shopperInformation else { return }
-
+        
         shopperInformation.billingAddress.map { billingAddress in
             items.billingAddressPickerItem?.value = billingAddress
             billingAddress.postalCode.map { items.postalCodeItem.value = $0 }
@@ -325,7 +327,7 @@ extension CardViewController {
         shopperInformation.card.map { items.holderNameItem.value = $0.holderName }
         shopperInformation.socialSecurityNumber.map { items.socialSecurityNumberItem.value = $0 }
     }
-
+    
     private func setupViewRelations() {
         observe(items.numberContainerItem.numberItem.publisher) { [weak self] in self?.didChange(pan: $0) }
         observe(items.numberContainerItem.numberItem.$binValue) { [weak self] in self?.didChange(bin: $0) }
@@ -334,7 +336,7 @@ extension CardViewController {
             cardDelegate?.didSelectSubmitButton()
         }
     }
-
+    
     private func didChange(pan: String) {
         items.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: pan)
         cardDelegate?.didChange(pan: pan)
@@ -366,7 +368,6 @@ extension CardViewController {
             return !brand.showsSocialSecurityNumber
         }
     }
-
 }
 
 internal protocol CardViewControllerDelegate: AnyObject {
@@ -395,6 +396,21 @@ extension CardViewController: CardViewControllerProtocol {
 
     internal func update(storePaymentMethodFieldValue isOn: Bool) {
         items.storeDetailsItem.value = items.storeDetailsItem.isVisible && isOn
+    }
+}
+
+// MARK: - Card scanner
+
+extension CardViewController {
+    private func setupCardScanning() {
+        if #available(iOS 13.0, *) {
+            // items.numberContainerItem.numberItem.view.inputAccessoryView = ...
+            
+        }
+    }
+    
+    private func openCardScanner() {
+        print("Open card scanner")
     }
 }
 
