@@ -35,7 +35,7 @@ internal final class FormSplitItemView: FormItemView<FormSplitItem> {
         stackView.axis = .horizontal
         stackView.alignment = .top
         stackView.distribution = .fillEqually
-        stackView.spacing = 16
+        stackView.spacing = 0
         return stackView
     }()
 
