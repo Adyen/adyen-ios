@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension FormCardNumberItemView {
     func makeCardScanAccessoryView(_ selector: Selector) -> UIView {
