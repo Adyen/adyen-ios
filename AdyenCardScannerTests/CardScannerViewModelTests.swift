@@ -103,4 +103,35 @@ final class CardScannerViewModelTests: XCTestCase {
         // Then
         XCTAssertEqual(captureSessionManager.updateVideoOrientationCallsCount, 1)
     }
+
+    func testDidCaptureImageShouldParseCardImage() throws {
+        // Given
+        cardImageParser = CardImageParsingMock()
+        captureSessionManager = CaptureSessionManagingMock()
+        sut = CardScannerViewModel(
+            cardImageParser: cardImageParser,
+            captureSessionManager: captureSessionManager
+        ) { _ in }
+
+        let image = UIImage(
+            named: "adyen-card-iphone-capture",
+            in: Bundle(for: type(of: self)),
+            compatibleWith: nil
+        )
+        let cgImage = try XCTUnwrap(image?.cgImage)
+        let ciImage = CIImage(cgImage: cgImage)
+
+        let expectation = expectation(description: "Image should be parsed")
+
+        cardImageParser.parseClosure = { _, _ in
+            expectation.fulfill()
+        }
+
+        // When
+        sut.didCapture(image: ciImage)
+
+        // Then
+        waitForExpectations(timeout: 1.0)
+        XCTAssertEqual(cardImageParser.parseCallsCount, 1)
+    }
 }
