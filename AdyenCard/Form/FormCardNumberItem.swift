@@ -45,6 +45,10 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     
     private let localizationParameters: LocalizationParameters?
     
+    internal let scanCardHandler: (() -> Void)?
+    
+    internal var supportsCardScanning: Bool { scanCardHandler != nil }
+    
     /// Returns the initial brand for single brand cases
     /// or `selectedDualBrand` for dual brand cases
     internal var currentBrand: CardBrand? {
@@ -57,7 +61,8 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     internal init(
         cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
         style: FormTextItemStyle = FormTextItemStyle(),
-        localizationParameters: LocalizationParameters? = nil
+        localizationParameters: LocalizationParameters? = nil,
+        scanCardHandler: (() -> Void)? = nil
     ) {
         // these 4 US debit brands are not to be displayed
         // but should be supported so it's done here for now
@@ -68,8 +73,8 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
                 logo.type != .nyce
         }
         self.supportedCardTypes = cardTypeLogos.map(\.type)
-        
         self.localizationParameters = localizationParameters
+        self.scanCardHandler = scanCardHandler
         
         super.init(style: style)
 

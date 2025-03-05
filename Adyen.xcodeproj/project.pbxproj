@@ -415,6 +415,7 @@
 		A0F4559B295F0F58001742C7 /* MealVoucherPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F4559A295F0F58001742C7 /* MealVoucherPaymentMethod.swift */; };
 		A0F455A12968472B001742C7 /* PartialPaymentMethodDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F455A02968472B001742C7 /* PartialPaymentMethodDetails.swift */; };
 		A0FA143F26D65A5300627127 /* InstallmentPickerElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */; };
+		B62A075C2D71FB43006072E7 /* FormCardNumberItemView+ScanCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62A075B2D71FB43006072E7 /* FormCardNumberItemView+ScanCard.swift */; };
 		B62D48B42BBE8DBE001EF01A /* AnalyticsFlavorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16AB280702B200534419 /* AnalyticsFlavorTests.swift */; };
 		B62D48B52BBE8DBE001EF01A /* AnalyticsEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16A928059A5A00534419 /* AnalyticsEventTests.swift */; };
 		B62D48B72BBE8DBE001EF01A /* AnalyticsProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0005B280468E100CE2EEC /* AnalyticsProviderMock.swift */; };
@@ -1839,6 +1840,7 @@
 		A0F4559A295F0F58001742C7 /* MealVoucherPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealVoucherPaymentMethod.swift; sourceTree = "<group>"; };
 		A0F455A02968472B001742C7 /* PartialPaymentMethodDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialPaymentMethodDetails.swift; sourceTree = "<group>"; };
 		A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallmentPickerElement.swift; sourceTree = "<group>"; };
+		B62A075B2D71FB43006072E7 /* FormCardNumberItemView+ScanCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormCardNumberItemView+ScanCard.swift"; sourceTree = "<group>"; };
 		B62D48AC2BBE8D79001EF01A /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
 		B62D48CA2BBE9059001EF01A /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
@@ -3975,6 +3977,7 @@
 				A04BD78126D510E1008E270F /* Installments */,
 				E2B317A42265D76600C1BB30 /* FormCardNumberItem.swift */,
 				E2B317A62265D7B700C1BB30 /* FormCardNumberItemView.swift */,
+				B62A075B2D71FB43006072E7 /* FormCardNumberItemView+ScanCard.swift */,
 				E76EC67F241125E0009C6E2F /* FormCardSecurityCodeItem.swift */,
 				E76EC681241125F5009C6E2F /* FormCardSecurityCodeItemView.swift */,
 				A01DCF0A26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift */,
@@ -7513,6 +7516,7 @@
 				F92329DD25AD049E002C5BC4 /* FallbackCardBrandProvider.swift in Sources */,
 				E7798569268CE1B900CECA95 /* KCPDetails.swift in Sources */,
 				B6C9DA792D0C3F62005D65C7 /* DualBrandView.swift in Sources */,
+				B62A075C2D71FB43006072E7 /* FormCardNumberItemView+ScanCard.swift in Sources */,
 				F92CBA072811754400367820 /* GiftCardConfirmationPaymentMethod.swift in Sources */,
 				E9E3DACD221EEAB200697074 /* CardSecurityCodeValidator.swift in Sources */,
 				F96286B5256BDEA400043FE3 /* CardBundleExtension.swift in Sources */,
