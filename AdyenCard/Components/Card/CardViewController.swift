@@ -108,7 +108,6 @@ internal class CardViewController: FormViewController {
     override internal func viewDidLoad() {
         setupView()
         setupViewRelations()
-        setupCardScanning()
         observeNumberItem()
         super.viewDidLoad()
     }
@@ -409,13 +408,6 @@ extension CardViewController: CardViewControllerProtocol {
 // MARK: - Card scanner
 
 extension CardViewController {
-    private func setupCardScanning() {
-        if #available(iOS 13.0, *) {
-            // items.numberContainerItem.numberItem.view.inputAccessoryView = ...
-            
-        }
-    }
-    
     private func openCardScanner() {
         // TODO: Use CardScanning module
     }
