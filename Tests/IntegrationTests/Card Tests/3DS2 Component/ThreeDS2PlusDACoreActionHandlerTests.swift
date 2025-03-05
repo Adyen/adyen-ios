@@ -83,8 +83,8 @@ import XCTest
         }
 
         func testFingerprintFlowSuccess() throws {
-            let service = AnyADYServiceMock()
-            service.authenticationRequestParameters = authenticationRequestParameters
+            let service = ThreeDSServiceableMock()
+            service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
         
             let expectedFingerprint = try ThreeDS2Component.Fingerprint(
                 authenticationRequestParameters: authenticationRequestParameters,
@@ -117,9 +117,9 @@ import XCTest
         }
 
         func testInvalidFingerprintToken() throws {
-            let service = AnyADYServiceMock()
-            service.authenticationRequestParameters = authenticationRequestParameters
-        
+            let service = ThreeDSServiceableMock()
+            service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
+
             let authenticationServiceMock = AuthenticationServiceMock()
 
             let fingerprintAction = ThreeDS2FingerprintAction(
@@ -159,16 +159,12 @@ import XCTest
 
         func testChallengeFlowSuccess() throws {
             
-            let service = AnyADYServiceMock()
-            service.authenticationRequestParameters = authenticationRequestParameters
-
-            let transaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
-            transaction.onPerformChallenge = { params, completion in
+            let service = ThreeDSServiceableMock()
+            service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
+            service.onPerformChallenge = { params, completion in
                 XCTAssertEqual(params.threeDSRequestorAppURL, URL(string: "https://google.com"))
-                completion(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y"), nil)
+                completion(.success(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y")))
             }
-            service.mockedTransaction = transaction
-        
             let authenticationServiceMock = AuthenticationServiceMock()
         
             authenticationServiceMock.onRegister = { _ in
@@ -195,7 +191,6 @@ import XCTest
                 deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
             )
             sut.threeDSRequestorAppURL = URL(string: "https://google.com")
-            sut.transaction = transaction
             sut.delegatedAuthenticationState.attemptRegistration = true
             sut.handle(challengeAction, event: analyticsEvent) { challengeResult in
                 switch challengeResult {
@@ -211,24 +206,18 @@ import XCTest
         }
     
         func testChallengeFlowFailure() throws {
-            let service = AnyADYServiceMock()
-            service.authenticationRequestParameters = authenticationRequestParameters
-            let mockedTransaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
-            service.mockedTransaction = mockedTransaction
-
-            mockedTransaction.onPerformChallenge = { parameters, completion in
-                completion(nil, Dummy.error)
-            }
-
+            let service = ThreeDSServiceableMock()
+            service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
+            service.onPerformChallenge = { $1(.failure(.challengeError(errorPayload: ""))) }
             let authenticationServiceMock = AuthenticationServiceMock()
         
             let sut = ThreeDS2PlusDACoreActionHandler(
                 context: Dummy.context,
+                service: service,
                 presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock
             )
-            sut.transaction = mockedTransaction
 
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
 
@@ -252,8 +241,6 @@ import XCTest
         }
 
         func testChallengeFlowMissingTransaction() throws {
-            let service = AnyADYServiceMock()
-        
             let authenticationServiceMock = AuthenticationServiceMock()
             let sut = ThreeDS2PlusDACoreActionHandler(
                 context: Dummy.context,
@@ -282,12 +269,9 @@ import XCTest
         }
 
         func testInvalidChallengeToken() throws {
-            let service = AnyADYServiceMock()
-            service.authenticationRequestParameters = authenticationRequestParameters
-            let mockedTransaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
-            service.mockedTransaction = mockedTransaction
-
-            mockedTransaction.onPerformChallenge = { parameters, completion in
+            let service = ThreeDSServiceableMock()
+            service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
+            service.onPerformChallenge = { parameters, completion in
                 XCTFail()
             }
 
@@ -299,8 +283,6 @@ import XCTest
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock
             )
-            sut.transaction = mockedTransaction
-
             let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
 
             let challengeAction = ThreeDS2ChallengeAction(challengeToken: "Invalid-token", authorisationToken: "AuthToken", paymentData: "paymentData")
@@ -334,8 +316,8 @@ import XCTest
                 static let expectedFingerprintResult = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES091dHB1dCI6Ik9uQXV0aGVudGljYXRlIiwic2RrQXBwSUQiOiJzZGtBcHBsaWNhdGlvbklkZW50aWZpZXIiLCJzZGtFbmNEYXRhIjoiZGV2aWNlX2luZm8iLCJzZGtFcGhlbVB1YktleSI6eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6IjNiM21QZldodU94d09XeWRMZWpTM0RKRVVQaU1WRnh0ekdDVjY5MDZyZmMiLCJ5IjoienYwa3oxU0tmTnZUM3FsNzVMMjE3ZGU2WnN6eGZMQThMVUtPSUtlNVpmNCJ9LCJzZGtSZWZlcmVuY2VOdW1iZXIiOiJzZGtSZWZlcmVuY2VOdW1iZXIiLCJzZGtUcmFuc0lEIjoic2RrVHJhbnNhY3Rpb25JZGVudGlmaWVyIn0="
             }
 
-            let service = AnyADYServiceMock()
-            service.authenticationRequestParameters = authenticationRequestParameters
+            let service = ThreeDSServiceableMock()
+            service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
                 
             let authenticationServiceMock = AuthenticationServiceMock()
             authenticationServiceMock.onAuthenticate = { input in
@@ -392,8 +374,8 @@ import XCTest
                 static let expectedFingerprintResult = "eyJzZGtBcHBJRCI6InNka0FwcGxpY2F0aW9uSWRlbnRpZmllciIsInNka0VuY0RhdGEiOiJkZXZpY2VfaW5mbyIsInNka0VwaGVtUHViS2V5Ijp7ImNydiI6IlAtMjU2Iiwia3R5IjoiRUMiLCJ4IjoiM2IzbVBmV2h1T3h3T1d5ZExlalMzREpFVVBpTVZGeHR6R0NWNjkwNnJmYyIsInkiOiJ6djBrejFTS2ZOdlQzcWw3NUwyMTdkZTZac3p4ZkxBOExVS09JS2U1WmY0In0sInNka1JlZmVyZW5jZU51bWJlciI6InNka1JlZmVyZW5jZU51bWJlciIsInNka1RyYW5zSUQiOiJzZGtUcmFuc2FjdGlvbklkZW50aWZpZXIifQ=="
             }
 
-            let service = AnyADYServiceMock()
-            service.authenticationRequestParameters = authenticationRequestParameters
+            let service = ThreeDSServiceableMock()
+            service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
                 
             let authenticationServiceMock = AuthenticationServiceMock()
             authenticationServiceMock.onAuthenticate = { input in
@@ -439,8 +421,8 @@ import XCTest
                 static let expectedFingerprintResult = "eyJzZGtBcHBJRCI6InNka0FwcGxpY2F0aW9uSWRlbnRpZmllciIsInNka0VuY0RhdGEiOiJkZXZpY2VfaW5mbyIsInNka0VwaGVtUHViS2V5Ijp7ImNydiI6IlAtMjU2Iiwia3R5IjoiRUMiLCJ4IjoiM2IzbVBmV2h1T3h3T1d5ZExlalMzREpFVVBpTVZGeHR6R0NWNjkwNnJmYyIsInkiOiJ6djBrejFTS2ZOdlQzcWw3NUwyMTdkZTZac3p4ZkxBOExVS09JS2U1WmY0In0sInNka1JlZmVyZW5jZU51bWJlciI6InNka1JlZmVyZW5jZU51bWJlciIsInNka1RyYW5zSUQiOiJzZGtUcmFuc2FjdGlvbklkZW50aWZpZXIifQ=="
             }
 
-            let service = AnyADYServiceMock()
-            service.authenticationRequestParameters = authenticationRequestParameters
+            let service = ThreeDSServiceableMock()
+            service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
                 
             let authenticationServiceMock = AuthenticationServiceMock()
             authenticationServiceMock.onAuthenticate = { input in
@@ -486,8 +468,8 @@ import XCTest
                 static let expectedFingerprintResult = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES091dHB1dCI6Im9uQXV0aGVudGljYXRlLXNka091dHB1dCIsImRlbGV0ZURlbGVnYXRlZEF1dGhlbnRpY2F0aW9uQ3JlZGVudGlhbCI6dHJ1ZSwic2RrQXBwSUQiOiJzZGtBcHBsaWNhdGlvbklkZW50aWZpZXIiLCJzZGtFbmNEYXRhIjoiZGV2aWNlX2luZm8iLCJzZGtFcGhlbVB1YktleSI6eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6IjNiM21QZldodU94d09XeWRMZWpTM0RKRVVQaU1WRnh0ekdDVjY5MDZyZmMiLCJ5IjoienYwa3oxU0tmTnZUM3FsNzVMMjE3ZGU2WnN6eGZMQThMVUtPSUtlNVpmNCJ9LCJzZGtSZWZlcmVuY2VOdW1iZXIiOiJzZGtSZWZlcmVuY2VOdW1iZXIiLCJzZGtUcmFuc0lEIjoic2RrVHJhbnNhY3Rpb25JZGVudGlmaWVyIn0="
             }
 
-            let service = AnyADYServiceMock()
-            service.authenticationRequestParameters = authenticationRequestParameters
+            let service = ThreeDSServiceableMock()
+            service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
                 
             let onAuthenticateExpectation = expectation(description: "Expect onReset to be called")
             let authenticationServiceMock = AuthenticationServiceMock()
@@ -534,15 +516,11 @@ import XCTest
         }
         
         func testDelegatedAuthenticationChallengeResultWhenRemovingCredentials() throws {
-            let service = AnyADYServiceMock()
-            service.authenticationRequestParameters = authenticationRequestParameters
-
-            let transaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
-            transaction.onPerformChallenge = { params, completion in
-                completion(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y"), nil)
+            let service = ThreeDSServiceableMock()
+            service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
+            service.onPerformChallenge = { params, completion in
+                completion(.success(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y")))
             }
-            service.mockedTransaction = transaction
-        
             let authenticationServiceMock = AuthenticationServiceMock()
         
             authenticationServiceMock.onRegister = { _ in
@@ -569,7 +547,6 @@ import XCTest
                 delegatedAuthenticationService: authenticationServiceMock,
                 deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
             )
-            sut.transaction = transaction
             sut.delegatedAuthenticationState.attemptRegistration = true
             sut.handle(challengeAction, event: analyticsEvent) { challengeResult in
                 switch challengeResult {
@@ -586,16 +563,12 @@ import XCTest
 
         func testDelegatedAuthenticationRegistrationFlowWhenUserDoesntConsentToRegister() throws {
 
-            let service = AnyADYServiceMock()
-            service.authenticationRequestParameters = authenticationRequestParameters
-
-            let transaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
-            transaction.onPerformChallenge = { params, completion in
+            let service = ThreeDSServiceableMock()
+            service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
+            service.onPerformChallenge = { params, completion in
                 XCTAssertEqual(params.threeDSRequestorAppURL, URL(string: "https://google.com"))
-                completion(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y"), nil)
+                completion(.success(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y")))
             }
-            service.mockedTransaction = transaction
-        
             let authenticationServiceMock = AuthenticationServiceMock()
         
             authenticationServiceMock.onRegister = { _ in
@@ -626,7 +599,6 @@ import XCTest
                 deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
             )
             sut.threeDSRequestorAppURL = URL(string: "https://google.com")
-            sut.transaction = transaction
             sut.delegatedAuthenticationState.attemptRegistration = true
             sut.handle(challengeAction, event: analyticsEvent) { challengeResult in
                 switch challengeResult {

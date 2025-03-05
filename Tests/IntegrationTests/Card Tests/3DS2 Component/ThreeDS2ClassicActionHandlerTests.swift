@@ -64,9 +64,9 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
 
     func testFingerprintFlowSuccess() throws {
         
-        let service = AnyADYServiceMock()
-        service.authenticationRequestParameters = authenticationRequestParameters
-        
+        let service = ThreeDSServiceableMock()
+        service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
+
         let fingerprint = try ThreeDS2Component.Fingerprint(
             authenticationRequestParameters: authenticationRequestParameters,
             delegatedAuthenticationSDKOutput: nil,
@@ -119,8 +119,8 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
         submitter.mockedResult = .success(.details(mockedDetails))
 
-        let service = AnyADYServiceMock()
-        service.authenticationRequestParameters = authenticationRequestParameters
+        let service = ThreeDSServiceableMock()
+        service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
 
         let fingerprintAction = ThreeDS2FingerprintAction(
             fingerprintToken: "Invalid-token",
@@ -149,17 +149,12 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
     }
 
     func testChallengeFlowSuccess() throws {
-
-        let service = AnyADYServiceMock()
-        service.authenticationRequestParameters = authenticationRequestParameters
-
-        let transaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
-        transaction.onPerformChallenge = { params, completion in
+        let service = ThreeDSServiceableMock()
+        service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
+        service.onPerformChallenge = { params, completion in
             XCTAssertEqual(params.threeDSRequestorAppURL, URL(string: "https://google.com"))
-            completion(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y"), nil)
+            completion(.success(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y")))
         }
-        service.mockedTransaction = transaction
-
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2ClassicActionHandler(
@@ -167,7 +162,6 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
             service: service
         )
         sut.threeDSRequestorAppURL = URL(string: "https://google.com")
-        sut.transaction = transaction
         sut.handle(challengeAction) { challengeResult in
             switch challengeResult {
             case let .success(result):
@@ -207,18 +201,11 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
 
     func testChallengeFlowFailure() throws {
 
-        let service = AnyADYServiceMock()
-        service.authenticationRequestParameters = authenticationRequestParameters
-        let mockedTransaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
-        service.mockedTransaction = mockedTransaction
-
-        mockedTransaction.onPerformChallenge = { parameters, completion in
-            completion(nil, Dummy.error)
-        }
+        let service = ThreeDSServiceableMock()
+        service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
+        service.onPerformChallenge = { $1(.failure(.challengeError(errorPayload: ""))) }
 
         let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, service: service)
-        sut.transaction = mockedTransaction
-
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
 
         sut.handle(challengeAction) { result in
@@ -250,10 +237,9 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
     }
 
     func testChallengeFlowMissingTransaction() throws {
-        let service = AnyADYServiceMock()
-
+        let service = ThreeDSServiceableMock()
         let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, service: service)
-
+        service.onPerformChallenge = { $1(.failure(.transactionNotInitialized(errorPayload: ""))) }
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         sut.handle(challengeAction) { result in
             switch result {
@@ -274,19 +260,12 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
     }
 
     func testInvalidChallengeToken() throws {
-
-        let service = AnyADYServiceMock()
-        service.authenticationRequestParameters = authenticationRequestParameters
-        let mockedTransaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
-        service.mockedTransaction = mockedTransaction
-
-        mockedTransaction.onPerformChallenge = { parameters, completion in
+        let service = ThreeDSServiceableMock()
+        service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
+        service.onPerformChallenge = { parameters, completion in
             XCTFail()
         }
-
         let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, service: service)
-        sut.transaction = mockedTransaction
-
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
 
         let challengeAction = ThreeDS2ChallengeAction(challengeToken: "Invalid-token", authorisationToken: "AuthToken", paymentData: "paymentData")
