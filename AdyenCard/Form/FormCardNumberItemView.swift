@@ -19,7 +19,9 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     internal required init(item: FormCardNumberItem) {
         super.init(item: item)
         accessory = .customView(detectedBrandsView)
-        textField.inputAccessoryView = makeCardScanAccessoryView(#selector(openCardScanner))
+        if item.supportsCardScanning {
+            textField.inputAccessoryView = makeCardScanAccessoryView(#selector(openCardScanner))
+        }
         textField.textContentType = .creditCardNumber
         textField.returnKeyType = .default
         textField.allowsEditingActions = false

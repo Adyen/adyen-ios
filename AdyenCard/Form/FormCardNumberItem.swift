@@ -47,6 +47,8 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     
     internal let scanCardHandler: (() -> Void)?
     
+    internal var supportsCardScanning: Bool { scanCardHandler != nil }
+    
     /// Returns the initial brand for single brand cases
     /// or `selectedDualBrand` for dual brand cases
     internal var currentBrand: CardBrand? {
