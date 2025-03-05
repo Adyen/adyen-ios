@@ -62,7 +62,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
         style: FormTextItemStyle = FormTextItemStyle(),
         localizationParameters: LocalizationParameters? = nil,
-        scanCardHandler: (() -> Void)?
+        scanCardHandler: (() -> Void)? = nil
     ) {
         // these 4 US debit brands are not to be displayed
         // but should be supported so it's done here for now
