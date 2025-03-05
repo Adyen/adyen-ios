@@ -12,6 +12,7 @@ extension FormCardNumberItemView {
         accessoryView.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
         
         let scanButton = UIButton(type: .system)
+        // TODO: Localization
         scanButton.setTitle("Scan your card", for: .normal)
         scanButton.addTarget(self, action: selector, for: .touchUpInside)
         scanButton.translatesAutoresizingMaskIntoConstraints = false
