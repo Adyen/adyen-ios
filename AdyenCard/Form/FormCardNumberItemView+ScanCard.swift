@@ -8,6 +8,11 @@ import Foundation
 import UIKit
 
 extension FormCardNumberItemView {
+    private enum Constants {
+        static let buttonSpacing: CGFloat = 10
+        static let imageName = "camera.fill"
+    }
+
     func makeCardScanAccessoryView(title: String, _ selector: Selector) -> UIView {
         let accessoryView = UIInputView(
             frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44),
@@ -20,13 +25,13 @@ extension FormCardNumberItemView {
         scanButton.tintColor = .systemBlue
 
         if #available(iOS 13.0, *) {
-            scanButton.setImage(UIImage(systemName: "camera.fill"), for: .normal)
+            scanButton.setImage(UIImage(systemName: Constants.imageName), for: .normal)
         }
         
         scanButton.imageView?.contentMode = .scaleAspectFit
         scanButton.contentHorizontalAlignment = .center
         
-        let spacing: CGFloat = 10
+        let spacing = Constants.buttonSpacing
         scanButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -spacing / 2, bottom: 0, right: spacing / 2)
         scanButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: spacing / 2, bottom: 0, right: -spacing / 2)
         scanButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: spacing, bottom: 0, right: spacing)
