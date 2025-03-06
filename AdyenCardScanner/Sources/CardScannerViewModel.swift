@@ -75,13 +75,11 @@ class CardScannerViewModel: CardScannerViewModelProtocol {
         roiInPreviewFrame: CGRect,
         previewFrame: CGRect
     ) {
-        guard let croppedImage = cropRegionOfInterest(
+        let croppedImage = cropRegionOfInterest(
             from: image,
             roiInPreviewFrame: roiInPreviewFrame,
             previewFrame: previewFrame
-        ) else {
-            return
-        }
+        )
 
         cardImageParser.parse(image: croppedImage) { creditCard in
             self.completion(.success(creditCard))
@@ -92,7 +90,7 @@ class CardScannerViewModel: CardScannerViewModelProtocol {
         from image: CIImage,
         roiInPreviewFrame: CGRect,
         previewFrame: CGRect
-    ) -> CIImage? {
+    ) -> CIImage {
         // Scale factors between CIImage and preview frame
         let imageWidth = image.extent.width
         let imageHeight = image.extent.height
