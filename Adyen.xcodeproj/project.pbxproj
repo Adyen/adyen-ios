@@ -516,6 +516,8 @@
 		C930FB6E269D79E0006A26D2 /* AffirmDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */; };
 		C933801E276A06E1005B66CD /* BACSDirectDebitComponentTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C933801D276A06E1005B66CD /* BACSDirectDebitComponentTracker.swift */; };
 		C9338020276A09E7005B66CD /* BACSDirectDebitComponentTrackerProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C933801F276A09E7005B66CD /* BACSDirectDebitComponentTrackerProtocolMock.swift */; };
+		C93844712D79DDDB00B1E747 /* CardScannerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93844702D79DDDB00B1E747 /* CardScannerViewControllerTests.swift */; };
+		C93844732D79DF3B00B1E747 /* CardScannerViewModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93844722D79DF3B00B1E747 /* CardScannerViewModelMock.swift */; };
 		C93B01B72760B03400D311A1 /* BACSConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93B01B62760B03400D311A1 /* BACSConfirmationViewController.swift */; };
 		C93B01B92760B06300D311A1 /* BACSConfirmationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93B01B82760B06300D311A1 /* BACSConfirmationPresenter.swift */; };
 		C9454C37276A340B0086C218 /* BACSDirectDebitPresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9454C35276A33A00086C218 /* BACSDirectDebitPresentationDelegate.swift */; };
@@ -1880,6 +1882,8 @@
 		C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmDetails.swift; sourceTree = "<group>"; };
 		C933801D276A06E1005B66CD /* BACSDirectDebitComponentTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTracker.swift; sourceTree = "<group>"; };
 		C933801F276A09E7005B66CD /* BACSDirectDebitComponentTrackerProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTrackerProtocolMock.swift; sourceTree = "<group>"; };
+		C93844702D79DDDB00B1E747 /* CardScannerViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerViewControllerTests.swift; sourceTree = "<group>"; };
+		C93844722D79DF3B00B1E747 /* CardScannerViewModelMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerViewModelMock.swift; sourceTree = "<group>"; };
 		C93B01B62760B03400D311A1 /* BACSConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationViewController.swift; sourceTree = "<group>"; };
 		C93B01B82760B06300D311A1 /* BACSConfirmationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationPresenter.swift; sourceTree = "<group>"; };
 		C9454C35276A33A00086C218 /* BACSDirectDebitPresentationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitPresentationDelegate.swift; sourceTree = "<group>"; };
@@ -3461,6 +3465,7 @@
 			children = (
 				C91BF2572D771667001F19DE /* CardImageParsingMock.swift */,
 				C91BF2592D7716D4001F19DE /* CaptureSessionManagingMock.swift */,
+				C93844722D79DF3B00B1E747 /* CardScannerViewModelMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -3567,6 +3572,7 @@
 			children = (
 				C91BF2562D7715D8001F19DE /* Mocks */,
 				C96844922D771328001DB7F1 /* CardScannerViewModelTests.swift */,
+				C93844702D79DDDB00B1E747 /* CardScannerViewControllerTests.swift */,
 				C91BF25B2D772233001F19DE /* Assets.xcassets */,
 			);
 			path = AdyenCardScannerTests;
@@ -7041,6 +7047,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C91BF2582D771667001F19DE /* CardImageParsingMock.swift in Sources */,
+				C93844732D79DF3B00B1E747 /* CardScannerViewModelMock.swift in Sources */,
+				C93844712D79DDDB00B1E747 /* CardScannerViewControllerTests.swift in Sources */,
 				C91BF25A2D7716D4001F19DE /* CaptureSessionManagingMock.swift in Sources */,
 				C96844932D771328001DB7F1 /* CardScannerViewModelTests.swift in Sources */,
 			);
