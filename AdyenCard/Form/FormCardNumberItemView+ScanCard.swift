@@ -8,21 +8,42 @@ import Foundation
 import UIKit
 
 extension FormCardNumberItemView {
-    func makeCardScanAccessoryView(_ selector: Selector) -> UIView {
-        let accessoryView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44))
-        accessoryView.backgroundColor = UIColor(white: 0.95, alpha: 1.0)
+    private enum Constants {
+        static let buttonSpacing: CGFloat = 10
+        static let imageName = "camera.fill"
+    }
+
+    func makeCardScanAccessoryView(title: String, _ selector: Selector) -> UIView {
+        let accessoryView = UIInputView(
+            frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44),
+            inputViewStyle: .keyboard
+        )
         
         let scanButton = UIButton(type: .system)
-        // TODO: Localization
-        scanButton.setTitle("Scan your card", for: .normal)
-        scanButton.addTarget(self, action: selector, for: .touchUpInside)
         scanButton.translatesAutoresizingMaskIntoConstraints = false
+        scanButton.setTitle(title, for: .normal)
+        scanButton.tintColor = .systemBlue
+
+        if #available(iOS 13.0, *) {
+            scanButton.setImage(UIImage(systemName: Constants.imageName), for: .normal)
+        }
+        
+        scanButton.imageView?.contentMode = .scaleAspectFit
+        scanButton.contentHorizontalAlignment = .center
+        
+        let spacing = Constants.buttonSpacing
+        scanButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -spacing / 2, bottom: 0, right: spacing / 2)
+        scanButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: spacing / 2, bottom: 0, right: -spacing / 2)
+        scanButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: spacing, bottom: 0, right: spacing)
+        
+        scanButton.addTarget(self, action: selector, for: .touchUpInside)
         
         accessoryView.addSubview(scanButton)
         
         NSLayoutConstraint.activate([
             scanButton.centerXAnchor.constraint(equalTo: accessoryView.centerXAnchor),
-            scanButton.centerYAnchor.constraint(equalTo: accessoryView.centerYAnchor)
+            scanButton.centerYAnchor.constraint(equalTo: accessoryView.centerYAnchor),
+            scanButton.widthAnchor.constraint(lessThanOrEqualTo: accessoryView.widthAnchor, multiplier: 0.8)
         ])
         
         return accessoryView

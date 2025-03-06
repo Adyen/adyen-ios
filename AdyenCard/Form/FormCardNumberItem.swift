@@ -46,6 +46,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     private let localizationParameters: LocalizationParameters?
     
     internal let scanCardHandler: (() -> Void)?
+    internal var scanYourCardButtonTitle: String
     
     internal var supportsCardScanning: Bool { scanCardHandler != nil }
     
@@ -75,6 +76,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         self.supportedCardTypes = cardTypeLogos.map(\.type)
         self.localizationParameters = localizationParameters
         self.scanCardHandler = scanCardHandler
+        self.scanYourCardButtonTitle = localizedString(.scanYourCardButton, localizationParameters)
         
         super.init(style: style)
 
