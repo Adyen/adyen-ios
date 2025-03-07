@@ -117,7 +117,7 @@
 "adyen.boletobancario.btnLabel" = "Generovať Boleto";
 "adyen.boleto.sendCopyToEmail" = "Zaslať kópiu na môj e-mail";
 "adyen.boleto.personalDetails" = "Osobné údaje";
-"adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.socialSecurityNumber" = "CPF / CNPJ";
 "adyen.boleto.download.pdf" = "Stiahnuť vo formáte PDF";
 "adyen.giftcard.currencyError" = "Darčekové karty sú platné iba v mene, v ktorej boli vydané";
 "adyen.giftcard.noBalance" = "Táto darčeková karta má nulový zostatok";
@@ -235,3 +235,15 @@
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Neplatná adresa";
 "adyen.address.lookup.search.manualEntryItem.title" = "Manuálne zadajte adresu";
 "adyen.accessibility.lastFourDigits" = "Posledné 4 číslice";
+"adyen.payto.mode.selection" = "Ako by ste chceli používať PayTo?";
+"adyen.mobileNumber" = "Mobilné telefónne číslo";
+"adyen.payto.payid.option.phone" = "Mobilný telefón";
+"adyen.payto.label.firstName" = "Krstné meno majiteľa účtu";
+"adyen.payto.label.lastName" = "Priezvisko majiteľa účtu";
+"adyen.payto.payid.label.identifier" = "Identifikátor";
+"adyen.payto.payid.abn.hint" = "Austrálske číslo organizácie";
+"adyen.payto.payid.label.orgid" = "ID organizácie";
+"adyen.payto.payid.orgid.hint" = "Identifikačné číslo organizácie";
+"adyen.payto.bsb.label.bankAccountNumber" = "Číslo bankového účtu";
+"adyen.payto.bsb.bankStateBranch.hint" = "Štátna pobočka banky";
+"adyen.payto.bsb.description" = "Pokračujte zadaním čísla bankového účtu a pobočky banky, ktorá je pripojená k vášmu účtu";

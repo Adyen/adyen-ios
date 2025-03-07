@@ -241,3 +241,15 @@
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Ógilt heimilisfang";
 "adyen.address.lookup.search.manualEntryItem.title" = "Slá inn heimilisfang handvirkt";
 "adyen.accessibility.lastFourDigits" = "Síðustu 4 tölustafir";
+"adyen.payto.mode.selection" = "Hvernig viltu nota PayTo?";
+"adyen.mobileNumber" = "Farsímanúmer";
+"adyen.payto.payid.option.phone" = "Farsími";
+"adyen.payto.label.firstName" = "Fornafn reikningshafa";
+"adyen.payto.label.lastName" = "Eftirnafn reikningshafa";
+"adyen.payto.payid.label.identifier" = "Auðkenni";
+"adyen.payto.payid.abn.hint" = "Ástralskt fyrirtækjanúmer";
+"adyen.payto.payid.label.orgid" = "Auðkenni fyrirtækis";
+"adyen.payto.payid.orgid.hint" = "Auðkennisnúmer fyrirtækis";
+"adyen.payto.bsb.label.bankAccountNumber" = "Bankareikningsnúmer";
+"adyen.payto.bsb.bankStateBranch.hint" = "Bankanúmer banka";
+"adyen.payto.bsb.description" = "Sláðu inn bankareikningsnúmerið og bankaútibúið sem er tengt við reikninginn til að halda áfram";

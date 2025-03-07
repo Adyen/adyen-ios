@@ -241,3 +241,15 @@
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Invalid Address";
 "adyen.address.lookup.search.manualEntryItem.title" = "Enter address manually";
 "adyen.accessibility.lastFourDigits" = "Last 4 digits";
+"adyen.payto.mode.selection" = "How would you like to use PayTo?";
+"adyen.mobileNumber" = "Mobile number";
+"adyen.payto.payid.option.phone" = "Mobile";
+"adyen.payto.label.firstName" = "Account holder first name";
+"adyen.payto.label.lastName" = "Account holder last name";
+"adyen.payto.payid.label.identifier" = "Identifier";
+"adyen.payto.payid.abn.hint" = "Australian Business Number";
+"adyen.payto.payid.label.orgid" = "Organization ID";
+"adyen.payto.payid.orgid.hint" = "Organization ID number";
+"adyen.payto.bsb.label.bankAccountNumber" = "Bank account number";
+"adyen.payto.bsb.bankStateBranch.hint" = "Bank state branch";
+"adyen.payto.bsb.description" = "Enter the bank account number and the Bank State Branch that is connected to your account to continue";

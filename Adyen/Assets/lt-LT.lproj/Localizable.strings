@@ -241,3 +241,15 @@
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Netinkamas adresas";
 "adyen.address.lookup.search.manualEntryItem.title" = "Įveskite adresą rankiniu būdu";
 "adyen.accessibility.lastFourDigits" = "Paskutiniai 4 skaitmenys";
+"adyen.payto.mode.selection" = "Kaip norėtumėte naudoti „PayTo“?";
+"adyen.mobileNumber" = "Mobiliojo telefono numeris";
+"adyen.payto.payid.option.phone" = "Mobilusis telefonas";
+"adyen.payto.label.firstName" = "Sąskaitos turėtojo vardas";
+"adyen.payto.label.lastName" = "Sąskaitos turėtojo pavardė";
+"adyen.payto.payid.label.identifier" = "Identifikatorius";
+"adyen.payto.payid.abn.hint" = "Australijos įmonės numeris";
+"adyen.payto.payid.label.orgid" = "Organizacijos identifikatorius";
+"adyen.payto.payid.orgid.hint" = "Organizacijos registracijos numeris";
+"adyen.payto.bsb.label.bankAccountNumber" = "Banko sąskaitos numeris";
+"adyen.payto.bsb.bankStateBranch.hint" = "Banko valstybinis skyrius";
+"adyen.payto.bsb.description" = "Įveskite banko sąskaitos numerį ir banko filialo kodą, susietą su jūsų sąskaita, kad galėtumėte tęsti";

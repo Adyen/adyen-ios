@@ -117,7 +117,7 @@
 "adyen.boletobancario.btnLabel" = "Generare Boleto";
 "adyen.boleto.sendCopyToEmail" = "Trimite o copie la adresa mea de e-mail";
 "adyen.boleto.personalDetails" = "Informații personale";
-"adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.socialSecurityNumber" = "CPF/CNPJ";
 "adyen.boleto.download.pdf" = "Descărcați PDF";
 "adyen.giftcard.currencyError" = "Cardurile cadou sunt valabile numai în moneda în care au fost emise";
 "adyen.giftcard.noBalance" = "Acest card cadou are soldul zero";
@@ -235,3 +235,15 @@
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Adresă incorectă";
 "adyen.address.lookup.search.manualEntryItem.title" = "Introduceți adresa manual";
 "adyen.accessibility.lastFourDigits" = "Ultimele 4 cifre";
+"adyen.payto.mode.selection" = "Cum dorești să utilizezi PayTo?";
+"adyen.mobileNumber" = "Număr de mobil";
+"adyen.payto.payid.option.phone" = "Mobil";
+"adyen.payto.label.firstName" = "Prenumele titularului de cont";
+"adyen.payto.label.lastName" = "Numele de familie al titularului de cont";
+"adyen.payto.payid.label.identifier" = "Identificator";
+"adyen.payto.payid.abn.hint" = "Număr de la birou din Australia";
+"adyen.payto.payid.label.orgid" = "ID organizație";
+"adyen.payto.payid.orgid.hint" = "Număr de identificare al organizației";
+"adyen.payto.bsb.label.bankAccountNumber" = "Numărul contului bancar";
+"adyen.payto.bsb.bankStateBranch.hint" = "Sucursala bancară statală";
+"adyen.payto.bsb.description" = "Pentru a continua, introduceți numărul contului bancar și sucursala băncii de stat care este asociată cu contul dvs.";

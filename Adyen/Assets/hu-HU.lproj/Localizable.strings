@@ -121,7 +121,7 @@
 "adyen.boletobancario.btnLabel" = "Boleto létrehozása";
 "adyen.boleto.sendCopyToEmail" = "Másolat küldése az e-mail-címemre";
 "adyen.boleto.personalDetails" = "Személyes adatok";
-"adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.socialSecurityNumber" = "CPF/CNPJ";
 "adyen.boleto.download.pdf" = "PDF letöltése";
 "adyen.giftcard.currencyError" = "Az ajándékkártyák csak abban a pénznemben érvényesek, amelyre kiállították azokat";
 "adyen.giftcard.noBalance" = "Az ajándékkártya egyenlege nulla";
@@ -241,3 +241,15 @@
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Érvénytelen cím";
 "adyen.address.lookup.search.manualEntryItem.title" = "Manuálisan írjon be egy címet";
 "adyen.accessibility.lastFourDigits" = "Utolsó négy számjegy";
+"adyen.payto.mode.selection" = "Hogyan szeretné használni a PayTo szolgáltatást?";
+"adyen.mobileNumber" = "Mobiltelefonszám";
+"adyen.payto.payid.option.phone" = "Mobiltelefon";
+"adyen.payto.label.firstName" = "Számlatulajdonos utóneve";
+"adyen.payto.label.lastName" = "Számlatulajdonos vezetékneve";
+"adyen.payto.payid.label.identifier" = "Azonosító";
+"adyen.payto.payid.abn.hint" = "Ausztrál vállalkozói azonosító";
+"adyen.payto.payid.label.orgid" = "Szervezeti azonosító";
+"adyen.payto.payid.orgid.hint" = "Szervezeti azonosítószám";
+"adyen.payto.bsb.label.bankAccountNumber" = "Bankszámlaszám";
+"adyen.payto.bsb.bankStateBranch.hint" = "Bankfiókkód";
+"adyen.payto.bsb.description" = "A folytatáshoz adja meg a bankszámlaszámot és a számlájához kapcsolódó bankfiók azonosító (BSB) kódját";

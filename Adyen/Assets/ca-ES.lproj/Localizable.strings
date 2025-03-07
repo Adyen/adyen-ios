@@ -241,3 +241,15 @@
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "L'adreça no és vàlida";
 "adyen.address.lookup.search.manualEntryItem.title" = "Introduïu l'adreça manualment";
 "adyen.accessibility.lastFourDigits" = "Últims 4 dígits";
+"adyen.payto.mode.selection" = "Com us agradaria utilitzar PayTo?";
+"adyen.mobileNumber" = "Número de mòbil";
+"adyen.payto.payid.option.phone" = "Mòbil";
+"adyen.payto.label.firstName" = "Nom del titular del compte";
+"adyen.payto.label.lastName" = "Cognom del titular del compte";
+"adyen.payto.payid.label.identifier" = "Identificador";
+"adyen.payto.payid.abn.hint" = "Número d'empresa australiana";
+"adyen.payto.payid.label.orgid" = "Identificació de l'organització";
+"adyen.payto.payid.orgid.hint" = "Número d'identificació de l'organització";
+"adyen.payto.bsb.label.bankAccountNumber" = "Número de compte bancari";
+"adyen.payto.bsb.bankStateBranch.hint" = "Sucursal bancària estatal";
+"adyen.payto.bsb.description" = "Introduïu el número de compte bancari i la sucursal bancària estatal que està associada al vostre compte per continuar";

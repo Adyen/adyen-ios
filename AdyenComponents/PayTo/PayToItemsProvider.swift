@@ -79,9 +79,8 @@ internal class PayToItemsProvider: PayToItemsProviding {
     
     /// The payment flow selection title  label item.
     internal func createFlowSelectionTitleItem() -> FormLabelItem {
-        // TODO: Add translation
         let item = FormLabelItem(
-            text: localizedString(LocalizationKey(key: "How would you like to use Payto?"), localizationParameters),
+            text: localizedString(.paytoModeSelection, localizationParameters),
             style: style.textField.text
         )
         item.identifier = ViewIdentifierBuilder.build(
@@ -93,7 +92,6 @@ internal class PayToItemsProvider: PayToItemsProviding {
 
     /// The segment control item to choose the payTo flow.
     internal func createFlowSelectionItem() -> FormSegmentedControlItem {
-        // TODO: Add translation
         let item = FormSegmentedControlItem(
             items: ["PayID", "BSB"],
             style: style.segmentedControlStyle,
@@ -118,18 +116,16 @@ internal class PayToItemsProvider: PayToItemsProviding {
             postfix: ViewIdentifier.phoneNumberItem
         )
         item.validator = RegularExpressionValidator(regularExpression: ValidationRegex.phone)
-        // TODO: Add translation
-        item.title = localizedString(LocalizationKey(key: "Phone"), localizationParameters)
-        item.placeholder = localizedString(LocalizationKey(key: "Mobile number"), localizationParameters)
+        item.title = localizedString(.paytoPayidOptionPhone, localizationParameters)
+        item.placeholder = localizedString(.mobileNumber, localizationParameters)
         return item
     }
 
     /// The  account holder firstname text input item.
     internal func createFirstNameInputItem() -> FormTextInputItem {
         let item = FormTextInputItem(style: style.textField)
-        // TODO: Add translation
-        item.title = localizedString(LocalizationKey(key: "Account holder first name"), localizationParameters)
-        item.placeholder = localizedString(LocalizationKey(key: "Account holder first name"), localizationParameters)
+        item.title = localizedString(.paytoLabelFirstName, localizationParameters)
+        item.placeholder = localizedString(.paytoLabelFirstName, localizationParameters)
         item.validator = LengthValidator(minimumLength: 1)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
@@ -141,9 +137,8 @@ internal class PayToItemsProvider: PayToItemsProviding {
     /// The  account holder lastname text input item.
     internal func createLastNameInputItem() -> FormTextInputItem {
         let item = FormTextInputItem(style: style.textField)
-        // TODO: Add translation
-        item.title = localizedString(LocalizationKey(key: "Account holder last name"), localizationParameters)
-        item.placeholder = localizedString(LocalizationKey(key: "Account holder last name"), localizationParameters)
+        item.title = localizedString(.paytoLabelLastName, localizationParameters)
+        item.placeholder = localizedString(.paytoLabelLastName, localizationParameters)
         item.validator = LengthValidator(minimumLength: 1)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
@@ -168,8 +163,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
             selectableStringValues: selectableValues,
             style: style.textField
         )
-        // TODO: Add translation
-        item.title = localizedString(LocalizationKey(key: "Identifier"), localizationParameters)
+        item.title = localizedString(.paytoPayidLabelIdentifier, localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.identifierPickerItem
@@ -181,7 +175,6 @@ internal class PayToItemsProvider: PayToItemsProviding {
     /// The  account holder email text input item.
     internal func createEmailInputItem() -> FormTextInputItem {
         let item = FormTextInputItem(style: style.textField)
-        // TODO: Add translation
         item.title = localizedString(.emailItemTitle, localizationParameters)
         item.placeholder = localizedString(.emailItemPlaceHolder, localizationParameters)
         item.validator = EmailValidator()
@@ -195,9 +188,8 @@ internal class PayToItemsProvider: PayToItemsProviding {
     /// The  account holder abn text input item.
     internal func createAbnInputItem() -> FormTextInputItem {
         let item = FormTextInputItem(style: style.textField)
-        // TODO: Add translation
         item.title = localizedString(LocalizationKey(key: "ABN"), localizationParameters)
-        item.placeholder = localizedString(LocalizationKey(key: "Australian Business Number"), localizationParameters)
+        item.placeholder = localizedString(.paytoPayidAbnHint, localizationParameters)
         item.formatter = NumericFormatter()
         item.validator = RegularExpressionValidator(regularExpression: ValidationRegex.abn)
         item.keyboardType = .numberPad
@@ -211,9 +203,8 @@ internal class PayToItemsProvider: PayToItemsProviding {
     /// The  account holder organization ID text input item.
     internal func createOrganizationIdInputItem() -> FormTextInputItem {
         let item = FormTextInputItem(style: style.textField)
-        // TODO: Add translation
-        item.title = localizedString(LocalizationKey(key: "Organization ID"), localizationParameters)
-        item.placeholder = localizedString(LocalizationKey(key: "Organization ID number"), localizationParameters)
+        item.title = localizedString(.paytoPayidLabelOrgid, localizationParameters)
+        item.placeholder = localizedString(.paytoPayidOrgidHint, localizationParameters)
         item.validator = RegularExpressionValidator(
             regularExpression: ValidationRegex.organizationId,
             minimumLength: 2
@@ -227,10 +218,8 @@ internal class PayToItemsProvider: PayToItemsProviding {
 
     /// The  payment instructions label item.
     internal func createBsbInstructionTitleItem() -> FormContainerItem<FormLabelItem> {
-        // TODO: Add translation
         let item = FormLabelItem(
-            text: localizedString(
-                LocalizationKey(key: "Enter the bank account number and the Bank State Branch that is connected to your account to continue"),
+            text: localizedString(.paytoBsbDescription,
                 localizationParameters
             ),
             style: style.textField.text
@@ -245,7 +234,6 @@ internal class PayToItemsProvider: PayToItemsProviding {
     /// The  bank account number text input item.
     internal func createAccountNumberInputItem() -> FormTextInputItem {
         let item = FormTextInputItem(style: style.textField)
-        // TODO: Add translation
         item.title = localizedString(.bacsBankAccountNumberFieldTitle, localizationParameters)
         item.placeholder = localizedString(.bacsBankAccountNumberFieldTitle, localizationParameters)
         item.validator = RegularExpressionValidator(regularExpression: ValidationRegex.accountNumber)
@@ -259,9 +247,8 @@ internal class PayToItemsProvider: PayToItemsProviding {
     /// The  bank state branch input item.
     internal func createBsbInputItem() -> FormTextInputItem {
         let item = FormTextInputItem(style: style.textField)
-        // TODO: Add translation
-        item.title = localizedString(LocalizationKey(key: "Bank state branch"), localizationParameters)
-        item.placeholder = localizedString(LocalizationKey(key: "Bank State Branch"), localizationParameters)
+        item.title = localizedString(.paytoBsbBankStateBranchHint, localizationParameters)
+        item.placeholder = localizedString(.paytoBsbBankStateBranchHint, localizationParameters)
         item.validator = RegularExpressionValidator(
             regularExpression: ValidationRegex.bsb,
             minimumLength: Constants.bsbDigitLength,

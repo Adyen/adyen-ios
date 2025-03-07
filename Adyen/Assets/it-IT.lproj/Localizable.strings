@@ -121,7 +121,7 @@
 "adyen.boletobancario.btnLabel" = "Genera Boleto";
 "adyen.boleto.sendCopyToEmail" = "Invia una copia alla mia e-mail";
 "adyen.boleto.personalDetails" = "Dati personali";
-"adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.socialSecurityNumber" = "CPF/CNPJ";
 "adyen.boleto.download.pdf" = "Scarica PDF";
 "adyen.giftcard.currencyError" = "I buono regalo sono validi solo nella valuta in cui sono state emessi";
 "adyen.giftcard.noBalance" = "Questo buono regalo ha un saldo pari a zero";
@@ -241,3 +241,15 @@
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Indirizzo non valido";
 "adyen.address.lookup.search.manualEntryItem.title" = "Inserisci l'indirizzo manualmente";
 "adyen.accessibility.lastFourDigits" = "Ultime 4 cifre";
+"adyen.payto.mode.selection" = "Come vorresti utilizzare PayTo?";
+"adyen.mobileNumber" = "Numero di cellulare";
+"adyen.payto.payid.option.phone" = "Cellulare";
+"adyen.payto.label.firstName" = "Nome del titolare del conto";
+"adyen.payto.label.lastName" = "Cognome del titolare del conto";
+"adyen.payto.payid.label.identifier" = "Identificatore";
+"adyen.payto.payid.abn.hint" = "";
+"adyen.payto.payid.label.orgid" = "ID organizzazione";
+"adyen.payto.payid.orgid.hint" = "";
+"adyen.payto.bsb.label.bankAccountNumber" = "Numero di conto bancario";
+"adyen.payto.bsb.bankStateBranch.hint" = "";
+"adyen.payto.bsb.description" = "Per continuare, immettere il numero di conto bancario e la filiale della banca collegata al tuo conto";
