@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
-import AVFoundation
 @testable import AdyenCardScanner
+import AVFoundation
+import Foundation
 
 class CaptureSessionManagingMock: CaptureSessionManaging {
 
@@ -16,7 +16,7 @@ class CaptureSessionManagingMock: CaptureSessionManaging {
 
     // MARK: - videoPreviewLayer
 
-    var videoPreviewLayer: AVCaptureVideoPreviewLayer = AVCaptureVideoPreviewLayer()
+    var videoPreviewLayer: AVCaptureVideoPreviewLayer = .init()
 
     // MARK: - configureSession
 
@@ -24,6 +24,7 @@ class CaptureSessionManagingMock: CaptureSessionManaging {
     var configureSessionCalled: Bool {
         configureSessionCallsCount > 0
     }
+
     var configureSessionClosure: (() -> Void)?
 
     func configureSession() {
@@ -37,6 +38,7 @@ class CaptureSessionManagingMock: CaptureSessionManaging {
     var startCaptureSessionCalled: Bool {
         startCaptureSessionCallsCount > 0
     }
+
     var startCaptureSessionClosure: (() -> Void)?
 
     func startCaptureSession() {
@@ -50,6 +52,7 @@ class CaptureSessionManagingMock: CaptureSessionManaging {
     var stopCaptureSessionCalled: Bool {
         stopCaptureSessionCallsCount > 0
     }
+
     var stopCaptureSessionClosure: (() -> Void)?
 
     func stopCaptureSession() {
@@ -63,6 +66,7 @@ class CaptureSessionManagingMock: CaptureSessionManaging {
     var updateVideoOrientationCalled: Bool {
         updateVideoOrientationCallsCount > 0
     }
+
     var updateVideoOrientationClosure: (() -> Void)?
 
     func updateVideoOrientation() {
