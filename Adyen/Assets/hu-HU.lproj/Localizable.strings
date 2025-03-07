@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Lejár: %@";
 "adyen.card.numberItem.unsupportedBrand" = "A(z) %@ nem támogatott";
 "adyen.card.numberItem.unknownBrand" = "A megadott kártyamárka nem támogatott";
+"adyen.card.scanYourCardButton" = "Kártya beolvasása";
 "adyen.dropIn.stored.title" = "%@ használatával történő fizetés jóváhagyása";
 "adyen.dropIn.preselected.openAll.title" = "Fizetési mód módosítása";
 "adyen.continueTo" = "Folytatás a következővel: %@";
