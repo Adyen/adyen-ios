@@ -18,23 +18,15 @@ internal protocol CardViewControllerProtocol {
 internal class CardViewController: FormViewController {
 
     private let configuration: CardComponent.Configuration
-
     private let shopperInformation: PrefilledShopperInformation?
-
     private let supportedCardTypes: [CardType]
-
     private let formStyle: FormComponentStyle
-    
     private var issuingCountryCode: String?
-    
     private let payment: Payment?
-    
     private let initialCountryCode: String
-    
     private let scope: String
-    
     private let cardLogos: [FormCardLogosItem.CardTypeLogo]
-    
+
     internal lazy var items = {
         
         let scanCardHandler: (() -> Void)?
