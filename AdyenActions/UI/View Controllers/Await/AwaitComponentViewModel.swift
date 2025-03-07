@@ -60,6 +60,14 @@ internal struct AwaitComponentViewModel {
                 message: localizedString(.upiVpaWaitingMessage, localizationParameters),
                 spinnerTitle: localizedString(.upiCollectConfirmPayment, localizationParameters)
             )
+
+        case .payTo:
+            // TODO: Add translation
+            return AwaitComponentViewModel(
+                icon: paymentMethodType.rawValue,
+                message: localizedString(LocalizationKey(key: "Complete your Payto payment with your bank"), localizationParameters),
+                spinnerTitle: localizedString(.upiCollectConfirmPayment, localizationParameters)
+            )
         }
     }
 

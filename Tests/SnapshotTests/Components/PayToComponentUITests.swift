@@ -12,7 +12,7 @@ import XCTest
 class PayToComponentUITests: XCTestCase {
 
     private lazy var paymentMethod: PayToPaymentMethod = .init(
-        type: .payto,
+        type: .payTo,
         name: "payto"
     )
     private var context: AdyenContext { Dummy.context }
