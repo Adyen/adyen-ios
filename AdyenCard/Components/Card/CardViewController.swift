@@ -9,6 +9,13 @@ import UIKit
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
+#if canImport(AdyenCardScanner)
+    import AdyenCardScanner
+
+    private let isCardScannerAvailable = true
+#else
+    private let isCardScannerAvailable = false
+#endif
 
 internal protocol CardViewControllerProtocol {
     func update(storePaymentMethodFieldVisibility isVisible: Bool)
@@ -16,7 +23,7 @@ internal protocol CardViewControllerProtocol {
 }
 
 internal class CardViewController: FormViewController {
-
+    
     private let configuration: CardComponent.Configuration
     private let shopperInformation: PrefilledShopperInformation?
     private let supportedCardTypes: [CardType]
@@ -26,11 +33,11 @@ internal class CardViewController: FormViewController {
     private let initialCountryCode: String
     private let scope: String
     private let cardLogos: [FormCardLogosItem.CardTypeLogo]
-
+    
     internal lazy var items = {
         
         let scanCardHandler: (() -> Void)?
-        if #available(iOS 13.0, *) {
+        if #available(iOS 13.0, *), isCardScannerAvailable {
             scanCardHandler = { [weak self] in self?.openCardScanner() }
         } else {
             scanCardHandler = nil
@@ -51,9 +58,9 @@ internal class CardViewController: FormViewController {
             scanCardHandler: scanCardHandler
         )
     }()
-
+    
     // MARK: Init view controller
-
+    
     /// Create new instance of CardViewController
     /// - Parameters:
     ///   - configuration: The configurations of the `CardComponent`.
@@ -94,25 +101,25 @@ internal class CardViewController: FormViewController {
             localizationParameters: localizationParameters
         )
     }
-
+    
     // MARK: - View lifecycle
-
+    
     override internal func viewDidLoad() {
         setupView()
         setupViewRelations()
         observeNumberItem()
         super.viewDidLoad()
     }
-
+    
     override internal func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         prefill()
     }
-
+    
     // MARK: Public methods
-
+    
     internal weak var cardDelegate: CardViewControllerDelegate?
-
+    
     internal var card: Card {
         let expiryMonth = items.expiryDateItem.expiryMonth
         let expiryYear = items.expiryDateItem.expiryYear
@@ -133,7 +140,7 @@ internal class CardViewController: FormViewController {
     internal var cardBIN: String {
         items.numberContainerItem.numberItem.binValue
     }
-
+    
     internal var validAddress: PostalAddress? {
         let address: PostalAddress
         let requiredFields: Set<AddressField>
@@ -160,42 +167,42 @@ internal class CardViewController: FormViewController {
         
         return address
     }
-
+    
     internal var kcpDetails: KCPDetails? {
         guard
             configuration.koreanAuthenticationMode != .hide,
             let taxNumber = items.additionalAuthCodeItem.nonEmptyValue,
             let password = items.additionalAuthPasswordItem.nonEmptyValue
         else { return nil }
-
+        
         return KCPDetails(taxNumber: taxNumber, password: password)
     }
-
+    
     internal var socialSecurityNumber: String? {
         guard configuration.socialSecurityNumberMode != .hide else { return nil }
         return items.socialSecurityNumberItem.nonEmptyValue
     }
-
+    
     internal var storePayment: Bool? {
         configuration.showsStorePaymentMethodField ? items.storeDetailsItem.value : nil
     }
-
+    
     internal var installments: Installments? {
         guard let installmentsItem = items.installmentsItem,
               !installmentsItem.isHidden.wrappedValue else { return nil }
         return installmentsItem.value.element.installmentValue
     }
-
+    
     internal func stopLoading() {
         items.button.showsActivityIndicator = false
         view.isUserInteractionEnabled = true
     }
-
+    
     internal func startLoading() {
         items.button.showsActivityIndicator = true
         view.isUserInteractionEnabled = false
     }
-
+    
     internal func update(binInfo: BinLookupResponse) {
         var brands: [CardBrand] = []
         // no dual branding if response is from regex (fallback)
@@ -371,11 +378,11 @@ extension CardViewController {
 internal protocol CardViewControllerDelegate: AnyObject {
     
     func didSelectSubmitButton()
-
+    
     func didChange(bin: String)
     
     func didChange(pan: String)
-
+    
 }
 
 extension FormValueItem where ValueType == String {
@@ -391,7 +398,7 @@ extension CardViewController: CardViewControllerProtocol {
         }
         items.storeDetailsItem.isVisible = isVisible
     }
-
+    
     internal func update(storePaymentMethodFieldValue isOn: Bool) {
         items.storeDetailsItem.value = items.storeDetailsItem.isVisible && isOn
     }
@@ -402,6 +409,16 @@ extension CardViewController: CardViewControllerProtocol {
 extension CardViewController {
     private func openCardScanner() {
         // TODO: Use CardScanning module
+        if let scannerViewController = AdyenCardScanner.CardScanner.createCardScanner(completion: { result in
+            switch result {
+            case let .success(card):
+                print("Scanned card: \(card)")
+            case let .failure(error):
+                print("Scanner error: \(error)")
+            }
+        }) {
+            presentViewController(scannerViewController, animated: true)
+        }
     }
 }
 
