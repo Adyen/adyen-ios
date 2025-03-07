@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Rennur út %@";
 "adyen.card.numberItem.unsupportedBrand" = "Ekki er stuðningur við %@";
 "adyen.card.numberItem.unknownBrand" = "Ekki er stuðningur við innslegið kortamerki";
+"adyen.card.scanYourCardButton" = "Skannaðu kortið þitt";
 "adyen.dropIn.stored.title" = "Staðfesta %@ greiðslu";
 "adyen.dropIn.preselected.openAll.title" = "Breyta greiðslumáta";
 "adyen.continueTo" = "Halda áfram á %@";

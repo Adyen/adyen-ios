@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Derīguma termiņš %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@ netiek atbalstīts";
 "adyen.card.numberItem.unknownBrand" = "Ievadītais kartes zīmols netiek atbalstīts";
+"adyen.card.scanYourCardButton" = "Skenējiet savu karti";
 "adyen.dropIn.stored.title" = "Apstipriniet %@ maksājumu";
 "adyen.dropIn.preselected.openAll.title" = "Mainīt samaksas veidu";
 "adyen.continueTo" = "Turpināt ar %@";

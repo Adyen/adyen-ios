@@ -6,7 +6,7 @@
 
 import Foundation
 
-internal protocol AnyChallengeResult {
-
-    var transactionStatus: String { get }
+internal struct ChallengeParameters {
+    internal let challengeToken: ThreeDS2Component.ChallengeToken
+    internal let threeDSRequestorAppURL: URL?
 }

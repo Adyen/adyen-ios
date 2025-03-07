@@ -9,17 +9,24 @@ import Adyen3DS2
 import Foundation
 
 final class AnyADYServiceMock: AnyADYService {
+    var onService: ((ADYServiceParameters, ADYAppearanceConfiguration, (AnyADYService) -> Void) -> Void)?
 
     func service(with parameters: ADYServiceParameters, appearanceConfiguration: ADYAppearanceConfiguration, completionHandler: @escaping (AnyADYService) -> Void) {
-        completionHandler(self)
+        if let onService {
+            return onService(parameters, appearanceConfiguration, completionHandler)
+        } else {
+            completionHandler(self)
+        }
     }
 
     var authenticationRequestParameters: AnyAuthenticationRequestParameters?
 
     var mockedTransaction: AnyADYTransaction?
-
+    var onTransaction: ((String) throws -> AnyADYTransaction)?
     func transaction(withMessageVersion: String) throws -> AnyADYTransaction {
-        if let mockedTransaction {
+        if let onTransaction {
+            return try onTransaction(withMessageVersion)
+        } else if let mockedTransaction {
             return mockedTransaction
         } else if let parameters = authenticationRequestParameters {
             return AnyADYTransactionMock(parameters: parameters)

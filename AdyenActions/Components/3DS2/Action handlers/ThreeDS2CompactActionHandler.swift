@@ -39,16 +39,6 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
             coreActionHandler.threeDSRequestorAppURL = newValue
         }
     }
-
-    internal var transaction: AnyADYTransaction? {
-        get {
-            coreActionHandler.transaction
-        }
-
-        set {
-            coreActionHandler.transaction = newValue
-        }
-    }
     
     internal var context: AdyenContext
     
@@ -62,7 +52,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     internal init(
         context: AdyenContext,
         fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter? = nil,
-        service: AnyADYService = ADYServiceAdapter(),
+        service: ThreeDSServiceable = ThreeDSServiceLegacy(),
         appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
         coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
         delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil

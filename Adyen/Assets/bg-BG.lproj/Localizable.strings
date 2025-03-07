@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Изтича %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@ не се поддържа";
 "adyen.card.numberItem.unknownBrand" = "Въведената марка на картата не се поддържа";
+"adyen.card.scanYourCardButton" = "Сканирайте Вашата карта";
 "adyen.dropIn.stored.title" = "Потвърди %@ плащането";
 "adyen.dropIn.preselected.openAll.title" = "Промяна на начина на плащане";
 "adyen.continueTo" = "Продължете към %@";

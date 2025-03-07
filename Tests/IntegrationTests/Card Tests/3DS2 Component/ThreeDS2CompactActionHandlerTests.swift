@@ -67,8 +67,8 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
         submitter.mockedResult = .success(.details(mockedDetails))
 
-        let service = AnyADYServiceMock()
-        service.authenticationRequestParameters = authenticationRequestParameters
+        let service = ThreeDSServiceableMock()
+        service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
 
         let fingerprintAction = ThreeDS2FingerprintAction(
             fingerprintToken: "Invalid-token",
@@ -96,13 +96,6 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
                     AnalyticsConstants.ErrorCode.threeDS2DecodingFailed.stringValue
                 )
                 
-                let errorEvent2 = analyticsProviderMock.errors[1]
-                XCTAssertEqual(errorEvent2.errorType, .threeDS2)
-                XCTAssertEqual(errorEvent2.component, "threeDS2Fingerprint")
-                XCTAssertEqual(
-                    errorEvent2.code,
-                    AnalyticsConstants.ErrorCode.threeDS2FingerprintHandlingFailed.stringValue
-                )
                 let decodingError = error as? DecodingError
                 switch decodingError {
                 case .dataCorrupted?: ()
@@ -117,15 +110,12 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
 
     func testChallengeFlowSuccess() throws {
 
-        let service = AnyADYServiceMock()
-        service.authenticationRequestParameters = authenticationRequestParameters
-
-        let transaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
-        transaction.onPerformChallenge = { params, completion in
+        let service = ThreeDSServiceableMock()
+        service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
+        service.onPerformChallenge = { params, completion in
             XCTAssertEqual(params.threeDSRequestorAppURL, URL(string: "https://google.com"))
-            completion(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y"), nil)
+            completion(.success(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y")))
         }
-        service.mockedTransaction = transaction
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         let analyticsProviderMock = AnalyticsProviderMock()
@@ -134,7 +124,6 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             service: service
         )
         sut.threeDSRequestorAppURL = URL(string: "https://google.com")
-        sut.transaction = transaction
         sut.handle(challengeAction) { challengeResult in
             switch challengeResult {
             case let .success(result):
@@ -175,14 +164,9 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
     func testChallengeFlowFailure() throws {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
 
-        let service = AnyADYServiceMock()
-        service.authenticationRequestParameters = authenticationRequestParameters
-        let mockedTransaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
-        service.mockedTransaction = mockedTransaction
-
-        mockedTransaction.onPerformChallenge = { parameters, completion in
-            completion(nil, Dummy.error)
-        }
+        let service = ThreeDSServiceableMock()
+        service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
+        service.onPerformChallenge = { $1(.failure(.challengeError(errorPayload: ""))) }
 
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2CompactActionHandler(
@@ -190,7 +174,6 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             fingerprintSubmitter: submitter,
             service: service
         )
-        sut.transaction = mockedTransaction
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         sut.handle(challengeAction) { result in
@@ -233,13 +216,10 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
         let mockedAction = ThreeDS2ChallengeAction(challengeToken: "Invalid-token", authorisationToken: "AuthToken", paymentData: "paymentData")
 
-        let service = AnyADYServiceMock()
-        service.authenticationRequestParameters = authenticationRequestParameters
-        let mockedTransaction = AnyADYTransactionMock(parameters: authenticationRequestParameters)
-        service.mockedTransaction = mockedTransaction
-
-        mockedTransaction.onPerformChallenge = { parameters, completion in
-            completion(nil, Dummy.error)
+        let service = ThreeDSServiceableMock()
+        service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
+        service.onPerformChallenge = { parameters, completion in
+            completion(.failure(.challengeError(errorPayload: "")))
         }
 
         let analyticsProviderMock = AnalyticsProviderMock()
@@ -248,7 +228,6 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             fingerprintSubmitter: submitter,
             service: service
         )
-        sut.transaction = mockedTransaction
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         sut.handle(mockedAction) { result in
@@ -278,15 +257,14 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
 
     func testChallengeFlowMissingTransaction() throws {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
-
-        let service = AnyADYServiceMock()
-
+        let service = ThreeDSServiceableMock()
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2CompactActionHandler(
             context: Dummy.context(with: analyticsProviderMock),
             fingerprintSubmitter: submitter,
             service: service
         )
+        service.onPerformChallenge = { $1(.failure(.transactionNotInitialized(errorPayload: ""))) }
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         sut.handle(challengeAction) { result in
@@ -321,15 +299,19 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
         submitter.mockedResult = .success(.details(mockedDetails))
 
-        let service = AnyADYServiceMock()
-        service.authenticationRequestParameters = AuthenticationRequestParametersMock(
-            deviceInformation: "device_info",
-            sdkApplicationIdentifier: "sdkApplicationIdentifier",
-            sdkTransactionIdentifier: "sdkTransactionIdentifier",
-            sdkReferenceNumber: "sdkReferenceNumber",
-            sdkEphemeralPublicKey: "invalid-key",
-            messageVersion: "messageVersion"
-        )
+        let service = ThreeDSServiceableMock()
+        service.onPerformFingerprint = {
+            $1(.success(
+                AuthenticationRequestParametersMock(
+                    deviceInformation: "device_info",
+                    sdkApplicationIdentifier: "sdkApplicationIdentifier",
+                    sdkTransactionIdentifier: "sdkTransactionIdentifier",
+                    sdkReferenceNumber: "sdkReferenceNumber",
+                    sdkEphemeralPublicKey: "invalid-key",
+                    messageVersion: "messageVersion"
+                ))
+            )
+        }
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         
@@ -351,15 +333,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
                     errorEvent1.code,
                     AnalyticsConstants.ErrorCode.threeDS2FingerprintCreationFailed.stringValue
                 )
-                
-                let errorEvent2 = analyticsProviderMock.errors[1]
-                XCTAssertEqual(errorEvent2.errorType, .threeDS2)
-                XCTAssertEqual(errorEvent2.component, "threeDS2Fingerprint")
-                XCTAssertEqual(
-                    errorEvent2.code,
-                    AnalyticsConstants.ErrorCode.threeDS2FingerprintHandlingFailed.stringValue
-                )
-                
+                                
                 let decodingError = error as? DecodingError
                 switch decodingError {
                 case .dataCorrupted?: ()
@@ -379,8 +353,8 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
         submitter.mockedResult = .success(.details(mockedDetails))
 
-        let service = AnyADYServiceMock()
-        service.authenticationRequestParameters = authenticationRequestParameters
+        let service = ThreeDSServiceableMock()
+        service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         let analyticsProviderMock = AnalyticsProviderMock()
@@ -429,8 +403,8 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let redirectAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "data")
         submitter.mockedResult = .success(.action(.redirect(redirectAction)))
 
-        let service = AnyADYServiceMock()
-        service.authenticationRequestParameters = authenticationRequestParameters
+        let service = ThreeDSServiceableMock()
+        service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service)
@@ -462,8 +436,8 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
 
         submitter.mockedResult = .failure(Dummy.error)
 
-        let service = AnyADYServiceMock()
-        service.authenticationRequestParameters = authenticationRequestParameters
+        let service = ThreeDSServiceableMock()
+        service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         let sut = ThreeDS2CompactActionHandler(context: Dummy.context, fingerprintSubmitter: submitter, service: service)
@@ -479,5 +453,35 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
 
         waitForExpectations(timeout: 2, handler: nil)
     }
+    
+    func testFingerprintFailureThatSubmitsErrorPayload() throws {
+        let submitter = AnyThreeDS2FingerprintSubmitterMock()
+        let onSubmitFingerprint = expectation(description: "Expect onSubmitFingerprint to be called.")
+        let errorPayload = "Error Payload"
+        
+        submitter.onSubmitFingerprint = { fingerprint, paymentData, completion in
+            let fingerprint: ThreeDS2Component.Fingerprint? = try? AdyenCoder.decodeBase64(fingerprint)
+            XCTAssertNotNil(fingerprint, "Should be able to decode the fingerprint successfully")
+            XCTAssertEqual(fingerprint?.threeDS2SDKError, errorPayload)
+            completion(.failure(Dummy.error))
+            onSubmitFingerprint.fulfill()
+        }
+        
+        let service = ThreeDSServiceableMock()
+        service.onPerformFingerprint = { $1(.failure(.fingerprintingError(errorPayload: errorPayload))) }
 
+        let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = ThreeDS2CompactActionHandler(
+            context: Dummy.context(
+                with: analyticsProviderMock
+            ),
+            fingerprintSubmitter: submitter,
+            service: service
+        )
+        sut.handle(fingerprintAction) { result in
+            resultExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 2, handler: nil)
+    }
 }
