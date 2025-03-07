@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Caduca %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@ no és compatible";
 "adyen.card.numberItem.unknownBrand" = "La marca de la targeta introduïda no és compatible";
+"adyen.card.scanYourCardButton" = "Escanegeu la vostra targeta";
 "adyen.dropIn.stored.title" = "Confirmació del pagament de %@";
 "adyen.dropIn.preselected.openAll.title" = "Canvieu el mètode de pagament";
 "adyen.continueTo" = "Continua a %@";

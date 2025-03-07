@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Udløber %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@ understøttes ikke";
 "adyen.card.numberItem.unknownBrand" = "Det angivne kortmærke understøttes ikke";
+"adyen.card.scanYourCardButton" = "Scan dit kort";
 "adyen.dropIn.stored.title" = "Bekræft %@-betaling";
 "adyen.dropIn.preselected.openAll.title" = "Skift betalingsmåde";
 "adyen.continueTo" = "Fortsæt til %@";

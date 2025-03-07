@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "%@ に期限が切れます";
 "adyen.card.numberItem.unsupportedBrand" = "%@はサポートされていません";
 "adyen.card.numberItem.unknownBrand" = "入力されたカードブランドはサポートされていません";
+"adyen.card.scanYourCardButton" = "カードをスキャンしてください";
 "adyen.dropIn.stored.title" = "%@のお支払いをご確認下さい";
 "adyen.dropIn.preselected.openAll.title" = "お支払方法を変更する";
 "adyen.continueTo" = "次へ進む：%@";
