@@ -64,6 +64,17 @@ internal enum ConfigurationConstants {
         "id": "Item #2"
     ]]
     
+    // sample mandate object (e.g., for PayTo)
+    static let mandate = [[
+        "amount": "4001", // [Mandatory] for PayTo - Mandate Amount field
+        "amountRule": "max", // [Mandatory] for PayTo - Needs to be Localised
+        "endsAt": "2024-12-31", // [Mandatory] for PayTo - Date format
+        "frequency": "adhoc", // [Mandatory] for PayTo - Needs to be Localised
+        "remarks": "testThroughFlow1", // [Mandatory] for PayTo - Needs to be Localised as "Description"
+        "count": "3", // [Optional] will be returned only if the merchant sends it
+        "startsAt": "2024-11-13"
+    ]]
+    
     static var delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication {
         .init(relyingPartyIdentifier: "test-authentication-adyen.netlify.app")
     }
