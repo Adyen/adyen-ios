@@ -219,7 +219,8 @@ internal class PayToItemsProvider: PayToItemsProviding {
     /// The  payment instructions label item.
     internal func createBsbInstructionTitleItem() -> FormContainerItem<FormLabelItem> {
         let item = FormLabelItem(
-            text: localizedString(.paytoBsbDescription,
+            text: localizedString(
+                .paytoBsbDescription,
                 localizationParameters
             ),
             style: style.textField.text

@@ -213,3 +213,5 @@ whiteList:
   - abn
   - firstname
   - bsb
+  - payid
+  - orgid
