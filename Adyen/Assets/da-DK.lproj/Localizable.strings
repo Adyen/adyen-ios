@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Udløber %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@ understøttes ikke";
 "adyen.card.numberItem.unknownBrand" = "Det angivne kortmærke understøttes ikke";
+"adyen.card.scanYourCardButton" = "Scan dit kort";
 "adyen.dropIn.stored.title" = "Bekræft %@-betaling";
 "adyen.dropIn.preselected.openAll.title" = "Skift betalingsmåde";
 "adyen.continueTo" = "Fortsæt til %@";
@@ -241,3 +242,15 @@
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Ugyldig adresse";
 "adyen.address.lookup.search.manualEntryItem.title" = "Indtast adresse manuelt";
 "adyen.accessibility.lastFourDigits" = "Sidste 4 cifre";
+"adyen.payto.mode.selection" = "Hvordan vil du bruge PayTo?";
+"adyen.mobileNumber" = "Mobilnummer";
+"adyen.payto.payid.option.phone" = "Mobil";
+"adyen.payto.label.firstName" = "Kontohavers fornavn";
+"adyen.payto.label.lastName" = "Kontohavers efternavn";
+"adyen.payto.payid.label.identifier" = "Identifikator";
+"adyen.payto.payid.abn.hint" = "";
+"adyen.payto.payid.label.orgid" = "Organisations-id";
+"adyen.payto.payid.orgid.hint" = "";
+"adyen.payto.bsb.label.bankAccountNumber" = "Bankkontonummer";
+"adyen.payto.bsb.bankStateBranch.hint" = "";
+"adyen.payto.bsb.description" = "Indtast bankkontonummeret og bankafdeling (Bank State Branch, BSB), der er knyttet til din konto, for at fortsætte";

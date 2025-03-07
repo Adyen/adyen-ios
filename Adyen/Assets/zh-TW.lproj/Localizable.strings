@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "%@ 到期";
 "adyen.card.numberItem.unsupportedBrand" = "系統不支援 %@";
 "adyen.card.numberItem.unknownBrand" = "系統不支援所輸入的卡片品牌";
+"adyen.card.scanYourCardButton" = "掃描您的卡片";
 "adyen.dropIn.stored.title" = "確認 %@ 付款";
 "adyen.dropIn.preselected.openAll.title" = "變更付款方式";
 "adyen.continueTo" = "繼續前往 %@";

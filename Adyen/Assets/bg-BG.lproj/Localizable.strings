@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Изтича %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@ не се поддържа";
 "adyen.card.numberItem.unknownBrand" = "Въведената марка на картата не се поддържа";
+"adyen.card.scanYourCardButton" = "Сканирайте Вашата карта";
 "adyen.dropIn.stored.title" = "Потвърди %@ плащането";
 "adyen.dropIn.preselected.openAll.title" = "Промяна на начина на плащане";
 "adyen.continueTo" = "Продължете към %@";
@@ -241,3 +242,15 @@
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Невалиден адрес";
 "adyen.address.lookup.search.manualEntryItem.title" = "Въведете адреса ръчно";
 "adyen.accessibility.lastFourDigits" = "Последните 4 цифри";
+"adyen.payto.mode.selection" = "Как бихте искали да използвате PayTo?";
+"adyen.mobileNumber" = "Мобилен номер";
+"adyen.payto.payid.option.phone" = "Мобилно устройство";
+"adyen.payto.label.firstName" = "Име на титуляра на сметката";
+"adyen.payto.label.lastName" = "Фамилия на титуляра на сметката";
+"adyen.payto.payid.label.identifier" = "Идентификатор";
+"adyen.payto.payid.abn.hint" = "Австралийски номер на юридическо лице";
+"adyen.payto.payid.label.orgid" = "OrganizationID";
+"adyen.payto.payid.orgid.hint" = "Идентификационен номер на организация";
+"adyen.payto.bsb.label.bankAccountNumber" = "Номер на банкова сметка";
+"adyen.payto.bsb.bankStateBranch.hint" = "Щатски банков клон";
+"adyen.payto.bsb.description" = "Въведете номера на банковата сметка и банковия клон, които са свързани с вашия акаунт, за да продължите";

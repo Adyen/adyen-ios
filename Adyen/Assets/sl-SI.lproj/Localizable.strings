@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Potek veljavnosti %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@ ni podprta znamka";
 "adyen.card.numberItem.unknownBrand" = "Vnesena znamka kartice ni podprta";
+"adyen.card.scanYourCardButton" = "Poskenirajte svojo kartico";
 "adyen.dropIn.stored.title" = "Potrdite plačilo: %@";
 "adyen.dropIn.preselected.openAll.title" = "Spremeni način plačila";
 "adyen.continueTo" = "Nadaljujte na %@";
@@ -117,7 +118,7 @@
 "adyen.boletobancario.btnLabel" = "Ustvari Boleto";
 "adyen.boleto.sendCopyToEmail" = "Pošlji kopijo na moj elektronski naslov";
 "adyen.boleto.personalDetails" = "Osebni podatki";
-"adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.socialSecurityNumber" = "CPF/​CNPJ";
 "adyen.boleto.download.pdf" = "Prenos datoteke PDF";
 "adyen.giftcard.currencyError" = "Darilne kartice so veljavne samo za valuto, za katero so bile izdane";
 "adyen.giftcard.noBalance" = "Na tej darilni kartici ni sredstev";

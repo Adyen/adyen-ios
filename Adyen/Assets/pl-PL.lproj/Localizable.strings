@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Wygasa %@";
 "adyen.card.numberItem.unsupportedBrand" = "Marka %@ nie jest obsługiwana";
 "adyen.card.numberItem.unknownBrand" = "Wprowadzona marka karty nie jest obsługiwana";
+"adyen.card.scanYourCardButton" = "Zeskanuj kartę";
 "adyen.dropIn.stored.title" = "Potwierdź płatność %@";
 "adyen.dropIn.preselected.openAll.title" = "Zmień metodę płatności";
 "adyen.continueTo" = "Przejdź do %@";
@@ -121,7 +122,7 @@
 "adyen.boletobancario.btnLabel" = "Wygeneruj płatność Boleto";
 "adyen.boleto.sendCopyToEmail" = "Wyślij kopię na mój e-mail";
 "adyen.boleto.personalDetails" = "Dane osobowe";
-"adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.socialSecurityNumber" = "CPF/CNPJ";
 "adyen.boleto.download.pdf" = "Pobierz PDF";
 "adyen.giftcard.currencyError" = "Karty podarunkowe są ważne tylko w walucie, w której zostały wydane";
 "adyen.giftcard.noBalance" = "Saldo karty podarunkowej jest puste";
@@ -241,3 +242,15 @@
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Nieprawidłowy adres";
 "adyen.address.lookup.search.manualEntryItem.title" = "Wprowadź adres ręcznie";
 "adyen.accessibility.lastFourDigits" = "Ostatnie 4 cyfry";
+"adyen.payto.mode.selection" = "Jak chcesz korzystać z PayTo?";
+"adyen.mobileNumber" = "Numer telefonu komórkowego";
+"adyen.payto.payid.option.phone" = "Telefon komórkowy";
+"adyen.payto.label.firstName" = "Imię posiadacza rachunku";
+"adyen.payto.label.lastName" = "Nazwisko posiadacza rachunku";
+"adyen.payto.payid.label.identifier" = "Identyfikator";
+"adyen.payto.payid.abn.hint" = "";
+"adyen.payto.payid.label.orgid" = "Identyfikator organizacji";
+"adyen.payto.payid.orgid.hint" = "";
+"adyen.payto.bsb.label.bankAccountNumber" = "Numer rachunku";
+"adyen.payto.bsb.bankStateBranch.hint" = "";
+"adyen.payto.bsb.description" = "Aby kontynuować, wprowadź numer konta bankowego i oddział banku, który jest powiązany z Twoim kontem";

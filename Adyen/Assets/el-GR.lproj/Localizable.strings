@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Λήξη: %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@: δεν υποστηρίζεται";
 "adyen.card.numberItem.unknownBrand" = "Η επωνυμία κάρτας που εισαγάγατε δεν υποστηρίζεται";
+"adyen.card.scanYourCardButton" = "Σαρώστε την κάρτα σας";
 "adyen.dropIn.stored.title" = "Επιβεβαίωση πληρωμής μέσω %@";
 "adyen.dropIn.preselected.openAll.title" = "Αλλαγή τρόπου πληρωμής";
 "adyen.continueTo" = "Μετάβαση στην %@";
@@ -121,7 +122,7 @@
 "adyen.boletobancario.btnLabel" = "Δημιουργία Boleto";
 "adyen.boleto.sendCopyToEmail" = "Αποστολή αντιγράφου στη διεύθυνση email μου";
 "adyen.boleto.personalDetails" = "Προσωπικά στοιχεία";
-"adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.socialSecurityNumber" = "CPF/CNPJ";
 "adyen.boleto.download.pdf" = "Λήψη PDF";
 "adyen.giftcard.currencyError" = "Οι δωροκάρτες ισχύουν μόνο για το νόμισμα στο οποίο εκδόθηκαν";
 "adyen.giftcard.noBalance" = "Η συγκεκριμένη δωροκάρτα έχει μηδενικό υπόλοιπο";
@@ -241,3 +242,15 @@
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "Μη έγκυρη διεύθυνση";
 "adyen.address.lookup.search.manualEntryItem.title" = "Εισαγάγετε τη διεύθυνση μη αυτόματα";
 "adyen.accessibility.lastFourDigits" = "Τελευταία 4 ψηφία";
+"adyen.payto.mode.selection" = "Πώς θα θέλατε να χρησιμοποιήσετε το PayTo;";
+"adyen.mobileNumber" = "Αριθμός κινητού";
+"adyen.payto.payid.option.phone" = "Κινητό";
+"adyen.payto.label.firstName" = "Όνομα κατόχου λογαριασμού";
+"adyen.payto.label.lastName" = "Επώνυμο κατόχου λογαριασμού";
+"adyen.payto.payid.label.identifier" = "Αναγνωριστικό";
+"adyen.payto.payid.abn.hint" = "";
+"adyen.payto.payid.label.orgid" = "Αναγνωριστικό οργανισμού";
+"adyen.payto.payid.orgid.hint" = "";
+"adyen.payto.bsb.label.bankAccountNumber" = "Αριθμός τραπεζικού λογαριασμού";
+"adyen.payto.bsb.bankStateBranch.hint" = "";
+"adyen.payto.bsb.description" = "Εισαγάγετε τον αριθμό τραπεζικού λογαριασμού και το υποκατάστημα της τράπεζας που συνδέεται με τον λογαριασμό σας για να συνεχίσετε.";

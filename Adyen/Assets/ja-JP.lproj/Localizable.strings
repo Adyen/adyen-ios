@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "%@ に期限が切れます";
 "adyen.card.numberItem.unsupportedBrand" = "%@はサポートされていません";
 "adyen.card.numberItem.unknownBrand" = "入力されたカードブランドはサポートされていません";
+"adyen.card.scanYourCardButton" = "カードをスキャンしてください";
 "adyen.dropIn.stored.title" = "%@のお支払いをご確認下さい";
 "adyen.dropIn.preselected.openAll.title" = "お支払方法を変更する";
 "adyen.continueTo" = "次へ進む：%@";
@@ -121,7 +122,7 @@
 "adyen.boletobancario.btnLabel" = "Boletoを生成する";
 "adyen.boleto.sendCopyToEmail" = "自分のメールアドレスにコピーを送信する";
 "adyen.boleto.personalDetails" = "個人情報";
-"adyen.boleto.socialSecurityNumber" = "";
+"adyen.boleto.socialSecurityNumber" = "CPF/CNPJ";
 "adyen.boleto.download.pdf" = "PDFをダウンロード";
 "adyen.giftcard.currencyError" = "ギフトカードは、発行された通貨でのみ有効です。";
 "adyen.giftcard.noBalance" = "このギフトカードの残高はゼロです";
@@ -241,3 +242,15 @@
 "adyen.address.lookup.item.validationFailureMessage.invalid" = "住所が無効です";
 "adyen.address.lookup.search.manualEntryItem.title" = "住所を手動で入力してください";
 "adyen.accessibility.lastFourDigits" = "末尾4桁";
+"adyen.payto.mode.selection" = "PayToをどのように使用しますか？";
+"adyen.mobileNumber" = "携帯番号";
+"adyen.payto.payid.option.phone" = "携帯";
+"adyen.payto.label.firstName" = "口座名義人の名";
+"adyen.payto.label.lastName" = "口座名義人の姓";
+"adyen.payto.payid.label.identifier" = "識別子";
+"adyen.payto.payid.abn.hint" = "";
+"adyen.payto.payid.label.orgid" = "組織ID";
+"adyen.payto.payid.orgid.hint" = "";
+"adyen.payto.bsb.label.bankAccountNumber" = "銀行口座番号";
+"adyen.payto.bsb.bankStateBranch.hint" = "";
+"adyen.payto.bsb.description" = "アカウントに接続されている銀行口座番号と銀行支店コードを入力して、続行してください。";
