@@ -154,7 +154,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
         let selectableValues = PayToPayIdentifier.allCases.map { identifier in
             FormStringPickerElement(
                 identifier: identifier.rawValue,
-                title: identifier.description
+                title: localizedString(identifier.localizedDescription, localizationParameters)
             )
         }
 
