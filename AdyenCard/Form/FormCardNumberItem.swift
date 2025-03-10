@@ -106,6 +106,10 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         }
     }
     
+    internal func setCardNumber(_ cardNumber: String) {
+        value = cardNumber
+    }
+
     // MARK: - BuildableFormItem
     
     override internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {

@@ -427,12 +427,9 @@ extension CardViewController {
     }
     
     private func processScannedCard(_ card: AdyenCardScanner.CreditCard) {
-        items.numberContainerItem.numberItem.value = card.number ?? ""
-        
+        items.numberContainerItem.setCardNumber(card.number ?? "")
         if let expirationDate = card.expirationDate {
             items.expiryDateItem.setExpiryDate(expirationDate)
-        } else {
-            items.expiryDateItem.value = ""
         }
     }
 }
