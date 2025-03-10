@@ -35,7 +35,6 @@ internal class CardViewController: FormViewController {
     private let cardLogos: [FormCardLogosItem.CardTypeLogo]
     
     internal lazy var items = {
-        
         let scanCardHandler: (() -> Void)?
         if #available(iOS 13.0, *), isCardScannerAvailable {
             scanCardHandler = { [weak self] in self?.openCardScanner() }
@@ -408,16 +407,32 @@ extension CardViewController: CardViewControllerProtocol {
 
 extension CardViewController {
     private func openCardScanner() {
-        // TODO: Use CardScanning module
-        if let scannerViewController = AdyenCardScanner.CardScanner.createCardScanner(completion: { result in
+        let scannerNavigationController = UINavigationController()
+        if let scannerViewController = AdyenCardScanner.CardScanner.createCardScanner(completion: { [weak self] result in
             switch result {
             case let .success(card):
-                print("Scanned card: \(card)")
+                scannerNavigationController.dismiss(animated: true)
+                self?.processScannedCard(card)
             case let .failure(error):
+                // TODO: Error handling
                 print("Scanner error: \(error)")
             }
         }) {
-            presentViewController(scannerViewController, animated: true)
+            scannerNavigationController.setViewControllers(
+                [scannerViewController],
+                animated: false
+            )
+            presentViewController(scannerNavigationController, animated: true)
+        }
+    }
+    
+    private func processScannedCard(_ card: AdyenCardScanner.CreditCard) {
+        items.numberContainerItem.numberItem.value = card.number ?? ""
+        
+        if let expirationDate = card.expirationDate {
+            items.expiryDateItem.setExpiryDate(expirationDate)
+        } else {
+            items.expiryDateItem.value = ""
         }
     }
 }
