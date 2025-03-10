@@ -14,7 +14,7 @@ internal enum PayToPayIdentifier: String, CaseIterable {
     case abn
     case organizationId
 
-    public var localizedDescription: LocalizationKey {
+    public var localizedKey: LocalizationKey {
         switch self {
         case .phone:
             return .paytoPayidOptionPhone
