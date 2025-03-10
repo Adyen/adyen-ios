@@ -41,6 +41,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     }
     
     override public func handleFormattedValueDidChange(_ newValue: String) {
+        textField.text = newValue
         updateValidationStatus()
     }
     
