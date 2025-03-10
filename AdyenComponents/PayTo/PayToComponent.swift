@@ -8,8 +8,7 @@
 import UIKit
 
 /// A component that provides PayTo flows for PayTo component.
-public final class PayToComponent: PaymentComponent,
-    PresentableComponent, AdyenObserver {
+public final class PayToComponent: PaymentComponent, PresentableComponent, AdyenObserver, PaymentAware, LoadingComponent {
 
     /// Configuration for PayTo Component.
     public typealias Configuration = BasicComponentConfiguration
@@ -200,7 +199,21 @@ public final class PayToComponent: PaymentComponent,
         return formViewController
     }()
 
-    // MARK: - Private
+    public func stopLoading() {
+        continueButtonItem.showsActivityIndicator = false
+        formViewController.view.isUserInteractionEnabled = true
+    }
+}
+
+extension PayToComponent: SubmittableComponent {
+    
+    public func submit() {
+        didSelectContinueButton()
+    }
+    
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
 }
 
 @_spi(AdyenInternal)
@@ -226,7 +239,32 @@ extension PayToComponent: ViewControllerPresenter {
 private extension PayToComponent {
 
     func didSelectContinueButton() {
-        // TODO: Implement
+        guard validate() else { return }
+        
+        startLoading()
+        
+        print("current identifier is \(selectedPaymentIdentifier())")
+        let details = PayToDetails(
+            paymentMethod: payToPaymentMethod,
+            accountIdentifier: selectedPaymentIdentifier(),
+            shopperName: .init(
+                firstName: firstNameInputItem.value,
+                lastName: lastNameInputItem.value
+            )
+        )
+        
+        submit(
+            data: PaymentComponentData(
+                paymentMethodDetails: details,
+                amount: payment?.amount,
+                order: order
+            )
+        )
+    }
+    
+    func startLoading() {
+        continueButtonItem.showsActivityIndicator = true
+        formViewController.view.isUserInteractionEnabled = false
     }
     
     func updatePayIdIdentifier(_ newValue: String) {
@@ -248,6 +286,26 @@ private extension PayToComponent {
         }
     }
 
+    /// The identifier for the payment data based on the
+    /// selected payment option (e.g., email, phone number etc.).
+    func selectedPaymentIdentifier() -> String {
+        switch selectedPaymentOption {
+        case let .payId(identifier):
+            switch identifier {
+            case .phone:
+                phoneNumberItem.phoneNumber
+            case .email:
+                emailInputItem.value
+            case .abn:
+                abnInputItem.value
+            case .organizationId:
+                organizationIdInputItem.value
+            }
+        case .BSB:
+            // bsb payment option requires combining both these values with a "-"
+            [bsbInputItem.value, accountNumberInputItem.value].joined(separator: "-")
+        }
+    }
 }
 
 // MARK: - Private

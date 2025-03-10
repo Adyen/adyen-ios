@@ -30,7 +30,7 @@ class PayToComponentTests: XCTestCase {
     }
 
     func test_paymentMethodType_isPayto() throws {
-        XCTAssertEqual(sut.paymentMethod.type, .payto)
+        XCTAssertEqual(sut.paymentMethod.type, .payTo)
     }
 
     func test_flowSelection_titleLabel_exists() throws {
@@ -307,5 +307,106 @@ class PayToComponentTests: XCTestCase {
         // Then
         XCTAssertNotNil(continueButton, "ContinueButton should exist")
     }
+    
+    func testViewDidLoadShouldSendInitialCall() throws {
+        
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = AdyenContext(
+            apiContext: Dummy.apiContext,
+            payment: Dummy.payment,
+            analyticsProvider: analyticsProviderMock
+        )
+        let paymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)
+        let sut = PayToComponent(
+            paymentMethod: paymentMethod,
+            context: context
+        )
 
+        // When
+        sut.viewDidLoad(viewController: sut.viewController)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.infos.count, 1)
+        let infoType = analyticsProviderMock.infos.first?.type
+        XCTAssertEqual(infoType, .rendered)
+    }
+    
+    func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        let paymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)
+        let configuration = PayToComponent.Configuration(showsSubmitButton: false)
+        let sut = PayToComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: configuration
+        )
+
+        try populateValidFields(sut: sut)
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        let validationResult = sut.validate()
+
+        // Then
+        XCTAssertTrue(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
+
+    func testValidateGivenInvalidInputShouldReturnFormViewControllerValidateResult() throws {
+        // Given
+        let paymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)
+        let configuration = PayToComponent.Configuration(showsSubmitButton: false)
+        let sut = PayToComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: configuration
+        )
+
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        let expectedResult = formViewController.validate()
+
+        // When
+        let validationResult = sut.validate()
+
+        // Then
+        XCTAssertFalse(validationResult)
+        XCTAssertEqual(expectedResult, validationResult)
+    }
+
+    func testSubmit_shouldCallPaymentDelegateDidSubmit() throws {
+        // Given
+        
+        sut.viewController.loadViewIfNeeded()
+
+        let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
+
+        let delegateMock = PaymentComponentDelegateMock()
+        sut.delegate = delegateMock
+        delegateMock.onDidSubmit = { data, component in
+            didSubmitExpectation.fulfill()
+        }
+
+        try populateValidFields(sut: sut)
+
+        // When
+        sut.submit()
+
+        // Then
+        wait(for: [didSubmitExpectation], timeout: 10)
+        XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
+    }
+    
+    private func populateValidFields(sut: PayToComponent) throws {
+        let phoneNumberItem: FormPhoneNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.phoneNumberItem"))
+        let firstNameInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.firstNameTextfield"))
+        let lastNameInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.lastNameTextfield"))
+        
+        self.populate(textItemView: phoneNumberItem, with: "4123466")
+        self.populate(textItemView: firstNameInputItem, with: "test")
+        self.populate(textItemView: lastNameInputItem, with: "lastname")
+    }
 }
