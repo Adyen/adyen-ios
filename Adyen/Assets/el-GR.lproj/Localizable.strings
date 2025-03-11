@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Λήξη: %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@: δεν υποστηρίζεται";
 "adyen.card.numberItem.unknownBrand" = "Η επωνυμία κάρτας που εισαγάγατε δεν υποστηρίζεται";
+"adyen.card.scanYourCardButton" = "Σαρώστε την κάρτα σας";
 "adyen.dropIn.stored.title" = "Επιβεβαίωση πληρωμής μέσω %@";
 "adyen.dropIn.preselected.openAll.title" = "Αλλαγή τρόπου πληρωμής";
 "adyen.continueTo" = "Μετάβαση στην %@";
@@ -253,3 +254,12 @@
 "adyen.payto.bsb.label.bankAccountNumber" = "Αριθμός τραπεζικού λογαριασμού";
 "adyen.payto.bsb.bankStateBranch.hint" = "";
 "adyen.payto.bsb.description" = "Εισαγάγετε τον αριθμό τραπεζικού λογαριασμού και το υποκατάστημα της τράπεζας που συνδέεται με τον λογαριασμό σας για να συνεχίσετε.";
+"adyen.payto.payid.phone.hint" = "";
+"adyen.payto.payid.option.email" = "Email";
+"adyen.payto.firstName.invalid" = "";
+"adyen.payto.lastName.invalid" = "";
+"adyen.payto.payid.abn.invalid" = "";
+"adyen.payto.payid.orgid.invalid" = "";
+"adyen.payto.payid.email.invalid" = "";
+"adyen.payto.bsb.bankStateBranch.invalid" = "";
+"adyen.payto.bsb.bankAccountNumber.invalid" = "";

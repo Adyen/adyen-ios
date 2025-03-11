@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Derīguma termiņš %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@ netiek atbalstīts";
 "adyen.card.numberItem.unknownBrand" = "Ievadītais kartes zīmols netiek atbalstīts";
+"adyen.card.scanYourCardButton" = "Skenējiet savu karti";
 "adyen.dropIn.stored.title" = "Apstipriniet %@ maksājumu";
 "adyen.dropIn.preselected.openAll.title" = "Mainīt samaksas veidu";
 "adyen.continueTo" = "Turpināt ar %@";
@@ -253,3 +254,12 @@
 "adyen.payto.bsb.label.bankAccountNumber" = "Bankas konta numurs";
 "adyen.payto.bsb.bankStateBranch.hint" = "Bankas valsts filiāle";
 "adyen.payto.bsb.description" = "Ievadiet bankas konta numuru un bankas valsts filiāli, kas ir saistīta ar jūsu kontu, lai turpinātu";
+"adyen.payto.payid.phone.hint" = "Mobilais tālrunis";
+"adyen.payto.payid.option.email" = "E-pasts";
+"adyen.payto.firstName.invalid" = "Ievadiet pareizu vārdu";
+"adyen.payto.lastName.invalid" = "Ievadiet pareizu uzvārdu";
+"adyen.payto.payid.abn.invalid" = "Ievadiet pareizu Austrālijas uzņēmuma reģistrācijas numuru";
+"adyen.payto.payid.orgid.invalid" = "Ievadiet pareizu organizācijas ID numuru";
+"adyen.payto.payid.email.invalid" = "Ievadiet pareizu e-pasta adresi";
+"adyen.payto.bsb.bankStateBranch.invalid" = "Ievadiet pareizu bankas valsts filiāli";
+"adyen.payto.bsb.bankAccountNumber.invalid" = "Ievadiet pareizu bankas konta numuru";

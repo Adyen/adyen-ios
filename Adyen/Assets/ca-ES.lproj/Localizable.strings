@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Caduca %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@ no és compatible";
 "adyen.card.numberItem.unknownBrand" = "La marca de la targeta introduïda no és compatible";
+"adyen.card.scanYourCardButton" = "Escanegeu la vostra targeta";
 "adyen.dropIn.stored.title" = "Confirmació del pagament de %@";
 "adyen.dropIn.preselected.openAll.title" = "Canvieu el mètode de pagament";
 "adyen.continueTo" = "Continua a %@";
@@ -253,3 +254,12 @@
 "adyen.payto.bsb.label.bankAccountNumber" = "Número de compte bancari";
 "adyen.payto.bsb.bankStateBranch.hint" = "Sucursal bancària estatal";
 "adyen.payto.bsb.description" = "Introduïu el número de compte bancari i la sucursal bancària estatal que està associada al vostre compte per continuar";
+"adyen.payto.payid.phone.hint" = "Telèfon mòbil";
+"adyen.payto.payid.option.email" = "Correu electrònic";
+"adyen.payto.firstName.invalid" = "Introduïu un nom correcte";
+"adyen.payto.lastName.invalid" = "Introduïu un cognom correcte";
+"adyen.payto.payid.abn.invalid" = "Introduïu un número d'empresa australiana correcte";
+"adyen.payto.payid.orgid.invalid" = "Introduïu un número d'identificació de l'organització correcte";
+"adyen.payto.payid.email.invalid" = "Introduïu una adreça de correu electrònic correcta";
+"adyen.payto.bsb.bankStateBranch.invalid" = "Introduïu una sucursal bancària estatal correcta";
+"adyen.payto.bsb.bankAccountNumber.invalid" = "Introduïu un número de compte bancari correcte";

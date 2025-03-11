@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Действительно до %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@ не поддерживается";
 "adyen.card.numberItem.unknownBrand" = "Карты введенной платежной системы не поддерживаются";
+"adyen.card.scanYourCardButton" = "Отсканируйте свою карту";
 "adyen.dropIn.stored.title" = "Подтвердить оплату %@";
 "adyen.dropIn.preselected.openAll.title" = "Изменить способ оплаты";
 "adyen.continueTo" = "Перейти к %@";
@@ -247,3 +248,12 @@
 "adyen.payto.bsb.label.bankAccountNumber" = "Номер банковского счета";
 "adyen.payto.bsb.bankStateBranch.hint" = "";
 "adyen.payto.bsb.description" = "Введите номер банковского счета и отделение банка, связанное с вашим счетом, чтобы продолжить";
+"adyen.payto.payid.phone.hint" = "";
+"adyen.payto.payid.option.email" = "Эл. почта";
+"adyen.payto.firstName.invalid" = "";
+"adyen.payto.lastName.invalid" = "";
+"adyen.payto.payid.abn.invalid" = "";
+"adyen.payto.payid.orgid.invalid" = "";
+"adyen.payto.payid.email.invalid" = "";
+"adyen.payto.bsb.bankStateBranch.invalid" = "";
+"adyen.payto.bsb.bankAccountNumber.invalid" = "";

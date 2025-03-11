@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Vyprší %@";
 "adyen.card.numberItem.unsupportedBrand" = "Karty %@ nejsou podporované";
 "adyen.card.numberItem.unknownBrand" = "Zadaná značka karet není podporovaná";
+"adyen.card.scanYourCardButton" = "Naskenujte svou kartu";
 "adyen.dropIn.stored.title" = "Potvrdit platbu %@";
 "adyen.dropIn.preselected.openAll.title" = "Změnit způsob platby";
 "adyen.continueTo" = "Pokračovat k %@";
@@ -253,3 +254,12 @@
 "adyen.payto.bsb.label.bankAccountNumber" = "Číslo bankovního účtu";
 "adyen.payto.bsb.bankStateBranch.hint" = "Pobočka banky ve státě";
 "adyen.payto.bsb.description" = "Pro pokračování zadejte číslo bankovního účtu a kód BSB (Bank State Branch) spojený s vaším účtem";
+"adyen.payto.payid.phone.hint" = "Mobilní telefon";
+"adyen.payto.payid.option.email" = "E-mail";
+"adyen.payto.firstName.invalid" = "Zadejte správné křestní jméno";
+"adyen.payto.lastName.invalid" = "Zadejte správné příjmení";
+"adyen.payto.payid.abn.invalid" = "Zadejte správné australské číslo firmy";
+"adyen.payto.payid.orgid.invalid" = "Zadejte správné identifikační číslo organizace";
+"adyen.payto.payid.email.invalid" = "Zadejte správnou e-mailovou adresu";
+"adyen.payto.bsb.bankStateBranch.invalid" = "Zadejte správnou pobočku banky ve státě";
+"adyen.payto.bsb.bankAccountNumber.invalid" = "Zadejte správné číslo bankovního účtu";

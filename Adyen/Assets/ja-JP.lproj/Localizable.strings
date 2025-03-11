@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "%@ に期限が切れます";
 "adyen.card.numberItem.unsupportedBrand" = "%@はサポートされていません";
 "adyen.card.numberItem.unknownBrand" = "入力されたカードブランドはサポートされていません";
+"adyen.card.scanYourCardButton" = "カードをスキャンしてください";
 "adyen.dropIn.stored.title" = "%@のお支払いをご確認下さい";
 "adyen.dropIn.preselected.openAll.title" = "お支払方法を変更する";
 "adyen.continueTo" = "次へ進む：%@";
@@ -253,3 +254,12 @@
 "adyen.payto.bsb.label.bankAccountNumber" = "銀行口座番号";
 "adyen.payto.bsb.bankStateBranch.hint" = "";
 "adyen.payto.bsb.description" = "アカウントに接続されている銀行口座番号と銀行支店コードを入力して、続行してください。";
+"adyen.payto.payid.phone.hint" = "";
+"adyen.payto.payid.option.email" = "メールアドレス";
+"adyen.payto.firstName.invalid" = "";
+"adyen.payto.lastName.invalid" = "";
+"adyen.payto.payid.abn.invalid" = "";
+"adyen.payto.payid.orgid.invalid" = "";
+"adyen.payto.payid.email.invalid" = "";
+"adyen.payto.bsb.bankStateBranch.invalid" = "";
+"adyen.payto.bsb.bankAccountNumber.invalid" = "";

@@ -86,6 +86,8 @@ public struct LocalizationKey {
     public static let cardNumberItemUnsupportedBrand = LocalizationKey(key: "adyen.card.numberItem.unsupportedBrand")
     /// The entered card brand isn't supported
     public static let cardNumberItemUnknownBrand = LocalizationKey(key: "adyen.card.numberItem.unknownBrand")
+    /// Scan your card
+    public static let cardScanYourCardButton = LocalizationKey(key: "adyen.card.scanYourCardButton")
     /// Confirm %@ payment
     public static let dropInStoredTitle = LocalizationKey(key: "adyen.dropIn.stored.title")
     /// Change Payment Method
@@ -518,6 +520,24 @@ public struct LocalizationKey {
     public static let paytoBsbBankStateBranchHint = LocalizationKey(key: "adyen.payto.bsb.bankStateBranch.hint")
     /// Enter the bank account number and the Bank State Branch that is connected to your account to continue
     public static let paytoBsbDescription = LocalizationKey(key: "adyen.payto.bsb.description")
+    /// Mobile phone
+    public static let paytoPayidPhoneHint = LocalizationKey(key: "adyen.payto.payid.phone.hint")
+    /// Email
+    public static let paytoPayidOptionEmail = LocalizationKey(key: "adyen.payto.payid.option.email")
+    /// Enter a correct First name
+    public static let paytoFirstNameInvalid = LocalizationKey(key: "adyen.payto.firstName.invalid")
+    /// Enter a correct Last name
+    public static let paytoLastNameInvalid = LocalizationKey(key: "adyen.payto.lastName.invalid")
+    /// Enter a correct Australian Business Number
+    public static let paytoPayidAbnInvalid = LocalizationKey(key: "adyen.payto.payid.abn.invalid")
+    /// Enter a correct Organization ID number
+    public static let paytoPayidOrgidInvalid = LocalizationKey(key: "adyen.payto.payid.orgid.invalid")
+    /// Enter a correct Email address
+    public static let paytoPayidEmailInvalid = LocalizationKey(key: "adyen.payto.payid.email.invalid")
+    /// Enter a correct Bank state branch
+    public static let paytoBsbBankStateBranchInvalid = LocalizationKey(key: "adyen.payto.bsb.bankStateBranch.invalid")
+    /// Enter a correct Bank account number
+    public static let paytoBsbBankAccountNumberInvalid = LocalizationKey(key: "adyen.payto.bsb.bankAccountNumber.invalid")
     
     internal let key: String
     

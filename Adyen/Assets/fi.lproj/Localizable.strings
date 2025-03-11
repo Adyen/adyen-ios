@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Vanhenee %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@ ei tueta";
 "adyen.card.numberItem.unknownBrand" = "Syötettyä tuotemerkkikorttia ei tueta";
+"adyen.card.scanYourCardButton" = "Skannaa korttisi";
 "adyen.dropIn.stored.title" = "Vahvista %@ maksu";
 "adyen.dropIn.preselected.openAll.title" = "Muuta maksutapaa";
 "adyen.continueTo" = "Jatka kohteeseen %@";
@@ -253,3 +254,12 @@
 "adyen.payto.bsb.label.bankAccountNumber" = "Pankkitilinumero";
 "adyen.payto.bsb.bankStateBranch.hint" = "";
 "adyen.payto.bsb.description" = "Jotta voit jatkaa, lisää tiliisi yhdistetty pankkitilin numero ja BSB-numero (pankkikonttorin tunnus)";
+"adyen.payto.payid.phone.hint" = "";
+"adyen.payto.payid.option.email" = "Sähköposti";
+"adyen.payto.firstName.invalid" = "";
+"adyen.payto.lastName.invalid" = "";
+"adyen.payto.payid.abn.invalid" = "";
+"adyen.payto.payid.orgid.invalid" = "";
+"adyen.payto.payid.email.invalid" = "";
+"adyen.payto.bsb.bankStateBranch.invalid" = "";
+"adyen.payto.bsb.bankAccountNumber.invalid" = "";

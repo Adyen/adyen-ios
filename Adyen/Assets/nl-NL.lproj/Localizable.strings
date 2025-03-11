@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Verloopt op %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@ wordt niet ondersteund";
 "adyen.card.numberItem.unknownBrand" = "Het ingevoerde kaartmerk wordt niet ondersteund";
+"adyen.card.scanYourCardButton" = "Scan uw kaart";
 "adyen.dropIn.stored.title" = "Bevestig %@ betaling";
 "adyen.dropIn.preselected.openAll.title" = "Betalingsmethode wijzigen";
 "adyen.continueTo" = "Doorgaan naar %@";
@@ -253,3 +254,12 @@
 "adyen.payto.bsb.label.bankAccountNumber" = "Bankrekeningnummer";
 "adyen.payto.bsb.bankStateBranch.hint" = "";
 "adyen.payto.bsb.description" = "Voer het bankrekeningnummer en BSB in die aan uw rekening zijn gekoppeld om door te gaan";
+"adyen.payto.payid.phone.hint" = "";
+"adyen.payto.payid.option.email" = "E-mail";
+"adyen.payto.firstName.invalid" = "";
+"adyen.payto.lastName.invalid" = "";
+"adyen.payto.payid.abn.invalid" = "";
+"adyen.payto.payid.orgid.invalid" = "";
+"adyen.payto.payid.email.invalid" = "";
+"adyen.payto.bsb.bankStateBranch.invalid" = "";
+"adyen.payto.bsb.bankAccountNumber.invalid" = "";

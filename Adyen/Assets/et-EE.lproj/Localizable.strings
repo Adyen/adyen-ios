@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Aegub %@";
 "adyen.card.numberItem.unsupportedBrand" = "Kaubamärki %@ ei toetata";
 "adyen.card.numberItem.unknownBrand" = "Sisestatud kaardi kaubamärki ei toetata";
+"adyen.card.scanYourCardButton" = "Skannige oma kaart";
 "adyen.dropIn.stored.title" = "Kinnitage makse (%@)";
 "adyen.dropIn.preselected.openAll.title" = "Muuda makseviisi";
 "adyen.continueTo" = "Jätka: %@";
@@ -253,3 +254,12 @@
 "adyen.payto.bsb.label.bankAccountNumber" = "Pangakonto number";
 "adyen.payto.bsb.bankStateBranch.hint" = "Panga riiklik filiaal";
 "adyen.payto.bsb.description" = "Jätkamiseks sisestage pangakonto number ja teie kontoga seotud panga riiklik filiaal";
+"adyen.payto.payid.phone.hint" = "Mobiiltelefon";
+"adyen.payto.payid.option.email" = "E-post";
+"adyen.payto.firstName.invalid" = "Sisestage õige eesnimi";
+"adyen.payto.lastName.invalid" = "Sisestage õige perekonnanimi";
+"adyen.payto.payid.abn.invalid" = "Sisestage õige Austraalia ärinumber";
+"adyen.payto.payid.orgid.invalid" = "Sisestage õige organisatsiooni ID-number";
+"adyen.payto.payid.email.invalid" = "Sisestage õige e-posti aadress";
+"adyen.payto.bsb.bankStateBranch.invalid" = "Sisestage õige panga riiklik filiaal";
+"adyen.payto.bsb.bankAccountNumber.invalid" = "Sisestage õige pangakonto number";

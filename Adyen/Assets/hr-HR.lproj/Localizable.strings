@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Istječe %@";
 "adyen.card.numberItem.unsupportedBrand" = "Kartica %@ nije podržana";
 "adyen.card.numberItem.unknownBrand" = "Unesena marka kartice nije podržana";
+"adyen.card.scanYourCardButton" = "Skenirajte svoju karticu";
 "adyen.dropIn.stored.title" = "Potvrdite plaćanje: %@";
 "adyen.dropIn.preselected.openAll.title" = "Promijeni način plaćanja";
 "adyen.continueTo" = "Nastavi na %@";
@@ -253,3 +254,12 @@
 "adyen.payto.bsb.label.bankAccountNumber" = "Broj bankovnog računa";
 "adyen.payto.bsb.bankStateBranch.hint" = "Podružnica državne banke";
 "adyen.payto.bsb.description" = "Unesite broj bankovnog računa i državnu podružnicu banke koja je povezana s vašim računom kako biste nastavili";
+"adyen.payto.payid.phone.hint" = "Mobilni telefon";
+"adyen.payto.payid.option.email" = "E-pošta";
+"adyen.payto.firstName.invalid" = "Unesite ispravno ime";
+"adyen.payto.lastName.invalid" = "Unesite ispravno prezime";
+"adyen.payto.payid.abn.invalid" = "Unesite ispravan australski poslovni broj";
+"adyen.payto.payid.orgid.invalid" = "Unesite ispravan identifikacijski broj organizacije";
+"adyen.payto.payid.email.invalid" = "Unesite ispravnu adresu e-pošte";
+"adyen.payto.bsb.bankStateBranch.invalid" = "Unesite ispravnu poslovnicu banke";
+"adyen.payto.bsb.bankAccountNumber.invalid" = "Unesite ispravan broj bankovnog računa";

@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Expiră la %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@ nu este acceptată";
 "adyen.card.numberItem.unknownBrand" = "Marca de card introdusă nu este acceptată";
+"adyen.card.scanYourCardButton" = "Scanați-vă cardul";
 "adyen.dropIn.stored.title" = "Confirmați plata %@";
 "adyen.dropIn.preselected.openAll.title" = "Schimbare metodă de plată";
 "adyen.continueTo" = "Continuați către %@";
@@ -247,3 +248,12 @@
 "adyen.payto.bsb.label.bankAccountNumber" = "Numărul contului bancar";
 "adyen.payto.bsb.bankStateBranch.hint" = "Sucursala bancară statală";
 "adyen.payto.bsb.description" = "Pentru a continua, introduceți numărul contului bancar și sucursala băncii de stat care este asociată cu contul dvs.";
+"adyen.payto.payid.phone.hint" = "Telefon mobil";
+"adyen.payto.payid.option.email" = "E-mail";
+"adyen.payto.firstName.invalid" = "Completează un prenume corect";
+"adyen.payto.lastName.invalid" = "Completează un nume de familie corect";
+"adyen.payto.payid.abn.invalid" = "Completează un număr corect de la birou din Australia";
+"adyen.payto.payid.orgid.invalid" = "Completează un număr corect de identificare al organizației";
+"adyen.payto.payid.email.invalid" = "Completează o adresă de e-mail corectă";
+"adyen.payto.bsb.bankStateBranch.invalid" = "Completează o sucursală bancară statală corectă";
+"adyen.payto.bsb.bankAccountNumber.invalid" = "Completează un număr de cont bancar corect";

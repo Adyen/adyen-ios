@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Expires %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@ isn't supported";
 "adyen.card.numberItem.unknownBrand" = "The entered card brand isn't supported";
+"adyen.card.scanYourCardButton" = "Scan your card";
 "adyen.dropIn.stored.title" = "Confirm %@ payment";
 "adyen.dropIn.preselected.openAll.title" = "Change Payment Method";
 "adyen.continueTo" = "Continue to %@";
@@ -253,3 +254,12 @@
 "adyen.payto.bsb.label.bankAccountNumber" = "Bank account number";
 "adyen.payto.bsb.bankStateBranch.hint" = "Bank state branch";
 "adyen.payto.bsb.description" = "Enter the bank account number and the Bank State Branch that is connected to your account to continue";
+"adyen.payto.payid.phone.hint" = "Mobile phone";
+"adyen.payto.payid.option.email" = "Email";
+"adyen.payto.firstName.invalid" = "Enter a correct First name";
+"adyen.payto.lastName.invalid" = "Enter a correct Last name";
+"adyen.payto.payid.abn.invalid" = "Enter a correct Australian Business Number";
+"adyen.payto.payid.orgid.invalid" = "Enter a correct Organization ID number";
+"adyen.payto.payid.email.invalid" = "Enter a correct Email address";
+"adyen.payto.bsb.bankStateBranch.invalid" = "Enter a correct Bank state branch";
+"adyen.payto.bsb.bankAccountNumber.invalid" = "Enter a correct Bank account number";

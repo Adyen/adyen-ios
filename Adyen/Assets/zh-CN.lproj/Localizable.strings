@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "%@过期";
 "adyen.card.numberItem.unsupportedBrand" = "不支持 %@";
 "adyen.card.numberItem.unknownBrand" = "不支持输入的卡片品牌";
+"adyen.card.scanYourCardButton" = "扫描您的卡片";
 "adyen.dropIn.stored.title" = "确认 %@ 支付";
 "adyen.dropIn.preselected.openAll.title" = "更改支付方式";
 "adyen.continueTo" = "继续至 %@";
@@ -247,3 +248,12 @@
 "adyen.payto.bsb.label.bankAccountNumber" = "银行账号";
 "adyen.payto.bsb.bankStateBranch.hint" = "";
 "adyen.payto.bsb.description" = "请输入银行账号和与您的账户关联的银行州分行以继续";
+"adyen.payto.payid.phone.hint" = "";
+"adyen.payto.payid.option.email" = "电子邮件";
+"adyen.payto.firstName.invalid" = "";
+"adyen.payto.lastName.invalid" = "";
+"adyen.payto.payid.abn.invalid" = "";
+"adyen.payto.payid.orgid.invalid" = "";
+"adyen.payto.payid.email.invalid" = "";
+"adyen.payto.bsb.bankStateBranch.invalid" = "";
+"adyen.payto.bsb.bankAccountNumber.invalid" = "";

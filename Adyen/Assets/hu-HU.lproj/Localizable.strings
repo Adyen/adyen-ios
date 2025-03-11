@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Lejár: %@";
 "adyen.card.numberItem.unsupportedBrand" = "A(z) %@ nem támogatott";
 "adyen.card.numberItem.unknownBrand" = "A megadott kártyamárka nem támogatott";
+"adyen.card.scanYourCardButton" = "Kártya beolvasása";
 "adyen.dropIn.stored.title" = "%@ használatával történő fizetés jóváhagyása";
 "adyen.dropIn.preselected.openAll.title" = "Fizetési mód módosítása";
 "adyen.continueTo" = "Folytatás a következővel: %@";
@@ -253,3 +254,12 @@
 "adyen.payto.bsb.label.bankAccountNumber" = "Bankszámlaszám";
 "adyen.payto.bsb.bankStateBranch.hint" = "Bankfiókkód";
 "adyen.payto.bsb.description" = "A folytatáshoz adja meg a bankszámlaszámot és a számlájához kapcsolódó bankfiók azonosító (BSB) kódját";
+"adyen.payto.payid.phone.hint" = "Mobiltelefon";
+"adyen.payto.payid.option.email" = "E-mail-cím";
+"adyen.payto.firstName.invalid" = "Adja meg a helyes utónevet";
+"adyen.payto.lastName.invalid" = "Adja meg a helyes vezetéknevet";
+"adyen.payto.payid.abn.invalid" = "Adja meg a helyes ausztrál vállalkozói azonosítót";
+"adyen.payto.payid.orgid.invalid" = "Adja meg a helyes szervezeti azonosítószámot";
+"adyen.payto.payid.email.invalid" = "Adja meg a helyes e-mail-címet";
+"adyen.payto.bsb.bankStateBranch.invalid" = "Adja meg a helyes bankfiókkódot";
+"adyen.payto.bsb.bankAccountNumber.invalid" = "Adja meg a helyes bankszámlaszámot";

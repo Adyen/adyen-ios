@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Wygasa %@";
 "adyen.card.numberItem.unsupportedBrand" = "Marka %@ nie jest obsługiwana";
 "adyen.card.numberItem.unknownBrand" = "Wprowadzona marka karty nie jest obsługiwana";
+"adyen.card.scanYourCardButton" = "Zeskanuj kartę";
 "adyen.dropIn.stored.title" = "Potwierdź płatność %@";
 "adyen.dropIn.preselected.openAll.title" = "Zmień metodę płatności";
 "adyen.continueTo" = "Przejdź do %@";
@@ -253,3 +254,12 @@
 "adyen.payto.bsb.label.bankAccountNumber" = "Numer rachunku";
 "adyen.payto.bsb.bankStateBranch.hint" = "";
 "adyen.payto.bsb.description" = "Aby kontynuować, wprowadź numer konta bankowego i oddział banku, który jest powiązany z Twoim kontem";
+"adyen.payto.payid.phone.hint" = "";
+"adyen.payto.payid.option.email" = "E-mail";
+"adyen.payto.firstName.invalid" = "";
+"adyen.payto.lastName.invalid" = "";
+"adyen.payto.payid.abn.invalid" = "";
+"adyen.payto.payid.orgid.invalid" = "";
+"adyen.payto.payid.email.invalid" = "";
+"adyen.payto.bsb.bankStateBranch.invalid" = "";
+"adyen.payto.bsb.bankAccountNumber.invalid" = "";

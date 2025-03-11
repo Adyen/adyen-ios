@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "تنتهي في %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@ غير مدعومة";
 "adyen.card.numberItem.unknownBrand" = "العلامة التجارية للبطاقة التي تم إدخالها غير مدعومة";
+"adyen.card.scanYourCardButton" = "امسح بطاقتك ضوئيًا";
 "adyen.dropIn.stored.title" = "تأكيد الدفع باستخدام %@";
 "adyen.dropIn.preselected.openAll.title" = "تغيير طريقة الدفع";
 "adyen.continueTo" = "متابعة إلى %@";
@@ -253,3 +254,12 @@
 "adyen.payto.bsb.label.bankAccountNumber" = "رقم الحساب البنكي";
 "adyen.payto.bsb.bankStateBranch.hint" = "رمز فرع البنك";
 "adyen.payto.bsb.description" = "أدخل رقم الحساب المصرفي وفرع البنك في الولاية المرتبط بحسابك للمتابعة";
+"adyen.payto.payid.phone.hint" = "الهاتف المحمول";
+"adyen.payto.payid.option.email" = "البريد الإلكتروني";
+"adyen.payto.firstName.invalid" = "أدخل اسمًا أولًا صحيحًا";
+"adyen.payto.lastName.invalid" = "أدخل اسم عائلة صحيحًا";
+"adyen.payto.payid.abn.invalid" = "أدخل رقم أعمال أستراليًا صحيحًا";
+"adyen.payto.payid.orgid.invalid" = "أدخل معرِّف منظمة صحيحًا";
+"adyen.payto.payid.email.invalid" = "أدخل عنوان بريد إلكتروني صحيحًا";
+"adyen.payto.bsb.bankStateBranch.invalid" = "أدخل رمز فرع بنك صحيحًا";
+"adyen.payto.bsb.bankAccountNumber.invalid" = "أدخل رقم حساب مصرفي صحيحًا";

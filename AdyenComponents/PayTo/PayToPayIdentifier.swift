@@ -19,7 +19,7 @@ internal enum PayToPayIdentifier: String, CaseIterable {
         case .phone:
             return .paytoPayidOptionPhone
         case .email:
-            return .emailItemTitle
+            return .paytoPayidOptionEmail
         case .abn:
             return LocalizationKey(key: "ABN")
         case .organizationId:

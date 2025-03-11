@@ -116,7 +116,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
             postfix: ViewIdentifier.phoneNumberItem
         )
         item.validator = RegularExpressionValidator(regularExpression: ValidationRegex.phone)
-        item.title = localizedString(.paytoPayidOptionPhone, localizationParameters)
+        item.title = localizedString(.paytoPayidPhoneHint, localizationParameters)
         item.placeholder = localizedString(.mobileNumber, localizationParameters)
         return item
     }
@@ -127,7 +127,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
         item.title = localizedString(.paytoLabelFirstName, localizationParameters)
         item.placeholder = localizedString(.paytoLabelFirstName, localizationParameters)
         item.validator = LengthValidator(minimumLength: 1)
-        item.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
+        item.validationFailureMessage = localizedString(.paytoFirstNameInvalid, localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.firstNameInputItem
@@ -141,7 +141,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
         item.title = localizedString(.paytoLabelLastName, localizationParameters)
         item.placeholder = localizedString(.paytoLabelLastName, localizationParameters)
         item.validator = LengthValidator(minimumLength: 1)
-        item.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
+        item.validationFailureMessage = localizedString(.paytoLastNameInvalid, localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.lastNameInputItem
@@ -180,7 +180,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
         item.title = localizedString(.emailItemTitle, localizationParameters)
         item.placeholder = localizedString(.emailItemPlaceHolder, localizationParameters)
         item.validator = EmailValidator()
-        item.validationFailureMessage = localizedString(.emailItemInvalid, localizationParameters)
+        item.validationFailureMessage = localizedString(.paytoPayidEmailInvalid, localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.emailInputItem
@@ -195,7 +195,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
         item.placeholder = localizedString(.paytoPayidAbnHint, localizationParameters)
         item.formatter = NumericFormatter()
         item.validator = RegularExpressionValidator(regularExpression: ValidationRegex.abn)
-        item.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
+        item.validationFailureMessage = localizedString(.paytoPayidAbnInvalid, localizationParameters)
         item.keyboardType = .numberPad
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
@@ -213,7 +213,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
             regularExpression: ValidationRegex.organizationId,
             minimumLength: 2
         )
-        item.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
+        item.validationFailureMessage = localizedString(.paytoPayidOrgidInvalid, localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.organizationIDInputItem
@@ -243,7 +243,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
         item.title = localizedString(.bacsBankAccountNumberFieldTitle, localizationParameters)
         item.placeholder = localizedString(.bacsBankAccountNumberFieldTitle, localizationParameters)
         item.validator = RegularExpressionValidator(regularExpression: ValidationRegex.accountNumber)
-        item.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
+        item.validationFailureMessage = localizedString(.paytoBsbBankAccountNumberInvalid, localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.accountNumberInputItem
@@ -261,7 +261,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
             minimumLength: Constants.bsbDigitLength,
             maximumLength: Constants.bsbDigitLength
         )
-        item.validationFailureMessage = localizedString(.validationAlertTitle, localizationParameters)
+        item.validationFailureMessage = localizedString(.paytoBsbBankStateBranchInvalid, localizationParameters)
         item.formatter = NumericFormatter()
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
