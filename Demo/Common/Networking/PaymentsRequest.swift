@@ -66,6 +66,7 @@ internal struct PaymentsRequest: APIRequest {
         try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
         try container.encode(ConfigurationConstants.recurringProcessingModel, forKey: .recurringProcessingModel)
         try container.encodeIfPresent(data.checkoutAttemptId, forKey: .checkoutAttemptId)
+        try container.encode(ConfigurationConstants.mandate, forKey: .mandate)
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -94,6 +95,7 @@ internal struct PaymentsRequest: APIRequest {
         case lineItems
         case delegatedAuthenticationData
         case recurringProcessingModel
+        case mandate
     }
     
 }
