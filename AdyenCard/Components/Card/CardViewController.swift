@@ -9,13 +9,6 @@ import UIKit
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
-#if canImport(AdyenCardScanner)
-    import AdyenCardScanner
-
-    private let isCardScannerAvailable = true
-#else
-    private let isCardScannerAvailable = false
-#endif
 
 internal protocol CardViewControllerProtocol {
     func update(storePaymentMethodFieldVisibility isVisible: Bool)
@@ -33,11 +26,27 @@ internal class CardViewController: FormViewController {
     private let initialCountryCode: String
     private let scope: String
     private let cardLogos: [FormCardLogosItem.CardTypeLogo]
+    private lazy var cardScannerController: CardScannerControlling = {
+        let controller = CardScannerController(presenter: self)
+        controller.onScanComplete = { [weak self] result in
+            switch result {
+            case let .success((number, date)):
+                self?.processScannedCard(number: number, expiryDate: date)
+            case let .failure(error):
+                // TODO: Error handling
+                print("Scanner error: \(error)")
+            }
+        }
+        return controller
+    }()
+    
+    private var isScannerAvailable: Bool { cardScannerController.isScannerAvailable }
     
     internal lazy var items = {
+        
         let scanCardHandler: (() -> Void)?
-        if #available(iOS 13.0, *), isCardScannerAvailable {
-            scanCardHandler = { [weak self] in self?.openCardScanner() }
+        if isScannerAvailable {
+            scanCardHandler = { [weak self] in self?.cardScannerController.openCardScanner() }
         } else {
             scanCardHandler = nil
         }
@@ -406,30 +415,10 @@ extension CardViewController: CardViewControllerProtocol {
 // MARK: - Card scanner
 
 extension CardViewController {
-    private func openCardScanner() {
-        let scannerNavigationController = UINavigationController()
-        if let scannerViewController = AdyenCardScanner.CardScanner.createCardScanner(completion: { [weak self] result in
-            switch result {
-            case let .success(card):
-                scannerNavigationController.dismiss(animated: true)
-                self?.processScannedCard(card)
-            case let .failure(error):
-                // TODO: Error handling
-                print("Scanner error: \(error)")
-            }
-        }) {
-            scannerNavigationController.setViewControllers(
-                [scannerViewController],
-                animated: false
-            )
-            presentViewController(scannerNavigationController, animated: true)
-        }
-    }
-    
-    private func processScannedCard(_ card: AdyenCardScanner.CreditCard) {
-        items.numberContainerItem.setCardNumber(card.number ?? "")
-        if let expirationDate = card.expirationDate {
-            items.expiryDateItem.setExpiryDate(expirationDate)
+    private func processScannedCard(number: String?, expiryDate: Date?) {
+        items.numberContainerItem.setCardNumber(number ?? "")
+        if let expiryDate {
+            items.expiryDateItem.setExpiryDate(expiryDate)
         }
     }
 }
