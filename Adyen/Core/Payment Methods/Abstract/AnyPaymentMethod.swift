@@ -16,7 +16,7 @@ internal enum AnyPaymentMethod: Codable {
     case storedAchDirectDebit(StoredACHDirectDebitPaymentMethod)
     case storedCashAppPay(StoredCashAppPayPaymentMethod)
     case storedTwint(StoredTwintPaymentMethod)
-    case storedPayTo(StoredPaytoPaymentMethod)
+    case storedPayTo(StoredPayToPaymentMethod)
 
     case instant(PaymentMethod)
     case card(AnyCardPaymentMethod)

@@ -289,7 +289,7 @@ extension ComponentManager: PaymentComponentBuilder {
         )
     }
     
-    internal func build(paymentMethod: StoredPaytoPaymentMethod) -> (any PaymentComponent)? {
+    internal func build(paymentMethod: StoredPayToPaymentMethod) -> (any PaymentComponent)? {
         StoredPaymentMethodComponent(
             paymentMethod: paymentMethod,
             context: context,

@@ -30,7 +30,7 @@ public struct PayToPaymentMethod: PaymentMethod {
 }
 
 /// A stored PayTo payment method.
-public struct StoredPaytoPaymentMethod: StoredPaymentMethod {
+public struct StoredPayToPaymentMethod: StoredPaymentMethod {
    
     public let type: PaymentMethodType
     

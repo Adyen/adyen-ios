@@ -171,7 +171,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
     
     func testStoredPayTo() throws {
         // Given
-        let paymentMethod = StoredPaytoPaymentMethod(
+        let paymentMethod = StoredPayToPaymentMethod(
             type: .payTo,
             name: "PayTo Account",
             identifier: "twint",
