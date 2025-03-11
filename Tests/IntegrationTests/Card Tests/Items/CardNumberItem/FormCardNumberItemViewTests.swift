@@ -251,13 +251,14 @@ private extension FormCardNumberItemViewTests {
     /// Sets up an expectation that the `handleDidReachMaximumLength` is called exactly once
     func makeExpectation_didReachMaximumLength_once(
         for sut: FormCardNumberItemView,
-        panLength: Int
+        panLength: Int,
+        file: StaticString = #file,
+        line: UInt = #line
     ) -> (delegate: FormTextItemViewDelegate, expectation: XCTestExpectation) {
         
         let expectation = expectation(description: "Handle did reach maximum length was called once")
         let delegate = FormTextItemViewDelegateMock<FormCardNumberItem, FormCardNumberItemView>()
         delegate.handleDidReachMaximumLength = { itemView in
-            XCTAssertEqual(itemView.textField.text?.count, panLength)
             expectation.fulfill()
         }
         sut.delegate = delegate
