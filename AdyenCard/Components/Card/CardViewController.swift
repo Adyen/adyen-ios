@@ -109,25 +109,25 @@ internal class CardViewController: FormViewController {
             localizationParameters: localizationParameters
         )
     }
-    
+
     // MARK: - View lifecycle
-    
+
     override internal func viewDidLoad() {
         setupView()
         setupViewRelations()
         observeNumberItem()
         super.viewDidLoad()
     }
-    
+
     override internal func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         prefill()
     }
-    
+
     // MARK: Public methods
-    
+
     internal weak var cardDelegate: CardViewControllerDelegate?
-    
+
     internal var card: Card {
         let expiryMonth = items.expiryDateItem.expiryMonth
         let expiryYear = items.expiryDateItem.expiryYear
@@ -148,7 +148,7 @@ internal class CardViewController: FormViewController {
     internal var cardBIN: String {
         items.numberContainerItem.numberItem.binValue
     }
-    
+
     internal var validAddress: PostalAddress? {
         let address: PostalAddress
         let requiredFields: Set<AddressField>
@@ -175,7 +175,7 @@ internal class CardViewController: FormViewController {
         
         return address
     }
-    
+
     internal var kcpDetails: KCPDetails? {
         guard
             configuration.koreanAuthenticationMode != .hide,
@@ -185,7 +185,7 @@ internal class CardViewController: FormViewController {
         
         return KCPDetails(taxNumber: taxNumber, password: password)
     }
-    
+
     internal var socialSecurityNumber: String? {
         guard configuration.socialSecurityNumberMode != .hide else { return nil }
         return items.socialSecurityNumberItem.nonEmptyValue
