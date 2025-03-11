@@ -36,17 +36,17 @@ internal protocol CardScannerControlling {
     
         internal func openCardScanner() {
             let scannerNavigationController = UINavigationController()
-            if let scannerViewController = AdyenCardScanner.CardScanner.createCardScanner(completion: { [weak self] result in
+            guard let scannerViewController = AdyenCardScanner.CardScanner.createCardScanner(completion: { [weak self] result in
                 guard let self else { return }
                 self.onScanComplete?(self.map(result))
                 scannerNavigationController.dismiss(animated: true)
-            }) {
-                scannerNavigationController.setViewControllers(
-                    [scannerViewController],
-                    animated: false
-                )
-                presenter.present(scannerNavigationController, animated: true)
-            }
+            }) else { return }
+            
+            scannerNavigationController.setViewControllers(
+                [scannerViewController],
+                animated: false
+            )
+            presenter.present(scannerNavigationController, animated: true)
         }
     
         // MARK: - Private
