@@ -551,13 +551,14 @@ private struct PayToPaymentMethodDecoder: PaymentMethodDecoder {
     }
 
     func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
-        if let storedPaymentMethod = paymentMethod as? StoredPayToPaymentMethod {
-            return .storedPayTo(storedPaymentMethod)
+        switch paymentMethod {
+        case let regular as PayToPaymentMethod:
+                .payTo(regular)
+        case let stored as StoredPayToPaymentMethod:
+            .storedPayTo(stored)
+        default:
+            nil
         }
-        if let method = paymentMethod as? PayToPaymentMethod {
-            return .payTo(method)
-        }
-        return nil
     }
 }
 

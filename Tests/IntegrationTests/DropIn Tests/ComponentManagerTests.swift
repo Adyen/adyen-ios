@@ -211,7 +211,7 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertNotNil(storedTwintComponent)
     }
     
-    func testPayToShouldSucceed() throws {
+    func test_componentManager_contains_payToComponent() throws {
         let sut = ComponentManager(
             paymentMethods: paymentMethods,
             context: context,
@@ -226,7 +226,7 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertNotNil(paymentComponent)
     }
     
-    func testStoredPaytoShouldSucceed() throws {
+    func test_componentManager_contains_storedPayToComponent() throws {
         // Given
         let sut = ComponentManager(
             paymentMethods: paymentMethods,

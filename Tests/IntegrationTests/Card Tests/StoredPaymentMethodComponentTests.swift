@@ -169,7 +169,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         XCTAssertEqual(viewController?.title, localizedString(.dropInStoredTitle, nil, paymentMethod.name))
     }
     
-    func testStoredPayTo() throws {
+    func test_storedPaymentComponent_matches_payTo() throws {
         // Given
         let paymentMethod = StoredPayToPaymentMethod(
             type: .payTo,
