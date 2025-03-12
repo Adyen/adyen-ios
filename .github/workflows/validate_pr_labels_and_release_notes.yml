@@ -6,7 +6,7 @@ on:
 
 jobs:
   get-pr-labels:
-    if: "!startsWith(github.event.pull_request.head.ref, 'release/')"
+    if: "!startsWith(github.event.pull_request.head.ref, 'release/') && !contains(github.actor, '[bot]')"
     runs-on: ubuntu-latest
     steps:
       - name: Fetch repo
@@ -25,9 +25,11 @@ jobs:
              exit 1
           fi 
           echo "LABELS=$(cat $FILE_PATH),chore,improvement" >> $GITHUB_OUTPUT
+          echo "GITHUB ACTOR: $GH_ACTOR"
         id: get-allowed_labels
         env:
           PROJECT_ROOT: ${{ github.workspace }}
+          GH_ACTOR: ${{ github.actor }}
 
       - name: Validate labels
         uses: jesusvasquez333/verify-pr-label-action@v1.4.0
