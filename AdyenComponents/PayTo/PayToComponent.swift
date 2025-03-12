@@ -242,8 +242,7 @@ private extension PayToComponent {
         guard validate() else { return }
         
         startLoading()
-        
-        print("current identifier is \(selectedPaymentIdentifier())")
+
         let details = PayToDetails(
             paymentMethod: payToPaymentMethod,
             accountIdentifier: selectedPaymentIdentifier(),

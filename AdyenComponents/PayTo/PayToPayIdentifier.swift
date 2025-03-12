@@ -4,24 +4,26 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+@_spi(AdyenInternal) import Adyen
+import UIKit
+
 /// Identifier options for PayTo, known as PayID.
-internal enum PayToPayIdentifier: String, CustomStringConvertible, CaseIterable {
+internal enum PayToPayIdentifier: String, CaseIterable {
     case phone
     case email
     case abn
     case organizationId
 
-    // TODO: Add translation
-    public var description: String {
+    internal var localizedKey: LocalizationKey {
         switch self {
         case .phone:
-            return "Phone"
+            return .paytoPayidOptionPhone
         case .email:
-            return "Email"
+            return .paytoPayidOptionEmail
         case .abn:
-            return "ABN"
+            return LocalizationKey(key: "ABN")
         case .organizationId:
-            return "Organization ID"
+            return .paytoPayidLabelOrgid
         }
     }
 }
