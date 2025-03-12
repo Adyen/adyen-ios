@@ -409,14 +409,18 @@ extension CardViewController: CardViewControllerProtocol {
 // MARK: - Card scanner
 
 extension CardViewController {
-    private func processScannedCard(number: String?, expiryDate: Date?) {
-        items.numberContainerItem.setCardNumber(number ?? "")
-        if let expiryDate {
-            items.expiryDateItem.setExpiryDate(expiryDate)
+    private func handleCardScanningResult(_ result: Result<(String?, Date?), Error>) {
+        switch result {
+        case let .success((number, expiryDate)):
+            items.numberContainerItem.setCardNumber(number ?? "")
+            if let expiryDate {
+                items.expiryDateItem.setExpiryDate(expiryDate)
+            }
+        case .failure:
+            // TODO: Implement error handling
+            break
         }
     }
-
-    private func handleCardScanningResult(_ result: Result<(String?, Date?), Error>) {}
 }
 
 extension CardBrand {

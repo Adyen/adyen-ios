@@ -5,11 +5,14 @@
 //
 
 import Foundation
+import UIKit
 
 internal protocol CardScannerControlling {
     typealias CardModel = (String?, Date?)
 
     var isScannerAvailable: Bool { get }
+
+    init(presenter: UIViewController)
     func openCardScanner()
     
     var onScanComplete: ((Result<CardModel, Error>) -> Void)? { get set }
@@ -24,7 +27,7 @@ internal protocol CardScannerControlling {
         }
     
         private let presenter: UIViewController
-        internal var onScanComplete: ((Result<CardModel, any Error>) -> Void)?
+        internal var onScanComplete: ((Result<(String?, Date?), any Error>) -> Void)?
     
         internal init(presenter: UIViewController) {
             self.presenter = presenter
@@ -68,7 +71,7 @@ internal protocol CardScannerControlling {
         internal var onScanComplete: ((Result<CardModel, any Error>) -> Void)?
         internal func openCardScanner() {}
 
-        internal init(onScanComplete: (@escaping (Result<CardModel, any Error>) -> Void)? = nil) {}
+        internal init(presenter: UIViewController) {}
     }
 
 #endif // canImport(AdyenCardScanner)
