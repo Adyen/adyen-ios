@@ -53,7 +53,7 @@ jobs:
             # Finding content inside of <$LABEL> & </$LABEL> + trimming leading/trailling spaces/newlines
             LABEL_OUTPUT=$(echo "$COMMITS" | awk "/<$LABEL>/,/<\/$LABEL>/" | sed "s/<$LABEL>//g; s/<\/$LABEL>//g")
             echo $LABEL_OUTPUT
-            LABEL_OUTPUT=$(echo $LABEL_OUTPUT | xargs)
+            LABEL_OUTPUT=$(echo $LABEL_OUTPUT | sed 's/"/\\"/g' | sed "s/'/\\'/g" | xargs)
             echo $LABEL_OUTPUT
             
             if [ -n "$LABEL_OUTPUT" ]; then
