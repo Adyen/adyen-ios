@@ -35,7 +35,8 @@ class PaymentMethodTests: XCTestCase {
                 storedBcmcDictionary,
                 storedDebitCardDictionary,
                 storedBlik,
-                storedACHDictionary
+                storedACHDictionary,
+                storedPayToDictionary
             ],
             "paymentMethods": [
                 creditCardDictionary,
@@ -108,7 +109,7 @@ class PaymentMethodTests: XCTestCase {
         
         let paymentMethods = try getPaymentMethods()
         
-        XCTAssertEqual(paymentMethods.stored.count, 8)
+        XCTAssertEqual(paymentMethods.stored.count, 9)
         XCTAssertTrue(paymentMethods.stored[0] is StoredCardPaymentMethod)
         
         XCTAssertTrue(paymentMethods.stored[1] is StoredCardPaymentMethod)
@@ -143,6 +144,9 @@ class PaymentMethodTests: XCTestCase {
         
         XCTAssertTrue(paymentMethods.stored[7] is StoredACHDirectDebitPaymentMethod)
         XCTAssertEqual((paymentMethods.stored[7] as! StoredACHDirectDebitPaymentMethod).identifier, "CWG8SF2PR2M84H82")
+        
+        XCTAssertTrue(paymentMethods.stored[8] is StoredPayToPaymentMethod)
+        XCTAssertEqual((paymentMethods.stored[8] as! StoredPayToPaymentMethod).identifier, "CM3QNF29XWNZJMV5")
         
         // Test StoredBCMCPaymentMethod localization
         var storedBCMCPaymentMethod = paymentMethods.stored[4] as! StoredBCMCPaymentMethod
@@ -1150,12 +1154,29 @@ class PaymentMethodTests: XCTestCase {
         testCoding(paymentMethod)
     }
     
-    // MARK: - Cash App
+    // MARK: - Qiwi App
     
     func testDecodingQiwiPaymentMethod() throws {
         let paymentMethod = try AdyenCoder.decode(qiwiWallet) as QiwiWalletPaymentMethod
         XCTAssertEqual(paymentMethod.type.rawValue, "qiwiwallet")
         XCTAssertEqual(paymentMethod.name, "Qiwi Wallet")
+        testCoding(paymentMethod)
+    }
+    
+    // MARK: PayTo
+    
+    func testDecodingPayToPaymentMethod() throws {
+        let paymentMethod = try AdyenCoder.decode(payto) as PayToPaymentMethod
+        XCTAssertEqual(paymentMethod.type.rawValue, "payto")
+        XCTAssertEqual(paymentMethod.name, "payto")
+        testCoding(paymentMethod)
+    }
+    
+    func testDecodingStoredPayToPaymentMethod() throws {
+        let paymentMethod = try AdyenCoder.decode(storedPayToDictionary) as StoredPayToPaymentMethod
+        XCTAssertEqual(paymentMethod.type.rawValue, "payto")
+        XCTAssertEqual(paymentMethod.name, "payto")
+        XCTAssertEqual(paymentMethod.label, "•••••••2311")
         testCoding(paymentMethod)
     }
     

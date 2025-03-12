@@ -451,6 +451,19 @@ let storedTwintDictionary = [
     "type": "twint"
 ] as [String: Any]
 
+let storedPayToDictionary = [
+    "id": "CM3QNF29XWNZJMV5",
+    "label": "•••••••2311",
+    "supportedShopperInteractions": [
+        "Ecommerce"
+    ],
+    "name": "payto",
+    "supportedRecurringProcessingModels": [
+        "CardOnFile"
+    ],
+    "type": "payto"
+] as [String: Any]
+
 let qiwiWallet = [
     "details": [
         [
