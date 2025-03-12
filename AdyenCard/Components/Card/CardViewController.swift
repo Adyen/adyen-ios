@@ -29,23 +29,17 @@ internal class CardViewController: FormViewController {
     private lazy var cardScannerController: CardScannerControlling = {
         let controller = CardScannerController(presenter: self)
         controller.onScanComplete = { [weak self] result in
-            switch result {
-            case let .success((number, date)):
-                self?.processScannedCard(number: number, expiryDate: date)
-            case let .failure(error):
-                // TODO: Error handling
-                print("Scanner error: \(error)")
-            }
+            self?.handleCardScanningResult(result)
         }
         return controller
     }()
     
-    private var isScannerAvailable: Bool { cardScannerController.isScannerAvailable }
+    private var isCardScannerAvailable: Bool { cardScannerController.isScannerAvailable }
     
     internal lazy var items = {
         
         let scanCardHandler: (() -> Void)?
-        if isScannerAvailable {
+        if isCardScannerAvailable {
             scanCardHandler = { [weak self] in self?.cardScannerController.openCardScanner() }
         } else {
             scanCardHandler = nil
@@ -421,6 +415,8 @@ extension CardViewController {
             items.expiryDateItem.setExpiryDate(expiryDate)
         }
     }
+
+    private func handleCardScanningResult(_ result: Result<(String?, Date?), Error>) {}
 }
 
 extension CardBrand {
