@@ -67,6 +67,8 @@ internal protocol CardScannerControlling {
         internal var isScannerAvailable: Bool { false }
         internal var onScanComplete: ((Result<CardModel, any Error>) -> Void)?
         internal func openCardScanner() {}
+
+        internal init(onScanComplete: (@escaping (Result<CardModel, any Error>) -> Void)? = nil) {}
     }
 
 #endif // canImport(AdyenCardScanner)
