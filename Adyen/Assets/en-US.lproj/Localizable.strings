@@ -22,7 +22,7 @@
 "adyen.card.nameItem.title" = "Name on card";
 "adyen.card.nameItem.placeholder" = "J. Smith";
 "adyen.card.nameItem.invalid" = "Enter name as shown on card";
-"adyen.card.numberItem.title" = "Awesome Card number";
+"adyen.card.numberItem.title" = "Card number";
 "adyen.card.numberItem.placeholder" = "1234 5678 9012 3456";
 "adyen.card.numberItem.invalid" = "Invalid card number";
 "adyen.card.expiryItem.title" = "Expiry date";
