@@ -257,3 +257,5 @@
 "adyen.payto.payid.email.invalid" = "Completează o adresă de e-mail corectă";
 "adyen.payto.bsb.bankStateBranch.invalid" = "Completează o sucursală bancară statală corectă";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Completează un număr de cont bancar corect";
+"adyen.payto.payid.description" = "Completați PayID și detaliile contului care sunt conectate la contul dvs. PayTo.";
+"adyen.payto.await.description" = "Vă mulțumim pentru achiziție! Finalizați plata conectându-vă la contul dvs. bancar, autorizând acordul PayTo și aprobând condițiile de plată.";

@@ -62,10 +62,9 @@ internal struct AwaitComponentViewModel {
             )
 
         case .payTo:
-            // TODO: Add translation
             return AwaitComponentViewModel(
                 icon: paymentMethodType.rawValue,
-                message: localizedString(LocalizationKey(key: "Complete your Payto payment with your bank"), localizationParameters),
+                message: localizedString(.paytoAwaitDescription, localizationParameters),
                 spinnerTitle: localizedString(.upiCollectConfirmPayment, localizationParameters)
             )
         }

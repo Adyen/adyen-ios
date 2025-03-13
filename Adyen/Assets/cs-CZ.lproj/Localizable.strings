@@ -263,3 +263,5 @@
 "adyen.payto.payid.email.invalid" = "Zadejte správnou e-mailovou adresu";
 "adyen.payto.bsb.bankStateBranch.invalid" = "Zadejte správnou pobočku banky ve státě";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Zadejte správné číslo bankovního účtu";
+"adyen.payto.payid.description" = "Zadejte PayID a údaje o účtu, které jsou propojeny s vaším účtem PayTo.";
+"adyen.payto.await.description" = "Děkujeme vám za váš nákup, platbu dokončíte tak, že se přihlásíte ke svému bankovnímu účtu, autorizujte smlouvu PayTo a odsouhlasíte platební podmínky.";

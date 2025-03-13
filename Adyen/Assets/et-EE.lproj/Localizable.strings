@@ -263,3 +263,5 @@
 "adyen.payto.payid.email.invalid" = "Sisestage õige e-posti aadress";
 "adyen.payto.bsb.bankStateBranch.invalid" = "Sisestage õige panga riiklik filiaal";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Sisestage õige pangakonto number";
+"adyen.payto.payid.description" = "Sisestage PayID ja teie PayTo kontoga ühendatud konto andmed.";
+"adyen.payto.await.description" = "Täname teid ostu eest, viige makse lõpule, logides sisse oma pangakontole, kinnitage PayTo leping ja nõustuge maksetingimustega.";

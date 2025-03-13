@@ -11,6 +11,7 @@ internal protocol PayToItemsProviding {
     
     func createFlowSelectionTitleItem() -> FormLabelItem
     func createFlowSelectionItem() -> FormSegmentedControlItem
+    func createPayIdFlowTitleItem() -> FormContainerItem<FormLabelItem>
     func createPhoneNumberItem() -> FormPhoneNumberItem
     func createFirstNameInputItem() -> FormTextInputItem
     func createLastNameInputItem() -> FormTextInputItem
@@ -30,6 +31,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
     private enum ViewIdentifier {
         static let flowSelectionTitleItem = "flowSelectionTitleLabel"
         static let flowSelectionItem = "flowSelectionSegmentedControl"
+        static let payIdFlowTitleItem = "payIdFlowTitleTitleLabel"
         static let phoneNumberItem = "phoneNumberItem"
         static let continueButtonItem = "continueButton"
         static let identifierPickerItem = "identifierPicker"
@@ -102,7 +104,21 @@ internal class PayToItemsProvider: PayToItemsProviding {
         )
         return item
     }
-    
+
+    /// The payid flow title label item.
+    internal func createPayIdFlowTitleItem() -> FormContainerItem<FormLabelItem> {
+        let item = FormLabelItem(
+            text: localizedString(.paytoPayidDescription, localizationParameters),
+            style: style.textField.text
+        )
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: scope,
+            postfix: ViewIdentifier.payIdFlowTitleItem
+        )
+        return item.padding()
+    }
+
+    /// The  phone number form text item.
     internal func createPhoneNumberItem() -> FormPhoneNumberItem {
         let item = FormPhoneNumberItem(
             phoneNumber: nil,

@@ -63,6 +63,7 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
     
     /// Items on PayId segment that can be shown/hidden
     private lazy var payIdDynamicItems: [FormItem] = [
+        payIdFlowTitleItem,
         identifierPickerItem,
         phoneNumberItem,
         emailInputItem,
@@ -97,7 +98,7 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
         self.configuration = configuration
     }
 
-    /// The payment flow selection title  label item.
+    /// The payment flow selection title label item.
     internal lazy var flowSelectionTitleItem: FormLabelItem = {
         itemsProvider.createFlowSelectionTitleItem()
     }()
@@ -110,7 +111,12 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
         }
         return item
     }()
-    
+
+    /// The payId flow title label item.
+    internal lazy var payIdFlowTitleItem: FormContainerItem<FormLabelItem> = {
+        itemsProvider.createPayIdFlowTitleItem()
+    }()
+
     internal lazy var phoneNumberItem: FormPhoneNumberItem = {
         itemsProvider.createPhoneNumberItem()
     }()
@@ -329,8 +335,8 @@ private extension PayToComponent {
         
         formViewController.append(bsbInstructionTitleItem)
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
-        formViewController.append(accountNumberInputItem)
         formViewController.append(bsbInputItem)
+        formViewController.append(accountNumberInputItem)
         bsbDynamicItems.forEach { $0.isHidden.wrappedValue = true }
     }
 
@@ -390,5 +396,6 @@ private extension PayToComponent {
         bsbDynamicItems.forEach { $0.isHidden.wrappedValue = true }
         
         identifierPickerItem.isHidden.wrappedValue = false
+        payIdFlowTitleItem.isHidden.wrappedValue = false
     }
 }

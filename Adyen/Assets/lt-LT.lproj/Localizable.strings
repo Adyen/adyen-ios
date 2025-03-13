@@ -263,3 +263,5 @@
 "adyen.payto.payid.email.invalid" = "Įveskite teisingą el. pašto adresą";
 "adyen.payto.bsb.bankStateBranch.invalid" = "Įveskite teisingą banko filialo kodą";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Įveskite teisingą banko sąskaitos numerį";
+"adyen.payto.payid.description" = "Įveskite „PayID“ ir sąskaitos duomenis, susietus su jūsų „PayTo“ sąskaita.";
+"adyen.payto.await.description" = "Dėkojame, kad perkate. Užbaikite mokėjimą prisijungę prie savo banko sąskaitos, patvirtinkite „PayTo“ sutartį ir mokėjimo sąlygas.";

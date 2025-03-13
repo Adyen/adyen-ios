@@ -263,3 +263,5 @@
 "adyen.payto.payid.email.invalid" = "Unesite ispravnu adresu e-pošte";
 "adyen.payto.bsb.bankStateBranch.invalid" = "Unesite ispravnu poslovnicu banke";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Unesite ispravan broj bankovnog računa";
+"adyen.payto.payid.description" = "Unesite PayID i podatke o računu koji su povezani s vašim PayTo računom.";
+"adyen.payto.await.description" = "Zahvaljujemo na kupnji! Dovršite plaćanje prijavom na svoj bankovni račun, autorizirajte ugovor za PayTo i odobrite uvjete plaćanja.";

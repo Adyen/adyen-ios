@@ -263,3 +263,5 @@
 "adyen.payto.payid.email.invalid" = "Ievadiet pareizu e-pasta adresi";
 "adyen.payto.bsb.bankStateBranch.invalid" = "Ievadiet pareizu bankas valsts filiāli";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Ievadiet pareizu bankas konta numuru";
+"adyen.payto.payid.description" = "Ievadiet PayID un konta informāciju, kas ir savienota ar Jūsu PayTo kontu.";
+"adyen.payto.await.description" = "Paldies par jūsu pirkumu, lūdzu, pabeidziet maksājumu, pieslēdzoties savam bankas kontam, autorizējot PayTo līgumu un apstiprinot maksājuma noteikumus.";

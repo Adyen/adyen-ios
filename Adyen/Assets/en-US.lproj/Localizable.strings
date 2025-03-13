@@ -263,3 +263,5 @@
 "adyen.payto.payid.email.invalid" = "Enter a correct Email address";
 "adyen.payto.bsb.bankStateBranch.invalid" = "Enter a correct Bank state branch";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Enter a correct Bank account number";
+"adyen.payto.payid.description" = "Enter the PayID and account details that are connected to your PayTo account.";
+"adyen.payto.await.description" = "Thank you for your purchase, complete your payment by logging into you bank account, authorize the PayTo agreement and approve the payment terms.";
