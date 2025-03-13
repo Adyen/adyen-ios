@@ -83,6 +83,10 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
             supportedCardLogosItem.isHidden.wrappedValue = brands.contains(where: \.isSupported)
         }
     }
+    
+    internal func setCardNumber(_ cardNumber: String) {
+        numberItem.setCardNumber(cardNumber)
+    }
 }
 
 /// Form item to display multiple card logos.

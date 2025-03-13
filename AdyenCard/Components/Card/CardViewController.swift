@@ -16,30 +16,31 @@ internal protocol CardViewControllerProtocol {
 }
 
 internal class CardViewController: FormViewController {
-
+    
     private let configuration: CardComponent.Configuration
-
     private let shopperInformation: PrefilledShopperInformation?
-
     private let supportedCardTypes: [CardType]
-
     private let formStyle: FormComponentStyle
-    
     private var issuingCountryCode: String?
-    
     private let payment: Payment?
-    
     private let initialCountryCode: String
-    
     private let scope: String
-    
     private let cardLogos: [FormCardLogosItem.CardTypeLogo]
+    private lazy var cardScannerController: CardScannerControlling = {
+        let controller = CardScannerController(presenter: self)
+        controller.onScanComplete = { [weak self] result in
+            self?.handleCardScanningResult(result)
+        }
+        return controller
+    }()
+    
+    private var isCardScannerAvailable: Bool { cardScannerController.isScannerAvailable }
     
     internal lazy var items = {
         
         let scanCardHandler: (() -> Void)?
-        if #available(iOS 13.0, *) {
-            scanCardHandler = { [weak self] in self?.openCardScanner() }
+        if isCardScannerAvailable {
+            scanCardHandler = { [weak self] in self?.cardScannerController.openCardScanner() }
         } else {
             scanCardHandler = nil
         }
@@ -59,9 +60,9 @@ internal class CardViewController: FormViewController {
             scanCardHandler: scanCardHandler
         )
     }()
-
+    
     // MARK: Init view controller
-
+    
     /// Create new instance of CardViewController
     /// - Parameters:
     ///   - configuration: The configurations of the `CardComponent`.
@@ -175,7 +176,7 @@ internal class CardViewController: FormViewController {
             let taxNumber = items.additionalAuthCodeItem.nonEmptyValue,
             let password = items.additionalAuthPasswordItem.nonEmptyValue
         else { return nil }
-
+        
         return KCPDetails(taxNumber: taxNumber, password: password)
     }
 
@@ -183,27 +184,27 @@ internal class CardViewController: FormViewController {
         guard configuration.socialSecurityNumberMode != .hide else { return nil }
         return items.socialSecurityNumberItem.nonEmptyValue
     }
-
+    
     internal var storePayment: Bool? {
         configuration.showsStorePaymentMethodField ? items.storeDetailsItem.value : nil
     }
-
+    
     internal var installments: Installments? {
         guard let installmentsItem = items.installmentsItem,
               !installmentsItem.isHidden.wrappedValue else { return nil }
         return installmentsItem.value.element.installmentValue
     }
-
+    
     internal func stopLoading() {
         items.button.showsActivityIndicator = false
         view.isUserInteractionEnabled = true
     }
-
+    
     internal func startLoading() {
         items.button.showsActivityIndicator = true
         view.isUserInteractionEnabled = false
     }
-
+    
     internal func update(binInfo: BinLookupResponse) {
         var brands: [CardBrand] = []
         // no dual branding if response is from regex (fallback)
@@ -379,11 +380,11 @@ extension CardViewController {
 internal protocol CardViewControllerDelegate: AnyObject {
     
     func didSelectSubmitButton()
-
+    
     func didChange(bin: String)
     
     func didChange(pan: String)
-
+    
 }
 
 extension FormValueItem where ValueType == String {
@@ -399,7 +400,7 @@ extension CardViewController: CardViewControllerProtocol {
         }
         items.storeDetailsItem.isVisible = isVisible
     }
-
+    
     internal func update(storePaymentMethodFieldValue isOn: Bool) {
         items.storeDetailsItem.value = items.storeDetailsItem.isVisible && isOn
     }
@@ -408,8 +409,17 @@ extension CardViewController: CardViewControllerProtocol {
 // MARK: - Card scanner
 
 extension CardViewController {
-    private func openCardScanner() {
-        // TODO: Use CardScanning module
+    private func handleCardScanningResult(_ result: Result<(String?, Date?), Error>) {
+        switch result {
+        case let .success((number, expiryDate)):
+            items.numberContainerItem.setCardNumber(number ?? "")
+            if let expiryDate {
+                items.expiryDateItem.setExpiryDate(expiryDate)
+            }
+        case .failure:
+            // TODO: Implement error handling
+            break
+        }
     }
 }
 
