@@ -28,3 +28,46 @@ public struct PayToPaymentMethod: PaymentMethod {
     }
 
 }
+
+/// A stored PayTo payment method.
+public struct StoredPayToPaymentMethod: StoredPaymentMethod {
+   
+    public let type: PaymentMethodType
+    
+    public let name: String
+    
+    public let identifier: String
+    
+    public let label: String
+    
+    public let supportedShopperInteractions: [ShopperInteraction]
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
+    
+    @_spi(AdyenInternal)
+    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
+    
+    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        let accessibilityLabel = [
+            name,
+            label
+        ].joined(separator: ", ")
+        
+        return DisplayInformation(
+            title: label,
+            subtitle: name,
+            logoName: type.rawValue,
+            accessibilityLabel: accessibilityLabel
+        )
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case type
+        case name
+        case identifier = "id"
+        case label
+        case supportedShopperInteractions
+    }
+}

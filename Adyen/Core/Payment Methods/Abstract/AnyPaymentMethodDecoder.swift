@@ -543,11 +543,22 @@ private struct TwintPaymentMethodDecoder: PaymentMethodDecoder {
 
 private struct PayToPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
-        try .payTo(PayToPaymentMethod(from: decoder))
+        if isStored {
+            return try .storedPayTo(StoredPayToPaymentMethod(from: decoder))
+        } else {
+            return try .payTo(PayToPaymentMethod(from: decoder))
+        }
     }
 
     func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
-        (paymentMethod as? PayToPaymentMethod).map { .payTo($0) }
+        switch paymentMethod {
+        case let regular as PayToPaymentMethod:
+            .payTo(regular)
+        case let stored as StoredPayToPaymentMethod:
+            .storedPayTo(stored)
+        default:
+            nil
+        }
     }
 }
 
