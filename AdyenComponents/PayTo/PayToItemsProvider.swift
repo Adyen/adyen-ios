@@ -279,6 +279,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
         )
         item.validationFailureMessage = localizedString(.paytoBsbBankStateBranchInvalid, localizationParameters)
         item.formatter = NumericFormatter()
+        item.keyboardType = .numberPad
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.bankStateBranchInputItem
