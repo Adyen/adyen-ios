@@ -257,3 +257,5 @@
 "adyen.payto.payid.email.invalid" = "Vnesite pravilen e-poštni naslov";
 "adyen.payto.bsb.bankStateBranch.invalid" = "Vnesite pravilno podružnico banke";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Vnesite pravilno številko bančnega računa";
+"adyen.payto.payid.description" = "Vnesite PayID in podrobnosti o računu, ki so povezani z vašim računom PayTo.";
+"adyen.payto.await.description" = "Zahvaljujemo se vam za nakup. Plačilo dokončajte tako, da se prijavite v svoj bančni račun, sprejmite pogodbo PayTo in potrdite plačilne pogoje.";

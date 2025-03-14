@@ -263,3 +263,5 @@
 "adyen.payto.payid.email.invalid" = "Adja meg a helyes e-mail-címet";
 "adyen.payto.bsb.bankStateBranch.invalid" = "Adja meg a helyes bankfiókkódot";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Adja meg a helyes bankszámlaszámot";
+"adyen.payto.payid.description" = "Adja meg a PayTo-fiókjához kapcsolódó PayID-t és a számlaadatait.";
+"adyen.payto.await.description" = "Köszönjük a vásárlást! A fizetés véglegesítéséhez jelentkezzen be bankszámlájára, hagyja jóvá a PayTo megállapodást, és fogadja el a fizetési feltételeket.";

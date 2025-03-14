@@ -263,3 +263,5 @@
 "adyen.payto.payid.email.invalid" = "Sláðu inn rétt netfang";
 "adyen.payto.bsb.bankStateBranch.invalid" = "Sláðu inn rétt bankanúmer banka";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Sláðu inn rétt bankareikningsnúmer";
+"adyen.payto.payid.description" = "Sláðu inn PayID og reikningsupplýsingar sem eru tengjast PayTo-reikningnum þínum.";
+"adyen.payto.await.description" = "Takk fyrir kaupin. Ljúktu við greiðsluna með því að skrá þig inn á bankareikninginn, heimila PayTo-samninginn og samþykkja greiðsluskilmálana.";

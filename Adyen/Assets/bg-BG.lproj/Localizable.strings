@@ -263,3 +263,5 @@
 "adyen.payto.payid.email.invalid" = "Въведете правилен имейл адрес";
 "adyen.payto.bsb.bankStateBranch.invalid" = "Въведете правилния щатски банков клон";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Въведете правилен номер на банкова сметка";
+"adyen.payto.payid.description" = "Въведете PayID и данните за сметката, които са свързани с Вашия PayTo акаунт.";
+"adyen.payto.await.description" = "Благодарим Ви за покупката, завършете плащането, като влезете в банковата си сметка, потвърдите споразумението PayTo и одобрите условията за плащане.";

@@ -263,3 +263,5 @@
 "adyen.payto.payid.email.invalid" = "أدخل عنوان بريد إلكتروني صحيحًا";
 "adyen.payto.bsb.bankStateBranch.invalid" = "أدخل رمز فرع بنك صحيحًا";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "أدخل رقم حساب مصرفي صحيحًا";
+"adyen.payto.payid.description" = "أدخل معرف PayID وتفاصيل الحساب المرتبطة بحساب PayTo الخاص بك.";
+"adyen.payto.await.description" = "نشكرك على عملية الشراء. يُرجى إكمال عملية الدفع من خلال تسجيل الدخول إلى حسابك المصرفي والموافقة على اتفاقية PayTo وعلى شروط الدفع.";

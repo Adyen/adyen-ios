@@ -85,6 +85,17 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(phoneNumberItem, "Phone number item should exist")
     }
 
+    func test_payid_titleLabel_exists() throws {
+        // Given
+        sut.viewController.loadViewIfNeeded()
+
+        // Check by accessibility identifier
+        let payIdTitleLabelItem = sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.payIdFlowTitleTitleLabel") as? UILabel
+
+        // Then
+        XCTAssertNotNil(payIdTitleLabelItem, "PayId flow title label should exist")
+    }
+
     func test_identifierPicker_exists() throws {
         // Given
         sut.viewController.loadViewIfNeeded()
