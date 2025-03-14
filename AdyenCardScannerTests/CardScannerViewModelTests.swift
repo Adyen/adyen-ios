@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import XCTest
-import AVFoundation
 @testable import AdyenCardScanner
+import AVFoundation
+import XCTest
 
 final class CardScannerViewModelTests: XCTestCase {
 

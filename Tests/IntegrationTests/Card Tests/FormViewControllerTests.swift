@@ -17,7 +17,7 @@ class FormViewControllerTests: XCTestCase {
         
         let formViewController = FormViewController(scrollEnabled: true, style: style, localizationParameters: nil)
 
-        let cardNumberItem = FormCardNumberItem(cardTypeLogos: [])
+        let cardNumberItem = FormCardNumberItem(cardTypeLogos: [], scanCardHandler: nil)
         let securityCodeItem = FormCardSecurityCodeItem(style: style.textField)
         
         formViewController.append(cardNumberItem)

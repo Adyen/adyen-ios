@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Istječe %@";
 "adyen.card.numberItem.unsupportedBrand" = "Kartica %@ nije podržana";
 "adyen.card.numberItem.unknownBrand" = "Unesena marka kartice nije podržana";
+"adyen.card.scanYourCardButton" = "Skenirajte svoju karticu";
 "adyen.dropIn.stored.title" = "Potvrdite plaćanje: %@";
 "adyen.dropIn.preselected.openAll.title" = "Promijeni način plaćanja";
 "adyen.continueTo" = "Nastavi na %@";

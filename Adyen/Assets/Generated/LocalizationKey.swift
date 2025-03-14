@@ -86,6 +86,8 @@ public struct LocalizationKey {
     public static let cardNumberItemUnsupportedBrand = LocalizationKey(key: "adyen.card.numberItem.unsupportedBrand")
     /// The entered card brand isn't supported
     public static let cardNumberItemUnknownBrand = LocalizationKey(key: "adyen.card.numberItem.unknownBrand")
+    /// Scan your card
+    public static let cardScanYourCardButton = LocalizationKey(key: "adyen.card.scanYourCardButton")
     /// Confirm %@ payment
     public static let dropInStoredTitle = LocalizationKey(key: "adyen.dropIn.stored.title")
     /// Change Payment Method
@@ -494,7 +496,9 @@ public struct LocalizationKey {
     public static let addressLookupSearchManualEntryItemTitle = LocalizationKey(key: "adyen.address.lookup.search.manualEntryItem.title")
     /// Last 4 digits
     public static let accessibilityLastFourDigits = LocalizationKey(key: "adyen.accessibility.lastFourDigits")
-    
+    /// Scan your card
+    public static let scanYourCardButton = LocalizationKey(key: "adyen.card.scanYourCardButton")
+
     internal let key: String
     
     /// :nodoc:

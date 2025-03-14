@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Aegub %@";
 "adyen.card.numberItem.unsupportedBrand" = "Kaubamärki %@ ei toetata";
 "adyen.card.numberItem.unknownBrand" = "Sisestatud kaardi kaubamärki ei toetata";
+"adyen.card.scanYourCardButton" = "Skannige oma kaart";
 "adyen.dropIn.stored.title" = "Kinnitage makse (%@)";
 "adyen.dropIn.preselected.openAll.title" = "Muuda makseviisi";
 "adyen.continueTo" = "Jätka: %@";

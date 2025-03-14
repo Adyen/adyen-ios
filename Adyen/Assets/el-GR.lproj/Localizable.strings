@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Λήξη: %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@: δεν υποστηρίζεται";
 "adyen.card.numberItem.unknownBrand" = "Η επωνυμία κάρτας που εισαγάγατε δεν υποστηρίζεται";
+"adyen.card.scanYourCardButton" = "Σαρώστε την κάρτα σας";
 "adyen.dropIn.stored.title" = "Επιβεβαίωση πληρωμής μέσω %@";
 "adyen.dropIn.preselected.openAll.title" = "Αλλαγή τρόπου πληρωμής";
 "adyen.continueTo" = "Μετάβαση στην %@";
