@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Scade il: %@";
 "adyen.card.numberItem.unsupportedBrand" = "%@ non è supportata";
 "adyen.card.numberItem.unknownBrand" = "Il brand della carta inserita non è supportato";
+"adyen.card.scanYourCardButton" = "Scansiona la tua carta";
 "adyen.dropIn.stored.title" = "Conferma il pagamento di %@";
 "adyen.dropIn.preselected.openAll.title" = "Cambia metodo di pagamento";
 "adyen.continueTo" = "Procedi verso %@";

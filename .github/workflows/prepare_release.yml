@@ -46,8 +46,18 @@ jobs:
     - name: Prepare Release Notes
       run: |
         RELEASE_NOTES=$(echo "$BASE_64_RELEASE_NOTES" | base64 --decode)
-        rm -rf "${{ github.workspace }}/release_notes.md" # Making sure we start a fresh document
-        echo "$RELEASE_NOTES" >> "${{ github.workspace }}/release_notes.md"
+        TMP_DIR="${{ github.workspace }}/.tmp"
+        RELEASE_NOTES_FILE_PATH="$TMP_DIR/release_notes.md"
+        
+        if [ -e $RELEASE_NOTES_FILE_PATH ]
+        then
+            echo "OLD RELEASE NOTES"
+            cat "$RELEASE_NOTES_FILE_PATH"
+            rm -rf $RELEASE_NOTES_FILE_PATH # Making sure we start a fresh document
+        fi
+
+        mkdir -p "$TMP_DIR"
+        echo "$RELEASE_NOTES" >> $RELEASE_NOTES_FILE_PATH
       env:
         BASE_64_RELEASE_NOTES: ${{ needs.get-release-notes.outputs.RELEASE_NOTES }}
     
@@ -59,5 +69,5 @@ jobs:
         branch: "release/${{ github.event.inputs.sdk-version }}"
         commit-message: "chore: prepare '${{ github.event.inputs.sdk-version }}' release"
         title: "[Release] ${{ github.event.inputs.sdk-version }}"
-        body-path: "${{ github.workspace }}/release_notes.md"
+        body-path: "${{ github.workspace }}/.tmp/release_notes.md"
         token: ${{ secrets.GITHUB_TOKEN }}
