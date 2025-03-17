@@ -4,17 +4,13 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import XCTest
 @testable import AdyenCardScanner
+import XCTest
 
 final class CardScannerViewControllerTests: XCTestCase {
 
     var viewModel: CardScannerViewModelMock!
     var sut: CardScannerViewController!
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
 
     override func tearDownWithError() throws {
         viewModel = nil

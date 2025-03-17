@@ -4,14 +4,14 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+@testable import AdyenCardScanner
 import Foundation
 import QuartzCore
-@testable import AdyenCardScanner
 
 class CardScannerViewModelMock: CardScannerViewModelProtocol {
     // MARK: - videoPreviewLayer
 
-    var videoPreviewLayer: CALayer = CALayer()
+    var videoPreviewLayer: CALayer = .init()
 
     // MARK: - configureSession
 
@@ -19,6 +19,7 @@ class CardScannerViewModelMock: CardScannerViewModelProtocol {
     var configureSessionCalled: Bool {
         configureSessionCallsCount > 0
     }
+
     var configureSessionClosure: (() -> Void)?
 
     func configureSession() {
@@ -32,6 +33,7 @@ class CardScannerViewModelMock: CardScannerViewModelProtocol {
     var startCaptureSessionCalled: Bool {
         startCaptureSessionCallsCount > 0
     }
+
     var startCaptureSessionClosure: (() -> Void)?
 
     func startCaptureSession() {
@@ -45,6 +47,7 @@ class CardScannerViewModelMock: CardScannerViewModelProtocol {
     var stopCaptureSessionCalled: Bool {
         stopCaptureSessionCallsCount > 0
     }
+
     var stopCaptureSessionClosure: (() -> Void)?
 
     func stopCaptureSession() {
@@ -58,6 +61,7 @@ class CardScannerViewModelMock: CardScannerViewModelProtocol {
     var updateVideoOrientationCalled: Bool {
         updateVideoOrientationCallsCount > 0
     }
+
     var updateVideoOrientationClosure: (() -> Void)?
 
     func updateVideoOrientation() {
@@ -71,6 +75,7 @@ class CardScannerViewModelMock: CardScannerViewModelProtocol {
     var updateCalled: Bool {
         updateCallsCount > 0
     }
+
     var updateReceivedPreviewLayerFrame: CGRect?
     var updateReceivedROIInPreviewLayer: CGRect?
     var updateReceivedInvocations: [(CGRect, CGRect)] = []
