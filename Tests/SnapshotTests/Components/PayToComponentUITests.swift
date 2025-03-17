@@ -273,6 +273,7 @@ class PayToComponentUITests: XCTestCase {
         wait(for: .aMoment)
 
         wait { sut.phoneNumberItem.isVisible == false }
+        wait { sut.emailInputItem.isVisible == true }
         wait(for: .aMoment)
 
         try populateEmailField(sut: sut)
