@@ -8,11 +8,11 @@ import AVFoundation
 import CoreImage
 import Foundation
 
-protocol CaptureSessionDelegate: AnyObject {
+internal protocol CaptureSessionDelegate: AnyObject {
     func didCapture(image: CIImage?)
 }
 
-protocol CaptureSessionManaging {
+internal protocol CaptureSessionManaging {
     var delegate: CaptureSessionDelegate? { get set }
     func configureSession()
     func startCaptureSession()
@@ -21,9 +21,9 @@ protocol CaptureSessionManaging {
     var videoPreviewLayer: AVCaptureVideoPreviewLayer { get }
 }
 
-class CaptureSessionManager: NSObject, CaptureSessionManaging {
+internal class CaptureSessionManager: NSObject, CaptureSessionManaging {
 
-    enum Constants {
+    private enum Constants {
         static let videoSettings: [String: Any] = [
             kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA
         ]
@@ -37,8 +37,8 @@ class CaptureSessionManager: NSObject, CaptureSessionManaging {
     private let videoOutputQueue = DispatchQueue(label: "com.cardscanner.videoOutputQueue")
 
     private let captureDevice: AVCaptureDevice
-    let videoPreviewLayer: AVCaptureVideoPreviewLayer
-    weak var delegate: CaptureSessionDelegate?
+    internal let videoPreviewLayer: AVCaptureVideoPreviewLayer
+    internal weak var delegate: CaptureSessionDelegate?
 
     private let captureSession: AVCaptureSession = {
         let session = AVCaptureSession()
@@ -48,7 +48,7 @@ class CaptureSessionManager: NSObject, CaptureSessionManaging {
 
     // MARK: - Initializers
 
-    init(captureDevice: AVCaptureDevice) {
+    internal init(captureDevice: AVCaptureDevice) {
         self.captureDevice = captureDevice
 
         self.videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
@@ -57,27 +57,27 @@ class CaptureSessionManager: NSObject, CaptureSessionManaging {
 
     // MARK: - CaptureSessionManaging
 
-    func configureSession() {
+    internal func configureSession() {
         sessionQueue.async {
             try? self.configureCaptureSession()
         }
     }
 
-    func startCaptureSession() {
+    internal func startCaptureSession() {
         sessionQueue.async {
             guard !self.captureSession.isRunning else { return }
             self.captureSession.startRunning()
         }
     }
 
-    func stopCaptureSession() {
+    internal func stopCaptureSession() {
         sessionQueue.async {
             guard self.captureSession.isRunning else { return }
             self.captureSession.stopRunning()
         }
     }
 
-    func updateVideoOrientation() {
+    internal func updateVideoOrientation() {
         guard
             let connection = videoPreviewLayer.connection,
             connection.isVideoOrientationSupported else {

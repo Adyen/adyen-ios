@@ -7,7 +7,7 @@
 import Foundation
 import UIKit
 
-protocol CardScanning {
+public protocol CardScanning {
     static func createCardScanner(
         completion: @escaping (Result<CreditCard, CardScannerError>) -> Void
     ) -> UIViewController?

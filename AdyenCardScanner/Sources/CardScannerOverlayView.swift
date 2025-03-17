@@ -6,13 +6,13 @@
 
 import UIKit
 
-class CardScannerOverlayView: UIView {
+internal class CardScannerOverlayView: UIView {
 
-    enum Style {
+    private enum Style {
         static let backgroundColor = UIColor.black.withAlphaComponent(0.4)
     }
 
-    enum Constants {
+    private enum Constants {
         static let roiAspectRatio: CGFloat = 1.585 // Credit card aspect ratio
     }
 
@@ -36,18 +36,18 @@ class CardScannerOverlayView: UIView {
 
     // MARK: - Initializers
 
-    override init(frame: CGRect) {
+    override internal init(frame: CGRect) {
         super.init(frame: frame)
         setupMaskViews()
         setupMasksLayout()
     }
 
     @available(*, unavailable)
-    required init?(coder: NSCoder) {
+    internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func layoutSubviews() {
+    override internal func layoutSubviews() {
         super.layoutSubviews()
         updateRoiLayout()
         self.roiFrame = roiView.frame
