@@ -39,7 +39,7 @@ internal protocol CardScannerControlling {
         }
     
         internal func openCardScanner(title: String?) {
-            let scannerNavigationController = makeNavigationController(title: title)
+            let scannerNavigationController = makeNavigationController()
             guard let scannerViewController = AdyenCardScanner.CardScanner.createCardScanner(completion: { [weak self] result in
                 guard let self else { return }
                 self.onScanComplete?(self.map(result))
@@ -67,7 +67,7 @@ internal protocol CardScannerControlling {
             }
         }
 
-        private func makeNavigationController(title: String?) -> UINavigationController {
+        private func makeNavigationController() -> UINavigationController {
             guard #available(iOS 13.0, *) else { return UINavigationController() }
 
             let appearance = UINavigationBarAppearance()
@@ -77,7 +77,6 @@ internal protocol CardScannerControlling {
             navigationController.navigationBar.standardAppearance = appearance
             navigationController.navigationBar.compactAppearance = appearance
             navigationController.navigationBar.scrollEdgeAppearance = appearance
-            navigationController.title = title
 
             return navigationController
         }
@@ -96,7 +95,7 @@ internal protocol CardScannerControlling {
     internal final class CardScannerController: CardScannerControlling {
         internal var isScannerAvailable: Bool { false }
         internal var onScanComplete: ((Result<CardModel, any Error>) -> Void)?
-        internal func openCardScanner() {}
+        internal func openCardScanner(title: String?) {}
 
         internal init(presenter: UIViewController) {}
     }
