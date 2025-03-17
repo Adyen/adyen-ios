@@ -40,7 +40,8 @@ internal class CardViewController: FormViewController {
         
         let scanCardHandler: (() -> Void)?
         if isCardScannerAvailable {
-            scanCardHandler = { [weak self] in self?.cardScannerController.openCardScanner() }
+            let scanCardTitle = localizedString(.scanYourCardButton, localizationParameters)
+            scanCardHandler = { [weak self] in self?.cardScannerController.openCardScanner(title: scanCardTitle) }
         } else {
             scanCardHandler = nil
         }
