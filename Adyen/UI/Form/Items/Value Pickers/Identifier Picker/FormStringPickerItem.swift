@@ -22,7 +22,7 @@ public struct FormStringPickerElement: CustomStringConvertible, Equatable {
 
 /// A identifier picker form item
 @_spi(AdyenInternal)
-public final class FormStringPickerItem: BaseFormPickerItem<FormStringPickerElement> {
+open class FormStringPickerItem: BaseFormPickerItem<FormStringPickerElement> {
 
     public init(
         preselectedStringValue: FormStringPickerElement,
@@ -40,7 +40,7 @@ public final class FormStringPickerItem: BaseFormPickerItem<FormStringPickerElem
         )
     }
 
-    override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    override open func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
 }
