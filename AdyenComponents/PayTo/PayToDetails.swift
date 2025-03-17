@@ -20,8 +20,13 @@ public struct PayToDetails: PaymentMethodDetails, ShopperInformation {
     
     /// Name of the shopper.
     public let shopperName: ShopperName?
-    
-    init(
+
+    /// Initializes the PayTo Component Details.
+    /// - Parameters:
+    ///   - paymentMethod: paymentMethod.
+    ///   - accountIdentifier: account identifier .
+    ///   - shopperName: shopper name .
+    public init(
         paymentMethod: PaymentMethod,
         accountIdentifier: String,
         shopperName: ShopperName?
