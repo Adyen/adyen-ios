@@ -32,7 +32,7 @@ internal class CardScannerOverlayView: UIView {
 
     // MARK: - Properties
 
-    @Published private(set) var roiFrame: CGRect = .zero
+    @Published internal private(set) var roiFrame: CGRect = .zero
 
     // MARK: - Initializers
 

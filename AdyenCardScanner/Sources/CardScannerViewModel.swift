@@ -70,7 +70,7 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
 
     // MARK: - Private
 
-    private func getCardData(
+    private func fetchCardData(
         from image: CIImage,
         roiInPreviewFrame: CGRect,
         previewFrame: CGRect
@@ -81,8 +81,8 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
             previewFrame: previewFrame
         )
 
-        cardImageParser.parse(image: croppedImage) { creditCard in
-            self.completion(.success(creditCard))
+        cardImageParser.parse(image: croppedImage) { [weak self] creditCard in
+            self?.completion(.success(creditCard))
         }
     }
 
@@ -140,7 +140,7 @@ extension CardScannerViewModel: CaptureSessionDelegate {
 
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self else { return }
-            getCardData(
+            fetchCardData(
                 from: image,
                 roiInPreviewFrame: roiInPreviewFrame,
                 previewFrame: previewFrame
