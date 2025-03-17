@@ -2732,11 +2732,11 @@
 		000888762D4CF5DB009C03E1 /* PayTo */ = {
 			isa = PBXGroup;
 			children = (
-				A01948332D8827A300AA27AC /* PayToFormPickerItemView.swift */,
 				000888772D4CF5F5009C03E1 /* PayToComponent.swift */,
 				A0BFBB532D6F2670003F543E /* PayToItemsProvider.swift */,
 				A0BFBB552D6F45AB003F543E /* PayToPayIdentifier.swift */,
 				A0BFBB572D75FD44003F543E /* PayToDetails.swift */,
+				A01948332D8827A300AA27AC /* PayToFormPickerItemView.swift */,
 			);
 			path = PayTo;
 			sourceTree = "<group>";
