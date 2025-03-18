@@ -53,7 +53,7 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
 
     /// Represents the selected payTo flow for the payment component.
     /// Determines the specific payTo transaction process to follow.
-    private lazy var selectedPaymentOption: PayToPaymentOption = .payId(selectedIdentifier) {
+    internal lazy var selectedPaymentOption: PayToPaymentOption = .payId(selectedIdentifier) {
         didSet {
             UIView.performWithoutAnimation {
                 updateInterface()
