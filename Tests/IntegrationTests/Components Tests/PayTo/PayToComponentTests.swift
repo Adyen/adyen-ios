@@ -101,10 +101,11 @@ class PayToComponentTests: XCTestCase {
         sut.viewController.loadViewIfNeeded()
 
         // Check by accessibility identifier
-        let identifierPickerItem: BaseFormPickerItemView<FormStringPickerElement> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.identifierPicker"))
+        let identifierPickerItem: PayToFormPickerItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.identifierPicker"))
 
         // Then
         XCTAssertNotNil(identifierPickerItem, "identifier picker should exist")
+        XCTAssertFalse(identifierPickerItem.canBecomeFirstResponder)
     }
 
     func test_firstname_textfield() throws {

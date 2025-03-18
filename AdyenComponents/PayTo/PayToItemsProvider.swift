@@ -176,7 +176,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
 
         AdyenAssertion.assert(message: "selectableValues should be greater than 0", condition: selectableValues.isEmpty)
 
-        let item = FormStringPickerItem(
+        let item = PayToIdentifierItem(
             preselectedStringValue: selectableValues[0],
             selectableStringValues: selectableValues,
             style: style.textField
