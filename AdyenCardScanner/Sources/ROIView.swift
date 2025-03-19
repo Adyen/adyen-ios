@@ -6,7 +6,8 @@
 
 import UIKit
 
-class ROIView: UIView {
+// Region of Interest (ROI) view.
+internal class ROIView: UIView {
 
     // MARK: - Properties
 
@@ -16,7 +17,7 @@ class ROIView: UIView {
 
     // MARK: - Public
 
-    override func draw(_ rect: CGRect) {
+    override internal func draw(_ rect: CGRect) {
         super.draw(rect)
 
         // Create full view path (outer shape)

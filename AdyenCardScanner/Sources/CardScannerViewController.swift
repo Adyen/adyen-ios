@@ -8,7 +8,7 @@ import AVFoundation
 import Combine
 import UIKit
 
-class CardScannerViewController: UIViewController {
+internal class CardScannerViewController: UIViewController {
 
     // MARK: - UI elements
 
@@ -27,20 +27,20 @@ class CardScannerViewController: UIViewController {
 
     // MARK: - Initializers
 
-    init(viewModel: CardScannerViewModelProtocol) {
+    internal init(viewModel: CardScannerViewModelProtocol) {
         self.viewModel = viewModel
         self.previewLayer = viewModel.videoPreviewLayer
         super.init(nibName: nil, bundle: nil)
     }
 
     @available(*, unavailable)
-    required init?(coder: NSCoder) {
+    internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - View lifecycle
 
-    override func viewDidLoad() {
+    override internal func viewDidLoad() {
         super.viewDidLoad()
         setupPreviewLayer()
         addOverlayView()
@@ -49,17 +49,17 @@ class CardScannerViewController: UIViewController {
         viewModel.configureSession()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    override internal func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.startCaptureSession()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
+    override internal func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         viewModel.stopCaptureSession()
     }
 
-    override func viewDidLayoutSubviews() {
+    override internal func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         previewLayer.frame = view.bounds
         viewModel.updateVideoOrientation()

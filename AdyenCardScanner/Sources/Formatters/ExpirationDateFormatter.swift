@@ -6,13 +6,13 @@
 
 import Foundation
 
-protocol ExpirationDateFormatting {
+internal protocol ExpirationDateFormatting {
     func date(from string: String) -> Date?
 }
 
-class ExpirationDateFormatter: ExpirationDateFormatting {
+internal class ExpirationDateFormatter: ExpirationDateFormatting {
 
-    enum ExpirationDateFormat {
+    private enum ExpirationDateFormat {
         static let short = "MM/yy"
         static let long = "MM/yyyy"
     }
@@ -24,7 +24,7 @@ class ExpirationDateFormatter: ExpirationDateFormatting {
 
     // MARK: - Initializers
 
-    init() {
+    internal init() {
         let locale = Locale.current
         let timeZone = TimeZone(secondsFromGMT: 0)
 
@@ -39,7 +39,7 @@ class ExpirationDateFormatter: ExpirationDateFormatting {
 
     // MARK: - ExpireDateFormatting
 
-    func date(from string: String) -> Date? {
+    internal func date(from string: String) -> Date? {
         // First, try the short ("MM/YY") format
         if let shortDate = shortDateFormatter.date(from: string) {
             return shortDate

@@ -42,7 +42,7 @@ final class CardScannerViewControllerTests: XCTestCase {
         XCTAssertEqual(viewModel.startCaptureSessionCallsCount, 1)
     }
 
-    func testViewWillAppearShouldStopCaptureSession() throws {
+    func testViewWillDisappearShouldStopCaptureSession() throws {
         // Given
         viewModel = CardScannerViewModelMock()
         sut = CardScannerViewController(viewModel: viewModel)
@@ -66,7 +66,7 @@ final class CardScannerViewControllerTests: XCTestCase {
         XCTAssertEqual(viewModel.updateVideoOrientationCallsCount, 1)
     }
 
-    func testVideoPreviewLayetIsSetOnInit() throws {
+    func testVideoPreviewLayerIsSetOnInit() throws {
         // Given
         let expectedVideoPreviewLayer = CALayer()
         viewModel = CardScannerViewModelMock()
