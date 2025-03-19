@@ -38,7 +38,7 @@ class PayToComponentUITests: XCTestCase {
         /// Text field
         style.textField.text.color = .yellow
         style.textField.text.font = .systemFont(ofSize: 5)
-        style.textField.text.textAlignment = .center
+        style.textField.text.textAlignment = .left
         style.textField.placeholderText = TextStyle(
             font: .preferredFont(forTextStyle: .body),
             color: .systemOrange,
@@ -123,7 +123,7 @@ class PayToComponentUITests: XCTestCase {
         // Assert
         var style = style
         style.textField.placeholderText?.color = .white
-        style.textField.placeholderText?.font = .preferredFont(forTextStyle: .caption1)
+        style.textField.placeholderText?.font = .preferredFont(forTextStyle: .body)
         style.textField.text.textAlignment = .right
         style.textField.title.backgroundColor = .red
         style.textField.backgroundColor = .brown
