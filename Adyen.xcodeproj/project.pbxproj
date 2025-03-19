@@ -539,6 +539,8 @@
 		C9454C38276A34150086C218 /* BACSDirectDebitPresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9454C35276A33A00086C218 /* BACSDirectDebitPresentationDelegate.swift */; };
 		C94632BE27BA6985003DD81F /* AnalyticsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94632BD27BA6985003DD81F /* AnalyticsProvider.swift */; };
 		C94639D02D5F68BC004A1B0C /* CaptureSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94639CF2D5F68BC004A1B0C /* CaptureSessionManager.swift */; };
+		C948B6672D8AC5C9000331AA /* CardImageParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C948B6662D8AC5C9000331AA /* CardImageParserTests.swift */; };
+		C948B6692D8AD0CA000331AA /* ExpirationDateFormattingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C948B6682D8AD0CA000331AA /* ExpirationDateFormattingMock.swift */; };
 		C95903DE275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95903DD275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift */; };
 		C96688BF26A6FC1C00DC7297 /* AffirmComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */; };
 		C9680BE62D6CAD590076B93D /* CardScannerAssembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9680BE52D6CAD590076B93D /* CardScannerAssembler.swift */; };
@@ -1913,6 +1915,8 @@
 		C9454C35276A33A00086C218 /* BACSDirectDebitPresentationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitPresentationDelegate.swift; sourceTree = "<group>"; };
 		C94632BD27BA6985003DD81F /* AnalyticsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsProvider.swift; sourceTree = "<group>"; };
 		C94639CF2D5F68BC004A1B0C /* CaptureSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSessionManager.swift; sourceTree = "<group>"; };
+		C948B6662D8AC5C9000331AA /* CardImageParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImageParserTests.swift; sourceTree = "<group>"; };
+		C948B6682D8AD0CA000331AA /* ExpirationDateFormattingMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationDateFormattingMock.swift; sourceTree = "<group>"; };
 		C95903DD275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		C95C89312BF63A3500C47296 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentTests.swift; sourceTree = "<group>"; };
@@ -3498,6 +3502,7 @@
 				C91BF2572D771667001F19DE /* CardImageParsingMock.swift */,
 				C91BF2592D7716D4001F19DE /* CaptureSessionManagingMock.swift */,
 				C93844722D79DF3B00B1E747 /* CardScannerViewModelMock.swift */,
+				C948B6682D8AD0CA000331AA /* ExpirationDateFormattingMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -3606,6 +3611,7 @@
 				C96844922D771328001DB7F1 /* CardScannerViewModelTests.swift */,
 				C91BF25B2D772233001F19DE /* Assets.xcassets */,
 				C93844742D7B1C4100B1E747 /* CardScannerViewControllerTests.swift */,
+				C948B6662D8AC5C9000331AA /* CardImageParserTests.swift */,
 			);
 			path = AdyenCardScannerTests;
 			sourceTree = "<group>";
@@ -7088,7 +7094,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C91BF2582D771667001F19DE /* CardImageParsingMock.swift in Sources */,
+				C948B6692D8AD0CA000331AA /* ExpirationDateFormattingMock.swift in Sources */,
 				C93844752D7B1C4100B1E747 /* CardScannerViewControllerTests.swift in Sources */,
+				C948B6672D8AC5C9000331AA /* CardImageParserTests.swift in Sources */,
 				C93844732D79DF3B00B1E747 /* CardScannerViewModelMock.swift in Sources */,
 				C91BF25A2D7716D4001F19DE /* CaptureSessionManagingMock.swift in Sources */,
 				C96844932D771328001DB7F1 /* CardScannerViewModelTests.swift in Sources */,
