@@ -17,12 +17,33 @@ final class CardImageParserTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testParseImageWithCreditCardOne() throws {
+    func testParseImageWithHighContrastCardImage() throws {
         // Given
         let expirationDateFormatter = ExpirationDateFormatter()
         sut = CardImageParser(expirationDateFormatter: expirationDateFormatter)
 
         let testCreditCard = try XCTUnwrap(testCreditCardOne)
+        let expectation = expectation(description: "Image should be parsed")
+
+        // When
+        sut.parse(image: testCreditCard.image) { receivedCreditCard in
+            expectation.fulfill()
+
+            let expectedCreditCard = testCreditCard.creditCard
+            XCTAssertEqual(expectedCreditCard.number, receivedCreditCard.number)
+            XCTAssertEqual(expectedCreditCard.expirationDate, receivedCreditCard.expirationDate)
+        }
+
+        // Then
+        waitForExpectations(timeout: 10.0)
+    }
+
+    func testParseImageWithLowContrastCardImage() throws {
+        // Given
+        let expirationDateFormatter = ExpirationDateFormatter()
+        sut = CardImageParser(expirationDateFormatter: expirationDateFormatter)
+
+        let testCreditCard = try XCTUnwrap(testCreditCardTwo)
         let expectation = expectation(description: "Image should be parsed")
 
         // When
@@ -57,6 +78,25 @@ final class CardImageParserTests: XCTestCase {
         let creditCard = CreditCard(
             number: "4111110003920001",
             expirationDate: dateFrom("03/30")
+        )
+        return TestCreditCard(
+            image: originalImage,
+            creditCard: creditCard
+        )
+    }
+
+    private var testCreditCardTwo: TestCreditCard? {
+        let image = UIImage(
+            named: "test-card-number-2",
+            in: Bundle(for: type(of: self)),
+            compatibleWith: nil
+        )
+        guard let cgImage = image?.cgImage else { return nil }
+        let originalImage = CIImage(cgImage: cgImage)
+
+        let creditCard = CreditCard(
+            number: "5413330089099999",
+            expirationDate: dateFrom("02/28")
         )
         return TestCreditCard(
             image: originalImage,
