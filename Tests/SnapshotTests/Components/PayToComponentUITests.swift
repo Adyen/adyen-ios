@@ -40,9 +40,9 @@ class PayToComponentUITests: XCTestCase {
         style.textField.text.font = .systemFont(ofSize: 5)
         style.textField.text.textAlignment = .center
         style.textField.placeholderText = TextStyle(
-            font: .preferredFont(forTextStyle: .headline),
+            font: .preferredFont(forTextStyle: .body),
             color: .systemOrange,
-            textAlignment: .center
+            textAlignment: .left
         )
 
         style.textField.title.backgroundColor = .blue
@@ -81,7 +81,7 @@ class PayToComponentUITests: XCTestCase {
         style.textField.text.font = .systemFont(ofSize: 5)
         style.textField.text.textAlignment = .center
         style.textField.placeholderText = TextStyle(
-            font: .preferredFont(forTextStyle: .headline),
+            font: .preferredFont(forTextStyle: .body),
             color: .systemOrange,
             textAlignment: .center
         )
@@ -121,6 +121,13 @@ class PayToComponentUITests: XCTestCase {
 
     func test_UI_elements_for_PayId_flowType() {
         // Assert
+        var style = style
+        style.textField.placeholderText?.color = .white
+        style.textField.placeholderText?.font = .preferredFont(forTextStyle: .caption1)
+        style.textField.text.textAlignment = .right
+        style.textField.title.backgroundColor = .red
+        style.textField.backgroundColor = .brown
+
         let config = PayToComponent.Configuration(style: style)
         let sut = PayToComponent(
             paymentMethod: paymentMethod,
@@ -435,12 +442,15 @@ class PayToComponentUITests: XCTestCase {
             didSubmitExpectation.fulfill()
         }
 
-        try populateBSBFields(sut: sut)
+        sut.selectedPaymentOption = .BSB
+
         try populateShopperNameField(sut: sut)
+        try populateBSBFields(sut: sut)
+
+        wait(for: .aMoment)
 
         continueButton.sendActions(for: .touchUpInside)
-
-        waitForExpectations(timeout: 10, handler: nil)
+        wait(for: [didSubmitExpectation], timeout: 10)
     }
 
     private func populateMobileNumberField(sut: PayToComponent) throws {
@@ -469,6 +479,7 @@ class PayToComponentUITests: XCTestCase {
 
         self.populate(textItemView: bankStateBranchInputItem, with: "123456")
         self.populate(textItemView: accountNumberInputItem, with: "NLAB13343455")
+        accountNumberInputItem.resignFirstResponder()
     }
 
     private func populateShopperNameField(sut: PayToComponent) throws {
