@@ -70,6 +70,7 @@ internal class CardImageParser: CardImageParsing {
         DispatchQueue.global().async {
             if self.cachedExpirationDate == nil {
                 self.cachedExpirationDate = self.extractExpirationDate(from: results)
+                print(self.cachedExpirationDate)
             }
             dispatchGroup.leave()
         }
