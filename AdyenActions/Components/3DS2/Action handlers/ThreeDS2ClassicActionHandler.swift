@@ -36,18 +36,18 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     
     internal init(
         context: AdyenContext,
-        service: ThreeDSServiceable = ThreeDSServiceLegacy(),
-        appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
+        appearanceConfiguration: ADYAppearanceConfiguration,
+        service: ThreeDSService,
         coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
         delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil
     ) {
         self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
             context: context,
+            service: service,
             appearanceConfiguration: appearanceConfiguration,
             delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
         )
         self.context = context
-        self.coreActionHandler.service = service
     }
 
     // MARK: - Fingerprint
