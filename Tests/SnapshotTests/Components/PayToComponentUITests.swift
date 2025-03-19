@@ -31,7 +31,7 @@ class PayToComponentUITests: XCTestCase {
         style.mainButtonItem.button.title.color = .white
         style.mainButtonItem.button.title.backgroundColor = .red
         style.mainButtonItem.button.title.textAlignment = .center
-        style.mainButtonItem.button.title.font = .systemFont(ofSize: 22)
+        style.mainButtonItem.button.title.font = .systemFont(ofSize: 12)
         style.mainButtonItem.button.backgroundColor = .red
         style.mainButtonItem.backgroundColor = .brown
 
@@ -40,14 +40,15 @@ class PayToComponentUITests: XCTestCase {
         style.textField.text.font = .systemFont(ofSize: 5)
         style.textField.text.textAlignment = .left
         style.textField.placeholderText = TextStyle(
-            font: .preferredFont(forTextStyle: .body),
+            font: .preferredFont(forTextStyle: .caption2),
             color: .systemOrange,
             textAlignment: .left
+
         )
 
         style.textField.title.backgroundColor = .blue
         style.textField.title.color = .green
-        style.textField.title.font = .systemFont(ofSize: 18)
+        style.textField.title.font = .systemFont(ofSize: 12)
         style.textField.title.textAlignment = .left
         style.textField.backgroundColor = .blue
 
@@ -72,7 +73,7 @@ class PayToComponentUITests: XCTestCase {
         style.mainButtonItem.button.title.color = .white
         style.mainButtonItem.button.title.backgroundColor = .red
         style.mainButtonItem.button.title.textAlignment = .center
-        style.mainButtonItem.button.title.font = .systemFont(ofSize: 22)
+        style.mainButtonItem.button.title.font = .systemFont(ofSize: 12)
         style.mainButtonItem.button.backgroundColor = .red
         style.mainButtonItem.backgroundColor = .brown
 
@@ -81,14 +82,14 @@ class PayToComponentUITests: XCTestCase {
         style.textField.text.font = .systemFont(ofSize: 5)
         style.textField.text.textAlignment = .center
         style.textField.placeholderText = TextStyle(
-            font: .preferredFont(forTextStyle: .body),
+            font: .preferredFont(forTextStyle: .caption2),
             color: .systemOrange,
             textAlignment: .center
         )
 
         style.textField.title.backgroundColor = .blue
         style.textField.title.color = .green
-        style.textField.title.font = .systemFont(ofSize: 18)
+        style.textField.title.font = .systemFont(ofSize: 12)
         style.textField.title.textAlignment = .left
         style.textField.backgroundColor = .blue
 
@@ -123,7 +124,7 @@ class PayToComponentUITests: XCTestCase {
         // Assert
         var style = style
         style.textField.placeholderText?.color = .white
-        style.textField.placeholderText?.font = .preferredFont(forTextStyle: .body)
+        style.textField.placeholderText?.font = .preferredFont(forTextStyle: .caption2)
         style.textField.text.textAlignment = .right
         style.textField.title.backgroundColor = .red
         style.textField.backgroundColor = .brown
