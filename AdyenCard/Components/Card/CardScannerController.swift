@@ -54,7 +54,7 @@ internal protocol CardScannerControlling {
     
         // MARK: - Private
         
-        private func map(_ result: Result<AdyenCardScanner.CreditCard, AdyenCardScanner.CardScannerError>) -> Result<CardModel, Error> {
+        private func map(_ result: Result<AdyenCardScanner.CardScanDetails, AdyenCardScanner.CardScannerError>) -> Result<CardModel, Error> {
             switch result {
             case let .success(card):
                 .success((card.number, card.expirationDate))
