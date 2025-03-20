@@ -12,7 +12,7 @@ internal protocol CardScannerAvailability {
 }
 
 internal protocol CardScannerProviding {
-    func createCardScanner(completion: @escaping (Result<CreditCard, CardScannerError>) -> Void) -> UIViewController?
+    func createCardScanner(completion: @escaping (Result<(String?, Date?), Error>) -> Void) -> UIViewController?
 }
 
 internal protocol CardScannerControlling: CardScannerAvailability {
@@ -21,6 +21,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
     init(presenter: UIViewController, availabilityProvider: CardScannerAvailability, cardScannerProvider: CardScannerProviding)
     func openCardScanner()
 
+    var title: String? { get set }
     var onScanComplete: ((Result<CardModel, Error>) -> Void)? { get set }
 }
 
@@ -121,9 +122,28 @@ internal protocol CardScannerControlling: CardScannerAvailability {
     internal final class CardScannerController: CardScannerControlling {
         internal var isScannerAvailable: Bool { false }
         internal var onScanComplete: ((Result<CardModel, any Error>) -> Void)?
-        internal func openCardScanner(title: String?) {}
+        var title: String?
+        internal func openCardScanner() {}
 
-        internal init(presenter: UIViewController) {}
+        internal init(
+            presenter: UIViewController,
+            availabilityProvider: CardScannerAvailability = DummyCardScannerAvailability(),
+            cardScannerProvider: CardScannerProviding = DummyCardScannerProvider()
+        ) {}
+
+        // MARK: - Helpers
+
+        struct DummyCardScannerAvailability: CardScannerAvailability {
+            var isScannerAvailable: Bool { false }
+        }
+
+        struct DummyCardScannerProvider: CardScannerProviding {
+            func createCardScanner(
+                completion: @escaping (Result<(String?, Date?), any Error>) -> Void
+            ) -> UIViewController? {
+                UIViewController()
+            }
+        }
     }
 
 #endif // canImport(AdyenCardScanner)
