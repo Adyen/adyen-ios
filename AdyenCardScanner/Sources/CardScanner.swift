@@ -9,7 +9,7 @@ import UIKit
 
 public typealias CardScanDetails = (number: String?, expirationDate: Date?)
 
-protocol CardScanning {
+public protocol CardScanning {
     static func createCardScanner(
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) -> UIViewController?

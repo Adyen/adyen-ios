@@ -8,19 +8,19 @@ import AVFoundation
 import Foundation
 import UIKit
 
-protocol CardScannerAssembling {
+internal protocol CardScannerAssembling {
     func resolveCardScannerViewController(
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) -> UIViewController?
 }
 
-class CardScannerAssembler: CardScannerAssembling {
+internal class CardScannerAssembler: CardScannerAssembling {
 
     // MARK: - Initializers
 
-    let captureDevice: AVCaptureDevice?
+    internal let captureDevice: AVCaptureDevice?
 
-    init() {
+    internal init() {
         self.captureDevice = AVCaptureDevice.default(
             .builtInWideAngleCamera,
             for: .video,
@@ -30,7 +30,7 @@ class CardScannerAssembler: CardScannerAssembling {
 
     // MARK: - CardScannerAssemblerProtocol
 
-    func resolveCardScannerViewController(
+    internal func resolveCardScannerViewController(
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) -> UIViewController? {
         guard let captureDevice else {

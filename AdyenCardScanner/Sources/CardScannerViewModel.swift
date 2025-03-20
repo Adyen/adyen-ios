@@ -8,7 +8,7 @@ import CoreImage
 import Foundation
 import QuartzCore
 
-protocol CardScannerViewModelProtocol {
+internal protocol CardScannerViewModelProtocol {
     var videoPreviewLayer: CALayer { get }
     func configureSession()
     func startCaptureSession()
@@ -17,7 +17,7 @@ protocol CardScannerViewModelProtocol {
     func update(previewLayerFrame: CGRect, roiInPreviewLayer: CGRect)
 }
 
-class CardScannerViewModel: CardScannerViewModelProtocol {
+internal class CardScannerViewModel: CardScannerViewModelProtocol {
 
     // MARK: - Properties
 
@@ -30,7 +30,7 @@ class CardScannerViewModel: CardScannerViewModelProtocol {
 
     // MARK: - Initializers
 
-    init(
+    internal init(
         cardImageParser: CardImageParsing,
         captureSessionManager: CaptureSessionManaging,
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
@@ -43,34 +43,34 @@ class CardScannerViewModel: CardScannerViewModelProtocol {
 
     // MARK: - CardScannerViewModelProtocol
 
-    var videoPreviewLayer: CALayer {
+    internal var videoPreviewLayer: CALayer {
         captureSessionManager.videoPreviewLayer
     }
 
-    func configureSession() {
+    internal func configureSession() {
         captureSessionManager.configureSession()
     }
 
-    func startCaptureSession() {
+    internal func startCaptureSession() {
         captureSessionManager.startCaptureSession()
     }
 
-    func stopCaptureSession() {
+    internal func stopCaptureSession() {
         captureSessionManager.stopCaptureSession()
     }
 
-    func updateVideoOrientation() {
+    internal func updateVideoOrientation() {
         captureSessionManager.updateVideoOrientation()
     }
 
-    func update(previewLayerFrame: CGRect, roiInPreviewLayer: CGRect) {
+    internal func update(previewLayerFrame: CGRect, roiInPreviewLayer: CGRect) {
         self.previewFrame = previewLayerFrame
         self.roiInPreviewFrame = roiInPreviewLayer
     }
 
     // MARK: - Private
 
-    private func getCardData(
+    private func fetchCardData(
         from image: CIImage,
         roiInPreviewFrame: CGRect,
         previewFrame: CGRect
@@ -139,12 +139,12 @@ class CardScannerViewModel: CardScannerViewModelProtocol {
 
 extension CardScannerViewModel: CaptureSessionDelegate {
 
-    func didCapture(image: CIImage?) {
+    internal func didCapture(image: CIImage?) {
         guard let image else { return }
 
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self else { return }
-            getCardData(
+            fetchCardData(
                 from: image,
                 roiInPreviewFrame: roiInPreviewFrame,
                 previewFrame: previewFrame
