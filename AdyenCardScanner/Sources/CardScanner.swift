@@ -7,9 +7,11 @@
 import Foundation
 import UIKit
 
+public typealias CardDetails = (number: String?, expirationDate: Date?)
+
 protocol CardScanning {
     static func createCardScanner(
-        completion: @escaping (Result<CreditCard, CardScannerError>) -> Void
+        completion: @escaping (Result<CardDetails, CardScannerError>) -> Void
     ) -> UIViewController?
 
     static var isAvailable: Bool { get }
@@ -24,7 +26,7 @@ public enum CardScanner: CardScanning {
     // MARK: - CardScanning
 
     public static func createCardScanner(
-        completion: @escaping (Result<CreditCard, CardScannerError>) -> Void
+        completion: @escaping (Result<CardDetails, CardScannerError>) -> Void
     ) -> UIViewController? {
         let cardScannerViewController = cardScannerAssembler.resolveCardScannerViewController(completion: completion)
         return cardScannerViewController
