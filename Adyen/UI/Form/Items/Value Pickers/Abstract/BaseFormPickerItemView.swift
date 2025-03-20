@@ -8,7 +8,7 @@ import UIKit
 
 /// Represents a picker item view.
 @_spi(AdyenInternal)
-public final class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>:
+open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>:
     FormValueItemView<BasePickerElement<T>, FormTextItemStyle, BaseFormPickerItem<T>>,
     UIPickerViewDelegate,
     UIPickerViewDataSource {
@@ -49,7 +49,7 @@ public final class BaseFormPickerItemView<T: CustomStringConvertible & Equatable
         }
     }
 
-    override public var canBecomeFirstResponder: Bool { true }
+    override open var canBecomeFirstResponder: Bool { true }
 
     @discardableResult
     override public func becomeFirstResponder() -> Bool {
