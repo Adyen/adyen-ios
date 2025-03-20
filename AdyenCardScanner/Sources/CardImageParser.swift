@@ -8,14 +8,14 @@ import CoreImage.CIFilterBuiltins
 import Foundation
 import Vision
 
-protocol CardImageParsing {
+internal protocol CardImageParsing {
     func parse(
         image: CIImage,
         completion: @escaping (CreditCard) -> Void
     )
 }
 
-class CardImageParser: CardImageParsing {
+internal class CardImageParser: CardImageParsing {
 
     private enum Constants {
         static let expirationDateRegex = "\\d{2}\\/\\d{2,4}"
@@ -33,13 +33,13 @@ class CardImageParser: CardImageParsing {
 
     // MARK: - Initializers
 
-    init(expirationDateFormatter: ExpirationDateFormatting) {
+    internal init(expirationDateFormatter: ExpirationDateFormatting) {
         self.expirationDateFormatter = expirationDateFormatter
     }
 
     // MARK: - CardImageParsing
 
-    func parse(
+    internal func parse(
         image: CIImage,
         completion: @escaping (CreditCard) -> Void
     ) {

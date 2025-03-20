@@ -6,7 +6,7 @@ on:
 
 jobs:
   create_release:
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     name: "Create Release"
     runs-on: ubuntu-latest
     
@@ -20,15 +20,6 @@ jobs:
       run: |
         SOURCE_BRANCH=${{ github.event.pull_request.head.ref }}
         
-        # Checking if the source branch was a release
-        # If the branch is not a release branch we return early and skip the subsequent steps
-        if [[ "$SOURCE_BRANCH" != release/* ]]; then
-          echo "PROCEED=false" >> $GITHUB_ENV
-          echo "Source branch does not match pattern. Exiting."
-          echo "IS_RELEASE_BRANCH=false" >> $GITHUB_ENV
-          exit 0
-        fi
-        
         # Extracting the version number from the source branch name
         # If the version number does not match we fail to indicate an issue
         VERSION_NUMBER=${SOURCE_BRANCH#release/}
@@ -36,8 +27,6 @@ jobs:
           echo "'$VERSION_NUMBER' does not match semantic versioning format. Exiting."
           exit 1
         fi
-
-        echo "IS_RELEASE_BRANCH=true" >> $GITHUB_ENV
         
         MERGE_COMMIT_SHA=${{ github.event.pull_request.merge_commit_sha }}
         PR_NUMBER=${{ github.event.pull_request.number }}
@@ -56,7 +45,6 @@ jobs:
         echo "$PR_BODY" >> "${{ github.workspace }}/release_content.md"
         
     - name: Create Release
-      if: env.IS_RELEASE_BRANCH == 'true'
       uses: softprops/action-gh-release@v2
       with:
         body_path: "${{ github.workspace }}/release_content.md"
