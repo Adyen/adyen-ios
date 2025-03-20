@@ -23,7 +23,7 @@ class CardScannerViewModel: CardScannerViewModelProtocol {
 
     private let cardImageParser: CardImageParsing
     private var captureSessionManager: CaptureSessionManaging
-    private let completion: (Result<CardDetails, CardScannerError>) -> Void
+    private let completion: (Result<CardScanDetails, CardScannerError>) -> Void
 
     private var previewFrame: CGRect = .zero
     private var roiInPreviewFrame: CGRect = .zero
@@ -33,7 +33,7 @@ class CardScannerViewModel: CardScannerViewModelProtocol {
     init(
         cardImageParser: CardImageParsing,
         captureSessionManager: CaptureSessionManaging,
-        completion: @escaping (Result<CardDetails, CardScannerError>) -> Void
+        completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) {
         self.cardImageParser = cardImageParser
         self.captureSessionManager = captureSessionManager

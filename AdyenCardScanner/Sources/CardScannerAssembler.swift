@@ -10,7 +10,7 @@ import UIKit
 
 protocol CardScannerAssembling {
     func resolveCardScannerViewController(
-        completion: @escaping (Result<CardDetails, CardScannerError>) -> Void
+        completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) -> UIViewController?
 }
 
@@ -31,7 +31,7 @@ class CardScannerAssembler: CardScannerAssembling {
     // MARK: - CardScannerAssemblerProtocol
 
     func resolveCardScannerViewController(
-        completion: @escaping (Result<CardDetails, CardScannerError>) -> Void
+        completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) -> UIViewController? {
         guard let captureDevice else {
             // TODO: Remove after error handling implementation
