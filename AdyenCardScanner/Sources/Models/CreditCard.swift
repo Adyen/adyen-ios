@@ -6,10 +6,10 @@
 
 import Foundation
 
-public struct CreditCard {
+internal struct CreditCard {
 
     // MARK: - Properties
 
-    public let number: String?
-    public let expirationDate: Date?
+    internal let number: String?
+    internal let expirationDate: Date?
 }
