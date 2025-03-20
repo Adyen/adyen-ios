@@ -426,6 +426,9 @@
 		A0F4559B295F0F58001742C7 /* MealVoucherPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F4559A295F0F58001742C7 /* MealVoucherPaymentMethod.swift */; };
 		A0F455A12968472B001742C7 /* PartialPaymentMethodDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F455A02968472B001742C7 /* PartialPaymentMethodDetails.swift */; };
 		A0FA143F26D65A5300627127 /* InstallmentPickerElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */; };
+		B605AC0B2D897A930084D583 /* CardScannerControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B605AC092D897A930084D583 /* CardScannerControllerTests.swift */; };
+		B605AC0C2D897F960084D583 /* AdyenCardScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9FC2C3D2D50D0B700C9D0F3 /* AdyenCardScanner.framework */; };
+		B605AC0D2D897F960084D583 /* AdyenCardScanner.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C9FC2C3D2D50D0B700C9D0F3 /* AdyenCardScanner.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B62A075C2D71FB43006072E7 /* FormCardNumberItemView+ScanCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62A075B2D71FB43006072E7 /* FormCardNumberItemView+ScanCard.swift */; };
 		B62D48B42BBE8DBE001EF01A /* AnalyticsFlavorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16AB280702B200534419 /* AnalyticsFlavorTests.swift */; };
 		B62D48B52BBE8DBE001EF01A /* AnalyticsEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16A928059A5A00534419 /* AnalyticsEventTests.swift */; };
@@ -1281,6 +1284,13 @@
 			remoteGlobalIDString = E2C0E03222097917008616F6;
 			remoteInfo = Adyen;
 		};
+		B605AC0E2D897F960084D583 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C9FC2C3C2D50D0B700C9D0F3;
+			remoteInfo = AdyenCardScanner;
+		};
 		B639C0852D80456300472EBB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
@@ -1494,6 +1504,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		B605AC102D897F960084D583 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B605AC0D2D897F960084D583 /* AdyenCardScanner.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E2C0E0A8220B0827008616F6 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1875,6 +1896,7 @@
 		A0F4559A295F0F58001742C7 /* MealVoucherPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealVoucherPaymentMethod.swift; sourceTree = "<group>"; };
 		A0F455A02968472B001742C7 /* PartialPaymentMethodDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialPaymentMethodDetails.swift; sourceTree = "<group>"; };
 		A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallmentPickerElement.swift; sourceTree = "<group>"; };
+		B605AC092D897A930084D583 /* CardScannerControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerControllerTests.swift; sourceTree = "<group>"; };
 		B62A075B2D71FB43006072E7 /* FormCardNumberItemView+ScanCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormCardNumberItemView+ScanCard.swift"; sourceTree = "<group>"; };
 		B62D48AC2BBE8D79001EF01A /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
@@ -2636,6 +2658,7 @@
 				8182AABD2B974E2B0087568E /* AdyenTwint.framework in Frameworks */,
 				E97B971322980CBA00505476 /* Adyen3DS2.framework in Frameworks */,
 				81B8036B2BE0E714003D037F /* AdyenWeChatPayInternal in Frameworks */,
+				B605AC0C2D897F960084D583 /* AdyenCardScanner.framework in Frameworks */,
 				81B8036B2BE0E714003D037F /* AdyenWeChatPayInternal in Frameworks */,
 				E97B970E22980C8400505476 /* AdyenDropIn.framework in Frameworks */,
 				E97B970D22980C7900505476 /* AdyenCard.framework in Frameworks */,
@@ -3408,6 +3431,14 @@
 				A0F41E5526CBCA6E0089AD6C /* InstallmentOptions.swift */,
 			);
 			path = Installment;
+			sourceTree = "<group>";
+		};
+		B605AC0A2D897A930084D583 /* Card Scanner */ = {
+			isa = PBXGroup;
+			children = (
+				B605AC092D897A930084D583 /* CardScannerControllerTests.swift */,
+			);
+			path = "Card Scanner";
 			sourceTree = "<group>";
 		};
 		B62D48AD2BBE8D79001EF01A /* UnitTests */ = {
@@ -4909,6 +4940,7 @@
 				F9EDB799239664B500CFB3C9 /* StoredPaymentMethodComponentTests.swift */,
 				F919DF9824EA64680027976E /* CardPublicKeyProviderTests.swift */,
 				81D7EC8F2CD24143005159F6 /* FormViewControllerTests.swift */,
+				B605AC0A2D897A930084D583 /* Card Scanner */,
 			);
 			path = "Card Tests";
 			sourceTree = "<group>";
@@ -6216,6 +6248,7 @@
 				E2C0E03822097917008616F6 /* Sources */,
 				E2C0E03922097917008616F6 /* Frameworks */,
 				E2C0E03A22097917008616F6 /* Resources */,
+				B605AC102D897F960084D583 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -6224,6 +6257,7 @@
 				E97B971222980C8B00505476 /* PBXTargetDependency */,
 				E2C0E03F22097917008616F6 /* PBXTargetDependency */,
 				F9D57522237C345C009C18B5 /* PBXTargetDependency */,
+				B605AC0F2D897F960084D583 /* PBXTargetDependency */,
 			);
 			name = IntegrationUIKitTests;
 			packageProductDependencies = (
@@ -7451,6 +7485,7 @@
 				F9AC61C0243750D80062A00D /* AppLauncherMock.swift in Sources */,
 				C9BB460927622F4100E6730B /* BACSConfirmationPresenterTests.swift in Sources */,
 				C96688BF26A6FC1C00DC7297 /* AffirmComponentTests.swift in Sources */,
+				B605AC0B2D897A930084D583 /* CardScannerControllerTests.swift in Sources */,
 				81FC2C8F2BB18F0F007F1316 /* ImageLoaderMock.swift in Sources */,
 				A0BDF3F22BD29E69001FF7E5 /* PostalCodeValidatorTests.swift in Sources */,
 				81DA70872BDA6075006CE5D5 /* Twint+Spy.swift in Sources */,
@@ -8195,6 +8230,11 @@
 			isa = PBXTargetDependency;
 			target = E2C0E03222097917008616F6 /* Adyen */;
 			targetProxy = A04F8C2D29E5957B00F3F62B /* PBXContainerItemProxy */;
+		};
+		B605AC0F2D897F960084D583 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C9FC2C3C2D50D0B700C9D0F3 /* AdyenCardScanner */;
+			targetProxy = B605AC0E2D897F960084D583 /* PBXContainerItemProxy */;
 		};
 		B639C0862D80456300472EBB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

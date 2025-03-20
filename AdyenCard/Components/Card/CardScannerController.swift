@@ -7,13 +7,19 @@
 import Foundation
 import UIKit
 
-internal protocol CardScannerControlling {
+internal protocol CardScannerAvailability {
+    var isScannerAvailable: Bool { get }
+}
+
+internal protocol CardScannerProviding {
+    func createCardScanner(completion: @escaping (Result<CreditCard, CardScannerError>) -> Void) -> UIViewController?
+}
+
+internal protocol CardScannerControlling: CardScannerAvailability {
     typealias CardModel = (String?, Date?)
 
-    var isScannerAvailable: Bool { get }
-
-    init(presenter: UIViewController)
-    func openCardScanner(title: String?)
+    init(presenter: UIViewController, availabilityProvider: CardScannerAvailability, cardScannerProvider: CardScannerProviding)
+    func openCardScanner()
 
     var onScanComplete: ((Result<CardModel, Error>) -> Void)? { get set }
 }
@@ -21,26 +27,45 @@ internal protocol CardScannerControlling {
 #if canImport(AdyenCardScanner)
     import AdyenCardScanner
 
+    private struct CardScannerAvailabilityWrapper: CardScannerAvailability {
+        var isScannerAvailable: Bool { AdyenCardScanner.CardScanner.isAvailable }
+    }
+
+    private struct CardScannerProviderWrapper: CardScannerProviding {
+        func createCardScanner(completion: @escaping (Result<CreditCard, CardScannerError>) -> Void) -> UIViewController? {
+            AdyenCardScanner.CardScanner.createCardScanner(completion: completion)
+        }
+    }
+
     internal final class CardScannerController: CardScannerControlling {
         internal enum CardScannerError: Error {
             case scanningError
         }
     
         private let presenter: UIViewController
+        private let availabilityProvider: CardScannerAvailability
+        private let cardScannerProvider: CardScannerProviding
+        internal var title: String?
 
         internal var onScanComplete: ((Result<(String?, Date?), any Error>) -> Void)?
     
-        internal init(presenter: UIViewController) {
+        internal init(
+            presenter: UIViewController,
+            availabilityProvider: CardScannerAvailability = CardScannerAvailabilityWrapper(),
+            cardScannerProvider: CardScannerProviding = CardScannerProviderWrapper()
+        ) {
+            self.availabilityProvider = availabilityProvider
+            self.cardScannerProvider = cardScannerProvider
             self.presenter = presenter
         }
     
         internal var isScannerAvailable: Bool {
-            if #available(iOS 13.0, *), AdyenCardScanner.CardScanner.isAvailable { true } else { false }
+            if #available(iOS 13.0, *), availabilityProvider.isScannerAvailable { true } else { false }
         }
     
-        internal func openCardScanner(title: String?) {
+        internal func openCardScanner() {
             let scannerNavigationController = makeNavigationController()
-            guard let scannerViewController = AdyenCardScanner.CardScanner.createCardScanner(completion: { [weak self] result in
+            guard let scannerViewController = cardScannerProvider.createCardScanner(completion: { [weak self] result in
                 guard let self else { return }
                 self.onScanComplete?(self.map(result))
                 scannerNavigationController.dismiss(animated: true)
@@ -85,8 +110,9 @@ internal protocol CardScannerControlling {
             UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handleCardScanningCancelation))
         }
 
-        @objc private func handleCardScanningCancelation(sender: NSObject) {
-            presenter.navigationController?.topViewController?.dismiss(animated: true)
+        @objc internal func handleCardScanningCancelation(completion: (() -> Void)? = nil) {
+            presenter.presentedViewController?.dismiss(animated: true, completion: completion)
+//            presenter.navigationController?.topViewController?.dismiss(animated: true)
         }
     }
 
