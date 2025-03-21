@@ -23,7 +23,7 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
 
     private let cardImageParser: CardImageParsing
     private var captureSessionManager: CaptureSessionManaging
-    private let completion: (Result<CreditCard, CardScannerError>) -> Void
+    private let completion: (Result<CardScanDetails, CardScannerError>) -> Void
 
     private var previewFrame: CGRect = .zero
     private var roiInPreviewFrame: CGRect = .zero
@@ -33,7 +33,7 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
     internal init(
         cardImageParser: CardImageParsing,
         captureSessionManager: CaptureSessionManaging,
-        completion: @escaping (Result<CreditCard, CardScannerError>) -> Void
+        completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) {
         self.cardImageParser = cardImageParser
         self.captureSessionManager = captureSessionManager
@@ -81,8 +81,12 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
             previewFrame: previewFrame
         )
 
-        cardImageParser.parse(image: croppedImage) { [weak self] creditCard in
-            self?.completion(.success(creditCard))
+        cardImageParser.parse(image: croppedImage) { creditCard in
+            let cardDetails = (
+                number: creditCard.number,
+                expirationDate: creditCard.expirationDate
+            )
+            self.completion(.success(cardDetails))
         }
     }
 
