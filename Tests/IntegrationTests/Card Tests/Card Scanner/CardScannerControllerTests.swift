@@ -61,7 +61,7 @@ class CardScannerControllerTests: XCTestCase {
     func testHandleCardScanningCancelation() throws {
         sut.openCardScanner()
 
-        sut.handleCardScanningCancelation {
+        sut.handleCardScanningCancelationWithCompletion {
             XCTAssertNil(self.mockPresenter.presentedViewController)
         }
     }
@@ -73,12 +73,12 @@ class CardScannerControllerTests: XCTestCase {
         let cardNumber = "1111 2222 3333 4444"
         let expiryDate = Date(timeIntervalSince1970: 1742456818)
 
-        let expectedResultTuple: (String?, Date?) = (cardNumber, expiryDate)
-        let mockCard = AdyenCardScanner.CreditCard(number: cardNumber, expirationDate: expiryDate)
+        let expectedResult: CardScanDetails = (cardNumber, expiryDate)
+        let mockCard = CardScanDetails(cardNumber, expiryDate)
 
         sut.onScanComplete = { result in
             // Then
-            self.expect(result, toMatch: .success(expectedResultTuple))
+            self.expect(result, toMatch: .success(expectedResult))
             expectation.fulfill()
         }
 
@@ -110,13 +110,18 @@ class CardScannerControllerTests: XCTestCase {
 
     // MARK: - Helpers
 
-    private func expect(_ result: Result<(String?, Date?), Error>, toMatch expectedResult: Result<(String?, Date?), Error>) {
+    private func expect(
+        _ result: Result<CardScanDetails, Error>,
+        toMatch expectedResult: Result<CardScanDetails, Error>,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) {
         switch (result, expectedResult) {
         case (.success(let (receivedCard, receivedDate)), .success(let (expectedCard, expectedDate))):
-            XCTAssertEqual(receivedCard, expectedCard)
-            XCTAssertEqual(receivedDate, expectedDate)
+            XCTAssertEqual(receivedCard, expectedCard, file: file, line: line)
+            XCTAssertEqual(receivedDate, expectedDate, file: file, line: line)
         case let (.failure(receivedError as NSError), .failure(expectedError as NSError)):
-            XCTAssertEqual(receivedError, expectedError)
+            XCTAssertEqual(receivedError, expectedError, file: file, line: line)
         default:
             XCTFail()
         }
@@ -127,16 +132,16 @@ class CardScannerControllerTests: XCTestCase {
     }
 
     private class CardScannerProviderSpy: CardScannerProviding {
-        private var completion: ((Result<AdyenCardScanner.CreditCard, AdyenCardScanner.CardScannerError>) -> Void)? = nil
+        private var completion: ((Result<AdyenCardScanner.CardScanDetails, Error>) -> Void)? = nil
 
         func createCardScanner(
-            completion: @escaping (Result<AdyenCardScanner.CreditCard, AdyenCardScanner.CardScannerError>) -> Void
+            completion: @escaping (Result<CardScanDetails, Error>) -> Void
         ) -> UIViewController? {
             self.completion = completion
             return UIViewController()
         }
 
-        func onScanComplete(result: Result<AdyenCardScanner.CreditCard, AdyenCardScanner.CardScannerError>) {
+        func onScanComplete(result: Result<CardScanDetails, Error>) {
             self.completion?(result)
         }
     }
