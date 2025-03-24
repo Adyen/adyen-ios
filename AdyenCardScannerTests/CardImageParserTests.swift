@@ -22,7 +22,7 @@ final class CardImageParserTests: XCTestCase {
         let expirationDateFormatter = ExpirationDateFormatter()
         sut = CardImageParser(expirationDateFormatter: expirationDateFormatter)
 
-        let testCreditCard = try XCTUnwrap(testCreditCardOne)
+        let testCreditCard = try XCTUnwrap(testCreditCardHighContrast)
         let expectation = expectation(description: "Image should be parsed")
 
         // When
@@ -43,7 +43,7 @@ final class CardImageParserTests: XCTestCase {
         let expirationDateFormatter = ExpirationDateFormatter()
         sut = CardImageParser(expirationDateFormatter: expirationDateFormatter)
 
-        let testCreditCard = try XCTUnwrap(testCreditCardTwo)
+        let testCreditCard = try XCTUnwrap(testCreditCardLowContrast)
         let expectation = expectation(description: "Image should be parsed")
 
         // When
@@ -59,13 +59,14 @@ final class CardImageParserTests: XCTestCase {
         waitForExpectations(timeout: 10.0)
     }
 
-    func testParseImageWithThirdImage() throws {
+    func testParseImageWithInvalidLuhnCheck() throws {
         // Given
         let expirationDateFormatter = ExpirationDateFormatter()
         sut = CardImageParser(expirationDateFormatter: expirationDateFormatter)
 
-        let testCreditCard = try XCTUnwrap(testCreditCardThree)
+        let testCreditCard = try XCTUnwrap(testCreditCardInvalidLuhn)
         let expectation = expectation(description: "Image should be parsed")
+        expectation.isInverted = true
 
         // When
         sut.parse(image: testCreditCard.image) { receivedCreditCard in
@@ -87,7 +88,7 @@ final class CardImageParserTests: XCTestCase {
         let creditCard: CreditCard
     }
 
-    private var testCreditCardOne: TestCreditCard? {
+    private var testCreditCardHighContrast: TestCreditCard? {
         let image = UIImage(
             named: "test-card-number-1",
             in: Bundle(for: type(of: self)),
@@ -106,7 +107,7 @@ final class CardImageParserTests: XCTestCase {
         )
     }
 
-    private var testCreditCardTwo: TestCreditCard? {
+    private var testCreditCardLowContrast: TestCreditCard? {
         let image = UIImage(
             named: "test-card-number-2",
             in: Bundle(for: type(of: self)),
@@ -125,7 +126,7 @@ final class CardImageParserTests: XCTestCase {
         )
     }
 
-    private var testCreditCardThree: TestCreditCard? {
+    private var testCreditCardInvalidLuhn: TestCreditCard? {
         let image = UIImage(
             named: "test-card-number-3",
             in: Bundle(for: type(of: self)),
@@ -135,8 +136,8 @@ final class CardImageParserTests: XCTestCase {
         let originalImage = CIImage(cgImage: cgImage)
 
         let creditCard = CreditCard(
-            number: "4000123456789010",
-            expirationDate: dateFrom("12/20")
+            number: "5412751234123456",
+            expirationDate: dateFrom("12/23")
         )
         return TestCreditCard(
             image: originalImage,

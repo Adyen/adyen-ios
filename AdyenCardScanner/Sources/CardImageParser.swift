@@ -100,7 +100,7 @@ internal class CardImageParser: CardImageParsing {
             .compactMap { $0.topCandidates(Constants.topCandidates).first }
             .filter { $0.confidence > Constants.cardNumberConfidence }
             .map { $0.string.replacingOccurrences(of: " ", with: "") }
-            .first(where: { $0.isCardNumber })
+            .first(where: { $0.isCardNumber && isValidLuhn($0) })
         guard let cardNumberMatch else { return nil }
         self.cachedCardNumber = cardNumberMatch
 
