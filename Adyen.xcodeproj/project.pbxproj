@@ -531,6 +531,7 @@
 		C930FB6E269D79E0006A26D2 /* AffirmDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */; };
 		C933801E276A06E1005B66CD /* BACSDirectDebitComponentTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C933801D276A06E1005B66CD /* BACSDirectDebitComponentTracker.swift */; };
 		C9338020276A09E7005B66CD /* BACSDirectDebitComponentTrackerProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C933801F276A09E7005B66CD /* BACSDirectDebitComponentTrackerProtocolMock.swift */; };
+		C933BE592D91659600EBFF7E /* ExpirationDateFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C933BE582D91659600EBFF7E /* ExpirationDateFormatterTests.swift */; };
 		C93844732D79DF3B00B1E747 /* CardScannerViewModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93844722D79DF3B00B1E747 /* CardScannerViewModelMock.swift */; };
 		C93844752D7B1C4100B1E747 /* CardScannerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93844742D7B1C4100B1E747 /* CardScannerViewControllerTests.swift */; };
 		C93B01B72760B03400D311A1 /* BACSConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93B01B62760B03400D311A1 /* BACSConfirmationViewController.swift */; };
@@ -1908,6 +1909,7 @@
 		C930FB6D269D79E0006A26D2 /* AffirmDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmDetails.swift; sourceTree = "<group>"; };
 		C933801D276A06E1005B66CD /* BACSDirectDebitComponentTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTracker.swift; sourceTree = "<group>"; };
 		C933801F276A09E7005B66CD /* BACSDirectDebitComponentTrackerProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTrackerProtocolMock.swift; sourceTree = "<group>"; };
+		C933BE582D91659600EBFF7E /* ExpirationDateFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationDateFormatterTests.swift; sourceTree = "<group>"; };
 		C93844722D79DF3B00B1E747 /* CardScannerViewModelMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerViewModelMock.swift; sourceTree = "<group>"; };
 		C93844742D7B1C4100B1E747 /* CardScannerViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerViewControllerTests.swift; sourceTree = "<group>"; };
 		C93B01B62760B03400D311A1 /* BACSConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationViewController.swift; sourceTree = "<group>"; };
@@ -3612,6 +3614,7 @@
 				C91BF25B2D772233001F19DE /* Assets.xcassets */,
 				C93844742D7B1C4100B1E747 /* CardScannerViewControllerTests.swift */,
 				C948B6662D8AC5C9000331AA /* CardImageParserTests.swift */,
+				C933BE582D91659600EBFF7E /* ExpirationDateFormatterTests.swift */,
 			);
 			path = AdyenCardScannerTests;
 			sourceTree = "<group>";
@@ -7094,6 +7097,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C91BF2582D771667001F19DE /* CardImageParsingMock.swift in Sources */,
+				C933BE592D91659600EBFF7E /* ExpirationDateFormatterTests.swift in Sources */,
 				C948B6692D8AD0CA000331AA /* ExpirationDateFormattingMock.swift in Sources */,
 				C93844752D7B1C4100B1E747 /* CardScannerViewControllerTests.swift in Sources */,
 				C948B6672D8AC5C9000331AA /* CardImageParserTests.swift in Sources */,
