@@ -261,8 +261,8 @@ import XCTest
                 delegateExpectation.fulfill()
             }
             
-            wait(for: .milliseconds(500))
-            
+            wait(for: .milliseconds(1500))
+
             sut.submitApprovedRequest(with: [oneTimeGrant, onFileGrant], profile: .init(id: "testId", cashtag: "testtag"))
             
             waitForExpectations(timeout: 10, handler: nil)
