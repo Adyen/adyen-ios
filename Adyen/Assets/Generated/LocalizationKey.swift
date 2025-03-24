@@ -524,19 +524,19 @@ public struct LocalizationKey {
     public static let paytoPayidPhoneHint = LocalizationKey(key: "adyen.payto.payid.phone.hint")
     /// Email
     public static let paytoPayidOptionEmail = LocalizationKey(key: "adyen.payto.payid.option.email")
-    /// Enter a correct First name
+    /// Enter a correct first name
     public static let paytoFirstNameInvalid = LocalizationKey(key: "adyen.payto.firstName.invalid")
-    /// Enter a correct Last name
+    /// Enter a correct last name
     public static let paytoLastNameInvalid = LocalizationKey(key: "adyen.payto.lastName.invalid")
     /// Enter a correct Australian Business Number
     public static let paytoPayidAbnInvalid = LocalizationKey(key: "adyen.payto.payid.abn.invalid")
-    /// Enter a correct Organization ID number
+    /// Enter a correct organization ID number
     public static let paytoPayidOrgidInvalid = LocalizationKey(key: "adyen.payto.payid.orgid.invalid")
-    /// Enter a correct Email address
+    /// Enter a correct email address
     public static let paytoPayidEmailInvalid = LocalizationKey(key: "adyen.payto.payid.email.invalid")
-    /// Enter a correct Bank state branch
+    /// Enter a correct Bank State Branch
     public static let paytoBsbBankStateBranchInvalid = LocalizationKey(key: "adyen.payto.bsb.bankStateBranch.invalid")
-    /// Enter a correct Bank account number
+    /// Enter a correct bank account number
     public static let paytoBsbBankAccountNumberInvalid = LocalizationKey(key: "adyen.payto.bsb.bankAccountNumber.invalid")
     /// Enter the PayID and account details that are connected to your PayTo account.
     public static let paytoPayidDescription = LocalizationKey(key: "adyen.payto.payid.description")

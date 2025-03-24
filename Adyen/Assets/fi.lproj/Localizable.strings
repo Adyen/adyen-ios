@@ -261,7 +261,7 @@
 "adyen.payto.payid.abn.invalid" = "Anna oikea Australian yritysnumero";
 "adyen.payto.payid.orgid.invalid" = "Anna oikea organisaation tunnusnumero";
 "adyen.payto.payid.email.invalid" = "Anna oikea sähköpostiosoite";
-"adyen.payto.bsb.bankStateBranch.invalid" = "Anna oikea pankkikonttorin osavaltio";
+"adyen.payto.bsb.bankStateBranch.invalid" = "Anna oikea pankkikonttorin osavaltion sivuliike";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Anna oikea pankkitilinumero";
 "adyen.payto.payid.description" = "Anna PayTo-tilisi PayID ja tilitiedot";
 "adyen.payto.await.description" = "Kiitos ostoksestasi. Suorita maksu kirjautumalla pankkitilillesi ja hyväksymällä PayTo-sopimus sekä maksuehdot.";

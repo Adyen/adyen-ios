@@ -257,11 +257,11 @@
 "adyen.payto.payid.phone.hint" = "Teléfono móvil";
 "adyen.payto.payid.option.email" = "Correo electrónico";
 "adyen.payto.firstName.invalid" = "Escriba un nombre correcto";
-"adyen.payto.lastName.invalid" = "Escriba unos apellidos correctos";
+"adyen.payto.lastName.invalid" = "Escriba un apellido correcto";
 "adyen.payto.payid.abn.invalid" = "Escriba un número de empresa australiano válido";
-"adyen.payto.payid.orgid.invalid" = "Escriba un NIF correcto";
+"adyen.payto.payid.orgid.invalid" = "Escriba un número de identificación de la organización correcto";
 "adyen.payto.payid.email.invalid" = "Escriba una dirección de correo electrónico correcta";
-"adyen.payto.bsb.bankStateBranch.invalid" = "Escriba una sucursal bancaria estatal correcta";
+"adyen.payto.bsb.bankStateBranch.invalid" = "Escriba una sucursal estatal bancaria correcta";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Escriba un número de cuenta bancaria correcto";
 "adyen.payto.payid.description" = "Introduzca el PayID y los detalles de la cuenta que están conectados a su cuenta PayTo.";
 "adyen.payto.await.description" = "Gracias por su compra. Para completar el pago, inicie sesión en su cuenta bancaria, autorice el acuerdo PayTo y apruebe los términos de pago.";

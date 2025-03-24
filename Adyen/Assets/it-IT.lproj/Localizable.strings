@@ -259,7 +259,7 @@
 "adyen.payto.firstName.invalid" = "Inserisci un nome corretto";
 "adyen.payto.lastName.invalid" = "Inserisci un cognome corretto";
 "adyen.payto.payid.abn.invalid" = "Inserisci un codice ABN corretto";
-"adyen.payto.payid.orgid.invalid" = "Inserisci un ID dell'organizzazione corretto";
+"adyen.payto.payid.orgid.invalid" = "Inserisci un numero ID dell'organizzazione corretto";
 "adyen.payto.payid.email.invalid" = "Inserisci un indirizzo e-mail corretto";
 "adyen.payto.bsb.bankStateBranch.invalid" = "Inserisci una filiale bancaria statale corretta";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Inserisci un numero di conto bancario corretto";

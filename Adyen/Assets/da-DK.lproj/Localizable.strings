@@ -256,12 +256,12 @@
 "adyen.payto.bsb.description" = "Indtast bankkontonummeret og bankafdeling (Bank State Branch, BSB), der er knyttet til din konto, for at fortsætte";
 "adyen.payto.payid.phone.hint" = "Mobiltelefon";
 "adyen.payto.payid.option.email" = "E-mail";
-"adyen.payto.firstName.invalid" = "Indtast et korrekt fornavn";
-"adyen.payto.lastName.invalid" = "Indtast et korrekt efternavn";
+"adyen.payto.firstName.invalid" = "Angiv et korrekt fornavn";
+"adyen.payto.lastName.invalid" = "Angiv et korrekt efternavn";
 "adyen.payto.payid.abn.invalid" = "Angiv et korrekt australsk virksomhedsnummer";
 "adyen.payto.payid.orgid.invalid" = "Angiv et korrekt organisations-id-nummer";
 "adyen.payto.payid.email.invalid" = "Angiv en korrekt e-mailadresse";
 "adyen.payto.bsb.bankStateBranch.invalid" = "Angiv en korrekt bankafdeling";
-"adyen.payto.bsb.bankAccountNumber.invalid" = "Indtast et korrekt kontonummer";
+"adyen.payto.bsb.bankAccountNumber.invalid" = "Angiv et korrekt bankkontonummer";
 "adyen.payto.payid.description" = "Indtast PayID og kontooplysninger, der er knyttet til din PayTo-konto.";
 "adyen.payto.await.description" = "Tak for dit køb. Fuldfør betalingen ved at logge ind på din bankkonto, godkende PayTo-aftalen og acceptere betalingsbetingelserne.";
