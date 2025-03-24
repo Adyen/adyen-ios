@@ -208,7 +208,7 @@ import XCTest
             
             let delegate = PaymentComponentDelegateMock()
             sut.delegate = delegate
-            setupRootViewController(sut.viewController)
+            sut.viewController.loadViewIfNeeded()
             
             let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
             let finalizationExpectation = expectation(description: "Component should finalize.")
@@ -227,8 +227,6 @@ import XCTest
                 })
                 delegateExpectation.fulfill()
             }
-            
-            wait(for: .milliseconds(300))
             
             sut.submitApprovedRequest(with: [oneTimeGrant], profile: .init(id: "testId", cashtag: "testtag"))
             
