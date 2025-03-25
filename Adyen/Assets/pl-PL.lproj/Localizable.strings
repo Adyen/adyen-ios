@@ -260,8 +260,8 @@
 "adyen.payto.lastName.invalid" = "Wprowadź prawidłowe nazwisko";
 "adyen.payto.payid.abn.invalid" = "Wprowadź prawidłowy australijski numer firmy";
 "adyen.payto.payid.orgid.invalid" = "Wprowadź prawidłowy numer identyfikacyjny organizacji";
-"adyen.payto.payid.email.invalid" = "Wprowadź poprawny adres e-mail";
-"adyen.payto.bsb.bankStateBranch.invalid" = "Wprowadź poprawny oddział stanowy banku";
+"adyen.payto.payid.email.invalid" = "Wprowadź prawidłowy adres e-mail";
+"adyen.payto.bsb.bankStateBranch.invalid" = "Wprowadź prawidłowy oddział banku";
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Wprowadź prawidłowy numer rachunku bankowego";
 "adyen.payto.payid.description" = "Wprowadź PayID i dane konta powiązane z Twoim kontem PayTo.";
 "adyen.payto.await.description" = "Dziękujemy za zakup. Prosimy o dokończenie płatności – w tym celu zaloguj się na konto bankowe, autoryzuj umowę PayTo i zatwierdź warunki płatności.";
