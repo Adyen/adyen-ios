@@ -32,6 +32,7 @@
                 availabilityProvider: CardScannerAvailalabilityMock(),
                 cardScannerProvider: mockCardScanner
             )
+            setupRootViewController(mockPresenter)
             
             let expectation = XCTestExpectation(description: "Card scanner should complete the flow")
             sut.onScanComplete = { result in
@@ -58,6 +59,7 @@
                 availabilityProvider: CardScannerAvailalabilityMock(),
                 cardScannerProvider: mockCardScanner
             )
+            setupRootViewController(mockPresenter)
             
             sut.openCardScanner()
 
@@ -74,6 +76,7 @@
                 availabilityProvider: CardScannerAvailalabilityMock(),
                 cardScannerProvider: mockCardScanner
             )
+            setupRootViewController(mockPresenter)
             
             // Given
             let expectation = XCTestExpectation(description: "Card scanner should complete the flow")
