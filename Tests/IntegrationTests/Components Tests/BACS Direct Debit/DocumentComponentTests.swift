@@ -28,12 +28,12 @@ class DocumentComponentTests: XCTestCase {
         sut.presentationDelegate = presentationDelegate
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "test_table")
         
-        presentationDelegate.doPresent = { [self] component in
+        presentationDelegate.doPresent = { component in
             XCTAssertNotNil(component.viewController as? ADYViewController)
             let viewController = component.viewController as! ADYViewController
             
-            setupRootViewController(viewController)
-            
+            viewController.loadViewIfNeeded()
+
             let pdfButton: UIButton? = viewController.view.findView(by: "mainButton")
             let messageLabel: UILabel? = viewController.view.findView(by: "messageLabel")
             let logo: UIImageView? = viewController.view.findView(by: "icon")
