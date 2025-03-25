@@ -10,11 +10,10 @@ import XCTest
 final class ExpirationDateFormatterTests: XCTestCase {
 
     var sut: ExpirationDateFormatter!
-    var dateFormatter: DateFormatter!
+    var dateFormatter = DateFormatter()
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM/yyyy"
         dateFormatter.locale = Locale.current
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
@@ -22,7 +21,6 @@ final class ExpirationDateFormatterTests: XCTestCase {
 
     override func tearDownWithError() throws {
         sut = nil
-        dateFormatter = nil
         try super.tearDownWithError()
     }
 

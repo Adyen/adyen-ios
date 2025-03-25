@@ -11,9 +11,16 @@ import XCTest
 final class CardImageParserTests: XCTestCase {
 
     var sut: CardImageParser!
+    var expirationDateFormatter: ExpirationDateFormatter!
+
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        expirationDateFormatter = ExpirationDateFormatter()
+    }
 
     override func tearDownWithError() throws {
         sut = nil
+        expirationDateFormatter = nil
         try super.tearDownWithError()
     }
 
@@ -35,7 +42,7 @@ final class CardImageParserTests: XCTestCase {
         }
 
         // Then
-        waitForExpectations(timeout: 10.0)
+        wait(for: [expectation], timeout: 0.1)
     }
 
     func testParseImageWithLowContrastCardImage() throws {
@@ -56,7 +63,7 @@ final class CardImageParserTests: XCTestCase {
         }
 
         // Then
-        waitForExpectations(timeout: 10.0)
+        wait(for: [expectation], timeout: 0.1)
     }
 
     func testParseImageWithInvalidLuhnCheck() throws {
@@ -78,7 +85,7 @@ final class CardImageParserTests: XCTestCase {
         }
 
         // Then
-        waitForExpectations(timeout: 10.0)
+        wait(for: [expectation], timeout: 0.1)
     }
 
     // MARK: - Private
@@ -145,9 +152,7 @@ final class CardImageParserTests: XCTestCase {
         )
     }
 
-
     private func dateFrom(_ string: String) -> Date? {
-        let dateFormatter = ExpirationDateFormatter()
-        return dateFormatter.date(from: string)
+        return expirationDateFormatter.date(from: string)
     }
 }
