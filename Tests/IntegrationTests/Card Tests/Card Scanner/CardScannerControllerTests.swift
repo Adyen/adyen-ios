@@ -62,7 +62,7 @@
             sut.openCardScanner()
 
             sut.handleCardScanningCancelationWithCompletion {
-                XCTAssertNil(self.mockPresenter.presentedViewController)
+                XCTAssertNil(mockPresenter.presentedViewController)
             }
         }
 
