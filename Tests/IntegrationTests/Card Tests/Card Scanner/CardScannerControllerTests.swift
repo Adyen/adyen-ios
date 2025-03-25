@@ -11,37 +11,28 @@
 
     class CardScannerControllerTests: XCTestCase {
 
-        var sut: CardScannerController!
-        var mockPresenter: UIViewController!
-        private var mockCardScanner: CardScannerProviderSpy!
-
-        override func setUpWithError() throws {
-            mockPresenter = UIViewController()
-            mockCardScanner = CardScannerProviderSpy()
-
-            sut = CardScannerController(
+        // This test requires AdyenCardScanner framework to be imported for the test target
+        func test_scannerIsAvailable() {
+            let mockPresenter = UIViewController()
+            let mockCardScanner = CardScannerProviderSpy()
+            let sut = CardScannerController(
                 presenter: mockPresenter,
                 availabilityProvider: CardScannerAvailalabilityMock(),
                 cardScannerProvider: mockCardScanner
             )
-
-            let window = UIWindow(frame: UIScreen.main.bounds)
-            window.rootViewController = mockPresenter
-            window.makeKeyAndVisible()
-        }
-
-        override func tearDownWithError() throws {
-            sut = nil
-            mockPresenter = nil
-            mockCardScanner = nil
-        }
-
-        // This test requires AdyenCardScanner framework to be imported for the test target
-        func test_scannerIsAvailable() {
+            
             XCTAssertTrue(sut.isScannerAvailable)
         }
 
         func test_openCardScanner_withTitle_presentsCorrectTitle() throws {
+            let mockPresenter = UIViewController()
+            let mockCardScanner = CardScannerProviderSpy()
+            let sut = CardScannerController(
+                presenter: mockPresenter,
+                availabilityProvider: CardScannerAvailalabilityMock(),
+                cardScannerProvider: mockCardScanner
+            )
+            
             let expectation = XCTestExpectation(description: "Card scanner should complete the flow")
             sut.onScanComplete = { result in
                 expectation.fulfill()
@@ -60,6 +51,14 @@
         }
 
         func testHandleCardScanningCancelation() throws {
+            let mockPresenter = UIViewController()
+            let mockCardScanner = CardScannerProviderSpy()
+            let sut = CardScannerController(
+                presenter: mockPresenter,
+                availabilityProvider: CardScannerAvailalabilityMock(),
+                cardScannerProvider: mockCardScanner
+            )
+            
             sut.openCardScanner()
 
             sut.handleCardScanningCancelationWithCompletion {
@@ -68,6 +67,14 @@
         }
 
         func test_controller_returnsScannedCardValue() {
+            let mockPresenter = UIViewController()
+            let mockCardScanner = CardScannerProviderSpy()
+            let sut = CardScannerController(
+                presenter: mockPresenter,
+                availabilityProvider: CardScannerAvailalabilityMock(),
+                cardScannerProvider: mockCardScanner
+            )
+            
             // Given
             let expectation = XCTestExpectation(description: "Card scanner should complete the flow")
 
@@ -91,6 +98,14 @@
         }
 
         func test_controller_returnsSimplifiedScannerError() {
+            let mockPresenter = UIViewController()
+            let mockCardScanner = CardScannerProviderSpy()
+            let sut = CardScannerController(
+                presenter: mockPresenter,
+                availabilityProvider: CardScannerAvailalabilityMock(),
+                cardScannerProvider: mockCardScanner
+            )
+            
             // Given
             let expectation = XCTestExpectation(description: "Card scanner should complete the flow")
             let mockError = AdyenCardScanner.CardScannerError(kind: .authorizationDenied)
