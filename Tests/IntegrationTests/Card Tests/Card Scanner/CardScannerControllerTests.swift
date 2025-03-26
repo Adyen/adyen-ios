@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+#if canImport(AdyenCardScanner)
 @testable import AdyenCard
 @testable import AdyenCardScanner
 import XCTest
@@ -144,3 +145,4 @@ class CardScannerControllerTests: XCTestCase {
         }
     }
 }
+#endif
