@@ -10,38 +10,20 @@ import XCTest
 
 class CardScannerControllerTests: XCTestCase {
 
-    var sut: CardScannerController!
-    var mockPresenter: UIViewController!
-    private var mockCardScanner: CardScannerProviderSpy!
-
-    override func setUpWithError() throws {
-        mockPresenter = UIViewController()
-        mockCardScanner = CardScannerProviderSpy()
-
-        sut = CardScannerController(
-            presenter: mockPresenter,
-            availabilityProvider: CardScannerAvailalabilityMock(),
-            cardScannerProvider: mockCardScanner
-        )
-
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = mockPresenter
-        window.makeKeyAndVisible()
-    }
-
-    override func tearDownWithError() throws {
-        sut = nil
-        mockPresenter = nil
-        mockCardScanner = nil
-    }
-
     // This test requires AdyenCardScanner framework to be imported for the test target
     func test_scannerIsAvailable() {
+        let (sut, _, _) = makeSUT()
         XCTAssertTrue(sut.isScannerAvailable)
     }
 
     func test_openCardScanner_withTitle_presentsCorrectTitle() throws {
         let expectation = XCTestExpectation(description: "Card scanner should complete the flow")
+        let (sut, presenter, _) = makeSUT()
+
+        let window = UIWindow(frame: UIScreen.main.bounds)
+        window.rootViewController = presenter
+        window.makeKeyAndVisible()
+
         sut.onScanComplete = { result in
             expectation.fulfill()
         }
@@ -50,7 +32,7 @@ class CardScannerControllerTests: XCTestCase {
         sut.title = expectedTitle
         sut.openCardScanner()
 
-        let scannerNavigationController = mockPresenter.presentedViewController as? UINavigationController
+        let scannerNavigationController = presenter.presentedViewController as? UINavigationController
         let scannerViewController = scannerNavigationController?.topViewController
         XCTAssertEqual(scannerViewController?.title, expectedTitle)
 
@@ -59,10 +41,12 @@ class CardScannerControllerTests: XCTestCase {
     }
 
     func testHandleCardScanningCancelation() throws {
+        let (sut, presenter, _) = makeSUT()
+
         sut.openCardScanner()
 
         sut.handleCardScanningCancelationWithCompletion {
-            XCTAssertNil(self.mockPresenter.presentedViewController)
+            XCTAssertNil(presenter.presentedViewController)
         }
     }
 
@@ -76,6 +60,7 @@ class CardScannerControllerTests: XCTestCase {
         let expectedResult: CardScanDetails = (cardNumber, expiryDate)
         let mockCard = CardScanDetails(cardNumber, expiryDate)
 
+        let (sut, presenter, cardScanner) = makeSUT()
         sut.onScanComplete = { result in
             // Then
             self.expect(result, toMatch: .success(expectedResult))
@@ -84,7 +69,7 @@ class CardScannerControllerTests: XCTestCase {
 
         // When
         sut.openCardScanner()
-        mockCardScanner.onScanComplete(result: .success(mockCard))
+        cardScanner.onScanComplete(result: .success(mockCard))
 
         wait(for: [expectation], timeout: 1.0)
     }
@@ -94,6 +79,7 @@ class CardScannerControllerTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Card scanner should complete the flow")
         let mockError = AdyenCardScanner.CardScannerError(kind: .authorizationDenied)
         let expectedError = CardScannerController.CardScannerError.scanningError
+        let (sut, presenter, cardScanner) = makeSUT()
 
         sut.onScanComplete = { result in
             // Then
@@ -103,12 +89,24 @@ class CardScannerControllerTests: XCTestCase {
 
         // When
         sut.openCardScanner()
-        mockCardScanner.onScanComplete(result: .failure(mockError))
+        cardScanner.onScanComplete(result: .failure(mockError))
 
         wait(for: [expectation], timeout: 1.0)
     }
 
     // MARK: - Helpers
+
+    private func makeSUT() -> (CardScannerController, UIViewController, CardScannerProviderSpy) {
+        let presenter = UIViewController()
+        let cardScanner = CardScannerProviderSpy()
+
+        let sut = CardScannerController(
+            presenter: presenter,
+            availabilityProvider: CardScannerAvailalabilityMock(),
+            cardScannerProvider: cardScanner
+        )
+        return (sut, presenter, cardScanner)
+    }
 
     private func expect(
         _ result: Result<CardScanDetails, Error>,
