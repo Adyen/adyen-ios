@@ -33,11 +33,7 @@ internal class CardScannerAssembler: CardScannerAssembling {
     internal func resolveCardScannerViewController(
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) -> UIViewController? {
-        guard let captureDevice else {
-            // TODO: Remove after error handling implementation
-            print("Card scanner: cannot resolve view controller, missing capture device")
-            return nil
-        }
+        guard let captureDevice else { return nil }
 
         let expireDateFormatter = ExpirationDateFormatter()
         let cardImageParser = CardImageParser(expirationDateFormatter: expireDateFormatter)
