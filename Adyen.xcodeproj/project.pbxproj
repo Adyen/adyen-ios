@@ -1510,7 +1510,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B605AC0D2D897F960084D583 /* AdyenCardScanner.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2659,8 +2658,6 @@
 			files = (
 				8182AABD2B974E2B0087568E /* AdyenTwint.framework in Frameworks */,
 				E97B971322980CBA00505476 /* Adyen3DS2.framework in Frameworks */,
-				81B8036B2BE0E714003D037F /* AdyenWeChatPayInternal in Frameworks */,
-				B605AC0C2D897F960084D583 /* AdyenCardScanner.framework in Frameworks */,
 				81B8036B2BE0E714003D037F /* AdyenWeChatPayInternal in Frameworks */,
 				E97B970E22980C8400505476 /* AdyenDropIn.framework in Frameworks */,
 				E97B970D22980C7900505476 /* AdyenCard.framework in Frameworks */,
