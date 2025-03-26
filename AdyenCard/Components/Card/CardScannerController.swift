@@ -147,7 +147,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         // MARK: - Helpers
 
         internal struct DummyCardScannerAvailability: CardScannerAvailability {
-            var isScannerAvailable: Bool { false }
+            internal var isScannerAvailable: Bool { false }
         }
 
         internal struct DummyCardScannerProvider: CardScannerProviding {
