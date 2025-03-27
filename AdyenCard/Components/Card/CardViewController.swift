@@ -28,6 +28,7 @@ internal class CardViewController: FormViewController {
     private let cardLogos: [FormCardLogosItem.CardTypeLogo]
     private lazy var cardScannerController: CardScannerControlling = {
         let controller = CardScannerController(presenter: self)
+        controller.title = localizedString(.scanYourCardButton, localizationParameters)
         controller.onScanComplete = { [weak self] result in
             self?.handleCardScanningResult(result)
         }
@@ -409,7 +410,7 @@ extension CardViewController: CardViewControllerProtocol {
 // MARK: - Card scanner
 
 extension CardViewController {
-    private func handleCardScanningResult(_ result: Result<(String?, Date?), Error>) {
+    private func handleCardScanningResult(_ result: Result<CardScanDetails, Error>) {
         switch result {
         case let .success((number, expiryDate)):
             items.numberContainerItem.setCardNumber(number ?? "")
