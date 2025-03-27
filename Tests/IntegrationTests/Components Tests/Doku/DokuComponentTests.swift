@@ -90,7 +90,7 @@ class DokuComponentTests: XCTestCase {
             configuration: DokuComponent.Configuration()
         )
 
-        setupRootViewController(sut.viewController)
+        sut.viewController.loadViewIfNeeded()
 
         wait(for: .milliseconds(300))
         
