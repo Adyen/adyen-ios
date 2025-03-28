@@ -8,12 +8,19 @@ import AVFoundation
 import CoreImage
 import Foundation
 
+internal enum CaptureAuthorizationStatus {
+    case authorized
+    case rejected
+    case denied
+}
+
 internal protocol CaptureSessionDelegate: AnyObject {
     func didCapture(image: CIImage?)
 }
 
 internal protocol CaptureSessionManaging {
     var delegate: CaptureSessionDelegate? { get set }
+    func requestCaptureAuthorization() async -> CaptureAuthorizationStatus
     func configureSession()
     func startCaptureSession()
     func stopCaptureSession()
@@ -56,6 +63,22 @@ internal class CaptureSessionManager: NSObject, CaptureSessionManaging {
     }
 
     // MARK: - CaptureSessionManaging
+
+    internal func requestCaptureAuthorization() async -> CaptureAuthorizationStatus {
+        let authorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
+
+        switch authorizationStatus {
+        case .authorized:
+            return .authorized
+        case .notDetermined:
+            let isAuthorized = await AVCaptureDevice.requestAccess(for: .video)
+            return isAuthorized ? .authorized : .rejected
+        case .restricted, .denied:
+            return .denied
+        @unknown default:
+            return .denied
+        }
+    }
 
     internal func configureSession() {
         sessionQueue.async {

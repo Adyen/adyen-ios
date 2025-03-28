@@ -11,8 +11,8 @@ import UIKit
 
 internal protocol CardScannerViewModelProtocol {
     var videoPreviewLayer: CALayer { get }
-    func requestAuthorization(in viewController: UIViewController) async -> Bool
-    func configureSession()
+    func requestCaptureAuthorization() async
+//    func configureSession()
     func startCaptureSession()
     func stopCaptureSession()
     func updateVideoOrientation()
@@ -23,8 +23,8 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
 
     // MARK: - Properties
 
+    internal weak var view: CardScannerViewProtocol?
     private let cardImageParser: CardImageParsing
-    private let captureAuthorizationService: CaptureAuthorizationServicing
     private var captureSessionManager: CaptureSessionManaging
     private let completion: (Result<CardScanDetails, CardScannerError>) -> Void
 
@@ -35,12 +35,10 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
 
     internal init(
         cardImageParser: CardImageParsing,
-        captureAuthorizationService: CaptureAuthorizationServicing,
         captureSessionManager: CaptureSessionManaging,
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) {
         self.cardImageParser = cardImageParser
-        self.captureAuthorizationService = captureAuthorizationService
         self.captureSessionManager = captureSessionManager
         self.completion = completion
         self.captureSessionManager.delegate = self
@@ -53,12 +51,17 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
     }
 
     @MainActor
-    internal func requestAuthorization(in viewController: UIViewController) async -> Bool {
-        await captureAuthorizationService.requestAuthorization(in: viewController)
-    }
+    internal func requestCaptureAuthorization() async {
+        let authorizationStatus = await captureSessionManager.requestCaptureAuthorization()
 
-    internal func configureSession() {
-        captureSessionManager.configureSession()
+        switch authorizationStatus {
+        case .authorized:
+            configureSession()
+        case .rejected:
+            view?.dismiss()
+        case .denied:
+            view?.presentCameraAccessDeniedAlert()
+        }
     }
 
     internal func startCaptureSession() {
@@ -79,6 +82,10 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
     }
 
     // MARK: - Private
+
+    private func configureSession() {
+        captureSessionManager.configureSession()
+    }
 
     private func fetchCardData(
         from image: CIImage,

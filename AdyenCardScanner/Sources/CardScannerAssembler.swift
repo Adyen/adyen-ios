@@ -38,15 +38,15 @@ internal class CardScannerAssembler: CardScannerAssembling {
         let expireDateFormatter = ExpirationDateFormatter()
         let cardImageParser = CardImageParser(expirationDateFormatter: expireDateFormatter)
 
-        let captureAuthorizationService = CaptureAuthorizationService()
         let captureSessionManager = CaptureSessionManager(captureDevice: captureDevice)
         let viewModel = CardScannerViewModel(
             cardImageParser: cardImageParser,
-            captureAuthorizationService: captureAuthorizationService,
             captureSessionManager: captureSessionManager,
             completion: completion
         )
 
-        return CardScannerViewController(viewModel: viewModel)
+        let view = CardScannerViewController(viewModel: viewModel)
+        viewModel.view = view
+        return view
     }
 }

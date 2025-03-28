@@ -8,7 +8,12 @@ import AVFoundation
 import Combine
 import UIKit
 
-internal class CardScannerViewController: UIViewController {
+internal protocol CardScannerViewProtocol: AnyObject {
+    func dismiss()
+    func presentCameraAccessDeniedAlert()
+}
+
+internal class CardScannerViewController: UIViewController, CardScannerViewProtocol {
 
     // MARK: - UI elements
 
@@ -45,15 +50,12 @@ internal class CardScannerViewController: UIViewController {
         setupView()
 
         Task {
-            let isCaptureAuthorized = await viewModel.requestAuthorization(in: self)
-            guard isCaptureAuthorized else { return }
-
-            setupPreviewLayer()
-            addOverlayView()
-            observeRoiLayoutChanges()
-
-            viewModel.configureSession()
+            await viewModel.requestCaptureAuthorization()
         }
+
+        setupPreviewLayer()
+        addOverlayView()
+        observeRoiLayoutChanges()
     }
 
     override internal func viewWillAppear(_ animated: Bool) {
@@ -100,5 +102,33 @@ internal class CardScannerViewController: UIViewController {
                 roiInPreviewLayer: newRoiFrame
             )
         }.store(in: &cancellables)
+    }
+
+    // MARK: - CardScannerViewProtocol
+
+    internal func dismiss() {
+        dismiss(animated: true)
+    }
+
+    internal func presentCameraAccessDeniedAlert() {
+        let alert = UIAlertController(
+            title: "Camera Access Denied",
+            message: "Your app does not have permission to access the camera.",
+            preferredStyle: .alert
+        )
+
+        let settingsAction = UIAlertAction(title: "Open Settings", style: .default) { _ in
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(settingsURL)
+            }
+        }
+        alert.addAction(settingsAction)
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            self.dismiss()
+        }
+        alert.addAction(cancelAction)
+
+        present(alert, animated: true, completion: nil)
     }
 }
