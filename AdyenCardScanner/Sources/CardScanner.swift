@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import SwiftUI
 import UIKit
 
 public typealias CardScanDetails = (number: String?, expirationDate: Date?)
@@ -28,6 +29,18 @@ public enum CardScanner: CardScanning {
     public static func createCardScanner(
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) -> UIViewController? {
+//        guard let cardScannerViewController = cardScannerAssembler.resolveCardScannerViewController(completion: completion) else {
+//            return nil
+//        }
+
+//        let captureAuthorizationService = CaptureAuthorizationService()
+//        let captureAuthorizationViewModel = CaptureAuthorizationViewModel(
+//            captureAuthoriationService: captureAuthorizationService,
+//            cardScannerViewController: cardScannerViewController
+//        )
+//        let captureAuthorizationViewController = CaptureAuthorizationViewController(viewModel: captureAuthorizationViewModel)
+//        return captureAuthorizationViewController
+        
         let cardScannerViewController = cardScannerAssembler.resolveCardScannerViewController(completion: completion)
         return cardScannerViewController
     }

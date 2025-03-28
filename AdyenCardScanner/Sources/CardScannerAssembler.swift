@@ -11,7 +11,7 @@ import UIKit
 internal protocol CardScannerAssembling {
     func resolveCardScannerViewController(
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
-    ) -> UIViewController?
+    ) -> CardScannerViewController?
 }
 
 internal class CardScannerAssembler: CardScannerAssembling {
@@ -32,15 +32,18 @@ internal class CardScannerAssembler: CardScannerAssembling {
 
     internal func resolveCardScannerViewController(
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
-    ) -> UIViewController? {
+    ) -> CardScannerViewController? {
         guard let captureDevice else { return nil }
 
         let expireDateFormatter = ExpirationDateFormatter()
         let cardImageParser = CardImageParser(expirationDateFormatter: expireDateFormatter)
 
+        let captureAuthorizationService = CaptureAuthorizationService()
         let captureSessionManager = CaptureSessionManager(captureDevice: captureDevice)
         let viewModel = CardScannerViewModel(
-            cardImageParser: cardImageParser, captureSessionManager: captureSessionManager,
+            cardImageParser: cardImageParser,
+            captureAuthorizationService: captureAuthorizationService,
+            captureSessionManager: captureSessionManager,
             completion: completion
         )
 

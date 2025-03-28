@@ -7,9 +7,11 @@
 import CoreImage
 import Foundation
 import QuartzCore
+import UIKit
 
 internal protocol CardScannerViewModelProtocol {
     var videoPreviewLayer: CALayer { get }
+    func requestAuthorization(in viewController: UIViewController) async -> Bool
     func configureSession()
     func startCaptureSession()
     func stopCaptureSession()
@@ -22,6 +24,7 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
     // MARK: - Properties
 
     private let cardImageParser: CardImageParsing
+    private let captureAuthorizationService: CaptureAuthorizationServicing
     private var captureSessionManager: CaptureSessionManaging
     private let completion: (Result<CardScanDetails, CardScannerError>) -> Void
 
@@ -32,10 +35,12 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
 
     internal init(
         cardImageParser: CardImageParsing,
+        captureAuthorizationService: CaptureAuthorizationServicing,
         captureSessionManager: CaptureSessionManaging,
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) {
         self.cardImageParser = cardImageParser
+        self.captureAuthorizationService = captureAuthorizationService
         self.captureSessionManager = captureSessionManager
         self.completion = completion
         self.captureSessionManager.delegate = self
@@ -45,6 +50,11 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
 
     internal var videoPreviewLayer: CALayer {
         captureSessionManager.videoPreviewLayer
+    }
+
+    @MainActor
+    internal func requestAuthorization(in viewController: UIViewController) async -> Bool {
+        await captureAuthorizationService.requestAuthorization(in: viewController)
     }
 
     internal func configureSession() {

@@ -9,30 +9,27 @@ import Foundation
 import UIKit
 
 internal protocol CaptureAuthorizationServicing {
-    //    var isAuthorized: Bool { get }
-    func requestAuthorization() async -> Bool
+    func requestAuthorization(in viewController: UIViewController) async -> Bool
 }
 
 internal class CaptureAuthorizationService: CaptureAuthorizationServicing {
 
-    func requestAuthorization() async -> Bool {
-        let status = AVCaptureDevice.authorizationStatus(for: .video)
+    internal func requestAuthorization(in viewController: UIViewController) async -> Bool {
+        let authorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
 
         var isAuthorized = false
 
-        switch status {
-        case .notDetermined:
-            isAuthorized = await AVCaptureDevice.requestAccess(for: .video)
-        case .restricted:
-            isAuthorized = false
-        case .denied:
-            isAuthorized = false
-            // Redirect to the settings app.
-            redirectToSettingsApp()
+        switch authorizationStatus {
         case .authorized:
             isAuthorized = true
+        case .notDetermined:
+            isAuthorized = await AVCaptureDevice.requestAccess(for: .video)
+        case .denied, .restricted:
+            isAuthorized = false
+            showCameraAccessDeniedAlert(in: viewController)
         @unknown default:
             isAuthorized = false
+            showCameraAccessDeniedAlert(in: viewController)
         }
 
         return isAuthorized
@@ -40,16 +37,25 @@ internal class CaptureAuthorizationService: CaptureAuthorizationServicing {
 
     // MARK: - Private
 
-    func redirectToSettingsApp() {
-        guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
-            return
-        }
+    private func showCameraAccessDeniedAlert(in viewController: UIViewController) {
+        let alert = UIAlertController(
+            title: "Camera Access Denied",
+            message: "Your app does not have permission to access the camera.",
+            preferredStyle: .alert
+        )
 
-        if UIApplication.shared.canOpenURL(settingsURL) {
-            UIApplication.shared.open(settingsURL) { success in
-                print("Settings opened: \(success)")
+        let settingsAction = UIAlertAction(title: "Open Settings", style: .default) { _ in
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(settingsURL)
             }
         }
-    }
+        alert.addAction(settingsAction)
 
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            viewController.dismiss(animated: true)
+        }
+        alert.addAction(cancelAction)
+
+        viewController.present(alert, animated: true, completion: nil)
+    }
 }

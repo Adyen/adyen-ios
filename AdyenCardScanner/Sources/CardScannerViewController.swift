@@ -42,11 +42,18 @@ internal class CardScannerViewController: UIViewController {
 
     override internal func viewDidLoad() {
         super.viewDidLoad()
-        setupPreviewLayer()
-        addOverlayView()
-        observeRoiLayoutChanges()
+        setupView()
 
-        viewModel.configureSession()
+        Task {
+            let isCaptureAuthorized = await viewModel.requestAuthorization(in: self)
+            guard isCaptureAuthorized else { return }
+
+            setupPreviewLayer()
+            addOverlayView()
+            observeRoiLayoutChanges()
+
+            viewModel.configureSession()
+        }
     }
 
     override internal func viewWillAppear(_ animated: Bool) {
@@ -66,6 +73,10 @@ internal class CardScannerViewController: UIViewController {
     }
 
     // MARK: - Private
+
+    private func setupView() {
+        view.backgroundColor = .black
+    }
 
     private func setupPreviewLayer() {
         view.layer.insertSublayer(previewLayer, at: 0)
