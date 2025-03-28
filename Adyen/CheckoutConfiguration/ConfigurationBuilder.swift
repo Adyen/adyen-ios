@@ -7,7 +7,7 @@
 import Foundation
 
 @resultBuilder
-public struct ConfigurationBuilder {
+public struct CheckoutConfigurationBuilder {
     public static func buildBlock(_ components: CheckoutConfigurable...) -> CheckoutConfigurable {
         CompositeCheckoutConfiguration(configurations: components)
     }
@@ -21,7 +21,9 @@ public struct ConfigurationBuilder {
     }
 }
 
-public protocol CheckoutConfigurable {}
+public protocol CheckoutConfigurable {
+    // static func makeDefaultConfig() -> Self
+}
 
 internal struct CompositeCheckoutConfiguration: CheckoutConfigurable {
     

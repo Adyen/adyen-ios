@@ -8,12 +8,10 @@ import Foundation
 
 public struct CheckoutConfiguration {
     
-    // TODO: Use AnyAPIEnvironment?
-    internal var environment: Environment
-    
     internal var amount: Amount
     
-    internal var clientKey: String
+    @_spi(AdyenInternal)
+    public var apiContext: APIContext
     
     // TODO: how we store configurations may change
     internal var configurations: [String: CheckoutConfigurable]
@@ -23,7 +21,6 @@ public struct CheckoutConfiguration {
     internal var onError: CheckoutErrorHandler?
     internal var onComplete: CheckoutSuccessHandler?
     
-    
     /// Creates a CheckoutConfiguration instance.
     /// - Parameters:
     ///   - environment: The environment to retrieve internal resources from.
@@ -32,18 +29,15 @@ public struct CheckoutConfiguration {
     ///   - content: Configuration builder to provide the desired configuration instances.
     ///   See https://docs.adyen.com/user-management/client-side-authentication for more information.
     /// - Throws: `ClientKeyError.invalidClientKey` if the client key is invalid.
+    // swiftlint:disable vertical_parameter_alignment
     public init(
         environment: Environment,
         amount: Amount,
-        clientKey: String, @ConfigurationBuilder content: () -> CheckoutConfigurable
+        clientKey: String,
+        @CheckoutConfigurationBuilder content: () -> CheckoutConfigurable
     ) throws {
-        guard ClientKeyValidator().isValid(clientKey) else {
-            throw ClientKeyError.invalidClientKey
-        }
-        
-        self.environment = environment
+        self.apiContext = try APIContext(environment: environment, clientKey: clientKey)
         self.amount = amount
-        self.clientKey = clientKey
         
         let content = content()
         let configArray = (content as? CompositeCheckoutConfiguration)?.configurations ?? [content]
@@ -56,5 +50,3 @@ public struct CheckoutConfiguration {
         self.configurations = configDictionary
     }
 }
-
-

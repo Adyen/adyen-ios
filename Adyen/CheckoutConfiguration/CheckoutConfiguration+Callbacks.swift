@@ -9,7 +9,7 @@ import Foundation
 // TODO: Finalize all the parameters of the callbacks
 // Move Action to core module?
 // Add Resultcode enum
-public typealias PaymentsResponseHandler = (_ resultCode: String, _ action: String ) -> Void
+public typealias PaymentsResponseHandler = (_ resultCode: String, _ action: String) -> Void
 public typealias SubmitHandler = (_ data: PaymentComponentData, _ handler: PaymentsResponseHandler?) -> Void
 public typealias AdditionalDetailsHandler = (_ data: ActionComponentData, _ handler: PaymentsResponseHandler?) -> Void
 // TODO: Have a checkout error object?
