@@ -12,7 +12,6 @@ import UIKit
 internal protocol CardScannerViewModelProtocol {
     var videoPreviewLayer: CALayer { get }
     func requestCaptureAuthorization() async
-//    func configureSession()
     func startCaptureSession()
     func stopCaptureSession()
     func updateVideoOrientation()

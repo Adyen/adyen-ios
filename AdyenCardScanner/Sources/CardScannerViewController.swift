@@ -112,8 +112,8 @@ internal class CardScannerViewController: UIViewController, CardScannerViewProto
 
     internal func presentCameraAccessDeniedAlert() {
         let alert = UIAlertController(
-            title: "Camera Access Denied",
-            message: "Your app does not have permission to access the camera.",
+            title: "Allow camera access",
+            message: "Access was previously denied. To scan cards, please grant access from Settings.",
             preferredStyle: .alert
         )
 
