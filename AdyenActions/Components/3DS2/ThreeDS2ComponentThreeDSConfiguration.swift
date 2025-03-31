@@ -5,7 +5,7 @@
 //
 
 internal extension ThreeDS2Component {
-    struct ThreeDSConfiguration: Decodable {
+    struct ThreeDSConfiguration: Decodable, ThreeDSFeatureChecker {
         private let version: String
         internal let featureFlags: [String: Bool]?
         
