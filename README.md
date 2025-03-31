@@ -285,6 +285,7 @@ In order to have more flexibility over the checkout flow, you can use our Compon
 - [QRCode Component][reference.QRCodeActionComponent]
 - [Cash App Pay Component][reference.CashAppPayComponent]
 - [Twint Component][reference.TwintComponent]
+- [PayTo Component][reference.PayToComponent]
 
 
 ## Customization
@@ -376,5 +377,6 @@ This repository is open source and available under the MIT license. For more inf
 [reference.QRCodeActionComponent]:  https://adyen.github.io/adyen-ios/5.16.0/documentation/adyen/qrcodeactioncomponent
 [reference.CashAppPayComponent]:  https://adyen.github.io/adyen-ios/5.16.0/documentation/adyen/cashAppPayComponent
 [reference.TwintComponent]:  https://adyen.github.io/adyen-ios/5.16.0/documentation/adyen/TwintComponent
+[reference.PayToComponent]:  https://adyen.github.io/adyen-ios/5.16.0/documentation/adyen/paytocomponent
 
 [apiExplorer.sessions]: https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/sessions
