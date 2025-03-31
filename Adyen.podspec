@@ -31,7 +31,7 @@ Pod::Spec.new do |s|
     plugin.source_files = 'AdyenWeChatPay/**/*.swift'
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/Actions'
-    plugin.dependency 'AdyenWeChatPayInternal', '2.1.0'
+    plugin.dependency 'AdyenWeChatPayInternal', '2.2.0'
   end
 
   s.subspec 'CashAppPay' do |plugin|
