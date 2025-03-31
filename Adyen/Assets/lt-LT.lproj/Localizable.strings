@@ -37,6 +37,7 @@
 "adyen.card.stored.expires" = "Galioja iki %@";
 "adyen.card.numberItem.unsupportedBrand" = "„%@“ nepalaikomas";
 "adyen.card.numberItem.unknownBrand" = "Įvestas kortelės prekės ženklas nepalaikomas";
+"adyen.card.scanYourCardButton" = "Nuskaitykite savo kortelę";
 "adyen.dropIn.stored.title" = "Patvirtinti %@ mokėjimą";
 "adyen.dropIn.preselected.openAll.title" = "Keisti mokėjimo būdą";
 "adyen.continueTo" = "Eiti į %@";

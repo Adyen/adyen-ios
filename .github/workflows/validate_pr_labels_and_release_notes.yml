@@ -6,6 +6,7 @@ on:
 
 jobs:
   get-pr-labels:
+    if: "!startsWith(github.event.pull_request.head.ref, 'release/') && !contains(github.event.pull_request.user.login, '[bot]')"
     runs-on: ubuntu-latest
     steps:
       - name: Fetch repo

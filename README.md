@@ -1,4 +1,4 @@
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/adyen/adyen-ios/build.yml?branch=develop)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/adyen/adyen-ios/verify-older-os-compatibility.yml?branch=develop)
 [![Pod](https://img.shields.io/cocoapods/v/Adyen.svg?style=flat)](http://cocoapods.org/pods/Adyen)
 [![carthage compatible](https://img.shields.io/badge/carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![SwiftPM](https://img.shields.io/badge/swift%20package%20manager-compatible-brightgreen.svg)](https://swiftpackageregistry.com/Adyen/adyen-ios)
@@ -27,11 +27,11 @@ You can integrate with Adyen iOS in two ways:
 
 ## SDK lifecycle
 
-| Major version | State      | Deprecated    | End-of-life   |
-|---------------|------------|---------------|---------------|
-| 5.x.x         | Active     | ---           | ---           |
-| 4.x.x         | Inactive   | TBA           | TBA           |
-| 3.x.x         | Deprecated | November 2021 | November 2022 |
+| Major version | State       | Deprecated    | End-of-life   |
+|---------------|-------------|---------------|---------------|
+| 5.x.x         | Active      | ---           | ---           |
+| 4.x.x         | Inactive    | TBA           | TBA           |
+| 3.x.x         | End-of-life | November 2021 | November 2022 |
 
 More information about our versioning and the Drop-in/Components lifecycle can be found [here](https://docs.adyen.com/online-payments/upgrade-your-integration/).
 

@@ -36,37 +36,39 @@ jobs:
       - name: Generate release notes
         id: generate-release-notes
         run: |
+          # Get the latest tag
           LATEST_TAG=$(git describe --tags --abbrev=0)
-          NUMBER_OF_COMMITS_SINCE_LAST_RELEASE=$(git log --oneline $LATEST_TAG..HEAD | wc -l | sed 's/^ *//g' | sed 's/ *$//g')
-
+          
+          # Get the commit messages since the latest tag
+          COMMITS=$(git log "$LATEST_TAG"..HEAD)
+          
+          # Convert the labels string to an array
           IFS=',' read -r -a ALLOWED_LABELS_ARRAY <<< "$ALLOWED_LABELS"
 
           OUTPUT=""
-
+          # Loop through each label and find matching commits
           for LABEL in "${ALLOWED_LABELS_ARRAY[@]}"; do
-             LABEL=$(echo "$LABEL" | sed 's/^ *//g' | sed 's/ *$//g')
-             GIT_LOG_CMD="git log -$NUMBER_OF_COMMITS_SINCE_LAST_RELEASE"
-             FIND_CMD="awk '/<$LABEL>/,/<\/$LABEL>/'"
-             LABEL_OUTPUT="$(eval "$GIT_LOG_CMD | $FIND_CMD")"
-             
-             if [ ! -z "$LABEL_OUTPUT" ]; then
-                LABEL_CONTENT="
+            LABEL=$(echo "$LABEL" | xargs) # Trim spaces
+            
+            # Finding content inside of <$LABEL> & </$LABEL> + trimming leading/trailling spaces/newlines
+            LABEL_OUTPUT=$(echo "$COMMITS" | awk "/<$LABEL>/,/<\/$LABEL>/" | sed "s/<$LABEL>//g; s/<\/$LABEL>//g" | xargs -0)
+            echo $LABEL_OUTPUT
+            
+            if [ -n "$LABEL_OUTPUT" ]; then
+              OUTPUT="$OUTPUT
           ## $LABEL
           $LABEL_OUTPUT"
-                
-                REMOVE_TAG_CMD="sed 's/<$LABEL>//g' | sed 's/<\/$LABEL>//g'"
-                OUTPUT=$(echo "$OUTPUT
-          $LABEL_CONTENT" | eval $REMOVE_TAG_CMD)
-             fi
+            fi
           done
           
           if [ ! -z "$OUTPUT" ]; then
              IFS="" echo "$OUTPUT" 
              IFS="" echo "$OUTPUT" >> $GITHUB_STEP_SUMMARY
-             
-             SANITIZED_OUTPUT=$(echo "$OUTPUT" | sed 'H;1h;$!d;x;s/\n/NEW_LINE_TOKEN/g' )
-             echo "Sanitized Output: $SANITIZED_OUTPUT"
-             IFS="" echo "RELEASE_NOTES=$SANITIZED_OUTPUT" >> $GITHUB_OUTPUT
+
+             # Converting the output to Base64 to get a single line required by the GITHUB_OUTPUT
+             BASE64_RELEASE_NOTES=$(echo "$OUTPUT" | base64 | tr -d '\n')
+             echo "Base64 Release Notes: $BASE64_RELEASE_NOTES"
+             IFS="" echo "RELEASE_NOTES=$BASE64_RELEASE_NOTES" >> $GITHUB_OUTPUT
           fi
         env:
           ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}
