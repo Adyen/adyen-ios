@@ -111,18 +111,15 @@ internal class CardScannerViewController: UIViewController, CardScannerViewProto
     }
 
     internal func presentCameraAccessDeniedAlert() {
-        let alertTitle = NSLocalizedString(LocalizationKey.cameraAlertTitle, comment: "")
-        let alertMessage = NSLocalizedString(LocalizationKey.cameraAlertMessage, comment: "")
+        let alertTitle = viewModel.cameraAlertTitle
+        let alertMessage = viewModel.cameraAlertMessage
         let alert = UIAlertController(
             title: alertTitle,
             message: alertMessage,
             preferredStyle: .alert
         )
 
-        let settingsActionTitle = NSLocalizedString(
-            LocalizationKey.cameraAlertSettingButtonTitle,
-            comment: ""
-        )
+        let settingsActionTitle = viewModel.cameraAlertSettingButtonTitle
         let settingsAction = UIAlertAction(
             title: settingsActionTitle,
             style: .default
@@ -131,10 +128,7 @@ internal class CardScannerViewController: UIViewController, CardScannerViewProto
         }
         alert.addAction(settingsAction)
 
-        let cancelActionTitle = NSLocalizedString(
-            LocalizationKey.cameraAlertCancelButtonTitle,
-            comment: ""
-        )
+        let cancelActionTitle = viewModel.cameraAlertCancelButtonTitle
         let cancelAction = UIAlertAction(
             title: cancelActionTitle,
             style: .cancel
@@ -144,12 +138,5 @@ internal class CardScannerViewController: UIViewController, CardScannerViewProto
         alert.addAction(cancelAction)
 
         present(alert, animated: true, completion: nil)
-    }
-
-    private enum LocalizationKey {
-        internal static let cameraAlertTitle = "card.scanner.camera.access.denied.alert.title"
-        internal static let cameraAlertMessage = "card.scanner.camera.access.denied.alert.message"
-        internal static let cameraAlertSettingButtonTitle = "card.scanner.camera.access.denied.alert.settingsButton.title"
-        internal static let cameraAlertCancelButtonTitle = "card.scanner.camera.access.denied.alert.cancelButton.title"
     }
 }

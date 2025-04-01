@@ -17,6 +17,12 @@ internal protocol CardScannerViewModelProtocol {
     func updateVideoOrientation()
     func update(previewLayerFrame: CGRect, roiInPreviewLayer: CGRect)
     func openSettingsApp()
+
+    // Localization
+    var cameraAlertTitle: String { get }
+    var cameraAlertMessage: String { get }
+    var cameraAlertSettingButtonTitle: String { get }
+    var cameraAlertCancelButtonTitle: String { get }
 }
 
 internal class CardScannerViewModel: CardScannerViewModelProtocol {
@@ -174,5 +180,42 @@ extension CardScannerViewModel: CaptureSessionDelegate {
                 previewFrame: previewFrame
             )
         }
+    }
+}
+
+// MARK: - Localization
+
+extension CardScannerViewModel {
+
+    private enum LocalizationKey: String {
+        case cameraAlertTitle = "card.scanner.camera.access.denied.alert.title"
+        case cameraAlertMessage = "card.scanner.camera.access.denied.alert.message"
+        case cameraAlertSettingButtonTitle = "card.scanner.camera.access.denied.alert.settingsButton.title"
+        case cameraAlertCancelButtonTitle = "card.scanner.camera.access.denied.alert.cancelButton.title"
+    }
+
+    internal var cameraAlertTitle: String {
+        localizedString(forKey: .cameraAlertTitle)
+    }
+
+    internal var cameraAlertMessage: String {
+        localizedString(forKey: .cameraAlertMessage)
+    }
+
+    internal var cameraAlertSettingButtonTitle: String {
+        localizedString(forKey: .cameraAlertSettingButtonTitle)
+    }
+
+    internal var cameraAlertCancelButtonTitle: String {
+        localizedString(forKey: .cameraAlertCancelButtonTitle)
+    }
+
+    // MARK: - Private
+
+    private func localizedString(
+        forKey key: LocalizationKey,
+        comment: String = ""
+    ) -> String {
+        NSLocalizedString(key.rawValue, comment: comment)
     }
 }
