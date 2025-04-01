@@ -52,19 +52,19 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     internal init(
         context: AdyenContext,
         fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter? = nil,
-        service: ThreeDSServiceable = ThreeDSServiceLegacy(),
-        appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
+        appearanceConfiguration: ADYAppearanceConfiguration,
+        service: ThreeDSService,
         coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
         delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil
     ) {
         self.context = context
         self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
             context: context,
+            service: service,
             appearanceConfiguration: appearanceConfiguration,
             delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
         )
         self.fingerprintSubmitter = fingerprintSubmitter ?? ThreeDS2FingerprintSubmitter(context: context)
-        self.coreActionHandler.service = service
     }
 
     // MARK: - Fingerprint
