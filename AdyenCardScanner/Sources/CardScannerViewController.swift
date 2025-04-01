@@ -126,10 +126,8 @@ internal class CardScannerViewController: UIViewController, CardScannerViewProto
         let settingsAction = UIAlertAction(
             title: settingsActionTitle,
             style: .default
-        ) { _ in
-            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.open(settingsURL)
-            }
+        ) { [weak self] _ in
+            self?.viewModel.openSettingsApp()
         }
         alert.addAction(settingsAction)
 

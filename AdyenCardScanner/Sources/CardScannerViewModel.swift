@@ -16,6 +16,7 @@ internal protocol CardScannerViewModelProtocol {
     func stopCaptureSession()
     func updateVideoOrientation()
     func update(previewLayerFrame: CGRect, roiInPreviewLayer: CGRect)
+    func openSettingsApp()
 }
 
 internal class CardScannerViewModel: CardScannerViewModelProtocol {
@@ -78,6 +79,13 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
     internal func update(previewLayerFrame: CGRect, roiInPreviewLayer: CGRect) {
         self.previewFrame = previewLayerFrame
         self.roiInPreviewFrame = roiInPreviewLayer
+    }
+
+    internal func openSettingsApp() {
+        guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+        UIApplication.shared.open(settingsURL)
     }
 
     // MARK: - Private
