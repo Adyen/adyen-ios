@@ -50,6 +50,7 @@ extension ComponentWrapper {
 
 internal func createDefaultThreeDS2CoreActionHandler(
     context: AdyenContext,
+    service: ThreeDSService,
     appearanceConfiguration: ADYAppearanceConfiguration,
     delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?
 ) -> AnyThreeDS2CoreActionHandler {
@@ -57,18 +58,21 @@ internal func createDefaultThreeDS2CoreActionHandler(
         if #available(iOS 16.0, *), let delegatedAuthenticationConfiguration {
             return ThreeDS2PlusDACoreActionHandler(
                 context: context,
+                service: service,
                 appearanceConfiguration: appearanceConfiguration,
                 delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
             )
         } else {
             return ThreeDS2CoreActionHandler(
                 context: context,
+                service: service,
                 appearanceConfiguration: appearanceConfiguration
             )
         }
     #else
         return ThreeDS2CoreActionHandler(
             context: context,
+            service: service,
             appearanceConfiguration: appearanceConfiguration
         )
     #endif

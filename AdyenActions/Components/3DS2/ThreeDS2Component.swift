@@ -229,6 +229,7 @@ public final class ThreeDS2Component: ActionComponent {
     internal lazy var threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler = {
         let handler = ThreeDS2CompactActionHandler(
             context: context,
+            service: ThreeDSServiceProvider(),
             appearanceConfiguration: configuration.appearanceConfiguration,
             delegatedAuthenticationConfiguration: configuration.delegateAuthentication
         )
@@ -242,6 +243,7 @@ public final class ThreeDS2Component: ActionComponent {
     internal lazy var threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler = {
         let handler = ThreeDS2ClassicActionHandler(
             context: context,
+            service: ThreeDSServiceProvider(),
             appearanceConfiguration: configuration.appearanceConfiguration,
             delegatedAuthenticationConfiguration: configuration.delegateAuthentication
         )

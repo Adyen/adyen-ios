@@ -8,8 +8,16 @@ import Adyen3DS2
 @_spi(AdyenInternal) @testable import AdyenActions
 import Foundation
 
-final class ThreeDSServiceableMock: ThreeDSServiceable {
-    func resetTransaction() {}
+final class ThreeDSServiceableMock: ThreeDSService {
+    var configuration: ThreeDSFeatureChecker?
+    
+    var onResetTransaction: (() -> Void)?
+    func resetTransaction() {
+        guard let onResetTransaction else {
+            fatalError("Need to provide a mock data if you are using this mock.")
+        }
+        onResetTransaction()
+    }
     
     typealias FingerprintResult = Result<any AnyAuthenticationRequestParameters, ThreeDSServiceFingerprintError>
     var onPerformFingerprint: ((FingerprintServiceParameters, (FingerprintResult) -> Void) -> Void)?
