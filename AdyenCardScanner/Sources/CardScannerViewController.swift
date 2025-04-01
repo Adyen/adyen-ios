@@ -111,24 +111,47 @@ internal class CardScannerViewController: UIViewController, CardScannerViewProto
     }
 
     internal func presentCameraAccessDeniedAlert() {
+        let alertTitle = NSLocalizedString(LocalizationKey.cameraAlertTitle, comment: "")
+        let alertMessage = NSLocalizedString(LocalizationKey.cameraAlertMessage, comment: "")
         let alert = UIAlertController(
-            title: "Allow camera access",
-            message: "Access was previously denied. To scan cards, please grant access from Settings.",
+            title: alertTitle,
+            message: alertMessage,
             preferredStyle: .alert
         )
 
-        let settingsAction = UIAlertAction(title: "Open Settings", style: .default) { _ in
+        let settingsActionTitle = NSLocalizedString(
+            LocalizationKey.cameraAlertSettingButtonTitle,
+            comment: ""
+        )
+        let settingsAction = UIAlertAction(
+            title: settingsActionTitle,
+            style: .default
+        ) { _ in
             if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
                 UIApplication.shared.open(settingsURL)
             }
         }
         alert.addAction(settingsAction)
 
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+        let cancelActionTitle = NSLocalizedString(
+            LocalizationKey.cameraAlertCancelButtonTitle,
+            comment: ""
+        )
+        let cancelAction = UIAlertAction(
+            title: cancelActionTitle,
+            style: .cancel
+        ) { _ in
             self.dismiss()
         }
         alert.addAction(cancelAction)
 
         present(alert, animated: true, completion: nil)
+    }
+
+    private enum LocalizationKey {
+        internal static let cameraAlertTitle = "card.scanner.camera.access.denied.alert.title"
+        internal static let cameraAlertMessage = "card.scanner.camera.access.denied.alert.message"
+        internal static let cameraAlertSettingButtonTitle = "card.scanner.camera.access.denied.alert.settingsButton.title"
+        internal static let cameraAlertCancelButtonTitle = "card.scanner.camera.access.denied.alert.cancelButton.title"
     }
 }
