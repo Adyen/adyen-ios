@@ -28,7 +28,7 @@ internal class CardViewController: FormViewController {
     private let cardLogos: [FormCardLogosItem.CardTypeLogo]
     private lazy var cardScannerController: CardScannerControlling = {
         let controller = CardScannerController(presenter: self)
-        controller.title = localizedString(.scanYourCardButton, localizationParameters)
+        controller.title = localizedString(.cardScanYourCardButton, localizationParameters)
         controller.onScanComplete = { [weak self] result in
             self?.handleCardScanningResult(result)
         }

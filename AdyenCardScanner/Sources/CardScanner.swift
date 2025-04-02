@@ -12,6 +12,7 @@ public typealias CardScanDetails = (number: String?, expirationDate: Date?)
 
 public protocol CardScanning {
     static func createCardScanner(
+        localizationBundle: Bundle,
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) -> UIViewController?
 
@@ -27,21 +28,13 @@ public enum CardScanner: CardScanning {
     // MARK: - CardScanning
 
     public static func createCardScanner(
+        localizationBundle: Bundle,
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) -> UIViewController? {
-//        guard let cardScannerViewController = cardScannerAssembler.resolveCardScannerViewController(completion: completion) else {
-//            return nil
-//        }
-
-//        let captureAuthorizationService = CaptureAuthorizationService()
-//        let captureAuthorizationViewModel = CaptureAuthorizationViewModel(
-//            captureAuthoriationService: captureAuthorizationService,
-//            cardScannerViewController: cardScannerViewController
-//        )
-//        let captureAuthorizationViewController = CaptureAuthorizationViewController(viewModel: captureAuthorizationViewModel)
-//        return captureAuthorizationViewController
-        
-        let cardScannerViewController = cardScannerAssembler.resolveCardScannerViewController(completion: completion)
+        let cardScannerViewController = cardScannerAssembler.resolveCardScannerViewController(
+            localizationBundle: localizationBundle,
+            completion: completion
+        )
         return cardScannerViewController
     }
 

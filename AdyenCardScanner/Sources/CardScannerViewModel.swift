@@ -32,6 +32,7 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
     internal weak var view: CardScannerViewProtocol?
     private let cardImageParser: CardImageParsing
     private var captureSessionManager: CaptureSessionManaging
+    private let localizationBundle: Bundle
     private let completion: (Result<CardScanDetails, CardScannerError>) -> Void
 
     private var previewFrame: CGRect = .zero
@@ -42,10 +43,12 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
     internal init(
         cardImageParser: CardImageParsing,
         captureSessionManager: CaptureSessionManaging,
+        localizationBundle: Bundle,
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) {
         self.cardImageParser = cardImageParser
         self.captureSessionManager = captureSessionManager
+        self.localizationBundle = localizationBundle
         self.completion = completion
         self.captureSessionManager.delegate = self
     }
@@ -188,10 +191,10 @@ extension CardScannerViewModel: CaptureSessionDelegate {
 extension CardScannerViewModel {
 
     private enum LocalizationKey: String {
-        case cameraAlertTitle = "card.scanner.camera.access.denied.alert.title"
-        case cameraAlertMessage = "card.scanner.camera.access.denied.alert.message"
-        case cameraAlertSettingButtonTitle = "card.scanner.camera.access.denied.alert.settingsButton.title"
-        case cameraAlertCancelButtonTitle = "card.scanner.camera.access.denied.alert.cancelButton.title"
+        case cameraAlertTitle = "adyen.card.scanner.camera.access.denied.alert.title"
+        case cameraAlertMessage = "adyen.card.scanner.camera.access.denied.alert.message"
+        case cameraAlertSettingButtonTitle = "adyen.card.scanner.camera.access.denied.alert.settingsButton.title"
+        case cameraAlertCancelButtonTitle = "adyen.cancelButton"
     }
 
     internal var cameraAlertTitle: String {
@@ -216,6 +219,10 @@ extension CardScannerViewModel {
         forKey key: LocalizationKey,
         comment: String = ""
     ) -> String {
-        NSLocalizedString(key.rawValue, comment: comment)
+        NSLocalizedString(
+            key.rawValue,
+            bundle: localizationBundle,
+            comment: ""
+        )
     }
 }

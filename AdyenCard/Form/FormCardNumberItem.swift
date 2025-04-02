@@ -76,8 +76,8 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         self.supportedCardTypes = cardTypeLogos.map(\.type)
         self.localizationParameters = localizationParameters
         self.scanCardHandler = scanCardHandler
-        self.scanYourCardButtonTitle = localizedString(.scanYourCardButton, localizationParameters)
-        
+        self.scanYourCardButtonTitle = localizedString(.cardScanYourCardButton, localizationParameters)
+
         super.init(style: style)
 
         observe(publisher) { [weak self] value in self?.valueDidChange(value) }
