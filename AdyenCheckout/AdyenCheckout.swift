@@ -9,11 +9,39 @@
 @_spi(AdyenInternal) import AdyenSession
 @_spi(AdyenInternal) import AdyenNetworking
 
-public class AdyenCheckout {
+internal protocol AdyenCheckoutProtocol {
+    static func setup(
+        with sessionId: String,
+        sessionData: String,
+        configuration: CheckoutConfiguration,
+        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
+    )
+    
+    static func setup(
+        with paymentMethods: PaymentMethods,
+        configuration: CheckoutConfiguration,
+        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
+    )
+    
+    static func setupSession(
+        with configuration: CheckoutConfiguration,
+        order: PartialPaymentOrder?,
+        completion: @escaping (Result<AdyenSession, Error>) -> Void
+    )
+    
+    static func fetchCheckoutAttemptId(
+        with configuration: CheckoutConfiguration,
+        completion: @escaping (Result<String, Error>) -> Void
+    )
+}
+
+
+/// AdyenCheckout is the entry point to the Checkout flow. You initialize it through its static methods for your chosen flow
+/// and it prepares all the requied data asynchronously and returns an `AdyenCheckout` instance ready to be used.
+public class AdyenCheckout: AdyenCheckoutProtocol {
     
     internal var session: AdyenSession?
     internal var checkoutAttemptId: String?
-    internal var apiClient: APIClient?
     internal var paymentMethods: PaymentMethods?
     
     /// Sets up the checkout object for the default flow
@@ -27,24 +55,44 @@ public class AdyenCheckout {
         with sessionId: String,
         sessionData: String,
         configuration: CheckoutConfiguration,
-        completion: @escaping (AdyenCheckout) -> Void
+        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
     ) {
         // session
         // analytics
-        var checkout = AdyenCheckout()
-        let apiClient = APIClient(apiContext: configuration.apiContext)
+        let checkout = AdyenCheckout()
         
         let group = DispatchGroup()
-        group.enter()
+        
         // create and store session and paymentmethods
-        group.leave()
-        
         group.enter()
-        // fetch and store checkout attempt id
-        group.leave()
+        setupSession(with: configuration) { result in
+            switch result {
+            case let .success(session):
+                checkout.session = session
+                checkout.paymentMethods = session.sessionContext.paymentMethods
+            case .failure:
+                // TODO: add error
+                break
+            }
+            group.leave()
+        }
         
+        // fetch and store checkout attempt id
+        group.enter()
+        fetchCheckoutAttemptId(with: configuration) { result in
+            switch result {
+            case let .success(attemptId):
+                checkout.checkoutAttemptId = attemptId
+            case .failure:
+                // TODO: decide what to do for failed attempt
+                break
+            }
+            group.leave()
+        }
+        
+        // success case only for now
         group.notify(queue: .main) {
-            completion(checkout)
+            completion(.success(checkout))
         }
     }
     
@@ -57,13 +105,32 @@ public class AdyenCheckout {
     public static func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
-        completion: @escaping (AdyenCheckout) -> Void
+        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
     ) {
-        var checkout = AdyenCheckout()
+        let checkout = AdyenCheckout()
         checkout.paymentMethods = paymentMethods
-        let apiClient = APIClient(apiContext: configuration.apiContext)
         
         // fetch and store checkout attempt id
-        completion(checkout)
+        fetchCheckoutAttemptId(with: configuration) { result in
+            switch result {
+            case let .success(attemptId):
+                checkout.checkoutAttemptId = attemptId
+            case .failure:
+                // TODO: decide what to do for failed attempt
+                break
+            }
+        }
+        completion(.success(checkout))
     }
+    
+    internal static func setupSession(
+        with configuration: CheckoutConfiguration,
+        order: PartialPaymentOrder? = nil,
+        completion: @escaping (Result<AdyenSession, Error>) -> Void
+    ) {}
+    
+    internal static func fetchCheckoutAttemptId(
+        with configuration: CheckoutConfiguration,
+        completion: @escaping (Result<String, Error>) -> Void
+    ) {}
 }
