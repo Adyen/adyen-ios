@@ -8,6 +8,7 @@
 @testable @_spi(AdyenInternal) import AdyenCard
 import XCTest
 @_spi(AdyenInternal) import Adyen
+import Adyen3DS2
 
 @available(iOS 16.0, *)
 class ThreeDS2ComponentTests: XCTestCase {
@@ -462,6 +463,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         
             // A mock for the 3ds2 sdk
             let mockService = ThreeDSServiceableMock()
+            mockService.onResetTransaction = {}
             mockService.onPerformFingerprint = { parameters, completion in
                 completion(
                     .success(
@@ -490,7 +492,12 @@ class ThreeDS2ComponentTests: XCTestCase {
                 deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
             )
                 
-            let classicActionHandler = ThreeDS2ClassicActionHandler(context: Dummy.context, service: mockService, coreActionHandler: threeDS2ActionHandler)
+            let classicActionHandler = ThreeDS2ClassicActionHandler(
+                context: Dummy.context,
+                appearanceConfiguration: ADYAppearanceConfiguration(),
+                service: mockService,
+                coreActionHandler: threeDS2ActionHandler
+            )
         
             let sut = ThreeDS2Component(
                 context: Dummy.context,
@@ -567,6 +574,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         
             // A mock for the 3ds2 sdk
             let mockService = ThreeDSServiceableMock()
+            mockService.onResetTransaction = {}
             mockService.onPerformFingerprint = {
                 $1(
                     .success(
@@ -595,7 +603,12 @@ class ThreeDS2ComponentTests: XCTestCase {
                 deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
             )
                 
-            let classicActionHandler = ThreeDS2ClassicActionHandler(context: Dummy.context, service: mockService, coreActionHandler: threeDS2ActionHandler)
+            let classicActionHandler = ThreeDS2ClassicActionHandler(
+                context: Dummy.context,
+                appearanceConfiguration: ADYAppearanceConfiguration(),
+                service: mockService,
+                coreActionHandler: threeDS2ActionHandler
+            )
         
             let sut = ThreeDS2Component(
                 context: Dummy.context,
@@ -695,6 +708,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         
             // A mock for the 3ds2 sdk, which would successfully complete a challenge.
             let mockService = ThreeDSServiceableMock()
+            mockService.onResetTransaction = {}
             let authenticationRequestParameters = AuthenticationRequestParametersMock(
                 deviceInformation: "device_info",
                 sdkApplicationIdentifier: "sdkApplicationIdentifier",
@@ -718,7 +732,12 @@ class ThreeDS2ComponentTests: XCTestCase {
                 deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
             )
             threeDS2ActionHandler.delegatedAuthenticationState.attemptRegistration = true
-            let classicActionHandler = ThreeDS2ClassicActionHandler(context: Dummy.context, service: mockService, coreActionHandler: threeDS2ActionHandler)
+            let classicActionHandler = ThreeDS2ClassicActionHandler(
+                context: Dummy.context,
+                appearanceConfiguration: ADYAppearanceConfiguration(),
+                service: mockService,
+                coreActionHandler: threeDS2ActionHandler
+            )
             mockService.onPerformChallenge = { $1(.success(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y"))) }
             let sut = ThreeDS2Component(
                 context: Dummy.context,
@@ -794,6 +813,7 @@ class ThreeDS2ComponentTests: XCTestCase {
     
             // A mock for the 3ds2 sdk, which would successfully complete a challenge.
             let mockService = ThreeDSServiceableMock()
+            mockService.onResetTransaction = {}
             let authenticationRequestParameters = AuthenticationRequestParametersMock(
                 deviceInformation: "device_info",
                 sdkApplicationIdentifier: "sdkApplicationIdentifier",
@@ -817,7 +837,12 @@ class ThreeDS2ComponentTests: XCTestCase {
                 deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
             )
             threeDS2ActionHandler.delegatedAuthenticationState.attemptRegistration = true
-            let classicActionHandler = ThreeDS2ClassicActionHandler(context: Dummy.context, service: mockService, coreActionHandler: threeDS2ActionHandler)
+            let classicActionHandler = ThreeDS2ClassicActionHandler(
+                context: Dummy.context,
+                appearanceConfiguration: ADYAppearanceConfiguration(),
+                service: mockService,
+                coreActionHandler: threeDS2ActionHandler
+            )
             mockService.onPerformChallenge = { $1(.success(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y"))) }
             let sut = ThreeDS2Component(
                 context: Dummy.context,

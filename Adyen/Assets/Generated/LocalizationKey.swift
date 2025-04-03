@@ -402,19 +402,19 @@ public struct LocalizationKey {
     public static let threeds2DARegistrationTitle = LocalizationKey(key: "adyen.threeds2.DA.registration.title")
     /// biometric
     public static let threeds2DABiometrics = LocalizationKey(key: "adyen.threeds2.DA.biometrics")
-    /// FaceID
+    /// Face ID
     public static let threeds2DAFaceID = LocalizationKey(key: "adyen.threeds2.DA.faceID")
-    /// TouchID
+    /// Touch ID
     public static let threeds2DATouchID = LocalizationKey(key: "adyen.threeds2.DA.touchID")
-    /// OpticID
+    /// Optic ID
     public static let threeds2DAOpticID = LocalizationKey(key: "adyen.threeds2.DA.opticID")
     /// Check out faster next time with this card
     public static let threeds2DARegistrationDescription = LocalizationKey(key: "adyen.threeds2.DA.registration.description")
     /// Skip manual entry & speed up checkout
     public static let threeds2DARegistrationFirstInfo = LocalizationKey(key: "adyen.threeds2.DA.registration.firstInfo")
-    /// Pay with Face ID or passcode
+    /// Pay with %@ or passcode
     public static let threeds2DARegistrationSecondInfo = LocalizationKey(key: "adyen.threeds2.DA.registration.secondInfo")
-    /// Edit or remove your details at any time.
+    /// Edit or remove your details at any time
     public static let threeds2DARegistrationThirdInfo = LocalizationKey(key: "adyen.threeds2.DA.registration.thirdInfo")
     /// Use secure checkout
     public static let threeds2DARegistrationPositiveButton = LocalizationKey(key: "adyen.threeds2.DA.registration.positiveButton")
@@ -442,12 +442,6 @@ public struct LocalizationKey {
     public static let threeds2DAApprovalRemoveAlertPositiveButton = LocalizationKey(key: "adyen.threeds2.DA.approval.remove.alert.positiveButton")
     /// Cancel
     public static let threeds2DAApprovalRemoveAlertNegativeButton = LocalizationKey(key: "adyen.threeds2.DA.approval.remove.alert.negativeButton")
-    /// Authenticating…
-    public static let threeds2DAApprovalErrorTitle = LocalizationKey(key: "adyen.threeds2.DA.approval.error.title")
-    /// Couldn’t approve payment with Secure Checkout
-    public static let threeds2DAApprovalErrorMessage = LocalizationKey(key: "adyen.threeds2.DA.approval.error.message")
-    /// Approve differently
-    public static let threeds2DAApprovalErrorButtonTitle = LocalizationKey(key: "adyen.threeds2.DA.approval.error.buttonTitle")
     /// Troubleshooting
     public static let threeds2DAErrorTroubleshootingTitle = LocalizationKey(key: "adyen.threeds2.DA.error.troubleshootingTitle")
     /// Ongoing payment issues may be resolved by resetting your Secure Checkout details.
@@ -456,12 +450,18 @@ public struct LocalizationKey {
     public static let threeds2DAErrorTroubleshootingButtonTitle = LocalizationKey(key: "adyen.threeds2.DA.error.troubleshootingButtonTitle")
     /// Reset Secure Checkout
     public static let threeds2DAErrorResetAlertTitle = LocalizationKey(key: "adyen.threeds2.DA.error.reset.alert.title")
-    /// You will be redirected to complete this payment in a different way
+    /// You will be redirected to complete this payment in a different way.
     public static let threeds2DAErrorResetAlertDescription = LocalizationKey(key: "adyen.threeds2.DA.error.reset.alert.description")
     /// Reset
     public static let threeds2DAErrorResetAlertPositiveButton = LocalizationKey(key: "adyen.threeds2.DA.error.reset.alert.positiveButton")
     /// Cancel
     public static let threeds2DAErrorResetAlertNegativeButton = LocalizationKey(key: "adyen.threeds2.DA.error.reset.alert.negativeButton")
+    /// Authenticating…
+    public static let threeds2DAApprovalErrorTitle = LocalizationKey(key: "adyen.threeds2.DA.approval.error.title")
+    /// Couldn’t approve payment with Secure Checkout
+    public static let threeds2DAApprovalErrorMessage = LocalizationKey(key: "adyen.threeds2.DA.approval.error.message")
+    /// Approve differently
+    public static let threeds2DAApprovalErrorButtonTitle = LocalizationKey(key: "adyen.threeds2.DA.approval.error.buttonTitle")
     /// Let’s try next time!
     public static let threeds2DARegistrationErrorTitle = LocalizationKey(key: "adyen.threeds2.DA.registration.error.title")
     /// Your payment has still been authenticated successfully but the Secure Checkout service was unavailable.
@@ -498,7 +498,53 @@ public struct LocalizationKey {
     public static let accessibilityLastFourDigits = LocalizationKey(key: "adyen.accessibility.lastFourDigits")
     /// Scan your card
     public static let scanYourCardButton = LocalizationKey(key: "adyen.card.scanYourCardButton")
-
+    /// How would you like to use PayTo?
+    public static let paytoModeSelection = LocalizationKey(key: "adyen.payto.mode.selection")
+    /// Mobile number
+    public static let mobileNumber = LocalizationKey(key: "adyen.mobileNumber")
+    /// Mobile
+    public static let paytoPayidOptionPhone = LocalizationKey(key: "adyen.payto.payid.option.phone")
+    /// Account holder first name
+    public static let paytoLabelFirstName = LocalizationKey(key: "adyen.payto.label.firstName")
+    /// Account holder last name
+    public static let paytoLabelLastName = LocalizationKey(key: "adyen.payto.label.lastName")
+    /// Identifier
+    public static let paytoPayidLabelIdentifier = LocalizationKey(key: "adyen.payto.payid.label.identifier")
+    /// Australian Business Number
+    public static let paytoPayidAbnHint = LocalizationKey(key: "adyen.payto.payid.abn.hint")
+    /// Organization ID
+    public static let paytoPayidLabelOrgid = LocalizationKey(key: "adyen.payto.payid.label.orgid")
+    /// Organization ID number
+    public static let paytoPayidOrgidHint = LocalizationKey(key: "adyen.payto.payid.orgid.hint")
+    /// Bank account number
+    public static let paytoBsbLabelBankAccountNumber = LocalizationKey(key: "adyen.payto.bsb.label.bankAccountNumber")
+    /// Bank state branch
+    public static let paytoBsbBankStateBranchHint = LocalizationKey(key: "adyen.payto.bsb.bankStateBranch.hint")
+    /// Enter the bank account number and the Bank State Branch that is connected to your account to continue
+    public static let paytoBsbDescription = LocalizationKey(key: "adyen.payto.bsb.description")
+    /// Mobile phone
+    public static let paytoPayidPhoneHint = LocalizationKey(key: "adyen.payto.payid.phone.hint")
+    /// Email
+    public static let paytoPayidOptionEmail = LocalizationKey(key: "adyen.payto.payid.option.email")
+    /// Enter a correct first name
+    public static let paytoFirstNameInvalid = LocalizationKey(key: "adyen.payto.firstName.invalid")
+    /// Enter a correct last name
+    public static let paytoLastNameInvalid = LocalizationKey(key: "adyen.payto.lastName.invalid")
+    /// Enter a correct Australian Business Number
+    public static let paytoPayidAbnInvalid = LocalizationKey(key: "adyen.payto.payid.abn.invalid")
+    /// Enter a correct organization ID number
+    public static let paytoPayidOrgidInvalid = LocalizationKey(key: "adyen.payto.payid.orgid.invalid")
+    /// Enter a correct email address
+    public static let paytoPayidEmailInvalid = LocalizationKey(key: "adyen.payto.payid.email.invalid")
+    /// Enter a correct Bank State Branch
+    public static let paytoBsbBankStateBranchInvalid = LocalizationKey(key: "adyen.payto.bsb.bankStateBranch.invalid")
+    /// Enter a correct bank account number
+    public static let paytoBsbBankAccountNumberInvalid = LocalizationKey(key: "adyen.payto.bsb.bankAccountNumber.invalid")
+    /// Enter the PayID and account details that are connected to your PayTo account.
+    public static let paytoPayidDescription = LocalizationKey(key: "adyen.payto.payid.description")
+    /// Thank you for your purchase, complete your payment by logging into you bank account, authorize the PayTo agreement and approve the payment terms.
+    public static let paytoAwaitDescription = LocalizationKey(key: "adyen.payto.await.description")
+    
     internal let key: String
     
     /// :nodoc:

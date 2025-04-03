@@ -11,8 +11,6 @@ import Foundation
 internal protocol AnyThreeDS2CoreActionHandler: Component {
     var threeDSRequestorAppURL: URL? { get set }
     
-    var service: ThreeDSServiceable { get set }
-
     var presentationDelegate: PresentationDelegate? { get set }
     
     func handle(
@@ -28,6 +26,8 @@ internal protocol AnyThreeDS2CoreActionHandler: Component {
     )
 }
 
+internal typealias ThreeDSService = ThreeDSConfigurable & ThreeDSServiceable
+
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
 internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     private enum Constants {
@@ -40,8 +40,8 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
 
     /// The appearance configuration of the 3D Secure 2 challenge UI.
     internal let appearanceConfiguration: ADYAppearanceConfiguration
-
-    internal lazy var service: ThreeDSServiceable = ThreeDSServiceLegacy()
+    
+    private var service: ThreeDSService
     
     internal weak var presentationDelegate: PresentationDelegate?
     
@@ -55,7 +55,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
     internal init(
         context: AdyenContext,
-        service: ThreeDSServiceable = ThreeDSServiceLegacy(),
+        service: ThreeDSService,
         appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()
     ) {
         self.context = context
@@ -88,7 +88,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                 appearanceConfiguration: appearanceConfiguration,
                 threeDSMessageVersion: token.threeDSMessageVersion
             )
-            
+            service.configuration = token.configuration
             service.performFingerprint(
                 parameters: serviceParameters
             ) { result in
@@ -222,8 +222,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                 message: "cancelled"
             )
 
-        case let .transactionNotInitialized(errorPayload):
-            opaqueRepresentationOfError = errorPayload
+        case .transactionNotInitialized:
             sendErrorEvent(
                 .threeDS2TransactionMissing,
                 for: Constants.challengeEvent
@@ -246,7 +245,6 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                 threeDS2SDKError: opaqueRepresentationOfError,
                 transStatus: Constants.transStatusWhenError
             )
-            self.service.resetTransaction()
             completionHandler(.success(threeDSResult))
         } catch {
             didFail(with: error, completionHandler: completionHandler)
@@ -265,7 +263,6 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                 authorizationToken: authorizationToken,
                 threeDS2SDKError: nil
             )
-            self.service.resetTransaction()
             completionHandler(.success(threeDSResult))
         } catch {
             didFail(with: error, completionHandler: completionHandler)
@@ -276,7 +273,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         with error: Error,
         completionHandler: @escaping (Result<R, Error>) -> Void
     ) {
-        self.service.resetTransaction()
+        service.resetTransaction()
         completionHandler(.failure(error))
     }
 

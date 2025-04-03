@@ -63,9 +63,7 @@ internal final class ThreeDSServiceLegacy: ThreeDSServiceable {
         )
         
         guard let transaction else {
-            return completionHandler(.failure(.transactionNotInitialized(
-                errorPayload: opaqueErrorObject(error: ThreeDSServiceChallengeError.transactionNotInitialized(errorPayload: ""))
-            )))
+            return completionHandler(.failure(.transactionNotInitialized))
         }
         
         transaction.performChallenge(

@@ -39,6 +39,7 @@ internal struct SessionRequest: APIRequest {
         try container.encode("iOS", forKey: .channel)
         try container.encode(ConfigurationConstants.additionalData, forKey: .additionalData)
         try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
+        try container.encode(ConfigurationConstants.mandate, forKey: .mandate)
         
         if ConfigurationConstants.current.cardSettings.enableInstallments {
             let installmentOptions = [
@@ -58,8 +59,8 @@ internal struct SessionRequest: APIRequest {
                 message: "API version should be v70 or above to apply card component's store payment method field",
                 condition: ConfigurationConstants.current.apiVersion < 70
             )
-            try container.encode("askForConsent", forKey: .storePaymentMethodMode)
-            try container.encode("CardOnFile", forKey: .recurringProcessingModel)
+            try container.encode("enabled", forKey: .storePaymentMethodMode)
+            try container.encode(ConfigurationConstants.recurringProcessingModel, forKey: .recurringProcessingModel)
         }
         
         if ConfigurationConstants.current.dropInSettings.allowDisablingStoredPaymentMethods {
@@ -85,6 +86,7 @@ internal struct SessionRequest: APIRequest {
         case recurringProcessingModel
         case showInstallmentAmount
         case showRemovePaymentMethodButton
+        case mandate
     }
     
 }
