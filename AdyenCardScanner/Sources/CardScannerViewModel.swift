@@ -16,7 +16,7 @@ internal protocol CardScannerViewModelProtocol {
     func stopCaptureSession()
     func updateVideoOrientation()
     func update(previewLayerFrame: CGRect, roiInPreviewLayer: CGRect)
-    func openSettingsApp()
+    func openSettingsApp() async
 
     // Localization
     var cameraAlertTitle: String { get }
@@ -32,6 +32,7 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
     internal weak var view: CardScannerViewProtocol?
     private let cardImageParser: CardImageParsing
     private var captureSessionManager: CaptureSessionManaging
+    private let applicationOpener: AppOpener
     private let localizationBundle: Bundle
     private let completion: (Result<CardScanDetails, CardScannerError>) -> Void
 
@@ -43,11 +44,13 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
     internal init(
         cardImageParser: CardImageParsing,
         captureSessionManager: CaptureSessionManaging,
+        applicationOpener: AppOpener,
         localizationBundle: Bundle,
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) {
         self.cardImageParser = cardImageParser
         self.captureSessionManager = captureSessionManager
+        self.applicationOpener = applicationOpener
         self.localizationBundle = localizationBundle
         self.completion = completion
         self.captureSessionManager.delegate = self
@@ -90,11 +93,11 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
         self.roiInPreviewFrame = roiInPreviewLayer
     }
 
-    internal func openSettingsApp() {
+    internal func openSettingsApp() async {
         guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
             return
         }
-        UIApplication.shared.open(settingsURL)
+        await applicationOpener.openApp(settingsURL, options: [:])
     }
 
     // MARK: - Private
@@ -114,12 +117,12 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
             previewFrame: previewFrame
         )
 
-        cardImageParser.parse(image: croppedImage) { creditCard in
+        cardImageParser.parse(image: croppedImage) { [weak self] creditCard in
             let cardDetails = (
                 number: creditCard.number,
                 expirationDate: creditCard.expirationDate
             )
-            self.completion(.success(cardDetails))
+            self?.completion(.success(cardDetails))
         }
     }
 

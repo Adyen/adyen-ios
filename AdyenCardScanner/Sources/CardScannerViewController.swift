@@ -124,7 +124,9 @@ internal class CardScannerViewController: UIViewController, CardScannerViewProto
             title: settingsActionTitle,
             style: .default
         ) { [weak self] _ in
-            self?.viewModel.openSettingsApp()
+            Task {
+                await self?.viewModel.openSettingsApp()
+            }
         }
         alert.addAction(settingsAction)
 
@@ -132,8 +134,8 @@ internal class CardScannerViewController: UIViewController, CardScannerViewProto
         let cancelAction = UIAlertAction(
             title: cancelActionTitle,
             style: .cancel
-        ) { _ in
-            self.dismiss()
+        ) { [weak self] _ in
+            self?.dismiss()
         }
         alert.addAction(cancelAction)
 

@@ -16,6 +16,7 @@ final class CardScannerViewModelTests: XCTestCase {
 
     var cardImageParser: CardImageParsingMock!
     var captureSessionManager: CaptureSessionManagingMock!
+    var applicationOpener: AppOpenerMock!
     var localizationBundle: Bundle!
     var view: CardScannerViewProtocolMock!
     var sut: CardScannerViewModel!
@@ -33,12 +34,14 @@ final class CardScannerViewModelTests: XCTestCase {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
+        applicationOpener = AppOpenerMock()
         localizationBundle = Bundle.main
         let expectedVideoPreviewLayer = AVCaptureVideoPreviewLayer()
         captureSessionManager.videoPreviewLayer = expectedVideoPreviewLayer
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
+            applicationOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -55,10 +58,12 @@ final class CardScannerViewModelTests: XCTestCase {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
+        applicationOpener = AppOpenerMock()
         localizationBundle = Bundle.main
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
+            applicationOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -77,10 +82,12 @@ final class CardScannerViewModelTests: XCTestCase {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
+        applicationOpener = AppOpenerMock()
         localizationBundle = Bundle.main
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
+            applicationOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -99,10 +106,12 @@ final class CardScannerViewModelTests: XCTestCase {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
+        applicationOpener = AppOpenerMock()
         localizationBundle = Bundle.main
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
+            applicationOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -121,10 +130,12 @@ final class CardScannerViewModelTests: XCTestCase {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
+        applicationOpener = AppOpenerMock()
         localizationBundle = Bundle.main
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
+            applicationOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -141,10 +152,12 @@ final class CardScannerViewModelTests: XCTestCase {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
+        applicationOpener = AppOpenerMock()
         localizationBundle = Bundle.main
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
+            applicationOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -161,10 +174,12 @@ final class CardScannerViewModelTests: XCTestCase {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
+        applicationOpener = AppOpenerMock()
         localizationBundle = Bundle.main
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
+            applicationOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -181,10 +196,12 @@ final class CardScannerViewModelTests: XCTestCase {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
+        applicationOpener = AppOpenerMock()
         localizationBundle = Bundle.main
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
+            applicationOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -216,10 +233,12 @@ final class CardScannerViewModelTests: XCTestCase {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
+        applicationOpener = AppOpenerMock()
         localizationBundle = Bundle.main
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
+            applicationOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -247,10 +266,12 @@ final class CardScannerViewModelTests: XCTestCase {
 
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
+        applicationOpener = AppOpenerMock()
         localizationBundle = Bundle.main
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
+            applicationOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -284,5 +305,142 @@ final class CardScannerViewModelTests: XCTestCase {
 
         XCTAssertNotEqual(croppedImage.extent.size, originalImage.extent.size)
         XCTAssertEqual(expectedCroppedImageSize, croppedImage.extent.size)
+    }
+
+    func testOpenSettingsApp() async throws {
+        // Given
+        let settingsURL = try XCTUnwrap(URL(string: UIApplication.openSettingsURLString))
+
+        cardImageParser = CardImageParsingMock()
+        captureSessionManager = CaptureSessionManagingMock()
+        applicationOpener = AppOpenerMock()
+        localizationBundle = Bundle.main
+        sut = CardScannerViewModel(
+            cardImageParser: cardImageParser,
+            captureSessionManager: captureSessionManager,
+            applicationOpener: applicationOpener,
+            localizationBundle: localizationBundle
+        ) { _ in }
+        view = CardScannerViewProtocolMock()
+        sut.view = view
+
+        // When
+        await sut.openSettingsApp()
+
+        // Then
+        XCTAssertEqual(applicationOpener.openApplicationCallsCount, 1)
+        let receivedApplicationURL = applicationOpener.openApplicationReceivedURL
+
+        XCTAssertEqual(settingsURL, receivedApplicationURL)
+    }
+
+    // MARK: - Localization
+
+    func testCameraAlertTitle() throws {
+        // Given
+        let expectedCameraAlertTitle = "adyen.card.scanner.camera.access.denied.alert.title"
+
+        cardImageParser = CardImageParsingMock()
+        captureSessionManager = CaptureSessionManagingMock()
+        applicationOpener = AppOpenerMock()
+        localizationBundle = Bundle.main
+        sut = CardScannerViewModel(
+            cardImageParser: cardImageParser,
+            captureSessionManager: captureSessionManager,
+            applicationOpener: applicationOpener,
+            localizationBundle: localizationBundle
+        ) { _ in }
+        view = CardScannerViewProtocolMock()
+        sut.view = view
+
+        // When
+        let cameraAlertTitle = sut.cameraAlertTitle
+
+        // Then
+        XCTAssertEqual(
+            expectedCameraAlertTitle,
+            cameraAlertTitle
+        )
+    }
+
+    func testCameraAlertMessage() throws {
+        // Given
+        let expectedCameraAlertMessage = "adyen.card.scanner.camera.access.denied.alert.message"
+
+        cardImageParser = CardImageParsingMock()
+        captureSessionManager = CaptureSessionManagingMock()
+        applicationOpener = AppOpenerMock()
+        localizationBundle = Bundle.main
+        sut = CardScannerViewModel(
+            cardImageParser: cardImageParser,
+            captureSessionManager: captureSessionManager,
+            applicationOpener: applicationOpener,
+            localizationBundle: localizationBundle
+        ) { _ in }
+        view = CardScannerViewProtocolMock()
+        sut.view = view
+
+        // When
+        let cameraAlertMessage = sut.cameraAlertMessage
+
+        // Then
+        XCTAssertEqual(
+            expectedCameraAlertMessage,
+            cameraAlertMessage
+        )
+    }
+
+    func testCameraAlertSettingButtonTitle() throws {
+        // Given
+        let expectedCameraAlertSettingButtonTitle = "adyen.card.scanner.camera.access.denied.alert.settingsButton.title"
+
+        cardImageParser = CardImageParsingMock()
+        captureSessionManager = CaptureSessionManagingMock()
+        applicationOpener = AppOpenerMock()
+        localizationBundle = Bundle.main
+        sut = CardScannerViewModel(
+            cardImageParser: cardImageParser,
+            captureSessionManager: captureSessionManager,
+            applicationOpener: applicationOpener,
+            localizationBundle: localizationBundle
+        ) { _ in }
+        view = CardScannerViewProtocolMock()
+        sut.view = view
+
+        // When
+        let cameraAlertSettingButtonTitle = sut.cameraAlertSettingButtonTitle
+
+        // Then
+        XCTAssertEqual(
+            expectedCameraAlertSettingButtonTitle,
+            cameraAlertSettingButtonTitle
+        )
+    }
+
+    func testCameraAlertCancelButtonTitle() throws {
+        // Given
+        let expectedCameraAlertSettingButtonTitle = "adyen.cancelButton"
+
+        cardImageParser = CardImageParsingMock()
+        captureSessionManager = CaptureSessionManagingMock()
+        applicationOpener = AppOpenerMock()
+        localizationBundle = Bundle.main
+        sut = CardScannerViewModel(
+            cardImageParser: cardImageParser,
+            captureSessionManager: captureSessionManager,
+            applicationOpener: applicationOpener,
+            localizationBundle: localizationBundle
+        ) { _ in }
+        view = CardScannerViewProtocolMock()
+        sut.view = view
+
+        // When
+        let cameraAlertCancelButtonTitle = sut.cameraAlertCancelButtonTitle
+
+        // Then
+        XCTAssertEqual(
+            expectedCameraAlertSettingButtonTitle,
+            cameraAlertCancelButtonTitle
+        )
     }
 }

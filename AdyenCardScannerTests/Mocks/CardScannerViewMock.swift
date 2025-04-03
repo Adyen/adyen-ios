@@ -14,6 +14,7 @@ class CardScannerViewProtocolMock: CardScannerViewProtocol {
     var dismissCalled: Bool {
         dismissCallsCount > 0
     }
+
     var dismissClosure: (() -> Void)?
 
     func dismiss() {
@@ -27,6 +28,7 @@ class CardScannerViewProtocolMock: CardScannerViewProtocol {
     var presentCameraAccessDeniedAlertCalled: Bool {
         presentCameraAccessDeniedAlertCallsCount > 0
     }
+
     var presentCameraAccessDeniedAlertClosure: (() -> Void)?
 
     func presentCameraAccessDeniedAlert() {

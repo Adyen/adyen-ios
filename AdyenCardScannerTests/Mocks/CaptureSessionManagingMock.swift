@@ -24,6 +24,7 @@ class CaptureSessionManagingMock: CaptureSessionManaging {
     var requestCaptureAuthorizationCalled: Bool {
         requestCaptureAuthorizationCallsCount > 0
     }
+
     var requestCaptureAuthorizationReturnValue: CaptureAuthorizationStatus = .authorized
     var requestCaptureAuthorizationClosure: (() async -> CaptureAuthorizationStatus)?
 

@@ -87,4 +87,22 @@ final class CardScannerViewControllerTests: XCTestCase {
         let layer = try XCTUnwrap(sut.view.layer.sublayers?.first)
         XCTAssertTrue(layer === expectedVideoPreviewLayer)
     }
+
+    func testPresentCameraAccessDeniedAlert() throws {
+        // Given
+        viewModel = CardScannerViewModelMock()
+        sut = CardScannerViewController(viewModel: viewModel)
+
+        let testWindow = UIWindow(frame: UIScreen.main.bounds)
+        testWindow.rootViewController = sut
+        testWindow.makeKeyAndVisible()
+        _ = sut.view
+
+        // When
+        sut.presentCameraAccessDeniedAlert()
+
+        // Then
+        let presentedAlert = try XCTUnwrap(sut.presentedViewController as? UIAlertController)
+        XCTAssertEqual(presentedAlert.actions.count, 2, "Alert should have two actions.")
+    }
 }
