@@ -17,12 +17,14 @@ final class CardScannerViewModelTests: XCTestCase {
     var cardImageParser: CardImageParsingMock!
     var captureSessionManager: CaptureSessionManagingMock!
     var localizationBundle: Bundle!
+    var view: CardScannerViewProtocolMock!
     var sut: CardScannerViewModel!
 
     override func tearDownWithError() throws {
         cardImageParser = nil
         captureSessionManager = nil
         localizationBundle = nil
+        view = nil
         sut = nil
         try super.tearDownWithError()
     }
@@ -39,6 +41,8 @@ final class CardScannerViewModelTests: XCTestCase {
             captureSessionManager: captureSessionManager,
             localizationBundle: localizationBundle
         ) { _ in }
+        view = CardScannerViewProtocolMock()
+        sut.view = view
 
         // When
         let receivedVideoPreviewLayer = sut.videoPreviewLayer
@@ -57,6 +61,8 @@ final class CardScannerViewModelTests: XCTestCase {
             captureSessionManager: captureSessionManager,
             localizationBundle: localizationBundle
         ) { _ in }
+        view = CardScannerViewProtocolMock()
+        sut.view = view
 
         captureSessionManager.requestCaptureAuthorizationReturnValue = .authorized
 
@@ -65,6 +71,50 @@ final class CardScannerViewModelTests: XCTestCase {
 
         // Then
         XCTAssertEqual(captureSessionManager.configureSessionCallsCount, 1)
+    }
+
+    func testRequestCaptureAuthorizationGivenRejectedShouldCallViewDismiss() async throws {
+        // Given
+        cardImageParser = CardImageParsingMock()
+        captureSessionManager = CaptureSessionManagingMock()
+        localizationBundle = Bundle.main
+        sut = CardScannerViewModel(
+            cardImageParser: cardImageParser,
+            captureSessionManager: captureSessionManager,
+            localizationBundle: localizationBundle
+        ) { _ in }
+        view = CardScannerViewProtocolMock()
+        sut.view = view
+
+        captureSessionManager.requestCaptureAuthorizationReturnValue = .rejected
+
+        // When
+        await sut.requestCaptureAuthorization()
+
+        // Then
+        XCTAssertEqual(view.dismissCallsCount, 1)
+    }
+
+    func testRequestCaptureAuthorizationGivenDeniedShouldCallViewDismiss() async throws {
+        // Given
+        cardImageParser = CardImageParsingMock()
+        captureSessionManager = CaptureSessionManagingMock()
+        localizationBundle = Bundle.main
+        sut = CardScannerViewModel(
+            cardImageParser: cardImageParser,
+            captureSessionManager: captureSessionManager,
+            localizationBundle: localizationBundle
+        ) { _ in }
+        view = CardScannerViewProtocolMock()
+        sut.view = view
+
+        captureSessionManager.requestCaptureAuthorizationReturnValue = .denied
+
+        // When
+        await sut.requestCaptureAuthorization()
+
+        // Then
+        XCTAssertEqual(view.presentCameraAccessDeniedAlertCallsCount, 1)
     }
 
     func testStartCaptureSessionShouldCallCaptureSessionManagerStartCaptureSession() throws {
@@ -77,6 +127,8 @@ final class CardScannerViewModelTests: XCTestCase {
             captureSessionManager: captureSessionManager,
             localizationBundle: localizationBundle
         ) { _ in }
+        view = CardScannerViewProtocolMock()
+        sut.view = view
 
         // When
         sut.startCaptureSession()
@@ -95,6 +147,8 @@ final class CardScannerViewModelTests: XCTestCase {
             captureSessionManager: captureSessionManager,
             localizationBundle: localizationBundle
         ) { _ in }
+        view = CardScannerViewProtocolMock()
+        sut.view = view
 
         // When
         sut.stopCaptureSession()
@@ -113,6 +167,8 @@ final class CardScannerViewModelTests: XCTestCase {
             captureSessionManager: captureSessionManager,
             localizationBundle: localizationBundle
         ) { _ in }
+        view = CardScannerViewProtocolMock()
+        sut.view = view
 
         // When
         sut.updateVideoOrientation()
@@ -131,6 +187,8 @@ final class CardScannerViewModelTests: XCTestCase {
             captureSessionManager: captureSessionManager,
             localizationBundle: localizationBundle
         ) { _ in }
+        view = CardScannerViewProtocolMock()
+        sut.view = view
 
         let image = UIImage(
             named: Constants.mockCardImage,
@@ -164,6 +222,8 @@ final class CardScannerViewModelTests: XCTestCase {
             captureSessionManager: captureSessionManager,
             localizationBundle: localizationBundle
         ) { _ in }
+        view = CardScannerViewProtocolMock()
+        sut.view = view
 
         // When
         sut.didCapture(image: nil)
@@ -193,6 +253,8 @@ final class CardScannerViewModelTests: XCTestCase {
             captureSessionManager: captureSessionManager,
             localizationBundle: localizationBundle
         ) { _ in }
+        view = CardScannerViewProtocolMock()
+        sut.view = view
 
         let image = UIImage(
             named: Constants.mockCardImage,
