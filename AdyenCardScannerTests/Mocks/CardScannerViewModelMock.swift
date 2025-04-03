@@ -9,23 +9,18 @@ import Foundation
 import QuartzCore
 
 class CardScannerViewModelMock: CardScannerViewModelProtocol {
+
+    var cameraAlertTitle: String = .init()
+
+    var cameraAlertMessage: String = .init()
+
+    var cameraAlertSettingButtonTitle: String = .init()
+
+    var cameraAlertCancelButtonTitle: String = .init()
+
     // MARK: - videoPreviewLayer
 
     var videoPreviewLayer: CALayer = .init()
-
-    // MARK: - configureSession
-
-    var configureSessionCallsCount = 0
-    var configureSessionCalled: Bool {
-        configureSessionCallsCount > 0
-    }
-
-    var configureSessionClosure: (() -> Void)?
-
-    func configureSession() {
-        configureSessionCallsCount += 1
-        configureSessionClosure?()
-    }
 
     // MARK: - startCaptureSession
 
@@ -87,5 +82,31 @@ class CardScannerViewModelMock: CardScannerViewModelProtocol {
         updateReceivedROIInPreviewLayer = roiInPreviewLayer
         updateReceivedInvocations.append((previewLayerFrame, roiInPreviewLayer))
         updateClosure?(previewLayerFrame, roiInPreviewLayer)
+    }
+
+    // MARK: - requestCaptureAuthorization
+
+    var requestCaptureAuthorizationCallsCount = 0
+    var requestCaptureAuthorizationCalled: Bool {
+        requestCaptureAuthorizationCallsCount > 0
+    }
+    var requestCaptureAuthorizationClosure: (() async -> Void)?
+
+    func requestCaptureAuthorization() async {
+        requestCaptureAuthorizationCallsCount += 1
+        await requestCaptureAuthorizationClosure?()
+    }
+
+    // MARK: - openSettingsApp
+
+    var openSettingsAppCallsCount = 0
+    var openSettingsAppCalled: Bool {
+        openSettingsAppCallsCount > 0
+    }
+    var openSettingsAppClosure: (() -> Void)?
+
+    func openSettingsApp() {
+        openSettingsAppCallsCount += 1
+        openSettingsAppClosure?()
     }
 }
