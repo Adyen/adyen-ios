@@ -496,6 +496,8 @@ public struct LocalizationKey {
     public static let addressLookupSearchManualEntryItemTitle = LocalizationKey(key: "adyen.address.lookup.search.manualEntryItem.title")
     /// Last 4 digits
     public static let accessibilityLastFourDigits = LocalizationKey(key: "adyen.accessibility.lastFourDigits")
+    /// Scan your card
+    public static let scanYourCardButton = LocalizationKey(key: "adyen.card.scanYourCardButton")
     /// How would you like to use PayTo?
     public static let paytoModeSelection = LocalizationKey(key: "adyen.payto.mode.selection")
     /// Mobile number

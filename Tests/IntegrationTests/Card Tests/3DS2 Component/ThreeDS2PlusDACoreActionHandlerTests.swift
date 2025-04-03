@@ -58,6 +58,7 @@ import XCTest
         func testSettingThreeDSRequestorAppURL() throws {
             let sut = ThreeDS2PlusDACoreActionHandler(
                 context: Dummy.context,
+                service: ThreeDSServiceableMock(),
                 appearanceConfiguration: ADYAppearanceConfiguration(),
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations
             )
@@ -68,6 +69,7 @@ import XCTest
         func testWrappedComponent() throws {
             let sut = ThreeDS2PlusDACoreActionHandler(
                 context: Dummy.context,
+                service: ThreeDSServiceableMock(),
                 appearanceConfiguration: ADYAppearanceConfiguration(),
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations
             )
@@ -119,7 +121,7 @@ import XCTest
         func testInvalidFingerprintToken() throws {
             let service = ThreeDSServiceableMock()
             service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
-
+            service.onResetTransaction = {}
             let authenticationServiceMock = AuthenticationServiceMock()
 
             let fingerprintAction = ThreeDS2FingerprintAction(
@@ -165,6 +167,7 @@ import XCTest
                 XCTAssertEqual(params.threeDSRequestorAppURL, URL(string: "https://google.com"))
                 completion(.success(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y")))
             }
+            service.onResetTransaction = {}
             let authenticationServiceMock = AuthenticationServiceMock()
         
             authenticationServiceMock.onRegister = { _ in
@@ -209,6 +212,7 @@ import XCTest
             let service = ThreeDSServiceableMock()
             service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
             service.onPerformChallenge = { $1(.failure(.challengeError(errorPayload: ""))) }
+            service.onResetTransaction = {}
             let authenticationServiceMock = AuthenticationServiceMock()
         
             let sut = ThreeDS2PlusDACoreActionHandler(
@@ -244,6 +248,7 @@ import XCTest
             let authenticationServiceMock = AuthenticationServiceMock()
             let sut = ThreeDS2PlusDACoreActionHandler(
                 context: Dummy.context,
+                service: ThreeDSServiceProvider(),
                 presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock
@@ -274,11 +279,12 @@ import XCTest
             service.onPerformChallenge = { parameters, completion in
                 XCTFail()
             }
-
+            service.onResetTransaction = {}
             let authenticationServiceMock = AuthenticationServiceMock()
 
             let sut = ThreeDS2PlusDACoreActionHandler(
                 context: Dummy.context,
+                service: service,
                 presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock
@@ -318,7 +324,7 @@ import XCTest
 
             let service = ThreeDSServiceableMock()
             service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
-                
+            service.onResetTransaction = {}
             let authenticationServiceMock = AuthenticationServiceMock()
             authenticationServiceMock.onAuthenticate = { input in
                 "OnAuthenticate"
@@ -376,7 +382,7 @@ import XCTest
 
             let service = ThreeDSServiceableMock()
             service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
-                
+            service.onResetTransaction = {}
             let authenticationServiceMock = AuthenticationServiceMock()
             authenticationServiceMock.onAuthenticate = { input in
                 throw NSError(domain: "Error during Authentication", code: 123)
@@ -423,7 +429,7 @@ import XCTest
 
             let service = ThreeDSServiceableMock()
             service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
-                
+            service.onResetTransaction = {}
             let authenticationServiceMock = AuthenticationServiceMock()
             authenticationServiceMock.onAuthenticate = { input in
                 "OnAuthenticate"
@@ -470,7 +476,7 @@ import XCTest
 
             let service = ThreeDSServiceableMock()
             service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
-                
+            service.onResetTransaction = {}
             let onAuthenticateExpectation = expectation(description: "Expect onReset to be called")
             let authenticationServiceMock = AuthenticationServiceMock()
             authenticationServiceMock.onAuthenticate = { input in
@@ -521,6 +527,7 @@ import XCTest
             service.onPerformChallenge = { params, completion in
                 completion(.success(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y")))
             }
+            service.onResetTransaction = {}
             let authenticationServiceMock = AuthenticationServiceMock()
         
             authenticationServiceMock.onRegister = { _ in
@@ -569,6 +576,7 @@ import XCTest
                 XCTAssertEqual(params.threeDSRequestorAppURL, URL(string: "https://google.com"))
                 completion(.success(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y")))
             }
+            service.onResetTransaction = {}
             let authenticationServiceMock = AuthenticationServiceMock()
         
             authenticationServiceMock.onRegister = { _ in

@@ -212,3 +212,9 @@ whiteList:
   - cancellables
   - qos
   - cardscanner
+  - payto
+  - abn
+  - firstname
+  - bsb
+  - payid
+  - orgid

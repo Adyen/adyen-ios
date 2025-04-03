@@ -16,6 +16,7 @@ internal enum AnyPaymentMethod: Codable {
     case storedAchDirectDebit(StoredACHDirectDebitPaymentMethod)
     case storedCashAppPay(StoredCashAppPayPaymentMethod)
     case storedTwint(StoredTwintPaymentMethod)
+    case storedPayTo(StoredPayToPaymentMethod)
 
     case instant(PaymentMethod)
     case card(AnyCardPaymentMethod)
@@ -46,6 +47,7 @@ internal enum AnyPaymentMethod: Codable {
     case cashAppPay(CashAppPayPaymentMethod)
     case twint(TwintPaymentMethod)
     case payByBankUS(PayByBankUSPaymentMethod)
+    case payTo(PayToPaymentMethod)
 
     case none
     
@@ -89,6 +91,8 @@ internal enum AnyPaymentMethod: Codable {
         case let .twint(paymentMethod): return paymentMethod
         case let .storedPayByBankUS(paymentMethod): return paymentMethod
         case let .payByBankUS(paymentMethod): return paymentMethod
+        case let .payTo(paymentMethod): return paymentMethod
+        case let .storedPayTo(paymentMethod): return paymentMethod
         case .none: return nil
         }
     }
