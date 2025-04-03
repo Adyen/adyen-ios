@@ -64,6 +64,15 @@ internal enum ConfigurationConstants {
         "id": "Item #2"
     ]]
     
+    // sample mandate object (e.g., for PayTo)
+    static let mandate = [
+        "amount": "\(current.amount.value)",
+        "amountRule": "max",
+        "endsAt": "2027-10-01",
+        "frequency": "adhoc",
+        "remarks": "Remark on mandate"
+    ]
+    
     static var delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication {
         .init(relyingPartyIdentifier: "test-authentication-adyen.netlify.app")
     }

@@ -19,6 +19,10 @@ extension PhoneExtension: FormPickable {
 @_spi(AdyenInternal)
 public final class FormPhoneExtensionPickerItem: FormPickerItem<PhoneExtension> {
     
+    internal var allowsSelection: Bool {
+        selectableValues.count > 1
+    }
+    
     public required init(
         preselectedExtension: PhoneExtension?,
         selectableExtensions: [PhoneExtension],
@@ -28,6 +32,7 @@ public final class FormPhoneExtensionPickerItem: FormPickerItem<PhoneExtension> 
         localizationParameters: LocalizationParameters? = nil,
         identifier: String? = nil
     ) {
+
         super.init(
             preselectedValue: preselectedExtension,
             selectableValues: selectableExtensions,
