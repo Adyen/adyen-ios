@@ -3802,8 +3802,8 @@
 		C99FF2B92D50E872007179C5 /* AdyenCardScanner */ = {
 			isa = PBXGroup;
 			children = (
-				C99FF2B62D50E872007179C5 /* Sources */,
 				C99FF2B72D50E872007179C5 /* AdyenCardScanner.h */,
+				C99FF2B62D50E872007179C5 /* Sources */,
 			);
 			path = AdyenCardScanner;
 			sourceTree = "<group>";
