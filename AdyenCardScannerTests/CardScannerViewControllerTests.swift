@@ -18,16 +18,23 @@ final class CardScannerViewControllerTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testViewDidLoadShouldCallViewModelConfigureSession() throws {
+    func testViewDidLoadShouldCallViewModelRequestCaptureAuthorization() throws {
         // Given
         viewModel = CardScannerViewModelMock()
         sut = CardScannerViewController(viewModel: viewModel)
 
+        let expectation = expectation(description: "Request capture authorization should be called.")
+
+        viewModel.requestCaptureAuthorizationClosure = {
+            // Then
+            expectation.fulfill()
+            XCTAssertEqual(self.viewModel.requestCaptureAuthorizationCallsCount, 1)
+        }
+
         // When
         sut.loadViewIfNeeded()
 
-        // Then
-        XCTAssertEqual(viewModel.configureSessionCallsCount, 1)
+        wait(for: [expectation], timeout: 0.1)
     }
 
     func testViewWillAppearShouldStartCaptureSession() throws {

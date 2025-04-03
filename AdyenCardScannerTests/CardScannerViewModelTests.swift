@@ -16,11 +16,13 @@ final class CardScannerViewModelTests: XCTestCase {
 
     var cardImageParser: CardImageParsingMock!
     var captureSessionManager: CaptureSessionManagingMock!
+    var localizationBundle: Bundle!
     var sut: CardScannerViewModel!
 
     override func tearDownWithError() throws {
         cardImageParser = nil
         captureSessionManager = nil
+        localizationBundle = nil
         sut = nil
         try super.tearDownWithError()
     }
@@ -29,12 +31,13 @@ final class CardScannerViewModelTests: XCTestCase {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
-
+        localizationBundle = Bundle.main
         let expectedVideoPreviewLayer = AVCaptureVideoPreviewLayer()
         captureSessionManager.videoPreviewLayer = expectedVideoPreviewLayer
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
-            captureSessionManager: captureSessionManager
+            captureSessionManager: captureSessionManager,
+            localizationBundle: localizationBundle
         ) { _ in }
 
         // When
@@ -44,17 +47,21 @@ final class CardScannerViewModelTests: XCTestCase {
         XCTAssertTrue(expectedVideoPreviewLayer === receivedVideoPreviewLayer)
     }
 
-    func testConfigureSessionShouldCallCaptureSessionManagerConfigureSession() throws {
+    func testRequestCaptureAuthorizationGivenAuthorizedShouldCallCaptureSessionManagerConfigureSession() async throws {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
+        localizationBundle = Bundle.main
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
-            captureSessionManager: captureSessionManager
+            captureSessionManager: captureSessionManager,
+            localizationBundle: localizationBundle
         ) { _ in }
 
+        captureSessionManager.requestCaptureAuthorizationReturnValue = .authorized
+
         // When
-        sut.configureSession()
+        await sut.requestCaptureAuthorization()
 
         // Then
         XCTAssertEqual(captureSessionManager.configureSessionCallsCount, 1)
@@ -64,9 +71,11 @@ final class CardScannerViewModelTests: XCTestCase {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
+        localizationBundle = Bundle.main
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
-            captureSessionManager: captureSessionManager
+            captureSessionManager: captureSessionManager,
+            localizationBundle: localizationBundle
         ) { _ in }
 
         // When
@@ -80,9 +89,11 @@ final class CardScannerViewModelTests: XCTestCase {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
+        localizationBundle = Bundle.main
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
-            captureSessionManager: captureSessionManager
+            captureSessionManager: captureSessionManager,
+            localizationBundle: localizationBundle
         ) { _ in }
 
         // When
@@ -96,9 +107,11 @@ final class CardScannerViewModelTests: XCTestCase {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
+        localizationBundle = Bundle.main
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
-            captureSessionManager: captureSessionManager
+            captureSessionManager: captureSessionManager,
+            localizationBundle: localizationBundle
         ) { _ in }
 
         // When
@@ -112,9 +125,11 @@ final class CardScannerViewModelTests: XCTestCase {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
+        localizationBundle = Bundle.main
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
-            captureSessionManager: captureSessionManager
+            captureSessionManager: captureSessionManager,
+            localizationBundle: localizationBundle
         ) { _ in }
 
         let image = UIImage(
@@ -143,9 +158,11 @@ final class CardScannerViewModelTests: XCTestCase {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
+        localizationBundle = Bundle.main
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
-            captureSessionManager: captureSessionManager
+            captureSessionManager: captureSessionManager,
+            localizationBundle: localizationBundle
         ) { _ in }
 
         // When
@@ -157,7 +174,7 @@ final class CardScannerViewModelTests: XCTestCase {
 
     func testDidCaptureWithImageShouldCropImageToRegionOfInterest() throws {
         // Given
-        let expectedCroppedImageSize = CGSize(width: 885.0, height: 1044.0)
+        let expectedCroppedImageSize = CGSize(width: 883.0, height: 1042.0)
 
         let previewLayerFrame = UIScreen.main.bounds
 
@@ -170,9 +187,11 @@ final class CardScannerViewModelTests: XCTestCase {
 
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
+        localizationBundle = Bundle.main
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
-            captureSessionManager: captureSessionManager
+            captureSessionManager: captureSessionManager,
+            localizationBundle: localizationBundle
         ) { _ in }
 
         let image = UIImage(
