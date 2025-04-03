@@ -5,7 +5,6 @@
 //
 
 import Foundation
-import SwiftUI
 import UIKit
 
 public typealias CardScanDetails = (number: String?, expirationDate: Date?)

@@ -12,7 +12,7 @@ internal protocol CardScannerAssembling {
     func resolveCardScannerViewController(
         localizationBundle: Bundle,
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
-    ) -> CardScannerViewController?
+    ) -> UIViewController?
 }
 
 internal class CardScannerAssembler: CardScannerAssembling {
@@ -34,7 +34,7 @@ internal class CardScannerAssembler: CardScannerAssembling {
     internal func resolveCardScannerViewController(
         localizationBundle: Bundle,
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
-    ) -> CardScannerViewController? {
+    ) -> UIViewController? {
         guard let captureDevice else { return nil }
 
         let expireDateFormatter = ExpirationDateFormatter()
