@@ -12,8 +12,8 @@ public struct AnalyticsEventLog: AnalyticsEvent {
     
     public var id: String = UUID().uuidString
     
-    public var timestamp = Int(Date().timeIntervalSince1970)
-    
+    public var timestamp = Int(Date().timeIntervalSince1970 * 1000)
+
     public var component: String
     
     public var type: LogType
