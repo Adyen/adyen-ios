@@ -8,18 +8,16 @@ import Foundation
 import UIKit
 
 internal protocol AppOpener {
-    func openApp(
-        _ url: URL,
-        options: [UIApplication.OpenExternalURLOptionsKey: Any]
-    ) async
+    func openSettingsApp() async
 }
 
 extension UIApplication: AppOpener {
-    
-    func openApp(
-        _ url: URL,
-        options: [OpenExternalURLOptionsKey: Any]
-    ) async {
-        await open(url, options: options)
+
+    func openSettingsApp() async {
+        guard let settingsAppURL = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+
+        await open(settingsAppURL, options: [:])
     }
 }

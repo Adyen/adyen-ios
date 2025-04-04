@@ -7,7 +7,6 @@
 import CoreImage
 import Foundation
 import QuartzCore
-import UIKit
 
 internal protocol CardScannerViewModelProtocol {
     var videoPreviewLayer: CALayer { get }
@@ -16,7 +15,7 @@ internal protocol CardScannerViewModelProtocol {
     func stopCaptureSession()
     func updateVideoOrientation()
     func update(previewLayerFrame: CGRect, roiInPreviewLayer: CGRect)
-    func openSettingsApp() async
+    func openSettingsApp()
 
     // Localization
     var cameraAlertTitle: String { get }
@@ -32,7 +31,7 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
     internal weak var view: CardScannerViewProtocol?
     private let cardImageParser: CardImageParsing
     private var captureSessionManager: CaptureSessionManaging
-    private let applicationOpener: AppOpener
+    private let appOpener: AppOpener
     private let localizationBundle: Bundle
     private let completion: (Result<CardScanDetails, CardScannerError>) -> Void
 
@@ -44,13 +43,13 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
     internal init(
         cardImageParser: CardImageParsing,
         captureSessionManager: CaptureSessionManaging,
-        applicationOpener: AppOpener,
+        appOpener: AppOpener,
         localizationBundle: Bundle,
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) {
         self.cardImageParser = cardImageParser
         self.captureSessionManager = captureSessionManager
-        self.applicationOpener = applicationOpener
+        self.appOpener = appOpener
         self.localizationBundle = localizationBundle
         self.completion = completion
         self.captureSessionManager.delegate = self
@@ -93,11 +92,10 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
         self.roiInPreviewFrame = roiInPreviewLayer
     }
 
-    internal func openSettingsApp() async {
-        guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
-            return
+    internal func openSettingsApp() {
+        Task {
+            await appOpener.openSettingsApp()
         }
-        await applicationOpener.openApp(settingsURL, options: [:])
     }
 
     // MARK: - Private

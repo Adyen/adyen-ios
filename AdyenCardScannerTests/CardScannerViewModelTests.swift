@@ -41,7 +41,7 @@ final class CardScannerViewModelTests: XCTestCase {
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
-            applicationOpener: applicationOpener,
+            appOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -63,7 +63,7 @@ final class CardScannerViewModelTests: XCTestCase {
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
-            applicationOpener: applicationOpener,
+            appOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -87,7 +87,7 @@ final class CardScannerViewModelTests: XCTestCase {
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
-            applicationOpener: applicationOpener,
+            appOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -111,7 +111,7 @@ final class CardScannerViewModelTests: XCTestCase {
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
-            applicationOpener: applicationOpener,
+            appOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -135,7 +135,7 @@ final class CardScannerViewModelTests: XCTestCase {
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
-            applicationOpener: applicationOpener,
+            appOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -157,7 +157,7 @@ final class CardScannerViewModelTests: XCTestCase {
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
-            applicationOpener: applicationOpener,
+            appOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -179,7 +179,7 @@ final class CardScannerViewModelTests: XCTestCase {
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
-            applicationOpener: applicationOpener,
+            appOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -201,7 +201,7 @@ final class CardScannerViewModelTests: XCTestCase {
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
-            applicationOpener: applicationOpener,
+            appOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -238,7 +238,7 @@ final class CardScannerViewModelTests: XCTestCase {
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
-            applicationOpener: applicationOpener,
+            appOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -271,7 +271,7 @@ final class CardScannerViewModelTests: XCTestCase {
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
-            applicationOpener: applicationOpener,
+            appOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -318,7 +318,7 @@ final class CardScannerViewModelTests: XCTestCase {
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
-            applicationOpener: applicationOpener,
+            appOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -347,7 +347,7 @@ final class CardScannerViewModelTests: XCTestCase {
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
-            applicationOpener: applicationOpener,
+            appOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -374,7 +374,7 @@ final class CardScannerViewModelTests: XCTestCase {
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
-            applicationOpener: applicationOpener,
+            appOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -401,7 +401,7 @@ final class CardScannerViewModelTests: XCTestCase {
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
-            applicationOpener: applicationOpener,
+            appOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()
@@ -428,7 +428,7 @@ final class CardScannerViewModelTests: XCTestCase {
         sut = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
-            applicationOpener: applicationOpener,
+            appOpener: applicationOpener,
             localizationBundle: localizationBundle
         ) { _ in }
         view = CardScannerViewProtocolMock()

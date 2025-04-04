@@ -124,9 +124,7 @@ internal class CardScannerViewController: UIViewController, CardScannerViewProto
             title: settingsActionTitle,
             style: .default
         ) { [weak self] _ in
-            Task {
-                await self?.viewModel.openSettingsApp()
-            }
+            self?.viewModel.openSettingsApp()
         }
         alert.addAction(settingsAction)
 

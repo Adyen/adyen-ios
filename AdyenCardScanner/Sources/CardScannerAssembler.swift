@@ -44,7 +44,7 @@ internal class CardScannerAssembler: CardScannerAssembling {
         let viewModel = CardScannerViewModel(
             cardImageParser: cardImageParser,
             captureSessionManager: captureSessionManager,
-            applicationOpener: UIApplication.shared,
+            appOpener: UIApplication.shared,
             localizationBundle: localizationBundle,
             completion: completion
         )
