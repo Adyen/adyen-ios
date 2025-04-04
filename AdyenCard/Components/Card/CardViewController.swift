@@ -26,8 +26,12 @@ internal class CardViewController: FormViewController {
     private let initialCountryCode: String
     private let scope: String
     private let cardLogos: [FormCardLogosItem.CardTypeLogo]
+    private let cardScannerAnalyticsHandler: CardScannerAnalyticsHandler
     private lazy var cardScannerController: CardScannerControlling = {
-        let controller = CardScannerController(presenter: self)
+        let controller = CardScannerController(
+            presenter: self,
+            analyticsHandler: cardScannerAnalyticsHandler
+        )
         controller.title = localizedString(.cardScanYourCardButton, localizationParameters)
         controller.onScanComplete = { [weak self] result in
             self?.handleCardScanningResult(result)
@@ -84,7 +88,8 @@ internal class CardViewController: FormViewController {
         supportedCardTypes: [CardType],
         initialCountryCode: String,
         scope: String,
-        localizationParameters: LocalizationParameters?
+        localizationParameters: LocalizationParameters?,
+        cardScannerAnalyticsHandler: @escaping CardScannerAnalyticsHandler
     ) {
         self.configuration = configuration
         self.shopperInformation = shopperInformation
@@ -93,7 +98,8 @@ internal class CardViewController: FormViewController {
         self.scope = scope
         self.initialCountryCode = initialCountryCode
         self.payment = payment
-        
+        self.cardScannerAnalyticsHandler = cardScannerAnalyticsHandler
+
         self.cardLogos = supportedCardTypes.map {
             .init(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
         }

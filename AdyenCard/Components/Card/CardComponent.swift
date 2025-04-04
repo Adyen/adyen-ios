@@ -190,7 +190,7 @@ public class CardComponent: PresentableComponent,
     private lazy var securedViewController = SecuredViewController(child: cardViewController, style: configuration.style)
     
     internal lazy var cardViewController: CardViewController = {
-        
+
         let formViewController = CardViewController(
             configuration: configuration,
             shopperInformation: configuration.shopperInformation,
@@ -200,8 +200,9 @@ public class CardComponent: PresentableComponent,
             supportedCardTypes: supportedCardTypes,
             initialCountryCode: initialCountryCode,
             scope: String(describing: self),
-            localizationParameters: configuration.localizationParameters
-        )
+            localizationParameters: configuration.localizationParameters) { [weak self] subtype in
+                self?.sendCardScannerLogEvent(subtype)
+            }
         formViewController.delegate = self
         formViewController.cardDelegate = self
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
@@ -295,7 +296,7 @@ private extension CardComponent.Configuration {
             completionHandler: completionHandler
         )
     }
-    
+
     func addressInputFormViewModel(
         with initialCountry: String,
         prefillAddress: PostalAddress?,
@@ -326,5 +327,21 @@ extension CardComponent: SubmittableComponent {
 
     public func validate() -> Bool {
         cardViewController.validate()
+    }
+}
+
+// MARK: - AdyenCardScanner Analytics
+
+extension CardComponent {
+
+    private func sendCardScannerLogEvent(_ subtype: AnalyticsEventLog.LogSubType) {
+        let component = paymentMethod.type.rawValue
+        let logEvent = AnalyticsEventLog(
+            component: component,
+            type: .cardScanner,
+            subType: subtype
+        )
+
+        context.analyticsProvider?.add(log: logEvent)
     }
 }

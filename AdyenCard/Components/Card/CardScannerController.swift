@@ -8,10 +8,12 @@
 import Foundation
 import UIKit
 
+
 internal protocol CardScannerAvailability {
     var isScannerAvailable: Bool { get }
 }
 
+internal typealias CardScannerAnalyticsHandler = (_ subtype: AnalyticsEventLog.LogSubType) -> ()
 internal typealias CardScanDetails = (number: String?, expirationDate: Date?)
 
 internal protocol CardScannerProviding {
@@ -20,7 +22,12 @@ internal protocol CardScannerProviding {
 
 internal protocol CardScannerControlling: CardScannerAvailability {
 
-    init(presenter: UIViewController, availabilityProvider: CardScannerAvailability, cardScannerProvider: CardScannerProviding)
+    init(
+        presenter: UIViewController,
+        availabilityProvider: CardScannerAvailability,
+        cardScannerProvider: CardScannerProviding,
+        analyticsHandler: @escaping CardScannerAnalyticsHandler
+    )
     func openCardScanner()
 
     var title: String? { get set }
@@ -58,21 +65,24 @@ internal protocol CardScannerControlling: CardScannerAvailability {
             case scanningError
         }
 
-        private let presenter: UIViewController
+        private weak var presenter: UIViewController?
         private let availabilityProvider: CardScannerAvailability
         private let cardScannerProvider: CardScannerProviding
         internal var title: String?
+        private let analyticsHandler: CardScannerAnalyticsHandler
 
         internal var onScanComplete: ((Result<CardScanDetails, Error>) -> Void)?
 
         internal init(
             presenter: UIViewController,
             availabilityProvider: CardScannerAvailability = CardScannerAvailabilityWrapper(),
-            cardScannerProvider: CardScannerProviding = CardScannerProviderWrapper()
+            cardScannerProvider: CardScannerProviding = CardScannerProviderWrapper(),
+            analyticsHandler: @escaping CardScannerAnalyticsHandler
         ) {
+            self.presenter = presenter
             self.availabilityProvider = availabilityProvider
             self.cardScannerProvider = cardScannerProvider
-            self.presenter = presenter
+            self.analyticsHandler = analyticsHandler
         }
 
         internal var isScannerAvailable: Bool {
@@ -94,7 +104,9 @@ internal protocol CardScannerControlling: CardScannerAvailability {
                 [scannerViewController],
                 animated: false
             )
-            presenter.present(scannerNavigationController, animated: true)
+
+
+            presenter?.present(scannerNavigationController, animated: true)
         }
 
         // MARK: - Private
@@ -133,7 +145,13 @@ internal protocol CardScannerControlling: CardScannerAvailability {
 
         @objc
         internal func handleCardScanningCancelationWithCompletion(_ completion: (() -> Void)?) {
-            presenter.presentedViewController?.dismiss(animated: true, completion: completion)
+            presenter?.presentedViewController?.dismiss(animated: true, completion: completion)
+        }
+
+        // MARK: - Analytics
+
+        private func sendLogEvent(_ subtype: AnalyticsEventLog.LogSubType) {
+            analyticsHandler(subtype)
         }
     }
 
