@@ -49,9 +49,7 @@ internal class CardScannerViewController: UIViewController, CardScannerViewProto
         super.viewDidLoad()
         setupView()
 
-        Task {
-            await viewModel.requestCaptureAuthorization()
-        }
+        viewModel.requestCaptureAuthorization()
 
         setupPreviewLayer()
         addOverlayView()

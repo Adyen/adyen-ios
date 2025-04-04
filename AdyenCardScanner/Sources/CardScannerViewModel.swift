@@ -10,7 +10,7 @@ import QuartzCore
 
 internal protocol CardScannerViewModelProtocol {
     var videoPreviewLayer: CALayer { get }
-    func requestCaptureAuthorization() async
+    func requestCaptureAuthorization()
     func startCaptureSession()
     func stopCaptureSession()
     func updateVideoOrientation()
@@ -61,17 +61,18 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
         captureSessionManager.videoPreviewLayer
     }
 
-    @MainActor
-    internal func requestCaptureAuthorization() async {
-        let authorizationStatus = await captureSessionManager.requestCaptureAuthorization()
+    internal func requestCaptureAuthorization() {
+        Task { @MainActor in
+            let authorizationStatus = await captureSessionManager.requestCaptureAuthorization()
 
-        switch authorizationStatus {
-        case .authorized:
-            configureSession()
-        case .rejected:
-            view?.dismiss()
-        case .denied:
-            view?.presentCameraAccessDeniedAlert()
+            switch authorizationStatus {
+            case .authorized:
+                configureSession()
+            case .rejected:
+                view?.dismiss()
+            case .denied:
+                view?.presentCameraAccessDeniedAlert()
+            }
         }
     }
 
