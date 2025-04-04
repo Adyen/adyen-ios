@@ -45,7 +45,9 @@ internal class CardViewController: FormViewController {
         
         let scanCardHandler: (() -> Void)?
         if isCardScannerAvailable {
-            scanCardHandler = { [weak self] in self?.cardScannerController.openCardScanner() }
+            scanCardHandler = { [weak self] in
+                self?.cardScannerController.openCardScanner()
+            }
         } else {
             scanCardHandler = nil
         }

@@ -200,17 +200,20 @@ public class CardComponent: PresentableComponent,
             supportedCardTypes: supportedCardTypes,
             initialCountryCode: initialCountryCode,
             scope: String(describing: self),
-            localizationParameters: configuration.localizationParameters) { [weak self] subtype in
-                self?.sendCardScannerLogEvent(subtype)
+            localizationParameters: configuration.localizationParameters,
+            cardScannerAnalyticsHandler: { [weak self] cardScannerLog in
+                self?.sendCardScannerLogEvent(cardScannerLog)
             }
+        )
+
         formViewController.delegate = self
         formViewController.cardDelegate = self
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
-        
+
         formViewController.items.onDidTriggerInfoEvent = { [weak self] infoEventData in
             self?.sendInfoEvent(with: infoEventData)
         }
-        
+
         return formViewController
     }()
     

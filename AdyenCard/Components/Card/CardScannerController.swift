@@ -8,12 +8,11 @@
 import Foundation
 import UIKit
 
-
 internal protocol CardScannerAvailability {
     var isScannerAvailable: Bool { get }
 }
 
-internal typealias CardScannerAnalyticsHandler = (_ subtype: AnalyticsEventLog.LogSubType) -> ()
+internal typealias CardScannerAnalyticsHandler = (_ subtype: AnalyticsEventLog.LogSubType) -> Void
 internal typealias CardScanDetails = (number: String?, expirationDate: Date?)
 
 internal protocol CardScannerProviding {
@@ -29,7 +28,6 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         analyticsHandler: @escaping CardScannerAnalyticsHandler
     )
     func openCardScanner()
-
     var title: String? { get set }
     var onScanComplete: ((Result<CardScanDetails, Error>) -> Void)? { get set }
 }
@@ -69,7 +67,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         private let availabilityProvider: CardScannerAvailability
         private let cardScannerProvider: CardScannerProviding
         internal var title: String?
-        private let analyticsHandler: CardScannerAnalyticsHandler
+        private let analyticsHandler: CardScannerAnalyticsHandler?
 
         internal var onScanComplete: ((Result<CardScanDetails, Error>) -> Void)?
 
@@ -83,10 +81,17 @@ internal protocol CardScannerControlling: CardScannerAvailability {
             self.availabilityProvider = availabilityProvider
             self.cardScannerProvider = cardScannerProvider
             self.analyticsHandler = analyticsHandler
+
+            if isScannerAvailable {
+                sendLogEvent(.cardScannerAvailable)
+            } else {
+                sendLogEvent(.cardScannerUnavailable)
+            }
         }
 
         internal var isScannerAvailable: Bool {
-            if #available(iOS 13.0, *), availabilityProvider.isScannerAvailable { true } else { false }
+            guard #available(iOS 13.0, *) else { return false }
+            return availabilityProvider.isScannerAvailable
         }
 
         internal func openCardScanner() {
@@ -105,8 +110,8 @@ internal protocol CardScannerControlling: CardScannerAvailability {
                 animated: false
             )
 
-
             presenter?.present(scannerNavigationController, animated: true)
+            sendLogEvent(.cardScannerPresented)
         }
 
         // MARK: - Private
@@ -114,9 +119,11 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         private func map(_ result: Result<CardScanDetails, Error>) -> Result<CardScanDetails, Error> {
             switch result {
             case let .success(cardScanDetails):
-                .success(cardScanDetails)
+                sendLogEvent(.cardScannerSuccess)
+                return .success(cardScanDetails)
             case .failure:
-                .failure(CardScannerError.scanningError)
+                sendLogEvent(.cardScannerFailure)
+                return .failure(CardScannerError.scanningError)
             }
         }
 
@@ -140,6 +147,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
 
         @objc
         private func handleCardScanningCancelation() {
+            sendLogEvent(.cardScannerCancelled)
             handleCardScanningCancelationWithCompletion(nil)
         }
 
@@ -151,7 +159,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         // MARK: - Analytics
 
         private func sendLogEvent(_ subtype: AnalyticsEventLog.LogSubType) {
-            analyticsHandler(subtype)
+            analyticsHandler?(subtype)
         }
     }
 
