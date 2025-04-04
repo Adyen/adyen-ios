@@ -8,22 +8,14 @@
 import UIKit
 
 class AppOpenerMock: AppOpener {
-    var openApplicationCallsCount = 0
-    var openApplicationCalled: Bool {
-        openApplicationCallsCount > 0
+    var openSettingsAppCallsCount = 0
+    var openSettingsAppCalled: Bool {
+        openSettingsAppCallsCount > 0
     }
-
-    var openApplicationReceivedURL: URL?
-    var openApplicationReceivedOptions: [UIApplication.OpenExternalURLOptionsKey: Any]?
-    var openApplicationClosure: ((URL, [UIApplication.OpenExternalURLOptionsKey: Any]) async -> Void)?
-
-    func openApp(
-        _ url: URL,
-        options: [UIApplication.OpenExternalURLOptionsKey: Any]
-    ) async {
-        openApplicationCallsCount += 1
-        openApplicationReceivedURL = url
-        openApplicationReceivedOptions = options
-        await openApplicationClosure?(url, options)
+    var openSettingsAppClosure: (() async -> Void)?
+    
+    func openSettingsApp() async {
+        openSettingsAppCallsCount += 1
+        await openSettingsAppClosure?()
     }
 }

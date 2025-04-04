@@ -28,7 +28,7 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
 
     // MARK: - Properties
 
-    internal weak var view: CardScannerViewProtocol?
+    internal weak var view: CardScannerPresenting?
     private let cardImageParser: CardImageParsing
     private var captureSessionManager: CaptureSessionManaging
     private let appOpener: AppOpener

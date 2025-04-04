@@ -91,11 +91,11 @@ class CardScannerViewModelMock: CardScannerViewModelProtocol {
         requestCaptureAuthorizationCallsCount > 0
     }
 
-    var requestCaptureAuthorizationClosure: (() async -> Void)?
+    var requestCaptureAuthorizationClosure: (() -> Void)?
 
-    func requestCaptureAuthorization() async {
+    func requestCaptureAuthorization() {
         requestCaptureAuthorizationCallsCount += 1
-        await requestCaptureAuthorizationClosure?()
+        requestCaptureAuthorizationClosure?()
     }
 
     // MARK: - openSettingsApp

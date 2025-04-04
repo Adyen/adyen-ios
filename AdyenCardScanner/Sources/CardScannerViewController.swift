@@ -8,12 +8,12 @@ import AVFoundation
 import Combine
 import UIKit
 
-internal protocol CardScannerViewProtocol: AnyObject {
+internal protocol CardScannerPresenting: AnyObject {
     func dismiss()
     func presentCameraAccessDeniedAlert()
 }
 
-internal class CardScannerViewController: UIViewController, CardScannerViewProtocol {
+internal class CardScannerViewController: UIViewController, CardScannerPresenting {
 
     // MARK: - UI elements
 

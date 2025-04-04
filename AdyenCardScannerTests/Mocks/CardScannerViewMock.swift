@@ -7,7 +7,7 @@
 @testable import AdyenCardScanner
 import Foundation
 
-class CardScannerViewProtocolMock: CardScannerViewProtocol {
+class CardScannerPresentingMock: CardScannerPresenting {
     // MARK: - dismiss
 
     var dismissCallsCount = 0
