@@ -7,33 +7,8 @@
 @_spi(AdyenInternal) import Adyen
 @_spi(AdyenInternal) import AdyenDropIn
 @_spi(AdyenInternal) import AdyenSession
+@_spi(AdyenInternal) import AdyenActions
 @_spi(AdyenInternal) import AdyenNetworking
-
-internal protocol AdyenCheckoutProtocol {
-    static func setup(
-        with sessionId: String,
-        sessionData: String,
-        configuration: CheckoutConfiguration,
-        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
-    )
-    
-    static func setup(
-        with paymentMethods: PaymentMethods,
-        configuration: CheckoutConfiguration,
-        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
-    )
-    
-    static func setupSession(
-        with configuration: CheckoutConfiguration,
-        order: PartialPaymentOrder?,
-        completion: @escaping (Result<AdyenSession, Error>) -> Void
-    )
-    
-    static func fetchCheckoutAttemptId(
-        with configuration: CheckoutConfiguration,
-        completion: @escaping (Result<String, Error>) -> Void
-    )
-}
 
 
 /// AdyenCheckout is the entry point to the Checkout flow. You initialize it through its static methods for your chosen flow
@@ -43,6 +18,7 @@ public class AdyenCheckout: AdyenCheckoutProtocol {
     internal var session: AdyenSession?
     internal var checkoutAttemptId: String?
     internal var paymentMethods: PaymentMethods?
+    internal let configuration: CheckoutConfiguration
     
     /// Sets up the checkout object for the default flow
     /// with the values from your backend's `/session` call.
@@ -59,7 +35,7 @@ public class AdyenCheckout: AdyenCheckoutProtocol {
     ) {
         // session
         // analytics
-        let checkout = AdyenCheckout()
+        let checkout = AdyenCheckout(configuration: configuration)
         
         let group = DispatchGroup()
         
@@ -107,7 +83,7 @@ public class AdyenCheckout: AdyenCheckoutProtocol {
         configuration: CheckoutConfiguration,
         completion: @escaping (Result<AdyenCheckout, Error>) -> Void
     ) {
-        let checkout = AdyenCheckout()
+        let checkout = AdyenCheckout(configuration: configuration)
         checkout.paymentMethods = paymentMethods
         
         // fetch and store checkout attempt id
@@ -121,6 +97,23 @@ public class AdyenCheckout: AdyenCheckoutProtocol {
             }
         }
         completion(.success(checkout))
+    }
+    
+    public func createComponent(with paymentMethod: any PaymentMethod) -> AdyenCheckoutComponent? {
+        CheckoutComponentBuilder.build(for: paymentMethod, configuration: configuration)
+    }
+    
+    public func createComponent(with action: Action) -> AdyenCheckoutComponent? {
+        CheckoutComponentBuilder.build(for: action, configuration: configuration)
+    }
+    
+    public func createDropIn() -> DropInComponent? {
+        nil
+    }
+    
+    // MARK: Internal
+    internal init(configuration: CheckoutConfiguration) {
+        self.configuration = configuration
     }
     
     internal static func setupSession(

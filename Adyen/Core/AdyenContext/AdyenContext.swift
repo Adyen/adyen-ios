@@ -42,6 +42,12 @@ public final class AdyenContext: PaymentAware {
         )
     }
     
+    // TODO: dummy init for v6 branch
+    @_spi(AdyenInternal)
+    public static func defaultValue() -> AdyenContext {
+        AdyenContext(apiContext: APIContext.defaultValue(), payment: nil)
+    }
+    
     /// Internal init for testing only
     internal init(
         apiContext: APIContext,

@@ -441,6 +441,8 @@
 		A0F749B42D95946200014A05 /* AdyenDropIn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E9B36CAB2243B2FE00EAA368 /* AdyenDropIn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A0F749B82D95946600014A05 /* AdyenSession.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F92980A627CE2B33000CA5CA /* AdyenSession.framework */; };
 		A0F749B92D95946600014A05 /* AdyenSession.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F92980A627CE2B33000CA5CA /* AdyenSession.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A0F749DB2D9EC10700014A05 /* AdyenCheckoutComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F749DA2D9EC02900014A05 /* AdyenCheckoutComponent.swift */; };
+		A0F749DD2D9FCEA200014A05 /* AdyenCheckoutProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F749DC2D9FCE9E00014A05 /* AdyenCheckoutProtocol.swift */; };
 		A0FA143F26D65A5300627127 /* InstallmentPickerElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */; };
 		B62D48B42BBE8DBE001EF01A /* AnalyticsFlavorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16AB280702B200534419 /* AnalyticsFlavorTests.swift */; };
 		B62D48B52BBE8DBE001EF01A /* AnalyticsEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16A928059A5A00534419 /* AnalyticsEventTests.swift */; };
@@ -1908,6 +1910,8 @@
 		A0F7499C2D958B3800014A05 /* AdyenCheckout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenCheckout.h; sourceTree = "<group>"; };
 		A0F7499D2D958B3800014A05 /* AdyenCheckout.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = AdyenCheckout.docc; sourceTree = "<group>"; };
 		A0F749A42D958B9400014A05 /* AdyenCheckout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenCheckout.swift; sourceTree = "<group>"; };
+		A0F749DA2D9EC02900014A05 /* AdyenCheckoutComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenCheckoutComponent.swift; sourceTree = "<group>"; };
+		A0F749DC2D9FCE9E00014A05 /* AdyenCheckoutProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenCheckoutProtocol.swift; sourceTree = "<group>"; };
 		A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallmentPickerElement.swift; sourceTree = "<group>"; };
 		B62D48AC2BBE8D79001EF01A /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
@@ -3430,7 +3434,9 @@
 		A0F7499E2D958B3800014A05 /* AdyenCheckout */ = {
 			isa = PBXGroup;
 			children = (
+				A0F749DC2D9FCE9E00014A05 /* AdyenCheckoutProtocol.swift */,
 				A0F749A42D958B9400014A05 /* AdyenCheckout.swift */,
+				A0F749DA2D9EC02900014A05 /* AdyenCheckoutComponent.swift */,
 				A0F7499C2D958B3800014A05 /* AdyenCheckout.h */,
 				A0F7499D2D958B3800014A05 /* AdyenCheckout.docc */,
 			);
@@ -6942,8 +6948,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0F749DB2D9EC10700014A05 /* AdyenCheckoutComponent.swift in Sources */,
 				A0F7499F2D958B3800014A05 /* AdyenCheckout.docc in Sources */,
 				A0F749A52D958B9700014A05 /* AdyenCheckout.swift in Sources */,
+				A0F749DD2D9FCEA200014A05 /* AdyenCheckoutProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
