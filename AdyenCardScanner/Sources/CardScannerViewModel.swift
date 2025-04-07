@@ -7,16 +7,15 @@
 import CoreImage
 import Foundation
 import QuartzCore
-import UIKit
 
 internal protocol CardScannerViewModelProtocol {
     var videoPreviewLayer: CALayer { get }
-    func requestCaptureAuthorization() async
+    func requestCaptureAuthorization()
     func startCaptureSession()
     func stopCaptureSession()
     func updateVideoOrientation()
     func update(previewLayerFrame: CGRect, roiInPreviewLayer: CGRect)
-    func openSettingsApp() async
+    func openSettingsApp()
 
     // Localization
     var cameraAlertTitle: String { get }
@@ -29,10 +28,10 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
 
     // MARK: - Properties
 
-    internal weak var view: CardScannerViewProtocol?
+    internal weak var view: CardScannerPresenting?
     private let cardImageParser: CardImageParsing
     private var captureSessionManager: CaptureSessionManaging
-    private let applicationOpener: AppOpener
+    private let appOpener: AppOpener
     private let localizationBundle: Bundle
     private let completion: (Result<CardScanDetails, CardScannerError>) -> Void
 
@@ -44,13 +43,13 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
     internal init(
         cardImageParser: CardImageParsing,
         captureSessionManager: CaptureSessionManaging,
-        applicationOpener: AppOpener,
+        appOpener: AppOpener,
         localizationBundle: Bundle,
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) {
         self.cardImageParser = cardImageParser
         self.captureSessionManager = captureSessionManager
-        self.applicationOpener = applicationOpener
+        self.appOpener = appOpener
         self.localizationBundle = localizationBundle
         self.completion = completion
         self.captureSessionManager.delegate = self
@@ -62,17 +61,18 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
         captureSessionManager.videoPreviewLayer
     }
 
-    @MainActor
-    internal func requestCaptureAuthorization() async {
-        let authorizationStatus = await captureSessionManager.requestCaptureAuthorization()
+    internal func requestCaptureAuthorization() {
+        Task { @MainActor in
+            let authorizationStatus = await captureSessionManager.requestCaptureAuthorization()
 
-        switch authorizationStatus {
-        case .authorized:
-            configureSession()
-        case .rejected:
-            view?.dismiss()
-        case .denied:
-            view?.presentCameraAccessDeniedAlert()
+            switch authorizationStatus {
+            case .authorized:
+                configureSession()
+            case .rejected:
+                view?.dismiss()
+            case .denied:
+                view?.presentCameraAccessDeniedAlert()
+            }
         }
     }
 
@@ -93,11 +93,10 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
         self.roiInPreviewFrame = roiInPreviewLayer
     }
 
-    internal func openSettingsApp() async {
-        guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
-            return
+    internal func openSettingsApp() {
+        Task {
+            await appOpener.openSettingsApp()
         }
-        await applicationOpener.openApp(settingsURL, options: [:])
     }
 
     // MARK: - Private

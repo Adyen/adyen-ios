@@ -8,12 +8,12 @@ import AVFoundation
 import Combine
 import UIKit
 
-internal protocol CardScannerViewProtocol: AnyObject {
+internal protocol CardScannerPresenting: AnyObject {
     func dismiss()
     func presentCameraAccessDeniedAlert()
 }
 
-internal class CardScannerViewController: UIViewController, CardScannerViewProtocol {
+internal class CardScannerViewController: UIViewController, CardScannerPresenting {
 
     // MARK: - UI elements
 
@@ -49,9 +49,7 @@ internal class CardScannerViewController: UIViewController, CardScannerViewProto
         super.viewDidLoad()
         setupView()
 
-        Task {
-            await viewModel.requestCaptureAuthorization()
-        }
+        viewModel.requestCaptureAuthorization()
 
         setupPreviewLayer()
         addOverlayView()
@@ -124,9 +122,7 @@ internal class CardScannerViewController: UIViewController, CardScannerViewProto
             title: settingsActionTitle,
             style: .default
         ) { [weak self] _ in
-            Task {
-                await self?.viewModel.openSettingsApp()
-            }
+            self?.viewModel.openSettingsApp()
         }
         alert.addAction(settingsAction)
 
