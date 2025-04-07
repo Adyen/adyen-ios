@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
@@ -37,12 +38,18 @@ internal protocol CardScannerControlling: CardScannerAvailability {
 
     private struct CardScannerProviderWrapper: CardScannerProviding {
         func createCardScanner(completion: @escaping (Result<CardScanDetails, Error>) -> Void) -> UIViewController? {
-            AdyenCardScanner.CardScanner.createCardScanner { result in
+
+            let localizationBundle = Bundle.coreInternalResources
+            let cardScannerViewController = AdyenCardScanner.CardScanner.createCardScanner(
+                localizationBundle: localizationBundle
+            ) { result in
                 switch result {
                 case let .success(details): completion(.success((details.number, details.expirationDate)))
                 case let .failure(error): completion(.failure(error))
                 }
             }
+
+            return cardScannerViewController
         }
     }
 

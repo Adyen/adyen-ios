@@ -8,7 +8,12 @@ import AVFoundation
 import Combine
 import UIKit
 
-internal class CardScannerViewController: UIViewController {
+internal protocol CardScannerPresenting: AnyObject {
+    func dismiss()
+    func presentCameraAccessDeniedAlert()
+}
+
+internal class CardScannerViewController: UIViewController, CardScannerPresenting {
 
     // MARK: - UI elements
 
@@ -42,11 +47,13 @@ internal class CardScannerViewController: UIViewController {
 
     override internal func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
+
+        viewModel.requestCaptureAuthorization()
+
         setupPreviewLayer()
         addOverlayView()
         observeRoiLayoutChanges()
-
-        viewModel.configureSession()
     }
 
     override internal func viewWillAppear(_ animated: Bool) {
@@ -66,6 +73,10 @@ internal class CardScannerViewController: UIViewController {
     }
 
     // MARK: - Private
+
+    private func setupView() {
+        view.backgroundColor = .black
+    }
 
     private func setupPreviewLayer() {
         view.layer.insertSublayer(previewLayer, at: 0)
@@ -89,5 +100,41 @@ internal class CardScannerViewController: UIViewController {
                 roiInPreviewLayer: newRoiFrame
             )
         }.store(in: &cancellables)
+    }
+
+    // MARK: - CardScannerViewProtocol
+
+    internal func dismiss() {
+        dismiss(animated: true)
+    }
+
+    internal func presentCameraAccessDeniedAlert() {
+        let alertTitle = viewModel.cameraAlertTitle
+        let alertMessage = viewModel.cameraAlertMessage
+        let alert = UIAlertController(
+            title: alertTitle,
+            message: alertMessage,
+            preferredStyle: .alert
+        )
+
+        let settingsActionTitle = viewModel.cameraAlertSettingButtonTitle
+        let settingsAction = UIAlertAction(
+            title: settingsActionTitle,
+            style: .default
+        ) { [weak self] _ in
+            self?.viewModel.openSettingsApp()
+        }
+        alert.addAction(settingsAction)
+
+        let cancelActionTitle = viewModel.cameraAlertCancelButtonTitle
+        let cancelAction = UIAlertAction(
+            title: cancelActionTitle,
+            style: .cancel
+        ) { [weak self] _ in
+            self?.dismiss()
+        }
+        alert.addAction(cancelAction)
+
+        present(alert, animated: true, completion: nil)
     }
 }

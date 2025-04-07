@@ -524,6 +524,9 @@
 		B6EE0F422BBEBF7600B9810D /* APIClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E757F02525D2ED4C007C813D /* APIClientMock.swift */; };
 		B6EE0F442BBEC94F00B9810D /* AnalyticsProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0005B280468E100CE2EEC /* AnalyticsProviderMock.swift */; };
 		B6EE0F452BBECBEF00B9810D /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; platformFilter = ios; };
+		C901BB8B2D9ECB1C00406282 /* CardScannerViewMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C901BB8A2D9ECB1C00406282 /* CardScannerViewMock.swift */; };
+		C901BB8F2D9ED76A00406282 /* AppOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = C901BB8E2D9ED76A00406282 /* AppOpener.swift */; };
+		C901BB912D9ED96D00406282 /* AppOpenerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C901BB902D9ED96D00406282 /* AppOpenerMock.swift */; };
 		C9037F102D563DCD003A5154 /* CardScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F0F2D563DCD003A5154 /* CardScannerViewModel.swift */; };
 		C9037F122D5A1976003A5154 /* CardScannerOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F112D5A1976003A5154 /* CardScannerOverlayView.swift */; };
 		C9037F142D5A19BD003A5154 /* ROIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F132D5A19BD003A5154 /* ROIView.swift */; };
@@ -1933,6 +1936,9 @@
 		B6C9DA782D0C3F62005D65C7 /* DualBrandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualBrandView.swift; sourceTree = "<group>"; };
 		B6C9DA7A2D102C91005D65C7 /* DualBrandViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualBrandViewTests.swift; sourceTree = "<group>"; };
 		B6EE0F432BBEBFD000B9810D /* IntegrationTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = IntegrationTests.xctestplan; sourceTree = "<group>"; };
+		C901BB8A2D9ECB1C00406282 /* CardScannerViewMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerViewMock.swift; sourceTree = "<group>"; };
+		C901BB8E2D9ED76A00406282 /* AppOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppOpener.swift; sourceTree = "<group>"; };
+		C901BB902D9ED96D00406282 /* AppOpenerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppOpenerMock.swift; sourceTree = "<group>"; };
 		C9037F0F2D563DCD003A5154 /* CardScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerViewModel.swift; sourceTree = "<group>"; };
 		C9037F112D5A1976003A5154 /* CardScannerOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerOverlayView.swift; sourceTree = "<group>"; };
 		C9037F132D5A19BD003A5154 /* ROIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ROIView.swift; sourceTree = "<group>"; };
@@ -3544,6 +3550,14 @@
 			path = Localization;
 			sourceTree = "<group>";
 		};
+		C901BB8D2D9ED76200406282 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				C901BB8E2D9ED76A00406282 /* AppOpener.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		C90D26AF2757C270001A488F /* BACS Direct Debit */ = {
 			isa = PBXGroup;
 			children = (
@@ -3587,6 +3601,8 @@
 				C91BF2592D7716D4001F19DE /* CaptureSessionManagingMock.swift */,
 				C93844722D79DF3B00B1E747 /* CardScannerViewModelMock.swift */,
 				C948B6682D8AD0CA000331AA /* ExpirationDateFormattingMock.swift */,
+				C901BB8A2D9ECB1C00406282 /* CardScannerViewMock.swift */,
+				C901BB902D9ED96D00406282 /* AppOpenerMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -3767,6 +3783,7 @@
 		C99FF2B62D50E872007179C5 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C901BB8D2D9ED76200406282 /* Protocols */,
 				C99AA1412D6DF6480043AA96 /* CardScanner.swift */,
 				C94639CF2D5F68BC004A1B0C /* CaptureSessionManager.swift */,
 				C99FF2B52D50E872007179C5 /* CardImageParser.swift */,
@@ -3785,8 +3802,8 @@
 		C99FF2B92D50E872007179C5 /* AdyenCardScanner */ = {
 			isa = PBXGroup;
 			children = (
-				C99FF2B62D50E872007179C5 /* Sources */,
 				C99FF2B72D50E872007179C5 /* AdyenCardScanner.h */,
+				C99FF2B62D50E872007179C5 /* Sources */,
 			);
 			path = AdyenCardScanner;
 			sourceTree = "<group>";
@@ -7191,10 +7208,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C91BF2582D771667001F19DE /* CardImageParsingMock.swift in Sources */,
+				C901BB912D9ED96D00406282 /* AppOpenerMock.swift in Sources */,
 				C933BE592D91659600EBFF7E /* ExpirationDateFormatterTests.swift in Sources */,
 				C948B6692D8AD0CA000331AA /* ExpirationDateFormattingMock.swift in Sources */,
 				C93844752D7B1C4100B1E747 /* CardScannerViewControllerTests.swift in Sources */,
 				C948B6672D8AC5C9000331AA /* CardImageParserTests.swift in Sources */,
+				C901BB8B2D9ECB1C00406282 /* CardScannerViewMock.swift in Sources */,
 				C93844732D79DF3B00B1E747 /* CardScannerViewModelMock.swift in Sources */,
 				C91BF25A2D7716D4001F19DE /* CaptureSessionManagingMock.swift in Sources */,
 				C96844932D771328001DB7F1 /* CardScannerViewModelTests.swift in Sources */,
@@ -7214,6 +7233,7 @@
 				C9037F122D5A1976003A5154 /* CardScannerOverlayView.swift in Sources */,
 				C9680BE62D6CAD590076B93D /* CardScannerAssembler.swift in Sources */,
 				C94639D02D5F68BC004A1B0C /* CaptureSessionManager.swift in Sources */,
+				C901BB8F2D9ED76A00406282 /* AppOpener.swift in Sources */,
 				C92B807C2D5B69CF0020A099 /* AVCaptureVideoOrientation+Extensions.swift in Sources */,
 				C99FF2BD2D50E872007179C5 /* CardImageParser.swift in Sources */,
 				C99AA1422D6DF6480043AA96 /* CardScanner.swift in Sources */,
@@ -8876,6 +8896,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenCardScanner;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
@@ -8919,6 +8943,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenCardScanner;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_VERSION = 5.0;
@@ -8985,6 +9013,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -9044,6 +9073,7 @@
 				MARKETING_VERSION = "";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;

@@ -259,3 +259,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Vnesite pravilno številko bančnega računa";
 "adyen.payto.payid.description" = "Vnesite PayID in podrobnosti o računu, ki so povezani z vašim računom PayTo.";
 "adyen.payto.await.description" = "Zahvaljujemo se vam za nakup. Plačilo dokončajte tako, da se prijavite v svoj bančni račun, sprejmite pogodbo PayTo in potrdite plačilne pogoje.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Dovolite dostop do kamere";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Dostop je bil prej zavrnjen. Za skeniranje Kartic morate omogočiti dostop v Nastavitvah.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Odpri nastavitve";

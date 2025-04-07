@@ -18,16 +18,23 @@ final class CardScannerViewControllerTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testViewDidLoadShouldCallViewModelConfigureSession() throws {
+    func testViewDidLoadShouldCallViewModelRequestCaptureAuthorization() throws {
         // Given
         viewModel = CardScannerViewModelMock()
         sut = CardScannerViewController(viewModel: viewModel)
 
+        let expectation = expectation(description: "Request capture authorization should be called.")
+
+        viewModel.requestCaptureAuthorizationClosure = {
+            // Then
+            expectation.fulfill()
+            XCTAssertEqual(self.viewModel.requestCaptureAuthorizationCallsCount, 1)
+        }
+
         // When
         sut.loadViewIfNeeded()
 
-        // Then
-        XCTAssertEqual(viewModel.configureSessionCallsCount, 1)
+        wait(for: [expectation], timeout: 0.1)
     }
 
     func testViewWillAppearShouldStartCaptureSession() throws {
@@ -79,5 +86,23 @@ final class CardScannerViewControllerTests: XCTestCase {
         // Then
         let layer = try XCTUnwrap(sut.view.layer.sublayers?.first)
         XCTAssertTrue(layer === expectedVideoPreviewLayer)
+    }
+
+    func testPresentCameraAccessDeniedAlert() throws {
+        // Given
+        viewModel = CardScannerViewModelMock()
+        sut = CardScannerViewController(viewModel: viewModel)
+
+        let testWindow = UIWindow(frame: UIScreen.main.bounds)
+        testWindow.rootViewController = sut
+        testWindow.makeKeyAndVisible()
+        _ = sut.view
+
+        // When
+        sut.presentCameraAccessDeniedAlert()
+
+        // Then
+        let presentedAlert = try XCTUnwrap(sut.presentedViewController as? UIAlertController)
+        XCTAssertEqual(presentedAlert.actions.count, 2, "Alert should have two actions.")
     }
 }

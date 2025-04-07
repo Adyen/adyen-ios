@@ -7,7 +7,6 @@
 @testable import AdyenCardScanner
 import XCTest
 
-
 final class CardImageParserTests: XCTestCase {
 
     var sut: CardImageParser!
@@ -153,6 +152,6 @@ final class CardImageParserTests: XCTestCase {
     }
 
     private func dateFrom(_ string: String) -> Date? {
-        return expirationDateFormatter.date(from: string)
+        expirationDateFormatter.date(from: string)
     }
 }

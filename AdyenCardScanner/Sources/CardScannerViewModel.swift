@@ -10,19 +10,29 @@ import QuartzCore
 
 internal protocol CardScannerViewModelProtocol {
     var videoPreviewLayer: CALayer { get }
-    func configureSession()
+    func requestCaptureAuthorization()
     func startCaptureSession()
     func stopCaptureSession()
     func updateVideoOrientation()
     func update(previewLayerFrame: CGRect, roiInPreviewLayer: CGRect)
+    func openSettingsApp()
+
+    // Localization
+    var cameraAlertTitle: String { get }
+    var cameraAlertMessage: String { get }
+    var cameraAlertSettingButtonTitle: String { get }
+    var cameraAlertCancelButtonTitle: String { get }
 }
 
 internal class CardScannerViewModel: CardScannerViewModelProtocol {
 
     // MARK: - Properties
 
+    internal weak var view: CardScannerPresenting?
     private let cardImageParser: CardImageParsing
     private var captureSessionManager: CaptureSessionManaging
+    private let appOpener: AppOpener
+    private let localizationBundle: Bundle
     private let completion: (Result<CardScanDetails, CardScannerError>) -> Void
 
     private var previewFrame: CGRect = .zero
@@ -33,10 +43,14 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
     internal init(
         cardImageParser: CardImageParsing,
         captureSessionManager: CaptureSessionManaging,
+        appOpener: AppOpener,
+        localizationBundle: Bundle,
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) {
         self.cardImageParser = cardImageParser
         self.captureSessionManager = captureSessionManager
+        self.appOpener = appOpener
+        self.localizationBundle = localizationBundle
         self.completion = completion
         self.captureSessionManager.delegate = self
     }
@@ -47,8 +61,19 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
         captureSessionManager.videoPreviewLayer
     }
 
-    internal func configureSession() {
-        captureSessionManager.configureSession()
+    internal func requestCaptureAuthorization() {
+        Task { @MainActor in
+            let authorizationStatus = await captureSessionManager.requestCaptureAuthorization()
+
+            switch authorizationStatus {
+            case .authorized:
+                configureSession()
+            case .rejected:
+                view?.dismiss()
+            case .denied:
+                view?.presentCameraAccessDeniedAlert()
+            }
+        }
     }
 
     internal func startCaptureSession() {
@@ -68,7 +93,17 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
         self.roiInPreviewFrame = roiInPreviewLayer
     }
 
+    internal func openSettingsApp() {
+        Task {
+            await appOpener.openSettingsApp()
+        }
+    }
+
     // MARK: - Private
+
+    private func configureSession() {
+        captureSessionManager.configureSession()
+    }
 
     private func fetchCardData(
         from image: CIImage,
@@ -81,12 +116,12 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
             previewFrame: previewFrame
         )
 
-        cardImageParser.parse(image: croppedImage) { creditCard in
+        cardImageParser.parse(image: croppedImage) { [weak self] creditCard in
             let cardDetails = (
                 number: creditCard.number,
                 expirationDate: creditCard.expirationDate
             )
-            self.completion(.success(cardDetails))
+            self?.completion(.success(cardDetails))
         }
     }
 
@@ -150,5 +185,46 @@ extension CardScannerViewModel: CaptureSessionDelegate {
                 previewFrame: previewFrame
             )
         }
+    }
+}
+
+// MARK: - Localization
+
+extension CardScannerViewModel {
+
+    private enum LocalizationKey: String {
+        case cameraAlertTitle = "adyen.card.scanner.camera.access.denied.alert.title"
+        case cameraAlertMessage = "adyen.card.scanner.camera.access.denied.alert.message"
+        case cameraAlertSettingButtonTitle = "adyen.card.scanner.camera.access.denied.alert.settingsButton.title"
+        case cameraAlertCancelButtonTitle = "adyen.cancelButton"
+    }
+
+    internal var cameraAlertTitle: String {
+        localizedString(forKey: .cameraAlertTitle)
+    }
+
+    internal var cameraAlertMessage: String {
+        localizedString(forKey: .cameraAlertMessage)
+    }
+
+    internal var cameraAlertSettingButtonTitle: String {
+        localizedString(forKey: .cameraAlertSettingButtonTitle)
+    }
+
+    internal var cameraAlertCancelButtonTitle: String {
+        localizedString(forKey: .cameraAlertCancelButtonTitle)
+    }
+
+    // MARK: - Private
+
+    private func localizedString(
+        forKey key: LocalizationKey,
+        comment: String = ""
+    ) -> String {
+        NSLocalizedString(
+            key.rawValue,
+            bundle: localizationBundle,
+            comment: ""
+        )
     }
 }

@@ -18,6 +18,25 @@ class CaptureSessionManagingMock: CaptureSessionManaging {
 
     var videoPreviewLayer: AVCaptureVideoPreviewLayer = .init()
 
+    // MARK: - requestCaptureAuthorization
+
+    var requestCaptureAuthorizationCallsCount = 0
+    var requestCaptureAuthorizationCalled: Bool {
+        requestCaptureAuthorizationCallsCount > 0
+    }
+
+    var requestCaptureAuthorizationReturnValue: CaptureAuthorizationStatus = .authorized
+    var requestCaptureAuthorizationClosure: (() async -> CaptureAuthorizationStatus)?
+
+    func requestCaptureAuthorization() async -> CaptureAuthorizationStatus {
+        requestCaptureAuthorizationCallsCount += 1
+        if let closure = requestCaptureAuthorizationClosure {
+            return await closure()
+        } else {
+            return requestCaptureAuthorizationReturnValue
+        }
+    }
+
     // MARK: - configureSession
 
     var configureSessionCallsCount = 0

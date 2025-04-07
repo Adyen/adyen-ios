@@ -265,3 +265,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Zadejte správné číslo bankovního účtu";
 "adyen.payto.payid.description" = "Zadejte PayID a údaje o účtu, které jsou propojeny s vaším účtem PayTo.";
 "adyen.payto.await.description" = "Děkujeme vám za váš nákup, platbu dokončíte tak, že se přihlásíte ke svému bankovnímu účtu, autorizujte smlouvu PayTo a odsouhlasíte platební podmínky.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Povolte přístup k fotoaparátu";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Přístup byl dříve odepřen. Chcete-li skenovat karty, povolte přístup v Nastaveních.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Otevřít Nastavení";

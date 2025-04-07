@@ -13,7 +13,7 @@
 "adyen.paymentMethod.removeButton" = "Kyllä, poista";
 "adyen.payment.refused.message" = "Maksu hylättiin. Yritä uudelleen.";
 "adyen.sepa.ibanItem.title" = "Tilinumero (IBAN)";
-"adyen.sepa.ibanItem.invalid" = "Väärä tilin numero";
+"adyen.sepa.ibanItem.invalid" = "Väärä tilinumero";
 "adyen.sepa.nameItem.title" = "Haltijan nimi";
 "adyen.sepa.nameItem.placeholder" = "J. Smith";
 "adyen.sepa.consentLabel" = "Painamalla yllä olevaa painiketta, hyväksyt, että määritetty määrä veloitetaan pankkitililtäsi.";
@@ -55,7 +55,7 @@
 "adyen.mbway.confirmPayment" = "Vahvista maksusi MB WAY -sovelluksella";
 "adyen.await.waitForConfirmation" = "Odottaa vahvistusta";
 "adyen.blik.confirmPayment" = "Avaa pankkisovelluksesi vahvistaaksesi maksun.";
-"adyen.blik.invalid" = "Syötä 6 lukua";
+"adyen.blik.invalid" = "Syötä 6 numeroa";
 "adyen.blik.code" = "6-numeroinen koodi";
 "adyen.blik.help" = "Hanki koodi pankkisovelluksestasi.";
 "adyen.blik.placeholder" = "";
@@ -100,8 +100,8 @@
 "adyen.houseNumberField.placeholder" = "Talon numero";
 "adyen.cityField.title" = "Kaupunki";
 "adyen.cityField.placeholder" = "Kaupunki";
-"adyen.cityTownField.title" = "Kaupunki / taajama";
-"adyen.cityTownField.placeholder" = "Kaupunki / taajama";
+"adyen.cityTownField.title" = "Kaupunki";
+"adyen.cityTownField.placeholder" = "Kaupunki";
 "adyen.postalCodeField.title" = "Postinumero";
 "adyen.postalCodeField.placeholder" = "Postinumero";
 "adyen.zipCodeField.title" = "Postinumero";
@@ -134,14 +134,14 @@
 "adyen.card.taxNumber.label" = "Kortinhaltijan syntymäpäivä (VVKKPP) tai yrityksen rekisterinumero (10 lukua)";
 "adyen.card.taxNumber.placeholder" = "VVKKPP / 0123456789";
 "adyen.card.taxNumber.invalid" = "Kelpaamaton kortinhaltijan syntymäpäivä (VVKKPP) tai yrityksen rekisterinumero";
-"adyen.card.encryptedPassword.label" = "Kortin salasanan ensimmäiset 2 lukua";
+"adyen.card.encryptedPassword.label" = "Kortin salasanan ensimmäiset 2 numeroa";
 "adyen.card.encryptedPassword.placeholder" = "12";
 "adyen.card.encryptedPassword.invalid" = "Kelpaamaton salasana";
 "adyen.card.taxNumber.label.short" = "Syntymäpäivä tai yrityksen rekisterinumero";
 "adyen.affirm.deliveryAddressToggle.title" = "Erillinen toimitusosoite";
 "adyen.voucher.shopperReference" = "Ostajan viite";
 "adyen.voucher.alternativeReference" = "Vaihtoehtoinen viite";
-"adyen.card.installments.numberOfInstallments" = "Asennusten määrä";
+"adyen.card.installments.numberOfInstallments" = "Maksuerien määrä";
 "adyen.card.installments.oneTime" = "Kertamaksu";
 "adyen.card.installments.title" = "Erämaksu";
 "adyen.card.installments.revolving" = "Toistuva maksu";
@@ -151,7 +151,7 @@
 "adyen.bacs.holderNameField.title" = "Tilinhaltijan nimi";
 "adyen.bacs.bankAccountNumberField.title" = "Pankkitilinumero";
 "adyen.bacs.bankLocationIdField.title" = "Lajittelukoodi";
-"adyen.bacs.legalConsentToggle.title" = "Vahvistan, että tili on nimessäni ja olen ainoa allekirjoittaja, joka vaaditaan valtuuttamaan suoraveloitus tällä tilillä.";
+"adyen.bacs.legalConsentToggle.title" = "Vahvistan, että tili on nimissäni ja olen ainoa allekirjoittaja, joka vaaditaan valtuuttamaan suoraveloitus tällä tilillä.";
 "adyen.bacs.amountConsentToggle.title" = "Hyväksyn, että alla oleva summa veloitetaan pankkitililtäni.";
 "adyen.bacs.specifiedAmountConsentToggle.title" = "Hyväksyn, että %@ veloitetaan pankkitililtäni.";
 "adyen.bacs.holderNameField.invalidMessage" = "Ei-kelvollinen tilinhaltijan nimi";
@@ -163,7 +163,7 @@
 "adyen.ach.accountHolderNameField.title" = "Tilinhaltijan nimi";
 "adyen.ach.accountHolderNameField.invalid" = "Ei-kelvollinen tilinhaltijan nimi";
 "adyen.ach.accountNumberField.title" = "Tilinumero";
-"adyen.ach.accountNumberField.invalid" = "Väärä tilin numero";
+"adyen.ach.accountNumberField.invalid" = "Väärä tilinumero";
 "adyen.ach.accountLocationField.title" = "ABA-reititysnumero";
 "adyen.ach.accountLocationField.invalid" = "Ei-kelvollinen ABA-reititysnumero";
 "idealIssuer.selectField.title" = "Pankki";
@@ -265,3 +265,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Anna oikea pankkitilinumero";
 "adyen.payto.payid.description" = "Anna PayTo-tilisi PayID ja tilitiedot";
 "adyen.payto.await.description" = "Kiitos ostoksestasi. Suorita maksu kirjautumalla pankkitilillesi ja hyväksymällä PayTo-sopimus sekä maksuehdot.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Salli kameran käyttö";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Käyttö estettiin aiemmin. Jos haluat lukea kortteja, anna käyttöoikeus asetuksissa.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Avaa asetukset";
