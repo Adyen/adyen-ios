@@ -94,7 +94,8 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         internal init(
             presenter: UIViewController,
             availabilityProvider: CardScannerAvailability = CardScannerAvailabilityWrapper(),
-            cardScannerProvider: CardScannerProviding = CardScannerProviderWrapper(),
+            cardScannerProvider: CardScannerProviding = CardScannerProviderDispatchOnce(
+                scannerProvider: CardScannerProviderWrapper()),
             analyticsHandler: @escaping CardScannerAnalyticsHandler
         ) {
             self.presenter = presenter
