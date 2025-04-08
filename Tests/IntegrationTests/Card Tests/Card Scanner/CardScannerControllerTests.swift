@@ -6,6 +6,7 @@
 
 #if canImport(AdyenCardScanner)
     @testable import AdyenCard
+    @_spi(AdyenInternal) import Adyen
     @testable import AdyenCardScanner
     import XCTest
 
@@ -61,7 +62,7 @@
             let expectedResult: CardScanDetails = (cardNumber, expiryDate)
             let mockCard = CardScanDetails(cardNumber, expiryDate)
 
-            let (sut, presenter, cardScanner) = makeSUT()
+            let (sut, _, cardScanner) = makeSUT()
             sut.onScanComplete = { result in
                 // Then
                 self.expect(result, toMatch: .success(expectedResult))
@@ -80,7 +81,7 @@
             let expectation = XCTestExpectation(description: "Card scanner should complete the flow")
             let mockError = AdyenCardScanner.CardScannerError(kind: .authorizationDenied)
             let expectedError = CardScannerController.CardScannerError.scanningError
-            let (sut, presenter, cardScanner) = makeSUT()
+            let (sut, _, cardScanner) = makeSUT()
 
             sut.onScanComplete = { result in
                 // Then
@@ -104,10 +105,12 @@
             let sut = CardScannerController(
                 presenter: presenter,
                 availabilityProvider: CardScannerAvailalabilityMock(),
-                cardScannerProvider: cardScanner
+                cardScannerProvider: cardScanner, analyticsHandler: self.sendEvent
             )
             return (sut, presenter, cardScanner)
         }
+
+        private func sendEvent(_ subtype: AnalyticsEventLog.LogSubType) {}
 
         private func expect(
             _ result: Result<CardScanDetails, Error>,
@@ -128,21 +131,6 @@
 
         private struct CardScannerAvailalabilityMock: CardScannerAvailability {
             var isScannerAvailable: Bool { true }
-        }
-
-        private class CardScannerProviderSpy: CardScannerProviding {
-            private var completion: ((Result<AdyenCardScanner.CardScanDetails, Error>) -> Void)? = nil
-
-            func createCardScanner(
-                completion: @escaping (Result<CardScanDetails, Error>) -> Void
-            ) -> UIViewController? {
-                self.completion = completion
-                return UIViewController()
-            }
-
-            func onScanComplete(result: Result<CardScanDetails, Error>) {
-                self.completion?(result)
-            }
         }
     }
 #endif
