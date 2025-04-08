@@ -4,8 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches:
-    - develop
-    - release/**
+      - develop
+  pull_request:
+    branches:
+      - 'release/**'
     
 jobs:
   tests:
