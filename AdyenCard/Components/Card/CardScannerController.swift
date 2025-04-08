@@ -41,8 +41,28 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         }
     }
 
-    private struct CardScannerProviderWrapper: CardScannerProviding {
-        func createCardScanner(completion: @escaping (Result<CardScanDetails, Error>) -> Void) -> UIViewController? {
+    internal class CardScannerProviderDispatchOnce: CardScannerProviding {
+        private let scannerProvider: CardScannerProviding
+
+        internal init(scannerProvider: CardScannerProviding) {
+            self.scannerProvider = scannerProvider
+        }
+
+        private var isDispatched = false
+
+        private var completion: ((Result<CardScanDetails, any Error>) -> Void)?
+
+        internal func createCardScanner(completion: @escaping (Result<CardScanDetails, any Error>) -> Void) -> UIViewController? {
+            self.scannerProvider.createCardScanner { result in
+                guard !self.isDispatched else { return }
+                self.isDispatched = true
+                completion(result)
+            }
+        }
+    }
+
+    internal struct CardScannerProviderWrapper: CardScannerProviding {
+        internal func createCardScanner(completion: @escaping (Result<CardScanDetails, Error>) -> Void) -> UIViewController? {
 
             let localizationBundle = Bundle.coreInternalResources
             let cardScannerViewController = AdyenCardScanner.CardScanner.createCardScanner(
