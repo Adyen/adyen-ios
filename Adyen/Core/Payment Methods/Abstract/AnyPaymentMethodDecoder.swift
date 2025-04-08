@@ -536,7 +536,6 @@ private struct TwintPaymentMethodDecoder: PaymentMethodDecoder {
                 return .storedTwint(method)
             }
         #endif
-            
         return nil
     }
 }
