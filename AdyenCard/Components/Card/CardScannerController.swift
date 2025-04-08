@@ -50,8 +50,6 @@ internal protocol CardScannerControlling: CardScannerAvailability {
 
         private var isDispatched = false
 
-        private var completion: ((Result<CardScanDetails, any Error>) -> Void)?
-
         internal func createCardScanner(completion: @escaping (Result<CardScanDetails, any Error>) -> Void) -> UIViewController? {
             self.scannerProvider.createCardScanner { result in
                 guard !self.isDispatched else { return }
