@@ -12,6 +12,7 @@ class AppOpenerMock: AppOpener {
     var openSettingsAppCalled: Bool {
         openSettingsAppCallsCount > 0
     }
+
     var openSettingsAppClosure: (() async -> Void)?
     
     func openSettingsApp() async {

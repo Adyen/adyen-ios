@@ -20,13 +20,6 @@ internal protocol CardScannerProviding {
 }
 
 internal protocol CardScannerControlling: CardScannerAvailability {
-
-    init(
-        presenter: UIViewController,
-        availabilityProvider: CardScannerAvailability,
-        cardScannerProvider: CardScannerProviding,
-        analyticsHandler: @escaping CardScannerAnalyticsHandler
-    )
     func openCardScanner()
     var title: String? { get set }
     var onScanComplete: ((Result<CardScanDetails, Error>) -> Void)? { get set }
@@ -41,8 +34,26 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         }
     }
 
-    private struct CardScannerProviderWrapper: CardScannerProviding {
-        func createCardScanner(completion: @escaping (Result<CardScanDetails, Error>) -> Void) -> UIViewController? {
+    internal class CardScannerProviderDispatchOnce: CardScannerProviding {
+        private let scannerProvider: CardScannerProviding
+
+        internal init(scannerProvider: CardScannerProviding) {
+            self.scannerProvider = scannerProvider
+        }
+
+        private var isDispatched = false
+
+        internal func createCardScanner(completion: @escaping (Result<CardScanDetails, any Error>) -> Void) -> UIViewController? {
+            self.scannerProvider.createCardScanner { result in
+                guard !self.isDispatched else { return }
+                self.isDispatched = true
+                completion(result)
+            }
+        }
+    }
+
+    internal struct CardScannerProviderWrapper: CardScannerProviding {
+        internal func createCardScanner(completion: @escaping (Result<CardScanDetails, Error>) -> Void) -> UIViewController? {
 
             let localizationBundle = Bundle.coreInternalResources
             let cardScannerViewController = AdyenCardScanner.CardScanner.createCardScanner(
@@ -74,7 +85,8 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         internal init(
             presenter: UIViewController,
             availabilityProvider: CardScannerAvailability = CardScannerAvailabilityWrapper(),
-            cardScannerProvider: CardScannerProviding = CardScannerProviderWrapper(),
+            cardScannerProvider: CardScannerProviding = CardScannerProviderDispatchOnce(
+                scannerProvider: CardScannerProviderWrapper()),
             analyticsHandler: @escaping CardScannerAnalyticsHandler
         ) {
             self.presenter = presenter
@@ -174,7 +186,8 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         internal init(
             presenter: UIViewController,
             availabilityProvider: CardScannerAvailability = DummyCardScannerAvailability(),
-            cardScannerProvider: CardScannerProviding = DummyCardScannerProvider()
+            cardScannerProvider: CardScannerProviding = DummyCardScannerProvider(),
+            analyticsHandler: CardScannerAnalyticsHandler?
         ) {}
 
         // MARK: - Helpers
