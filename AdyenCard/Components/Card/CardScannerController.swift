@@ -20,13 +20,6 @@ internal protocol CardScannerProviding {
 }
 
 internal protocol CardScannerControlling: CardScannerAvailability {
-
-    init(
-        presenter: UIViewController,
-        availabilityProvider: CardScannerAvailability,
-        cardScannerProvider: CardScannerProviding,
-        analyticsHandler: @escaping CardScannerAnalyticsHandler
-    )
     func openCardScanner()
     var title: String? { get set }
     var onScanComplete: ((Result<CardScanDetails, Error>) -> Void)? { get set }
