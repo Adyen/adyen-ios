@@ -186,7 +186,8 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         internal init(
             presenter: UIViewController,
             availabilityProvider: CardScannerAvailability = DummyCardScannerAvailability(),
-            cardScannerProvider: CardScannerProviding = DummyCardScannerProvider()
+            cardScannerProvider: CardScannerProviding = DummyCardScannerProvider(),
+            analyticsHandler: CardScannerAnalyticsHandler?
         ) {}
 
         // MARK: - Helpers
