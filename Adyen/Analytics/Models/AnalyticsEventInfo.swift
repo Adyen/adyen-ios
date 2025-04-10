@@ -13,7 +13,7 @@ public struct AnalyticsEventInfo: AnalyticsEvent {
     
     public var id: String = UUID().uuidString
     
-    public var timestamp = Int(Date().timeIntervalSince1970 * 1000) // Backend expect miliseconds as Int
+    public var timestamp = Int(Date().timeIntervalSince1970 * 1000) // Backend expect milliseconds as Int
 
     public var component: String
     
