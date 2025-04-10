@@ -11,11 +11,25 @@
     import XCTest
 
     class CardScannerControllerTests: XCTestCase {
+        
+        private var currentEventSubtype: AnalyticsEventLog.LogSubType?
+        
+        override func tearDownWithError() throws {
+            currentEventSubtype = nil
+            try super.tearDownWithError()
+        }
 
         // This test requires AdyenCardScanner framework to be imported for the test target
         func test_scannerIsAvailable() {
             let (sut, _, _) = makeSUT()
             XCTAssertTrue(sut.isScannerAvailable)
+            XCTAssertEqual(currentEventSubtype, .cardScannerAvailable)
+        }
+        
+        func test_scannerIsUnAvailable() {
+            let (sut, _, _) = makeSUT(isAvailable: false)
+            XCTAssertFalse(sut.isScannerAvailable)
+            XCTAssertEqual(currentEventSubtype, .cardScannerUnavailable)
         }
 
         func test_openCardScanner_withTitle_presentsCorrectTitle() throws {
@@ -37,6 +51,7 @@
             let scannerNavigationController = presenter.presentedViewController as? UINavigationController
             let scannerViewController = scannerNavigationController?.topViewController
             XCTAssertEqual(scannerViewController?.title, expectedTitle)
+            XCTAssertEqual(currentEventSubtype, .cardScannerPresented)
 
             sut.onScanComplete?(.success((nil, Date())))
             wait(for: [expectation], timeout: 3.0)
@@ -49,6 +64,7 @@
 
             sut.handleCardScanningCancelationWithCompletion {
                 XCTAssertNil(presenter.presentedViewController)
+                XCTAssertEqual(self.currentEventSubtype, .cardScannerCancelled)
             }
         }
 
@@ -66,6 +82,7 @@
             sut.onScanComplete = { result in
                 // Then
                 self.expect(result, toMatch: .success(expectedResult))
+                XCTAssertEqual(self.currentEventSubtype, .cardScannerSuccess)
                 expectation.fulfill()
             }
 
@@ -86,6 +103,7 @@
             sut.onScanComplete = { result in
                 // Then
                 self.expect(result, toMatch: .failure(expectedError))
+                XCTAssertEqual(self.currentEventSubtype, .cardScannerFailure)
                 expectation.fulfill()
             }
 
@@ -98,19 +116,22 @@
 
         // MARK: - Helpers
 
-        private func makeSUT() -> (CardScannerController, UIViewController, CardScannerProviderSpy) {
+        private func makeSUT(isAvailable: Bool = true) -> (CardScannerController, UIViewController, CardScannerProviderSpy) {
             let presenter = UIViewController()
             let cardScanner = CardScannerProviderSpy()
 
             let sut = CardScannerController(
                 presenter: presenter,
-                availabilityProvider: CardScannerAvailalabilityMock(),
-                cardScannerProvider: cardScanner, analyticsHandler: self.sendEvent
+                availabilityProvider: CardScannerAvailalabilityMock(isScannerAvailable: isAvailable),
+                cardScannerProvider: cardScanner,
+                analyticsHandler: sendEvent
             )
             return (sut, presenter, cardScanner)
         }
 
-        private func sendEvent(_ subtype: AnalyticsEventLog.LogSubType) {}
+        private func sendEvent(_ subtype: AnalyticsEventLog.LogSubType) {
+            currentEventSubtype = subtype
+        }
 
         private func expect(
             _ result: Result<CardScanDetails, Error>,
@@ -130,7 +151,11 @@
         }
 
         private struct CardScannerAvailalabilityMock: CardScannerAvailability {
-            var isScannerAvailable: Bool { true }
+            var isScannerAvailable: Bool
+            
+            init(isScannerAvailable: Bool = true) {
+                self.isScannerAvailable = isScannerAvailable
+            }
         }
     }
 #endif

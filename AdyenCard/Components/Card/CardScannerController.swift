@@ -159,13 +159,12 @@ internal protocol CardScannerControlling: CardScannerAvailability {
 
         @objc
         private func handleCardScanningCancelation() {
-            sendLogEvent(.cardScannerCancelled)
             handleCardScanningCancelationWithCompletion(nil)
         }
 
-        @objc
         internal func handleCardScanningCancelationWithCompletion(_ completion: (() -> Void)?) {
-            presenter?.presentedViewController?.dismiss(animated: true, completion: completion)
+            sendLogEvent(.cardScannerCancelled)
+            presenter?.dismiss(animated: true, completion: completion)
         }
 
         // MARK: - Analytics

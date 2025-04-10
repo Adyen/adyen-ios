@@ -201,8 +201,8 @@ public class CardComponent: PresentableComponent,
             initialCountryCode: initialCountryCode,
             scope: String(describing: self),
             localizationParameters: configuration.localizationParameters,
-            cardScannerAnalyticsHandler: { [weak self] cardScannerLog in
-                self?.sendCardScannerLogEvent(cardScannerLog)
+            cardScannerAnalyticsHandler: { [weak self] logSubType in
+                self?.sendCardScannerLogEvent(logSubType)
             }
         )
 
