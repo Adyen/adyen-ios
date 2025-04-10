@@ -15,14 +15,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-
-        - version: '18.1'
-          runtime: 'iOS-18-1'
-          device: 'iPhone 16'
-          displayname: 'iPhone-16'
-          os: 'macos-14-xlarge'
-          xcode_version: '16.1'
-          needs_custom_sim: false # Takes the shipped simulator that comes with Xcode 15
         
         - version: '17.2'
           runtime: 'iOS-17-2'
