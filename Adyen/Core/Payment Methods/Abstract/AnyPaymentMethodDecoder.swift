@@ -553,11 +553,11 @@ private struct PayToPaymentMethodDecoder: PaymentMethodDecoder {
     func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
         switch paymentMethod {
         case let regular as PayToPaymentMethod:
-            .payTo(regular)
+            return .payTo(regular)
         case let stored as StoredPayToPaymentMethod:
-            .storedPayTo(stored)
+            return .storedPayTo(stored)
         default:
-            nil
+            return nil
         }
     }
 }

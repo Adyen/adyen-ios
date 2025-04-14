@@ -26,6 +26,10 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var allowDisablingStoredPaymentMethods: Bool = false
     @Published internal var allowsSkippingPaymentList: Bool = false
     @Published internal var allowPreselectedPaymentView: Bool = true
+    
+    /// Controls the setting to configure the option to force redirect action to authenticate using a Card instead of native.
+    @Published internal var allowForceCardRedirectAction: Bool = false
+    
     @Published internal var applePayMerchantIdentifier: String = ""
     @Published internal var allowOnboarding: Bool = false
     @Published internal var analyticsIsEnabled: Bool = true
@@ -61,6 +65,7 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.allowDisablingStoredPaymentMethods = configuration.dropInSettings.allowDisablingStoredPaymentMethods
         self.allowsSkippingPaymentList = configuration.dropInSettings.allowsSkippingPaymentList
         self.allowPreselectedPaymentView = configuration.dropInSettings.allowPreselectedPaymentView
+        self.allowForceCardRedirectAction = configuration.threeDSConfigurationSettings.allowForceCardRedirectAction
         self.applePayMerchantIdentifier = configuration.applePaySettings.merchantIdentifier
         self.allowOnboarding = configuration.applePaySettings.allowOnboarding
         self.analyticsIsEnabled = configuration.analyticsSettings.isEnabled
@@ -98,6 +103,9 @@ internal final class ConfigurationViewModel: ObservableObject {
                 allowDisablingStoredPaymentMethods: allowDisablingStoredPaymentMethods,
                 allowsSkippingPaymentList: allowsSkippingPaymentList,
                 allowPreselectedPaymentView: allowPreselectedPaymentView
+            ),
+            threeDSConfigurationSettings: ThreeDSConfigurationSettings(
+                allowForceCardRedirectAction: allowForceCardRedirectAction
             ),
             applePaySettings: ApplePaySettings(
                 merchantIdentifier: applePayMerchantIdentifier,
