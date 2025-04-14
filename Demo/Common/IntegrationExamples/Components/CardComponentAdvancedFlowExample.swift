@@ -6,6 +6,9 @@
 
 import Adyen
 import AdyenActions
+#if canImport(AdyenCardScanner)
+    import AdyenCardScanner
+#endif
 import AdyenCard
 import AdyenComponents
 import AdyenDropIn

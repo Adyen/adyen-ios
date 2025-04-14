@@ -6,15 +6,30 @@
 
 #if canImport(AdyenCardScanner)
     @testable import AdyenCard
+    @_spi(AdyenInternal) import Adyen
     @testable import AdyenCardScanner
     import XCTest
 
     class CardScannerControllerTests: XCTestCase {
+        
+        private var currentEventSubtype: AnalyticsEventLog.LogSubType?
+        
+        override func tearDownWithError() throws {
+            currentEventSubtype = nil
+            try super.tearDownWithError()
+        }
 
         // This test requires AdyenCardScanner framework to be imported for the test target
         func test_scannerIsAvailable() {
             let (sut, _, _) = makeSUT()
             XCTAssertTrue(sut.isScannerAvailable)
+            XCTAssertEqual(currentEventSubtype, .cardScannerAvailable)
+        }
+        
+        func test_scannerIsUnAvailable() {
+            let (sut, _, _) = makeSUT(isAvailable: false)
+            XCTAssertFalse(sut.isScannerAvailable)
+            XCTAssertEqual(currentEventSubtype, .cardScannerUnavailable)
         }
 
         func test_openCardScanner_withTitle_presentsCorrectTitle() throws {
@@ -36,6 +51,7 @@
             let scannerNavigationController = presenter.presentedViewController as? UINavigationController
             let scannerViewController = scannerNavigationController?.topViewController
             XCTAssertEqual(scannerViewController?.title, expectedTitle)
+            XCTAssertEqual(currentEventSubtype, .cardScannerPresented)
 
             sut.onScanComplete?(.success((nil, Date())))
             wait(for: [expectation], timeout: 3.0)
@@ -48,6 +64,7 @@
 
             sut.handleCardScanningCancelationWithCompletion {
                 XCTAssertNil(presenter.presentedViewController)
+                XCTAssertEqual(self.currentEventSubtype, .cardScannerCancelled)
             }
         }
 
@@ -61,10 +78,11 @@
             let expectedResult: CardScanDetails = (cardNumber, expiryDate)
             let mockCard = CardScanDetails(cardNumber, expiryDate)
 
-            let (sut, presenter, cardScanner) = makeSUT()
+            let (sut, _, cardScanner) = makeSUT()
             sut.onScanComplete = { result in
                 // Then
                 self.expect(result, toMatch: .success(expectedResult))
+                XCTAssertEqual(self.currentEventSubtype, .cardScannerSuccess)
                 expectation.fulfill()
             }
 
@@ -80,11 +98,12 @@
             let expectation = XCTestExpectation(description: "Card scanner should complete the flow")
             let mockError = AdyenCardScanner.CardScannerError(kind: .authorizationDenied)
             let expectedError = CardScannerController.CardScannerError.scanningError
-            let (sut, presenter, cardScanner) = makeSUT()
+            let (sut, _, cardScanner) = makeSUT()
 
             sut.onScanComplete = { result in
                 // Then
                 self.expect(result, toMatch: .failure(expectedError))
+                XCTAssertEqual(self.currentEventSubtype, .cardScannerFailure)
                 expectation.fulfill()
             }
 
@@ -97,16 +116,21 @@
 
         // MARK: - Helpers
 
-        private func makeSUT() -> (CardScannerController, UIViewController, CardScannerProviderSpy) {
+        private func makeSUT(isAvailable: Bool = true) -> (CardScannerController, UIViewController, CardScannerProviderSpy) {
             let presenter = UIViewController()
             let cardScanner = CardScannerProviderSpy()
 
             let sut = CardScannerController(
                 presenter: presenter,
-                availabilityProvider: CardScannerAvailalabilityMock(),
-                cardScannerProvider: cardScanner
+                availabilityProvider: CardScannerAvailalabilityMock(isScannerAvailable: isAvailable),
+                cardScannerProvider: cardScanner,
+                analyticsHandler: sendEvent
             )
             return (sut, presenter, cardScanner)
+        }
+
+        private func sendEvent(_ subtype: AnalyticsEventLog.LogSubType) {
+            currentEventSubtype = subtype
         }
 
         private func expect(
@@ -127,21 +151,10 @@
         }
 
         private struct CardScannerAvailalabilityMock: CardScannerAvailability {
-            var isScannerAvailable: Bool { true }
-        }
-
-        private class CardScannerProviderSpy: CardScannerProviding {
-            private var completion: ((Result<AdyenCardScanner.CardScanDetails, Error>) -> Void)? = nil
-
-            func createCardScanner(
-                completion: @escaping (Result<CardScanDetails, Error>) -> Void
-            ) -> UIViewController? {
-                self.completion = completion
-                return UIViewController()
-            }
-
-            func onScanComplete(result: Result<CardScanDetails, Error>) {
-                self.completion?(result)
+            var isScannerAvailable: Bool
+            
+            init(isScannerAvailable: Bool = true) {
+                self.isScannerAvailable = isScannerAvailable
             }
         }
     }
