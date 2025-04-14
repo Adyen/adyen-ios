@@ -6,14 +6,14 @@
 
 import Adyen
 import AdyenActions
+#if canImport(AdyenCardScanner)
+    import AdyenCardScanner
+#endif
 import AdyenCard
 import AdyenComponents
 import AdyenDropIn
 import PassKit
 import UIKit
-#if canImport(AdyenCardScanner)
-    import AdyenCardScanner
-#endif
 
 internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
 
