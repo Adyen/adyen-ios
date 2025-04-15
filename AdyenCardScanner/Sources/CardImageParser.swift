@@ -158,6 +158,7 @@ private extension String {
     }
 }
 
+@available(iOS 13.0, *)
 private extension CIImage {
 
     func applyNoiseReductionFilter() -> CIImage? {
