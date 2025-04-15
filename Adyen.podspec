@@ -59,9 +59,12 @@ Pod::Spec.new do |s|
     }
   end
 
-  s.subspec 'CardScanner' do |plugin|
+  s.subspec 'AdyenCardScanner' do |plugin|
     plugin.source_files = 'AdyenCardScanner/**/*.swift'
-    plugin.vendored_frameworks = 'XCFramework/Dynamic/AdyenCardScanner.xcframework'
+    plugin.pod_target_xcconfig = { 
+      'PRODUCT_MODULE_NAME' => 'AdyenCardScanner',
+      'DEFINES_MODULE' => 'YES'
+    }  
   end
 
   s.subspec 'Components' do |plugin|
