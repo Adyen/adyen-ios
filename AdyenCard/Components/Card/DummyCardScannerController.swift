@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 internal final class DummyCardScannerController: CardScannerControlling {
     internal var isScannerAvailable: Bool { false }
