@@ -59,6 +59,10 @@ Pod::Spec.new do |s|
     }
   end
 
+  s.subspec 'AdyenCardScanner' do |plugin|
+    plugin.source_files = 'AdyenCardScanner/**/*.swift'
+  end
+
   s.subspec 'Components' do |plugin|
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/Encryption'
