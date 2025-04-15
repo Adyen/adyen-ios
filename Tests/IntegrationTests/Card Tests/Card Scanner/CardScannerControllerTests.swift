@@ -75,7 +75,7 @@
             let cardNumber = "1111 2222 3333 4444"
             let expiryDate = Date(timeIntervalSince1970: 1742456818)
 
-            let expectedResult: CardScanDetails = (cardNumber, expiryDate)
+            let expectedResult: CardScannerCardDetails = (cardNumber, expiryDate)
             let mockCard = CardScanDetails(cardNumber, expiryDate)
 
             let (sut, _, cardScanner) = makeSUT()
@@ -134,8 +134,8 @@
         }
 
         private func expect(
-            _ result: Result<CardScanDetails, Error>,
-            toMatch expectedResult: Result<CardScanDetails, Error>,
+            _ result: Result<CardScannerCardDetails, Error>,
+            toMatch expectedResult: Result<CardScannerCardDetails, Error>,
             file: StaticString = #file,
             line: UInt = #line
         ) {

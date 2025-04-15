@@ -13,16 +13,16 @@ internal protocol CardScannerAvailability {
 }
 
 internal typealias CardScannerAnalyticsHandler = (_ subtype: AnalyticsEventLog.LogSubType) -> Void
-internal typealias CardScanDetails = (number: String?, expirationDate: Date?)
+internal typealias CardScannerCardDetails = (number: String?, expirationDate: Date?)
 
 internal protocol CardScannerProviding {
-    func createCardScanner(completion: @escaping (Result<CardScanDetails, Error>) -> Void) -> UIViewController?
+    func createCardScanner(completion: @escaping (Result<CardScannerCardDetails, Error>) -> Void) -> UIViewController?
 }
 
 internal protocol CardScannerControlling: CardScannerAvailability {
     func openCardScanner()
     var title: String? { get set }
-    var onScanComplete: ((Result<CardScanDetails, Error>) -> Void)? { get set }
+    var onScanComplete: ((Result<CardScannerCardDetails, Error>) -> Void)? { get set }
 }
 
 #if canImport(AdyenCardScanner)
@@ -43,7 +43,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
 
         private var isDispatched = false
 
-        internal func createCardScanner(completion: @escaping (Result<CardScanDetails, any Error>) -> Void) -> UIViewController? {
+        internal func createCardScanner(completion: @escaping (Result<CardScannerCardDetails, any Error>) -> Void) -> UIViewController? {
             self.scannerProvider.createCardScanner { result in
                 guard !self.isDispatched else { return }
                 self.isDispatched = true
@@ -53,7 +53,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
     }
 
     internal struct CardScannerProviderWrapper: CardScannerProviding {
-        internal func createCardScanner(completion: @escaping (Result<CardScanDetails, Error>) -> Void) -> UIViewController? {
+        internal func createCardScanner(completion: @escaping (Result<CardScannerCardDetails, Error>) -> Void) -> UIViewController? {
 
             let localizationBundle = Bundle.coreInternalResources
             let cardScannerViewController = AdyenCardScanner.CardScanner.createCardScanner(
@@ -80,7 +80,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         internal var title: String?
         private let analyticsHandler: CardScannerAnalyticsHandler?
 
-        internal var onScanComplete: ((Result<CardScanDetails, Error>) -> Void)?
+        internal var onScanComplete: ((Result<CardScannerCardDetails, Error>) -> Void)?
 
         internal init(
             presenter: UIViewController,
@@ -128,7 +128,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
 
         // MARK: - Private
 
-        private func map(_ result: Result<CardScanDetails, Error>) -> Result<CardScanDetails, Error> {
+        private func map(_ result: Result<CardScannerCardDetails, Error>) -> Result<CardScannerCardDetails, Error> {
             switch result {
             case let .success(cardScanDetails):
                 sendLogEvent(.cardScannerSuccess)

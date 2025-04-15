@@ -12,13 +12,13 @@
         private var completion: ((Result<AdyenCardScanner.CardScanDetails, Error>) -> Void)? = nil
 
         func createCardScanner(
-            completion: @escaping (Result<CardScanDetails, Error>) -> Void
+            completion: @escaping (Result<CardScannerCardDetails, Error>) -> Void
         ) -> UIViewController? {
             self.completion = completion
             return UIViewController()
         }
 
-        func onScanComplete(result: Result<CardScanDetails, Error>) {
+        func onScanComplete(result: Result<CardScannerCardDetails, Error>) {
             self.completion?(result)
         }
     }

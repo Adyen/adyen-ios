@@ -418,7 +418,7 @@ extension CardViewController: CardViewControllerProtocol {
 // MARK: - Card scanner
 
 extension CardViewController {
-    private func handleCardScanningResult(_ result: Result<CardScanDetails, Error>) {
+    private func handleCardScanningResult(_ result: Result<CardScannerCardDetails, Error>) {
         switch result {
         case let .success((number, expiryDate)):
             items.numberContainerItem.setCardNumber(number ?? "")
