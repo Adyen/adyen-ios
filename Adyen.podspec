@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.swift_version = '5.7'
   s.frameworks = 'Foundation'
   s.default_subspecs = 'Core', 'Components', 'Actions', 'Card', 'Encryption', 'DropIn', 'Session'
-  s.pod_target_xcconfig = {'SWIFT_SUPPRESS_WARNINGS' => 'YES', 'BUILD_LIBRARY_FOR_DISTRIBUTION' => 'YES' }
+  s.pod_target_xcconfig = {'SWIFT_SUPPRESS_WARNINGS' => 'YES' }
 
   s.subspec 'DropIn' do |plugin|
     plugin.source_files = 'AdyenDropIn/**/*.swift'
