@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.swift_version = '5.7'
   s.frameworks = 'Foundation'
   s.default_subspecs = 'Core', 'Components', 'Actions', 'Card', 'Encryption', 'DropIn', 'Session'
-  s.pod_target_xcconfig = {'SWIFT_SUPPRESS_WARNINGS' => 'YES' }
+  s.pod_target_xcconfig = {'SWIFT_SUPPRESS_WARNINGS' => 'YES', 'BUILD_LIBRARY_FOR_DISTRIBUTION' => 'YES' }
 
   s.subspec 'DropIn' do |plugin|
     plugin.source_files = 'AdyenDropIn/**/*.swift'
@@ -59,20 +59,12 @@ Pod::Spec.new do |s|
     }
   end
 
-  s.subspec 'AdyenCardWithScanner' do |plugin|
-    plugin.dependency 'Adyen/Core'
-    plugin.dependency 'Adyen/Encryption'
-    plugin.dependency 'Adyen/AdyenCardScanner'
-    plugin.source_files = 'AdyenCard/**/*.swift'
-    plugin.resource_bundles = {
-        'AdyenCard' => [
-            'AdyenCard/Assets/**/*.xcassets'
-        ]
-    }
-  end
-
   s.subspec 'AdyenCardScanner' do |plugin|
     plugin.source_files = 'AdyenCardScanner/**/*.swift'
+    plugin.pod_target_xcconfig = { 
+      'PRODUCT_MODULE_NAME' => 'AdyenCardScanner',
+      'DEFINES_MODULE' => 'YES'
+    }  
   end
 
   s.subspec 'Components' do |plugin|
