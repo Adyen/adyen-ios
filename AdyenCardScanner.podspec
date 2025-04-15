@@ -13,4 +13,10 @@ Pod::Spec.new do |s|
   s.framework = 'Foundation'
   s.ios.deployment_target = '13.0'
   s.swift_version = '5.7'
+
+  s.pod_target_xcconfig = { 
+    'DEFINES_MODULE' => 'YES',
+    'PRODUCT_MODULE_NAME' => 'AdyenCardScanner',
+    'BUILD_LIBRARY_FOR_DISTRIBUTION' => 'YES'
+  }
 end
