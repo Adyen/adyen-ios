@@ -63,12 +63,16 @@ Pod::Spec.new do |s|
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/Encryption'
     plugin.dependency 'Adyen/AdyenCardScanner'
-    plugin.source_files = 'AdyenCard/**/*.swift, AdyenCardScanner/**/*.swift'
+    plugin.source_files = 'AdyenCard/**/*.swift'
     plugin.resource_bundles = {
         'AdyenCard' => [
             'AdyenCard/Assets/**/*.xcassets'
         ]
     }
+  end
+
+  s.subspec 'AdyenCardScanner' do |plugin|
+    plugin.source_files = 'AdyenCardScanner/**/*.swift'
   end
 
   s.subspec 'Components' do |plugin|
