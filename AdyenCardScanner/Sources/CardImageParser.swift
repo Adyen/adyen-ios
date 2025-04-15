@@ -15,6 +15,7 @@ internal protocol CardImageParsing {
     )
 }
 
+@available(iOS 13.0, *)
 internal class CardImageParser: CardImageParsing {
 
     private enum Constants {
