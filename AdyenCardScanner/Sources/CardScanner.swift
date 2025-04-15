@@ -9,6 +9,7 @@ import UIKit
 
 public typealias CardScanDetails = (number: String?, expirationDate: Date?)
 
+@available(iOS 13.0, *)
 public protocol CardScanning {
     static func createCardScanner(
         localizationBundle: Bundle,
@@ -18,6 +19,7 @@ public protocol CardScanning {
     static var isAvailable: Bool { get }
 }
 
+@available(iOS 13.0, *)
 public enum CardScanner: CardScanning {
 
     // MARK: - Properties

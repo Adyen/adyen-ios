@@ -24,6 +24,7 @@ internal protocol CardScannerViewModelProtocol {
     var cameraAlertCancelButtonTitle: String { get }
 }
 
+@available(iOS 13.0, *)
 internal class CardScannerViewModel: CardScannerViewModelProtocol {
 
     // MARK: - Properties

@@ -175,6 +175,7 @@ internal class CaptureSessionManager: NSObject, CaptureSessionManaging {
     }
 }
 
+@available(iOS 13.0, *)
 extension CaptureSessionManager: AVCaptureVideoDataOutputSampleBufferDelegate {
 
     func captureOutput(
