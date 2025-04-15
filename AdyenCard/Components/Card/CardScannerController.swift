@@ -178,7 +178,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
 
     internal final class CardScannerController: CardScannerControlling {
         internal var isScannerAvailable: Bool { false }
-        internal var onScanComplete: ((Result<CardScanDetails, any Error>) -> Void)?
+        internal var onScanComplete: ((Result<CardScannerCardDetails, any Error>) -> Void)?
         internal var title: String?
         internal func openCardScanner() {}
 
@@ -197,7 +197,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
 
         internal struct DummyCardScannerProvider: CardScannerProviding {
             internal func createCardScanner(
-                completion: @escaping (Result<CardScanDetails, any Error>) -> Void
+                completion: @escaping (Result<CardScannerCardDetails, any Error>) -> Void
             ) -> UIViewController? {
                 UIViewController()
             }
