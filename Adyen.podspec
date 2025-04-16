@@ -61,7 +61,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'CardScanner' do |plugin|
     plugin.dependency 'Adyen/Card'
-    plugin.dependency 'AdyenCardScanner', :git => 'https://github.com/Adyen/adyen-ios.git', :branch => 'chore/ocr-cocoapods'
+    plugin.dependency 'AdyenCardScanner'
   end
 
   s.subspec 'Components' do |plugin|
