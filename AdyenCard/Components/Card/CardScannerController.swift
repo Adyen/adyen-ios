@@ -45,7 +45,10 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         private var isDispatched = false
 
         internal func createCardScanner(completion: @escaping (Result<CardScannerCardDetails, any Error>) -> Void) -> UIViewController? {
-            self.scannerProvider.createCardScanner { result in
+
+            isDispatched = false
+
+            return self.scannerProvider.createCardScanner { result in
                 guard !self.isDispatched else { return }
                 self.isDispatched = true
                 completion(result)
@@ -79,7 +82,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
 
         private weak var presenter: UIViewController?
         private let availabilityProvider: CardScannerAvailability
-        private var cardScannerProvider: CardScannerProviding
+        private let cardScannerProvider: CardScannerProviding
         internal var title: String?
         private let analyticsHandler: CardScannerAnalyticsHandler?
 
@@ -110,8 +113,6 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         }
 
         internal func openCardScanner() {
-            self.cardScannerProvider = CardScannerProviderDispatchOnce(
-                scannerProvider: CardScannerProviderWrapper())
             let scannerNavigationController = makeNavigationController()
             guard let scannerViewController = cardScannerProvider.createCardScanner(completion: { [weak self] result in
                 guard let self else { return }
