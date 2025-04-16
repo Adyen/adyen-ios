@@ -59,14 +59,10 @@ Pod::Spec.new do |s|
     }
   end
 
-  # s.subspec 'AdyenCardScanner' do |plugin|
-  #   plugin.source_files = 'AdyenCardScanner/**/*.swift'
-  #   plugin.framework_name = 'AdyenCardScanner'
-  #   plugin.pod_target_xcconfig = { 
-  #     'PRODUCT_MODULE_NAME' => 'AdyenCardScanner',
-  #     'DEFINES_MODULE' => 'YES'
-  #   }  
-  # end
+  s.subspec 'CardScanner' do |plugin|
+    plugin.dependency 'Adyen/Card'
+    plugin.dependency 'AdyenCardScanner', :git => 'https://github.com/Adyen/adyen-ios.git', :branch => 'chore/ocr-cocoapods'
+  end
 
   s.subspec 'Components' do |plugin|
     plugin.dependency 'Adyen/Core'
