@@ -79,7 +79,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
 
         private weak var presenter: UIViewController?
         private let availabilityProvider: CardScannerAvailability
-        private let cardScannerProvider: CardScannerProviding
+        private var cardScannerProvider: CardScannerProviding
         internal var title: String?
         private let analyticsHandler: CardScannerAnalyticsHandler?
 
@@ -110,6 +110,8 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         }
 
         internal func openCardScanner() {
+            self.cardScannerProvider = CardScannerProviderDispatchOnce(
+                scannerProvider: CardScannerProviderWrapper())
             let scannerNavigationController = makeNavigationController()
             guard let scannerViewController = cardScannerProvider.createCardScanner(completion: { [weak self] result in
                 guard let self else { return }
