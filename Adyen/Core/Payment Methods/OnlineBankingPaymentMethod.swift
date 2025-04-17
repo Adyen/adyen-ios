@@ -19,6 +19,16 @@ public struct Issuer: Codable, CustomStringConvertible, Equatable {
         name
     }
 
+    /// Initializes a new instance of `Issuer`.
+    ///
+    /// - Parameters:
+    ///   - identifier: The identifier.
+    ///   - name: The name.
+    public init(identifier: String, name: String) {
+        self.identifier = identifier
+        self.name = name
+    }
+
     // MARK: - Coding
     
     private enum CodingKeys: String, CodingKey {

@@ -38,7 +38,9 @@ extension CardViewController {
         private let presenter: WeakReferenceViewControllerPresenter
         
         private let addressMode: CardComponent.AddressFormType
-        
+
+        private var binInfo: BinLookupResponse?
+
         /// Closure that is called when an event is triggered via the field items.
         internal var onDidTriggerInfoEvent: ((InfoEventData) -> Void)?
 
@@ -53,7 +55,8 @@ extension CardViewController {
             localizationParameters: LocalizationParameters?,
             addressViewModelBuilder: AddressViewModelBuilder,
             presenter: ViewControllerPresenter,
-            addressMode: CardComponent.AddressFormType
+            addressMode: CardComponent.AddressFormType,
+            binInfo: BinLookupResponse? = nil
         ) {
             self.formStyle = formStyle
             self.amount = payment?.amount
@@ -66,6 +69,7 @@ extension CardViewController {
             self.addressViewModelBuilder = addressViewModelBuilder
             self.presenter = .init(presenter)
             self.addressMode = addressMode
+            self.binInfo = binInfo
         }
         
         internal lazy var billingAddressPickerItem: FormAddressPickerItem? = {
@@ -160,6 +164,74 @@ extension CardViewController {
             
             return holderNameItem
         }()
+
+        // TODO: Neelam -- ADD new co-branded card UI here
+
+        /// The card brand selection title label item.
+        internal lazy var brandSelectionTitleLabelItem: FormContainerItem<FormLabelItem> = {
+            brandSelectionTitleLabel()
+        }()
+
+        /// The card brand selection title label.
+        internal func brandSelectionTitleLabel() -> FormContainerItem<FormLabelItem> {
+            let item = FormLabelItem(
+                text: localizedString(
+                    LocalizationKey(key: "Card brand selection (optional)"),
+                    configuration.localizationParameters
+                ),
+                style: configuration.style.sectionHeader
+            )
+            item.style.textAlignment = .left
+            item.identifier = ViewIdentifierBuilder.build(
+                scopeInstance: self,
+                postfix: ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "cardBrandSelectionTitleLabelItem")
+            )
+            return item.padding()
+        }
+
+        ///  The card brand selection subtitle label item..
+        internal lazy var brandSelectionSubtitleLabelItem: FormContainerItem<FormLabelItem> = {
+            brandSelectionSubtitleLabel()
+        }()
+
+        /// The card brand selection subtitle label.
+        internal func brandSelectionSubtitleLabel() -> FormContainerItem<FormLabelItem> {
+            let item = FormLabelItem(
+                text: localizedString(
+                    LocalizationKey(key: "Select your preferred card brand"),
+                    configuration.localizationParameters
+                ),
+                style: configuration.style.footnoteLabel
+            )
+            item.style.textAlignment = .left
+            item.identifier = ViewIdentifierBuilder.build(
+                scopeInstance: self,
+                postfix: ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "cardBrandSelectionSubtitleLabelItem")
+            )
+            return item.padding(UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0))
+        }
+
+        /// The brand selection list item.
+        internal lazy var brandTypeList: [SelectableFormItem] = {
+            let brands = [CardBrand(type(of: .visa))]
+            guard let brands = self.binInfo?.brands, !brands.isEmpty else { return [] }
+            return brands.map { selectableFormItem(from: $0) }
+        }()
+
+        private func selectableFormItem(from brand: CardBrand) -> SelectableFormItem {
+            let selectableItem = SelectableFormItem(
+                title: brand.type.name,
+                imageUrl: nil,
+                isSelected: false,
+                style: .init(title: configuration.style.textField.title),
+                identifier: brand.type.rawValue
+            )
+            selectableItem.selectionHandler = { [weak self, weak selectableItem] in
+                guard let self, let selectableItem else { return }
+                numberContainerItem.numberItem.selectBrand(at: 0)
+            }
+            return selectableItem
+        }
 
         internal lazy var additionalAuthCodeItem: FormTextInputItem = {
             var additionalItem = FormTextInputItem(style: formStyle.textField)

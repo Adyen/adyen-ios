@@ -51,8 +51,8 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         isDualBranded ? selectedDualBrand : initialBrand
     }
     
-    internal var isDualBranded: Bool = false
-    
+    @AdyenObservable(false) internal var isDualBranded
+
     /// Initializes the form card number item.
     internal init(
         cardTypeLogos: [FormCardLogosItem.CardTypeLogo],

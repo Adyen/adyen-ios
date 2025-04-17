@@ -34,7 +34,9 @@ internal class CardViewController: FormViewController {
     private let scope: String
     
     private let cardLogos: [FormCardLogosItem.CardTypeLogo]
-    
+
+    private var binInfo: BinLookupResponse?
+
     internal lazy var items = {
         
         ItemsProvider(
@@ -48,7 +50,8 @@ internal class CardViewController: FormViewController {
             localizationParameters: localizationParameters,
             addressViewModelBuilder: DefaultAddressViewModelBuilder(),
             presenter: self,
-            addressMode: configuration.billingAddress.mode
+            addressMode: configuration.billingAddress.mode,
+            binInfo: binInfo
         )
     }()
 
@@ -198,11 +201,18 @@ internal class CardViewController: FormViewController {
 
     internal func update(binInfo: BinLookupResponse) {
         var brands: [CardBrand] = []
+        self.binInfo = binInfo
         // no dual branding if response is from regex (fallback)
         if binInfo.isCreatedLocally, let firstBrand = binInfo.brands?.first {
             brands = [firstBrand]
+            // TODO: hide the brand type selection UI here
+            hideBrandTypeSelectionItem()
         } else {
             brands = binInfo.brands ?? []
+            // TODO: unhide the brand type selection UI here
+            if binInfo.brands?.count == 2 {
+                unhideBrandTypeSelectionItem(binInfo: binInfo)
+            }
         }
         issuingCountryCode = binInfo.issuingCountryCode
         items.numberContainerItem.update(brands: brands)
@@ -277,6 +287,10 @@ extension CardViewController {
         if configuration.socialSecurityNumberMode != .hide {
             append(items.socialSecurityNumberItem)
         }
+
+        // TODO: Neelam-- Add the new UI for co-branded card here
+        appendBrandTypeSelectionItem()
+        hideBrandTypeSelectionItem()
 
         if let installmentsItem = items.installmentsItem {
             append(installmentsItem)
@@ -365,6 +379,52 @@ extension CardViewController {
         case .auto:
             return !brand.showsSocialSecurityNumber
         }
+    }
+
+    private func appendBrandTypeSelectionItem() {
+        append(FormSpacerItem(numberOfSpaces: 2))
+        append(items.brandSelectionTitleLabelItem)
+        append(items.brandSelectionSubtitleLabelItem)
+        items.brandTypeList.forEach { append($0) }
+        append(FormSpacerItem())
+    }
+
+    private func unhideBrandTypeSelectionItem(binInfo: BinLookupResponse) {
+        updateBrandTypeList(binInfo)
+        items.brandSelectionTitleLabelItem.isHidden.wrappedValue = false
+        items.brandSelectionSubtitleLabelItem.isHidden.wrappedValue = false
+        items.brandTypeList.forEach { $0.isHidden.wrappedValue = false }
+    }
+
+    private func updateBrandTypeList(_ binInfo: BinLookupResponse? = nil) {
+        let logos = items.numberContainerItem.numberItem.cardTypeLogos
+        let brands = binInfo?.brands?.map { item in
+            SelectableFormItem(
+                title: item.type.name,
+                imageUrl: logos.filter { $0.type == item.type }.first?.url,
+                isSelected: false,
+                style: SelectableFormItemStyle(
+                    title: .init(
+                        font: UIFont(),
+                        color: UIColor()
+                    )
+                ),
+                identifier: item.type.rawValue,
+                accessibilityLabel: item.type.name,
+                selectionHandler: { [weak self] in
+                    guard let self else { return }
+                    print("Neelam item", item)
+                }
+            )
+        }
+        items.brandTypeList = brands ?? []
+//        items.brandTypeList.forEach { append($0) }
+    }
+
+    private func hideBrandTypeSelectionItem() {
+        items.brandSelectionTitleLabelItem.isHidden.wrappedValue = true
+        items.brandSelectionSubtitleLabelItem.isHidden.wrappedValue = true
+        items.brandTypeList.forEach { $0.isHidden.wrappedValue = true }
     }
 
 }

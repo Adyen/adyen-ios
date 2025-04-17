@@ -75,6 +75,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
         numberItem.update(brands: brands)
         
         if showsSupportedCardLogos {
+            // TODO: Neelam
             supportedCardLogosItem.isHidden.wrappedValue = brands.contains(where: \.isSupported)
         }
     }

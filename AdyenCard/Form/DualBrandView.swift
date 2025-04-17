@@ -44,9 +44,9 @@ extension FormCardNumberItemView {
         
         private lazy var secondaryGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(secondaryLogoTapped))
         
-        private let selectedViewAlpha: CGFloat = 1
-        
-        private let unselectedViewAlpha: CGFloat = 0.3
+//        private let selectedViewAlpha: CGFloat = 1
+//
+//        private let unselectedViewAlpha: CGFloat = 0.3
         
         private var primaryLogoUrl: URL?
         private var secondaryLogoUrl: URL?
@@ -93,15 +93,15 @@ extension FormCardNumberItemView {
             primaryLogoUrl = firstLogo.url
             secondaryLogoUrl = secondLogo?.url
             
-            primaryLogoView.alpha = selectedViewAlpha
+            // primaryLogoView.alpha = selectedViewAlpha
             primaryLogoView.accessibilityValue = firstLogo.type.name
             primaryLogoView.isAccessibilityElement = true
             
             // dual branded. allow selection but initially neither is selected
             if let secondLogo {
-                primaryLogoView.alpha = unselectedViewAlpha
-                
-                secondaryLogoView.alpha = unselectedViewAlpha
+//                primaryLogoView.alpha = unselectedViewAlpha
+//
+//                secondaryLogoView.alpha = unselectedViewAlpha
                 secondaryLogoView.accessibilityValue = secondLogo.type.name
                 secondaryLogoView.isHidden = false
                 
@@ -117,17 +117,17 @@ extension FormCardNumberItemView {
         }
         
         @objc private func primaryLogoTapped() {
-            guard primaryLogoView.alpha != selectedViewAlpha else { return }
-            primaryLogoView.alpha = selectedViewAlpha
-            secondaryLogoView.alpha = unselectedViewAlpha
+//            guard primaryLogoView.alpha != selectedViewAlpha else { return }
+//            primaryLogoView.alpha = selectedViewAlpha
+//            secondaryLogoView.alpha = unselectedViewAlpha
             onBrandSelection(0)
             updateAccessibilityValues()
         }
         
         @objc private func secondaryLogoTapped() {
-            guard secondaryLogoView.alpha != selectedViewAlpha else { return }
-            secondaryLogoView.alpha = selectedViewAlpha
-            primaryLogoView.alpha = unselectedViewAlpha
+//            guard secondaryLogoView.alpha != selectedViewAlpha else { return }
+//            secondaryLogoView.alpha = selectedViewAlpha
+//            primaryLogoView.alpha = unselectedViewAlpha
             onBrandSelection(1)
             updateAccessibilityValues()
         }
@@ -137,11 +137,11 @@ extension FormCardNumberItemView {
             secondaryLogoUrl = nil
 
             primaryLogoView.image = Constant.placeholderImage
-            primaryLogoView.alpha = selectedViewAlpha
+//            primaryLogoView.alpha = selectedViewAlpha
             primaryLogoView.removeGestureRecognizer(primaryGestureRecognizer)
             secondaryLogoView.image = Constant.placeholderImage
             secondaryLogoView.isHidden = true
-            secondaryLogoView.alpha = unselectedViewAlpha
+//            secondaryLogoView.alpha = unselectedViewAlpha
             secondaryLogoView.removeGestureRecognizer(secondaryGestureRecognizer)
         }
         
@@ -168,8 +168,8 @@ extension FormCardNumberItemView {
             primaryLogoView.accessibilityTraits = .button
             secondaryLogoView.accessibilityTraits = .button
             
-            primaryLogoView.accessibilityMarkAsSelected(primaryLogoView.alpha == selectedViewAlpha)
-            secondaryLogoView.accessibilityMarkAsSelected(secondaryLogoView.alpha == selectedViewAlpha)
+//            primaryLogoView.accessibilityMarkAsSelected(primaryLogoView.alpha == selectedViewAlpha)
+//            secondaryLogoView.accessibilityMarkAsSelected(secondaryLogoView.alpha == selectedViewAlpha)
         }
         
         override public func didMoveToWindow() {
