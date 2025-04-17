@@ -6,6 +6,7 @@
 
 import UIKit
 
+@available(iOS 13.0, *)
 internal class CardScannerOverlayView: UIView {
 
     private enum Style {

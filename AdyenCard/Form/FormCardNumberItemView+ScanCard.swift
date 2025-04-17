@@ -14,11 +14,10 @@ extension FormCardNumberItemView {
     }
 
     func makeCardScanAccessoryView(title: String, _ selector: Selector) -> UIView {
-        let accessoryView = UIInputView(
-            frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44),
-            inputViewStyle: .keyboard
-        )
-        
+        let accessoryView = UIInputView(frame: .zero, inputViewStyle: .keyboard)
+        accessoryView.translatesAutoresizingMaskIntoConstraints = false
+        accessoryView.heightAnchor.constraint(equalToConstant: 44).isActive = true
+
         let scanButton = UIButton(type: .system)
         scanButton.translatesAutoresizingMaskIntoConstraints = false
         scanButton.setTitle(title, for: .normal)

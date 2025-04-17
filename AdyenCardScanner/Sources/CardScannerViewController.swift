@@ -13,6 +13,7 @@ internal protocol CardScannerPresenting: AnyObject {
     func presentCameraAccessDeniedAlert()
 }
 
+@available(iOS 13.0, *)
 internal class CardScannerViewController: UIViewController, CardScannerPresenting {
 
     // MARK: - UI elements

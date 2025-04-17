@@ -18,6 +18,7 @@ internal protocol CaptureSessionDelegate: AnyObject {
     func didCapture(image: CIImage?)
 }
 
+@available(iOS 13.0, *)
 internal protocol CaptureSessionManaging {
     var delegate: CaptureSessionDelegate? { get set }
     func requestCaptureAuthorization() async -> CaptureAuthorizationStatus
@@ -28,6 +29,7 @@ internal protocol CaptureSessionManaging {
     var videoPreviewLayer: AVCaptureVideoPreviewLayer { get }
 }
 
+@available(iOS 13.0, *)
 internal class CaptureSessionManager: NSObject, CaptureSessionManaging {
 
     private enum Constants {
@@ -173,6 +175,7 @@ internal class CaptureSessionManager: NSObject, CaptureSessionManaging {
     }
 }
 
+@available(iOS 13.0, *)
 extension CaptureSessionManager: AVCaptureVideoDataOutputSampleBufferDelegate {
 
     func captureOutput(

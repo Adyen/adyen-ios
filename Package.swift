@@ -29,6 +29,10 @@ let package = Package(
             targets: ["AdyenCard"]
         ),
         .library(
+            name: "AdyenCardScanner",
+            targets: ["AdyenCardScanner"]
+        ),
+        .library(
             name: "AdyenComponents",
             targets: ["AdyenComponents"]
         ),
@@ -123,6 +127,13 @@ let package = Package(
             exclude: [
                 "Info.plist",
                 "Utilities/Non SPM Bundle Extension" // This is to exclude `BundleExtension.swift` file, since swift packages has different code to access internal resources.
+            ]
+        ),
+        .target(
+            name: "AdyenCardScanner",
+            path: "AdyenCardScanner",
+            exclude: [
+                "Info.plist"
             ]
         ),
         .target(

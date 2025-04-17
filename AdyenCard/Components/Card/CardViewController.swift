@@ -28,10 +28,12 @@ internal class CardViewController: FormViewController {
     private let cardLogos: [FormCardLogosItem.CardTypeLogo]
     private let cardScannerAnalyticsHandler: CardScannerAnalyticsHandler
     private lazy var cardScannerController: CardScannerControlling = {
-        let controller = CardScannerController(
-            presenter: self,
-            analyticsHandler: cardScannerAnalyticsHandler
-        )
+        var controller: CardScannerControlling
+        if #available(iOS 13.0, *) {
+            controller = CardScannerController(presenter: self, analyticsHandler: cardScannerAnalyticsHandler)
+        } else {
+            controller = DummyCardScannerController(presenter: self, analyticsHandler: cardScannerAnalyticsHandler)
+        }
         controller.title = localizedString(.cardScanYourCardButton, localizationParameters)
         controller.onScanComplete = { [weak self] result in
             self?.handleCardScanningResult(result)
