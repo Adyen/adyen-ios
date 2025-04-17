@@ -11,9 +11,6 @@ import UIKit
 /// A component that provides a form for BLIK payments.
 public final class BLIKComponent: PaymentComponent, PresentableComponent, PaymentAware, LoadingComponent {
     
-    /// Configuration for BLIK Component.
-    public typealias Configuration = BasicComponentConfiguration
-    
     /// The context object for this component.
     @_spi(AdyenInternal)
     public let context: AdyenContext
@@ -28,7 +25,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     )
     
     /// Component's configuration
-    public var configuration: Configuration
+    public var configuration: BLIKComponentConfiguration
 
     public let requiresModalPresentation: Bool = true
 
@@ -42,7 +39,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     public init(
         paymentMethod: BLIKPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: BLIKComponentConfiguration = .init()
     ) {
         self.blikPaymentMethod = paymentMethod
         self.context = context

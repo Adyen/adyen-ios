@@ -101,6 +101,7 @@ public class AdyenCheckout: AdyenCheckoutProtocol {
     
     public func createComponent(with paymentMethod: any PaymentMethod) -> AdyenCheckoutComponent? {
         CheckoutComponentBuilder.build(for: paymentMethod, configuration: configuration)
+//        AdyenCheckoutComponent(paymentMethod: paymentMethod, configuration: configuration)
     }
     
     public func createComponent(with action: Action) -> AdyenCheckoutComponent? {
