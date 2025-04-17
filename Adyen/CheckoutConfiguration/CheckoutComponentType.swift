@@ -17,6 +17,7 @@ public enum CheckoutComponentType: Hashable {
     // init(action: Action...
 }
 
+/// A wrapper to hold a configuration along with other necessary properties a configuration does not have access to such as apiContext/amount etc.
 @_spi(AdyenInternal)
 public class ConfigurationWrapper {
     
