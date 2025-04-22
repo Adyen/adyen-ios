@@ -14,7 +14,10 @@ public struct CheckoutConfiguration {
     public var apiContext: APIContext
     
     // TODO: how we store configurations may change
-    internal var configurations: [String: CheckoutConfigurable]
+    @_spi(AdyenInternal)
+    public var configurations: [CheckoutComponentType: ConfigurationWrapper]
+    
+    internal var analyticsConfiguration: AnalyticsConfiguration
     
     internal var onSubmit: SubmitHandler?
     internal var onAdditionalDetails: AdditionalDetailsHandler?
@@ -34,19 +37,26 @@ public struct CheckoutConfiguration {
         environment: Environment,
         amount: Amount,
         clientKey: String,
+        analyticsConfiguration: AnalyticsConfiguration = .init(),
         @CheckoutConfigurationBuilder content: () -> CheckoutConfigurable
     ) throws {
         self.apiContext = try APIContext(environment: environment, clientKey: clientKey)
         self.amount = amount
+        self.analyticsConfiguration = analyticsConfiguration
         
+        var configDictionary: [CheckoutComponentType: ConfigurationWrapper] = [:]
         let content = content()
-        let configArray = (content as? CompositeCheckoutConfiguration)?.configurations ?? [content]
-        var configDictionary: [String: CheckoutConfigurable] = [:]
+        let configArray = (content as? CompositeCheckoutConfiguration)?.configurations ?? []
         
-        // Should dictionary hold ALL configs beforehand and update new ones?
         for configuration in configArray {
-            configDictionary[String(describing: configuration.self)] = configuration
+            let wrappedConfiguration = ConfigurationWrapper(
+                configuration: configuration,
+                apiContext: apiContext,
+                amount: amount
+            )
+            configDictionary[configuration.componentType] = wrappedConfiguration
         }
         self.configurations = configDictionary
     }
+    
 }

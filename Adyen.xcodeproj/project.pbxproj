@@ -389,6 +389,9 @@
 		A04F8C2B29E5957B00F3F62B /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
 		A04F8C3129E596C300F3F62B /* CashAppPayDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01D775529B250C10075BD70 /* CashAppPayDetails.swift */; };
 		A04F8C3229E596C300F3F62B /* CashAppPayComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03B7C9129B0C61500FDDDFC /* CashAppPayComponent.swift */; };
+		A052F5D82DB1250D00C47D3E /* CheckoutComponentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A052F5D72DB124FC00C47D3E /* CheckoutComponentType.swift */; };
+		A052F5DA2DB143FB00C47D3E /* BLIKComponentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A052F5D92DB143F200C47D3E /* BLIKComponentConfiguration.swift */; };
+		A052F5DC2DB1460000C47D3E /* CheckoutConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A052F5DB2DB145FB00C47D3E /* CheckoutConfigurable.swift */; };
 		A05D7212276A28EE0087F3E9 /* DocumentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */; };
 		A06170A92CCF96B300AF388A /* EventAnalyticsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06170A82CCF96B300AF388A /* EventAnalyticsProvider.swift */; };
 		A06170AB2CCFE0F600AF388A /* AnalyticsProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06170AA2CCFE0F600AF388A /* AnalyticsProviderProtocol.swift */; };
@@ -441,6 +444,8 @@
 		A0F749B42D95946200014A05 /* AdyenDropIn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E9B36CAB2243B2FE00EAA368 /* AdyenDropIn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A0F749B82D95946600014A05 /* AdyenSession.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F92980A627CE2B33000CA5CA /* AdyenSession.framework */; };
 		A0F749B92D95946600014A05 /* AdyenSession.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F92980A627CE2B33000CA5CA /* AdyenSession.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A0F749DB2D9EC10700014A05 /* CheckoutComponentBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F749DA2D9EC02900014A05 /* CheckoutComponentBuilder.swift */; };
+		A0F749DD2D9FCEA200014A05 /* AdyenCheckoutProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F749DC2D9FCE9E00014A05 /* AdyenCheckoutProtocol.swift */; };
 		A0FA143F26D65A5300627127 /* InstallmentPickerElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */; };
 		B62D48B42BBE8DBE001EF01A /* AnalyticsFlavorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16AB280702B200534419 /* AnalyticsFlavorTests.swift */; };
 		B62D48B52BBE8DBE001EF01A /* AnalyticsEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16A928059A5A00534419 /* AnalyticsEventTests.swift */; };
@@ -1865,6 +1870,9 @@
 		A04F8C1E29E5950100F3F62B /* AdyenCashAppPay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenCashAppPay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A04F8C2029E5950100F3F62B /* AdyenCashAppPay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenCashAppPay.h; sourceTree = "<group>"; };
 		A04F8C2129E5950100F3F62B /* AdyenCashAppPay.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = AdyenCashAppPay.docc; sourceTree = "<group>"; };
+		A052F5D72DB124FC00C47D3E /* CheckoutComponentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutComponentType.swift; sourceTree = "<group>"; };
+		A052F5D92DB143F200C47D3E /* BLIKComponentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentConfiguration.swift; sourceTree = "<group>"; };
+		A052F5DB2DB145FB00C47D3E /* CheckoutConfigurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutConfigurable.swift; sourceTree = "<group>"; };
 		A05A9B7D2B8F8DF300E5E178 /* AnalyticsEventDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEventDataSourceTests.swift; sourceTree = "<group>"; };
 		A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentComponentTests.swift; sourceTree = "<group>"; };
 		A06170A82CCF96B300AF388A /* EventAnalyticsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAnalyticsProvider.swift; sourceTree = "<group>"; };
@@ -1908,6 +1916,8 @@
 		A0F7499C2D958B3800014A05 /* AdyenCheckout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenCheckout.h; sourceTree = "<group>"; };
 		A0F7499D2D958B3800014A05 /* AdyenCheckout.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = AdyenCheckout.docc; sourceTree = "<group>"; };
 		A0F749A42D958B9400014A05 /* AdyenCheckout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenCheckout.swift; sourceTree = "<group>"; };
+		A0F749DA2D9EC02900014A05 /* CheckoutComponentBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutComponentBuilder.swift; sourceTree = "<group>"; };
+		A0F749DC2D9FCE9E00014A05 /* AdyenCheckoutProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenCheckoutProtocol.swift; sourceTree = "<group>"; };
 		A0FA143E26D65A5300627127 /* InstallmentPickerElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallmentPickerElement.swift; sourceTree = "<group>"; };
 		B62D48AC2BBE8D79001EF01A /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
@@ -3336,6 +3346,8 @@
 		A01948532D91AD7500AA27AC /* CheckoutConfiguration */ = {
 			isa = PBXGroup;
 			children = (
+				A052F5D72DB124FC00C47D3E /* CheckoutComponentType.swift */,
+				A052F5DB2DB145FB00C47D3E /* CheckoutConfigurable.swift */,
 				A01948562D92BFAB00AA27AC /* ConfigurationBuilder.swift */,
 				A01948542D91AD8700AA27AC /* CheckoutConfiguration.swift */,
 				A0D87A252D9420AF00763AD6 /* CheckoutConfiguration+Callbacks.swift */,
@@ -3430,7 +3442,9 @@
 		A0F7499E2D958B3800014A05 /* AdyenCheckout */ = {
 			isa = PBXGroup;
 			children = (
+				A0F749DC2D9FCE9E00014A05 /* AdyenCheckoutProtocol.swift */,
 				A0F749A42D958B9400014A05 /* AdyenCheckout.swift */,
+				A0F749DA2D9EC02900014A05 /* CheckoutComponentBuilder.swift */,
 				A0F7499C2D958B3800014A05 /* AdyenCheckout.h */,
 				A0F7499D2D958B3800014A05 /* AdyenCheckout.docc */,
 			);
@@ -4262,6 +4276,7 @@
 			isa = PBXGroup;
 			children = (
 				E700A7352549EA1C0012B64C /* BLIKComponent.swift */,
+				A052F5D92DB143F200C47D3E /* BLIKComponentConfiguration.swift */,
 				E700A73D2549EA680012B64C /* BLIKDetails.swift */,
 			);
 			path = BLIK;
@@ -6942,8 +6957,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0F749DB2D9EC10700014A05 /* CheckoutComponentBuilder.swift in Sources */,
 				A0F7499F2D958B3800014A05 /* AdyenCheckout.docc in Sources */,
 				A0F749A52D958B9700014A05 /* AdyenCheckout.swift in Sources */,
+				A0F749DD2D9FCEA200014A05 /* AdyenCheckoutProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7024,6 +7041,7 @@
 			files = (
 				00346FC529895B7100F7DA94 /* CancellableToolBar.swift in Sources */,
 				E788A3B2265565DF00089448 /* EContextPaymentMethod.swift in Sources */,
+				A052F5DC2DB1460000C47D3E /* CheckoutConfigurable.swift in Sources */,
 				E216D3C5221AEF450013CBCF /* IBANFormatter.swift in Sources */,
 				5A4702182664E9440023F264 /* APIContext.swift in Sources */,
 				E9AFF87A224A4C9C005A0D8D /* PaymentComponent.swift in Sources */,
@@ -7217,6 +7235,7 @@
 				F96F44CD23B257D700871C1F /* Logger.swift in Sources */,
 				A06B7A9A2A1CEC59008FC09D /* StoredCashAppPayPaymentMethod.swift in Sources */,
 				E216D3BC221AAB240013CBCF /* FormItem.swift in Sources */,
+				A052F5D82DB1250D00C47D3E /* CheckoutComponentType.swift in Sources */,
 				81BBB3472A66DAA600AF1F9E /* AddressLookupSearchViewController+Style.swift in Sources */,
 				E9093403228EDADA00C9F04B /* Payment.swift in Sources */,
 				A0D87A262D9420BC00763AD6 /* CheckoutConfiguration+Callbacks.swift in Sources */,
@@ -7729,6 +7748,7 @@
 				F9175EE32593952600D653BE /* BLIKDetails.swift in Sources */,
 				8108315D2A4D8C7B0092FAF7 /* IssuerListEmptyView.swift in Sources */,
 				F9B016F92604F3FF001F23FC /* BasicPersonalInfoFormComponent.swift in Sources */,
+				A052F5DA2DB143FB00C47D3E /* BLIKComponentConfiguration.swift in Sources */,
 				C9D8EB9B2745282E006D8CA1 /* BACSInputPresenter.swift in Sources */,
 				81272F182CC7E1DD00D8773A /* PayByBankUSComponent+ConfirmationViewController.swift in Sources */,
 				F9175EC32593950D00D653BE /* QiwiWalletDetails.swift in Sources */,
