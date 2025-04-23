@@ -10,13 +10,21 @@ import UIKit
 
 /// Configuration for BLIK Component.
 public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
-    public let componentType: Adyen.CheckoutComponentType = .payment(.blik)
+    package var onSubmit: Adyen.SubmitHandler?
     
-    public var showsSubmitButton: Bool
+    package var onAdditionalDetails: Adyen.AdditionalDetailsHandler?
     
-    public var style: FormComponentStyle
+    package var onError: Adyen.CheckoutErrorHandler?
     
-    public var localizationParameters: LocalizationParameters?
+    package var onComplete: Adyen.CheckoutSuccessHandler?
+    
+    package let componentType: Adyen.CheckoutComponentType = .payment(.blik)
+    
+    package var showsSubmitButton: Bool
+    
+    package var style: FormComponentStyle
+    
+    package var localizationParameters: LocalizationParameters?
     
     public init(
         showsSubmitButton: Bool = true,
@@ -27,12 +35,9 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
         self.style = style
         self.localizationParameters = localizationParameters
     }
-    
-    public func showsSubmitButton(_ showsSubmitButton: Bool) -> Self {
-        var copy = self
-        copy.showsSubmitButton = showsSubmitButton
-        return copy
-    }
+}
+
+extension BLIKComponentConfiguration {
     
     public func style(_ style: FormComponentStyle) -> Self {
         var copy = self
@@ -45,5 +50,4 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
         copy.localizationParameters = localizationParameters
         return copy
     }
-    
 }

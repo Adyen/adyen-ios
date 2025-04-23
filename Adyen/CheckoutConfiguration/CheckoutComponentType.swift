@@ -17,17 +17,17 @@ public enum CheckoutComponentType: Hashable {
     // init(action: Action...
 }
 
-/// A wrapper to hold a configuration along with other necessary properties a configuration does not have access to such as apiContext/amount etc.
-@_spi(AdyenInternal)
-public class ConfigurationWrapper {
+/// A wrapper to hold a configuration along with other necessary properties a
+/// configuration does not have access to such as apiContext/amount etc.
+package class ConfigurationWrapper {
     
-    public let configuration: CheckoutComponentConfiguration
+    package let configuration: CheckoutComponentConfiguration
     
-    public let apiContext: APIContext
+    package let apiContext: APIContext
     
-    public let amount: Amount
+    package let amount: Amount
     
-    public init(
+    package init(
         configuration: CheckoutComponentConfiguration,
         apiContext: APIContext,
         amount: Amount

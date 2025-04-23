@@ -7,22 +7,25 @@
 import Foundation
 
 public struct CheckoutConfiguration {
-    
+
     internal var amount: Amount
-    
-    @_spi(AdyenInternal)
-    public var apiContext: APIContext
-    
-    // TODO: how we store configurations may change
-    @_spi(AdyenInternal)
-    public var configurations: [CheckoutComponentType: ConfigurationWrapper]
     
     internal var analyticsConfiguration: AnalyticsConfiguration
     
-    internal var onSubmit: SubmitHandler?
-    internal var onAdditionalDetails: AdditionalDetailsHandler?
-    internal var onError: CheckoutErrorHandler?
-    internal var onComplete: CheckoutSuccessHandler?
+    package var apiContext: APIContext
+    
+    package var showsSubmitButton: Bool = true
+    
+    // TODO: how we store configurations may change
+    package var configurations: [CheckoutComponentType: ConfigurationWrapper]
+    
+    package var onSubmit: SubmitHandler?
+    
+    package var onAdditionalDetails: AdditionalDetailsHandler?
+    
+    package var onError: CheckoutErrorHandler?
+    
+    package var onComplete: CheckoutSuccessHandler?
     
     /// Creates a CheckoutConfiguration instance.
     /// - Parameters:
@@ -49,14 +52,22 @@ public struct CheckoutConfiguration {
         let configArray = (content as? CompositeCheckoutConfiguration)?.configurations ?? []
         
         for configuration in configArray {
-            let wrappedConfiguration = ConfigurationWrapper(
-                configuration: configuration,
-                apiContext: apiContext,
-                amount: amount
-            )
-            configDictionary[configuration.componentType] = wrappedConfiguration
+            if let configuration = configuration as? CheckoutComponentConfiguration {
+                let wrappedConfiguration = ConfigurationWrapper(
+                    configuration: configuration,
+                    apiContext: apiContext,
+                    amount: amount
+                )
+                configDictionary[configuration.componentType] = wrappedConfiguration
+            }
         }
         self.configurations = configDictionary
+    }
+    
+    public func showsSubmitButton(_ showsSubmitButton: Bool) -> Self {
+        var copy = self
+        copy.showsSubmitButton = showsSubmitButton
+        return copy
     }
     
 }

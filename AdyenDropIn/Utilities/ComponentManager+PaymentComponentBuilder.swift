@@ -422,15 +422,16 @@ private extension ComponentManager {
     }
 
     func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {
-        let config = BLIKComponent.Configuration(
-            style: configuration.style.formComponent,
-            localizationParameters: configuration.localizationParameters
-        )
-        return BLIKComponent(
-            paymentMethod: paymentMethod,
-            context: context,
-            configuration: config
-        )
+        nil
+//        let config = BLIKComponent.Configuration(
+//            style: configuration.style.formComponent,
+//            localizationParameters: configuration.localizationParameters
+//        )
+//        return BLIKComponent(
+//            paymentMethod: paymentMethod,
+//            context: context,
+//            configuration: config
+//        )
     }
 
     func createBoletoComponent(_ paymentMethod: BoletoPaymentMethod) -> BoletoComponent {

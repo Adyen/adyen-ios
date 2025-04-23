@@ -16,6 +16,18 @@ public typealias AdditionalDetailsHandler = (_ data: ActionComponentData, _ hand
 public typealias CheckoutErrorHandler = (_ error: Error) -> Void
 public typealias CheckoutSuccessHandler = (_ resultCode: String) -> Void
 
+/// Basic callbacks for all components.
+package protocol CheckoutBaseCallbacks {
+    
+    var onSubmit: SubmitHandler? { get set }
+    
+    var onAdditionalDetails: AdditionalDetailsHandler? { get set }
+    
+    var onError: CheckoutErrorHandler? { get set }
+    
+    var onComplete: CheckoutSuccessHandler? { get set }
+}
+
 public extension CheckoutConfiguration {
     
     // TODO: Add function descriptions
@@ -26,10 +38,10 @@ public extension CheckoutConfiguration {
         return copy
     }
     
-    // TODO: Mutating func or copy
-    mutating func onAdditionalDetails(_ onAdditionalDetails: @escaping AdditionalDetailsHandler) -> Self {
-        self.onAdditionalDetails = onAdditionalDetails
-        return self
+    func onAdditionalDetails(_ onAdditionalDetails: @escaping AdditionalDetailsHandler) -> Self {
+        var copy = self
+        copy.onAdditionalDetails = onAdditionalDetails
+        return copy
     }
     
     func onError(_ onError: @escaping CheckoutErrorHandler) -> Self {
