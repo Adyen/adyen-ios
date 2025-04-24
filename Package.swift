@@ -187,8 +187,12 @@ let package = Package(
         .target(
             name: "AdyenCheckout",
             dependencies: [
+                .target(name: "Adyen"),
                 .target(name: "AdyenDropIn"),
                 .target(name: "AdyenSession"),
+                .target(name: "AdyenCard"),
+                .target(name: "AdyenComponents"),
+                .target(name: "AdyenActions")
             ],
             path: "AdyenCheckout",
             exclude: ["Info.plist"]

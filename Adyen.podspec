@@ -34,6 +34,11 @@ Pod::Spec.new do |s|
     plugin.source_files = 'AdyenCheckout/**/*.swift'
     plugin.dependency 'Adyen/DropIn'
     plugin.dependency 'Adyen/Session'
+    plugin.dependency 'Adyen/Core'
+    plugin.dependency 'Adyen/Actions'
+    plugin.dependency 'Adyen/Card'
+    plugin.dependency 'Adyen/Encryption'
+    plugin.dependency 'Adyen/Components'
   end
 
   # Payment Methods
