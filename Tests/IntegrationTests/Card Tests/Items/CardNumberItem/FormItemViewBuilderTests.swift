@@ -22,6 +22,24 @@ class FormItemViewBuilderTests: XCTestCase {
         let view = item.build(with: FormItemViewBuilder())
         
         XCTAssertNotNil(view as? FormPhoneExtensionPickerItemView)
+        XCTAssertFalse(item.allowsSelection)
+    }
+    
+    func testPhoneExtensionMultiple() {
+        let presenter = UIViewController()
+        let query = PhoneExtensionsQuery(paymentMethod: .generic)
+        let selectableValues = PhoneExtensionsRepository.get(with: query)
+        let item = FormPhoneExtensionPickerItem(
+            preselectedExtension: selectableValues[0],
+            selectableExtensions: selectableValues,
+            validationFailureMessage: nil,
+            style: .init(),
+            presenter: .init(presenter)
+        )
+        let view = item.build(with: FormItemViewBuilder())
+        
+        XCTAssertNotNil(view as? FormPhoneExtensionPickerItemView)
+        XCTAssertTrue(item.allowsSelection)
     }
     
     func testViewBuildableFormTextItem() {

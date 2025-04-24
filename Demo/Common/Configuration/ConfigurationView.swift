@@ -16,6 +16,7 @@ internal struct ConfigurationView: View {
         case region = "Region"
         case payment = "Payment"
         case components = "Components"
+        case authentication = "Authentication"
         case dropIn = "DropIn"
     }
     
@@ -51,6 +52,7 @@ internal struct ConfigurationView: View {
                 wrapInSection(view: paymentSection, section: .payment)
                 wrapInSection(view: dropInSection, section: .dropIn)
                 wrapInSection(view: componentsSection, section: .components)
+                wrapInSection(view: authenticationSection, section: .authentication)
             }.navigationBarTitle("Configuration", displayMode: .inline)
                 .navigationBarItems(
                     leading: Button("Default", action: viewModel.defaultTapped),
@@ -148,6 +150,12 @@ internal struct ConfigurationView: View {
             cardComponentSection
             applePaySection
             analyticsSection
+        }
+    }
+    
+    private var authenticationSection: some View {
+        Toggle(isOn: $viewModel.allowForceCardRedirectAction) {
+            Text("Force Card RedirectAction")
         }
     }
 

@@ -37,8 +37,8 @@ internal struct SessionRequest: APIRequest {
         try container.encode(ConfigurationConstants.returnUrl.absoluteString, forKey: .returnUrl)
         try container.encode(ConfigurationConstants.reference, forKey: .reference)
         try container.encode("iOS", forKey: .channel)
-        try container.encode(ConfigurationConstants.additionalData, forKey: .additionalData)
         try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
+        try container.encode(ConfigurationConstants.mandate, forKey: .mandate)
         
         if ConfigurationConstants.current.cardSettings.enableInstallments {
             let installmentOptions = [
@@ -58,13 +58,20 @@ internal struct SessionRequest: APIRequest {
                 message: "API version should be v70 or above to apply card component's store payment method field",
                 condition: ConfigurationConstants.current.apiVersion < 70
             )
-            try container.encode("askForConsent", forKey: .storePaymentMethodMode)
-            try container.encode("CardOnFile", forKey: .recurringProcessingModel)
+            try container.encode("enabled", forKey: .storePaymentMethodMode)
+            try container.encode(ConfigurationConstants.recurringProcessingModel, forKey: .recurringProcessingModel)
         }
         
         if ConfigurationConstants.current.dropInSettings.allowDisablingStoredPaymentMethods {
             try container.encode(true, forKey: .showRemovePaymentMethodButton)
         }
+        
+        let configuration: AuthenticationData.AuthenticationConfiguration = ConfigurationConstants.current.threeDSConfigurationSettings.allowForceCardRedirectAction ?
+            .cardRedirectAction : .nativeThreeDSAction
+        try container.encodeIfPresent(
+            AuthenticationData(configuration: configuration),
+            forKey: .authenticationData
+        )
     }
     
     internal enum CodingKeys: CodingKey {
@@ -85,6 +92,8 @@ internal struct SessionRequest: APIRequest {
         case recurringProcessingModel
         case showInstallmentAmount
         case showRemovePaymentMethodButton
+        case mandate
+        case authenticationData
     }
     
 }
@@ -98,5 +107,32 @@ internal struct SessionResponse: Response {
     internal enum CodingKeys: String, CodingKey {
         case sessionData
         case sessionId = "id"
+    }
+}
+
+private struct AuthenticationData: Encodable {
+    struct ThreeDSRequestData: Encodable {
+        enum NativeThreeDS: String, Encodable {
+            case preferred
+            case disabled
+        }
+
+        let nativeThreeDS: NativeThreeDS
+    }
+
+    let threeDSRequestData: ThreeDSRequestData
+    
+    enum AuthenticationConfiguration {
+        case nativeThreeDSAction
+        case cardRedirectAction
+    }
+    
+    init?(configuration: AuthenticationConfiguration) {
+        switch configuration {
+        case .cardRedirectAction:
+            self.threeDSRequestData = ThreeDSRequestData(nativeThreeDS: .disabled)
+        case .nativeThreeDSAction:
+            return nil
+        }
     }
 }

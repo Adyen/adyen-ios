@@ -59,13 +59,39 @@ internal struct PaymentsRequest: APIRequest {
         try container.encode(currentConfiguration.countryCode, forKey: .countryCode)
         try container.encode(ConfigurationConstants.returnUrl.absoluteString, forKey: .returnUrl)
         try container.encode(ConfigurationConstants.shopperReference, forKey: .shopperReference)
-        try container.encode(ConfigurationConstants.additionalData, forKey: .additionalData)
+        let configuration: AdditionalData.AuthenticationConfiguration = currentConfiguration.threeDSConfigurationSettings.allowForceCardRedirectAction ? .cardRedirectAction : .nativeThreeDSAction
+        try container.encode(
+            AdditionalData(configuration: configuration),
+            forKey: .additionalData
+        )
         try container.encode(currentConfiguration.merchantAccount, forKey: .merchantAccount)
         try container.encodeIfPresent(data.order?.compactOrder, forKey: .order)
         try container.encodeIfPresent(data.installments, forKey: .installments)
         try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
         try container.encode(ConfigurationConstants.recurringProcessingModel, forKey: .recurringProcessingModel)
         try container.encodeIfPresent(data.checkoutAttemptId, forKey: .checkoutAttemptId)
+        try container.encode(ConfigurationConstants.mandate, forKey: .mandate)
+    }
+    
+    private struct AdditionalData: Encodable {
+        let allow3DS2: Bool?
+        let executeThreeD: Bool
+        
+        enum AuthenticationConfiguration {
+            case nativeThreeDSAction
+            case cardRedirectAction
+        }
+        
+        init(configuration: AuthenticationConfiguration) {
+            switch configuration {
+            case .cardRedirectAction:
+                self.allow3DS2 = nil
+                self.executeThreeD = true
+            case .nativeThreeDSAction:
+                self.allow3DS2 = true
+                self.executeThreeD = true
+            }
+        }
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -94,6 +120,7 @@ internal struct PaymentsRequest: APIRequest {
         case lineItems
         case delegatedAuthenticationData
         case recurringProcessingModel
+        case mandate
     }
     
 }

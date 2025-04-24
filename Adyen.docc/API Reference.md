@@ -297,6 +297,12 @@ The Adyen DropIn/Components SDK API Reference.
 - ``UPIPaymentMethod``
 - ``UPIComponent``
 - ``UPIComponentDetails``
+
+### PayTo Component
+
+- ``PayToPaymentMethod``
+- ``PayToComponent``
+- ``PayToDetails``
     
 ## Public Protocols
 

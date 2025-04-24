@@ -2,6 +2,9 @@ name: 🫛 Publish Adyen.podspec
 on:
   workflow_dispatch:
   workflow_call:
+    secrets: # When triggered via another workflow, secrets are not automatically forwarded
+      COCOAPODS_TRUNK_TOKEN:
+        required: true
   
 jobs:
 
