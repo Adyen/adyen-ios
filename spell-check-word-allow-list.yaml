@@ -209,3 +209,9 @@ whiteList:
   - primeiropay
   - SDKs
   - ks
+  - payto
+  - abn
+  - firstname
+  - bsb
+  - payid
+  - orgid

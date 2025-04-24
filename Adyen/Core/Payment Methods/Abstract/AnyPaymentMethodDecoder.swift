@@ -90,7 +90,8 @@ internal enum AnyPaymentMethodDecoder {
         .upi: UPIPaymentMethodDecoder(),
         .cashAppPay: CashAppPayPaymentMethodDecoder(),
         .twint: TwintPaymentMethodDecoder(),
-        .payByBankAISDD: PayByBankUSPaymentMethodDecoder()
+        .payByBankAISDD: PayByBankUSPaymentMethodDecoder(),
+        .payTo: PayToPaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = InstantPaymentMethodDecoder()
@@ -537,6 +538,27 @@ private struct TwintPaymentMethodDecoder: PaymentMethodDecoder {
         #endif
             
         return nil
+    }
+}
+
+private struct PayToPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
+        if isStored {
+            return try .storedPayTo(StoredPayToPaymentMethod(from: decoder))
+        } else {
+            return try .payTo(PayToPaymentMethod(from: decoder))
+        }
+    }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        switch paymentMethod {
+        case let regular as PayToPaymentMethod:
+            return .payTo(regular)
+        case let stored as StoredPayToPaymentMethod:
+            return .storedPayTo(stored)
+        default:
+            return nil
+        }
     }
 }
 

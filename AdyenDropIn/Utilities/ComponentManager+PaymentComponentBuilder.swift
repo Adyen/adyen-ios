@@ -280,6 +280,22 @@ extension ComponentManager: PaymentComponentBuilder {
             configuration: configuration
         )
     }
+    
+    internal func build(paymentMethod: PayToPaymentMethod) -> PaymentComponent? {
+        PayToComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: .init(style: configuration.style.formComponent)
+        )
+    }
+    
+    internal func build(paymentMethod: StoredPayToPaymentMethod) -> (any PaymentComponent)? {
+        StoredPaymentMethodComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: .init(localizationParameters: configuration.localizationParameters)
+        )
+    }
 }
 
 // MARK: - Privates

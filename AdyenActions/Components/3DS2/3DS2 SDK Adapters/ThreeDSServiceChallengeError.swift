@@ -7,9 +7,9 @@
 import Foundation
 
 /// Errors that could happen during a challenge
-internal enum ThreeDSServiceChallengeError: Error {
+internal enum ThreeDSServiceChallengeError: Error, Equatable {
     /// The transaction was not initialized during fingerprinting.
-    case transactionNotInitialized(errorPayload: String)
+    case transactionNotInitialized
     /// Edge case which should never occur.
     case errorAndResultAreNil(errorPayload: String)
     /// The challenge has been cancelled.

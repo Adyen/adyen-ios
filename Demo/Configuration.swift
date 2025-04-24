@@ -32,9 +32,6 @@ internal enum ConfigurationConstants {
     static let shopperReference = "iOS Checkout Shopper"
 
     static let shopperEmail = "checkoutShopperiOS@example.org"
-    
-    static let additionalData = ["allow3DS2": true, "executeThreeD": true]
-    
     static let recurringProcessingModel = "CardOnFile"
 
     static var apiContext: APIContext {
@@ -63,6 +60,15 @@ internal enum ConfigurationConstants {
         "taxAmount": "52",
         "id": "Item #2"
     ]]
+    
+    // sample mandate object (e.g., for PayTo)
+    static let mandate = [
+        "amount": "\(current.amount.value)",
+        "amountRule": "max",
+        "endsAt": "2027-10-01",
+        "frequency": "adhoc",
+        "remarks": "Remark on mandate"
+    ]
     
     static var delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication {
         .init(relyingPartyIdentifier: "test-authentication-adyen.netlify.app")
@@ -114,6 +120,10 @@ internal struct DropInSettings: Codable {
     internal var allowPreselectedPaymentView: Bool = true
 }
 
+internal struct ThreeDSConfigurationSettings: Codable {
+    internal var allowForceCardRedirectAction: Bool
+}
+
 internal struct ApplePaySettings: Codable {
     internal var merchantIdentifier: String
     internal var allowOnboarding: Bool = false
@@ -133,6 +143,7 @@ internal struct DemoAppSettings: Codable {
     internal let merchantAccount: String
     internal let cardSettings: CardSettings
     internal let dropInSettings: DropInSettings
+    internal let threeDSConfigurationSettings: ThreeDSConfigurationSettings
     internal let applePaySettings: ApplePaySettings
     internal let analyticsSettings: AnalyticsSettings
 
@@ -160,6 +171,7 @@ internal struct DemoAppSettings: Codable {
         merchantAccount: ConfigurationConstants.merchantAccount,
         cardSettings: defaultCardSettings,
         dropInSettings: defaultDropInSettings,
+        threeDSConfigurationSettings: threeDSConfigurationSettings,
         applePaySettings: defaultApplePaySettings,
         analyticsSettings: defaultAnalyticsSettings
     )
@@ -180,6 +192,10 @@ internal struct DemoAppSettings: Codable {
         allowDisablingStoredPaymentMethods: false,
         allowsSkippingPaymentList: false,
         allowPreselectedPaymentView: true
+    )
+    
+    internal static let threeDSConfigurationSettings = ThreeDSConfigurationSettings(
+        allowForceCardRedirectAction: false
     )
 
     internal static let defaultApplePaySettings = ApplePaySettings(
