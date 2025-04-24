@@ -55,7 +55,7 @@ let package = Package(
         .library(
             name: "AdyenDelegatedAuthentication",
             targets: ["AdyenDelegatedAuthentication"]
-        )
+        ),
         .library(
             name: "AdyenCheckout",
             targets: ["AdyenCheckout"]
