@@ -94,6 +94,7 @@ then
     pod 'Adyen/DelegatedAuthentication', :path => '../'
     pod 'Adyen/CashAppPay', :path => '../'
     pod 'Adyen/AdyenTwint', :path => '../'
+    pod 'Adyen/AdyenCheckout', :path => '../'
   end
 
   post_install do |installer|
@@ -118,6 +119,7 @@ else
     pod 'AdyenAuthentication'
     pod 'Adyen/CashAppPay', :path => '../'
     pod 'Adyen/AdyenTwint', :path => '../'
+    pod 'Adyen/AdyenCheckout', :path => '../'
   end
 
   post_install do |installer|
