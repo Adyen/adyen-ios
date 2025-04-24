@@ -56,6 +56,10 @@ let package = Package(
             name: "AdyenDelegatedAuthentication",
             targets: ["AdyenDelegatedAuthentication"]
         )
+        .library(
+            name: "AdyenCheckout",
+            targets: ["AdyenCheckout"]
+        )
     ],
     dependencies: [
         .package(
@@ -178,6 +182,15 @@ let package = Package(
                 .target(name: "TwintSDK")
             ],
             path: "AdyenTwint",
+            exclude: ["Info.plist"]
+        ),
+        .target(
+            name: "AdyenCheckout",
+            dependencies: [
+                .target(name: "AdyenDropIn"),
+                .target(name: "AdyenSession"),
+            ],
+            path: "AdyenCheckout",
             exclude: ["Info.plist"]
         ),
         .binaryTarget(
