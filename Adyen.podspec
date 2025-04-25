@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '12.0'
   s.swift_version = '5.9'
   s.frameworks = 'Foundation'
-  s.default_subspecs = 'Core', 'Components', 'Actions', 'Card', 'Encryption', 'DropIn', 'Session'
+  s.default_subspecs = 'Core', 'Components', 'Actions', 'Card', 'Encryption', 'DropIn', 'Session', 'AdyenCheckout'
   s.pod_target_xcconfig = {
     'SWIFT_SUPPRESS_WARNINGS' => 'YES',
     'BUILD_LIBRARY_FOR_DISTRIBUTION' => 'YES',
@@ -32,13 +32,13 @@ Pod::Spec.new do |s|
 
   s.subspec 'AdyenCheckout' do |plugin|
     plugin.source_files = 'AdyenCheckout/**/*.swift'
-    plugin.dependency 'Adyen/DropIn'
-    plugin.dependency 'Adyen/Session'
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/Actions'
     plugin.dependency 'Adyen/Card'
     plugin.dependency 'Adyen/Encryption'
     plugin.dependency 'Adyen/Components'
+    plugin.dependency 'Adyen/DropIn'
+    plugin.dependency 'Adyen/Session'
   end
 
   # Payment Methods
