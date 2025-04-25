@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-@_spi(AdyenInternal) import AdyenActions
+import AdyenActions
 import AdyenDropIn
 import AdyenNetworking
 import AdyenSession
