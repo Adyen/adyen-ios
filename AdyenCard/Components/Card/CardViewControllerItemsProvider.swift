@@ -69,7 +69,6 @@ extension CardViewController {
             self.addressViewModelBuilder = addressViewModelBuilder
             self.presenter = .init(presenter)
             self.addressMode = addressMode
-            self.binInfo = binInfo
         }
         
         internal lazy var billingAddressPickerItem: FormAddressPickerItem? = {
@@ -165,72 +164,39 @@ extension CardViewController {
             return holderNameItem
         }()
 
-        // TODO: Neelam -- ADD new co-branded card UI here
-
-        /// The card brand selection title label item.
-        internal lazy var brandSelectionTitleLabelItem: FormContainerItem<FormLabelItem> = {
-            brandSelectionTitleLabel()
-        }()
-
-        /// The card brand selection title label.
-        internal func brandSelectionTitleLabel() -> FormContainerItem<FormLabelItem> {
-            let item = FormLabelItem(
-                text: localizedString(
+        internal lazy var coBadgedCardItem: FormCoBadgedCardItem = {
+            FormCoBadgedCardItem(
+                title: localizedString(
                     LocalizationKey(key: "Card brand selection (optional)"),
                     configuration.localizationParameters
                 ),
-                style: configuration.style.sectionHeader
-            )
-            item.style.textAlignment = .left
-            item.identifier = ViewIdentifierBuilder.build(
-                scopeInstance: self,
-                postfix: ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "cardBrandSelectionTitleLabelItem")
-            )
-            return item.padding()
-        }
-
-        ///  The card brand selection subtitle label item..
-        internal lazy var brandSelectionSubtitleLabelItem: FormContainerItem<FormLabelItem> = {
-            brandSelectionSubtitleLabel()
-        }()
-
-        /// The card brand selection subtitle label.
-        internal func brandSelectionSubtitleLabel() -> FormContainerItem<FormLabelItem> {
-            let item = FormLabelItem(
-                text: localizedString(
+                subtitle: localizedString(
                     LocalizationKey(key: "Select your preferred card brand"),
                     configuration.localizationParameters
                 ),
-                style: configuration.style.footnoteLabel
+                selectableFormItems: [],
+                style: .init(
+                    title: configuration.style.sectionHeader,
+                    subtitle: configuration.style.footnoteLabel
+                )
             )
-            item.style.textAlignment = .left
-            item.identifier = ViewIdentifierBuilder.build(
-                scopeInstance: self,
-                postfix: ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "cardBrandSelectionSubtitleLabelItem")
-            )
-            return item.padding(UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0))
-        }
-
-        /// The brand selection list item.
-        internal lazy var brandTypeList: [SelectableFormItem] = {
-            let brands = [CardBrand(type(of: .visa))]
-            guard let brands = self.binInfo?.brands, !brands.isEmpty else { return [] }
-            return brands.map { selectableFormItem(from: $0) }
         }()
 
-        private func selectableFormItem(from brand: CardBrand) -> SelectableFormItem {
-            let selectableItem = SelectableFormItem(
-                title: brand.type.name,
-                imageUrl: nil,
-                isSelected: false,
-                style: .init(title: configuration.style.textField.title),
-                identifier: brand.type.rawValue
-            )
-            selectableItem.selectionHandler = { [weak self, weak selectableItem] in
-                guard let self, let selectableItem else { return }
-                numberContainerItem.numberItem.selectBrand(at: 0)
+        internal func selectableFormItems(from brands: [CardBrand]) -> [SelectableFormItem] {
+            brands.map { brand in
+                let selectableItem = SelectableFormItem(
+                    title: brand.type.name,
+                    imageUrl: numberContainerItem.numberItem.cardTypeLogos.filter { $0.type == brand.type }.first?.url,
+                    isSelected: brand.type.rawValue == brands.first?.type.rawValue ? true : false,
+                    style: .init(title: configuration.style.textField.title),
+                    identifier: brand.type.rawValue
+                )
+                selectableItem.selectionHandler = { [weak self, weak selectableItem] in
+                    guard let self else { return }
+                    handleSelection(identifier: selectableItem?.identifier, brand: brand)
+                }
+                return selectableItem
             }
-            return selectableItem
         }
 
         internal lazy var additionalAuthCodeItem: FormTextInputItem = {
@@ -313,7 +279,23 @@ extension CardViewController {
             )
             return item
         }()
-        
+
+        internal func handleSelection(identifier: String?, brand: CardBrand? = nil) {
+            coBadgedCardItem.selectableFormItems.forEach { $0.isSelected = false }
+            coBadgedCardItem.selectableFormItems.first(where: { $0.identifier == identifier })?.isSelected = true
+            numberContainerItem.numberItem.selectBrand(cardBrand: brand)
+            self.triggerInfoEvent(of: .selected, target: .dualBrand)
+        }
+
+        internal func triggerInfoEvent(of type: AnalyticsEventInfo.InfoType, target: AnalyticsEventTarget, error: AnalyticsValidationError? = nil) {
+            let infoEventData = InfoEventData(
+                type: type,
+                target: target,
+                error: error
+            )
+            onDidTriggerInfoEvent?(infoEventData)
+        }
+
         private func setupEventTriggers(for item: FormTextItem, target: AnalyticsEventTarget) {
             item.onDidBeginEditing = { [weak self] in
                 self?.triggerInfoEvent(of: .focus, target: target)
@@ -331,16 +313,6 @@ extension CardViewController {
                 )
             }
         }
-        
-        private func triggerInfoEvent(of type: AnalyticsEventInfo.InfoType, target: AnalyticsEventTarget, error: AnalyticsValidationError? = nil) {
-            let infoEventData = InfoEventData(
-                type: type,
-                target: target,
-                error: error
-            )
-            onDidTriggerInfoEvent?(infoEventData)
-        }
-
     }
 
 }

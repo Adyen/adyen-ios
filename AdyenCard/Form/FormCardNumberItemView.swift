@@ -88,9 +88,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     
     /// Logo view for the brand(s) icons and selection for dual-branded cards.
     internal lazy var detectedBrandsView: DualBrandView = {
-        let cardTypeLogosView = DualBrandView(style: item.style.icon, onBrandSelection: { [weak self] index in
-            self?.item.selectBrand(at: index)
-        })
+        let cardTypeLogosView = DualBrandView(style: item.style.icon)
         cardTypeLogosView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardTypeLogos")
         cardTypeLogosView.backgroundColor = item.style.backgroundColor
         return cardTypeLogosView

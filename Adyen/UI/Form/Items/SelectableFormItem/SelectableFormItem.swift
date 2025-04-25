@@ -68,3 +68,11 @@ public class SelectableFormItem: FormItem {
     }
 
 }
+
+extension SelectableFormItem: Equatable {
+
+    public static func == (lhs: SelectableFormItem, rhs: SelectableFormItem) -> Bool {
+        lhs.title == rhs.title &&
+            lhs.identifier == rhs.identifier
+    }
+}

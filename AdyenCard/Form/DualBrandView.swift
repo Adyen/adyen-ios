@@ -18,11 +18,13 @@ extension FormCardNumberItemView {
         }
         
         private let style: ImageStyle
+        private var primaryLogoUrl: URL?
+        private var secondaryLogoUrl: URL?
+        private let imageLoader: ImageLoading
+        private var imageLoadingTasks = [AdyenCancellable]()
+
         internal let childItemViews: [any AnyFormItemView] = []
-        
-        /// Closure that's called when a selection is made between the brands
-        private let onBrandSelection: (Int) -> Void
-        
+
         private lazy var stackView: UIStackView = {
             let stackView = UIStackView(arrangedSubviews: [primaryLogoView, secondaryLogoView])
             stackView.axis = .horizontal
@@ -39,27 +41,12 @@ extension FormCardNumberItemView {
             imageView.isHidden = true
             return imageView
         }()
-        
-        private lazy var primaryGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(primaryLogoTapped))
-        
-        private lazy var secondaryGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(secondaryLogoTapped))
-        
-//        private let selectedViewAlpha: CGFloat = 1
-//
-//        private let unselectedViewAlpha: CGFloat = 0.3
-        
-        private var primaryLogoUrl: URL?
-        private var secondaryLogoUrl: URL?
-        private let imageLoader: ImageLoading
-        private var imageLoadingTasks = [AdyenCancellable]()
-        
+
         internal init(
             style: ImageStyle,
-            imageLoader: ImageLoading = ImageLoaderProvider.imageLoader(),
-            onBrandSelection: @escaping ((Int) -> Void)
+            imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
         ) {
             self.style = style
-            self.onBrandSelection = onBrandSelection
             self.imageLoader = imageLoader
             
             super.init(frame: .zero)
@@ -92,44 +79,18 @@ extension FormCardNumberItemView {
             
             primaryLogoUrl = firstLogo.url
             secondaryLogoUrl = secondLogo?.url
-            
-            // primaryLogoView.alpha = selectedViewAlpha
+
             primaryLogoView.accessibilityValue = firstLogo.type.name
             primaryLogoView.isAccessibilityElement = true
-            
-            // dual branded. allow selection but initially neither is selected
+
             if let secondLogo {
-//                primaryLogoView.alpha = unselectedViewAlpha
-//
-//                secondaryLogoView.alpha = unselectedViewAlpha
                 secondaryLogoView.accessibilityValue = secondLogo.type.name
                 secondaryLogoView.isHidden = false
-                
-                primaryLogoView.addGestureRecognizer(primaryGestureRecognizer)
-                secondaryLogoView.addGestureRecognizer(secondaryGestureRecognizer)
             }
             
             secondaryLogoView.isAccessibilityElement = !secondaryLogoView.isHidden
             
-            updateAccessibilityValues()
-            
             updateLogos()
-        }
-        
-        @objc private func primaryLogoTapped() {
-//            guard primaryLogoView.alpha != selectedViewAlpha else { return }
-//            primaryLogoView.alpha = selectedViewAlpha
-//            secondaryLogoView.alpha = unselectedViewAlpha
-            onBrandSelection(0)
-            updateAccessibilityValues()
-        }
-        
-        @objc private func secondaryLogoTapped() {
-//            guard secondaryLogoView.alpha != selectedViewAlpha else { return }
-//            secondaryLogoView.alpha = selectedViewAlpha
-//            primaryLogoView.alpha = unselectedViewAlpha
-            onBrandSelection(1)
-            updateAccessibilityValues()
         }
         
         private func resetLogos() {
@@ -137,12 +98,8 @@ extension FormCardNumberItemView {
             secondaryLogoUrl = nil
 
             primaryLogoView.image = Constant.placeholderImage
-//            primaryLogoView.alpha = selectedViewAlpha
-            primaryLogoView.removeGestureRecognizer(primaryGestureRecognizer)
             secondaryLogoView.image = Constant.placeholderImage
             secondaryLogoView.isHidden = true
-//            secondaryLogoView.alpha = unselectedViewAlpha
-            secondaryLogoView.removeGestureRecognizer(secondaryGestureRecognizer)
         }
         
         private func createEmptyImageView() -> UIImageView {
@@ -153,23 +110,9 @@ extension FormCardNumberItemView {
             imageView.layer.borderWidth = style.borderWidth
             imageView.layer.borderColor = style.borderColor?.cgColor
             imageView.backgroundColor = style.backgroundColor
-            imageView.isUserInteractionEnabled = true
             imageView.widthAnchor.constraint(equalToConstant: Constant.iconSize.width).isActive = true
             imageView.heightAnchor.constraint(equalToConstant: Constant.iconSize.height).isActive = true
             return imageView
-        }
-        
-        private func updateAccessibilityValues() {
-            if secondaryLogoView.isHidden {
-                primaryLogoView.accessibilityTraits = .image
-                return
-            }
-            
-            primaryLogoView.accessibilityTraits = .button
-            secondaryLogoView.accessibilityTraits = .button
-            
-//            primaryLogoView.accessibilityMarkAsSelected(primaryLogoView.alpha == selectedViewAlpha)
-//            secondaryLogoView.accessibilityMarkAsSelected(secondaryLogoView.alpha == selectedViewAlpha)
         }
         
         override public func didMoveToWindow() {

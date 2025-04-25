@@ -21,9 +21,7 @@ final class DualBrandViewTests: XCTestCase {
         sut = FormCardNumberItemView.DualBrandView(
             style: brandImageStyle,
             imageLoader: imageLoader
-        ) { _ in
-            self.brandSelectionCount += 1
-        }
+        )
     }
     
     override func tearDown() {
@@ -64,8 +62,6 @@ final class DualBrandViewTests: XCTestCase {
         XCTAssertEqual(sut.primaryLogoView.image, visaImage, "Primary logo should show visa image")
         XCTAssertEqual(sut.secondaryLogoView.image, bcmcImage, "Secondary logo should show bcmc image")
         XCTAssertFalse(sut.secondaryLogoView.isHidden, "Secondary logo should be visible")
-        XCTAssertEqual(sut.primaryLogoView.alpha, 0.3, accuracy: 0.001, "Primary logo is not selected")
-        XCTAssertEqual(sut.secondaryLogoView.alpha, 0.3, accuracy: 0.001, "Secondary logo is not selected")
 
         // When: Update with empty logos array
         sut.updateCurrentLogos([])
@@ -74,13 +70,6 @@ final class DualBrandViewTests: XCTestCase {
         XCTAssertEqual(sut.primaryLogoView.image, placeholderImage, "Primary logo should show placeholder")
         XCTAssertEqual(sut.primaryLogoView.alpha, 1.0, "Primary logo should have full opacity")
         XCTAssertTrue(sut.secondaryLogoView.isHidden, "Secondary logo should be hidden")
-
-        XCTAssertFalse(sut.primaryLogoView.gestureRecognizers?.isEmpty == false, "Primary logo should not have gesture recognizers")
-        XCTAssertFalse(sut.secondaryLogoView.gestureRecognizers?.isEmpty == false, "Secondary logo should not have gesture recognizers")
-
-        simulateTapOnPrimaryLogo()
-        simulateTapOnSecondaryLogo()
-        XCTAssertEqual(brandSelectionCount, 0, "Brand selection should not be possible after reset")
     }
 
     func testUpdateCurrentLogos_changingFromDualToSingle_resetsAndShowsSingleBrand() {
@@ -99,26 +88,6 @@ final class DualBrandViewTests: XCTestCase {
         
         // Then
         XCTAssertTrue(sut.secondaryLogoView.isHidden, "Secondary logo should be hidden")
-        XCTAssertEqual(sut.primaryLogoView.alpha, 1.0, "Primary logo should have full opacity")
-        XCTAssertFalse(sut.primaryLogoView.gestureRecognizers?.isEmpty == false, "Primary logo should not have gesture recognizers")
-        
-        // Verify brand selection is not possible
-        simulateTapOnPrimaryLogo()
-        XCTAssertEqual(brandSelectionCount, 0, "Brand selection should not be possible with single brand")
-    }
-    
-    // MARK: - Helper Methods
-    
-    private func simulateTapOnPrimaryLogo() {
-        if let gestureRecognizer = sut.primaryLogoView.gestureRecognizers?.first {
-            gestureRecognizer.state = .recognized
-        }
-    }
-    
-    private func simulateTapOnSecondaryLogo() {
-        if let gestureRecognizer = sut.secondaryLogoView.gestureRecognizers?.first {
-            gestureRecognizer.state = .recognized
-        }
     }
     
     private var brandImageStyle: ImageStyle = .init(

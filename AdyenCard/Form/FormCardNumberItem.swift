@@ -176,15 +176,14 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
                 cardTypeLogos.first { $0.type == brand.type }
             }
     }
-    
-    /// Changes the selected dual brand with the given index to trigger updates
+
+    /// Changes the selected dual brand with the given cardBrand to trigger updates
     /// for the observing objects.
-    internal func selectBrand(at index: Int) {
-        let newBrand = detectedBrands.adyen[safeIndex: index]
-        updateValidation(for: newBrand)
-        self.selectedDualBrand = newBrand
+    internal func selectBrand(cardBrand: CardBrand? = nil) {
+        updateValidation(for: cardBrand)
+        self.selectedDualBrand = cardBrand
     }
-    
+
     /// Updates the initial brand and the related validation checks.
     private func update(initialBrand: CardBrand?, defaultSupportedValue: Bool = true) {
         updateValidation(for: initialBrand, defaultSupportedValue: defaultSupportedValue)
