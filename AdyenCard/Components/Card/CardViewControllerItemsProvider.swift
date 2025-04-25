@@ -39,8 +39,6 @@ extension CardViewController {
         
         private let addressMode: CardComponent.AddressFormType
 
-        private var binInfo: BinLookupResponse?
-
         /// Closure that is called when an event is triggered via the field items.
         internal var onDidTriggerInfoEvent: ((InfoEventData) -> Void)?
 
@@ -55,8 +53,7 @@ extension CardViewController {
             localizationParameters: LocalizationParameters?,
             addressViewModelBuilder: AddressViewModelBuilder,
             presenter: ViewControllerPresenter,
-            addressMode: CardComponent.AddressFormType,
-            binInfo: BinLookupResponse? = nil
+            addressMode: CardComponent.AddressFormType
         ) {
             self.formStyle = formStyle
             self.amount = payment?.amount

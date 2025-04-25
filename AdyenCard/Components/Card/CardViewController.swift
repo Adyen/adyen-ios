@@ -35,8 +35,6 @@ internal class CardViewController: FormViewController {
     
     private let cardLogos: [FormCardLogosItem.CardTypeLogo]
 
-    private var binInfo: BinLookupResponse?
-
     internal lazy var items = {
         
         ItemsProvider(
@@ -50,8 +48,7 @@ internal class CardViewController: FormViewController {
             localizationParameters: localizationParameters,
             addressViewModelBuilder: DefaultAddressViewModelBuilder(),
             presenter: self,
-            addressMode: configuration.billingAddress.mode,
-            binInfo: binInfo
+            addressMode: configuration.billingAddress.mode
         )
     }()
 
@@ -207,9 +204,11 @@ internal class CardViewController: FormViewController {
             items.coBadgedCardItem.isHidden.wrappedValue = true
         } else {
             brands = binInfo.brands ?? []
-            items.coBadgedCardItem.isHidden.wrappedValue = false
-            items.triggerInfoEvent(of: .rendered, target: .dualBrand)
-            items.coBadgedCardItem.update(selectableFormItems: items.selectableFormItems(from: brands))
+            if brands.count == 2, brands.allSatisfy(\.isSupported) {
+                items.coBadgedCardItem.isHidden.wrappedValue = false
+                items.triggerInfoEvent(of: .rendered, target: .dualBrand)
+                items.coBadgedCardItem.update(selectableFormItems: items.selectableFormItems(from: brands))
+            }
         }
         issuingCountryCode = binInfo.issuingCountryCode
         items.numberContainerItem.update(brands: brands)
