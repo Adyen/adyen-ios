@@ -6,11 +6,11 @@
 
 import Foundation
 
-public enum CheckoutComponentType: Hashable {
+package enum CheckoutComponentType: Hashable {
     case payment(PaymentMethodType)
     // case action(Action)
     
-    init(paymentMethodType: PaymentMethodType) {
+    package init(paymentMethodType: PaymentMethodType) {
         self = .payment(paymentMethodType)
     }
     

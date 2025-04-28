@@ -5,10 +5,16 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import AdyenActions
-import AdyenDropIn
+#if canImport(AdyenSession)
+    @_spi(AdyenInternal) import AdyenSession
+#endif
+#if canImport(AdyenDropIn)
+    @_spi(AdyenInternal) import AdyenDropIn
+#endif
+#if canImport(AdyenActions)
+    @_spi(AdyenInternal) import AdyenActions
+#endif
 import AdyenNetworking
-import AdyenSession
 import Foundation
 
 /// AdyenCheckout is the entry point to the Checkout flow. You initialize it through its static methods for your chosen flow
