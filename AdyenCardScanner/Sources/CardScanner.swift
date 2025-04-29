@@ -32,6 +32,7 @@ public enum CardScanner: CardScanning {
         localizationBundle: Bundle,
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) -> UIViewController? {
+        assertCameraUsageDescription()
         let cardScannerViewController = cardScannerAssembler.resolveCardScannerViewController(
             localizationBundle: localizationBundle,
             completion: completion
@@ -41,5 +42,25 @@ public enum CardScanner: CardScanning {
 
     public static var isAvailable: Bool {
         cardScannerAssembler.captureDevice != nil
+    }
+
+    // MARK: - Private
+
+    // swiftlint:disable line_length
+    private static func assertCameraUsageDescription() {
+        guard let cameraUsageDescription = Bundle.main.object(
+            forInfoDictionaryKey: "NSCameraUsageDescription"
+        ) as? String, !cameraUsageDescription.isEmpty else {
+            #if DEBUG
+                fatalError(
+                    "Error: NSCameraUsageDescription is missing from Info.plist. Please add a description for camera usage as required by the AdyenCardScanner SDK."
+                )
+            #else
+                debugPrint(
+                    "⚠️ Warning: NSCameraUsageDescription is missing from Info.plist. Camera functionality in AdyenCardScanner SDK might be limited or fail."
+                )
+                return
+            #endif
+        }
     }
 }
