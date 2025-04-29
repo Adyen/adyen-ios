@@ -229,6 +229,16 @@ class FormCardNumberItemViewTests: XCTestCase {
     }
 
     func test_makeCardScanAccessoryView_shouldReturnAccessoryViewWithScanButton() throws {
+
+        class SelectorMock: AnyObject {
+
+            var selectorMethodCalled = false
+            @objc
+            func selectorMethod() {
+                selectorMethodCalled = true
+            }
+        }
+
         // Given
         let panLength = 5
         let cardNumberValidator = CardNumberValidator(
@@ -237,11 +247,11 @@ class FormCardNumberItemViewTests: XCTestCase {
             panLength: panLength
         )
 
-        let mockObject = MockObject()
+        let mockObject = SelectorMock()
         let sut = setupSut(validator: cardNumberValidator)
 
         // When
-        let cardScanAccessoryView = sut.makeCardScanAccessoryView(title: "Scan card", #selector(mockObject.optionalMethod))
+        let cardScanAccessoryView = sut.makeCardScanAccessoryView(title: "Scan card", #selector(mockObject.selectorMethod))
 
         // Then
         let inputView = try XCTUnwrap(cardScanAccessoryView as? UIInputView)
@@ -297,14 +307,5 @@ private extension FormCardNumberItemViewTests {
         }
         sut.delegate = delegate
         return delegate
-    }
-}
-
-class MockObject: AnyObject {
-
-    var invokedOptionalMethod = false
-    @objc
-    func optionalMethod() {
-        invokedOptionalMethod = true
     }
 }
