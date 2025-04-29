@@ -227,6 +227,27 @@ class FormCardNumberItemViewTests: XCTestCase {
         // the delegate would be released before the end of the test
         _ = setup
     }
+
+    func test_makeCardScanAccessoryView_shouldReturnAccessoryViewWithScanButton() throws {
+        // Given
+        let panLength = 5
+        let cardNumberValidator = CardNumberValidator(
+            isLuhnCheckEnabled: true,
+            isEnteredBrandSupported: true,
+            panLength: panLength
+        )
+
+        let mockObject = MockObject()
+        let sut = setupSut(validator: cardNumberValidator)
+
+        // When
+        let cardScanAccessoryView = sut.makeCardScanAccessoryView(title: "Scan card", #selector(mockObject.optionalMethod))
+
+        // Then
+        let inputView = try XCTUnwrap(cardScanAccessoryView as? UIInputView)
+        let scanButton = inputView.subviews.last as? UIButton
+        XCTAssertNotNil(scanButton, "The FormCardNumberItemView should contain a card scan button")
+    }
 }
 
 // MARK: - Helpers
@@ -276,5 +297,14 @@ private extension FormCardNumberItemViewTests {
         }
         sut.delegate = delegate
         return delegate
+    }
+}
+
+class MockObject: AnyObject {
+
+    var invokedOptionalMethod = false
+    @objc
+    func optionalMethod() {
+        invokedOptionalMethod = true
     }
 }
