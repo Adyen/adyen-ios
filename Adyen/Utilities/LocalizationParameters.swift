@@ -8,7 +8,7 @@ import Foundation
 
 internal enum LocalizationMode: Equatable {
     case natural(bundle: Bundle?, tableName: String?, keySeparator: String?, locale: String?)
-    case enforced(locale: String)
+    case enforced(bundle: Bundle?, tableName: String?, keySeparator: String?, locale: String)
 }
 
 /// The localization parameters to control some aspects of how localized strings are fetched,
@@ -25,9 +25,9 @@ public struct LocalizationParameters: Equatable {
     /// By default current locale is used.
     public var locale: String? {
         switch mode {
-        case .natural(bundle: _, tableName: _, keySeparator: _, locale: let locale):
+        case .natural(_, _, _, locale: let locale):
             return locale
-        case let .enforced(locale: locale):
+        case .enforced(_, _, _, locale: let locale):
             return locale
         }
     }
@@ -36,10 +36,10 @@ public struct LocalizationParameters: Equatable {
     /// the Localizable.strings is used instead.
     public var tableName: String? {
         switch mode {
-        case let .natural(bundle: _, tableName: tableName, keySeparator: _, locale: _):
+        case .natural(_, tableName: let tableName, _, _):
             return tableName
-        default:
-            return nil
+        case .enforced(_, tableName: let tableName, _, _):
+            return tableName
         }
     }
 
@@ -47,10 +47,10 @@ public struct LocalizationParameters: Equatable {
     /// otherwise a "." is used.
     public var keySeparator: String? {
         switch mode {
-        case let .natural(bundle: _, tableName: _, keySeparator: keySeparator, locale: _):
+        case .natural(_, _, keySeparator: let keySeparator, _):
             return keySeparator
-        default:
-            return nil
+        case .enforced(_, _, keySeparator: let keySeparator, _):
+            return keySeparator
         }
     }
 
@@ -59,10 +59,10 @@ public struct LocalizationParameters: Equatable {
     /// if not found, then the internal SDK bundle is used.
     public var bundle: Bundle? {
         switch mode {
-        case let .natural(bundle: bundle, tableName: _, keySeparator: _, locale: _):
+        case .natural(bundle: let bundle, _, _, _):
             return bundle
-        default:
-            return nil
+        case .enforced(bundle: let bundle, _, _, _):
+            return bundle
         }
 
     }
@@ -84,7 +84,7 @@ public struct LocalizationParameters: Equatable {
     ///
     /// - Parameters:
     ///   - enforcedLocale: The locale to be enforced.
-    public init(enforcedLocale: String) {
-        mode = .enforced(locale: enforcedLocale)
+    public init(enforcedLocale: String, bundle: Bundle? = nil, tableName: String? = nil, keySeparator: String? = nil) {
+        mode = .enforced(bundle: bundle, tableName: tableName, keySeparator: keySeparator, locale: enforcedLocale)
     }
 }

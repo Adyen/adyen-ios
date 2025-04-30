@@ -31,11 +31,12 @@ private struct LocalizationInput {
 public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
     var translationAttempt: String?
 
+    let possibleInputs = buildPossibleInputs(key.key, parameters)
     switch parameters?.mode {
-    case let .enforced(locale: enforcedLocale):
-        translationAttempt = enforceLocalizedString(key: key.key, locale: enforcedLocale)
+    case .enforced:
+        translationAttempt = attempt(possibleInputs, locale: parameters?.locale)
     case .natural, .none:
-        translationAttempt = attempt(buildPossibleInputs(key.key, parameters))
+        translationAttempt = attempt(possibleInputs)
     }
 
     // Use fallback in case attempt result is nil or empty
@@ -59,12 +60,6 @@ private func fallbackLocalizedString(key: String) -> String {
             .flatMap(Bundle.init(path:))
             .map { NSLocalizedString(key, tableName: nil, bundle: $0, comment: "") } ?? key
     }
-}
-
-private func enforceLocalizedString(key: String, locale: String) -> String? {
-    Bundle.coreInternalResources.path(forResource: locale, ofType: "lproj")
-        .flatMap(Bundle.init(path:))
-        .map { NSLocalizedString(key, tableName: nil, bundle: $0, comment: "") }
 }
 
 private func buildPossibleInputs(
@@ -102,8 +97,11 @@ private func updated(_ key: String, withSeparator separator: String?) -> String?
     return key.replacingOccurrences(of: ".", with: separator)
 }
 
-private func attempt(_ inputs: [LocalizationInput]) -> String? {
-    inputs.compactMap { attempt($0) }.first
+private func attempt(_ inputs: [LocalizationInput], locale: String? = nil) -> String? {
+    if let locale {
+        return inputs.compactMap { attemptEnforce(locale: locale, $0) }.first
+    }
+    return inputs.compactMap { attempt($0) }.first
 }
 
 private func attempt(_ input: LocalizationInput) -> String? {
@@ -113,6 +111,18 @@ private func attempt(_ input: LocalizationInput) -> String? {
         return localizedString
     }
     
+    return nil
+}
+
+/// This method encapsulate individual file into own Bundle and uses it as a source for NSLocalizedString
+private func attemptEnforce(locale: String, _ input: LocalizationInput) -> String? {
+    let localizedString = input.bundle.path(forResource: locale, ofType: "lproj")
+        .flatMap(Bundle.init(path:))
+        .map { NSLocalizedString(input.key, tableName: input.table, bundle: $0, comment: input.key) }
+
+    if localizedString != input.key {
+        return localizedString
+    }
     return nil
 }
 
