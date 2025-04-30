@@ -180,6 +180,6 @@ internal protocol CardScannerControlling: CardScannerAvailability {
 
 #else // canImport(AdyenCardScanner)
 
-    typealias CardScannerController = DummyCardScannerController
+    internal typealias CardScannerController = DummyCardScannerController
 
 #endif // canImport(AdyenCardScanner)
