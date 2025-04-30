@@ -1,29 +1,50 @@
-# AdyenCardScanner SDK
+# Adyen CardScanner iOS SDK
 
-The **CardScanner SDK** allows you to quickly integrate card scanning functionality into your iOS app using a simple, customizable interface.
+The **CardScanner SDK** allows you to quickly integrate card scanning functionality into your iOS app.
 
-## Technical Requirements
+## Overview
 
-- iOS 13.0 or later
-- Swift 5.0 or later
-- Camera access (requires `NSCameraUsageDescription` in `Info.plist`)
-- A `Bundle` containing localized strings (optional but recommended)
+TBD
 
-### Info.plist Configuration
+## Requirements
 
-To access the camera, add the following key to your `Info.plist`:
+- iOS 13.0 or higher
+- Swift 5.0 or higher
+- Xcode 15 or higher
+
+
+### Installation
+
+TBD
+
+### Integration
+
+1. Set up camera permission
+
+To access the camera, add the following key to your `Info.plist`. 
+You can also edit your Into.plist file andd add it directly.
 
 ```xml
 <key>NSCameraUsageDescription</key>
 <string>We need access to your camera to scan your card.</string>
 ```
 
-### Integration
+![Info.plist camera permission](Images/plist-file-demo.png)
+
+2. Create a card scanner view controller and present it where you want to start the scan flow.
+- Create the card scanner view controller.
+- Add your specific business logic to the card scan completion block.
+- Present the view controler.
+- After a successful card scan, the card scanner view controller will be dismissed and the completion block will be executed.
+
+#### Example integration
 
 ```swift
-import CardScanner
 
-class CheckoutViewController: UIViewController {
+import UIKit
+import AdyenCardScanner
+
+class ViewController: UIViewController {
 
     func presentCardScanner() {
         // Check if card scanning is supported on this device
@@ -36,10 +57,11 @@ class CheckoutViewController: UIViewController {
         let scannerVC = CardScanner.createCardScanner(localizationBundle: .main) { result in
             switch result {
             case .success(let details):
+                // The scanned card by the user. The result of the scan are in details.
                 print("Scanned card number: \(details.cardNumber)")
-                print("Expiry: \(details.expiryMonth ?? 0)/\(details.expiryYear ?? 0)")
             case .failure(let error):
-                print("Scanning failed: \(error)")
+                // The card scan failed.
+                print("Scanning failed: \(error.localizedDescription)")
             }
         }
 
