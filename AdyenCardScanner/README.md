@@ -28,11 +28,9 @@ TBD
     <key>NSCameraUsageDescription</key>
     <string>We need access to your camera to scan your card.</string>
     ```
+   <img src="Images/plist-file-demo.png" width=800/>
 
-    ![Info.plist camera permission](Images/plist-file-demo.png)
-
-
-2. Create a card scanner view controller and present it where you want to start the scan flow.
+3. Create a card scanner view controller and present it where you want to start the scan flow.
     - Create the card scanner view controller.
     - Add your specific business logic to the card scan completion block.
     - Present the view controler.
