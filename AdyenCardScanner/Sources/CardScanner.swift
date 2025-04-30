@@ -48,11 +48,11 @@ public enum CardScanner: CardScanning {
 
     // swiftlint:disable line_length
     private static func assertCameraUsageDescription() {
-        guard let cameraUsageDescription = Bundle.main.object(
-            forInfoDictionaryKey: "NSCameraUsageDescription"
-        ) as? String, !cameraUsageDescription.isEmpty else {
-            assertionFailure("Error: NSCameraUsageDescription is missing from Info.plist. Please add a description for camera usage as required by the AdyenCardScanner SDK.")
-            return
-        }
+        let cameraUsageDescription = Bundle.main.object(forInfoDictionaryKey: "NSCameraUsageDescription") as? String
+        if let cameraUsageDescription, !cameraUsageDescription.isEmpty { return }
+
+        assertionFailure(
+            "Error: NSCameraUsageDescription is missing from Info.plist. Please add a description for camera usage as required by the AdyenCardScanner SDK."
+        )
     }
 }
