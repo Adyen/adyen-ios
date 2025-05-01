@@ -75,7 +75,7 @@ public struct LocalizationParameters: Equatable {
     ///   `Bundle.main` takes precedence over the custom bundle provided.
     ///   - tableName: The string table to search.
     ///   - keySeparator: The key separator string.
-    ///   - locale: The locale for external resources.
+    ///   - locale: The locale for external resources and formatting of monetary values..
     public init(bundle: Bundle? = nil, tableName: String? = nil, keySeparator: String? = nil, locale: String? = nil) {
         mode = .natural(bundle: bundle, tableName: tableName, keySeparator: keySeparator, locale: locale)
     }
@@ -84,6 +84,10 @@ public struct LocalizationParameters: Equatable {
     ///
     /// - Parameters:
     ///   - enforcedLocale: The locale to be enforced.
+    ///   - bundle: The custom bundle to search.
+    ///   `Bundle.main` takes precedence over the custom bundle provided.
+    ///   - tableName: The string table to search.
+    ///   - keySeparator: The key separator string.
     public init(enforcedLocale: String, bundle: Bundle? = nil, tableName: String? = nil, keySeparator: String? = nil) {
         mode = .enforced(bundle: bundle, tableName: tableName, keySeparator: keySeparator, locale: enforcedLocale)
     }
