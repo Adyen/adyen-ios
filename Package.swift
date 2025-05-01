@@ -1,4 +1,4 @@
-// swift-tools-version:5.7
+// swift-tools-version:5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -55,6 +55,10 @@ let package = Package(
         .library(
             name: "AdyenDelegatedAuthentication",
             targets: ["AdyenDelegatedAuthentication"]
+        ),
+        .library(
+            name: "AdyenCheckout",
+            targets: ["AdyenCheckout"]
         )
     ],
     dependencies: [
@@ -178,6 +182,19 @@ let package = Package(
                 .target(name: "TwintSDK")
             ],
             path: "AdyenTwint",
+            exclude: ["Info.plist"]
+        ),
+        .target(
+            name: "AdyenCheckout",
+            dependencies: [
+                .target(name: "Adyen"),
+                .target(name: "AdyenDropIn"),
+                .target(name: "AdyenSession"),
+                .target(name: "AdyenCard"),
+                .target(name: "AdyenComponents"),
+                .target(name: "AdyenActions")
+            ],
+            path: "AdyenCheckout",
             exclude: ["Info.plist"]
         ),
         .binaryTarget(

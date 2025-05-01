@@ -5,15 +5,21 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-@_spi(AdyenInternal) import AdyenDropIn
-@_spi(AdyenInternal) import AdyenSession
-@_spi(AdyenInternal) import AdyenActions
-@_spi(AdyenInternal) import AdyenNetworking
-
+#if canImport(AdyenSession)
+    @_spi(AdyenInternal) import AdyenSession
+#endif
+#if canImport(AdyenDropIn)
+    @_spi(AdyenInternal) import AdyenDropIn
+#endif
+#if canImport(AdyenActions)
+    @_spi(AdyenInternal) import AdyenActions
+#endif
+import AdyenNetworking
+import Foundation
 
 /// AdyenCheckout is the entry point to the Checkout flow. You initialize it through its static methods for your chosen flow
 /// and it prepares all the requied data asynchronously and returns an `AdyenCheckout` instance ready to be used.
-public class AdyenCheckout: AdyenCheckoutProtocol {
+public final class AdyenCheckout: AdyenCheckoutProtocol {
     
     internal var session: AdyenSession?
     internal var checkoutAttemptId: String?
@@ -100,7 +106,7 @@ public class AdyenCheckout: AdyenCheckoutProtocol {
     }
     
     public func createComponent(with paymentMethod: any PaymentMethod) -> AdyenCheckoutComponent? {
-        CheckoutComponentBuilder.build(for: paymentMethod, configuration: configuration)
+        try? CheckoutComponentBuilder.build(for: paymentMethod, configuration: configuration)
 //        AdyenCheckoutComponent(paymentMethod: paymentMethod, configuration: configuration)
     }
     
@@ -113,6 +119,7 @@ public class AdyenCheckout: AdyenCheckoutProtocol {
     }
     
     // MARK: Internal
+
     internal init(configuration: CheckoutConfiguration) {
         self.configuration = configuration
     }

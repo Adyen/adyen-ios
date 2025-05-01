@@ -6,16 +6,14 @@
 
 import Foundation
 
-public protocol CheckoutConfigurable {
-    
-}
+public protocol CheckoutConfigurable {}
 
 /// Configuration interface for all Checkout Components.
-public protocol CheckoutComponentConfiguration: CheckoutConfigurable {
+package protocol CheckoutComponentConfiguration: CheckoutConfigurable, CheckoutBaseCallbacks {
     
     var componentType: CheckoutComponentType { get }
     
-    var showsSubmitButton: Bool { get }
+    var showsSubmitButton: Bool { get set }
     
     // These are here to work with the current way,
     // to be changed with new styling/localization
@@ -24,8 +22,22 @@ public protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     var localizationParameters: LocalizationParameters? { get }
 }
 
+public extension CheckoutConfigurable {
+    
+    // TODO: add descriptions
+    // having this function here instead of re writing it for all configurations
+    // prevents duplication, but the returned value will be seen as CheckoutConfigurable
+    // after calling this function, as opposed to actual type
+    // like BLIKComponentConfiguration before calling this.
+    func showsSubmitButton(_ showsSubmitButton: Bool) -> any CheckoutConfigurable {
+        guard let self = self as? CheckoutComponentConfiguration else { return self }
+        var copy = self
+        copy.showsSubmitButton = showsSubmitButton
+        return copy
+    }
+}
 
 internal struct CompositeCheckoutConfiguration: CheckoutConfigurable {
     
-    internal var configurations: [CheckoutComponentConfiguration]
+    internal var configurations: [CheckoutConfigurable]
 }

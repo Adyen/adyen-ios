@@ -49,7 +49,11 @@ public struct APIContext: AnyAPIContext {
     // TODO: dummy for v6 branch
     @_spi(AdyenInternal)
     public static func defaultValue() -> Self {
-        try! APIContext(environment: Environment.test, clientKey: "test_AbC123xYz")
+        do {
+            return try APIContext(environment: Environment.test, clientKey: "test_AbC123xYz")
+        } catch {
+            fatalError()
+        }
     }
 
 }

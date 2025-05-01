@@ -6,16 +6,6 @@
 
 import Foundation
 
-// TODO: Finalize all the parameters of the callbacks
-// Move Action to core module?
-// Add Resultcode enum
-public typealias PaymentsResponseHandler = (_ resultCode: String, _ action: String) -> Void
-public typealias SubmitHandler = (_ data: PaymentComponentData, _ handler: PaymentsResponseHandler?) -> Void
-public typealias AdditionalDetailsHandler = (_ data: ActionComponentData, _ handler: PaymentsResponseHandler?) -> Void
-// TODO: Have a checkout error object?
-public typealias CheckoutErrorHandler = (_ error: Error) -> Void
-public typealias CheckoutSuccessHandler = (_ resultCode: String) -> Void
-
 public extension CheckoutConfiguration {
     
     // TODO: Add function descriptions
@@ -26,10 +16,10 @@ public extension CheckoutConfiguration {
         return copy
     }
     
-    // TODO: Mutating func or copy
-    mutating func onAdditionalDetails(_ onAdditionalDetails: @escaping AdditionalDetailsHandler) -> Self {
-        self.onAdditionalDetails = onAdditionalDetails
-        return self
+    func onAdditionalDetails(_ onAdditionalDetails: @escaping AdditionalDetailsHandler) -> Self {
+        var copy = self
+        copy.onAdditionalDetails = onAdditionalDetails
+        return copy
     }
     
     func onError(_ onError: @escaping CheckoutErrorHandler) -> Self {

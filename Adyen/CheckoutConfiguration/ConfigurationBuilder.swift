@@ -8,19 +8,23 @@ import Foundation
 
 @resultBuilder
 public struct CheckoutConfigurationBuilder {
-    public static func buildBlock(_ components: CheckoutComponentConfiguration...) -> CheckoutConfigurable {
+    public static func buildBlock(_ components: CheckoutConfigurable...) -> [CheckoutConfigurable] {
+        components
+    }
+    
+    public static func buildOptional(_ component: CheckoutConfigurable?) -> CheckoutConfigurable? {
+        component
+    }
+    
+    public static func buildEither(first component: CheckoutConfigurable) -> CheckoutConfigurable {
+        component
+    }
+    
+    public static func buildEither(second component: CheckoutConfigurable) -> CheckoutConfigurable {
+        component
+    }
+    
+    public static func buildFinalResult(_ components: [CheckoutConfigurable]) -> CheckoutConfigurable {
         CompositeCheckoutConfiguration(configurations: components)
-    }
-    
-    public static func buildOptional(_ component: CheckoutComponentConfiguration?) -> CheckoutConfigurable? {
-        component
-    }
-    
-    public static func buildEither(first component: CheckoutComponentConfiguration) -> CheckoutConfigurable {
-        component
-    }
-    
-    public static func buildEither(second component: CheckoutComponentConfiguration) -> CheckoutConfigurable {
-        component
     }
 }

@@ -55,6 +55,7 @@ let package = Package(
                 .product(name: \"AdyenTwint\", package: \"Adyen\"),
                 .product(name: \"AdyenDropIn\", package: \"Adyen\"),
                 .product(name: \"AdyenDelegatedAuthentication\", package: \"Adyen\"),
+                .product(name: \"AdyenCheckout\", package: \"Adyen\"),
             ]
         )
     ]
