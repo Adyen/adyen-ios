@@ -25,6 +25,12 @@ class LocalizationTests: XCTestCase {
         XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "تأكيد الدفع باستخدام test")
         XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "التحقق من بطاقتك")
         XCTAssertEqual(parameters.locale, "ar")
+
+        parameters = LocalizationParameters(enforcedLocale: "is-IS")
+        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Staðfesta test greiðslu")
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Staðfestu kortið þitt")
+        XCTAssertEqual(localizedString(.submitButton, parameters), "Greiða")
+        XCTAssertEqual(parameters.locale, "is-IS")
     }
 
     func testEnforcedLocalizationOverrides() {
@@ -35,6 +41,7 @@ class LocalizationTests: XCTestCase {
         )
         XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle - Confirm test payment - IS")
         XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - IS")
+        XCTAssertEqual(localizedString(.submitButton, parameters), "Greiða")
 
         XCTAssertNotNil(parameters.bundle)
         XCTAssertNil(parameters.keySeparator)

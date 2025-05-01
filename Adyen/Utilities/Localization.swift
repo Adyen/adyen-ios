@@ -34,7 +34,7 @@ public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationPa
     var possibleInputs = buildPossibleInputs(key.key, parameters)
     switch parameters?.mode {
     case .enforced:
-        possibleInputs.buildPossibleInputs(for: Bundle.coreInternalResources, key.key, parameters)
+        possibleInputs.buildPossibleInputs(for: Bundle.coreInternalResources, key.key, nil)
         translationAttempt = attempt(possibleInputs, locale: parameters?.locale)
     case .natural, .none:
         translationAttempt = attempt(possibleInputs)
@@ -103,7 +103,7 @@ private func attempt(_ input: LocalizationInput) -> String? {
 private func attemptEnforce(locale: String, _ input: LocalizationInput) -> String? {
     let localizedString = input.bundle.path(forResource: locale, ofType: "lproj")
         .flatMap(Bundle.init(path:))
-        .map { NSLocalizedString(input.key, tableName: input.table, bundle: $0, comment: input.key) }
+        .map { NSLocalizedString(input.key, tableName: input.table, bundle: $0, comment: "") }
 
     if localizedString != input.key {
         return localizedString
