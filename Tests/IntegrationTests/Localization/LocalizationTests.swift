@@ -27,6 +27,35 @@ class LocalizationTests: XCTestCase {
         XCTAssertEqual(parameters.locale, "ar")
     }
 
+    func testEnforcedLocalizationOverrides() {
+        var parameters = LocalizationParameters(
+            enforcedLocale: "is-IS",
+            bundle: Bundle(for: LocalizationTests.self),
+            tableName: "EnforceLocaleTests"
+        )
+        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle - Confirm test payment - IS")
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - IS")
+
+        XCTAssertNotNil(parameters.bundle)
+        XCTAssertNil(parameters.keySeparator)
+        XCTAssertEqual(parameters.tableName, "EnforceLocaleTests")
+        XCTAssertEqual(parameters.locale, "is-IS")
+
+        parameters = LocalizationParameters(
+            enforcedLocale: "ro-RO",
+            bundle: Bundle(for: LocalizationTests.self),
+            tableName: "EnforceLocaleTests",
+            keySeparator: "-"
+        )
+        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle - Confirm test payment - RO")
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - RO")
+
+        XCTAssertNotNil(parameters.bundle)
+        XCTAssertEqual(parameters.keySeparator, "-")
+        XCTAssertEqual(parameters.tableName, "EnforceLocaleTests")
+        XCTAssertEqual(parameters.locale, "ro-RO")
+    }
+
     // MARK: - Button title
 
     func testLocalizationWitZeroPayment() {

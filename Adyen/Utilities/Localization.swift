@@ -31,9 +31,10 @@ private struct LocalizationInput {
 public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
     var translationAttempt: String?
 
-    let possibleInputs = buildPossibleInputs(key.key, parameters)
+    var possibleInputs = buildPossibleInputs(key.key, parameters)
     switch parameters?.mode {
     case .enforced:
+        possibleInputs.buildPossibleInputs(for: Bundle.coreInternalResources, key.key, parameters)
         translationAttempt = attempt(possibleInputs, locale: parameters?.locale)
     case .natural, .none:
         translationAttempt = attempt(possibleInputs)
@@ -66,29 +67,13 @@ private func buildPossibleInputs(
     _ key: String,
     _ parameters: LocalizationParameters?
 ) -> [LocalizationInput] {
-    var possibleInputs = buildPossibleInputs(for: Bundle.main, key, parameters)
+    var possibleInputs = [LocalizationInput]()
+    possibleInputs.buildPossibleInputs(for: Bundle.main, key, parameters)
 
     if let customBundle = parameters?.bundle {
-        let inputs = buildPossibleInputs(for: customBundle, key, parameters)
-        possibleInputs.append(contentsOf: inputs)
+        possibleInputs.buildPossibleInputs(for: customBundle, key, parameters)
     }
 
-    return possibleInputs
-}
-
-private func buildPossibleInputs(
-    for bundle: Bundle,
-    _ key: String,
-    _ parameters: LocalizationParameters?
-) -> [LocalizationInput] {
-    var possibleInputs = [LocalizationInput]()
-    
-    if let customKey = updated(key, withSeparator: parameters?.keySeparator) {
-        possibleInputs.append(LocalizationInput(key: customKey, table: parameters?.tableName, bundle: bundle))
-    }
-    
-    possibleInputs.append(LocalizationInput(key: key, table: parameters?.tableName, bundle: bundle))
-    
     return possibleInputs
 }
 
@@ -168,4 +153,19 @@ private func localizedZeroPaymentAuthorisationButtonTitle(
     case .immediate:
         return localizedString(.confirmPreauthorization, parameters)
     }
+}
+
+extension [LocalizationInput] {
+
+    fileprivate mutating func buildPossibleInputs(
+        for bundle: Bundle,
+        _ key: String,
+        _ parameters: LocalizationParameters?
+    ) {
+        if let customKey = updated(key, withSeparator: parameters?.keySeparator) {
+            self.append(LocalizationInput(key: customKey, table: parameters?.tableName, bundle: bundle))
+        }
+        self.append(LocalizationInput(key: key, table: parameters?.tableName, bundle: bundle))
+    }
+
 }

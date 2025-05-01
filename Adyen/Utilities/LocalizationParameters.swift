@@ -25,9 +25,9 @@ public struct LocalizationParameters: Equatable {
     /// By default current locale is used.
     public var locale: String? {
         switch mode {
-        case .natural(_, _, _, locale: let locale):
+        case let .natural(_, _, _, locale: locale):
             return locale
-        case .enforced(_, _, _, locale: let locale):
+        case let .enforced(_, _, _, locale: locale):
             return locale
         }
     }
@@ -36,9 +36,9 @@ public struct LocalizationParameters: Equatable {
     /// the Localizable.strings is used instead.
     public var tableName: String? {
         switch mode {
-        case .natural(_, tableName: let tableName, _, _):
+        case let .natural(_, tableName: tableName, _, _):
             return tableName
-        case .enforced(_, tableName: let tableName, _, _):
+        case let .enforced(_, tableName: tableName, _, _):
             return tableName
         }
     }
@@ -47,9 +47,9 @@ public struct LocalizationParameters: Equatable {
     /// otherwise a "." is used.
     public var keySeparator: String? {
         switch mode {
-        case .natural(_, _, keySeparator: let keySeparator, _):
+        case let .natural(_, _, keySeparator: keySeparator, _):
             return keySeparator
-        case .enforced(_, _, keySeparator: let keySeparator, _):
+        case let .enforced(_, _, keySeparator: keySeparator, _):
             return keySeparator
         }
     }
@@ -59,9 +59,9 @@ public struct LocalizationParameters: Equatable {
     /// if not found, then the internal SDK bundle is used.
     public var bundle: Bundle? {
         switch mode {
-        case .natural(bundle: let bundle, _, _, _):
+        case let .natural(bundle: bundle, _, _, _):
             return bundle
-        case .enforced(bundle: let bundle, _, _, _):
+        case let .enforced(bundle: bundle, _, _, _):
             return bundle
         }
 
