@@ -28,10 +28,10 @@ requirements, integration steps, and a complete example to help you get started 
 2. Set Up and Present the Card Scanner
     To initiate the card scanning flow:
 
-    1. Create the card scanner view controller.
-    2. Implement your business logic in the scanner’s completion block (e.g., handling the scanned card data).
-    3. Present the view controller where needed in your app.
-    4. Once a card is successfully scanned, the scanner view controller will automatically dismiss, and your completion block will be triggered.
+    - Create the card scanner view controller.
+    - Implement your business logic in the scanner’s completion block (e.g., handling the scanned card data).
+    - Present the view controller where needed in your app.
+    - Once a card is successfully scanned, the scanner view controller will automatically dismiss, and your completion block will be triggered.
 
 ### Example integration
 
