@@ -1,21 +1,15 @@
 # Adyen CardScanner iOS SDK
 
-The **CardScanner SDK** allows you to quickly integrate card scanning functionality into your iOS app.
-
-## Overview
-
-TBD
+The **AdyenCardScanner iOS SDK** provides an easy-to-use interface for integrating credit and debit card
+scanning into your iOS applications. With minimal setup, the SDK enables users to scan their cards using
+the device’s camera, improving the checkout experience by reducing manual input. This document covers setup
+requirements, integration steps, and a complete example to help you get started quickly.
 
 ## Requirements
 
 - iOS 13.0 or higher
 - Swift 5.0 or higher
 - Xcode 15 or higher
-
-
-## Installation
-
-TBD
 
 ## Integration
 
@@ -30,11 +24,14 @@ TBD
     ```
    <img src="Images/plist-file-demo.png" width=800/>
 
-3. Create a card scanner view controller and present it where you want to start the scan flow.
-    - Create the card scanner view controller.
-    - Add your specific business logic to the card scan completion block.
-    - Present the view controler.
-    - After a successful card scan, the card scanner view controller will be dismissed and the completion block will be executed.
+
+2. Set Up and Present the Card Scanner
+    To initiate the card scanning flow:
+
+    1. Create the card scanner view controller.
+    2. Implement your business logic in the scanner’s completion block (e.g., handling the scanned card data).
+    3. Present the view controller where needed in your app.
+    4. Once a card is successfully scanned, the scanner view controller will automatically dismiss, and your completion block will be triggered.
 
 ### Example integration
 
@@ -71,3 +68,8 @@ class ViewController: UIViewController {
     }
 }
 ```
+
+## License
+
+This repository is open source and available under the MIT license. For more information, see the LICENSE file.
+
