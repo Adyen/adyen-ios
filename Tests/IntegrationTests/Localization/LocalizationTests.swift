@@ -41,14 +41,18 @@ class LocalizationTests: XCTestCase {
         )
         XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle - Confirm test payment - IS")
         XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - IS")
+
+        // Fallback to SDK's translation for known locale
         XCTAssertEqual(localizedString(.submitButton, parameters), "Greiða")
 
         XCTAssertNotNil(parameters.bundle)
         XCTAssertNil(parameters.keySeparator)
         XCTAssertEqual(parameters.tableName, "EnforceLocaleTests")
         XCTAssertEqual(parameters.locale, "is-IS")
+    }
 
-        parameters = LocalizationParameters(
+    func testEnforcedLocalizationOverridesWithCustomSeparator() {
+        var parameters = LocalizationParameters(
             enforcedLocale: "ro-RO",
             bundle: Bundle(for: LocalizationTests.self),
             tableName: "EnforceLocaleTests",
@@ -57,10 +61,26 @@ class LocalizationTests: XCTestCase {
         XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle - Confirm test payment - RO")
         XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - RO")
 
+        // Fallback to SDK's translation for known locale, ignoring custom separator
+        XCTAssertEqual(localizedString(.submitButton, parameters), "Plătiți")
+
         XCTAssertNotNil(parameters.bundle)
         XCTAssertEqual(parameters.keySeparator, "-")
         XCTAssertEqual(parameters.tableName, "EnforceLocaleTests")
         XCTAssertEqual(parameters.locale, "ro-RO")
+    }
+
+    func testEnforcedLocalizationOverridesUnsupportedLocale() {
+        var parameters = LocalizationParameters(
+            enforcedLocale: "hi",
+            bundle: Bundle(for: LocalizationTests.self),
+            tableName: "EnforceLocaleTests"
+        )
+        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle - Confirm test payment - HI")
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - HI")
+
+        // Ultimate fallback to English
+        XCTAssertEqual(localizedString(.submitButton, parameters), "Pay")
     }
 
     // MARK: - Button title

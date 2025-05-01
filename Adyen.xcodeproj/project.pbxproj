@@ -2041,6 +2041,9 @@
 		E7166A5524EAD99F007CCDEF /* BinInfoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinInfoProvider.swift; sourceTree = "<group>"; };
 		E71C32882DC272BD003D45F4 /* is-IS */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "is-IS"; path = "is-IS.lproj/EnforceLocaleTests.strings"; sourceTree = "<group>"; };
 		E71C328A2DC393EB003D45F4 /* ro-RO */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ro-RO"; path = "ro-RO.lproj/EnforceLocaleTests.strings"; sourceTree = "<group>"; };
+		E71C328B2DC3AA1C003D45F4 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		E71C328C2DC3AA1C003D45F4 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		E71C328D2DC3AA42003D45F4 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/EnforceLocaleTests.strings; sourceTree = "<group>"; };
 		E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredBLIKPaymentMethod.swift; sourceTree = "<group>"; };
 		E72521ED25517EB100533E35 /* BLIKComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentTests.swift; sourceTree = "<group>"; };
 		E7275BF8255012F600907CF9 /* FormLabelItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabelItem.swift; sourceTree = "<group>"; };
@@ -6478,6 +6481,7 @@
 				"is-IS",
 				"lt-LT",
 				"lv-LV",
+				hi,
 			);
 			mainGroup = E2C0E02922097916008616F6;
 			packageReferences = (
@@ -8174,6 +8178,7 @@
 			children = (
 				E71C32882DC272BD003D45F4 /* is-IS */,
 				E71C328A2DC393EB003D45F4 /* ro-RO */,
+				E71C328D2DC3AA42003D45F4 /* hi */,
 			);
 			name = EnforceLocaleTests.strings;
 			sourceTree = "<group>";
@@ -8220,6 +8225,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				E97B970B2297ED0D00505476 /* Base */,
+				E71C328B2DC3AA1C003D45F4 /* hi */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -8228,6 +8234,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				F95B6DA325274551002C9062 /* Base */,
+				E71C328C2DC3AA1C003D45F4 /* hi */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
