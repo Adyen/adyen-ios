@@ -41,7 +41,7 @@ internal enum CheckoutComponentBuilder {
 
 extension CheckoutConfiguration {
     func configuration(for paymentMethod: PaymentMethod) -> CheckoutComponentConfiguration? {
-        configurations[.payment(paymentMethod.type)]?.configuration
+        configurations[.payment(paymentMethod.type)]
     }
 }
 
@@ -57,6 +57,19 @@ extension BLIKPaymentMethod {
         } else {
             blikConfiguration = .init()
         }
-        return BLIKComponent(paymentMethod: self, context: AdyenContext.defaultValue(), configuration: blikConfiguration)
+        
+        let context = AdyenContext(
+            apiContext: configuration.apiContext,
+            payment: nil,
+            amount: configuration.amount,
+            analyticsConfiguration: configuration.analyticsConfiguration
+        )
+        var component = BLIKComponent(
+            paymentMethod: self,
+            context: context,
+            configuration: blikConfiguration
+        )
+        component.setBaseCallbacks(from: configuration)
+        return component
     }
 }

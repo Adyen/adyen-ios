@@ -9,7 +9,7 @@ import Foundation
 public protocol CheckoutConfigurable {}
 
 /// Configuration interface for all Checkout Components.
-package protocol CheckoutComponentConfiguration: CheckoutConfigurable, CheckoutBaseCallbacks {
+package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     
     var componentType: CheckoutComponentType { get }
     

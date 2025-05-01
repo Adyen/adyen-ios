@@ -9,7 +9,15 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for BLIK payments.
-public final class BLIKComponent: PaymentComponent, PresentableComponent, PaymentAware, LoadingComponent {
+public final class BLIKComponent: PaymentComponent, PresentableComponent, PaymentAware, LoadingComponent, CheckoutBaseCallbacks {
+    
+    package var onSubmit: Adyen.SubmitHandler?
+    
+    package var onAdditionalDetails: Adyen.AdditionalDetailsHandler?
+    
+    package var onError: Adyen.CheckoutErrorHandler?
+    
+    package var onComplete: Adyen.CheckoutSuccessHandler?
     
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -125,7 +133,8 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
+        let data = PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order)
+        submitNew(data: data)
     }
 }
 
