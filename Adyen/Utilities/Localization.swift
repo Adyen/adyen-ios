@@ -34,7 +34,7 @@ public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationPa
     var possibleInputs = buildPossibleInputs(key.key, parameters)
     switch parameters?.mode {
     case .enforced:
-        possibleInputs.buildPossibleInputs(for: Bundle.coreInternalResources, key.key, nil)
+        possibleInputs.appendPossibleInputs(for: Bundle.coreInternalResources, key.key, nil)
         translationAttempt = attempt(possibleInputs, locale: parameters?.locale)
     case .natural, .none:
         translationAttempt = attempt(possibleInputs)
@@ -68,10 +68,10 @@ private func buildPossibleInputs(
     _ parameters: LocalizationParameters?
 ) -> [LocalizationInput] {
     var possibleInputs = [LocalizationInput]()
-    possibleInputs.buildPossibleInputs(for: Bundle.main, key, parameters)
+    possibleInputs.appendPossibleInputs(for: Bundle.main, key, parameters)
 
     if let customBundle = parameters?.bundle {
-        possibleInputs.buildPossibleInputs(for: customBundle, key, parameters)
+        possibleInputs.appendPossibleInputs(for: customBundle, key, parameters)
     }
 
     return possibleInputs
@@ -157,7 +157,7 @@ private func localizedZeroPaymentAuthorisationButtonTitle(
 
 extension [LocalizationInput] {
 
-    fileprivate mutating func buildPossibleInputs(
+    fileprivate mutating func appendPossibleInputs(
         for bundle: Bundle,
         _ key: String,
         _ parameters: LocalizationParameters?
