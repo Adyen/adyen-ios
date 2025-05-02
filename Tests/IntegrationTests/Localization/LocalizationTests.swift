@@ -34,7 +34,7 @@ class LocalizationTests: XCTestCase {
     }
 
     func testEnforcedLocalizationOverrides() {
-        var parameters = LocalizationParameters(
+        let parameters = LocalizationParameters(
             enforcedLocale: "is-IS",
             bundle: Bundle(for: LocalizationTests.self)
         )
@@ -50,7 +50,7 @@ class LocalizationTests: XCTestCase {
     }
 
     func testEnforcedLocalizationOverridesWithCustomSeparator() {
-        var parameters = LocalizationParameters(
+        let parameters = LocalizationParameters(
             enforcedLocale: "ro-RO",
             bundle: Bundle(for: LocalizationTests.self),
             tableName: "EnforceLocaleTests",
@@ -69,12 +69,16 @@ class LocalizationTests: XCTestCase {
     }
 
     func testEnforcedLocalizationOverridesUnsupportedLocale() {
-        var parameters = LocalizationParameters(
+        let parameters = LocalizationParameters(
             enforcedLocale: "hi",
             bundle: Bundle(for: LocalizationTests.self)
         )
+
+        // Will find a line on Custom bundle
         XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle - Confirm test payment - HI")
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - HI")
+
+        // Will not find a line on Custom bundle and fallback to Main bundle
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Verify your card - HI")
 
         // Ultimate fallback to English
         XCTAssertEqual(localizedString(.submitButton, parameters), "Pay")

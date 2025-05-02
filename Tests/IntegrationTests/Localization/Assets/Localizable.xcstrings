@@ -16,12 +16,6 @@
             "value" : "TestBundle - Verify your card - FR"
           }
         },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TestBundle - Verify your card - HI"
-          }
-        },
         "is-IS" : {
           "stringUnit" : {
             "state" : "translated",

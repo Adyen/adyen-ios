@@ -68,12 +68,12 @@ private func buildPossibleInputs(
     _ parameters: LocalizationParameters?
 ) -> [LocalizationInput] {
     var possibleInputs = [LocalizationInput]()
-    possibleInputs.appendPossibleInputs(for: Bundle.main, key, parameters)
 
     if let customBundle = parameters?.bundle {
         possibleInputs.appendPossibleInputs(for: customBundle, key, parameters)
     }
 
+    possibleInputs.appendPossibleInputs(for: Bundle.main, key, parameters)
     return possibleInputs
 }
 

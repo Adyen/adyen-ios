@@ -10,6 +10,28 @@
     "(Requires API version 70 or higher)" : {
 
     },
+    "adyen.card.stored.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verify your card - HI"
+          }
+        }
+      }
+    },
+    "adyen.dropIn.stored.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verify your card - HI"
+          }
+        }
+      }
+    },
     "adyen.submitButton.formatted" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -67,6 +89,9 @@
     "Card Component" : {
 
     },
+    "Components" : {
+
+    },
     "Configuration" : {
 
     },
@@ -97,9 +122,6 @@
     "isEnabled" : {
 
     },
-    "Key" : {
-      "extractionState" : "manual"
-    },
     "Korean Authentication Mode" : {
 
     },
@@ -125,6 +147,9 @@
 
     },
     "Stored Payment Method Removal" : {
+
+    },
+    "Using Session" : {
 
     },
     "Visibility" : {
