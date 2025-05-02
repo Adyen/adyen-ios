@@ -9,7 +9,7 @@ import UIKit
 
 public typealias CardScanDetails = (number: String?, expirationDate: Date?)
 
-/// A protocol that defines an interface for presenting a user interface to scan payment cards.
+/// A protocol that defines an interface for presenting a view controller to scan payment cards.
 ///
 /// Types that conform to the `CardScanning` protocol provide functionality to create a card scanning
 /// view controller and report whether scanning is currently supported on the device.
