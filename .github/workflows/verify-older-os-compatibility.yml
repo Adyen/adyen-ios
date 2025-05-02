@@ -35,14 +35,6 @@ jobs:
           xcode_version: '15.1'
           needs_custom_sim: false # Takes the shipped simulator that comes with Xcode 15
         
-        - version: '16.4'
-          runtime: 'iOS-16-4'
-          device: 'iPhone 14'
-          displayname: 'iPhone-14'
-          os: 'macos-13'
-          xcode_version: '14.3'
-          needs_custom_sim: false # Takes the shipped simulator that comes with Xcode 14
-        
       # Github deprecated macos-12 runners
       # so we have to find another solution to test on older iOS versions
       #
