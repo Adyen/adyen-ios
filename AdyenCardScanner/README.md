@@ -62,7 +62,7 @@ class ViewController: UIViewController {
         }
 
         // Present the scanner if creation was successful
-        if let scannerVC = scannerVC {
+        if let scannerVC {
             present(scannerVC, animated: true)
         }
     }
