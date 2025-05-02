@@ -5,7 +5,7 @@
 <!-- Add screenshots or link to screen recording demonstrating the changes -->
 <!-- Include both light/dark mode and different device sizes if it matters -->
 
-## Release Notes
+## Release Notes [Optional]
 <!-- 
 Release notes with appropriate tags will be included in automatically generated release notes.
 Use the following guidelines to determine if you need release notes:
@@ -34,9 +34,9 @@ Use the following guidelines to determine if you need release notes:
 ## Testing Instructions [Optional]
 <!-- Step-by-step instructions for reviewers to verify your changes work as expected -->
 
-## Ticket [Required]
+## Ticket [Optional]
 <ticket>
-COIOS-
+COSDK-
 </ticket>
 
 ## Checklist [Required]
@@ -44,4 +44,3 @@ COIOS-
 - [ ] Tested changes locally
 - [ ] Added/updated unit tests
 - [ ] Verified against acceptance criteria
-- [ ] PR title follows conventional commit format
