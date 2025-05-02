@@ -36,8 +36,7 @@ class LocalizationTests: XCTestCase {
     func testEnforcedLocalizationOverrides() {
         var parameters = LocalizationParameters(
             enforcedLocale: "is-IS",
-            bundle: Bundle(for: LocalizationTests.self),
-            tableName: "EnforceLocaleTests"
+            bundle: Bundle(for: LocalizationTests.self)
         )
         XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle - Confirm test payment - IS")
         XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - IS")
@@ -47,7 +46,6 @@ class LocalizationTests: XCTestCase {
 
         XCTAssertNotNil(parameters.bundle)
         XCTAssertNil(parameters.keySeparator)
-        XCTAssertEqual(parameters.tableName, "EnforceLocaleTests")
         XCTAssertEqual(parameters.locale, "is-IS")
     }
 
@@ -73,8 +71,7 @@ class LocalizationTests: XCTestCase {
     func testEnforcedLocalizationOverridesUnsupportedLocale() {
         var parameters = LocalizationParameters(
             enforcedLocale: "hi",
-            bundle: Bundle(for: LocalizationTests.self),
-            tableName: "EnforceLocaleTests"
+            bundle: Bundle(for: LocalizationTests.self)
         )
         XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle - Confirm test payment - HI")
         XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - HI")

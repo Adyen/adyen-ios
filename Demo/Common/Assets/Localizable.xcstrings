@@ -1,0 +1,135 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "(Example values for installments)" : {
+
+    },
+    "(Requires API version 70 or higher)" : {
+
+    },
+    "adyen.submitButton.formatted" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Test Pay %@"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Test Pay %@ -HI"
+          }
+        }
+      }
+    },
+    "Allow OnBoarding" : {
+
+    },
+    "Allow Preselected PaymentView" : {
+
+    },
+    "Analytics" : {
+
+    },
+    "any.key.1" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "value 1 %@"
+          }
+        }
+      }
+    },
+    "any.key.2" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "value 2"
+          }
+        }
+      }
+    },
+    "Apple Pay" : {
+
+    },
+    "Billing Address mode" : {
+
+    },
+    "Card Component" : {
+
+    },
+    "Configuration" : {
+
+    },
+    "Default" : {
+
+    },
+    "Displays a button to remove stored payment methods" : {
+
+    },
+    "DropIn" : {
+
+    },
+    "Force Card RedirectAction" : {
+
+    },
+    "Holder Name" : {
+
+    },
+    "Input Modes" : {
+
+    },
+    "Installment Amount" : {
+
+    },
+    "Installments" : {
+
+    },
+    "isEnabled" : {
+
+    },
+    "Key" : {
+      "extractionState" : "manual"
+    },
+    "Korean Authentication Mode" : {
+
+    },
+    "Save" : {
+
+    },
+    "Security Code" : {
+
+    },
+    "Set to country currency" : {
+
+    },
+    "Skip Payment List" : {
+
+    },
+    "Social Security Number Mode" : {
+
+    },
+    "Store Payment Method Toggle" : {
+
+    },
+    "Stored Card" : {
+
+    },
+    "Stored Payment Method Removal" : {
+
+    },
+    "Visibility" : {
+
+    }
+  },
+  "version" : "1.0"
+}
