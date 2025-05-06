@@ -29,7 +29,7 @@ You can override strings for each key and locale.
 For example, if you want to override the payment button text to **Subscribe for [AMOUNT]**, add a key `adyen.submitButton.formatted` to your catalog. Then, provide new translation(s).
 
 <details>
-  <summary> Using Legacy <code>.strings</code> files</summary>
+  <summary><h3> Using Legacy <code>.strings</code> files</h3></summary>
 
 You can override strings for each key, and for each language and locale using legacy `.strings` files.
 
