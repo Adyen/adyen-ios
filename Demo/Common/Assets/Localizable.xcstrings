@@ -32,23 +32,6 @@
         }
       }
     },
-    "adyen.submitButton.formatted" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Test Pay %@"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Test Pay %@ -HI"
-          }
-        }
-      }
-    },
     "Allow OnBoarding" : {
 
     },
