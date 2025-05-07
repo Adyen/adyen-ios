@@ -18,7 +18,7 @@ To enforce a custom locale for formatting a monetary values, use the `locale` pr
 
 You can override strings for each key and locale.
 
-> Important: If you are using multiple Adyen Components or the Drop-in, all usages of that localization key will be updated with the overridden value.
+> Important: If you are using multiple Adyen Components or the Drop-in, all usages of that localization key will be updated with the value you specify to override the default localization.
 
 > Tip: If you want to override the value of a key for a specific component, you can use the `localizationParameters` property to specify a custom localization file to get the values from, as described below.
 
