@@ -68,34 +68,40 @@ To enforce a specific locale and formatting of monetary values no matter which l
 
 List of currently avaialble locales:
 
-| Language | Locale code | Fallback |
-| --- | --- | :---: |
-| Arabic - International | ar | |
-| Chinese - Simplified | zh-CN | |
-| Chinese - Traditional | zh-TW | |
-| Croatian | hr-HR | |
-| Czech | cs-CZ | |
-| Danish | da-DK | |
-| Dutch | nl-NL | |
-| English - US | en-US | ✱ |
-| Finnish | fi-FI | |
-| French | fr-FR | |
-| German | de-DE | |
-| Greek | el-GR | |
-| Hungarian | hu-HU | |
-| Italian | it-IT | |
-| Japanese | ja-JP | |
-| Korean | ko-KR | |
-| Norwegian | no-NO | |
-| Polish | pl-PL | |
-| Portuguese - Brazil | pt-BR | |
-| Portuguese - Portugal | pt-PT | |
-| Romanian | ro-RO | |
-| Russian | ru-RU | |
-| Slovak | sk-SK | |
-| Slovenian | sl-SI | |
-| Spanish | es-ES | |
-| Swedish | sv-SE | |
+| Language               | Locale code | Fallback |
+| ---------------------- | ----------- | :------: |
+| Arabic - International | ar          |          |
+| Bulgarian              | bg-BG       |          |
+| Catalan                | ca-ES       |          |
+| Chinese - Simplified   | zh-CN       |          |
+| Chinese - Traditional  | zh-TW       |          |
+| Croatian               | hr-HR       |          |
+| Czech                  | cs-CZ       |          |
+| Danish                 | da-DK       |          |
+| Dutch                  | nl-NL       |          |
+| English - US           | en-US       |    ✱     |
+| Estonian               | et-EE       |          |
+| Finnish                | fi-FI       |          |
+| French                 | fr-FR       |          |
+| German                 | de-DE       |          |
+| Greek                  | el-GR       |          |
+| Hungarian              | hu-HU       |          |
+| Icelandic              | is-IS       |          |
+| Italian                | it-IT       |          |
+| Japanese               | ja-JP       |          |
+| Korean                 | ko-KR       |          |
+| Latvian                | lv-LV       |          |
+| Lithuanian             | lt-LT       |          |
+| Norwegian              | no-NO       |          |
+| Polish                 | pl-PL       |          |
+| Portuguese - Brazil    | pt-BR       |          |
+| Portuguese - Portugal  | pt-PT       |          |
+| Romanian               | ro-RO       |          |
+| Russian                | ru-RU       |          |
+| Slovak                 | sk-SK       |          |
+| Slovenian              | sl-SI       |          |
+| Spanish                | es-ES       |          |
+| Swedish                | sv-SE       |          |
 
 ## Adding a locale
 
