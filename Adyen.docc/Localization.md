@@ -6,7 +6,7 @@ By default, the SDK attempts to use a device's locale for translation of text an
 
 > Note: Localization only picks up locales that are listed in the `CFBundleLocalizations` property of your app's `Info.plist` file.
 
-## Enforcing locale
+## Enforce a locale
 
 To enforce a specific locale and formatting of monetary values, regardless of the shopper's device locale, use `LocalizationParameters(enforcedLocale: MY_LOCALE)`. (`MY_LOCALE` should be replaced with your desired locale identifier, e.g., "fr-FR").
 
