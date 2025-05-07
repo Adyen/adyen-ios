@@ -13,7 +13,7 @@ jobs:
   build:
     env:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
-      destination: "name=iPhone 15 Pro,OS=18.1"
+      destination: "name=iPhone 16,OS=18.1"
       destination_iPad: "name=iPad (10th generation),OS=18.1"
       project: "Adyen.xcodeproj"
       params: "-derivedDataPath ./DerivedData -skipPackagePluginValidation"
