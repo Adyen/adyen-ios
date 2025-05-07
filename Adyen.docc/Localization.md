@@ -14,7 +14,7 @@ To enforce a specific locale and formatting of monetary values, regardless of th
 
 To enforce a custom locale for formatting a monetary values, use the `locale` property on `LocalizationParameters`. In case of `enforcedLocale` the value will be used for both localisation and monetary values formatting.
 
-## Overriding strings
+## Override strings
 
 You can override strings for each key and locale.
 
