@@ -8,7 +8,8 @@ By default, the SDK attempts to use a device's locale for translation of text an
 
 ## Enforce a locale
 
-To enforce a specific locale and formatting of monetary values, regardless of the shopper's device locale, use `LocalizationParameters(enforcedLocale: MY_LOCALE)`. (`MY_LOCALE` should be replaced with your desired locale identifier, e.g., "fr-FR").
+To enforce a specific locale and formatting of monetary values, regardless of the shopper's device locale, use `LocalizationParameters(enforcedLocale: MY_LOCALE)`: 
+-  Replace `MY_LOCALE` with your desired locale identifier, for example, **fr-FR**.
 
 ## Override default monetary value formats
 
