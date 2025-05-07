@@ -26,7 +26,9 @@ You can override strings for each key and locale.
 2.  [Add a language to your project](https://developer.apple.com/documentation/xcode/localizing-and-varying-text-with-a-string-catalog#Add-a-language-to-your-project) if necessary.
 3.  Find the key for the string you want to translate in the [list of available strings](https://github.com/Adyen/adyen-ios/blob/develop/Adyen/Assets/Generated/LocalizationKey.swift) and override it for each desired locale.
 
-For example, if you want to override the payment button text to **Subscribe for [AMOUNT]**, add a key `adyen.submitButton.formatted` to your catalog. Then, provide new translation(s).
+For example, if you want to override the payment button text to **Subscribe for [AMOUNT]**: 
+1. Add the `adyen.submitButton.formatted` key to your catalog.
+2. Provide the new translation(s).
 
 <details>
   <summary><h3> Using Legacy <code>.strings</code> files</h3></summary>
