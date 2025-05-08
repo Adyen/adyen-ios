@@ -127,6 +127,7 @@
 		<string>twint-issuer1</string>
 		<string>weixinULAPI</string>
 		<string>weixin</string>
+		<string>weixinURLParamsAPI</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
