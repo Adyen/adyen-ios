@@ -1,19 +1,35 @@
 # Localization
 
-Both the Drop-in and the Components offer an option to customize the strings to match your app's use case or tone of voice.
+The SDK offers two primary ways to handle language and regional formatting:
 
-By default, the SDK attempts to use a device's locale for translation of text and formatting of monetary values. If the preferred device locales are not supported, the SDK falls back to the **en-US** locale.
+* **[iOS Default](https://developer.apple.com/library/archive/qa/qa1828/_index.html) Localization:**
+    The SDK tries to match the shopper's device language and regional settings. This is effective only for locales also listed in your app's `CFBundleLocalizations` array (found in the `Info.plist` file). If a suitable match for UI text isn't found, the text defaults to `en-US`, though formatting for amounts or dates may still try to adhere to the shopper's device region.
 
-> Note: Localization only picks up locales that are listed in the `CFBundleLocalizations` property of your app's `Info.plist` file.
+* **Enforced Localization:**
+    You can explicitly set a specific locale (e.g., `"fr-FR"`) by using `LocalizationParameters(enforcedLocale: "fr-FR"`. This ignores device preferences and ensures that all UI text and data formatting (like currency, dates, numbers) consistently use the specified locale's conventions. This method is ideal for apps targeting a single language, requiring uniform branding, or implementing an in-app language switcher.
 
-## Enforce a locale
+## How Device Locales Affect Monetary Formatting
 
-To enforce a specific locale and formatting of monetary values, regardless of the shopper's device locale, use `LocalizationParameters(enforcedLocale: MY_LOCALE)`: 
--  Replace `MY_LOCALE` with your desired locale identifier, for example, **fr-FR**.
+The default iOS localisation can lead to significant variations in the display of monetary values based on the shopper's device locale settings.
 
-## Override default monetary value formats
+For instance, if your app's UI supports English, French, and Chinese (Mainland) (meaning all three are listed in your `CFBundleLocalizations`), and the transaction amount is **12,340 Chinese Yuan (CNY)** (twelve thousand three hundred forty), here's how four different shoppers might see that CNY amount displayed, formatted according to their device's regional settings:
 
-To enforce a custom locale for formatting a monetary values, use the `locale` property on `LocalizationParameters`. In case of `enforcedLocale` the value will be used for both localisation and monetary values formatting.
+| User's Device Language | User's Device Region | Example Pay Button Label (for 12,340 CNY) |
+| :--------------------- | :------------------- | :---------------------------------------- |
+| `zh` (Chinese)         | `CN` (China)         | `¥12,340.00`                              |
+| `fr` (French)          | `FR` (France)        | `12 340,00 CNY`                           |
+| `tr` (Turkish)         | `TR` (Turkey)        | `CN¥12.340,00`                            |
+| `vi` (Vietnamese)      | `VN` (Vietnam)       | `¥12.340,00`                              |
+
+## Uniform Monetary Formatting
+
+If you prefer a consistent monetary display for all shoppers, or need to customize how numbers are formatted independently of the UI language, you can use `LocalizationParameters`. There are two main ways to control this:
+
+* **To customize *only* the formatting of monetary values (numbers, separators):**
+    Use the `locale` property on `LocalizationParameters`. This applies the monetary formatting of the chosen locale, but the UI text will still follow the "Natural Localization" process.
+
+* **To enforce a single locale for *both* UI text and all data formatting (including monetary values):**
+    Use the `enforcedLocale` property on `LocalizationParameters` (as detailed in the "Enforced Localization" section above).## Override strings
 
 ## Override strings
 
@@ -122,3 +138,6 @@ let parameters = LocalizationParameters(
 // Assuming 'configuration' is an instance of your Adyen component's configuration
 configuration.localizationParameters = parameters // Apply to any Component configuration.
 ```
+## Localisation diagram
+
+![diagram_6](https://github.com/user-attachments/assets/9e3252ff-1eb3-4e59-9197-a50d1ef305cb)
