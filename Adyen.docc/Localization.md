@@ -138,6 +138,6 @@ let parameters = LocalizationParameters(
 // Assuming 'configuration' is an instance of your Adyen component's configuration
 configuration.localizationParameters = parameters // Apply to any Component configuration.
 ```
-## Localisation diagram
+## Localization flow
 
 ![diagram_6](https://github.com/user-attachments/assets/9e3252ff-1eb3-4e59-9197-a50d1ef305cb)
