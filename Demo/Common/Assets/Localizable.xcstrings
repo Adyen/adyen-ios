@@ -11,15 +11,7 @@
 
     },
     "adyen.card.stored.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verify your card - HI"
-          }
-        }
-      }
+      "extractionState" : "manual"
     },
     "adyen.dropIn.stored.title" : {
       "extractionState" : "manual",
@@ -27,7 +19,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verify your card - HI"
+            "value" : "Confirm %@ payment - HI"
           }
         }
       }

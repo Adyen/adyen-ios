@@ -16,6 +16,12 @@
             "value" : "TestBundle - Verify your card - FR"
           }
         },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TestBundle - Verify your card - HI"
+          }
+        },
         "is-IS" : {
           "stringUnit" : {
             "state" : "translated",
@@ -36,13 +42,13 @@
         "da-DK" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TestBundle - Verify your card - DK"
+            "value" : "TestBundle - Confirm %@ payment - DK"
           }
         },
         "fr-FR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TestBundle - Verify your card - FR"
+            "value" : "TestBundle - Confirm %@ payment - FR"
           }
         },
         "hi" : {

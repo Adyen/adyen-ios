@@ -130,11 +130,11 @@ To use a custom localization file name, key format, or bundle, you can configure
 | `tableName`    | Your localization file name (without extension). | `"Localizable"` |
 | `keySeparator` | The separator for the key for each string.       | `"."`           |
 
-In the following example, the SDK looks for the key `adyen_submitButton_formatted` in the `YOUR_LOCALIZATION_FILE.strings` (or `YOUR_LOCALIZATION_FILE.xcstrings` catalog) file within the **CommonLibrary** bundle.
+In the following example, the SDK looks for the key `adyen_submitButton_formatted` in the `YOUR_LOCALIZATION_FILE.strings` (or `YOUR_LOCALIZATION_FILE.xcstrings` catalog) file within a custom bundle.
 
 ```swift
 let parameters = LocalizationParameters(
-    bundle: Bundle(for: MyLibraryClass.self), // Or your specific bundle instance
+    bundle: Bundle(for: MyClass.self), // Or your specific bundle instance
     tableName: "YOUR_LOCALIZATION_FILE",
     keySeparator: "_"
 )

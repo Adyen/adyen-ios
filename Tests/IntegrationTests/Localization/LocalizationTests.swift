@@ -74,11 +74,11 @@ class LocalizationTests: XCTestCase {
             bundle: Bundle(for: LocalizationTests.self)
         )
 
-        // Will find a line on Custom bundle
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle - Confirm test payment - HI")
+        // This string exist on Custom bundle, but SDK will first check on Main bundle
+        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Confirm test payment - HI")
 
-        // Will not find a line on Custom bundle and fallback to Main bundle
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Verify your card - HI")
+        // Will not find a line on Main bundle and fallback to Custom bundle
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - HI")
 
         // Ultimate fallback to English
         XCTAssertEqual(localizedString(.submitButton, parameters), "Pay")
