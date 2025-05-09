@@ -1,18 +1,20 @@
 # Localization
 
-The SDK offers two primary ways to handle language and regional formatting:
+The SDK allows you to customize UI strings and manage locale behavior using the `LocalizationParameters` object. You can configure these settings for both the Drop-in and individual Components through their `configuration.localizationParameters` property.
+
+Based on this configuration, the SDK provides two methods for handling language and regional formatting:
 
 * **[iOS Default](https://developer.apple.com/library/archive/qa/qa1828/_index.html) Localization:**
-    The SDK tries to match the shopper's device language and regional settings. This is effective only for locales also listed in your app's `CFBundleLocalizations` array (found in the `Info.plist` file). If a suitable match for UI text isn't found, the text defaults to `en-US`, though formatting for amounts or dates may still try to adhere to the shopper's device region.
+    The SDK matches the shopper's device language and regional settings when their locale is listed in your app's `CFBundleLocalizations` array in the `Info.plist` file. If the locale for your shopper's device language isn't found, the locale defaults to `en-US` for UI text. Amount and date formatting may still adhere to the shopper's device region.
 
 * **Enforced Localization:**
-    You can explicitly set a specific locale (e.g., `"fr-FR"`) by using `LocalizationParameters(enforcedLocale: "fr-FR"`. This ignores device preferences and ensures that all UI text and data formatting (like currency, dates, numbers) consistently use the specified locale's conventions. This method is ideal for apps targeting a single language, requiring uniform branding, or implementing an in-app language switcher.
+    You enforce a specific locale (e.g., `"fr-FR"`) by using `LocalizationParameters(enforcedLocale: "fr-FR"`. This ignores the shopper's device preferences, and all UI text and data formatting (like currency, dates, numbers) use the conventions of the enforced locale. Using an enforced locale allows you to target a single language, achieve uniform branding, or implement an in-app language switcher.
 
-## How Device Locales Affect Monetary Formatting
+## How device locales affect monetary formatting
 
-The default iOS localisation can lead to significant variations in the display of monetary values based on the shopper's device locale settings.
+The default iOS localization can lead to significant variations in how monetary values are displayed based on the shopper's device locale settings.
 
-For instance, if your app's UI supports English, French, and Chinese (Mainland) (meaning all three are listed in your `CFBundleLocalizations`), and the transaction amount is **12,340 Chinese Yuan (CNY)** (twelve thousand three hundred forty), here's how four different shoppers might see that CNY amount displayed, formatted according to their device's regional settings:
+For instance, if your app's `CFBundleLocalizations` array consist of English, French, and Chinese (Mainland) locales, and the transaction amount is **12,340 Chinese Yuan (CNY)** (twelve thousand three hundred forty), below is how your app will display the amount, formatted according to their device's regional settings:
 
 | User's Device Language | User's Device Region | Example Pay Button Label (for 12,340 CNY) |
 | :--------------------- | :------------------- | :---------------------------------------- |
@@ -28,8 +30,8 @@ If you prefer a consistent monetary display for all shoppers, or need to customi
 * **To customize *only* the formatting of monetary values (numbers, separators):**
     Use the `locale` property on `LocalizationParameters`. This applies the monetary formatting of the chosen locale, but the UI text will still follow the "Natural Localization" process.
 
-* **To enforce a single locale for *both* UI text and all data formatting (including monetary values):**
-    Use the `enforcedLocale` property on `LocalizationParameters` (as detailed in the "Enforced Localization" section above).## Override strings
+* **To enforce a single locale for *both* UI text and numeric data formatting:**
+    Use the `enforcedLocale` property on `LocalizationParameters` (as detailed in the "Enforced Localization" section above).
 
 ## Override strings
 
@@ -41,7 +43,7 @@ You can override strings for each key and locale.
 
 1.  [Add a string catalog to your project](https://developer.apple.com/documentation/xcode/localizing-and-varying-text-with-a-string-catalog#Add-a-string-catalog-to-your-project) or use your existing one.
 2.  [Add a language to your project](https://developer.apple.com/documentation/xcode/localizing-and-varying-text-with-a-string-catalog#Add-a-language-to-your-project) if necessary.
-3.  Find the key for the string you want to translate in the [list of available strings](https://github.com/Adyen/adyen-ios/blob/develop/Adyen/Assets/Generated/LocalizationKey.swift) and override it for each desired locale.
+3.  Find the key for the string you want to translate in the [list of available strings](https://github.com/Adyen/adyen-ios/blob/develop/Adyen/Assets/Generated/LocalizationKey.swift) and add your custom translation to override it for each desired locale.
 
 For example, if you want to override the payment button text to **Subscribe for [AMOUNT]**: 
 1. Add the `adyen.submitButton.formatted` key to your catalog.
@@ -76,7 +78,7 @@ For example, if you want to override the payment button text to **Subscribe for 
 
 </details>
 
-### Adding a New Locale
+### Add a new locale
 
 In the same way, you can add new locales that are not supported by the SDK out-of-the-box. Add the necessary `.xcstrings` entries or `.strings` files for the new locale.
 
@@ -117,7 +119,7 @@ In the same way, you can add new locales that are not supported by the SDK out-o
 | Spanish                | es-ES       |          |
 | Swedish                | sv-SE       |          |
 
-### Custom Localization File Name
+### Use a custom localization file name
 
 To use a custom localization file name, key format, or bundle, you can configure `LocalizationParameters`.
 
