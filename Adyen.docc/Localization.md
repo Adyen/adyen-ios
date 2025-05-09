@@ -23,12 +23,12 @@ For instance, if your app's `CFBundleLocalizations` array consist of English, Fr
 | `tr` (Turkish)         | `TR` (Turkey)        | `CN¥12.340,00`                            |
 | `vi` (Vietnamese)      | `VN` (Vietnam)       | `¥12.340,00`                              |
 
-## Uniform Monetary Formatting
+## Uniform currency and amount formatting
 
-If you prefer a consistent monetary display for all shoppers, or need to customize how numbers are formatted independently of the UI language, you can use `LocalizationParameters`. There are two main ways to control this:
+If you prefer to have a uniform monetary formatting for all shoppers, or need to customize how numbers are formatted independently of the UI language, you can use `LocalizationParameters`. There are two ways to control this:
 
 * **To customize *only* the formatting of monetary values (numbers, separators):**
-    Use the `locale` property on `LocalizationParameters`. This applies the monetary formatting of the chosen locale, but the UI text will still follow the "Natural Localization" process.
+    Use the `locale` property on `LocalizationParameters`. This applies the monetary formatting of the chosen locale, but the UI text will adhere to the "Default Localization".
 
 * **To enforce a single locale for *both* UI text and numeric data formatting:**
     Use the `enforcedLocale` property on `LocalizationParameters` (as detailed in the "Enforced Localization" section above).
