@@ -4,11 +4,11 @@ The SDK allows you to customize UI strings and manage locale behavior using the 
 
 Based on this configuration, the SDK provides two methods for handling language and regional formatting:
 
-* **[iOS Default](https://developer.apple.com/library/archive/qa/qa1828/_index.html) Localization:**
-    The SDK matches the shopper's device language and regional settings when their locale is listed in your app's `CFBundleLocalizations` array in the `Info.plist` file. If the locale for your shopper's device language isn't found, the locale defaults to `en-US` for UI text. Amount and date formatting may still adhere to the shopper's device region.
+- **[iOS Default](https://developer.apple.com/library/archive/qa/qa1828/_index.html) Localization:**
+  The SDK matches the shopper's device language and regional settings when their locale is listed in your app's `CFBundleLocalizations` array in the `Info.plist` file. If the locale for your shopper's device language isn't found, the locale defaults to `en-US` for UI text. Amount and date formatting may still adhere to the shopper's device region.
 
-* **Enforced Localization:**
-    You enforce a specific locale (e.g., `"fr-FR"`) by using `LocalizationParameters(enforcedLocale: "fr-FR"`. This ignores the shopper's device preferences, and all UI text and data formatting (like currency, dates, numbers) use the conventions of the enforced locale. Using an enforced locale allows you to target a single language, achieve uniform branding, or implement an in-app language switcher.
+- **Enforced Localization:**
+  You enforce a specific locale (e.g., `"fr-FR"`) by using `LocalizationParameters(enforcedLocale: "fr-FR"`. This ignores the shopper's device preferences, and all UI text and data formatting (like currency, dates, numbers) use the conventions of the enforced locale. Using an enforced locale allows you to target a single language, achieve uniform branding, or implement an in-app language switcher.
 
 ## How device locales affect monetary formatting
 
@@ -27,11 +27,11 @@ For instance, if your app's `CFBundleLocalizations` array consist of English, Fr
 
 If you prefer to have a uniform monetary formatting for all shoppers, or need to customize how numbers are formatted independently of the UI language, you can use `LocalizationParameters`. There are two ways to control this:
 
-* **To customize *only* the formatting of monetary values (numbers, separators):**
-    Use the `locale` property on `LocalizationParameters`. This applies the monetary formatting of the chosen locale, but the UI text will adhere to the "Default Localization".
+- **To customize _only_ the formatting of monetary values (numbers, separators):**
+  Use the `locale` property on `LocalizationParameters`. This applies the monetary formatting of the chosen locale, but the UI text will adhere to the "Default Localization".
 
-* **To enforce a single locale for *both* UI text and numeric data formatting:**
-    Use the `enforcedLocale` property on `LocalizationParameters` (as detailed in the "Enforced Localization" section above).
+- **To enforce a single locale for _both_ UI text and numeric data formatting:**
+  Use the `enforcedLocale` property on `LocalizationParameters` (as detailed in the "Enforced Localization" section above).
 
 ## Override strings
 
@@ -45,7 +45,8 @@ You can override strings for each key and locale.
 2.  [Add a language to your project](https://developer.apple.com/documentation/xcode/localizing-and-varying-text-with-a-string-catalog#Add-a-language-to-your-project) if necessary.
 3.  Find the key for the string you want to translate in the [list of available strings](https://github.com/Adyen/adyen-ios/blob/develop/Adyen/Assets/Generated/LocalizationKey.swift) and add your custom translation to override it for each desired locale.
 
-For example, if you want to override the payment button text to **Subscribe for [AMOUNT]**: 
+For example, if you want to override the payment button text to **Subscribe for [AMOUNT]**:
+
 1. Add the `adyen.submitButton.formatted` key to your catalog.
 2. Provide the new translation(s).
 
@@ -140,6 +141,7 @@ let parameters = LocalizationParameters(
 // Assuming 'configuration' is an instance of your Adyen component's configuration
 configuration.localizationParameters = parameters // Apply to any Component configuration.
 ```
+
 ## Localization flow
 
-![diagram_6](https://github.com/user-attachments/assets/9e3252ff-1eb3-4e59-9197-a50d1ef305cb)
+![Localization diagram](Assets/localization_diagram.png)
