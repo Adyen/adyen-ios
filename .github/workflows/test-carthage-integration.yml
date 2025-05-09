@@ -35,3 +35,15 @@ jobs:
       run: |
         carthage version
         Scripts/test-carthage-integration.sh
+
+    - name: Archive Xcode Project
+      if: always() 
+      run: |
+        zip -r xcode-project.zip . 
+
+    - name: Upload Xcode Project
+      if: always() 
+      uses: actions/upload-artifact@v3
+      with:
+        name: xcode-project
+        path: xcode-project.zip
