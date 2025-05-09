@@ -43,7 +43,7 @@ jobs:
 
     - name: Upload Xcode Project
       if: always() 
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: xcode-project
         path: xcode-project.zip
