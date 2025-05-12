@@ -34,10 +34,9 @@ class LocalizationTests: XCTestCase {
     }
 
     func testEnforcedLocalizationOverrides() {
-        var parameters = LocalizationParameters(
+        let parameters = LocalizationParameters(
             enforcedLocale: "is-IS",
-            bundle: Bundle(for: LocalizationTests.self),
-            tableName: "EnforceLocaleTests"
+            bundle: Bundle(for: LocalizationTests.self)
         )
         XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle - Confirm test payment - IS")
         XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - IS")
@@ -47,12 +46,11 @@ class LocalizationTests: XCTestCase {
 
         XCTAssertNotNil(parameters.bundle)
         XCTAssertNil(parameters.keySeparator)
-        XCTAssertEqual(parameters.tableName, "EnforceLocaleTests")
         XCTAssertEqual(parameters.locale, "is-IS")
     }
 
     func testEnforcedLocalizationOverridesWithCustomSeparator() {
-        var parameters = LocalizationParameters(
+        let parameters = LocalizationParameters(
             enforcedLocale: "ro-RO",
             bundle: Bundle(for: LocalizationTests.self),
             tableName: "EnforceLocaleTests",
@@ -71,12 +69,15 @@ class LocalizationTests: XCTestCase {
     }
 
     func testEnforcedLocalizationOverridesUnsupportedLocale() {
-        var parameters = LocalizationParameters(
+        let parameters = LocalizationParameters(
             enforcedLocale: "hi",
-            bundle: Bundle(for: LocalizationTests.self),
-            tableName: "EnforceLocaleTests"
+            bundle: Bundle(for: LocalizationTests.self)
         )
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle - Confirm test payment - HI")
+
+        // This string exist on Custom bundle, but SDK will first check on Main bundle
+        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Confirm test payment - HI")
+
+        // Will not find a line on Main bundle and fallback to Custom bundle
         XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - HI")
 
         // Ultimate fallback to English

@@ -1,4 +1,0 @@
-
-/// Custom strings file with custom table name and custom key separator, for Testing purposes only.
-"adyen.dropIn.stored.title" = "TestBundle - Confirm %@ payment - IS";
-"adyen.card.stored.title" = "TestBundle - Verify your card - IS";
