@@ -36,6 +36,13 @@ jobs:
         carthage version
         Scripts/test-carthage-integration.sh
 
+    - name: Upload Xcode build log if it exists
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: carthage-build-log
+        path: test_carthage_integration.log
+
     - name: Archive Xcode Project
       if: always() 
       run: |
