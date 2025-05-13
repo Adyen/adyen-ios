@@ -27,13 +27,3 @@ package protocol CheckoutBaseCallbacks {
     
     var onComplete: CheckoutSuccessHandler? { get set }
 }
-
-package extension CheckoutBaseCallbacks {
-    
-    mutating func setBaseCallbacks(from configuration: CheckoutConfiguration) {
-        self.onSubmit = configuration.onSubmit
-        self.onAdditionalDetails = configuration.onAdditionalDetails
-        self.onError = configuration.onError
-        self.onComplete = configuration.onComplete
-    }
-}

@@ -69,7 +69,6 @@ extension BLIKPaymentMethod {
             context: context,
             configuration: blikConfiguration
         )
-        component.setBaseCallbacks(from: configuration)
         return component
     }
 }
