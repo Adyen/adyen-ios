@@ -45,20 +45,6 @@ extension PaymentComponent {
         }
     }
     
-    package func submitNew(data: PaymentComponentData) {
-        sendSubmitEvent()
-        
-        let checkoutAttemptId = context.analyticsProvider?.checkoutAttemptId ?? AnalyticsConstants.fetchCheckoutAttemptIdFailed
-        let updatedData = data.replacing(checkoutAttemptId: checkoutAttemptId)
-        
-        // TODO: all submitting components will be conforming to this
-        if let self = self as? CheckoutBaseCallbacks {
-            self.onSubmit?(data) { resultCode, action in
-                // based on response, decide next steps
-            }
-        }
-    }
-    
     private func sendSubmitEvent() {
         let logEvent = AnalyticsEventLog(component: paymentMethod.type.rawValue, type: .submit)
         context.analyticsProvider?.add(log: logEvent)
