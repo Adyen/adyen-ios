@@ -70,7 +70,8 @@ import Foundation
         private static func assertWeChatPayAppSchemeConfigured() {
             guard Bundle.main.adyen.isSchemeConfigured("weixin") else {
                 return AdyenAssertion.assertionFailure(message: """
-                weixin:// scheme must be added to Info.plist under LSApplicationQueriesSchemes key.
+                You need to ensure that "weixin", "weixinULAPI" and "weixinURLParamsAPI" are configured 
+                in the first 50 LSApplicationQueriesSchemes in your Info.plist.
                 """)
             }
         }
