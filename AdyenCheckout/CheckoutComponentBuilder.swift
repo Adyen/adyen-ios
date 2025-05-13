@@ -15,14 +15,12 @@
     @_spi(AdyenInternal) import AdyenActions
 #endif
 
-public protocol AdyenCheckoutComponent: PresentableComponent {}
-
 internal enum CheckoutComponentBuilder {
     
     internal static func build(
         for paymentMethod: PaymentMethod,
         configuration: CheckoutConfiguration
-    ) throws -> AdyenCheckoutComponent {
+    ) -> PaymentComponent {
         if let blikPaymentMethod = paymentMethod as? BLIKPaymentMethod {
             return blikPaymentMethod.buildComponent(with: configuration)
         } else if let atomePaymentMethod = paymentMethod as? AtomePaymentMethod {}
@@ -34,25 +32,27 @@ internal enum CheckoutComponentBuilder {
     internal static func build(
         for action: Action,
         configuration: CheckoutConfiguration
-    ) -> AdyenCheckoutComponent {
+    ) -> ActionComponent {
         fatalError()
     }
 }
 
 extension CheckoutConfiguration {
-    func configuration(for paymentMethod: PaymentMethod) -> CheckoutComponentConfiguration? {
+    func componentConfiguration(for paymentMethod: PaymentMethod) -> CheckoutComponentConfiguration? {
         configurations[.payment(paymentMethod.type)]
     }
+    
+//    func componentConfiguration(for action: Action) -> CheckoutComponentConfiguration? {
+//        configurations[.action(...)]
+//    }
 }
-
-extension BLIKComponent: AdyenCheckoutComponent {}
 
 // testing different ways of creating the component
 extension BLIKPaymentMethod {
     
     func buildComponent(with configuration: CheckoutConfiguration) -> BLIKComponent {
         var blikConfiguration: BLIKComponentConfiguration
-        if let configuration = configuration.configuration(for: self) as? BLIKComponentConfiguration {
+        if let configuration = configuration.componentConfiguration(for: self) as? BLIKComponentConfiguration {
             blikConfiguration = configuration
         } else {
             blikConfiguration = .init()

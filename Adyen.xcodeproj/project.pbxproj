@@ -377,6 +377,7 @@
 		A02AF3DF274FB30200E1636C /* ApplePayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3DE274FB30200E1636C /* ApplePayStyle.swift */; };
 		A02AF3E8275A0D0900E1636C /* DocumentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3E7275A0D0900E1636C /* DocumentComponent.swift */; };
 		A02AF3EA275A3A5100E1636C /* DocumentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3E9275A3A5100E1636C /* DocumentAction.swift */; };
+		A02B89A82DCCE4FB0083CE99 /* AdyenCheckoutComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02B89A72DCCE4F60083CE99 /* AdyenCheckoutComponent.swift */; };
 		A03EE72F2760A2E300470561 /* DocumentActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE72E2760A2E300470561 /* DocumentActionViewModel.swift */; };
 		A03EE7312761297800470561 /* DocumentComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE7302761297800470561 /* DocumentComponentStyle.swift */; };
 		A03EE73327612BF300470561 /* DocumentActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE73227612BF300470561 /* DocumentActionView.swift */; };
@@ -1870,6 +1871,7 @@
 		A02AF3DE274FB30200E1636C /* ApplePayStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayStyle.swift; sourceTree = "<group>"; };
 		A02AF3E7275A0D0900E1636C /* DocumentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentComponent.swift; sourceTree = "<group>"; };
 		A02AF3E9275A3A5100E1636C /* DocumentAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAction.swift; sourceTree = "<group>"; };
+		A02B89A72DCCE4F60083CE99 /* AdyenCheckoutComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenCheckoutComponent.swift; sourceTree = "<group>"; };
 		A03B7C9129B0C61500FDDDFC /* CashAppPayComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPayComponent.swift; sourceTree = "<group>"; };
 		A03EE72E2760A2E300470561 /* DocumentActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentActionViewModel.swift; sourceTree = "<group>"; };
 		A03EE7302761297800470561 /* DocumentComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentComponentStyle.swift; sourceTree = "<group>"; };
@@ -3497,6 +3499,7 @@
 		A0F7499E2D958B3800014A05 /* AdyenCheckout */ = {
 			isa = PBXGroup;
 			children = (
+				A02B89A72DCCE4F60083CE99 /* AdyenCheckoutComponent.swift */,
 				A0F749DC2D9FCE9E00014A05 /* AdyenCheckoutProtocol.swift */,
 				A0F749A42D958B9400014A05 /* AdyenCheckout.swift */,
 				A0F749DA2D9EC02900014A05 /* CheckoutComponentBuilder.swift */,
@@ -7021,6 +7024,7 @@
 			files = (
 				A0F749DB2D9EC10700014A05 /* CheckoutComponentBuilder.swift in Sources */,
 				A0F7499F2D958B3800014A05 /* AdyenCheckout.docc in Sources */,
+				A02B89A82DCCE4FB0083CE99 /* AdyenCheckoutComponent.swift in Sources */,
 				A0F749A52D958B9700014A05 /* AdyenCheckout.swift in Sources */,
 				A0F749DD2D9FCEA200014A05 /* AdyenCheckoutProtocol.swift in Sources */,
 			);
