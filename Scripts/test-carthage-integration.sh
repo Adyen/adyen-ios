@@ -149,6 +149,28 @@ cp "../Demo/Configuration.swift" Source/Configuration.swift
 
 xcodegen generate
 
+function check_symlinks_in_dir {
+  local dir="$1"
+
+  if [ ! -d "$dir" ]; then
+    echo "Error: '$dir' is not a directory"
+    return 1
+  fi
+
+  local all_symlinks=true
+
+  while IFS= read -r -d '' item; do
+    if [ -L "$item" ]; then
+      echo "$item is a symbolic link"
+    else
+      echo "$item is NOT a symbolic link"
+      all_symlinks=false
+    fi
+  done < <(find "$dir" -mindepth 1 -print0)
+}
+
+check_symlinks_in_dir "./Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/Adyen3DS2.xcframework" >> test_carthage_integration.log
+
 echo_header "Run Tests"
 xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 16" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | tee test_carthage_integration.log | xcpretty && exit ${PIPESTATUS[0]}
 
