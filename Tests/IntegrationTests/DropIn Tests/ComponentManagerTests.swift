@@ -133,7 +133,37 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.regularComponents.filter { $0 is PresentableComponent }.count, 24)
         XCTAssertEqual(sut.regularComponents.filter { $0 is FinalizableComponent }.count, 1)
     }
-    
+
+    func testCardPaymentMethod() throws {
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
+
+        sut.configuration.localizationParameters = LocalizationParameters(tableName: "TestValue", keySeparator: nil)
+
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "scheme" } as? CardComponent)
+        XCTAssertEqual(paymentComponent.configuration.localizationParameters?.tableName, "TestValue")
+    }
+
+    func testBCMCPaymentMethod() throws {
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
+        sut.configuration.localizationParameters = LocalizationParameters(tableName: "TestValue", keySeparator: nil)
+
+        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "bcmc" } as? BCMCComponent)
+
+        XCTAssertEqual(paymentComponent.configuration.localizationParameters?.tableName, "TestValue")
+    }
+
     func testCashAppShouldFailWithoutConfig() {
         let sut = ComponentManager(
             paymentMethods: paymentMethods,
