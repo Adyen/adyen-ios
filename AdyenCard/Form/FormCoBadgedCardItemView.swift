@@ -11,7 +11,7 @@ import UIKit
 internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem> {
 
     private enum Constants {
-        static let viewHeight: CGFloat = 150
+        static let viewHeight: CGFloat = 160
     }
 
     /// The card brand selection title label item.
@@ -29,6 +29,8 @@ internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem
     internal lazy var subtitleLabel: UILabel = {
         let subtitleLabel = UILabel(style: item.style.subtitle)
         subtitleLabel.text = item.subtitle
+        subtitleLabel.numberOfLines = 0
+        subtitleLabel.textAlignment = .left
         subtitleLabel.accessibilityLabel = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardBadgedCardSelectionSubtitleLabelItem")

@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "„%@“ nepalaikomas";
 "adyen.card.numberItem.unknownBrand" = "Įvestas kortelės prekės ženklas nepalaikomas";
 "adyen.card.scanYourCardButton" = "Nuskaitykite savo kortelę";
+"adyen.creditCard.dualBrand.title" = "Kortelės prekių ženklas";
+"adyen.creditCard.dualBrand.description" = "Selecteer het merk van de kaart waarmee u het liefst wilt betalen. Dit is optioneel.";
 "adyen.dropIn.stored.title" = "Patvirtinti %@ mokėjimą";
 "adyen.dropIn.preselected.openAll.title" = "Keisti mokėjimo būdą";
 "adyen.continueTo" = "Eiti į %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Įveskite UPI ID";
-"adyen.UPI.collectFieldLabel" = "Įveskite UPI ID / VPA";
+"adyen.UPI.collectFieldLabel" = "UPI ID";
 "adyen.UPI.error.noAppSelected" = "Norėdami tęsti, pasirinkite mokėjimo metodą";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
@@ -265,3 +267,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Įveskite teisingą banko sąskaitos numerį";
 "adyen.payto.payid.description" = "Įveskite „PayID“ ir sąskaitos duomenis, susietus su jūsų „PayTo“ sąskaita.";
 "adyen.payto.await.description" = "Dėkojame, kad perkate. Užbaikite mokėjimą prisijungę prie savo banko sąskaitos, patvirtinkite „PayTo“ sutartį ir mokėjimo sąlygas.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Suteikti prieigą prie kameros";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Anksčiau prieigos užklausa buvo atmesta. Norėdami nuskaityti korteles, suteikite prieigą skiltyje „Nustatymai“.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Atidarykite skiltį „Nustatymai“";

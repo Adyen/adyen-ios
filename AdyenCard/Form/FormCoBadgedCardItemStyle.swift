@@ -22,7 +22,7 @@ internal struct FormCoBadgedCardItemStyle: ViewStyle {
     internal var subtitle = TextStyle(
         font: .preferredFont(forTextStyle: .footnote),
         color: UIColor.Adyen.componentLabel,
-        textAlignment: .natural
+        textAlignment: .left
     )
 
     /// The background color.

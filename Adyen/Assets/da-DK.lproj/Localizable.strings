@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "%@ understøttes ikke";
 "adyen.card.numberItem.unknownBrand" = "Det angivne kortmærke understøttes ikke";
 "adyen.card.scanYourCardButton" = "Scan dit kort";
+"adyen.creditCard.dualBrand.title" = "Korttype";
+"adyen.creditCard.dualBrand.description" = "Wählen Sie die Kartenmarke aus, mit der Sie bezahlen möchten. Dies ist optional.";
 "adyen.dropIn.stored.title" = "Bekræft %@-betaling";
 "adyen.dropIn.preselected.openAll.title" = "Skift betalingsmåde";
 "adyen.continueTo" = "Fortsæt til %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Indtast UPI-id";
-"adyen.UPI.collectFieldLabel" = "Indtast UPI-id/VPA";
+"adyen.UPI.collectFieldLabel" = "UPI-id";
 "adyen.UPI.error.noAppSelected" = "Vælg en betalingsmåde for at fortsætte";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
@@ -265,3 +267,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Angiv et korrekt bankkontonummer";
 "adyen.payto.payid.description" = "Indtast PayID og kontooplysninger, der er knyttet til din PayTo-konto.";
 "adyen.payto.await.description" = "Tak for dit køb. Fuldfør betalingen ved at logge ind på din bankkonto, godkende PayTo-aftalen og acceptere betalingsbetingelserne.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Tillad kameraadgang";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Adgang blev tidligere nægtet. Du skal give adgang fra indstillinger for at scanne kort.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Åbn indstillingerne";

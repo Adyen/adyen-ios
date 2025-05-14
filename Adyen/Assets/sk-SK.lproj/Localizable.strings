@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "Značka %@ nie je podporovaná";
 "adyen.card.numberItem.unknownBrand" = "Zadaná značka karty nie je podporovaná";
 "adyen.card.scanYourCardButton" = "Naskenujte svoju kartu";
+"adyen.creditCard.dualBrand.title" = "Značka karty";
+"adyen.creditCard.dualBrand.description" = "Välj det kortmärke du föredrar att betala med. Detta är valfritt.";
 "adyen.dropIn.stored.title" = "Potvrďte platbu pomocou %@";
 "adyen.dropIn.preselected.openAll.title" = "Zmeniť spôsob platby";
 "adyen.continueTo" = "Pokračovať do %@";
@@ -184,7 +186,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Zadajte UPI ID";
-"adyen.UPI.collectFieldLabel" = "Zadajte UPI ID / VPA";
+"adyen.UPI.collectFieldLabel" = "ID UPI";
 "adyen.UPI.error.noAppSelected" = "Pokračujte výberom spôsobu platby";
 "adyen.twint.noAppsInstalled.message" = "V tomto zariadení nie je nainštalovaná aplikácia TWINT, alebo je verzia aplikácie TWINT zastaraná. Prosím, aktualizujte si alebo si nainštalujte aplikáciu TWINT.";
 "adyen.threeds2.DA.registration.title" = "Zabezpečená platba";
@@ -259,3 +261,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Zadajte správne číslo bankového účtu";
 "adyen.payto.payid.description" = "Zadajte PayID a údaje o účte, ktoré sú pripojené k vášmu účtu PayTo.";
 "adyen.payto.await.description" = "Ďakujeme vám za nákup. Na dokončenie platby sa prihláste do svojho bankového účtu, autorizujte zmluvu s PayTo a schváľte platobné podmienky.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Povoliť prístup k fotoaparátu";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Prístup bol predtým odmietnutý. Na nasnímanie kariet udeľte v ponuke Nastavenia prístup.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Otvoriť ponuku Nastavenia";

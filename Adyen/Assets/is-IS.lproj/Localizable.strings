@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "Ekki er stuðningur við %@";
 "adyen.card.numberItem.unknownBrand" = "Ekki er stuðningur við innslegið kortamerki";
 "adyen.card.scanYourCardButton" = "Skannaðu kortið þitt";
+"adyen.creditCard.dualBrand.title" = "Kortafyrirtæki";
+"adyen.creditCard.dualBrand.description" = "Seleziona la marca della carta con cui preferisci pagare. Questo è facoltativo.";
 "adyen.dropIn.stored.title" = "Staðfesta %@ greiðslu";
 "adyen.dropIn.preselected.openAll.title" = "Breyta greiðslumáta";
 "adyen.continueTo" = "Halda áfram á %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Sláðu inn UPI-auðkenni";
-"adyen.UPI.collectFieldLabel" = "Sláðu inn UPI-auðkenni/VPA";
+"adyen.UPI.collectFieldLabel" = "UPI-auðkenni";
 "adyen.UPI.error.noAppSelected" = "Veldu greiðslumáta til að halda áfram";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
@@ -265,3 +267,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Sláðu inn rétt bankareikningsnúmer";
 "adyen.payto.payid.description" = "Sláðu inn PayID og reikningsupplýsingar sem eru tengjast PayTo-reikningnum þínum.";
 "adyen.payto.await.description" = "Takk fyrir kaupin. Ljúktu við greiðsluna með því að skrá þig inn á bankareikninginn, heimila PayTo-samninginn og samþykkja greiðsluskilmálana.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Gefðu aðgang að myndavél";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Aðgangi var áður hafnað. Til að skanna kort skaltu gefa aðgang í stillingum.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Opna stillingar";

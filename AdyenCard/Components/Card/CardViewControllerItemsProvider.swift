@@ -12,6 +12,7 @@ extension CardViewController {
     internal struct InfoEventData {
         internal let type: AnalyticsEventInfo.InfoType
         internal let target: AnalyticsEventTarget
+        internal let brands: [CardBrand]?
         internal let error: AnalyticsValidationError?
     }
 
@@ -164,11 +165,11 @@ extension CardViewController {
         internal lazy var coBadgedCardItem: FormCoBadgedCardItem = {
             FormCoBadgedCardItem(
                 title: localizedString(
-                    LocalizationKey(key: "Card brand selection (optional)"),
+                    .creditCardDualBrandTitle,
                     configuration.localizationParameters
                 ),
                 subtitle: localizedString(
-                    LocalizationKey(key: "Select your preferred card brand"),
+                    .creditCardDualBrandDescription,
                     configuration.localizationParameters
                 ),
                 selectableFormItems: [],
@@ -188,9 +189,9 @@ extension CardViewController {
                     style: .init(title: configuration.style.textField.title),
                     identifier: brand.type.rawValue
                 )
-                selectableItem.selectionHandler = { [weak self, weak selectableItem] in
+                selectableItem.selectionHandler = { [weak self] in
                     guard let self else { return }
-                    handleSelection(identifier: selectableItem?.identifier, brand: brand)
+                    handleSelection(selectedBrand: brand)
                 }
                 return selectableItem
             }
@@ -277,17 +278,24 @@ extension CardViewController {
             return item
         }()
 
-        internal func handleSelection(identifier: String?, brand: CardBrand? = nil) {
+        internal func handleSelection(selectedBrand: CardBrand) {
             coBadgedCardItem.selectableFormItems.forEach { $0.isSelected = false }
-            coBadgedCardItem.selectableFormItems.first(where: { $0.identifier == identifier })?.isSelected = true
-            numberContainerItem.numberItem.selectBrand(cardBrand: brand)
-            self.triggerInfoEvent(of: .selected, target: .dualBrand)
+            coBadgedCardItem.selectableFormItems.first(where: { $0.identifier == selectedBrand.type.rawValue })?.isSelected = true
+            numberContainerItem.numberItem.selectBrand(cardBrand: selectedBrand)
+
+            triggerInfoEvent(of: .selected, target: .dualBrandButton, brands: [selectedBrand])
         }
 
-        internal func triggerInfoEvent(of type: AnalyticsEventInfo.InfoType, target: AnalyticsEventTarget, error: AnalyticsValidationError? = nil) {
+        internal func triggerInfoEvent(
+            of type: AnalyticsEventInfo.InfoType,
+            target: AnalyticsEventTarget,
+            brands: [CardBrand]? = nil,
+            error: AnalyticsValidationError? = nil
+        ) {
             let infoEventData = InfoEventData(
                 type: type,
                 target: target,
+                brands: brands,
                 error: error
             )
             onDidTriggerInfoEvent?(infoEventData)

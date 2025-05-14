@@ -205,9 +205,13 @@ internal class CardViewController: FormViewController {
         } else {
             brands = binInfo.brands ?? []
             if brands.count == 2, brands.allSatisfy(\.isSupported) {
+                items.coBadgedCardItem.selectableFormItems = items.selectableFormItems(from: brands)
                 items.coBadgedCardItem.isHidden.wrappedValue = false
-                items.triggerInfoEvent(of: .rendered, target: .dualBrand)
-                items.coBadgedCardItem.update(selectableFormItems: items.selectableFormItems(from: brands))
+                items.triggerInfoEvent(
+                    of: .displayed,
+                    target: .dualBrandButton,
+                    brands: brands
+                )
             }
         }
         issuingCountryCode = binInfo.issuingCountryCode

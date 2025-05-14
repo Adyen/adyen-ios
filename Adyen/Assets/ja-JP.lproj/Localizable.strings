@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "%@はサポートされていません";
 "adyen.card.numberItem.unknownBrand" = "入力されたカードブランドはサポートされていません";
 "adyen.card.scanYourCardButton" = "カードをスキャンしてください";
+"adyen.creditCard.dualBrand.title" = "カードブランド";
+"adyen.creditCard.dualBrand.description" = "Pasirinkite kortelės, kuria pageidaujate atsiskaityti, prekių ženklą. Tai neprivaloma.";
 "adyen.dropIn.stored.title" = "%@のお支払いをご確認下さい";
 "adyen.dropIn.preselected.openAll.title" = "お支払方法を変更する";
 "adyen.continueTo" = "次へ進む：%@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "UPI IDを入力してください";
-"adyen.UPI.collectFieldLabel" = "UPI ID/VPAを入力してください";
+"adyen.UPI.collectFieldLabel" = "UPI ID";
 "adyen.UPI.error.noAppSelected" = "支払い方法を選択して続行する";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
@@ -265,3 +267,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "正しい銀行口座番号を入力してください";
 "adyen.payto.payid.description" = "PayToアカウントに接続されているPayIDとアカウントの詳細を入力してください。";
 "adyen.payto.await.description" = "ご購入いただきありがとうございます。銀行口座にログインして支払いを完了し、PayTo契約を承認し、支払い条件を承認してください。";
+"adyen.card.scanner.camera.access.denied.alert.title" = "カメラへのアクセスを許可";
+"adyen.card.scanner.camera.access.denied.alert.message" = "過去にアクセスが拒否されました。カードをスキャンするには、設定からアクセスを許可してください。";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "設定を開く";

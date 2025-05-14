@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "Marka %@ nie jest obsługiwana";
 "adyen.card.numberItem.unknownBrand" = "Wprowadzona marka karty nie jest obsługiwana";
 "adyen.card.scanYourCardButton" = "Zeskanuj kartę";
+"adyen.creditCard.dualBrand.title" = "Marka karty";
+"adyen.creditCard.dualBrand.description" = "Selecione a marca de cartão com que prefere pagar. Isto é opcional.";
 "adyen.dropIn.stored.title" = "Potwierdź płatność %@";
 "adyen.dropIn.preselected.openAll.title" = "Zmień metodę płatności";
 "adyen.continueTo" = "Przejdź do %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Wprowadź identyfikator UPI";
-"adyen.UPI.collectFieldLabel" = "Wprowadź identyfikator UPI / VPA";
+"adyen.UPI.collectFieldLabel" = "Identyfikator UPI";
 "adyen.UPI.error.noAppSelected" = "Wybierz metodę płatności, aby kontynuować";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
@@ -265,3 +267,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Wprowadź prawidłowy numer rachunku bankowego";
 "adyen.payto.payid.description" = "Wprowadź PayID i dane konta powiązane z Twoim kontem PayTo.";
 "adyen.payto.await.description" = "Dziękujemy za zakup. Prosimy o dokończenie płatności – w tym celu zaloguj się na konto bankowe, autoryzuj umowę PayTo i zatwierdź warunki płatności.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Zezwól na dostęp do aparatu";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Wcześniej odmówiono dostępu. Aby skanować karty, przyznaj dostęp w ustawieniach.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Otwórz ustawienia";

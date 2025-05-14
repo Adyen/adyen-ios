@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "Kaubamärki %@ ei toetata";
 "adyen.card.numberItem.unknownBrand" = "Sisestatud kaardi kaubamärki ei toetata";
 "adyen.card.scanYourCardButton" = "Skannige oma kaart";
+"adyen.creditCard.dualBrand.title" = "Kaardi bränd";
+"adyen.creditCard.dualBrand.description" = "Valitse ensisijainen maksukorttisi. Tämä on vapaaehtoista.";
 "adyen.dropIn.stored.title" = "Kinnitage makse (%@)";
 "adyen.dropIn.preselected.openAll.title" = "Muuda makseviisi";
 "adyen.continueTo" = "Jätka: %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Sisestage UPI ID";
-"adyen.UPI.collectFieldLabel" = "Sisestage UPI ID / VPA";
+"adyen.UPI.collectFieldLabel" = "UPI ID";
 "adyen.UPI.error.noAppSelected" = "Jätkamiseks valige makseviis";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
@@ -265,3 +267,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Sisestage õige pangakonto number";
 "adyen.payto.payid.description" = "Sisestage PayID ja teie PayTo kontoga ühendatud konto andmed.";
 "adyen.payto.await.description" = "Täname teid ostu eest, viige makse lõpule, logides sisse oma pangakontole, kinnitage PayTo leping ja nõustuge maksetingimustega.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Lubage kaamerale juurdepääs";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Juurdepääs oli varem keelatud. Kaartide skannimiseks andke juurdepääs Sätete kaudu.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Avage Sätted";

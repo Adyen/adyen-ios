@@ -222,6 +222,14 @@ public class CardComponent: PresentableComponent,
             type: data.type
         )
         infoEvent.target = data.target
+        infoEvent.brand = data.brands?.first?.type.rawValue
+        infoEvent.configData = data.type == .selected ? nil : CoBadgedAnalyticsConfiguration(
+            brands: data.brands?.compactMap(
+                \.type.rawValue
+            ).joined(
+                separator: ","
+            )
+        )
         if let errorCode = data.error?.analyticsErrorCode {
             infoEvent.validationErrorCode = String(errorCode)
         }

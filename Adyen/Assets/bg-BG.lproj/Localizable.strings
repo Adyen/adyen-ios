@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "%@ не се поддържа";
 "adyen.card.numberItem.unknownBrand" = "Въведената марка на картата не се поддържа";
 "adyen.card.scanYourCardButton" = "Сканирайте Вашата карта";
+"adyen.creditCard.dualBrand.title" = "Марка на картата";
+"adyen.creditCard.dualBrand.description" = "Seleccioneu la marca de la targeta amb la qual preferiu pagar. Això és opcional.";
 "adyen.dropIn.stored.title" = "Потвърди %@ плащането";
 "adyen.dropIn.preselected.openAll.title" = "Промяна на начина на плащане";
 "adyen.continueTo" = "Продължете към %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Въведете UPI ID";
-"adyen.UPI.collectFieldLabel" = "Въведете UPI ID / VPA";
+"adyen.UPI.collectFieldLabel" = "UPI ID";
 "adyen.UPI.error.noAppSelected" = "Изберете метод на плащане, за да продължите";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
@@ -265,3 +267,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Въведете правилен номер на банкова сметка";
 "adyen.payto.payid.description" = "Въведете PayID и данните за сметката, които са свързани с Вашия PayTo акаунт.";
 "adyen.payto.await.description" = "Благодарим Ви за покупката, завършете плащането, като влезете в банковата си сметка, потвърдите споразумението PayTo и одобрите условията за плащане.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Разрешете достъп до камерата";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Достъпът е бил отказан по-рано. За да сканирате карти, моля, дайте достъп от настройки.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Отворете настройките";

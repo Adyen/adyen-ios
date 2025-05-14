@@ -19,7 +19,7 @@ internal final class FormCoBadgedCardItem: FormItem {
     internal var subtitle: String
 
     /// The array of selectable form items.
-    @AdyenObservable([]) internal private(set) var selectableFormItems: [SelectableFormItem]
+    @AdyenObservable([]) internal var selectableFormItems: [SelectableFormItem]
 
     /// The `accessibilityIdentifier` to be used on the `FormCoBadgedCardItem`
     internal var identifier: String?
@@ -61,10 +61,6 @@ internal final class FormCoBadgedCardItem: FormItem {
 
     internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
-    }
-
-    internal func update(selectableFormItems: [SelectableFormItem]) {
-        self.selectableFormItems = selectableFormItems
     }
 }
 

@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "No admitimos tarjetas de %@";
 "adyen.card.numberItem.unknownBrand" = "La marca de la tarjeta introducida no es compatible";
 "adyen.card.scanYourCardButton" = "Escanee su tarjeta";
+"adyen.creditCard.dualBrand.title" = "Marca de tarjeta";
+"adyen.creditCard.dualBrand.description" = "Valige kaardibränd, millega eelistate maksta. See on valikuline.";
 "adyen.dropIn.stored.title" = "Confirmar pago de %@";
 "adyen.dropIn.preselected.openAll.title" = "Cambiar método de pago";
 "adyen.continueTo" = "Continuar a %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Introduzca el ID de la UPI";
-"adyen.UPI.collectFieldLabel" = "Introduzca el ID de la UPI/VPA";
+"adyen.UPI.collectFieldLabel" = "ID de la UPI";
 "adyen.UPI.error.noAppSelected" = "Selecciona un método de pago para continuar";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
@@ -265,3 +267,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Escriba un número de cuenta bancaria correcto";
 "adyen.payto.payid.description" = "Introduzca el PayID y los detalles de la cuenta que están conectados a su cuenta PayTo.";
 "adyen.payto.await.description" = "Gracias por su compra. Para completar el pago, inicie sesión en su cuenta bancaria, autorice el acuerdo PayTo y apruebe los términos de pago.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Permita el acceso a la cámara";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Anteriormente se había denegado el acceso. Para escanear tarjetas, conceda acceso desde Configuraciones.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Abrir Configuraciones";

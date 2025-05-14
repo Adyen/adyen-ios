@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "%@ غير مدعومة";
 "adyen.card.numberItem.unknownBrand" = "العلامة التجارية للبطاقة التي تم إدخالها غير مدعومة";
 "adyen.card.scanYourCardButton" = "امسح بطاقتك ضوئيًا";
+"adyen.creditCard.dualBrand.title" = "العلامة التجارية للبطاقة";
+"adyen.creditCard.dualBrand.description" = "اختر العلامة التجارية للبطاقة التي تفضل الدفع بها. هذا البيان اختياري., Изберете марката на картата, с която предпочитате да плащате. Това не е задължително.";
 "adyen.dropIn.stored.title" = "تأكيد الدفع باستخدام %@";
 "adyen.dropIn.preselected.openAll.title" = "تغيير طريقة الدفع";
 "adyen.continueTo" = "متابعة إلى %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "أدخل معرف UPI";
-"adyen.UPI.collectFieldLabel" = "أدخل معرف واجهة المدفوعات الموحدة (UPI) / عنوان الدفع الافتراضي (VPA)";
+"adyen.UPI.collectFieldLabel" = "معرف UPI";
 "adyen.UPI.error.noAppSelected" = "للمتابعة؛ حدد وسيلة للدفع";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
@@ -265,3 +267,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "أدخل رقم حساب مصرفي صحيحًا";
 "adyen.payto.payid.description" = "أدخل معرف PayID وتفاصيل الحساب المرتبطة بحساب PayTo الخاص بك.";
 "adyen.payto.await.description" = "نشكرك على عملية الشراء. يُرجى إكمال عملية الدفع من خلال تسجيل الدخول إلى حسابك المصرفي والموافقة على اتفاقية PayTo وعلى شروط الدفع.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "امنح الإذن بالوصول إلى الكاميرا";
+"adyen.card.scanner.camera.access.denied.alert.message" = "لقد رُفِضَ الوصول إليها من قبل. لمسح البطاقات ضوئيًا؛ يُرجى منح الإذن بالوصول إلى الكاميرا من خلال Settings (الإعدادات).";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "افتح Settings (الإعدادات)";

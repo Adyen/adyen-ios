@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "%@ non è supportata";
 "adyen.card.numberItem.unknownBrand" = "Il brand della carta inserita non è supportato";
 "adyen.card.scanYourCardButton" = "Scansiona la tua carta";
+"adyen.creditCard.dualBrand.title" = "Marca della carta";
+"adyen.creditCard.dualBrand.description" = "お支払いに使用するカードブランドをお選びください。これは任意です。, 결제에 사용할 카드 브랜드를 선택하세요. 이는 선택 사항입니다.";
 "adyen.dropIn.stored.title" = "Conferma il pagamento di %@";
 "adyen.dropIn.preselected.openAll.title" = "Cambia metodo di pagamento";
 "adyen.continueTo" = "Procedi verso %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Immetti l'ID UPI";
-"adyen.UPI.collectFieldLabel" = "Immetti l'ID UPI / VPA";
+"adyen.UPI.collectFieldLabel" = "ID UPI";
 "adyen.UPI.error.noAppSelected" = "Seleziona un metodo di pagamento per continuare";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
@@ -265,3 +267,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Inserisci un numero di conto bancario corretto";
 "adyen.payto.payid.description" = "Immettere la PayID e i dettagli del conto collegati al conto PayTo.";
 "adyen.payto.await.description" = "Grazie per l'acquisto, completa il pagamento effettuando l'accesso al tuo conto bancario, autorizza l'accordo PayTo e approva i termini di pagamento.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Consenti l'accesso alla fotocamera";
+"adyen.card.scanner.camera.access.denied.alert.message" = "L'accesso è stato negato in precedenza. Per scansionare le carte, autorizzare l'accesso dalle Impostazioni.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Apri le impostazioni";
