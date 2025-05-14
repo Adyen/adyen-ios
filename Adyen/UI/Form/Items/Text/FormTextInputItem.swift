@@ -8,13 +8,13 @@ import Foundation
 
 /// An item for plain text input
 @_spi(AdyenInternal)
-public final class FormTextInputItem: FormTextItem {
+open class FormTextInputItem: FormTextItem {
 
     @AdyenObservable(true) public var isEnabled: Bool
     
     internal var focusHandler: (() -> Void)?
     
-    override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    override open func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
     
