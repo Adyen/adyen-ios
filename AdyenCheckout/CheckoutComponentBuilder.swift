@@ -5,15 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-#if canImport(AdyenDropIn)
-    @_spi(AdyenInternal) import AdyenDropIn
-#endif
-#if canImport(AdyenComponents)
-    @_spi(AdyenInternal) import AdyenComponents
-#endif
-#if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
-#endif
+@_spi(AdyenInternal) import AdyenDropIn
+@_spi(AdyenInternal) import AdyenComponents
+@_spi(AdyenInternal) import AdyenActions
 
 internal enum CheckoutComponentBuilder {
     
