@@ -170,6 +170,7 @@ function check_symlinks_in_dir {
 }
 
 check_symlinks_in_dir "./Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/Adyen3DS2.xcframework" >> test_carthage_integration.log
+check_symlinks_in_dir "./Carthage/Build/Adyen3DS2.xcframework" >> test_carthage_integration.log
 
 echo_header "Run Tests"
 xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 16" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | tee test_carthage_integration.log | xcpretty && exit ${PIPESTATUS[0]}
