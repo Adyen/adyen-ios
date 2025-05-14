@@ -13,7 +13,13 @@ final class BLIKComponentUITests: XCTestCase {
 
     private let payment = Payment(amount: Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
     private var paymentMethod: BLIKPaymentMethod { BLIKPaymentMethod(type: .blik, name: "test_name") }
-    private var context: AdyenContext { AdyenContext(apiContext: Dummy.apiContext, payment: payment) }
+    private var context: AdyenContext {
+        AdyenContext(
+            apiContext: Dummy.apiContext,
+            payment: payment,
+            amount: Dummy.amount
+        )
+    }
 
     func testUIConfiguration() {
         var style = FormComponentStyle()
@@ -45,13 +51,13 @@ final class BLIKComponentUITests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        let config = BLIKComponent.Configuration(style: style)
+        let config = BLIKComponentConfiguration(style: style)
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
     func testSubmitForm() throws {
-        let config = BLIKComponent.Configuration(style: .init())
+        let config = BLIKComponentConfiguration(style: .init())
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
         let delegate = PaymentComponentDelegateMock()
@@ -88,7 +94,7 @@ final class BLIKComponentUITests: XCTestCase {
     }
 
     func testSubmitButtonLoading() throws {
-        let config = BLIKComponent.Configuration(style: .init())
+        let config = BLIKComponentConfiguration(style: .init())
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
         setupRootViewController(sut.viewController)
