@@ -6,6 +6,7 @@
 
 import Foundation
 
+// TODO: add description
 public struct CheckoutConfiguration {
 
     package var amount: Amount
