@@ -8,16 +8,16 @@ import Foundation
 
 public struct CheckoutConfiguration {
 
-    internal var amount: Amount
+    package var amount: Amount
     
-    internal var analyticsConfiguration: AnalyticsConfiguration
+    package var analyticsConfiguration: AnalyticsConfiguration
     
     package var apiContext: APIContext
     
     package var showsSubmitButton: Bool = true
     
     // TODO: how we store configurations may change
-    package var configurations: [CheckoutComponentType: ConfigurationWrapper]
+    package var configurations: [CheckoutComponentType: CheckoutComponentConfiguration]
     
     package var onSubmit: SubmitHandler?
     
@@ -47,18 +47,13 @@ public struct CheckoutConfiguration {
         self.amount = amount
         self.analyticsConfiguration = analyticsConfiguration
         
-        var configDictionary: [CheckoutComponentType: ConfigurationWrapper] = [:]
+        var configDictionary: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
         let content = content()
         let configArray = (content as? CompositeCheckoutConfiguration)?.configurations ?? []
         
         for configuration in configArray {
             if let configuration = configuration as? CheckoutComponentConfiguration {
-                let wrappedConfiguration = ConfigurationWrapper(
-                    configuration: configuration,
-                    apiContext: apiContext,
-                    amount: amount
-                )
-                configDictionary[configuration.componentType] = wrappedConfiguration
+                configDictionary[configuration.componentType] = configuration
             }
         }
         self.configurations = configDictionary

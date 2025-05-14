@@ -17,7 +17,7 @@
 import AdyenNetworking
 import Foundation
 
-/// AdyenCheckout is the entry point to the Checkout flow. You initialize it through its static methods for your chosen flow
+/// `AdyenCheckout` is the entry point to the Checkout flow. You initialize it through its static methods for your chosen flow
 /// and it prepares all the requied data asynchronously and returns an `AdyenCheckout` instance ready to be used.
 public final class AdyenCheckout: AdyenCheckoutProtocol {
     
@@ -106,12 +106,11 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     }
     
     public func createComponent(with paymentMethod: any PaymentMethod) -> AdyenCheckoutComponent? {
-        try? CheckoutComponentBuilder.build(for: paymentMethod, configuration: configuration)
-//        AdyenCheckoutComponent(paymentMethod: paymentMethod, configuration: configuration)
+        AdyenCheckoutComponent(paymentMethod: paymentMethod, configuration: configuration, session: session)
     }
     
     public func createComponent(with action: Action) -> AdyenCheckoutComponent? {
-        CheckoutComponentBuilder.build(for: action, configuration: configuration)
+        AdyenCheckoutComponent(action: action, configuration: configuration, session: session)
     }
     
     public func createDropIn() -> DropInComponent? {

@@ -10,13 +10,6 @@ import UIKit
 
 /// Configuration for BLIK Component.
 public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
-    package var onSubmit: Adyen.SubmitHandler?
-    
-    package var onAdditionalDetails: Adyen.AdditionalDetailsHandler?
-    
-    package var onError: Adyen.CheckoutErrorHandler?
-    
-    package var onComplete: Adyen.CheckoutSuccessHandler?
     
     package let componentType: Adyen.CheckoutComponentType = .payment(.blik)
     
