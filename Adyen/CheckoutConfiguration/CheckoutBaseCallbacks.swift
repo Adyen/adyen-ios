@@ -8,7 +8,7 @@ import Foundation
 
 // TODO: Finalize all the parameters of the callbacks
 // Move Action to core module?
-// Add Resultcode enum
+// Add Result code enum
 public typealias PaymentsResponseHandler = (_ response: CheckoutPaymentsResponse) -> Void
 public typealias SubmitHandler = (_ data: PaymentComponentData, _ handler: PaymentsResponseHandler?) -> Void
 public typealias AdditionalDetailsHandler = (_ data: ActionComponentData, _ handler: PaymentsResponseHandler?) -> Void
