@@ -17,6 +17,8 @@ function print_help {
   echo "-c, --no-clean            ignore cleanup"
 }
 
+LOGFILE="$(pwd)/test-carthage-integration.log"
+echo "###################### Test Carthage Integration started on: $(date +'%Y-%m-%d %H:%M:%S')" | tee -a "${LOGFILE}"
 PROJECT_NAME=TempProject
 NEED_CLEANUP=true
 
@@ -49,12 +51,12 @@ then
 
   echo "git \"file://$CWD/../\" \"$CURRENT_COMMIT\"" > Cartfile
   echo "github \"adyen/adyen-authentication-ios\" == 3.1.0" >> Cartfile
-  carthage update --use-xcframeworks --configuration Debug
+  carthage update --use-xcframeworks --configuration Debug | tee -a  "${LOGFILE}"
 else
   cd $PROJECT_NAME
 fi
 
-echo_header "Generate Project"
+echo_header "Generate Project" | tee -a "${LOGFILE}"
 echo "
 name: $PROJECT_NAME
 targets:
@@ -147,7 +149,7 @@ cp -a "../Demo/Common" Source/
 cp -a "../Demo/UIKit" Source/
 cp "../Demo/Configuration.swift" Source/Configuration.swift
 
-xcodegen generate
+xcodegen generate | tee -a "${LOGFILE}"
 
 function check_symlinks_in_dir {
   local dir="$1"
@@ -169,11 +171,13 @@ function check_symlinks_in_dir {
   done < <(find "$dir" -mindepth 1 -print0)
 }
 
-check_symlinks_in_dir "./Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/Adyen3DS2.xcframework" >> test_carthage_integration.log
-check_symlinks_in_dir "./Carthage/Build/Adyen3DS2.xcframework" >> test_carthage_integration.log
+# Adding this statement as we realize that carthage sometimes changes a symbolic link to an actual link ex: maccatalyst/Adyen3DS2.framework/Resources. 
+# For now we log it so that we know when it fails for this particular reason.
+check_symlinks_in_dir "./Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/Adyen3DS2.xcframework" | tee -a "${LOGFILE}"
+check_symlinks_in_dir "./Carthage/Build/Adyen3DS2.xcframework" | tee -a "${LOGFILE}"
 
 echo_header "Run Tests"
-xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 16" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | tee test_carthage_integration.log | xcpretty && exit ${PIPESTATUS[0]}
+xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 16" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | tee -a "${LOGFILE}" | xcpretty && exit ${PIPESTATUS[0]}
 
 if [ "$NEED_CLEANUP" == true ]
 then
