@@ -198,10 +198,11 @@ internal class CardViewController: FormViewController {
 
     internal func update(binInfo: BinLookupResponse) {
         var brands: [CardBrand] = []
+        items.coBadgedCardItem.isHidden.wrappedValue = true
+
         // no dual branding if response is from regex (fallback)
         if binInfo.isCreatedLocally, let firstBrand = binInfo.brands?.first {
             brands = [firstBrand]
-            items.coBadgedCardItem.isHidden.wrappedValue = true
         } else {
             brands = binInfo.brands ?? []
             if brands.count == 2, brands.allSatisfy(\.isSupported) {
