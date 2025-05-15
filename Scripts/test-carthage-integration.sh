@@ -159,14 +159,9 @@ function check_symlinks_in_dir {
     return 1
   fi
 
-  local all_symlinks=true
-
   while IFS= read -r -d '' item; do
     if [ -L "$item" ]; then
       echo "$item is a symbolic link"
-    else
-      echo "$item is NOT a symbolic link"
-      all_symlinks=false
     fi
   done < <(find "$dir" -mindepth 1 -print0)
 }
