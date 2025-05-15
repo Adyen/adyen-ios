@@ -43,12 +43,3 @@ internal struct FormCoBadgedCardItemStyle: ViewStyle {
         self.subtitle = subtitle
     }
 }
-
-extension FormCoBadgedCardItemStyle: Equatable {
-
-    internal static func == (lhs: FormCoBadgedCardItemStyle, rhs: FormCoBadgedCardItemStyle) -> Bool {
-        lhs.title == rhs.title &&
-            lhs.subtitle == rhs.subtitle &&
-            lhs.backgroundColor.cgColor == rhs.backgroundColor.cgColor
-    }
-}
