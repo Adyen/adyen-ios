@@ -179,9 +179,6 @@ xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination 
 
 BUILD_EXIT_CODE=${PIPESTATUS[0]}
 
-xcrun xcresulttool get --path ./TestResults.xcresult --format json > xcresult.json
-jq -r '.. | objects? | select(.issueType? == "error") | .message' xcresult.json
-
 check_symlinks_in_dir "./Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/Adyen3DS2.xcframework" 2>&1 | tee -a "${LOGFILE}"
 check_symlinks_in_dir "./Carthage/Build/Adyen3DS2.xcframework" 2>&1 | tee -a "${LOGFILE}"
 
