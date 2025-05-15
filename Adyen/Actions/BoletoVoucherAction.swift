@@ -64,7 +64,7 @@ public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadabl
         }
     }
     
-    internal init(
+    package init(
         paymentMethodType: VoucherPaymentMethod,
         totalAmount: Amount,
         reference: String,
