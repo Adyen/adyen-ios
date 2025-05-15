@@ -423,14 +423,33 @@ extension CardViewController {
     private func handleCardScanningResult(_ result: Result<CardScannerCardDetails, Error>) {
         switch result {
         case let .success((number, expiryDate)):
-            items.numberContainerItem.setCardNumber(number ?? "")
+            if let number {
+                items.numberContainerItem.setCardNumber(number)
+            }
+
             if let expiryDate {
                 items.expiryDateItem.setExpiryDate(expiryDate)
             }
+
+            focusNextInputField()
         case .failure:
             // TODO: Implement error handling
             break
         }
+    }
+
+    private func focusNextInputField() {
+        let textInputItems: [FormTextInputItem] = [
+            items.expiryDateItem,
+            items.securityCodeItem,
+            items.holderNameItem,
+            items.additionalAuthCodeItem,
+            items.additionalAuthPasswordItem,
+            items.socialSecurityNumberItem
+        ].filter(\.isVisible)
+
+        let firstEmptyItem = textInputItems.first(where: { $0.value.isEmpty })
+        firstEmptyItem?.focus()
     }
 }
 

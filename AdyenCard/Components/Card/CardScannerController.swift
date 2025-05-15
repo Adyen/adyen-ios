@@ -116,8 +116,8 @@ internal protocol CardScannerControlling: CardScannerAvailability {
             let scannerNavigationController = makeNavigationController()
             guard let scannerViewController = cardScannerProvider.createCardScanner(completion: { [weak self] result in
                 guard let self else { return }
-                self.onScanComplete?(map(result))
                 scannerNavigationController.dismiss(animated: true)
+                self.onScanComplete?(map(result))
             }) else { return }
 
             scannerViewController.navigationItem.leftBarButtonItem = makeCancelBarButton()

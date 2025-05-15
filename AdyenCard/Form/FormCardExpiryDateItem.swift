@@ -8,8 +8,8 @@ import Foundation
 @_spi(AdyenInternal) import Adyen
 
 /// A form item into which card expiry date is entered, formatted and validated.
-internal final class FormCardExpiryDateItem: FormTextItem {
-    
+internal final class FormCardExpiryDateItem: FormTextInputItem {
+
     internal var localizationParameters: LocalizationParameters?
     
     /// Flag determining this forms state. Validation changes based on this.
@@ -74,7 +74,7 @@ internal final class FormCardExpiryDateItem: FormTextItem {
 }
 
 extension FormItemViewBuilder {
-    internal func build(with item: FormCardExpiryDateItem) -> FormItemView<FormCardExpiryDateItem> {
-        FormTextItemView<FormCardExpiryDateItem>(item: item)
+    internal func build(with item: FormCardExpiryDateItem) -> FormItemView<FormTextInputItem> {
+        FormTextInputItemView(item: item)
     }
 }

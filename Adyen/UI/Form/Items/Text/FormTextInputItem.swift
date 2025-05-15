@@ -12,8 +12,8 @@ open class FormTextInputItem: FormTextItem {
 
     @AdyenObservable(true) public var isEnabled: Bool
     
-    internal var focusHandler: (() -> Void)?
-    
+    open var focusHandler: (() -> Void)?
+
     override open func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
@@ -28,7 +28,7 @@ open class FormTextInputItem: FormTextItem {
         isHidden.wrappedValue ? true : super.isValid()
     }
     
-    public func focus() {
+    open func focus() {
         AdyenAssertion.assert(message: "`focusHandler` needs to be set", condition: focusHandler == nil)
         focusHandler?()
     }
