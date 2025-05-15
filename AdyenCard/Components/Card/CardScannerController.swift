@@ -21,6 +21,7 @@ internal protocol CardScannerProviding {
 
 internal protocol CardScannerControlling: CardScannerAvailability {
     func openCardScanner()
+    func dismiss()
     var title: String? { get set }
     var onScanComplete: ((Result<CardScannerCardDetails, Error>) -> Void)? { get set }
 }
@@ -86,6 +87,18 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         internal var title: String?
         private let analyticsHandler: CardScannerAnalyticsHandler?
 
+        private let scannerNavigationController: UINavigationController = {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithDefaultBackground()
+
+            let navigationController = UINavigationController()
+            navigationController.navigationBar.standardAppearance = appearance
+            navigationController.navigationBar.compactAppearance = appearance
+            navigationController.navigationBar.scrollEdgeAppearance = appearance
+
+            return navigationController
+        }()
+
         internal var onScanComplete: ((Result<CardScannerCardDetails, Error>) -> Void)?
 
         internal init(
@@ -113,7 +126,6 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         }
 
         internal func openCardScanner() {
-            let scannerNavigationController = makeNavigationController()
             guard let scannerViewController = cardScannerProvider.createCardScanner(completion: { [weak self] result in
                 guard let self else { return }
                 scannerNavigationController.dismiss(animated: true)
@@ -132,6 +144,10 @@ internal protocol CardScannerControlling: CardScannerAvailability {
             sendLogEvent(.cardScannerPresented)
         }
 
+        internal func dismiss() {
+            scannerNavigationController.dismiss(animated: true)
+        }
+
         // MARK: - Private
 
         private func map(_ result: Result<CardScannerCardDetails, Error>) -> Result<CardScannerCardDetails, Error> {
@@ -145,30 +161,14 @@ internal protocol CardScannerControlling: CardScannerAvailability {
             }
         }
 
-        private func makeNavigationController() -> UINavigationController {
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithDefaultBackground()
-
-            let navigationController = UINavigationController()
-            navigationController.navigationBar.standardAppearance = appearance
-            navigationController.navigationBar.compactAppearance = appearance
-            navigationController.navigationBar.scrollEdgeAppearance = appearance
-
-            return navigationController
-        }
-
         private func makeCancelBarButton() -> UIBarButtonItem {
             UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handleCardScanningCancelation))
         }
 
         @objc
         private func handleCardScanningCancelation() {
-            handleCardScanningCancelationWithCompletion(nil)
-        }
-
-        internal func handleCardScanningCancelationWithCompletion(_ completion: (() -> Void)?) {
             sendLogEvent(.cardScannerCancelled)
-            presenter?.dismiss(animated: true, completion: completion)
+            scannerNavigationController.dismiss(animated: true)
         }
 
         // MARK: - Analytics
