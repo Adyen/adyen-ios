@@ -36,7 +36,7 @@ jobs:
         carthage version
         Scripts/test-carthage-integration.sh
 
-    - name: Upload Xcode build log if it exists
+    - name: Upload test-carthage-integration.log build log
       if: always()
       uses: actions/upload-artifact@v4
       with:
@@ -46,7 +46,7 @@ jobs:
     - name: Archive Xcode Project
       if: always() 
       run: |
-        zip -ry xcode-project.zip . 
+        zip -qry xcode-project.zip . 
 
     - name: Upload Xcode Project
       if: always() 
