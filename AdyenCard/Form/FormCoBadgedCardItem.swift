@@ -30,7 +30,7 @@ internal final class FormCoBadgedCardItem: FormItem {
     internal var isHidden: AdyenObservable<Bool> = AdyenObservable(true)
 
     /// The coBadged card item style.
-    internal let style: FormCoBadgedCardItemStyle
+    internal var style: FormCoBadgedCardItemStyle
 
     /// Initializes the FormCoBadged card item.
     ///

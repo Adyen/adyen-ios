@@ -203,6 +203,7 @@ internal class CardViewController: FormViewController {
         if binInfo.isCreatedLocally, let firstBrand = binInfo.brands?.first {
             brands = [firstBrand]
             items.coBadgedCardItem.isHidden.wrappedValue = true
+            items.coBadgedCardItem.selectableFormItems = []
         } else {
             brands = binInfo.brands ?? []
             if brands.count == 2, brands.allSatisfy(\.isSupported) {
@@ -215,6 +216,7 @@ internal class CardViewController: FormViewController {
                 )
             } else {
                 items.coBadgedCardItem.isHidden.wrappedValue = true
+                items.coBadgedCardItem.selectableFormItems = []
             }
         }
         issuingCountryCode = binInfo.issuingCountryCode
@@ -283,9 +285,6 @@ extension CardViewController {
         }
 
         append(items.coBadgedCardItem)
-        if items.coBadgedCardItem.isVisible {
-            append(FormSpacerItem())
-        }
 
         if configuration.koreanAuthenticationMode != .hide {
             append(items.additionalAuthCodeItem)

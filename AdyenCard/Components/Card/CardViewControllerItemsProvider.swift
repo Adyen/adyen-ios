@@ -163,7 +163,7 @@ extension CardViewController {
         }()
 
         internal lazy var coBadgedCardItem: FormCoBadgedCardItem = {
-            FormCoBadgedCardItem(
+            let item = FormCoBadgedCardItem(
                 title: localizedString(
                     .creditCardDualBrandTitle,
                     configuration.localizationParameters
@@ -178,6 +178,12 @@ extension CardViewController {
                     subtitle: configuration.style.footnoteLabel
                 )
             )
+            item.style.subtitle.textAlignment = .left
+            item.identifier = ViewIdentifierBuilder.build(
+                scopeInstance: self,
+                postfix: "coBadgedCardItem"
+            )
+            return item
         }()
 
         internal func selectableFormItems(from brands: [CardBrand]) -> [SelectableFormItem] {

@@ -51,7 +51,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         isDualBranded ? selectedDualBrand : initialBrand
     }
     
-    @AdyenObservable(false) internal var isDualBranded
+    internal var isDualBranded: Bool = false
 
     /// Initializes the form card number item.
     internal init(
@@ -179,7 +179,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
 
     /// Changes the selected dual brand with the given cardBrand to trigger updates
     /// for the observing objects.
-    internal func selectBrand(cardBrand: CardBrand? = nil) {
+    internal func selectBrand(cardBrand: CardBrand) {
         updateValidation(for: cardBrand)
         self.selectedDualBrand = cardBrand
     }
