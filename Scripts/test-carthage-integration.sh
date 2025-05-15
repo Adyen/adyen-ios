@@ -175,8 +175,7 @@ check_symlinks_in_dir "./Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/A
 check_symlinks_in_dir "./Carthage/Build/Adyen3DS2.xcframework" 2>&1 | tee -a "${LOGFILE}"
 
 echo_header "Run Tests"
-xcodebuild build test -project $PROJECT_NAME.xcodeproj -resultBundlePath ./TestResults
- -scheme App -destination "name=iPhone 16" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO 2>&1 | tee -a "${LOGFILE}" | xcpretty 
+xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 16" -resultBundlePath ./TestResults CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO 2>&1 | tee -a "${LOGFILE}" | xcpretty 
 
 BUILD_EXIT_CODE=${PIPESTATUS[0]}
 
