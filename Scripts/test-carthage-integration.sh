@@ -173,10 +173,14 @@ check_symlinks_in_dir "./Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/A
 check_symlinks_in_dir "./Carthage/Build/Adyen3DS2.xcframework" 2>&1 | tee -a "${LOGFILE}"
 
 echo_header "Run Tests"
-xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 16" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO 2>&1 | tee -a "${LOGFILE}" | xcpretty && exit ${PIPESTATUS[0]}
+xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 16" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO 2>&1 | tee -a "${LOGFILE}" | xcpretty 
+
+BUILD_EXIT_CODE=${PIPESTATUS[0]}
 
 check_symlinks_in_dir "./Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/Adyen3DS2.xcframework" 2>&1 | tee -a "${LOGFILE}"
 check_symlinks_in_dir "./Carthage/Build/Adyen3DS2.xcframework" 2>&1 | tee -a "${LOGFILE}"
+
+exit $BUILD_EXIT_CODE
 
 if [ "$NEED_CLEANUP" == true ]
 then
@@ -184,3 +188,4 @@ then
   cd ../
   rm -rf $PROJECT_NAME
 fi 
+
