@@ -55,7 +55,7 @@ then
   echo "github \"adyen/adyen-authentication-ios\" == 3.1.0" >> Cartfile
   echo_header "Swift Version:" | tee -a  "${LOGFILE}"
   xcrun --sdk iphoneos swiftc --version | tee -a  "${LOGFILE}"
-  carthage update --platform iOS --use-xcframeworks 2>&1 | tee -a  "${LOGFILE}"
+  carthage update --platform iOS --use-xcframeworks --no-skip-current 2>&1 | tee -a  "${LOGFILE}"
   
 else
   cd $PROJECT_NAME
@@ -178,6 +178,7 @@ check_symlinks_in_dir "./Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/A
 check_symlinks_in_dir "./Carthage/Build/Adyen3DS2.xcframework" 2>&1 | tee -a "${LOGFILE}"
 
 echo_header "Run Tests"
+xcodebuild -version | tee -a "${LOGFILE}"
 xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 16" -resultBundlePath ./TestResults CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO 2>&1 | tee -a "${LOGFILE}" | xcpretty 
 
 BUILD_EXIT_CODE=${PIPESTATUS[0]}
