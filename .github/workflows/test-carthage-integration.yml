@@ -41,7 +41,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: carthage-build-log
-        path: ./TempProject/test_carthage_integration.log
+        path: ./test_carthage_integration.log
 
     - name: Archive Xcode Project
       if: always() 
