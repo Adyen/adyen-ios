@@ -153,6 +153,7 @@ xcodegen generate 2>&1 | tee -a "${LOGFILE}"
 
 function check_symlinks_in_dir {
   local dir="$1"
+  echo "check_symlinks_in_dir: $dir"
 
   if [ ! -d "$dir" ]; then
     echo "Error: '$dir' is not a directory"
