@@ -53,7 +53,10 @@ then
 
   echo "git \"file://$CWD/../\" \"$CURRENT_COMMIT\"" > Cartfile
   echo "github \"adyen/adyen-authentication-ios\" == 3.1.0" >> Cartfile
-  carthage update --use-xcframeworks --configuration Debug 2>&1 | tee -a  "${LOGFILE}"
+  echo_header "Swift Version:" | tee -a  "${LOGFILE}"
+  xcrun --sdk iphoneos swiftc --version | tee -a  "${LOGFILE}"
+  carthage update --platform iOS --use-xcframeworks 2>&1 | tee -a  "${LOGFILE}"
+  
 else
   cd $PROJECT_NAME
 fi
