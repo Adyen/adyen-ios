@@ -55,7 +55,7 @@ then
   echo "github \"adyen/adyen-authentication-ios\" == 3.1.0" >> Cartfile
   echo_header "Swift Version:" | tee -a  "${LOGFILE}"
   xcrun --sdk iphoneos swiftc --version | tee -a  "${LOGFILE}"
-  carthage update --platform iOS --use-xcframeworks 2>&1 | tee -a  "${LOGFILE}"
+  carthage update --platform iOS --no-build 2>&1 | tee -a  "${LOGFILE}"
   carthage build --platform iOS --use-xcframeworks --no-skip-current --configuration Debug 2>&1 | tee -a "${LOGFILE}"
   
 else
