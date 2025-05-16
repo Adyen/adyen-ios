@@ -21,7 +21,7 @@ internal protocol CardScannerProviding {
 
 internal protocol CardScannerControlling: CardScannerAvailability {
     func openCardScanner()
-    func dismiss(_ completion: (() -> Void)?)
+    func dismiss(completion: (() -> Void)?)
     var title: String? { get set }
     var onScanComplete: ((Result<CardScannerCardDetails, Error>) -> Void)? { get set }
 }
@@ -144,7 +144,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
             sendLogEvent(.cardScannerPresented)
         }
 
-        internal func dismiss(_ completion: (() -> Void)? = nil) {
+        internal func dismiss(completion: (() -> Void)? = nil) {
             presenter?.dismiss(animated: true, completion: completion)
         }
 
@@ -172,7 +172,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
 
         internal func handleCardScanningCancelationWithCompletion(_ completion: (() -> Void)?) {
             sendLogEvent(.cardScannerCancelled)
-            dismiss(completion)
+            dismiss(completion: completion)
         }
 
         // MARK: - Analytics

@@ -12,7 +12,7 @@ internal final class DummyCardScannerController: CardScannerControlling {
     internal var onScanComplete: ((Result<CardScannerCardDetails, any Error>) -> Void)?
     internal var title: String?
     internal func openCardScanner() { /* Empty implementation */ }
-    internal func dismiss(_ completion: (() -> Void)? = nil) { /* Empty implementation */ }
+    internal func dismiss(completion: (() -> Void)? = nil) { /* Empty implementation */ }
 
     internal init(
         presenter: UIViewController,
