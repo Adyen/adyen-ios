@@ -433,8 +433,7 @@ extension CardViewController {
 
             focusNextInputField()
         case .failure:
-            // TODO: Implement error handling
-            break
+            cardScannerController.dismiss(nil)
         }
     }
 

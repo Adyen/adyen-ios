@@ -57,6 +57,28 @@
             wait(for: [expectation], timeout: 3.0)
         }
 
+        func test_dismiss_shouldDismissPresentedNavigationController() throws {
+            // Given
+            let (sut, presenter, _) = makeSUT()
+            let window = UIWindow(frame: UIScreen.main.bounds)
+            window.rootViewController = presenter
+            window.makeKeyAndVisible()
+
+            sut.openCardScanner()
+            XCTAssertNotNil(presenter.presentedViewController)
+
+            let dismissalExpectation = XCTestExpectation(description: "Navigation controller should be dismissed")
+
+            // When
+            sut.dismiss {
+                dismissalExpectation.fulfill()
+            }
+
+            // Then
+            wait(for: [dismissalExpectation], timeout: 2)
+            XCTAssertNil(presenter.presentedViewController)
+        }
+
         func testHandleCardScanningCancelation() throws {
             let (sut, presenter, _) = makeSUT()
 
