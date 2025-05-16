@@ -20,6 +20,7 @@ function print_help {
 }
 
 LOGFILE="$(pwd)/test-carthage-integration.log"
+rm "${LOGFILE}"
 echo "###################### Test Carthage Integration started on: $(date +'%Y-%m-%d %H:%M:%S')" 2>&1 | tee -a "${LOGFILE}"
 PROJECT_NAME=TempProject
 NEED_CLEANUP=true
