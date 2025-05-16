@@ -51,6 +51,10 @@ then
   echo_header "Setup Carthage"
   CWD=$(pwd)
   CURRENT_COMMIT=$(git rev-parse HEAD)
+  
+  rm -rf Carthage
+  rm -rf ~/Library/Caches/org.carthage.CarthageKit
+  rm -rf ~/Library/Developer/Xcode/DerivedData
 
   echo "git \"file://$CWD/../\" \"$CURRENT_COMMIT\"" > Cartfile
   echo "github \"adyen/adyen-authentication-ios\" == 3.1.0" >> Cartfile
