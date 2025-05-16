@@ -65,8 +65,13 @@ public final class AdyenContext: PaymentAware {
                 environment: analyticsEnvironment,
                 clientKey: apiContext.clientKey
             )
-        else { return nil }
-        
+        else {
+            AdyenAssertion.assertionFailure(
+                message: "AnalyticsProvider couldn't be created. Ensure the used environment is of type `Environment`"
+            )
+            return nil
+        }
+
         var eventAnalyticsProvider: AnyEventAnalyticsProvider?
         
         if analyticsConfiguration.isEnabled {

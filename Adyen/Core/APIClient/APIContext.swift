@@ -26,6 +26,7 @@ public struct APIContext: AnyAPIContext {
     public let headers: [String: String] = ["Content-Type": "application/json"]
 
     /// Environment to retrieve internal resources from.
+    /// - Note: Always use the provided `Environment` object to ensure a correct environment.
     public let environment: AnyAPIEnvironment
     
     /// The client key that corresponds to the web service user you will use for initiating the payment.
@@ -37,6 +38,7 @@ public struct APIContext: AnyAPIContext {
     ///   - environment: The environment to retrieve internal resources from.
     ///   - clientKey: The client key that corresponds to the web service user you will use for initiating the payment.
     /// - Throws: `ClientKeyError.invalidClientKey` if the client key is invalid.
+    /// - Note: Always use the provided `Environment` object to ensure a correct environment.
     public init(environment: AnyAPIEnvironment, clientKey: String) throws {
         guard ClientKeyValidator().isValid(clientKey) else {
             throw ClientKeyError.invalidClientKey

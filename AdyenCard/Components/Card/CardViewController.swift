@@ -436,20 +436,6 @@ extension CardViewController {
             cardScannerController.dismiss(completion: nil)
         }
     }
-
-    private func focusNextInputField() {
-        let textInputItems: [FormTextInputItem] = [
-            items.expiryDateItem,
-            items.securityCodeItem,
-            items.holderNameItem,
-            items.additionalAuthCodeItem,
-            items.additionalAuthPasswordItem,
-            items.socialSecurityNumberItem
-        ].filter(\.isVisible)
-
-        let firstEmptyItem = textInputItems.first(where: { $0.value.isEmpty })
-        firstEmptyItem?.focus()
-    }
 }
 
 extension CardBrand {

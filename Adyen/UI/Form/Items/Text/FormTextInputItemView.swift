@@ -8,7 +8,7 @@ import Foundation
 
 /// A form view representing a plain text input.
 @_spi(AdyenInternal)
-public final class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
+open class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
 
     // MARK: - Initializers
 
