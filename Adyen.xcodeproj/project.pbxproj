@@ -394,6 +394,7 @@
 		A02B89BF2DD48A070083CE99 /* AnyVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D2F6F2664EDC900BB5B2F /* AnyVoucherAction.swift */; };
 		A02B89C02DD48A070083CE99 /* MultibancoVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9976BB226D903F400D2D7CE /* MultibancoVoucherAction.swift */; };
 		A02B89C12DD48A070083CE99 /* ThreeDS2FingerprintAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E226F53F22969B650013A463 /* ThreeDS2FingerprintAction.swift */; };
+		A02B89DE2DD76E660083CE99 /* ComponentManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */; };
 		A03EE72F2760A2E300470561 /* DocumentActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE72E2760A2E300470561 /* DocumentActionViewModel.swift */; };
 		A03EE7312761297800470561 /* DocumentComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE7302761297800470561 /* DocumentComponentStyle.swift */; };
 		A03EE73327612BF300470561 /* DocumentActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE73227612BF300470561 /* DocumentActionView.swift */; };
@@ -1162,7 +1163,6 @@
 		F9EDB7982396643A00CFB3C9 /* CardPaymentMethodMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB7972396643A00CFB3C9 /* CardPaymentMethodMock.swift */; };
 		F9EDB79A239664B500CFB3C9 /* StoredPaymentMethodComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB799239664B500CFB3C9 /* StoredPaymentMethodComponentTests.swift */; };
 		F9EDB79C2396652000CFB3C9 /* StoredPaymentMethodMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79B2396652000CFB3C9 /* StoredPaymentMethodMock.swift */; };
-		F9EDB79E2397AEF400CFB3C9 /* ComponentManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */; };
 		F9EDB7A02397BD8500CFB3C9 /* DummyPaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79F2397BD8500CFB3C9 /* DummyPaymentMethods.swift */; };
 		F9F1A98226CCEAB20005CB1D /* JWAEncryptionAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1A98126CCEAB20005CB1D /* JWAEncryptionAlgorithm.swift */; };
 		F9F1A98426CCEB650005CB1D /* JWAA256CBCHS512Algorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F1A98326CCEB650005CB1D /* JWAA256CBCHS512Algorithm.swift */; };
@@ -3438,6 +3438,14 @@
 			path = Document;
 			sourceTree = "<group>";
 		};
+		A02B89DD2DD76E550083CE99 /* DropIn */ = {
+			isa = PBXGroup;
+			children = (
+				F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */,
+			);
+			path = DropIn;
+			sourceTree = "<group>";
+		};
 		A0414C1B27888BF300DF3FE9 /* ACH Direct Debit */ = {
 			isa = PBXGroup;
 			children = (
@@ -3513,6 +3521,7 @@
 			isa = PBXGroup;
 			children = (
 				E757F02525D2ED4C007C813D /* APIClientMock.swift */,
+				A02B89DD2DD76E550083CE99 /* DropIn */,
 				C9C0005A280468B800CE2EEC /* Analytics */,
 				F91760A52594C5C000D653BE /* Assets */,
 				E97B9718229D54C600505476 /* Core */,
@@ -4515,7 +4524,6 @@
 			children = (
 				F9EDB79023965FFC00CFB3C9 /* Payment Method List */,
 				E759E1F425CB373F00B1F8DC /* DropInTests.swift */,
-				F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */,
 				E74CE3DE26727EB1008231D2 /* DropInDelegateMock.swift */,
 				E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */,
 				E767F4DB25A603A50077029E /* ModalToolbarTests.swift */,
@@ -7045,6 +7053,7 @@
 				B6D8080B2BCD147D00F3F5EB /* SimpleSchedulerTests.swift in Sources */,
 				B6D808042BCD147600F3F5EB /* UILabelHelpersTests.swift in Sources */,
 				B62D48B72BBE8DBE001EF01A /* AnalyticsProviderMock.swift in Sources */,
+				A02B89DE2DD76E660083CE99 /* ComponentManagerTests.swift in Sources */,
 				B6D808112BCD147D00F3F5EB /* BankDetailsEncryptorTests.swift in Sources */,
 				A00580A62CD8CBC300294F2E /* EventAnalyticsProviderTests.swift in Sources */,
 				B6D808332BCD1F8900F3F5EB /* LogoGeneratorTests.swift in Sources */,
@@ -7550,7 +7559,6 @@
 				F99D4603262D647400880D72 /* AddressViewModelTests.swift in Sources */,
 				F95B6D9025231880002C9062 /* PhoneNumberValidatorTests.swift in Sources */,
 				F9639B5224E29E340073F38A /* PresentationDelegateMock.swift in Sources */,
-				F9EDB79E2397AEF400CFB3C9 /* ComponentManagerTests.swift in Sources */,
 				F9EDB7922396603F00CFB3C9 /* PaymentMethodListComponentTests.swift in Sources */,
 				F919DFA224ED599D0027976E /* AdyenActionComponentTests.swift in Sources */,
 				81DA70912BDA6120006CE5D5 /* PaymentMethods+Equatable.swift in Sources */,
