@@ -70,6 +70,7 @@ private extension CardComponent.Configuration {
         )
         configuration.showsSupportedCardLogos = false
         configuration.binLookupType = .bcmc
+        configuration.localizationParameters = localizationParameters
         return configuration
     }
 }
