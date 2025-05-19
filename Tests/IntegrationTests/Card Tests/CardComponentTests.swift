@@ -1038,7 +1038,7 @@ class CardComponentTests: XCTestCase {
         cardNumberItem.value = "4111 1111 1111 1111"
         XCTAssertTrue(cardNumberItem.isValid())
 
-        cardNumberItem.selectBrand(cardBrand: brands.last)
+        cardNumberItem.selectBrand(cardBrand: brands.last!)
         XCTAssertTrue(cardNumberItem.isValid())
         cardNumberItem.value = "4111 1111 1111"
         XCTAssertTrue(cardNumberItem.isValid())
