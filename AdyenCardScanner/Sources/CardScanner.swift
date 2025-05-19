@@ -7,45 +7,32 @@
 import Foundation
 import UIKit
 
+/// Details captured from a scanned card.
 public typealias CardScanDetails = (number: String?, expirationDate: Date?)
 
-/// A protocol that defines an interface for presenting a view controller to scan payment cards.
+/// Provides card scanning functionality.
 ///
-/// Types that conform to the `CardScanning` protocol provide functionality to create a card scanning
-/// view controller and report whether scanning is currently supported on the device.
+/// Use `createCardScanner(localizationBundle:completion:)` to present the scanner and `isAvailable` to check device support.
+/// Ensure `NSCameraUsageDescription` is set in your `Info.plist`.
 ///
-/// You typically use this protocol to integrate card scanning into your app’s payment or onboarding flows.
-///
-/// - Note: Card scanning is available only on supported devices running iOS 13.0 or later.
+/// - Availability: iOS 13.0+
 @available(iOS 13.0, *)
-public protocol CardScanning {
-
-    /// Creates and returns a view controller that presents the card scanner interface.
-    ///
-    /// - Parameters:
-    ///   - localizationBundle: A bundle containing localized strings used in the scanner UI.
-    ///   - completion: A closure called when the scan completes, with either a `CardScanDetails` object
-    ///     on success or a `CardScannerError` on failure.
-    ///
-    /// - Returns: A `UIViewController` that presents the card scanner, or `nil` if scanning is not available.
-    static func createCardScanner(
-        localizationBundle: Bundle,
-        completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
-    ) -> UIViewController?
-
-    /// A Boolean value indicating whether card scanning is available on the current device.
-    static var isAvailable: Bool { get }
-}
-
-@available(iOS 13.0, *)
-public enum CardScanner: CardScanning {
+public enum CardScanner {
 
     // MARK: - Properties
 
     private static let cardScannerAssembler = CardScannerAssembler()
 
-    // MARK: - CardScanning
+    // MARK: - Public interface
 
+    /// Creates and returns a view controller that presents the card scanner interface.
+    ///
+    /// - Parameters:
+    ///   - localizationBundle: A bundle containing localized strings used in the scanner UI.
+    ///   - completion: A closure called when the scan completes, with either a `CardScanDetails` object
+    ///     on success or a `CardScannerError` on failure.
+    ///
+    /// - Returns: A `UIViewController` that presents the card scanner, or `nil` if scanning is not available.
     public static func createCardScanner(
         localizationBundle: Bundle,
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
@@ -58,6 +45,7 @@ public enum CardScanner: CardScanning {
         return cardScannerViewController
     }
 
+    /// A Boolean value indicating whether card scanning is available on the current device
     public static var isAvailable: Bool {
         cardScannerAssembler.captureDevice != nil
     }
