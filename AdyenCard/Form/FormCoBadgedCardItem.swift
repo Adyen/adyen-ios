@@ -62,6 +62,11 @@ internal final class FormCoBadgedCardItem: FormItem {
     internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
+
+    internal func updateSelection(_ selectedBrand: CardBrand) {
+        selectableFormItems.forEach { $0.isSelected = false }
+        selectableFormItems.first(where: { $0.identifier == selectedBrand.type.rawValue })?.isSelected = true
+    }
 }
 
 extension FormItemViewBuilder {

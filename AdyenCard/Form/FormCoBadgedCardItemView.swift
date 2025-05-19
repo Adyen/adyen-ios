@@ -87,7 +87,7 @@ internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem
     }()
 
     private func removeBrandsListFromView() {
-        for view in self.brandsListView {
+        brandsListView.forEach { view in
             contentStackView.removeArrangedSubview(view)
             view.removeFromSuperview()
         }

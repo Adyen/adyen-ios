@@ -188,10 +188,15 @@ extension CardViewController {
 
         internal func selectableFormItems(from brands: [CardBrand]) -> [SelectableFormItem] {
             brands.map { brand in
+
+                let brandLogoURL = numberContainerItem.numberItem.cardTypeLogos.first(where: { $0.type == brand.type })?.url
+
+                let isSelected = brand.type.rawValue == brands.first?.type.rawValue ? true : false
+
                 let selectableItem = SelectableFormItem(
                     title: brand.type.name,
-                    imageUrl: numberContainerItem.numberItem.cardTypeLogos.filter { $0.type == brand.type }.first?.url,
-                    isSelected: brand.type.rawValue == brands.first?.type.rawValue ? true : false,
+                    imageUrl: brandLogoURL,
+                    isSelected: isSelected,
                     style: .init(title: configuration.style.textField.title),
                     identifier: brand.type.rawValue
                 )
@@ -285,8 +290,7 @@ extension CardViewController {
         }()
 
         internal func handleSelection(selectedBrand: CardBrand) {
-            coBadgedCardItem.selectableFormItems.forEach { $0.isSelected = false }
-            coBadgedCardItem.selectableFormItems.first(where: { $0.identifier == selectedBrand.type.rawValue })?.isSelected = true
+            coBadgedCardItem.updateSelection(selectedBrand)
             numberContainerItem.numberItem.selectBrand(cardBrand: selectedBrand)
 
             triggerInfoEvent(of: .selected, target: .dualBrandButton, brands: [selectedBrand])
