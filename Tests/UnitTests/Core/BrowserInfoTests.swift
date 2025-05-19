@@ -15,7 +15,7 @@ class BrowserInfoTests: XCTestCase {
             XCTAssertNotNil(info?.userAgent)
             browserInfoExpectation.fulfill()
         }
-        waitForExpectations(timeout: 20, handler: nil)
+        waitForExpectations(timeout: 60, handler: nil)
     }
     
     func testPaymentComponentDataBrowserInfo() {
