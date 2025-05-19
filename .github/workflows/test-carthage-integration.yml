@@ -39,7 +39,7 @@ jobs:
     - name: Archive Xcode Project
       if: always() 
       run: |
-        zip -r xcode-project.zip . 
+        zip -qry xcode-project.zip . 
 
     - name: Upload Xcode Project
       if: always() 
