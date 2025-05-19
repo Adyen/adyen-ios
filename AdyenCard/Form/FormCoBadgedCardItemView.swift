@@ -57,14 +57,13 @@ internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem
         preservesSuperviewLayoutMargins = true
 
         observe(item.$selectableFormItems) { [weak self] selectableItem in
-            selectableItem.forEach { [weak self] _ in
-                guard let self else { return }
-                removeBrandsListFromView()
+            guard let self else { return }
 
-                self.brandsListView = selectableItem.map { item in SelectableFormItemView(item: item) }
-                self.brandsListView.forEach { self.contentStackView.addArrangedSubview($0) }
-            }
-            self?.configureConstraints()
+            self.removeBrandsListFromView()
+
+            self.brandsListView = selectableItem.map { item in SelectableFormItemView(item: item) }
+            self.brandsListView.forEach { self.contentStackView.addArrangedSubview($0) }
+            self.configureConstraints()
         }
     }
 
