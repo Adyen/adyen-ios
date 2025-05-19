@@ -35,11 +35,14 @@ internal struct FormCoBadgedCardItemStyle: ViewStyle {
     ///
     /// - Parameter title: The title style.
     /// - Parameter subtitle: The subtitle style.
+    /// - Parameter backgroundColor: The background color.
     internal init(
         title: TextStyle,
-        subtitle: TextStyle
+        subtitle: TextStyle,
+        backgroundColor: UIColor = .clear
     ) {
         self.title = title
         self.subtitle = subtitle
+        self.backgroundColor = backgroundColor
     }
 }
