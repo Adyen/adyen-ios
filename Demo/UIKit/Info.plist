@@ -125,6 +125,7 @@
 		<string>twint-issuer1</string>
 		<string>weixinULAPI</string>
 		<string>weixin</string>
+		<string>weixinURLParamsAPI</string>
 	</array>
 	<key>LSMinimumSystemVersion</key>
 	<string>12.0.0</string>
