@@ -175,7 +175,7 @@ class CardComponentTests: XCTestCase {
         let holderNameItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem.titleLabel")
         let holderNameItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem.textField")
 
-        let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
+        let expiryDateItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
         let expiryDateItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem.titleLabel")
         let expiryDateItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem.textField")
 
@@ -742,8 +742,8 @@ class CardComponentTests: XCTestCase {
         setupRootViewController(sut.viewController)
 
         let cardNumberItemView: FormCardNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
-        let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem"))
-        
+        let expiryDateItemView: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem"))
+
         // no focus change without panglength till max (19)
         
         var newResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress)])
@@ -797,7 +797,7 @@ class CardComponentTests: XCTestCase {
         setupRootViewController(component.viewController)
         
         let view: UIView = viewController.view
-        let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.expiryDateItem"))
+        let expiryDateItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.expiryDateItem"))
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
         
         expiryDateItemView.becomeFirstResponder()
@@ -1871,7 +1871,7 @@ class CardComponentTests: XCTestCase {
         let view: UIView = sut.cardViewController.view
         
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
-        let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
+        let expiryDateField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
         let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
 
         let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
@@ -1939,7 +1939,7 @@ class CardComponentTests: XCTestCase {
         let view: UIView = sut.cardViewController.view
         
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
-        let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
+        let expiryDateField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
         let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
         
         populate(textItemView: securityCodeField, with: "737")
@@ -1995,7 +1995,7 @@ class CardComponentTests: XCTestCase {
         let view: UIView = sut.cardViewController.view
         
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
-        let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
+        let expiryDateField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
         let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
         let postalCodeField: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.zipCode))
         
@@ -2052,7 +2052,7 @@ class CardComponentTests: XCTestCase {
         let view: UIView = sut.cardViewController.view
         
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
-        let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
+        let expiryDateField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
         let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
         let postalCodeField: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.zipCode))
         
@@ -2175,7 +2175,7 @@ class CardComponentTests: XCTestCase {
         let view: UIView = sut.cardViewController.view
 
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
-        let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
+        let expiryDateField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
         let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
  
         let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
@@ -2231,7 +2231,7 @@ class CardComponentTests: XCTestCase {
         let view: UIView = sut.cardViewController.view
 
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
-        let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
+        let expiryDateField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
         let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
 
         let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
@@ -2293,7 +2293,7 @@ class CardComponentTests: XCTestCase {
         let view: UIView = sut.cardViewController.view
 
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
-        let expiryDateField: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
+        let expiryDateField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
         let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
 
         let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
@@ -2446,7 +2446,7 @@ extension CardComponentTests {
 
     func fillCard(on view: UIView, with card: Card) {
         let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
-        let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
+        let expiryDateItemView: FormTextInputItemView? = view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
 
         populate(textItemView: cardNumberItemView!, with: card.number ?? "")

@@ -71,7 +71,7 @@ final class CardComponentEventTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = makeSUT(analyticsProviderMock: analyticsProviderMock)
 
-        let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem"))
+        let expiryDateItemView: FormTextInputItemView = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem"))
 
         testFocusEvents(
             for: expiryDateItemView,
