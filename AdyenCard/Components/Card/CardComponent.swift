@@ -223,6 +223,8 @@ public class CardComponent: PresentableComponent,
         )
         infoEvent.target = data.target
         infoEvent.brand = data.brands?.first?.type.rawValue
+
+        // Send configData only when co-badged cards are displayed
         if data.type == .displayed, infoEvent.target == .dualBrandButton {
             infoEvent.configData = CoBadgedAnalyticsConfiguration(brands: data.brands?.map(\.type.rawValue).joined(separator: ","))
         }
