@@ -8,7 +8,7 @@ import Foundation
 
 /// An item for plain text input
 @_spi(AdyenInternal)
-open class FormTextInputItem: FormTextItem {
+public class FormTextInputItem: FormTextItem {
 
     @AdyenObservable(true) public var isEnabled: Bool
     
