@@ -70,7 +70,7 @@ internal final class DropInNavigationController: UINavigationController, Preferr
         topViewController.updateFrame(keyboardRect: frame, animated: animated)
     }
     
-    private func wrapInModalController(component: PresentableComponent, isRoot: Bool) -> WrapperViewController {
+    private func wrapInModalController(component: PresentableComponent, isRoot: Bool) -> UIViewController {
         let modal = ModalViewController(
             rootViewController: component.viewController,
             style: style,
@@ -78,9 +78,10 @@ internal final class DropInNavigationController: UINavigationController, Preferr
             cancelButtonHandler: { [weak self] in self?.cancelHandler?($0, component) }
         )
         modal.isRoot = isRoot
-        let container = WrapperViewController(child: modal)
-        
-        return container
+//        let container = WrapperViewController(child: modal)
+//
+//        return container
+        return modal
     }
     
     private func setup(root component: PresentableComponent) {

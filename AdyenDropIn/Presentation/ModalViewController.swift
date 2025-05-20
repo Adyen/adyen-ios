@@ -70,69 +70,16 @@ internal final class ModalViewController: UIViewController {
         innerController.didMove(toParent: self)
         arrangeConstraints()
     }
-    
-    override internal var preferredContentSize: CGSize {
-        get {
-            guard innerController.isViewLoaded else { return .zero }
-            let innerSize = innerController.preferredContentSize
-            return CGSize(
-                width: innerSize.width,
-                height: navigationBarHeight + innerSize.height + (1.0 / UIScreen.main.scale)
-            )
-        }
-        
-        // swiftlint:disable:next unused_setter_value
-        set { AdyenAssertion.assertionFailure(message: """
-        PreferredContentSize is overridden for this view controller.
-        getter - returns combined size of an inner content and navigation bar.
-        setter - no implemented.
-        """)
-        }
-    }
-    
+
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         view.adyen.round(corners: [.topLeft, .topRight], radius: style.cornerRadius)
     }
     
     // MARK: - View elements
-    
-    internal lazy var separator: UIView = {
-        let separator = UIView(frame: .zero)
-        separator.backgroundColor = getSeparatorColor()
-        return separator
-    }()
-    
-    private func getSeparatorColor() -> UIColor {
-        switch navBarType {
-        case .regular:
-            return style.separatorColor ?? UIColor.Adyen.componentSeparator
-        case .custom:
-            return style.backgroundColor
-        }
-    }
-    
-    internal lazy var navBar: UIView = {
-        let navBar: AnyNavigationBar
-        
-        switch navBarType {
-        case .regular:
-            navBar = getRegularNavBar()
-        case let .custom(customNavbar):
-            navBar = customNavbar
-        }
-        
-        navBar.onCancelHandler = { [weak self] in self?.didCancel() }
-        navBar.translatesAutoresizingMaskIntoConstraints = false
-        return navBar
-    }()
-
-    private func getRegularNavBar() -> AnyNavigationBar {
-        ModalToolbar(title: self.innerController.title, style: style)
-    }
 
     internal lazy var stackView: UIStackView = {
-        let views = [navBar, separator, innerController.view]
+        let views = [innerController.view]
         let stackView = UIStackView(arrangedSubviews: views.compactMap { $0 })
         stackView.axis = .vertical
         stackView.distribution = .fill
@@ -150,13 +97,6 @@ internal final class ModalViewController: UIViewController {
     // MARK: - Private
     
     private func arrangeConstraints() {
-        let separatorHeight: CGFloat = 1.0 / UIScreen.main.scale
-        let toolbarHeight = navigationBarHeight - separatorHeight
-
         stackView.adyen.anchor(inside: view)
-        NSLayoutConstraint.activate([
-            navBar.heightAnchor.constraint(equalToConstant: toolbarHeight),
-            separator.heightAnchor.constraint(equalToConstant: separatorHeight)
-        ])
     }
 }
