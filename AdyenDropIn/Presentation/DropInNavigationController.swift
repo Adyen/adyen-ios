@@ -86,6 +86,5 @@ internal final class DropInNavigationController: UINavigationController, Preferr
     private func setup(root component: PresentableComponent) {
         let rootContainer = wrapInModalController(component: component, isRoot: true)
         viewControllers = [rootContainer]
-        navigationBar.isHidden = true
     }
 }
