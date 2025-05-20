@@ -39,7 +39,7 @@
 "adyen.card.numberItem.unknownBrand" = "L'émetteur de cette carte n'est pas pris en charge";
 "adyen.card.scanYourCardButton" = "Scannez votre carte";
 "adyen.creditCard.dualBrand.title" = "Marque de la carte";
-"adyen.creditCard.dualBrand.description" = "Odaberite vrstu kartice kojom želite platiti. Ovo je neobavezno.";
+"adyen.creditCard.dualBrand.description" = "Sélectionnez la marque de la carte avec laquelle vous préférez payer. Ceci est facultatif.";
 "adyen.dropIn.stored.title" = "Confirmer paiement de %@";
 "adyen.dropIn.preselected.openAll.title" = "Changer de moyen de paiement";
 "adyen.continueTo" = "Poursuivre vers %@";

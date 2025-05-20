@@ -21,8 +21,8 @@ internal struct FormCoBadgedCardItemStyle: ViewStyle {
     /// The subtitle style.
     internal var subtitle = TextStyle(
         font: .preferredFont(forTextStyle: .footnote),
-        color: UIColor.Adyen.componentLabel,
-        textAlignment: .left
+        color: UIColor.Adyen.componentSecondaryLabel,
+        textAlignment: .natural
     )
 
     /// The background color.

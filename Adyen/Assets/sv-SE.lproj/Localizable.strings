@@ -39,7 +39,7 @@
 "adyen.card.numberItem.unknownBrand" = "Den angivna kortutgivaren stöds inte";
 "adyen.card.scanYourCardButton" = "Skanna ditt kort";
 "adyen.creditCard.dualBrand.title" = "Kortmärke";
-"adyen.creditCard.dualBrand.description" = "選擇首選付款卡品牌。這是可選項。";
+"adyen.creditCard.dualBrand.description" = "请选择您偏好的支付卡片品牌。这是可选的。";
 "adyen.dropIn.stored.title" = "Bekräfta %@-betalning";
 "adyen.dropIn.preselected.openAll.title" = "Ändra betalningssätt";
 "adyen.continueTo" = "Fortsätt till %@";

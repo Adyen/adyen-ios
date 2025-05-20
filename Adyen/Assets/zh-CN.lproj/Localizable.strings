@@ -39,6 +39,7 @@
 "adyen.card.numberItem.unknownBrand" = "不支持输入的卡片品牌";
 "adyen.card.scanYourCardButton" = "扫描您的卡片";
 "adyen.creditCard.dualBrand.title" = "卡片品牌";
+"adyen.creditCard.dualBrand.description" = "選擇首選付款卡品牌。這是可選項。";
 "adyen.dropIn.stored.title" = "确认 %@ 支付";
 "adyen.dropIn.preselected.openAll.title" = "更改支付方式";
 "adyen.continueTo" = "继续至 %@";

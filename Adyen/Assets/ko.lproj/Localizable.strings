@@ -39,7 +39,7 @@
 "adyen.card.numberItem.unknownBrand" = "입력한 카드 브랜드는 지원되지 않습니다";
 "adyen.card.scanYourCardButton" = "카드 스캔";
 "adyen.creditCard.dualBrand.title" = "카드 브랜드";
-"adyen.creditCard.dualBrand.description" = "Atlasiet kartes zīmolu, ar kuru vēlaties maksāt. Tas nav obligāti.";
+"adyen.creditCard.dualBrand.description" = "Pasirinkite kortelės, kuria pageidaujate atsiskaityti, prekių ženklą. Tai neprivaloma.";
 "adyen.dropIn.stored.title" = "%@ 결제 확인";
 "adyen.dropIn.preselected.openAll.title" = "결제 수단 변경";
 "adyen.continueTo" = "다음으로 계속: %@";

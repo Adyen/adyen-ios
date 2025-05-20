@@ -8,8 +8,8 @@ import XCTest
 @_spi(AdyenInternal) @testable import Adyen
 @testable @_spi(AdyenInternal) import AdyenCard
 
-final class DualBrandViewTests: XCTestCase {
-    var sut: FormCardNumberItemView.DualBrandView!
+final class DualBrandAccessoryViewTests: XCTestCase {
+    var sut: FormCardNumberItemView.DualBrandAccessoryView!
     private var imageLoader: ImageLoaderMock!
     var brandSelectionCount: Int!
     
@@ -18,7 +18,7 @@ final class DualBrandViewTests: XCTestCase {
         
         brandSelectionCount = 0
         imageLoader = ImageLoaderMock()
-        sut = FormCardNumberItemView.DualBrandView(
+        sut = FormCardNumberItemView.DualBrandAccessoryView(
             style: brandImageStyle,
             imageLoader: imageLoader
         )

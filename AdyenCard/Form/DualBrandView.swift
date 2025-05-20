@@ -10,7 +10,7 @@ import UIKit
 extension FormCardNumberItemView {
     
     /// Custom view housing up to 2 sub views for brand logos.
-    internal class DualBrandView: UIView {
+    internal class DualBrandAccessoryView: UIView {
         
         private enum Constant {
             static let iconSize = CGSize(width: 24, height: 16)

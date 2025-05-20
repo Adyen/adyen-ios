@@ -39,7 +39,7 @@
 "adyen.card.numberItem.unknownBrand" = "A megadott kártyamárka nem támogatott";
 "adyen.card.scanYourCardButton" = "Kártya beolvasása";
 "adyen.creditCard.dualBrand.title" = "Kártyakibocsátó";
-"adyen.creditCard.dualBrand.description" = "Veldu kortafyrirtæki kortsins sem þú vilt greiða með. Þetta er valfrjálst.";
+"adyen.creditCard.dualBrand.description" = "Válassza ki a fizetéshez használni kívánt kártyakibocsátót. Ez nem kötelező.";
 "adyen.dropIn.stored.title" = "%@ használatával történő fizetés jóváhagyása";
 "adyen.dropIn.preselected.openAll.title" = "Fizetési mód módosítása";
 "adyen.continueTo" = "Folytatás a következővel: %@";

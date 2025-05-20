@@ -39,7 +39,7 @@
 "adyen.card.numberItem.unknownBrand" = "Syötettyä tuotemerkkikorttia ei tueta";
 "adyen.card.scanYourCardButton" = "Skannaa korttisi";
 "adyen.creditCard.dualBrand.title" = "Korttibrändi";
-"adyen.creditCard.dualBrand.description" = "Sélectionnez la marque de la carte avec laquelle vous préférez payer. Ceci est facultatif.";
+"adyen.creditCard.dualBrand.description" = "Valitse ensisijainen maksukorttisi. Tämä on vapaaehtoista.";
 "adyen.dropIn.stored.title" = "Vahvista %@ maksu";
 "adyen.dropIn.preselected.openAll.title" = "Muuta maksutapaa";
 "adyen.continueTo" = "Jatka kohteeseen %@";

@@ -39,7 +39,7 @@
 "adyen.card.numberItem.unknownBrand" = "Ekki er stuðningur við innslegið kortamerki";
 "adyen.card.scanYourCardButton" = "Skannaðu kortið þitt";
 "adyen.creditCard.dualBrand.title" = "Kortafyrirtæki";
-"adyen.creditCard.dualBrand.description" = "Seleziona la marca della carta con cui preferisci pagare. Questo è facoltativo.";
+"adyen.creditCard.dualBrand.description" = "Veldu kortafyrirtæki kortsins sem þú vilt greiða með. Þetta er valfrjálst.";
 "adyen.dropIn.stored.title" = "Staðfesta %@ greiðslu";
 "adyen.dropIn.preselected.openAll.title" = "Breyta greiðslumáta";
 "adyen.continueTo" = "Halda áfram á %@";

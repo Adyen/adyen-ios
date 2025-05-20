@@ -39,7 +39,7 @@
 "adyen.card.numberItem.unknownBrand" = "La marca de la targeta introduïda no és compatible";
 "adyen.card.scanYourCardButton" = "Escanegeu la vostra targeta";
 "adyen.creditCard.dualBrand.title" = "Marca de targeta";
-"adyen.creditCard.dualBrand.description" = "Vyberte značku karty, kterou preferujete pro platbu. Je to volitelné.";
+"adyen.creditCard.dualBrand.description" = "Seleccioneu la marca de la targeta amb la qual preferiu pagar. Això és opcional.";
 "adyen.dropIn.stored.title" = "Confirmació del pagament de %@";
 "adyen.dropIn.preselected.openAll.title" = "Canvieu el mètode de pagament";
 "adyen.continueTo" = "Continua a %@";

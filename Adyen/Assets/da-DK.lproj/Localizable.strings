@@ -39,7 +39,7 @@
 "adyen.card.numberItem.unknownBrand" = "Det angivne kortmærke understøttes ikke";
 "adyen.card.scanYourCardButton" = "Scan dit kort";
 "adyen.creditCard.dualBrand.title" = "Korttype";
-"adyen.creditCard.dualBrand.description" = "Wählen Sie die Kartenmarke aus, mit der Sie bezahlen möchten. Dies ist optional.";
+"adyen.creditCard.dualBrand.description" = "Vælg den korttype, du foretrækker at betale med. Dette er valgfrit.";
 "adyen.dropIn.stored.title" = "Bekræft %@-betaling";
 "adyen.dropIn.preselected.openAll.title" = "Skift betalingsmåde";
 "adyen.continueTo" = "Fortsæt til %@";

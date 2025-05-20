@@ -178,7 +178,7 @@ extension CardViewController {
                     subtitle: configuration.style.footnoteLabel
                 )
             )
-            item.style.subtitle.textAlignment = .left
+            item.style.subtitle.textAlignment = .natural
             item.identifier = ViewIdentifierBuilder.build(
                 scopeInstance: self,
                 postfix: "coBadgedCardItem"
@@ -186,12 +186,12 @@ extension CardViewController {
             return item
         }()
 
-        internal func selectableFormItems(from brands: [CardBrand]) -> [SelectableFormItem] {
+        internal func selectableFormItems(from brands: [CardBrand], defaultSelectedBrand: CardBrand) -> [SelectableFormItem] {
             brands.map { brand in
 
                 let brandLogoURL = numberContainerItem.numberItem.cardTypeLogos.first(where: { $0.type == brand.type })?.url
 
-                let isSelected = brand.type.rawValue == brands.first?.type.rawValue ? true : false
+                let isSelected = brand.type.rawValue == defaultSelectedBrand.type.rawValue ? true : false
 
                 let selectableItem = SelectableFormItem(
                     title: brand.type.name,
