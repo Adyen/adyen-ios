@@ -86,41 +86,6 @@ internal final class DropInNavigationController: UINavigationController, Preferr
     private func setup(root component: PresentableComponent) {
         let rootContainer = wrapInModalController(component: component, isRoot: true)
         viewControllers = [rootContainer]
-        
-        delegate = self
-        modalPresentationStyle = .custom
-        transitioningDelegate = self
         navigationBar.isHidden = true
     }
-}
-
-extension DropInNavigationController: UINavigationControllerDelegate {
-    
-    internal func navigationController(
-        _ navigationController: UINavigationController,
-        animationControllerFor operation: UINavigationController.Operation,
-        from fromVC: UIViewController,
-        to toVC: UIViewController
-    ) -> UIViewControllerAnimatedTransitioning? {
-        SlideInPresentationAnimator(duration: 0.6)
-    }
-    
-}
-
-extension DropInNavigationController: UIViewControllerTransitioningDelegate {
-
-    internal func presentationController(
-        forPresented presented: UIViewController,
-        presenting: UIViewController?,
-        source: UIViewController
-    ) -> UIPresentationController? {
-        DimmingPresentationController(
-            presented: presented,
-            presenting: presenting,
-            layoutDidChanged: { [weak self] in
-                self?.updateTopViewControllerIfNeeded(animated: false)
-            }
-        )
-    }
-    
 }
