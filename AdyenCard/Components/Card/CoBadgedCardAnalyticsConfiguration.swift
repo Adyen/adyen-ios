@@ -7,7 +7,7 @@
 import Foundation
 @_spi(AdyenInternal) import Adyen
 
-internal struct CoBadgedAnalyticsConfiguration: AnalyticsStringDictionaryConvertible {
+internal struct CoBadgedCardAnalyticsConfiguration: AnalyticsStringDictionaryConvertible {
 
     private let dualBrands: String?
 

@@ -208,7 +208,7 @@ internal class CardViewController: FormViewController {
             brands = binInfo.brands ?? []
             items.coBadgedCardItem.selectableFormItems = []
             if brands.count == 2, brands.allSatisfy(\.isSupported) {
-                guard let defaultSelectedBrand =  brands.first else {
+                guard let defaultSelectedBrand = brands.first else {
                     return
                 }
                 items.coBadgedCardItem.selectableFormItems = items.selectableFormItems(from: brands, defaultSelectedBrand: defaultSelectedBrand)
