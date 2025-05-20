@@ -13,34 +13,22 @@ import UIKit
 /// View controller with a custom navigation bar for DropIn.
 
 internal final class ModalViewController: UIViewController {
-    
-    internal let style: NavigationStyle
 
     private let innerController: UIViewController
 
     internal weak var delegate: ViewControllerDelegate?
-
-    private let navigationBarHeight: CGFloat = 63.0
-    
-    private let navBarType: NavigationBarType
 
     // MARK: - Initializing
     
     /// Initializes the component view controller.
     ///
     /// - Parameter rootViewController: The root view controller to be displayed.
-    /// - Parameter style: The navigation level UI style.
-    /// - Parameter navBarType: The type of the navigation bar.
     /// - Parameter cancelButtonHandler: An optional callback for the cancel button.
     internal init(
         rootViewController: UIViewController,
-        style: NavigationStyle = NavigationStyle(),
-        navBarType: NavigationBarType,
         cancelButtonHandler: ((Bool) -> Void)? = nil
     ) {
         self.innerController = rootViewController
-        self.navBarType = navBarType
-        self.style = style
         self.cancelButtonHandler = cancelButtonHandler
         
         super.init(nibName: nil, bundle: Bundle(for: ModalViewController.self))
@@ -60,43 +48,26 @@ internal final class ModalViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         addChildViewController()
-        view.backgroundColor = style.backgroundColor
     }
 
     private func addChildViewController() {
         innerController.willMove(toParent: self)
         addChild(innerController)
-        view.addSubview(stackView)
+        view.addSubview(innerController.view)
         innerController.didMove(toParent: self)
         arrangeConstraints()
     }
 
-    override public func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        view.adyen.round(corners: [.topLeft, .topRight], radius: style.cornerRadius)
-    }
-    
-    // MARK: - View elements
+    // MARK: - Private
 
-    internal lazy var stackView: UIStackView = {
-        let views = [innerController.view]
-        let stackView = UIStackView(arrangedSubviews: views.compactMap { $0 })
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.alignment = .fill
-        return stackView
-    }()
-    
     private func didCancel() {
         guard let cancelHandler = cancelButtonHandler else { return }
         
         innerController.resignFirstResponder()
         cancelHandler(isRoot)
     }
-    
-    // MARK: - Private
-    
+
     private func arrangeConstraints() {
-        stackView.adyen.anchor(inside: view)
+        innerController.view.adyen.anchor(inside: view)
     }
 }

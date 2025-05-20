@@ -700,7 +700,6 @@
 		E759E24C25CB3BB700B1F8DC /* DropInTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E759E1F425CB373F00B1F8DC /* DropInTests.swift */; };
 		E7620EA123BF3DC800A492C3 /* ModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90139CA22846AD5004C74DA /* ModalViewController.swift */; };
 		E7620EAD23C3466B00A492C3 /* ModalViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */; };
-		E767F3F525A4CFAF0077029E /* WrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F34D25A4865A0077029E /* WrapperViewController.swift */; };
 		E767F4DC25A603A50077029E /* ModalToolbarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F4DB25A603A50077029E /* ModalToolbarTests.swift */; };
 		E76CAC4E26BC0CC200117953 /* CardViewControllerItemsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76CAC4D26BC0CC200117953 /* CardViewControllerItemsProvider.swift */; };
 		E76EC680241125E0009C6E2F /* FormCardSecurityCodeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EC67F241125E0009C6E2F /* FormCardSecurityCodeItem.swift */; };
@@ -2153,7 +2152,6 @@
 		E757F02525D2ED4C007C813D /* APIClientMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientMock.swift; sourceTree = "<group>"; };
 		E759E1F425CB373F00B1F8DC /* DropInTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInTests.swift; sourceTree = "<group>"; };
 		E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewControllerTests.swift; sourceTree = "<group>"; };
-		E767F34D25A4865A0077029E /* WrapperViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrapperViewController.swift; sourceTree = "<group>"; };
 		E767F49A25A5E9740077029E /* ModalToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalToolbar.swift; sourceTree = "<group>"; };
 		E767F4DB25A603A50077029E /* ModalToolbarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalToolbarTests.swift; sourceTree = "<group>"; };
 		E768712426B02D17005A91DB /* Shared.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Shared.entitlements; sourceTree = "<group>"; };
@@ -4499,7 +4497,6 @@
 		E7484C2523B9FDC400CCF74F /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				E767F34D25A4865A0077029E /* WrapperViewController.swift */,
 				E72DA34023E1BE5300707638 /* DropInNavigationController.swift */,
 				E90139CA22846AD5004C74DA /* ModalViewController.swift */,
 				E7484C2623B9FDF000CCF74F /* SlideInPresentationAnimator.swift */,
@@ -7762,7 +7759,6 @@
 				E9B36CB82243B38A00EAA368 /* DropInComponent.swift in Sources */,
 				E7DE050627F7243000CB5F83 /* NavigationDelegate.swift in Sources */,
 				5A238C69263A9C8C00758FEF /* PreApplePayComponent.swift in Sources */,
-				E767F3F525A4CFAF0077029E /* WrapperViewController.swift in Sources */,
 				E9B36CC522451C7100EAA368 /* ComponentManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

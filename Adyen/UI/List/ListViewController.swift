@@ -58,7 +58,7 @@ public final class ListViewController: UITableViewController {
         dataSource.sections.flatMap(\.items).forEach { $0.loadingHandler = nil }
         
         dataSource.reload(newSections: newSections, tableView: tableView, animated: animated)
-        adyen.updatePreferredContentSize()
+//        adyen.updatePreferredContentSize()
         
         stopLoading()
 
@@ -77,7 +77,7 @@ public final class ListViewController: UITableViewController {
     
     public func deleteItem(at indexPath: IndexPath, animated: Bool = true) {
         dataSource.deleteItem(at: indexPath, tableView: tableView, animated: animated)
-        adyen.updatePreferredContentSize()
+//        adyen.updatePreferredContentSize()
     }
     
     // MARK: - View

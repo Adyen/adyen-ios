@@ -9,7 +9,7 @@ import UIKit
 /// Displays a form for the user to enter details.
 @objc(ADYFormViewController)
 @_spi(AdyenInternal)
-open class FormViewController: UIViewController, AdyenObserver, PreferredContentSizeConsumer {
+open class FormViewController: UIViewController, AdyenObserver {
 
     private enum Animations {
         static let keyboardBottomInset = "keyboardBottomInset"
@@ -83,9 +83,9 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
         itemManager.topLevelItemViews.forEach(formView.appendItemView(_:))
         delegate?.viewDidLoad(viewController: self)
         
-        observe(keyboardObserver.$keyboardRect) { [weak self] _ in
-            self?.didUpdatePreferredContentSize()
-        }
+//        observe(keyboardObserver.$keyboardRect) { [weak self] _ in
+//            self?.didUpdatePreferredContentSize()
+//        }
     }
 
     override open func viewWillAppear(_ animated: Bool) {
@@ -135,22 +135,22 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
 
     private lazy var itemManager = FormViewItemManager()
 
-    // MARK: - PreferredContentSizeConsumer
-
-    public func willUpdatePreferredContentSize() { /* Empty implementation */ }
-
-    public func didUpdatePreferredContentSize() {
-        let bottomInset: CGFloat = keyboardObserver.keyboardRect.height - view.safeAreaInsets.bottom
-        let context = AnimationContext(
-            animationKey: Animations.keyboardBottomInset,
-            duration: 0.25,
-            options: [.beginFromCurrentState, .layoutSubviews],
-            animations: { [weak self] in
-                self?.scrollView.contentInset.bottom = bottomInset
-            }
-        )
-        view.adyen.animate(context: context)
-    }
+//    // MARK: - PreferredContentSizeConsumer
+//
+//    public func willUpdatePreferredContentSize() { /* Empty implementation */ }
+//
+//    public func didUpdatePreferredContentSize() {
+//        let bottomInset: CGFloat = keyboardObserver.keyboardRect.height - view.safeAreaInsets.bottom
+//        let context = AnimationContext(
+//            animationKey: Animations.keyboardBottomInset,
+//            duration: 0.25,
+//            options: [.beginFromCurrentState, .layoutSubviews],
+//            animations: { [weak self] in
+//                self?.scrollView.contentInset.bottom = bottomInset
+//            }
+//        )
+//        view.adyen.animate(context: context)
+//    }
 
     // MARK: - Items
 

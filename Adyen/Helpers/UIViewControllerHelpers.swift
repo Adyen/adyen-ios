@@ -25,24 +25,24 @@ public extension AdyenScope where Base: UIViewController {
 @_spi(AdyenInternal)
 extension UIResponder: AdyenCompatible {}
 
-@_spi(AdyenInternal)
-extension AdyenScope where Base: UIResponder {
+// @_spi(AdyenInternal)
+// extension AdyenScope where Base: UIResponder {
+//
+//    func updatePreferredContentSize() {
+//        if let consumer = base as? PreferredContentSizeConsumer {
+//            consumer.willUpdatePreferredContentSize()
+//        }
+//        base.next?.adyen.updatePreferredContentSize()
+//        if let consumer = base as? PreferredContentSizeConsumer {
+//            consumer.didUpdatePreferredContentSize()
+//        }
+//    }
+// }
 
-    func updatePreferredContentSize() {
-        if let consumer = base as? PreferredContentSizeConsumer {
-            consumer.willUpdatePreferredContentSize()
-        }
-        base.next?.adyen.updatePreferredContentSize()
-        if let consumer = base as? PreferredContentSizeConsumer {
-            consumer.didUpdatePreferredContentSize()
-        }
-    }
-}
-
-@_spi(AdyenInternal)
-public protocol PreferredContentSizeConsumer {
-
-    func didUpdatePreferredContentSize()
-
-    func willUpdatePreferredContentSize()
-}
+// @_spi(AdyenInternal)
+// public protocol PreferredContentSizeConsumer {
+//
+//    func didUpdatePreferredContentSize()
+//
+//    func willUpdatePreferredContentSize()
+// }

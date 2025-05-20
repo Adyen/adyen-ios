@@ -7,8 +7,8 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-internal final class DropInNavigationController: UINavigationController, PreferredContentSizeConsumer, AdyenObserver {
-    
+internal final class DropInNavigationController: UINavigationController, AdyenObserver {
+
     internal typealias CancelHandler = (Bool, PresentableComponent) -> Void
     
     private let cancelHandler: CancelHandler?
@@ -28,21 +28,7 @@ internal final class DropInNavigationController: UINavigationController, Preferr
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override internal func viewDidLoad() {
-        super.viewDidLoad()
-        
-        observe(keyboardObserver.$keyboardRect) { [weak self] _ in
-            self?.updateTopViewControllerIfNeeded()
-        }
-    }
 
-    internal func willUpdatePreferredContentSize() { /* Empty implementation */ }
-
-    internal func didUpdatePreferredContentSize() {
-        updateTopViewControllerIfNeeded()
-    }
-    
     internal func present(asModal component: PresentableComponent) {
         if component.requiresModalPresentation {
             pushViewController(
@@ -62,19 +48,10 @@ internal final class DropInNavigationController: UINavigationController, Preferr
     }
 
     // MARK: - Private
-
-    internal func updateTopViewControllerIfNeeded(animated: Bool = true) {
-        guard let topViewController = topViewController as? WrapperViewController else { return }
-
-        let frame = topViewController.requiresKeyboardInput ? keyboardObserver.keyboardRect : .zero
-        topViewController.updateFrame(keyboardRect: frame, animated: animated)
-    }
     
     private func wrapInModalController(component: PresentableComponent, isRoot: Bool) -> UIViewController {
         let modal = ModalViewController(
             rootViewController: component.viewController,
-            style: style,
-            navBarType: component.navBarType,
             cancelButtonHandler: { [weak self] in self?.cancelHandler?($0, component) }
         )
         modal.isRoot = isRoot
