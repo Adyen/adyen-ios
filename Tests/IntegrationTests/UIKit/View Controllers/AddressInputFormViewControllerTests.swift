@@ -308,7 +308,6 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
 
-        // should not use setupRootViewController as it makes tests flaky, needs to be addressed
         setupRootViewController(viewController)
         setupRootViewController(UIViewController())
 
