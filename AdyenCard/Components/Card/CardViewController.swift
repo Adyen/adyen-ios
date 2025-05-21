@@ -34,7 +34,7 @@ internal class CardViewController: FormViewController {
     private let scope: String
     
     private let cardLogos: [FormCardLogosItem.CardTypeLogo]
-    
+
     internal lazy var items = {
         
         ItemsProvider(
@@ -198,11 +198,29 @@ internal class CardViewController: FormViewController {
 
     internal func update(binInfo: BinLookupResponse) {
         var brands: [CardBrand] = []
+
         // no dual branding if response is from regex (fallback)
         if binInfo.isCreatedLocally, let firstBrand = binInfo.brands?.first {
             brands = [firstBrand]
+            items.coBadgedCardItem.isHidden.wrappedValue = true
+            items.coBadgedCardItem.selectableFormItems = []
         } else {
             brands = binInfo.brands ?? []
+            items.coBadgedCardItem.selectableFormItems = []
+            if brands.count == 2, brands.allSatisfy(\.isSupported) {
+                guard let defaultSelectedBrand = brands.first else {
+                    return
+                }
+                items.coBadgedCardItem.selectableFormItems = items.selectableFormItems(from: brands, defaultSelectedBrand: defaultSelectedBrand)
+                items.coBadgedCardItem.isHidden.wrappedValue = false
+                items.triggerInfoEvent(
+                    of: .displayed,
+                    target: .dualBrandButton,
+                    brands: brands
+                )
+            } else {
+                items.coBadgedCardItem.isHidden.wrappedValue = true
+            }
         }
         issuingCountryCode = binInfo.issuingCountryCode
         items.numberContainerItem.update(brands: brands)
@@ -268,6 +286,8 @@ extension CardViewController {
         if configuration.showsHolderNameField {
             append(items.holderNameItem)
         }
+
+        append(items.coBadgedCardItem)
 
         if configuration.koreanAuthenticationMode != .hide {
             append(items.additionalAuthCodeItem)

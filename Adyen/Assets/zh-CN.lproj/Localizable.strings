@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "不支持 %@";
 "adyen.card.numberItem.unknownBrand" = "不支持输入的卡片品牌";
 "adyen.card.scanYourCardButton" = "扫描您的卡片";
+"adyen.creditCard.dualBrand.title" = "卡片品牌";
+"adyen.creditCard.dualBrand.description" = "選擇首選付款卡品牌。這是可選項。";
 "adyen.dropIn.stored.title" = "确认 %@ 支付";
 "adyen.dropIn.preselected.openAll.title" = "更改支付方式";
 "adyen.continueTo" = "继续至 %@";
@@ -184,7 +186,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "输入 UPI ID";
-"adyen.UPI.collectFieldLabel" = "输入 UPI ID/VPA";
+"adyen.UPI.collectFieldLabel" = "UPI ID";
 "adyen.UPI.error.noAppSelected" = "选择支付方式继续";
 "adyen.twint.noAppsInstalled.message" = "此设备上未安装 TWINT 或安装的 TWINT 版本已过期。请更新或安装 TWINT 应用。";
 "adyen.threeds2.DA.registration.title" = "安全结账";
@@ -259,3 +261,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "输入正确的银行账号";
 "adyen.payto.payid.description" = "请输入与您的 PayTo 账户关联的 PayID 和账户详细信息。";
 "adyen.payto.await.description" = "感谢您的购买，请登录您的银行账户完成支付，授权 PayTo 协议并批准支付条款。";
+"adyen.card.scanner.camera.access.denied.alert.title" = "允许访问摄像头";
+"adyen.card.scanner.camera.access.denied.alert.message" = "访问之前被拒绝。要扫描卡片，请从设置中授予访问权限。";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "打开设置";

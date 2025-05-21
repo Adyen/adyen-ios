@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "%@ netiek atbalstīts";
 "adyen.card.numberItem.unknownBrand" = "Ievadītais kartes zīmols netiek atbalstīts";
 "adyen.card.scanYourCardButton" = "Skenējiet savu karti";
+"adyen.creditCard.dualBrand.title" = "Kartes zīmols";
+"adyen.creditCard.dualBrand.description" = "Selecteer het merk van de kaart waarmee u het liefst wilt betalen. Dit is optioneel.";
 "adyen.dropIn.stored.title" = "Apstipriniet %@ maksājumu";
 "adyen.dropIn.preselected.openAll.title" = "Mainīt samaksas veidu";
 "adyen.continueTo" = "Turpināt ar %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Ievadiet UPI ID";
-"adyen.UPI.collectFieldLabel" = "Ievadiet UPI ID/VPA";
+"adyen.UPI.collectFieldLabel" = "UPI ID";
 "adyen.UPI.error.noAppSelected" = "Lai turpinātu, atlasiet maksājuma veidu";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
@@ -265,3 +267,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Ievadiet pareizu bankas konta numuru";
 "adyen.payto.payid.description" = "Ievadiet PayID un konta informāciju, kas ir savienota ar Jūsu PayTo kontu.";
 "adyen.payto.await.description" = "Paldies par jūsu pirkumu, lūdzu, pabeidziet maksājumu, pieslēdzoties savam bankas kontam, autorizējot PayTo līgumu un apstiprinot maksājuma noteikumus.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Atļaut piekļuvi kamerai";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Piekļuve iepriekš tika liegta. Lai skenētu kartes, lūdzu, piešķiriet piekļuvi no Iestatījumiem.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Atvērt Iestatījumus";

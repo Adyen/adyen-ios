@@ -42,6 +42,7 @@ public struct SelectableFormItemStyle: ViewStyle {
     }
 }
 
+@_spi(AdyenInternal)
 extension SelectableFormItemStyle: Equatable {
 
     public static func == (lhs: SelectableFormItemStyle, rhs: SelectableFormItemStyle) -> Bool {

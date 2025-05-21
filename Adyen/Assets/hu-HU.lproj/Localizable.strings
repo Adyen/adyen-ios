@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "A(z) %@ nem támogatott";
 "adyen.card.numberItem.unknownBrand" = "A megadott kártyamárka nem támogatott";
 "adyen.card.scanYourCardButton" = "Kártya beolvasása";
+"adyen.creditCard.dualBrand.title" = "Kártyakibocsátó";
+"adyen.creditCard.dualBrand.description" = "Válassza ki a fizetéshez használni kívánt kártyakibocsátót. Ez nem kötelező.";
 "adyen.dropIn.stored.title" = "%@ használatával történő fizetés jóváhagyása";
 "adyen.dropIn.preselected.openAll.title" = "Fizetési mód módosítása";
 "adyen.continueTo" = "Folytatás a következővel: %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "UPI-azonosító megadása";
-"adyen.UPI.collectFieldLabel" = "UPI-azonosító/VPA megadása";
+"adyen.UPI.collectFieldLabel" = "UPI-azonosító";
 "adyen.UPI.error.noAppSelected" = "A folytatáshoz válasszon fizetési módot";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
@@ -265,3 +267,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Adja meg a helyes bankszámlaszámot";
 "adyen.payto.payid.description" = "Adja meg a PayTo-fiókjához kapcsolódó PayID-t és a számlaadatait.";
 "adyen.payto.await.description" = "Köszönjük a vásárlást! A fizetés véglegesítéséhez jelentkezzen be bankszámlájára, hagyja jóvá a PayTo megállapodást, és fogadja el a fizetési feltételeket.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Engedélyezze a kamerához való hozzáférését";
+"adyen.card.scanner.camera.access.denied.alert.message" = "A hozzáférés korábban meg lett tagadva. A kártyaolvasáshoz adjon hozzáférési engedélyt a Beállításokban.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Beállítások megnyitása";
