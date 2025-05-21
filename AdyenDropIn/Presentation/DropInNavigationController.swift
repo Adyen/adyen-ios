@@ -36,7 +36,7 @@ internal final class DropInNavigationController: UINavigationController {
     internal func present(asModal component: PresentableComponent) {
         if component.requiresModalPresentation {
             pushViewController(
-                wrapInModalController(
+                wrapInComponentViewController(
                     component: component,
                     isRoot: false
                 ),
@@ -48,22 +48,27 @@ internal final class DropInNavigationController: UINavigationController {
     }
     
     internal func present(root component: PresentableComponent) {
-        pushViewController(wrapInModalController(component: component, isRoot: true), animated: true)
+        pushViewController(
+            wrapInComponentViewController(component: component, isRoot: true),
+            animated: true
+        )
     }
 
     // MARK: - Private
     
-    private func wrapInModalController(component: PresentableComponent, isRoot: Bool) -> UIViewController {
-        let modal = ModalViewController(
-            rootViewController: component.viewController,
-            cancelButtonHandler: { [weak self] in self?.cancelHandler?($0, component) }
-        )
-        modal.isRoot = isRoot
-        return modal
+    private func wrapInComponentViewController(component: PresentableComponent, isRoot: Bool) -> UIViewController {
+        let componentViewModel = ComponentViewModel(
+            component: component,
+            isRoot: isRoot
+        ) { [weak self] isRoot in
+            self?.cancelHandler?(isRoot, component)
+        }
+        let modalViewController = ComponentViewController(viewModel: componentViewModel)
+        return modalViewController
     }
     
     private func setup(root component: PresentableComponent) {
-        let rootContainer = wrapInModalController(component: component, isRoot: true)
+        let rootContainer = wrapInComponentViewController(component: component, isRoot: true)
         viewControllers = [rootContainer]
     }
 }

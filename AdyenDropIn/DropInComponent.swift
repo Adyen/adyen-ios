@@ -280,9 +280,7 @@ public final class DropInComponent: NSObject,
 
         if isRoot {
             sendExitEvent()
-            delegate?.didFail(with: ComponentError.cancelled, from: self)
-        } else {
-            navigationController.popViewController(animated: true)
+//            delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
     }
 
