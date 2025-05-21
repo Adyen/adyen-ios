@@ -11,8 +11,8 @@ final class SubmitButtonTests: XCTestCase {
 
     private let style = ButtonStyle(title: .init(font: .preferredFont(forTextStyle: .body), color: .red))
 
-    func testInitialState() {
-        let (sut, activityIndicatorView) = makeSUT()
+    func testInitialState() throws {
+        let (sut, activityIndicatorView) = try makeSUT()
 
         XCTAssertFalse(sut.showsActivityIndicator, "Activity indicator should not be showing initially")
         XCTAssertFalse(activityIndicatorView.isAnimating, "Activity indicator should not be animating initially")
@@ -22,8 +22,8 @@ final class SubmitButtonTests: XCTestCase {
         XCTAssertTrue(sut.isEnabled, "Button should be enabled initially")
     }
 
-    func testButtonTapLoadingState() {
-        let (sut, activityIndicatorView) = makeSUT()
+    func testButtonTapLoadingState() throws {
+        let (sut, activityIndicatorView) = try makeSUT()
 
         // When: Simulate tap by directly setting showsActivityIndicator to true
         sut.showsActivityIndicator = true
@@ -35,10 +35,10 @@ final class SubmitButtonTests: XCTestCase {
         XCTAssertFalse(sut.isEnabled, "Button should be disabled during loading")
     }
 
-    func testActivityIndicatorDisappearsAndTitleComesBack() {
-        let (sut, activityIndicatorView) = makeSUT()
+    func testActivityIndicatorDisappearsAndTitleComesBack() throws {
+        let (sut, activityIndicatorView) = try makeSUT()
 
-        // Wen we put the button in a loading state
+        // When we put the button in a loading state
         sut.showsActivityIndicator = true
         XCTAssertTrue(sut.showsActivityIndicator)
         sut.showsActivityIndicator = false
@@ -51,10 +51,10 @@ final class SubmitButtonTests: XCTestCase {
         XCTAssertTrue(sut.isEnabled, "Button should be enabled after activity indicator hides")
     }
 
-    func makeSUT(_ title: String = "Submit") -> (SubmitButton, UIActivityIndicatorView) {
+    func makeSUT(_ title: String = "Submit") throws -> (SubmitButton, UIActivityIndicatorView) {
         let sut = SubmitButton(style: style)
         sut.title = title
-        let activityIndicatorView: UIActivityIndicatorView! = sut.findView(by: "activityIndicator")
+        let activityIndicatorView: UIActivityIndicatorView = try XCTUnwrap(sut.findView(by: "activityIndicator"))
 
         return (sut, activityIndicatorView)
     }
