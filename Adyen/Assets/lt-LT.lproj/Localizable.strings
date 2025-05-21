@@ -39,7 +39,7 @@
 "adyen.card.numberItem.unknownBrand" = "Įvestas kortelės prekės ženklas nepalaikomas";
 "adyen.card.scanYourCardButton" = "Nuskaitykite savo kortelę";
 "adyen.creditCard.dualBrand.title" = "Kortelės prekių ženklas";
-"adyen.creditCard.dualBrand.description" = "Atlasiet kartes zīmolu, ar kuru vēlaties maksāt. Tas nav obligāti.";
+"adyen.creditCard.dualBrand.description" = "Pasirinkite kortelės, kuria pageidaujate atsiskaityti, prekių ženklą. Tai neprivaloma.";
 "adyen.dropIn.stored.title" = "Patvirtinti %@ mokėjimą";
 "adyen.dropIn.preselected.openAll.title" = "Keisti mokėjimo būdą";
 "adyen.continueTo" = "Eiti į %@";

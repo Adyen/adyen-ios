@@ -39,7 +39,7 @@
 "adyen.card.numberItem.unknownBrand" = "Zadaná značka karty nie je podporovaná";
 "adyen.card.scanYourCardButton" = "Naskenujte svoju kartu";
 "adyen.creditCard.dualBrand.title" = "Značka karty";
-"adyen.creditCard.dualBrand.description" = "Izberite znamko kartice, s katero želite plačati. To ni obvezno.";
+"adyen.creditCard.dualBrand.description" = "Vyberte značku karty, ktorou preferujete platiť. Táto možnosť je nepovinná.";
 "adyen.dropIn.stored.title" = "Potvrďte platbu pomocou %@";
 "adyen.dropIn.preselected.openAll.title" = "Zmeniť spôsob platby";
 "adyen.continueTo" = "Pokračovať do %@";

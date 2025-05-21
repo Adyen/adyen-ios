@@ -39,7 +39,7 @@
 "adyen.card.numberItem.unknownBrand" = "Marca de card introdusă nu este acceptată";
 "adyen.card.scanYourCardButton" = "Scanați-vă cardul";
 "adyen.creditCard.dualBrand.title" = "Brandul cardului";
-"adyen.creditCard.dualBrand.description" = "Выберите платежную систему карты по умолчанию. Это необязательно.";
+"adyen.creditCard.dualBrand.description" = "Selectați brandul cardului cu care preferați să plătiți. Acest lucru este opțional.";
 "adyen.dropIn.stored.title" = "Confirmați plata %@";
 "adyen.dropIn.preselected.openAll.title" = "Schimbare metodă de plată";
 "adyen.continueTo" = "Continuați către %@";

@@ -39,7 +39,7 @@
 "adyen.card.numberItem.unknownBrand" = "Vnesena znamka kartice ni podprta";
 "adyen.card.scanYourCardButton" = "Poskenirajte svojo kartico";
 "adyen.creditCard.dualBrand.title" = "Znamka kartice";
-"adyen.creditCard.dualBrand.description" = "Välj det kortmärke du föredrar att betala med. Detta är valfritt.";
+"adyen.creditCard.dualBrand.description" = "Izberite znamko kartice, s katero želite plačati. To ni obvezno.";
 "adyen.dropIn.stored.title" = "Potrdite plačilo: %@";
 "adyen.dropIn.preselected.openAll.title" = "Spremeni način plačila";
 "adyen.continueTo" = "Nadaljujte na %@";

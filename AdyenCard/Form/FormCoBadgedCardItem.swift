@@ -32,10 +32,10 @@ internal final class FormCoBadgedCardItem: FormItem {
     /// The coBadged card item style.
     internal var style: FormCoBadgedCardItemStyle
 
-    /// The callback to send the selected brand to the cardviewcontroller
+    /// The callback to send the selected brand to the Card Viewcontroller
     internal var onCardBrandSelection: ((CardBrand) -> Void)?
 
-    /// Brands set after coBagedCardItems are displayed on the view
+    /// Brands set after coBadgedCardItems are displayed on the view
     @AdyenObservable(nil) internal private(set) var cardItemsDisplayed: [CardBrand]?
 
     /// Initializes the FormCoBadged card item.
