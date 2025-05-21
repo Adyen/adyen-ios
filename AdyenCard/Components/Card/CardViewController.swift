@@ -103,7 +103,7 @@ internal class CardViewController: FormViewController {
         observeNumberItem()
         observeCoBadgedCardItem()
         items.coBadgedCardItem.onCardBrandSelection = { [weak self] cardBrand in
-            self?.handleSelection(selectedBrand: cardBrand)
+            self?.handleSelection(cardBrand)
         }
         super.viewDidLoad()
     }
@@ -207,10 +207,10 @@ internal class CardViewController: FormViewController {
         if binInfo.isCreatedLocally, let firstBrand = binInfo.brands?.first {
             brands = [firstBrand]
             items.coBadgedCardItem.isHidden.wrappedValue = true
-            items.coBadgedCardItem.selectableFormItems = []
+            items.coBadgedCardItem.resetItems()
         } else {
             brands = binInfo.brands ?? []
-            items.coBadgedCardItem.updateSelectableFormItems(brands, cardLogos: cardLogos)
+            items.coBadgedCardItem.updateItems(brands, cardLogos: cardLogos)
         }
         issuingCountryCode = binInfo.issuingCountryCode
         items.numberContainerItem.update(brands: brands)
@@ -218,7 +218,7 @@ internal class CardViewController: FormViewController {
         updateBillingAddressOptionalStatus(brands: brands)
     }
 
-    internal func handleSelection(selectedBrand: CardBrand) {
+    internal func handleSelection(_ selectedBrand: CardBrand) {
         items.coBadgedCardItem.updateSelection(selectedBrand)
         items.numberContainerItem.numberItem.selectBrand(cardBrand: selectedBrand)
 

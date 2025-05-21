@@ -11,7 +11,7 @@ internal struct CoBadgedCardAnalyticsConfiguration: AnalyticsStringDictionaryCon
 
     private let dualBrands: String?
 
-    internal init(brands: String?) {
-        self.dualBrands = brands
+    internal init(dualBrands: String?) {
+        self.dualBrands = dualBrands
     }
 }

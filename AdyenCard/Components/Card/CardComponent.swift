@@ -226,7 +226,7 @@ public class CardComponent: PresentableComponent,
 
         // Send configData only when co-badged cards are displayed
         if data.type == .displayed, infoEvent.target == .dualBrandButton {
-            infoEvent.configData = CoBadgedCardAnalyticsConfiguration(brands: data.brands?.map(\.type.rawValue).joined(separator: ","))
+            infoEvent.configData = CoBadgedCardAnalyticsConfiguration(dualBrands: data.brands?.map(\.type.rawValue).joined(separator: ","))
         }
         if let errorCode = data.error?.analyticsErrorCode {
             infoEvent.validationErrorCode = String(errorCode)

@@ -94,7 +94,7 @@ internal final class FormCoBadgedCardItem: FormItem {
         }
     }
 
-    internal func updateSelectableFormItems(_ brands: [CardBrand], cardLogos: [FormCardLogosItem.CardTypeLogo]) {
+    internal func updateItems(_ brands: [CardBrand], cardLogos: [FormCardLogosItem.CardTypeLogo]) {
         selectableFormItems = []
         if brands.count == 2, brands.allSatisfy(\.isSupported) {
             guard let defaultSelectedBrand = brands.first else {
@@ -115,6 +115,10 @@ internal final class FormCoBadgedCardItem: FormItem {
     internal func updateSelection(_ selectedBrand: CardBrand) {
         selectableFormItems.forEach { $0.isSelected = false }
         selectableFormItems.first(where: { $0.identifier == selectedBrand.type.rawValue })?.isSelected = true
+    }
+
+    internal func resetItems() {
+        selectableFormItems = []
     }
 }
 
