@@ -186,28 +186,6 @@ extension CardViewController {
             return item
         }()
 
-        internal func selectableFormItems(from brands: [CardBrand], defaultSelectedBrand: CardBrand) -> [SelectableFormItem] {
-            brands.map { brand in
-
-                let brandLogoURL = numberContainerItem.numberItem.cardTypeLogos.first(where: { $0.type == brand.type })?.url
-
-                let isSelected = brand.type.rawValue == defaultSelectedBrand.type.rawValue ? true : false
-
-                let selectableItem = SelectableFormItem(
-                    title: brand.type.name,
-                    imageUrl: brandLogoURL,
-                    isSelected: isSelected,
-                    style: .init(title: configuration.style.textField.title),
-                    identifier: brand.type.rawValue
-                )
-                selectableItem.selectionHandler = { [weak self] in
-                    guard let self else { return }
-                    handleSelection(selectedBrand: brand)
-                }
-                return selectableItem
-            }
-        }
-
         internal lazy var additionalAuthCodeItem: FormTextInputItem = {
             var additionalItem = FormTextInputItem(style: formStyle.textField)
             additionalItem.title = localizedString(.cardTaxNumberLabelShort, localizationParameters)
@@ -288,13 +266,6 @@ extension CardViewController {
             )
             return item
         }()
-
-        internal func handleSelection(selectedBrand: CardBrand) {
-            coBadgedCardItem.updateSelection(selectedBrand)
-            numberContainerItem.numberItem.selectBrand(cardBrand: selectedBrand)
-
-            triggerInfoEvent(of: .selected, target: .dualBrandButton, brands: [selectedBrand])
-        }
 
         internal func triggerInfoEvent(
             of type: AnalyticsEventInfo.InfoType,

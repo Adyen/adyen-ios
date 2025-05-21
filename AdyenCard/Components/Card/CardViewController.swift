@@ -101,6 +101,10 @@ internal class CardViewController: FormViewController {
         setupView()
         setupViewRelations()
         observeNumberItem()
+        observeCoBadgedCardItem()
+        items.coBadgedCardItem.onCardBrandSelection = { [weak self] cardBrand in
+            self?.handleSelection(selectedBrand: cardBrand)
+        }
         super.viewDidLoad()
     }
 
@@ -206,26 +210,19 @@ internal class CardViewController: FormViewController {
             items.coBadgedCardItem.selectableFormItems = []
         } else {
             brands = binInfo.brands ?? []
-            items.coBadgedCardItem.selectableFormItems = []
-            if brands.count == 2, brands.allSatisfy(\.isSupported) {
-                guard let defaultSelectedBrand = brands.first else {
-                    return
-                }
-                items.coBadgedCardItem.selectableFormItems = items.selectableFormItems(from: brands, defaultSelectedBrand: defaultSelectedBrand)
-                items.coBadgedCardItem.isHidden.wrappedValue = false
-                items.triggerInfoEvent(
-                    of: .displayed,
-                    target: .dualBrandButton,
-                    brands: brands
-                )
-            } else {
-                items.coBadgedCardItem.isHidden.wrappedValue = true
-            }
+            items.coBadgedCardItem.updateSelectableFormItems(brands, cardLogos: cardLogos)
         }
         issuingCountryCode = binInfo.issuingCountryCode
         items.numberContainerItem.update(brands: brands)
         
         updateBillingAddressOptionalStatus(brands: brands)
+    }
+
+    internal func handleSelection(selectedBrand: CardBrand) {
+        items.coBadgedCardItem.updateSelection(selectedBrand)
+        items.numberContainerItem.numberItem.selectBrand(cardBrand: selectedBrand)
+
+        items.triggerInfoEvent(of: .selected, target: .dualBrandButton, brands: [selectedBrand])
     }
 }
 
@@ -258,7 +255,17 @@ extension CardViewController {
             self?.updateFields(from: newBrand)
         }
     }
-    
+
+    private func observeCoBadgedCardItem() {
+        observe(items.coBadgedCardItem.$cardItemsDisplayed) { [weak self] brands in
+            self?.items.triggerInfoEvent(
+                of: .displayed,
+                target: .dualBrandButton,
+                brands: brands
+            )
+        }
+    }
+
     /// Updates relevant other fields after number field changes
     private func updateFields(from brand: CardBrand?) {
         items.securityCodeItem.displayMode = brand?.securityCodeItemDisplayMode ?? .required

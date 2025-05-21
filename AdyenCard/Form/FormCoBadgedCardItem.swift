@@ -32,6 +32,12 @@ internal final class FormCoBadgedCardItem: FormItem {
     /// The coBadged card item style.
     internal var style: FormCoBadgedCardItemStyle
 
+    /// The callback to send the selected brand to the cardviewcontroller
+    internal var onCardBrandSelection: ((CardBrand) -> Void)?
+
+    /// Brands set after coBagedCardItems are displayed on the view
+    @AdyenObservable(nil) internal private(set) var cardItemsDisplayed: [CardBrand]?
+
     /// Initializes the FormCoBadged card item.
     ///
     /// - Parameters:
@@ -61,6 +67,49 @@ internal final class FormCoBadgedCardItem: FormItem {
 
     internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
+    }
+
+    internal func selectableFormItems(
+        from brands: [CardBrand],
+        cardLogos: [FormCardLogosItem.CardTypeLogo],
+        defaultSelectedBrand: CardBrand
+    ) -> [SelectableFormItem] {
+        brands.map { brand in
+            let brandLogoURL = cardLogos.first(where: { $0.type == brand.type })?.url
+
+            let isSelected = brand.type.rawValue == defaultSelectedBrand.type.rawValue ? true : false
+
+            let selectableItem = SelectableFormItem(
+                title: brand.type.name,
+                imageUrl: brandLogoURL,
+                isSelected: isSelected,
+                style: .init(title: style.title),
+                identifier: brand.type.rawValue
+            )
+            selectableItem.selectionHandler = { [weak self] in
+                guard let self else { return }
+                onCardBrandSelection?(brand)
+            }
+            return selectableItem
+        }
+    }
+
+    internal func updateSelectableFormItems(_ brands: [CardBrand], cardLogos: [FormCardLogosItem.CardTypeLogo]) {
+        selectableFormItems = []
+        if brands.count == 2, brands.allSatisfy(\.isSupported) {
+            guard let defaultSelectedBrand = brands.first else {
+                return
+            }
+            selectableFormItems = selectableFormItems(
+                from: brands,
+                cardLogos: cardLogos,
+                defaultSelectedBrand: defaultSelectedBrand
+            )
+            isHidden.wrappedValue = false
+            cardItemsDisplayed = brands
+        } else {
+            isHidden.wrappedValue = true
+        }
     }
 
     internal func updateSelection(_ selectedBrand: CardBrand) {
