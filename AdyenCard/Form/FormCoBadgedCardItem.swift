@@ -96,6 +96,7 @@ internal final class FormCoBadgedCardItem: FormItem {
 
     internal func updateItems(_ brands: [CardBrand], cardLogos: [FormCardLogosItem.CardTypeLogo]) {
         selectableFormItems = []
+        cardItemsDisplayed = []
         if brands.count == 2, brands.allSatisfy(\.isSupported) {
             guard let defaultSelectedBrand = brands.first else {
                 return
