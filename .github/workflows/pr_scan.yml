@@ -89,7 +89,7 @@ jobs:
           -enableCodeCoverage YES \
           -resultBundlePath "${resultPath}" \
           ${params} \
-          -destination  -destination "${{env.destination_iPad}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+          -destination "${{env.destination_iPad}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
         params: '${{env.params}}'
         scheme: 'SnapshotTests'
