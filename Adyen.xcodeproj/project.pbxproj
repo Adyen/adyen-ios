@@ -1293,6 +1293,13 @@
 			remoteGlobalIDString = E2C0E03222097917008616F6;
 			remoteInfo = Adyen;
 		};
+		A069FDF72DDDC9B700A214B8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E2C0E07C220B0399008616F6;
+			remoteInfo = AdyenUIHost;
+		};
 		A0F749942D958B3000014A05 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
@@ -6217,6 +6224,7 @@
 				819BFB452BDBEEA10018DC9B /* PBXTargetDependency */,
 				819BFB492BDBEEB50018DC9B /* PBXTargetDependency */,
 				819BFB4D2BDBEECA0018DC9B /* PBXTargetDependency */,
+				A069FDF82DDDC9B700A214B8 /* PBXTargetDependency */,
 			);
 			name = UnitTests;
 			productName = AdyenUnitTests;
@@ -6567,6 +6575,7 @@
 					};
 					B62D48AB2BBE8D79001EF01A = {
 						CreatedOnToolsVersion = 15.2;
+						TestTargetID = E2C0E07C220B0399008616F6;
 					};
 					E2C0E03222097917008616F6 = {
 						CreatedOnToolsVersion = 10.1;
@@ -8221,6 +8230,11 @@
 			target = E2C0E03222097917008616F6 /* Adyen */;
 			targetProxy = A04F8C2D29E5957B00F3F62B /* PBXContainerItemProxy */;
 		};
+		A069FDF82DDDC9B700A214B8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E2C0E07C220B0399008616F6 /* AdyenUIHost */;
+			targetProxy = A069FDF72DDDC9B700A214B8 /* PBXContainerItemProxy */;
+		};
 		A0F749952D958B3000014A05 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A0F7498D2D958B2F00014A05 /* AdyenCheckout */;
@@ -8773,6 +8787,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AdyenUIHost.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AdyenUIHost";
 			};
 			name = Debug;
 		};
@@ -8798,6 +8813,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AdyenUIHost.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AdyenUIHost";
 			};
 			name = Release;
 		};
