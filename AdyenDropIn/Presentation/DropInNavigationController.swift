@@ -7,7 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-internal final class DropInNavigationController: UINavigationController, AdyenObserver {
+internal final class DropInNavigationController: UINavigationController {
 
     internal typealias CancelHandler = (Bool, PresentableComponent) -> Void
     
@@ -16,7 +16,9 @@ internal final class DropInNavigationController: UINavigationController, AdyenOb
     internal let style: NavigationStyle
     
     internal lazy var keyboardObserver = KeyboardObserver()
-    
+
+    // MARK: - Initializers
+
     internal init(rootComponent: PresentableComponent, style: NavigationStyle, cancelHandler: @escaping CancelHandler) {
         self.style = style
         self.cancelHandler = cancelHandler
@@ -28,6 +30,8 @@ internal final class DropInNavigationController: UINavigationController, AdyenOb
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - View life cycle
 
     internal func present(asModal component: PresentableComponent) {
         if component.requiresModalPresentation {
@@ -55,9 +59,6 @@ internal final class DropInNavigationController: UINavigationController, AdyenOb
             cancelButtonHandler: { [weak self] in self?.cancelHandler?($0, component) }
         )
         modal.isRoot = isRoot
-//        let container = WrapperViewController(child: modal)
-//
-//        return container
         return modal
     }
     

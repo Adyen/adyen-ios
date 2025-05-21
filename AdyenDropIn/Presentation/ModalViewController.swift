@@ -48,6 +48,7 @@ internal final class ModalViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         addChildViewController()
+        setupNavigationItem()
     }
 
     private func addChildViewController() {
@@ -59,6 +60,16 @@ internal final class ModalViewController: UIViewController {
     }
 
     // MARK: - Private
+
+    private func setupNavigationItem() {
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelButtonTapped))
+        navigationItem.rightBarButtonItem = cancelButton
+        navigationItem.title = "Checkout"
+    }
+
+    @objc private func cancelButtonTapped() {
+        self.navigationController?.dismiss(animated: true, completion: nil)
+    }
 
     private func didCancel() {
         guard let cancelHandler = cancelButtonHandler else { return }
