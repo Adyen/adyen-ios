@@ -10,7 +10,7 @@ import Foundation
 public struct CheckoutPaymentsResponse: Decodable, Sendable {
     
     // TODO: should it be string or enum?
-    public let resultCode: String
+    public let resultCode: CheckoutResultCode
     
     public let action: Action?
     
@@ -18,7 +18,7 @@ public struct CheckoutPaymentsResponse: Decodable, Sendable {
     
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.resultCode = try container.decode(String.self, forKey: .resultCode)
+        self.resultCode = try container.decode(CheckoutResultCode.self, forKey: .resultCode)
         self.action = try container.decodeIfPresent(Action.self, forKey: .action)
         self.order = try container.decodeIfPresent(PartialPaymentOrder.self, forKey: .order)
     }
@@ -34,9 +34,9 @@ public struct CheckoutPaymentsResponse: Decodable, Sendable {
 public struct CheckoutResult {
     
     // TODO: string or enum?
-    public let resultCode: String
+    public let resultCode: CheckoutResultCode
     
-    package init(resultCode: String) {
+    package init(resultCode: CheckoutResultCode) {
         self.resultCode = resultCode
     }
 }

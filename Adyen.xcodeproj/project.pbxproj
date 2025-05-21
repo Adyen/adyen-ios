@@ -424,6 +424,7 @@
 		A06170A92CCF96B300AF388A /* EventAnalyticsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06170A82CCF96B300AF388A /* EventAnalyticsProvider.swift */; };
 		A06170AB2CCFE0F600AF388A /* AnalyticsProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06170AA2CCFE0F600AF388A /* AnalyticsProviderProtocol.swift */; };
 		A0644AB728A5120C00BBF4A9 /* StorePaymentMethodFieldAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0644AB628A5120C00BBF4A9 /* StorePaymentMethodFieldAware.swift */; };
+		A069FDFA2DDDDAEF00A214B8 /* CheckoutResultCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A069FDF92DDDDAE400A214B8 /* CheckoutResultCode.swift */; };
 		A06B7A9A2A1CEC59008FC09D /* StoredCashAppPayPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06B7A992A1CEC59008FC09D /* StoredCashAppPayPaymentMethod.swift */; };
 		A06B7A9C2A1CEEAE008FC09D /* AnyCashAppPayConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06B7A9B2A1CEEAE008FC09D /* AnyCashAppPayConfiguration.swift */; };
 		A06B7A9E2A1E458C008FC09D /* CashAppPayConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06B7A9D2A1E458C008FC09D /* CashAppPayConfiguration.swift */; };
@@ -1910,6 +1911,7 @@
 		A06170A82CCF96B300AF388A /* EventAnalyticsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventAnalyticsProvider.swift; sourceTree = "<group>"; };
 		A06170AA2CCFE0F600AF388A /* AnalyticsProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsProviderProtocol.swift; sourceTree = "<group>"; };
 		A0644AB628A5120C00BBF4A9 /* StorePaymentMethodFieldAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorePaymentMethodFieldAware.swift; sourceTree = "<group>"; };
+		A069FDF92DDDDAE400A214B8 /* CheckoutResultCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutResultCode.swift; sourceTree = "<group>"; };
 		A06B7A992A1CEC59008FC09D /* StoredCashAppPayPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredCashAppPayPaymentMethod.swift; sourceTree = "<group>"; };
 		A06B7A9B2A1CEEAE008FC09D /* AnyCashAppPayConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCashAppPayConfiguration.swift; sourceTree = "<group>"; };
 		A06B7A9D2A1E458C008FC09D /* CashAppPayConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPayConfiguration.swift; sourceTree = "<group>"; };
@@ -3458,6 +3460,7 @@
 		A02B89DF2DD776070083CE99 /* ResponseModels */ = {
 			isa = PBXGroup;
 			children = (
+				A069FDF92DDDDAE400A214B8 /* CheckoutResultCode.swift */,
 				A02B89E02DD776330083CE99 /* CheckoutPaymentsResponse.swift */,
 			);
 			path = ResponseModels;
@@ -7329,6 +7332,7 @@
 				C9BAE20F27BEA68D002F5728 /* InitialAnalyticsRequest.swift in Sources */,
 				F926D52023F4217A00D058D3 /* DeviceDependent.swift in Sources */,
 				F9A6C4BB2657AFF600D8CD3E /* FormSpacerItem.swift in Sources */,
+				A069FDFA2DDDDAEF00A214B8 /* CheckoutResultCode.swift in Sources */,
 				00346FC429895B6A00F7DA94 /* ModalToolbar.swift in Sources */,
 				F9D5753123828EBB009C18B5 /* AnyCardPaymentMethod.swift in Sources */,
 				E2B317A92265EBD200C1BB30 /* EventPublisher.swift in Sources */,
