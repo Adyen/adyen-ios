@@ -215,3 +215,4 @@ whiteList:
   - bsb
   - payid
   - orgid
+  - viewcontroller
