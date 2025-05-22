@@ -36,7 +36,7 @@ internal final class FormCoBadgedCardItem: FormItem {
     internal var onCardBrandSelection: ((CardBrand) -> Void)?
 
     /// Brands set after coBadgedCardItems are displayed on the view
-    @AdyenObservable(nil) internal private(set) var cardItemsDisplayed: [CardBrand]?
+    @AdyenObservable(nil) internal var cardItemsDisplayed: [CardBrand]?
 
     /// Initializes the FormCoBadged card item.
     ///

@@ -1422,7 +1422,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
     }
 
-    func testCoBadgedCardsShouldSendDisplayedAnalyticsInfo() throws {
+    func testCoBadgedCardsShouldSendDisplayedAnalyticsInfoWithEmptyBrands() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(
@@ -1438,18 +1438,37 @@ class CardComponentTests: XCTestCase {
 
         setupRootViewController(sut.viewController)
 
-        let newResponse = BinLookupResponse(brands: [CardBrand(type: .visa), CardBrand(type: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
-        sut.cardViewController.update(binInfo: newResponse)
-
-        wait(for: .aMoment)
-
-        // Then
-        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
+        sut.cardViewController.items.coBadgedCardItem.cardItemsDisplayed = []
         let dualBrandDisplayedCalled = analyticsProviderMock.infos.filter { $0.type == .displayed }.first
         XCTAssertNotNil(dualBrandDisplayedCalled)
-        XCTAssertEqual(dualBrandDisplayedCalled?.brand, newResponse.brands?.first?.type.rawValue)
         XCTAssertEqual(dualBrandDisplayedCalled?.target, .dualBrandButton)
         XCTAssertNotNil(dualBrandDisplayedCalled?.configData)
+        XCTAssertNil(dualBrandDisplayedCalled?.brand)
+    }
+
+    func testCoBadgedCardsShouldSendDisplayedAnalyticsInfo() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = AdyenContext(
+            apiContext: Dummy.apiContext,
+            payment: Dummy.payment,
+            analyticsProvider: analyticsProviderMock
+        )
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardComponent.Configuration()
+        )
+
+        let brands = [CardBrand(type: .visa), CardBrand(type: .carteBancaire)]
+        setupRootViewController(sut.viewController)
+
+        sut.cardViewController.items.coBadgedCardItem.cardItemsDisplayed = brands
+        let dualBrandDisplayedCalled = analyticsProviderMock.infos.filter { $0.type == .displayed }.first
+        XCTAssertNotNil(dualBrandDisplayedCalled)
+        XCTAssertEqual(dualBrandDisplayedCalled?.target, .dualBrandButton)
+        XCTAssertNotNil(dualBrandDisplayedCalled?.configData)
+        XCTAssertNotNil(dualBrandDisplayedCalled?.brand)
     }
 
     func testCoBadgedCardsShouldSendSelectedAnalyticsInfo() throws {
