@@ -278,11 +278,13 @@ extension CardViewController {
 
     private func observeCoBadgedCardItem() {
         observe(items.coBadgedCardItem.$cardItemsDisplayed) { [weak self] brands in
-            self?.items.triggerInfoEvent(
-                of: .displayed,
-                target: .dualBrandButton,
-                brands: brands
-            )
+            if brands?.isEmpty == false {
+                self?.items.triggerInfoEvent(
+                    of: .displayed,
+                    target: .dualBrandButton,
+                    brands: brands
+                )
+            }
         }
     }
 
