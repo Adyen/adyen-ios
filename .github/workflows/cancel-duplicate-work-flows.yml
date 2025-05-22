@@ -1,5 +1,5 @@
 # .github/workflows/cancel-duplicate-work-flows.yml
-name: Cancel duplicate work flows
+name: Cancel duplicate work flowsXX
 
 on:
   pull_request:
