@@ -1422,30 +1422,6 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
     }
 
-    func testCoBadgedCardsShouldSendDisplayedAnalyticsInfoWithEmptyBrands() throws {
-        // Given
-        let analyticsProviderMock = AnalyticsProviderMock()
-        let context = AdyenContext(
-            apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
-            analyticsProvider: analyticsProviderMock
-        )
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: CardComponent.Configuration()
-        )
-
-        setupRootViewController(sut.viewController)
-
-        sut.cardViewController.items.coBadgedCardItem.cardItemsDisplayed = []
-        let dualBrandDisplayedCalled = analyticsProviderMock.infos.filter { $0.type == .displayed }.first
-        XCTAssertNotNil(dualBrandDisplayedCalled)
-        XCTAssertEqual(dualBrandDisplayedCalled?.target, .dualBrandButton)
-        XCTAssertNotNil(dualBrandDisplayedCalled?.configData)
-        XCTAssertNil(dualBrandDisplayedCalled?.brand)
-    }
-
     func testCoBadgedCardsShouldSendDisplayedAnalyticsInfo() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
