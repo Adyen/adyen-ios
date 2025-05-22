@@ -7,6 +7,7 @@ jobs:
   cancel-multiple-workflow-runs:
     name: "Cancel the self CI workflow run"
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: "Cancel build"
         uses: potiuk/cancel-workflow-runs@master
