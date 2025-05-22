@@ -278,7 +278,7 @@ extension CardViewController {
 
     private func observeCoBadgedCardItem() {
         observe(items.coBadgedCardItem.$cardItemsDisplayed) { [weak self] brands in
-            guard let brands = brands else {
+            guard let brands, brands.count > 0 else {
                 return
             }
             self?.items.triggerInfoEvent(
@@ -286,6 +286,7 @@ extension CardViewController {
                 target: .dualBrandButton,
                 brands: brands
             )
+
         }
     }
 
