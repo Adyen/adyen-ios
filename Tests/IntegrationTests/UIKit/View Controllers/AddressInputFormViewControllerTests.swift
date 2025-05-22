@@ -28,7 +28,6 @@ class AddressInputFormViewControllerTests: XCTestCase {
                 searchHandler: nil
             )
         )
-        
         viewController.loadViewIfNeeded()
 
         let view: UIView = viewController.view
@@ -82,7 +81,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         )
         
         viewController.loadViewIfNeeded()
-        
+
         // When
         let view: UIView = viewController.view
 
@@ -223,7 +222,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
                 }
             )
         )
-        
+
         setupRootViewController(UINavigationController(rootViewController: viewController))
 
         let view: UIView = viewController.view
@@ -242,8 +241,10 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        setupRootViewController(UINavigationController(rootViewController: viewController))
-        
+        let navVC = UINavigationController(rootViewController: viewController)
+        navVC.loadViewIfNeeded()
+        viewController.loadViewIfNeeded()
+
         XCTAssertEqual(
             viewController.navigationItem.rightBarButtonItem?.isEnabled,
             false
@@ -259,8 +260,10 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
 
-        setupRootViewController(UINavigationController(rootViewController: viewController))
-        
+        let navVC = UINavigationController(rootViewController: viewController)
+        navVC.loadViewIfNeeded()
+        viewController.loadViewIfNeeded()
+
         XCTAssertEqual(
             viewController.navigationItem.rightBarButtonItem?.isEnabled,
             false
@@ -303,7 +306,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
                 prefillAddress: .init(country: "NL", street: "Singel")
             )
         )
-        
+
         setupRootViewController(viewController)
         setupRootViewController(UIViewController())
 
