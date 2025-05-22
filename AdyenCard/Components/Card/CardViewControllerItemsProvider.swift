@@ -19,26 +19,17 @@ extension CardViewController {
     internal final class ItemsProvider {
 
         private let formStyle: FormComponentStyle
-
         private let amount: Amount?
-
         private var localizationParameters: LocalizationParameters?
-
         private let configuration: CardComponent.Configuration
-
         private let shopperInformation: PrefilledShopperInformation?
-
         private let cardLogos: [FormCardLogosItem.CardTypeLogo]
-
         private let scope: String
-
         private let initialCountry: String
-        
         private let addressViewModelBuilder: AddressViewModelBuilder
-        
         private let presenter: WeakReferenceViewControllerPresenter
-        
         private let addressMode: CardComponent.AddressFormType
+        private let scanCardHandler: (() -> Void)?
 
         /// Closure that is called when an event is triggered via the field items.
         internal var onDidTriggerInfoEvent: ((InfoEventData) -> Void)?
@@ -54,7 +45,8 @@ extension CardViewController {
             localizationParameters: LocalizationParameters?,
             addressViewModelBuilder: AddressViewModelBuilder,
             presenter: ViewControllerPresenter,
-            addressMode: CardComponent.AddressFormType
+            addressMode: CardComponent.AddressFormType,
+            scanCardHandler: (() -> Void)?
         ) {
             self.formStyle = formStyle
             self.amount = payment?.amount
@@ -67,6 +59,7 @@ extension CardViewController {
             self.addressViewModelBuilder = addressViewModelBuilder
             self.presenter = .init(presenter)
             self.addressMode = addressMode
+            self.scanCardHandler = scanCardHandler
         }
         
         internal lazy var billingAddressPickerItem: FormAddressPickerItem? = {
@@ -112,7 +105,8 @@ extension CardViewController {
                 cardTypeLogos: cardLogos,
                 showsSupportedCardLogos: configuration.showsSupportedCardLogos,
                 style: formStyle.textField,
-                localizationParameters: localizationParameters
+                localizationParameters: localizationParameters,
+                scanCardHandler: scanCardHandler
             )
             item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "numberContainerItem")
             

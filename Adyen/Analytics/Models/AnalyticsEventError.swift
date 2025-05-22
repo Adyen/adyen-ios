@@ -12,7 +12,7 @@ public struct AnalyticsEventError: AnalyticsEvent {
     
     public var id: String = UUID().uuidString
     
-    public var timestamp = Int(Date().timeIntervalSince1970)
+    public var timestamp = Int(Date().timeIntervalSince1970 * 1000)
      
     public var component: String
     

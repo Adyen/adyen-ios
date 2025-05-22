@@ -13,12 +13,12 @@ public protocol FormTextItemViewDelegate: AnyObject {
     /// Invoked when the text entered in the item view's text field has reached the maximum length.
     ///
     /// - Parameter itemView: The item view in which the maximum length was reached.
-    func didReachMaximumLength<T: FormTextItem>(in itemView: FormTextItemView<T>)
+    func didReachMaximumLength(in itemView: FormTextItemView<some FormTextItem>)
     
     /// Invoked when the return key in the item view's text field is selected.
     ///
     /// - Parameter itemView: The item view in which the return key was selected.
-    func didSelectReturnKey<T: FormTextItem>(in itemView: FormTextItemView<T>)
+    func didSelectReturnKey(in itemView: FormTextItemView<some FormTextItem>)
     
 }
 
@@ -125,7 +125,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         
         return textField
     }()
-    
+
     // MARK: - Accessory view
     
     /// Accessory of the entry text field.
