@@ -19,6 +19,12 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     internal required init(item: FormCardNumberItem) {
         super.init(item: item)
         accessory = .customView(detectedBrandsView)
+        if item.supportsCardScanning {
+            textField.inputAccessoryView = makeCardScanAccessoryView(
+                title: item.scanYourCardButtonTitle,
+                #selector(openCardScanner)
+            )
+        }
         textField.textContentType = .creditCardNumber
         textField.returnKeyType = .default
         textField.allowsEditingActions = false
@@ -35,6 +41,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     }
     
     override public func handleFormattedValueDidChange(_ newValue: String) {
+        textField.text = newValue
         updateValidationStatus()
     }
     
@@ -95,4 +102,9 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         cardTypeLogosView.backgroundColor = item.style.backgroundColor
         return cardTypeLogosView
     }()
+    
+    @objc private func openCardScanner() {
+        guard let scanCardHandler = item.scanCardHandler else { return }
+        scanCardHandler()
+    }
 }

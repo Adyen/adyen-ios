@@ -265,3 +265,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Sláðu inn rétt bankareikningsnúmer";
 "adyen.payto.payid.description" = "Sláðu inn PayID og reikningsupplýsingar sem eru tengjast PayTo-reikningnum þínum.";
 "adyen.payto.await.description" = "Takk fyrir kaupin. Ljúktu við greiðsluna með því að skrá þig inn á bankareikninginn, heimila PayTo-samninginn og samþykkja greiðsluskilmálana.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Gefðu aðgang að myndavél";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Aðgangi var áður hafnað. Til að skanna kort skaltu gefa aðgang í stillingum.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Opna stillingar";

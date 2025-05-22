@@ -28,7 +28,6 @@ class AddressInputFormViewControllerTests: XCTestCase {
                 searchHandler: nil
             )
         )
-
         viewController.loadViewIfNeeded()
 
         let view: UIView = viewController.view
@@ -131,10 +130,10 @@ class AddressInputFormViewControllerTests: XCTestCase {
                 searchHandler: nil
             )
         )
-
-        let navVC = UINavigationController(rootViewController: viewController)
-        navVC.loadViewIfNeeded()
-
+        
+        let navController = UINavigationController(rootViewController: viewController)
+        navController.loadViewIfNeeded()
+        
         let view: UIView = viewController.view
 
         let houseNumberItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.houseNumberOrName"))
@@ -166,8 +165,8 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        let navVC = UINavigationController(rootViewController: viewController)
-        navVC.loadViewIfNeeded()
+        let navController = UINavigationController(rootViewController: viewController)
+        navController.loadViewIfNeeded()
 
         let view: UIView = viewController.view
 
@@ -290,8 +289,8 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        let navVC = UINavigationController(rootViewController: viewController)
-        navVC.loadViewIfNeeded()
+        let navController = UINavigationController(rootViewController: viewController)
+        navController.loadViewIfNeeded()
 
         XCTAssertEqual(
             viewController.navigationItem.rightBarButtonItem?.isEnabled,

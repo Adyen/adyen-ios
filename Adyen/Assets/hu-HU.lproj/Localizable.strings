@@ -265,3 +265,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Adja meg a helyes bankszámlaszámot";
 "adyen.payto.payid.description" = "Adja meg a PayTo-fiókjához kapcsolódó PayID-t és a számlaadatait.";
 "adyen.payto.await.description" = "Köszönjük a vásárlást! A fizetés véglegesítéséhez jelentkezzen be bankszámlájára, hagyja jóvá a PayTo megállapodást, és fogadja el a fizetési feltételeket.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Engedélyezze a kamerához való hozzáférését";
+"adyen.card.scanner.camera.access.denied.alert.message" = "A hozzáférés korábban meg lett tagadva. A kártyaolvasáshoz adjon hozzáférési engedélyt a Beállításokban.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Beállítások megnyitása";

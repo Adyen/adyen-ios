@@ -8,13 +8,13 @@ import Foundation
 
 /// An item for plain text input
 @_spi(AdyenInternal)
-public final class FormTextInputItem: FormTextItem {
+open class FormTextInputItem: FormTextItem {
 
     @AdyenObservable(true) public var isEnabled: Bool
     
-    internal var focusHandler: (() -> Void)?
-    
-    override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    open var focusHandler: (() -> Void)?
+
+    override open func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
     
@@ -28,7 +28,7 @@ public final class FormTextInputItem: FormTextItem {
         isHidden.wrappedValue ? true : super.isValid()
     }
     
-    public func focus() {
+    open func focus() {
         AdyenAssertion.assert(message: "`focusHandler` needs to be set", condition: focusHandler == nil)
         focusHandler?()
     }

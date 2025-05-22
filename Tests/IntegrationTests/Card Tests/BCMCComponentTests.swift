@@ -237,7 +237,7 @@ class BCMCComponentTests: XCTestCase {
         self.populate(textItemView: cardNumberView!, with: Dummy.bancontactCard.number!)
         
         // Enter Expiry Date
-        let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem")
+        let expiryDateItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem")
         XCTAssertNotNil(expiryDateItemView)
         let date = Date(timeIntervalSinceNow: 60 * 60 * 24 * 30 * 2)
         let calendar = Calendar(identifier: .gregorian)
@@ -536,8 +536,8 @@ class BCMCComponentTests: XCTestCase {
         
         // Enter Expiry Date
         let expiryDateView = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem")
-        XCTAssertNotNil(expiryDateView as? FormTextItemView<FormCardExpiryDateItem>)
-        let expiryDateItemView = expiryDateView as! FormTextItemView<FormCardExpiryDateItem>
+        XCTAssertNotNil(expiryDateView as? FormTextInputItemView)
+        let expiryDateItemView = expiryDateView as! FormTextInputItemView
         self.populate(textItemView: expiryDateItemView, with: "10/20")
         
         // Tap submit button
@@ -593,7 +593,7 @@ class BCMCComponentTests: XCTestCase {
     
     func fillCard(on view: UIView, with card: Card, simulateKeyStrokes: Bool = false) {
         let cardNumberItemView: FormCardNumberItemView? = view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
-        let expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? = view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem")
+        let expiryDateItemView: FormTextInputItemView? = view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem")
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = view.findView(with: "AdyenCard.BCMCComponent.securityCodeItem")
 
         if simulateKeyStrokes {

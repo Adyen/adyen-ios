@@ -9,7 +9,7 @@ import Foundation
 @_spi(AdyenInternal)
 public protocol FormViewProtocol {
     
-    func add<T: FormItem>(item: T?)
+    func add(item: (some FormItem)?)
     
     func displayValidation()
 }

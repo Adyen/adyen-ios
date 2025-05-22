@@ -265,3 +265,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Angiv et korrekt bankkontonummer";
 "adyen.payto.payid.description" = "Indtast PayID og kontooplysninger, der er knyttet til din PayTo-konto.";
 "adyen.payto.await.description" = "Tak for dit køb. Fuldfør betalingen ved at logge ind på din bankkonto, godkende PayTo-aftalen og acceptere betalingsbetingelserne.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Tillad kameraadgang";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Adgang blev tidligere nægtet. Du skal give adgang fra indstillinger for at scanne kort.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Åbn indstillingerne";

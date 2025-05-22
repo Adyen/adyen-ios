@@ -259,3 +259,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "請輸入正確的銀行帳戶號碼";
 "adyen.payto.payid.description" = "請輸入與 PayTo 帳戶相連的 PayID 和帳戶詳情。";
 "adyen.payto.await.description" = "非常感謝您的購買！敬請登入您的銀行帳戶以完成付款、授權 PayTo 協議並同意接受《付款條款》。";
+"adyen.card.scanner.camera.access.denied.alert.title" = "允許使用相機";
+"adyen.card.scanner.camera.access.denied.alert.message" = "之前存取被拒。若要掃描卡片，請在「設定」中授予存取權限。";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "開啟「設定」";

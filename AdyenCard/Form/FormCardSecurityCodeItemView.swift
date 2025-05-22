@@ -29,6 +29,10 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         }
         
         item.$selectedCard.publish(nil)
+
+        item.focusHandler = { [weak self] in
+            self?.becomeFirstResponder()
+        }
     }
     
     internal lazy var cardHintView: HintView = {

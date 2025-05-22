@@ -265,3 +265,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Wprowadź prawidłowy numer rachunku bankowego";
 "adyen.payto.payid.description" = "Wprowadź PayID i dane konta powiązane z Twoim kontem PayTo.";
 "adyen.payto.await.description" = "Dziękujemy za zakup. Prosimy o dokończenie płatności – w tym celu zaloguj się na konto bankowe, autoryzuj umowę PayTo i zatwierdź warunki płatności.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Zezwól na dostęp do aparatu";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Wcześniej odmówiono dostępu. Aby skanować karty, przyznaj dostęp w ustawieniach.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Otwórz ustawienia";

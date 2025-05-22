@@ -259,3 +259,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Введите правильный номер банковского счета";
 "adyen.payto.payid.description" = "Введите PayID и данные счета, которые связаны с вашей учетной записью PayTo.";
 "adyen.payto.await.description" = "Благодарим за покупку! Чтобы оформить оплату, войдите в свой банковский счет, подпишите соглашение с PayTo и примите условия оплаты.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Разрешите доступ к камере";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Доступ был закрыт ранее. Чтобы сканировать карты, выдайте необходимое разрешение в «Настройках».";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Откройте настройки";

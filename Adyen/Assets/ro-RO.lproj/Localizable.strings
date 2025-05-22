@@ -259,3 +259,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Completează un număr de cont bancar corect";
 "adyen.payto.payid.description" = "Completați PayID și detaliile contului care sunt conectate la contul dvs. PayTo.";
 "adyen.payto.await.description" = "Vă mulțumim pentru achiziție! Finalizați plata conectându-vă la contul dvs. bancar, autorizând acordul PayTo și aprobând condițiile de plată.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Permiteți accesul la cameră";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Accesul a fost refuzat anterior. Pentru a scana carduri, acordați accesul din Setări.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Deschideți Setările";

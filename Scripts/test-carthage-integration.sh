@@ -81,6 +81,9 @@ targets:
       - framework: Carthage/Build/AdyenCard.xcframework
         embed: true
         codeSign: true
+      - framework: Carthage/Build/AdyenCardScanner.xcframework
+        embed: true
+        codeSign: true
       - framework: Carthage/Build/AdyenComponents.xcframework
         embed: true
         codeSign: true

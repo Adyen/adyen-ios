@@ -265,3 +265,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Voer een correct bankrekeningnummer in";
 "adyen.payto.payid.description" = "Voer de PayID en accountgegevens in die gekoppeld zijn aan uw PayTo-account.";
 "adyen.payto.await.description" = "Bedankt voor uw aankoop. Rond uw betaling af door in te loggen bij uw bankrekening, de PayTo-overeenkomst te autoriseren en akkoord te gaan met de betalingsvoorwaarden.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Cameratoegang toestaan";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Toegang was eerder geweigerd. Om kaarten te scannen, verleen toegang via Instellingen.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Instellingen openen";
