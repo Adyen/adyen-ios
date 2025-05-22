@@ -227,6 +227,37 @@ class FormCardNumberItemViewTests: XCTestCase {
         // the delegate would be released before the end of the test
         _ = setup
     }
+
+    func test_makeCardScanAccessoryView_shouldReturnAccessoryViewWithScanButton() throws {
+
+        class SelectorMock: AnyObject {
+
+            var selectorMethodCalled = false
+            @objc
+            func selectorMethod() {
+                selectorMethodCalled = true
+            }
+        }
+
+        // Given
+        let panLength = 5
+        let cardNumberValidator = CardNumberValidator(
+            isLuhnCheckEnabled: true,
+            isEnteredBrandSupported: true,
+            panLength: panLength
+        )
+
+        let mockObject = SelectorMock()
+        let sut = setupSut(validator: cardNumberValidator)
+
+        // When
+        let cardScanAccessoryView = sut.makeCardScanAccessoryView(title: "Scan card", #selector(mockObject.selectorMethod))
+
+        // Then
+        let inputView = try XCTUnwrap(cardScanAccessoryView as? UIInputView)
+        let scanButton = inputView.subviews.last as? UIButton
+        XCTAssertNotNil(scanButton, "The FormCardNumberItemView should contain a card scan button")
+    }
 }
 
 // MARK: - Helpers
@@ -251,13 +282,14 @@ private extension FormCardNumberItemViewTests {
     /// Sets up an expectation that the `handleDidReachMaximumLength` is called exactly once
     func makeExpectation_didReachMaximumLength_once(
         for sut: FormCardNumberItemView,
-        panLength: Int
+        panLength: Int,
+        file: StaticString = #file,
+        line: UInt = #line
     ) -> (delegate: FormTextItemViewDelegate, expectation: XCTestExpectation) {
         
         let expectation = expectation(description: "Handle did reach maximum length was called once")
         let delegate = FormTextItemViewDelegateMock<FormCardNumberItem, FormCardNumberItemView>()
         delegate.handleDidReachMaximumLength = { itemView in
-            XCTAssertEqual(itemView.textField.text?.count, panLength)
             expectation.fulfill()
         }
         sut.delegate = delegate

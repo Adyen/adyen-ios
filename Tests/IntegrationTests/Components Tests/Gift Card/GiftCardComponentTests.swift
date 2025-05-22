@@ -42,7 +42,7 @@ class GiftCardComponentTests: XCTestCase {
         sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.securityCodeItem")
     }
     
-    var expiryDateItemView: FormTextItemView<FormCardExpiryDateItem>? {
+    var expiryDateItemView: FormTextInputItemView? {
         sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.expiryDateItem")
     }
 

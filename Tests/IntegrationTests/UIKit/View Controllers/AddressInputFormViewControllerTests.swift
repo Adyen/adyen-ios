@@ -29,7 +29,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        setupRootViewController(viewController)
+        viewController.loadViewIfNeeded()
 
         let view: UIView = viewController.view
 
@@ -81,7 +81,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        setupRootViewController(viewController)
+        viewController.loadViewIfNeeded()
         
         // When
         let view: UIView = viewController.view
@@ -132,7 +132,8 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        setupRootViewController(UINavigationController(rootViewController: viewController))
+        let navController = UINavigationController(rootViewController: viewController)
+        navController.loadViewIfNeeded()
         
         let view: UIView = viewController.view
 
@@ -165,7 +166,8 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        setupRootViewController(UINavigationController(rootViewController: viewController))
+        let navController = UINavigationController(rootViewController: viewController)
+        navController.loadViewIfNeeded()
 
         let view: UIView = viewController.view
 
@@ -223,7 +225,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         )
         
         setupRootViewController(UINavigationController(rootViewController: viewController))
-        
+
         let view: UIView = viewController.view
         let searchItemView: FormSearchButtonItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.searchBar"))
         
@@ -284,8 +286,9 @@ class AddressInputFormViewControllerTests: XCTestCase {
             )
         )
         
-        setupRootViewController(UINavigationController(rootViewController: viewController))
-        
+        let navController = UINavigationController(rootViewController: viewController)
+        navController.loadViewIfNeeded()
+
         XCTAssertEqual(
             viewController.navigationItem.rightBarButtonItem?.isEnabled,
             true

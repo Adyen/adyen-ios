@@ -265,3 +265,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Digite um número válido de conta bancária";
 "adyen.payto.payid.description" = "Digite o PayID e as informações da conta associados à sua conta PayTo.";
 "adyen.payto.await.description" = "Agradecemos a compra! Para concluir o pagamento, acesse sua conta bancária, aceite o acordo do PayTo e aprove os termos de pagamento.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Dê acesso à câmera";
+"adyen.card.scanner.camera.access.denied.alert.message" = "O acesso foi negado anteriormente. Para digitalizar cartões, conceda acesso em Configurações.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Abrir Configurações";

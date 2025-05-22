@@ -265,3 +265,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Sisestage õige pangakonto number";
 "adyen.payto.payid.description" = "Sisestage PayID ja teie PayTo kontoga ühendatud konto andmed.";
 "adyen.payto.await.description" = "Täname teid ostu eest, viige makse lõpule, logides sisse oma pangakontole, kinnitage PayTo leping ja nõustuge maksetingimustega.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Lubage kaamerale juurdepääs";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Juurdepääs oli varem keelatud. Kaartide skannimiseks andke juurdepääs Sätete kaudu.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Avage Sätted";
