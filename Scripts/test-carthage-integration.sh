@@ -47,6 +47,10 @@ then
   CWD=$(pwd)
   CURRENT_COMMIT=$(git rev-parse HEAD)
 
+  rm -rf Carthage
+  rm -rf ~/Library/Caches/org.carthage.CarthageKit
+  rm -rf ~/Library/Developer/Xcode/DerivedData
+
   echo "git \"file://$CWD/../\" \"$CURRENT_COMMIT\"" > Cartfile
   echo "github \"adyen/adyen-authentication-ios\" == 3.1.0" >> Cartfile
   carthage update --use-xcframeworks --configuration Debug
@@ -153,7 +157,7 @@ cp "../Demo/Configuration.swift" Source/Configuration.swift
 xcodegen generate
 
 echo_header "Run Tests"
-xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 16" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | xcpretty && exit ${PIPESTATUS[0]}
+xcodebuild build test -project $PROJECT_NAME.xcodeproj -scheme App -destination "name=iPhone 16" -resultBundlePath ./TestResults CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO | xcpretty && exit ${PIPESTATUS[0]}
 
 if [ "$NEED_CLEANUP" == true ]
 then
