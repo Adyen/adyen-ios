@@ -13,6 +13,8 @@ echo "1. Resolving DerivedData path..."
 DERIVED_DATA_PATH=$(xcodebuild -project "${PROJECT_NAME}" -scheme "${TOP_LEVEL_BUILD_SCHEME}" -showBuildSettings | grep -m1 -oE '(/.*DerivedData[^ ]*)')
 FRAMEWORKS_PRODUCT_PATH="${DERIVED_DATA_PATH}/${BUILD_CONFIGURATION}-iphoneos"
 
+BUILD_OUTPUT_DIR="${PWD}/sdk_size_output"
+mkdir -p "$BUILD_OUTPUT_DIR"
 
 echo "DerivedData path: ${DERIVED_DATA_PATH}"
 echo "Framework product path: ${FRAMEWORKS_PRODUCT_PATH}"
@@ -58,7 +60,7 @@ typeset -A framework_map
 while IFS= read -r fw; do
   name=$(basename "$fw")
   size_kb=$(du -sk "$fw" | cut -f1)
-  framework_map["$name"]=$size_kb
+  framework_map[$name]=$size_kb
 done < <(find "$FRAMEWORKS_PRODUCT_PATH" -name "*.framework" -type d)
 
 # Now sort and print them
@@ -71,3 +73,25 @@ for entry in ${(k)framework_map}; do
   fi
   printf "%-30s %8s\n" "$entry" "$size_fmt"
 done | sort -k2 -h
+
+# JSON
+
+typeset -a size_entries
+json_output="{"
+first_entry=true
+
+for name in ${(k)framework_map}; do
+  size_kb=${framework_map[$name]}
+  size_entries+=("${size_kb}|${name}")
+
+  # Build JSON
+  if $first_entry; then
+    json_output+="\"$name\": $size_kb"
+    first_entry=false
+  else
+    json_output+=", \"$name\": $size_kb"
+  fi
+done
+
+json_output+="}"
+echo "$json_output" > "${BUILD_OUTPUT_DIR}/sdk_sizes.json"
