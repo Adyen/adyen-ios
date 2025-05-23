@@ -60,62 +60,67 @@ echo "// swift-tools-version: 5.8
 import PackageDescription
 
 let package = Package(
-    name: \"Adyen\",
-    defaultLocalization: \"en-us\",
+    name: "Adyen",
+    defaultLocalization: "en-us",
     platforms: [
         .iOS(.v12)
     ],
     products: [
         .library(
-            name: \"Adyen\",
-            targets: [\"Adyen\"]
+            name: "Adyen",
+            targets: ["Adyen"]
         )
     ],
     dependencies: [
         .package(
-            name: \"Adyen3DS2\",
-            url: \"https://github.com/Adyen/adyen-3ds2-ios\",
+            name: "Adyen3DS2",
+            url: "https://github.com/Adyen/adyen-3ds2-ios",
             .exact(Version(2, 4, 2))
         ),
         .package(
-            name: \"AdyenNetworking\",
-            url: \"https://github.com/Adyen/adyen-networking-ios\",
+            name: "AdyenNetworking",
+            url: "https://github.com/Adyen/adyen-networking-ios",
             .exact(Version(3, 0, 1))
         ),
         .package(
-            name: \"AdyenWeChatPayInternal\",
-            url: \"https://github.com/Adyen/adyen-wechatpay-ios\",
+            name: "AdyenWeChatPayInternal",
+            url: "https://github.com/Adyen/adyen-wechatpay-ios",
             .exact(Version(2, 2, 0))
         ),
         .package(
-            name: \"PayKit\",
-            url: \"https://github.com/cashapp/cash-app-pay-ios-sdk\",
+            name: "PayKit",
+            url: "https://github.com/cashapp/cash-app-pay-ios-sdk",
             .exact(Version(0, 6, 2))
         )
     ],
     targets: [
+        .binaryTarget(
+            name: "TwintSDK",
+            path: "XCFramework/Dynamic/TwintSDK.xcframework"
+        ),
         .target(
-            name: \"Adyen\",
+            name: "Adyen",
             dependencies: [
-                .product(name: \"AdyenNetworking\", package: \"AdyenNetworking\"),
-                .product(name: \"Adyen3DS2\", package: \"Adyen3DS2\"),
-                .product(name: \"AdyenWeChatPayInternal\", package: \"AdyenWeChatPayInternal\"),
-                .product(name: \"PayKit\", package: \"PayKit\"),
-                .product(name: \"PayKitUI\", package: \"PayKit\")
+                .product(name: "AdyenNetworking", package: "AdyenNetworking"),
+                .product(name: "Adyen3DS2", package: "Adyen3DS2"),
+                .product(name: "AdyenWeChatPayInternal", package: "AdyenWeChatPayInternal"),
+                .product(name: "PayKit", package: "PayKit"),
+                .product(name: "PayKitUI", package: "PayKit"),
+                "MySDK" // Add the binary target as a dependency
             ],
             exclude: [
-                \"Adyen/Info.plist\",
-                \"AdyenActions/Info.plist\",
-                \"AdyenComponents/Info.plist\",
-                \"AdyenDropIn/Info.plist\",
-                \"AdyenEncryption/Info.plist\",
-                \"AdyenSwiftUI/Info.plist\",
-                \"AdyenWeChatPay/Info.plist\",
-                \"AdyenCashAppPay/AdyenCashAppPay.docc\",
-                \"AdyenCard/Info.plist\",
-                \"AdyenCard/Utilities/Non SPM Bundle Extension\",
-                \"AdyenActions/Utilities/Non SPM Bundle Extension\",
-                \"Adyen/Utilities/Non SPM Bundle Extension\"
+                "Adyen/Info.plist",
+                "AdyenActions/Info.plist",
+                "AdyenComponents/Info.plist",
+                "AdyenDropIn/Info.plist",
+                "AdyenEncryption/Info.plist",
+                "AdyenSwiftUI/Info.plist",
+                "AdyenWeChatPay/Info.plist",
+                "AdyenCashAppPay/AdyenCashAppPay.docc",
+                "AdyenCard/Info.plist",
+                "AdyenCard/Utilities/Non SPM Bundle Extension",
+                "AdyenActions/Utilities/Non SPM Bundle Extension",
+                "Adyen/Utilities/Non SPM Bundle Extension"
             ]
         ),
     ]
