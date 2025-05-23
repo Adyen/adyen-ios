@@ -1,6 +1,7 @@
 name: Test Swift Package Manager Integration
 
 on:
+  workflow_dispatch:
   pull_request:
     types: [opened, synchronize, reopened]
 
