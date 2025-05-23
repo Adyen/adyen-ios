@@ -2,6 +2,18 @@
 
 set -e
 
+# Get the directory where the script is located, then resolve to an absolute path
+# This assumes your TwintSDK.xcframework is located relative to this script.
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+# Define the absolute path to your XCFramework
+# ADJUST THIS PATH IF YOUR XCFRAMEWORK IS NOT DIRECTLY IN YourProjectRoot/XCFramework/Dynamic/
+# For example, if your script is in `Scripts/` and XCFramework is in `XCFramework/`,
+# you might need: PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+# Then: TWINT_XCFRAMEWORK_ABSOLUTE_PATH="$PROJECT_ROOT/XCFramework/Dynamic/TwintSDK.xcframework"
+TWINT_XCFRAMEWORK_ABSOLUTE_PATH="$SCRIPT_DIR/XCFramework/Dynamic/TwintSDK.xcframework"
+
+
 # Since Docc doesn't support generating a single set of documentation
 # for multiple modules, we create a temporary Swift package project.
 # Swift package manager turns the different modules into a single module, which
@@ -13,46 +25,46 @@ FRAMEWORK_NAME=Adyen
 DOCS_ROOT=docs
 FINAL_DOCC_ARCHIVE_PATH=$DOCS_ROOT/docc_archive
 
-rm -rf $TEMP_PROJECT_FOLDER
+rm -rf "$TEMP_PROJECT_FOLDER"
 
-rm -rf $DOCS_ROOT
+rm -rf "$DOCS_ROOT"
 
-mkdir -p $DOCS_ROOT
+mkdir -p "$DOCS_ROOT"
 
-mkdir -p $TEMP_PROJECT_FOLDER $TEMP_PROJECT_PATH $FINAL_DOCC_ARCHIVE_PATH
+mkdir -p "$TEMP_PROJECT_FOLDER" "$TEMP_PROJECT_PATH" "$FINAL_DOCC_ARCHIVE_PATH"
 
-cd $TEMP_PROJECT_PATH
+cd "$TEMP_PROJECT_PATH"
  
 # Create a new Swift Package.
 swift package init
 
 cd ../../
 
-rsync -r Adyen $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
-rsync -r AdyenActions $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
-rsync -r AdyenComponents $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
-rsync -r AdyenEncryption $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
-rsync -r AdyenCard $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
-rsync -r AdyenDropIn $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
-rsync -r AdyenSession $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
-rsync -r AdyenWeChatPay $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
-rsync -r AdyenSwiftUI $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
-rsync -r AdyenCashAppPay $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
-rsync -r AdyenTwint $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
+rsync -r Adyen "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
+rsync -r AdyenActions "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
+rsync -r AdyenComponents "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
+rsync -r AdyenEncryption "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
+rsync -r AdyenCard "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
+rsync -r AdyenDropIn "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
+rsync -r AdyenSession "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
+rsync -r AdyenWeChatPay "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
+rsync -r AdyenSwiftUI "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
+rsync -r AdyenCashAppPay "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
+rsync -r AdyenTwint "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
 
 # Copy the Adyen.docc folder to the temp package source folder
-cp -a $FRAMEWORK_NAME.docc $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/$FRAMEWORK_NAME.docc
+cp -a "$FRAMEWORK_NAME.docc" "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/$FRAMEWORK_NAME.docc"
 
 # Rename AdyenActions/Utilities/BundleSPMExtension.swift to AdyenActions/Utilities/ActionsBundleSPMExtension.swift
-mv $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/AdyenActions/Utilities/BundleSPMExtension.swift \
-$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/AdyenActions/Utilities/ActionsBundleSPMExtension.swift
+mv "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/AdyenActions/Utilities/BundleSPMExtension.swift" \
+"$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/AdyenActions/Utilities/ActionsBundleSPMExtension.swift"
 
 # Rename Adyen/Utilities/BundleSPMExtension.swift to Adyen/Utilities/CoreBundleSPMExtension.swift
-mv $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/Adyen/Utilities/BundleSPMExtension.swift \
-$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/Adyen/Utilities/CoreBundleSPMExtension.swift
+mv "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/Adyen/Utilities/BundleSPMExtension.swift" \
+"$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/Adyen/Utilities/CoreBundleSPMExtension.swift"
 
 # Go back to Temp project root
-cd $TEMP_PROJECT_PATH
+cd "$TEMP_PROJECT_PATH"
 
 echo "// swift-tools-version: 5.8
 // The swift-tools-version declares the minimum version of Swift required to build this package.
@@ -96,7 +108,7 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: \"TwintSDK\",
-            path: \"XCFramework/Dynamic/TwintSDK.xcframework\"
+            path: \"$TWINT_XCFRAMEWORK_ABSOLUTE_PATH\" # Using the absolute path variable
         ),
         .target(
             name: \"Adyen\",
@@ -106,7 +118,7 @@ let package = Package(
                 .product(name: \"AdyenWeChatPayInternal\", package: \"AdyenWeChatPayInternal\"),
                 .product(name: \"PayKit\", package: \"PayKit\"),
                 .product(name: \"PayKitUI\", package: \"PayKit\"),
-                \"TwintSDK\"
+                \"TwintSDK\" # Ensure this matches the binary target name
             ],
             exclude: [
                 \"Adyen/Info.plist\",
@@ -142,35 +154,35 @@ xcodebuild clean -scheme "$PROJECT_NAME" -destination "$DESTINATION" -skipPackag
 
 # Generate the docc archive.
 xcodebuild docbuild \
- -scheme $PROJECT_NAME \
- -destination $DESTINATION \
+ -scheme "$PROJECT_NAME" \
+ -destination "$DESTINATION" \
  -configuration Release \
- -derivedDataPath $DERIVED_DATA_PATH \
+ -derivedDataPath "$DERIVED_DATA_PATH" \
  -skipPackagePluginValidation
 
 # Go back to original project root
 cd ../../
 
 # Delete old DocC archive
-rm -rf $FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchive
+rm -rf "$FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchive"
 
 # Move the new DocC archive to the its final place
-mv $TEMP_PROJECT_PATH/$DERIVED_DATA_PATH/Build/Products/Release-iphoneos/$FRAMEWORK_NAME.doccarchive $FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchive
+mv "$TEMP_PROJECT_PATH/$DERIVED_DATA_PATH/Build/Products/Release-iphoneos/$FRAMEWORK_NAME.doccarchive" "$FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchive"
 
 # Generate the DocC html pages
-$(xcrun --find docc) process-archive \
-transform-for-static-hosting $FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchive \
---output-path $DOCS_ROOT/html \
---hosting-base-path /adyen-ios/$LATEST_VERSION
+"$(xcrun --find docc)" process-archive \
+transform-for-static-hosting "$FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchive" \
+--output-path "$DOCS_ROOT/html" \
+--hosting-base-path "/adyen-ios/$LATEST_VERSION"
 
 # Clean up.
-rm -rf $TEMP_PROJECT_FOLDER
+rm -rf "$TEMP_PROJECT_FOLDER"
 
 REDIRECT_FOLDER=$DOCS_ROOT/redirect
 
-mkdir -p $REDIRECT_FOLDER
+mkdir -p "$REDIRECT_FOLDER"
 
-cd $REDIRECT_FOLDER
+cd "$REDIRECT_FOLDER"
 
 echo "<head>
   <meta http-equiv=\"Refresh\" content=\"0; url='/adyen-ios/$LATEST_VERSION/documentation/adyen'\" />
