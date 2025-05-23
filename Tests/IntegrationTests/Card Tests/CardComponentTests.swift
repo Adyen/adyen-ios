@@ -1439,7 +1439,7 @@ class CardComponentTests: XCTestCase {
         let brands = [CardBrand(type: .visa), CardBrand(type: .carteBancaire)]
         setupRootViewController(sut.viewController)
 
-        sut.cardViewController.items.coBadgedCardItem.cardItemsDisplayed = brands
+        sut.cardViewController.items.coBadgedCardItem.updatedCardBrands = brands
         let dualBrandDisplayedCalled = analyticsProviderMock.infos.filter { $0.type == .displayed }.first
         XCTAssertNotNil(dualBrandDisplayedCalled)
         XCTAssertEqual(dualBrandDisplayedCalled?.target, .dualBrandButton)
