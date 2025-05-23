@@ -96,7 +96,7 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: \"TwintSDK\",
-            path: \"XCFramework/Static/TwintSDK.xcframework\"
+            path: \"XCFramework/Dynamic/TwintSDK.xcframework\"
         ),
         .target(
             name: \"Adyen\",
@@ -106,7 +106,7 @@ let package = Package(
                 .product(name: \"AdyenWeChatPayInternal\", package: \"AdyenWeChatPayInternal\"),
                 .product(name: \"PayKit\", package: \"PayKit\"),
                 .product(name: \"PayKitUI\", package: \"PayKit\"),
-                \"MySDK\" // Add the binary target as a dependency
+                \"TwintSDK\"
             ],
             exclude: [
                 \"Adyen/Info.plist\",
