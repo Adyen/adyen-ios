@@ -143,7 +143,8 @@ let package = Package(
                 \"AdyenCard/Info.plist\",
                 \"AdyenCard/Utilities/Non SPM Bundle Extension\",
                 \"AdyenActions/Utilities/Non SPM Bundle Extension\",
-                \"Adyen/Utilities/Non SPM Bundle Extension\"
+                \"Adyen/Utilities/Non SPM Bundle Extension\",
+                \"AdyenTwint/AdyenTwint.docc\"
             ]
         ),
     ]
