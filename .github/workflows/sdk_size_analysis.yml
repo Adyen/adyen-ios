@@ -24,7 +24,7 @@ jobs:
           ./Scripts/sdk_size_analysis.sh
 
       - name: Upload framework sizes JSON artifact
-        uses: actions/upload-artifact
+        uses: actions/upload-artifact@v4
         with:
           name: sdk-sizes-${{ github.head_ref }}
           path: sdk_size_output/sdk_sizes.json
