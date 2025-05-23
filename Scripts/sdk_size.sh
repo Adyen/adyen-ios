@@ -1,53 +1,47 @@
 #!/bin/zsh
-set -eo pipefail
+set -eo pipefail # Using zsh, keep exit on error and pipefail
 
-echo "--- Starting Local SDK Size Analysis Script (Default DerivedData) ---"
+echo "--- Starting Local SDK Size Analysis Script (Final Version) ---"
 
 # --- Configuration ---
 PROJECT_NAME="Adyen.xcodeproj"
+BUILD_OUTPUT_DIR="./build_output_local" # Our custom SYMROOT for final products
 
-# The top-level scheme that integrates/uses many Adyen frameworks.
-# We'll start with "Adyen" as it succeeded manually.
-TOP_LEVEL_BUILD_SCHEME="Adyen" # <-- Using "Adyen" as confirmed working.
+# The derivedDataPath will be used by the 'xcodebuild build' command.
+# This is where intermediate build files for the project and its dependencies (including SPM) go.
+PROJECT_DERIVED_DATA_PATH="./DerivedData"
 
-# When -derivedDataPath and SYMROOT are not specified, xcodebuild uses defaults.
-# Default DerivedData location is typically ~/Library/Developer/Xcode/DerivedData/
-# Inside that, products for 'Release-iphoneos' will be:
-# ~/Library/Developer/Xcode/DerivedData/<ProjectName-hash>/Build/Products/Release-iphoneos/
-# We need to find this path dynamically, or rely on it being consistently structured.
+# The top-level scheme that integrates/uses all Adyen frameworks.
+# Confirmed to be the scheme that builds all desired SDK frameworks into SYMROOT.
+TOP_LEVEL_BUILD_SCHEME="AdyenUIHost"
 
-# We'll use a placeholder for the output path for measuring.
-# After a successful run, you'll need to inspect ~/Library/Developer/Xcode/DerivedData/
-# to find the exact path to `Release-iphoneos` and adjust FRAMEWORKS_PRODUCT_PATH accordingly.
-# For now, let's assume it's directly in ~/Library/Developer/Xcode/DerivedData/<ProjectName-hash>/Build/Products/Release-iphoneos/
-# We'll use a dynamic way to find the latest DerivedData for measurement.
-
-# A common name for the root of the derived data for the project
-DERIVED_DATA_ROOT="${HOME}/Library/Developer/Xcode/DerivedData"
-
-# This variable will be set after the build to the actual product path
-ACTUAL_FRAMEWORKS_PRODUCT_PATH=""
-ACTUAL_XCFRAMEWORKS_PRODUCT_PATH=""
+# Path where final frameworks will be found directly within the SYMROOT.
+# Based on your confirmed output, all frameworks land directly here.
+FRAMEWORKS_PRODUCT_PATH="${BUILD_OUTPUT_DIR}/Release-iphoneos"
+# No separate XCFRAMEWORKS_PRODUCT_PATH is needed if they are also in the same folder.
+# If some frameworks are .xcframework bundles, they will still be found by `find ... *.xcframework`
+# when searching the FRAMEWORKS_PRODUCT_PATH.
 
 
-# --- Pre-build Cleanup ---
-echo "1. Performing cleanup..."
-# Clean up Xcode's default DerivedData for this project to ensure a fresh build.
-# This finds the specific DerivedData folder for your project.
-echo "   Removing existing DerivedData for '${PROJECT_NAME}'..."
-PROJECT_DERIVED_DATA_FOLDER_NAME=$(basename "${PROJECT_NAME}" .xcodeproj) # e.g., "Adyen"
-# Find any folders matching pattern, allowing for the hash at the end
-find "${DERIVED_DATA_ROOT}" -maxdepth 1 -type d -name "${PROJECT_DERIVED_DATA_FOLDER_NAME}-*" -print0 | while read -d $'\0' ddata_path; do
-    echo "   Found and removing: ${ddata_path}"
-    rm -rf "${ddata_path}"
-done
-echo "DerivedData cleanup complete."
+# --- Pre-build Cleanup & Directory Setup ---
+echo "1. Performing cleanup and setting up directories..."
+
+# Clean up the entire DerivedData directory that xcodebuild will use for its builds
+echo "   Removing existing DerivedData: ${PROJECT_DERIVED_DATA_PATH}"
+rm -rf "${PROJECT_DERIVED_DATA_PATH}"
+
+# Clean up the build output directory for this script's final products (the SYMROOT)
+echo "   Removing existing script build output directory: ${BUILD_OUTPUT_DIR}"
+rm -rf "${BUILD_OUTPUT_DIR}"
+
+echo "   Creating fresh output directory for SYMROOT: ${BUILD_OUTPUT_DIR}"
+mkdir -p "${BUILD_OUTPUT_DIR}"
+# Note: PROJECT_DERIVED_DATA_PATH will be created by xcodebuild itself when it runs.
 
 
-# --- Build the top-level integrating scheme ---
-# This command is taken directly from your manual working command.
-# It uses Xcode's default DerivedData location.
-echo "2. Building top-level scheme: ${TOP_LEVEL_BUILD_SCHEME} (using default DerivedData)..."
+# --- Build the top-level integrating scheme (`AdyenUIHost`) ---
+# This single 'xcodebuild clean build' command handles everything.
+echo "2. Building top-level scheme: ${TOP_LEVEL_BUILD_SCHEME}..."
 
 set +e # Temporarily disable exit on error
 
@@ -56,10 +50,9 @@ xcodebuild_command="xcodebuild clean build \
     -scheme \"${TOP_LEVEL_BUILD_SCHEME}\" \
     -sdk iphoneos \
     -configuration Release \
-    -skipPackagePluginValidation \
-    -verbose"
-# REMOVED: SYMROOT and -derivedDataPath from here.
-# Xcode will put intermediate files and final products in its default DerivedData.
+    SYMROOT=\"${BUILD_OUTPUT_DIR}\" \
+    -derivedDataPath \"${PROJECT_DERIVED_DATA_PATH}\" \
+    -skipPackagePluginValidation"
 
 # Execute the build command (full output to console and file)
 echo "Executing build command (full output will be displayed):"
@@ -69,7 +62,7 @@ BUILD_STATUS=${PIPESTATUS[0]} # Get the exit status of xcodebuild (the first com
 set +x # Disable tracing after the command executes
 set -e
 
-if [ ${BUILD_STATUS} -ne 0 ]; then
+if [[ ${BUILD_STATUS} -ne 0 ]]; then # Use [[ ]] for zsh conditional
     echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     echo "!! Build for scheme '${TOP_LEVEL_BUILD_SCHEME}' FAILED!   !!"
     echo "!! The exact command executed was:                        !!"
@@ -80,109 +73,12 @@ if [ ${BUILD_STATUS} -ne 0 ]; then
 fi
 echo "Top-level scheme '${TOP_LEVEL_BUILD_SCHEME}' built successfully."
 
-# --- Determine actual output paths after successful build ---
-# This step finds the DerivedData folder created by xcodebuild and then the products within it.
-echo "3. Locating built frameworks for measurement..."
-set -x
-# Find the latest DerivedData folder for your project
-LATEST_PROJECT_DERIVED_DATA_FOLDER=$(find "${DERIVED_DATA_ROOT}" -maxdepth 1 -type d -name "${PROJECT_DERIVED_DATA_FOLDER_NAME}-*" -print0 | xargs -0 ls -td | head -n 1)
-
-if [ -z "${LATEST_PROJECT_DERIVED_DATA_FOLDER}" ]; then
-    echo "ERROR: Could not find the DerivedData folder for project ${PROJECT_NAME}."
-    exit 1
-fi
-
-# Standard product path within DerivedData
-ACTUAL_FRAMEWORKS_PRODUCT_PATH="${LATEST_PROJECT_DERIVED_DATA_FOLDER}/Build/Products/Release-iphoneos"
-# Adjust for xcframeworks if they land in a different spot
-ACTUAL_XCFRAMEWORKS_PRODUCT_PATH="${LATEST_PROJECT_DERIVED_DATA_FOLDER}/Build/Products/Release" # Common for xcframeworks
-
-echo "   Detected framework products path: ${ACTUAL_FRAMEWORKS_PRODUCT_PATH}"
-echo "   Detected xcframework products path: ${ACTUAL_XCFRAMEWORKS_PRODUCT_PATH}"
-set +x
-
 
 # --- Measure SDK and Frameworks ---
-echo "4. Measuring SDK and Frameworks..." # Renumbered step
+# All frameworks are now expected to be directly in SYMROOT/Release-iphoneos/
+echo "3. Measuring SDK and Frameworks..." # Renumbered step
 
-declare -A current_sizes_map # Associative array to store sizes
-
-export -f measure_bundle_size
-measure_bundle_size() {
-    local bundle_path="$1"
-    local bundle_type="$2"
-    local bundle_name=$(basename "${bundle_path}" .${bundle_type})
-
-    if [ -d "${bundle_path}" ]; then
-        local bytes=$(du -sck "${bundle_path}" | grep total | awk '{print $1 * 1024}')
-        local human_readable=$(numfmt --to=iec-bytes --format="%7.2f" "${bytes}")
-
-        echo "   Found ${bundle_type}: ${bundle_name} - ${human_readable} (${bytes} bytes)"
-        current_sizes_map["${bundle_name}"]="${human_readable}"
-        current_sizes_map["${bundle_name}_bytes"]="${bytes}"
-    else
-        echo "   Warning: ${bundle_type} not found at path: ${bundle_path}. It might not be built or embedded by ${TOP_LEVEL_BUILD_SCHEME}."
-        return 1
-    fi
-}
-
-echo "   Searching for .framework bundles in ${ACTUAL_FRAMEWORKS_PRODUCT_PATH}..."
-set -x
-find "${ACTUAL_FRAMEWORKS_PRODUCT_PATH}" -maxdepth 1 -type d -name "*.framework" -print0 | \
-    xargs -0 -I {} bash -c 'measure_bundle_size "$@" "framework"' _ {} \
-    || { echo "Error measuring framework sizes!"; exit 1; }
-set +x
-
-echo "   Searching for .xcframework bundles in ${ACTUAL_XCFRAMEWORKS_PRODUCT_PATH}..."
-set -x
-find "${ACTUAL_XCFRAMEWORK_PRODUCT_PATH}" -maxdepth 1 -type d -name "*.xcframework" -print0 | \
-    xargs -0 -I {} bash -c 'measure_bundle_size "$@" "xcframework"' _ {} \
-    || { echo "Error measuring xcframework sizes!"; exit 1; }
-set +x
-
-echo ""
-echo "--- Summary of Measured Framework Sizes ---"
-if [ ${#current_sizes_map[@]} -eq 0 ]; then
-    echo "No frameworks or xcframeworks were found in the build output."
-    echo "Please inspect the contents of '${ACTUAL_FRAMEWORKS_PRODUCT_PATH}' and '${ACTUAL_XCFRAMEWORKS_PRODUCT_PATH}' after the script runs."
-    echo "Also, review the full build log for ${TOP_LEVEL_BUILD_SCHEME} at '${BUILD_OUTPUT_DIR}/full_build_log_${TOP_LEVEL_BUILD_SCHEME}.txt' to understand why products were not found."
-else
-    FRAMEWORK_NAMES=()
-    for key in "${!current_sizes_map[@]}"; do
-        if [[ ! "$key" =~ _bytes$ ]]; then
-            FRAMEWORK_NAMES+=("$key")
-        fi
-    done
-
-    IFS=$'\n' sorted_frameworks=($(sort <<<"${FRAMEWORK_NAMES[*]}"))
-    unset IFS
-
-    echo "| Framework | Size     |"
-    echo "|---|---|"
-    for fw_name in "${sorted_frameworks[@]}"; do
-        human_size="${current_sizes_map[${fw_name}]}"
-        echo "| ${fw_name} | ${human_size} |"
-    done
-
-    JSON_OUTPUT="{"
-    first=true
-    for key in "${!current_sizes_map[@]}"; do
-        if [[ $key == *_bytes ]]; then
-            if [ "$first" = true ]; then
-                first=false
-            else
-                JSON_OUTPUT+=","
-            fi
-            FRAMEWORK_NAME=$(echo "$key" | sed 's/_bytes//')
-            JSON_OUTPUT+="\"${FRAMEWORK_NAME}\":${current_sizes_map[$key]}"
-        fi
-    done
-    JSON_OUTPUT+="}"
-    echo "$JSON_OUTPUT" > "${BUILD_OUTPUT_DIR}/sdk_sizes_current.json"
-    echo ""
-    echo "Raw byte sizes saved to: ${BUILD_OUTPUT_DIR}/sdk_sizes_current.json"
-fi
-
-echo ""
-echo "--- Local SDK Size Analysis Script Finished ---"
-echo "You can inspect the generated files in: ${BUILD_OUTPUT_DIR}"
+find "$BUILD_OUTPUT_DIR/Release-iphoneos" -name "*.framework" -type d | while read -r framework; do
+  size=$(du -sh "$framework" | cut -f1)
+  echo "$(basename "$framework"): $size"
+done
