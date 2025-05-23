@@ -36,7 +36,7 @@ internal final class FormCoBadgedCardItem: FormItem {
     internal var onCardBrandSelection: ((CardBrand) -> Void)?
 
     /// Brands set after coBadgedCardItems are displayed on the view
-    @AdyenObservable(nil) internal var cardItemsDisplayed: [CardBrand]?
+    @AdyenObservable(nil) internal var updatedCardBrands: [CardBrand]?
 
     /// Initializes the FormCoBadged card item.
     ///
@@ -96,7 +96,7 @@ internal final class FormCoBadgedCardItem: FormItem {
 
     internal func updateItems(_ brands: [CardBrand], cardLogos: [FormCardLogosItem.CardTypeLogo]) {
         selectableFormItems = []
-        cardItemsDisplayed = []
+        updatedCardBrands = []
         if brands.count == 2, brands.allSatisfy(\.isSupported) {
             guard let defaultSelectedBrand = brands.first else {
                 return
@@ -107,7 +107,7 @@ internal final class FormCoBadgedCardItem: FormItem {
                 defaultSelectedBrand: defaultSelectedBrand
             )
             isHidden.wrappedValue = false
-            cardItemsDisplayed = brands
+            updatedCardBrands = brands
         } else {
             isHidden.wrappedValue = true
         }

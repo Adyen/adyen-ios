@@ -277,7 +277,7 @@ extension CardViewController {
     }
 
     private func observeCoBadgedCardItem() {
-        observe(items.coBadgedCardItem.$cardItemsDisplayed) { [weak self] brands in
+        observe(items.coBadgedCardItem.$updatedCardBrands) { [weak self] brands in
             guard let brands, brands.count > 0 else {
                 return
             }
