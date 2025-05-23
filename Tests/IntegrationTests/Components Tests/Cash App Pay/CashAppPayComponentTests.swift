@@ -165,6 +165,7 @@ import XCTest
             let context = AdyenContext(
                 apiContext: Dummy.apiContext,
                 payment: Dummy.payment,
+                amount: Dummy.amount,
                 analyticsProvider: analyticsProviderMock
             )
             let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)

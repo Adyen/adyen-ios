@@ -5,18 +5,10 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-#if canImport(AdyenSession)
-    @_spi(AdyenInternal) import AdyenSession
-#endif
-#if canImport(AdyenDropIn)
-    @_spi(AdyenInternal) import AdyenDropIn
-#endif
-#if canImport(AdyenComponents)
-    @_spi(AdyenInternal) import AdyenComponents
-#endif
-#if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
-#endif
+@_spi(AdyenInternal) import AdyenSession
+@_spi(AdyenInternal) import AdyenDropIn
+@_spi(AdyenInternal) import AdyenComponents
+@_spi(AdyenInternal) import AdyenActions
 
 // TODO: add description
 public final class AdyenCheckoutComponent {
@@ -36,7 +28,7 @@ public final class AdyenCheckoutComponent {
     ) {
         self.configuration = configuration
         self.paymentComponent = CheckoutComponentBuilder.build(for: paymentMethod, configuration: configuration)
-        
+        self.paymentComponent?.delegate = self
     }
     
     package init(
@@ -46,5 +38,35 @@ public final class AdyenCheckoutComponent {
     ) {
         self.configuration = configuration
         self.actionComponent = CheckoutComponentBuilder.build(for: action, configuration: configuration)
+    }
+}
+
+extension AdyenCheckoutComponent: PaymentComponentDelegate {
+    
+    public func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
+        configuration.onSubmit?(data) { [weak self] response in
+            guard let self else { return }
+            self.handle(response)
+        }
+    }
+    
+    public func didFail(with error: any Error, from component: any PaymentComponent) {}
+    
+    private func handle(_ paymentsResponse: CheckoutPaymentsResponse) {
+        if let action = paymentsResponse.action {
+            // handle action
+        } else {
+            finish(with: CheckoutResult(resultCode: paymentsResponse.resultCode))
+        }
+    }
+    
+    private func finish(with result: CheckoutResult) {
+        // add any finalizing code if needed
+        configuration.onComplete?(result)
+    }
+    
+    private func finish(with error: Error) {
+        // add any finalizing code if needed
+        configuration.onError?(CheckoutError(error: error))
     }
 }

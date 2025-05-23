@@ -123,7 +123,7 @@ class BLIKComponentTests: XCTestCase {
 
     func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
         // Given
-        let configuration = BLIKComponent.Configuration(showsSubmitButton: false)
+        let configuration = BLIKComponentConfiguration(showsSubmitButton: false)
         let sut = BLIKComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -149,7 +149,7 @@ class BLIKComponentTests: XCTestCase {
 
     func testValidateGivenInvalidInputShouldReturnFormViewControllerValidateResult() throws {
         // Given
-        let configuration = BLIKComponent.Configuration(showsSubmitButton: false)
+        let configuration = BLIKComponentConfiguration(showsSubmitButton: false)
         let sut = BLIKComponent(
             paymentMethod: paymentMethod,
             context: context,

@@ -117,3 +117,8 @@ public enum Action: Decodable {
     }
     
 }
+
+/// Any action that has payment data
+package protocol PaymentDataAware {
+    var paymentData: String { get }
+}
