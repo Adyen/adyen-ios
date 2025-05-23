@@ -108,7 +108,7 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: \"TwintSDK\",
-            path: \"$TWINT_XCFRAMEWORK_ABSOLUTE_PATH\" # Using the absolute path variable
+            path: \"$TWINT_XCFRAMEWORK_ABSOLUTE_PATH\"
         ),
         .target(
             name: \"Adyen\",
@@ -118,7 +118,7 @@ let package = Package(
                 .product(name: \"AdyenWeChatPayInternal\", package: \"AdyenWeChatPayInternal\"),
                 .product(name: \"PayKit\", package: \"PayKit\"),
                 .product(name: \"PayKitUI\", package: \"PayKit\"),
-                \"TwintSDK\" # Ensure this matches the binary target name
+                \"TwintSDK\"
             ],
             exclude: [
                 \"Adyen/Info.plist\",
