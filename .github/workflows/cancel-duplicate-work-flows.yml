@@ -1,59 +1,62 @@
+# .github/workflows/cancel-duplicate-work-flows.yml
 name: Cancel duplicate work flows
 
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   cancel-multiple-workflow-runs:
     name: "Cancel the self CI workflow run"
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
     steps:
       - name: "Cancel build"
-        uses: potiuk/cancel-workflow-runs@master
+        uses: styfle/cancel-workflow-action@0.12.1
         with:
-          cancelMode: allDuplicates
-          cancelFutureDuplicates: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-          workflowFileName: build.yml
+          workflow_id: build.yml
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+          all_but_latest: true
+
       - name: "Cancel pr scan"
-        uses: potiuk/cancel-workflow-runs@master
+        uses: styfle/cancel-workflow-action@0.12.1
         with:
-          cancelMode: allDuplicates
-          cancelFutureDuplicates: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-          workflowFileName: pr_scan.yml
+          workflow_id: pr_scan.yml
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+          all_but_latest: true
+
       - name: "Cancel spell check"
-        uses: potiuk/cancel-workflow-runs@master
+        uses: styfle/cancel-workflow-action@0.12.1
         with:
-          cancelMode: allDuplicates
-          cancelFutureDuplicates: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-          workflowFileName: spell-check.yml
+          workflow_id: spell-check.yml
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+          all_but_latest: true
+
       - name: "Cancel test_cocoapods_integration"
-        uses: potiuk/cancel-workflow-runs@master
+        uses: styfle/cancel-workflow-action@0.12.1
         with:
-          cancelMode: allDuplicates
-          cancelFutureDuplicates: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-          workflowFileName: test_cocoapods_integration.yml
+          workflow_id: test_cocoapods_integration.yml
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+          all_but_latest: true
+
       - name: "Cancel test-carthage-integration"
-        uses: potiuk/cancel-workflow-runs@master
+        uses: styfle/cancel-workflow-action@0.12.1
         with:
-          cancelMode: allDuplicates
-          cancelFutureDuplicates: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-          workflowFileName: test-carthage-integration.yml
+          workflow_id: test-carthage-integration.yml
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+          all_but_latest: true
+
       - name: "Cancel test-SPM-integration"
-        uses: potiuk/cancel-workflow-runs@master
+        uses: styfle/cancel-workflow-action@0.12.1
         with:
-          cancelMode: allDuplicates
-          cancelFutureDuplicates: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-          workflowFileName: test-SPM-integration.yml
+          workflow_id: test-SPM-integration.yml
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+          all_but_latest: true
+
       - name: "Cancel validate_pr_labels_and_release_notes"
-        uses: potiuk/cancel-workflow-runs@master
+        uses: styfle/cancel-workflow-action@0.12.1
         with:
-          cancelMode: allDuplicates
-          cancelFutureDuplicates: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-          workflowFileName: validate_pr_labels_and_release_notes.yml
+          workflow_id: validate_pr_labels_and_release_notes.yml
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+          all_but_latest: true
