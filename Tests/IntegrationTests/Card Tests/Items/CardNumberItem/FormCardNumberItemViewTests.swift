@@ -10,6 +10,8 @@ import XCTest
 
 class FormCardNumberItemViewTests: XCTestCase {
     
+    var scanButtonTapped = false
+    
     override func run() {
         AdyenDependencyValues.runTestWithValues {
             $0.imageLoader = ImageLoaderMock()
@@ -230,15 +232,6 @@ class FormCardNumberItemViewTests: XCTestCase {
 
     func test_makeCardScanAccessoryView_shouldReturnAccessoryViewWithScanButton() throws {
 
-        class SelectorMock: AnyObject {
-
-            var selectorMethodCalled = false
-            @objc
-            func selectorMethod() {
-                selectorMethodCalled = true
-            }
-        }
-
         // Given
         let panLength = 5
         let cardNumberValidator = CardNumberValidator(
@@ -247,17 +240,25 @@ class FormCardNumberItemViewTests: XCTestCase {
             panLength: panLength
         )
 
-        let mockObject = SelectorMock()
         let sut = setupSut(validator: cardNumberValidator)
 
         // When
-        let cardScanAccessoryView = sut.makeCardScanAccessoryView(title: "Scan card", #selector(mockObject.selectorMethod))
+        let cardScanAccessoryView = sut.makeCardScanAccessoryView(title: "Scan card", #selector(sut.scanButtonMockTapped))
 
         // Then
         let inputView = try XCTUnwrap(cardScanAccessoryView as? UIInputView)
         let scanButton = inputView.subviews.last as? UIButton
         XCTAssertNotNil(scanButton, "The FormCardNumberItemView should contain a card scan button")
+        
+        XCTAssertFalse(scanButtonTapped)
+        scanButton?.sendActions(for: .touchUpInside)
     }
+}
+
+private extension FormCardNumberItemView {
+    
+    @objc
+    func scanButtonMockTapped() {} // empty init
 }
 
 // MARK: - Helpers
