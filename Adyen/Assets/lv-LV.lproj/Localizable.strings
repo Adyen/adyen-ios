@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "%@ netiek atbalstīts";
 "adyen.card.numberItem.unknownBrand" = "Ievadītais kartes zīmols netiek atbalstīts";
 "adyen.card.scanYourCardButton" = "Skenējiet savu karti";
+"adyen.creditCard.dualBrand.title" = "Kartes zīmols";
+"adyen.creditCard.dualBrand.description" = "Atlasiet kartes zīmolu, ar kuru vēlaties maksāt. Tas nav obligāti.";
 "adyen.dropIn.stored.title" = "Apstipriniet %@ maksājumu";
 "adyen.dropIn.preselected.openAll.title" = "Mainīt samaksas veidu";
 "adyen.continueTo" = "Turpināt ar %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Ievadiet UPI ID";
-"adyen.UPI.collectFieldLabel" = "Ievadiet UPI ID/VPA";
+"adyen.UPI.collectFieldLabel" = "UPI ID";
 "adyen.UPI.error.noAppSelected" = "Lai turpinātu, atlasiet maksājuma veidu";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";

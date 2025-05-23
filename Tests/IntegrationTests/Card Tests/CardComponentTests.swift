@@ -1038,7 +1038,7 @@ class CardComponentTests: XCTestCase {
         cardNumberItem.value = "4111 1111 1111 1111"
         XCTAssertTrue(cardNumberItem.isValid())
 
-        cardNumberItem.selectBrand(at: 1)
+        cardNumberItem.selectBrand(cardBrand: brands.last!)
         XCTAssertTrue(cardNumberItem.isValid())
         cardNumberItem.value = "4111 1111 1111"
         XCTAssertTrue(cardNumberItem.isValid())
@@ -1401,7 +1401,84 @@ class CardComponentTests: XCTestCase {
         wait(for: .aMoment) // Logo item view should still be hidden after waiting a bit
         XCTAssertFalse(logoItemView.isHidden)
     }
-    
+
+    func testCoBadgedCardsSelectionUIVisibility() throws {
+        // Given
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardComponent.Configuration()
+        )
+
+        setupRootViewController(sut.viewController)
+
+        let newResponse = BinLookupResponse(brands: [CardBrand(type: .visa), CardBrand(type: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
+        sut.cardViewController.update(binInfo: newResponse)
+
+        wait(for: .aMoment)
+
+        // Then
+        XCTAssertFalse(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
+    }
+
+    func testCoBadgedCardsShouldSendDisplayedAnalyticsInfo() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = AdyenContext(
+            apiContext: Dummy.apiContext,
+            payment: Dummy.payment,
+            analyticsProvider: analyticsProviderMock
+        )
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardComponent.Configuration()
+        )
+
+        let brands = [CardBrand(type: .visa), CardBrand(type: .carteBancaire)]
+        setupRootViewController(sut.viewController)
+
+        sut.cardViewController.items.coBadgedCardItem.cardItemsDisplayed = brands
+        let dualBrandDisplayedCalled = analyticsProviderMock.infos.filter { $0.type == .displayed }.first
+        XCTAssertNotNil(dualBrandDisplayedCalled)
+        XCTAssertEqual(dualBrandDisplayedCalled?.target, .dualBrandButton)
+        XCTAssertNotNil(dualBrandDisplayedCalled?.configData)
+        XCTAssertNotNil(dualBrandDisplayedCalled?.brand)
+    }
+
+    func testCoBadgedCardsShouldSendSelectedAnalyticsInfo() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = AdyenContext(
+            apiContext: Dummy.apiContext,
+            payment: Dummy.payment,
+            analyticsProvider: analyticsProviderMock
+        )
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardComponent.Configuration()
+        )
+
+        setupRootViewController(sut.viewController)
+
+        let newResponse = BinLookupResponse(brands: [CardBrand(type: .visa), CardBrand(type: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
+
+        sut.cardViewController.update(binInfo: newResponse)
+        sut.cardViewController.items.coBadgedCardItem.selectableFormItems.first?.selectionHandler?()
+
+        wait(for: .aMoment)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
+        let dualBrandSelectedCalled = analyticsProviderMock.infos.filter { $0.type == .selected }.first
+        XCTAssertNotNil(dualBrandSelectedCalled)
+        XCTAssertEqual(dualBrandSelectedCalled?.brand, newResponse.brands?.first?.type.rawValue)
+        XCTAssertEqual(dualBrandSelectedCalled?.target, .dualBrandButton)
+        XCTAssertNil(dualBrandSelectedCalled?.configData)
+    }
+
     func testStorePaymentMethodFieldVisibility() throws {
         
         // Given

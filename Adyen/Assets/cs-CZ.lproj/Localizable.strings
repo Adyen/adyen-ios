@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "Karty %@ nejsou podporované";
 "adyen.card.numberItem.unknownBrand" = "Zadaná značka karet není podporovaná";
 "adyen.card.scanYourCardButton" = "Naskenujte svou kartu";
+"adyen.creditCard.dualBrand.title" = "Značka karty";
+"adyen.creditCard.dualBrand.description" = "Vyberte značku karty, kterou preferujete pro platbu. Je to volitelné.";
 "adyen.dropIn.stored.title" = "Potvrdit platbu %@";
 "adyen.dropIn.preselected.openAll.title" = "Změnit způsob platby";
 "adyen.continueTo" = "Pokračovat k %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Zadejte UPI ID";
-"adyen.UPI.collectFieldLabel" = "Zadejte UPI ID / VPA";
+"adyen.UPI.collectFieldLabel" = "UPI ID";
 "adyen.UPI.error.noAppSelected" = "Pro pokračování je potřeba vybrat platební metodu";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";

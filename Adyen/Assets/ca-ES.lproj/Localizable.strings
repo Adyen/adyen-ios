@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "%@ no és compatible";
 "adyen.card.numberItem.unknownBrand" = "La marca de la targeta introduïda no és compatible";
 "adyen.card.scanYourCardButton" = "Escanegeu la vostra targeta";
+"adyen.creditCard.dualBrand.title" = "Marca de targeta";
+"adyen.creditCard.dualBrand.description" = "Seleccioneu la marca de la targeta amb la qual preferiu pagar. Això és opcional.";
 "adyen.dropIn.stored.title" = "Confirmació del pagament de %@";
 "adyen.dropIn.preselected.openAll.title" = "Canvieu el mètode de pagament";
 "adyen.continueTo" = "Continua a %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Introduïu el PIN d'UPI";
-"adyen.UPI.collectFieldLabel" = "Introduïu l'ID / VPA d'UPI";
+"adyen.UPI.collectFieldLabel" = "Identificador d'UPI";
 "adyen.UPI.error.noAppSelected" = "Seleccioneu una forma de pagament per continuar";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";

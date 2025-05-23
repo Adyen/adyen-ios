@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "%@ wird nicht unterstützt";
 "adyen.card.numberItem.unknownBrand" = "Die eingegebene Kartenmarke wird nicht unterstützt";
 "adyen.card.scanYourCardButton" = "Scannen Sie Ihre Karte";
+"adyen.creditCard.dualBrand.title" = "Kartenmarke";
+"adyen.creditCard.dualBrand.description" = "Wählen Sie die Kartenmarke aus, mit der Sie bezahlen möchten. Dies ist optional.";
 "adyen.dropIn.stored.title" = "Bestätige %@ Zahlung";
 "adyen.dropIn.preselected.openAll.title" = "Zahlungsmethode wechseln";
 "adyen.continueTo" = "Weiter zu %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "UPI-ID eingeben";
-"adyen.UPI.collectFieldLabel" = "UPI-ID/VPA eingeben";
+"adyen.UPI.collectFieldLabel" = "UPI-ID";
 "adyen.UPI.error.noAppSelected" = "Wählen Sie eine Zahlungsmethode aus, um fortzufahren";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";

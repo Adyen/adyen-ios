@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "%@ не поддерживается";
 "adyen.card.numberItem.unknownBrand" = "Карты введенной платежной системы не поддерживаются";
 "adyen.card.scanYourCardButton" = "Отсканируйте свою карту";
+"adyen.creditCard.dualBrand.title" = "Платежная система карты";
+"adyen.creditCard.dualBrand.description" = "Выберите платежную систему карты по умолчанию. Это необязательно.";
 "adyen.dropIn.stored.title" = "Подтвердить оплату %@";
 "adyen.dropIn.preselected.openAll.title" = "Изменить способ оплаты";
 "adyen.continueTo" = "Перейти к %@";
@@ -184,7 +186,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Введите идентификатор UPI";
-"adyen.UPI.collectFieldLabel" = "Введите VPA или идентификатор UPI";
+"adyen.UPI.collectFieldLabel" = "Идентификатор UPI";
 "adyen.UPI.error.noAppSelected" = "Для продолжения выберите способ оплаты";
 "adyen.twint.noAppsInstalled.message" = "На этом устройстве либо установлена устаревшая версия TWINT, либо это приложение не установлено вообще. Обновите или установите TWINT.";
 "adyen.threeds2.DA.registration.title" = "Безопасная оплата";

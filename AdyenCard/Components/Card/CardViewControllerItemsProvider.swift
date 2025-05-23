@@ -12,6 +12,7 @@ extension CardViewController {
     internal struct InfoEventData {
         internal let type: AnalyticsEventInfo.InfoType
         internal let target: AnalyticsEventTarget
+        internal let brands: [CardBrand]?
         internal let error: AnalyticsValidationError?
     }
 
@@ -29,7 +30,7 @@ extension CardViewController {
         private let presenter: WeakReferenceViewControllerPresenter
         private let addressMode: CardComponent.AddressFormType
         private let scanCardHandler: (() -> Void)?
-        
+
         /// Closure that is called when an event is triggered via the field items.
         internal var onDidTriggerInfoEvent: ((InfoEventData) -> Void)?
 
@@ -155,6 +156,30 @@ extension CardViewController {
             return holderNameItem
         }()
 
+        internal lazy var coBadgedCardItem: FormCoBadgedCardItem = {
+            let item = FormCoBadgedCardItem(
+                title: localizedString(
+                    .creditCardDualBrandTitle,
+                    configuration.localizationParameters
+                ),
+                subtitle: localizedString(
+                    .creditCardDualBrandDescription,
+                    configuration.localizationParameters
+                ),
+                selectableFormItems: [],
+                style: .init(
+                    title: configuration.style.sectionHeader,
+                    subtitle: configuration.style.footnoteLabel
+                )
+            )
+            item.style.subtitle.textAlignment = .natural
+            item.identifier = ViewIdentifierBuilder.build(
+                scopeInstance: self,
+                postfix: "coBadgedCardItem"
+            )
+            return item
+        }()
+
         internal lazy var additionalAuthCodeItem: FormTextInputItem = {
             var additionalItem = FormTextInputItem(style: formStyle.textField)
             additionalItem.title = localizedString(.cardTaxNumberLabelShort, localizationParameters)
@@ -235,7 +260,22 @@ extension CardViewController {
             )
             return item
         }()
-        
+
+        internal func triggerInfoEvent(
+            of type: AnalyticsEventInfo.InfoType,
+            target: AnalyticsEventTarget,
+            brands: [CardBrand]? = nil,
+            error: AnalyticsValidationError? = nil
+        ) {
+            let infoEventData = InfoEventData(
+                type: type,
+                target: target,
+                brands: brands,
+                error: error
+            )
+            onDidTriggerInfoEvent?(infoEventData)
+        }
+
         private func setupEventTriggers(for item: FormTextItem, target: AnalyticsEventTarget) {
             item.onDidBeginEditing = { [weak self] in
                 self?.triggerInfoEvent(of: .focus, target: target)
@@ -253,16 +293,6 @@ extension CardViewController {
                 )
             }
         }
-        
-        private func triggerInfoEvent(of type: AnalyticsEventInfo.InfoType, target: AnalyticsEventTarget, error: AnalyticsValidationError? = nil) {
-            let infoEventData = InfoEventData(
-                type: type,
-                target: target,
-                error: error
-            )
-            onDidTriggerInfoEvent?(infoEventData)
-        }
-
     }
 
 }

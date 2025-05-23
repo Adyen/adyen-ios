@@ -66,7 +66,6 @@ class BCMCComponentTests: XCTestCase {
         XCTAssertEqual(sut.supportedCardTypes, brands)
         
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem.cardTypeLogos"))
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.supportedCardLogosItem"))
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.holderNameItem"))
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem"))
@@ -123,7 +122,6 @@ class BCMCComponentTests: XCTestCase {
         XCTAssertEqual(sut.supportedCardTypes, brands)
         
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem.cardTypeLogos"))
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.holderNameItem"))
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem"))
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.securityCodeItem"))
@@ -148,7 +146,6 @@ class BCMCComponentTests: XCTestCase {
         XCTAssertEqual(sut.supportedCardTypes, brands)
         
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
-        XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem.cardTypeLogos"))
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.holderNameItem"))
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem"))
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.securityCodeItem"))
@@ -171,8 +168,8 @@ class BCMCComponentTests: XCTestCase {
         
         XCTAssertEqual(cardNumberItemView.item.cardTypeLogos.count, 1)
         XCTAssertEqual(cardNumberItemView.item.cardTypeLogos.first?.url, LogoURLProvider.logoURL(withName: brands.first!.rawValue, environment: context.apiContext.environment))
-        
-        wait { cardNumberItemView.findView(by: "cardTypeLogos") != nil }
+
+        wait(for: .aMoment)
     }
     
     func testInvalidCardTypeDetection() {

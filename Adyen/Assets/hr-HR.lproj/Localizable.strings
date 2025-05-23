@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "Kartica %@ nije podržana";
 "adyen.card.numberItem.unknownBrand" = "Unesena marka kartice nije podržana";
 "adyen.card.scanYourCardButton" = "Skenirajte svoju karticu";
+"adyen.creditCard.dualBrand.title" = "Vrsta kartice";
+"adyen.creditCard.dualBrand.description" = "Odaberite vrstu kartice kojom želite platiti. Ovo je neobavezno.";
 "adyen.dropIn.stored.title" = "Potvrdite plaćanje: %@";
 "adyen.dropIn.preselected.openAll.title" = "Promijeni način plaćanja";
 "adyen.continueTo" = "Nastavi na %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Unesite UPI ID";
-"adyen.UPI.collectFieldLabel" = "Unesite UPI ID/VPA";
+"adyen.UPI.collectFieldLabel" = "UPI ID";
 "adyen.UPI.error.noAppSelected" = "Za nastavak odaberite način plaćanja";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";

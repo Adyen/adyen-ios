@@ -88,6 +88,10 @@ public struct LocalizationKey {
     public static let cardNumberItemUnknownBrand = LocalizationKey(key: "adyen.card.numberItem.unknownBrand")
     /// Scan your card
     public static let cardScanYourCardButton = LocalizationKey(key: "adyen.card.scanYourCardButton")
+    /// Card Brand
+    public static let creditCardDualBrandTitle = LocalizationKey(key: "adyen.creditCard.dualBrand.title")
+    /// Select the card brand you prefer to pay with. This is optional.
+    public static let creditCardDualBrandDescription = LocalizationKey(key: "adyen.creditCard.dualBrand.description")
     /// Confirm %@ payment
     public static let dropInStoredTitle = LocalizationKey(key: "adyen.dropIn.stored.title")
     /// Change Payment Method
@@ -388,7 +392,7 @@ public struct LocalizationKey {
     public static let UPISecondTabTitle = LocalizationKey(key: "adyen.UPI.secondTabTitle")
     /// Enter UPI ID
     public static let UPICollectDropdownLabel = LocalizationKey(key: "adyen.UPI.collectDropdownLabel")
-    /// Enter UPI ID / VPA
+    /// UPI ID
     public static let UPICollectFieldLabel = LocalizationKey(key: "adyen.UPI.collectFieldLabel")
     /// Select a payment method to continue
     public static let UPIErrorNoAppSelected = LocalizationKey(key: "adyen.UPI.error.noAppSelected")

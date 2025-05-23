@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "%@ غير مدعومة";
 "adyen.card.numberItem.unknownBrand" = "العلامة التجارية للبطاقة التي تم إدخالها غير مدعومة";
 "adyen.card.scanYourCardButton" = "امسح بطاقتك ضوئيًا";
+"adyen.creditCard.dualBrand.title" = "العلامة التجارية للبطاقة";
+"adyen.creditCard.dualBrand.description" = "اختر العلامة التجارية للبطاقة التي تفضل الدفع بها. هذا البيان اختياري.";
 "adyen.dropIn.stored.title" = "تأكيد الدفع باستخدام %@";
 "adyen.dropIn.preselected.openAll.title" = "تغيير طريقة الدفع";
 "adyen.continueTo" = "متابعة إلى %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "أدخل معرف UPI";
-"adyen.UPI.collectFieldLabel" = "أدخل معرف واجهة المدفوعات الموحدة (UPI) / عنوان الدفع الافتراضي (VPA)";
+"adyen.UPI.collectFieldLabel" = "معرف UPI";
 "adyen.UPI.error.noAppSelected" = "للمتابعة؛ حدد وسيلة للدفع";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";

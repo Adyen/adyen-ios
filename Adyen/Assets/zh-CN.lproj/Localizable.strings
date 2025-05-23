@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "不支持 %@";
 "adyen.card.numberItem.unknownBrand" = "不支持输入的卡片品牌";
 "adyen.card.scanYourCardButton" = "扫描您的卡片";
+"adyen.creditCard.dualBrand.title" = "卡片品牌";
+"adyen.creditCard.dualBrand.description" = "请选择您偏好的支付卡片品牌。这是可选的。";
 "adyen.dropIn.stored.title" = "确认 %@ 支付";
 "adyen.dropIn.preselected.openAll.title" = "更改支付方式";
 "adyen.continueTo" = "继续至 %@";
@@ -184,7 +186,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "输入 UPI ID";
-"adyen.UPI.collectFieldLabel" = "输入 UPI ID/VPA";
+"adyen.UPI.collectFieldLabel" = "UPI ID";
 "adyen.UPI.error.noAppSelected" = "选择支付方式继续";
 "adyen.twint.noAppsInstalled.message" = "此设备上未安装 TWINT 或安装的 TWINT 版本已过期。请更新或安装 TWINT 应用。";
 "adyen.threeds2.DA.registration.title" = "安全结账";

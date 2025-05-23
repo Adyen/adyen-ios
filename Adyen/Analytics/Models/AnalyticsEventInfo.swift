@@ -40,6 +40,7 @@ public struct AnalyticsEventInfo: AnalyticsEvent {
         case validationError = "ValidationError"
         case rendered = "Rendered"
         case input = "Input"
+        case displayed = "Displayed"
     }
     
     public init(component: String, type: InfoType) {

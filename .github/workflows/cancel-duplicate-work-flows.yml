@@ -16,47 +16,47 @@ jobs:
         uses: styfle/cancel-workflow-action@0.12.1
         with:
           workflow_id: build.yml
-          token: ${{ secrets.GITHUB_TOKEN }}
+          access_token: ${{ secrets.GITHUB_TOKEN }}
           all_but_latest: true
 
       - name: "Cancel pr scan"
         uses: styfle/cancel-workflow-action@0.12.1
         with:
           workflow_id: pr_scan.yml
-          token: ${{ secrets.GITHUB_TOKEN }}
+          access_token: ${{ secrets.GITHUB_TOKEN }}
           all_but_latest: true
 
       - name: "Cancel spell check"
         uses: styfle/cancel-workflow-action@0.12.1
         with:
           workflow_id: spell-check.yml
-          token: ${{ secrets.GITHUB_TOKEN }}
+          access_token: ${{ secrets.GITHUB_TOKEN }}
           all_but_latest: true
 
       - name: "Cancel test_cocoapods_integration"
         uses: styfle/cancel-workflow-action@0.12.1
         with:
           workflow_id: test_cocoapods_integration.yml
-          token: ${{ secrets.GITHUB_TOKEN }}
+          access_token: ${{ secrets.GITHUB_TOKEN }}
           all_but_latest: true
 
       - name: "Cancel test-carthage-integration"
         uses: styfle/cancel-workflow-action@0.12.1
         with:
           workflow_id: test-carthage-integration.yml
-          token: ${{ secrets.GITHUB_TOKEN }}
+          access_token: ${{ secrets.GITHUB_TOKEN }}
           all_but_latest: true
 
       - name: "Cancel test-SPM-integration"
         uses: styfle/cancel-workflow-action@0.12.1
         with:
           workflow_id: test-SPM-integration.yml
-          token: ${{ secrets.GITHUB_TOKEN }}
+          access_token: ${{ secrets.GITHUB_TOKEN }}
           all_but_latest: true
 
       - name: "Cancel validate_pr_labels_and_release_notes"
         uses: styfle/cancel-workflow-action@0.12.1
         with:
           workflow_id: validate_pr_labels_and_release_notes.yml
-          token: ${{ secrets.GITHUB_TOKEN }}
+          access_token: ${{ secrets.GITHUB_TOKEN }}
           all_but_latest: true

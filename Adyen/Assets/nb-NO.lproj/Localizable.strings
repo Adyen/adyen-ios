@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "%@ støttes ikke";
 "adyen.card.numberItem.unknownBrand" = "Kortmerket du har oppgitt, støttes ikke";
 "adyen.card.scanYourCardButton" = "Skann kortet ditt";
+"adyen.creditCard.dualBrand.title" = "Kortmerke";
+"adyen.creditCard.dualBrand.description" = "Velg kortmerket du foretrekker å betale med. Dette er valgfritt.";
 "adyen.dropIn.stored.title" = "Bekreft betaling med %@";
 "adyen.dropIn.preselected.openAll.title" = "Endre betalingsmetode";
 "adyen.continueTo" = "Fortsett til %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Angi UPI-ID";
-"adyen.UPI.collectFieldLabel" = "Skriv inn UPI-ID/VPA";
+"adyen.UPI.collectFieldLabel" = "UPI-ID";
 "adyen.UPI.error.noAppSelected" = "Velg en betalingsmetode for å fortsette";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";

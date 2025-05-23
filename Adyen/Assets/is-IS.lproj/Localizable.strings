@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "Ekki er stuðningur við %@";
 "adyen.card.numberItem.unknownBrand" = "Ekki er stuðningur við innslegið kortamerki";
 "adyen.card.scanYourCardButton" = "Skannaðu kortið þitt";
+"adyen.creditCard.dualBrand.title" = "Kortafyrirtæki";
+"adyen.creditCard.dualBrand.description" = "Veldu kortafyrirtæki kortsins sem þú vilt greiða með. Þetta er valfrjálst.";
 "adyen.dropIn.stored.title" = "Staðfesta %@ greiðslu";
 "adyen.dropIn.preselected.openAll.title" = "Breyta greiðslumáta";
 "adyen.continueTo" = "Halda áfram á %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Sláðu inn UPI-auðkenni";
-"adyen.UPI.collectFieldLabel" = "Sláðu inn UPI-auðkenni/VPA";
+"adyen.UPI.collectFieldLabel" = "UPI-auðkenni";
 "adyen.UPI.error.noAppSelected" = "Veldu greiðslumáta til að halda áfram";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";

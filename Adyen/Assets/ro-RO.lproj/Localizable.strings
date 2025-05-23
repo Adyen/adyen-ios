@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "%@ nu este acceptată";
 "adyen.card.numberItem.unknownBrand" = "Marca de card introdusă nu este acceptată";
 "adyen.card.scanYourCardButton" = "Scanați-vă cardul";
+"adyen.creditCard.dualBrand.title" = "Brandul cardului";
+"adyen.creditCard.dualBrand.description" = "Selectați brandul cardului cu care preferați să plătiți. Acest lucru este opțional.";
 "adyen.dropIn.stored.title" = "Confirmați plata %@";
 "adyen.dropIn.preselected.openAll.title" = "Schimbare metodă de plată";
 "adyen.continueTo" = "Continuați către %@";
@@ -184,7 +186,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Introduceți ID-ul UPI";
-"adyen.UPI.collectFieldLabel" = "Completați identificatorul UPI/VPA";
+"adyen.UPI.collectFieldLabel" = "ID UPI";
 "adyen.UPI.error.noAppSelected" = "Selectați o metodă de plată pentru a continua";
 "adyen.twint.noAppsInstalled.message" = "Pe acest dispozitiv nu este instalată nicio versiune sau este o versiune depășită a TWINT. Actualizați sau instalați aplicația TWINT.";
 "adyen.threeds2.DA.registration.title" = "Plată securizată";

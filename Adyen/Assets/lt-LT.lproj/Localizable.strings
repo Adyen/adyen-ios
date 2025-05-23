@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "„%@“ nepalaikomas";
 "adyen.card.numberItem.unknownBrand" = "Įvestas kortelės prekės ženklas nepalaikomas";
 "adyen.card.scanYourCardButton" = "Nuskaitykite savo kortelę";
+"adyen.creditCard.dualBrand.title" = "Kortelės prekių ženklas";
+"adyen.creditCard.dualBrand.description" = "Pasirinkite kortelės, kuria pageidaujate atsiskaityti, prekių ženklą. Tai neprivaloma.";
 "adyen.dropIn.stored.title" = "Patvirtinti %@ mokėjimą";
 "adyen.dropIn.preselected.openAll.title" = "Keisti mokėjimo būdą";
 "adyen.continueTo" = "Eiti į %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Įveskite UPI ID";
-"adyen.UPI.collectFieldLabel" = "Įveskite UPI ID / VPA";
+"adyen.UPI.collectFieldLabel" = "UPI ID";
 "adyen.UPI.error.noAppSelected" = "Norėdami tęsti, pasirinkite mokėjimo metodą";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";

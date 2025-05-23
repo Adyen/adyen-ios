@@ -41,6 +41,7 @@
 		004BA67B29D427F300A8C69B /* DropInExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004BA67A29D427F300A8C69B /* DropInExample.swift */; };
 		004BA67F29D45A2E00A8C69B /* InitialDataFlowProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004BA67E29D45A2E00A8C69B /* InitialDataFlowProtocol.swift */; };
 		004BA68129D4639900A8C69B /* PresenterExampleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004BA68029D4639900A8C69B /* PresenterExampleProtocol.swift */; };
+		0055CDA72DD215DF0019F1D9 /* CoBadgedCardAnalyticsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0055CDA62DD215CC0019F1D9 /* CoBadgedCardAnalyticsConfiguration.swift */; };
 		0058691528B644FB00B65A19 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691428B644FB00B65A19 /* QRCodeView.swift */; };
 		0058691728B6450900B65A19 /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691628B6450900B65A19 /* QRCodeViewController.swift */; };
 		0058691928B6451000B65A19 /* QRCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691828B6451000B65A19 /* QRCodeViewModel.swift */; };
@@ -57,6 +58,9 @@
 		00BC8F552BF349FC00EBE0EB /* SelectableFormItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BC8F542BF349FC00EBE0EB /* SelectableFormItemStyle.swift */; };
 		00C3DB0E2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */; };
 		00C3DB0F2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */; };
+		00C401AB2DB242CD000EDA3C /* FormCoBadgedCardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C401AA2DB242BC000EDA3C /* FormCoBadgedCardItem.swift */; };
+		00C401AD2DB24760000EDA3C /* FormCoBadgedCardItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C401AC2DB2475E000EDA3C /* FormCoBadgedCardItemView.swift */; };
+		00C401AF2DB24A8E000EDA3C /* FormCoBadgedCardItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C401AE2DB24A8C000EDA3C /* FormCoBadgedCardItemStyle.swift */; };
 		00D5B8662A4C63FE003CFCD0 /* CardComponentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */; };
 		00D5B8672A4C63FE003CFCD0 /* CardComponentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */; };
 		00E5D6552AF4E99B00CDE118 /* AdyenTwint.docc in Sources */ = {isa = PBXBuildFile; fileRef = 00E5D6542AF4E99B00CDE118 /* AdyenTwint.docc */; };
@@ -458,8 +462,8 @@
 		B639C0822D8039F600472EBB /* CardScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B639C0812D80399800472EBB /* CardScannerController.swift */; };
 		B66CAF3A2DAEB16D0017984C /* DummyCardScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66CAF392DAEB16D0017984C /* DummyCardScannerController.swift */; };
 		B6ABA1C32CA6B058003514E5 /* ListItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ABA1C22CA6B058003514E5 /* ListItemTests.swift */; };
-		B6C9DA792D0C3F62005D65C7 /* DualBrandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C9DA782D0C3F62005D65C7 /* DualBrandView.swift */; };
-		B6C9DA7B2D102C91005D65C7 /* DualBrandViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C9DA7A2D102C91005D65C7 /* DualBrandViewTests.swift */; };
+		B6C9DA792D0C3F62005D65C7 /* DualBrandAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C9DA782D0C3F62005D65C7 /* DualBrandAccessoryView.swift */; };
+		B6C9DA7B2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C9DA7A2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift */; };
 		B6D808032BCD140E00F3F5EB /* AssetsAccessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91760A62594C5DF00D653BE /* AssetsAccessTests.swift */; };
 		B6D808042BCD147600F3F5EB /* UILabelHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD40F42263150F90090E01C /* UILabelHelpersTests.swift */; };
 		B6D808052BCD147600F3F5EB /* KeyedDecodingContainerExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9021E032264C55E009CF7F4 /* KeyedDecodingContainerExtensionsTests.swift */; };
@@ -1615,6 +1619,7 @@
 		004BA67A29D427F300A8C69B /* DropInExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInExample.swift; sourceTree = "<group>"; };
 		004BA67E29D45A2E00A8C69B /* InitialDataFlowProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialDataFlowProtocol.swift; sourceTree = "<group>"; };
 		004BA68029D4639900A8C69B /* PresenterExampleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterExampleProtocol.swift; sourceTree = "<group>"; };
+		0055CDA62DD215CC0019F1D9 /* CoBadgedCardAnalyticsConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoBadgedCardAnalyticsConfiguration.swift; sourceTree = "<group>"; };
 		0058691428B644FB00B65A19 /* QRCodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
 		0058691628B6450900B65A19 /* QRCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
 		0058691828B6451000B65A19 /* QRCodeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeViewModel.swift; sourceTree = "<group>"; };
@@ -1633,6 +1638,9 @@
 		00BC8F522BF2569200EBE0EB /* SelectableFormItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableFormItemView.swift; sourceTree = "<group>"; };
 		00BC8F542BF349FC00EBE0EB /* SelectableFormItemStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableFormItemStyle.swift; sourceTree = "<group>"; };
 		00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsSettingsView.swift; sourceTree = "<group>"; };
+		00C401AA2DB242BC000EDA3C /* FormCoBadgedCardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCoBadgedCardItem.swift; sourceTree = "<group>"; };
+		00C401AC2DB2475E000EDA3C /* FormCoBadgedCardItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCoBadgedCardItemView.swift; sourceTree = "<group>"; };
+		00C401AE2DB24A8C000EDA3C /* FormCoBadgedCardItemStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCoBadgedCardItemStyle.swift; sourceTree = "<group>"; };
 		00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentSettingsView.swift; sourceTree = "<group>"; };
 		00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenTwint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E5D6532AF4E99B00CDE118 /* AdyenTwint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenTwint.h; sourceTree = "<group>"; };
@@ -1946,8 +1954,8 @@
 		B66CAF392DAEB16D0017984C /* DummyCardScannerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyCardScannerController.swift; sourceTree = "<group>"; };
 		B693408F2DAE6ACB0026AD7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6ABA1C22CA6B058003514E5 /* ListItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemTests.swift; sourceTree = "<group>"; };
-		B6C9DA782D0C3F62005D65C7 /* DualBrandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualBrandView.swift; sourceTree = "<group>"; };
-		B6C9DA7A2D102C91005D65C7 /* DualBrandViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualBrandViewTests.swift; sourceTree = "<group>"; };
+		B6C9DA782D0C3F62005D65C7 /* DualBrandAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualBrandAccessoryView.swift; sourceTree = "<group>"; };
+		B6C9DA7A2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualBrandAccessoryViewTests.swift; sourceTree = "<group>"; };
 		B6EE0F432BBEBFD000B9810D /* IntegrationTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = IntegrationTests.xctestplan; sourceTree = "<group>"; };
 		C901BB8A2D9ECB1C00406282 /* CardScannerViewMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerViewMock.swift; sourceTree = "<group>"; };
 		C901BB8E2D9ED76A00406282 /* AppOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppOpener.swift; sourceTree = "<group>"; };
@@ -4213,7 +4221,10 @@
 				A01DCF0A26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift */,
 				A018094726FDD345003A8DE3 /* FormCardNumberContainerItem.swift */,
 				A09C704227032870004C01AA /* FormCardLogosItemView.swift */,
-				B6C9DA782D0C3F62005D65C7 /* DualBrandView.swift */,
+				B6C9DA782D0C3F62005D65C7 /* DualBrandAccessoryView.swift */,
+				00C401AA2DB242BC000EDA3C /* FormCoBadgedCardItem.swift */,
+				00C401AC2DB2475E000EDA3C /* FormCoBadgedCardItemView.swift */,
+				00C401AE2DB24A8C000EDA3C /* FormCoBadgedCardItemStyle.swift */,
 			);
 			path = Form;
 			sourceTree = "<group>";
@@ -5052,7 +5063,7 @@
 				E9E3DAC4221ECF5300697074 /* Validators */,
 				E9E3DAC3221ECF4800697074 /* Formatters */,
 				E9E3DAC7221EDDAF00697074 /* CardNumbers.swift */,
-				B6C9DA7A2D102C91005D65C7 /* DualBrandViewTests.swift */,
+				B6C9DA7A2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift */,
 				F9D57534238291A1009C18B5 /* BCMCComponentTests.swift */,
 				F9EDB78C2395643A00CFB3C9 /* CardComponentTests.swift */,
 				A0B4B9B02BC027DE00C99926 /* CardComponentEventTests.swift */,
@@ -5302,6 +5313,8 @@
 				B66CAF392DAEB16D0017984C /* DummyCardScannerController.swift */,
 				E745175425FB6A59000BDCCF /* CardViewController.swift */,
 				E76CAC4D26BC0CC200117953 /* CardViewControllerItemsProvider.swift */,
+				A0290DFC2C4FD6D5005BE269 /* CardAnalyticsConfiguration.swift */,
+				0055CDA62DD215CC0019F1D9 /* CoBadgedCardAnalyticsConfiguration.swift */,
 				F9C6BD5F26DFBA0600DA7512 /* ThreeDS2SdkVersion.swift */,
 			);
 			path = Card;
@@ -7801,7 +7814,7 @@
 				F9D644E724D40C7C0059CBE3 /* MBWayComponentTests.swift in Sources */,
 				8152A2982BF7585B00AF957C /* FormItemViewBuilderTests.swift in Sources */,
 				5A56E15526B6DEF800744CA0 /* XCTestCase+Style.swift in Sources */,
-				B6C9DA7B2D102C91005D65C7 /* DualBrandViewTests.swift in Sources */,
+				B6C9DA7B2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift in Sources */,
 				F9E4726228CF1D4300FF9550 /* AuthenticationServiceMock.swift in Sources */,
 				21CBEF4D2D88768700178809 /* ThreeDS2Component+FingerprintTokenTests.swift in Sources */,
 				E767F4DC25A603A50077029E /* ModalToolbarTests.swift in Sources */,
@@ -7829,11 +7842,12 @@
 				A01DCF0B26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift in Sources */,
 				A0FA143F26D65A5300627127 /* InstallmentPickerElement.swift in Sources */,
 				F9D5751E237C106A009C18B5 /* BCMCComponent.swift in Sources */,
+				00C401AD2DB24760000EDA3C /* FormCoBadgedCardItemView.swift in Sources */,
 				E7166A5424EACC44007CCDEF /* BinLookupResponse.swift in Sources */,
 				E9E3DAB4221D988200697074 /* CardNumberValidator.swift in Sources */,
 				F92329DD25AD049E002C5BC4 /* FallbackCardBrandProvider.swift in Sources */,
 				E7798569268CE1B900CECA95 /* KCPDetails.swift in Sources */,
-				B6C9DA792D0C3F62005D65C7 /* DualBrandView.swift in Sources */,
+				B6C9DA792D0C3F62005D65C7 /* DualBrandAccessoryView.swift in Sources */,
 				B62A075C2D71FB43006072E7 /* FormCardNumberItemView+ScanCard.swift in Sources */,
 				F92CBA072811754400367820 /* GiftCardConfirmationPaymentMethod.swift in Sources */,
 				E9E3DACD221EEAB200697074 /* CardSecurityCodeValidator.swift in Sources */,
@@ -7859,16 +7873,19 @@
 				A09C704327032870004C01AA /* FormCardLogosItemView.swift in Sources */,
 				F9B8C49223FC287100C4D0FB /* FormCardNumberItemView.swift in Sources */,
 				F9FE25A72625B448001874BB /* GiftCardComponent.swift in Sources */,
+				0055CDA72DD215DF0019F1D9 /* CoBadgedCardAnalyticsConfiguration.swift in Sources */,
 				B639C0822D8039F600472EBB /* CardScannerController.swift in Sources */,
 				F92329D225AD0240002C5BC4 /* CardBrand.swift in Sources */,
 				F9C6BD6026DFBA0600DA7512 /* ThreeDS2SdkVersion.swift in Sources */,
 				E7451A052600EC8D000BDCCF /* CardComponentConfiguration.swift in Sources */,
+				00C401AB2DB242CD000EDA3C /* FormCoBadgedCardItem.swift in Sources */,
 				F919DF9524E6D7BC0027976E /* CardComponentExtensions.swift in Sources */,
 				E76CAC4E26BC0CC200117953 /* CardViewControllerItemsProvider.swift in Sources */,
 				B66CAF3A2DAEB16D0017984C /* DummyCardScannerController.swift in Sources */,
 				E76EC680241125E0009C6E2F /* FormCardSecurityCodeItem.swift in Sources */,
 				E7166A5624EAD99F007CCDEF /* BinInfoProvider.swift in Sources */,
 				A01DFBC72BB6FBF800205881 /* CardValidationError.swift in Sources */,
+				00C401AF2DB24A8E000EDA3C /* FormCoBadgedCardItemStyle.swift in Sources */,
 				E2028F5E222805E20007FF8B /* CardDetails.swift in Sources */,
 				F96A2882265F9C2B00E718BD /* GiftCardComponent+Extensions.swift in Sources */,
 				A001676C2BD120400099A6AE /* CardHolderNameValidator.swift in Sources */,
