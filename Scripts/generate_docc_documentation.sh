@@ -2,20 +2,9 @@
 
 set -e
 
-# Get the directory where the script is located, then resolve to an absolute path
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-# Define the absolute path to your original TwintSDK.xcframework
-# ASSUMPTION: TwintSDK.xcframework is located at YourProjectRoot/XCFramework/Dynamic/TwintSDK.xcframework
-# If your script is in 'YourProjectRoot/Scripts/', then PROJECT_ROOT would be SCRIPT_DIR/..
-# Adjust PROJECT_ROOT and TWINT_XCFRAMEWORK_SOURCE_PATH as needed based on your actual structure.
-# For example, if XCFramework is a sibling of your script directory:
-# PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-# TWINT_XCFRAMEWORK_SOURCE_PATH="$PROJECT_ROOT/XCFramework/Dynamic/TwintSDK.xcframework"
-#
-# Based on your previous error, let's assume your script is in 'adyen-ios/Scripts'
-# and the XCFramework is in 'adyen-ios/XCFramework/Dynamic'
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")" # Go up one level from 'Scripts' to 'adyen-ios'
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 TWINT_XCFRAMEWORK_SOURCE_PATH="$PROJECT_ROOT/XCFramework/Dynamic/TwintSDK.xcframework"
 
 
@@ -190,7 +179,7 @@ transform-for-static-hosting "$FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchi
 # Clean up.
 rm -rf "$TEMP_PROJECT_FOLDER"
 
-REDIRECT_FOLDER="$DOCS_ROOT/redirect" # Quoted for safety
+REDIRECT_FOLDER="$DOCS_ROOT/redirect"
 
 mkdir -p "$REDIRECT_FOLDER"
 
