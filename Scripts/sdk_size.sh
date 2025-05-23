@@ -51,7 +51,6 @@ xcodebuild_command="xcodebuild clean build \
     -sdk iphoneos \
     -configuration Release \
     SYMROOT=\"${BUILD_OUTPUT_DIR}\" \
-    -derivedDataPath \"${PROJECT_DERIVED_DATA_PATH}\" \
     -skipPackagePluginValidation"
 
 # Execute the build command (full output to console and file)
