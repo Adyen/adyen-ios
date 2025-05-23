@@ -3,15 +3,20 @@
 set -e
 
 # Get the directory where the script is located, then resolve to an absolute path
-# This assumes your TwintSDK.xcframework is located relative to this script.
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-# Define the absolute path to your XCFramework
-# ADJUST THIS PATH IF YOUR XCFRAMEWORK IS NOT DIRECTLY IN YourProjectRoot/XCFramework/Dynamic/
-# For example, if your script is in `Scripts/` and XCFramework is in `XCFramework/`,
-# you might need: PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-# Then: TWINT_XCFRAMEWORK_ABSOLUTE_PATH="$PROJECT_ROOT/XCFramework/Dynamic/TwintSDK.xcframework"
-TWINT_XCFRAMEWORK_ABSOLUTE_PATH="$SCRIPT_DIR/XCFramework/Dynamic/TwintSDK.xcframework"
+# Define the absolute path to your original TwintSDK.xcframework
+# ASSUMPTION: TwintSDK.xcframework is located at YourProjectRoot/XCFramework/Dynamic/TwintSDK.xcframework
+# If your script is in 'YourProjectRoot/Scripts/', then PROJECT_ROOT would be SCRIPT_DIR/..
+# Adjust PROJECT_ROOT and TWINT_XCFRAMEWORK_SOURCE_PATH as needed based on your actual structure.
+# For example, if XCFramework is a sibling of your script directory:
+# PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+# TWINT_XCFRAMEWORK_SOURCE_PATH="$PROJECT_ROOT/XCFramework/Dynamic/TwintSDK.xcframework"
+#
+# Based on your previous error, let's assume your script is in 'adyen-ios/Scripts'
+# and the XCFramework is in 'adyen-ios/XCFramework/Dynamic'
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")" # Go up one level from 'Scripts' to 'adyen-ios'
+TWINT_XCFRAMEWORK_SOURCE_PATH="$PROJECT_ROOT/XCFramework/Dynamic/TwintSDK.xcframework"
 
 
 # Since Docc doesn't support generating a single set of documentation
@@ -20,10 +25,10 @@ TWINT_XCFRAMEWORK_ABSOLUTE_PATH="$SCRIPT_DIR/XCFramework/Dynamic/TwintSDK.xcfram
 # can then be processed by Docc.
 
 TEMP_PROJECT_FOLDER=TempProject
-TEMP_PROJECT_PATH=$TEMP_PROJECT_FOLDER/Adyen
+TEMP_PROJECT_PATH="$TEMP_PROJECT_FOLDER/Adyen" # Quoted for safety
 FRAMEWORK_NAME=Adyen
 DOCS_ROOT=docs
-FINAL_DOCC_ARCHIVE_PATH=$DOCS_ROOT/docc_archive
+FINAL_DOCC_ARCHIVE_PATH="$DOCS_ROOT/docc_archive" # Quoted for safety
 
 rm -rf "$TEMP_PROJECT_FOLDER"
 
@@ -38,7 +43,13 @@ cd "$TEMP_PROJECT_PATH"
 # Create a new Swift Package.
 swift package init
 
-cd ../../
+cd ../../ # Go back to the main project root (where the DoccGenerator.sh script is)
+
+# --- NEW: Copy TwintSDK.xcframework into the temp project's structure ---
+TWINT_XCFRAMEWORK_DEST_DIR="$TEMP_PROJECT_PATH/XCFramework/Dynamic"
+mkdir -p "$TWINT_XCFRAMEWORK_DEST_DIR"
+cp -a "$TWINT_XCFRAMEWORK_SOURCE_PATH" "$TWINT_XCFRAMEWORK_DEST_DIR/"
+# --- END NEW ---
 
 rsync -r Adyen "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
 rsync -r AdyenActions "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
@@ -63,7 +74,7 @@ mv "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/AdyenActions/Utilities/BundleSPME
 mv "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/Adyen/Utilities/BundleSPMExtension.swift" \
 "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/Adyen/Utilities/CoreBundleSPMExtension.swift"
 
-# Go back to Temp project root
+# Go back to Temp project root (which is where the Package.swift will be written)
 cd "$TEMP_PROJECT_PATH"
 
 echo "// swift-tools-version: 5.8
@@ -108,7 +119,7 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: \"TwintSDK\",
-            path: \"$TWINT_XCFRAMEWORK_ABSOLUTE_PATH\"
+            path: \"XCFramework/Dynamic/TwintSDK.xcframework\"
         ),
         .target(
             name: \"Adyen\",
@@ -178,7 +189,7 @@ transform-for-static-hosting "$FINAL_DOCC_ARCHIVE_PATH/$FRAMEWORK_NAME.doccarchi
 # Clean up.
 rm -rf "$TEMP_PROJECT_FOLDER"
 
-REDIRECT_FOLDER=$DOCS_ROOT/redirect
+REDIRECT_FOLDER="$DOCS_ROOT/redirect" # Quoted for safety
 
 mkdir -p "$REDIRECT_FOLDER"
 
