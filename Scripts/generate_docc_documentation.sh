@@ -38,6 +38,7 @@ rsync -r AdyenSession $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
 rsync -r AdyenWeChatPay $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
 rsync -r AdyenSwiftUI $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
 rsync -r AdyenCashAppPay $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
+rsync -r AdyenTwint $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME
 
 # Copy the Adyen.docc folder to the temp package source folder
 cp -a $FRAMEWORK_NAME.docc $TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/$FRAMEWORK_NAME.docc
@@ -62,7 +63,7 @@ let package = Package(
     name: \"Adyen\",
     defaultLocalization: \"en-us\",
     platforms: [
-        .iOS(.v11)
+        .iOS(.v12)
     ],
     products: [
         .library(
@@ -74,22 +75,22 @@ let package = Package(
         .package(
             name: \"Adyen3DS2\",
             url: \"https://github.com/Adyen/adyen-3ds2-ios\",
-            .exact(Version(2, 4, 1))
+            .exact(Version(2, 4, 2))
         ),
         .package(
             name: \"AdyenNetworking\",
             url: \"https://github.com/Adyen/adyen-networking-ios\",
-            .exact(Version(3, 0, 0))
+            .exact(Version(3, 0, 1))
         ),
         .package(
             name: \"AdyenWeChatPayInternal\",
             url: \"https://github.com/Adyen/adyen-wechatpay-ios\",
-            .exact(Version(2, 1, 0))
+            .exact(Version(2, 2, 0))
         ),
         .package(
             name: \"PayKit\",
             url: \"https://github.com/cashapp/cash-app-pay-ios-sdk\",
-            .exact(Version(0, 5, 1))
+            .exact(Version(0, 6, 2))
         )
     ],
     targets: [
