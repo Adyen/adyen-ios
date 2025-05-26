@@ -80,7 +80,7 @@ internal final class FormCoBadgedCardItem: FormItem {
             let isSelected = brand.type.rawValue == defaultSelectedBrand.type.rawValue ? true : false
 
             let selectableItem = SelectableFormItem(
-                title: brand.type.name,
+                title: brand.localeBrand ?? brand.type.rawValue,
                 imageUrl: brandLogoURL,
                 isSelected: isSelected,
                 style: .init(title: style.title),
