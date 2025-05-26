@@ -23,8 +23,39 @@ jobs:
         run: |
           ./Scripts/sdk_size_analysis.sh
 
-      - name: Upload framework sizes JSON artifact
+      - name: Sanitize branch name
+        id: sanitize
+        run: |
+          sanitized_branch=${GITHUB_HEAD_REF//\//-}
+          echo "sanitized_branch=$sanitized_branch" >> $GITHUB_OUTPUT
+
+      - name: Upload SDK size JSON
         uses: actions/upload-artifact@v4
         with:
-          name: sdk-sizes-${{ github.head_ref }}
+          name: sdk-sizes-${{ steps.sanitize.outputs.sanitized_branch }}
           path: sdk_size_output/sdk_sizes.json
+          
+  comment-sdk-size:
+    runs-on: ubuntu-latest
+    needs: analyze-sdk-size
+    if: success()
+
+    steps:
+      - name: Download SDK size JSON
+        uses: actions/download-artifact@v4
+        with:
+          name: sdk-sizes-${{ steps.sanitize.outputs.sanitized_branch }}
+
+      - name: Read and format size summary
+        id: format
+        run: |
+          echo '```' > comment.txt
+          jq -r 'to_entries | sort_by(.value) | reverse | .[] | "\(.key): \(.value) KB"' sdk_sizes.json >> comment.txt
+          echo '```' >> comment.txt
+          cat comment.txt
+
+      - name: Post SDK size comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: sdk-size
+          path: comment.txt

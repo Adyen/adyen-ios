@@ -36,10 +36,10 @@ xcodebuild clean build \
   -skipPackagePluginValidation \
   CODE_SIGN_IDENTITY="" \
   CODE_SIGNING_REQUIRED=NO \
-  CODE_SIGNING_ALLOWED=NO \  
+  CODE_SIGNING_ALLOWED=NO \
   2>&1 | tee "${BUILD_OUTPUT_DIR}/full_build_log_${TOP_LEVEL_BUILD_SCHEME}.txt"
 
-BUILD_STATUS=${PIPESTATUS[0]}
+BUILD_STATUS=${pipestatus[1]}
 
 set +x
 set -e
