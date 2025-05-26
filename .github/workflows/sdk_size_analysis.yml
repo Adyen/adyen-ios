@@ -8,7 +8,8 @@ on:
 jobs:
   analyze-sdk-size:
     runs-on: macos-15-xlarge
-
+    outputs:
+      sanitized_branch: ${{ steps.sanitize.outputs.sanitized_branch }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -44,7 +45,7 @@ jobs:
       - name: Download SDK size JSON
         uses: actions/download-artifact@v4
         with:
-          name: sdk-sizes-${{ steps.sanitize.outputs.sanitized_branch }}
+          name: sdk-sizes-${{ needs.analyze-sdk-size.outputs.sanitized_branch}} 
 
       - name: Read and format size summary
         id: format
