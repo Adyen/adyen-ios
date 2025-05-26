@@ -1422,6 +1422,27 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
     }
 
+    func testCoBadgedCardsNameOnSelectionUI() throws {
+        // Given
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardComponent.Configuration()
+        )
+
+        setupRootViewController(sut.viewController)
+
+        let newResponse = BinLookupResponse(brands: [CardBrand(type: .bcmc), CardBrand(type: .maestro)], issuingCountryCode: "BE", isCreatedLocally: false)
+        sut.cardViewController.update(binInfo: newResponse)
+
+        wait(for: .aMoment)
+
+        // Then
+        XCTAssertFalse(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
+        XCTAssertEqual(sut.cardViewController.items.coBadgedCardItem.selectableFormItems[0].title, newResponse.brands?[0].localeBrand ?? newResponse.brands?[0].type.rawValue)
+    }
+
     func testCoBadgedCardsShouldSendDisplayedAnalyticsInfo() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
