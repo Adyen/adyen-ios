@@ -60,7 +60,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'CardScanner' do |plugin|
-    plugin.dependency = 'AdyenCardScanner'
+    plugin.dependency 'AdyenCardScanner'
   end
 
   s.subspec 'Components' do |plugin|
