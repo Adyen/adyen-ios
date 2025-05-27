@@ -1411,7 +1411,7 @@ class CardComponentTests: XCTestCase {
             configuration: CardComponent.Configuration()
         )
 
-        setupRootViewController(sut.viewController)
+        sut.viewController.loadViewIfNeeded()
 
         let newResponse = BinLookupResponse(brands: [CardBrand(type: .visa), CardBrand(type: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
         sut.cardViewController.update(binInfo: newResponse)
@@ -1420,6 +1420,42 @@ class CardComponentTests: XCTestCase {
 
         // Then
         XCTAssertFalse(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
+    }
+
+    func testCoBadgedCardsNameOnSelectionUI() throws {
+        // Given
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardComponent.Configuration()
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
+        let newResponse = BinLookupResponse(
+            brands: [
+                CardBrand(
+                    type: .bcmc,
+                    localeBrand: "Bancontact card"
+                ),
+                CardBrand(
+                    type: .maestro,
+                    localeBrand: nil
+                )
+            ],
+            issuingCountryCode: "BE",
+            isCreatedLocally: false
+        )
+
+        sut.cardViewController.update(binInfo: newResponse)
+
+        wait(for: .aMoment)
+
+        // Then
+        XCTAssertFalse(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
+        XCTAssertEqual(sut.cardViewController.items.coBadgedCardItem.selectableFormItems[0].title, newResponse.brands?[0].localeBrand)
+        XCTAssertEqual(sut.cardViewController.items.coBadgedCardItem.selectableFormItems[1].title, newResponse.brands?[1].type.rawValue)
     }
 
     func testCoBadgedCardsShouldSendDisplayedAnalyticsInfo() throws {
@@ -1437,7 +1473,7 @@ class CardComponentTests: XCTestCase {
         )
 
         let brands = [CardBrand(type: .visa), CardBrand(type: .carteBancaire)]
-        setupRootViewController(sut.viewController)
+        sut.viewController.loadViewIfNeeded()
 
         sut.cardViewController.items.coBadgedCardItem.updatedCardBrands = brands
         let dualBrandDisplayedCalled = analyticsProviderMock.infos.filter { $0.type == .displayed }.first
