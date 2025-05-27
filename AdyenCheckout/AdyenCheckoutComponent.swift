@@ -99,33 +99,3 @@ extension AdyenCheckoutComponent: ActionComponentDelegate {
         finish(with: error)
     }
 }
-
-extension AdyenCheckoutComponent: PaymentComponentDelegate {
-    
-    public func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
-        configuration.onSubmit?(data) { [weak self] response in
-            guard let self else { return }
-            self.handle(response)
-        }
-    }
-    
-    public func didFail(with error: any Error, from component: any PaymentComponent) {}
-    
-    private func handle(_ paymentsResponse: CheckoutPaymentsResponse) {
-        if let action = paymentsResponse.action {
-            // handle action
-        } else {
-            finish(with: CheckoutResult(resultCode: paymentsResponse.resultCode))
-        }
-    }
-    
-    private func finish(with result: CheckoutResult) {
-        // add any finalizing code if needed
-        configuration.onComplete?(result)
-    }
-    
-    private func finish(with error: Error) {
-        // add any finalizing code if needed
-        configuration.onError?(CheckoutError(error: error))
-    }
-}
