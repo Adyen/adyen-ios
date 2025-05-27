@@ -31,7 +31,10 @@ public struct CardBrand: Decodable {
 
     /// Indicates the cvc policy of the brand.
     internal let cvcPolicy: RequirementPolicy
-    
+
+    /// Indicates the locale brand name.
+    internal let localeBrand: String?
+
     /// Indicates the expiry date policy of the brand.
     internal let expiryDatePolicy: RequirementPolicy
 
@@ -65,7 +68,8 @@ public struct CardBrand: Decodable {
         expiryDatePolicy: RequirementPolicy = .required,
         isLuhnCheckEnabled: Bool = true,
         showSocialSecurityNumber: Bool = false,
-        panLength: Int? = nil
+        panLength: Int? = nil,
+        localeBrand: String? = nil
     ) {
         self.type = type
         self.isSupported = isSupported
@@ -74,6 +78,7 @@ public struct CardBrand: Decodable {
         self.isLuhnCheckEnabled = isLuhnCheckEnabled
         self.showsSocialSecurityNumber = showSocialSecurityNumber
         self.panLength = panLength
+        self.localeBrand = localeBrand
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -84,6 +89,7 @@ public struct CardBrand: Decodable {
         case showsSocialSecurityNumber = "showSocialSecurityNumber"
         case expiryDatePolicy
         case panLength
+        case localeBrand
     }
     
     internal var isCVCOptional: Bool {
