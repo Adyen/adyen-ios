@@ -31,7 +31,7 @@ jobs:
 
       - name: Run SDK Size Analysis Script
         run: |
-          ./Scripts/sdk_size_analysis.sh --skip-build
+          ./Scripts/sdk_size_analysis.sh
 
       - name: Upload current SDK size JSON
         if: ${{ github.event_name != 'pull_request' }}
