@@ -141,7 +141,7 @@ print_step "Writing sdk_sizes.json..."
 
 json_path="${BUILD_OUTPUT_DIR}/sdk_sizes.json"
 
-# Build raw JSON content without double-quoting keys
+# Build raw JSON content
 raw_json="{"
 first=true
 for name in ${(k)framework_map}; do
@@ -155,8 +155,7 @@ for name in ${(k)framework_map}; do
 done
 raw_json+=", \"__total__\": ${total_kb}}"
 
-# Pretty-print using jq
-printf $raw_json
+# Prettify using jq
 echo "$raw_json" | jq '.' > "$json_path"
 
 echo "Saved to: $json_path"
