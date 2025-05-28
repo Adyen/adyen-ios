@@ -19,6 +19,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     internal var checkoutAttemptId: String?
     internal var paymentMethods: PaymentMethods?
     internal let configuration: CheckoutConfiguration
+    internal let presentationDelegate: PresentationDelegate?
     
     /// Sets up the checkout object for the default flow
     /// with the values from your backend's `/session` call.
@@ -31,11 +32,13 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         with sessionId: String,
         sessionData: String,
         configuration: CheckoutConfiguration,
+        presentationDelegate: PresentationDelegate? = nil,
         completion: @escaping (Result<AdyenCheckout, Error>) -> Void
     ) {
-        // session
-        // analytics
-        let checkout = AdyenCheckout(configuration: configuration)
+        let checkout = AdyenCheckout(
+            configuration: configuration,
+            presentationDelegate: presentationDelegate
+        )
         
         let group = DispatchGroup()
         
@@ -81,9 +84,13 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     public static func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
+        presentationDelegate: PresentationDelegate? = nil,
         completion: @escaping (Result<AdyenCheckout, Error>) -> Void
     ) {
-        let checkout = AdyenCheckout(configuration: configuration)
+        let checkout = AdyenCheckout(
+            configuration: configuration,
+            presentationDelegate: presentationDelegate
+        )
         checkout.paymentMethods = paymentMethods
         
         // fetch and store checkout attempt id
@@ -103,7 +110,8 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         AdyenCheckoutComponent(
             paymentMethod: paymentMethod,
             configuration: configuration,
-            session: session
+            session: session,
+            presentationDelegate: presentationDelegate
         )
     }
     
@@ -111,7 +119,8 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         AdyenCheckoutComponent(
             action: action,
             configuration: configuration,
-            session: session
+            session: session,
+            presentationDelegate: presentationDelegate
         )
     }
     
@@ -121,8 +130,12 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     
     // MARK: Internal
 
-    internal init(configuration: CheckoutConfiguration) {
+    internal init(
+        configuration: CheckoutConfiguration,
+        presentationDelegate: PresentationDelegate?
+    ) {
         self.configuration = configuration
+        self.presentationDelegate = presentationDelegate
     }
     
     internal static func setupSession(
