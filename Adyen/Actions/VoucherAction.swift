@@ -4,7 +4,6 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Indicates the Voucher payment methods.
@@ -134,7 +133,7 @@ public enum VoucherAction: Decodable {
 }
 
 /// Describes a voucher that has an instructions url.
-internal protocol InstructionAwareVoucherAction {
+package protocol InstructionAwareVoucherAction {
     
     /// The instruction url.
     var instructionsURL: URL { get }

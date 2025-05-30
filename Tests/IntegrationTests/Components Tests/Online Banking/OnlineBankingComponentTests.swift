@@ -19,7 +19,12 @@ class OnlineBankingComponentTests: XCTestCase {
     override func setUpWithError() throws {
         paymentMethod = try! AdyenCoder.decode(onlineBankingDictionary) as OnlineBankingPaymentMethod
         analyticsProviderMock = AnalyticsProviderMock()
-        context = AdyenContext(apiContext: Dummy.apiContext, payment: nil, analyticsProvider: analyticsProviderMock)
+        context = AdyenContext(
+            apiContext: Dummy.apiContext,
+            payment: nil,
+            amount: Dummy.amount,
+            analyticsProvider: analyticsProviderMock
+        )
         style = FormComponentStyle()
         sut = OnlineBankingComponent(
             paymentMethod: paymentMethod,

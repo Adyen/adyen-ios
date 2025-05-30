@@ -313,6 +313,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             payment: Dummy.payment,
+            amount: Dummy.amount,
             analyticsProvider: analyticsProviderMock
         )
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")

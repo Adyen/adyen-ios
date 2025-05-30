@@ -8,13 +8,13 @@ import Foundation
 
 // TODO: Finalize all the parameters of the callbacks
 // Move Action to core module?
-// Add Resultcode enum
-public typealias PaymentsResponseHandler = (_ resultCode: String, _ action: String) -> Void
+// Add Result code enum
+public typealias PaymentsResponseHandler = (_ response: CheckoutPaymentsResponse) -> Void
 public typealias SubmitHandler = (_ data: PaymentComponentData, _ handler: PaymentsResponseHandler?) -> Void
 public typealias AdditionalDetailsHandler = (_ data: ActionComponentData, _ handler: PaymentsResponseHandler?) -> Void
 // TODO: Have a checkout error object?
 public typealias CheckoutErrorHandler = (_ error: Error) -> Void
-public typealias CheckoutSuccessHandler = (_ resultCode: String) -> Void
+public typealias CheckoutSuccessHandler = (_ result: CheckoutResult) -> Void
 
 /// Basic callbacks for all components.
 package protocol CheckoutBaseCallbacks {

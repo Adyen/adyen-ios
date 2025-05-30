@@ -5,20 +5,14 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-#if canImport(AdyenSession)
-    @_spi(AdyenInternal) import AdyenSession
-#endif
-#if canImport(AdyenDropIn)
-    @_spi(AdyenInternal) import AdyenDropIn
-#endif
-#if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
-#endif
+@_spi(AdyenInternal) import AdyenSession
+@_spi(AdyenInternal) import AdyenDropIn
+@_spi(AdyenInternal) import AdyenActions
 import AdyenNetworking
 import Foundation
 
 /// `AdyenCheckout` is the entry point to the Checkout flow. You initialize it through its static methods for your chosen flow
-/// and it prepares all the requied data asynchronously and returns an `AdyenCheckout` instance ready to be used.
+/// and it prepares all the required data asynchronously and returns an `AdyenCheckout` instance ready to be used.
 public final class AdyenCheckout: AdyenCheckoutProtocol {
     
     internal var session: AdyenSession?
@@ -45,7 +39,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         
         let group = DispatchGroup()
         
-        // create and store session and paymentmethods
+        // create and store session and payment methods
         group.enter()
         setupSession(with: configuration) { result in
             switch result {
@@ -106,11 +100,19 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     }
     
     public func createComponent(with paymentMethod: any PaymentMethod) -> AdyenCheckoutComponent? {
-        AdyenCheckoutComponent(paymentMethod: paymentMethod, configuration: configuration, session: session)
+        AdyenCheckoutComponent(
+            paymentMethod: paymentMethod,
+            configuration: configuration,
+            session: session
+        )
     }
     
     public func createComponent(with action: Action) -> AdyenCheckoutComponent? {
-        AdyenCheckoutComponent(action: action, configuration: configuration, session: session)
+        AdyenCheckoutComponent(
+            action: action,
+            configuration: configuration,
+            session: session
+        )
     }
     
     public func createDropIn() -> DropInComponent? {

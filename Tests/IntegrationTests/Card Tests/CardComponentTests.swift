@@ -2096,7 +2096,11 @@ class CardComponentTests: XCTestCase {
 
     func testPayButtonLocaleBasedFormating() {
         let amount = Amount(value: 1234567, currencyCode: "USD")
-        let context = AdyenContext(apiContext: Dummy.apiContext, payment: Payment(amount: amount, countryCode: "US"))
+        let context = AdyenContext(
+            apiContext: Dummy.apiContext,
+            payment: Payment(amount: amount, countryCode: "US"),
+            amount: amount
+        )
 
         // When
         var configuration = CardComponent.Configuration()
@@ -2114,7 +2118,11 @@ class CardComponentTests: XCTestCase {
 
     func testPayButtonEnforceedLocaleBasedFormating() {
         let amount = Amount(value: 1234567, currencyCode: "USD")
-        let context = AdyenContext(apiContext: Dummy.apiContext, payment: Payment(amount: amount, countryCode: "US"))
+        let context = AdyenContext(
+            apiContext: Dummy.apiContext,
+            payment: Payment(amount: amount, countryCode: "US"),
+            amount: amount
+        )
 
         // When
         var configuration = CardComponent.Configuration()

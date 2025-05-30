@@ -89,6 +89,7 @@ then
     use_frameworks!
 
     pod 'Adyen', :path => '../'
+    pod 'Adyen/AdyenCheckout', :path => '../'
     pod 'Adyen/Session', :path => '../'
     pod 'Adyen/SwiftUI', :path => '../'
     pod 'Adyen/DelegatedAuthentication', :path => '../'
@@ -113,6 +114,7 @@ else
     use_frameworks!
 
     pod 'Adyen', :path => '../'
+    pod 'Adyen/AdyenCheckout', :path => '../'
     pod 'Adyen/WeChatPay', :path => '../'
     pod 'Adyen/SwiftUI', :path => '../'
     pod 'AdyenAuthentication'
