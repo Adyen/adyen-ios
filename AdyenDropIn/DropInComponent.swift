@@ -197,6 +197,8 @@ public final class DropInComponent: NSObject,
     }
 
     internal lazy var rootComponent: PresentableComponent = {
+        var presentableComponent: PresentableComponent
+
         if configuration.allowPreselectedPaymentView,
            let preselectedComponent = componentManager.storedComponents.first {
             return preselectedPaymentMethodComponent(for: preselectedComponent, onCancel: nil)
@@ -210,7 +212,7 @@ public final class DropInComponent: NSObject,
     }()
 
     internal lazy var navigationController = DropInNavigationController(
-        rootComponent: rootComponent,
+        rootViewController: rootComponent.viewController,
         style: configuration.style.navigation,
         cancelHandler: { [weak self] isRoot, component in
             self?.didSelectCancelButton(isRoot: isRoot, component: component)

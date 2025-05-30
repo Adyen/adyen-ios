@@ -9,6 +9,8 @@ import UIKit
 
 internal final class DropInNavigationController: UINavigationController {
 
+    // MARK: - Initializers
+
     internal typealias CancelHandler = (Bool, PresentableComponent) -> Void
     
     private let cancelHandler: CancelHandler?
@@ -19,11 +21,15 @@ internal final class DropInNavigationController: UINavigationController {
 
     // MARK: - Initializers
 
-    internal init(rootComponent: PresentableComponent, style: NavigationStyle, cancelHandler: @escaping CancelHandler) {
+    internal init(
+        rootViewController: UIViewController,
+        style: NavigationStyle,
+        cancelHandler: @escaping CancelHandler
+    ) {
         self.style = style
         self.cancelHandler = cancelHandler
         super.init(nibName: nil, bundle: Bundle(for: DropInNavigationController.self))
-        setup(root: rootComponent)
+        setup(root: rootViewController)
     }
     
     @available(*, unavailable)
@@ -67,8 +73,9 @@ internal final class DropInNavigationController: UINavigationController {
         return modalViewController
     }
     
-    private func setup(root component: PresentableComponent) {
-        let rootContainer = wrapInComponentViewController(component: component, isRoot: true)
-        viewControllers = [rootContainer]
+    private func setup(root viewController: UIViewController) {
+        // TODO: - Only wrap if its a regular component.
+        // let rootContainer = wrapInComponentViewController(component: component, isRoot: true)
+        viewControllers = [viewController]
     }
 }

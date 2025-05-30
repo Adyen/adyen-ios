@@ -6,9 +6,10 @@
 
 import Foundation
 import UIKit
+@_spi(AdyenInternal) import Adyen
 
 internal protocol PreselectedPaymentMethodViewModelProtocol {
-
+    var paymentMethodView: UIViewController { get }
 }
 
 internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewModelProtocol {
@@ -35,6 +36,10 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
 
     // MARK: - PreselectedPaymentMethodViewModelProtocol
 
+    var paymentMethodView: UIViewController {
+        preselectedPaymentMethodComponent.viewController
+    }
+
     // MARK: - Private
 
 }
@@ -59,7 +64,24 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     
     // MARK: - View life cycle
 
+    override internal func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .systemPink
+
+        setupPaymentMethodView()
+    }
+
     // MARK: - Public
 
     // MARK: - Private
+
+    private func setupPaymentMethodView() {
+        let paymentMethodView = viewModel.paymentMethodView
+
+        paymentMethodView.willMove(toParent: self)
+        addChild(paymentMethodView)
+        view.addSubview(paymentMethodView.view)
+        paymentMethodView.didMove(toParent: self)
+        paymentMethodView.view.adyen.anchor(inside: view)
+    }
 }
