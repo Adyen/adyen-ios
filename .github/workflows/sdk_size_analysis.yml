@@ -74,7 +74,9 @@ jobs:
             ' base_sdk_size/sdk_sizes.json sdk_size_output/sdk_sizes.json >> comment.txt
           else
             echo "ℹ️ No baseline data found for '${{ steps.sanitize.outputs.base_branch }}'." >> comment.txt
-            jq -r 'to_entries | .[] | "\(.key): \(.value) KB"' sdk_size_output/sdk_sizes.json >> comment.txt
+            echo "| Framework | Size |" >> comment.txt
+            echo "| --- | ---: |" >> comment.txt
+            jq -r 'to_entries | .[] | "| \(.key) | \(.value) KB |"' sdk_size_output/sdk_sizes.json >> comment.txt
           fi
 
           echo '```' >> comment.txt
