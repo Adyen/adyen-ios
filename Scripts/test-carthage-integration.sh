@@ -105,6 +105,9 @@ targets:
       - framework: Carthage/Checkouts/adyen-3ds2-ios/XCFramework/Dynamic/Adyen3DS2.xcframework
         embed: true
         codeSign: true
+      - framework: Carthage/Checkouts/adyen-3ds2-ios-swift/XCFramework/Dynamic/Adyen3DS2_Swift.xcframework
+        embed: true
+        codeSign: true
       - framework: Carthage/Build/AdyenNetworking.xcframework
         embed: true
         codeSign: true
@@ -142,13 +145,11 @@ cp "../Tests/IntegrationTests/Helpers/XCTestCase+Wait.swift" Tests/XCTestCase+Wa
 cp "../Tests/IntegrationTests/Helpers/XCTestCase+Wait+UIKit.swift" Tests/XCTestCase+Wait+UIKit.swift
 cp "../Tests/IntegrationTests/Helpers/UIViewController+Search.swift" Tests/UIViewController+Search.swift
 cp "../Tests/IntegrationTests/Helpers/UIView+Search.swift" Tests/UIView+Search.swift
-cp "../Tests/UnitTests/Helpers/PaymentMethods+Equatable.swift" Tests/PaymentMethods+Equatable.swift
 cp "../Tests/UnitTests/Analytics/AnalyticsProviderMock.swift" Tests/AnalyticsProviderMock.swift
+cp "../Tests/UnitTests/Helpers/"/* Tests/
 cp -r "../Tests/UnitTests/Mocks/"* Tests/
 cp "../Tests/IntegrationTests/Actions Tests/ActionComponent/ActionComponentDelegateMock.swift" Tests/ActionComponentDelegateMock.swift
 cp "../Tests/UnitTests/APIClientMock.swift" Tests/APIClientMock.swift
-cp "../Tests/UnitTests/Helpers/String+UIImage.swift" Tests/String+UIImage.swift
-cp "../Tests/UnitTests/Helpers/XCTestCase+Coder.swift" Tests/XCTestCase+Coder.swift
 cp "../Tests/UnitTests/APIClientMock.swift" Source/APIClientMock.swift
 cp -a "../Demo/Common" Source/
 cp -a "../Demo/UIKit" Source/

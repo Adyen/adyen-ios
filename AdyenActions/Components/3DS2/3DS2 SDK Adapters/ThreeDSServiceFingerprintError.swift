@@ -10,4 +10,7 @@ import Foundation
 internal enum ThreeDSServiceFingerprintError: Error {
     /// The sdk faced an error performing fingerprinting.
     case fingerprintingError(errorPayload: String)
+    case transactionCreationError(errorPayload: String)
+    case messageVersionCreationError(errorPayload: String)
+    case serviceParameterCreationError(errorPayload: String)
 }

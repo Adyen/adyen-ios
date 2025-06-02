@@ -50,7 +50,7 @@ extension ComponentWrapper {
 
 internal func createDefaultThreeDS2CoreActionHandler(
     context: AdyenContext,
-    service: ThreeDSService,
+    service: ThreeDSServiceOrchestrator,
     appearanceConfiguration: ADYAppearanceConfiguration,
     delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?
 ) -> AnyThreeDS2CoreActionHandler {

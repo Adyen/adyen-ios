@@ -6,3 +6,4 @@ Demo/Common/IntegrationExamples/MapkitAddressLookupProvider.swift
 Tests/*
 UITests/*
 Scripts/*
+Package.swift

@@ -42,7 +42,7 @@ internal typealias VoidHandler = () -> Void
         /// - Parameter presentationDelegate: The presentation delegate
         internal convenience init(
             context: AdyenContext,
-            service: ThreeDSService,
+            service: ThreeDSServiceOrchestrator,
             appearanceConfiguration: ADYAppearanceConfiguration,
             delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication
         ) {
@@ -71,7 +71,7 @@ internal typealias VoidHandler = () -> Void
         /// - Parameter delegatedAuthenticationService: The Delegated Authentication service.
         internal init(
             context: AdyenContext,
-            service: ThreeDSService,
+            service: ThreeDSServiceOrchestrator,
             presenter: ThreeDS2PlusDAScreenPresenterProtocol,
             appearanceConfiguration: ADYAppearanceConfiguration = .init(),
             style: DelegatedAuthenticationComponentStyle = .init(),

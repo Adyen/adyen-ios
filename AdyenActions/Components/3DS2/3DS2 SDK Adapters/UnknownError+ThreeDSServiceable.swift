@@ -10,4 +10,6 @@ extension UnknownError {
     internal static let transactionNotInitialized = UnknownError(errorDescription: "Transaction not initialized")
     internal static let serviceIsNil = UnknownError(errorDescription: "ADYService is nil.")
     internal static let resultAndErrorAreNil = UnknownError(errorDescription: "Both error and result are nil, this should never happen.")
+    internal static let invalidMessageVersion = UnknownError(errorDescription: "Invalid message version.")
+    internal static let topViewControllerNotDetermined = UnknownError(errorDescription: "Top view controller couldn't be determined.")
 }

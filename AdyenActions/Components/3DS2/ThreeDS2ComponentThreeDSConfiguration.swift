@@ -5,7 +5,7 @@
 //
 
 internal extension ThreeDS2Component {
-    struct ThreeDSConfiguration: Decodable, ThreeDSFeatureChecker {
+    struct ThreeDSConfiguration: Decodable {
         private let version: String
         internal let featureFlags: [String: Bool]?
         
@@ -31,5 +31,11 @@ internal extension ThreeDS2Component {
         internal func isFeatureEnabled(_ name: String) -> Bool {
             featureFlags?[name] ?? false
         }
+    }
+}
+
+extension ThreeDS2Component.ThreeDSConfiguration: ThreeDSFeatureChecker {
+    func isFeatureEnabled(_ feature: Feature) -> Bool {
+        isFeatureEnabled(feature.rawValue)
     }
 }
