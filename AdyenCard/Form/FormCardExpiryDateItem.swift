@@ -56,7 +56,7 @@ internal final class FormCardExpiryDateItem: FormTextInputItem {
     override internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
-    
+
     private func updateFormState() {
         // when optional, if user enters anything it should be validated as regular entry.
         if isOptional {
@@ -67,14 +67,14 @@ internal final class FormCardExpiryDateItem: FormTextInputItem {
             validator = expiryDateValidator
         }
     }
-    
+
     internal func setExpiryDate(_ date: Date) {
         self.value = dateFormatter.string(from: date)
     }
 }
 
 extension FormItemViewBuilder {
-    internal func build(with item: FormCardExpiryDateItem) -> FormItemView<FormTextInputItem> {
-        FormTextInputItemView(item: item)
+    internal func build(with item: FormCardExpiryDateItem) -> FormItemView<FormCardExpiryDateItem> {
+        FormCardExpiryDateItemView(item: item)
     }
 }
