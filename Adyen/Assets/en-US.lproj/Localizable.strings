@@ -49,7 +49,6 @@
 "adyen.telephonePrefix" = "Prefix";
 "adyen.phoneNumber.placeholder" = "123–456–789";
 "adyen.card.cvcItem.placeholder.digits" = "%@ digits";
-"adyen.card.expiryItem.accessibilityLabel" = "Card expiry date (%@ format)";
 "adyen.emailItem.title" = "Email address";
 "adyen.emailItem.placeHolder" = "Email address";
 "adyen.emailItem.invalid" = "Invalid email address";
