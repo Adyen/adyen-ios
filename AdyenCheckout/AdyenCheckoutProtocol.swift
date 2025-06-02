@@ -14,12 +14,14 @@ internal protocol AdyenCheckoutProtocol: AdyenSessionProviding, CheckoutAttemptI
         with sessionId: String,
         sessionData: String,
         configuration: CheckoutConfiguration,
+        presentationDelegate: PresentationDelegate?,
         completion: @escaping (Result<AdyenCheckout, Error>) -> Void
     )
     
     static func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
+        presentationDelegate: PresentationDelegate?,
         completion: @escaping (Result<AdyenCheckout, Error>) -> Void
     )
     

@@ -41,7 +41,8 @@ extension CheckoutConfiguration {
 //    }
 }
 
-// testing different ways of creating the component
+// TODO: testing different ways of creating the component
+// we can go back to paymentcomponentbuilder or choose another way as well
 extension BLIKPaymentMethod {
     
     func buildComponent(with configuration: CheckoutConfiguration) -> BLIKComponent {
@@ -51,16 +52,12 @@ extension BLIKPaymentMethod {
         } else {
             blikConfiguration = .init()
         }
+        // TODO: find a better place to carry over global settings to individual configs
+        blikConfiguration.showsSubmitButton = configuration.showsSubmitButton
         
-        let context = AdyenContext(
-            apiContext: configuration.apiContext,
-            payment: nil,
-            amount: configuration.amount,
-            analyticsConfiguration: configuration.analyticsConfiguration
-        )
-        var component = BLIKComponent(
+        let component = BLIKComponent(
             paymentMethod: self,
-            context: context,
+            context: configuration.context,
             configuration: blikConfiguration
         )
         return component
