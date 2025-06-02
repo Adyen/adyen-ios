@@ -26,7 +26,7 @@ public final class AdyenCheckoutComponent {
             context: configuration.context,
             configuration: AdyenActionComponent.Configuration()
         )
-        //TODO: create a way for CheckoutConfig to have AdyenActionComponent.Configuration
+        // TODO: create a way for CheckoutConfig to have AdyenActionComponent.Configuration
         handler.delegate = self
         handler.presentationDelegate = presentationDelegate
         return handler

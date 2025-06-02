@@ -470,7 +470,6 @@
 		A0F749972D958B3000014A05 /* AdyenCheckout.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A0F7498E2D958B3000014A05 /* AdyenCheckout.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A0F7499F2D958B3800014A05 /* AdyenCheckout.docc in Sources */ = {isa = PBXBuildFile; fileRef = A0F7499D2D958B3800014A05 /* AdyenCheckout.docc */; };
 		A0F749A02D958B3800014A05 /* AdyenCheckout.h in Headers */ = {isa = PBXBuildFile; fileRef = A0F7499C2D958B3800014A05 /* AdyenCheckout.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A0F749A12D958B5A00014A05 /* AdyenCheckout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0F7498E2D958B3000014A05 /* AdyenCheckout.framework */; };
 		A0F749A52D958B9700014A05 /* AdyenCheckout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F749A42D958B9400014A05 /* AdyenCheckout.swift */; };
 		A0F749A62D958BFE00014A05 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; platformFilter = ios; };
 		A0F749B32D95946200014A05 /* AdyenDropIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9B36CAB2243B2FE00EAA368 /* AdyenDropIn.framework */; };
@@ -2727,7 +2726,6 @@
 				A020EC4829E6EC4B0050B2FE /* AdyenCashAppPay.framework in Frameworks */,
 				A0F749962D958B3000014A05 /* AdyenCheckout.framework in Frameworks */,
 				81BDD6CE2B21CE6C0022250E /* AdyenAuthentication in Frameworks */,
-				A0F749A12D958B5A00014A05 /* AdyenCheckout.framework in Frameworks */,
 				E9B36CB22243B2FF00EAA368 /* AdyenDropIn.framework in Frameworks */,
 				E2C0E0AD220B0840008616F6 /* AdyenCard.framework in Frameworks */,
 			);
