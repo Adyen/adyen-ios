@@ -12,8 +12,8 @@ public struct AnalyticsEventLog: AnalyticsEvent {
     
     public var id: String = UUID().uuidString
     
-    public var timestamp = Int(Date().timeIntervalSince1970)
-    
+    public var timestamp = Int(Date().timeIntervalSince1970 * 1000)
+
     public var component: String
     
     public var type: LogType
@@ -30,6 +30,7 @@ public struct AnalyticsEventLog: AnalyticsEvent {
         case redirect = "Redirect"
         case threeDS2 = "ThreeDS2"
         case closed = "Closed"
+        case cardScanner = "CardScanner"
     }
     
     public enum LogSubType: String, Encodable {
@@ -45,6 +46,12 @@ public struct AnalyticsEventLog: AnalyticsEvent {
         case challengeDataSent = "ChallengeDataSentMobile"
         case challengeDisplayed = "ChallengeDisplayed"
         case challengeComplete = "ChallengeCompleted"
+        case cardScannerAvailable = "CardScannerAvailable"
+        case cardScannerUnavailable = "CardScannerUnavailable"
+        case cardScannerPresented = "CardScannerPresented"
+        case cardScannerCancelled = "CardScannerCancelled"
+        case cardScannerSuccess = "CardScannerSuccess"
+        case cardScannerFailure = "CardScannerFailure"
     }
     
     public init(component: String, type: LogType, subType: LogSubType? = nil) {

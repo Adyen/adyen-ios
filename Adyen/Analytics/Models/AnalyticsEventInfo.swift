@@ -13,8 +13,8 @@ public struct AnalyticsEventInfo: AnalyticsEvent {
     
     public var id: String = UUID().uuidString
     
-    public var timestamp = Int(Date().timeIntervalSince1970)
-    
+    public var timestamp = Int(Date().timeIntervalSince1970 * 1000) // Backend expect milliseconds as Int
+
     public var component: String
     
     public var type: InfoType
@@ -40,6 +40,7 @@ public struct AnalyticsEventInfo: AnalyticsEvent {
         case validationError = "ValidationError"
         case rendered = "Rendered"
         case input = "Input"
+        case displayed = "Displayed"
     }
     
     public init(component: String, type: InfoType) {

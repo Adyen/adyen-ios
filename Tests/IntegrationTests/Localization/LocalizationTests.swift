@@ -25,6 +25,63 @@ class LocalizationTests: XCTestCase {
         XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "تأكيد الدفع باستخدام test")
         XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "التحقق من بطاقتك")
         XCTAssertEqual(parameters.locale, "ar")
+
+        parameters = LocalizationParameters(enforcedLocale: "is-IS")
+        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Staðfesta test greiðslu")
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Staðfestu kortið þitt")
+        XCTAssertEqual(localizedString(.submitButton, parameters), "Greiða")
+        XCTAssertEqual(parameters.locale, "is-IS")
+    }
+
+    func testEnforcedLocalizationOverrides() {
+        let parameters = LocalizationParameters(
+            enforcedLocale: "is-IS",
+            bundle: Bundle(for: LocalizationTests.self)
+        )
+        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle - Confirm test payment - IS")
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - IS")
+
+        // Fallback to SDK's translation for known locale
+        XCTAssertEqual(localizedString(.submitButton, parameters), "Greiða")
+
+        XCTAssertNotNil(parameters.bundle)
+        XCTAssertNil(parameters.keySeparator)
+        XCTAssertEqual(parameters.locale, "is-IS")
+    }
+
+    func testEnforcedLocalizationOverridesWithCustomSeparator() {
+        let parameters = LocalizationParameters(
+            enforcedLocale: "ro-RO",
+            bundle: Bundle(for: LocalizationTests.self),
+            tableName: "EnforceLocaleTests",
+            keySeparator: "-"
+        )
+        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle - Confirm test payment - RO")
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - RO")
+
+        // Fallback to SDK's translation for known locale, ignoring custom separator
+        XCTAssertEqual(localizedString(.submitButton, parameters), "Plătiți")
+
+        XCTAssertNotNil(parameters.bundle)
+        XCTAssertEqual(parameters.keySeparator, "-")
+        XCTAssertEqual(parameters.tableName, "EnforceLocaleTests")
+        XCTAssertEqual(parameters.locale, "ro-RO")
+    }
+
+    func testEnforcedLocalizationOverridesUnsupportedLocale() {
+        let parameters = LocalizationParameters(
+            enforcedLocale: "hi",
+            bundle: Bundle(for: LocalizationTests.self)
+        )
+
+        // This string exist on Custom bundle, but SDK will first check on Main bundle
+        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Confirm test payment - HI")
+
+        // Will not find a line on Main bundle and fallback to Custom bundle
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - HI")
+
+        // Ultimate fallback to English
+        XCTAssertEqual(localizedString(.submitButton, parameters), "Pay")
     }
 
     // MARK: - Button title

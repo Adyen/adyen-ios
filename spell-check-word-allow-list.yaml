@@ -209,9 +209,13 @@ whiteList:
   - primeiropay
   - SDKs
   - ks
+  - cancellables
+  - qos
+  - cardscanner
   - payto
   - abn
   - firstname
   - bsb
   - payid
   - orgid
+  - viewcontroller

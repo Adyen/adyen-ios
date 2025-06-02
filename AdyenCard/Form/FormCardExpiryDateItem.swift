@@ -4,11 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Foundation
 @_spi(AdyenInternal) import Adyen
 
 /// A form item into which card expiry date is entered, formatted and validated.
-internal final class FormCardExpiryDateItem: FormTextItem {
-    
+internal final class FormCardExpiryDateItem: FormTextInputItem {
+
     internal var localizationParameters: LocalizationParameters?
     
     /// Flag determining this forms state. Validation changes based on this.
@@ -19,6 +20,11 @@ internal final class FormCardExpiryDateItem: FormTextItem {
     }
     
     private let expiryDateValidator = CardExpiryDateValidator()
+    private lazy var dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM / YY"
+        return dateFormatter
+    }()
     
     /// Returns the month part of the expiry date item
     internal var expiryMonth: String? {
@@ -62,10 +68,13 @@ internal final class FormCardExpiryDateItem: FormTextItem {
         }
     }
     
+    internal func setExpiryDate(_ date: Date) {
+        self.value = dateFormatter.string(from: date)
+    }
 }
 
 extension FormItemViewBuilder {
-    internal func build(with item: FormCardExpiryDateItem) -> FormItemView<FormCardExpiryDateItem> {
-        FormTextItemView<FormCardExpiryDateItem>(item: item)
+    internal func build(with item: FormCardExpiryDateItem) -> FormItemView<FormTextInputItem> {
+        FormTextInputItemView(item: item)
     }
 }

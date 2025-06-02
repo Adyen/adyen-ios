@@ -45,6 +45,11 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     
     private let localizationParameters: LocalizationParameters?
     
+    internal let scanCardHandler: (() -> Void)?
+    internal var scanYourCardButtonTitle: String
+    
+    internal var supportsCardScanning: Bool { scanCardHandler != nil }
+    
     /// Returns the initial brand for single brand cases
     /// or `selectedDualBrand` for dual brand cases
     internal var currentBrand: CardBrand? {
@@ -52,12 +57,13 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     }
     
     internal var isDualBranded: Bool = false
-    
+
     /// Initializes the form card number item.
     internal init(
         cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
         style: FormTextItemStyle = FormTextItemStyle(),
-        localizationParameters: LocalizationParameters? = nil
+        localizationParameters: LocalizationParameters? = nil,
+        scanCardHandler: (() -> Void)? = nil
     ) {
         // these 4 US debit brands are not to be displayed
         // but should be supported so it's done here for now
@@ -68,9 +74,10 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
                 logo.type != .nyce
         }
         self.supportedCardTypes = cardTypeLogos.map(\.type)
-        
         self.localizationParameters = localizationParameters
-        
+        self.scanCardHandler = scanCardHandler
+        self.scanYourCardButtonTitle = localizedString(.cardScanYourCardButton, localizationParameters)
+
         super.init(style: style)
 
         observe(publisher) { [weak self] value in self?.valueDidChange(value) }
@@ -99,6 +106,10 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         }
     }
     
+    internal func setCardNumber(_ cardNumber: String) {
+        value = cardNumber
+    }
+
     // MARK: - BuildableFormItem
     
     override internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
@@ -176,15 +187,14 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
                 cardTypeLogos.first { $0.type == brand.type }
             }
     }
-    
-    /// Changes the selected dual brand with the given index to trigger updates
+
+    /// Changes the selected dual brand with the given cardBrand to trigger updates
     /// for the observing objects.
-    internal func selectBrand(at index: Int) {
-        let newBrand = detectedBrands.adyen[safeIndex: index]
-        updateValidation(for: newBrand)
-        self.selectedDualBrand = newBrand
+    internal func selectBrand(cardBrand: CardBrand) {
+        updateValidation(for: cardBrand)
+        self.selectedDualBrand = cardBrand
     }
-    
+
     /// Updates the initial brand and the related validation checks.
     private func update(initialBrand: CardBrand?, defaultSupportedValue: Bool = true) {
         updateValidation(for: initialBrand, defaultSupportedValue: defaultSupportedValue)

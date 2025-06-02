@@ -82,7 +82,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
         super.viewDidLoad()
         itemManager.topLevelItemViews.forEach(formView.appendItemView(_:))
         delegate?.viewDidLoad(viewController: self)
-        
+
         observe(keyboardObserver.$keyboardRect) { [weak self] _ in
             self?.didUpdatePreferredContentSize()
         }
@@ -214,11 +214,11 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     public func showValidation() {
         let validatableItemViews = itemManager.flatItemViews
             .compactMap { $0 as? AnyFormValidatableValueItemView }
-        
+
         validatableItemViews.forEach { $0.showValidation() }
-        
+
         let firstInvalidItemView = validatableItemViews.first { !$0.isValid }
-        
+
         if let firstInvalidItemView {
             UIAccessibility.post(notification: .screenChanged, argument: firstInvalidItemView)
         }
@@ -237,6 +237,15 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
 
     public func resetForm() {
         itemManager.flatItemViews.forEach { $0.reset() }
+    }
+
+    public func focusNextInputField() {
+        let textInputItems = itemManager.flatItems.compactMap {
+            $0 as? FormTextInputItem
+        }.filter(\.isVisible)
+
+        let firstEmptyItem = textInputItems.first(where: { $0.value.isEmpty })
+        firstEmptyItem?.focus()
     }
 
     // MARK: - Private

@@ -190,7 +190,7 @@ public class CardComponent: PresentableComponent,
     private lazy var securedViewController = SecuredViewController(child: cardViewController, style: configuration.style)
     
     internal lazy var cardViewController: CardViewController = {
-        
+
         let formViewController = CardViewController(
             configuration: configuration,
             shopperInformation: configuration.shopperInformation,
@@ -200,16 +200,20 @@ public class CardComponent: PresentableComponent,
             supportedCardTypes: supportedCardTypes,
             initialCountryCode: initialCountryCode,
             scope: String(describing: self),
-            localizationParameters: configuration.localizationParameters
+            localizationParameters: configuration.localizationParameters,
+            cardScannerAnalyticsHandler: { [weak self] logSubType in
+                self?.sendCardScannerLogEvent(logSubType)
+            }
         )
+
         formViewController.delegate = self
         formViewController.cardDelegate = self
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
-        
+
         formViewController.items.onDidTriggerInfoEvent = { [weak self] infoEventData in
             self?.sendInfoEvent(with: infoEventData)
         }
-        
+
         return formViewController
     }()
     
@@ -222,6 +226,12 @@ public class CardComponent: PresentableComponent,
             type: data.type
         )
         infoEvent.target = data.target
+        infoEvent.brand = data.brands?.first?.type.rawValue
+
+        // Send configData only when co-badged cards are displayed
+        if data.type == .displayed, infoEvent.target == .dualBrandButton {
+            infoEvent.configData = CoBadgedCardAnalyticsConfiguration(dualBrands: data.brands?.map(\.type.rawValue).joined(separator: ","))
+        }
         if let errorCode = data.error?.analyticsErrorCode {
             infoEvent.validationErrorCode = String(errorCode)
         }
@@ -295,7 +305,7 @@ private extension CardComponent.Configuration {
             completionHandler: completionHandler
         )
     }
-    
+
     func addressInputFormViewModel(
         with initialCountry: String,
         prefillAddress: PostalAddress?,
@@ -326,5 +336,21 @@ extension CardComponent: SubmittableComponent {
 
     public func validate() -> Bool {
         cardViewController.validate()
+    }
+}
+
+// MARK: - AdyenCardScanner Analytics
+
+extension CardComponent {
+
+    private func sendCardScannerLogEvent(_ subtype: AnalyticsEventLog.LogSubType) {
+        let component = paymentMethod.type.rawValue
+        let logEvent = AnalyticsEventLog(
+            component: component,
+            type: .cardScanner,
+            subType: subtype
+        )
+
+        context.analyticsProvider?.add(log: logEvent)
     }
 }

@@ -1,109 +1,147 @@
 # Localization
 
-Both the Drop-in and the Components offer a an option to customize the strings to match the usecase / tone of voice your app.
+The SDK allows you to customize UI strings and manage locale behavior using the `LocalizationParameters` object. You can configure these settings for both the Drop-in and individual Components through their `configuration.localizationParameters` property.
 
-By default, the SDK attempts to use a device's locale for translation of text and formatting of monetary values. If the preferred device's locales are not supported, the SDK falls back to the **en-US** locale.
+Based on this configuration, the SDK provides two methods for handling language and regional formatting:
 
-> Note: Localization only picks up locales that are listed in the `CFBundleLocalizations` property of your app's `Info.plist` file.
+- **[iOS Default](https://developer.apple.com/library/archive/qa/qa1828/_index.html) Localization:**
+  The SDK matches the shopper's device language and regional settings when their locale is listed in your app's `CFBundleLocalizations` array in the `Info.plist` file. If the locale for your shopper's device language isn't found, the locale defaults to `en-US` for UI text. Amount and date formatting may still adhere to the shopper's device region.
 
-## Overriding default formatting of monetary values 
+- **Enforced Localization:**
+  You enforce a specific locale (e.g., `"fr-FR"`) by using `LocalizationParameters(enforcedLocale: "fr-FR"`. This ignores the shopper's device preferences, and all UI text and data formatting (like currency, dates, numbers) use the conventions of the enforced locale. Using an enforced locale allows you to target a single language, achieve uniform branding, or implement an in-app language switcher.
 
-To enforce your own formatting for monetary values, use the `locale` property on `LocalizationParameters`.
+## How device locales affect monetary formatting
 
-## Overriding a string 
+The default iOS localization can lead to significant variations in how monetary values are displayed based on the shopper's device locale settings.
 
-You can override strings for each key, and for each language and locale. 
+For instance, if your app's `CFBundleLocalizations` array consist of English, French, and Chinese (Mainland) locales, and the transaction amount is **12,340 Chinese Yuan (CNY)** (twelve thousand three hundred forty), below is how your app will display the amount, formatted according to their device's regional settings:
 
-1. In Xcode, [create a new](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) or use your existing `Localizable.strings` / `Localizable.xcstrings` file.
+| User's Device Language | User's Device Region | Example Pay Button Label (for 12,340 CNY) |
+| :--------------------- | :------------------- | :---------------------------------------- |
+| `zh` (Chinese)         | `CN` (China)         | `¥12,340.00`                              |
+| `fr` (French)          | `FR` (France)        | `12 340,00 CNY`                           |
+| `tr` (Turkish)         | `TR` (Turkey)        | `CN¥12.340,00`                            |
+| `vi` (Vietnamese)      | `VN` (Vietnam)       | `¥12.340,00`                              |
 
-For example, if your app uses English and Spanish, your project folder should have a `Localizable.strings` file for each locale:
+## Uniform currency and amount formatting
 
-- English: `en-US.lproj/Localizable.string`
+If you prefer to have a uniform monetary formatting for all shoppers, or need to customize how numbers are formatted independently of the UI language, you can use `LocalizationParameters`. There are two ways to control this:
 
-- Spanish: `es-ES.lproj/Localizable.string`
+- **To customize _only_ the formatting of monetary values (numbers, separators):**
+  Use the `locale` property on `LocalizationParameters`. This applies the monetary formatting of the chosen locale, but the UI text will adhere to the "Default Localization".
 
-2. Find the key for the string you want to translate in the [list of available strings](https://github.com/Adyen/adyen-ios/blob/develop/Adyen/Assets/Generated/LocalizationKey.swift) and override it for each desired locale:
+- **To enforce a single locale for _both_ UI text and numeric data formatting:**
+  Use the `enforcedLocale` property on `LocalizationParameters` (as detailed in the "Enforced Localization" section above).
 
-For example, if you want to override the payment button text to **Subscribe for [AMOUNT]**.
+## Override strings
 
-- English, in the `en-US.lproj/Localizable.string` file:
-```
-"adyen.submitButton.formatted" = "Subscribe for %@";
-```
+You can override strings for each key and locale.
 
-- Spanish, in the `es-ES.lproj/Localizable.string` file:
-```
-"adyen.submitButton.formatted" = "Suscríbete por %@";
-```
+> Important: If you are using multiple Adyen Components or the Drop-in, all usages of that localization key will be updated with the value you specify to override the default localization.
 
-> Important: If you are using multiple Adyen Components or Drop-In, all usages of that localization key get updated with the overridden value.
+> Tip: If you want to override the value of a key for a specific component, you can use the `localizationParameters` property to specify a custom localization file to get the values from, as described below.
 
-> Tip: If you want to override the value for a key for a specific component you can use the `localizationParameters` to specify a custom localization file to get the values from as described below.
+1.  [Add a string catalog to your project](https://developer.apple.com/documentation/xcode/localizing-and-varying-text-with-a-string-catalog#Add-a-string-catalog-to-your-project) or use your existing one.
+2.  [Add a language to your project](https://developer.apple.com/documentation/xcode/localizing-and-varying-text-with-a-string-catalog#Add-a-language-to-your-project) if necessary.
+3.  Find the key for the string you want to translate in the [list of available strings](https://github.com/Adyen/adyen-ios/blob/develop/Adyen/Assets/Generated/LocalizationKey.swift) and add your custom translation to override it for each desired locale.
 
+For example, if you want to override the payment button text to **Subscribe for [AMOUNT]**:
 
-### Custom localization file name
+1. Add the `adyen.submitButton.formatted` key to your catalog.
+2. Provide the new translation(s).
 
-To use a custom localization file name, key format, or bundle, you must configure `LocalizationParameters`.
+<details>
+  <summary><h3> Using Legacy <code>.strings</code> files</h3></summary>
 
-|Parameter | Description | Default value |
-| --- | --- | --- |
-|`bundle`| Your bundle. | `Bundle.main` |
-|`tableName` | Your localization file name. | `Localizable.strings` |
-|`keySeparator` | The separator for the key for each string. | `"."` |
+You can override strings for each key, and for each language and locale using legacy `.strings` files.
 
-In the following example, the SDK looks for the key `adyen_submitButton_formatted` in the `YOUR_LOCALIZATION_FILE.strings` file in **CommonLibrary** bundle. 
+1.  In Xcode, [create a new](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html) or use your existing `Localizable.strings` file. (If you are using `.xcstrings` catalogs, refer to the section above).
+
+    For example, if your app uses English and Spanish, your project folder should have a `Localizable.strings` file for each locale:
+
+    - English: `en-US.lproj/Localizable.strings`
+    - Spanish: `es-ES.lproj/Localizable.strings`
+
+2.  Find the key for the string you want to translate in the [list of available strings](https://github.com/Adyen/adyen-ios/blob/develop/Adyen/Assets/Generated/LocalizationKey.swift) and override it for each desired locale.
+
+For example, if you want to override the payment button text to **Subscribe for [AMOUNT]**:
+
+- English, in the `en.lproj/Localizable.strings` file:
+
+  ```strings
+  "adyen.submitButton.formatted" = "Subscribe for %@";
+  ```
+
+- Spanish, in the `es.lproj/Localizable.strings` file:
+  ```strings
+  "adyen.submitButton.formatted" = "Suscríbete por %@";
+  ```
+
+</details>
+
+### Add a new locale
+
+In the same way, you can add new locales that are not supported by the SDK out-of-the-box. Add the necessary `.xcstrings` entries or `.strings` files for the new locale.
+
+#### List of Currently Available Locales
+
+| Language               | Locale code | Fallback |
+| :--------------------- | :---------- | :------: |
+| Arabic - International | ar          |          |
+| Bulgarian              | bg-BG       |          |
+| Catalan                | ca-ES       |          |
+| Chinese - Simplified   | zh-CN       |          |
+| Chinese - Traditional  | zh-TW       |          |
+| Croatian               | hr-HR       |          |
+| Czech                  | cs-CZ       |          |
+| Danish                 | da-DK       |          |
+| Dutch                  | nl-NL       |          |
+| English - US           | en-US       |    ✱     |
+| Estonian               | et-EE       |          |
+| Finnish                | fi-FI       |          |
+| French                 | fr-FR       |          |
+| German                 | de-DE       |          |
+| Greek                  | el-GR       |          |
+| Hungarian              | hu-HU       |          |
+| Icelandic              | is-IS       |          |
+| Italian                | it-IT       |          |
+| Japanese               | ja-JP       |          |
+| Korean                 | ko-KR       |          |
+| Latvian                | lv-LV       |          |
+| Lithuanian             | lt-LT       |          |
+| Norwegian              | no-NO       |          |
+| Polish                 | pl-PL       |          |
+| Portuguese - Brazil    | pt-BR       |          |
+| Portuguese - Portugal  | pt-PT       |          |
+| Romanian               | ro-RO       |          |
+| Russian                | ru-RU       |          |
+| Slovak                 | sk-SK       |          |
+| Slovenian              | sl-SI       |          |
+| Spanish                | es-ES       |          |
+| Swedish                | sv-SE       |          |
+
+### Use a custom localization file name
+
+To use a custom localization file name, key format, or bundle, you can configure `LocalizationParameters`.
+
+| Parameter      | Description                                      | Default value   |
+| :------------- | :----------------------------------------------- | :-------------- |
+| `bundle`       | Your bundle.                                     | `Bundle.main`   |
+| `tableName`    | Your localization file name (without extension). | `"Localizable"` |
+| `keySeparator` | The separator for the key for each string.       | `"."`           |
+
+In the following example, the SDK looks for the key `adyen_submitButton_formatted` in the `YOUR_LOCALIZATION_FILE.strings` (or `YOUR_LOCALIZATION_FILE.xcstrings` catalog) file within a custom bundle.
 
 ```swift
 let parameters = LocalizationParameters(
-    bundle: Bundle(for: MyCommonLibraryClass.type),
+    bundle: Bundle(for: MyClass.self), // Or your specific bundle instance
     tableName: "YOUR_LOCALIZATION_FILE",
     keySeparator: "_"
 )
-configuration.localizationParameters = parameters // Any Component.
+// Assuming 'configuration' is an instance of your Adyen component's configuration
+configuration.localizationParameters = parameters // Apply to any Component configuration.
 ```
 
-## Enforcing locale
+## Localization flow
 
-To enforce a specific locale and formatting of monetary values no matter which locale the shopper's device uses, use `LocalizationParameters(enforcedLocale: MY_LOCALE)`.
-
-List of currently avaialble locales:
-
-| Language | Locale code | Fallback |
-| --- | --- | :---: |
-| Arabic - International | ar | |
-| Chinese - Simplified | zh-CN | |
-| Chinese - Traditional | zh-TW | |
-| Croatian | hr-HR | |
-| Czech | cs-CZ | |
-| Danish | da-DK | |
-| Dutch | nl-NL | |
-| English - US | en-US | ✱ |
-| Finnish | fi-FI | |
-| French | fr-FR | |
-| German | de-DE | |
-| Greek | el-GR | |
-| Hungarian | hu-HU | |
-| Italian | it-IT | |
-| Japanese | ja-JP | |
-| Korean | ko-KR | |
-| Norwegian | no-NO | |
-| Polish | pl-PL | |
-| Portuguese - Brazil | pt-BR | |
-| Portuguese - Portugal | pt-PT | |
-| Romanian | ro-RO | |
-| Russian | ru-RU | |
-| Slovak | sk-SK | |
-| Slovenian | sl-SI | |
-| Spanish | es-ES | |
-| Swedish | sv-SE | |
-
-## Adding a locale
-
-If a locale you want isn't already available, you can add it:
-
-1. List the locale you want in the `CFBundleLocalizations` property of your app's `Info.plist` file.
-2. Create a new `Localizable.strings` file for the locale in Xcode. For example, `uk_UA.lproj/Localizable.string`.
-3. Add translations to [all keys](https://github.com/Adyen/adyen-ios/blob/develop/Adyen/Assets/en-US.lproj/Localizable.strings) in the file. 
-4. If necessary, configure the file name, bundle, and separator with [`LocalizationParameters`](https://github.com/Adyen/adyen-ios/blob/develop/Adyen.docc/Localization.md#custom-localization-file-name).
-
-> Important: Custom locales cannot be [enforced](https://github.com/Adyen/adyen-ios/blob/develop/Adyen.docc/Localization.md#custom-localization-file-name). 
+![Localization diagram](Assets/localization_diagram.png)

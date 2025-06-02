@@ -32,7 +32,7 @@ public enum AnalyticsEventTarget: String, Encodable {
     case expiryDate = "expiry_date"
     case securityCode = "security_code"
     case holderName = "holder_name"
-    case dualBrand
+    case dualBrandButton = "dual_brand_button"
     case boletoSocialSecurityNumber = "social_security_number"
     case taxNumber = "tax_number"
     case authPassWord = "password"
