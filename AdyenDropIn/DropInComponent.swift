@@ -206,7 +206,7 @@ public final class DropInComponent: NSObject,
                   let singleRegularComponent = componentManager.singleRegularComponent {
             setNecessaryDelegates(on: singleRegularComponent)
             return singleRegularComponent
-        } else {
+        } else { 
             return paymentMethodListComponent(onCancel: nil)
         }
     }()
