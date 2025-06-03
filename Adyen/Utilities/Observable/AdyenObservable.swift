@@ -7,6 +7,8 @@
 import Foundation
 
 /// Wraps a value to make it observable.
+/// Note: When the `wrappedValue` is updated, the observable will only publish the new value to subscribers
+///       if it is not equal to the previous value.
 @propertyWrapper
 public final class AdyenObservable<ValueType: Equatable>: EventPublisher {
     
@@ -21,9 +23,6 @@ public final class AdyenObservable<ValueType: Equatable>: EventPublisher {
 
     /// The value being observed.
     ///
-    /// When this value is updated, the observable will only publish the new value to subscribers
-    /// if it is not equal to the previous value (using the `!=` operator). This differs from most
-    /// reactive frameworks, which typically publish all updates regardless of value equality.
     ///
     /// - Note: This equality-based publishing behavior is part of the framework design but ideally
     ///         should be a responsibility of the business logic layer rather than the reactive framework.
