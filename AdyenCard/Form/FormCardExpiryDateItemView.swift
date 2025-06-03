@@ -17,6 +17,9 @@ internal final class FormCardExpiryDateItemView: FormTextItemView<FormCardExpiry
         observe(item.$placeholder) { [weak self] _ in
             self?.setupAccessibility()
         }
+        observe(item.$title) { [weak self] _ in
+            self?.setupAccessibility()
+        }
     }
 
     private func setupAccessibility() {
