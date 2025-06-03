@@ -252,7 +252,7 @@ class DropInTests: XCTestCase {
         XCTAssertNotNil(sut.sessionAsStoredPaymentMethodsDelegate)
 
         let expectation = expectation(description: "deletion delegate should be called")
-        let paymentMethodsListComponent = sut.paymentMethodListComponent(onCancel: nil)
+        let paymentMethodsListComponent = sut.resolvePaymentMethodListComponent(onCancel: nil)
 
         sut.didDelete(storedPaymentMethod, in: paymentMethodsListComponent) { success in
             XCTAssertEqual(storedPaymentMethodsDelegate.onDisableCallCount, 1)
@@ -287,7 +287,7 @@ class DropInTests: XCTestCase {
         XCTAssertNotNil(sut.sessionAsStoredPaymentMethodsDelegate)
 
         let expectation = expectation(description: "deletion delegate should be called")
-        let paymentMethodsListComponent = sut.paymentMethodListComponent(onCancel: nil)
+        let paymentMethodsListComponent = sut.resolvePaymentMethodListComponent(onCancel: nil)
 
         sut.didDelete(storedPaymentMethod, in: paymentMethodsListComponent) { success in
             XCTAssertEqual(storedPaymentMethodsDelegate.onDisableCallCount, 1)
@@ -322,7 +322,7 @@ class DropInTests: XCTestCase {
         XCTAssertNil(sut.sessionAsStoredPaymentMethodsDelegate)
 
         let expectation = expectation(description: "deletion delegate should be called")
-        let paymentMethodsListComponent = sut.paymentMethodListComponent(onCancel: nil)
+        let paymentMethodsListComponent = sut.resolvePaymentMethodListComponent(onCancel: nil)
 
         sut.didDelete(storedPaymentMethod, in: paymentMethodsListComponent) { success in
             XCTAssertEqual(storedPaymentMethodsDelegate.onDisableCallCount, 1)
@@ -357,7 +357,7 @@ class DropInTests: XCTestCase {
         XCTAssertNil(sut.sessionAsStoredPaymentMethodsDelegate)
 
         let expectation = expectation(description: "deletion delegate should be called")
-        let paymentMethodsListComponent = sut.paymentMethodListComponent(onCancel: nil)
+        let paymentMethodsListComponent = sut.resolvePaymentMethodListComponent(onCancel: nil)
 
         sut.didDelete(storedPaymentMethod, in: paymentMethodsListComponent) { success in
             XCTAssertEqual(storedPaymentMethodsDelegate.onDisableCallCount, 1)

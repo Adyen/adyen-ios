@@ -8,40 +8,58 @@ import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
 
+internal protocol PreselectedPaymentMethodRouterProtocol {
+    func showAllPaymentMethods()
+}
+
 internal protocol PreselectedPaymentMethodViewModelProtocol {
     var paymentMethodView: UIViewController { get }
 }
 
-internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewModelProtocol {
+internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewModelProtocol, PreselectedPaymentMethodComponentDelegate {
 
     // MARK: - Properties
 
+    private let router: PreselectedPaymentMethodRouterProtocol
     private let preselectedPaymentMethodComponent: PreselectedPaymentMethodComponent
 
     // MARK: - Initializers
 
     internal init(
+        router: PreselectedPaymentMethodRouterProtocol,
         component: PaymentComponent,
         title: String,
         style: FormComponentStyle,
-        listItemStyle: ListItemStyle
+        listItemStyle: ListItemStyle,
+        localizationParameters: LocalizationParameters?
     ) {
+        self.router = router
         self.preselectedPaymentMethodComponent = PreselectedPaymentMethodComponent(
             component: component,
             title: title,
             style: style,
             listItemStyle: listItemStyle
         )
+        self.preselectedPaymentMethodComponent.localizationParameters = localizationParameters
+        self.preselectedPaymentMethodComponent.delegate = self
     }
 
     // MARK: - PreselectedPaymentMethodViewModelProtocol
 
-    var paymentMethodView: UIViewController {
+    internal var paymentMethodView: UIViewController {
         preselectedPaymentMethodComponent.viewController
     }
 
-    // MARK: - Private
+    // MARK: - PreselectedPaymentMethodComponentDelegate
 
+    internal func didRequestAllPaymentMethods() {
+        router.showAllPaymentMethods()
+    }
+
+    internal func didProceed(with component: any Adyen.PaymentComponent) {
+        // TODO: - Proceed with payment
+        print("Did proceed with payment method...")
+    }
 }
 
 internal class PreselectedPaymentMethodViewController: UIViewController {
@@ -67,6 +85,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     override internal func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemPink
+        navigationItem.title = "XXX"
 
         setupPaymentMethodView()
     }
