@@ -22,6 +22,6 @@ internal final class FormCardExpiryDateItemView: FormTextItemView<FormCardExpiry
     private func setupAccessibility() {
         let title = item.title ?? ""
         let placeholder = item.placeholder ?? "MM/YY"
-        textField.accessibilityLabel = "\(title), \(placeholder)"
+        textField.accessibilityLabel = title.isEmpty ? placeholder : "\(title), \(placeholder)"
     }
 }
