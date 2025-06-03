@@ -7025,7 +7025,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\nif [ -f /usr/local/adyen/bin/swiftlint ]; then\n   cd $SRCROOT\n   /usr/local/adyen/bin/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\nif [ -f $SRCROOT/Internal/swiftlint ]; then\n   $SRCROOT/Internal/swiftlint --config \"$SRCROOT/.swiftlint.yml\"\nfi\n";
 		};
 		B64285632BB4682A005C88C7 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
