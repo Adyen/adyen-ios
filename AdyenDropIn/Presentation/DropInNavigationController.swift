@@ -29,7 +29,8 @@ internal final class DropInNavigationController: UINavigationController {
         self.style = style
         self.cancelHandler = cancelHandler
         super.init(nibName: nil, bundle: Bundle(for: DropInNavigationController.self))
-        setup(root: rootViewController)
+
+        viewControllers = [rootViewController]
     }
     
     @available(*, unavailable)
@@ -41,13 +42,6 @@ internal final class DropInNavigationController: UINavigationController {
 
     internal func present(_ viewController: UIViewController) {
         pushViewController(viewController, animated: true)
-    }
-    
-    internal func present(root component: PresentableComponent) {
-        pushViewController(
-            wrapInComponentViewController(component: component, isRoot: true),
-            animated: true
-        )
     }
 
     // MARK: - Private
@@ -61,11 +55,5 @@ internal final class DropInNavigationController: UINavigationController {
         }
         let modalViewController = ComponentViewController(viewModel: componentViewModel)
         return modalViewController
-    }
-    
-    private func setup(root viewController: UIViewController) {
-        // TODO: - Only wrap if its a regular component.
-        // let rootContainer = wrapInComponentViewController(component: component, isRoot: true)
-        viewControllers = [viewController]
     }
 }

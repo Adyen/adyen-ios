@@ -35,6 +35,7 @@ public final class DropInComponent: NSObject,
 
     private var preselectedPaymentMethodView: UIViewController?
     private var paymentMethodListView: UIViewController?
+    private var componentView: UIViewController?
 
     private lazy var componentManager: ComponentManager = {
         let componentManager = createComponentManager(nil)
@@ -205,7 +206,7 @@ public final class DropInComponent: NSObject,
     }
 
     internal lazy var navigationController = DropInNavigationController(
-        rootViewController: rootComponent,
+        rootViewController: rootViewController,
         style: configuration.style.navigation,
         cancelHandler: { [weak self] isRoot, component in
             self?.didSelectCancelButton(isRoot: isRoot, component: component)
@@ -226,7 +227,7 @@ public final class DropInComponent: NSObject,
 
     // ================= ROOT VIEW CONTROLLER ===============
 
-    internal lazy var rootComponent: UIViewController = {
+    internal lazy var rootViewController: UIViewController = {
         if configuration.allowPreselectedPaymentView,
            let preselectedComponent = componentManager.storedComponents.first {
             let view = resolvePreselectedPaymentMethodView(for: preselectedComponent, onCancel: nil)
@@ -235,13 +236,32 @@ public final class DropInComponent: NSObject,
         } else if configuration.allowsSkippingPaymentList,
                   let singleRegularComponent = componentManager.singleRegularComponent {
             setNecessaryDelegates(on: singleRegularComponent)
-            return singleRegularComponent.viewController
+            let componentView = resolveComponentView(from: singleRegularComponent)
+            self.componentView = componentView
+            return componentView
         } else {
             let view = resolvePaymentMethodListView(onCancel: nil)
             self.paymentMethodListView = view
             return view
         }
     }()
+
+    // ================= COMPONENT MODULE - ASSEMBLER ===============
+
+    internal func resolveComponentView(
+        from component: PresentableComponent
+    ) -> UIViewController {
+        let viewModel = ComponentViewModel(
+            component: component,
+            isRoot: false,
+            cancelHandler: nil
+        )
+
+        let componentViewController = ComponentViewController(viewModel: viewModel)
+        return componentViewController
+    }
+
+    // ================= COMPONENT MODULE - ASSEMBLER ===============
 
     // ================= PAYMENT METHOD LIST MODULE - ASSEMBLER ===============
 
@@ -292,7 +312,8 @@ public final class DropInComponent: NSObject,
 
         switch component {
         case let component as PresentableComponent:
-            navigationController.present(component.viewController)
+            let componentView = resolveComponentView(from: component)
+            navigationController.present(componentView)
         case let component as PaymentInitiable:
             component.initiatePayment()
         default:
@@ -327,7 +348,7 @@ public final class DropInComponent: NSObject,
 
     public func stopLoading() {
         paymentInProgress = false
-        (rootComponent as? ComponentLoader)?.stopLoading()
+        (rootViewController as? ComponentLoader)?.stopLoading()
         selectedPaymentComponent?.stopLoadingIfNeeded()
     }
 
@@ -391,7 +412,7 @@ extension DropInComponent: PreselectedPaymentMethodRouterProtocol {
     }
 
     func proceed(with component: any PaymentComponent) {
-        (rootComponent as? ComponentLoader)?.startLoading(for: component)
+        (rootViewController as? ComponentLoader)?.startLoading(for: component)
         didSelect(component)
     }
 
@@ -415,7 +436,7 @@ extension DropInComponent: PaymentMethodListRouterProtocol {
     }
 
     func present(_ component: any PaymentComponent) {
-        (rootComponent as? ComponentLoader)?.startLoading(for: component)
+        (rootViewController as? ComponentLoader)?.startLoading(for: component)
         didSelect(component)
     }
 

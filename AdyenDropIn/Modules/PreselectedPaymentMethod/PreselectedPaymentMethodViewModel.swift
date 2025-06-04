@@ -85,7 +85,6 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
 
     override internal func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemPink
         navigationItem.title = "1"
 
         setupPaymentMethodView()
