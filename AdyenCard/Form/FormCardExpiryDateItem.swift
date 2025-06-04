@@ -75,8 +75,6 @@ internal final class FormCardExpiryDateItem: FormTextInputItem {
 
 extension FormItemViewBuilder {
     internal func build(with item: FormCardExpiryDateItem) -> FormItemView<FormTextInputItem> {
-//        FormCardExpiryDateItemView(item: item)
-
         let updateAccessibilityClosure: ((UIView?) -> Void) = { view in
             let title = item.title ?? ""
             let format = localizedString(.cardExpiryItemAccessibilityLabel, item.localizationParameters)
