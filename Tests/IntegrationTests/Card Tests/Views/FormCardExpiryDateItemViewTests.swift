@@ -14,13 +14,6 @@ class FormCardExpiryDateItemViewTests: XCTestCase {
         // Given
         let sut = makeSUT(item: FormCardExpiryDateItem())
         sut.item.title = nil
-
-        // Due to unconventional behavior of `AdyenObservable` compared
-        // to other reactive frameworks this needs to be here as publisher doesn't
-        // publish if new value is the same as old value
-        sut.item.placeholder = nil
-
-        // When placeholder is updated
         sut.item.placeholder = "MM/YY"
 
         // Then
@@ -33,23 +26,6 @@ class FormCardExpiryDateItemViewTests: XCTestCase {
 
         sut.item.title = "Expiry date"
         sut.item.placeholder = nil
-
-        // When placeholder is updated
-        sut.item.placeholder = "MM/YY"
-
-        // Then
-        let format = localizedString(.cardExpiryItemAccessibilityLabel, nil)
-        XCTAssertEqual(sut.accessibilityLabelView?.accessibilityLabel, "Expiry date, \(format)")
-    }
-
-    func testAccessibilityLabelWhenPlaceholderChanges() {
-        // Given
-        let sut = makeSUT(item: FormCardExpiryDateItem())
-        sut.item.title = "Expiry date"
-        sut.item.placeholder = "MM/YY"
-
-        // When placeholder is updated
-        sut.item.placeholder = "MM/YYYY"
 
         // Then
         let format = localizedString(.cardExpiryItemAccessibilityLabel, nil)
@@ -86,7 +62,7 @@ class FormCardExpiryDateItemViewTests: XCTestCase {
 }
 
 extension FormCardExpiryDateItemViewTests {
-    private func makeSUT(item: FormCardExpiryDateItem) -> FormItemView<FormTextInputItem> {
-        FormItemViewBuilder().build(with: item)
+    private func makeSUT(item: FormCardExpiryDateItem) -> FormItemView<FormCardExpiryDateItem> {
+        FormCardExpiryDateItemView(item: item)
     }
 }

@@ -462,6 +462,7 @@
 		B639C0822D8039F600472EBB /* CardScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B639C0812D80399800472EBB /* CardScannerController.swift */; };
 		B66CAF3A2DAEB16D0017984C /* DummyCardScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66CAF392DAEB16D0017984C /* DummyCardScannerController.swift */; };
 		B686B6532DEEE2250071AFCA /* FormCardExpiryDateItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686B6522DEEE2250071AFCA /* FormCardExpiryDateItemViewTests.swift */; };
+		B686B6552DF0AC0A0071AFCA /* FormCardExpiryDateItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686B6542DF0AC0A0071AFCA /* FormCardExpiryDateItemView.swift */; };
 		B6ABA1C32CA6B058003514E5 /* ListItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ABA1C22CA6B058003514E5 /* ListItemTests.swift */; };
 		B6C9DA792D0C3F62005D65C7 /* DualBrandAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C9DA782D0C3F62005D65C7 /* DualBrandAccessoryView.swift */; };
 		B6C9DA7B2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C9DA7A2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift */; };
@@ -1954,6 +1955,7 @@
 		B639C0812D80399800472EBB /* CardScannerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerController.swift; sourceTree = "<group>"; };
 		B66CAF392DAEB16D0017984C /* DummyCardScannerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyCardScannerController.swift; sourceTree = "<group>"; };
 		B686B6522DEEE2250071AFCA /* FormCardExpiryDateItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardExpiryDateItemViewTests.swift; sourceTree = "<group>"; };
+		B686B6542DF0AC0A0071AFCA /* FormCardExpiryDateItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardExpiryDateItemView.swift; sourceTree = "<group>"; };
 		B693408F2DAE6ACB0026AD7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6ABA1C22CA6B058003514E5 /* ListItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemTests.swift; sourceTree = "<group>"; };
 		B6C9DA782D0C3F62005D65C7 /* DualBrandAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualBrandAccessoryView.swift; sourceTree = "<group>"; };
@@ -4229,6 +4231,7 @@
 				E76EC67F241125E0009C6E2F /* FormCardSecurityCodeItem.swift */,
 				E76EC681241125F5009C6E2F /* FormCardSecurityCodeItemView.swift */,
 				A01DCF0A26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift */,
+				B686B6542DF0AC0A0071AFCA /* FormCardExpiryDateItemView.swift */,
 				A018094726FDD345003A8DE3 /* FormCardNumberContainerItem.swift */,
 				A09C704227032870004C01AA /* FormCardLogosItemView.swift */,
 				B6C9DA782D0C3F62005D65C7 /* DualBrandAccessoryView.swift */,
@@ -7884,6 +7887,7 @@
 				A09C704327032870004C01AA /* FormCardLogosItemView.swift in Sources */,
 				F9B8C49223FC287100C4D0FB /* FormCardNumberItemView.swift in Sources */,
 				F9FE25A72625B448001874BB /* GiftCardComponent.swift in Sources */,
+				B686B6552DF0AC0A0071AFCA /* FormCardExpiryDateItemView.swift in Sources */,
 				0055CDA72DD215DF0019F1D9 /* CoBadgedCardAnalyticsConfiguration.swift in Sources */,
 				B639C0822D8039F600472EBB /* CardScannerController.swift in Sources */,
 				F92329D225AD0240002C5BC4 /* CardBrand.swift in Sources */,
