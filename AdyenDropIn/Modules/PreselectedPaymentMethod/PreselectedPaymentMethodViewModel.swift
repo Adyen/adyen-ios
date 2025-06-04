@@ -8,8 +8,9 @@ import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
 
-internal protocol PreselectedPaymentMethodRouterProtocol {
+internal protocol PreselectedPaymentMethodRouterProtocol: AnyObject {
     func showAllPaymentMethods()
+    func proceed(with component: any PaymentComponent)
 }
 
 internal protocol PreselectedPaymentMethodViewModelProtocol {
@@ -20,7 +21,7 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
 
     // MARK: - Properties
 
-    private let router: PreselectedPaymentMethodRouterProtocol
+    private weak var router: PreselectedPaymentMethodRouterProtocol?
     private let preselectedPaymentMethodComponent: PreselectedPaymentMethodComponent
 
     // MARK: - Initializers
@@ -53,12 +54,12 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
     // MARK: - PreselectedPaymentMethodComponentDelegate
 
     internal func didRequestAllPaymentMethods() {
-        router.showAllPaymentMethods()
+        router?.showAllPaymentMethods()
     }
 
     internal func didProceed(with component: any Adyen.PaymentComponent) {
-        // TODO: - Proceed with payment
-        print("Did proceed with payment method...")
+        print("Proceed with component: \(component)")
+        router?.proceed(with: component)
     }
 }
 
@@ -85,7 +86,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     override internal func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemPink
-        navigationItem.title = "XXX"
+        navigationItem.title = "1"
 
         setupPaymentMethodView()
     }

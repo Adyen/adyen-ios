@@ -39,8 +39,7 @@ internal final class DropInNavigationController: UINavigationController {
 
     // MARK: - View life cycle
 
-    internal func present(_ component: PresentableComponent) {
-        let viewController = wrapInComponentViewController(component: component, isRoot: false)
+    internal func present(_ viewController: UIViewController) {
         pushViewController(viewController, animated: true)
     }
     
