@@ -47,8 +47,6 @@ internal class ComponentViewModel: ComponentViewModelProtocol {
     }
 }
 
-/// View controller with a custom navigation bar for DropIn.
-
 internal final class ComponentViewController: UIViewController {
 
     // MARK: - Properties
@@ -102,12 +100,14 @@ internal final class ComponentViewController: UIViewController {
     }
 
     private func setupNavigationItem() {
+        // TODO: - Replace with actual title
         navigationItem.title = "Checkout"
 
         if viewModel.isRoot { setupCancelButton() }
     }
 
     private func setupCancelButton() {
+        // TODO: - Implement logic to cancel ongoing payment
         let cancelButton = UIBarButtonItem(
             title: "Cancel",
             style: .plain,

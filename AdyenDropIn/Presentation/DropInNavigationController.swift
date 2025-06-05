@@ -43,17 +43,4 @@ internal final class DropInNavigationController: UINavigationController {
     internal func present(_ viewController: UIViewController) {
         pushViewController(viewController, animated: true)
     }
-
-    // MARK: - Private
-    
-//    private func wrapInComponentViewController(component: PresentableComponent, isRoot: Bool) -> UIViewController {
-//        let componentViewModel = ComponentViewModel(
-//            component: component,
-//            isRoot: isRoot
-//        ) { [weak self] isRoot in
-//            self?.cancelHandler?(isRoot, component)
-//        }
-//        let modalViewController = ComponentViewController(viewModel: componentViewModel)
-//        return modalViewController
-//    }
 }
