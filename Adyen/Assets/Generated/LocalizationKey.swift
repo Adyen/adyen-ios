@@ -70,6 +70,8 @@ public struct LocalizationKey {
     public static let cardExpiryItemPlaceholder = LocalizationKey(key: "adyen.card.expiryItem.placeholder")
     /// Invalid expiry date
     public static let cardExpiryItemInvalid = LocalizationKey(key: "adyen.card.expiryItem.invalid")
+    /// Month, 2 digits, Year, 2 digits
+    public static let cardExpiryItemAccessibilityLabel = LocalizationKey(key: "adyen.card.expiryItem.accessibilityLabel")
     /// Invalid CVC / CVV format
     public static let cardCvcItemInvalid = LocalizationKey(key: "adyen.card.cvcItem.invalid")
     /// Security code

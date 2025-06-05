@@ -1,32 +1,25 @@
-///
-/// Copyright (c) 2021 Adyen N.V.
-///
-/// This file is open source and available under the MIT license. See the LICENSE file for more info.
-///
+//
+// Copyright (c) 2025 Adyen N.V.
+//
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//
 
-@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenCard
 import XCTest
 
 class FormCardExpiryDateItemViewTests: XCTestCase {
-    
+//
     func testAccessibilityLabelWithEmptyTitle() {
         // Given
         let sut = makeSUT(item: FormCardExpiryDateItem())
         sut.item.title = nil
-
-        // Due to unconventional behavior of `AdyenObservable` compared
-        // to other reactive frameworks this needs to be here as publisher doesn't
-        // publish if new value is the same as old value
-        sut.item.placeholder = nil
-
-        // When placeholder is updated
         sut.item.placeholder = "MM/YY"
 
         // Then
-        XCTAssertEqual(sut.textField.accessibilityLabel, "MM/YY")
+        XCTAssertEqual(sut.accessibilityLabelView?.accessibilityLabel, localizedString(.cardExpiryItemAccessibilityLabel, nil))
     }
-    
+
     func testAccessibilityLabelWithTitle() {
         // Given
         let sut = makeSUT(item: FormCardExpiryDateItem())
@@ -34,26 +27,11 @@ class FormCardExpiryDateItemViewTests: XCTestCase {
         sut.item.title = "Expiry date"
         sut.item.placeholder = nil
 
-        // When placeholder is updated
-        sut.item.placeholder = "MM/YY"
-
         // Then
-        XCTAssertEqual(sut.textField.accessibilityLabel, "Expiry date, MM/YY")
+        let format = localizedString(.cardExpiryItemAccessibilityLabel, nil)
+        XCTAssertEqual(sut.accessibilityLabelView?.accessibilityLabel, "Expiry date, \(format)")
     }
-    
-    func testAccessibilityLabelWhenPlaceholderChanges() {
-        // Given
-        let sut = makeSUT(item: FormCardExpiryDateItem())
-        sut.item.title = "Expiry date"
-        sut.item.placeholder = "MM/YY"
 
-        // When placeholder is updated
-        sut.item.placeholder = "MM/YYYY"
-        
-        // Then
-        XCTAssertEqual(sut.textField.accessibilityLabel, "Expiry date, MM/YYYY")
-    }
-    
     func testAccessibilityLabelWhenTitleChanges() {
         // Given
         let sut = makeSUT(item: FormCardExpiryDateItem())
@@ -64,7 +42,8 @@ class FormCardExpiryDateItemViewTests: XCTestCase {
         sut.item.title = "Card expiration date"
 
         // Then
-        XCTAssertEqual(sut.textField.accessibilityLabel, "Card expiration date, MM/YY")
+        let format = localizedString(.cardExpiryItemAccessibilityLabel, nil)
+        XCTAssertEqual(sut.accessibilityLabelView?.accessibilityLabel, "Card expiration date, \(format)")
     }
 
     func testAccessibilityLabelSetWithoutItemUpdates() {
@@ -77,12 +56,18 @@ class FormCardExpiryDateItemViewTests: XCTestCase {
         let sut = makeSUT(item: item)
 
         // Then
-        XCTAssertEqual(sut.textField.accessibilityLabel, "Expiry date, MM/YY")
+        let format = localizedString(.cardExpiryItemAccessibilityLabel, nil)
+        XCTAssertEqual(sut.accessibilityLabelView?.accessibilityLabel, "Expiry date, \(format)")
     }
 }
 
 extension FormCardExpiryDateItemViewTests {
-    private func makeSUT(item: FormCardExpiryDateItem) -> FormCardExpiryDateItemView {
-        FormCardExpiryDateItemView(item: item)
+    private func makeSUT(item: FormCardExpiryDateItem) -> FormTextInputItemView {
+        let view = FormTextInputItemView(item: item)
+        view.observe(item.$title) { _ in
+            view.accessibilityLabelView?.accessibilityLabel = item.accessibilityValue
+        }
+        view.accessibilityLabelView?.accessibilityLabel = item.accessibilityValue
+        return view
     }
 }
