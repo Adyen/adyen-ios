@@ -20,8 +20,6 @@ internal final class FormCardExpiryDateItemView: FormTextItemView<FormCardExpiry
     }
 
     private func setupAccessibility() {
-        let title = item.title ?? ""
-        let format = localizedString(.cardExpiryItemAccessibilityLabel, item.localizationParameters)
-        textField.accessibilityLabel = title.isEmpty ? format : "\(title), \(format)"
+        textField.accessibilityLabel = item.accessibilityValue
     }
 }
