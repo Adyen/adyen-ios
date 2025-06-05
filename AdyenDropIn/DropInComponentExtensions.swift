@@ -101,7 +101,7 @@ extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
 
     @_spi(AdyenInternal)
     public func showConfirmation(for component: InstantPaymentComponent, with order: PartialPaymentOrder?) {
-        let newRoot = resolvePreselectedPaymentMethodView(
+        let newRootViewController = resolvePreselectedPaymentMethodView(
             for: component,
             onCancel: { [weak self] in
                 guard let self,
@@ -109,8 +109,8 @@ extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
                 self.partialPaymentDelegate?.cancelOrder(order, component: self)
             }
         )
-//        navigationController.present(root: newRoot)
-//        rootComponent = newRoot
+        navigationController.present(newRootViewController)
+        rootViewController = newRootViewController
     }
 }
 

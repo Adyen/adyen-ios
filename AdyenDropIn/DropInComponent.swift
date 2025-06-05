@@ -420,7 +420,7 @@ extension DropInComponent: PreselectedPaymentMethodRouterProtocol {
         let view = resolvePaymentMethodListView(onCancel: onCancel)
         self.paymentMethodListView = view
         navigationController.present(view)
-        //        rootComponent = newList
+        // rootComponent = newList
     }
 }
 
