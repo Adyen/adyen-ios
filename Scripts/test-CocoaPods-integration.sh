@@ -88,8 +88,10 @@ then
   target '$PROJECT_NAME' do
     use_frameworks!
 
+    pod 'AdyenCardScanner', :path => '../'
     pod 'Adyen', :path => '../'
     pod 'Adyen/AdyenCheckout', :path => '../'
+    pod 'Adyen/CardScanner', :path => '../'
     pod 'Adyen/Session', :path => '../'
     pod 'Adyen/SwiftUI', :path => '../'
     pod 'Adyen/DelegatedAuthentication', :path => '../'
@@ -113,8 +115,10 @@ else
   target '$PROJECT_NAME' do
     use_frameworks!
 
+    pod 'AdyenCardScanner', :path => '../'
     pod 'Adyen', :path => '../'
     pod 'Adyen/AdyenCheckout', :path => '../'
+    pod 'Adyen/CardScanner', :path => '../'
     pod 'Adyen/WeChatPay', :path => '../'
     pod 'Adyen/SwiftUI', :path => '../'
     pod 'AdyenAuthentication'

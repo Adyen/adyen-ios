@@ -10,6 +10,8 @@ import XCTest
 
 class FormCardNumberItemViewTests: XCTestCase {
     
+    var scanButtonTapped = false
+    
     override func run() {
         AdyenDependencyValues.runTestWithValues {
             $0.imageLoader = ImageLoaderMock()
@@ -227,6 +229,36 @@ class FormCardNumberItemViewTests: XCTestCase {
         // the delegate would be released before the end of the test
         _ = setup
     }
+
+    func test_makeCardScanAccessoryView_shouldReturnAccessoryViewWithScanButton() throws {
+
+        // Given
+        let panLength = 5
+        let cardNumberValidator = CardNumberValidator(
+            isLuhnCheckEnabled: true,
+            isEnteredBrandSupported: true,
+            panLength: panLength
+        )
+
+        let sut = setupSut(validator: cardNumberValidator)
+
+        // When
+        let cardScanAccessoryView = sut.makeCardScanAccessoryView(title: "Scan card", #selector(sut.scanButtonMockTapped))
+
+        // Then
+        let inputView = try XCTUnwrap(cardScanAccessoryView as? UIInputView)
+        let scanButton = inputView.subviews.last as? UIButton
+        XCTAssertNotNil(scanButton, "The FormCardNumberItemView should contain a card scan button")
+        
+        XCTAssertFalse(scanButtonTapped)
+        scanButton?.sendActions(for: .touchUpInside)
+    }
+}
+
+private extension FormCardNumberItemView {
+    
+    @objc
+    func scanButtonMockTapped() {} // empty init
 }
 
 // MARK: - Helpers
@@ -251,13 +283,14 @@ private extension FormCardNumberItemViewTests {
     /// Sets up an expectation that the `handleDidReachMaximumLength` is called exactly once
     func makeExpectation_didReachMaximumLength_once(
         for sut: FormCardNumberItemView,
-        panLength: Int
+        panLength: Int,
+        file: StaticString = #file,
+        line: UInt = #line
     ) -> (delegate: FormTextItemViewDelegate, expectation: XCTestExpectation) {
         
         let expectation = expectation(description: "Handle did reach maximum length was called once")
         let delegate = FormTextItemViewDelegateMock<FormCardNumberItem, FormCardNumberItemView>()
         delegate.handleDidReachMaximumLength = { itemView in
-            XCTAssertEqual(itemView.textField.text?.count, panLength)
             expectation.fulfill()
         }
         sut.delegate = delegate

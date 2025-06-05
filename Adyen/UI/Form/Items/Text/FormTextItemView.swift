@@ -125,7 +125,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         
         return textField
     }()
-    
+
     // MARK: - Accessory view
     
     /// Accessory of the entry text field.

@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "%@ ni podprta znamka";
 "adyen.card.numberItem.unknownBrand" = "Vnesena znamka kartice ni podprta";
 "adyen.card.scanYourCardButton" = "Poskenirajte svojo kartico";
+"adyen.creditCard.dualBrand.title" = "Znamka kartice";
+"adyen.creditCard.dualBrand.description" = "Izberite znamko kartice, s katero želite plačati. To ni obvezno.";
 "adyen.dropIn.stored.title" = "Potrdite plačilo: %@";
 "adyen.dropIn.preselected.openAll.title" = "Spremeni način plačila";
 "adyen.continueTo" = "Nadaljujte na %@";
@@ -184,7 +186,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Vnesite UPI ID";
-"adyen.UPI.collectFieldLabel" = "Vnesite UPI ID / VPA";
+"adyen.UPI.collectFieldLabel" = "UPI ID";
 "adyen.UPI.error.noAppSelected" = "Za nadaljevanje izberite način plačila";
 "adyen.twint.noAppsInstalled.message" = "V tej napravi ni nameščena različica aplikacije TWINT ali pa je zastarela. Posodobite ali namestite aplikacijo TWINT.";
 "adyen.threeds2.DA.registration.title" = "Secure Checkout";
@@ -259,3 +261,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Vnesite pravilno številko bančnega računa";
 "adyen.payto.payid.description" = "Vnesite PayID in podrobnosti o računu, ki so povezani z vašim računom PayTo.";
 "adyen.payto.await.description" = "Zahvaljujemo se vam za nakup. Plačilo dokončajte tako, da se prijavite v svoj bančni račun, sprejmite pogodbo PayTo in potrdite plačilne pogoje.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Dovolite dostop do kamere";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Dostop je bil prej zavrnjen. Za skeniranje Kartic morate omogočiti dostop v Nastavitvah.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Odpri nastavitve";

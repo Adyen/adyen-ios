@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LSMinimumSystemVersion</key>
-	<string>12.0.0</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -45,7 +43,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>5.17.0</string>
+	<string>5.18.1</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -127,7 +125,10 @@
 		<string>twint-issuer1</string>
 		<string>weixinULAPI</string>
 		<string>weixin</string>
+		<string>weixinURLParamsAPI</string>
 	</array>
+	<key>LSMinimumSystemVersion</key>
+	<string>12.0.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -135,6 +136,8 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Scan credit card details</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Please authenticate yourself</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

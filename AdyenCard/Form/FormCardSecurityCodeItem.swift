@@ -7,7 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 
 /// A form item into which a card's security code (CVC/CVV) is entered.
-internal final class FormCardSecurityCodeItem: FormTextItem {
+internal final class FormCardSecurityCodeItem: FormTextInputItem {
 
     internal enum DisplayMode {
         case required

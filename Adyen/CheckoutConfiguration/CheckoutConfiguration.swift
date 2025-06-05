@@ -29,12 +29,6 @@ import Foundation
 /// ```
 ///
 public struct CheckoutConfiguration {
-
-    package var amount: Amount
-    
-    package var analyticsConfiguration: AnalyticsConfiguration
-    
-    package var apiContext: APIContext
     
     package var showsSubmitButton: Bool = true
     
@@ -48,6 +42,8 @@ public struct CheckoutConfiguration {
     package var onError: CheckoutErrorHandler?
     
     package var onComplete: CheckoutSuccessHandler?
+    
+    package let context: AdyenContext
     
     /// Creates a CheckoutConfiguration instance.
     /// - Parameters:
@@ -65,9 +61,14 @@ public struct CheckoutConfiguration {
         analyticsConfiguration: AnalyticsConfiguration = .init(),
         @CheckoutConfigurationBuilder content: () -> CheckoutConfigurable
     ) throws {
-        self.apiContext = try APIContext(environment: environment, clientKey: clientKey)
-        self.amount = amount
-        self.analyticsConfiguration = analyticsConfiguration
+        let apiContext = try APIContext(environment: environment, clientKey: clientKey)
+        
+        self.context = AdyenContext(
+            apiContext: apiContext,
+            payment: nil,
+            amount: amount,
+            analyticsConfiguration: analyticsConfiguration
+        )
         
         var configDictionary: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
         let content = content()

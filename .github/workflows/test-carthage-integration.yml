@@ -1,6 +1,7 @@
 name: Test Carthage Integration
 
 on:
+  workflow_dispatch:
   pull_request:
     types: [opened, synchronize, reopened]
   
@@ -11,7 +12,7 @@ on:
 jobs:
 
   carthage:
-    runs-on: macos-14-xlarge # Apple Silicon Runner
+    runs-on: macos-15-xlarge 
     steps:
     - uses: actions/checkout@v4
     - uses: n1hility/cancel-previous-runs@v3

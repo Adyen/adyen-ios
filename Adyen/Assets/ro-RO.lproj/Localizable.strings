@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "%@ nu este acceptată";
 "adyen.card.numberItem.unknownBrand" = "Marca de card introdusă nu este acceptată";
 "adyen.card.scanYourCardButton" = "Scanați-vă cardul";
+"adyen.creditCard.dualBrand.title" = "Brandul cardului";
+"adyen.creditCard.dualBrand.description" = "Selectați brandul cardului cu care preferați să plătiți. Acest lucru este opțional.";
 "adyen.dropIn.stored.title" = "Confirmați plata %@";
 "adyen.dropIn.preselected.openAll.title" = "Schimbare metodă de plată";
 "adyen.continueTo" = "Continuați către %@";
@@ -184,7 +186,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Introduceți ID-ul UPI";
-"adyen.UPI.collectFieldLabel" = "Completați identificatorul UPI/VPA";
+"adyen.UPI.collectFieldLabel" = "ID UPI";
 "adyen.UPI.error.noAppSelected" = "Selectați o metodă de plată pentru a continua";
 "adyen.twint.noAppsInstalled.message" = "Pe acest dispozitiv nu este instalată nicio versiune sau este o versiune depășită a TWINT. Actualizați sau instalați aplicația TWINT.";
 "adyen.threeds2.DA.registration.title" = "Plată securizată";
@@ -259,3 +261,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Completează un număr de cont bancar corect";
 "adyen.payto.payid.description" = "Completați PayID și detaliile contului care sunt conectate la contul dvs. PayTo.";
 "adyen.payto.await.description" = "Vă mulțumim pentru achiziție! Finalizați plata conectându-vă la contul dvs. bancar, autorizând acordul PayTo și aprobând condițiile de plată.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Permiteți accesul la cameră";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Accesul a fost refuzat anterior. Pentru a scana carduri, acordați accesul din Setări.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Deschideți Setările";

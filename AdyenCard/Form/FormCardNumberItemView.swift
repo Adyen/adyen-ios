@@ -19,6 +19,12 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     internal required init(item: FormCardNumberItem) {
         super.init(item: item)
         accessory = .customView(detectedBrandsView)
+        if item.supportsCardScanning {
+            textField.inputAccessoryView = makeCardScanAccessoryView(
+                title: item.scanYourCardButtonTitle,
+                #selector(openCardScanner)
+            )
+        }
         textField.textContentType = .creditCardNumber
         textField.returnKeyType = .default
         textField.allowsEditingActions = false
@@ -35,6 +41,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     }
     
     override public func handleFormattedValueDidChange(_ newValue: String) {
+        textField.text = newValue
         updateValidationStatus()
     }
     
@@ -87,12 +94,14 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     // MARK: - Card Type Logos View
     
     /// Logo view for the brand(s) icons and selection for dual-branded cards.
-    internal lazy var detectedBrandsView: DualBrandView = {
-        let cardTypeLogosView = DualBrandView(style: item.style.icon, onBrandSelection: { [weak self] index in
-            self?.item.selectBrand(at: index)
-        })
-        cardTypeLogosView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardTypeLogos")
+    internal lazy var detectedBrandsView: DualBrandAccessoryView = {
+        let cardTypeLogosView = DualBrandAccessoryView(style: item.style.icon)
         cardTypeLogosView.backgroundColor = item.style.backgroundColor
         return cardTypeLogosView
     }()
+    
+    @objc private func openCardScanner() {
+        guard let scanCardHandler = item.scanCardHandler else { return }
+        scanCardHandler()
+    }
 }

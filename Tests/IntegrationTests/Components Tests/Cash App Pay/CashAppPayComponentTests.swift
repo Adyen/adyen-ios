@@ -100,9 +100,8 @@ import XCTest
             let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsStorePaymentMethodField: true, style: componentStyle)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
-            setupRootViewController(sut.viewController)
-            wait(for: .milliseconds(300))
-            
+            sut.viewController.loadViewIfNeeded()
+
             let storeDetailsItemView: FormToggleItemView? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem")
             let storeDetailsItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem.titleLabel")
             
@@ -121,9 +120,8 @@ import XCTest
             let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsStorePaymentMethodField: true)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
-            setupRootViewController(sut.viewController)
-            wait(for: .milliseconds(300))
-            
+            sut.viewController.loadViewIfNeeded()
+
             let storeDetailsToggleView: UIView? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem")
             
             XCTAssertNotNil(storeDetailsToggleView)
@@ -134,9 +132,8 @@ import XCTest
             let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsStorePaymentMethodField: false)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
-            setupRootViewController(sut.viewController)
-            wait(for: .milliseconds(300))
-            
+            sut.viewController.loadViewIfNeeded()
+
             let storeDetailsToggleView: UIView? = sut.viewController.view.findView(with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem")
             
             XCTAssertNil(storeDetailsToggleView)
@@ -146,12 +143,8 @@ import XCTest
             let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsStorePaymentMethodField: true)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
-            setupRootViewController(sut.viewController)
-            wait(for: .milliseconds(300))
+            sut.viewController.loadViewIfNeeded()
 
-            setupRootViewController(sut.viewController)
-            wait(for: .milliseconds(300))
-            
             XCTAssertFalse(sut.cashAppPayButton.showsActivityIndicator)
             sut.cashAppPayButton.showsActivityIndicator = true
             sut.stopLoadingIfNeeded()
@@ -209,8 +202,8 @@ import XCTest
             
             let delegate = PaymentComponentDelegateMock()
             sut.delegate = delegate
-            setupRootViewController(sut.viewController)
-            
+            sut.viewController.loadViewIfNeeded()
+
             let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
             let finalizationExpectation = expectation(description: "Component should finalize.")
             delegate.onDidSubmit = { data, component in
@@ -229,8 +222,6 @@ import XCTest
                 delegateExpectation.fulfill()
             }
             
-            wait(for: .milliseconds(300))
-            
             sut.submitApprovedRequest(with: [oneTimeGrant], profile: .init(id: "testId", cashtag: "testtag"))
             
             waitForExpectations(timeout: 10, handler: nil)
@@ -242,8 +233,8 @@ import XCTest
             
             let delegate = PaymentComponentDelegateMock()
             sut.delegate = delegate
-            setupRootViewController(sut.viewController)
-            
+            sut.viewController.loadViewIfNeeded()
+
             let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
             let finalizationExpectation = expectation(description: "Component should finalize.")
             delegate.onDidSubmit = { data, component in
@@ -262,8 +253,6 @@ import XCTest
                 delegateExpectation.fulfill()
             }
             
-            wait(for: .milliseconds(300))
-            
             sut.submitApprovedRequest(with: [oneTimeGrant, onFileGrant], profile: .init(id: "testId", cashtag: "testtag"))
             
             waitForExpectations(timeout: 10, handler: nil)
@@ -277,7 +266,7 @@ import XCTest
                 context: context,
                 configuration: configuration
             )
-            setupRootViewController(sut.viewController)
+            sut.viewController.loadViewIfNeeded()
 
             let paymentDelegateMock = PaymentComponentDelegateMock()
             sut.delegate = paymentDelegateMock
@@ -310,7 +299,7 @@ import XCTest
                 configuration: config
             )
             
-            setupRootViewController(sut.viewController)
+            sut.viewController.loadViewIfNeeded()
             
             let paymentDelegateMock = PaymentComponentDelegateMock()
             sut.delegate = paymentDelegateMock
@@ -460,7 +449,7 @@ import XCTest
                 context: context,
                 configuration: configuration
             )
-            setupRootViewController(sut.viewController)
+            sut.viewController.loadViewIfNeeded()
 
             let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
             let expectedResult = formViewController.validate()

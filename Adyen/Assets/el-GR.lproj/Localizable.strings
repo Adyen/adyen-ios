@@ -38,6 +38,8 @@
 "adyen.card.numberItem.unsupportedBrand" = "%@: δεν υποστηρίζεται";
 "adyen.card.numberItem.unknownBrand" = "Η επωνυμία κάρτας που εισαγάγατε δεν υποστηρίζεται";
 "adyen.card.scanYourCardButton" = "Σαρώστε την κάρτα σας";
+"adyen.creditCard.dualBrand.title" = "Επωνυμία κάρτας";
+"adyen.creditCard.dualBrand.description" = "Επιλέξτε την επωνυμία της κάρτας με την οποία προτιμάτε να πληρώσετε. Αυτό είναι προαιρετικό.";
 "adyen.dropIn.stored.title" = "Επιβεβαίωση πληρωμής μέσω %@";
 "adyen.dropIn.preselected.openAll.title" = "Αλλαγή τρόπου πληρωμής";
 "adyen.continueTo" = "Μετάβαση στην %@";
@@ -188,7 +190,7 @@
 "adyen.UPI.firstTabTitle" = "Pay by any UPI app";
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Εισαγωγή αναγνωριστικού UPI";
-"adyen.UPI.collectFieldLabel" = "Εισαγωγή αναγνωριστικού UPI / VPA";
+"adyen.UPI.collectFieldLabel" = "Αναγνωριστικό UPI";
 "adyen.UPI.error.noAppSelected" = "Επιλέξτε μια μέθοδο πληρωμής για να συνεχίσετε";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
@@ -265,3 +267,6 @@
 "adyen.payto.bsb.bankAccountNumber.invalid" = "Εισαγάγετε σωστό αριθμό τραπεζικού λογαριασμού";
 "adyen.payto.payid.description" = "Εισαγάγετε το PayID και τα στοιχεία λογαριασμού που είναι συνδεδεμένα με τον λογαριασμό PayTo που διαθέτετε.";
 "adyen.payto.await.description" = "Σας ευχαριστούμε για την αγορά σας. Ολοκληρώστε την πληρωμή σας συνδεόμενοι στον τραπεζικό λογαριασμό σας. Εξουσιοδοτήστε τη συμφωνία PayTo και εγκρίνετε τους όρους πληρωμής.";
+"adyen.card.scanner.camera.access.denied.alert.title" = "Επιτρέψτε την πρόσβαση στην κάμερα";
+"adyen.card.scanner.camera.access.denied.alert.message" = "Η πρόσβαση είχε προηγουμένως απορριφθεί. Για να σαρώσετε κάρτες, παραχωρήστε πρόσβαση από τις Ρυθμίσεις.";
+"adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Ανοίξτε τις Ρυθμίσεις";

@@ -31,11 +31,13 @@ private struct LocalizationInput {
 public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
     var translationAttempt: String?
 
+    var possibleInputs = buildPossibleInputs(key.key, parameters)
     switch parameters?.mode {
-    case let .enforced(locale: enforcedLocale):
-        translationAttempt = enforceLocalizedString(key: key.key, locale: enforcedLocale)
+    case .enforced:
+        possibleInputs.appendPossibleInputs(for: Bundle.coreInternalResources, key.key, nil)
+        translationAttempt = attempt(possibleInputs, locale: parameters?.locale)
     case .natural, .none:
-        translationAttempt = attempt(buildPossibleInputs(key.key, parameters))
+        translationAttempt = attempt(possibleInputs)
     }
 
     // Use fallback in case attempt result is nil or empty
@@ -61,39 +63,17 @@ private func fallbackLocalizedString(key: String) -> String {
     }
 }
 
-private func enforceLocalizedString(key: String, locale: String) -> String? {
-    Bundle.coreInternalResources.path(forResource: locale, ofType: "lproj")
-        .flatMap(Bundle.init(path:))
-        .map { NSLocalizedString(key, tableName: nil, bundle: $0, comment: "") }
-}
-
 private func buildPossibleInputs(
-    _ key: String,
-    _ parameters: LocalizationParameters?
-) -> [LocalizationInput] {
-    var possibleInputs = buildPossibleInputs(for: Bundle.main, key, parameters)
-
-    if let customBundle = parameters?.bundle {
-        let inputs = buildPossibleInputs(for: customBundle, key, parameters)
-        possibleInputs.append(contentsOf: inputs)
-    }
-
-    return possibleInputs
-}
-
-private func buildPossibleInputs(
-    for bundle: Bundle,
     _ key: String,
     _ parameters: LocalizationParameters?
 ) -> [LocalizationInput] {
     var possibleInputs = [LocalizationInput]()
-    
-    if let customKey = updated(key, withSeparator: parameters?.keySeparator) {
-        possibleInputs.append(LocalizationInput(key: customKey, table: parameters?.tableName, bundle: bundle))
+    possibleInputs.appendPossibleInputs(for: Bundle.main, key, parameters)
+
+    if let customBundle = parameters?.bundle {
+        possibleInputs.appendPossibleInputs(for: customBundle, key, parameters)
     }
-    
-    possibleInputs.append(LocalizationInput(key: key, table: parameters?.tableName, bundle: bundle))
-    
+
     return possibleInputs
 }
 
@@ -102,8 +82,11 @@ private func updated(_ key: String, withSeparator separator: String?) -> String?
     return key.replacingOccurrences(of: ".", with: separator)
 }
 
-private func attempt(_ inputs: [LocalizationInput]) -> String? {
-    inputs.compactMap { attempt($0) }.first
+private func attempt(_ inputs: [LocalizationInput], locale: String? = nil) -> String? {
+    if let locale {
+        return inputs.compactMap { attemptEnforce(locale: locale, $0) }.first
+    }
+    return inputs.compactMap { attempt($0) }.first
 }
 
 private func attempt(_ input: LocalizationInput) -> String? {
@@ -113,6 +96,18 @@ private func attempt(_ input: LocalizationInput) -> String? {
         return localizedString
     }
     
+    return nil
+}
+
+/// This method encapsulate individual file into own Bundle and uses it as a source for NSLocalizedString
+private func attemptEnforce(locale: String, _ input: LocalizationInput) -> String? {
+    let localizedString = input.bundle.path(forResource: locale, ofType: "lproj")
+        .flatMap(Bundle.init(path:))
+        .map { NSLocalizedString(input.key, tableName: input.table, bundle: $0, comment: "") }
+
+    if localizedString != input.key {
+        return localizedString
+    }
     return nil
 }
 
@@ -158,4 +153,19 @@ private func localizedZeroPaymentAuthorisationButtonTitle(
     case .immediate:
         return localizedString(.confirmPreauthorization, parameters)
     }
+}
+
+extension [LocalizationInput] {
+
+    fileprivate mutating func appendPossibleInputs(
+        for bundle: Bundle,
+        _ key: String,
+        _ parameters: LocalizationParameters?
+    ) {
+        if let customKey = updated(key, withSeparator: parameters?.keySeparator) {
+            self.append(LocalizationInput(key: customKey, table: parameters?.tableName, bundle: bundle))
+        }
+        self.append(LocalizationInput(key: key, table: parameters?.tableName, bundle: bundle))
+    }
+
 }
