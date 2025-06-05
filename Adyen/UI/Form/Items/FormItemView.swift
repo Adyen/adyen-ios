@@ -13,7 +13,7 @@ open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView, AdyenObser
     /// The item represented by the view.
     public let item: ItemType
     
-    /// The view to set the `accessibilityLabel` on when invalid
+    /// The primary view within this item designated for accessibility label updates, used for both descriptive text and validation messages.
     internal var accessibilityLabelView: UIView? {
         AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
         return nil
