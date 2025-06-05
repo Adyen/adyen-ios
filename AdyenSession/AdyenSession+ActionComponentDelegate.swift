@@ -25,16 +25,15 @@ extension AdyenSession: ActionComponentDelegate {
             AdyenAssertion.assertionFailure(message: "Missing resultCode.")
             return
         }
-        let result = AdyenSessionResult(
-            resultCode: SessionPaymentResultCode(paymentResultCode: resultCode),
-            encodedResult: sessionContext.sessionResult
+        let result = CheckoutResult(
+            resultCode: resultCode,
+            sessionResult: sessionContext.sessionResult
         )
         delegate?.didComplete(with: result, component: currentComponent, session: self)
     }
 
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        let handler = delegate?.handlerForAdditionalDetails(in: component, session: self) ?? self
-        handler.didProvide(data, from: component, session: self)
+        didProvide(data, from: component, session: self)
     }
     
     public func didOpenExternalApplication(component: ActionComponent) {

@@ -9,21 +9,7 @@
 @_spi(AdyenInternal) import AdyenDropIn
 @_spi(AdyenInternal) import AdyenActions
 
-internal protocol AdyenCheckoutProtocol: AdyenSessionProviding, CheckoutAttemptIdProviding {
-    static func setup(
-        with sessionId: String,
-        sessionData: String,
-        configuration: CheckoutConfiguration,
-        presentationDelegate: PresentationDelegate?,
-        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
-    )
-    
-    static func setup(
-        with paymentMethods: PaymentMethods,
-        configuration: CheckoutConfiguration,
-        presentationDelegate: PresentationDelegate?,
-        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
-    )
+internal protocol AdyenCheckoutProtocol {
     
     func createComponent(with paymentMethod: PaymentMethod) -> AdyenCheckoutComponent?
     
@@ -32,8 +18,25 @@ internal protocol AdyenCheckoutProtocol: AdyenSessionProviding, CheckoutAttemptI
     func createDropIn() -> DropInComponent?
 }
 
+internal protocol AdyenCheckoutProviding: AdyenSessionProviding, CheckoutAttemptIdProviding {
+    func setup(
+        with sessionId: String,
+        sessionData: String,
+        configuration: CheckoutConfiguration,
+        presentationDelegate: PresentationDelegate?,
+        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
+    )
+    
+    func setup(
+        with paymentMethods: PaymentMethods,
+        configuration: CheckoutConfiguration,
+        presentationDelegate: PresentationDelegate?,
+        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
+    )
+}
+
 internal protocol AdyenSessionProviding {
-    static func setupSession(
+    func setupSession(
         with configuration: CheckoutConfiguration,
         order: PartialPaymentOrder?,
         completion: @escaping (Result<AdyenSession, Error>) -> Void
@@ -41,8 +44,7 @@ internal protocol AdyenSessionProviding {
 }
 
 internal protocol CheckoutAttemptIdProviding {
-    
-    static func fetchCheckoutAttemptId(
+    func fetchCheckoutAttemptId(
         with configuration: CheckoutConfiguration,
         completion: @escaping (Result<String, Error>) -> Void
     )

@@ -13,11 +13,11 @@ import AdyenSession
 class SessionDelegateMock: AdyenSessionDelegate {
     
     var handlerMock: SessionAdvancedHandlerMock?
-    var onDidComplete: ((AdyenSessionResult, Component, AdyenSession) -> Void)?
+    var onDidComplete: ((CheckoutResult, Component, AdyenSession) -> Void)?
     var onDidFail: ((Error, Component, AdyenSession) -> Void)?
     var onDidOpenExternalApplication: (() -> Void)?
     
-    func didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession) {
+    func didComplete(with result: CheckoutResult, component: Component, session: AdyenSession) {
         onDidComplete?(result, component, session)
     }
     

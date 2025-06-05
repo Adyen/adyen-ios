@@ -33,11 +33,16 @@ public struct CheckoutPaymentsResponse: Decodable, Sendable {
 /// Data model that contains information regarding the status of a payment.
 public struct CheckoutResult {
     
-    // TODO: string or enum?
     public let resultCode: CheckoutResultCode
     
-    package init(resultCode: CheckoutResultCode) {
+    /// An encoded string that can be used to get the payment outcome on your server.
+    /// - Description: Use this value with the new  `/sessions/id` endpoint
+    /// as a query string on your server to get a synchronous result for your payment.
+    public let sessionResult: String?
+    
+    package init(resultCode: CheckoutResultCode, sessionResult: String? = nil) {
         self.resultCode = resultCode
+        self.sessionResult = sessionResult
     }
 }
 

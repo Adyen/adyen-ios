@@ -1464,6 +1464,7 @@ class CardComponentTests: XCTestCase {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             payment: Dummy.payment,
+            amount: Dummy.amount,
             analyticsProvider: analyticsProviderMock
         )
         let sut = CardComponent(
@@ -1489,6 +1490,7 @@ class CardComponentTests: XCTestCase {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             payment: Dummy.payment,
+            amount: Dummy.amount,
             analyticsProvider: analyticsProviderMock
         )
         let sut = CardComponent(

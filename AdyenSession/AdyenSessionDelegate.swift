@@ -21,7 +21,7 @@ public protocol AdyenSessionDelegate: AnyObject {
     ///   - result: The result object of the completed payment.
     ///   - component: The component object.
     ///   - session: The session object.
-    func didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession)
+    func didComplete(with result: CheckoutResult, component: Component, session: AdyenSession)
     
     /// Invoked when a payment component fails.
     ///
@@ -96,55 +96,4 @@ public protocol AdyenSessionPaymentDetailsHandler {
     ///   - actionComponentData: The data supplied by the action component.
     ///   - component: The component that handled the action.
     func didProvide(_ actionComponentData: ActionComponentData, from component: ActionComponent, session: AdyenSession)
-}
-
-/// Represents the status of a payment via ``AdyenSession``.
-public enum SessionPaymentResultCode: String {
-    /// Indicates the payment was successfully authorised.
-    case authorised = "Authorised"
-    
-    /// Indicates the payment was refused.
-    case refused = "Refused"
-    
-    /// Indicates that it is not possible to obtain the final status of the payment.
-    case pending = "Pending"
-    
-    /// Indicates the payment has been cancelled
-    /// (either by the shopper or the merchant) before processing was completed.
-    case cancelled = "Cancelled"
-    
-    /// There was an error when the payment was being processed.
-    case error = "Error"
-    
-    /// Indicates the payment has successfully been received by Adyen, and will be processed.
-    case received = "Received"
-    
-    /// Indicates that the response contains additional information that is presented to the shopper.
-    case presentToShopper = "PresentToShopper"
-    
-    // Internal init to map payment response to only the final codes.
-    internal init(paymentResultCode: PaymentsResponse.ResultCode) {
-        switch paymentResultCode {
-        case .authenticationFinished,
-             .authenticationNotRequired,
-             .redirectShopper,
-             .identifyShopper,
-             .challengeShopper:
-            self = .error
-        case .presentToShopper:
-            self = .presentToShopper
-        case .authorised:
-            self = .authorised
-        case .refused:
-            self = .refused
-        case .pending:
-            self = .pending
-        case .cancelled:
-            self = .cancelled
-        case .error:
-            self = .error
-        case .received:
-            self = .received
-        }
-    }
 }

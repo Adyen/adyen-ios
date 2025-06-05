@@ -832,7 +832,7 @@ class SessionTests: XCTestCase {
         let didCompleteExpectation = expectation(description: "didComplete should be called")
         sessionDelegate.onDidComplete = { result, _, _ in
             XCTAssertEqual(result.resultCode, .authorised)
-            XCTAssertEqual(result.encodedResult, "sessionResultString")
+            XCTAssertEqual(result.sessionResult, "sessionResultString")
             didCompleteExpectation.fulfill()
         }
         let actionData = try ActionComponentData(
@@ -865,7 +865,7 @@ class SessionTests: XCTestCase {
         let didCompleteExpectation = expectation(description: "didComplete should be called")
         sessionDelegate.onDidComplete = { result, _, _ in
             XCTAssertEqual(result.resultCode, .pending)
-            XCTAssertNil(result.encodedResult)
+            XCTAssertNil(result.sessionResult)
             didCompleteExpectation.fulfill()
         }
         let actionData = try ActionComponentData(
@@ -898,7 +898,7 @@ class SessionTests: XCTestCase {
         let didCompleteExpectation = expectation(description: "didComplete should be called")
         sessionDelegate.onDidComplete = { result, _, _ in
             XCTAssertEqual(result.resultCode, .refused)
-            XCTAssertNil(result.encodedResult)
+            XCTAssertNil(result.sessionResult)
             didCompleteExpectation.fulfill()
         }
         let actionData = try ActionComponentData(
@@ -931,7 +931,7 @@ class SessionTests: XCTestCase {
         let didCompleteExpectation = expectation(description: "didComplete should be called")
         sessionDelegate.onDidComplete = { result, _, _ in
             XCTAssertEqual(result.resultCode, .cancelled)
-            XCTAssertEqual(result.encodedResult, "sessionResultString")
+            XCTAssertEqual(result.sessionResult, "sessionResultString")
             didCompleteExpectation.fulfill()
         }
         let actionData = try ActionComponentData(
@@ -964,7 +964,7 @@ class SessionTests: XCTestCase {
         let didCompleteExpectation = expectation(description: "didComplete should be called")
         sessionDelegate.onDidComplete = { result, _, _ in
             XCTAssertEqual(result.resultCode, .received)
-            XCTAssertEqual(result.encodedResult, "sessionResultString")
+            XCTAssertEqual(result.sessionResult, "sessionResultString")
             didCompleteExpectation.fulfill()
         }
         let actionData = try ActionComponentData(
@@ -997,7 +997,7 @@ class SessionTests: XCTestCase {
         let didCompleteExpectation = expectation(description: "didComplete should be called")
         sessionDelegate.onDidComplete = { result, _, _ in
             XCTAssertEqual(result.resultCode, .presentToShopper)
-            XCTAssertEqual(result.encodedResult, "sessionResultString")
+            XCTAssertEqual(result.sessionResult, "sessionResultString")
             didCompleteExpectation.fulfill()
         }
         let paymentMethod = expectedPaymentMethods.regular.first as! GiftCardPaymentMethod
@@ -1034,7 +1034,7 @@ class SessionTests: XCTestCase {
         let didCompleteExpectation = expectation(description: "didComplete should be called")
         sessionDelegate.onDidComplete = { result, _, _ in
             XCTAssertEqual(result.resultCode, .error)
-            XCTAssertNil(result.encodedResult)
+            XCTAssertNil(result.sessionResult)
             didCompleteExpectation.fulfill()
         }
         let actionData = try ActionComponentData(
@@ -1067,7 +1067,7 @@ class SessionTests: XCTestCase {
         let didCompleteExpectation = expectation(description: "didComplete should be called")
         sessionDelegate.onDidComplete = { result, _, _ in
             XCTAssertEqual(result.resultCode, .error)
-            XCTAssertEqual(result.encodedResult, "sessionResultString")
+            XCTAssertEqual(result.sessionResult, "sessionResultString")
             didCompleteExpectation.fulfill()
         }
         let actionData = try ActionComponentData(

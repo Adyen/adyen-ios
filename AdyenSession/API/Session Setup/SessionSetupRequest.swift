@@ -14,7 +14,7 @@ internal protocol SessionResponse: Response {
 
 /// A protocol that contains payment result values for session calls.
 internal protocol SessionPaymentResultAware {
-    var resultCode: PaymentsResponse.ResultCode { get }
+    var resultCode: CheckoutResultCode { get }
     
     var sessionResult: String? { get }
 }
