@@ -22,14 +22,6 @@ public final class AdyenObservable<ValueType: Equatable>: EventPublisher {
     // MARK: - Value
 
     /// The value being observed.
-    ///
-    ///
-    /// - Note: This equality-based publishing behavior is part of the framework design but ideally
-    ///         should be a responsibility of the business logic layer rather than the reactive framework.
-    ///         When implementing custom observers, consider whether this behavior is appropriate for your use case.
-    ///
-    /// - Important: If you need to force publication even when values are equal, you'll need to
-    ///              explicitly call `publish(value)` instead of setting this property.
     public var wrappedValue: ValueType {
         didSet {
             guard wrappedValue != oldValue else { return }
