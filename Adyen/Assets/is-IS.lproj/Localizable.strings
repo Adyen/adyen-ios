@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "Gildisdagur (valfrjálst)";
 "adyen.card.expiryItem.placeholder" = "MM/ÁÁ";
 "adyen.card.expiryItem.invalid" = "Ógildur gildisdagur";
+"adyen.card.expiryItem.accessibilityLabel" = "Mánuður, 2 tölustafir, Ár, 2 tölustafir";
 "adyen.card.cvcItem.invalid" = "Ógilt CVC- / CVV-snið";
 "adyen.card.cvcItem.title" = "Öryggiskóði";
 "adyen.card.cvcItem.placeholder" = "123";

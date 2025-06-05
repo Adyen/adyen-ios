@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "تاريخ الانتهاء (اختياري)";
 "adyen.card.expiryItem.placeholder" = "شهر/سنة";
 "adyen.card.expiryItem.invalid" = "تاريخ انتهاء غير صحيح";
+"adyen.card.expiryItem.accessibilityLabel" = "الشهر (رقمين)، السنة (رقمين)";
 "adyen.card.cvcItem.invalid" = "تنسيق CVC / CVV غير صحيح";
 "adyen.card.cvcItem.title" = "رمز الأمان";
 "adyen.card.cvcItem.placeholder" = "123";

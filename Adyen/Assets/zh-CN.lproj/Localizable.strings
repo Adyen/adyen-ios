@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "到期日期（可选）";
 "adyen.card.expiryItem.placeholder" = "月月/年年";
 "adyen.card.expiryItem.invalid" = "无效的到期日期";
+"adyen.card.expiryItem.accessibilityLabel" = "月份，2 位数字，年份，2 位数字";
 "adyen.card.cvcItem.invalid" = "无效的 CVC / CVV 格式";
 "adyen.card.cvcItem.title" = "安全码";
 "adyen.card.cvcItem.placeholder" = "123";

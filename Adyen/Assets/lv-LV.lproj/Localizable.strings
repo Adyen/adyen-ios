@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "Derīguma termiņš (pēc izvēles)";
 "adyen.card.expiryItem.placeholder" = "MM/GG";
 "adyen.card.expiryItem.invalid" = "Nederīgs derīguma termiņš";
+"adyen.card.expiryItem.accessibilityLabel" = "Mēnesis, 2 cipari, gads, 2 cipari";
 "adyen.card.cvcItem.invalid" = "Nederīgs CVC/CVV formāts";
 "adyen.card.cvcItem.title" = "Drošības kods";
 "adyen.card.cvcItem.placeholder" = "123";
