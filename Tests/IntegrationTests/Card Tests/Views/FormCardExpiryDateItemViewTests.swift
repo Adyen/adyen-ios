@@ -62,7 +62,12 @@ class FormCardExpiryDateItemViewTests: XCTestCase {
 }
 
 extension FormCardExpiryDateItemViewTests {
-    private func makeSUT(item: FormCardExpiryDateItem) -> FormItemView<FormCardExpiryDateItem> {
-        FormCardExpiryDateItemView(item: item)
+    private func makeSUT(item: FormCardExpiryDateItem) -> FormTextInputItemView {
+        let view = FormTextInputItemView(item: item)
+        view.observe(item.$title) { _ in
+            view.accessibilityLabelView?.accessibilityLabel = item.accessibilityValue
+        }
+        view.accessibilityLabelView?.accessibilityLabel = item.accessibilityValue
+        return view
     }
 }
