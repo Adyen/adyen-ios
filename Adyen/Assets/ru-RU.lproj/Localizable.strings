@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "Срок действия (необязательно)";
 "adyen.card.expiryItem.placeholder" = "ММ/ГГ";
 "adyen.card.expiryItem.invalid" = "Неверный срок действия";
+"adyen.card.expiryItem.accessibilityLabel" = "Месяц: 2 цифры, год: 2 цифры";
 "adyen.card.cvcItem.invalid" = "Неверный формат CVC / CVV";
 "adyen.card.cvcItem.title" = "Защитный код";
 "adyen.card.cvcItem.placeholder" = "123";

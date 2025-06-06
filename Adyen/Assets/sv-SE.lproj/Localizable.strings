@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "Utgångsdatum (valfritt)";
 "adyen.card.expiryItem.placeholder" = "MM/ÅÅ";
 "adyen.card.expiryItem.invalid" = "Ogiltigt utgångsdatum";
+"adyen.card.expiryItem.accessibilityLabel" = "Månad, 2 siffror, År, 2 siffror";
 "adyen.card.cvcItem.invalid" = "Ogiltigt CVC/CVV-format";
 "adyen.card.cvcItem.title" = "Säkerhetskod";
 "adyen.card.cvcItem.placeholder" = "123";

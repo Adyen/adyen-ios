@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "Aegumiskuupäev (valikuline)";
 "adyen.card.expiryItem.placeholder" = "KK/AA";
 "adyen.card.expiryItem.invalid" = "Vale aegumiskuupäev";
+"adyen.card.expiryItem.accessibilityLabel" = "Kuu, 2 numbrit, aasta, 2 numbrit";
 "adyen.card.cvcItem.invalid" = "Vale CVC/CVV vorming";
 "adyen.card.cvcItem.title" = "Turvakood";
 "adyen.card.cvcItem.placeholder" = "123";

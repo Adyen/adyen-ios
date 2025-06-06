@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "Ablaufdatum (optional)";
 "adyen.card.expiryItem.placeholder" = "MM/JJ";
 "adyen.card.expiryItem.invalid" = "Ungültiges Ablaufdatum";
+"adyen.card.expiryItem.accessibilityLabel" = "Monat, 2 Ziffern, Jahr, 2 Ziffern";
 "adyen.card.cvcItem.invalid" = "Ungültiges CVC/CVV-Format";
 "adyen.card.cvcItem.title" = "Sicherheitscode";
 "adyen.card.cvcItem.placeholder" = "123";

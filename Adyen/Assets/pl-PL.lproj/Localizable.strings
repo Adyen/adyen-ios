@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "Data ważności (opcjonalnie)";
 "adyen.card.expiryItem.placeholder" = "MM/RR";
 "adyen.card.expiryItem.invalid" = "Nieprawidłowa data wygaśnięcia";
+"adyen.card.expiryItem.accessibilityLabel" = "Miesiąc, 2 cyfry, rok, 2 cyfry";
 "adyen.card.cvcItem.invalid" = "Nieprawidłowy format CVC/CVV";
 "adyen.card.cvcItem.title" = "Kod zabezpieczający";
 "adyen.card.cvcItem.placeholder" = "123";

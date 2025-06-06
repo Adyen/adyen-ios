@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "Udløbsdato (valgfrit)";
 "adyen.card.expiryItem.placeholder" = "MM/ÅÅ";
 "adyen.card.expiryItem.invalid" = "Ugyldig udløbsdato";
+"adyen.card.expiryItem.accessibilityLabel" = "Måned, 2 cifre, År, 2 cifre";
 "adyen.card.cvcItem.invalid" = "Ugyldigt format for CVC/CVV";
 "adyen.card.cvcItem.title" = "Sikkerhedskode";
 "adyen.card.cvcItem.placeholder" = "123";

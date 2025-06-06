@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "만료일(선택 사항)";
 "adyen.card.expiryItem.placeholder" = "MM/YY";
 "adyen.card.expiryItem.invalid" = "유효하지 않은 만료일";
+"adyen.card.expiryItem.accessibilityLabel" = "월, 2자리 숫자, 연도, 2자리 숫자";
 "adyen.card.cvcItem.invalid" = "유효하지 않은 CVC/CVV 형식";
 "adyen.card.cvcItem.title" = "보안 코드";
 "adyen.card.cvcItem.placeholder" = "123";
