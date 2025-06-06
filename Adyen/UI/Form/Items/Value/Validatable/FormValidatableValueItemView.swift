@@ -13,13 +13,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     AnyFormValidatableValueItemView {
     
     private var itemObserver: Observation?
-    
-    /// The view to set the `accessibilityLabel` on when invalid
-    internal var accessibilityLabelView: UIView? {
-        AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
-        return nil
-    }
-    
+        
     public required init(item: ItemType) {
         super.init(item: item)
         

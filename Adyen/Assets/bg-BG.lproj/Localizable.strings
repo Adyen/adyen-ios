@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "Дата на валидност (незадължително)";
 "adyen.card.expiryItem.placeholder" = "ММ/ГГ";
 "adyen.card.expiryItem.invalid" = "Невалидна дата на валидност";
+"adyen.card.expiryItem.accessibilityLabel" = "Месец, 2 цифри, година, 2 цифри";
 "adyen.card.cvcItem.invalid" = "Невалиден CVC/CVV формат";
 "adyen.card.cvcItem.title" = "Код за сигурност";
 "adyen.card.cvcItem.placeholder" = "123";

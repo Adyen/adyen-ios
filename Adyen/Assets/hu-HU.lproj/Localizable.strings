@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "Lejárati dátum (nem kötelező)";
 "adyen.card.expiryItem.placeholder" = "HH/ÉÉ";
 "adyen.card.expiryItem.invalid" = "Érvénytelen lejárati dátum";
+"adyen.card.expiryItem.accessibilityLabel" = "Hónap, két számjegy, év, két számjegy";
 "adyen.card.cvcItem.invalid" = "A CVC/CVV formátuma érvénytelen";
 "adyen.card.cvcItem.title" = "Biztonsági kód";
 "adyen.card.cvcItem.placeholder" = "123";
