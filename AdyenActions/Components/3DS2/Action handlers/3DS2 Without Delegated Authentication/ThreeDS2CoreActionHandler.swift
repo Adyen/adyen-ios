@@ -206,6 +206,8 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         }
     }
     
+    internal func userCancelledChallenge() {}
+
     /// Invoked to handle the error flow of a challenge handling by the 3ds2sdk.
     private func didReceiveErrorOnChallenge(
         error: ThreeDSServiceChallengeError,
@@ -215,6 +217,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         let opaqueRepresentationOfError: String
         switch error {
         case let .cancelled(errorPayload):
+            userCancelledChallenge()
             opaqueRepresentationOfError = errorPayload
             sendErrorEvent(
                 .threeDS2ChallengeHandlingFailed,

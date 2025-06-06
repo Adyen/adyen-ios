@@ -159,6 +159,53 @@ import XCTest
             waitForExpectations(timeout: 2, handler: nil)
         }
 
+        func testOnChallengeFlowCancellationRegistration() throws {
+            let service = ThreeDSServiceableMock()
+            service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
+            service.onPerformChallenge = { params, completion in
+                completion(.failure(.cancelled(errorPayload: "")))
+            }
+            service.onResetTransaction = {}
+            let authenticationServiceMock = AuthenticationServiceMock()
+        
+            authenticationServiceMock.onRegister = { _ in
+                self.expectedSDKRegistrationOutput
+            }
+        
+            let expectedResult = try! ThreeDSResult(
+                from: AnyChallengeResultMock(
+                    sdkTransactionIdentifier: "sdkTransactionIdentifier",
+                    transactionStatus: "Y"
+                ),
+                delegatedAuthenticationSDKOutput: expectedSDKRegistrationOutput,
+                authorizationToken: "authToken",
+                threeDS2SDKError: nil
+            )
+            
+            let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
+            let sut = ThreeDS2PlusDACoreActionHandler(
+                context: Dummy.context,
+                service: service,
+                presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .register, showApprovalScreenReturnState: .fallback),
+                delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
+                delegatedAuthenticationService: authenticationServiceMock,
+                deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
+            )
+            sut.threeDSRequestorAppURL = URL(string: "https://google.com")
+            sut.delegatedAuthenticationState.attemptRegistration = true
+            sut.handle(challengeAction, event: analyticsEvent) { challengeResult in
+                switch challengeResult {
+                case .success:
+                    XCTAssertFalse(sut.delegatedAuthenticationState.attemptRegistration)
+                case .failure:
+                    XCTFail()
+                }
+                resultExpectation.fulfill()
+            }
+
+            waitForExpectations(timeout: 2, handler: nil)
+        }
+        
         func testChallengeFlowSuccess() throws {
             
             let service = ThreeDSServiceableMock()
