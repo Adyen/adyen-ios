@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -2742,6 +2742,10 @@
 		F9FE39E22679E09200F02A9B /* LoadingViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		C9025A3C2DF2ED6400E0D191 /* Root */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Root; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		00E5D64E2AF4E99A00CDE118 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -4040,6 +4044,7 @@
 		C9C22D922DE5F9620028C23F /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				C9025A3C2DF2ED6400E0D191 /* Root */,
 				C9C22D9B2DE5F9BB0028C23F /* PreApplePay */,
 				C9C22D9E2DE5F9BE0028C23F /* PaymentMethodList */,
 				C9C22D962DE5F9920028C23F /* PreselectedPaymentMethod */,
@@ -6692,6 +6697,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				C9025A3C2DF2ED6400E0D191 /* Root */,
 			);
 			name = AdyenDropIn;
 			productName = AdyenDropIn;
