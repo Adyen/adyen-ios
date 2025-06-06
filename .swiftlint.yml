@@ -9,6 +9,7 @@ opt_in_rules:
 excluded:
   - Build
   - .build
+  - .index-build
   - Tests
   - AdyenCardScannerTests
   - Internal

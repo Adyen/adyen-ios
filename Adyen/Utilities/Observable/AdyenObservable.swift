@@ -7,6 +7,8 @@
 import Foundation
 
 /// Wraps a value to make it observable.
+/// Note: When the `wrappedValue` is updated, the observable will only publish the new value to subscribers
+///       if it is not equal to the previous value.
 @propertyWrapper
 public final class AdyenObservable<ValueType: Equatable>: EventPublisher {
     
@@ -18,7 +20,8 @@ public final class AdyenObservable<ValueType: Equatable>: EventPublisher {
     }
     
     // MARK: - Value
-    
+
+    /// The value being observed.
     public var wrappedValue: ValueType {
         didSet {
             guard wrappedValue != oldValue else { return }

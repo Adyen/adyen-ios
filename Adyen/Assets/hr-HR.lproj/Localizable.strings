@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "Datum isteka (neobavezno)";
 "adyen.card.expiryItem.placeholder" = "MM/GG";
 "adyen.card.expiryItem.invalid" = "Nevažeći datum isteka";
+"adyen.card.expiryItem.accessibilityLabel" = "Mjesec, 2 znamenke, godina, 2 znamenke";
 "adyen.card.cvcItem.invalid" = "Nevažeći CVC/CVV format";
 "adyen.card.cvcItem.title" = "Sigurnosni kôd";
 "adyen.card.cvcItem.placeholder" = "123";

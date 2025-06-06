@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "Vervaldatum (optioneel)";
 "adyen.card.expiryItem.placeholder" = "MM/JJ";
 "adyen.card.expiryItem.invalid" = "Ongeldige vervaldatum";
+"adyen.card.expiryItem.accessibilityLabel" = "Maand, 2 cijfers; jaar, 2 cijfers";
 "adyen.card.cvcItem.invalid" = "Ongeldige CVC-/CVV-indeling";
 "adyen.card.cvcItem.title" = "Beveiligingscode";
 "adyen.card.cvcItem.placeholder" = "123";
