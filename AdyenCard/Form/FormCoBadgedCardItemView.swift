@@ -11,7 +11,7 @@ import UIKit
 internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem> {
 
     private enum Constants {
-        static let viewHeight: CGFloat = 160
+        static let viewHeight: CGFloat = 256
     }
 
     /// The card brand selection title label item.
@@ -30,6 +30,7 @@ internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem
         let subtitleLabel = UILabel(style: item.style.subtitle)
         subtitleLabel.text = item.subtitle
         subtitleLabel.numberOfLines = 0
+        subtitleLabel.lineBreakMode = .byWordWrapping
         subtitleLabel.accessibilityLabel = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardBadgedCardSelectionSubtitleLabelItem")
@@ -75,7 +76,7 @@ internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem
         stackView.spacing = 5
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.preservesSuperviewLayoutMargins = true
-        stackView.layoutMargins = .init(top: 30, left: 0, bottom: 0, right: 0)
+        stackView.layoutMargins = .init(top: 24, left: 0, bottom: 24, right: 0)
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.setContentHuggingPriority(.required, for: .vertical)
         stackView.axis = .vertical
@@ -99,6 +100,7 @@ internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem
             contentStackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            subtitleLabel.heightAnchor.constraint(equalToConstant: 48),
             heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.viewHeight)
         ]
         NSLayoutConstraint.activate(constraints)
