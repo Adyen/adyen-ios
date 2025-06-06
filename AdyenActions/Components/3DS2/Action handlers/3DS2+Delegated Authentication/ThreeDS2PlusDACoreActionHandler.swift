@@ -440,7 +440,7 @@ internal typealias VoidHandler = () -> Void
             }
         }
         
-        internal override func userCancelledChallenge() {
+        override internal func userCancelledChallenge() {
             self.delegatedAuthenticationState.attemptRegistration = false
         }
         
