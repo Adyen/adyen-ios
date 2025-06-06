@@ -7,4 +7,4 @@
 import Foundation
 
 /// The Adyen SDK version.
-public let adyenSdkVersion: String = "5.18.1"
+public let adyenSdkVersion: String = "5.19.1"
