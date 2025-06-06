@@ -228,22 +228,29 @@ public final class DropInComponent: NSObject,
     // ================= ROOT VIEW CONTROLLER ===============
 
     internal lazy var rootViewController: UIViewController = {
-        if configuration.allowPreselectedPaymentView,
-           let preselectedComponent = componentManager.storedComponents.first {
-            let view = resolvePreselectedPaymentMethodView(for: preselectedComponent, onCancel: nil)
-            self.preselectedPaymentMethodView = view
-            return view
-        } else if configuration.allowsSkippingPaymentList,
-                  let singleRegularComponent = componentManager.singleRegularComponent {
-            setNecessaryDelegates(on: singleRegularComponent)
-            let componentView = resolveComponentView(from: singleRegularComponent)
-            self.componentView = componentView
-            return componentView
-        } else {
-            let view = resolvePaymentMethodListView(onCancel: nil)
-            self.paymentMethodListView = view
-            return view
-        }
+//        if configuration.allowPreselectedPaymentView,
+//           let preselectedComponent = componentManager.storedComponents.first {
+//            let view = resolvePreselectedPaymentMethodView(for: preselectedComponent, onCancel: nil)
+//            self.preselectedPaymentMethodView = view
+//            return view
+//        } else if configuration.allowsSkippingPaymentList,
+//                  let singleRegularComponent = componentManager.singleRegularComponent {
+//            setNecessaryDelegates(on: singleRegularComponent)
+//            let componentView = resolveComponentView(from: singleRegularComponent)
+//            self.componentView = componentView
+//            return componentView
+//        } else {
+//            let view = resolvePaymentMethodListView(onCancel: nil)
+//            self.paymentMethodListView = view
+//            return view
+//        }
+        let dropInRootAssembler = DropInRootAssembler(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration
+        )
+        let view = dropInRootAssembler.resolveDropInRootView()
+        return view
     }()
 
     // ================= COMPONENT MODULE - ASSEMBLER ===============
@@ -274,8 +281,7 @@ public final class DropInComponent: NSObject,
             router: self,
             context: context,
             componentManager: componentManager,
-            style: configuration.style.listComponent,
-            localizationParameters: configuration.localizationParameters
+            configuration: configuration
         )
         let view = PaymentMethodListViewController(viewModel: viewModel)
         return view
@@ -297,9 +303,7 @@ public final class DropInComponent: NSObject,
             router: self,
             component: paymentComponent,
             title: title,
-            style: configuration.style.formComponent,
-            listItemStyle: configuration.style.listComponent.listItem,
-            localizationParameters: configuration.localizationParameters
+            configuration: configuration
         )
         let view = PreselectedPaymentMethodViewController(viewModel: viewModel)
         return view

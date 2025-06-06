@@ -8,71 +8,6 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-internal class DropInRootAssembler {
-
-    // MARK: - Properties
-
-    private let paymentMethods: PaymentMethods
-    private let context: AdyenContext
-    private let configuration: DropInComponent.Configuration
-
-    // MARK: - Initalizers
-
-    internal init(
-        paymentMethods: PaymentMethods,
-        context: AdyenContext,
-        configuration: DropInComponent.Configuration
-    ) {
-        self.paymentMethods = paymentMethods
-        self.context = context
-        self.configuration = configuration
-    }
-
-    // MARK: - Public
-
-    internal func resolveDropInRootView() -> UIViewController {
-        let componentManager = resolveComponentManager()
-        let apiClient = resolveAPIClient()
-
-        let viewModel = DropInRootViewModel(
-            componentManager: componentManager,
-            apiClient: apiClient,
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration
-        )
-        componentManager.presentationDelegate = viewModel
-
-        let view = DropInRootViewController(viewModel: viewModel)
-        return view
-    }
-
-    // MARK: - Private
-
-    private func resolveComponentManager() -> ComponentManager {
-        let componentManager = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            partialPaymentEnabled: false, // TODO: - Set partial payment flow
-            order: nil,
-            supportsEditingStoredPaymentMethods: false, // TODO: - Support editing stored PMs
-            presentationDelegate: nil
-        )
-
-        return componentManager
-    }
-
-    private func resolveAPIClient() -> APIClientProtocol {
-        let scheduler = SimpleScheduler(maximumCount: 3)
-        let apiClient = APIClient(apiContext: context.apiContext)
-            .retryAPIClient(with: scheduler)
-            .retryOnErrorAPIClient()
-
-        return apiClient
-    }
-}
-
 internal protocol DropInRootViewModelProtocol {
     var rootViewController: UIViewController? { get }
 }
@@ -81,6 +16,7 @@ internal class DropInRootViewModel: DropInRootViewModelProtocol {
 
     // MARK: - Properties
 
+    private let router: DropInRootRouterProtocol
     private let componentManager: ComponentManager
     private let apiClient: APIClientProtocol
     private let paymentMethods: PaymentMethods
@@ -91,6 +27,7 @@ internal class DropInRootViewModel: DropInRootViewModelProtocol {
     // MARK: - Initializers
 
     internal init(
+        router: DropInRootRouterProtocol,
         componentManager: ComponentManager,
         apiClient: APIClientProtocol,
         paymentMethods: PaymentMethods,
@@ -98,6 +35,7 @@ internal class DropInRootViewModel: DropInRootViewModelProtocol {
         configuration: DropInComponent.Configuration,
         title: String? = nil
     ) {
+        self.router = router
         self.componentManager = componentManager
         self.apiClient = apiClient
         self.paymentMethods = paymentMethods
@@ -108,40 +46,24 @@ internal class DropInRootViewModel: DropInRootViewModelProtocol {
 
     // MARK: - DropInRootViewModelProtocol
 
-    var rootViewController: UIViewController? {
-        return nil
+    internal var rootViewController: UIViewController? {
+        nil
     }
 
     // MARK: - Private
+
+    private func resolveRootViewController() -> UIViewController? {
+        nil
+    }
+
+    private func resolvePreselectedPaymentMethodView() -> UIViewController? {
+        nil
+    }
 }
 
 extension DropInRootViewModel: PresentationDelegate {
 
     internal func present(component: any Adyen.PresentableComponent) {
         // TODO: -
-    }
-}
-
-class DropInRootViewController: UIViewController {
-
-    // MARK: - Properties
-
-    private let viewModel: DropInRootViewModelProtocol
-
-    // MARK: - Initializers
-
-    init(viewModel: DropInRootViewModelProtocol) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - View life cycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
     }
 }

@@ -17,6 +17,44 @@ internal protocol PaymentMethodListRouterProtocol: AnyObject {
     )
 }
 
+protocol PaymentMethodListAssemblerProtocol {
+    func resolvePaymentMethodListView(
+        router: PaymentMethodListRouterProtocol,
+        configuration: DropInComponent.Configuration
+    ) -> UIViewController
+}
+
+internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
+
+    // MARK: - Properties
+
+    private let componentManager: ComponentManager
+    private let context: AdyenContext
+
+    // MARK: - Initializers
+
+    internal init(componentManager: ComponentManager, context: AdyenContext) {
+        self.componentManager = componentManager
+        self.context = context
+    }
+
+    // MARK: - PaymentMethodListAssemblerProtocol
+
+    internal func resolvePaymentMethodListView(
+        router: PaymentMethodListRouterProtocol,
+        configuration: DropInComponent.Configuration
+    ) -> UIViewController {
+        let viewModel = PaymentMethodListViewModel(
+            router: router,
+            context: context,
+            componentManager: componentManager,
+            configuration: configuration
+        )
+        let view = PaymentMethodListViewController(viewModel: viewModel)
+        return view
+    }
+}
+
 internal protocol PaymentMethodListViewModelProtocol {
     var paymentMethodListView: UIViewController { get }
 }
@@ -34,8 +72,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
         router: PaymentMethodListRouterProtocol,
         context: AdyenContext,
         componentManager: ComponentManager,
-        style: ListComponentStyle,
-        localizationParameters: LocalizationParameters?
+        configuration: DropInComponent.Configuration
     ) {
         self.router = router
 
@@ -43,9 +80,9 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
         self.paymentMethodListComponent = PaymentMethodListComponent(
             context: context,
             components: components,
-            style: style
+            style: configuration.style.listComponent
         )
-        self.paymentMethodListComponent.localizationParameters = localizationParameters
+        self.paymentMethodListComponent.localizationParameters = configuration.localizationParameters
         self.paymentMethodListComponent.delegate = self
     }
 
