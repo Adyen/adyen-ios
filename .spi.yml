@@ -1,5 +1,16 @@
 version: 1
 builder:
   configs:
-    - documentation_targets: [Adyen, AdyenActions, AdyenCard, AdyenComponents, AdyenSession, AdyenDropIn, AdyenEncryption, AdyenWeChatPay, AdyenCashAppPay, AdyenTwint]
-      platform: ios
+    - documentation_targets:
+        - Adyen
+        - AdyenActions
+        - AdyenCard
+        - AdyenComponents
+        - AdyenSession
+        - AdyenDropIn
+        - AdyenEncryption
+        - AdyenWeChatPay
+        - AdyenCashAppPay
+        - AdyenTwint
+      platform: [ios]
+      swift_version: 5.7
