@@ -11,6 +11,7 @@ builder:
         - AdyenEncryption
         - AdyenWeChatPay
         - AdyenCashAppPay
+        - AdyenSwiftUI
         - AdyenTwint
       platform: [ios]
       swift_version: 5.7
