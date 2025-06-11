@@ -11,7 +11,7 @@ import UIKit
 internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem> {
 
     private enum Constants {
-        static let viewHeight: CGFloat = 256
+        static let viewHeight: CGFloat = 220
     }
 
     /// The card brand selection title label item.
@@ -73,10 +73,10 @@ internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, subtitleLabel])
         brandsListView.forEach { stackView.addArrangedSubview($0) }
-        stackView.spacing = 5
+        stackView.spacing = 0
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.preservesSuperviewLayoutMargins = true
-        stackView.layoutMargins = .init(top: 24, left: 0, bottom: 24, right: 0)
+        stackView.layoutMargins = .init(top: 14, left: 0, bottom: 16, right: 0)
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.setContentHuggingPriority(.required, for: .vertical)
         stackView.axis = .vertical

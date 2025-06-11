@@ -178,13 +178,14 @@ public final class UPIComponent: PaymentComponent,
             ),
             imageUrl: nil,
             isSelected: false,
+            isSeparatorViewShown: true,
             style: .init(title: configuration.style.textField.title),
             identifier: Constants.vpaFlowIdentifier
         )
         selectableItem.selectionHandler = { [weak self, weak selectableItem] in
             guard let self, let selectableItem else { return }
             self.handleSelection(
-                identifier: selectableItem.identifier,
+                item: selectableItem,
                 showVpaInputItem: true
             )
         }
@@ -257,13 +258,14 @@ public final class UPIComponent: PaymentComponent,
             title: app.name,
             imageUrl: logoUrl,
             isSelected: false,
+            isSeparatorViewShown: true,
             style: .init(title: configuration.style.textField.title),
             identifier: app.identifier
         )
         selectableItem.selectionHandler = { [weak self, weak selectableItem] in
             guard let self, let selectableItem else { return }
             self.handleSelection(
-                identifier: selectableItem.identifier,
+                item: selectableItem,
                 showVpaInputItem: false
             )
         }
@@ -306,12 +308,16 @@ public final class UPIComponent: PaymentComponent,
 
 extension UPIComponent {
     
-    private func handleSelection(identifier: String?, showVpaInputItem: Bool) {
-        self.currentSelectedItemIdentifier = identifier
+    private func handleSelection(item: SelectableFormItem?, showVpaInputItem: Bool) {
+        self.currentSelectedItemIdentifier = item?.identifier
         self.updateSelection()
         self.vpaInputItem.isHidden.wrappedValue = !showVpaInputItem
+
         if showVpaInputItem {
             self.focusVpaInput()
+            item?.isSeparatorViewShown = false
+        } else {
+            item?.isSeparatorViewShown = true
         }
     }
     
@@ -354,7 +360,8 @@ private extension UPIComponent {
     
     func updateSelection() {
         upiAppsList.forEach { $0.isSelected = false }
-        
+        upiAppsList.forEach { $0.isSeparatorViewShown = true }
+
         if let currentSelectedItemIdentifier {
             upiAppsList.first(where: { $0.identifier == currentSelectedItemIdentifier })?.isSelected = true
         }

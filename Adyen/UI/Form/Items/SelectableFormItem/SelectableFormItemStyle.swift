@@ -27,18 +27,25 @@ public struct SelectableFormItemStyle: ViewStyle {
         contentMode: .scaleAspectFit
     )
 
+    /// The background color.
     public var backgroundColor: UIColor {
         get { title.backgroundColor }
         set { title.backgroundColor = newValue }
     }
 
+    /// The color for separator element.
+    public var separatorColor: UIColor? = UIColor.Adyen.componentSeparator
+
     /// Initializes the selectableForm item style.
     ///
     /// - Parameter title: The title style.
+    /// - Parameter separatorColor: The separator color.
     public init(
-        title: TextStyle
+        title: TextStyle,
+        separatorColor: UIColor? = nil
     ) {
         self.title = title
+        self.separatorColor = separatorColor
     }
 }
 

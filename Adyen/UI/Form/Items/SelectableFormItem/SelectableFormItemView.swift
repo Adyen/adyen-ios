@@ -86,6 +86,20 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
         return stackView
     }()
 
+    // MARK: - Separator
+
+    private lazy var separator: FormSeparatorItem = {
+        let separator = FormSeparatorItem(color: item.style.separatorColor ?? UIColor.Adyen.componentSeparator)
+        separator.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "separator")
+        return separator
+    }()
+
+    private lazy var separatorView: FormSeparatorItemView = {
+        let separatorView = FormSeparatorItemView(item: separator)
+        separatorView.isHidden = !item.isSeparatorViewShown
+        return separatorView
+    }()
+
     // MARK: - Item Button
 
     private lazy var itemButton: UIButton = {
@@ -97,8 +111,9 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "button")
         }
         customButton.addSubview(contentStackView)
-        
+
         contentStackView.isUserInteractionEnabled = false
+        contentStackView.addArrangedSubview(separatorView)
 
         return customButton
     }()
@@ -113,6 +128,7 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
         backgroundColor = item.style.backgroundColor
 
         addSubview(itemButton)
+        addSubview(separatorView)
 
         accessibilityIdentifier = item.identifier
         accessibilityLabel = item.accessibilityLabel
@@ -127,6 +143,11 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
         observe(item.$isSelected) { [weak self] isSelected in
             guard let self else { return }
             self.checkmarkImageView.isHidden = !isSelected
+        }
+
+        observe(item.$isSeparatorViewShown) { [weak self] isShown in
+            guard let self else { return }
+            self.separatorView.isHidden = !isShown
         }
     }
 
@@ -167,7 +188,11 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
             contentStackView.bottomAnchor.constraint(equalTo: itemButton.bottomAnchor),
             contentStackView.leadingAnchor.constraint(equalTo: itemButton.layoutMarginsGuide.leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: itemButton.layoutMarginsGuide.trailingAnchor),
-            
+
+            separatorView.topAnchor.constraint(equalTo: itemButton.topAnchor, constant: 50),
+            separatorView.leadingAnchor.constraint(equalTo: itemButton.layoutMarginsGuide.leadingAnchor, constant: 0),
+            separatorView.trailingAnchor.constraint(equalTo: itemButton.layoutMarginsGuide.trailingAnchor, constant: 10),
+
             imageView.widthAnchor.constraint(equalToConstant: Constants.iconImageSize.width),
             imageView.heightAnchor.constraint(equalToConstant: Constants.iconImageSize.height),
             
