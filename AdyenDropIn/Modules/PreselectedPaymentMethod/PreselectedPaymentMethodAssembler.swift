@@ -19,14 +19,37 @@ internal protocol PreselectedPaymentMethodAssemblerProtocol {
 
 internal struct PreselectedPaymentMethodAssembler {
 
+    // MARK: - Properties
+
+    private let componentManager: ComponentManager
+    private let context: AdyenContext
+    private let configuration: DropInComponent.Configuration
+
+    // MARK: - Initializers
+
+    internal init(
+        componentManager: ComponentManager,
+        context: AdyenContext,
+        configuration: DropInComponent.Configuration
+    ) {
+        self.componentManager = componentManager
+        self.context = context
+        self.configuration = configuration
+    }
+
     // MARK: - PreselectedPaymentMethodAssemblerProtocol
 
     internal func resolvePreselectedPaymentMethodView(
-        router: PreselectedPaymentMethodRouterProtocol,
         component: PaymentComponent,
-        title: String,
-        configuration: DropInComponent.Configuration
+        title: String
     ) -> UIViewController {
+        let paymentMethodListAssembler = PaymentMethodListAssembler(
+            componentManager: componentManager,
+            context: context,
+            configuration: configuration
+        )
+
+        let router = PreselectedPaymentMethodRouter(paymentMethodListAssembler: paymentMethodListAssembler)
         let viewModel = PreselectedPaymentMethodViewModel(
             router: router,
             component: component,
@@ -34,6 +57,7 @@ internal struct PreselectedPaymentMethodAssembler {
             configuration: configuration
         )
         let view = PreselectedPaymentMethodViewController(viewModel: viewModel)
+        router.view = view
         return view
     }
 }

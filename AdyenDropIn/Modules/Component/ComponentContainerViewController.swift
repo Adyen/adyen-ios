@@ -4,64 +4,25 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
-#if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
-#endif
+import Foundation
 import UIKit
+@_spi(AdyenInternal) import Adyen
 
-internal protocol ComponentViewModelProtocol {
-    var view: UIViewController { get }
-    var isRoot: Bool { get }
-    func didCancel()
-}
-
-internal class ComponentViewModel: ComponentViewModelProtocol {
+internal final class ComponentContainerViewController: UIViewController {
 
     // MARK: - Properties
 
-    private let component: PresentableComponent
-    internal let isRoot: Bool
-    private let cancelHandler: ((_ isRoot: Bool) -> Void)?
-
-    // MARK: - Initializers
-
-    internal init(
-        component: PresentableComponent,
-        isRoot: Bool,
-        cancelHandler: ((Bool) -> Void)?
-    ) {
-        self.component = component
-        self.isRoot = isRoot
-        self.cancelHandler = cancelHandler
-    }
-
-    // MARK: - Public
-
-    internal var view: UIViewController {
-        component.viewController
-    }
-
-    internal func didCancel() {
-        cancelHandler?(isRoot)
-    }
-}
-
-internal final class ComponentViewController: UIViewController {
-
-    // MARK: - Properties
-
-    private let viewModel: ComponentViewModelProtocol
+    private let viewModel: ComponentContainerViewModelProtocol
     internal weak var delegate: ViewControllerDelegate?
 
     // MARK: - Initializing
 
-    internal init(viewModel: ComponentViewModelProtocol) {
+    internal init(viewModel: ComponentContainerViewModelProtocol) {
         self.viewModel = viewModel
 
-        super.init(nibName: nil, bundle: Bundle(for: ComponentViewController.self))
+        super.init(nibName: nil, bundle: Bundle(for: ComponentContainerViewController.self))
     }
-    
+
     @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -101,7 +62,7 @@ internal final class ComponentViewController: UIViewController {
 
     private func setupNavigationItem() {
         // TODO: - Replace with actual title
-        navigationItem.title = "Checkout"
+        navigationItem.title = "3"
 
         if viewModel.isRoot { setupCancelButton() }
     }

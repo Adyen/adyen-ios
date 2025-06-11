@@ -31,7 +31,6 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     override internal func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "1"
-
         setupPaymentMethodView()
     }
 

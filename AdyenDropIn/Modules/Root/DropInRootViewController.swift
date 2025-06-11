@@ -7,7 +7,7 @@
 import Foundation
 import UIKit
 
-internal class DropInRootViewController: UIViewController {
+internal class DropInRootViewController: UINavigationController {
 
     // MARK: - Properties
 
@@ -15,21 +15,16 @@ internal class DropInRootViewController: UIViewController {
 
     // MARK: - Initializers
 
-    internal init(viewModel: DropInRootViewModelProtocol) {
+    internal init(
+        rootViewController: UIViewController,
+        viewModel: DropInRootViewModelProtocol
+    ) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+        super.init(rootViewController: rootViewController)
     }
 
     @available(*, unavailable)
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - View life cycle
-
-    override internal func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .red
-        navigationItem.title = "We start here"
     }
 }

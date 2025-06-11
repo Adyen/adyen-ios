@@ -16,7 +16,6 @@ internal class DropInRootViewModel: DropInRootViewModelProtocol {
 
     // MARK: - Properties
 
-    private let router: DropInRootRouterProtocol
     private let componentManager: ComponentManager
     private let apiClient: APIClientProtocol
     private let paymentMethods: PaymentMethods
@@ -27,7 +26,6 @@ internal class DropInRootViewModel: DropInRootViewModelProtocol {
     // MARK: - Initializers
 
     internal init(
-        router: DropInRootRouterProtocol,
         componentManager: ComponentManager,
         apiClient: APIClientProtocol,
         paymentMethods: PaymentMethods,
@@ -35,7 +33,6 @@ internal class DropInRootViewModel: DropInRootViewModelProtocol {
         configuration: DropInComponent.Configuration,
         title: String? = nil
     ) {
-        self.router = router
         self.componentManager = componentManager
         self.apiClient = apiClient
         self.paymentMethods = paymentMethods

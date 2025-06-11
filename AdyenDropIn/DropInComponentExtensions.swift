@@ -80,7 +80,7 @@ extension DropInComponent: NavigationDelegate {
 
     @_spi(AdyenInternal)
     public func present(component: PresentableComponent) {
-        navigationController.present(component.viewController)
+        navigationController.present(component.viewController, animated: true)
     }
 
 }
@@ -109,7 +109,7 @@ extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
                 self.partialPaymentDelegate?.cancelOrder(order, component: self)
             }
         )
-        navigationController.present(newRootViewController)
+        navigationController.present(newRootViewController, animated: true)
         rootViewController = newRootViewController
     }
 }

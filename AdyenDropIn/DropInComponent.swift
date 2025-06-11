@@ -205,13 +205,23 @@ public final class DropInComponent: NSObject,
         )
     }
 
-    internal lazy var navigationController = DropInNavigationController(
-        rootViewController: rootViewController,
-        style: configuration.style.navigation,
-        cancelHandler: { [weak self] isRoot, component in
-            self?.didSelectCancelButton(isRoot: isRoot, component: component)
-        }
-    )
+//    internal lazy var navigationController = DropInNavigationController(
+//        rootViewController: rootViewController,
+//        style: configuration.style.navigation,
+//        cancelHandler: { [weak self] isRoot, component in
+//            self?.didSelectCancelButton(isRoot: isRoot, component: component)
+//        }
+//    )
+
+    internal lazy var navigationController: UIViewController = {
+        let dropInRootAssembler = DropInRootAssembler(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration
+        )
+        let dropInRootViewController = dropInRootAssembler.resolveDropInRootView()
+        return dropInRootViewController
+    }()
 
     private lazy var actionComponent: AdyenActionComponent = {
         let handler = AdyenActionComponent(context: context)
@@ -258,13 +268,13 @@ public final class DropInComponent: NSObject,
     internal func resolveComponentView(
         from component: PresentableComponent
     ) -> UIViewController {
-        let viewModel = ComponentViewModel(
+        let viewModel = ComponentContainerViewModel(
             component: component,
             isRoot: false,
             cancelHandler: nil
         )
 
-        let componentViewController = ComponentViewController(viewModel: viewModel)
+        let componentViewController = ComponentContainerViewController(viewModel: viewModel)
         return componentViewController
     }
 
@@ -317,7 +327,7 @@ public final class DropInComponent: NSObject,
         switch component {
         case let component as PresentableComponent:
             let componentView = resolveComponentView(from: component)
-            navigationController.present(componentView)
+            navigationController.present(componentView, animated: true)
         case let component as PaymentInitiable:
             component.initiatePayment()
         default:
@@ -424,7 +434,7 @@ extension DropInComponent: PreselectedPaymentMethodRouterProtocol {
     internal func displayPaymentMethodsList(onCancel: (() -> Void)?) {
         let view = resolvePaymentMethodListView(onCancel: onCancel)
         self.paymentMethodListView = view
-        navigationController.present(view)
+        navigationController.present(view, animated: true)
         // rootComponent = newList
     }
 }
@@ -440,9 +450,9 @@ extension DropInComponent: PaymentMethodListRouterProtocol {
         sendDidLoadEvent()
     }
 
-    func present(_ component: any PaymentComponent) {
-        (rootViewController as? ComponentLoader)?.startLoading(for: component)
-        didSelect(component)
+    func present(_ component: any PresentableComponent) {
+//        (rootViewController as? ComponentLoader)?.startLoading(for: component)
+//        didSelect(component)
     }
 
     func delete(
