@@ -10,7 +10,7 @@ import UIKit
 internal protocol PreselectedPaymentMethodRouterProtocol {
     func dismiss(completion: (() -> Void)?)
     func showAllPaymentMethods()
-    func proceed(with component: any PaymentComponent)
+    func present(componentViewController: UIViewController)
 }
 
 internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouterProtocol {
@@ -39,7 +39,8 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouterPro
         view?.present(navigationViewController, animated: true)
     }
 
-    internal func proceed(with component: any Adyen.PaymentComponent) {
+    func present(componentViewController: UIViewController) {
         // TODO: - Handle logic with preselected payment method
+        view?.present(componentViewController, animated: true)
     }
 }

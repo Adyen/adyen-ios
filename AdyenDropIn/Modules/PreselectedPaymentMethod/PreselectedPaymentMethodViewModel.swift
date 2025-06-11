@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
 import Foundation
 import UIKit
+@_spi(AdyenInternal) import Adyen
 
 @objc
 internal protocol PreselectedPaymentMethodViewModelProtocol {
@@ -19,6 +19,7 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
     // MARK: - Properties
 
     private let router: PreselectedPaymentMethodRouterProtocol
+    private let component: PaymentComponent
     private let preselectedPaymentMethodComponent: PreselectedPaymentMethodComponent
 
     // MARK: - Initializers
@@ -32,6 +33,7 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
         self.router = router
 
         let style = configuration.style
+        self.component = component
         self.preselectedPaymentMethodComponent = PreselectedPaymentMethodComponent(
             component: component,
             title: title,
@@ -48,7 +50,8 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
         preselectedPaymentMethodComponent.viewController
     }
 
-    func cancel() {
+    internal func cancel() {
+        stopLoading()
         router.dismiss(completion: nil)
     }
 
@@ -58,8 +61,33 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
         router.showAllPaymentMethods()
     }
 
-    internal func didProceed(with component: any Adyen.PaymentComponent) {
-        print("Proceed with component: \(component)")
-        router.proceed(with: component)
+    internal func didProceed(with component: any PaymentComponent) {
+        startLoading()
+        startPaymentFlow(for: component)
+    }
+
+    // MARK: - Private
+
+    private func startPaymentFlow(for component: PaymentComponent) {
+        // TODO: - Handle payment delegation
+//        setNecessaryDelegates(on: component)
+
+        switch component {
+        case let component as PresentableComponent:
+            let componentViewController = component.viewController
+            router.present(componentViewController: componentViewController)
+        case let component as PaymentInitiable:
+            component.initiatePayment()
+        default:
+            break
+        }
+    }
+
+    private func startLoading() {
+        preselectedPaymentMethodComponent.startLoading(for: component)
+    }
+
+    private func stopLoading() {
+        preselectedPaymentMethodComponent.stopLoadingIfNeeded()
     }
 }
