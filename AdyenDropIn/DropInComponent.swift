@@ -33,10 +33,6 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Properties
 
-    private var preselectedPaymentMethodView: UIViewController?
-    private var paymentMethodListView: UIViewController?
-    private var componentView: UIViewController?
-
     private lazy var componentManager: ComponentManager = {
         let componentManager = createComponentManager(nil)
         return componentManager
@@ -433,7 +429,6 @@ extension DropInComponent: PreselectedPaymentMethodRouterProtocol {
 
     internal func displayPaymentMethodsList(onCancel: (() -> Void)?) {
         let view = resolvePaymentMethodListView(onCancel: onCancel)
-        self.paymentMethodListView = view
         navigationController.present(view, animated: true)
         // rootComponent = newList
     }
@@ -444,6 +439,10 @@ extension DropInComponent: PreselectedPaymentMethodRouterProtocol {
 // ============= PAYMENT METHOD LIST ===============
 
 extension DropInComponent: PaymentMethodListRouterProtocol {
+
+    func dismiss() {
+        //
+    }
 
     func didLoad() {
         sendInitialAnalytics()

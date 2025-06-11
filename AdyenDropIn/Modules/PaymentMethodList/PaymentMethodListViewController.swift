@@ -30,8 +30,8 @@ internal class PaymentMethodListViewController: UIViewController {
 
     override internal func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "2"
 
+        setupNavigationItem()
         setupPaymentMethodListView()
     }
 
@@ -45,5 +45,16 @@ internal class PaymentMethodListViewController: UIViewController {
         view.addSubview(paymentMethodListView.view)
         paymentMethodListView.didMove(toParent: self)
         paymentMethodListView.view.adyen.anchor(inside: view)
+    }
+
+    private func setupNavigationItem() {
+        navigationItem.title = "2"
+        let cancelButton = UIBarButtonItem(
+            title: "Cancel",
+            style: .plain,
+            target: viewModel,
+            action: #selector(viewModel.cancel)
+        )
+        navigationItem.leftBarButtonItem = cancelButton
     }
 }

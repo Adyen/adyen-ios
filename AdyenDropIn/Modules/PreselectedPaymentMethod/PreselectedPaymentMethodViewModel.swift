@@ -8,8 +8,10 @@ import Adyen
 import Foundation
 import UIKit
 
+@objc
 internal protocol PreselectedPaymentMethodViewModelProtocol {
     var paymentMethodView: UIViewController { get }
+    func cancel()
 }
 
 internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewModelProtocol, PreselectedPaymentMethodComponentDelegate {
@@ -44,6 +46,10 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
 
     internal var paymentMethodView: UIViewController {
         preselectedPaymentMethodComponent.viewController
+    }
+
+    func cancel() {
+        router.dismiss(completion: nil)
     }
 
     // MARK: - PreselectedPaymentMethodComponentDelegate

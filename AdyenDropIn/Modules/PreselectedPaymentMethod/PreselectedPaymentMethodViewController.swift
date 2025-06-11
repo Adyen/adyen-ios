@@ -30,11 +30,9 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
 
     override internal func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "1"
         setupPaymentMethodView()
+        setupNavigationItem()
     }
-
-    // MARK: - Public
 
     // MARK: - Private
 
@@ -46,5 +44,16 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
         view.addSubview(paymentMethodView.view)
         paymentMethodView.didMove(toParent: self)
         paymentMethodView.view.adyen.anchor(inside: view)
+    }
+
+    private func setupNavigationItem() {
+        navigationItem.title = "1"
+        let cancelButton = UIBarButtonItem(
+            title: "Cancel",
+            style: .plain,
+            target: viewModel,
+            action: #selector(viewModel.cancel)
+        )
+        navigationItem.leftBarButtonItem = cancelButton
     }
 }

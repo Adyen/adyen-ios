@@ -8,8 +8,10 @@ import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
 
+@objc
 internal protocol PaymentMethodListViewModelProtocol {
     var paymentMethodListView: UIViewController { get }
+    func cancel()
 }
 
 internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, PaymentMethodListComponentDelegate {
@@ -43,6 +45,11 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
 
     internal var paymentMethodListView: UIViewController {
         paymentMethodListComponent.viewController
+    }
+
+    internal func cancel() {
+        // TODO: - Handle cancellation
+        router.dismiss(completion: nil)
     }
 
     // MARK: - PaymentMethodListComponentDelegate

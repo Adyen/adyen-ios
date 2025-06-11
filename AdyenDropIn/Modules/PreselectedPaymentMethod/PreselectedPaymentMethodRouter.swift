@@ -8,6 +8,7 @@ import Foundation
 import UIKit
 
 internal protocol PreselectedPaymentMethodRouterProtocol {
+    func dismiss(completion: (() -> Void)?)
     func showAllPaymentMethods()
     func proceed(with component: any PaymentComponent)
 }
@@ -26,6 +27,10 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouterPro
     }
 
     // MARK: - PreselectedPaymentMethodRouterProtocol
+
+    internal func dismiss(completion: (() -> Void)?) {
+        view?.dismiss(animated: true, completion: completion)
+    }
 
     internal func showAllPaymentMethods() {
         let paymentMethodListView = paymentMethodListAssembler.resolvePaymentMethodListView()

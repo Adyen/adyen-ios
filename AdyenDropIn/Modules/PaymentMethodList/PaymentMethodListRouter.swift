@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 internal protocol PaymentMethodListRouterProtocol {
+    func dismiss(completion: (() -> Void)?)
     func didLoad()
     func present(_ component: PresentableComponent)
     func delete(
@@ -31,6 +32,10 @@ internal class PaymentMethodListRouter: PaymentMethodListRouterProtocol {
     }
 
     // MARK: - PaymentMethodListRouterProtocol
+
+    internal func dismiss(completion: (() -> Void)?) {
+        view?.navigationController?.dismiss(animated: true, completion: completion)
+    }
 
     internal func didLoad() {
         // TODO: -
