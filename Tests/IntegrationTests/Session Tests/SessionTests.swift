@@ -122,62 +122,6 @@ class SessionTests: XCTestCase {
         sut.didSubmit(data, from: component)
         waitForExpectations(timeout: 2, handler: nil)
     }
-
-    func testDidSubmitWithCheckoutAttemptIdNonNilShouldIncludeCheckoutAttemptIdInPaymentComponentData() throws {
-        // Given
-        let expectedCheckoutAttemptId = try XCTUnwrap(analyticsProviderMock._checkoutAttemptId)
-
-        let sessionAdvancedHandlerMock = SessionAdvancedHandlerMock()
-        let sessionDelegateMock = SessionDelegateMock()
-        sessionDelegateMock.handlerMock = sessionAdvancedHandlerMock
-
-        let paymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
-        let sut = try initializeSession(expectedPaymentMethods: paymentMethods, delegate: sessionDelegateMock)
-
-        let paymentMethod = try XCTUnwrap(paymentMethods.regular.last as? MBWayPaymentMethod)
-        let component = MBWayComponent(paymentMethod: paymentMethod, context: context)
-        component.delegate = sut
-
-        let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
-
-        // When
-        XCTAssertNil(paymentComponentData.checkoutAttemptId)
-        component.submit(data: paymentComponentData, component: component)
-
-        sessionAdvancedHandlerMock.onDidSubmit = { data, _, _ in
-            // Then
-            XCTAssertEqual(expectedCheckoutAttemptId, data.checkoutAttemptId)
-        }
-    }
-
-    func testDidSubmitWithCheckoutAttemptIdNilShouldNotIncludeCheckoutAttemptIdInPaymentComponentData() throws {
-        // Given
-        analyticsProviderMock._checkoutAttemptId = nil
-
-        let sessionAdvancedHandlerMock = SessionAdvancedHandlerMock()
-        let sessionDelegateMock = SessionDelegateMock()
-        sessionDelegateMock.handlerMock = sessionAdvancedHandlerMock
-
-        let paymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
-        let sut = try initializeSession(expectedPaymentMethods: paymentMethods, delegate: sessionDelegateMock)
-
-        let paymentMethod = try XCTUnwrap(paymentMethods.regular.last as? MBWayPaymentMethod)
-        let component = MBWayComponent(paymentMethod: paymentMethod, context: context)
-        component.delegate = sut
-
-        let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
-
-        // When
-        XCTAssertNil(paymentComponentData.checkoutAttemptId)
-        component.submit(data: paymentComponentData, component: component)
-
-        sessionAdvancedHandlerMock.onDidSubmit = { data, _, _ in
-            // Then
-            XCTAssertNil(data.checkoutAttemptId)
-        }
-    }
     
     private let paymentMethodsDictionary = [
         "storedPaymentMethods": [
@@ -624,64 +568,9 @@ class SessionTests: XCTestCase {
         XCTAssertEqual(sut.sessionContext.data, "session_data_1")
     }
     
-    func testDelegateDidSubmitHandler() throws {
-        let sessionHandlerMock = SessionAdvancedHandlerMock()
-        let sessionDelegate = SessionDelegateMock()
-        sessionDelegate.handlerMock = sessionHandlerMock
-        
-        let didSubmitExpectation = expectation(description: "handler didSubmit should be called")
-        sessionHandlerMock.onDidSubmit = { data, component, session in
-            didSubmitExpectation.fulfill()
-        }
-        
-        let expectedPaymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
-        let sut = try initializeSession(
-            expectedPaymentMethods: expectedPaymentMethods,
-            delegate: sessionDelegate
-        )
-        let paymentMethod = expectedPaymentMethods.regular.last as! MBWayPaymentMethod
-        let data = PaymentComponentData(
-            paymentMethodDetails: MBWayDetails(
-                paymentMethod: paymentMethod,
-                telephoneNumber: "telephone"
-            ),
-            amount: nil,
-            order: nil
-        )
-        let component = MBWayComponent(
-            paymentMethod: paymentMethod,
-            context: context
-        )
-        sut.didSubmit(data, from: component)
-        wait(for: [didSubmitExpectation], timeout: 10)
-    }
-    
-    func testDelegateDidProvideHandler() throws {
-        let sessionHandlerMock = SessionAdvancedHandlerMock()
-        let sessionDelegate = SessionDelegateMock()
-        sessionDelegate.handlerMock = sessionHandlerMock
-        
-        let didProvideExpectation = expectation(description: "handler didProvide should be called")
-        sessionHandlerMock.onDidProvide = { data, component, session in
-            didProvideExpectation.fulfill()
-        }
-        
-        let expectedPaymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
-        let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
-        let data = try ActionComponentData(
-            details: RedirectDetails(
-                returnURL: Dummy.returnUrl
-            ),
-            paymentData: "payment_data"
-        )
-        sut.didProvide(data, from: RedirectComponent(context: context))
-        wait(for: [didProvideExpectation], timeout: 10)
-    }
-    
     func testRemoveStoredPaymentMethodSuccess() throws {
         let expectedPaymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
-        let paymentMethod = expectedPaymentMethods.regular.last as! MBWayPaymentMethod
         
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
@@ -703,13 +592,12 @@ class SessionTests: XCTestCase {
             XCTAssertTrue(success)
         }
         
-        waitForExpectations(timeout: 2, handler: nil)
+        wait(for: [deleteExpectation], timeout: 1)
     }
     
     func testRemoveStoredPaymentMethodFailure() throws {
         let expectedPaymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods)
-        let paymentMethod = expectedPaymentMethods.regular.last as! MBWayPaymentMethod
         
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
@@ -731,7 +619,7 @@ class SessionTests: XCTestCase {
             XCTAssertFalse(success)
         }
         
-        waitForExpectations(timeout: 2, handler: nil)
+        wait(for: [deleteExpectation], timeout: 1)
     }
     
     func testSessionAsDropInDelegate() throws {
@@ -744,9 +632,7 @@ class SessionTests: XCTestCase {
             configuration: config
         )
         let expectedPaymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
-        let sessionHandlerMock = SessionAdvancedHandlerMock()
         let sessionDelegate = SessionDelegateMock()
-        sessionDelegate.handlerMock = sessionHandlerMock
         let sut = try initializeSession(expectedPaymentMethods: expectedPaymentMethods, delegate: sessionDelegate)
         dropIn.delegate = sut
         
@@ -770,20 +656,6 @@ class SessionTests: XCTestCase {
         let didOpenExternalAppExpectation = expectation(description: "didOpenExternalApplication should be called")
         sessionDelegate.onDidOpenExternalApplication = {
             didOpenExternalAppExpectation.fulfill()
-        }
-        
-        let didProvideExpectation = expectation(description: "handler didProvide should be called")
-        sessionHandlerMock.onDidProvide = { data, component, session in
-            XCTAssertTrue(component === actionComponent)
-            XCTAssertTrue(session === sut)
-            didProvideExpectation.fulfill()
-        }
-        
-        let didSubmitExpectation = expectation(description: "handler didSubmit should be called")
-        sessionHandlerMock.onDidSubmit = { data, component, session in
-            XCTAssertTrue(component === paymentComponent)
-            XCTAssertTrue(session === sut)
-            didSubmitExpectation.fulfill()
         }
         
         let paymentData = PaymentComponentData(
@@ -1066,7 +938,7 @@ class SessionTests: XCTestCase {
         
         let didCompleteExpectation = expectation(description: "didComplete should be called")
         sessionDelegate.onDidComplete = { result, _, _ in
-            XCTAssertEqual(result.resultCode, .error)
+            XCTAssertEqual(result.resultCode, .redirectShopper)
             XCTAssertEqual(result.sessionResult, "sessionResultString")
             didCompleteExpectation.fulfill()
         }

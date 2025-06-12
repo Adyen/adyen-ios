@@ -46,7 +46,7 @@ extension AdyenSession: ActionComponentDelegate {
 }
 
 @_spi(AdyenInternal)
-extension AdyenSession: AdyenSessionPaymentDetailsHandler {
+extension AdyenSession {
     public func didProvide(
         _ actionComponentData: ActionComponentData,
         from component: ActionComponent,

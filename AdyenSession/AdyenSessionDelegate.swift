@@ -39,61 +39,10 @@ public protocol AdyenSessionDelegate: AnyObject {
     ///   - component: The current component object.
     ///   - session: The session object.
     func didOpenExternalApplication(component: ActionComponent, session: AdyenSession)
-    
-    /// Returns a handler for handling the payment data submitted by the shopper that is required for the payments call.
-    /// This method is optional.
-    /// - Parameters:
-    ///   - component: The current payment component object.
-    ///   - session: The session object.
-    /// - Returns: An instance conforming to the ``AdyenSessionPaymentsHandler``
-    /// protocol to take over, or nil to let ``AdyenSession`` handle the flow.
-    func handlerForPayments(in component: PaymentComponent, session: AdyenSession) -> AdyenSessionPaymentsHandler?
-    
-    /// Returns a handler for handling the additional data provided that is required for the payment details call.
-    /// This method is optional.
-    /// - Parameters:
-    ///   - component: The current action component object.
-    ///   - session: The session object.
-    /// - Returns: An instance conforming to the ``AdyenSessionPaymentDetailsHandler``
-    /// protocol to take over, or nil to let ``AdyenSession`` handle the flow.
-    func handlerForAdditionalDetails(in component: ActionComponent, session: AdyenSession) -> AdyenSessionPaymentDetailsHandler?
 }
 
 /// Provides default empty implementation for ``AdyenSessionDelegate``
 public extension AdyenSessionDelegate {
-
-    func handlerForPayments(in component: PaymentComponent, session: AdyenSession) -> AdyenSessionPaymentsHandler? { nil }
-    
-    func handlerForAdditionalDetails(in component: ActionComponent, session: AdyenSession) -> AdyenSessionPaymentDetailsHandler? { nil }
     
     func didOpenExternalApplication(component: ActionComponent, session: AdyenSession) {}
-}
-
-/// Describes the interface to take over the step where data is provided for the payments call.
-public protocol AdyenSessionPaymentsHandler {
-    
-    /// Invoked when the shopper submits the data needed for the payments call.
-    ///
-    /// - Parameters:
-    ///   - paymentComponentData: The data supplied by the payment component.
-    ///   - component: The payment component from which the payment details were submitted.
-    ///   - dropInComponent: The DropIn Component instance if any.
-    ///   - session: The ``AdyenSession`` instance.
-    func didSubmit(
-        _ paymentComponentData: PaymentComponentData,
-        from component: Component,
-        dropInComponent: AnyDropInComponent?,
-        session: AdyenSession
-    )
-}
-
-/// Describes the interface to take over the step where additional data is provided for making the payment details call.
-public protocol AdyenSessionPaymentDetailsHandler {
-    
-    /// Invoked when there is new data provided that is required for the payment details call.
-    ///
-    /// - Parameters:
-    ///   - actionComponentData: The data supplied by the action component.
-    ///   - component: The component that handled the action.
-    func didProvide(_ actionComponentData: ActionComponentData, from component: ActionComponent, session: AdyenSession)
 }

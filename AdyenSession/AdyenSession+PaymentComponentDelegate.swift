@@ -47,9 +47,8 @@ extension AdyenSession: PaymentComponentDelegate {
     }
 }
 
-// TODO: get rid of the handle protocols, advanced cases are handled in AdyenCheckout
 @_spi(AdyenInternal)
-extension AdyenSession: AdyenSessionPaymentsHandler {
+extension AdyenSession {
     public func didSubmit(
         _ paymentComponentData: PaymentComponentData,
         from component: Component,

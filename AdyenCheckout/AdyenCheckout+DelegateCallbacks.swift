@@ -10,6 +10,12 @@
 @_spi(AdyenInternal) import AdyenComponents
 @_spi(AdyenInternal) import AdyenActions
 
+// This is where the main flow checking/forwarding happens.
+// Through confoming to the delegates, AdyenCheckout will be bridge.
+// If there is a callback, regardless of session, we call it first.
+// If not, we check session and pass the work to it.
+// Finally if neither, we will fail/assert/show error.
+
 extension AdyenCheckout: PaymentComponentDelegate {
     
     public func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
