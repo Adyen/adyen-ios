@@ -35,6 +35,8 @@ public class SelectableFormItem: FormItem {
 
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
 
+    @AdyenObservable(true) public var isSeparatorViewShown: Bool
+
     /// Initializes the list item.
     ///
     /// - Parameters:
@@ -49,6 +51,7 @@ public class SelectableFormItem: FormItem {
         title: String,
         imageUrl: URL? = nil,
         isSelected: Bool = false,
+        isSeparatorViewShown: Bool = true,
         style: SelectableFormItemStyle,
         identifier: String? = nil,
         accessibilityLabel: String? = nil,
@@ -61,6 +64,7 @@ public class SelectableFormItem: FormItem {
         self.accessibilityLabel = accessibilityLabel ?? title
         self.selectionHandler = selectionHandler
         self.isSelected = isSelected
+        self.isSeparatorViewShown = isSeparatorViewShown
     }
 
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
