@@ -22,6 +22,7 @@ internal class DropInRootViewModel: DropInRootViewModelProtocol {
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
     private let title: String?
+    private let router: DropInRootRouterProtocol
 
     // MARK: - Initializers
 
@@ -31,7 +32,8 @@ internal class DropInRootViewModel: DropInRootViewModelProtocol {
         paymentMethods: PaymentMethods,
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
-        title: String? = nil
+        title: String? = nil,
+        router: DropInRootRouterProtocol
     ) {
         self.componentManager = componentManager
         self.apiClient = apiClient
@@ -39,6 +41,7 @@ internal class DropInRootViewModel: DropInRootViewModelProtocol {
         self.context = context
         self.configuration = configuration
         self.title = title
+        self.router = router
     }
 
     // MARK: - DropInRootViewModelProtocol

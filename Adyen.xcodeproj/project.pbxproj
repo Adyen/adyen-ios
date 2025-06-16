@@ -616,6 +616,7 @@
 		C94639D02D5F68BC004A1B0C /* CaptureSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94639CF2D5F68BC004A1B0C /* CaptureSessionManager.swift */; };
 		C948B6672D8AC5C9000331AA /* CardImageParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C948B6662D8AC5C9000331AA /* CardImageParserTests.swift */; };
 		C948B6692D8AD0CA000331AA /* ExpirationDateFormattingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C948B6682D8AD0CA000331AA /* ExpirationDateFormattingMock.swift */; };
+		C94E350B2E00561B00B89290 /* DropInRootRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94E350A2E00561B00B89290 /* DropInRootRouter.swift */; };
 		C95903DE275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95903DD275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift */; };
 		C96688BF26A6FC1C00DC7297 /* AffirmComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */; };
 		C9680BE62D6CAD590076B93D /* CardScannerAssembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9680BE52D6CAD590076B93D /* CardScannerAssembler.swift */; };
@@ -2105,6 +2106,7 @@
 		C94639CF2D5F68BC004A1B0C /* CaptureSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSessionManager.swift; sourceTree = "<group>"; };
 		C948B6662D8AC5C9000331AA /* CardImageParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImageParserTests.swift; sourceTree = "<group>"; };
 		C948B6682D8AD0CA000331AA /* ExpirationDateFormattingMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationDateFormattingMock.swift; sourceTree = "<group>"; };
+		C94E350A2E00561B00B89290 /* DropInRootRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInRootRouter.swift; sourceTree = "<group>"; };
 		C95903DD275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		C95C89312BF63A3500C47296 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentTests.swift; sourceTree = "<group>"; };
@@ -3769,6 +3771,7 @@
 				C9025A412DF3135700E0D191 /* DropInRootViewModel.swift */,
 				C9025A462DF316C000E0D191 /* DropInRootViewController.swift */,
 				C9025A442DF3167900E0D191 /* DropInRootAssembler.swift */,
+				C94E350A2E00561B00B89290 /* DropInRootRouter.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -8266,6 +8269,7 @@
 				5A238C93263AEA0800758FEF /* PreApplePayView.swift in Sources */,
 				C941A5262DF9CB790014AFF1 /* ComponentContainerAssembler.swift in Sources */,
 				E9B36CC722451C8300EAA368 /* DropInConfiguration.swift in Sources */,
+				C94E350B2E00561B00B89290 /* DropInRootRouter.swift in Sources */,
 				C9025A472DF316C000E0D191 /* DropInRootViewController.swift in Sources */,
 				A0290DFF2C57DBC1005BE269 /* DropInAnalyticsConfiguration.swift in Sources */,
 				C941A5222DF9C34E0014AFF1 /* PaymentMethodListViewController.swift in Sources */,

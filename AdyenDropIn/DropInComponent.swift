@@ -280,8 +280,8 @@ public final class DropInComponent: NSObject,
 
     internal func resolvePaymentMethodListView(onCancel: (() -> Void)?) -> UIViewController {
         // TODO: - Review if needed with new architecture
-        // component.onCancel = onCancel
-        // component._isDropIn = true
+//         component.onCancel = onCancel
+//         component._isDropIn = true
 
         let viewModel = PaymentMethodListViewModel(
             router: self,

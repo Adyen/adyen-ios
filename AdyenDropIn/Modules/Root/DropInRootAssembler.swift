@@ -19,6 +19,7 @@ internal class DropInRootAssembler {
     private let paymentMethods: PaymentMethods
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
+    private let componentManager: ComponentManager
 
     // MARK: - Initalizers
 
@@ -30,71 +31,7 @@ internal class DropInRootAssembler {
         self.paymentMethods = paymentMethods
         self.context = context
         self.configuration = configuration
-    }
-
-    // MARK: - Public
-
-    internal func resolveDropInRootView() -> UIViewController {
-        let componentManager = resolveComponentManager()
-        let apiClient = resolveAPIClient()
-
-        let viewModel = DropInRootViewModel(
-            componentManager: componentManager,
-            apiClient: apiClient,
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration
-        )
-        componentManager.presentationDelegate = viewModel
-
-        let rootViewController = resolveRootView(componentManager: componentManager)
-        let dropInRootViewController = DropInRootViewController(
-            rootViewController: rootViewController,
-            viewModel: viewModel
-        )
-        return dropInRootViewController
-    }
-
-    // MARK: - Private
-
-    private func resolveRootView(
-        componentManager: ComponentManager
-    ) -> UIViewController {
-        if configuration.allowPreselectedPaymentView,
-           let preselectedPaymentMethodComponent = componentManager.storedComponents.first {
-            let preselectedPaymentMethodAssembler = PreselectedPaymentMethodAssembler(
-                componentManager: componentManager,
-                context: context,
-                configuration: configuration
-            )
-            let view = preselectedPaymentMethodAssembler.resolvePreselectedPaymentMethodView(
-                component: preselectedPaymentMethodComponent,
-                title: "Preselected PM"
-            )
-            return view
-        } else if configuration.allowsSkippingPaymentList,
-                  let singleRegularComponent = componentManager.singleRegularComponent {
-            let viewModel = ComponentContainerViewModel(
-                component: singleRegularComponent,
-                isRoot: false,
-                cancelHandler: nil
-            )
-
-            let componentViewController = ComponentContainerViewController(viewModel: viewModel)
-            return componentViewController
-        } else {
-            let paymentMethodListAssembler = PaymentMethodListAssembler(
-                componentManager: componentManager,
-                context: context,
-                configuration: configuration
-            )
-            let paymentMethodListView = paymentMethodListAssembler.resolvePaymentMethodListView()
-            return paymentMethodListView
-        }
-    }
-
-    private func resolveComponentManager() -> ComponentManager {
-        let componentManager = ComponentManager(
+        self.componentManager = ComponentManager(
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
@@ -103,9 +40,35 @@ internal class DropInRootAssembler {
             supportsEditingStoredPaymentMethods: false, // TODO: - Support editing stored PMs
             presentationDelegate: nil
         )
-
-        return componentManager
     }
+
+    // MARK: - Public
+
+    internal func resolveDropInRootView() -> UIViewController {
+        let apiClient = resolveAPIClient()
+        let router = DropInRootRouter(
+            preselectedPaymentMethodAssembler: preselectedPaymentMethodAssembler,
+            paymentMethodListAssembler: paymentMethodListAssembler,
+            componentContainerAssemblerProtocol: componentContainerAssembler,
+            componentManager: componentManager,
+            configuration: configuration
+        )
+
+        let viewModel = DropInRootViewModel(
+            componentManager: componentManager,
+            apiClient: apiClient,
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            router: router
+        )
+        componentManager.presentationDelegate = viewModel
+
+        router.start()
+        return router.rootViewController
+    }
+
+    // MARK: - Private
 
     private func resolveAPIClient() -> APIClientProtocol {
         let scheduler = SimpleScheduler(maximumCount: 3)
@@ -114,5 +77,25 @@ internal class DropInRootAssembler {
             .retryOnErrorAPIClient()
 
         return apiClient
+    }
+
+    private var preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
+        PreselectedPaymentMethodAssembler(
+            componentManager: componentManager,
+            context: context,
+            configuration: configuration
+        )
+    }
+
+    private var paymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
+        PaymentMethodListAssembler(
+            componentManager: componentManager,
+            context: context,
+            configuration: configuration
+        )
+    }
+
+    private var componentContainerAssembler: ComponentContainerAssemblerProtocol {
+        ComponentContainerAssembler()
     }
 }

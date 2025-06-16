@@ -10,14 +10,12 @@ import UIKit
 
 internal protocol PreselectedPaymentMethodAssemblerProtocol {
     func resolvePreselectedPaymentMethodView(
-        router: PreselectedPaymentMethodRouterProtocol,
         component: PaymentComponent,
-        title: String,
-        configuration: DropInComponent.Configuration
+        title: String
     ) -> UIViewController
 }
 
-internal struct PreselectedPaymentMethodAssembler {
+internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
 
     // MARK: - Properties
 
