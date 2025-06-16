@@ -14,11 +14,10 @@ import UIKit
 @_spi(AdyenInternal)
 extension AdyenSession: PaymentComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        let handler = delegate?.handlerForPayments(in: component, session: self) ?? self
-        handler.didSubmit(data, from: component, dropInComponent: nil, session: self)
+        didSubmit(data, from: component, dropInComponent: nil, session: self)
     }
     
-    internal func finish(with result: AdyenSessionResult, component: Component) {
+    internal func finish(with result: CheckoutResult, component: Component) {
         let success = result.resultCode == .authorised
             || result.resultCode == .received
             || result.resultCode == .pending
@@ -49,7 +48,7 @@ extension AdyenSession: PaymentComponentDelegate {
 }
 
 @_spi(AdyenInternal)
-extension AdyenSession: AdyenSessionPaymentsHandler {
+extension AdyenSession {
     public func didSubmit(
         _ paymentComponentData: PaymentComponentData,
         from component: Component,
@@ -99,9 +98,9 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
                 handleOrderBlock()
             }
         } else {
-            let result = AdyenSessionResult(
-                resultCode: SessionPaymentResultCode(paymentResultCode: response.resultCode),
-                encodedResult: response.sessionResult
+            let result = CheckoutResult(
+                resultCode: response.resultCode,
+                sessionResult: response.sessionResult
             )
             finish(with: result, component: currentComponent)
         }

@@ -15,11 +15,22 @@ import Foundation
 /// and it prepares all the required data asynchronously and returns an `AdyenCheckout` instance ready to be used.
 public final class AdyenCheckout: AdyenCheckoutProtocol {
     
-    internal var session: AdyenSession?
-    internal var checkoutAttemptId: String?
-    internal var paymentMethods: PaymentMethods?
+    internal let session: AdyenSession?
+    internal let checkoutAttemptId: String?
+    internal let paymentMethods: PaymentMethods?
     internal let configuration: CheckoutConfiguration
-    internal let presentationDelegate: PresentationDelegate?
+    internal weak var presentationDelegate: PresentationDelegate?
+    
+    internal lazy var actionHandlingComponent: ActionHandlingComponent = {
+        let handler = AdyenActionComponent(
+            context: configuration.context,
+            configuration: AdyenActionComponent.Configuration()
+        )
+        // TODO: create a way for CheckoutConfig to have AdyenActionComponent.Configuration
+        handler.delegate = self
+        handler.presentationDelegate = presentationDelegate
+        return handler
+    }()
     
     /// Sets up the checkout object for the default flow
     /// with the values from your backend's `/session` call.
@@ -27,6 +38,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     ///   - sessionId: sessionId from the `/session` call response.
     ///   - sessionData: session data from the `/session` call response.
     ///   - configuration: The `CheckoutConfiguration` instance.
+    ///   - presentationDelegate: A delegate in order to handle presentation logic if needed.
     ///   - completion: A closure that is called when the setup is complete, containing the checkout object.
     public static func setup(
         with sessionId: String,
@@ -35,44 +47,31 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         presentationDelegate: PresentationDelegate? = nil,
         completion: @escaping (Result<AdyenCheckout, Error>) -> Void
     ) {
-        let checkout = AdyenCheckout(
+        setup(
+            with: sessionId,
+            sessionData: sessionData,
             configuration: configuration,
-            presentationDelegate: presentationDelegate
+            presentationDelegate: presentationDelegate,
+            provider: AdyenCheckoutProvider.default,
+            completion: completion
         )
-        
-        let group = DispatchGroup()
-        
-        // create and store session and payment methods
-        group.enter()
-        setupSession(with: configuration) { result in
-            switch result {
-            case let .success(session):
-                checkout.session = session
-                checkout.paymentMethods = session.sessionContext.paymentMethods
-            case .failure:
-                // TODO: add error
-                break
-            }
-            group.leave()
-        }
-        
-        // fetch and store checkout attempt id
-        group.enter()
-        fetchCheckoutAttemptId(with: configuration) { result in
-            switch result {
-            case let .success(attemptId):
-                checkout.checkoutAttemptId = attemptId
-            case .failure:
-                // TODO: decide what to do for failed attempt
-                break
-            }
-            group.leave()
-        }
-        
-        // success case only for now
-        group.notify(queue: .main) {
-            completion(.success(checkout))
-        }
+    }
+    
+    internal static func setup(
+        with sessionId: String,
+        sessionData: String,
+        configuration: CheckoutConfiguration,
+        presentationDelegate: PresentationDelegate? = nil,
+        provider: AdyenCheckoutProviding = AdyenCheckoutProvider.default,
+        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
+    ) {
+        provider.setup(
+            with: sessionId,
+            sessionData: sessionData,
+            configuration: configuration,
+            presentationDelegate: presentationDelegate,
+            completion: completion
+        )
     }
     
     /// Sets up the checkout object for the advanced flow
@@ -80,6 +79,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     /// - Parameters:
     ///   - paymentMethods: The `PaymentMethods` response from the `/paymentMethods` call.
     ///   - configuration: The `CheckoutConfiguration` instance.
+    ///   - presentationDelegate: A delegate in order to handle presentation logic if needed.
     ///   - completion: A closure that is called when the setup is complete, containing the checkout object.
     public static func setup(
         with paymentMethods: PaymentMethods,
@@ -87,31 +87,35 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         presentationDelegate: PresentationDelegate? = nil,
         completion: @escaping (Result<AdyenCheckout, Error>) -> Void
     ) {
-        let checkout = AdyenCheckout(
+        setup(
+            with: paymentMethods,
             configuration: configuration,
-            presentationDelegate: presentationDelegate
+            presentationDelegate: presentationDelegate,
+            provider: AdyenCheckoutProvider.default,
+            completion: completion
         )
-        checkout.paymentMethods = paymentMethods
-        
-        // fetch and store checkout attempt id
-        fetchCheckoutAttemptId(with: configuration) { result in
-            switch result {
-            case let .success(attemptId):
-                checkout.checkoutAttemptId = attemptId
-            case .failure:
-                // TODO: decide what to do for failed attempt
-                break
-            }
-        }
-        completion(.success(checkout))
+    }
+    
+    internal static func setup(
+        with paymentMethods: PaymentMethods,
+        configuration: CheckoutConfiguration,
+        presentationDelegate: PresentationDelegate? = nil,
+        provider: AdyenCheckoutProviding = AdyenCheckoutProvider.default,
+        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
+    ) {
+        provider.setup(
+            with: paymentMethods,
+            configuration: configuration,
+            presentationDelegate: presentationDelegate,
+            completion: completion
+        )
     }
     
     public func createComponent(with paymentMethod: any PaymentMethod) -> AdyenCheckoutComponent? {
         AdyenCheckoutComponent(
             paymentMethod: paymentMethod,
             configuration: configuration,
-            session: session,
-            presentationDelegate: presentationDelegate
+            delegate: self
         )
     }
     
@@ -119,8 +123,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         AdyenCheckoutComponent(
             action: action,
             configuration: configuration,
-            session: session,
-            presentationDelegate: presentationDelegate
+            delegate: self
         )
     }
     
@@ -132,20 +135,17 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
 
     internal init(
         configuration: CheckoutConfiguration,
+        session: AdyenSession? = nil,
+        paymentMethods: PaymentMethods? = nil,
+        checkoutAttemptId: String?,
         presentationDelegate: PresentationDelegate?
     ) {
         self.configuration = configuration
+        self.session = session
+        self.paymentMethods = paymentMethods ?? session?.sessionContext.paymentMethods
+        self.checkoutAttemptId = checkoutAttemptId
         self.presentationDelegate = presentationDelegate
+        
+        self.session?.delegate = self
     }
-    
-    internal static func setupSession(
-        with configuration: CheckoutConfiguration,
-        order: PartialPaymentOrder? = nil,
-        completion: @escaping (Result<AdyenSession, Error>) -> Void
-    ) {}
-    
-    internal static func fetchCheckoutAttemptId(
-        with configuration: CheckoutConfiguration,
-        completion: @escaping (Result<String, Error>) -> Void
-    ) {}
 }

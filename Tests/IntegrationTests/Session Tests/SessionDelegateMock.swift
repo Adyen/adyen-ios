@@ -12,12 +12,11 @@ import AdyenSession
 
 class SessionDelegateMock: AdyenSessionDelegate {
     
-    var handlerMock: SessionAdvancedHandlerMock?
-    var onDidComplete: ((AdyenSessionResult, Component, AdyenSession) -> Void)?
+    var onDidComplete: ((CheckoutResult, Component, AdyenSession) -> Void)?
     var onDidFail: ((Error, Component, AdyenSession) -> Void)?
     var onDidOpenExternalApplication: (() -> Void)?
     
-    func didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession) {
+    func didComplete(with result: CheckoutResult, component: Component, session: AdyenSession) {
         onDidComplete?(result, component, session)
     }
     
@@ -27,32 +26,5 @@ class SessionDelegateMock: AdyenSessionDelegate {
     
     func didOpenExternalApplication(component: ActionComponent, session: AdyenSession) {
         onDidOpenExternalApplication?()
-    }
-    
-    func handlerForPayments(in component: PaymentComponent, session: AdyenSession) -> AdyenSessionPaymentsHandler? {
-        handlerMock
-    }
-    
-    func handlerForAdditionalDetails(in component: ActionComponent, session: AdyenSession) -> AdyenSessionPaymentDetailsHandler? {
-        handlerMock
-    }
-}
-
-class SessionAdvancedHandlerMock: AdyenSessionPaymentsHandler, AdyenSessionPaymentDetailsHandler {
-    
-    var onDidSubmit: ((PaymentComponentData, Component, AdyenSession) -> Void)?
-    var onDidProvide: ((ActionComponentData, Component, AdyenSession) -> Void)?
-    
-    func didSubmit(
-        _ paymentComponentData: PaymentComponentData,
-        from component: Component,
-        dropInComponent: AnyDropInComponent?,
-        session: AdyenSession
-    ) {
-        onDidSubmit?(paymentComponentData, component, session)
-    }
-    
-    func didProvide(_ actionComponentData: ActionComponentData, from component: ActionComponent, session: AdyenSession) {
-        onDidProvide?(actionComponentData, component, session)
     }
 }

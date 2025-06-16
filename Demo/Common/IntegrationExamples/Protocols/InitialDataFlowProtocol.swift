@@ -60,7 +60,7 @@ extension InitialDataFlowProtocol {
     }
 }
 
-extension SessionPaymentResultCode {
+extension CheckoutResultCode {
     var isSuccess: Bool {
         self == .authorised || self == .received || self == .pending
     }
