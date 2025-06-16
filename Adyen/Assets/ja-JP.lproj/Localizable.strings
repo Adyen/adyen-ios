@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "有効期限（任意）";
 "adyen.card.expiryItem.placeholder" = "MM/YY";
 "adyen.card.expiryItem.invalid" = "有効期限が無効です";
+"adyen.card.expiryItem.accessibilityLabel" = "月2桁、年2桁";
 "adyen.card.cvcItem.invalid" = "無効なCVC / CVV形式です";
 "adyen.card.cvcItem.title" = "セキュリティコード";
 "adyen.card.cvcItem.placeholder" = "123";

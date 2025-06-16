@@ -440,6 +440,10 @@ internal typealias VoidHandler = () -> Void
             }
         }
         
+        override internal func userCancelledChallenge() {
+            self.delegatedAuthenticationState.attemptRegistration = false
+        }
+        
         private enum RegistrationFlowError: Error {
             case registrationServiceError(underlyingError: Error)
             case userOptedOutOfRegistration

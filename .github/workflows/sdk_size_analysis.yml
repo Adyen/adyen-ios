@@ -43,7 +43,7 @@ jobs:
       - name: Try to download base branch size artifact
         if: ${{ github.event_name == 'pull_request' }}
         continue-on-error: true
-        uses: dawidd6/action-download-artifact@v10
+        uses: dawidd6/action-download-artifact@v11
         with:
           name: sdk-sizes-${{ steps.sanitize.outputs.sanitized_base }}
           repo: ${{ github.repository }}
@@ -55,8 +55,6 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         id: compare
         run: |
-          echo '```' > comment.txt
-
           if [ -f base_sdk_size/sdk_sizes.json ]; then
             echo "🔍 Comparing against '${{ steps.sanitize.outputs.base_branch }}'..." >> comment.txt
             jq -r -s '
@@ -74,10 +72,11 @@ jobs:
             ' base_sdk_size/sdk_sizes.json sdk_size_output/sdk_sizes.json >> comment.txt
           else
             echo "ℹ️ No baseline data found for '${{ steps.sanitize.outputs.base_branch }}'." >> comment.txt
-            jq -r 'to_entries | .[] | "\(.key): \(.value) KB"' sdk_size_output/sdk_sizes.json >> comment.txt
+            echo "| Framework | Size |" >> comment.txt
+            echo "| --- | ---: |" >> comment.txt
+            jq -r 'to_entries | .[] | "| \(.key) | \(.value) KB |"' sdk_size_output/sdk_sizes.json >> comment.txt
           fi
 
-          echo '```' >> comment.txt
           cat comment.txt
 
       - name: Post SDK size comment

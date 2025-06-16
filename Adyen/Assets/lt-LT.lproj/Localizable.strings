@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "Galiojimo data (neprivaloma)";
 "adyen.card.expiryItem.placeholder" = "mm/MM";
 "adyen.card.expiryItem.invalid" = "Netinkama galiojimo data";
+"adyen.card.expiryItem.accessibilityLabel" = "Mėnuo, 2 skaitmenys, metai, 2 skaitmenys";
 "adyen.card.cvcItem.invalid" = "Netinkamas CVC / CVV formatas";
 "adyen.card.cvcItem.title" = "Saugos kodas";
 "adyen.card.cvcItem.placeholder" = "123";

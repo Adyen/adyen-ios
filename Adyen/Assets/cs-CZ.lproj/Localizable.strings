@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "Datum konce platnosti (volitelné)";
 "adyen.card.expiryItem.placeholder" = "MM/RR";
 "adyen.card.expiryItem.invalid" = "Neplatné datum konce platnosti";
+"adyen.card.expiryItem.accessibilityLabel" = "Měsíc, 2 číslice, rok, 2 číslice";
 "adyen.card.cvcItem.invalid" = "Neplatný formát kódu CVC/CVV";
 "adyen.card.cvcItem.title" = "Bezpečnostní kód";
 "adyen.card.cvcItem.placeholder" = "123";

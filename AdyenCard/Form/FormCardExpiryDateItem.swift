@@ -11,7 +11,14 @@ import Foundation
 internal final class FormCardExpiryDateItem: FormTextInputItem {
 
     internal var localizationParameters: LocalizationParameters?
-    
+
+    /// Provides accessibility label for corresponding view
+    internal var accessibilityValue: String {
+        let format = localizedString(.cardExpiryItemAccessibilityLabel, localizationParameters)
+        let title = title ?? ""
+        return title.isEmpty ? format : "\(title), \(format)"
+    }
+
     /// Flag determining this forms state. Validation changes based on this.
     internal var isOptional: Bool = false {
         didSet {
@@ -56,7 +63,7 @@ internal final class FormCardExpiryDateItem: FormTextInputItem {
     override internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
-    
+
     private func updateFormState() {
         // when optional, if user enters anything it should be validated as regular entry.
         if isOptional {
@@ -67,14 +74,19 @@ internal final class FormCardExpiryDateItem: FormTextInputItem {
             validator = expiryDateValidator
         }
     }
-    
+
     internal func setExpiryDate(_ date: Date) {
         self.value = dateFormatter.string(from: date)
     }
 }
 
 extension FormItemViewBuilder {
-    internal func build(with item: FormCardExpiryDateItem) -> FormItemView<FormTextInputItem> {
-        FormTextInputItemView(item: item)
+    internal func build(with item: FormCardExpiryDateItem) -> FormTextInputItemView {
+        let view = FormTextInputItemView(item: item)
+        view.observe(item.$title) { _ in
+            view.accessibilityLabelView?.accessibilityLabel = item.accessibilityValue
+        }
+        view.accessibilityLabelView?.accessibilityLabel = item.accessibilityValue
+        return view
     }
 }
