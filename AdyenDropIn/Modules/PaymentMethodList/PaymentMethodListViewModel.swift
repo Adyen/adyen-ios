@@ -18,7 +18,8 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
 
     // MARK: - Properties
 
-    private let router: PaymentMethodListRouterProtocol
+    // Weak to avoid retain cycle: view → viewModel → router → view
+    private weak var router: PaymentMethodListRouterProtocol?
     private let paymentMethodListComponent: PaymentMethodListComponent
 
     // MARK: - Initializers
@@ -49,7 +50,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
 
     internal func cancel() {
         // TODO: - Handle cancellation
-        router.dismiss(completion: nil)
+        router?.cancel(completion: nil)
     }
 
     // MARK: - PaymentMethodListComponentDelegate
@@ -58,7 +59,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
         _ paymentMethodListComponent: PaymentMethodListComponent
     ) {
         // TODO: - Handle analytcis
-        router.didLoad()
+        router?.didLoad()
     }
 
     internal func didSelect(
@@ -68,7 +69,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
         // TODO: - Handle non presentable component
         switch component {
         case let component as PresentableComponent:
-            router.present(component)
+            router?.didSelect(component)
         case let component as PaymentInitiable:
             component.initiatePayment()
         default:
@@ -82,7 +83,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
         completion: @escaping Adyen.Completion<Bool>
     ) {
         // TODO: - Logic to delete stored payment method
-        router.delete(storedPaymentMethod: paymentMethod, completion: completion)
+        router?.delete(storedPaymentMethod: paymentMethod, completion: completion)
     }
 
     // MARK: - Private

@@ -8,22 +8,31 @@ import Adyen
 import Foundation
 import UIKit
 
-internal protocol PaymentMethodListRouterProtocol {
-    func dismiss(completion: (() -> Void)?)
+internal protocol PaymentMethodListRouterProtocol: AnyObject {
+    var rootViewController: UIViewController { get }
+    func start()
+    var delegate: PaymentMethodListRouterDelegate? { get set }
+    func cancel(completion: (() -> Void)?)
     func didLoad()
-    func present(_ component: PresentableComponent)
+    func didSelect(_ component: PresentableComponent)
     func delete(
         storedPaymentMethod: StoredPaymentMethod,
         completion: @escaping (Bool) -> Void
     )
 }
 
+internal protocol PaymentMethodListRouterDelegate: AnyObject {
+    func cancelPayment(completion: (() -> Void)?)
+}
+
 internal class PaymentMethodListRouter: PaymentMethodListRouterProtocol {
 
     // MARK: - Properties
 
+    private let navigationController = UINavigationController()
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
-    internal weak var view: UIViewController?
+    internal var view: UIViewController?
+    internal weak var delegate: PaymentMethodListRouterDelegate?
 
     // MARK: - Initializers
 
@@ -33,8 +42,20 @@ internal class PaymentMethodListRouter: PaymentMethodListRouterProtocol {
 
     // MARK: - PaymentMethodListRouterProtocol
 
-    internal func dismiss(completion: (() -> Void)?) {
-        view?.navigationController?.dismiss(animated: true, completion: completion)
+    internal var rootViewController: UIViewController {
+        navigationController
+    }
+
+    internal func start() {
+        guard let view else {
+            fatalError("Router's view was not set.")
+        }
+
+        navigationController.setViewControllers([view], animated: false)
+    }
+
+    internal func cancel(completion: (() -> Void)?) {
+        delegate?.cancelPayment(completion: completion)
     }
 
     internal func didLoad() {
@@ -42,9 +63,9 @@ internal class PaymentMethodListRouter: PaymentMethodListRouterProtocol {
         print("Payment method list did load")
     }
 
-    internal func present(_ component: PresentableComponent) {
-        let componentContainerView = componentContainerAssembler.resolveContainerView(for: component)
-        view?.navigationController?.pushViewController(componentContainerView, animated: true)
+    internal func didSelect(_ component: PresentableComponent) {
+        let componentViewController = componentContainerAssembler.resolveContainerView(for: component)
+        view?.navigationController?.pushViewController(componentViewController, animated: true)
     }
 
     internal func delete(

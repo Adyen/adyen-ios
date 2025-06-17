@@ -75,12 +75,12 @@ extension DropInComponent: ActionComponentDelegate {
 extension DropInComponent: NavigationDelegate {
 
     internal func dismiss(completion: (() -> Void)? = nil) {
-        navigationController.dismiss(animated: true, completion: completion)
+        viewController.dismiss(animated: true, completion: completion)
     }
 
     @_spi(AdyenInternal)
     public func present(component: PresentableComponent) {
-        navigationController.present(component.viewController, animated: true)
+        viewController.present(component.viewController, animated: true)
     }
 
 }

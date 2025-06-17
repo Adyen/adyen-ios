@@ -8,9 +8,7 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-internal protocol DropInRootViewModelProtocol {
-    var rootViewController: UIViewController? { get }
-}
+internal protocol DropInRootViewModelProtocol {}
 
 internal class DropInRootViewModel: DropInRootViewModelProtocol {
 
@@ -45,20 +43,6 @@ internal class DropInRootViewModel: DropInRootViewModelProtocol {
     }
 
     // MARK: - DropInRootViewModelProtocol
-
-    internal var rootViewController: UIViewController? {
-        nil
-    }
-
-    // MARK: - Private
-
-    private func resolveRootViewController() -> UIViewController? {
-        nil
-    }
-
-    private func resolvePreselectedPaymentMethodView() -> UIViewController? {
-        nil
-    }
 }
 
 extension DropInRootViewModel: PresentationDelegate {

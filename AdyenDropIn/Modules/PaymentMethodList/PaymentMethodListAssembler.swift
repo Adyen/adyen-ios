@@ -7,7 +7,7 @@
 import Foundation
 
 internal protocol PaymentMethodListAssemblerProtocol {
-    func resolvePaymentMethodListView() -> UIViewController
+    func resolvePaymentMethodListRouter() -> PaymentMethodListRouterProtocol
 }
 
 internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
@@ -32,7 +32,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
 
     // MARK: - PaymentMethodListAssemblerProtocol
 
-    internal func resolvePaymentMethodListView() -> UIViewController {
+    internal func resolvePaymentMethodListRouter() -> PaymentMethodListRouterProtocol {
         let componentContainerAssembler = ComponentContainerAssembler()
         let router = PaymentMethodListRouter(componentContainerAssembler: componentContainerAssembler)
         let viewModel = PaymentMethodListViewModel(
@@ -43,6 +43,6 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         )
         let view = PaymentMethodListViewController(viewModel: viewModel)
         router.view = view
-        return view
+        return router
     }
 }

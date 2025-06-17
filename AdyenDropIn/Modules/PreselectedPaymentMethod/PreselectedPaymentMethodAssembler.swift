@@ -9,45 +9,31 @@ import Foundation
 import UIKit
 
 internal protocol PreselectedPaymentMethodAssemblerProtocol {
-    func resolvePreselectedPaymentMethodView(
+    func resolvePreselectedPaymentMethodRouter(
         component: PaymentComponent,
         title: String
-    ) -> UIViewController
+    ) -> PreselectedPaymentMethodRouterProtocol
 }
 
 internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
 
     // MARK: - Properties
 
-    private let componentManager: ComponentManager
-    private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
 
     // MARK: - Initializers
 
-    internal init(
-        componentManager: ComponentManager,
-        context: AdyenContext,
-        configuration: DropInComponent.Configuration
-    ) {
-        self.componentManager = componentManager
-        self.context = context
+    internal init(configuration: DropInComponent.Configuration) {
         self.configuration = configuration
     }
 
     // MARK: - PreselectedPaymentMethodAssemblerProtocol
 
-    internal func resolvePreselectedPaymentMethodView(
+    internal func resolvePreselectedPaymentMethodRouter(
         component: PaymentComponent,
         title: String
-    ) -> UIViewController {
-        let paymentMethodListAssembler = PaymentMethodListAssembler(
-            componentManager: componentManager,
-            context: context,
-            configuration: configuration
-        )
-
-        let router = PreselectedPaymentMethodRouter(paymentMethodListAssembler: paymentMethodListAssembler)
+    ) -> PreselectedPaymentMethodRouterProtocol {
+        let router = PreselectedPaymentMethodRouter()
         let viewModel = PreselectedPaymentMethodViewModel(
             router: router,
             component: component,
@@ -56,6 +42,6 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
         )
         let view = PreselectedPaymentMethodViewController(viewModel: viewModel)
         router.view = view
-        return view
+        return router
     }
 }

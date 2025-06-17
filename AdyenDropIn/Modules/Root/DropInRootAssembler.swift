@@ -44,12 +44,12 @@ internal class DropInRootAssembler {
 
     // MARK: - Public
 
-    internal func resolveDropInRootView() -> UIViewController {
+    internal func resolveDropInRootRouter() -> DropInRootRouterProtocol {
         let apiClient = resolveAPIClient()
         let router = DropInRootRouter(
             preselectedPaymentMethodAssembler: preselectedPaymentMethodAssembler,
             paymentMethodListAssembler: paymentMethodListAssembler,
-            componentContainerAssemblerProtocol: componentContainerAssembler,
+            componentContainerAssembler: componentContainerAssembler,
             componentManager: componentManager,
             configuration: configuration
         )
@@ -63,9 +63,7 @@ internal class DropInRootAssembler {
             router: router
         )
         componentManager.presentationDelegate = viewModel
-
-        router.start()
-        return router.rootViewController
+        return router
     }
 
     // MARK: - Private
@@ -80,11 +78,7 @@ internal class DropInRootAssembler {
     }
 
     private var preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
-        PreselectedPaymentMethodAssembler(
-            componentManager: componentManager,
-            context: context,
-            configuration: configuration
-        )
+        PreselectedPaymentMethodAssembler(configuration: configuration)
     }
 
     private var paymentMethodListAssembler: PaymentMethodListAssemblerProtocol {

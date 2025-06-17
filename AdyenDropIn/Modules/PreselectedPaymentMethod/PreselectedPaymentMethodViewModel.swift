@@ -18,7 +18,8 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
 
     // MARK: - Properties
 
-    private let router: PreselectedPaymentMethodRouterProtocol
+    // Weak to avoid retain cycle: view → viewModel → router → view
+    private weak var router: PreselectedPaymentMethodRouterProtocol?
     private let component: PaymentComponent
     private let preselectedPaymentMethodComponent: PreselectedPaymentMethodComponent
 
@@ -52,13 +53,13 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
 
     internal func cancel() {
         stopLoading()
-        router.dismiss(completion: nil)
+        router?.dismiss(completion: nil)
     }
 
     // MARK: - PreselectedPaymentMethodComponentDelegate
 
     internal func didRequestAllPaymentMethods() {
-        router.showAllPaymentMethods()
+        router?.showAllPaymentMethods()
     }
 
     internal func didProceed(with component: any PaymentComponent) {
@@ -74,8 +75,7 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
 
         switch component {
         case let component as PresentableComponent:
-            let componentViewController = component.viewController
-            router.present(componentViewController: componentViewController)
+            router?.proceed(with: component)
         case let component as PaymentInitiable:
             component.initiatePayment()
         default:

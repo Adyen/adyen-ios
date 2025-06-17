@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 import UIKit
 
-protocol ComponentContainerAssemblerProtocol {
+internal protocol ComponentContainerAssemblerProtocol {
     func resolveContainerView(for component: PresentableComponent) -> UIViewController
 }
 
@@ -16,7 +16,7 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
 
     // MARK: - ComponentContainerAssemblerProtocol
 
-    func resolveContainerView(for component: PresentableComponent) -> UIViewController {
+    internal func resolveContainerView(for component: PresentableComponent) -> UIViewController {
         let viewModel = ComponentContainerViewModel(
             component: component,
             isRoot: false,

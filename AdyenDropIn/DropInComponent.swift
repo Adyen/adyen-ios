@@ -33,6 +33,8 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Properties
 
+    private let dropInRootRouter: DropInRootRouterProtocol
+
     private lazy var componentManager: ComponentManager = {
         let componentManager = createComponentManager(nil)
         return componentManager
@@ -78,6 +80,13 @@ public final class DropInComponent: NSObject,
             .retryAPIClient(with: scheduler)
             .retryOnErrorAPIClient()
 
+        let dropInRootAssembler = DropInRootAssembler(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration
+        )
+        self.dropInRootRouter = dropInRootAssembler.resolveDropInRootRouter()
+
         super.init()
     }
 
@@ -121,7 +130,10 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Presentable Component Protocol
 
-    public var viewController: UIViewController { navigationController }
+    public var viewController: UIViewController {
+        dropInRootRouter.start()
+        return dropInRootRouter.rootViewController
+    }
 
     // MARK: - Handling Actions
 
@@ -209,15 +221,9 @@ public final class DropInComponent: NSObject,
 //        }
 //    )
 
-    internal lazy var navigationController: UIViewController = {
-        let dropInRootAssembler = DropInRootAssembler(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration
-        )
-        let dropInRootViewController = dropInRootAssembler.resolveDropInRootView()
-        return dropInRootViewController
-    }()
+//    internal lazy var navigationController: UIViewController = {
+//        self.dropInRootRouter.rootViewController
+//    }()
 
     private lazy var actionComponent: AdyenActionComponent = {
         let handler = AdyenActionComponent(context: context)
@@ -233,7 +239,7 @@ public final class DropInComponent: NSObject,
 
     // ================= ROOT VIEW CONTROLLER ===============
 
-    internal lazy var rootViewController: UIViewController = {
+//    internal lazy var rootViewController: UIViewController = {
 //        if configuration.allowPreselectedPaymentView,
 //           let preselectedComponent = componentManager.storedComponents.first {
 //            let view = resolvePreselectedPaymentMethodView(for: preselectedComponent, onCancel: nil)
@@ -250,14 +256,7 @@ public final class DropInComponent: NSObject,
 //            self.paymentMethodListView = view
 //            return view
 //        }
-        let dropInRootAssembler = DropInRootAssembler(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration
-        )
-        let view = dropInRootAssembler.resolveDropInRootView()
-        return view
-    }()
+//    }()
 
     // ================= COMPONENT MODULE - ASSEMBLER ===============
 
@@ -274,25 +273,6 @@ public final class DropInComponent: NSObject,
         return componentViewController
     }
 
-    // ================= COMPONENT MODULE - ASSEMBLER ===============
-
-    // ================= PAYMENT METHOD LIST MODULE - ASSEMBLER ===============
-
-    internal func resolvePaymentMethodListView(onCancel: (() -> Void)?) -> UIViewController {
-        // TODO: - Review if needed with new architecture
-//         component.onCancel = onCancel
-//         component._isDropIn = true
-
-        let viewModel = PaymentMethodListViewModel(
-            router: self,
-            context: context,
-            componentManager: componentManager,
-            configuration: configuration
-        )
-        let view = PaymentMethodListViewController(viewModel: viewModel)
-        return view
-    }
-
     // ================= PAYMENT METHOD LIST MODULE - ASSEMBLER ===============
 
     internal func didSelect(_ component: PaymentComponent) {
@@ -301,7 +281,7 @@ public final class DropInComponent: NSObject,
         switch component {
         case let component as PresentableComponent:
             let componentView = resolveComponentView(from: component)
-            navigationController.present(componentView, animated: true)
+            viewController.present(componentView, animated: true)
         case let component as PaymentInitiable:
             component.initiatePayment()
         default:
@@ -337,7 +317,7 @@ public final class DropInComponent: NSObject,
     public func stopLoading() {
         paymentInProgress = false
         // TODO: - Handle loading logic in its own module
-        (rootViewController as? ComponentLoader)?.stopLoading()
+//        (rootViewController as? ComponentLoader)?.stopLoading()
         selectedPaymentComponent?.stopLoadingIfNeeded()
     }
 
@@ -393,49 +373,36 @@ extension DropInComponent: InstallmentConfigurationAware {
 
 // ============= PAYMENT METHOD LIST ===============
 
-extension DropInComponent: PaymentMethodListRouterProtocol {
+//    func didLoad() {
+//        sendInitialAnalytics()
+//        sendDidLoadEvent()
+//    }
 
-    func dismiss() {
-        //
-    }
-
-    func didLoad() {
-        sendInitialAnalytics()
-        sendDidLoadEvent()
-    }
-
-    func present(_ component: any PresentableComponent) {
-//        (rootViewController as? ComponentLoader)?.startLoading(for: component)
-//        didSelect(component)
-    }
-
-    func delete(
-        storedPaymentMethod: any StoredPaymentMethod,
-        completion: @escaping (Bool) -> Void
-    ) {
-        let deletionCompletion = { [weak self] (success: Bool) in
-            defer {
-                completion(success)
-            }
-            guard success else { return }
-            self?.paymentMethods.stored.removeAll(where: { $0 == storedPaymentMethod })
-            self?.reloadComponentManager()
-        }
-
-        if let sessionAsStoredPaymentMethodsDelegate {
-            sessionAsStoredPaymentMethodsDelegate.disable(
-                storedPaymentMethod: storedPaymentMethod,
-                dropInComponent: self,
-                completion: deletionCompletion
-            )
-        } else {
-            storedPaymentMethodsDelegate?.disable(
-                storedPaymentMethod: storedPaymentMethod,
-                completion: deletionCompletion
-            )
-        }
-    }
-
-}
+//    func delete(
+//        storedPaymentMethod: any StoredPaymentMethod,
+//        completion: @escaping (Bool) -> Void
+//    ) {
+//        let deletionCompletion = { [weak self] (success: Bool) in
+//            defer {
+//                completion(success)
+//            }
+//            guard success else { return }
+//            self?.paymentMethods.stored.removeAll(where: { $0 == storedPaymentMethod })
+//            self?.reloadComponentManager()
+//        }
+//
+//        if let sessionAsStoredPaymentMethodsDelegate {
+//            sessionAsStoredPaymentMethodsDelegate.disable(
+//                storedPaymentMethod: storedPaymentMethod,
+//                dropInComponent: self,
+//                completion: deletionCompletion
+//            )
+//        } else {
+//            storedPaymentMethodsDelegate?.disable(
+//                storedPaymentMethod: storedPaymentMethod,
+//                completion: deletionCompletion
+//            )
+//        }
+//    }
 
 // ============= PAYMENT METHOD LIST ===============

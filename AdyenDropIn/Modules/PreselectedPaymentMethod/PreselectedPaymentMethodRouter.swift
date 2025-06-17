@@ -4,43 +4,51 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
 import UIKit
 
-internal protocol PreselectedPaymentMethodRouterProtocol {
+internal protocol PreselectedPaymentMethodRouterProtocol: AnyObject {
+    var rootViewController: UIViewController { get }
+    var delegate: PreselectedPaymentMethodRouterDelegate? { get set }
     func dismiss(completion: (() -> Void)?)
     func showAllPaymentMethods()
-    func present(componentViewController: UIViewController)
+    func proceed(with paymentComponent: PresentableComponent)
+}
+
+internal protocol PreselectedPaymentMethodRouterDelegate: AnyObject {
+    func showAllPaymentMethods()
+    func didProceed(with paymentComponent: PresentableComponent)
 }
 
 internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouterProtocol {
-
+    
     // MARK: - Properties
 
-    private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
-    internal weak var view: UIViewController?
+    internal var view: UIViewController?
+    internal weak var delegate: PreselectedPaymentMethodRouterDelegate?
 
     // MARK: - Initializers
 
-    internal init(paymentMethodListAssembler: PaymentMethodListAssemblerProtocol) {
-        self.paymentMethodListAssembler = paymentMethodListAssembler
-    }
-
     // MARK: - PreselectedPaymentMethodRouterProtocol
+
+    internal var rootViewController: UIViewController {
+        guard let view else {
+            fatalError("Router's view was not set.")
+        }
+        return view
+    }
 
     internal func dismiss(completion: (() -> Void)?) {
         view?.dismiss(animated: true, completion: completion)
     }
 
     internal func showAllPaymentMethods() {
-        let paymentMethodListView = paymentMethodListAssembler.resolvePaymentMethodListView()
-
-        let navigationViewController = UINavigationController(rootViewController: paymentMethodListView)
-        view?.present(navigationViewController, animated: true)
+        delegate?.showAllPaymentMethods()
     }
 
-    func present(componentViewController: UIViewController) {
+    internal func proceed(with paymentComponent: any PresentableComponent) {
         // TODO: - Handle logic with preselected payment method
-        view?.present(componentViewController, animated: true)
+        delegate?.didProceed(with: paymentComponent)
     }
 }
