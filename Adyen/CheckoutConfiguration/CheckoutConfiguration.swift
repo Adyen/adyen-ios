@@ -63,7 +63,7 @@ public struct CheckoutConfiguration {
     ) throws {
         let apiContext = try APIContext(environment: environment, clientKey: clientKey)
         
-        self.context = AdyenContext(
+        let context = AdyenContext(
             apiContext: apiContext,
             payment: nil,
             amount: amount,
@@ -79,7 +79,17 @@ public struct CheckoutConfiguration {
                 configDictionary[configuration.componentType] = configuration
             }
         }
-        self.configurations = configDictionary
+        let configurations = configDictionary
+        
+        self.init(context: context, configurations: configurations)
+    }
+    
+    internal init(
+        context: AdyenContext,
+        configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
+    ) {
+        self.context = context
+        self.configurations = configurations
     }
     
     public func showsSubmitButton(_ showsSubmitButton: Bool) -> Self {

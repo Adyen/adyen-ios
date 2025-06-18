@@ -407,6 +407,8 @@
 		A03056D82DEDED2F00ED7014 /* AdyenCheckout.h in Headers */ = {isa = PBXBuildFile; fileRef = A03056CC2DEDED2F00ED7014 /* AdyenCheckout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A03056DA2DEF331100ED7014 /* AdyenCheckout+DelegateCallbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056D92DEF32FD00ED7014 /* AdyenCheckout+DelegateCallbacks.swift */; };
 		A03056DC2DF07F8100ED7014 /* AdyenCheckoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056DB2DF07F7800ED7014 /* AdyenCheckoutProvider.swift */; };
+		A03056E62E005CD200ED7014 /* AdyenCheckoutProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056E52E005CD100ED7014 /* AdyenCheckoutProviderMock.swift */; };
+		A03056E82E016D9A00ED7014 /* AdyenCheckoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056E72E016D9A00ED7014 /* AdyenCheckoutTests.swift */; };
 		A03EE72F2760A2E300470561 /* DocumentActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE72E2760A2E300470561 /* DocumentActionViewModel.swift */; };
 		A03EE7312761297800470561 /* DocumentComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE7302761297800470561 /* DocumentComponentStyle.swift */; };
 		A03EE73327612BF300470561 /* DocumentActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE73227612BF300470561 /* DocumentActionView.swift */; };
@@ -1969,6 +1971,8 @@
 		A03056D12DEDED2F00ED7014 /* CheckoutComponentBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutComponentBuilder.swift; sourceTree = "<group>"; };
 		A03056D92DEF32FD00ED7014 /* AdyenCheckout+DelegateCallbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AdyenCheckout+DelegateCallbacks.swift"; sourceTree = "<group>"; };
 		A03056DB2DF07F7800ED7014 /* AdyenCheckoutProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenCheckoutProvider.swift; sourceTree = "<group>"; };
+		A03056E52E005CD100ED7014 /* AdyenCheckoutProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenCheckoutProviderMock.swift; sourceTree = "<group>"; };
+		A03056E72E016D9A00ED7014 /* AdyenCheckoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenCheckoutTests.swift; sourceTree = "<group>"; };
 		A03B7C9129B0C61500FDDDFC /* CashAppPayComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPayComponent.swift; sourceTree = "<group>"; };
 		A03EE72E2760A2E300470561 /* DocumentActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentActionViewModel.swift; sourceTree = "<group>"; };
 		A03EE7302761297800470561 /* DocumentComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentComponentStyle.swift; sourceTree = "<group>"; };
@@ -3617,6 +3621,15 @@
 			path = AdyenCheckout;
 			sourceTree = "<group>";
 		};
+		A03056DD2E005BD000ED7014 /* AdyenCheckout */ = {
+			isa = PBXGroup;
+			children = (
+				A03056E52E005CD100ED7014 /* AdyenCheckoutProviderMock.swift */,
+				A03056E72E016D9A00ED7014 /* AdyenCheckoutTests.swift */,
+			);
+			path = AdyenCheckout;
+			sourceTree = "<group>";
+		};
 		A0414C1B27888BF300DF3FE9 /* ACH Direct Debit */ = {
 			isa = PBXGroup;
 			children = (
@@ -3697,6 +3710,7 @@
 			isa = PBXGroup;
 			children = (
 				E757F02525D2ED4C007C813D /* APIClientMock.swift */,
+				A03056DD2E005BD000ED7014 /* AdyenCheckout */,
 				A02B89DD2DD76E550083CE99 /* DropIn */,
 				C9C0005A280468B800CE2EEC /* Analytics */,
 				F91760A52594C5C000D653BE /* Assets */,
@@ -7433,6 +7447,7 @@
 				B6D8080B2BCD147D00F3F5EB /* SimpleSchedulerTests.swift in Sources */,
 				B6D808042BCD147600F3F5EB /* UILabelHelpersTests.swift in Sources */,
 				B62D48B72BBE8DBE001EF01A /* AnalyticsProviderMock.swift in Sources */,
+				A03056E62E005CD200ED7014 /* AdyenCheckoutProviderMock.swift in Sources */,
 				A02B89DE2DD76E660083CE99 /* ComponentManagerTests.swift in Sources */,
 				B6D808112BCD147D00F3F5EB /* BankDetailsEncryptorTests.swift in Sources */,
 				A00580A62CD8CBC300294F2E /* EventAnalyticsProviderTests.swift in Sources */,
@@ -7462,6 +7477,7 @@
 				B6D808212BCD151F00F3F5EB /* URLProtocolMock.swift in Sources */,
 				B6D8081B2BCD151F00F3F5EB /* StoredPaymentMethodMock.swift in Sources */,
 				B62D48C02BBE8DF5001EF01A /* APIClientMock.swift in Sources */,
+				A03056E82E016D9A00ED7014 /* AdyenCheckoutTests.swift in Sources */,
 				B6D8083A2BCD1F8900F3F5EB /* AdyenCoderTests.swift in Sources */,
 				B6D808252BCD155400F3F5EB /* String+UIImage.swift in Sources */,
 				B6D8081A2BCD151F00F3F5EB /* ImageLoaderMock.swift in Sources */,
