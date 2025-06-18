@@ -8,6 +8,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenSession
 @_spi(AdyenInternal) @testable import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenComponents
 @_spi(AdyenInternal) @testable import AdyenActions
 import XCTest
 
@@ -40,7 +41,7 @@ final class AdyenCheckoutTests: XCTestCase {
             configuration: configuration,
             session: nil,
             paymentMethods: nil,
-            checkoutAttemptId: "fakeId",
+            checkoutAttemptId: "attemptId",
             presentationDelegate: nil
         )
         mockProvider.setupWithSessionResult = .success(expectedCheckout)
@@ -54,7 +55,10 @@ final class AdyenCheckoutTests: XCTestCase {
             provider: mockProvider
         ) { result in
             if case let .success(checkout) = result {
-                XCTAssertEqual(checkout.checkoutAttemptId, "fakeId")
+                XCTAssertEqual(checkout.checkoutAttemptId, "attemptId")
+                XCTAssertNil(checkout.paymentMethods)
+                XCTAssertEqual(checkout.session?.sessionContext.data, "sessionData")
+                XCTAssertEqual(checkout.session?.sessionContext.identifier, "sessionId")
             } else {
                 XCTFail("Expected success")
             }
@@ -75,8 +79,8 @@ final class AdyenCheckoutTests: XCTestCase {
             presentationDelegate: nil,
             provider: mockProvider
         ) { result in
-            if case .failure = result {
-                // Success path for test
+            if case let .failure(error) = result {
+                XCTAssertTrue(error is TestError)
             } else {
                 XCTFail("Expected failure")
             }
@@ -90,7 +94,7 @@ final class AdyenCheckoutTests: XCTestCase {
             configuration: configuration,
             session: nil,
             paymentMethods: paymentMethods,
-            checkoutAttemptId: "anotherFakeId",
+            checkoutAttemptId: "attemptId2",
             presentationDelegate: nil
         )
         
@@ -104,7 +108,9 @@ final class AdyenCheckoutTests: XCTestCase {
             provider: mockProvider
         ) { result in
             if case let .success(checkout) = result {
-                XCTAssertEqual(checkout.checkoutAttemptId, "anotherFakeId")
+                XCTAssertEqual(checkout.checkoutAttemptId, "attemptId2")
+                XCTAssertNil(checkout.session)
+                XCTAssertNotNil(checkout.paymentMethods)
             } else {
                 XCTFail("Expected success")
             }
@@ -124,8 +130,8 @@ final class AdyenCheckoutTests: XCTestCase {
             presentationDelegate: nil,
             provider: mockProvider
         ) { result in
-            if case .failure = result {
-                // Success path for test
+            if case let .failure(error) = result {
+                XCTAssertTrue(error is TestError)
             } else {
                 XCTFail("Expected failure")
             }
@@ -153,6 +159,46 @@ final class AdyenCheckoutTests: XCTestCase {
         mockProvider.fetchCheckoutAttemptId(with: configuration) { _ in }
         XCTAssertTrue(didCall)
     }
+    
+    // MARK: - payment component delegate
+    
+    func test_didSubmit_callsOnSubmit_whenSet() {
+        let expectation = expectation(description: "onSubmit called")
+        var didCallSubmit = false
+        let blik = paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self)!
+        let blikDetails = BLIKDetails(
+            paymentMethod: blik,
+            blikCode: "code"
+        )
+        let paymentData = PaymentComponentData(
+            paymentMethodDetails: blikDetails,
+            amount: nil,
+            order: nil
+        )
+        
+        configuration.onSubmit = { data, completion in
+            didCallSubmit = true
+            XCTAssertEqual(data.checkoutAttemptId, paymentData.checkoutAttemptId)
+            let details = data.paymentMethod as! BLIKDetails
+            XCTAssertEqual(details.type, blikDetails.type)
+            XCTAssertEqual(details.blikCode, blikDetails.blikCode)
+            expectation.fulfill()
+            
+            completion?(CheckoutPaymentsResponse(resultCode: .authorised))
+        }
+        
+        let sut = AdyenCheckout(
+            configuration: configuration,
+            checkoutAttemptId: "attemptId",
+            presentationDelegate: nil
+        )
+        sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
+        waitForExpectations(timeout: 1)
+        
+        XCTAssertTrue(didCallSubmit)
+    }
+    
 }
 
 struct TestError: Error {}
+

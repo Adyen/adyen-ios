@@ -23,6 +23,16 @@ public struct CheckoutPaymentsResponse: Decodable, Sendable {
         self.order = try container.decodeIfPresent(PartialPaymentOrder.self, forKey: .order)
     }
     
+    internal init(
+        resultCode: CheckoutResultCode,
+        action: Action? = nil,
+        order: PartialPaymentOrder? = nil
+    ) {
+        self.resultCode = resultCode
+        self.action = action
+        self.order = order
+    }
+    
     private enum CodingKeys: CodingKey {
         case resultCode
         case action

@@ -128,6 +128,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     }
     
     public func createDropIn() -> DropInComponent? {
+        // TODO: dropin creation discussion with new changes
         nil
     }
     
