@@ -71,7 +71,7 @@ public final class AdyenSession {
         public let paymentMethods: PaymentMethods
         
         /// Result code from the latest API call
-        internal var resultCode: PaymentsResponse.ResultCode?
+        internal var resultCode: CheckoutResultCode?
         
         /// Encoded result string from the latest API call
         internal var sessionResult: String?
@@ -87,7 +87,7 @@ public final class AdyenSession {
     public private(set) weak var presentationDelegate: PresentationDelegate?
     
     /// The delegate object.
-    public private(set) weak var delegate: AdyenSessionDelegate?
+    public package(set) weak var delegate: AdyenSessionDelegate?
     
     /// Initializes an instance of ``AdyenSession`` asynchronously.
     /// - Parameter configuration: The session configuration.

@@ -42,7 +42,7 @@ extension CheckoutConfiguration {
 }
 
 // TODO: testing different ways of creating the component
-// we can go back to paymentcomponentbuilder or choose another way as well
+// we can go back to payment component builder or choose another way as well
 extension BLIKPaymentMethod {
     
     func buildComponent(with configuration: CheckoutConfiguration) -> BLIKComponent {

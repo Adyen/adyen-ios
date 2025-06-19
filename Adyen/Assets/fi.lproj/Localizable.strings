@@ -29,6 +29,7 @@
 "adyen.card.expiryItem.title.optional" = "Viimeinen voimassaolopäivä (valinnainen)";
 "adyen.card.expiryItem.placeholder" = "KK / VV";
 "adyen.card.expiryItem.invalid" = "Virheellinen vanhenemispäivämäärä";
+"adyen.card.expiryItem.accessibilityLabel" = "Kuukausi, 2 numeroa, Vuosi, 2 numeroa";
 "adyen.card.cvcItem.invalid" = "Virheellinen CVC / CVV-muoto";
 "adyen.card.cvcItem.title" = "Turvakoodi";
 "adyen.card.cvcItem.placeholder" = "123";

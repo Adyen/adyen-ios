@@ -84,7 +84,10 @@ internal final class FormCoBadgedCardItem: FormItem {
                 title: brand.localeBrand ?? brand.type.rawValue,
                 imageUrl: brandLogoURL,
                 isSelected: isSelected,
-                style: .init(title: style.title),
+                style: .init(
+                    title: style.title,
+                    separatorColor: UIColor.Adyen.componentSeparator
+                ),
                 identifier: brand.type.rawValue
             )
             selectableItem.selectionHandler = { [weak self] in

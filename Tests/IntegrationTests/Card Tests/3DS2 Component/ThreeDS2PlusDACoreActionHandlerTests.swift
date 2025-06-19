@@ -159,6 +159,41 @@ import XCTest
             waitForExpectations(timeout: 2, handler: nil)
         }
 
+        func testOnChallengeFlowCancellationRegistration() throws {
+            let service = ThreeDSServiceableMock()
+            service.onPerformChallenge = { params, completion in
+                completion(.failure(.cancelled(errorPayload: "")))
+            }
+            let authenticationServiceMock = AuthenticationServiceMock()
+        
+            authenticationServiceMock.onRegister = { _ in
+                XCTFail("Register shouldn't occur on cancellation")
+                return ""
+            }
+            let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
+            let sut = ThreeDS2PlusDACoreActionHandler(
+                context: Dummy.context,
+                service: service,
+                presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .register, showApprovalScreenReturnState: .fallback),
+                delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
+                delegatedAuthenticationService: authenticationServiceMock,
+                deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
+            )
+            sut.delegatedAuthenticationState.attemptRegistration = true
+
+            sut.handle(challengeAction, event: analyticsEvent) { challengeResult in
+                switch challengeResult {
+                case .success:
+                    XCTAssertFalse(sut.delegatedAuthenticationState.attemptRegistration)
+                case .failure:
+                    XCTFail()
+                }
+                resultExpectation.fulfill()
+            }
+
+            waitForExpectations(timeout: 1, handler: nil)
+        }
+        
         func testChallengeFlowSuccess() throws {
             
             let service = ThreeDSServiceableMock()
