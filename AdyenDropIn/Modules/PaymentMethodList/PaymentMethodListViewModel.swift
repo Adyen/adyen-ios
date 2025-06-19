@@ -59,7 +59,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
         _ paymentMethodListComponent: PaymentMethodListComponent
     ) {
         // TODO: - Handle analytcis
-        router?.didLoad()
     }
 
     internal func didSelect(
@@ -83,7 +82,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
         completion: @escaping Adyen.Completion<Bool>
     ) {
         // TODO: - Logic to delete stored payment method
-        router?.delete(storedPaymentMethod: paymentMethod, completion: completion)
     }
 
     // MARK: - Private

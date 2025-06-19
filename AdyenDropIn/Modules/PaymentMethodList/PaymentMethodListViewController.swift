@@ -33,6 +33,8 @@ internal class PaymentMethodListViewController: UIViewController {
 
         setupNavigationItem()
         setupPaymentMethodListView()
+
+        // TODO: - Implement analytics
     }
 
     // MARK: - Private

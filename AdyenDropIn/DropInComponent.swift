@@ -36,7 +36,7 @@ public final class DropInComponent: NSObject,
     private let dropInRootRouter: DropInRootRouterProtocol
 
     private lazy var componentManager: ComponentManager = {
-        let componentManager = createComponentManager(nil)
+        let componentManager = createComponentManager(order: nil)
         return componentManager
     }()
 
@@ -149,7 +149,7 @@ public final class DropInComponent: NSObject,
     private var apiClient: APIClientProtocol
 
     internal func reloadComponentManager() {
-        componentManager = createComponentManager(componentManager.order)
+        componentManager = createComponentManager(order: componentManager.order)
     }
 
     /// Convenience accessor to the session if it's the delegate for removing stored payment methods
@@ -191,7 +191,7 @@ public final class DropInComponent: NSObject,
             return
         }
         paymentMethods.paid = response.paymentMethods ?? []
-        componentManager = createComponentManager(order)
+        componentManager = createComponentManager(order: order)
         paymentInProgress = false
 //        displayPaymentMethodsList(onCancel: { [weak self] in
 //            guard let self else { return }
@@ -201,7 +201,7 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Private
 
-    private func createComponentManager(_ order: PartialPaymentOrder?) -> ComponentManager {
+    private func createComponentManager(order: PartialPaymentOrder?) -> ComponentManager {
         ComponentManager(
             paymentMethods: paymentMethods,
             context: context,

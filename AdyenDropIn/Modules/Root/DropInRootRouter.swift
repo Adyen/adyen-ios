@@ -101,6 +101,8 @@ internal class DropInRootRouter: DropInRootRouterProtocol {
     }
 }
 
+// PreselectedPaymentMethodRouterDelegate
+
 extension DropInRootRouter: PreselectedPaymentMethodRouterDelegate {
 
     func showAllPaymentMethods() {
@@ -117,6 +119,8 @@ extension DropInRootRouter: PreselectedPaymentMethodRouterDelegate {
         navigationController.present(componentViewController, animated: true)
     }
 }
+
+// PaymentMethodListRouterDelegate
 
 extension DropInRootRouter: PaymentMethodListRouterDelegate {
 

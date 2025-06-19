@@ -13,12 +13,7 @@ internal protocol PaymentMethodListRouterProtocol: AnyObject {
     func start()
     var delegate: PaymentMethodListRouterDelegate? { get set }
     func cancel(completion: (() -> Void)?)
-    func didLoad()
     func didSelect(_ component: PresentableComponent)
-    func delete(
-        storedPaymentMethod: StoredPaymentMethod,
-        completion: @escaping (Bool) -> Void
-    )
 }
 
 internal protocol PaymentMethodListRouterDelegate: AnyObject {
@@ -58,21 +53,9 @@ internal class PaymentMethodListRouter: PaymentMethodListRouterProtocol {
         delegate?.cancelPayment(completion: completion)
     }
 
-    internal func didLoad() {
-        // TODO: -
-        print("Payment method list did load")
-    }
-
     internal func didSelect(_ component: PresentableComponent) {
         let componentViewController = componentContainerAssembler.resolveContainerView(for: component)
         view?.navigationController?.pushViewController(componentViewController, animated: true)
-    }
-
-    internal func delete(
-        storedPaymentMethod: any Adyen.StoredPaymentMethod,
-        completion: @escaping (Bool) -> Void
-    ) {
-        // TODO: -
     }
 
     // MARK: - Private

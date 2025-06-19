@@ -35,6 +35,8 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         self.component = component
         self.isRoot = isRoot
         self.cancelHandler = cancelHandler
+
+        setupComponent()
     }
 
     // MARK: - Public
@@ -45,5 +47,31 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     internal func didCancel() {
         cancelHandler?(isRoot)
+    }
+
+    // MARK: - Private
+
+    private func setupComponent() {
+        (component as? PaymentComponent)?.delegate = self
+    }
+}
+
+// MARK: - PaymentComponentDelegate
+
+extension ComponentContainerViewModel: PaymentComponentDelegate {
+
+    func didSubmit(
+        _ data: Adyen.PaymentComponentData,
+        from component: any Adyen.PaymentComponent
+    ) {
+        // TODO: -
+        print("SUBMIT")
+    }
+    
+    func didFail(
+        with error: any Error,
+        from component: any Adyen.PaymentComponent
+    ) {
+        // TODO: -
     }
 }
