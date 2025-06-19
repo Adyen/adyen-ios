@@ -18,51 +18,6 @@ import AdyenNetworking
 import UIKit
 
 @_spi(AdyenInternal)
-extension DropInComponent: PaymentMethodListComponentDelegate {
-
-    internal func didLoad(_ paymentMethodListComponent: PaymentMethodListComponent) {
-        sendInitialAnalytics()
-        sendDidLoadEvent()
-    }
-    
-    internal func didSelect(
-        _ component: PaymentComponent,
-        in paymentMethodListComponent: PaymentMethodListComponent
-    ) {
-        (rootComponent as? ComponentLoader)?.startLoading(for: component)
-        didSelect(component)
-    }
-    
-    internal func didDelete(
-        _ paymentMethod: StoredPaymentMethod,
-        in paymentMethodListComponent: PaymentMethodListComponent,
-        completion: @escaping (Bool) -> Void
-    ) {
-        let deletionCompletion = { [weak self] (success: Bool) in
-            defer {
-                completion(success)
-            }
-            guard success else { return }
-            self?.paymentMethods.stored.removeAll(where: { $0 == paymentMethod })
-            self?.reloadComponentManager()
-        }
-        
-        if let sessionAsStoredPaymentMethodsDelegate {
-            sessionAsStoredPaymentMethodsDelegate.disable(
-                storedPaymentMethod: paymentMethod,
-                dropInComponent: self,
-                completion: deletionCompletion
-            )
-        } else {
-            storedPaymentMethodsDelegate?.disable(
-                storedPaymentMethod: paymentMethod,
-                completion: deletionCompletion
-            )
-        }
-    }
-}
-
-@_spi(AdyenInternal)
 extension DropInComponent: PaymentComponentDelegate {
     
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
@@ -117,24 +72,6 @@ extension DropInComponent: ActionComponentDelegate {
     
 }
 
-extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
-
-    internal func didProceed(with component: PaymentComponent) {
-        (rootComponent as? ComponentLoader)?.startLoading(for: component)
-        didSelect(component)
-    }
-    
-    internal func didRequestAllPaymentMethods() {
-        showPaymentMethodsList(onCancel: nil)
-    }
-
-    internal func showPaymentMethodsList(onCancel: (() -> Void)?) {
-        let newList = paymentMethodListComponent(onCancel: onCancel)
-        navigationController.present(root: newList)
-        rootComponent = newList
-    }
-}
-
 extension DropInComponent: NavigationDelegate {
 
     internal func dismiss(completion: (() -> Void)? = nil) {
@@ -143,7 +80,7 @@ extension DropInComponent: NavigationDelegate {
 
     @_spi(AdyenInternal)
     public func present(component: PresentableComponent) {
-        navigationController.present(asModal: component)
+        navigationController.present(component.viewController)
     }
 
 }
@@ -164,12 +101,16 @@ extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
 
     @_spi(AdyenInternal)
     public func showConfirmation(for component: InstantPaymentComponent, with order: PartialPaymentOrder?) {
-        let newRoot = preselectedPaymentMethodComponent(for: component, onCancel: { [weak self] in
-            guard let self, let order else { return }
-            self.partialPaymentDelegate?.cancelOrder(order, component: self)
-        })
-        navigationController.present(root: newRoot)
-        rootComponent = newRoot
+        let newRootViewController = resolvePreselectedPaymentMethodView(
+            for: component,
+            onCancel: { [weak self] in
+                guard let self,
+                      let order else { return }
+                self.partialPaymentDelegate?.cancelOrder(order, component: self)
+            }
+        )
+        navigationController.present(newRootViewController)
+        rootViewController = newRootViewController
     }
 }
 
