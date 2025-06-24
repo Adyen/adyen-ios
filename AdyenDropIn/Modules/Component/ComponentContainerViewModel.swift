@@ -4,17 +4,25 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 #if canImport(AdyenActions)
     @_spi(AdyenInternal) import AdyenActions
 #endif
 
+internal protocol ComponentContainerDelegate: AnyObject {
+    func didSubmit(
+        _ data: PaymentComponentData,
+        from component: PaymentComponent
+    )
+    func didFail(with error: Error)
+    func didCancel(component: PaymentComponent)
+}
+
 internal protocol ComponentContainerViewModelProtocol {
     var view: UIViewController { get }
-    var isRoot: Bool { get }
-    func didCancel()
+    func cancel()
 }
 
 internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol {
@@ -22,20 +30,12 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     // MARK: - Properties
 
     private let component: PresentableComponent
-    internal let isRoot: Bool
-    private let cancelHandler: ((_ isRoot: Bool) -> Void)?
+    private weak var delegate: ComponentContainerDelegate?
 
     // MARK: - Initializers
 
-    internal init(
-        component: PresentableComponent,
-        isRoot: Bool,
-        cancelHandler: ((Bool) -> Void)?
-    ) {
+    internal init(component: PresentableComponent) {
         self.component = component
-        self.isRoot = isRoot
-        self.cancelHandler = cancelHandler
-
         setupComponent()
     }
 
@@ -45,8 +45,8 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         component.viewController
     }
 
-    internal func didCancel() {
-        cancelHandler?(isRoot)
+    internal func cancel() {
+        handleCancellation()
     }
 
     // MARK: - Private
@@ -61,17 +61,43 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 extension ComponentContainerViewModel: PaymentComponentDelegate {
 
     func didSubmit(
-        _ data: Adyen.PaymentComponentData,
-        from component: any Adyen.PaymentComponent
+        _ data: PaymentComponentData,
+        from component: any PaymentComponent
     ) {
         // TODO: -
-        print("SUBMIT")
+        let checkoutAttemptId = component.context.analyticsProvider?.checkoutAttemptId
+        let updatedData = data.replacing(
+            checkoutAttemptId: checkoutAttemptId
+        )
+
+        guard updatedData.browserInfo == nil else {
+            delegate?.didSubmit(updatedData, from: component)
+            return
+        }
+        updatedData.dataByAddingBrowserInfo { [weak self] in
+            guard let self else { return }
+            delegate?.didSubmit($0, from: component)
+        }
     }
     
     func didFail(
         with error: any Error,
         from component: any Adyen.PaymentComponent
     ) {
-        // TODO: -
+        if case ComponentError.cancelled = error {
+            handleCancellation()
+        } else {
+            delegate?.didFail(with: error)
+        }
+    }
+
+    // MARK: - Private
+
+    private func handleCancellation() {
+        component.cancelIfNeeded()
+
+        if let component = (component as? PaymentComponent) {
+            delegate?.didCancel(component: component)
+        }
     }
 }

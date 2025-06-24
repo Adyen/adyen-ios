@@ -263,12 +263,7 @@ public final class DropInComponent: NSObject,
     internal func resolveComponentView(
         from component: PresentableComponent
     ) -> UIViewController {
-        let viewModel = ComponentContainerViewModel(
-            component: component,
-            isRoot: false,
-            cancelHandler: nil
-        )
-
+        let viewModel = ComponentContainerViewModel(component: component)
         let componentViewController = ComponentContainerViewController(viewModel: viewModel)
         return componentViewController
     }

@@ -17,11 +17,7 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
     // MARK: - ComponentContainerAssemblerProtocol
 
     internal func resolveContainerView(for component: PresentableComponent) -> UIViewController {
-        let viewModel = ComponentContainerViewModel(
-            component: component,
-            isRoot: false,
-            cancelHandler: nil
-        )
+        let viewModel = ComponentContainerViewModel(component: component)
         let view = ComponentContainerViewController(viewModel: viewModel)
         return view
     }

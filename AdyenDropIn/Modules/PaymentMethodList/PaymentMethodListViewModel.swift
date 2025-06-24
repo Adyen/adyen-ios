@@ -62,7 +62,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
     }
 
     internal func didSelect(
-        _ component: any Adyen.PaymentComponent,
+        _ component: any PaymentComponent,
         in paymentMethodListComponent: PaymentMethodListComponent
     ) {
         // TODO: - Handle non presentable component
@@ -77,7 +77,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
     }
 
     internal func didDelete(
-        _ paymentMethod: any Adyen.StoredPaymentMethod,
+        _ paymentMethod: any StoredPaymentMethod,
         in paymentMethodListComponent: PaymentMethodListComponent,
         completion: @escaping Adyen.Completion<Bool>
     ) {
