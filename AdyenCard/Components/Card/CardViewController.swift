@@ -230,7 +230,7 @@ internal class CardViewController: FormViewController {
             items.coBadgedCardItem.resetItems()
         } else {
             brands = binInfo.brands ?? []
-            items.coBadgedCardItem.updateItems(brands, cardLogos: cardLogos)
+            showCoBadgedCardsUI(for: brands)
         }
         issuingCountryCode = binInfo.issuingCountryCode
         items.numberContainerItem.update(brands: brands)
@@ -243,6 +243,16 @@ internal class CardViewController: FormViewController {
         items.numberContainerItem.numberItem.selectBrand(cardBrand: selectedBrand)
 
         items.triggerInfoEvent(of: .selected, target: .dualBrandButton, brands: [selectedBrand])
+    }
+
+    private func showCoBadgedCardsUI(for brands: [CardBrand]) {
+        let allowedCoBadgedCardTypes = ["cartebancaire", "bcmc", "dankort"]
+        let coBadgedBrands = brands.filter { brand in
+            allowedCoBadgedCardTypes.contains(brand.type.rawValue)
+        }
+        if coBadgedBrands.count > 0 {
+            items.coBadgedCardItem.updateItems(brands, cardLogos: cardLogos)
+        }
     }
 }
 
