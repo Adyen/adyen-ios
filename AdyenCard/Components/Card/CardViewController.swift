@@ -26,7 +26,7 @@ internal class CardViewController: FormViewController {
     private let initialCountryCode: String
     private let scope: String
     private let cardLogos: [FormCardLogosItem.CardTypeLogo]
-    private let allowedCoBadgedCardTypes = Set(["cartebancaire", "bcmc", "dankort"])
+    private let allowedCoBadgedCardTypes: [CardType] = [.carteBancaire, .bcmc, .dankort]
     private let cardScannerAnalyticsHandler: CardScannerAnalyticsHandler
     private lazy var cardScannerController: CardScannerControlling = {
         var controller: CardScannerControlling
@@ -248,7 +248,7 @@ internal class CardViewController: FormViewController {
 
     internal func showCoBadgedCardsUI(for brands: [CardBrand]) {
         let coBadgedBrands = brands.filter { brand in
-            allowedCoBadgedCardTypes.contains(brand.type.rawValue)
+            return allowedCoBadgedCardTypes.contains(brand.type)
         }
         if !coBadgedBrands.isEmpty { // Check if there are any co-badged brands
             items.coBadgedCardItem.updateItems(brands, cardLogos: cardLogos)
