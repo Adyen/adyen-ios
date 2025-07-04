@@ -56,13 +56,13 @@ internal final class DropInExample: InitialDataFlowProtocol {
             
             switch response {
             case let .success(config):
-                AdyenSession.initialize(
-                    with: config,
-                    delegate: self,
-                    presentationDelegate: self,
-                    completion: completion
-                )
-                
+//                AdyenSession.initialize(
+//                    with: config,
+//                    delegate: self,
+//                    presentationDelegate: self,
+//                    completion: completion
+//                )
+                break
             case let .failure(error):
                 completion(.failure(error))
             }

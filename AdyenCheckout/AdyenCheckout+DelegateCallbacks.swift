@@ -25,7 +25,13 @@ extension AdyenCheckout: PaymentComponentDelegate {
                 self.handle(response)
             }
         } else if let session {
-            session.didSubmit(data, from: component)
+            session.didSubmit(
+                data,
+                from: component,
+                dropInComponent: nil,
+                session: session
+            )
+            
         } else {
             // TODO: throw/assert to inform missing callbacks
         }
@@ -42,16 +48,6 @@ extension AdyenCheckout: PaymentComponentDelegate {
             finish(with: CheckoutResult(resultCode: paymentsResponse.resultCode))
         }
     }
-    
-    private func finish(with result: CheckoutResult) {
-        // add any finalizing code if needed
-        configuration.onComplete?(result)
-    }
-    
-    private func finish(with error: Error) {
-        // add any finalizing code if needed
-        configuration.onError?(CheckoutError(error: error))
-    }
 }
 
 extension AdyenCheckout: ActionComponentDelegate {
@@ -62,7 +58,11 @@ extension AdyenCheckout: ActionComponentDelegate {
                 self.handle(response)
             }
         } else if let session {
-            session.didProvide(data, from: component)
+            session.didProvide(
+                data,
+                from: component,
+                session: session
+            )
         } else {
             // TODO: throw/assert to inform missing callbacks
         }
@@ -86,4 +86,13 @@ extension AdyenCheckout: AdyenSessionDelegate {
         finish(with: error)
     }
     
+    private func finish(with result: CheckoutResult) {
+        // add any finalizing code if needed
+        configuration.onComplete?(result)
+    }
+    
+    private func finish(with error: Error) {
+        // add any finalizing code if needed
+        configuration.onError?(CheckoutError(error: error))
+    }
 }

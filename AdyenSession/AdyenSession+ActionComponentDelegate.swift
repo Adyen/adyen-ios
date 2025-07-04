@@ -45,12 +45,11 @@ extension AdyenSession: ActionComponentDelegate {
     }
 }
 
-@_spi(AdyenInternal)
 extension AdyenSession {
-    public func didProvide(
+    package func didProvide(
         _ actionComponentData: ActionComponentData,
         from component: ActionComponent,
-        session: AdyenSession
+        session: AdyenSessionProtocol
     ) {
         (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
         let request = PaymentDetailsRequest(

@@ -47,13 +47,12 @@ extension AdyenSession: PaymentComponentDelegate {
     }
 }
 
-@_spi(AdyenInternal)
 extension AdyenSession {
-    public func didSubmit(
+    package func didSubmit(
         _ paymentComponentData: PaymentComponentData,
         from component: Component,
         dropInComponent: AnyDropInComponent?,
-        session: AdyenSession
+        session: AdyenSessionProtocol
     ) {
         let request = PaymentsRequest(
             sessionId: sessionContext.identifier,
@@ -137,7 +136,7 @@ extension AdyenSession {
         if let dropInComponent = dropInComponent as? ActionHandlingComponent {
             dropInComponent.handle(action)
         } else {
-            actionComponent.handle(action)
+            actionHandlingComponent.handle(action)
         }
     }
     
