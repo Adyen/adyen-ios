@@ -1402,7 +1402,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(logoItemView.isHidden)
     }
 
-    func testCoBadgedCardsSelectionUIVisibility() throws {
+    func testCoBadgedCardsSelectionUIVisibilityForEU() throws {
         // Given
 
         let sut = CardComponent(
@@ -1414,12 +1414,34 @@ class CardComponentTests: XCTestCase {
         sut.viewController.loadViewIfNeeded()
 
         let newResponse = BinLookupResponse(brands: [CardBrand(type: .visa), CardBrand(type: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
-        sut.cardViewController.update(binInfo: newResponse)
+
+        sut.cardViewController.showCoBadgedCardsUI(for: newResponse.brands!)
 
         wait(for: .aMoment)
 
         // Then
         XCTAssertFalse(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
+    }
+
+    func testCoBadgedCardsSelectionUIHiddenForAU() throws {
+        // Given
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardComponent.Configuration()
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
+        let newResponse = BinLookupResponse(brands: [CardBrand(type: .masterCard), CardBrand(type: .other(named: "eftpos_australia"))], issuingCountryCode: "AU", isCreatedLocally: false)
+
+        sut.cardViewController.showCoBadgedCardsUI(for: newResponse.brands!)
+
+        wait(for: .aMoment)
+
+        // Then
+        XCTAssertTrue(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
     }
 
     func testCoBadgedCardsNameOnSelectionUI() throws {
