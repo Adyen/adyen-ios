@@ -21,7 +21,7 @@ internal protocol ComponentContainerDelegate: AnyObject {
 }
 
 internal protocol ComponentContainerViewModelProtocol {
-    var view: UIViewController { get }
+    var componentViewController: UIViewController { get }
     func cancel()
 }
 
@@ -41,7 +41,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     // MARK: - Public
 
-    internal var view: UIViewController {
+    internal var componentViewController: UIViewController {
         component.viewController
     }
 
