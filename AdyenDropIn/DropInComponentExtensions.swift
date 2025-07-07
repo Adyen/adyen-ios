@@ -75,12 +75,12 @@ extension DropInComponent: ActionComponentDelegate {
 extension DropInComponent: NavigationDelegate {
 
     internal func dismiss(completion: (() -> Void)? = nil) {
-        navigationController.dismiss(animated: true, completion: completion)
+        viewController.dismiss(animated: true, completion: completion)
     }
 
     @_spi(AdyenInternal)
     public func present(component: PresentableComponent) {
-        navigationController.present(component.viewController)
+        viewController.present(component.viewController, animated: true)
     }
 
 }
@@ -101,16 +101,16 @@ extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
 
     @_spi(AdyenInternal)
     public func showConfirmation(for component: InstantPaymentComponent, with order: PartialPaymentOrder?) {
-        let newRootViewController = resolvePreselectedPaymentMethodView(
-            for: component,
-            onCancel: { [weak self] in
-                guard let self,
-                      let order else { return }
-                self.partialPaymentDelegate?.cancelOrder(order, component: self)
-            }
-        )
-        navigationController.present(newRootViewController)
-        rootViewController = newRootViewController
+//        let newRootViewController = resolvePreselectedPaymentMethodView(
+//            for: component,
+//            onCancel: { [weak self] in
+//                guard let self,
+//                      let order else { return }
+//                self.partialPaymentDelegate?.cancelOrder(order, component: self)
+//            }
+//        )
+//        navigationController.present(newRootViewController, animated: true)
+//        rootViewController = newRootViewController
     }
 }
 
