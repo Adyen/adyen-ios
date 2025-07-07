@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 /// A form item that contains Cash App Pay's own button.
-@available(iOS 13.0, *)
 internal class CashAppPayButtonItem: FormItem {
     
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
@@ -33,7 +32,6 @@ internal class CashAppPayButtonItem: FormItem {
     }
 }
 
-@available(iOS 13.0, *)
 extension FormItemViewBuilder {
     internal func build(with item: CashAppPayButtonItem) -> FormItemView<CashAppPayButtonItem> {
         CashAppPayButtonItemView(item: item)
