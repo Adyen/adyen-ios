@@ -10,8 +10,8 @@ import UIKit
 
 internal protocol PaymentMethodListRouterProtocol: AnyObject {
     var rootViewController: UIViewController { get }
-    func start()
     var delegate: PaymentMethodListRouterDelegate? { get set }
+    func start()
     func cancel(completion: (() -> Void)?)
     func didSelect(_ component: PresentableComponent)
 }

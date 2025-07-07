@@ -12,7 +12,7 @@ import UIKit
 #endif
 
 internal protocol ComponentContainerViewModelProtocol {
-    var view: UIViewController { get }
+    var componentViewController: UIViewController { get }
     var isRoot: Bool { get }
     func didCancel()
 }
@@ -41,7 +41,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     // MARK: - Public
 
-    internal var view: UIViewController {
+    internal var componentViewController: UIViewController {
         component.viewController
     }
 

@@ -53,7 +53,7 @@ internal final class ComponentContainerViewController: UIViewController {
     // MARK: - Private
 
     private var componentView: UIViewController {
-        viewModel.view
+        viewModel.componentViewController
     }
 
     private func setupLayout() {

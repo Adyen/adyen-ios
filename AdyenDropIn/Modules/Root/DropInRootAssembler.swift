@@ -21,7 +21,7 @@ internal class DropInRootAssembler {
     private let configuration: DropInComponent.Configuration
     private let componentManager: ComponentManager
 
-    // MARK: - Initalizers
+    // MARK: - Initializers
 
     internal init(
         paymentMethods: PaymentMethods,
