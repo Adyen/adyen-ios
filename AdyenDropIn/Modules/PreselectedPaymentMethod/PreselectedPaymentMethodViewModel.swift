@@ -8,20 +8,19 @@ import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
 
-internal protocol PreselectedPaymentMethodRouterProtocol: AnyObject {
-    func showAllPaymentMethods()
-    func proceed(with component: any PaymentComponent)
-}
-
+@objc
 internal protocol PreselectedPaymentMethodViewModelProtocol {
     var paymentMethodView: UIViewController { get }
+    func cancel()
 }
 
 internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewModelProtocol, PreselectedPaymentMethodComponentDelegate {
 
     // MARK: - Properties
 
+    // Weak to avoid retain cycle: view → viewModel → router → view
     private weak var router: PreselectedPaymentMethodRouterProtocol?
+    private let component: PaymentComponent
     private let preselectedPaymentMethodComponent: PreselectedPaymentMethodComponent
 
     // MARK: - Initializers
@@ -30,18 +29,19 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
         router: PreselectedPaymentMethodRouterProtocol,
         component: PaymentComponent,
         title: String,
-        style: FormComponentStyle,
-        listItemStyle: ListItemStyle,
-        localizationParameters: LocalizationParameters?
+        configuration: DropInComponent.Configuration
     ) {
         self.router = router
+
+        let style = configuration.style
+        self.component = component
         self.preselectedPaymentMethodComponent = PreselectedPaymentMethodComponent(
             component: component,
             title: title,
-            style: style,
-            listItemStyle: listItemStyle
+            style: style.formComponent,
+            listItemStyle: style.listComponent.listItem
         )
-        self.preselectedPaymentMethodComponent.localizationParameters = localizationParameters
+        self.preselectedPaymentMethodComponent.localizationParameters = configuration.localizationParameters
         self.preselectedPaymentMethodComponent.delegate = self
     }
 
@@ -51,56 +51,43 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
         preselectedPaymentMethodComponent.viewController
     }
 
+    internal func cancel() {
+        stopLoading()
+        router?.dismiss(completion: nil)
+    }
+
     // MARK: - PreselectedPaymentMethodComponentDelegate
 
     internal func didRequestAllPaymentMethods() {
         router?.showAllPaymentMethods()
     }
 
-    internal func didProceed(with component: any Adyen.PaymentComponent) {
-        print("Proceed with component: \(component)")
-        router?.proceed(with: component)
+    internal func didProceed(with component: any PaymentComponent) {
+        startLoading()
+        startPaymentFlow(for: component)
     }
-}
-
-internal class PreselectedPaymentMethodViewController: UIViewController {
-
-    // MARK: - Properties
-
-    private let viewModel: PreselectedPaymentMethodViewModelProtocol
-
-    // MARK: - Initalizers
-
-    internal init(viewModel: PreselectedPaymentMethodViewModelProtocol) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - View life cycle
-
-    override internal func viewDidLoad() {
-        super.viewDidLoad()
-        navigationItem.title = "1"
-
-        setupPaymentMethodView()
-    }
-
-    // MARK: - Public
 
     // MARK: - Private
 
-    private func setupPaymentMethodView() {
-        let paymentMethodView = viewModel.paymentMethodView
+    private func startPaymentFlow(for component: PaymentComponent) {
+        // TODO: - Handle payment delegation
+//        setNecessaryDelegates(on: component)
 
-        paymentMethodView.willMove(toParent: self)
-        addChild(paymentMethodView)
-        view.addSubview(paymentMethodView.view)
-        paymentMethodView.didMove(toParent: self)
-        paymentMethodView.view.adyen.anchor(inside: view)
+        switch component {
+        case let component as PresentableComponent:
+            router?.proceed(with: component)
+        case let component as PaymentInitiable:
+            component.initiatePayment()
+        default:
+            break
+        }
+    }
+
+    private func startLoading() {
+        preselectedPaymentMethodComponent.startLoading(for: component)
+    }
+
+    private func stopLoading() {
+        preselectedPaymentMethodComponent.stopLoadingIfNeeded()
     }
 }
