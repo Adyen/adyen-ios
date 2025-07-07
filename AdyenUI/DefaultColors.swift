@@ -8,62 +8,125 @@ import UIKit
 
 public enum DefaultColors {
 
-    public enum Light {
+    public static let background: UIColor = {
+        return UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return color(hex: 0x121212) // Dark background
+            } else {
+                return color(hex: 0xFFFFFF) // Light background
+            }
+        }
+    }()
 
-        public static let background = color(hex: 0xFFFFFF)
+    public static let container: UIColor = {
+        return UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return color(hex: 0x2A2A2A)
+            } else {
+                return color(hex: 0xF7F7F8)
+            }
+        }
+    }()
 
-        public static let container = color(hex: 0xF7F7F8)
+    public static let primary: UIColor = {
+        return UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return color(hex: 0xEFEFEF)
+            } else {
+                return color(hex: 0x00112C)
+            }
+        }
+    }()
 
-        public static let primary = color(hex: 0x00112C)
+    public static let textOnPrimary: UIColor = {
+        return UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return color(hex: 0x121212)
+            } else {
+                return color(hex: 0xFFFFFF)
+            }
+        }
+    }()
 
-        public static let textOnPrimary = color(hex: 0xFFFFFF)
+    public static let action: UIColor = {
+        return UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return color(hex: 0x7DB9FF)
+            } else {
+                return color(hex: 0x0070F5)
+            }
+        }
+    }()
 
-        public static let action = color(hex: 0x0070F5)
+    public static let destructive: UIColor = {
+        return UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return color(hex: 0xF99C9C)
+            } else {
+                return color(hex: 0xE22D2D)
+            }
+        }
+    }()
 
-        public static let destructive = color(hex: 0xE22D2D)
+    public static let textOnDestructive: UIColor = {
+        return UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return color(hex: 0x121212)
+            } else {
+                return color(hex: 0xFFFFFF)
+            }
+        }
+    }()
 
-        public static let textOnDestructive = color(hex: 0xFFFFFF)
+    public static let disabled: UIColor = {
+        return UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return color(hex: 0x373737)
+            } else {
+                return color(hex: 0xEEEFF1)
+            }
+        }
+    }()
 
-        public static let disabled = color(hex: 0xEEEFF1)
+    public static let textOnDisabled: UIColor = {
+        return UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return color(hex: 0xEFEFEF)
+            } else {
+                return color(hex: 0x00112C)
+            }
+        }
+    }()
 
-        public static let textOnDisabled = color(hex: 0x00112C)
+    public static let outline: UIColor = {
+        return UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return color(hex: 0x454545)
+            } else {
+                return color(hex: 0xDBDEE2)
+            }
+        }
+    }()
 
-        public static let outline = color(hex: 0xDBDEE2)
+    public static let text: UIColor = {
+        return UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return color(hex: 0xEFEFEF)
+            } else {
+                return color(hex: 0x00112C)
+            }
+        }
+    }()
 
-        public static let text = color(hex: 0x00112C)
-
-        public static let textSecondary = color(hex: 0x5C687C)
-
-
-    }
-
-    public enum Dark {
-
-        public static let background = color(hex: 0x121212)
-
-        public static let container = color(hex: 0x2A2A2A)
-
-        public static let primary = color(hex: 0xEFEFEF)
-
-        public static let textOnPrimary = color(hex: 0x121212)
-
-        public static let action = color(hex: 0x7DB9FF)
-
-        public static let destructive = color(hex: 0xF99C9C)
-
-        public static let textOnDestructive = color(hex: 0x121212)
-
-        public static let disabled = color(hex: 0x373737)
-
-        public static let textOnDisabled = color(hex: 0xEFEFEF)
-
-        public static let outline = color(hex: 0x454545)
-
-        public static let text = color(hex: 0xEFEFEF)
-
-        public static let textSecondary = color(hex: 0xEFEFEF)
-
-    }
+    public static let textSecondary: UIColor = {
+        return UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return color(hex: 0xEFEFEF)
+            } else {
+                return color(hex: 0x5C687C)
+            }
+        }
+    }()
 
     /// Create new UIColor from hex value.
     /// - Parameter hex: The hex value of color. Should be between 0 and 0xFFFFFF.
