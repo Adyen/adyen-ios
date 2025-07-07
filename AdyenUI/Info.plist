@@ -13,7 +13,7 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>NSHumanReadableCopyright</key>
-    <string>Copyright © 2022 Adyen. All rights reserved.</string>
+    <string>Copyright © 2025 Adyen. All rights reserved.</string>
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>
     <key>CFBundleVersion</key>
