@@ -29,7 +29,6 @@ internal protocol CardScannerControlling: CardScannerAvailability {
 #if canImport(AdyenCardScanner)
     import AdyenCardScanner
 
-    @available(iOS 13.0, *)
     private struct CardScannerAvailabilityWrapper: CardScannerAvailability {
         var isScannerAvailable: Bool {
             AdyenCardScanner.CardScanner.isAvailable
