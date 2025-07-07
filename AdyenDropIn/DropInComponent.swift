@@ -86,6 +86,7 @@ public final class DropInComponent: NSObject,
             configuration: configuration
         )
         self.dropInRootRouter = dropInRootAssembler.resolveDropInRootRouter()
+        self.dropInRootRouter.start()
 
         super.init()
     }
@@ -131,8 +132,7 @@ public final class DropInComponent: NSObject,
     // MARK: - Presentable Component Protocol
 
     public var viewController: UIViewController {
-        dropInRootRouter.start()
-        return dropInRootRouter.rootViewController
+        dropInRootRouter.rootViewController
     }
 
     // MARK: - Handling Actions
