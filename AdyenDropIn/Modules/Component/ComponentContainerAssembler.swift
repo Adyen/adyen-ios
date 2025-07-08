@@ -18,7 +18,12 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
 
     internal func resolveContainerView(for component: PresentableComponent) -> UIViewController {
         let viewModel = ComponentContainerViewModel(component: component)
-        let view = ComponentContainerViewController(viewModel: viewModel)
-        return view
+
+        if let alertController = (component.viewController as? UIAlertController) {
+            return alertController
+        } else {
+            let view = ComponentContainerViewController(viewModel: viewModel)
+            return view
+        }
     }
 }

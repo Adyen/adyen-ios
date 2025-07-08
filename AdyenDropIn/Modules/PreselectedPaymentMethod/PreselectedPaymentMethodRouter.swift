@@ -49,6 +49,10 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouterPro
 
     internal func proceed(with paymentComponent: any PresentableComponent) {
         // TODO: - Handle logic with preselected payment method
-        delegate?.didProceed(with: paymentComponent)
+//        delegate?.didProceed(with: paymentComponent)
+
+//        let componentContainerAssembler = ComponentContainerAssembler()
+//        let componentContainerViewController = componentContainerAssembler.resolveContainerView(for: paymentComponent)
+        rootViewController.present(paymentComponent.viewController, animated: true)
     }
 }

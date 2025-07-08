@@ -55,10 +55,15 @@ internal class PaymentMethodListRouter: PaymentMethodListRouterProtocol {
 
     internal func didSelect(_ component: PresentableComponent) {
         if component.requiresModalPresentation {
-            view?.present(component.viewController, animated: true)
+            let componentContainerViewController = componentContainerAssembler.resolveContainerView(
+                for: component
+            )
+            view?.navigationController?.pushViewController(componentContainerViewController, animated: true)
         } else {
-            let componentViewController = componentContainerAssembler.resolveContainerView(for: component)
-            view?.navigationController?.pushViewController(componentViewController, animated: true)
+            let componentContainerViewController = componentContainerAssembler.resolveContainerView(
+                for: component
+            )
+            view?.present(componentContainerViewController, animated: true)
         }
     }
 
