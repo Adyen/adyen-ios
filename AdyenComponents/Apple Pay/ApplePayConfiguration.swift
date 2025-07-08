@@ -163,6 +163,9 @@ extension ApplePayComponent {
         public func replacing(amount: Amount) -> Self {
             var newConfig = self
             newConfig.applePayPayment.update(amount: amount)
+            if let paymentRequest {
+                paymentRequest.paymentSummaryItems = newConfig.applePayPayment.summaryItems
+            }
             return newConfig
         }
 
