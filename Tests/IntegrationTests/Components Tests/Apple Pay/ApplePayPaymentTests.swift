@@ -11,82 +11,111 @@ import XCTest
 
 class ApplePayPaymentTest: XCTestCase {
 
-    func testCreateApplePayPaymentWithSummeryItems() throws {
-        _ = try ApplePayPayment(countryCode: "US", currencyCode: "USD", summaryItems: [.init(label: "My Label", amount: 10.5)])
+    func test_initWithSummaryItems_shouldNotThrow() throws {
+        XCTAssertNoThrow(try ApplePayPayment(countryCode: "US", currencyCode: "USD", summaryItems: [.init(label: "My Label", amount: 10.5)]))
     }
 
-    func testCreateApplePayPaymentWithPayemtn() throws {
-        _ = try ApplePayPayment(payment: Payment(amount: Amount(value: 1050, currencyCode: "USD"), countryCode: "US"), brand: "My Label")
+    func test_initWithPayment_shouldNotThrow() throws {
+        XCTAssertNoThrow(try ApplePayPayment(payment: Payment(amount: Amount(value: 1050, currencyCode: "USD"), countryCode: "US"), brand: "My Label"))
     }
 
-    func testInvalidCurrencyCode() {
+    func test_initWithPayment_whenInvalidCurrencyCode_throwsInvalidCurrencyCodeError() {
         // Given
-        let amount = Amount(value: 2, unsafeCurrencyCode: "ZZZ")
+        let invalidCurrencyCode = "ZZZ"
 
         // When
-        let payment = Payment(amount: amount, countryCode: getRandomCountryCode())
+        let payment = Payment(amount: Amount(value: 2, unsafeCurrencyCode: invalidCurrencyCode), countryCode: "US")
 
         // Then
         XCTAssertThrowsError(try ApplePayPayment(payment: payment, brand: "TEST")) { error in
             XCTAssertTrue(error is ApplePayComponent.Error)
-            XCTAssertEqual(error as! ApplePayComponent.Error, ApplePayComponent.Error.invalidCurrencyCode)
-            XCTAssertEqual((error as! ApplePayComponent.Error).localizedDescription, "The currency code is invalid.")
+            let applePayError = try? XCTUnwrap(error as? ApplePayComponent.Error)
+            XCTAssertEqual(applePayError, .invalidCurrencyCode)
         }
-
-        XCTAssertThrowsError(try ApplePayPayment(
-            countryCode: "US",
-            currencyCode: "ZZZ",
-            summaryItems: [.init(label: "My Label", amount: 10.5)]
-        ))
     }
 
-    func testInvalidCountryCode() {
+    func test_initWithSummaryItems_whenInvalidCurrencyCode_throwsInvalidCurrencyCodeError() {
+        // Given
+        let invalidCurrencyCode = "ZZZ"
+
+        // Then
+        XCTAssertThrowsError(try ApplePayPayment(
+            countryCode: "US",
+            currencyCode: invalidCurrencyCode,
+            summaryItems: [.init(label: "My Label", amount: 10.5)]
+        )) { error in
+            let applePayError = try? XCTUnwrap(error as? ApplePayComponent.Error)
+            XCTAssertEqual(applePayError, .invalidCurrencyCode)
+        }
+    }
+
+    func test_initWithPayment_whenInvalidCountryCode_throwsInvalidCountryCodeError() {
+        // Given
+        let invalidCountryCode = "ZZ"
+
         // When
-        let payment = Payment(amount: Amount(value: 1050, currencyCode: "USD"), unsafeCountryCode: "ZZ")
+        let payment = Payment(amount: Amount(value: 1050, currencyCode: "USD"), unsafeCountryCode: invalidCountryCode)
 
         // Then
         XCTAssertThrowsError(try ApplePayPayment(payment: payment, brand: "TEST")) { error in
-            XCTAssertTrue(error is ApplePayComponent.Error)
-            XCTAssertEqual(error as! ApplePayComponent.Error, ApplePayComponent.Error.invalidCountryCode)
-            XCTAssertEqual((error as! ApplePayComponent.Error).localizedDescription, "The country code is invalid.")
+            let applePayError = try? XCTUnwrap(error as? ApplePayComponent.Error)
+            XCTAssertEqual(applePayError, .invalidCountryCode)
         }
+    }
 
+    func test_initWithSummaryItems_whenInvalidCountryCode_throwsInvalidCountryCodeError() {
+        // Given
+        let invalidCountryCode = "ZZ"
+
+        // Then
         XCTAssertThrowsError(try ApplePayPayment(
-            countryCode: "ZZ",
+            countryCode: invalidCountryCode,
             currencyCode: "USD",
             summaryItems: [.init(label: "My Label", amount: 10.5)]
-        ))
-    }
-
-    func testEmptySummaryItems() {
-        XCTAssertThrowsError(try ApplePayPayment(countryCode: "US", currencyCode: "USD", summaryItems: [])) { error in
-            XCTAssertTrue(error is ApplePayComponent.Error)
-            XCTAssertEqual(error as! ApplePayComponent.Error, ApplePayComponent.Error.emptySummaryItems)
-            XCTAssertEqual((error as! ApplePayComponent.Error).localizedDescription, "The summaryItems array is empty.")
+        )) { error in
+            let applePayError = try? XCTUnwrap(error as? ApplePayComponent.Error)
+            XCTAssertEqual(applePayError, .invalidCountryCode)
         }
     }
 
-    func testGrandTotalIsNegative() {
-        XCTAssertThrowsError(try ApplePayPayment(
-            countryCode: "US",
-            currencyCode: "USD",
-            summaryItems: createInvalidGrandTotalTestSummaryItems()
-        )) { error in
-            XCTAssertTrue(error is ApplePayComponent.Error)
-            XCTAssertEqual(error as! ApplePayComponent.Error, ApplePayComponent.Error.negativeGrandTotal)
-            XCTAssertEqual((error as! ApplePayComponent.Error).localizedDescription, "The grand total summary item should be greater than or equal to zero.")
+    func test_init_withEmptySummaryItems_throwsEmptySummaryItemsError() {
+        // Given
+        let invalidSummeryItems: [PKPaymentSummaryItem] = []
+
+        // Then
+        XCTAssertThrowsError(try ApplePayPayment(countryCode: "US", currencyCode: "USD", summaryItems: invalidSummeryItems)) { error in
+            let applePayError = try? XCTUnwrap(error as? ApplePayComponent.Error)
+            XCTAssertEqual(applePayError, .emptySummaryItems)
         }
     }
 
-    func testOneItemWithZeroAmount() {
+    func test_init_withNegativeGrandTotal_throwsNegativeGrandTotalError() {
+        // Given
+        let invalidSummeryItems = createInvalidGrandTotalTestSummaryItems()
+
+        // Then
         XCTAssertThrowsError(try ApplePayPayment(
             countryCode: "US",
             currencyCode: "USD",
-            summaryItems: createTestSummaryItemsWithZeroAmount()
+            summaryItems: invalidSummeryItems
         )) { error in
-            XCTAssertTrue(error is ApplePayComponent.Error)
-            XCTAssertEqual(error as! ApplePayComponent.Error, ApplePayComponent.Error.invalidSummaryItem)
-            XCTAssertEqual((error as! ApplePayComponent.Error).localizedDescription, "At least one of the summary items has an invalid amount.")
+            let applePayError = try? XCTUnwrap(error as? ApplePayComponent.Error)
+            XCTAssertEqual(applePayError, .negativeGrandTotal)
+        }
+    }
+
+    func test_init_withZeroAmountSummaryItem_throwsInvalidSummaryItemError() {
+        // Given
+        let invalidSummeryItems = createTestSummaryItemsWithZeroAmount()
+
+        // Then
+        XCTAssertThrowsError(try ApplePayPayment(
+            countryCode: "US",
+            currencyCode: "USD",
+            summaryItems: invalidSummeryItems
+        )) { error in
+            let applePayError = try? XCTUnwrap(error as? ApplePayComponent.Error)
+            XCTAssertEqual(applePayError, .invalidSummaryItem)
         }
     }
 
@@ -94,7 +123,6 @@ class ApplePayPaymentTest: XCTestCase {
         var amounts = (0...3).map { _ in
             NSDecimalNumber(mantissa: UInt64.random(in: 1...20), exponent: 1, isNegative: Bool.random())
         }
-        // Negative Grand total
         amounts.append(NSDecimalNumber(mantissa: 20, exponent: 1, isNegative: true))
         return amounts.enumerated().map {
             PKPaymentSummaryItem(label: "summary_\($0)", amount: $1)

@@ -751,6 +751,7 @@
 		E795A27626404E9400321C48 /* AddressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E795A27526404E9400321C48 /* AddressViewModel.swift */; };
 		E7975F982880421600A12C40 /* XCTestCase+Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E60D227E0E6280051C72C /* XCTestCase+Result.swift */; };
 		E79A64812490D98F00368E9F /* CardComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79A64802490D98F00368E9F /* CardComponentDelegateMock.swift */; };
+		E7AEDBEC2E1E742900377AB2 /* ApplePayPaymentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AEDBEB2E1E742900377AB2 /* ApplePayPaymentTests.swift */; };
 		E7B3DE9F25A61B9200CA4D2B /* UIViewConstraintsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B3DE9E25A61B9200CA4D2B /* UIViewConstraintsHelper.swift */; };
 		E7B627FD24ED32CC000CEC6E /* BinLookupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B627FC24ED32CC000CEC6E /* BinLookupService.swift */; };
 		E7CC63D2287EFFC00034108B /* DummyHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CC63D1287EFFC00034108B /* DummyHelper.swift */; };
@@ -2224,6 +2225,7 @@
 		E788A5062658045D00089448 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		E795A27526404E9400321C48 /* AddressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressViewModel.swift; sourceTree = "<group>"; };
 		E79A64802490D98F00368E9F /* CardComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentDelegateMock.swift; sourceTree = "<group>"; };
+		E7AEDBEB2E1E742900377AB2 /* ApplePayPaymentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayPaymentTests.swift; sourceTree = "<group>"; };
 		E7B3DE9E25A61B9200CA4D2B /* UIViewConstraintsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewConstraintsHelper.swift; sourceTree = "<group>"; };
 		E7B627FC24ED32CC000CEC6E /* BinLookupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinLookupService.swift; sourceTree = "<group>"; };
 		E7CC63D1287EFFC00034108B /* DummyHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyHelper.swift; sourceTree = "<group>"; };
@@ -5602,6 +5604,7 @@
 		F960FB06237181DC00AEF74B /* Apple Pay */ = {
 			isa = PBXGroup;
 			children = (
+				E7AEDBEB2E1E742900377AB2 /* ApplePayPaymentTests.swift */,
 				F960FB082371823A00AEF74B /* ApplePayComponentTests.swift */,
 				F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */,
 				5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */,
@@ -7717,6 +7720,7 @@
 				5A56E15326B6DB9C00744CA0 /* VoucherViewTests.swift in Sources */,
 				81DC5A592A79287400DBF2D1 /* AddressInputFormViewControllerTests.swift in Sources */,
 				81A2E3BE2A5C453200CF5F9C /* LinkTextViewTests.swift in Sources */,
+				E7AEDBEC2E1E742900377AB2 /* ApplePayPaymentTests.swift in Sources */,
 				81825CC42AC59C6C00F91912 /* XCTestCase+Wait+UIKit.swift in Sources */,
 				E9E3DAC2221ECE1000697074 /* CardSecurityCodeFormatterTests.swift in Sources */,
 				F9A6C453265640E000D8CD3E /* InstantPaymentComponentTests.swift in Sources */,

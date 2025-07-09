@@ -359,7 +359,9 @@ class ApplePayComponentTest: XCTestCase {
             PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
             PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
         ]
-        let testAmount = Amount(value: 1000, currencyCode: "USD")
+        let minorUnits = 1234
+        let decimalAmount: NSDecimalNumber = 12.34 // USD decimals is 2
+        let testAmount = Amount(value: minorUnits, currencyCode: "USD")
         let config = try ApplePayComponent.Configuration(paymentRequest: request)
 
         // When
@@ -371,7 +373,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertEqual(sut.paymentRequest?.paymentSummaryItems.count, 2)
         let summaryItem = sut.paymentRequest?.paymentSummaryItems.last
         XCTAssertNotNil(summaryItem)
-        XCTAssertEqual(summaryItem?.amount, 10)
+        XCTAssertEqual(summaryItem?.amount, decimalAmount)
     }
 
     func testReplacingSummaryItemsJPY() throws {
@@ -384,7 +386,9 @@ class ApplePayComponentTest: XCTestCase {
             PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
             PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
         ]
-        let testAmount = Amount(value: 1000, currencyCode: "JPY")
+        let minorUnits = 1234
+        let decimalAmount: NSDecimalNumber = 1234.0 // JPY decimals is 0
+        let testAmount = Amount(value: minorUnits, currencyCode: "JPY")
         let config = try ApplePayComponent.Configuration(paymentRequest: request)
 
         // When
@@ -396,10 +400,10 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertEqual(sut.paymentRequest?.paymentSummaryItems.count, 2)
         let summaryItem = sut.paymentRequest?.paymentSummaryItems.last
         XCTAssertNotNil(summaryItem)
-        XCTAssertEqual(summaryItem?.amount, 1000)
+        XCTAssertEqual(summaryItem?.amount, decimalAmount)
     }
 
-    func testReplacingAmountWithPayemtn() throws {
+    func testReplacingAmountWithPayment() throws {
         // Given
         let payment = try ApplePayPayment(payment: Payment(amount: Amount(value: 1050, currencyCode: "USD"), countryCode: "US"), brand: "My Label")
         let config = ApplePayComponent.Configuration(payment: payment, merchantIdentifier: "")
