@@ -9,7 +9,7 @@ import UIKit
 public enum DefaultColors {
 
     public static let background: UIColor = {
-        return UIColor { traitCollection in
+        UIColor { traitCollection in
             if traitCollection.userInterfaceStyle == .dark {
                 return color(hex: 0x121212) // Dark background
             } else {
@@ -19,7 +19,7 @@ public enum DefaultColors {
     }()
 
     public static let container: UIColor = {
-        return UIColor { traitCollection in
+        UIColor { traitCollection in
             if traitCollection.userInterfaceStyle == .dark {
                 return color(hex: 0x2A2A2A)
             } else {
@@ -29,7 +29,7 @@ public enum DefaultColors {
     }()
 
     public static let primary: UIColor = {
-        return UIColor { traitCollection in
+        UIColor { traitCollection in
             if traitCollection.userInterfaceStyle == .dark {
                 return color(hex: 0xEFEFEF)
             } else {
@@ -39,7 +39,7 @@ public enum DefaultColors {
     }()
 
     public static let textOnPrimary: UIColor = {
-        return UIColor { traitCollection in
+        UIColor { traitCollection in
             if traitCollection.userInterfaceStyle == .dark {
                 return color(hex: 0x121212)
             } else {
@@ -49,7 +49,7 @@ public enum DefaultColors {
     }()
 
     public static let action: UIColor = {
-        return UIColor { traitCollection in
+        UIColor { traitCollection in
             if traitCollection.userInterfaceStyle == .dark {
                 return color(hex: 0x7DB9FF)
             } else {
@@ -59,7 +59,7 @@ public enum DefaultColors {
     }()
 
     public static let destructive: UIColor = {
-        return UIColor { traitCollection in
+        UIColor { traitCollection in
             if traitCollection.userInterfaceStyle == .dark {
                 return color(hex: 0xF99C9C)
             } else {
@@ -69,7 +69,7 @@ public enum DefaultColors {
     }()
 
     public static let textOnDestructive: UIColor = {
-        return UIColor { traitCollection in
+        UIColor { traitCollection in
             if traitCollection.userInterfaceStyle == .dark {
                 return color(hex: 0x121212)
             } else {
@@ -79,7 +79,7 @@ public enum DefaultColors {
     }()
 
     public static let disabled: UIColor = {
-        return UIColor { traitCollection in
+        UIColor { traitCollection in
             if traitCollection.userInterfaceStyle == .dark {
                 return color(hex: 0x373737)
             } else {
@@ -89,7 +89,7 @@ public enum DefaultColors {
     }()
 
     public static let textOnDisabled: UIColor = {
-        return UIColor { traitCollection in
+        UIColor { traitCollection in
             if traitCollection.userInterfaceStyle == .dark {
                 return color(hex: 0xEFEFEF)
             } else {
@@ -99,7 +99,7 @@ public enum DefaultColors {
     }()
 
     public static let outline: UIColor = {
-        return UIColor { traitCollection in
+        UIColor { traitCollection in
             if traitCollection.userInterfaceStyle == .dark {
                 return color(hex: 0x454545)
             } else {
@@ -109,7 +109,7 @@ public enum DefaultColors {
     }()
 
     public static let text: UIColor = {
-        return UIColor { traitCollection in
+        UIColor { traitCollection in
             if traitCollection.userInterfaceStyle == .dark {
                 return color(hex: 0xEFEFEF)
             } else {
@@ -119,7 +119,7 @@ public enum DefaultColors {
     }()
 
     public static let textSecondary: UIColor = {
-        return UIColor { traitCollection in
+        UIColor { traitCollection in
             if traitCollection.userInterfaceStyle == .dark {
                 return color(hex: 0xEFEFEF)
             } else {
