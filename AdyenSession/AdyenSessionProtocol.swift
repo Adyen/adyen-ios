@@ -17,14 +17,13 @@ package protocol AdyenSessionProtocol: AnyObject {
     
     func didSubmit(
         _ paymentComponentData: PaymentComponentData,
-        from component: Component,
-        dropInComponent: AnyDropInComponent?,
-        session: AdyenSessionProtocol
+        from component: PaymentComponent,
+        dropInComponent: AnyDropInComponent?
     )
     
     func didProvide(
         _ actionComponentData: ActionComponentData,
         from component: ActionComponent,
-        session: AdyenSessionProtocol
+        dropInComponent: AnyDropInComponent?
     )
 }

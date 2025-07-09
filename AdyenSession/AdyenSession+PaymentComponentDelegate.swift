@@ -14,7 +14,7 @@ import UIKit
 @_spi(AdyenInternal)
 extension AdyenSession: PaymentComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        didSubmit(data, from: component, dropInComponent: nil, session: self)
+        didSubmit(data, from: component, dropInComponent: nil)
     }
     
     internal func finish(with result: CheckoutResult, component: Component) {
@@ -50,9 +50,8 @@ extension AdyenSession: PaymentComponentDelegate {
 extension AdyenSession {
     package func didSubmit(
         _ paymentComponentData: PaymentComponentData,
-        from component: Component,
-        dropInComponent: AnyDropInComponent?,
-        session: AdyenSessionProtocol
+        from component: PaymentComponent,
+        dropInComponent: AnyDropInComponent?
     ) {
         let request = PaymentsRequest(
             sessionId: sessionContext.identifier,

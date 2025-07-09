@@ -5,8 +5,8 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@testable @_spi(AdyenInternal) import AdyenCard
-@testable import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenCard
+@_spi(AdyenInternal) @testable import AdyenDropIn
 import XCTest
 
 class ModalViewControllerTests: XCTestCase {

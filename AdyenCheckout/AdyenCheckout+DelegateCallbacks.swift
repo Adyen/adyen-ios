@@ -28,10 +28,8 @@ extension AdyenCheckout: PaymentComponentDelegate {
             session.didSubmit(
                 data,
                 from: component,
-                dropInComponent: nil,
-                session: session
+                dropInComponent: nil
             )
-            
         } else {
             // TODO: throw/assert to inform missing callbacks
         }
@@ -61,7 +59,7 @@ extension AdyenCheckout: ActionComponentDelegate {
             session.didProvide(
                 data,
                 from: component,
-                session: session
+                dropInComponent: nil
             )
         } else {
             // TODO: throw/assert to inform missing callbacks
@@ -87,12 +85,12 @@ extension AdyenCheckout: AdyenSessionDelegate {
     }
     
     private func finish(with result: CheckoutResult) {
-        // add any finalizing code if needed
+        // TODO: add any finalizing code if needed
         configuration.onComplete?(result)
     }
     
     private func finish(with error: Error) {
-        // add any finalizing code if needed
+        // TODO: add any finalizing code if needed
         configuration.onError?(CheckoutError(error: error))
     }
 }

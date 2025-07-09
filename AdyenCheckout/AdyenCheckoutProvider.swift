@@ -26,7 +26,7 @@ internal class AdyenCheckoutProvider: AdyenCheckoutProviding {
         completion: @escaping (Result<AdyenCheckout, Error>) -> Void
     ) {
         var checkoutAttemptIdInstance: String?
-        var sessionInstance: AdyenSession?
+        var sessionInstance: AdyenSessionProtocol?
         let group = DispatchGroup()
         
         // create and store session and payment methods
@@ -108,7 +108,7 @@ internal class AdyenCheckoutProvider: AdyenCheckoutProviding {
     internal func setupSession(
         with configuration: CheckoutConfiguration,
         order: PartialPaymentOrder? = nil,
-        completion: @escaping (Result<AdyenSession, Error>) -> Void
+        completion: @escaping (Result<AdyenSessionProtocol, Error>) -> Void
     ) {}
     
     internal func fetchCheckoutAttemptId(
