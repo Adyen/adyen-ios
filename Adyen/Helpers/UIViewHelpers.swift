@@ -61,7 +61,6 @@ extension AdyenScope where Base: UIView {
             completion: { [weak base] _ in
                 base?.isHidden = hidden
                 base?.alpha = hidden ? 0 : 1
-                base?.adyen.updatePreferredContentSize()
             }
         )
         animate(context: context)
@@ -72,7 +71,6 @@ extension AdyenScope where Base: UIView {
         
         base.isHidden = hidden
         base.alpha = hidden ? 0 : 1
-        base.adyen.updatePreferredContentSize()
     }
 
     public var minimalSize: CGSize {

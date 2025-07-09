@@ -7,12 +7,10 @@
 import Foundation
 import UIKit
 
-@available(iOS 13.0, *)
 internal protocol AppOpener {
     func openSettingsApp() async
 }
 
-@available(iOS 13.0, *)
 extension UIApplication: AppOpener {
 
     func openSettingsApp() async {

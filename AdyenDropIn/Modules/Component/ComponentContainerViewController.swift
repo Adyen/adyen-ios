@@ -1,0 +1,84 @@
+//
+// Copyright (c) 2025 Adyen N.V.
+//
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//
+
+import Foundation
+import UIKit
+@_spi(AdyenInternal) import Adyen
+
+internal final class ComponentContainerViewController: UIViewController {
+
+    // MARK: - Properties
+
+    private let viewModel: ComponentContainerViewModelProtocol
+    internal weak var delegate: ViewControllerDelegate?
+
+    // MARK: - Initializers
+
+    internal init(viewModel: ComponentContainerViewModelProtocol) {
+        self.viewModel = viewModel
+
+        super.init(nibName: nil, bundle: Bundle(for: ComponentContainerViewController.self))
+    }
+
+    @available(*, unavailable)
+    public required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - View life cycle
+
+    override public func viewDidLoad() {
+        super.viewDidLoad()
+        setupComponentView()
+        setupNavigationItem()
+    }
+
+    override public func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        componentView.resignFirstResponder()
+        viewModel.didCancel()
+    }
+
+    private func setupComponentView() {
+        componentView.willMove(toParent: self)
+        addChild(componentView)
+        view.addSubview(componentView.view)
+        componentView.didMove(toParent: self)
+        setupLayout()
+    }
+
+    // MARK: - Private
+
+    private var componentView: UIViewController {
+        viewModel.componentViewController
+    }
+
+    private func setupLayout() {
+        componentView.view.adyen.anchor(inside: view)
+    }
+
+    private func setupNavigationItem() {
+        // TODO: - Replace with actual title
+        navigationItem.title = "3"
+
+        if viewModel.isRoot { setupCancelButton() }
+    }
+
+    private func setupCancelButton() {
+        // TODO: - Implement logic to cancel ongoing payment
+        let cancelButton = UIBarButtonItem(
+            title: "Cancel",
+            style: .plain,
+            target: self,
+            action: #selector(cancelButtonTapped)
+        )
+        navigationItem.rightBarButtonItem = cancelButton
+    }
+
+    @objc private func cancelButtonTapped() {
+        navigationController?.dismiss(animated: true)
+    }
+}

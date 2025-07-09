@@ -29,17 +29,6 @@ public final class ListViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override public var preferredContentSize: CGSize {
-        get { tableView.contentSize }
-        
-        // swiftlint:disable:next unused_setter_value
-        set { AdyenAssertion.assertionFailure(message: """
-        PreferredContentSize is overridden for this view controller.
-        getter - returns content size of scroll view.
-        setter - no implemented.
-        """) }
-    }
-    
     // MARK: - Data Source
     
     public var sections: [ListSection] { dataSource.sections }
@@ -58,8 +47,7 @@ public final class ListViewController: UITableViewController {
         dataSource.sections.flatMap(\.items).forEach { $0.loadingHandler = nil }
         
         dataSource.reload(newSections: newSections, tableView: tableView, animated: animated)
-        adyen.updatePreferredContentSize()
-        
+
         stopLoading()
 
         newSections.flatMap(\.items).forEach { item in
@@ -77,7 +65,6 @@ public final class ListViewController: UITableViewController {
     
     public func deleteItem(at indexPath: IndexPath, animated: Bool = true) {
         dataSource.deleteItem(at: indexPath, tableView: tableView, animated: animated)
-        adyen.updatePreferredContentSize()
     }
     
     // MARK: - View
