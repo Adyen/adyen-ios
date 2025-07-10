@@ -779,7 +779,6 @@
 		E74E41D32C492C1600354C76 /* AdyenWeChatPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E755BF7226B40C90007AAB25 /* DateValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E755BF7126B40C90007AAB25 /* DateValidator.swift */; };
 		E759E24C25CB3BB700B1F8DC /* DropInTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E759E1F425CB373F00B1F8DC /* DropInTests.swift */; };
-		E7620EAD23C3466B00A492C3 /* ModalViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */; };
 		E767F4DC25A603A50077029E /* ModalToolbarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E767F4DB25A603A50077029E /* ModalToolbarTests.swift */; };
 		E76CAC4E26BC0CC200117953 /* CardViewControllerItemsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76CAC4D26BC0CC200117953 /* CardViewControllerItemsProvider.swift */; };
 		E76EC680241125E0009C6E2F /* FormCardSecurityCodeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E76EC67F241125E0009C6E2F /* FormCardSecurityCodeItem.swift */; };
@@ -2319,7 +2318,6 @@
 		E755BF7126B40C90007AAB25 /* DateValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateValidator.swift; sourceTree = "<group>"; };
 		E757F02525D2ED4C007C813D /* APIClientMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientMock.swift; sourceTree = "<group>"; };
 		E759E1F425CB373F00B1F8DC /* DropInTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInTests.swift; sourceTree = "<group>"; };
-		E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalViewControllerTests.swift; sourceTree = "<group>"; };
 		E767F49A25A5E9740077029E /* ModalToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalToolbar.swift; sourceTree = "<group>"; };
 		E767F4DB25A603A50077029E /* ModalToolbarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalToolbarTests.swift; sourceTree = "<group>"; };
 		E768712426B02D17005A91DB /* Shared.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Shared.entitlements; sourceTree = "<group>"; };
@@ -4910,7 +4908,6 @@
 				E74CE3DE26727EB1008231D2 /* DropInDelegateMock.swift */,
 				E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */,
 				E767F4DB25A603A50077029E /* ModalToolbarTests.swift */,
-				E7620EAC23C3466B00A492C3 /* ModalViewControllerTests.swift */,
 				E7D5311B2447065B000046B4 /* PreselectedPaymentComponentTests.swift */,
 				E7F563E928B7758D00082D4C /* DropInTestInternal.swift */,
 				A0290DF72C413056005BE269 /* StoredPaymentMethodDelegateMock.swift */,
@@ -8137,7 +8134,6 @@
 				E7E8343C24F3C81700EC3844 /* PublicKeyProviderMock.swift in Sources */,
 				F9838D0126318EBD00963483 /* ReadyToSubmitPaymentComponentDelegateMock.swift in Sources */,
 				F919DF9924EA64680027976E /* CardPublicKeyProviderTests.swift in Sources */,
-				E7620EAD23C3466B00A492C3 /* ModalViewControllerTests.swift in Sources */,
 				C9C21914276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift in Sources */,
 				E7085C1E2629FDD700D0153B /* RedirectListnerTests.swift in Sources */,
 				0008887C2D4CFA73009C03E1 /* PayToComponentTests.swift in Sources */,

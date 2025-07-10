@@ -118,16 +118,18 @@ class QRCodeActionComponentUITests: XCTestCase {
                 style: NavigationStyle()
             )
             
-            let wrapper = WrapperViewController(
-                child: ModalViewController(
-                    rootViewController: qrCodeViewController,
-                    navBarType: .custom(pollingComponentToolBar)
-                )
-            )
-            
-            self.setupRootViewController(wrapper)
+//            let wrapper = WrapperViewController(
+//                child: ModalViewController(
+//                    rootViewController: qrCodeViewController,
+//                    navBarType: .custom(pollingComponentToolBar)
+//                )
+//            )
+
+            let dropInRootViewController = DropInRootViewController(rootViewController: qrCodeViewController)
+
+            self.setupRootViewController(dropInRootViewController)
             self.wait(for: qrCodeViewController.qrCodeView)
-            self.verifyViewControllerImage(matching: wrapper, named: "upi_cancel_button")
+            self.verifyViewControllerImage(matching: dropInRootViewController, named: "upi_cancel_button")
 
             dummyExpectation.fulfill()
         }

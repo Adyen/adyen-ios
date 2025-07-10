@@ -23,14 +23,13 @@ class PaymentMethodListComponentTests: XCTestCase {
         }
     }
     
-    func testRequiresKeyboardInput() {
+    func testRequiresKeyboardInput() throws {
         let section = ComponentsSection(components: [storedComponent])
         let sectionedComponents = [section]
         let sut = PaymentMethodListComponent(context: Dummy.context, components: sectionedComponents)
 
-        let navigationViewController = DropInNavigationController(rootViewController: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
-
-        XCTAssertFalse((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
+        let formViewController = try XCTUnwrap(sut.viewController as? FormViewController)
+        XCTAssertFalse(formViewController.requiresKeyboardInput)
     }
     
     func testLocalizationWithCustomTableName() {

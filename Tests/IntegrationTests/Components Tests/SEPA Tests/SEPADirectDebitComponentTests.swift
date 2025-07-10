@@ -24,12 +24,11 @@ class SEPADirectDebitComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testRequiresKeyboardInput() {
+    func testRequiresKeyboardInput() throws {
         let sut = SEPADirectDebitComponent(paymentMethod: method, context: context)
 
-        let navigationViewController = DropInNavigationController(rootViewController: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
-
-        XCTAssertTrue((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
+        let formViewController = try XCTUnwrap(sut.viewController as? FormViewController)
+        XCTAssertTrue(formViewController.requiresKeyboardInput)
     }
     
     func testLocalizationWithCustomTableName() throws {
