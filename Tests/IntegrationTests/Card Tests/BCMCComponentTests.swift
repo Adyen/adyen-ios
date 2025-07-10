@@ -36,7 +36,7 @@ class BCMCComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testRequiresKeyboardInput() {
+    func testRequiresKeyboardInput() throws {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.accel])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(
@@ -45,9 +45,8 @@ class BCMCComponentTests: XCTestCase {
             configuration: CardComponent.Configuration()
         )
 
-        let navigationViewController = DropInNavigationController(rootViewController: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
-
-        XCTAssertTrue((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
+        let formViewController = try XCTUnwrap(sut.viewController as? FormViewController)
+        XCTAssertTrue(formViewController.requiresKeyboardInput)
     }
     
     func testDefaultConfigAllFieldsArePresent() {

@@ -8,6 +8,7 @@
 import AdyenDropIn
 import XCTest
 
+// TODO: To be rewriten when DropInComponent has its final implementation.
 class DropInInternalTests: XCTestCase {
 
     override func run() {
@@ -17,7 +18,7 @@ class DropInInternalTests: XCTestCase {
             super.run()
         }
     }
-    
+
     func testFinaliseIfNeededSelectedComponent() throws {
         let config = DropInComponent.Configuration()
 
@@ -34,7 +35,7 @@ class DropInInternalTests: XCTestCase {
 
         let topVC = try waitForViewController(ofType: ListViewController.self, toBecomeChildOf: sut.viewController)
         topVC.tableView(topVC.tableView, didSelectRowAt: .init(item: 0, section: 0))
-        
+
         let cell = try XCTUnwrap(topVC.tableView.cellForRow(at: .init(item: 0, section: 0)) as? ListCell)
         XCTAssertTrue(cell.showsActivityIndicator)
 

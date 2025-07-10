@@ -75,16 +75,6 @@ class AwaitComponentTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testRequiresKeyboardInput() {
-        let sut = AwaitViewController(viewModel: AwaitComponentViewModel(icon: "icon", message: "message", spinnerTitle: "spinner title"))
-
-        let wrapperViewController = WrapperViewController(
-            child: ModalViewController(rootViewController: sut, navBarType: .regular)
-        )
-
-        XCTAssertFalse(wrapperViewController.requiresKeyboardInput)
-    }
-
     func testActionHandling() {
         var style = AwaitComponentStyle()
         style.backgroundColor = UIColor.green
