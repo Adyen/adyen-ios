@@ -11,18 +11,16 @@ import Adyen3DS2_Swift
 import XCTest
 
 final class MockTransactionRepresentable: TransactionRepresentable {
-    internal var onFingerprintParameters: (
-        () throws -> AnyAuthenticationRequestParameters
-    )?
-    
-    var fingerprintParameters: AdyenActions.AnyAuthenticationRequestParameters {
-        get throws {
-            guard let onFingerprintParameters else {
-                fatalError("mock not configured")
-            }
-            return try onFingerprintParameters()
+    func fingerprintParameters(completion: @escaping (Result<any AdyenActions.AnyAuthenticationRequestParameters, any Error>) -> Void) {
+        guard let onFingerprintParameters else {
+            fatalError("mock not configured")
         }
+        return completion(onFingerprintParameters())
     }
+    
+    internal var onFingerprintParameters: (
+        () -> Result<AnyAuthenticationRequestParameters, any Error>
+    )?
     
     internal var onPerformChallenge: (
         (

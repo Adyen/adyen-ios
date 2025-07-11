@@ -10,8 +10,8 @@ import UIKit
 @MainActor
 internal protocol TransactionRepresentable {
     /// The transaction provides the fingerprint
-    var fingerprintParameters: AnyAuthenticationRequestParameters { get throws }
-
+    func fingerprintParameters(completion: @escaping (Result<AnyAuthenticationRequestParameters, any Error>) -> Void)
+    
     /// The transaction can perform a challenge
     func performChallenge(
         challengeParameters: Adyen3DS2_Swift.ChallengeParameters,
@@ -24,13 +24,18 @@ internal protocol TransactionRepresentable {
 }
 
 /// Interfaces to the Adyen3DS2_Swift
+@available(iOS 13.0, *)
 extension Adyen3DS2_Swift.Transaction: TransactionRepresentable {
-    internal var fingerprintParameters: any AnyAuthenticationRequestParameters {
-        get throws {
-            try authenticationRequestParameters
+    func fingerprintParameters(completion: @escaping (Result<AnyAuthenticationRequestParameters, any Error>) -> Void) {
+        Task { @MainActor in
+            do {
+                try await completion(.success(authenticationRequestParameters))
+            } catch {
+                completion(.failure(error))
+            }
         }
     }
-    
+
     internal func performChallenge(
         challengeParameters: Adyen3DS2_Swift.ChallengeParameters,
         presentingViewController: UIViewController,
@@ -50,6 +55,8 @@ extension Adyen3DS2_Swift.Transaction: TransactionRepresentable {
     }
     
     func resetTransaction() {
-        close()
+        Task {
+            await close()
+        }
     }
 }

@@ -224,7 +224,7 @@ final class ThreeDSServiceTests: XCTestCase {
         }
 
         mockTransaction.onFingerprintParameters = {
-            AuthenticationRequestParametersMock.empty
+            .success(AuthenticationRequestParametersMock.empty)
         }
         mockTransaction.onPerformChallenge = {
             $2(onPerformChallengeResult)
@@ -240,7 +240,7 @@ private extension MockTransactionRepresentable {
     static let mock: MockTransactionRepresentable = {
         let mockTransaction = MockTransactionRepresentable()
         mockTransaction.onFingerprintParameters = {
-            AuthenticationRequestParametersMock.empty
+            .success(AuthenticationRequestParametersMock.empty)
         }
         return mockTransaction
     }()

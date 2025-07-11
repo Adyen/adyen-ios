@@ -17,6 +17,7 @@ internal protocol TransactionProviding {
     )
 }
 
+@available(iOS 13.0, *)
 internal final class TransactionProvider: TransactionProviding {
     internal func createTransaction(
         serviceParameters: Adyen3DS2_Swift.ServiceParameters,
@@ -25,17 +26,19 @@ internal final class TransactionProvider: TransactionProviding {
         appearanceConfiguration: Adyen3DS2_Swift.AppearanceConfiguration,
         completion: @MainActor @escaping @Sendable (Result<TransactionRepresentable, any Error>) -> Void
     ) {
-        Adyen3DS2_Swift.Transaction.initialize(
-            serviceParameters: serviceParameters,
-            messageVersion: messageVersion,
-            securityDelegate: securityDelegate,
-            appearanceConfiguration: appearanceConfiguration
-        ) { result in
-            switch result {
-            case let .success(transaction):
-                completion(.success(transaction))
-            case let .failure(error):
-                completion(.failure(error))
+        Task { @MainActor in
+            Adyen3DS2_Swift.Transaction.initialize(
+                serviceParameters: serviceParameters,
+                messageVersion: messageVersion,
+                securityDelegate: securityDelegate,
+                appearanceConfiguration: appearanceConfiguration
+            ) { result in
+                switch result {
+                case let .success(transaction):
+                    completion(.success(transaction))
+                case let .failure(error):
+                    completion(.failure(error))
+                }
             }
         }
     }

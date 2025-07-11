@@ -54,15 +54,18 @@ internal final class ThreeDSService: ThreeDSServiceable {
             appearanceConfiguration: parameters.appearanceConfiguration
         ) { [weak self] appearanceConfiguration in
             guard let self else { return }
-            self.createTransaction(
-                serviceParameters: serviceParameters,
-                messageVersion: messageVersion,
-                appearanceConfiguration: appearanceConfiguration,
-                completionHandler: completionHandler
-            )
+            Task { @MainActor in
+                self.createTransaction(
+                    serviceParameters: serviceParameters,
+                    messageVersion: messageVersion,
+                    appearanceConfiguration: appearanceConfiguration,
+                    completionHandler: completionHandler
+                )
+            }
         }
     }
     
+    @MainActor
     private func createTransaction(
         serviceParameters: Adyen3DS2_Swift.ServiceParameters,
         messageVersion: Adyen3DS2_Swift.MessageVersion,
@@ -79,12 +82,15 @@ internal final class ThreeDSService: ThreeDSServiceable {
             switch result {
             case let .success(transaction):
                 self.transaction = transaction
-                do {
-                    try completionHandler(.success(transaction.fingerprintParameters))
-                } catch {
-                    completionHandler(.failure(.fingerprintingError(
-                        errorPayload: self.opaqueErrorObject(error: error)
-                    )))
+                transaction.fingerprintParameters {
+                    switch $0 {
+                    case let .success(paramters):
+                        completionHandler(.success(paramters))
+                    case let .failure(error):
+                        completionHandler(.failure(.fingerprintingError(
+                            errorPayload: self.opaqueErrorObject(error: error)
+                        )))
+                    }
                 }
             case let .failure(error):
                 completionHandler(.failure(.transactionCreationError(
