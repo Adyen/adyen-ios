@@ -16,24 +16,3 @@ package enum CheckoutComponentType: Hashable {
     
     // init(action: Action...
 }
-
-/// A wrapper to hold a configuration along with other necessary properties a
-/// configuration does not have access to such as apiContext/amount etc.
-package class ConfigurationWrapper {
-    
-    package let configuration: CheckoutComponentConfiguration
-    
-    package let apiContext: APIContext
-    
-    package let amount: Amount
-    
-    package init(
-        configuration: CheckoutComponentConfiguration,
-        apiContext: APIContext,
-        amount: Amount
-    ) {
-        self.configuration = configuration
-        self.apiContext = apiContext
-        self.amount = amount
-    }
-}

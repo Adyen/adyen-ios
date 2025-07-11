@@ -49,7 +49,7 @@ internal struct CancelOrderRequest: APIRequest {
     }
 }
 
-internal struct CancelOrderResponse: SessionResponse {
+internal struct CancelOrderResponse: SessionDataAware {
 
     internal let sessionData: String
 }

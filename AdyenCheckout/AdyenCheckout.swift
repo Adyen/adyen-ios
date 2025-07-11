@@ -15,7 +15,7 @@ import Foundation
 /// and it prepares all the required data asynchronously and returns an `AdyenCheckout` instance ready to be used.
 public final class AdyenCheckout: AdyenCheckoutProtocol {
     
-    internal let session: AdyenSession?
+    internal let session: AdyenSessionProtocol?
     internal let checkoutAttemptId: String?
     internal let paymentMethods: PaymentMethods?
     internal let configuration: CheckoutConfiguration
@@ -27,11 +27,14 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
             configuration: AdyenActionComponent.Configuration()
         )
         // TODO: create a way for CheckoutConfig to have AdyenActionComponent.Configuration
+        // and it should provided if they want to have action handling
+        // move AdyenActionComponent.Configuration to its own entity and make it public
         handler.delegate = self
         handler.presentationDelegate = presentationDelegate
         return handler
     }()
     
+    // TODO: should we replace sessionId/sessionData params with a struct to future proof session init?
     /// Sets up the checkout object for the default flow
     /// with the values from your backend's `/session` call.
     /// - Parameters:
@@ -136,7 +139,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
 
     internal init(
         configuration: CheckoutConfiguration,
-        session: AdyenSession? = nil,
+        session: AdyenSessionProtocol? = nil,
         paymentMethods: PaymentMethods? = nil,
         checkoutAttemptId: String?,
         presentationDelegate: PresentationDelegate?

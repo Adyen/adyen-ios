@@ -79,7 +79,7 @@ internal struct PaymentsRequest: APIRequest {
     }
 }
 
-internal struct PaymentsResponse: SessionResponse, SessionPaymentResultAware {
+internal struct PaymentsResponse: SessionDataAware, SessionResultAware {
     
     internal let resultCode: CheckoutResultCode
     

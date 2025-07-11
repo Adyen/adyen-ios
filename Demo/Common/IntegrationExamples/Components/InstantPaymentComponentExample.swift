@@ -51,12 +51,13 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
             guard let self else { return }
             switch response {
             case let .success(configuration):
-                AdyenSession.initialize(
-                    with: configuration,
-                    delegate: self,
-                    presentationDelegate: self,
-                    completion: completion
-                )
+//                AdyenSession.initialize(
+//                    with: configuration,
+//                    delegate: self,
+//                    presentationDelegate: self,
+//                    completion: completion
+//                )
+                break
             case let .failure(error):
                 completion(.failure(error))
             }

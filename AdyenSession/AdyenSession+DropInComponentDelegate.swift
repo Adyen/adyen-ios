@@ -10,7 +10,7 @@ import Foundation
 @_spi(AdyenInternal)
 extension AdyenSession: DropInComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
-        didSubmit(data, from: component, dropInComponent: dropInComponent, session: self)
+        didSubmit(data, from: component, dropInComponent: dropInComponent)
     }
     
     public func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
@@ -18,7 +18,7 @@ extension AdyenSession: DropInComponentDelegate {
     }
     
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
-        didProvide(data, from: component, session: self)
+        didProvide(data, from: component, dropInComponent: dropInComponent)
     }
     
     public func didComplete(from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
