@@ -6,7 +6,6 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public protocol AdyenSessionAware {
+package protocol AdyenSessionAware {
     var isSession: Bool { get }
 }

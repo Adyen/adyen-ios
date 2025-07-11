@@ -7,6 +7,7 @@
 import Adyen
 import AdyenNetworking
 import Foundation
+import UIKit
 
 internal protocol DropInAssemblerProtocol {
     func resolveDropInRootView() -> UIViewController

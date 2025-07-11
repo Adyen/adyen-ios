@@ -46,15 +46,7 @@ extension InitialDataFlowProtocol {
     private func initializeSession(with sessionId: String, data: String) -> AdyenSession.Configuration {
         let configuration = AdyenSession.Configuration(
             sessionIdentifier: sessionId,
-            initialSessionData: data,
-            context: context,
-            actionComponent: .init(
-                threeDS: .init(
-                    requestorAppURL: ConfigurationConstants.returnUrl,
-                    delegateAuthentication: ConfigurationConstants.delegatedAuthenticationConfigurations
-                ),
-                twint: .init(callbackAppScheme: ConfigurationConstants.returnUrl.scheme!)
-            )
+            initialSessionData: data
         )
         return configuration
     }

@@ -39,7 +39,7 @@ internal protocol AdyenSessionProviding {
     func setupSession(
         with configuration: CheckoutConfiguration,
         order: PartialPaymentOrder?,
-        completion: @escaping (Result<AdyenSession, Error>) -> Void
+        completion: @escaping (Result<AdyenSessionProtocol, Error>) -> Void
     )
 }
 

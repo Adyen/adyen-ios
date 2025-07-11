@@ -11,7 +11,7 @@ import UIKit
 @_spi(AdyenInternal)
 extension AdyenSession: SessionStoredPaymentMethodsDelegate {
     
-    public var showRemovePaymentMethodButton: Bool { sessionContext.configuration.showRemovePaymentMethodButton }
+    public var showRemovePaymentMethodButton: Bool { sessionContext.responseConfiguration.showRemovePaymentMethodButton }
     
     public func disable(storedPaymentMethod: StoredPaymentMethod, dropInComponent: AnyDropInComponent, completion: @escaping Completion<Bool>) {
         let request = DisableStoredPaymentMethodRequest(

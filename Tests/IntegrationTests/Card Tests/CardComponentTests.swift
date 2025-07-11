@@ -52,16 +52,15 @@ class CardComponentTests: XCTestCase {
         }
     }
     
-    func testRequiresKeyboardInput() {
+    func testRequiresKeyboardInput() throws {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
             configuration: CardComponent.Configuration()
         )
-        
-        let navigationViewController = DropInNavigationController(rootViewController: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
 
-        XCTAssertTrue((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
+        let formViewController = try XCTUnwrap(sut.viewController as? FormViewController)
+        XCTAssertTrue(formViewController.requiresKeyboardInput)
     }
 
     func testLocalizationWithCustomTableName() {

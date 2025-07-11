@@ -19,14 +19,14 @@ internal class AdyenCheckoutProviderMock: AdyenCheckoutProviding {
     var setupWithPaymentMethodsResult: Result<AdyenCheckout, Error>?
     
     // For AdyenSessionProviding
-    var setupSessionHandler: ((CheckoutConfiguration, PartialPaymentOrder?, @escaping (Result<AdyenSession, Error>) -> Void) -> Void)?
+    var setupSessionHandler: ((CheckoutConfiguration, PartialPaymentOrder?, @escaping (Result<AdyenSessionProtocol, Error>) -> Void) -> Void)?
     // For CheckoutAttemptIdProviding
     var fetchCheckoutAttemptIdHandler: ((CheckoutConfiguration, @escaping (Result<String, Error>) -> Void) -> Void)?
     
     func setupSession(
         with configuration: CheckoutConfiguration,
         order: PartialPaymentOrder?,
-        completion: @escaping (Result<AdyenSession, Error>) -> Void
+        completion: @escaping (Result<AdyenSessionProtocol, Error>) -> Void
     ) {
         setupSessionCalled = true
         setupSessionHandler?(configuration, order, completion)
