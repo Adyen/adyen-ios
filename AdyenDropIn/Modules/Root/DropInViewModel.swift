@@ -8,9 +8,11 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-internal protocol DropInRootViewModelProtocol {}
+internal protocol DropInViewModelProtocol {
+    func cancel(completion: (() -> Void)?)
+}
 
-internal class DropInRootViewModel: DropInRootViewModelProtocol {
+internal class DropInViewModel: DropInViewModelProtocol {
 
     // MARK: - Properties
 
@@ -20,7 +22,6 @@ internal class DropInRootViewModel: DropInRootViewModelProtocol {
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
     private let title: String?
-    private let router: DropInRootRouterProtocol
 
     // MARK: - Initializers
 
@@ -30,8 +31,7 @@ internal class DropInRootViewModel: DropInRootViewModelProtocol {
         paymentMethods: PaymentMethods,
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
-        title: String? = nil,
-        router: DropInRootRouterProtocol
+        title: String? = nil
     ) {
         self.componentManager = componentManager
         self.apiClient = apiClient
@@ -39,13 +39,18 @@ internal class DropInRootViewModel: DropInRootViewModelProtocol {
         self.context = context
         self.configuration = configuration
         self.title = title
-        self.router = router
+
+        self.componentManager.presentationDelegate = self
     }
 
     // MARK: - DropInRootViewModelProtocol
+
+    func cancel(completion: (() -> Void)?) {
+        print("⚠️ PAYMENT CANCELLED ⚠️")
+    }
 }
 
-extension DropInRootViewModel: PresentationDelegate {
+extension DropInViewModel: PresentationDelegate {
 
     internal func present(component: any Adyen.PresentableComponent) {
         // TODO: -

@@ -7,7 +7,7 @@
 import Foundation
 import UIKit
 
-internal class DropInRootViewController: UINavigationController {
+internal class DropInNavigationController: UINavigationController {
 
     // MARK: - Properties
 

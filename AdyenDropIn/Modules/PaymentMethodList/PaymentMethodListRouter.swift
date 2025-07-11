@@ -15,17 +15,17 @@ internal protocol PaymentMethodListRouterProtocol: AnyObject {
 }
 
 internal protocol PaymentMethodListRouterDelegate: AnyObject {
-    func cancelPayment(completion: (() -> Void)?)
+    func paymentMethodListDidCancel(completion: (() -> Void)?)
 }
 
 internal class PaymentMethodListRouter: PaymentMethodListRouterProtocol {
 
     // MARK: - Properties
 
+    internal weak var delegate: PaymentMethodListRouterDelegate?
     private let navigationController = UINavigationController()
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
     internal var view: UIViewController?
-    internal weak var delegate: PaymentMethodListRouterDelegate?
 
     // MARK: - Initializers
 
@@ -55,7 +55,7 @@ extension PaymentMethodListRouter: PaymentMethodListViewModelDelegate {
     // MARK: - PaymentMethodListViewModelDelegate
 
     func didCancel(completion: (() -> Void)?) {
-        delegate?.cancelPayment(completion: completion)
+        delegate?.paymentMethodListDidCancel(completion: completion)
     }
 
     internal func didSelect(_ component: PresentableComponent) {

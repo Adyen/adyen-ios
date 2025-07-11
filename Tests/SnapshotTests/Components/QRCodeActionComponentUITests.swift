@@ -125,7 +125,7 @@ class QRCodeActionComponentUITests: XCTestCase {
 //                )
 //            )
 
-            let dropInRootViewController = DropInRootViewController(rootViewController: qrCodeViewController)
+            let dropInRootViewController = DropInNavigationController(rootViewController: qrCodeViewController)
 
             self.setupRootViewController(dropInRootViewController)
             self.wait(for: qrCodeViewController.qrCodeView)

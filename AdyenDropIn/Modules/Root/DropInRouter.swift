@@ -14,12 +14,12 @@ internal protocol Router: AnyObject {
     func start()
 }
 
-internal protocol DropInRootRouterProtocol: Router {
+internal protocol DropInRouterProtocol: Router {
     func start()
     var rootViewController: UIViewController { get }
 }
 
-internal class DropInRootRouter: DropInRootRouterProtocol {
+internal class DropInRouter: DropInRouterProtocol {
 
     private enum DropInRoot {
         case preselected(_ paymentComponent: PaymentComponent)
@@ -29,13 +29,14 @@ internal class DropInRootRouter: DropInRootRouterProtocol {
 
     // MARK: - Properties
 
+    private let navigationController: DropInNavigationController
+    private let viewModel: DropInViewModelProtocol
+
     private let preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
     private let componentManager: ComponentManager
     private let configuration: DropInComponent.Configuration
-
-    private let navigationController: DropInRootViewController
 
     private var preselectedPaymentMethodRouter: PreselectedPaymentMethodRouterProtocol?
     private var paymentMethodListRouter: PaymentMethodListRouterProtocol?
@@ -43,18 +44,20 @@ internal class DropInRootRouter: DropInRootRouterProtocol {
     // MARK: - Initializers
 
     internal init(
+        viewModel: DropInViewModelProtocol,
         preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol,
         paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
         componentContainerAssembler: ComponentContainerAssemblerProtocol,
         componentManager: ComponentManager,
         configuration: DropInComponent.Configuration
     ) {
+        self.viewModel = viewModel
         self.preselectedPaymentMethodAssembler = preselectedPaymentMethodAssembler
         self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
         self.componentManager = componentManager
         self.configuration = configuration
-        self.navigationController = DropInRootViewController()
+        self.navigationController = DropInNavigationController()
     }
 
     // MARK: - DropInRootRouterProtocol
@@ -106,7 +109,7 @@ internal class DropInRootRouter: DropInRootRouterProtocol {
 
 // PreselectedPaymentMethodRouterDelegate
 
-extension DropInRootRouter: PreselectedPaymentMethodRouterDelegate {
+extension DropInRouter: PreselectedPaymentMethodRouterDelegate {
 
     func showAllPaymentMethods() {
         let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter()
@@ -118,13 +121,15 @@ extension DropInRootRouter: PreselectedPaymentMethodRouterDelegate {
     }
 }
 
-// PaymentMethodListRouterDelegate
+extension DropInRouter: PaymentMethodListRouterDelegate {
 
-extension DropInRootRouter: PaymentMethodListRouterDelegate {
+    // MARK: - PaymentMethodListRouterDelegate
 
-    func cancelPayment(completion: (() -> Void)?) {
+    func paymentMethodListDidCancel(completion: (() -> Void)?) {
         navigationController.presentingViewController?.dismiss(animated: true)
         preselectedPaymentMethodRouter = nil
         paymentMethodListRouter = nil
+
+        viewModel.cancel(completion: nil)
     }
 }

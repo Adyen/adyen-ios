@@ -13,7 +13,7 @@ internal protocol DropInAssemblerProtocol {
     func resolveDropInRootView() -> UIViewController
 }
 
-internal class DropInRootAssembler {
+internal class DropInAssembler {
 
     // MARK: - Properties
 
@@ -45,9 +45,19 @@ internal class DropInRootAssembler {
 
     // MARK: - Public
 
-    internal func resolveDropInRootRouter() -> DropInRootRouterProtocol {
+    internal func resolveDropInRootRouter() -> DropInRouterProtocol {
         let apiClient = resolveAPIClient()
-        let router = DropInRootRouter(
+
+        let viewModel = DropInViewModel(
+            componentManager: componentManager,
+            apiClient: apiClient,
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration
+        )
+
+        let router = DropInRouter(
+            viewModel: viewModel,
             preselectedPaymentMethodAssembler: preselectedPaymentMethodAssembler,
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler,
@@ -55,15 +65,6 @@ internal class DropInRootAssembler {
             configuration: configuration
         )
 
-        let viewModel = DropInRootViewModel(
-            componentManager: componentManager,
-            apiClient: apiClient,
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            router: router
-        )
-        componentManager.presentationDelegate = viewModel
         return router
     }
 

@@ -33,7 +33,7 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Properties
 
-    private let dropInRootRouter: DropInRootRouterProtocol
+    private let dropInRootRouter: DropInRouterProtocol
 
     private lazy var componentManager: ComponentManager = {
         let componentManager = createComponentManager(order: nil)
@@ -80,7 +80,7 @@ public final class DropInComponent: NSObject,
             .retryAPIClient(with: scheduler)
             .retryOnErrorAPIClient()
 
-        let dropInRootAssembler = DropInRootAssembler(
+        let dropInRootAssembler = DropInAssembler(
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration
