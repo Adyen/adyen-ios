@@ -12,8 +12,6 @@ internal protocol PaymentMethodListRouterProtocol: AnyObject {
     var rootViewController: UIViewController { get }
     var delegate: PaymentMethodListRouterDelegate? { get set }
     func start()
-    func cancel(completion: (() -> Void)?)
-    func didSelect(_ component: PresentableComponent)
 }
 
 internal protocol PaymentMethodListRouterDelegate: AnyObject {
@@ -49,23 +47,50 @@ internal class PaymentMethodListRouter: PaymentMethodListRouterProtocol {
         navigationController.setViewControllers([view], animated: false)
     }
 
-    internal func cancel(completion: (() -> Void)?) {
+    // MARK: - Private
+}
+
+extension PaymentMethodListRouter: PaymentMethodListViewModelDelegate {
+
+    // MARK: - PaymentMethodListViewModelDelegate
+
+    func didCancel(completion: (() -> Void)?) {
         delegate?.cancelPayment(completion: completion)
     }
 
     internal func didSelect(_ component: PresentableComponent) {
+        let componentContainerViewController = componentContainerAssembler.resolveContainerView(
+            for: component,
+            delegate: self
+        )
+
         if component.requiresModalPresentation {
-            let componentContainerViewController = componentContainerAssembler.resolveContainerView(
-                for: component
-            )
             view?.navigationController?.pushViewController(componentContainerViewController, animated: true)
         } else {
-            let componentContainerViewController = componentContainerAssembler.resolveContainerView(
-                for: component
-            )
             view?.present(componentContainerViewController, animated: true)
         }
     }
+}
 
-    // MARK: - Private
+extension PaymentMethodListRouter: ComponentContainerViewModelDelegate {
+
+    // MARK: - ComponentContainerViewModelDelegate
+
+    func didSubmit(
+        _ data: PaymentComponentData,
+        from component: any PaymentComponent
+    ) {
+        // TODO: - Handle
+        print("didSubmit")
+    }
+    
+    func didFail(with error: any Error) {
+        // TODO: - Handle
+        print("didFail")
+    }
+    
+    func didCancel(component: any PaymentComponent) {
+        // TODO: - Handle
+        print("didCancel")
+    }
 }

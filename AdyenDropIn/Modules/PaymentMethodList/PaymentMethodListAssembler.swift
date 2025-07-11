@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
 import Adyen
+import Foundation
 
 internal protocol PaymentMethodListAssemblerProtocol {
     func resolvePaymentMethodListRouter() -> PaymentMethodListRouterProtocol
@@ -37,11 +37,11 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         let componentContainerAssembler = ComponentContainerAssembler()
         let router = PaymentMethodListRouter(componentContainerAssembler: componentContainerAssembler)
         let viewModel = PaymentMethodListViewModel(
-            router: router,
             context: context,
             componentManager: componentManager,
             configuration: configuration
         )
+        viewModel.delegate = router
         let view = PaymentMethodListViewController(viewModel: viewModel)
         router.view = view
         return router

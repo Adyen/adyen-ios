@@ -18,7 +18,6 @@ internal protocol PreselectedPaymentMethodRouterProtocol: AnyObject {
 
 internal protocol PreselectedPaymentMethodRouterDelegate: AnyObject {
     func showAllPaymentMethods()
-    func didProceed(with paymentComponent: PresentableComponent)
 }
 
 internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouterProtocol {

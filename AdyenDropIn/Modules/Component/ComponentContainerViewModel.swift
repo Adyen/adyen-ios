@@ -11,7 +11,7 @@ import UIKit
     @_spi(AdyenInternal) import AdyenActions
 #endif
 
-internal protocol ComponentContainerDelegate: AnyObject {
+internal protocol ComponentContainerViewModelDelegate: AnyObject {
     func didSubmit(
         _ data: PaymentComponentData,
         from component: PaymentComponent
@@ -30,7 +30,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     // MARK: - Properties
 
     private let component: PresentableComponent
-    private weak var delegate: ComponentContainerDelegate?
+    weak var delegate: ComponentContainerViewModelDelegate?
 
     // MARK: - Initializers
 

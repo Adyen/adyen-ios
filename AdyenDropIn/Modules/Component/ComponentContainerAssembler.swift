@@ -9,15 +9,22 @@ import Foundation
 import UIKit
 
 internal protocol ComponentContainerAssemblerProtocol {
-    func resolveContainerView(for component: PresentableComponent) -> UIViewController
+    func resolveContainerView(
+        for component: PresentableComponent,
+        delegate: ComponentContainerViewModelDelegate
+    ) -> UIViewController
 }
 
 internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol {
 
     // MARK: - ComponentContainerAssemblerProtocol
 
-    internal func resolveContainerView(for component: PresentableComponent) -> UIViewController {
+    internal func resolveContainerView(
+        for component: PresentableComponent,
+        delegate: ComponentContainerViewModelDelegate
+    ) -> UIViewController {
         let viewModel = ComponentContainerViewModel(component: component)
+        viewModel.delegate = delegate
 
         if let alertController = (component.viewController as? UIAlertController) {
             return alertController

@@ -81,8 +81,10 @@ internal class DropInRootRouter: DropInRootRouterProtocol {
             self.preselectedPaymentMethodRouter = preselectedPaymentMethodRouter
             return preselectedPaymentMethodRouter.rootViewController
         case let .component(paymentComponent):
-            let componentView = componentContainerAssembler.resolveContainerView(for: paymentComponent)
-            return componentView
+            // TODO: - Handle standalone component case
+//            let componentView = componentContainerAssembler.resolveContainerView(for: paymentComponent)
+//            return componentView
+            return UIViewController()
         case .paymentMethodList:
             let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter()
             paymentMethodListRouter.delegate = self
@@ -113,11 +115,6 @@ extension DropInRootRouter: PreselectedPaymentMethodRouterDelegate {
         paymentMethodListRouter.start()
         
         navigationController.present(paymentMethodListRouter.rootViewController, animated: true)
-    }
-
-    func didProceed(with paymentComponent: any PresentableComponent) {
-        let componentViewController = componentContainerAssembler.resolveContainerView(for: paymentComponent)
-        navigationController.present(componentViewController, animated: true)
     }
 }
 

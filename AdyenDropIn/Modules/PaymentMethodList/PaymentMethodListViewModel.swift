@@ -8,30 +8,32 @@ import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
 
+internal protocol PaymentMethodListViewModelDelegate: AnyObject {
+    func didCancel(completion: (() -> Void)?)
+    func didSelect(_ component: PresentableComponent)
+}
+
 @objc
 internal protocol PaymentMethodListViewModelProtocol {
     var paymentMethodListView: UIViewController { get }
     func cancel()
 }
 
-internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, PaymentMethodListComponentDelegate {
+internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     // MARK: - Properties
 
-    // Weak to avoid retain cycle: view → viewModel → router → view
-    private weak var router: PaymentMethodListRouterProtocol?
+    internal weak var delegate: PaymentMethodListViewModelDelegate?
+
     private let paymentMethodListComponent: PaymentMethodListComponent
 
     // MARK: - Initializers
 
     internal init(
-        router: PaymentMethodListRouterProtocol,
         context: AdyenContext,
         componentManager: ComponentManager,
         configuration: DropInComponent.Configuration
     ) {
-        self.router = router
-
         let components = componentManager.sections
         self.paymentMethodListComponent = PaymentMethodListComponent(
             context: context,
@@ -50,8 +52,13 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
 
     internal func cancel() {
         // TODO: - Handle cancellation
-        router?.cancel(completion: nil)
+        delegate?.didCancel(completion: nil)
     }
+
+    // MARK: - Private
+}
+
+extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
 
     // MARK: - PaymentMethodListComponentDelegate
 
@@ -68,7 +75,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
         // TODO: - Handle non presentable component
         switch component {
         case let component as PresentableComponent:
-            router?.didSelect(component)
+            delegate?.didSelect(component)
         case let component as PaymentInitiable:
             component.initiatePayment()
         default:
@@ -83,6 +90,4 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
     ) {
         // TODO: - Logic to delete stored payment method
     }
-
-    // MARK: - Private
 }
