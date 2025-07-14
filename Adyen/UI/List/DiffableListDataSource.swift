@@ -6,7 +6,6 @@
 
 import UIKit
 
-@available(iOS 13.0, *)
 internal final class DiffableListDataSource: UITableViewDiffableDataSource<ListSection, ListItem>, ListViewControllerDataSource {
     internal var cellReuseIdentifier: String { coreDataSource.cellReuseIdentifier }
     

@@ -5,7 +5,11 @@
 //
 
 import Foundation
+import UIKit
 
-package protocol AdyenSessionAware {
-    var isSession: Bool { get }
+internal class DropInRootViewController: UINavigationController {
+
+    // MARK: - Properties
+
+    // MARK: - Initializers
 }

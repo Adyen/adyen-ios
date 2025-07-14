@@ -33,7 +33,7 @@ extension AdyenSession: ActionComponentDelegate {
     }
 
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        didProvide(data, from: component, session: self)
+        didProvide(data, from: component, dropInComponent: nil)
     }
     
     public func didOpenExternalApplication(component: ActionComponent) {
@@ -45,12 +45,11 @@ extension AdyenSession: ActionComponentDelegate {
     }
 }
 
-@_spi(AdyenInternal)
 extension AdyenSession {
-    public func didProvide(
+    package func didProvide(
         _ actionComponentData: ActionComponentData,
         from component: ActionComponent,
-        session: AdyenSession
+        dropInComponent: AnyDropInComponent?
     ) {
         (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
         let request = PaymentDetailsRequest(

@@ -9,7 +9,6 @@ import Foundation
 /// Data model to contain relevant parts of `/payments` and `/payment/details` call responses.
 public struct CheckoutPaymentsResponse: Decodable, Sendable {
     
-    // TODO: should it be string or enum?
     public let resultCode: CheckoutResultCode
     
     public let action: Action?

@@ -39,7 +39,7 @@ internal final class ComponentManager {
         partialPaymentEnabled: Bool = true,
         order: PartialPaymentOrder?,
         supportsEditingStoredPaymentMethods: Bool = false,
-        presentationDelegate: PresentationDelegate
+        presentationDelegate: PresentationDelegate?
     ) {
         self.paymentMethods = paymentMethods
         self.configuration = configuration

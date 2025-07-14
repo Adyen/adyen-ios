@@ -4,27 +4,21 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
+@_spi(AdyenInternal) import Adyen
 
-internal protocol PaymentMethodListRouterProtocol: AnyObject {
-    func didLoad()
-    func present(_ component: PaymentComponent)
-    func delete(
-        storedPaymentMethod: StoredPaymentMethod,
-        completion: @escaping (Bool) -> Void
-    )
-}
-
+@objc
 internal protocol PaymentMethodListViewModelProtocol {
     var paymentMethodListView: UIViewController { get }
+    func cancel()
 }
 
 internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, PaymentMethodListComponentDelegate {
 
     // MARK: - Properties
 
+    // Weak to avoid retain cycle: view → viewModel → router → view
     private weak var router: PaymentMethodListRouterProtocol?
     private let paymentMethodListComponent: PaymentMethodListComponent
 
@@ -34,8 +28,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
         router: PaymentMethodListRouterProtocol,
         context: AdyenContext,
         componentManager: ComponentManager,
-        style: ListComponentStyle,
-        localizationParameters: LocalizationParameters?
+        configuration: DropInComponent.Configuration
     ) {
         self.router = router
 
@@ -43,9 +36,9 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
         self.paymentMethodListComponent = PaymentMethodListComponent(
             context: context,
             components: components,
-            style: style
+            style: configuration.style.listComponent
         )
-        self.paymentMethodListComponent.localizationParameters = localizationParameters
+        self.paymentMethodListComponent.localizationParameters = configuration.localizationParameters
         self.paymentMethodListComponent.delegate = self
     }
 
@@ -55,19 +48,32 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
         paymentMethodListComponent.viewController
     }
 
+    internal func cancel() {
+        // TODO: - Handle cancellation
+        router?.cancel(completion: nil)
+    }
+
     // MARK: - PaymentMethodListComponentDelegate
 
     internal func didLoad(
         _ paymentMethodListComponent: PaymentMethodListComponent
     ) {
-        router?.didLoad()
+        // TODO: - Handle analytcis
     }
 
     internal func didSelect(
         _ component: any Adyen.PaymentComponent,
         in paymentMethodListComponent: PaymentMethodListComponent
     ) {
-        router?.present(component)
+        // TODO: - Handle non presentable component
+        switch component {
+        case let component as PresentableComponent:
+            router?.didSelect(component)
+        case let component as PaymentInitiable:
+            component.initiatePayment()
+        default:
+            break
+        }
     }
 
     internal func didDelete(
@@ -75,49 +81,8 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
         in paymentMethodListComponent: PaymentMethodListComponent,
         completion: @escaping Adyen.Completion<Bool>
     ) {
-        router?.delete(storedPaymentMethod: paymentMethod, completion: completion)
+        // TODO: - Logic to delete stored payment method
     }
 
     // MARK: - Private
-}
-
-internal class PaymentMethodListViewController: UIViewController {
-
-    // MARK: - Properties
-
-    private let viewModel: PaymentMethodListViewModelProtocol
-
-    // MARK: - Initalizers
-
-    internal init(viewModel: PaymentMethodListViewModelProtocol) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - View life cycle
-
-    override internal func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .blue
-        navigationItem.title = "2"
-
-        setupPaymentMethodListView()
-    }
-
-    // MARK: - Private
-
-    private func setupPaymentMethodListView() {
-        let paymentMethodListView = viewModel.paymentMethodListView
-
-        paymentMethodListView.willMove(toParent: self)
-        addChild(paymentMethodListView)
-        view.addSubview(paymentMethodListView.view)
-        paymentMethodListView.didMove(toParent: self)
-        paymentMethodListView.view.adyen.anchor(inside: view)
-    }
 }

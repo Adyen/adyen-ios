@@ -15,8 +15,145 @@ import Foundation
 /// It can handle the required steps internally such as `/payments` and `/payment/details`
 /// calls and partial payment calls, then provide feedback
 /// via ``AdyenSessionDelegate`` methods.
-public final class AdyenSession {
+public final class AdyenSession: AdyenSessionProtocol {
     
+    /// The session context information.
+    public internal(set) var sessionContext: Context
+    
+    /// The presentation delegate.
+    public package(set) weak var presentationDelegate: PresentationDelegate?
+    
+    /// The delegate object.
+    public package(set) weak var delegate: AdyenSessionDelegate?
+    
+    internal let configuration: Configuration
+    
+    // Session's API client should be only of SessionAPIClient type
+    // in order to update session data/result after each internal API call.
+    internal private(set) lazy var apiClient: SessionAPIClient = {
+        SessionAPIClient(
+            apiClient: baseAPIClient,
+            onSessionDataUpdate: { [weak self] data in
+                self?.updateSession(with: data)
+            },
+            onSessionResultUpdate: { [weak self] result in
+                self?.updateSession(with: result)
+            }
+        )
+    }()
+    
+    internal var actionHandlingComponent: ActionHandlingComponent
+    
+    /// The injected API client to be used by the session's API client.
+    private let baseAPIClient: APIClientProtocol
+    
+    internal init(
+        configuration: Configuration,
+        sessionContext: Context,
+        baseAPIClient: APIClientProtocol,
+        actionHandlingComponent: ActionHandlingComponent,
+        delegate: AdyenSessionDelegate? = nil,
+        presentationDelegate: PresentationDelegate? = nil
+    ) {
+        self.configuration = configuration
+        self.sessionContext = sessionContext
+        self.actionHandlingComponent = actionHandlingComponent
+        self.delegate = delegate
+        self.presentationDelegate = presentationDelegate
+        self.baseAPIClient = baseAPIClient
+    }
+    
+    // swiftlint:disable function_parameter_count
+    /// Initializes an instance of ``AdyenSession`` asynchronously.
+    /// - Parameter configuration: The session configuration.
+    /// - Parameter apiClient: The api client object for network calls.
+    /// - Parameter actionHandlingComponent: Action component to handle actions.
+    /// - Parameter delegate: The session delegate.
+    /// - Parameter presentationDelegate: The presentation delegate.
+    /// - Parameter completion: The completion closure, that delivers the new instance asynchronously.
+    public static func setup(
+        with configuration: Configuration,
+        apiClient: APIClientProtocol,
+        actionHandlingComponent: ActionHandlingComponent,
+        delegate: AdyenSessionDelegate?,
+        presentationDelegate: PresentationDelegate?,
+        completion: @escaping ((Result<AdyenSession, Error>) -> Void)
+    ) {
+        makeSetupCall(
+            with: configuration,
+            baseAPIClient: apiClient
+        ) { result in
+            switch result {
+            case let .success(sessionContext):
+                let session = AdyenSession(
+                    configuration: configuration,
+                    sessionContext: sessionContext,
+                    baseAPIClient: apiClient,
+                    actionHandlingComponent: actionHandlingComponent,
+                    delegate: delegate,
+                    presentationDelegate: presentationDelegate
+                )
+                session.delegate = delegate
+                session.presentationDelegate = presentationDelegate
+                AnalyticsForSession.sessionId = sessionContext.identifier
+                completion(.success(session))
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    // swiftlint:enable function_parameter_count
+    
+    internal static func makeSetupCall(
+        with configuration: Configuration,
+        baseAPIClient: APIClientProtocol,
+        order: PartialPaymentOrder? = nil,
+        completion: @escaping ((Result<Context, Error>) -> Void)
+    ) {
+        let sessionId = configuration.sessionIdentifier
+        let sessionData = configuration.initialSessionData
+        let request = SessionSetupRequest(
+            sessionId: sessionId,
+            sessionData: sessionData,
+            order: order
+        )
+
+        let apiClient = SelfRetainingAPIClient(apiClient: baseAPIClient)
+        apiClient.perform(request) { result in
+            switch result {
+            case let .success(response):
+                let sessionContext = Context(
+                    data: response.sessionData,
+                    identifier: sessionId,
+                    countryCode: response.countryCode,
+                    shopperLocale: response.shopperLocale,
+                    amount: response.amount,
+                    paymentMethods: response.paymentMethods,
+                    responseConfiguration: response.configuration
+                )
+                completion(.success(sessionContext))
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    // MARK: - Private
+    
+    private func updateSession(with data: SessionDataAware) {
+        sessionContext.data = data.sessionData
+    }
+    
+    private func updateSession(with result: SessionResultAware) {
+        sessionContext.resultCode = result.resultCode
+        sessionContext.sessionResult = result.sessionResult
+    }
+}
+
+extension AdyenSession {
+    
+    // TODO: remove adyen context and action config from this
     /// Session configuration.
     public struct Configuration {
         
@@ -24,28 +161,17 @@ public final class AdyenSession {
         
         internal let initialSessionData: String
         
-        internal let context: AdyenContext
-        
-        internal let actionComponent: AdyenActionComponent.Configuration
-        
         /// Initializes a new Configuration object
         ///
         /// - Parameters:
         ///   - sessionIdentifier: The session identifier.
         ///   - initialSessionData: The initial session data.
-        ///   - context: The context object for this component.
-        ///   - localizationParameters: The localization parameters
-        ///   - actionComponent: The action handling configuration.
         public init(
             sessionIdentifier: String,
-            initialSessionData: String,
-            context: AdyenContext,
-            actionComponent: AdyenActionComponent.Configuration = .init()
+            initialSessionData: String
         ) {
             self.sessionIdentifier = sessionIdentifier
             self.initialSessionData = initialSessionData
-            self.context = context
-            self.actionComponent = actionComponent
         }
     }
     
@@ -77,128 +203,7 @@ public final class AdyenSession {
         internal var sessionResult: String?
         
         /// Component related configuration object
-        internal let configuration: SessionSetupResponse.Configuration
-    }
-    
-    /// The session context information.
-    public internal(set) var sessionContext: Context
-    
-    /// The presentation delegate.
-    public private(set) weak var presentationDelegate: PresentationDelegate?
-    
-    /// The delegate object.
-    public package(set) weak var delegate: AdyenSessionDelegate?
-    
-    /// Initializes an instance of ``AdyenSession`` asynchronously.
-    /// - Parameter configuration: The session configuration.
-    /// - Parameter delegate: The session delegate.
-    /// - Parameter presentationDelegate: The presentation delegate.
-    /// - Parameter completion: The completion closure, that delivers the new instance asynchronously.
-    public static func initialize(
-        with configuration: Configuration,
-        delegate: AdyenSessionDelegate,
-        presentationDelegate: PresentationDelegate,
-        completion: @escaping ((Result<AdyenSession, Error>) -> Void)
-    ) {
-        let baseAPIClient = APIClient(apiContext: configuration.context.apiContext)
-            .retryAPIClient(with: SimpleScheduler(maximumCount: 2))
-            .retryOnErrorAPIClient()
-        initialize(
-            with: configuration,
-            delegate: delegate,
-            presentationDelegate: presentationDelegate,
-            baseAPIClient: baseAPIClient,
-            completion: completion
-        )
-    }
-    
-    internal static func initialize(
-        with configuration: Configuration,
-        delegate: AdyenSessionDelegate,
-        presentationDelegate: PresentationDelegate,
-        baseAPIClient: APIClientProtocol,
-        completion: @escaping ((Result<AdyenSession, Error>) -> Void)
-    ) {
-        makeSetupCall(
-            with: configuration,
-            baseAPIClient: baseAPIClient
-        ) { result in
-            switch result {
-            case let .success(sessionContext):
-                let session = AdyenSession(
-                    configuration: configuration,
-                    sessionContext: sessionContext
-                )
-                session.delegate = delegate
-                session.presentationDelegate = presentationDelegate
-                AnalyticsForSession.sessionId = sessionContext.identifier
-                completion(.success(session))
-            case let .failure(error):
-                completion(.failure(error))
-            }
-        }
-    }
-    
-    internal static func makeSetupCall(
-        with configuration: Configuration,
-        baseAPIClient: APIClientProtocol,
-        order: PartialPaymentOrder? = nil,
-        completion: @escaping ((Result<Context, Error>) -> Void)
-    ) {
-        let sessionId = configuration.sessionIdentifier
-        let sessionData = configuration.initialSessionData
-        let request = SessionSetupRequest(
-            sessionId: sessionId,
-            sessionData: sessionData,
-            order: order
-        )
-
-        let apiClient = SelfRetainingAPIClient(apiClient: baseAPIClient)
-        apiClient.perform(request) { result in
-            switch result {
-            case let .success(response):
-                let sessionContext = Context(
-                    data: response.sessionData,
-                    identifier: sessionId,
-                    countryCode: response.countryCode,
-                    shopperLocale: response.shopperLocale,
-                    amount: response.amount,
-                    paymentMethods: response.paymentMethods,
-                    configuration: response.configuration
-                )
-                completion(.success(sessionContext))
-            case let .failure(error):
-                completion(.failure(error))
-            }
-        }
-    }
-    
-    // MARK: - Action Handling for Components
-
-    internal lazy var actionComponent: ActionHandlingComponent = {
-        let handler = AdyenActionComponent(
-            context: configuration.context,
-            configuration: configuration.actionComponent
-        )
-        handler.delegate = self
-        handler.presentationDelegate = presentationDelegate
-        return handler
-    }()
-    
-    // MARK: - Private
-    
-    internal let configuration: Configuration
-    
-    internal lazy var apiClient: APIClientProtocol = {
-        let apiClient = SessionAPIClient(apiClient: APIClient(apiContext: configuration.context.apiContext), session: self)
-        return apiClient
-            .retryAPIClient(with: SimpleScheduler(maximumCount: 2))
-            .retryOnErrorAPIClient()
-    }()
-    
-    private init(configuration: Configuration, sessionContext: Context) {
-        self.sessionContext = sessionContext
-        self.configuration = configuration
+        internal let responseConfiguration: SessionSetupResponse.Configuration
     }
 }
 
@@ -211,11 +216,11 @@ extension AdyenSession: AdyenSessionAware {
 @_spi(AdyenInternal)
 extension AdyenSession: InstallmentConfigurationAware {
     
-    public var installmentConfiguration: InstallmentConfiguration? { sessionContext.configuration.installmentOptions }
+    public var installmentConfiguration: InstallmentConfiguration? { sessionContext.responseConfiguration.installmentOptions }
 }
 
 @_spi(AdyenInternal)
 extension AdyenSession: StorePaymentMethodFieldAware {
     
-    public var showStorePaymentMethodField: Bool? { sessionContext.configuration.enableStoreDetails }
+    public var showStorePaymentMethodField: Bool? { sessionContext.responseConfiguration.enableStoreDetails }
 }

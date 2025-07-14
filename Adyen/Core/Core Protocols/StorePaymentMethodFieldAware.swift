@@ -7,14 +7,12 @@
 import Foundation
 
 /// Describes the interface to display a field to store the payment method.
-@_spi(AdyenInternal)
-public protocol StorePaymentMethodFieldAware: AdyenSessionAware {
+package protocol StorePaymentMethodFieldAware: AdyenSessionAware {
     var showStorePaymentMethodField: Bool? { get }
 }
 
 /// Describes whether it is possible to allow for session to remove stored payment methods.
-@_spi(AdyenInternal)
-public protocol SessionStoredPaymentMethodsDelegate: AdyenSessionAware, StoredPaymentMethodsDelegate {
+package protocol SessionStoredPaymentMethodsDelegate: AdyenSessionAware, StoredPaymentMethodsDelegate {
     
     var showRemovePaymentMethodButton: Bool { get }
     

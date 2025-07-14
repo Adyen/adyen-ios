@@ -37,9 +37,19 @@ final class AdyenCheckoutTests: XCTestCase {
     }
 
     func testSetupWithSession_Success() {
+        let expectedSession = AdyenSessionMock(sessionContext: .init(
+            data: "test_session_data",
+            identifier: "test_session_id",
+            countryCode: "US",
+            shopperLocale: "en_US",
+            amount: Amount(value: 1000, currencyCode: "USD"),
+            paymentMethods: paymentMethods,
+            responseConfiguration: .init(installmentOptions: nil, enableStoreDetails: true)
+        ))
+        
         let expectedCheckout = AdyenCheckout(
             configuration: configuration,
-            session: nil,
+            session: expectedSession,
             paymentMethods: nil,
             checkoutAttemptId: "attemptId",
             presentationDelegate: nil
@@ -56,8 +66,12 @@ final class AdyenCheckoutTests: XCTestCase {
         ) { result in
             if case let .success(checkout) = result {
                 XCTAssertEqual(checkout.checkoutAttemptId, "attemptId")
-                XCTAssertNil(checkout.paymentMethods)
-                // TODO: more value checks after session is mockable/injectable
+                XCTAssertNotNil(checkout.paymentMethods)
+                XCTAssertNotNil(checkout.session)
+                XCTAssertTrue(checkout.session === expectedSession)
+                XCTAssertTrue(checkout.session?.delegate === checkout)
+                XCTAssertEqual(checkout.session?.sessionContext.identifier, "test_session_id")
+                XCTAssertEqual(checkout.session?.sessionContext.data, "test_session_data")
             } else {
                 XCTFail("Expected success")
             }
