@@ -45,10 +45,10 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
     // MARK: - Networking
 
     internal func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
-        requestAdyenSessionConfiguration { [weak self] response in
+        requestSessionSetupModel { [weak self] response in
             guard let self else { return }
             switch response {
-            case let .success(configuration):
+            case let .success(model):
 //                AdyenSession.initialize(
 //                    with: configuration,
 //                    delegate: self,

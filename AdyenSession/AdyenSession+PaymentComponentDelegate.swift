@@ -151,8 +151,12 @@ extension AdyenSession {
             )
             return
         }
+        let model = AdyenSession.SetupModel(
+            sessionIdentifier: sessionContext.identifier,
+            initialSessionData: sessionContext.data
+        )
         Self.makeSetupCall(
-            with: configuration,
+            with: model,
             baseAPIClient: apiClient,
             order: order
         ) { [weak self] result in

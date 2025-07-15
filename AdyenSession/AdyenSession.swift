@@ -18,7 +18,7 @@ import Foundation
 public final class AdyenSession: AdyenSessionProtocol {
     
     /// The session context information.
-    public internal(set) var sessionContext: Context
+    public internal(set) var sessionContext: AdyenSession.Context
     
     /// The presentation delegate.
     public package(set) weak var presentationDelegate: PresentationDelegate?
@@ -26,7 +26,7 @@ public final class AdyenSession: AdyenSessionProtocol {
     /// The delegate object.
     public package(set) weak var delegate: AdyenSessionDelegate?
     
-    internal let configuration: Configuration
+    internal let context: AdyenContext
     
     // Session's API client should be only of SessionAPIClient type
     // in order to update session data/result after each internal API call.
@@ -42,54 +42,62 @@ public final class AdyenSession: AdyenSessionProtocol {
         )
     }()
     
-    internal var actionHandlingComponent: ActionHandlingComponent
+    internal lazy var actionHandlingComponent: ActionHandlingComponent = {
+        let handler = AdyenActionComponent(
+            context: context,
+            configuration: AdyenActionComponent.Configuration()
+        )
+        // TODO: create a way for CheckoutConfig to have AdyenActionComponent.Configuration
+        // and it should provided if they want to have action handling
+        // move AdyenActionComponent.Configuration to its own entity and make it public
+        handler.delegate = self
+        handler.presentationDelegate = presentationDelegate
+        return handler
+    }()
     
     /// The injected API client to be used by the session's API client.
     private let baseAPIClient: APIClientProtocol
     
     internal init(
-        configuration: Configuration,
-        sessionContext: Context,
+        sessionContext: AdyenSession.Context,
         baseAPIClient: APIClientProtocol,
-        actionHandlingComponent: ActionHandlingComponent,
+        context: AdyenContext,
         delegate: AdyenSessionDelegate? = nil,
         presentationDelegate: PresentationDelegate? = nil
     ) {
-        self.configuration = configuration
         self.sessionContext = sessionContext
-        self.actionHandlingComponent = actionHandlingComponent
         self.delegate = delegate
         self.presentationDelegate = presentationDelegate
         self.baseAPIClient = baseAPIClient
+        self.context = context
     }
     
     // swiftlint:disable function_parameter_count
     /// Initializes an instance of ``AdyenSession`` asynchronously.
-    /// - Parameter configuration: The session configuration.
+    /// - Parameter model: The session setup model.
     /// - Parameter apiClient: The api client object for network calls.
     /// - Parameter actionHandlingComponent: Action component to handle actions.
     /// - Parameter delegate: The session delegate.
     /// - Parameter presentationDelegate: The presentation delegate.
     /// - Parameter completion: The completion closure, that delivers the new instance asynchronously.
     public static func setup(
-        with configuration: Configuration,
+        with model: AdyenSession.SetupModel,
         apiClient: APIClientProtocol,
-        actionHandlingComponent: ActionHandlingComponent,
+        context: AdyenContext,
         delegate: AdyenSessionDelegate?,
         presentationDelegate: PresentationDelegate?,
         completion: @escaping ((Result<AdyenSession, Error>) -> Void)
     ) {
         makeSetupCall(
-            with: configuration,
+            with: model,
             baseAPIClient: apiClient
         ) { result in
             switch result {
             case let .success(sessionContext):
                 let session = AdyenSession(
-                    configuration: configuration,
                     sessionContext: sessionContext,
                     baseAPIClient: apiClient,
-                    actionHandlingComponent: actionHandlingComponent,
+                    context: context,
                     delegate: delegate,
                     presentationDelegate: presentationDelegate
                 )
@@ -106,13 +114,13 @@ public final class AdyenSession: AdyenSessionProtocol {
     // swiftlint:enable function_parameter_count
     
     internal static func makeSetupCall(
-        with configuration: Configuration,
+        with model: AdyenSession.SetupModel,
         baseAPIClient: APIClientProtocol,
         order: PartialPaymentOrder? = nil,
         completion: @escaping ((Result<Context, Error>) -> Void)
     ) {
-        let sessionId = configuration.sessionIdentifier
-        let sessionData = configuration.initialSessionData
+        let sessionId = model.sessionIdentifier
+        let sessionData = model.initialSessionData
         let request = SessionSetupRequest(
             sessionId: sessionId,
             sessionData: sessionData,
@@ -153,9 +161,8 @@ public final class AdyenSession: AdyenSessionProtocol {
 
 extension AdyenSession {
     
-    // TODO: remove adyen context and action config from this
     /// Session configuration.
-    public struct Configuration {
+    public struct SetupModel {
         
         internal let sessionIdentifier: String
         

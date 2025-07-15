@@ -11,21 +11,21 @@ import AdyenSession
 internal protocol InitialDataFlowProtocol: AnyObject {
     var context: AdyenContext { get }
     var apiClient: APIClientProtocol { get }
-    func requestAdyenSessionConfiguration(completion: @escaping (Result<AdyenSession.Configuration, Error>) -> Void)
+    func requestSessionSetupModel(completion: @escaping (Result<AdyenSession.SetupModel, Error>) -> Void)
     func generateContext() -> AdyenContext
     func start()
 }
 
 extension InitialDataFlowProtocol {
 
-    internal func requestAdyenSessionConfiguration(completion: @escaping (Result<AdyenSession.Configuration, Error>) -> Void) {
+    internal func requestSessionSetupModel(completion: @escaping (Result<AdyenSession.SetupModel, Error>) -> Void) {
         let request = SessionRequest()
         apiClient.perform(request) { [weak self] result in
             guard let self else { return }
             switch result {
             case let .success(response):
-                let config = self.initializeSession(with: response.sessionId, data: response.sessionData)
-                completion(.success(config))
+                let setupModel = self.initializeModel(with: response.sessionId, data: response.sessionData)
+                completion(.success(setupModel))
             case let .failure(error):
                 completion(.failure(error))
             }
@@ -43,12 +43,12 @@ extension InitialDataFlowProtocol {
         )
     }
 
-    private func initializeSession(with sessionId: String, data: String) -> AdyenSession.Configuration {
-        let configuration = AdyenSession.Configuration(
+    private func initializeModel(with sessionId: String, data: String) -> AdyenSession.SetupModel {
+        let setupModel = AdyenSession.SetupModel(
             sessionIdentifier: sessionId,
             initialSessionData: data
         )
-        return configuration
+        return setupModel
     }
 }
 
