@@ -9,6 +9,7 @@ on:
     types: [opened, synchronize, reopened]
     branches:
       - 'release/**'
+      - 'develop'
     
 jobs:
   tests:
