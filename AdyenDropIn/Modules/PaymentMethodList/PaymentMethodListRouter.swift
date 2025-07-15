@@ -16,6 +16,8 @@ internal protocol PaymentMethodListRouterProtocol: AnyObject {
 
 internal protocol PaymentMethodListRouterDelegate: AnyObject {
     func paymentMethodListDidCancel(completion: (() -> Void)?)
+    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
+    func didFail(with error: any Error)
 }
 
 internal class PaymentMethodListRouter: PaymentMethodListRouterProtocol {
@@ -76,17 +78,14 @@ extension PaymentMethodListRouter: ComponentContainerViewModelDelegate {
 
     // MARK: - ComponentContainerViewModelDelegate
 
-    func didSubmit(
-        _ data: PaymentComponentData,
-        from component: any PaymentComponent
-    ) {
+    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         // TODO: - Handle
-        print("didSubmit")
+        delegate?.didSubmit(data, from: component)
     }
     
     func didFail(with error: any Error) {
         // TODO: - Handle
-        print("didFail")
+        delegate?.didFail(with: error)
     }
     
     func didCancel(component: any PaymentComponent) {
