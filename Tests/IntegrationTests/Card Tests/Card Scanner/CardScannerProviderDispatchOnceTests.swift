@@ -17,7 +17,7 @@
 
             let cardScanner = CardScannerProviderSpy()
             let sut = CardScannerProviderDispatchOnce(scannerProvider: cardScanner)
-            let _ = sut.createCardScanner { result in
+            _ = sut.createCardScanner { result in
                 expectation.fulfill()
             }
 
