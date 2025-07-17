@@ -19,7 +19,7 @@ class PaymentComponentSubject: PaymentComponent {
 
     // MARK: - Initializers
 
-    public init(
+    init(
         context: AdyenContext,
         delegate: PaymentComponentDelegate,
         payment: Payment?,

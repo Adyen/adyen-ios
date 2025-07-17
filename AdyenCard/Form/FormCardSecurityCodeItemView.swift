@@ -136,7 +136,7 @@ extension FormCardSecurityCodeItemView {
             )
         }
         
-        override public var accessibilityIdentifier: String? {
+        override var accessibilityIdentifier: String? {
             didSet {
                 hintImage.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "imageView")
             }

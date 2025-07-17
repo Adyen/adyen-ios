@@ -660,7 +660,7 @@ class ComponentManagerTests: XCTestCase {
             presentationDelegate: presentationDelegate
         )
 
-        let _ = dummy.buildComponent(using: componentManager)
+        _ = dummy.buildComponent(using: componentManager)
         
         wait(for: [expectation], timeout: 10)
     }

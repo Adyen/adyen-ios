@@ -51,7 +51,7 @@ internal struct OpenExternalAppDetector: OpenExternalAppDetecting {
         self.detectionDelay = detectionDelay
     }
     
-    public func checkIfExternalAppDidOpen(_ completion: @escaping (Bool) -> Void) {
+    func checkIfExternalAppDidOpen(_ completion: @escaping (Bool) -> Void) {
         DispatchQueue.main.asyncAfter(deadline: .now() + detectionDelay) {
             completion(!applicationStateProvider.applicationState.isActive)
         }

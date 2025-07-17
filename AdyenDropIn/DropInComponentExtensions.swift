@@ -18,17 +18,6 @@ import AdyenNetworking
 import UIKit
 
 @_spi(AdyenInternal)
-extension DropInComponent: PaymentComponentDelegate {
-    
-    public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        paymentInProgress = true
-    }
-    
-    public func didFail(with error: Error, from component: PaymentComponent) {}
-
-}
-
-@_spi(AdyenInternal)
 extension DropInComponent: ActionComponentDelegate {
     
     public func didOpenExternalApplication(component: ActionComponent) {

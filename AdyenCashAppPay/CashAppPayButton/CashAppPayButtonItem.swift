@@ -11,14 +11,14 @@ import UIKit
 /// A form item that contains Cash App Pay's own button.
 internal class CashAppPayButtonItem: FormItem {
     
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
     internal var subitems: [FormItem] = []
     
     internal var identifier: String?
     
     /// The observable of the button indicator activity.
-    @AdyenObservable(false) public var showsActivityIndicator: Bool
+    @AdyenObservable(false) var showsActivityIndicator: Bool
     
     /// A closure that will be invoked when a button is selected.
     internal let selectionHandler: () -> Void

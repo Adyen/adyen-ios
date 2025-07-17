@@ -33,7 +33,7 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Properties
 
-    private let dropInRootRouter: DropInRouterProtocol
+    private let dropInRouter: DropInRouterProtocol
 
     private lazy var componentManager: ComponentManager = {
         let componentManager = createComponentManager(order: nil)
@@ -85,10 +85,12 @@ public final class DropInComponent: NSObject,
             context: context,
             configuration: configuration
         )
-        self.dropInRootRouter = dropInRootAssembler.resolveDropInRootRouter()
-        self.dropInRootRouter.start()
+        self.dropInRouter = dropInRootAssembler.resolveDropInRootRouter()
+        self.dropInRouter.start()
 
         super.init()
+
+        self.dropInRouter.delegate = self
     }
 
     //    /// For testing only
@@ -132,7 +134,7 @@ public final class DropInComponent: NSObject,
     // MARK: - Presentable Component Protocol
 
     public var viewController: UIViewController {
-        dropInRootRouter.rootViewController
+        dropInRouter.rootViewController
     }
 
     // MARK: - Handling Actions
@@ -318,7 +320,7 @@ public final class DropInComponent: NSObject,
 
     private func setNecessaryDelegates(on component: PaymentComponent) {
         selectedPaymentComponent = component
-        component.delegate = self
+//        component.delegate = self
         (component as? CardComponent)?.cardComponentDelegate = cardComponentDelegate
         (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
@@ -401,3 +403,24 @@ extension DropInComponent: InstallmentConfigurationAware {
 //    }
 
 // ============= PAYMENT METHOD LIST ===============
+
+extension DropInComponent: DropInRouterDelegate {
+
+    // PaymentComponentDelegate
+
+    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
+        paymentInProgress = true
+        print("🔵 didSubmit")
+        delegate?.didSubmit(data, from: component, in: self)
+    }
+
+    func didFail(with error: any Error) {
+        print("❌ didFail")
+        delegate?.didFail(with: error, from: self)
+    }
+
+    func didCancel(component: any PaymentComponent) {
+        print("⚠️ PAYMENT CANCELLED ⚠️")
+        delegate?.didCancel(component: component, from: self)
+    }
+}

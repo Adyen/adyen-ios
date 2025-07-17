@@ -12,7 +12,7 @@ internal enum QRCodeComponentError: LocalizedError {
     /// Indicates the QR code is not longer valid
     case qrCodeExpired
 
-    public var errorDescription: String? {
+    var errorDescription: String? {
         "QR code is no longer valid"
     }
 }

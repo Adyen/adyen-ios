@@ -64,7 +64,6 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        // TODO: -
         let checkoutAttemptId = component.context.analyticsProvider?.checkoutAttemptId
         let updatedData = data.replacing(
             checkoutAttemptId: checkoutAttemptId

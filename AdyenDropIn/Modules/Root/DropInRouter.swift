@@ -9,20 +9,28 @@ import AdyenNetworking
 import Foundation
 import UIKit
 
+internal protocol DropInRouterDelegate: AnyObject {
+    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
+    func didFail(with error: any Error)
+    func didCancel(component: any PaymentComponent)
+}
+
 internal protocol Router: AnyObject {
     var rootViewController: UIViewController { get }
     func start()
 }
 
 internal protocol DropInRouterProtocol: Router {
-    func start()
+    var delegate: DropInRouterDelegate? { get set }
     var rootViewController: UIViewController { get }
+    func start()
 }
 
 internal class DropInRouter: DropInRouterProtocol {
 
     // MARK: - Properties
 
+    internal weak var delegate: DropInRouterDelegate?
     private let navigationController: DropInNavigationController
     private let viewModel: DropInViewModelProtocol
 
@@ -107,15 +115,17 @@ extension DropInRouter: PaymentMethodListRouterDelegate {
         navigationController.presentingViewController?.dismiss(animated: true)
         preselectedPaymentMethodRouter = nil
         paymentMethodListRouter = nil
-
-        viewModel.cancel(completion: nil)
     }
 
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
-        viewModel.submit(data, from: component)
+        delegate?.didSubmit(data, from: component)
     }
 
     func didFail(with error: any Error) {
-        viewModel.fail(with: error)
+        delegate?.didFail(with: error)
+    }
+
+    func didCancel(component: any PaymentComponent) {
+        delegate?.didCancel(component: component)
     }
 }

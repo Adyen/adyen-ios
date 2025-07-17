@@ -145,7 +145,7 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     
     // MARK: - Localization
     
-    public var localizationParameters: LocalizationParameters?
+    var localizationParameters: LocalizationParameters?
     
     // MARK: - Loading
     
