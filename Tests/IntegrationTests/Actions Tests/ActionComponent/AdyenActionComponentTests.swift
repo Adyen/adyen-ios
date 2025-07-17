@@ -286,7 +286,7 @@ class AdyenActionComponentTests: XCTestCase {
                 XCTFail("No assertion should have been raised")
             }
             
-            let _ = AdyenActionComponent.Configuration.Twint(callbackAppScheme: scheme)
+            _ = AdyenActionComponent.Configuration.Twint(callbackAppScheme: scheme)
         }
         
         // Invalid Configuration
@@ -296,7 +296,7 @@ class AdyenActionComponentTests: XCTestCase {
                 XCTAssertEqual(message, "Format of provided callbackAppScheme '\(scheme)' is incorrect.")
             }
             
-            let _ = AdyenActionComponent.Configuration.Twint(callbackAppScheme: scheme)
+            _ = AdyenActionComponent.Configuration.Twint(callbackAppScheme: scheme)
         }
     }
     

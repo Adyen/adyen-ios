@@ -248,7 +248,7 @@ internal class CardViewController: FormViewController {
 
     internal func showCoBadgedCardsUI(for brands: [CardBrand]) {
         let coBadgedBrands = brands.filter { brand in
-            return allowedCoBadgedCardTypes.contains(brand.type)
+            allowedCoBadgedCardTypes.contains(brand.type)
         }
         if !coBadgedBrands.isEmpty { // Check if there are any co-badged brands
             items.coBadgedCardItem.updateItems(brands, cardLogos: cardLogos)
