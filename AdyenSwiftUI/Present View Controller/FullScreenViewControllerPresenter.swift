@@ -84,7 +84,7 @@ import SwiftUI
             context: UIViewControllerRepresentableContext<FullScreenView>
         ) {
             guard !viewController.isBeingPresented, !viewController.isBeingDismissed else { return }
-            // already store reference to viewController to avoid issue to present the same controller twice
+            // Store the view controller reference before presentation to prevent a race condition.
             context.coordinator.currentlyPresentedViewController = viewController
             presenter.present(viewController, animated: true)
         }
