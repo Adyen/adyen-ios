@@ -83,7 +83,9 @@ public final class DropInComponent: NSObject,
         let dropInRootAssembler = DropInAssembler(
             paymentMethods: paymentMethods,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            cardComponentDelegate: cardComponentDelegate,
+            partialPaymentDelegate: partialPaymentDelegate
         )
         self.dropInRouter = dropInRootAssembler.resolveDropInRootRouter()
         self.dropInRouter.start()
@@ -133,9 +135,9 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Presentable Component Protocol
 
-    public var viewController: UIViewController {
+    public lazy var viewController: UIViewController = {
         dropInRouter.rootViewController
-    }
+    }()
 
     // MARK: - Handling Actions
 
@@ -265,7 +267,11 @@ public final class DropInComponent: NSObject,
     internal func resolveComponentView(
         from component: PresentableComponent
     ) -> UIViewController {
-        let viewModel = ComponentContainerViewModel(component: component)
+        let viewModel = ComponentContainerViewModel(
+            component: component,
+            cardComponentDelegate: nil,
+            partialPaymentDelegate: nil
+        )
         let componentViewController = ComponentContainerViewController(viewModel: viewModel)
         return componentViewController
     }
@@ -321,8 +327,8 @@ public final class DropInComponent: NSObject,
     private func setNecessaryDelegates(on component: PaymentComponent) {
         selectedPaymentComponent = component
 //        component.delegate = self
-        (component as? CardComponent)?.cardComponentDelegate = cardComponentDelegate
-        (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
+//        (component as? CardComponent)?.cardComponentDelegate = cardComponentDelegate
+//        (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
         (component as? PreApplePayComponent)?.presentationDelegate = self
 
@@ -406,7 +412,7 @@ extension DropInComponent: InstallmentConfigurationAware {
 
 extension DropInComponent: DropInRouterDelegate {
 
-    // PaymentComponentDelegate
+    // MARK: - PaymentComponentDelegate
 
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         paymentInProgress = true

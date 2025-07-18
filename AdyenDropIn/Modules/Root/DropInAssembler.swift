@@ -21,17 +21,23 @@ internal class DropInAssembler {
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
     private let componentManager: ComponentManager
+    private let cardComponentDelegate: CardComponentDelegate?
+    private let partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
 
     internal init(
         paymentMethods: PaymentMethods,
         context: AdyenContext,
-        configuration: DropInComponent.Configuration
+        configuration: DropInComponent.Configuration,
+        cardComponentDelegate: CardComponentDelegate?,
+        partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.paymentMethods = paymentMethods
         self.context = context
         self.configuration = configuration
+        self.cardComponentDelegate = cardComponentDelegate
+        self.partialPaymentDelegate = partialPaymentDelegate
         self.componentManager = ComponentManager(
             paymentMethods: paymentMethods,
             context: context,
@@ -85,11 +91,16 @@ internal class DropInAssembler {
         PaymentMethodListAssembler(
             componentManager: componentManager,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            cardComponentDelegate: cardComponentDelegate,
+            partialPaymentDelegate: partialPaymentDelegate
         )
     }
-
+    
     private var componentContainerAssembler: ComponentContainerAssemblerProtocol {
-        ComponentContainerAssembler()
+        ComponentContainerAssembler(
+            cardComponentDelegate: cardComponentDelegate,
+            partialPaymentDelegate: partialPaymentDelegate
+        )
     }
 }

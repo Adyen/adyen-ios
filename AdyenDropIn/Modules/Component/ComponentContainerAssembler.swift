@@ -17,13 +17,32 @@ internal protocol ComponentContainerAssemblerProtocol {
 
 internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol {
 
+    // MARK: - Properties
+
+    private let cardComponentDelegate: CardComponentDelegate?
+    private let partialPaymentDelegate: PartialPaymentDelegate?
+
+    // MARK: - Initializers
+
+    internal init(
+        cardComponentDelegate: CardComponentDelegate?,
+        partialPaymentDelegate: PartialPaymentDelegate?
+    ) {
+        self.cardComponentDelegate = cardComponentDelegate
+        self.partialPaymentDelegate = partialPaymentDelegate
+    }
+
     // MARK: - ComponentContainerAssemblerProtocol
 
     internal func resolveContainerView(
         for component: PresentableComponent,
         delegate: ComponentContainerViewModelDelegate
     ) -> UIViewController {
-        let viewModel = ComponentContainerViewModel(component: component)
+        let viewModel = ComponentContainerViewModel(
+            component: component,
+            cardComponentDelegate: cardComponentDelegate,
+            partialPaymentDelegate: partialPaymentDelegate
+        )
         viewModel.delegate = delegate
 
         if let alertController = (component.viewController as? UIAlertController) {

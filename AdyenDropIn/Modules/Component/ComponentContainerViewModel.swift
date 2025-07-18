@@ -29,13 +29,21 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     // MARK: - Properties
 
+    internal weak var delegate: ComponentContainerViewModelDelegate?
     private let component: PresentableComponent
-    weak var delegate: ComponentContainerViewModelDelegate?
+    private weak var cardComponentDelegate: CardComponentDelegate?
+    private weak var partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
 
-    internal init(component: PresentableComponent) {
+    internal init(
+        component: PresentableComponent,
+        cardComponentDelegate: CardComponentDelegate?,
+        partialPaymentDelegate: PartialPaymentDelegate?
+    ) {
         self.component = component
+        self.cardComponentDelegate = cardComponentDelegate
+        self.partialPaymentDelegate = partialPaymentDelegate
         setupComponent()
     }
 
@@ -53,6 +61,8 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     private func setupComponent() {
         (component as? PaymentComponent)?.delegate = self
+        (component as? CardComponent)?.cardComponentDelegate = cardComponentDelegate
+        (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
     }
 }
 
