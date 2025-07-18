@@ -1,0 +1,143 @@
+name: Compatibility Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - 'release/**'
+      - 'develop'
+    
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}
+    continue-on-error: false
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        
+        # Xcode 26
+        - version: '18.4'
+          runtime: 'iOS-18-4'
+          device: 'iPhone 16 Pro'
+          displayname: 'iPhone-16-Pro'
+          os: 'macos-15-large'
+          xcode_version: '26.0'
+          needs_custom_sim: false
+          
+        # Xcode 16.1 - iOS 17
+        - version: '17.0'
+          runtime: 'iOS-17-0'
+          device: 'iPhone 15'
+          displayname: 'iPhone-15'
+          os: 'macos-15-large'
+          xcode_version: '16.1'
+          needs_custom_sim: true
+
+        # Xcode 16.1 - iOS 16
+        - version: '16.0'
+          runtime: 'iOS-16-0'
+          device: 'iPhone 14'
+          displayname: 'iPhone-14'
+          os: 'macos-15-large'
+          xcode_version: '16.1'
+          needs_custom_sim: true
+          
+        # Xcode 16.1 - iOS 15
+        - version: '15.0'
+          runtime: 'iOS-15-0'
+          device: 'iPhone 13'
+          displayname: 'iPhone-13'
+          os: 'macos-15-large'
+          xcode_version: '16.1'
+          needs_custom_sim: true 
+                  
+    steps:
+    - uses: actions/checkout@v4
+    - uses: n1hility/cancel-previous-runs@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Prepare custom devices
+      run: |
+        sudo mkdir -p /Library/Developer/CoreSimulator/Profiles/Runtimes
+
+    - name: Select Xcode ${{ matrix.xcode_version }}
+      if: matrix.xcode_version != ''
+      run: |
+        sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode_version }}.app
+        xcodebuild -version
+        
+    - name: Download and install older iOS simulator runtime
+      if: matrix.needs_custom_sim == true
+      run: |
+        RUNTIME_DIR="/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS-${{ matrix.version }}.simruntime"
+        
+        if [ ! -d "$RUNTIME_DIR" ]; then
+          echo "Downloading iOS ${{ matrix.version }} runtime..."
+          # URL example format: https://devimages-cdn.apple.com/downloads/xcode/simulators/com.apple.pkg.iPhoneSimulatorSDK15_0-15.0.1.1633537348.dmg
+          # Note: You may need to adjust the actual URLs based on what Apple makes available
+          
+          case "${{ matrix.version }}" in
+            "17.0")
+              DOWNLOAD_URL="https://devimages-cdn.apple.com/downloads/xcode/simulators/com.apple.pkg.iPhoneSimulatorSDK17_0-17.0.1.1690000000.dmg"
+              ;;
+            "16.0")
+              DOWNLOAD_URL="https://devimages-cdn.apple.com/downloads/xcode/simulators/com.apple.pkg.iPhoneSimulatorSDK16_0-16.0.1.1660000000.dmg"
+              ;;
+            "15.0")
+              DOWNLOAD_URL="https://devimages-cdn.apple.com/downloads/xcode/simulators/com.apple.pkg.iPhoneSimulatorSDK15_0-15.0.1.1633537348.dmg"
+              ;;
+            *)
+              echo "No download URL configured for iOS ${{ matrix.version }}. Please add it to the workflow."
+              exit 1
+              ;;
+          esac
+          
+          # Download and mount the DMG
+          curl -L -o simulator.dmg "$DOWNLOAD_URL"
+          hdiutil attach simulator.dmg
+          
+          # Install the simulator runtime
+          sudo installer -pkg "/Volumes/iOS_${{ matrix.version }}_Simulator_Runtime/iOS_${{ matrix.version }}_Simulator_Runtime.pkg" -target /
+          
+          # Clean up
+          hdiutil detach "/Volumes/iOS_${{ matrix.version }}_Simulator_Runtime"
+          rm simulator.dmg
+        else
+          echo "iOS ${{ matrix.version }} runtime is already installed."
+        fi
+        
+        # Verify simulator is available
+        xcrun simctl list runtimes
+
+    - name: Download simulator if needed (${{ matrix.version }})
+      if: matrix.needs_custom_sim
+      run: |
+        xcversion simulators --install="iOS ${version}"
+      env:
+        version: ${{ matrix.version }}
+
+    - name: Create simulator ${{ matrix.version }}
+      run: |
+        xcrun simctl list devices ${version}
+        xcrun simctl create ${displayname} "${device}" "com.apple.CoreSimulator.SimRuntime.${runtime}"
+      env:
+        version: ${{ matrix.version }}
+        displayname: ${{ matrix.displayname }}
+        device: ${{ matrix.device }}
+        runtime: ${{ matrix.runtime }}
+
+    - name: Build and test
+      run: |
+        xcodebuild -version
+        xcodebuild build test -project ${project} -scheme "${scheme}" ${params} -destination "${destination}" ## | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+      env:
+        project: 'Adyen.xcodeproj'
+        params: "-skipPackagePluginValidation"
+        scheme: 'IntegrationUIKitTests'
+        destination: "OS=${{ matrix.version }},name=${{ matrix.displayname }}"
