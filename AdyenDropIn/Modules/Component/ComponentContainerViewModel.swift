@@ -21,6 +21,7 @@ internal protocol ComponentContainerViewModelDelegate: AnyObject {
 }
 
 internal protocol ComponentContainerViewModelProtocol {
+    var delegate: ComponentContainerViewModelDelegate? { get set }
     var componentViewController: UIViewController { get }
     func cancel()
 }
@@ -63,6 +64,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         (component as? PaymentComponent)?.delegate = self
         (component as? CardComponent)?.cardComponentDelegate = cardComponentDelegate
         (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
+        (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
     }
 }
 
@@ -108,5 +110,16 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
         if let component = (component as? PaymentComponent) {
             delegate?.didCancel(component: component)
         }
+    }
+}
+
+extension ComponentContainerViewModel: ReadyToSubmitPaymentComponentDelegate {
+
+    func showConfirmation(
+        for component: InstantPaymentComponent,
+        with order: PartialPaymentOrder?
+    ) {
+        // TODO: - Handle gift card balance confirmation
+        // 1. Present preselected payment method.
     }
 }

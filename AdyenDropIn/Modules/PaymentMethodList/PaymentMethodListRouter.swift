@@ -8,17 +8,17 @@ import Adyen
 import Foundation
 import UIKit
 
-internal protocol PaymentMethodListRouterProtocol: AnyObject {
-    var rootViewController: UIViewController { get }
-    var delegate: PaymentMethodListRouterDelegate? { get set }
-    func start()
-}
-
 internal protocol PaymentMethodListRouterDelegate: AnyObject {
     func paymentMethodListDidCancel(completion: (() -> Void)?)
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
     func didFail(with error: any Error)
     func didCancel(component: any PaymentComponent)
+}
+
+internal protocol PaymentMethodListRouterProtocol: AnyObject {
+    var rootViewController: UIViewController { get }
+    var delegate: PaymentMethodListRouterDelegate? { get set }
+    func start()
 }
 
 internal class PaymentMethodListRouter: PaymentMethodListRouterProtocol {
@@ -28,6 +28,7 @@ internal class PaymentMethodListRouter: PaymentMethodListRouterProtocol {
     internal weak var delegate: PaymentMethodListRouterDelegate?
     private let navigationController = UINavigationController()
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
+    private var componentContainerRouter: ComponentContainerRouterProtocol?
     internal var view: UIViewController?
 
     // MARK: - Initializers
@@ -59,13 +60,19 @@ extension PaymentMethodListRouter: PaymentMethodListViewModelDelegate {
 
     func didCancel(completion: (() -> Void)?) {
         delegate?.paymentMethodListDidCancel(completion: completion)
+        componentContainerRouter = nil
     }
 
     internal func didSelect(_ component: PresentableComponent) {
-        let componentContainerViewController = componentContainerAssembler.resolveContainerView(
+        let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: component,
             delegate: self
         )
+        self.componentContainerRouter = componentContainerRouter
+
+        componentContainerRouter.start()
+
+        let componentContainerViewController = componentContainerRouter.rootViewController
 
         if component.requiresModalPresentation {
             view?.navigationController?.pushViewController(componentContainerViewController, animated: true)
@@ -75,9 +82,9 @@ extension PaymentMethodListRouter: PaymentMethodListViewModelDelegate {
     }
 }
 
-extension PaymentMethodListRouter: ComponentContainerViewModelDelegate {
+extension PaymentMethodListRouter: ComponentContainerRouterDelegate {
 
-    // MARK: - ComponentContainerViewModelDelegate
+    // MARK: - ComponentContainerRouterDelegate
 
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         delegate?.didSubmit(data, from: component)

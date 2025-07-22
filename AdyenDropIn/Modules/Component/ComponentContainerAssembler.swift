@@ -9,10 +9,10 @@ import Foundation
 import UIKit
 
 internal protocol ComponentContainerAssemblerProtocol {
-    func resolveContainerView(
+    func resolveComponentContainerRouter(
         for component: PresentableComponent,
-        delegate: ComponentContainerViewModelDelegate
-    ) -> UIViewController
+        delegate: ComponentContainerRouterDelegate
+    ) -> ComponentContainerRouterProtocol
 }
 
 internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol {
@@ -34,22 +34,18 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
 
     // MARK: - ComponentContainerAssemblerProtocol
 
-    internal func resolveContainerView(
+    internal func resolveComponentContainerRouter(
         for component: PresentableComponent,
-        delegate: ComponentContainerViewModelDelegate
-    ) -> UIViewController {
+        delegate: ComponentContainerRouterDelegate
+    ) -> ComponentContainerRouterProtocol {
         let viewModel = ComponentContainerViewModel(
             component: component,
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
-        viewModel.delegate = delegate
-
-        if let alertController = (component.viewController as? UIAlertController) {
-            return alertController
-        } else {
-            let view = ComponentContainerViewController(viewModel: viewModel)
-            return view
-        }
+        let view = ComponentContainerViewController(viewModel: viewModel)
+        let router = ComponentContainerRouter(view: view, viewModel: viewModel)
+        router.delegate = delegate
+        return router
     }
 }
