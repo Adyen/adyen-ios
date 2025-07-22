@@ -78,7 +78,7 @@ jobs:
       if: matrix.needs_custom_sim == true
       run: |
         echo "Downloading iOS ${{ matrix.version }} runtime using xcodes..."
-        xcodes runtimes install "iOS ${{ matrix.version }}"
+        sudo xcodes runtimes install "iOS ${{ matrix.version }}" --non-interactive
         
         # Verify simulator is available
         xcrun simctl list runtimes
