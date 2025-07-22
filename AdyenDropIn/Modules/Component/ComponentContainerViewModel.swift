@@ -31,20 +31,32 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     // MARK: - Properties
 
     internal weak var delegate: ComponentContainerViewModelDelegate?
+
     private let component: PresentableComponent
+    private let context: AdyenContext
+    private let configuration: DropInComponent.Configuration
     private weak var cardComponentDelegate: CardComponentDelegate?
     private weak var partialPaymentDelegate: PartialPaymentDelegate?
+
+    private let actionComponent: AdyenActionComponent
 
     // MARK: - Initializers
 
     internal init(
         component: PresentableComponent,
+        context: AdyenContext,
+        configuration: DropInComponent.Configuration,
         cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.component = component
+        self.context = context
+        self.configuration = configuration
         self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
+        self.actionComponent = AdyenActionComponent(context: context)
+
+        setupComponent()
         setupComponent()
     }
 
@@ -65,6 +77,15 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         (component as? CardComponent)?.cardComponentDelegate = cardComponentDelegate
         (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
+    }
+
+    private func setupActionComponent() {
+        actionComponent.delegate = self
+        actionComponent.presentationDelegate = self
+        actionComponent.configuration.style = configuration.style.actionComponent
+        actionComponent.configuration.localizationParameters = configuration.localizationParameters
+        actionComponent.configuration.threeDS = configuration.actionComponent.threeDS
+        actionComponent.configuration.twint = configuration.actionComponent.twint
     }
 }
 
@@ -121,5 +142,31 @@ extension ComponentContainerViewModel: ReadyToSubmitPaymentComponentDelegate {
     ) {
         // TODO: - Handle gift card balance confirmation
         // 1. Present preselected payment method.
+    }
+}
+
+extension ComponentContainerViewModel: ActionComponentDelegate {
+
+    func didProvide(_ data: Adyen.ActionComponentData, from component: any Adyen.ActionComponent) {
+        // TODO: - Handle action details
+    }
+    
+    func didComplete(from component: any Adyen.ActionComponent) {
+        // TODO: - Handle action complete
+    }
+    
+    func didFail(with error: any Error, from component: any Adyen.ActionComponent) {
+        // TODO: - Handle action cancellation
+    }
+
+    func didOpenExternalApplication(component: any ActionComponent) {
+        // TODO: - Handle app redirect
+    }
+}
+
+extension ComponentContainerViewModel: PresentationDelegate {
+
+    func present(component: any Adyen.PresentableComponent) {
+        // TODO: - Handle subsequent presentations
     }
 }

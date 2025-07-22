@@ -269,6 +269,8 @@ public final class DropInComponent: NSObject,
     ) -> UIViewController {
         let viewModel = ComponentContainerViewModel(
             component: component,
+            context: context,
+            configuration: configuration,
             cardComponentDelegate: nil,
             partialPaymentDelegate: nil
         )

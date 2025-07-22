@@ -19,15 +19,21 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
 
     // MARK: - Properties
 
+    private let context: AdyenContext
+    private let configuration: DropInComponent.Configuration
     private let cardComponentDelegate: CardComponentDelegate?
     private let partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
 
     internal init(
+        context: AdyenContext,
+        configuration: DropInComponent.Configuration,
         cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
+        self.context = context
+        self.configuration = configuration
         self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
     }
@@ -40,6 +46,8 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
     ) -> ComponentContainerRouterProtocol {
         let viewModel = ComponentContainerViewModel(
             component: component,
+            context: context,
+            configuration: configuration,
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
