@@ -69,55 +69,21 @@ jobs:
         sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode_version }}.app
         xcodebuild -version
         
-    - name: Download and install older iOS simulator runtime
+    - name: Install xcodes 
       if: matrix.needs_custom_sim == true
       run: |
-        RUNTIME_DIR="/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS-${{ matrix.version }}.simruntime"
-        
-        if [ ! -d "$RUNTIME_DIR" ]; then
-          echo "Downloading iOS ${{ matrix.version }} runtime..."
-          # URL example format: https://devimages-cdn.apple.com/downloads/xcode/simulators/com.apple.pkg.iPhoneSimulatorSDK15_0-15.0.1.1633537348.dmg
-          # Note: You may need to adjust the actual URLs based on what Apple makes available
-          
-          case "${{ matrix.version }}" in
-            "17.0")
-              DOWNLOAD_URL="https://devimages-cdn.apple.com/downloads/xcode/simulators/com.apple.pkg.iPhoneSimulatorSDK17_0-17.0.1.1690000000.dmg"
-              ;;
-            "16.0")
-              DOWNLOAD_URL="https://devimages-cdn.apple.com/downloads/xcode/simulators/com.apple.pkg.iPhoneSimulatorSDK16_0-16.0.1.1660000000.dmg"
-              ;;
-            "15.0")
-              DOWNLOAD_URL="https://devimages-cdn.apple.com/downloads/xcode/simulators/com.apple.pkg.iPhoneSimulatorSDK15_0-15.0.1.1633537348.dmg"
-              ;;
-            *)
-              echo "No download URL configured for iOS ${{ matrix.version }}. Please add it to the workflow."
-              exit 1
-              ;;
-          esac
-          
-          # Download and mount the DMG
-          curl -L -o simulator.dmg "$DOWNLOAD_URL"
-          hdiutil attach simulator.dmg
-          
-          # Install the simulator runtime
-          sudo installer -pkg "/Volumes/iOS_${{ matrix.version }}_Simulator_Runtime/iOS_${{ matrix.version }}_Simulator_Runtime.pkg" -target /
-          
-          # Clean up
-          hdiutil detach "/Volumes/iOS_${{ matrix.version }}_Simulator_Runtime"
-          rm simulator.dmg
-        else
-          echo "iOS ${{ matrix.version }} runtime is already installed."
-        fi
+        brew install xcodesorg/made/xcodes
+    
+    - name: Download and install simulator runtime
+      if: matrix.needs_custom_sim == true
+      run: |
+        echo "Downloading iOS ${{ matrix.version }} runtime using xcodes..."
+        xcodes runtimes install "iOS ${{ matrix.version }}"
         
         # Verify simulator is available
         xcrun simctl list runtimes
 
-    - name: Download simulator if needed (${{ matrix.version }})
-      if: matrix.needs_custom_sim
-      run: |
-        xcversion simulators --install="iOS ${version}"
-      env:
-        version: ${{ matrix.version }}
+    # This step is now handled by the xcodes tool above
 
     - name: Create simulator ${{ matrix.version }}
       run: |
