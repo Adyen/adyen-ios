@@ -42,6 +42,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     internal func resolvePaymentMethodListRouter() -> PaymentMethodListRouterProtocol {
         let componentContainerAssembler = ComponentContainerAssembler(
             context: context,
+            configuration: configuration,
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )

@@ -100,6 +100,7 @@ internal class DropInAssembler {
     private var componentContainerAssembler: ComponentContainerAssemblerProtocol {
         ComponentContainerAssembler(
             context: context,
+            configuration: configuration,
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )

@@ -75,7 +75,7 @@ internal final class ComponentViewController: UIViewController {
         setupNavigationItem()
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
+    override func public viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         componentView.resignFirstResponder()
         viewModel.didCancel()
