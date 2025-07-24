@@ -450,6 +450,12 @@
 		B60946132DA562FD00CEE6CF /* CardScannerProviderDispatchOnceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60946122DA562FD00CEE6CF /* CardScannerProviderDispatchOnceTests.swift */; };
 		B60946152DA5656100CEE6CF /* CardScannerTestsHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60946142DA5656100CEE6CF /* CardScannerTestsHelpers.swift */; };
 		B61CE9152DDDD7C3009B7503 /* SubmitButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61CE9142DDDD7C3009B7503 /* SubmitButtonTests.swift */; };
+		B6244E002E3224BE00F42780 /* Secrets.template.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B6244DFF2E3224BE00F42780 /* Secrets.template.xcconfig */; };
+		B6244E022E3224BE00F42780 /* Secrets.template.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B6244DFF2E3224BE00F42780 /* Secrets.template.xcconfig */; };
+		B6244E052E3279F500F42780 /* Secrets.test.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B6244E042E3279F500F42780 /* Secrets.test.xcconfig */; };
+		B6244E062E3279F500F42780 /* Secrets.test.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B6244E042E3279F500F42780 /* Secrets.test.xcconfig */; };
+		B6244E082E327A5300F42780 /* Configuration+secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6244E072E327A5300F42780 /* Configuration+secrets.swift */; };
+		B6244E092E327A5300F42780 /* Configuration+secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6244E072E327A5300F42780 /* Configuration+secrets.swift */; };
 		B62A075C2D71FB43006072E7 /* FormCardNumberItemView+ScanCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62A075B2D71FB43006072E7 /* FormCardNumberItemView+ScanCard.swift */; };
 		B62D48B42BBE8DBE001EF01A /* AnalyticsFlavorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16AB280702B200534419 /* AnalyticsFlavorTests.swift */; };
 		B62D48B52BBE8DBE001EF01A /* AnalyticsEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16A928059A5A00534419 /* AnalyticsEventTests.swift */; };
@@ -1948,6 +1954,9 @@
 		B60946122DA562FD00CEE6CF /* CardScannerProviderDispatchOnceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerProviderDispatchOnceTests.swift; sourceTree = "<group>"; };
 		B60946142DA5656100CEE6CF /* CardScannerTestsHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerTestsHelpers.swift; sourceTree = "<group>"; };
 		B61CE9142DDDD7C3009B7503 /* SubmitButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitButtonTests.swift; sourceTree = "<group>"; };
+		B6244DFF2E3224BE00F42780 /* Secrets.template.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.template.xcconfig; sourceTree = "<group>"; };
+		B6244E042E3279F500F42780 /* Secrets.test.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.test.xcconfig; sourceTree = "<group>"; };
+		B6244E072E327A5300F42780 /* Configuration+secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Configuration+secrets.swift"; sourceTree = "<group>"; };
 		B62A075B2D71FB43006072E7 /* FormCardNumberItemView+ScanCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormCardNumberItemView+ScanCard.swift"; sourceTree = "<group>"; };
 		B62D48AC2BBE8D79001EF01A /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
@@ -4846,8 +4855,11 @@
 		E7E58BF725ADDF8400E869F9 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				B6244E042E3279F500F42780 /* Secrets.test.xcconfig */,
+				B6244DFF2E3224BE00F42780 /* Secrets.template.xcconfig */,
 				E768712426B02D17005A91DB /* Shared.entitlements */,
 				F9620D7A23C36082005209FC /* Configuration.swift */,
+				B6244E072E327A5300F42780 /* Configuration+secrets.swift */,
 				E2C0E07E220B0399008616F6 /* UIKit */,
 				F95B6D962527454E002C9062 /* SwiftUI */,
 				F9615FC5252F49A400FA8EDD /* Common */,
@@ -6928,11 +6940,13 @@
 			files = (
 				F9EDB78923955ABF00CFB3C9 /* AdyenUIHost.strings in Resources */,
 				E9909FB422B7C816008DE50C /* PaymentMethods.json in Resources */,
+				B6244E062E3279F500F42780 /* Secrets.test.xcconfig in Resources */,
 				F96F44DF23BF453800871C1F /* AdyenUIHostCustomSeparator.strings in Resources */,
 				E2C0E087220B039B008616F6 /* Assets.xcassets in Resources */,
 				F9615FC0252F076A00FA8EDD /* payment_methods_response.json in Resources */,
 				002D4BFD2C009D8F00DBBD45 /* action_response.json in Resources */,
 				E97B970C2297ED0D00505476 /* LaunchScreen.storyboard in Resources */,
+				B6244E002E3224BE00F42780 /* Secrets.template.xcconfig in Resources */,
 				A023A9B428103C2D004FDCA4 /* session_response.json in Resources */,
 				E71C32932DC50E15003D45F4 /* Localizable.xcstrings in Resources */,
 			);
@@ -6995,9 +7009,11 @@
 				002D4BFE2C009D9900DBBD45 /* action_response.json in Resources */,
 				F9615FC1252F076A00FA8EDD /* payment_methods_response.json in Resources */,
 				F95B6DA425274551002C9062 /* LaunchScreen.storyboard in Resources */,
+				B6244E022E3224BE00F42780 /* Secrets.template.xcconfig in Resources */,
 				F94E37B82818138900617382 /* session_response.json in Resources */,
 				F95B6DA125274551002C9062 /* Preview Assets.xcassets in Resources */,
 				E71C32922DC50E15003D45F4 /* Localizable.xcstrings in Resources */,
+				B6244E052E3279F500F42780 /* Secrets.test.xcconfig in Resources */,
 				F95B6D9E25274551002C9062 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7933,6 +7949,7 @@
 				F9885430272C078E00F34557 /* DisableStoredPaymentMethodRequest.swift in Sources */,
 				E24FECFC226EFD3C00A65122 /* ComponentsItem.swift in Sources */,
 				F9CFB05D283541DC002F3B72 /* UIView+Helpers.swift in Sources */,
+				B6244E092E327A5300F42780 /* Configuration+secrets.swift in Sources */,
 				F9A53C442549887F009000A7 /* DefaultAPIClient.swift in Sources */,
 				E24FED0D2270915A00A65122 /* CodingHelpers.swift in Sources */,
 				B6EE0F3A2BBEA2A800B9810D /* APIClientMock.swift in Sources */,
@@ -8256,6 +8273,7 @@
 				B6EE0F382BBE9C4500B9810D /* APIClientHelper.swift in Sources */,
 				F95B6D9A2527454E002C9062 /* SceneDelegate.swift in Sources */,
 				00ED81BE29EEC50B00A6B52C /* CardComponentAdvancedFlowExample.swift in Sources */,
+				B6244E082E327A5300F42780 /* Configuration+secrets.swift in Sources */,
 				F95B6DD6252B4654002C9062 /* ComponentsItem.swift in Sources */,
 				81C5D0CE2AC4170A002E918F /* IssuerListComponentExample.swift in Sources */,
 				81C5D0D12AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift in Sources */,
@@ -9326,6 +9344,7 @@
 		};
 		E2C0E08C220B039B008616F6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B6244E042E3279F500F42780 /* Secrets.test.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Demo/Shared.entitlements;
@@ -9844,6 +9863,7 @@
 		};
 		F95B6DA625274551002C9062 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B6244E042E3279F500F42780 /* Secrets.test.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Demo/Shared.entitlements;

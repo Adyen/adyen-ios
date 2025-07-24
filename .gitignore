@@ -44,3 +44,6 @@ TempProject/
 .build
 .vscode
 .tmp
+
+# Configuration files with secrets
+Demo/Secrets.test.xcconfig
