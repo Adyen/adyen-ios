@@ -31,7 +31,7 @@ extension PayByBankUSComponent {
         
         // MARK: UIViewController
         
-        init(model: Model) {
+        public init(model: Model) {
             self.model = model
             
             supportedBankLogosView = SupportedPaymentMethodLogosView(
@@ -44,17 +44,17 @@ extension PayByBankUSComponent {
             super.init(nibName: nil, bundle: nil)
         }
         
-        override func viewDidLoad() {
+        override public func viewDidLoad() {
             super.viewDidLoad()
             setupViews()
         }
         
         @available(*, unavailable)
-        required init?(coder: NSCoder) {
+        public required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
         
-        override var preferredContentSize: CGSize {
+        override public var preferredContentSize: CGSize {
             get {
                 view.adyen.minimalSize
             }
@@ -67,7 +67,7 @@ extension PayByBankUSComponent {
             """) }
         }
         
-        override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
             super.traitCollectionDidChange(previousTraitCollection)
             headerImageView.layer.borderColor = model.style.headerImage.borderColor?.cgColor ?? UIColor.Adyen.componentSeparator.cgColor
         }

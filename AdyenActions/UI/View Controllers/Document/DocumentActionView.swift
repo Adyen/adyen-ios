@@ -110,7 +110,7 @@ internal final class DocumentActionView: UIView {
         delegate?.mainButtonTap(sourceView: mainButton, downloadable: viewModel.action)
     }
     
-    override func didMoveToWindow() {
+    override public func didMoveToWindow() {
         super.didMoveToWindow()
         updateLogo()
     }

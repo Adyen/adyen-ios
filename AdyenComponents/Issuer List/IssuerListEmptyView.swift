@@ -39,7 +39,7 @@ internal class IssuerListEmptyView: UIView, SearchResultsEmptyView {
     private let style: Style
     private let localizationParameters: LocalizationParameters?
     
-    var searchTerm: String {
+    public var searchTerm: String {
         didSet { updateLabels() }
     }
     

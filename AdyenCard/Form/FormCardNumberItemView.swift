@@ -40,18 +40,18 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         }
     }
     
-    override func handleFormattedValueDidChange(_ newValue: String) {
+    override public func handleFormattedValueDidChange(_ newValue: String) {
         textField.text = newValue
         updateValidationStatus()
     }
 
-    override func textDidChange(textField: UITextField) {
+    override public func textDidChange(textField: UITextField) {
         // Overriding to not use the default behavior of the super class
         _ = item.textDidChange(value: textField.text ?? "")
         notifyDelegateOfMaxLengthIfNeeded()
     }
 
-    override func textField(
+    override public func textField(
         _ textField: UITextField,
         shouldChangeCharactersIn range: NSRange,
         replacementString string: String

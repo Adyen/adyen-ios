@@ -21,7 +21,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     /// The delegate of the view
     internal weak var delegate: QRCodeViewDelegate?
     
-    var localizationParameters: LocalizationParameters?
+    public var localizationParameters: LocalizationParameters?
 
     private var imageLoadingTask: AdyenCancellable? {
         willSet { imageLoadingTask?.cancel() }
@@ -155,7 +155,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     
     // MARK: UI Handling
     
-    override func didMoveToWindow() {
+    override public func didMoveToWindow() {
         super.didMoveToWindow()
         updateIcon()
     }

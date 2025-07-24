@@ -63,13 +63,13 @@ internal final class ComponentViewController: UIViewController {
     }
     
     @available(*, unavailable)
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - View life cycle
 
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         setupComponentView()
         setupNavigationItem()

@@ -55,7 +55,7 @@ public final class FormSegmentedControlItem: FormItem {
 
 internal class ADYSegmentedControl: UISegmentedControl, AnyFormItemView {
 
-    var childItemViews: [AnyFormItemView] { [] }
+    public var childItemViews: [AnyFormItemView] { [] }
 
-    func reset() { /* Do nothing */ }
+    public func reset() { /* Do nothing */ }
 }

@@ -46,7 +46,7 @@ internal final class VoucherView: UIView, Localizable {
     internal var localizationParameters: LocalizationParameters?
     
     @available(*, unavailable)
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -250,7 +250,7 @@ internal final class VoucherView: UIView, Localizable {
         )
     }
     
-    override func didMoveToSuperview() {
+    override public func didMoveToSuperview() {
         super.didMoveToSuperview()
         updateLogo()
     }

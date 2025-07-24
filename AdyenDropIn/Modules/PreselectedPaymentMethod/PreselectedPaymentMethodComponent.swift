@@ -71,7 +71,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
     // MARK: - View Controller
     
-    lazy var viewController: UIViewController = {
+    public lazy var viewController: UIViewController = {
         let formViewController = FormViewController(
             scrollEnabled: true,
             style: style,
@@ -155,7 +155,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         return item
     }()
     
-    func startLoading(for component: PaymentComponent) {
+    public func startLoading(for component: PaymentComponent) {
         guard component === defaultComponent else { return }
         submitButtonItem.showsActivityIndicator = true
         openAllButtonItem.enabled = false
@@ -168,7 +168,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
     // MARK: - Localization
     
-    var localizationParameters: LocalizationParameters?
+    public var localizationParameters: LocalizationParameters?
     
 }
 

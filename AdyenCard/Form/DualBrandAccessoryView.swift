@@ -115,7 +115,7 @@ extension FormCardNumberItemView {
             return imageView
         }
         
-        override func didMoveToWindow() {
+        override public func didMoveToWindow() {
             super.didMoveToWindow()
             updateLogos()
         }
