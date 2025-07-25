@@ -18,17 +18,9 @@ internal extension ConfigurationConstants {
     }
     
     static func secret_value(for key: SecretKey) -> String {
-        let environmentValue = ProcessInfo.processInfo.environment[key.rawValue]
-        let xcconfigValue = Bundle.main.infoDictionary?[key.rawValue] as? String
-
-        let value = [environmentValue, xcconfigValue]
-            .compactMap { $0 }
-            .first
-
-        guard let value else {
+        guard let value = Bundle.main.infoDictionary?[key.rawValue] as? String else {
             fatalError("\(key.rawValue) has to be provided via .xcconfig or environment variable")
         }
-
         return value
     }
 }
