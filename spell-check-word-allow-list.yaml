@@ -220,3 +220,4 @@ whiteList:
   - orgid
   - viewcontroller
   - xcconfig
+  - adhoc
