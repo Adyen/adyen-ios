@@ -26,8 +26,13 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouterPro
 
     internal var view: UIViewController?
     internal weak var delegate: PreselectedPaymentMethodRouterDelegate?
+    private let componentContainerAssembler: ComponentContainerAssemblerProtocol
 
     // MARK: - Initializers
+    
+    init(componentContainerAssembler: ComponentContainerAssemblerProtocol) {
+        self.componentContainerAssembler = componentContainerAssembler
+    }
 
     // MARK: - PreselectedPaymentMethodRouterProtocol
 
@@ -50,8 +55,26 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouterPro
         // TODO: - Handle logic with preselected payment method
 //        delegate?.didProceed(with: paymentComponent)
 
-//        let componentContainerAssembler = ComponentContainerAssembler()
-//        let componentContainerViewController = componentContainerAssembler.resolveContainerView(for: paymentComponent)
-        rootViewController.present(paymentComponent.viewController, animated: true)
+        let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
+            for: paymentComponent,
+            delegate: self
+        )
+        componentContainerRouter.start()
+        rootViewController.present(componentContainerRouter.rootViewController, animated: true)
+    }
+}
+
+extension PreselectedPaymentMethodRouter: ComponentContainerRouterDelegate {
+    
+    func didSubmit(_ data: Adyen.PaymentComponentData, from component: any Adyen.PaymentComponent) {
+        // TODO: - Logic didSubmit
+    }
+    
+    func didFail(with error: any Error) {
+        // TODO: - Logic didFail
+    }
+    
+    func didCancel(component: any Adyen.PaymentComponent) {
+        // TODO: - Logic didCancel
     }
 }

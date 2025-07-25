@@ -84,7 +84,12 @@ internal class DropInAssembler {
     }
 
     private var preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
-        PreselectedPaymentMethodAssembler(configuration: configuration)
+        PreselectedPaymentMethodAssembler(
+            context: context,
+            configuration: configuration,
+            cardComponentDelegate: cardComponentDelegate,
+            partialPaymentDelegate: partialPaymentDelegate
+        )
     }
 
     private var paymentMethodListAssembler: PaymentMethodListAssemblerProtocol {

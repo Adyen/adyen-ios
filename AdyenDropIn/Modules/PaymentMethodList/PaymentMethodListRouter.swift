@@ -74,6 +74,7 @@ extension PaymentMethodListRouter: PaymentMethodListViewModelDelegate {
 
         let componentContainerViewController = componentContainerRouter.rootViewController
 
+        // TODO: - Invert `requiresModalPresentation` logic or remove it fully.
         if component.requiresModalPresentation {
             view?.navigationController?.pushViewController(componentContainerViewController, animated: true)
         } else {
