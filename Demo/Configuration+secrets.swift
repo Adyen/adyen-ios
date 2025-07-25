@@ -7,7 +7,7 @@
 import Foundation
 
 /// Helper for reading configuration values from .xcconfig locally or environment variables on CI
-extension ConfigurationConstants {
+internal extension ConfigurationConstants {
 
     enum SecretKey: String {
         case clientKey = "ADYEN_CLIENT_KEY"
@@ -17,22 +17,18 @@ extension ConfigurationConstants {
         case applePayMerchantIdentifier = "APPLE_PAY_MERCHANT_IDENTIFIER"
     }
     
-    /// Get configuration value from .xcconfig or environment variables
-    /// - Parameters:
-    ///   - key: The configuration key
-    ///   - defaultValue: Optional default value if key is not found
-    /// - Returns: The configuration value or default value
-    static func value(for key: SecretKey, defaultValue: String = "") -> String {
-        // First try to get from environment variables for CI
-        if let envValue = ProcessInfo.processInfo.environment[key.rawValue], !envValue.isEmpty {
-            return envValue
-        }
-        
-        // Then fallback to .xcconfig
-        if let bundleValue = Bundle.main.infoDictionary?[key.rawValue] as? String, !bundleValue.isEmpty {
-            return bundleValue
+    static func secret_value(for key: SecretKey) -> String {
+        let environmentValue = ProcessInfo.processInfo.environment[key.rawValue]
+        let xcconfigValue = Bundle.main.infoDictionary?[key.rawValue] as? String
+
+        let value = [environmentValue, xcconfigValue]
+            .compactMap { $0 }
+            .first
+
+        guard let value else {
+            fatalError("\(key.rawValue) has to be provided via .xcconfig or environment variable")
         }
 
-        return defaultValue
+        return value
     }
 }

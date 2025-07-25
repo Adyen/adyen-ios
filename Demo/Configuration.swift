@@ -42,15 +42,15 @@ internal enum ConfigurationConstants {
         return try! APIContext(environment: componentsEnvironment, clientKey: "local_DUMMYKEYFORTESTING")
     }
 
-    static let clientKey = value(for: .clientKey, defaultValue: "local_DUMMYKEYFORTESTING")
+    static let clientKey = secret_value(for: .clientKey)
 
-    static let demoServerAPIKey = value(for: .demoServerAPIKey)
+    static let demoServerAPIKey = secret_value(for: .demoServerAPIKey)
 
-    static let merchantAccount = value(for: .merchantAccount)
+    static let merchantAccount = secret_value(for: .merchantAccount)
 
-    static let appleTeamIdentifier = value(for: .appleTeamIdentifier)
+    static let appleTeamIdentifier = secret_value(for: .appleTeamIdentifier)
 
-    static let applePayMerchantIdentifier = value(for: .applePayMerchantIdentifier)
+    static let applePayMerchantIdentifier = secret_value(for: .applePayMerchantIdentifier)
 
     static let lineItems = [[
         "description": "Socks",
