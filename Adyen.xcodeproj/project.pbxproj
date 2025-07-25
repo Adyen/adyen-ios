@@ -9374,6 +9374,7 @@
 		};
 		E2C0E08D220B039B008616F6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B6244E0A2E3281B800F42780 /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Demo/Shared.entitlements;
@@ -9892,6 +9893,7 @@
 		};
 		F95B6DA725274551002C9062 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B6244E0A2E3281B800F42780 /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Demo/Shared.entitlements;
