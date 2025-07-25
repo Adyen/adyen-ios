@@ -47,7 +47,7 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
     // MARK: - Networking
 
     internal func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
-        requestSessionSetupModel { [weak self] response in
+        requestSessionInitialInfo { [weak self] response in
             guard let self else { return }
             switch response {
             case let .success(model):
@@ -78,7 +78,7 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
     }
 
     private func instantPaymentComponent(from session: AdyenSession) throws -> InstantPaymentComponent {
-        let paymentMethods = session.sessionContext.paymentMethods
+        let paymentMethods = session.state.paymentMethods
         
         // Get the correct payment method from the paymentMethods object
         // In this example the first supported `InstantPaymentMethod` is chosen

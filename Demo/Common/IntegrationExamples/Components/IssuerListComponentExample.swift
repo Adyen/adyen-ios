@@ -45,7 +45,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
     // MARK: - Networking
 
     internal func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
-        requestSessionSetupModel { [weak self] response in
+        requestSessionInitialInfo { [weak self] response in
             guard let self else { return }
             switch response {
             case let .success(model):
@@ -76,7 +76,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
     }
 
     private func issuerListComponent(from session: AdyenSession) throws -> IssuerListComponent {
-        let paymentMethods = session.sessionContext.paymentMethods
+        let paymentMethods = session.state.paymentMethods
         guard let paymentMethod = paymentMethods.paymentMethod(ofType: IssuerListPaymentMethod.self) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: IssuerListPaymentMethod.self)
         }

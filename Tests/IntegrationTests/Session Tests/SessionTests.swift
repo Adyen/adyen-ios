@@ -86,17 +86,17 @@ class SessionTests: XCTestCase {
             case .failure:
                 XCTFail()
             case let .success(session):
-                XCTAssertEqual(session.sessionContext.identifier, "session_id")
-                XCTAssertEqual(session.sessionContext.data, "session_data_1")
-                XCTAssertEqual(session.sessionContext.shopperLocale, "US")
-                XCTAssertEqual(session.sessionContext.countryCode, "US")
-                XCTAssertEqual(session.sessionContext.paymentMethods, self.expectedPaymentMethods)
-                XCTAssertEqual(session.sessionContext.amount, .init(value: 220, currencyCode: "USD"))
-                XCTAssertFalse(session.sessionContext.responseConfiguration.enableStoreDetails)
-                XCTAssertFalse(session.sessionContext.responseConfiguration.showRemovePaymentMethodButton)
+                XCTAssertEqual(session.state.identifier, "session_id")
+                XCTAssertEqual(session.state.data, "session_data_1")
+                XCTAssertEqual(session.state.shopperLocale, "US")
+                XCTAssertEqual(session.state.countryCode, "US")
+                XCTAssertEqual(session.state.paymentMethods, self.expectedPaymentMethods)
+                XCTAssertEqual(session.state.amount, .init(value: 220, currencyCode: "USD"))
+                XCTAssertFalse(session.state.responseConfiguration.enableStoreDetails)
+                XCTAssertFalse(session.state.responseConfiguration.showRemovePaymentMethodButton)
                 XCTAssertEqual(AnalyticsForSession.sessionId, "session_id")
                 XCTAssertTrue(session.isSession)
-                XCTAssertEqual(session.showStorePaymentMethodField, session.sessionContext.responseConfiguration.enableStoreDetails)
+                XCTAssertEqual(session.showStorePaymentMethodField, session.state.responseConfiguration.enableStoreDetails)
             }
             expectation.fulfill()
         }
@@ -297,13 +297,13 @@ class SessionTests: XCTestCase {
         sut.didSubmit(data, from: component, in: dropInComponent)
         wait(for: [apiCallsExpectation], timeout: 1)
         
-        XCTAssertEqual(sut.sessionContext.amount, expectedAmount)
-        XCTAssertEqual(sut.sessionContext.countryCode, "EG")
-        XCTAssertEqual(sut.sessionContext.shopperLocale, "EG")
-        XCTAssertEqual(sut.sessionContext.data, "session_data_xxx")
-        XCTAssertNil(sut.sessionContext.responseConfiguration.installmentOptions)
-        XCTAssertTrue(sut.sessionContext.responseConfiguration.enableStoreDetails)
-        XCTAssertTrue(sut.sessionContext.responseConfiguration.showRemovePaymentMethodButton)
+        XCTAssertEqual(sut.state.amount, expectedAmount)
+        XCTAssertEqual(sut.state.countryCode, "EG")
+        XCTAssertEqual(sut.state.shopperLocale, "EG")
+        XCTAssertEqual(sut.state.data, "session_data_xxx")
+        XCTAssertNil(sut.state.responseConfiguration.installmentOptions)
+        XCTAssertTrue(sut.state.responseConfiguration.enableStoreDetails)
+        XCTAssertTrue(sut.state.responseConfiguration.showRemovePaymentMethodButton)
     }
     
     func testDidSubmitFailure() throws {
@@ -458,7 +458,7 @@ class SessionTests: XCTestCase {
             let balance = try! result.get()
             XCTAssertEqual(balance.availableAmount.value, 50)
             XCTAssertEqual(balance.transactionLimit!.value, 30)
-            XCTAssertEqual(self.sut.sessionContext.data, "session_data2")
+            XCTAssertEqual(self.sut.state.data, "session_data2")
         }
         waitForExpectations(timeout: 5, handler: nil)
     }
@@ -489,7 +489,7 @@ class SessionTests: XCTestCase {
         // get .failure
         sut.checkBalance(with: paymentData, component: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
             XCTAssertNotNil(result.failure)
-            XCTAssertEqual(self.sut.sessionContext.data, "session_data2")
+            XCTAssertEqual(self.sut.state.data, "session_data2")
         }
         wait(for: [expectation], timeout: 1)
     }
@@ -516,7 +516,7 @@ class SessionTests: XCTestCase {
         // get .failure
         sut.checkBalance(with: paymentData, component: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
             XCTAssertNotNil(result.failure)
-            XCTAssertEqual(self.sut.sessionContext.data, "session_data_0")
+            XCTAssertEqual(self.sut.state.data, "session_data_0")
         }
         wait(for: [expectation], timeout: 1)
     }
@@ -546,7 +546,7 @@ class SessionTests: XCTestCase {
             let order = try! result.get()
             XCTAssertEqual(order.pspReference, "ref")
             XCTAssertEqual(order.orderData, "data")
-            XCTAssertEqual(self.sut.sessionContext.data, "session_data2")
+            XCTAssertEqual(self.sut.state.data, "session_data2")
         }
         wait(for: [expectation], timeout: 1)
     }
@@ -570,7 +570,7 @@ class SessionTests: XCTestCase {
         )
         sut.requestOrder(for: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
             XCTAssertNotNil(result.failure)
-            XCTAssertEqual(self.sut.sessionContext.data, "session_data_0")
+            XCTAssertEqual(self.sut.state.data, "session_data_0")
         }
         wait(for: [expectation], timeout: 1)
     }
@@ -590,7 +590,7 @@ class SessionTests: XCTestCase {
         sut.cancelOrder(order, component: PaymentComponentMock(paymentMethod: paymentMethod))
         
         wait(for: .seconds(1))
-        XCTAssertEqual(sut.sessionContext.data, "session_data2")
+        XCTAssertEqual(sut.state.data, "session_data2")
     }
     
     func testCancelOrderFailure() throws {
@@ -608,7 +608,7 @@ class SessionTests: XCTestCase {
         sut.cancelOrder(order, component: PaymentComponentMock(paymentMethod: paymentMethod))
         
         wait(for: .seconds(1))
-        XCTAssertEqual(sut.sessionContext.data, "session_data_0")
+        XCTAssertEqual(sut.state.data, "session_data_0")
     }
     
     func testRemoveStoredPaymentMethodSuccess() throws {
@@ -706,7 +706,7 @@ class SessionTests: XCTestCase {
         
         dropIn.didFail(with: ComponentError.paymentMethodNotSupported, from: paymentComponent)
         dropIn.didOpenExternalApplication(component: QRCodeActionComponent(context: context))
-        sut.sessionContext.resultCode = .authorised
+        sut.state.resultCode = .authorised
         dropIn.didComplete(from: actionComponent)
         
         wait(for: [didFailExpectation, didCompleteExpectation, didOpenExternalAppExpectation], timeout: 2)
@@ -1056,7 +1056,7 @@ class SessionTests: XCTestCase {
         delegate: AdyenSessionDelegate = SessionDelegateMock(),
         configuration: SessionSetupResponse.Configuration = .init(installmentOptions: nil, enableStoreDetails: true)
     ) -> AdyenSession {
-        let sessionContext = AdyenSession.Context(
+        let sessionState = AdyenSession.State(
             data: "session_data_0",
             identifier: "session_id",
             countryCode: "US",
@@ -1066,7 +1066,7 @@ class SessionTests: XCTestCase {
             responseConfiguration: configuration
         )
         let sut = AdyenSession(
-            sessionContext: sessionContext,
+            state: sessionState,
             baseAPIClient: apiClient,
             context: context,
             delegate: delegate

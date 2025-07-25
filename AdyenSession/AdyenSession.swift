@@ -18,7 +18,7 @@ import Foundation
 public final class AdyenSession: AdyenSessionProtocol {
     
     /// The session context information.
-    public internal(set) var sessionContext: AdyenSession.Context
+    public internal(set) var state: AdyenSession.State
     
     /// The presentation delegate.
     public package(set) weak var presentationDelegate: PresentationDelegate?
@@ -59,13 +59,13 @@ public final class AdyenSession: AdyenSessionProtocol {
     private let baseAPIClient: APIClientProtocol
     
     internal init(
-        sessionContext: AdyenSession.Context,
+        state: AdyenSession.State,
         baseAPIClient: APIClientProtocol,
         context: AdyenContext,
         delegate: AdyenSessionDelegate? = nil,
         presentationDelegate: PresentationDelegate? = nil
     ) {
-        self.sessionContext = sessionContext
+        self.state = state
         self.delegate = delegate
         self.presentationDelegate = presentationDelegate
         self.baseAPIClient = baseAPIClient
@@ -74,14 +74,14 @@ public final class AdyenSession: AdyenSessionProtocol {
     
     // swiftlint:disable function_parameter_count
     /// Initializes an instance of ``AdyenSession`` asynchronously.
-    /// - Parameter model: The session setup model.
+    /// - Parameter initialInfo: The session setup initial data.
     /// - Parameter apiClient: The api client object for network calls.
     /// - Parameter actionHandlingComponent: Action component to handle actions.
     /// - Parameter delegate: The session delegate.
     /// - Parameter presentationDelegate: The presentation delegate.
     /// - Parameter completion: The completion closure, that delivers the new instance asynchronously.
     public static func setup(
-        with model: AdyenSession.SetupModel,
+        with initialInfo: AdyenSession.InitialInfo,
         apiClient: APIClientProtocol,
         context: AdyenContext,
         delegate: AdyenSessionDelegate?,
@@ -89,13 +89,13 @@ public final class AdyenSession: AdyenSessionProtocol {
         completion: @escaping ((Result<AdyenSession, Error>) -> Void)
     ) {
         makeSetupCall(
-            with: model,
+            with: initialInfo,
             baseAPIClient: apiClient
         ) { result in
             switch result {
-            case let .success(sessionContext):
+            case let .success(sessionState):
                 let session = AdyenSession(
-                    sessionContext: sessionContext,
+                    state: sessionState,
                     baseAPIClient: apiClient,
                     context: context,
                     delegate: delegate,
@@ -103,7 +103,7 @@ public final class AdyenSession: AdyenSessionProtocol {
                 )
                 session.delegate = delegate
                 session.presentationDelegate = presentationDelegate
-                AnalyticsForSession.sessionId = sessionContext.identifier
+                AnalyticsForSession.sessionId = sessionState.identifier
                 completion(.success(session))
             case let .failure(error):
                 completion(.failure(error))
@@ -114,13 +114,13 @@ public final class AdyenSession: AdyenSessionProtocol {
     // swiftlint:enable function_parameter_count
     
     internal static func makeSetupCall(
-        with model: AdyenSession.SetupModel,
+        with initialInfo: AdyenSession.InitialInfo,
         baseAPIClient: APIClientProtocol,
         order: PartialPaymentOrder? = nil,
-        completion: @escaping ((Result<Context, Error>) -> Void)
+        completion: @escaping ((Result<State, Error>) -> Void)
     ) {
-        let sessionId = model.sessionIdentifier
-        let sessionData = model.initialSessionData
+        let sessionId = initialInfo.sessionIdentifier
+        let sessionData = initialInfo.initialSessionData
         let request = SessionSetupRequest(
             sessionId: sessionId,
             sessionData: sessionData,
@@ -131,7 +131,7 @@ public final class AdyenSession: AdyenSessionProtocol {
         apiClient.perform(request) { result in
             switch result {
             case let .success(response):
-                let sessionContext = Context(
+                let sessionState = State(
                     data: response.sessionData,
                     identifier: sessionId,
                     countryCode: response.countryCode,
@@ -140,7 +140,7 @@ public final class AdyenSession: AdyenSessionProtocol {
                     paymentMethods: response.paymentMethods,
                     responseConfiguration: response.configuration
                 )
-                completion(.success(sessionContext))
+                completion(.success(sessionState))
             case let .failure(error):
                 completion(.failure(error))
             }
@@ -150,20 +150,19 @@ public final class AdyenSession: AdyenSessionProtocol {
     // MARK: - Private
     
     private func updateSession(with data: SessionDataAware) {
-        sessionContext.data = data.sessionData
+        state.data = data.sessionData
     }
     
     private func updateSession(with result: SessionResultAware) {
-        sessionContext.resultCode = result.resultCode
-        sessionContext.sessionResult = result.sessionResult
+        state.resultCode = result.resultCode
+        state.sessionResult = result.sessionResult
     }
 }
 
 extension AdyenSession {
     
-    // TODO: remove adyen context and action config from this
-    /// Session configuration.
-    public struct SetupModel {
+    /// Initial parameters required for the session call.
+    public struct InitialInfo {
         
         internal let sessionIdentifier: String
         
@@ -183,8 +182,8 @@ extension AdyenSession {
         }
     }
     
-    /// The session information
-    public struct Context {
+    /// Current state/information of session that gets updated after each internal call.
+    public struct State {
         
         /// The session data.
         public internal(set) var data: String
@@ -224,11 +223,11 @@ extension AdyenSession: AdyenSessionAware {
 @_spi(AdyenInternal)
 extension AdyenSession: InstallmentConfigurationAware {
     
-    public var installmentConfiguration: InstallmentConfiguration? { sessionContext.responseConfiguration.installmentOptions }
+    public var installmentConfiguration: InstallmentConfiguration? { state.responseConfiguration.installmentOptions }
 }
 
 @_spi(AdyenInternal)
 extension AdyenSession: StorePaymentMethodFieldAware {
     
-    public var showStorePaymentMethodField: Bool? { sessionContext.responseConfiguration.enableStoreDetails }
+    public var showStorePaymentMethodField: Bool? { state.responseConfiguration.enableStoreDetails }
 }
