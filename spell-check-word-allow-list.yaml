@@ -219,3 +219,4 @@ whiteList:
   - payid
   - orgid
   - viewcontroller
+  - xcconfig
