@@ -57,7 +57,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         self.actionComponent = AdyenActionComponent(context: context)
 
         setupComponent()
-        setupComponent()
+        setupActionComponent()
     }
 
     // MARK: - Public
