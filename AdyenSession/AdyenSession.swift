@@ -101,8 +101,6 @@ public final class AdyenSession: AdyenSessionProtocol {
                     delegate: delegate,
                     presentationDelegate: presentationDelegate
                 )
-                session.delegate = delegate
-                session.presentationDelegate = presentationDelegate
                 AnalyticsForSession.sessionId = sessionState.identifier
                 completion(.success(session))
             case let .failure(error):
