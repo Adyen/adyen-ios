@@ -34,7 +34,7 @@ jobs:
           runtime: 'iOS-17-0'
           device: 'iPhone 15'
           displayname: 'iPhone-15'
-          os: 'macos-15-large'
+          os: 'macos-14-large'
           needs_custom_sim: true
 
         # Xcode 16.1 - iOS 16
@@ -42,7 +42,7 @@ jobs:
           runtime: 'iOS-16-0'
           device: 'iPhone 14'
           displayname: 'iPhone-14'
-          os: 'macos-15-large'
+          os: 'macos-14-large'
           needs_custom_sim: true
           
         # Xcode 16.1 - iOS 15
