@@ -24,15 +24,11 @@ jobs:
       with:
         xcode-version: '16.1'
 
-    - name: Lint Cocoapods
+    - name: Lint Cocoapods and check test project integration
       run: |
-        # using mint to lock older version until Xcode16 bug is fixed
-        # https://github.com/yonaskolb/XcodeGen/pull/1563
 
         brew update
-        brew install mint
-        mint install yonaskolb/xcodegen@2.43.0
-        export PATH="$PATH:/Users/runner/.mint/bin"
+        brew install xcodegen
         
         gem install cocoapods -v 1.10.2
         pod repo update
