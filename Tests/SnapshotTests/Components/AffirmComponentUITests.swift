@@ -68,7 +68,7 @@ class AffirmComponentUITests: XCTestCase {
             sut.stopLoadingIfNeeded()
 
             // this is a 100% flaky test on Github, commented until further investigation
-//            self.verifyViewControllerImage(matching: sut.viewController, named: "shopper-info-prefilled")
+            self.verifyViewControllerImage(matching: sut.viewController, named: "shopper-info-prefilled")
             
             didSubmitExpectation.fulfill()
         }
