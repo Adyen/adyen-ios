@@ -11,21 +11,24 @@ import AdyenSession
 internal protocol InitialDataFlowProtocol: AnyObject {
     var context: AdyenContext { get }
     var apiClient: APIClientProtocol { get }
-    func requestAdyenSessionConfiguration(completion: @escaping (Result<AdyenSession.Configuration, Error>) -> Void)
+    func requestSessionInitialInfo(completion: @escaping (Result<AdyenSession.InitialInfo, Error>) -> Void)
     func generateContext() -> AdyenContext
     func start()
 }
 
 extension InitialDataFlowProtocol {
 
-    internal func requestAdyenSessionConfiguration(completion: @escaping (Result<AdyenSession.Configuration, Error>) -> Void) {
+    internal func requestSessionInitialInfo(completion: @escaping (Result<AdyenSession.InitialInfo, Error>) -> Void) {
         let request = SessionRequest()
         apiClient.perform(request) { [weak self] result in
             guard let self else { return }
             switch result {
             case let .success(response):
-                let config = self.initializeSession(with: response.sessionId, data: response.sessionData)
-                completion(.success(config))
+                let initialInfo = AdyenSession.InitialInfo(
+                    sessionIdentifier: response.sessionId,
+                    initialSessionData: response.sessionData
+                )
+                completion(.success(initialInfo))
             case let .failure(error):
                 completion(.failure(error))
             }
@@ -43,12 +46,12 @@ extension InitialDataFlowProtocol {
         )
     }
 
-    private func initializeSession(with sessionId: String, data: String) -> AdyenSession.Configuration {
-        let configuration = AdyenSession.Configuration(
+    private func initialInfo(with sessionId: String, data: String) -> AdyenSession.InitialInfo {
+        let initialInfo = AdyenSession.InitialInfo(
             sessionIdentifier: sessionId,
             initialSessionData: data
         )
-        return configuration
+        return initialInfo
     }
 }
 

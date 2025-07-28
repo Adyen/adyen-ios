@@ -1199,7 +1199,7 @@ class PaymentMethodTests: XCTestCase {
         // set
         dummy.checkoutAttemptId = ""
         // get
-        let _ = dummy.checkoutAttemptId
+        _ = dummy.checkoutAttemptId
         
         wait(for: [expectation], timeout: 10)
     }

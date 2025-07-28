@@ -9,7 +9,7 @@
     @testable import AdyenCardScanner
 
     internal class CardScannerProviderSpy: CardScannerProviding {
-        private var completion: ((Result<AdyenCardScanner.CardScanDetails, Error>) -> Void)? = nil
+        private var completion: ((Result<AdyenCardScanner.CardScanDetails, Error>) -> Void)?
 
         func createCardScanner(
             completion: @escaping (Result<CardScannerCardDetails, Error>) -> Void
