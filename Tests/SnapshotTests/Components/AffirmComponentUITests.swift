@@ -66,14 +66,7 @@ class AffirmComponentUITests: XCTestCase {
             XCTAssertEqual(details.deliveryAddress, expectedDeliveryAddress)
 
             sut.stopLoadingIfNeeded()
-            
-            // Add explicit delay before snapshot to ensure loading state is fully cleared
-            let snapshotDelay = self.expectation(description: "Wait for UI to stabilize before snapshot")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                snapshotDelay.fulfill()
-            }
-            self.wait(for: [snapshotDelay], timeout: 1.0)
-            
+                        
             self.verifyViewControllerImage(matching: sut.viewController, named: "shopper-info-prefilled")
             
             didSubmitExpectation.fulfill()
