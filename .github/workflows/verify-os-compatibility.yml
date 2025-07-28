@@ -32,8 +32,8 @@ jobs:
         # Xcode 16.1 - iOS 17
         - version: '17.0'
           runtime: 'iOS-17-0'
-          device: 'iPhone 15'
-          displayname: 'iPhone-15'
+          device: 'iPhone 15 Pro'
+          displayname: 'iPhone-15-Pro'
           os: 'macos-14-large'
           needs_custom_sim: true
 
