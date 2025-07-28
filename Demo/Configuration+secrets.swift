@@ -17,9 +17,9 @@ internal extension ConfigurationConstants {
         case applePayMerchantIdentifier = "APPLE_PAY_MERCHANT_IDENTIFIER"
     }
     
-    static func secret_value(for key: SecretKey) -> String {
-        guard let value = Bundle.main.infoDictionary?[key.rawValue] as? String else {
-            fatalError("\(key.rawValue) has to be provided via .xcconfig or environment variable")
+    static func secretValue(for key: SecretKey) -> String {
+        guard let value = Bundle.main.infoDictionary?[key.rawValue] as? String, !value.isEmpty else {
+            fatalError("\(key.rawValue) has to be provided via .xcconfig or environment variable and must not be empty")
         }
         return value
     }
