@@ -1,18 +1,31 @@
 #!/bin/bash
 
-BUILD_PATH=Build-Temp
+set -euo pipefail
 
-# Clean build
+BUILD_PATH=Build-Temp
+XC_CONFIG_PATH=ci/CI.xcconfig
+
+echo "📁 Creating xcconfig file to disable signing..."
+mkdir -p ci
+cat > $XC_CONFIG_PATH <<EOF
+CODE_SIGNING_ALLOWED = NO
+CODE_SIGNING_REQUIRED = NO
+CODE_SIGN_IDENTITY =
+EOF
+
+echo "🧹 Cleaning previous build..."
 xcodebuild clean -project Adyen.xcodeproj \
   -scheme AdyenUIHost \
   -destination="generic/platform=iOS" \
   -sdk iphoneos \
   -configuration Release \
-  -skipPackagePluginValidation
+  -skipPackagePluginValidation \
+  -xcconfig $XC_CONFIG_PATH
 
+echo "📁 Creating build path..."
 mkdir -p $BUILD_PATH
 
-# Archive with explicit signing parameters
+echo "📦 Archiving..."
 xcodebuild archive -project Adyen.xcodeproj \
   -scheme AdyenUIHost \
   -destination="generic/platform=iOS" \
@@ -24,10 +37,9 @@ xcodebuild archive -project Adyen.xcodeproj \
   -authenticationKeyID $XCODE_AUTHENTICATION_KEY_ID \
   -authenticationKeyIssuerID $XCODE_AUTHENTICATION_KEY_ISSUER_ID \
   -authenticationKeyPath $3 \
-  CODE_SIGN_IDENTITY="$CODE_SIGN_IDENTITY" \
-  DEVELOPMENT_TEAM="$DEVELOPMENT_TEAM" \
+  -xcconfig $XC_CONFIG_PATH
 
-# Export archive for App Store distribution
+echo "📤 Exporting IPA..."
 xcodebuild -exportArchive \
   -archivePath $BUILD_PATH/AdyenUIHost.xcarchive \
   -exportOptionsPlist exportOptions.plist \
@@ -38,5 +50,5 @@ xcodebuild -exportArchive \
   -authenticationKeyIssuerID $XCODE_AUTHENTICATION_KEY_ISSUER_ID \
   -authenticationKeyPath $3
 
-# Upload to App Store Connect
+echo "🚀 Uploading to App Store Connect..."
 xcrun altool --upload-app -f $BUILD_PATH/AdyenUIHost.ipa -u $1 -p $2 --type iphoneos
