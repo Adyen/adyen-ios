@@ -89,6 +89,15 @@ jobs:
         # apply provisioning profile
         mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
         cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+
+    - name: Debug Keychain and Provisioning Profile
+      run: |
+        security list-keychains
+        security find-identity -v -p codesigning $KEYCHAIN_PATH
+        ls -l ~/Library/MobileDevice/Provisioning\ Profiles/
+        for PP in ~/Library/MobileDevice/Provisioning\ Profiles/*.mobileprovision; do
+          grep -aA2 'Name\|UUID\|TeamIdentifier' "$PP"
+        done
         
     - name: Configure Demo App
       env:
