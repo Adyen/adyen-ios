@@ -84,6 +84,9 @@ jobs:
         # apply provisioning profile
         mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
         cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+
+        echo "🔐 Verifying code signing identities in $KEYCHAIN_PATH..."
+        security find-identity -v -p codesigning $KEYCHAIN_PATH
         
     - name: Configure Demo App
       env:
