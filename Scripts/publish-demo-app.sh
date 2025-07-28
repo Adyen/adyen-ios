@@ -26,7 +26,6 @@ xcodebuild archive -project Adyen.xcodeproj \
   -authenticationKeyPath $3 \
   CODE_SIGN_IDENTITY="$CODE_SIGN_IDENTITY" \
   DEVELOPMENT_TEAM="$DEVELOPMENT_TEAM" \
-  PROVISIONING_PROFILE_SPECIFIER="$PROVISIONING_PROFILE_SPECIFIER"
 
 # Export archive for App Store distribution
 xcodebuild -exportArchive \

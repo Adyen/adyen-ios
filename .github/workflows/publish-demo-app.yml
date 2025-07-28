@@ -125,7 +125,6 @@ jobs:
         XCODE_AUTHENTICATION_KEY_BASE64: ${{ secrets.XCODE_AUTHENTICATION_KEY_BASE64 }}
         DEVELOPMENT_TEAM: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
         CODE_SIGN_IDENTITY: "Apple Distribution"
-        PROVISIONING_PROFILE_SPECIFIER: "Checkout Demo UIKit Distribution"
       run: |
         XCODE_AUTHENTICATION_KEY_PATH=$RUNNER_TEMP/authentication_key_path.p8
         rm -f $XCODE_AUTHENTICATION_KEY_PATH
