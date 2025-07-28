@@ -37,7 +37,7 @@ final class AdyenCheckoutTests: XCTestCase {
     }
 
     func testSetupWithSession_Success() {
-        let expectedSession = AdyenSessionMock(sessionContext: .init(
+        let expectedSession = AdyenSessionMock(state: .init(
             data: "test_session_data",
             identifier: "test_session_id",
             countryCode: "US",
@@ -70,8 +70,8 @@ final class AdyenCheckoutTests: XCTestCase {
                 XCTAssertNotNil(checkout.session)
                 XCTAssertTrue(checkout.session === expectedSession)
                 XCTAssertTrue(checkout.session?.delegate === checkout)
-                XCTAssertEqual(checkout.session?.sessionContext.identifier, "test_session_id")
-                XCTAssertEqual(checkout.session?.sessionContext.data, "test_session_data")
+                XCTAssertEqual(checkout.session?.state.identifier, "test_session_id")
+                XCTAssertEqual(checkout.session?.state.data, "test_session_data")
             } else {
                 XCTFail("Expected success")
             }

@@ -45,10 +45,10 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     // MARK: - Networking
 
     internal func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
-        requestAdyenSessionConfiguration { [weak self] response in
+        requestSessionInitialInfo { [weak self] response in
             guard let self else { return }
             switch response {
-            case let .success(configuration):
+            case let .success(model):
 //                AdyenSession.initialize(
 //                    with: configuration,
 //                    delegate: self,
@@ -76,7 +76,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     }
 
     internal func applePayComponent(from session: AdyenSession) throws -> ApplePayComponent {
-        let paymentMethods = session.sessionContext.paymentMethods
+        let paymentMethods = session.state.paymentMethods
         guard let paymentMethod = paymentMethods.paymentMethod(ofType: ApplePayPaymentMethod.self) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self)
         }

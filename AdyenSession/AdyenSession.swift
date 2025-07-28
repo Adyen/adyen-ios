@@ -18,7 +18,7 @@ import Foundation
 public final class AdyenSession: AdyenSessionProtocol {
     
     /// The session context information.
-    public internal(set) var sessionContext: Context
+    public internal(set) var state: AdyenSession.State
     
     /// The presentation delegate.
     public package(set) weak var presentationDelegate: PresentationDelegate?
@@ -26,7 +26,7 @@ public final class AdyenSession: AdyenSessionProtocol {
     /// The delegate object.
     public package(set) weak var delegate: AdyenSessionDelegate?
     
-    internal let configuration: Configuration
+    internal let context: AdyenContext
     
     // Session's API client should be only of SessionAPIClient type
     // in order to update session data/result after each internal API call.
@@ -42,60 +42,66 @@ public final class AdyenSession: AdyenSessionProtocol {
         )
     }()
     
-    internal var actionHandlingComponent: ActionHandlingComponent
+    internal lazy var actionHandlingComponent: ActionHandlingComponent = {
+        let handler = AdyenActionComponent(
+            context: context,
+            configuration: AdyenActionComponent.Configuration()
+        )
+        // TODO: create a way for CheckoutConfig to have AdyenActionComponent.Configuration
+        // and it should provided if they want to have action handling
+        // move AdyenActionComponent.Configuration to its own entity and make it public
+        handler.delegate = self
+        handler.presentationDelegate = presentationDelegate
+        return handler
+    }()
     
     /// The injected API client to be used by the session's API client.
     private let baseAPIClient: APIClientProtocol
     
     internal init(
-        configuration: Configuration,
-        sessionContext: Context,
+        state: AdyenSession.State,
         baseAPIClient: APIClientProtocol,
-        actionHandlingComponent: ActionHandlingComponent,
+        context: AdyenContext,
         delegate: AdyenSessionDelegate? = nil,
         presentationDelegate: PresentationDelegate? = nil
     ) {
-        self.configuration = configuration
-        self.sessionContext = sessionContext
-        self.actionHandlingComponent = actionHandlingComponent
+        self.state = state
         self.delegate = delegate
         self.presentationDelegate = presentationDelegate
         self.baseAPIClient = baseAPIClient
+        self.context = context
     }
     
     // swiftlint:disable function_parameter_count
     /// Initializes an instance of ``AdyenSession`` asynchronously.
-    /// - Parameter configuration: The session configuration.
+    /// - Parameter initialInfo: The session setup initial data.
     /// - Parameter apiClient: The api client object for network calls.
     /// - Parameter actionHandlingComponent: Action component to handle actions.
     /// - Parameter delegate: The session delegate.
     /// - Parameter presentationDelegate: The presentation delegate.
     /// - Parameter completion: The completion closure, that delivers the new instance asynchronously.
     public static func setup(
-        with configuration: Configuration,
+        with initialInfo: AdyenSession.InitialInfo,
         apiClient: APIClientProtocol,
-        actionHandlingComponent: ActionHandlingComponent,
+        context: AdyenContext,
         delegate: AdyenSessionDelegate?,
         presentationDelegate: PresentationDelegate?,
         completion: @escaping ((Result<AdyenSession, Error>) -> Void)
     ) {
         makeSetupCall(
-            with: configuration,
+            with: initialInfo,
             baseAPIClient: apiClient
         ) { result in
             switch result {
-            case let .success(sessionContext):
+            case let .success(sessionState):
                 let session = AdyenSession(
-                    configuration: configuration,
-                    sessionContext: sessionContext,
+                    state: sessionState,
                     baseAPIClient: apiClient,
-                    actionHandlingComponent: actionHandlingComponent,
+                    context: context,
                     delegate: delegate,
                     presentationDelegate: presentationDelegate
                 )
-                session.delegate = delegate
-                session.presentationDelegate = presentationDelegate
-                AnalyticsForSession.sessionId = sessionContext.identifier
+                AnalyticsForSession.sessionId = sessionState.identifier
                 completion(.success(session))
             case let .failure(error):
                 completion(.failure(error))
@@ -106,13 +112,13 @@ public final class AdyenSession: AdyenSessionProtocol {
     // swiftlint:enable function_parameter_count
     
     internal static func makeSetupCall(
-        with configuration: Configuration,
+        with initialInfo: AdyenSession.InitialInfo,
         baseAPIClient: APIClientProtocol,
         order: PartialPaymentOrder? = nil,
-        completion: @escaping ((Result<Context, Error>) -> Void)
+        completion: @escaping ((Result<State, Error>) -> Void)
     ) {
-        let sessionId = configuration.sessionIdentifier
-        let sessionData = configuration.initialSessionData
+        let sessionId = initialInfo.sessionIdentifier
+        let sessionData = initialInfo.initialSessionData
         let request = SessionSetupRequest(
             sessionId: sessionId,
             sessionData: sessionData,
@@ -123,7 +129,7 @@ public final class AdyenSession: AdyenSessionProtocol {
         apiClient.perform(request) { result in
             switch result {
             case let .success(response):
-                let sessionContext = Context(
+                let sessionState = State(
                     data: response.sessionData,
                     identifier: sessionId,
                     countryCode: response.countryCode,
@@ -132,7 +138,7 @@ public final class AdyenSession: AdyenSessionProtocol {
                     paymentMethods: response.paymentMethods,
                     responseConfiguration: response.configuration
                 )
-                completion(.success(sessionContext))
+                completion(.success(sessionState))
             case let .failure(error):
                 completion(.failure(error))
             }
@@ -142,20 +148,19 @@ public final class AdyenSession: AdyenSessionProtocol {
     // MARK: - Private
     
     private func updateSession(with data: SessionDataAware) {
-        sessionContext.data = data.sessionData
+        state.data = data.sessionData
     }
     
     private func updateSession(with result: SessionResultAware) {
-        sessionContext.resultCode = result.resultCode
-        sessionContext.sessionResult = result.sessionResult
+        state.resultCode = result.resultCode
+        state.sessionResult = result.sessionResult
     }
 }
 
 extension AdyenSession {
     
-    // TODO: remove adyen context and action config from this
-    /// Session configuration.
-    public struct Configuration {
+    /// Initial parameters required for the session call.
+    public struct InitialInfo {
         
         internal let sessionIdentifier: String
         
@@ -175,8 +180,8 @@ extension AdyenSession {
         }
     }
     
-    /// The session information
-    public struct Context {
+    /// Current state/information of session that gets updated after each internal call.
+    public struct State {
         
         /// The session data.
         public internal(set) var data: String
@@ -216,11 +221,11 @@ extension AdyenSession: AdyenSessionAware {
 @_spi(AdyenInternal)
 extension AdyenSession: InstallmentConfigurationAware {
     
-    public var installmentConfiguration: InstallmentConfiguration? { sessionContext.responseConfiguration.installmentOptions }
+    public var installmentConfiguration: InstallmentConfiguration? { state.responseConfiguration.installmentOptions }
 }
 
 @_spi(AdyenInternal)
 extension AdyenSession: StorePaymentMethodFieldAware {
     
-    public var showStorePaymentMethodField: Bool? { sessionContext.responseConfiguration.enableStoreDetails }
+    public var showStorePaymentMethodField: Bool? { state.responseConfiguration.enableStoreDetails }
 }

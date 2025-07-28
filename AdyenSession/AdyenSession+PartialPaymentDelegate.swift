@@ -16,8 +16,8 @@ extension AdyenSession: PartialPaymentDelegate {
         completion: @escaping (Result<Balance, Error>) -> Void
     ) {
         let request = BalanceCheckRequest(
-            sessionId: sessionContext.identifier,
-            sessionData: sessionContext.data,
+            sessionId: state.identifier,
+            sessionData: state.data,
             data: data
         )
         apiClient.perform(request) { [weak self] result in
@@ -53,8 +53,8 @@ extension AdyenSession: PartialPaymentDelegate {
     
     public func requestOrder(for component: Component, completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void) {
         let request = CreateOrderRequest(
-            sessionId: sessionContext.identifier,
-            sessionData: sessionContext.data
+            sessionId: state.identifier,
+            sessionData: state.data
         )
         apiClient.perform(request) { [weak self] result in
             self?.handle(result: result, completion: completion)
@@ -75,8 +75,8 @@ extension AdyenSession: PartialPaymentDelegate {
     
     public func cancelOrder(_ order: PartialPaymentOrder, component: Component) {
         let request = CancelOrderRequest(
-            sessionId: sessionContext.identifier,
-            sessionData: sessionContext.data,
+            sessionId: state.identifier,
+            sessionData: state.data,
             order: order
         )
         // no feedback needed from cancelOrder as the delegate will be called

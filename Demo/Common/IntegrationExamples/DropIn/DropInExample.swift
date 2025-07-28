@@ -51,11 +51,11 @@ internal final class DropInExample: InitialDataFlowProtocol {
     // MARK: - Networking
 
     private func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
-        requestAdyenSessionConfiguration { [weak self] response in
+        requestSessionInitialInfo { [weak self] response in
             guard let self else { return }
             
             switch response {
-            case let .success(config):
+            case let .success(model):
 //                AdyenSession.initialize(
 //                    with: config,
 //                    delegate: self,
@@ -78,7 +78,7 @@ internal final class DropInExample: InitialDataFlowProtocol {
     }
 
     private func dropInComponent(from session: AdyenSession) -> DropInComponent {
-        let paymentMethods = session.sessionContext.paymentMethods
+        let paymentMethods = session.state.paymentMethods
         let configuration = dropInConfiguration(from: paymentMethods)
         let component = DropInComponent(
             paymentMethods: paymentMethods,
