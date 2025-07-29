@@ -31,7 +31,7 @@ echo "📦 Exporting IPA..."
 xcodebuild -exportArchive \
   -archivePath ./Build-Temp/AdyenUIHost.xcarchive \
   -exportPath ./Build-Temp \
-  -exportOptionsPlist ./ExportOptions.plist \
+  -exportOptionsPlist ./exportOptions.plist \
   -quiet
 
 echo "☁️ Uploading to App Store Connect..."
