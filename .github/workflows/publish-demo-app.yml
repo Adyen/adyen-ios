@@ -27,12 +27,6 @@ on:
         required: true
       APPLE_APP_SPECIFIC_PASSWORD:
         required: true
-      XCODE_AUTHENTICATION_KEY_ID:
-        required: true
-      XCODE_AUTHENTICATION_KEY_ISSUER_ID:
-        required: true
-      XCODE_AUTHENTICATION_KEY_BASE64:
-        required: true
 
 jobs:
   Publish:
@@ -102,12 +96,5 @@ jobs:
         env:
           APPLE_ID_USERNAME: ${{ secrets.APPLE_ID_USERNAME }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
-          XCODE_AUTHENTICATION_KEY_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ID }}
-          XCODE_AUTHENTICATION_KEY_ISSUER_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ISSUER_ID }}
-          XCODE_AUTHENTICATION_KEY_BASE64: ${{ secrets.XCODE_AUTHENTICATION_KEY_BASE64 }}
         run: |
-          XCODE_AUTHENTICATION_KEY_PATH=$RUNNER_TEMP/auth_key.p8
-          echo -n "$XCODE_AUTHENTICATION_KEY_BASE64" | base64 --decode -o $XCODE_AUTHENTICATION_KEY_PATH
-          chmod 600 $XCODE_AUTHENTICATION_KEY_PATH
-
-          ./Scripts/publish-demo-app.sh "$APPLE_ID_USERNAME" "$APPLE_APP_SPECIFIC_PASSWORD" "$XCODE_AUTHENTICATION_KEY_PATH"
+          ./Scripts/publish-demo-app.sh "$APPLE_ID_USERNAME" "$APPLE_APP_SPECIFIC_PASSWORD"

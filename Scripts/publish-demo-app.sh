@@ -3,7 +3,7 @@ set -euo pipefail
 
 BUILD_PATH=Build-Temp
 
-# 1. Clean
+echo "📦 Cleaning..."
 xcodebuild clean -project Adyen.xcodeproj \
  -scheme AdyenUIHost \
  -destination="generic/platform=iOS" \
@@ -13,7 +13,7 @@ xcodebuild clean -project Adyen.xcodeproj \
 
 mkdir -p $BUILD_PATH
 
-# 2. Archive
+echo "📦 Archiving..."
 xcodebuild archive -project Adyen.xcodeproj \
  -scheme AdyenUIHost \
  -destination="generic/platform=iOS" \
@@ -21,25 +21,18 @@ xcodebuild archive -project Adyen.xcodeproj \
  -configuration Release \
  -archivePath $BUILD_PATH/AdyenUIHost.xcarchive \
  -allowProvisioningUpdates \
- -skipPackagePluginValidation \
- -authenticationKeyID $XCODE_AUTHENTICATION_KEY_ID \
- -authenticationKeyIssuerID $XCODE_AUTHENTICATION_KEY_ISSUER_ID \
- -authenticationKeyPath $3
+ -skipPackagePluginValidation
 
-# 3. Verify cert is installed
-echo "🧾 Available signing identities:"
+echo "🔍 Checking available identities..."
 security find-identity -v -p codesigning
 
-# 4. Export
+echo "📦 Exporting IPA with manual signing..."
 xcodebuild -exportArchive \
  -archivePath $BUILD_PATH/AdyenUIHost.xcarchive \
  -exportOptionsPlist exportOptions.plist \
  -exportPath $BUILD_PATH \
  -allowProvisioningUpdates \
- -skipPackagePluginValidation \
- -authenticationKeyID $XCODE_AUTHENTICATION_KEY_ID \
- -authenticationKeyIssuerID $XCODE_AUTHENTICATION_KEY_ISSUER_ID \
- -authenticationKeyPath $3
+ -skipPackagePluginValidation
 
-# 5. Upload
+echo "☁️ Uploading to App Store Connect..."
 xcrun altool --upload-app -f $BUILD_PATH/AdyenUIHost.ipa -u $1 -p $2 --type ios
