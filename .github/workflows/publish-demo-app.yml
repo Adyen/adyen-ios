@@ -71,10 +71,10 @@ jobs:
         echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o "$CERTIFICATE_PATH"
         if [ ! -s "$CERTIFICATE_PATH" ]; then
             echo "Error: Build certificate file is empty or missing after decoding."
-            ls -l "$RUNNER_TEMP"
+            ls -l "$RUNNER_TEMP" # List contents to verify
             exit 1
         fi
-        echo "Build certificate decoded to $CERTIFICATE_PATH"
+        echo "Build certificate decoded to $CERTIFICATE_PATH (size: $(stat -f%z "$CERTIFICATE_PATH") bytes)"
 
         echo "Attempting to decode DEVELOPMENT_CERTIFICATE_BASE64..."
         echo -n "$DEVELOPMENT_CERTIFICATE_BASE64" | base64 --decode -o "$DEV_CERTIFICATE_PATH"
@@ -82,17 +82,24 @@ jobs:
             echo "Warning: Development certificate file is empty or missing after decoding."
             # Don't exit here if it's optional
         fi
-        echo "Development certificate decoded to $DEV_CERTIFICATE_PATH"
+        echo "Development certificate decoded to $DEV_CERTIFICATE_PATH (size: $(stat -f%z "$DEV_CERTIFICATE_PATH") bytes)"
 
         echo "Attempting to decode BUILD_PROVISION_PROFILE_BASE64..."
         echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o "$PP_PATH"
         if [ ! -s "$PP_PATH" ]; then
-            echo "Error: Provisioning profile file is empty or missing after decoding."
+            echo "Error: Provisioning profile file is empty or missing after decoding. Base64 secret might be empty/invalid."
             ls -l "$RUNNER_TEMP"
             exit 1
         fi
-        echo "Provisioning profile decoded to $PP_PATH"
-        echo "File size of $PP_PATH: $(stat -f%z "$PP_PATH") bytes" # Check file size
+        echo "Provisioning profile decoded to $PP_PATH (size: $(stat -f%z "$PP_PATH") bytes)"
+        # --- NEW DEBUGGING STEP ---
+        echo "First 100 bytes of $PP_PATH (hex dump):"
+        head -c 100 "$PP_PATH" | xxd -p | tr -d '\n' | sed 's/../& /g' # Show hex dump
+        echo "" # Newline for readability
+        echo "Checking file type of $PP_PATH:"
+        file "$PP_PATH" # Show file type
+        # --- END NEW DEBUGGING STEP ---
+
 
         # create temporary keychain
         echo "Creating temporary keychain..."
@@ -118,10 +125,11 @@ jobs:
         # --- NEW: Extract names and make them available to subsequent steps ---
         # Extract Provisioning Profile Name
         echo "Attempting to extract Provisioning Profile Name..."
+        # Redirect stderr to /dev/null for security cms to silence "Cannot parse..." output
         PROVISIONING_PROFILE_NAME=$(security cms -D -i "$PP_PATH" 2>/dev/null | /usr/libexec/PlistBuddy -c "Print Name" /dev/stdin)
         if [ -z "$PROVISIONING_PROFILE_NAME" ]; then
-            echo "Error: Failed to extract Provisioning Profile Name. Content of profile may be invalid."
-            cat "$PP_PATH" # Dump profile content (use with caution, if sensitive data is not being redacted by GH)
+            echo "Error: Failed to extract Provisioning Profile Name. Content of profile may be invalid or not a valid CMS file."
+            # cat "$PP_PATH" # Temporarily uncomment this with EXTREME CAUTION to see raw content, but it will print secret data!
             exit 1
         fi
         echo "Extracted Provisioning Profile Name: $PROVISIONING_PROFILE_NAME"
