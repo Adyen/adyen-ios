@@ -114,4 +114,4 @@ jobs:
           fi
           echo "✨ Next build number: $BUILD_NUMBER"
 
-          ./Scripts/publish-demo-app.sh "$APPLE_ID_USERNAME" "$APPLE_APP_SPECIFIC_PASSWORD" "$BUILD_NUMBER"
+          ./Scripts/publish-demo-app.sh "$APPLE_ID_USERNAME" "$APPLE_APP_SPECIFIC_PASSWORD" $XCODE_AUTHENTICATION_KEY_PATH" "$BUILD_NUMBER"
