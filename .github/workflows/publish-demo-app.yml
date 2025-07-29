@@ -62,42 +62,82 @@ jobs:
 
         # create variables
         CERTIFICATE_PATH="$RUNNER_TEMP/build_certificate.p12"
-        DEV_CERTIFICATE_PATH="$RUNNER_TEMP/dev_certificate.p12" # Keep if needed for development signing, otherwise remove
+        DEV_CERTIFICATE_PATH="$RUNNER_TEMP/dev_certificate.p12"
         PP_PATH="$RUNNER_TEMP/build_pp.mobileprovision"
         KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
 
         # import certificate and provisioning profile from secrets
+        echo "Attempting to decode BUILD_CERTIFICATE_BASE64..."
         echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o "$CERTIFICATE_PATH"
-        echo -n "$DEVELOPMENT_CERTIFICATE_BASE64" | base64 --decode -o "$DEV_CERTIFICATE_PATH" # Keep if needed
+        if [ ! -s "$CERTIFICATE_PATH" ]; then
+            echo "Error: Build certificate file is empty or missing after decoding."
+            ls -l "$RUNNER_TEMP"
+            exit 1
+        fi
+        echo "Build certificate decoded to $CERTIFICATE_PATH"
+
+        echo "Attempting to decode DEVELOPMENT_CERTIFICATE_BASE64..."
+        echo -n "$DEVELOPMENT_CERTIFICATE_BASE64" | base64 --decode -o "$DEV_CERTIFICATE_PATH"
+        if [ ! -s "$DEV_CERTIFICATE_PATH" ]; then
+            echo "Warning: Development certificate file is empty or missing after decoding."
+            # Don't exit here if it's optional
+        fi
+        echo "Development certificate decoded to $DEV_CERTIFICATE_PATH"
+
+        echo "Attempting to decode BUILD_PROVISION_PROFILE_BASE64..."
         echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o "$PP_PATH"
+        if [ ! -s "$PP_PATH" ]; then
+            echo "Error: Provisioning profile file is empty or missing after decoding."
+            ls -l "$RUNNER_TEMP"
+            exit 1
+        fi
+        echo "Provisioning profile decoded to $PP_PATH"
+        echo "File size of $PP_PATH: $(stat -f%z "$PP_PATH") bytes" # Check file size
 
         # create temporary keychain
+        echo "Creating temporary keychain..."
         security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
         security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
         security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+        echo "Keychain created and unlocked."
 
         # import release certificate to keychain
+        echo "Importing certificates to keychain..."
         security import "$CERTIFICATE_PATH" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
-        security import "$DEV_CERTIFICATE_PATH" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH" # Keep if needed
+        security import "$DEV_CERTIFICATE_PATH" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
         security list-keychain -d user -s "$KEYCHAIN_PATH"
+        echo "Certificates imported."
+        security find-identity -p codesigning "$KEYCHAIN_PATH" # List identities for debugging
 
         # apply provisioning profile
+        echo "Copying provisioning profile..."
         mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
         cp "$PP_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles"
-        
+        echo "Provisioning profile copied."
+
         # --- NEW: Extract names and make them available to subsequent steps ---
         # Extract Provisioning Profile Name
-        PROVISIONING_PROFILE_NAME=$(security cms -D -i "$PP_PATH" | /usr/libexec/PlistBuddy -c "Print Name" /dev/stdin)
+        echo "Attempting to extract Provisioning Profile Name..."
+        PROVISIONING_PROFILE_NAME=$(security cms -D -i "$PP_PATH" 2>/dev/null | /usr/libexec/PlistBuddy -c "Print Name" /dev/stdin)
+        if [ -z "$PROVISIONING_PROFILE_NAME" ]; then
+            echo "Error: Failed to extract Provisioning Profile Name. Content of profile may be invalid."
+            cat "$PP_PATH" # Dump profile content (use with caution, if sensitive data is not being redacted by GH)
+            exit 1
+        fi
         echo "Extracted Provisioning Profile Name: $PROVISIONING_PROFILE_NAME"
         echo "PROVISIONING_PROFILE_NAME=$PROVISIONING_PROFILE_NAME" >> "$GITHUB_ENV"
 
         # Extract Code Sign Identity Name from the certificate
-        # This assumes the certificate is a standard "Apple Distribution: Your Name (TeamID)" format
-        # Adjust the grep/cut command if your certificate name varies
+        echo "Attempting to extract Code Sign Identity Name..."
         CODE_SIGN_IDENTITY_NAME=$(security find-identity -p codesigning "$KEYCHAIN_PATH" | grep "Apple Distribution" | head -n 1 | sed -E 's/.*"(.+)".*/\1/')
         if [ -z "$CODE_SIGN_IDENTITY_NAME" ]; then
             # Fallback if "Apple Distribution" not found, try "iPhone Distribution" (older or enterprise)
             CODE_SIGN_IDENTITY_NAME=$(security find-identity -p codesigning "$KEYCHAIN_PATH" | grep "iPhone Distribution" | head -n 1 | sed -E 's/.*"(.+)".*/\1/')
+        fi
+        if [ -z "$CODE_SIGN_IDENTITY_NAME" ]; then
+            echo "Error: Failed to extract Code Sign Identity Name from keychain. No matching identity found."
+            security find-identity -p codesigning -v "$KEYCHAIN_PATH" # Verbose output
+            exit 1
         fi
         echo "Extracted Code Sign Identity Name: $CODE_SIGN_IDENTITY_NAME"
         echo "CODE_SIGN_IDENTITY_NAME=$CODE_SIGN_IDENTITY_NAME" >> "$GITHUB_ENV"
