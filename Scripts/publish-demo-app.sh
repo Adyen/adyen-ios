@@ -2,9 +2,11 @@
 set -euo pipefail
 
 # Constants
-BUILD_PATH="Build-Temp"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BUILD_PATH="$SCRIPT_DIR/../Build-Temp"
 ARCHIVE_PATH="$BUILD_PATH/AdyenUIHost.xcarchive"
 IPA_PATH="$BUILD_PATH/AdyenUIHost.ipa"
+EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions.plist"
 
 # Input arguments
 APPLE_ID_USERNAME="${1:-}"
@@ -49,7 +51,7 @@ xcodebuild archive -project Adyen.xcodeproj \
 echo "📤 Exporting .ipa..."
 xcodebuild -exportArchive \
   -archivePath "$ARCHIVE_PATH" \
-  -exportOptionsPlist exportOptions.plist \
+  -exportOptionsPlist "$EXPORT_OPTIONS_PLIST" \
   -exportPath "$BUILD_PATH" \
   -allowProvisioningUpdates \
   -skipPackagePluginValidation \
@@ -64,4 +66,4 @@ xcrun altool --upload-app \
   -p "$APPLE_APP_SPECIFIC_PASSWORD" \
   --type ios
 
-echo "✅ Done!"
+echo "✅ Upload complete!"
