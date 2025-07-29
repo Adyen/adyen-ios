@@ -1,22 +1,16 @@
 name: 🚀 Publish Demo App
 on:
   workflow_dispatch:
-    inputs:
-      provisioning_profile_name: # For manual trigger if needed
-        description: 'Name of the provisioning profile (e.g., "Adyen App Store Distribution Profile")'
-        required: true
-        type: string
-      code_sign_identity_name: # For manual trigger if needed
-        description: 'Name of the code signing identity (e.g., "Apple Distribution: Adyen B.V. (YOUR_TEAM_ID)")'
-        required: true
-        type: string
-      # Other inputs you might want for manual dispatch if not already there
-      # e.g., environment, merchant_account, etc. derived from secrets below
+    # No inputs here if you want them always from secrets for manual runs too
+    # If you want to allow manual overrides, you could keep them as optional inputs
+    # and use a coalesce-like expression:
+    # ${{ github.event.inputs.provisioning_profile_name || secrets.PROVISIONING_PROFILE_NAME }}
+    # But for simplicity, if you truly want them *only* from secrets, remove inputs.
   workflow_call:
     secrets: # When triggered via another workflow, secrets are not automatically forwarded
-      BUILD_CERTIFICATE_BASE64:
+      BUILD_CERTIFICATE_BASE664:
         required: true
-      DEVELOPMENT_CERTIFICATE_BASE64: # If used for local development signing, keep it. Otherwise, might be removable for App Store builds.
+      DEVELOPMENT_CERTIFICATE_BASE64:
         required: true
       P12_PASSWORD:
         required: true
@@ -32,9 +26,9 @@ on:
         required: true
       APPLE_DEVELOPMENT_TEAM_ID:
         required: true
-      PROVISIONING_PROFILE_NAME: # RE-ADDED AS A REQUIRED SECRET
+      PROVISIONING_PROFILE_NAME: # This is the secret you've already added
         required: true
-      CODE_SIGN_IDENTITY_NAME: # RE-ADDED AS A REQUIRED SECRET
+      CODE_SIGN_IDENTITY_NAME: # This is the secret you've already added
         required: true
       ENVIRONMENT:
         required: true
@@ -77,7 +71,7 @@ jobs:
 
         # create variables
         CERTIFICATE_PATH="$RUNNER_TEMP/build_certificate.p12"
-        DEV_CERTIFICATE_PATH="$RUNNER_TEMP/dev_certificate.p12" # Keep if needed for development signing, otherwise remove
+        DEV_CERTIFICATE_PATH="$RUNNER_TEMP/dev_certificate.p12"
         PP_PATH="$RUNNER_TEMP/build_pp.mobileprovision"
         KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
 
@@ -129,9 +123,7 @@ jobs:
         cp "$PP_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles"
         echo "Provisioning profile copied."
 
-        # --- REMOVED: Dynamic extraction of PROVISIONING_PROFILE_NAME and CODE_SIGN_IDENTITY_NAME
-        #     Now these are provided directly via secrets
-        # ---
+        # No dynamic extraction here, relying on secrets directly.
         
     - name: Configure Demo App
       env:
@@ -160,7 +152,7 @@ jobs:
         sed -i '' "s/static let demoServerEnvironment.*=.*/static let demoServerEnvironment = DemoCheckoutAPIEnvironment.$ENVIRONMENT/g" ./Demo/Configuration.swift
 
         # classicAPIEnvironment
-        sed -i '' "s/static let classicAPIEnvironment.*=.*/static let classicAPIEnvironment = DemoClassicAPIAPIEnvironment.$ENVIRONMENT/g" ./Demo/Configuration.swift # Corrected typo "APIAPI" to "API"
+        sed -i '' "s/static let classicAPIEnvironment.*=.*/static let classicAPIEnvironment = DemoClassicAPIEnvironment.$ENVIRONMENT/g" ./Demo/Configuration.swift
 
         # componentsEnvironment
         sed -i '' "s/static let componentsEnvironment.*=.*/static let componentsEnvironment = Environment.$ENVIRONMENT/g" ./Demo/Configuration.swift
@@ -168,7 +160,6 @@ jobs:
     - name: Clean Xcode Derived Data and Caches
       run: |
         echo "Cleaning Xcode build folder..."
-        # Adjust workspace and scheme names to your actual project if different
         xcodebuild clean -workspace "Adyen.xcworkspace" -scheme "AdyenUIHost" || true 
         
         echo "Deleting Derived Data..."
@@ -186,7 +177,7 @@ jobs:
         # pod deintegrate
         
         echo "Cleaning Swift Package Manager caches (if applicable)..."
-        swift package clean || true # This cleans SPM build artifacts within the project
+        swift package clean || true
         
         echo "Done cleaning."
 
@@ -197,7 +188,7 @@ jobs:
         XCODE_AUTHENTICATION_KEY_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ID }}
         XCODE_AUTHENTICATION_KEY_ISSUER_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ISSUER_ID }}
         XCODE_AUTHENTICATION_KEY_BASE64: ${{ secrets.XCODE_AUTHENTICATION_KEY_BASE64 }}
-        # Pass the explicitly provided names from secrets
+        # Pass the explicitly provided names from secrets to the script
         APPLE_DEVELOPMENT_TEAM_ID: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
         PROVISIONING_PROFILE_NAME: ${{ secrets.PROVISIONING_PROFILE_NAME }} # Directly from secret
         CODE_SIGN_IDENTITY_NAME: ${{ secrets.CODE_SIGN_IDENTITY_NAME }}     # Directly from secret
