@@ -59,11 +59,11 @@ xcodebuild -exportArchive \
   -authenticationKeyIssuerID "$XCODE_AUTHENTICATION_KEY_ISSUER_ID" \
   -authenticationKeyPath "$AUTH_KEY_PATH"
 
-echo "☁️ Uploading to App Store Connect using API key..."
+echo "☁️ Uploading to App Store Connect..."
 xcrun altool --upload-app \
   -f "$IPA_PATH" \
-  --type ios \
-  --apiKey "$XCODE_AUTHENTICATION_KEY_ID" \
-  --apiIssuer "$XCODE_AUTHENTICATION_KEY_ISSUER_ID"
+  -u "$APPLE_ID_USERNAME" \
+  -p "$APPLE_APP_SPECIFIC_PASSWORD" \
+  --type ios
 
 echo "✅ Upload complete!"
