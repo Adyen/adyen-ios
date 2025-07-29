@@ -40,8 +40,8 @@ jobs:
         # Xcode 16.1 - iOS 16
         - version: '16.0'
           runtime: 'iOS-16-0'
-          device: 'iPhone 14'
-          displayname: 'iPhone-14'
+          device: 'iPhone 14 Pro'
+          displayname: 'iPhone-14-Pro'
           os: 'macos-14-large'
           needs_custom_sim: true
           
