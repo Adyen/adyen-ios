@@ -8,20 +8,18 @@ ARCHIVE_PATH="$BUILD_PATH/AdyenUIHost.xcarchive"
 IPA_PATH="$BUILD_PATH/AdyenUIHost.ipa"
 EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions.plist"
 
-echo "options path: $EXPORT_OPTIONS_PLIST"
-
 # Input arguments
 APPLE_ID_USERNAME="${1:-}"
 APPLE_APP_SPECIFIC_PASSWORD="${2:-}"
-XCODE_AUTHENTICATION_KEY_PATH="${3:-}"
+AUTH_KEY_PATH="${3:-}"
 
 # Required environment variables
 : "${XCODE_AUTHENTICATION_KEY_ID:?Environment variable XCODE_AUTHENTICATION_KEY_ID not set}"
 : "${XCODE_AUTHENTICATION_KEY_ISSUER_ID:?Environment variable XCODE_AUTHENTICATION_KEY_ISSUER_ID not set}"
 
 # Validate arguments
-if [[ -z "$APPLE_ID_USERNAME" || -z "$APPLE_APP_SPECIFIC_PASSWORD" || -z "$XCODE_AUTHENTICATION_KEY_PATH" ]]; then
-    echo "Usage: $0 <APPLE_ID_USERNAME> <APPLE_APP_SPECIFIC_PASSWORD> <XCODE_AUTHENTICATION_KEY_PATH>"
+if [[ -z "$APPLE_ID_USERNAME" || -z "$APPLE_APP_SPECIFIC_PASSWORD" || -z "$AUTH_KEY_PATH" ]]; then
+    echo "Usage: $0 <APPLE_ID_USERNAME> <APPLE_APP_SPECIFIC_PASSWORD> <AUTH_KEY_PATH>"
     exit 1
 fi
 
@@ -48,7 +46,7 @@ xcodebuild archive -project Adyen.xcodeproj \
   -skipPackagePluginValidation \
   -authenticationKeyID "$XCODE_AUTHENTICATION_KEY_ID" \
   -authenticationKeyIssuerID "$XCODE_AUTHENTICATION_KEY_ISSUER_ID" \
-  -authenticationKeyPath "$XCODE_AUTHENTICATION_KEY_PATH"
+  -authenticationKeyPath "$AUTH_KEY_PATH"
 
 echo "📤 Exporting .ipa..."
 xcodebuild -exportArchive \
@@ -59,7 +57,7 @@ xcodebuild -exportArchive \
   -skipPackagePluginValidation \
   -authenticationKeyID "$XCODE_AUTHENTICATION_KEY_ID" \
   -authenticationKeyIssuerID "$XCODE_AUTHENTICATION_KEY_ISSUER_ID" \
-  -authenticationKeyPath "$XCODE_AUTHENTICATION_KEY_PATH"
+  -authenticationKeyPath "$AUTH_KEY_PATH"
 
 echo "☁️ Uploading to App Store Connect..."
 xcrun altool --upload-app \
