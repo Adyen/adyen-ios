@@ -8,8 +8,22 @@ ARCHIVE_PATH="$BUILD_PATH/AdyenUIHost.xcarchive"
 IPA_PATH="$BUILD_PATH/AdyenUIHost.ipa"
 EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions.plist"
 
-# Input arguments
-AUTH_KEY_PATH="${1:-}"
+# Input: Path to App Store Connect API Key (.p8)
+AUTH_KEY_PATH_RAW="${1:-}"
+if [[ -z "$AUTH_KEY_PATH_RAW" ]]; then
+    echo "Usage: $0 <AUTH_KEY_PATH>"
+    exit 1
+fi
+
+# Resolve absolute path to the auth key
+AUTH_KEY_PATH="$(cd "$(dirname "$AUTH_KEY_PATH_RAW")" && pwd)/$(basename "$AUTH_KEY_PATH_RAW")"
+
+
+# Validate that file exists
+if [[ ! -f "$AUTH_KEY_PATH" ]]; then
+    echo "❌ Error: AUTH_KEY_PATH does not point to a valid file: $AUTH_KEY_PATH"
+    exit 1
+fi
 
 # Required env vars
 : "${XCODE_AUTHENTICATION_KEY_ID:?Environment variable XCODE_AUTHENTICATION_KEY_ID not set}"
