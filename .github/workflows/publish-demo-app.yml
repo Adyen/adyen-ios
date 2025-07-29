@@ -76,27 +76,11 @@ jobs:
 
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-          
+
       - name: Extract App Bundle ID from Info.plist
         id: extract_bundle_id
         run: |
-          INFO_PLIST_PATH=$(find . -name Info.plist | grep "Demo/Info.plist" | head -n 1)
-    
-          if [ -z "$INFO_PLIST_PATH" ]; then
-           echo "❌ Info.plist for Demo app not found."
-          exit 1
-          fi
-
-          echo "📄 Using Info.plist at: $INFO_PLIST_PATH"
-
-          BUNDLE_ID=$(/usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "$INFO_PLIST_PATH" 2>/dev/null || true)
-
-          if [ -z "$BUNDLE_ID" ]; then
-            echo "❌ CFBundleIdentifier not found in Info.plist"
-            cat "$INFO_PLIST_PATH"
-            exit 1
-          fi
-
+          BUNDLE_ID=$(/usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "Demo/UIKit/Info.plist")
           echo "APP_BUNDLE_ID=$BUNDLE_ID" >> $GITHUB_ENV
           echo "✅ Extracted APP_BUNDLE_ID=$BUNDLE_ID"
 
