@@ -8,6 +8,8 @@ ARCHIVE_PATH="$BUILD_PATH/AdyenUIHost.xcarchive"
 IPA_PATH="$BUILD_PATH/AdyenUIHost.ipa"
 EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions.plist"
 
+echo "options path: $EXPORT_OPTIONS_PLIST"
+
 # Input arguments
 APPLE_ID_USERNAME="${1:-}"
 APPLE_APP_SPECIFIC_PASSWORD="${2:-}"
