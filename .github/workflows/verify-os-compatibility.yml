@@ -35,6 +35,7 @@ jobs:
           device: 'iPhone 15 Pro'
           displayname: 'iPhone-15-Pro'
           os: 'macos-14-large'
+          xcode_version: '16.1'
           needs_custom_sim: true
 
         # Xcode 16.1 - iOS 16
@@ -43,6 +44,7 @@ jobs:
           device: 'iPhone 14 Pro'
           displayname: 'iPhone-14-Pro'
           os: 'macos-14-large'
+          xcode_version: '16.1'
           needs_custom_sim: true
           
         # Xcode 16.1 - iOS 15
