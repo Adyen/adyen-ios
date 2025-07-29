@@ -1,6 +1,17 @@
 name: 🚀 Publish Demo App
 on:
   workflow_dispatch:
+    inputs:
+      provisioning_profile_name: # For manual trigger if needed
+        description: 'Name of the provisioning profile (e.g., "Adyen App Store Distribution Profile")'
+        required: true
+        type: string
+      code_sign_identity_name: # For manual trigger if needed
+        description: 'Name of the code signing identity (e.g., "Apple Distribution: Adyen B.V. (YOUR_TEAM_ID)")'
+        required: true
+        type: string
+      # Other inputs you might want for manual dispatch if not already there
+      # e.g., environment, merchant_account, etc. derived from secrets below
   workflow_call:
     secrets: # When triggered via another workflow, secrets are not automatically forwarded
       BUILD_CERTIFICATE_BASE64:
@@ -20,6 +31,10 @@ on:
       MERCHANT_ACCOUNT:
         required: true
       APPLE_DEVELOPMENT_TEAM_ID:
+        required: true
+      PROVISIONING_PROFILE_NAME: # RE-ADDED AS A REQUIRED SECRET
+        required: true
+      CODE_SIGN_IDENTITY_NAME: # RE-ADDED AS A REQUIRED SECRET
         required: true
       ENVIRONMENT:
         required: true
@@ -62,7 +77,7 @@ jobs:
 
         # create variables
         CERTIFICATE_PATH="$RUNNER_TEMP/build_certificate.p12"
-        DEV_CERTIFICATE_PATH="$RUNNER_TEMP/dev_certificate.p12"
+        DEV_CERTIFICATE_PATH="$RUNNER_TEMP/dev_certificate.p12" # Keep if needed for development signing, otherwise remove
         PP_PATH="$RUNNER_TEMP/build_pp.mobileprovision"
         KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
 
@@ -71,7 +86,7 @@ jobs:
         echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o "$CERTIFICATE_PATH"
         if [ ! -s "$CERTIFICATE_PATH" ]; then
             echo "Error: Build certificate file is empty or missing after decoding."
-            ls -l "$RUNNER_TEMP" # List contents to verify
+            ls -l "$RUNNER_TEMP"
             exit 1
         fi
         echo "Build certificate decoded to $CERTIFICATE_PATH (size: $(stat -f%z "$CERTIFICATE_PATH") bytes)"
@@ -80,7 +95,6 @@ jobs:
         echo -n "$DEVELOPMENT_CERTIFICATE_BASE64" | base64 --decode -o "$DEV_CERTIFICATE_PATH"
         if [ ! -s "$DEV_CERTIFICATE_PATH" ]; then
             echo "Warning: Development certificate file is empty or missing after decoding."
-            # Don't exit here if it's optional
         fi
         echo "Development certificate decoded to $DEV_CERTIFICATE_PATH (size: $(stat -f%z "$DEV_CERTIFICATE_PATH") bytes)"
 
@@ -92,14 +106,7 @@ jobs:
             exit 1
         fi
         echo "Provisioning profile decoded to $PP_PATH (size: $(stat -f%z "$PP_PATH") bytes)"
-        # --- NEW DEBUGGING STEP ---
-        echo "First 100 bytes of $PP_PATH (hex dump):"
-        head -c 100 "$PP_PATH" | xxd -p | tr -d '\n' | sed 's/../& /g' # Show hex dump
-        echo "" # Newline for readability
-        echo "Checking file type of $PP_PATH:"
-        file "$PP_PATH" # Show file type
-        # --- END NEW DEBUGGING STEP ---
-
+        echo "File type of $PP_PATH: $(file "$PP_PATH")" # Debugging: show file type
 
         # create temporary keychain
         echo "Creating temporary keychain..."
@@ -122,35 +129,10 @@ jobs:
         cp "$PP_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles"
         echo "Provisioning profile copied."
 
-        # --- NEW: Extract names and make them available to subsequent steps ---
-        # Extract Provisioning Profile Name
-        echo "Attempting to extract Provisioning Profile Name..."
-        # Redirect stderr to /dev/null for security cms to silence "Cannot parse..." output
-        PROVISIONING_PROFILE_NAME=$(security cms -D -i "$PP_PATH" 2>/dev/null | /usr/libexec/PlistBuddy -c "Print Name" /dev/stdin)
-        if [ -z "$PROVISIONING_PROFILE_NAME" ]; then
-            echo "Error: Failed to extract Provisioning Profile Name. Content of profile may be invalid or not a valid CMS file."
-            # cat "$PP_PATH" # Temporarily uncomment this with EXTREME CAUTION to see raw content, but it will print secret data!
-            exit 1
-        fi
-        echo "Extracted Provisioning Profile Name: $PROVISIONING_PROFILE_NAME"
-        echo "PROVISIONING_PROFILE_NAME=$PROVISIONING_PROFILE_NAME" >> "$GITHUB_ENV"
-
-        # Extract Code Sign Identity Name from the certificate
-        echo "Attempting to extract Code Sign Identity Name..."
-        CODE_SIGN_IDENTITY_NAME=$(security find-identity -p codesigning "$KEYCHAIN_PATH" | grep "Apple Distribution" | head -n 1 | sed -E 's/.*"(.+)".*/\1/')
-        if [ -z "$CODE_SIGN_IDENTITY_NAME" ]; then
-            # Fallback if "Apple Distribution" not found, try "iPhone Distribution" (older or enterprise)
-            CODE_SIGN_IDENTITY_NAME=$(security find-identity -p codesigning "$KEYCHAIN_PATH" | grep "iPhone Distribution" | head -n 1 | sed -E 's/.*"(.+)".*/\1/')
-        fi
-        if [ -z "$CODE_SIGN_IDENTITY_NAME" ]; then
-            echo "Error: Failed to extract Code Sign Identity Name from keychain. No matching identity found."
-            security find-identity -p codesigning -v "$KEYCHAIN_PATH" # Verbose output
-            exit 1
-        fi
-        echo "Extracted Code Sign Identity Name: $CODE_SIGN_IDENTITY_NAME"
-        echo "CODE_SIGN_IDENTITY_NAME=$CODE_SIGN_IDENTITY_NAME" >> "$GITHUB_ENV"
-        # --- END NEW ---
-
+        # --- REMOVED: Dynamic extraction of PROVISIONING_PROFILE_NAME and CODE_SIGN_IDENTITY_NAME
+        #     Now these are provided directly via secrets
+        # ---
+        
     - name: Configure Demo App
       env:
         CLIENT_KEY: ${{ secrets.DEMO_APP_TEST_ENV_CLIENT_KEY }}
@@ -178,7 +160,7 @@ jobs:
         sed -i '' "s/static let demoServerEnvironment.*=.*/static let demoServerEnvironment = DemoCheckoutAPIEnvironment.$ENVIRONMENT/g" ./Demo/Configuration.swift
 
         # classicAPIEnvironment
-        sed -i '' "s/static let classicAPIEnvironment.*=.*/static let classicAPIEnvironment = DemoClassicAPIEnvironment.$ENVIRONMENT/g" ./Demo/Configuration.swift
+        sed -i '' "s/static let classicAPIEnvironment.*=.*/static let classicAPIEnvironment = DemoClassicAPIAPIEnvironment.$ENVIRONMENT/g" ./Demo/Configuration.swift # Corrected typo "APIAPI" to "API"
 
         # componentsEnvironment
         sed -i '' "s/static let componentsEnvironment.*=.*/static let componentsEnvironment = Environment.$ENVIRONMENT/g" ./Demo/Configuration.swift
@@ -215,10 +197,10 @@ jobs:
         XCODE_AUTHENTICATION_KEY_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ID }}
         XCODE_AUTHENTICATION_KEY_ISSUER_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ISSUER_ID }}
         XCODE_AUTHENTICATION_KEY_BASE64: ${{ secrets.XCODE_AUTHENTICATION_KEY_BASE64 }}
-        # Pass the extracted names to the script
+        # Pass the explicitly provided names from secrets
         APPLE_DEVELOPMENT_TEAM_ID: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
-        PROVISIONING_PROFILE_NAME: ${{ env.PROVISIONING_PROFILE_NAME }} # Use env context
-        CODE_SIGN_IDENTITY_NAME: ${{ env.CODE_SIGN_IDENTITY_NAME }}     # Use env context
+        PROVISIONING_PROFILE_NAME: ${{ secrets.PROVISIONING_PROFILE_NAME }} # Directly from secret
+        CODE_SIGN_IDENTITY_NAME: ${{ secrets.CODE_SIGN_IDENTITY_NAME }}     # Directly from secret
       run: |
         XCODE_AUTHENTICATION_KEY_PATH="$RUNNER_TEMP/authentication_key_path.p8"
         rm -f "$XCODE_AUTHENTICATION_KEY_PATH"
