@@ -29,7 +29,7 @@ xcodebuild archive \
     -archivePath $BUILD_PATH/AdyenUIHost.xcarchive \
     -allowProvisioningUpdates \
     -allowProvisioningDeviceRegistration \
-    -derivedDataPath $BUILD_PATH/DerivedData
+    -derivedDataPath $BUILD_PATH/DerivedData \
     -skipPackagePluginValidation \
     -authenticationKeyID $XCODE_AUTHENTICATION_KEY_ID \
     -authenticationKeyIssuerID $XCODE_AUTHENTICATION_KEY_ISSUER_ID \
@@ -48,7 +48,7 @@ xcodebuild -exportArchive \
     -skipPackagePluginValidation \
     -authenticationKeyID $XCODE_AUTHENTICATION_KEY_ID \
     -authenticationKeyIssuerID $XCODE_AUTHENTICATION_KEY_ISSUER_ID \
-    -authenticationKeyPath $3
+    -authenticationKeyPath $XCODE_AUTHENTICATION_KEY_PATH
 
 echo "☁️ Uploading to App Store Connect..."
 
