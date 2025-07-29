@@ -5,7 +5,7 @@
     <key>method</key>
     <string>app-store</string>
     <key>signingStyle</key>
-    <string>manual</string>
+    <string>automatic</string>
     <key>teamID</key>
     <string>B2NYSS5932</string>
     <key>teamName</key>

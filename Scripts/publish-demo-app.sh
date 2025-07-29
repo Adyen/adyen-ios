@@ -9,24 +9,21 @@ IPA_PATH="$BUILD_PATH/AdyenUIHost.ipa"
 EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions.plist"
 
 # Input arguments
-APPLE_ID_USERNAME="${1:-}"
-APPLE_APP_SPECIFIC_PASSWORD="${2:-}"
-AUTH_KEY_PATH="${3:-}"
+AUTH_KEY_PATH="${1:-}"
 
-# Required environment variables
+# Required env vars
 : "${XCODE_AUTHENTICATION_KEY_ID:?Environment variable XCODE_AUTHENTICATION_KEY_ID not set}"
 : "${XCODE_AUTHENTICATION_KEY_ISSUER_ID:?Environment variable XCODE_AUTHENTICATION_KEY_ISSUER_ID not set}"
 
-# Validate arguments
-if [[ -z "$APPLE_ID_USERNAME" || -z "$APPLE_APP_SPECIFIC_PASSWORD" || -z "$AUTH_KEY_PATH" ]]; then
-    echo "Usage: $0 <APPLE_ID_USERNAME> <APPLE_APP_SPECIFIC_PASSWORD> <AUTH_KEY_PATH>"
+# Validate
+if [[ -z "$AUTH_KEY_PATH" ]]; then
+    echo "Usage: $0 <AUTH_KEY_PATH>"
     exit 1
 fi
 
 echo "🧹 Cleaning project..."
 xcodebuild clean -project Adyen.xcodeproj \
   -scheme AdyenUIHost \
-  -destination "generic/platform=iOS" \
   -sdk iphoneos \
   -configuration Release \
   -skipPackagePluginValidation
@@ -35,7 +32,7 @@ echo "📁 Creating build directory..."
 rm -rf "$BUILD_PATH"
 mkdir -p "$BUILD_PATH"
 
-echo "📦 Archiving app..."
+echo "📦 Archiving app (manual signing will be enforced at export)..."
 xcodebuild archive -project Adyen.xcodeproj \
   -scheme AdyenUIHost \
   -destination "generic/platform=iOS" \
@@ -43,12 +40,9 @@ xcodebuild archive -project Adyen.xcodeproj \
   -configuration Release \
   -archivePath "$ARCHIVE_PATH" \
   -allowProvisioningUpdates \
-  -skipPackagePluginValidation \
-  -authenticationKeyID "$XCODE_AUTHENTICATION_KEY_ID" \
-  -authenticationKeyIssuerID "$XCODE_AUTHENTICATION_KEY_ISSUER_ID" \
-  -authenticationKeyPath "$AUTH_KEY_PATH"
+  -skipPackagePluginValidation
 
-echo "📤 Exporting .ipa..."
+echo "📤 Exporting .ipa with manual signing..."
 xcodebuild -exportArchive \
   -archivePath "$ARCHIVE_PATH" \
   -exportOptionsPlist "$EXPORT_OPTIONS_PLIST" \
