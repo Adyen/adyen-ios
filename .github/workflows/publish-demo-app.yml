@@ -1,14 +1,9 @@
 name: 🚀 Publish Demo App
 on:
   workflow_dispatch:
-    # No inputs here if you want them always from secrets for manual runs too
-    # If you want to allow manual overrides, you could keep them as optional inputs
-    # and use a coalesce-like expression:
-    # ${{ github.event.inputs.provisioning_profile_name || secrets.PROVISIONING_PROFILE_NAME }}
-    # But for simplicity, if you truly want them *only* from secrets, remove inputs.
   workflow_call:
     secrets: # When triggered via another workflow, secrets are not automatically forwarded
-      BUILD_CERTIFICATE_BASE664:
+      BUILD_CERTIFICATE_BASE64:
         required: true
       DEVELOPMENT_CERTIFICATE_BASE64:
         required: true
@@ -25,10 +20,6 @@ on:
       MERCHANT_ACCOUNT:
         required: true
       APPLE_DEVELOPMENT_TEAM_ID:
-        required: true
-      PROVISIONING_PROFILE_NAME: # This is the secret you've already added
-        required: true
-      CODE_SIGN_IDENTITY_NAME: # This is the secret you've already added
         required: true
       ENVIRONMENT:
         required: true
@@ -70,60 +61,29 @@ jobs:
       run: |
 
         # create variables
-        CERTIFICATE_PATH="$RUNNER_TEMP/build_certificate.p12"
-        DEV_CERTIFICATE_PATH="$RUNNER_TEMP/dev_certificate.p12"
-        PP_PATH="$RUNNER_TEMP/build_pp.mobileprovision"
-        KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
+        CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+        DEV_CERTIFICATE_PATH=$RUNNER_TEMP/dev_certificate.p12
+        PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+        KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
         # import certificate and provisioning profile from secrets
-        echo "Attempting to decode BUILD_CERTIFICATE_BASE64..."
-        echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o "$CERTIFICATE_PATH"
-        if [ ! -s "$CERTIFICATE_PATH" ]; then
-            echo "Error: Build certificate file is empty or missing after decoding."
-            ls -l "$RUNNER_TEMP"
-            exit 1
-        fi
-        echo "Build certificate decoded to $CERTIFICATE_PATH (size: $(stat -f%z "$CERTIFICATE_PATH") bytes)"
-
-        echo "Attempting to decode DEVELOPMENT_CERTIFICATE_BASE64..."
-        echo -n "$DEVELOPMENT_CERTIFICATE_BASE64" | base64 --decode -o "$DEV_CERTIFICATE_PATH"
-        if [ ! -s "$DEV_CERTIFICATE_PATH" ]; then
-            echo "Warning: Development certificate file is empty or missing after decoding."
-        fi
-        echo "Development certificate decoded to $DEV_CERTIFICATE_PATH (size: $(stat -f%z "$DEV_CERTIFICATE_PATH") bytes)"
-
-        echo "Attempting to decode BUILD_PROVISION_PROFILE_BASE64..."
-        echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o "$PP_PATH"
-        if [ ! -s "$PP_PATH" ]; then
-            echo "Error: Provisioning profile file is empty or missing after decoding. Base64 secret might be empty/invalid."
-            ls -l "$RUNNER_TEMP"
-            exit 1
-        fi
-        echo "Provisioning profile decoded to $PP_PATH (size: $(stat -f%z "$PP_PATH") bytes)"
-        echo "File type of $PP_PATH: $(file "$PP_PATH")" # Debugging: show file type
+        echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
+        echo -n "$DEVELOPMENT_CERTIFICATE_BASE64" | base64 --decode -o $DEV_CERTIFICATE_PATH
+        echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
 
         # create temporary keychain
-        echo "Creating temporary keychain..."
-        security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-        security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
-        security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
-        echo "Keychain created and unlocked."
+        security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+        security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+        security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
 
         # import release certificate to keychain
-        echo "Importing certificates to keychain..."
-        security import "$CERTIFICATE_PATH" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
-        security import "$DEV_CERTIFICATE_PATH" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
-        security list-keychain -d user -s "$KEYCHAIN_PATH"
-        echo "Certificates imported."
-        security find-identity -p codesigning "$KEYCHAIN_PATH" # List identities for debugging
+        security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+        security import $DEV_CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+        security list-keychain -d user -s $KEYCHAIN_PATH
 
         # apply provisioning profile
-        echo "Copying provisioning profile..."
-        mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
-        cp "$PP_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles"
-        echo "Provisioning profile copied."
-
-        # No dynamic extraction here, relying on secrets directly.
+        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+        cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
         
     - name: Configure Demo App
       env:
@@ -134,9 +94,6 @@ jobs:
         ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
       run: |
         # client Key
-        # Log first 3 and last 3 characters of Team ID
-        TEAM_ID="${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}"
-        echo "Development Team ID (partial): ${TEAM_ID:0:3}...${TEAM_ID: -3}"
         sed -i '' "s/static let clientKey.*$/static let clientKey = \"$CLIENT_KEY\"/g" ./Demo/Configuration.swift
 
         # demo server API key
@@ -156,31 +113,6 @@ jobs:
 
         # componentsEnvironment
         sed -i '' "s/static let componentsEnvironment.*=.*/static let componentsEnvironment = Environment.$ENVIRONMENT/g" ./Demo/Configuration.swift
-
-    - name: Clean Xcode Derived Data and Caches
-      run: |
-        echo "Cleaning Xcode build folder..."
-        xcodebuild clean -workspace "Adyen.xcworkspace" -scheme "AdyenUIHost" || true 
-        
-        echo "Deleting Derived Data..."
-        rm -rf "$HOME/Library/Developer/Xcode/DerivedData/*"
-        
-        echo "Cleaning Xcode caches..."
-        rm -rf "$HOME/Library/Caches/com.apple.dt.Xcode/*"
-        
-        echo "Cleaning CocoaPods cache (if applicable)..."
-        # Uncomment and adjust if you use CocoaPods
-        # rm -rf "$HOME/.cocoapods/repos"
-        # rm -rf Pods
-        # rm -f Podfile.lock
-        # pod cache clean --all
-        # pod deintegrate
-        
-        echo "Cleaning Swift Package Manager caches (if applicable)..."
-        swift package clean || true
-        
-        echo "Done cleaning."
-
     - name: Publish Demo App
       env:
         APPLE_ID_USERNAME: ${{ secrets.APPLE_ID_USERNAME }}
@@ -188,22 +120,9 @@ jobs:
         XCODE_AUTHENTICATION_KEY_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ID }}
         XCODE_AUTHENTICATION_KEY_ISSUER_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ISSUER_ID }}
         XCODE_AUTHENTICATION_KEY_BASE64: ${{ secrets.XCODE_AUTHENTICATION_KEY_BASE64 }}
-        # Pass the explicitly provided names from secrets to the script
-        APPLE_DEVELOPMENT_TEAM_ID: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
-        PROVISIONING_PROFILE_NAME: ${{ secrets.PROVISIONING_PROFILE_NAME }} # Directly from secret
-        CODE_SIGN_IDENTITY_NAME: ${{ secrets.CODE_SIGN_IDENTITY_NAME }}     # Directly from secret
       run: |
-        XCODE_AUTHENTICATION_KEY_PATH="$RUNNER_TEMP/authentication_key_path.p8"
-        rm -f "$XCODE_AUTHENTICATION_KEY_PATH"
-        echo -n "$XCODE_AUTHENTICATION_KEY_BASE64" | base64 --decode -o "$XCODE_AUTHENTICATION_KEY_PATH"
+        XCODE_AUTHENTICATION_KEY_PATH=$RUNNER_TEMP/authentication_key_path.p8
+        rm -f $XCODE_AUTHENTICATION_KEY_PATH
+        echo -n "$XCODE_AUTHENTICATION_KEY_BASE64" | base64 --decode -o $XCODE_AUTHENTICATION_KEY_PATH
 
-        # Pass all necessary arguments to the shell script
-        ./Scripts/publish-demo-app.sh \
-          "$APPLE_ID_USERNAME" \
-          "$APPLE_APP_SPECIFIC_PASSWORD" \
-          "$XCODE_AUTHENTICATION_KEY_PATH" \
-          "$APPLE_DEVELOPMENT_TEAM_ID" \
-          "$PROVISIONING_PROFILE_NAME" \
-          "$CODE_SIGN_IDENTITY_NAME" \
-          "${{ secrets.XCODE_AUTHENTICATION_KEY_ID }}" \
-          "${{ secrets.XCODE_AUTHENTICATION_KEY_ISSUER_ID }}"
+        ./Scripts/publish-demo-app.sh "$APPLE_ID_USERNAME" "$APPLE_APP_SPECIFIC_PASSWORD" "$XCODE_AUTHENTICATION_KEY_PATH"
