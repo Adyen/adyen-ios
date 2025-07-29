@@ -8,10 +8,10 @@ BUILD_NUMBER="$3"
 
 echo "🔧 Building Demo app for distribution..."
 
-xcodebuild clean -scheme AdyenUIHost -workspace Adyen.xcodeproj
+xcodebuild clean -scheme AdyenUIHost -project Adyen.xcodeproj
 
 xcodebuild archive \
-  -workspace Adyen.xcodeproj \
+  -project Adyen.xcodeproj \
   -scheme AdyenUIHost \
   -configuration Release \
   -archivePath ./Build-Temp/AdyenUIHost.xcarchive \
