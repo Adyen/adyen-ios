@@ -3,6 +3,9 @@ set -euo pipefail
 
 BUILD_PATH=Build-Temp
 
+echo "⬆️ Incrementing build number..."
+agvtool new-version -all $(($(agvtool what-version -terse | head -n 1) + 1))
+
 echo "📦 Cleaning..."
 xcodebuild clean -project Adyen.xcodeproj \
  -scheme AdyenUIHost \
@@ -35,4 +38,4 @@ xcodebuild -exportArchive \
  -skipPackagePluginValidation
 
 echo "☁️ Uploading to App Store Connect..."
-xcrun altool --upload-app -f $BUILD_PATH/AdyenUIHost.ipa -u $1 -p $2 --type ios
+xcrun altool --upload-app -f $BUILD_PATH/AdyenUIHost.ipa -u "$1" -p "$2" --type ios
