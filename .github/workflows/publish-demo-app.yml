@@ -5,7 +5,7 @@ on:
     secrets: # When triggered via another workflow, secrets are not automatically forwarded
       BUILD_CERTIFICATE_BASE64:
         required: true
-      DEVELOPMENT_CERTIFICATE_BASE64:
+      DEVELOPMENT_CERTIFICATE_BASE64: # If used for local development signing, keep it. Otherwise, might be removable for App Store builds.
         required: true
       P12_PASSWORD:
         required: true
@@ -61,30 +61,48 @@ jobs:
       run: |
 
         # create variables
-        CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-        DEV_CERTIFICATE_PATH=$RUNNER_TEMP/dev_certificate.p12
-        PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
-        KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+        CERTIFICATE_PATH="$RUNNER_TEMP/build_certificate.p12"
+        DEV_CERTIFICATE_PATH="$RUNNER_TEMP/dev_certificate.p12" # Keep if needed for development signing, otherwise remove
+        PP_PATH="$RUNNER_TEMP/build_pp.mobileprovision"
+        KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
 
         # import certificate and provisioning profile from secrets
-        echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
-        echo -n "$DEVELOPMENT_CERTIFICATE_BASE64" | base64 --decode -o $DEV_CERTIFICATE_PATH
-        echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
+        echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o "$CERTIFICATE_PATH"
+        echo -n "$DEVELOPMENT_CERTIFICATE_BASE64" | base64 --decode -o "$DEV_CERTIFICATE_PATH" # Keep if needed
+        echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o "$PP_PATH"
 
         # create temporary keychain
-        security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-        security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-        security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+        security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+        security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+        security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
 
         # import release certificate to keychain
-        security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-        security import $DEV_CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-        security list-keychain -d user -s $KEYCHAIN_PATH
+        security import "$CERTIFICATE_PATH" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+        security import "$DEV_CERTIFICATE_PATH" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH" # Keep if needed
+        security list-keychain -d user -s "$KEYCHAIN_PATH"
 
         # apply provisioning profile
-        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-        cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+        mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+        cp "$PP_PATH" "$HOME/Library/MobileDevice/Provisioning Profiles"
         
+        # --- NEW: Extract names and make them available to subsequent steps ---
+        # Extract Provisioning Profile Name
+        PROVISIONING_PROFILE_NAME=$(security cms -D -i "$PP_PATH" | /usr/libexec/PlistBuddy -c "Print Name" /dev/stdin)
+        echo "Extracted Provisioning Profile Name: $PROVISIONING_PROFILE_NAME"
+        echo "PROVISIONING_PROFILE_NAME=$PROVISIONING_PROFILE_NAME" >> "$GITHUB_ENV"
+
+        # Extract Code Sign Identity Name from the certificate
+        # This assumes the certificate is a standard "Apple Distribution: Your Name (TeamID)" format
+        # Adjust the grep/cut command if your certificate name varies
+        CODE_SIGN_IDENTITY_NAME=$(security find-identity -p codesigning "$KEYCHAIN_PATH" | grep "Apple Distribution" | head -n 1 | sed -E 's/.*"(.+)".*/\1/')
+        if [ -z "$CODE_SIGN_IDENTITY_NAME" ]; then
+            # Fallback if "Apple Distribution" not found, try "iPhone Distribution" (older or enterprise)
+            CODE_SIGN_IDENTITY_NAME=$(security find-identity -p codesigning "$KEYCHAIN_PATH" | grep "iPhone Distribution" | head -n 1 | sed -E 's/.*"(.+)".*/\1/')
+        fi
+        echo "Extracted Code Sign Identity Name: $CODE_SIGN_IDENTITY_NAME"
+        echo "CODE_SIGN_IDENTITY_NAME=$CODE_SIGN_IDENTITY_NAME" >> "$GITHUB_ENV"
+        # --- END NEW ---
+
     - name: Configure Demo App
       env:
         CLIENT_KEY: ${{ secrets.DEMO_APP_TEST_ENV_CLIENT_KEY }}
@@ -116,6 +134,32 @@ jobs:
 
         # componentsEnvironment
         sed -i '' "s/static let componentsEnvironment.*=.*/static let componentsEnvironment = Environment.$ENVIRONMENT/g" ./Demo/Configuration.swift
+
+    - name: Clean Xcode Derived Data and Caches
+      run: |
+        echo "Cleaning Xcode build folder..."
+        # Adjust workspace and scheme names to your actual project if different
+        xcodebuild clean -workspace "Adyen.xcworkspace" -scheme "AdyenUIHost" || true 
+        
+        echo "Deleting Derived Data..."
+        rm -rf "$HOME/Library/Developer/Xcode/DerivedData/*"
+        
+        echo "Cleaning Xcode caches..."
+        rm -rf "$HOME/Library/Caches/com.apple.dt.Xcode/*"
+        
+        echo "Cleaning CocoaPods cache (if applicable)..."
+        # Uncomment and adjust if you use CocoaPods
+        # rm -rf "$HOME/.cocoapods/repos"
+        # rm -rf Pods
+        # rm -f Podfile.lock
+        # pod cache clean --all
+        # pod deintegrate
+        
+        echo "Cleaning Swift Package Manager caches (if applicable)..."
+        swift package clean || true # This cleans SPM build artifacts within the project
+        
+        echo "Done cleaning."
+
     - name: Publish Demo App
       env:
         APPLE_ID_USERNAME: ${{ secrets.APPLE_ID_USERNAME }}
@@ -123,9 +167,22 @@ jobs:
         XCODE_AUTHENTICATION_KEY_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ID }}
         XCODE_AUTHENTICATION_KEY_ISSUER_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ISSUER_ID }}
         XCODE_AUTHENTICATION_KEY_BASE64: ${{ secrets.XCODE_AUTHENTICATION_KEY_BASE64 }}
+        # Pass the extracted names to the script
+        APPLE_DEVELOPMENT_TEAM_ID: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
+        PROVISIONING_PROFILE_NAME: ${{ env.PROVISIONING_PROFILE_NAME }} # Use env context
+        CODE_SIGN_IDENTITY_NAME: ${{ env.CODE_SIGN_IDENTITY_NAME }}     # Use env context
       run: |
-        XCODE_AUTHENTICATION_KEY_PATH=$RUNNER_TEMP/authentication_key_path.p8
-        rm -f $XCODE_AUTHENTICATION_KEY_PATH
-        echo -n "$XCODE_AUTHENTICATION_KEY_BASE64" | base64 --decode -o $XCODE_AUTHENTICATION_KEY_PATH
+        XCODE_AUTHENTICATION_KEY_PATH="$RUNNER_TEMP/authentication_key_path.p8"
+        rm -f "$XCODE_AUTHENTICATION_KEY_PATH"
+        echo -n "$XCODE_AUTHENTICATION_KEY_BASE64" | base64 --decode -o "$XCODE_AUTHENTICATION_KEY_PATH"
 
-        ./Scripts/publish-demo-app.sh "$APPLE_ID_USERNAME" "$APPLE_APP_SPECIFIC_PASSWORD" "$XCODE_AUTHENTICATION_KEY_PATH"
+        # Pass all necessary arguments to the shell script
+        ./Scripts/publish-demo-app.sh \
+          "$APPLE_ID_USERNAME" \
+          "$APPLE_APP_SPECIFIC_PASSWORD" \
+          "$XCODE_AUTHENTICATION_KEY_PATH" \
+          "$APPLE_DEVELOPMENT_TEAM_ID" \
+          "$PROVISIONING_PROFILE_NAME" \
+          "$CODE_SIGN_IDENTITY_NAME" \
+          "${{ secrets.XCODE_AUTHENTICATION_KEY_ID }}" \
+          "${{ secrets.XCODE_AUTHENTICATION_KEY_ISSUER_ID }}"
