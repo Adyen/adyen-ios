@@ -32,7 +32,7 @@ echo "📁 Creating build directory..."
 rm -rf "$BUILD_PATH"
 mkdir -p "$BUILD_PATH"
 
-echo "📦 Archiving app (manual signing will be enforced at export)..."
+echo "📦 Archiving app (signing disabled)..."
 xcodebuild archive -project Adyen.xcodeproj \
   -scheme AdyenUIHost \
   -destination "generic/platform=iOS" \
@@ -40,7 +40,8 @@ xcodebuild archive -project Adyen.xcodeproj \
   -configuration Release \
   -archivePath "$ARCHIVE_PATH" \
   -allowProvisioningUpdates \
-  -skipPackagePluginValidation
+  -skipPackagePluginValidation \
+  CODE_SIGNING_ALLOWED=NO
 
 echo "📤 Exporting .ipa with manual signing..."
 xcodebuild -exportArchive \
