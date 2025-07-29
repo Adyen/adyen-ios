@@ -1,4 +1,5 @@
 name: 🚀 Publish Demo App
+
 on:
   workflow_dispatch:
   workflow_call:
@@ -76,6 +77,13 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
+      - name: Extract App Bundle ID from Info.plist
+        id: extract_bundle_id
+        run: |
+          BUNDLE_ID=$(/usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "Demo/Info.plist")
+          echo "APP_BUNDLE_ID=$BUNDLE_ID" >> $GITHUB_ENV
+          echo "✅ Extracted APP_BUNDLE_ID=$BUNDLE_ID"
+
       - name: Configure Demo App
         env:
           CLIENT_KEY: ${{ secrets.DEMO_APP_TEST_ENV_CLIENT_KEY }}
@@ -96,5 +104,14 @@ jobs:
         env:
           APPLE_ID_USERNAME: ${{ secrets.APPLE_ID_USERNAME }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_DEVELOPMENT_TEAM_ID: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
         run: |
-          ./Scripts/publish-demo-app.sh "$APPLE_ID_USERNAME" "$APPLE_APP_SPECIFIC_PASSWORD"
+          export BUILD_NUMBER=$(xcrun altool --list-apps -u "$APPLE_ID_USERNAME" -p "$APPLE_APP_SPECIFIC_PASSWORD" --output-format xml | xmllint --xpath "string(//array/dict[string[text()='$APP_BUNDLE_ID']]/following-sibling::dict[1]/key[text()='version']/following-sibling::string[1])" - 2>/dev/null)
+          if [ -z "$BUILD_NUMBER" ]; then
+            BUILD_NUMBER=1
+          else
+            BUILD_NUMBER=$((BUILD_NUMBER + 1))
+          fi
+          echo "✨ Next build number: $BUILD_NUMBER"
+
+          ./Scripts/publish-demo-app.sh "$APPLE_ID_USERNAME" "$APPLE_APP_SPECIFIC_PASSWORD" "$BUILD_NUMBER"

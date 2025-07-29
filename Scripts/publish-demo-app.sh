@@ -1,41 +1,46 @@
 #!/bin/bash
+
 set -euo pipefail
 
-BUILD_PATH=Build-Temp
+APPLE_ID_USERNAME="$1"
+APPLE_APP_SPECIFIC_PASSWORD="$2"
+BUILD_NUMBER="$3"
 
-echo "⬆️ Incrementing build number..."
-agvtool new-version -all $(($(agvtool what-version -terse | head -n 1) + 1))
+echo "🔧 Building Demo app for distribution..."
 
-echo "📦 Cleaning..."
-xcodebuild clean -project Adyen.xcodeproj \
- -scheme AdyenUIHost \
- -destination="generic/platform=iOS" \
- -sdk iphoneos \
- -configuration Release \
- -skipPackagePluginValidation
+xcodebuild clean -scheme AdyenUIHost -workspace AdyenUIHost.xcworkspace
 
-mkdir -p $BUILD_PATH
+xcodebuild archive \
+  -workspace AdyenUIHost.xcworkspace \
+  -scheme AdyenUIHost \
+  -configuration Release \
+  -archivePath ./Build-Temp/AdyenUIHost.xcarchive \
+  -destination "generic/platform=iOS" \
+  -allowProvisioningUpdates \
+  -allowProvisioningDeviceRegistration \
+  -derivedDataPath ./Build-Temp/DerivedData \
+  -quiet \
+  OTHER_CODE_SIGN_FLAGS="--keychain $RUNNER_TEMP/app-signing.keychain-db" \
+  CODE_SIGN_STYLE=Manual \
+  DEVELOPMENT_TEAM=$APPLE_DEVELOPMENT_TEAM_ID \
+  PRODUCT_BUNDLE_IDENTIFIER=$APP_BUNDLE_ID \
+  BUILD_NUMBER=$BUILD_NUMBER
 
-echo "📦 Archiving..."
-xcodebuild archive -project Adyen.xcodeproj \
- -scheme AdyenUIHost \
- -destination="generic/platform=iOS" \
- -sdk iphoneos \
- -configuration Release \
- -archivePath $BUILD_PATH/AdyenUIHost.xcarchive \
- -allowProvisioningUpdates \
- -skipPackagePluginValidation
+echo "📦 Exporting IPA..."
 
-echo "🔍 Checking available identities..."
-security find-identity -v -p codesigning
-
-echo "📦 Exporting IPA with manual signing..."
 xcodebuild -exportArchive \
- -archivePath $BUILD_PATH/AdyenUIHost.xcarchive \
- -exportOptionsPlist exportOptions.plist \
- -exportPath $BUILD_PATH \
- -allowProvisioningUpdates \
- -skipPackagePluginValidation
+  -archivePath ./Build-Temp/AdyenUIHost.xcarchive \
+  -exportPath ./Build-Temp \
+  -exportOptionsPlist ./ExportOptions.plist \
+  -quiet
 
 echo "☁️ Uploading to App Store Connect..."
-xcrun altool --upload-app -f $BUILD_PATH/AdyenUIHost.ipa -u "$1" -p "$2" --type ios
+
+xcrun altool --upload-app \
+  --type ios \
+  --file ./Build-Temp/AdyenUIHost.ipa \
+  --username "$APPLE_ID_USERNAME" \
+  --password "$APPLE_APP_SPECIFIC_PASSWORD" \
+  --output-format xml
+
+echo "✅ Upload complete."
