@@ -29,20 +29,20 @@ jobs:
           xcode_version: '26.0'
           needs_custom_sim: false
           
-        # Xcode 15.4 - iOS 17
+        # Xcode 16.2 - iOS 17
         - version: '17.5'
           runtime: 'iOS-17-5'
           device: 'iPhone 15 Pro'
           displayname: 'iPhone-15-Pro'
           os: 'macos-14'
-          xcode_version: '15.4'
+          xcode_version: '16.2' # latest available on macos-14 runner
           needs_custom_sim: true
 
-        # iOS 16
+        # Xcode 16.2 - iOS 16
         - version: '16.0'
           runtime: 'iOS-16-0'
-          device: 'iPhone 16 Pro'
-          displayname: 'iPhone-16-Pro'
+          device: 'iPhone 14 Pro'
+          displayname: 'iPhone-14-Pro'
           os: 'macos-14-large'
           xcode_version: '16.2' # latest available on macos-14 runner
           needs_custom_sim: true
