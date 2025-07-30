@@ -44,16 +44,9 @@ jobs:
           device: 'iPhone 14 Pro'
           displayname: 'iPhone-14-Pro'
           os: 'macos-14-large'
-          needs_custom_sim: false
-          
-        # iOS 15
-        - version: '15.0'
-          runtime: 'iOS-15-0'
-          device: 'iPhone 13'
-          displayname: 'iPhone-13'
-          os: 'macos-14-large'
-          needs_custom_sim: false
-                  
+          xcode_version: '15.4'
+          needs_custom_sim: true
+                            
     steps:
     - uses: actions/checkout@v4
     - uses: n1hility/cancel-previous-runs@v3
