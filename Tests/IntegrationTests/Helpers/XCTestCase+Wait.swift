@@ -66,6 +66,7 @@ extension XCTestCase {
         at keyPath: KeyPath<Target, Value>,
         is expectedValue: Value,
         timeout: TimeInterval = 120,
+        file: StaticString = #file,
         line: Int = #line
     ) {
         wait(
