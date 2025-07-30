@@ -35,9 +35,18 @@ jobs:
           device: 'iPhone 15 Pro'
           displayname: 'iPhone-15-Pro'
           os: 'macos-15'
-          xcode_version: '16.4' # latest available on macos-15 runner
+          xcode_version: '16.4' 
           needs_custom_sim: true
                             
+        # Xcode 16.2 - iOS 16
+        - version: '16.4'
+          runtime: 'iOS-16-4'
+          device: 'iPhone 14 Pro'
+          displayname: 'iPhone-14-Pro'
+          os: 'macos-15'
+          xcode_version: '16.4'
+          needs_custom_sim: true
+
     steps:
     - uses: actions/checkout@v4
     - uses: n1hility/cancel-previous-runs@v3
