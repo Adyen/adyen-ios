@@ -25,7 +25,7 @@ jobs:
           runtime: 'iOS-18-4'
           device: 'iPhone 16 Pro'
           displayname: 'iPhone-16-Pro'
-          os: 'macos-15'
+          os: 'macos-15-xlarge'
           xcode_version: '26.0'
           needs_custom_sim: false
           
