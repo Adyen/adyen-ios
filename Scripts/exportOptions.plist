@@ -4,12 +4,14 @@
 <dict>
     <key>method</key>
     <string>app-store</string>
+    <key>signingStyle</key>
+    <string>manual</string>
     <key>teamID</key>
     <string>B2NYSS5932</string>
     <key>teamName</key>
-    <string>Adyen B.V.</string>
+    <string>Adyen N.V.</string>
     <key>signingCertificate</key>
-	  <string>Apple Distribution: Adyen B.V. (B2NYSS5932)</string>
+	  <string>iPhone Distribution: Adyen N.V. (B2NYSS5932)</string>
     <key>provisioningProfiles</key>
     <dict>
       <key>com.adyen.CheckoutDemoUIKit</key>
