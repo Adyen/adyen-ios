@@ -72,11 +72,6 @@ jobs:
         sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode_version }}.app
         xcodebuild -version
         
-    - name: Install xcodes 
-      if: matrix.needs_custom_sim == true
-      run: |
-        brew install xcodesorg/made/xcodes
-    
     - name: Download and install simulator runtime
       if: matrix.needs_custom_sim == true
       run: |
