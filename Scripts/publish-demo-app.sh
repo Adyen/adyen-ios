@@ -9,25 +9,19 @@ IPA_PATH="$BUILD_PATH/AdyenUIHost.ipa"
 EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions.plist"
 
 # Input arguments
-AUTH_KEY_INPUT="${1:-}"
+APPLE_ID_USERNAME="$1"
+APPLE_APP_SPECIFIC_PASSWORD="$2"
+AUTH_KEY_PATH="$3"
+
+# Validate
+if [[ -z "$APPLE_ID_USERNAME" || -z "$APPLE_APP_SPECIFIC_PASSWORD" || -z "$AUTH_KEY_PATH" ]]; then
+  echo "❌ Usage: $0 <APPLE_ID_USERNAME> <APPLE_APP_SPECIFIC_PASSWORD> <AUTH_KEY_PATH>"
+  exit 1
+fi
 
 # Required env vars
 : "${XCODE_AUTHENTICATION_KEY_ID:?Environment variable XCODE_AUTHENTICATION_KEY_ID not set}"
 : "${XCODE_AUTHENTICATION_KEY_ISSUER_ID:?Environment variable XCODE_AUTHENTICATION_KEY_ISSUER_ID not set}"
-
-# Resolve AUTH_KEY_PATH to absolute path
-if [[ -z "$AUTH_KEY_INPUT" ]]; then
-    echo "Usage: $0 <AUTH_KEY_PATH>"
-    exit 1
-fi
-
-AUTH_KEY_PATH="$(cd "$(dirname "$AUTH_KEY_INPUT")" && pwd)/$(basename "$AUTH_KEY_INPUT")"
-
-# Validate file exists
-if [[ ! -f "$AUTH_KEY_PATH" ]]; then
-    echo "❌ Error: Auth key does not exist at: $AUTH_KEY_PATH"
-    exit 1
-fi
 
 echo "🧹 Cleaning project..."
 xcodebuild clean -project Adyen.xcodeproj \
