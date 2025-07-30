@@ -34,17 +34,8 @@ jobs:
           runtime: 'iOS-17-5'
           device: 'iPhone 15 Pro'
           displayname: 'iPhone-15-Pro'
-          os: 'macos-14'
-          xcode_version: '16.2' # latest available on macos-14 runner
-          needs_custom_sim: true
-
-        # Xcode 16.2 - iOS 16
-        - version: '16.0'
-          runtime: 'iOS-16-0'
-          device: 'iPhone 14 Pro'
-          displayname: 'iPhone-14-Pro'
-          os: 'macos-14-large'
-          xcode_version: '16.2' # latest available on macos-14 runner
+          os: 'macos-15'
+          xcode_version: '16.4' # latest available on macos-15 runner
           needs_custom_sim: true
                             
     steps:
