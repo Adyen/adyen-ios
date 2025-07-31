@@ -92,19 +92,8 @@ jobs:
         MERCHANT_ACCOUNT: ${{ secrets.MERCHANT_ACCOUNT }}
         APPLE_DEVELOPMENT_TEAM_ID: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
         ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+        APPLE_PAY_MERCHANT_IDENTIFIER: ${{ secrets.APPLE_PAY_MERCHANT_IDENTIFIER }}
       run: |
-        # client Key
-        sed -i '' "s/static let clientKey.*$/static let clientKey = \"$CLIENT_KEY\"/g" ./Demo/Configuration.swift
-
-        # demo server API key
-        sed -i '' "s/static let demoServerAPIKey.*$/static let demoServerAPIKey = \"$DEMO_SERVER_API_KEY\"/g" ./Demo/Configuration.swift
-
-        # merchant account
-        sed -i '' "s/static let merchantAccount.*=.*\".*\"/static let merchantAccount = \"$MERCHANT_ACCOUNT\"/g" ./Demo/Configuration.swift
-
-        # apple team identifier
-        sed -i '' "s/static let appleTeamIdentifier.*=.*\".*\"/static let appleTeamIdentifier = \"$APPLE_DEVELOPMENT_TEAM_ID\"/g" ./Demo/Configuration.swift
-
         # demoServerEnvironment
         sed -i '' "s/static let demoServerEnvironment.*=.*/static let demoServerEnvironment = DemoCheckoutAPIEnvironment.$ENVIRONMENT/g" ./Demo/Configuration.swift
 
@@ -120,9 +109,25 @@ jobs:
         XCODE_AUTHENTICATION_KEY_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ID }}
         XCODE_AUTHENTICATION_KEY_ISSUER_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ISSUER_ID }}
         XCODE_AUTHENTICATION_KEY_BASE64: ${{ secrets.XCODE_AUTHENTICATION_KEY_BASE64 }}
+        
+        # Pass the secrets required for Info.plist substitution
+        CLIENT_KEY: ${{ secrets.DEMO_APP_TEST_ENV_CLIENT_KEY }}
+        DEMO_SERVER_API_KEY: ${{ secrets.DEMO_SERVER_TEST_ENV_API_KEY }}
+        MERCHANT_ACCOUNT: ${{ secrets.MERCHANT_ACCOUNT }}
+        APPLE_DEVELOPMENT_TEAM_ID: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
+        ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+        APPLE_PAY_MERCHANT_IDENTIFIER: ${{ secrets.APPLE_PAY_MERCHANT_IDENTIFIER }}
       run: |
         AUTH_KEY_PATH=$RUNNER_TEMP/authentication_key_path.p8
         rm -f $AUTH_KEY_PATH
         echo -n "$XCODE_AUTHENTICATION_KEY_BASE64" | base64 --decode -o $AUTH_KEY_PATH
+
+        # Add debug prints to verify environment variables before launching the script
+        echo "Environment variables before script execution:"
+        echo "CLIENT_KEY: ${CLIENT_KEY:0:4}****"
+        echo "DEMO_SERVER_API_KEY: ${DEMO_SERVER_API_KEY:0:4}****"
+        echo "MERCHANT_ACCOUNT: ${MERCHANT_ACCOUNT:0:4}****"
+        echo "APPLE_DEVELOPMENT_TEAM_ID: $APPLE_DEVELOPMENT_TEAM_ID"
+        echo "ENVIRONMENT: $ENVIRONMENT"
 
         ./Scripts/publish-demo-app.sh "$APPLE_ID_USERNAME" "$APPLE_APP_SPECIFIC_PASSWORD" "$AUTH_KEY_PATH"
