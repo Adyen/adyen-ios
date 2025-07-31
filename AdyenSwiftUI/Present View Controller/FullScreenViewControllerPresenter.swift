@@ -83,10 +83,16 @@ import SwiftUI
             presenter: UIViewController,
             context: UIViewControllerRepresentableContext<FullScreenView>
         ) {
-            guard !viewController.isBeingPresented, !viewController.isBeingDismissed else { return }
-            // Store the view controller reference before presentation to prevent a race condition.
+            guard context.coordinator.currentlyPresentedViewController !== viewController,
+                  presenter.presentedViewController == nil,
+                  !viewController.isBeingPresented,
+                  !viewController.isBeingDismissed else {
+                return
+            }
+
+            // Assign before to prevent multiple presentation attempts
             context.coordinator.currentlyPresentedViewController = viewController
-            presenter.present(viewController, animated: true)
+            presenter.present(viewController, animated: true, completion: nil)
         }
 
         private func dismiss(
