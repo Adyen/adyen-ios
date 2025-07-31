@@ -84,7 +84,6 @@ import SwiftUI
             context: UIViewControllerRepresentableContext<FullScreenView>
         ) {
             guard context.coordinator.currentlyPresentedViewController !== viewController,
-                  presenter.presentedViewController == nil,
                   !viewController.isBeingPresented,
                   !viewController.isBeingDismissed else {
                 return
