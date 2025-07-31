@@ -44,7 +44,7 @@ public struct TextStyle: ViewStyle {
         cornerRounding: CornerRounding = .none,
         backgroundColor: UIColor = .clear
     ) {
-        self.font = FontStyle.default.body
+        self.font = font
         self.color = color
         self.disabledColor = disabledColor
         self.textAlignment = textAlignment

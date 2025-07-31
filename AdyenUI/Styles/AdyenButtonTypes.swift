@@ -21,8 +21,8 @@ public struct AdyenButtonTypes {
     ) {
         self.primary = primary
         self.secondary = secondary
-        self.tertiary = primary
-        self.destructive = secondary
+        self.tertiary = tertiary
+        self.destructive = destructive
     }
     
     // Default initializer using the default configurations
