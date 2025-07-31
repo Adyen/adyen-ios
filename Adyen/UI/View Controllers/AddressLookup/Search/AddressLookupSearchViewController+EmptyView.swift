@@ -11,7 +11,7 @@ extension AddressLookupSearchViewController {
     /// The view that is shown when the address lookup search result is empty
     internal class EmptyView: EmptyStateView<LinkTextView> {
         
-        override public var searchTerm: String {
+        override var searchTerm: String {
             didSet { updateLabels() }
         }
         

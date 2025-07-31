@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenUI
 import Foundation
 import UIKit
 
@@ -12,9 +13,9 @@ public struct TextStyle: ViewStyle {
     
     /// The font used to display the text.
     public var font: UIFont
-    
+
     /// The color of the text.
-    public var color: UIColor
+    public var color: UIColor = ColorScheme.default.background
 
     /// The color of the text when the element is disabled.
     public var disabledColor = UIColor.Adyen.secondaryComponentBackground
@@ -43,7 +44,7 @@ public struct TextStyle: ViewStyle {
         cornerRounding: CornerRounding = .none,
         backgroundColor: UIColor = .clear
     ) {
-        self.font = font
+        self.font = FontStyle.default.body
         self.color = color
         self.disabledColor = disabledColor
         self.textAlignment = textAlignment

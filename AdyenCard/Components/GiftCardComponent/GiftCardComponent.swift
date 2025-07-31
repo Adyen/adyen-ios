@@ -8,6 +8,7 @@
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
+import AdyenUI
 import UIKit
 
 /// A component that provides a form for gift card payments.
@@ -237,7 +238,7 @@ public final class GiftCardComponent: PresentableComponent,
     }()
 
     internal lazy var button: FormButtonItem = {
-        let item = FormButtonItem(style: style.mainButtonItem)
+        let item = FormButtonItem(style: .primary(for: .default))
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedString(.cardApplyGiftcard, localizationParameters)
         item.buttonSelectionHandler = { [weak self] in

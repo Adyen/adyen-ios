@@ -127,14 +127,14 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     private lazy var actionButton: SubmitButton = {
         switch model.actionButtonType {
         case .copyCode:
-            let button = SubmitButton(style: model.style.copyCodeButton)
+            let button = SubmitButton(style: .primary(for: .default))
             button.title = localizedString(.pixCopyButton, localizationParameters)
             button.addTarget(self, action: #selector(copyCode), for: .touchUpInside)
             button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "copyCodeButton")
             button.translatesAutoresizingMaskIntoConstraints = false
             return button
         case .saveAsImage:
-            let button = SubmitButton(style: model.style.saveAsImageButton)
+            let button = SubmitButton(style: .primary(for: .default))
             button.title = localizedString(.voucherSaveImage, localizationParameters)
             button.addTarget(self, action: #selector(saveQRCodeAsImage), for: .touchUpInside)
             button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "saveAsImageButton")

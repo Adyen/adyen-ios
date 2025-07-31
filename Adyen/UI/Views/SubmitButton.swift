@@ -4,19 +4,19 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenUI
 import UIKit
 
 /// A rounded submit button used to submit details.
 @_spi(AdyenInternal)
 public final class SubmitButton: UIControl {
-    
-    private let style: ButtonStyle
-    
+    private let buttonStyle: AdyenButtonStyle
+
     /// Initializes the submit button.
     ///
     /// - Parameter style: The `SubmitButton` UI style.
-    public init(style: ButtonStyle) {
-        self.style = style
+    public init(style: AdyenButtonStyle) {
+        self.buttonStyle = style
         super.init(frame: .zero)
         
         isAccessibilityElement = true
@@ -25,10 +25,10 @@ public final class SubmitButton: UIControl {
         addSubview(backgroundView)
         addSubview(activityIndicatorView)
         addSubview(titleLabel)
-        
-        backgroundColor = style.backgroundColor
-        self.adyen.round(using: style.cornerRounding)
-        
+
+        backgroundColor = buttonStyle.backgroundColor
+        self.adyen.round(using: buttonStyle.cornerRadius ?? .fixed(14.0))
+
         configureConstraints()
     }
     
@@ -41,10 +41,8 @@ public final class SubmitButton: UIControl {
     
     internal lazy var backgroundView: BackgroundView = {
         let backgroundView = BackgroundView(
-            cornerRounding: style.cornerRounding,
-            borderColor: style.borderColor,
-            borderWidth: style.borderWidth,
-            color: style.backgroundColor
+            cornerRounding: buttonStyle.cornerRadius ?? .fixed(14.0),
+            color: buttonStyle.backgroundColor ?? .clear
         )
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -62,7 +60,10 @@ public final class SubmitButton: UIControl {
     }
     
     internal lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel(style: style.title)
+        let titleLabel = UILabel(style: TextStyle(
+            font: FontStyle.default.bodyEmphasized,
+            color: ColorScheme.default.textOnPrimary
+        ))
         titleLabel.isAccessibilityElement = false
         
         return titleLabel
@@ -119,14 +120,13 @@ public final class SubmitButton: UIControl {
     
     override public func layoutSubviews() {
         super.layoutSubviews()
-        self.adyen.round(using: style.cornerRounding)
+        self.adyen.round(using: buttonStyle.cornerRadius ?? .fixed(14.0))
     }
     
     private func configureConstraints() {
         backgroundView.adyen.anchor(inside: self)
         
-        let heightConstraint = heightAnchor.constraint(equalToConstant: 50.0)
-        
+        let heightConstraint = heightAnchor.constraint(equalToConstant: 52.0)
         let labelConstraints = [
             titleLabel.topAnchor.constraint(equalTo: topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -138,9 +138,9 @@ public final class SubmitButton: UIControl {
             activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
             activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ]
-        
+
         let allConstraints = labelConstraints + spinnerConstraints + [heightConstraint]
-        
+
         NSLayoutConstraint.activate(allConstraints)
     }
     
@@ -160,11 +160,9 @@ extension SubmitButton {
         
         private let color: UIColor
         private let rounding: CornerRounding
-        
+
         fileprivate init(
             cornerRounding: CornerRounding,
-            borderColor: UIColor?,
-            borderWidth: CGFloat,
             color: UIColor
         ) {
             self.color = color
@@ -172,8 +170,6 @@ extension SubmitButton {
             super.init(frame: .zero)
             
             backgroundColor = color
-            layer.borderColor = borderColor?.cgColor
-            layer.borderWidth = borderWidth
             isUserInteractionEnabled = false
             
             layer.masksToBounds = true

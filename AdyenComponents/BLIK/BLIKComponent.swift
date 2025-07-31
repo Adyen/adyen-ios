@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenUI
 import Foundation
 import UIKit
 
@@ -21,7 +22,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
 
     public lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
-        style: configuration.style
+        themeManager: configuration.themeManager
     )
     
     /// Component's configuration
@@ -54,9 +55,10 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
             scrollEnabled: configuration.showsSubmitButton,
-            style: configuration.style,
+            themeManager: configuration.themeManager,
             localizationParameters: configuration.localizationParameters
         )
+
         formViewController.delegate = self
 
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
@@ -78,16 +80,16 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     /// The helper message item.
     internal lazy var hintLabelItem: FormLabelItem = .init(
         text: localizedString(.blikHelp, configuration.localizationParameters),
-        style: configuration.style.hintLabel,
         identifier: ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: "blikCodeHintLabel"
-        )
+        ),
+        labelStyle: configuration.themeManager?.uiElementStyles.label
     )
 
     /// The BLIK code item.
     internal lazy var codeItem: FormTextInputItem = {
-        let item = FormTextInputItem(style: configuration.style.textField)
+        let item = FormTextInputItem()
         item.title = localizedString(.blikCode, configuration.localizationParameters)
         item.placeholder = localizedString(.blikPlaceholder, configuration.localizationParameters)
         item.validator = NumericStringValidator(exactLength: 6)
@@ -100,7 +102,8 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
 
     /// The footer item.
     internal lazy var button: FormButtonItem = {
-        let item = FormButtonItem(style: configuration.style.mainButtonItem)
+        let buttonType = configuration.themeManager?.uiElementStyles.button.primary
+        let item = FormButtonItem(style: buttonType ?? AdyenButtonTypes.default.primary)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(
             with: payment?.amount,

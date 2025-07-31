@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenUI
 import Foundation
 import UIKit
 
@@ -133,7 +134,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
     }()
 
     internal lazy var button: FormButtonItem = {
-        let item = FormButtonItem(style: configuration.style.mainButtonItem)
+        let item = FormButtonItem(style: .primary(for: .default))
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(
             with: payment?.amount,

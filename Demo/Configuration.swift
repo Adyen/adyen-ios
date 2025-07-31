@@ -9,6 +9,7 @@ import AdyenActions
 import AdyenCard
 import AdyenComponents
 import AdyenDropIn
+import AdyenUI
 import Foundation
 import PassKit
 
@@ -270,9 +271,26 @@ internal struct DemoAppSettings: Codable {
     internal var dropInConfiguration: DropInComponent.Configuration {
         var style = DropInComponent.Style()
         style.navigation.tintColor = .red
-        
+
+        let themeManager = AdyenCheckoutThemeManager()
+        let currentScheme = themeManager.currentColorScheme
+        let currentFont = themeManager.currentFontStyle
+
+        var customLabelStyle = LabelStyle(colorScheme: currentScheme, fontStyle: currentFont)
+        customLabelStyle.font = currentFont.bodyEmphasized
+        customLabelStyle.textAlignment = .left
+
+        let customElementStyles = AdyenElementStyles(label: customLabelStyle)
+
+        themeManager.applyCustomTheme(
+            colorScheme: currentScheme,
+            fontStyle: currentFont,
+            elementStyles: customElementStyles
+        )
+
         let dropInConfig = DropInComponent.Configuration(
             style: style,
+            themeManager: themeManager,
             allowsSkippingPaymentList: dropInSettings.allowsSkippingPaymentList,
             allowPreselectedPaymentView: dropInSettings.allowPreselectedPaymentView
         )

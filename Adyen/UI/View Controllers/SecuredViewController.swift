@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenUI
 import Foundation
 import UIKit
 
@@ -16,7 +17,9 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
 
     internal let childViewController: ChildViewController
 
-    private let style: ViewStyle
+    private let style: ViewStyle?
+
+    private let themeManager: AdyenCheckoutThemeManager?
 
     private var blurConstraints: [NSLayoutConstraint]?
 
@@ -40,9 +43,14 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
     ///
     /// - Parameter child: The wrapped `UIViewController`.
     /// - Parameter style: The UI style.
-    public init(child: ChildViewController, style: ViewStyle) {
+    public init(
+        child: ChildViewController,
+        style: ViewStyle? = nil,
+        themeManager: AdyenCheckoutThemeManager? = nil
+    ) {
         self.childViewController = child
         self.style = style
+        self.themeManager = themeManager
 
         super.init(nibName: nil, bundle: Bundle(for: SecuredViewController.self))
     }
@@ -61,7 +69,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
     override public func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = style.backgroundColor
+        view.backgroundColor = themeManager?.currentColorScheme.background
         addChildViewController()
         listenToBackgroundNotifications()
 
@@ -137,7 +145,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
                 self?.blurEffectView.removeFromSuperview()
                 self?.$blurEffectView.reset()
 
-                self?.view.backgroundColor = self?.style.backgroundColor
+                self?.view.backgroundColor = self?.themeManager?.currentColorScheme.background
             }
         )
     }

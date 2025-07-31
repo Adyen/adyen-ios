@@ -37,8 +37,10 @@ public final class FormPostalCodeItem: FormTextItem {
             title = localizedString(
                 .postalCodeFieldTitle,
                 localizationParameters
-            ) + " " + localizedString(.fieldTitleOptional,
-                                      localizationParameters)
+            ) + " " + localizedString(
+                .fieldTitleOptional,
+                localizationParameters
+            )
             validator = PostalCodeValidator(minimumLength: 0, maximumLength: Constants.maxLength)
         } else {
             title = localizedString(.postalCodeFieldTitle, localizationParameters)

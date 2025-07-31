@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenUI
 import Foundation
 
 /// A form item that represents a single button with a spinner.
@@ -15,8 +16,8 @@ public final class FormButtonItem: FormItem {
     public var subitems: [FormItem] = []
     
     /// Indicates the item's UI styling.
-    public let style: FormButtonItemStyle
-    
+    public let style: AdyenButtonStyle
+
     public var identifier: String?
     
     /// The title of the button.
@@ -34,7 +35,7 @@ public final class FormButtonItem: FormItem {
     /// Initializes the button item.
     ///
     /// - Parameter style: The item's UI style.
-    public init(style: FormButtonItemStyle) {
+    public init(style: AdyenButtonStyle) {
         self.style = style
     }
     

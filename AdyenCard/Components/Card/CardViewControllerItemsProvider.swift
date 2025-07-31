@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenUI
 import UIKit
 
 extension CardViewController {
@@ -251,7 +252,7 @@ extension CardViewController {
         }()
 
         internal lazy var button: FormButtonItem = {
-            let item = FormButtonItem(style: formStyle.mainButtonItem)
+            let item = FormButtonItem(style: .primary(for: .default))
             item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "payButtonItem")
             item.title = localizedSubmitButtonTitle(
                 with: amount,

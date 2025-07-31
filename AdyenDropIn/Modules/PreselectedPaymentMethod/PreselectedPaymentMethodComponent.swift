@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenUI
 import Foundation
 import UIKit
 
@@ -122,7 +123,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
     private lazy var submitButtonItem: FormButtonItem = {
         let component = self.defaultComponent
-        let item = FormButtonItem(style: style.mainButtonItem)
+        let item = FormButtonItem(style: .primary(for: .default))
         item.title = localizedSubmitButtonTitle(
             with: component.context.payment?.amount,
             style: .immediate,
@@ -137,7 +138,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     }()
     
     private lazy var openAllButtonItem: FormButtonItem = {
-        let item = FormButtonItem(style: style.secondaryButtonItem)
+        let item = FormButtonItem(style: .primary(for: .default))
         item.title = localizedString(.dropInPreselectedOpenAllTitle, localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "openAllButton")
         item.buttonSelectionHandler = { [weak self] in

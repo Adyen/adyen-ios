@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenUI
 import UIKit
 
 /// Displays a form for the user to enter details.
@@ -35,7 +36,10 @@ open class FormViewController: UIViewController, AdyenObserver {
     public var requiresKeyboardInput: Bool { formRequiresInputView() }
 
     /// Indicates the `FormViewController` UI styling.
-    public let style: ViewStyle
+    public let style: ViewStyle?
+
+    /// Indicates the `FormViewController` UI styling theme.
+    public let themeManager: AdyenCheckoutThemeManager?
 
     /// Delegate to handle different viewController events.
     public weak var delegate: ViewControllerDelegate?
@@ -55,11 +59,13 @@ open class FormViewController: UIViewController, AdyenObserver {
     ///   - localizationParameters: The localization parameters.
     public init(
         scrollEnabled: Bool,
-        style: ViewStyle,
+        style: ViewStyle? = nil,
+        themeManager: AdyenCheckoutThemeManager? = nil,
         localizationParameters: LocalizationParameters?
     ) {
         self.scrollEnabled = scrollEnabled
         self.style = style
+        self.themeManager = themeManager
         self.localizationParameters = localizationParameters
         super.init(nibName: nil, bundle: Bundle(for: FormViewController.self))
     }
@@ -254,8 +260,8 @@ open class FormViewController: UIViewController, AdyenObserver {
     }
 
     private func setupViews() {
-        view.backgroundColor = style.backgroundColor
-        formView.backgroundColor = style.backgroundColor
+        view.backgroundColor = style?.backgroundColor
+        formView.backgroundColor = style?.backgroundColor
         formView.isEmbeddedInScrollView = scrollEnabled
     }
 

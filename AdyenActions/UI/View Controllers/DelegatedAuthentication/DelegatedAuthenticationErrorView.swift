@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenUI
 import Foundation
 import UIKit
 
@@ -71,7 +72,7 @@ internal final class DelegatedAuthenticationErrorView: UIView {
     )
     
     internal lazy var troubleshootingButton: SubmitButton = {
-        let button = SubmitButton(style: self.style.troubleshootingButtonStyle)
+        let button = SubmitButton(style: .primary(for: .default))
         button.addTarget(self, action: #selector(troubleshootingButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "troubleshootingButton")
         button.preservesSuperviewLayoutMargins = true
@@ -106,7 +107,7 @@ internal final class DelegatedAuthenticationErrorView: UIView {
     // MARK: Buttons
 
     internal lazy var firstButton: SubmitButton = {
-        let button = SubmitButton(style: style.errorButton)
+        let button = SubmitButton(style: .primary(for: .default))
 
         button.addTarget(self, action: #selector(firstButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton")

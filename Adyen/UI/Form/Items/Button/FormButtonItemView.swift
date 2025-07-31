@@ -15,12 +15,11 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem> {
     /// - Parameter item: The item represented by the view.
     internal required init(item: FormButtonItem) {
         super.init(item: item)
-        backgroundColor = item.style.backgroundColor
         
         addSubview(submitButton)
 
         preservesSuperviewLayoutMargins = true
-        
+
         bind(item.$showsActivityIndicator, to: submitButton, at: \.showsActivityIndicator)
         bind(item.$enabled, to: submitButton, at: \.isEnabled)
         bind(item.$title, to: submitButton, at: \.title)
@@ -31,7 +30,7 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem> {
     // MARK: - Submit Button
     
     internal lazy var submitButton: SubmitButton = {
-        let submitButton = SubmitButton(style: item.style.button)
+        let submitButton = SubmitButton(style: .primary(for: .default))
 
         submitButton.addTarget(self, action: #selector(didSelectSubmitButton), for: .touchUpInside)
         submitButton.accessibilityIdentifier = item.identifier.map {
