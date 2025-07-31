@@ -78,7 +78,7 @@ public class AdyenCheckoutThemeManager {
         if let newElementStyles = elementStyles {
             self.uiElementStyles = newElementStyles
             self.customElementsStyles = newElementStyles
-            needsUpdate = true // Even if scheme/font didn't change, new custom styles were applied
+            needsUpdate = true // Even if scheme/font did not change, new custom styles were applied
         } else if needsUpdate {
             // If no new custom elementStyles were provided, but color/font did change,
             // we re-apply the current custom styles (if any)

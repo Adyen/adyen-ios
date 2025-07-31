@@ -74,7 +74,7 @@ extension TextStyle: Equatable {
             lhs.textAlignment == rhs.textAlignment
     }
 
-    /// Convert TextSyle into collection of attributes.
+    /// Convert TextStyle into collection of attributes.
     public var stringAttributes: [NSAttributedString.Key: Any] {
         var attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: color,
