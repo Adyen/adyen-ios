@@ -16,7 +16,7 @@ extension ApplePayComponent {
         case userCannotMakePayment
 
         /// Indicates that the current device's hardware doesn't support ApplePay.
-        case deviceDoesNotSupportApplyPay
+        case deviceDoesNotSupportApplePay
 
         /// Indicates that the summaryItems array is empty.
         case emptySummaryItems
@@ -43,7 +43,7 @@ extension ApplePayComponent {
             switch self {
             case .userCannotMakePayment:
                 return "The user can’t make payments on any of the payment request’s supported networks."
-            case .deviceDoesNotSupportApplyPay:
+            case .deviceDoesNotSupportApplePay:
                 return "The current device's hardware doesn't support ApplePay."
             case .emptySummaryItems:
                 return "The summaryItems array is empty."
