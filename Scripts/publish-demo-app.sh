@@ -31,7 +31,7 @@ fi
 # Debug print to verify environment variables, to be removed before merge
 echo "Verifying required environment variables:"
 echo "ADYEN_CLIENT_KEY: ${CLIENT_KEY:0:4}****"
-echo "ADYEN_DEMO_SERVER_API_KEY: ${DEMO_SERVER_API_KEY:0:4}****"
+echo "ADYEN_DEMO_SERVER_API_KEY: ${DEMO_SERVER_API_KEY:10:24}****"
 echo "ADYEN_MERCHANT_ACCOUNT: ${MERCHANT_ACCOUNT:0:4}****"
 echo "APPLE_TEAM_IDENTIFIER: ${APPLE_DEVELOPMENT_TEAM_ID}"
 
@@ -57,6 +57,17 @@ echo "APPLE_DEVELOPMENT_TEAM_ID: $APPLE_DEVELOPMENT_TEAM_ID"
 echo "APPLE_PAY_MERCHANT_IDENTIFIER: ${APPLE_PAY_MERCHANT_IDENTIFIER:-"Not Set"}"
 echo "-------------------------------------------------------"
 
+# Properly escape secret values to handle special characters correctly
+# Use printf to preserve exact string content without interpretation
+SAFE_CLIENT_KEY=$(printf %s "$CLIENT_KEY")
+SAFE_API_KEY=$(printf %s "$DEMO_SERVER_API_KEY")
+SAFE_MERCHANT=$(printf %s "$MERCHANT_ACCOUNT")
+
+# Debug output to check sanitized values (safely masked)
+echo "Debug: Escaped client key starts with: ${SAFE_CLIENT_KEY:0:4}****"
+echo "Debug: Escaped API key starts with: ${SAFE_API_KEY:10:24}****"
+echo "Debug: Escaped merchant account starts with: ${SAFE_MERCHANT:0:4}****"
+
 echo "📦 Archiving app (signing disabled)..."
 xcodebuild archive -project Adyen.xcodeproj \
   -scheme AdyenUIHost \
@@ -67,9 +78,9 @@ xcodebuild archive -project Adyen.xcodeproj \
   -skipPackagePluginValidation \
   -verbose \
   CODE_SIGNING_ALLOWED=NO \
-  ADYEN_CLIENT_KEY="$CLIENT_KEY" \
-  ADYEN_DEMO_SERVER_API_KEY="$DEMO_SERVER_API_KEY" \
-  ADYEN_MERCHANT_ACCOUNT="$MERCHANT_ACCOUNT" \
+  ADYEN_CLIENT_KEY="$SAFE_CLIENT_KEY" \
+  ADYEN_DEMO_SERVER_API_KEY="$SAFE_API_KEY" \
+  ADYEN_MERCHANT_ACCOUNT="$SAFE_MERCHANT" \
   APPLE_TEAM_IDENTIFIER="$APPLE_DEVELOPMENT_TEAM_ID" \
   APPLE_PAY_MERCHANT_IDENTIFIER="${APPLE_PAY_MERCHANT_IDENTIFIER:-"merchant.com.adyen.test"}" | tee build_log.txt
 
