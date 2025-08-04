@@ -54,12 +54,12 @@ public struct AdyenButtonTypes {
 // Defines styles for different button types
 public struct AdyenButtonStyle {
     
-    public var backgroundColor: UIColor?
-    public var textColor: UIColor?
-    public var disabledBackgroundColor: UIColor?
-    public var disabledTextColor: UIColor?
+    public var backgroundColor: UIColor
+    public var textColor: UIColor
+    public var disabledBackgroundColor: UIColor
+    public var disabledTextColor: UIColor
     public var cornerRadius: CornerRounding?
-    
+
     public init(
         backgroundColor: UIColor,
         textColor: UIColor,
