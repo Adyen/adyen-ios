@@ -23,6 +23,13 @@ public final class AdyenCheckoutComponent {
     
     internal weak var delegate: CheckoutComponentDelegate?
     
+    public var viewController: UIViewController? {
+        guard let presentableComponent = paymentComponent as? PresentableComponent else {
+            return nil
+        }
+        return presentableComponent.viewController
+    }
+    
     package init(
         paymentMethod: PaymentMethod,
         configuration: CheckoutConfiguration,

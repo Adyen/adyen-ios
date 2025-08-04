@@ -448,6 +448,8 @@
 		A06B7AA52A1F9484008FC09D /* CashAppPayButtonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06B7AA42A1F9484008FC09D /* CashAppPayButtonItemView.swift */; };
 		A06B7AA72A274A83008FC09D /* ResultHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06B7AA62A274A83008FC09D /* ResultHelpers.swift */; };
 		A06C76452E1EAF9700213E53 /* AdyenSessionMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06C76442E1EAF9200213E53 /* AdyenSessionMock.swift */; };
+		A06C76712E379A5800213E53 /* BLIKComponentAdvancedFlowExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06C76702E379A5100213E53 /* BLIKComponentAdvancedFlowExample.swift */; };
+		A06C76722E379A5800213E53 /* BLIKComponentAdvancedFlowExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06C76702E379A5100213E53 /* BLIKComponentAdvancedFlowExample.swift */; };
 		A07355D7276B350F00530562 /* DocumentActionViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */; };
 		A078327F299BE02F0029DA0D /* CashAppPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A078327E299BE02F0029DA0D /* CashAppPaymentMethod.swift */; };
 		A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */; };
@@ -2033,6 +2035,7 @@
 		A06B7AA42A1F9484008FC09D /* CashAppPayButtonItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPayButtonItemView.swift; sourceTree = "<group>"; };
 		A06B7AA62A274A83008FC09D /* ResultHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultHelpers.swift; sourceTree = "<group>"; };
 		A06C76442E1EAF9200213E53 /* AdyenSessionMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenSessionMock.swift; sourceTree = "<group>"; };
+		A06C76702E379A5100213E53 /* BLIKComponentAdvancedFlowExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentAdvancedFlowExample.swift; sourceTree = "<group>"; };
 		A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentActionViewDelegateMock.swift; sourceTree = "<group>"; };
 		A078327E299BE02F0029DA0D /* CashAppPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPaymentMethod.swift; sourceTree = "<group>"; };
 		A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatter.swift; sourceTree = "<group>"; };
@@ -3212,6 +3215,7 @@
 		00ED81BA29EEC47C00A6B52C /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				A06C76702E379A5100213E53 /* BLIKComponentAdvancedFlowExample.swift */,
 				002A76782A039C96000684D2 /* ApplePayComponentExample.swift */,
 				002A767B2A050140000684D2 /* ApplePayComponentAdvancedFlowExample.swift */,
 				00ED81C229F68C0F00A6B52C /* CardComponentExample.swift */,
@@ -8347,6 +8351,7 @@
 				81A48DBB2A5709F600242341 /* DemoAddressLookupProvider.swift in Sources */,
 				C9454C37276A340B0086C218 /* BACSDirectDebitPresentationDelegate.swift in Sources */,
 				004BA67B29D427F300A8C69B /* DropInExample.swift in Sources */,
+				A06C76722E379A5800213E53 /* BLIKComponentAdvancedFlowExample.swift in Sources */,
 				A09ADA112807142600BF6802 /* SessionRequest.swift in Sources */,
 				F9A53C4A2549887F009000A7 /* Environment.swift in Sources */,
 				81EF2FE12AF3D75C001FE82F /* InstantPaymentComponentAdvancedFlowExample.swift in Sources */,
@@ -8635,6 +8640,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F9FE24DA26259267001874BB /* CreateOrderRequest.swift in Sources */,
+				A06C76712E379A5800213E53 /* BLIKComponentAdvancedFlowExample.swift in Sources */,
 				F9FE24C32625913F001874BB /* CancelOrderRequest.swift in Sources */,
 				F9A53C542549887F009000A7 /* PaymentMethodsRequest.swift in Sources */,
 				F9CFB05B28351709002F3B72 /* APIRequest.swift in Sources */,
