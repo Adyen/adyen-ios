@@ -11,8 +11,6 @@ import XCTest
 final class FullScreenViewControllerTests: XCTestCase {
     
     func testViewControllerIsPresented() {
-        let expectation = expectation(description: "View controller is presented")
-        
         let viewModel = TestPresentingViewModel()
         let testVC = UIViewController()
         
@@ -27,11 +25,8 @@ final class FullScreenViewControllerTests: XCTestCase {
             viewModel.viewController = testVC
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-            XCTAssertTrue(host.presentedViewController === testVC, "Expected view controller to be presented")
-            expectation.fulfill()
-        }
-        
-        waitForExpectations(timeout: 1.0)
+        let predicate = NSPredicate { _, _ in host.presentedViewController === testVC }
+        let expectation = XCTNSPredicateExpectation(predicate: predicate, object: host)
+        wait(for: [expectation], timeout: 2.0)
     }
 }
