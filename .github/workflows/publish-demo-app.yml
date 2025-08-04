@@ -95,8 +95,12 @@ jobs:
       run: |
         # Function to escape special characters for sed
         escape_for_sed() {
-          # Escape special characters: \ & / [ ]
-          echo "$1" | sed 's/[\\&/\[\]]/\\&/g'
+          # Remove any newlines first (sed doesn't allow them in replacement strings)
+          local cleaned=$(echo -n "$1" | tr -d '\n')
+          
+          # Use printf %q which properly escapes the string for shell
+          # Then escape any / characters specifically for sed
+          printf %q "$cleaned" | sed 's/\//\\\//g'
         }
         
         # Escape the secrets
