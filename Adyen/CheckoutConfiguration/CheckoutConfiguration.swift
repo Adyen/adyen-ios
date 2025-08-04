@@ -101,7 +101,7 @@ public struct CheckoutConfiguration {
         return copy
     }
 
-    public func applyTheme(_ theme: AdyenTheme) -> Self {
+    public func theme(_ theme: AdyenTheme) -> Self {
         var copy = self
         copy.theme = theme
         return copy
