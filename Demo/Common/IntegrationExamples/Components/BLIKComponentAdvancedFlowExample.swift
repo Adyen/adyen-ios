@@ -84,14 +84,12 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 self.component = component
                 self.presenter?.present(viewController: viewController(for: component!), completion: nil)
             case let .failure(error):
-                print("failed to create adyencheckout \(error)")
+                print("failed to create adyen checkout \(error)")
             }
         }
         
-        // add all the config options to settings? like showsubmitbutton
+        // add all the config options to settings? like show submit button
     }
-    
-//    private func callPaymentsAsync(with data: PaymentComponentData) async -> CheckoutPaymentsResponse {}
     
     private func callPayments(with data: PaymentComponentData, completion: PaymentsResponseHandler?) {
         let request = PaymentsRequest(data: data)
