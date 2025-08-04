@@ -19,8 +19,6 @@ public struct LabelStyle {
     /// The technique to use for aligning the text.
     public var textAlignment: NSTextAlignment = .center
 
-    /// The background color of the label
-    public var backgroundColor: UIColor = .clear
 
     /// Initializes the label style.
     ///
@@ -52,20 +50,15 @@ public struct LabelStyle {
     /// - Parameter color: The color of the text.
     /// - Parameter disabledColor: The color of the text when the element is disabled.
     /// - Parameter textAlignment: The technique to use for aligning the text.
-    /// - Parameter cornerRounding: The corners style of the text item.
-    /// - Parameter backgroundColor: The background color of the text item.
     public init(
         font: UIFont,
         color: UIColor,
         disabledColor: UIColor = ColorScheme.default.disabled,
-        textAlignment: NSTextAlignment,
-        cornerRounding: CornerRounding = .none,
-        backgroundColor: UIColor = .clear
+        textAlignment: NSTextAlignment
     ) {
         self.init(font: font, color: color)
         self.disabledColor = disabledColor
         self.textAlignment = textAlignment
-        self.backgroundColor = backgroundColor
     }
 }
 
@@ -74,7 +67,6 @@ extension LabelStyle: Equatable {
         lhs.font == rhs.font &&
             lhs.color == rhs.color &&
             lhs.disabledColor == rhs.disabledColor &&
-            lhs.textAlignment == rhs.textAlignment &&
-            lhs.backgroundColor == rhs.backgroundColor
+            lhs.textAlignment == rhs.textAlignment
     }
 }
