@@ -599,6 +599,8 @@
 		C9D8EB9E27452D3B006D8CA1 /* BACSItemsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9D27452D3B006D8CA1 /* BACSItemsFactory.swift */; };
 		C9D8EBA02745556B006D8CA1 /* BACSDirectDebitDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9F2745556B006D8CA1 /* BACSDirectDebitDetails.swift */; };
 		C9D8EBA2274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */; };
+		C9DCCD122E3CE5B500B88C52 /* TestPresentingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DCCD112E3CE5B500B88C52 /* TestPresentingView.swift */; };
+		C9DCCD142E3CE83C00B88C52 /* FullScreenViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DCCD132E3CE83C00B88C52 /* FullScreenViewControllerTests.swift */; };
 		C9EEEFEC2D5516B300B7AFFC /* ExpirationDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EEEFEA2D5516B300B7AFFC /* ExpirationDateFormatter.swift */; };
 		C9F468E227465FCF00500FF5 /* BACSDirectDebitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F468E127465FCF00500FF5 /* BACSDirectDebitData.swift */; };
 		C9F9905D2DC2566C00D2BFB0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C9F9905C2DC2566C00D2BFB0 /* README.md */; };
@@ -2034,6 +2036,8 @@
 		C9D8EB9D27452D3B006D8CA1 /* BACSItemsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSItemsFactory.swift; sourceTree = "<group>"; };
 		C9D8EB9F2745556B006D8CA1 /* BACSDirectDebitDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitDetails.swift; sourceTree = "<group>"; };
 		C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitPaymentMethod.swift; sourceTree = "<group>"; };
+		C9DCCD112E3CE5B500B88C52 /* TestPresentingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPresentingView.swift; sourceTree = "<group>"; };
+		C9DCCD132E3CE83C00B88C52 /* FullScreenViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewControllerTests.swift; sourceTree = "<group>"; };
 		C9EEEFEA2D5516B300B7AFFC /* ExpirationDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationDateFormatter.swift; sourceTree = "<group>"; };
 		C9F468E127465FCF00500FF5 /* BACSDirectDebitData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitData.swift; sourceTree = "<group>"; };
 		C9F9905C2DC2566C00D2BFB0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -3547,8 +3551,9 @@
 		B62D48AD2BBE8D79001EF01A /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				E757F02525D2ED4C007C813D /* APIClientMock.swift */,
+				C9DCCD0E2E3CE57300B88C52 /* AdyenSwiftUI */,
 				C9C0005A280468B800CE2EEC /* Analytics */,
+				E757F02525D2ED4C007C813D /* APIClientMock.swift */,
 				F91760A52594C5C000D653BE /* Assets */,
 				E97B9718229D54C600505476 /* Core */,
 				E9E3DABC221EA44900697074 /* Extension */,
@@ -3944,6 +3949,23 @@
 				C9D8EB9527440297006D8CA1 /* Input */,
 			);
 			path = Scenes;
+			sourceTree = "<group>";
+		};
+		C9DCCD0E2E3CE57300B88C52 /* AdyenSwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				C9DCCD102E3CE58600B88C52 /* Present View Controller */,
+			);
+			path = AdyenSwiftUI;
+			sourceTree = "<group>";
+		};
+		C9DCCD102E3CE58600B88C52 /* Present View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C9DCCD112E3CE5B500B88C52 /* TestPresentingView.swift */,
+				C9DCCD132E3CE83C00B88C52 /* FullScreenViewControllerTests.swift */,
+			);
+			path = "Present View Controller";
 			sourceTree = "<group>";
 		};
 		C9EEEFEB2D5516B300B7AFFC /* Formatters */ = {
@@ -7219,6 +7241,7 @@
 				B6D808202BCD151F00F3F5EB /* PaymentComponentMock.swift in Sources */,
 				B6D8080B2BCD147D00F3F5EB /* SimpleSchedulerTests.swift in Sources */,
 				B6D808042BCD147600F3F5EB /* UILabelHelpersTests.swift in Sources */,
+				C9DCCD122E3CE5B500B88C52 /* TestPresentingView.swift in Sources */,
 				B62D48B72BBE8DBE001EF01A /* AnalyticsProviderMock.swift in Sources */,
 				B6D808112BCD147D00F3F5EB /* BankDetailsEncryptorTests.swift in Sources */,
 				A00580A62CD8CBC300294F2E /* EventAnalyticsProviderTests.swift in Sources */,
@@ -7228,6 +7251,7 @@
 				B6D8080D2BCD147D00F3F5EB /* AdyenContextTests.swift in Sources */,
 				B62D48B42BBE8DBE001EF01A /* AnalyticsFlavorTests.swift in Sources */,
 				B6D8081D2BCD151F00F3F5EB /* CancellableMock.swift in Sources */,
+				C9DCCD142E3CE83C00B88C52 /* FullScreenViewControllerTests.swift in Sources */,
 				B6D808282BCD166D00F3F5EB /* PostalAddressMocks.swift in Sources */,
 				B6D808232BCD151F00F3F5EB /* ActionHandlingComponentMock.swift in Sources */,
 				B6D8082D2BCD178B00F3F5EB /* XCTestCase+Result.swift in Sources */,

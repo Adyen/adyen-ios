@@ -84,12 +84,12 @@ import SwiftUI
             context: UIViewControllerRepresentableContext<FullScreenView>
         ) {
             guard context.coordinator.currentlyPresentedViewController !== viewController,
+                  viewController.presentingViewController == nil,
                   !viewController.isBeingPresented,
                   !viewController.isBeingDismissed else {
                 return
             }
 
-            // Assign before to prevent multiple presentation attempts
             context.coordinator.currentlyPresentedViewController = viewController
             presenter.present(viewController, animated: true, completion: nil)
         }
