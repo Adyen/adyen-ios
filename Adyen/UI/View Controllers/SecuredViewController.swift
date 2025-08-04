@@ -19,7 +19,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
 
     private let style: ViewStyle?
 
-    private let themeManager: AdyenCheckoutThemeManager?
+    private let theme: AdyenTheme?
 
     private var blurConstraints: [NSLayoutConstraint]?
 
@@ -46,11 +46,11 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
     public init(
         child: ChildViewController,
         style: ViewStyle? = nil,
-        themeManager: AdyenCheckoutThemeManager? = nil
+        theme: AdyenTheme? = nil
     ) {
         self.childViewController = child
         self.style = style
-        self.themeManager = themeManager
+        self.theme = theme
 
         super.init(nibName: nil, bundle: Bundle(for: SecuredViewController.self))
     }
@@ -69,7 +69,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
     override public func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = themeManager?.currentColorScheme.background
+        view.backgroundColor = theme?.currentColorScheme.background
         addChildViewController()
         listenToBackgroundNotifications()
 
@@ -145,7 +145,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
                 self?.blurEffectView.removeFromSuperview()
                 self?.$blurEffectView.reset()
 
-                self?.view.backgroundColor = self?.themeManager?.currentColorScheme.background
+                self?.view.backgroundColor = self?.theme?.currentColorScheme.background
             }
         )
     }

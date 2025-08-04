@@ -22,7 +22,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
 
     public lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
-        themeManager: configuration.themeManager
+        theme: configuration.theme
     )
     
     /// Component's configuration
@@ -55,7 +55,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
             scrollEnabled: configuration.showsSubmitButton,
-            themeManager: configuration.themeManager,
+            theme: configuration.theme,
             localizationParameters: configuration.localizationParameters
         )
 
@@ -84,7 +84,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
             scopeInstance: self,
             postfix: "blikCodeHintLabel"
         ),
-        labelStyle: configuration.themeManager?.uiElementStyles.label
+        labelStyle: configuration.theme?.uiElementStyles.label
     )
 
     /// The BLIK code item.
@@ -102,7 +102,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
 
     /// The footer item.
     internal lazy var button: FormButtonItem = {
-        let buttonType = configuration.themeManager?.uiElementStyles.button.primary
+        let buttonType = configuration.theme?.uiElementStyles.button.primary
         let item = FormButtonItem(style: buttonType ?? AdyenButtonTypes.default.primary)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(

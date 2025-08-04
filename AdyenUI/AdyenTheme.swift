@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class AdyenCheckoutThemeManager {
+public class AdyenTheme {
     
     public var currentColorScheme: ColorScheme {
         didSet {

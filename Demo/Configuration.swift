@@ -272,9 +272,9 @@ internal struct DemoAppSettings: Codable {
         var style = DropInComponent.Style()
         style.navigation.tintColor = .red
 
-        let themeManager = AdyenCheckoutThemeManager()
-        let currentScheme = themeManager.currentColorScheme
-        let currentFont = themeManager.currentFontStyle
+        let theme = AdyenTheme()
+        let currentScheme = theme.currentColorScheme
+        let currentFont = theme.currentFontStyle
 
         var customLabelStyle = LabelStyle(colorScheme: currentScheme, fontStyle: currentFont)
         customLabelStyle.font = currentFont.bodyEmphasized
@@ -282,7 +282,7 @@ internal struct DemoAppSettings: Codable {
 
         let customElementStyles = AdyenElementStyles(label: customLabelStyle)
 
-        themeManager.applyCustomTheme(
+        theme.applyCustomTheme(
             colorScheme: currentScheme,
             fontStyle: currentFont,
             elementStyles: customElementStyles
@@ -290,7 +290,7 @@ internal struct DemoAppSettings: Codable {
 
         let dropInConfig = DropInComponent.Configuration(
             style: style,
-            themeManager: themeManager,
+            theme: theme,
             allowsSkippingPaymentList: dropInSettings.allowsSkippingPaymentList,
             allowPreselectedPaymentView: dropInSettings.allowPreselectedPaymentView
         )

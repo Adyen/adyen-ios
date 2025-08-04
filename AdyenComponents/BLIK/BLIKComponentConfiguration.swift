@@ -16,26 +16,26 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
     
     package var showsSubmitButton: Bool
 
-    package var themeManager: AdyenCheckoutThemeManager?
+    package var theme: AdyenTheme?
 
     package var localizationParameters: LocalizationParameters?
     
     public init(
         showsSubmitButton: Bool = true,
-        themeManager: AdyenCheckoutThemeManager? = nil,
+        theme: AdyenTheme? = nil,
         localizationParameters: LocalizationParameters? = nil
     ) {
         self.showsSubmitButton = showsSubmitButton
-        self.themeManager = themeManager
+        self.theme = theme
         self.localizationParameters = localizationParameters
     }
 }
 
 extension BLIKComponentConfiguration {
     
-    public func style(_ themeManager: AdyenCheckoutThemeManager) -> Self {
+    public func style(_ theme: AdyenTheme) -> Self {
         var copy = self
-        copy.themeManager = themeManager
+        copy.theme = theme
         return copy
     }
     

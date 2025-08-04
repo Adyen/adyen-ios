@@ -20,7 +20,7 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     
     // These are here to work with the current way,
     // to be changed with new styling/localization
-    var themeManager: AdyenCheckoutThemeManager? { get }
+    var theme: AdyenTheme? { get }
 
     var localizationParameters: LocalizationParameters? { get }
 }

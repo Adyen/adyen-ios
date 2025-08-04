@@ -14,7 +14,7 @@
 		000888822D510414009C03E1 /* PayToComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000888812D510412009C03E1 /* PayToComponentUITests.swift */; };
 		000888832D510414009C03E1 /* PayToComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000888812D510412009C03E1 /* PayToComponentUITests.swift */; };
 		000A7B092E27CDEC005584F2 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000A7B012E27CDEC005584F2 /* UIFont.swift */; };
-		000A7B0A2E27CDEC005584F2 /* AdyenCheckoutThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000A7B032E27CDEC005584F2 /* AdyenCheckoutThemeManager.swift */; };
+		000A7B0A2E27CDEC005584F2 /* AdyenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000A7B032E27CDEC005584F2 /* AdyenTheme.swift */; };
 		000A7B0B2E27CDEC005584F2 /* AdyenUI.docc in Sources */ = {isa = PBXBuildFile; fileRef = 000A7B042E27CDEC005584F2 /* AdyenUI.docc */; };
 		000A7B0C2E27CDEC005584F2 /* ColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000A7B052E27CDEC005584F2 /* ColorScheme.swift */; };
 		000A7B0D2E27CDEC005584F2 /* FontStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000A7B062E27CDEC005584F2 /* FontStyle.swift */; };
@@ -1710,7 +1710,7 @@
 		0008887A2D4CFA67009C03E1 /* PayToComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToComponentTests.swift; sourceTree = "<group>"; };
 		000888812D510412009C03E1 /* PayToComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToComponentUITests.swift; sourceTree = "<group>"; };
 		000A7B012E27CDEC005584F2 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
-		000A7B032E27CDEC005584F2 /* AdyenCheckoutThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenCheckoutThemeManager.swift; sourceTree = "<group>"; };
+		000A7B032E27CDEC005584F2 /* AdyenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenTheme.swift; sourceTree = "<group>"; };
 		000A7B042E27CDEC005584F2 /* AdyenUI.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = AdyenUI.docc; sourceTree = "<group>"; };
 		000A7B052E27CDEC005584F2 /* ColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorScheme.swift; sourceTree = "<group>"; };
 		000A7B062E27CDEC005584F2 /* FontStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontStyle.swift; sourceTree = "<group>"; };
@@ -3076,7 +3076,7 @@
 				000A7B022E27CDEC005584F2 /* Helpers */,
 				004758102E379397009E3802 /* Styles */,
 				000A7B042E27CDEC005584F2 /* AdyenUI.docc */,
-				000A7B032E27CDEC005584F2 /* AdyenCheckoutThemeManager.swift */,
+				000A7B032E27CDEC005584F2 /* AdyenTheme.swift */,
 				000A7B052E27CDEC005584F2 /* ColorScheme.swift */,
 				000A7B062E27CDEC005584F2 /* FontStyle.swift */,
 				004757C12E2E5841009E3802 /* AdyenElementStyles.swift */,
@@ -7536,7 +7536,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				000A7B092E27CDEC005584F2 /* UIFont.swift in Sources */,
-				000A7B0A2E27CDEC005584F2 /* AdyenCheckoutThemeManager.swift in Sources */,
+				000A7B0A2E27CDEC005584F2 /* AdyenTheme.swift in Sources */,
 				004757C22E2E5848009E3802 /* AdyenElementStyles.swift in Sources */,
 				000A7B0B2E27CDEC005584F2 /* AdyenUI.docc in Sources */,
 				004758112E379410009E3802 /* CornerRadiusStyle.swift in Sources */,

@@ -31,7 +31,7 @@ public class FormLabelItem: FormItem {
     /// The text of the label.
     public var text: String
 
-    /// The labelStyle from the theme manager
+    /// The labelStyle from the adyen theme 
     public var labelStyle: LabelStyle?
 
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {

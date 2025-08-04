@@ -46,7 +46,7 @@ public struct CheckoutConfiguration {
     
     package let context: AdyenContext
 
-    package var themeManager: AdyenCheckoutThemeManager?
+    package var theme: AdyenTheme?
 
     /// Creates a CheckoutConfiguration instance.
     /// - Parameters:
@@ -101,9 +101,9 @@ public struct CheckoutConfiguration {
         return copy
     }
 
-    public func applyTheme(_ themeManager: AdyenCheckoutThemeManager) -> Self {
+    public func applyTheme(_ theme: AdyenTheme) -> Self {
         var copy = self
-        copy.themeManager = themeManager
+        copy.theme = theme
         return copy
     }
 }
