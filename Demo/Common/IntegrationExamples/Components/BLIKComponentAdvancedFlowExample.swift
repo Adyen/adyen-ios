@@ -56,15 +56,15 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             BLIKComponentConfiguration()
                 .showsSubmitButton(false)
         }
-        .onSubmit { data, handler in
-            self.callPayments(with: data, completion: handler)
+        .onSubmit { [weak self] data, handler in
+            self?.callPayments(with: data, completion: handler)
         }
-        .onAdditionalDetails { data, handler in
-            self.callDetails(with: data, completion: handler)
+        .onAdditionalDetails { [weak self] data, handler in
+            self?.callDetails(with: data, completion: handler)
         }
-        .onComplete { result in
-            self.presenter?.dismiss {
-                self.presenter?.presentAlert(withTitle: "Result Code", message: result.resultCode.rawValue)
+        .onComplete { [weak self] result in
+            self?.presenter?.dismiss {
+                self?.presenter?.presentAlert(withTitle: "Result Code", message: result.resultCode.rawValue)
             }
         }
         
