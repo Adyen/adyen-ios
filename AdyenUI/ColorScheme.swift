@@ -6,8 +6,8 @@
 
 import UIKit
 
-public struct ColorScheme {
-    
+public struct ColorScheme: Equatable {
+
     public var background: UIColor
     public var container: UIColor
     public var primary: UIColor
@@ -20,7 +20,7 @@ public struct ColorScheme {
     public var outline: UIColor
     public var text: UIColor
     public var textSecondary: UIColor
-    
+
     /// Create new UIColor from hex value.
     /// - Parameter hex: The hex value of color. Should be between 0 and 0xFFFFFF.
     internal static func color(hex: UInt) -> UIColor {
@@ -35,64 +35,64 @@ public struct ColorScheme {
             alpha: 1.0
         )
     }
-    
+
     // MARK: - Initializers
-    
+
     // A static default ColorScheme
     public static var `default`: ColorScheme {
         ColorScheme()
     }
-    
+
     private init() {
         self.background = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0x121212) : ColorScheme.color(hex: 0xFFFFFF)
         }
-        
+
         self.container = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0x1C1C1E) : ColorScheme.color(hex: 0xF7F7F8)
         }
-        
+
         self.primary = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0xEFEFEF) : ColorScheme.color(hex: 0x00112C)
         }
-        
+
         self.textOnPrimary = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0x121212) : ColorScheme.color(hex: 0xFFFFFF)
         }
-        
+
         self.action = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0x7DB9FF) : ColorScheme.color(hex: 0x0070F5)
         }
-        
+
         self.destructive = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0xF99C9C) : ColorScheme.color(hex: 0xE22D2D)
         }
-        
+
         self.textOnDestructive = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0x121212) : ColorScheme.color(hex: 0xFFFFFF)
         }
-        
+
         self.disabled = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0x373737) : ColorScheme.color(hex: 0xEEEFF1)
         }
-        
+
         self.outline = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0x454545) : ColorScheme.color(hex: 0xDBDEE2)
         }
-        
+
         self.textOnDisabled = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0xEFEFEF) : ColorScheme.color(hex: 0x00112C)
         }
-        
+
         self.text = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0xEFEFEF) : ColorScheme.color(hex: 0x00112C)
         }
-        
+
         self.textSecondary = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0xEFEFEF) : ColorScheme.color(hex: 0x5C687C)
         }
     }
-    
+
     public init(
         background: UIColor? = nil,
         container: UIColor? = nil,
@@ -108,7 +108,7 @@ public struct ColorScheme {
         textSecondary: UIColor? = nil
     ) {
         let defaultScheme = ColorScheme.default
-        
+
         self.background = background ?? defaultScheme.background
         self.container = container ?? defaultScheme.container
         self.primary = primary ?? defaultScheme.primary
@@ -121,53 +121,5 @@ public struct ColorScheme {
         self.outline = outline ?? defaultScheme.outline
         self.text = text ?? defaultScheme.text
         self.textSecondary = textSecondary ?? defaultScheme.textSecondary
-    }
-    
-    public init(
-        background: UIColor,
-        container: UIColor,
-        primary: UIColor,
-        textOnPrimary: UIColor,
-        action: UIColor,
-        destructive: UIColor,
-        textOnDestructive: UIColor,
-        disabled: UIColor,
-        textOnDisabled: UIColor,
-        outline: UIColor,
-        text: UIColor,
-        textSecondary: UIColor
-    ) {
-        self.background = background
-        self.container = container
-        self.primary = primary
-        self.textOnPrimary = textOnPrimary
-        self.action = action
-        self.destructive = destructive
-        self.textOnDestructive = textOnDestructive
-        self.disabled = disabled
-        self.textOnDisabled = textOnDisabled
-        self.outline = outline
-        self.text = text
-        self.textSecondary = textSecondary
-    }
-    
-}
-
-extension ColorScheme: Equatable {
-    // MARK: - Equatable Conformance
-    
-    public static func == (lhs: ColorScheme, rhs: ColorScheme) -> Bool {
-        lhs.background == rhs.background &&
-            lhs.container == rhs.container &&
-            lhs.primary == rhs.primary &&
-            lhs.textOnPrimary == rhs.textOnPrimary &&
-            lhs.action == rhs.action &&
-            lhs.destructive == rhs.destructive &&
-            lhs.textOnDestructive == rhs.textOnDestructive &&
-            lhs.disabled == rhs.disabled &&
-            lhs.textOnDisabled == rhs.textOnDisabled &&
-            lhs.outline == rhs.outline &&
-            lhs.text == rhs.text &&
-            lhs.textSecondary == rhs.textSecondary
     }
 }

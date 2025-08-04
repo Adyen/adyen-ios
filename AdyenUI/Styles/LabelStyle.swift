@@ -19,7 +19,6 @@ public struct LabelStyle {
     /// The technique to use for aligning the text.
     public var textAlignment: NSTextAlignment = .center
 
-
     /// Initializes the label style.
     ///
     /// - Parameter font: The font used to display the text.

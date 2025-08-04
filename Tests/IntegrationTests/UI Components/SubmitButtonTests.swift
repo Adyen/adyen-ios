@@ -52,7 +52,7 @@ final class SubmitButtonTests: XCTestCase {
     }
 
     func makeSUT(_ title: String = "Submit") throws -> (SubmitButton, UIActivityIndicatorView) {
-        let sut = SubmitButton(style: style)
+        let sut = SubmitButton(style: .primary(for: .default))
         sut.title = title
         let activityIndicatorView: UIActivityIndicatorView = try XCTUnwrap(sut.findView(by: "activityIndicator"))
 

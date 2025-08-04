@@ -42,7 +42,6 @@ public class FormLabelItem: FormItem {
         label.font = labelStyle?.font
         label.textColor = labelStyle?.color
         label.textAlignment = labelStyle?.textAlignment ?? .natural
-        label.backgroundColor = labelStyle?.backgroundColor ?? .red
         return label
     }
 }
