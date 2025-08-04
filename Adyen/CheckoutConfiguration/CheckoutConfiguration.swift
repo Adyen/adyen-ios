@@ -46,7 +46,7 @@ public struct CheckoutConfiguration {
     
     package let context: AdyenContext
 
-    package var theme: AdyenTheme?
+    package var theme: AdyenTheme = .init()
 
     /// Creates a CheckoutConfiguration instance.
     /// - Parameters:

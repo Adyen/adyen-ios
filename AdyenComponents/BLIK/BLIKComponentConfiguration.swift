@@ -16,13 +16,13 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
     
     package var showsSubmitButton: Bool
 
-    package var theme: AdyenTheme?
+    package var theme: AdyenTheme = .init()
 
     package var localizationParameters: LocalizationParameters?
     
     public init(
         showsSubmitButton: Bool = true,
-        theme: AdyenTheme? = nil,
+        theme: AdyenTheme = AdyenTheme(),
         localizationParameters: LocalizationParameters? = nil
     ) {
         self.showsSubmitButton = showsSubmitButton

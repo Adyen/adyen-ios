@@ -84,7 +84,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
             scopeInstance: self,
             postfix: "blikCodeHintLabel"
         ),
-        labelStyle: configuration.theme?.uiElementStyles.label
+        labelStyle: configuration.theme.uiElementStyles.label
     )
 
     /// The BLIK code item.
@@ -100,10 +100,10 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
         return item
     }()
 
-    /// The footer item.
+    /// The button item.
     internal lazy var button: FormButtonItem = {
-        let buttonType = configuration.theme?.uiElementStyles.button.primary
-        let item = FormButtonItem(style: buttonType ?? AdyenButtonTypes.default.primary)
+        let buttonType = configuration.theme.uiElementStyles.button.primary
+        let item = FormButtonItem(style: buttonType)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(
             with: payment?.amount,

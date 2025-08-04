@@ -16,7 +16,7 @@ public class FormLabelItem: FormItem {
     
     public var subitems: [FormItem] = []
 
-    public init(text: String, style: TextStyle? = nil, identifier: String? = nil, labelStyle: LabelStyle? = nil) {
+    public init(text: String, style: TextStyle? = nil, identifier: String? = nil, labelStyle: LabelStyle = LabelStyle()) {
         self.identifier = identifier
         self.style = style
         self.labelStyle = labelStyle
@@ -31,17 +31,17 @@ public class FormLabelItem: FormItem {
     /// The text of the label.
     public var text: String
 
-    /// The labelStyle from the adyen theme 
-    public var labelStyle: LabelStyle?
+    /// The labelStyle from the adyen theme
+    public var labelStyle: LabelStyle = .init()
 
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         let label = ADYLabel()
         label.text = text
         label.numberOfLines = 0
         label.accessibilityIdentifier = identifier
-        label.font = labelStyle?.font
-        label.textColor = labelStyle?.color
-        label.textAlignment = labelStyle?.textAlignment ?? .natural
+        label.font = labelStyle.font
+        label.textColor = labelStyle.color
+        label.textAlignment = labelStyle.textAlignment
         return label
     }
 }

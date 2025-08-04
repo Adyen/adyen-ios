@@ -39,7 +39,7 @@ open class FormViewController: UIViewController, AdyenObserver {
     public let style: ViewStyle?
 
     /// Indicates the `FormViewController` UI styling theme.
-    public let theme: AdyenTheme?
+    public var theme: AdyenTheme = .init()
 
     /// Delegate to handle different viewController events.
     public weak var delegate: ViewControllerDelegate?
@@ -60,7 +60,7 @@ open class FormViewController: UIViewController, AdyenObserver {
     public init(
         scrollEnabled: Bool,
         style: ViewStyle? = nil,
-        theme: AdyenTheme? = nil,
+        theme: AdyenTheme = AdyenTheme(),
         localizationParameters: LocalizationParameters?
     ) {
         self.scrollEnabled = scrollEnabled
