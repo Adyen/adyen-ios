@@ -26,8 +26,6 @@ public final class UPIComponent: PaymentComponent,
         static let upiFlowSelectionItem = "upiFlowSelectionSegmentedControlItem"
         static let continueButtonItem = "continueButton"
         static let errorItem = "errorItem"
-        static let generateQRCodeButtonItem = "generateQRCodeButton"
-        static let generateQRCodeContainerItem = "generateQRCodeLabelContainerItem"
         static let virtualPaymentAddressInputItem = "virtualPaymentAddressInputItem"
     }
 
@@ -37,7 +35,6 @@ public final class UPIComponent: PaymentComponent,
         internal static let upiIntent = "upi_intent"
         internal static let vpaFlowIdentifier = "UPI/VPA"
         internal static let noAppsVpaSegmentTitle = "VPA"
-        internal static let qrCodeIcon = "qrcode"
     }
 
     /// Configuration for UPI Component.
