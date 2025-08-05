@@ -308,14 +308,11 @@ private extension UPIComponent {
         case .upiApps:
             upiAppsList.forEach { $0.isHidden.wrappedValue = false }
             vpaInputItem.isVisible = currentSelectedItemIdentifier == Constants.vpaFlowIdentifier
-            continueButton.title = localizedString(.continueTitle, configuration.localizationParameters)
             focusVpaInput()
         case .qrCode:
             upiAppsList.forEach { $0.isHidden.wrappedValue = true }
             vpaInputItem.isVisible = true
             focusVpaInput()
-            
-            continueButton.title = localizedString(.QRCodeGenerateQRCode, configuration.localizationParameters)
         }
         
         hideError()
