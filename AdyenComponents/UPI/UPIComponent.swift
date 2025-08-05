@@ -29,7 +29,6 @@ public final class UPIComponent: PaymentComponent,
         static let generateQRCodeButtonItem = "generateQRCodeButton"
         static let generateQRCodeContainerItem = "generateQRCodeLabelContainerItem"
         static let virtualPaymentAddressInputItem = "virtualPaymentAddressInputItem"
-        static let qrCodeGenerationImageItem = "qrCodeGenerationImageItem"
     }
 
     internal enum Constants {
@@ -168,35 +167,6 @@ public final class UPIComponent: PaymentComponent,
         return upiAppslist
     }()
 
-    /// The QRCode generation message item.
-    internal lazy var qrCodeGenerationLabelContainerItem: FormItem = {
-        let item = FormLabelItem(
-            text: localizedString(
-                .UPIQrcodeGenerationMessage,
-                configuration.localizationParameters
-            ),
-            style: configuration.style.footnoteLabel
-        )
-        item.style.textAlignment = .center
-        item.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: ViewIdentifier.generateQRCodeContainerItem
-        )
-        
-        return item.padding().padding()
-    }()
-
-    /// The QRCode generation message view.
-    internal lazy var qrCodeGenerationImageItem: FormImageItem = {
-        let imageView = FormImageItem(name: Constants.qrCodeIcon)
-        imageView.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: ViewIdentifier.qrCodeGenerationImageItem
-        )
-        imageView.isHidden.wrappedValue = true
-        return imageView
-    }()
-
     /// The continue button item.
     internal lazy var continueButton: FormButtonItem = {
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
@@ -257,10 +227,9 @@ public final class UPIComponent: PaymentComponent,
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
         formViewController.append(upiFlowSelectionItem.padding())
         formViewController.append(errorItem)
-        formViewController.append(qrCodeGenerationImageItem)
-        qrCodeGenerationLabelContainerItem.isHidden.wrappedValue = true
+        
+        // TODO: - Remove QR items
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
-        formViewController.append(qrCodeGenerationLabelContainerItem)
 
         upiAppsList.forEach { formViewController.append($0) }
         // If apps get returned we hide the vpa input field until the vpa selection item is selected
@@ -339,21 +308,10 @@ private extension UPIComponent {
         case .upiApps:
             upiAppsList.forEach { $0.isHidden.wrappedValue = false }
             vpaInputItem.isVisible = currentSelectedItemIdentifier == Constants.vpaFlowIdentifier
-            
-            qrCodeGenerationLabelContainerItem.isVisible = false
-            qrCodeGenerationImageItem.isVisible = false
-            
             continueButton.title = localizedString(.continueTitle, configuration.localizationParameters)
-            
             focusVpaInput()
-
         case .qrCode:
             upiAppsList.forEach { $0.isHidden.wrappedValue = true }
-            vpaInputItem.isVisible = false
-            
-            qrCodeGenerationLabelContainerItem.isVisible = true
-            qrCodeGenerationImageItem.isVisible = true
-            
             vpaInputItem.isVisible = true
             focusVpaInput()
             
