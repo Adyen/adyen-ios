@@ -93,24 +93,38 @@ jobs:
         APPLE_DEVELOPMENT_TEAM_ID: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
         ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
       run: |
+        # Function to escape special characters for sed
+        escape_for_sed() {
+          # Remove any newlines first (sed doesn't allow them in replacement strings)
+          local cleaned=$(echo -n "$1" | tr -d '\n')
+          
+          # Use printf %q which properly escapes the string for shell
+          # Then escape any / characters specifically for sed
+          printf %q "$cleaned" | sed 's/\//\\\//g'
+        }
+        
+        # Escape the secrets
+        ESCAPED_CLIENT_KEY=$(escape_for_sed "$CLIENT_KEY")
+        ESCAPED_DEMO_SERVER_API_KEY=$(escape_for_sed "$DEMO_SERVER_API_KEY")
+        
         # client Key
-        sed -i '' "s/static let clientKey.*$/static let clientKey = \"$CLIENT_KEY\"/g" ./Demo/Configuration.swift
-
+        sed -i '' "s/static let clientKey.*$/static let clientKey = \"$ESCAPED_CLIENT_KEY\"/g" ./Demo/Configuration.swift
+        
         # demo server API key
-        sed -i '' "s/static let demoServerAPIKey.*$/static let demoServerAPIKey = \"$DEMO_SERVER_API_KEY\"/g" ./Demo/Configuration.swift
-
+        sed -i '' "s/static let demoServerAPIKey.*$/static let demoServerAPIKey = \"$ESCAPED_DEMO_SERVER_API_KEY\"/g" ./Demo/Configuration.swift
+        
         # merchant account
         sed -i '' "s/static let merchantAccount.*=.*\".*\"/static let merchantAccount = \"$MERCHANT_ACCOUNT\"/g" ./Demo/Configuration.swift
-
+        
         # apple team identifier
         sed -i '' "s/static let appleTeamIdentifier.*=.*\".*\"/static let appleTeamIdentifier = \"$APPLE_DEVELOPMENT_TEAM_ID\"/g" ./Demo/Configuration.swift
-
+        
         # demoServerEnvironment
         sed -i '' "s/static let demoServerEnvironment.*=.*/static let demoServerEnvironment = DemoCheckoutAPIEnvironment.$ENVIRONMENT/g" ./Demo/Configuration.swift
-
+        
         # classicAPIEnvironment
         sed -i '' "s/static let classicAPIEnvironment.*=.*/static let classicAPIEnvironment = DemoClassicAPIEnvironment.$ENVIRONMENT/g" ./Demo/Configuration.swift
-
+        
         # componentsEnvironment
         sed -i '' "s/static let componentsEnvironment.*=.*/static let componentsEnvironment = Environment.$ENVIRONMENT/g" ./Demo/Configuration.swift
     - name: 🚀 Publish Demo App
