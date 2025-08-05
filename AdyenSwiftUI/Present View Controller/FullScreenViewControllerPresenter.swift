@@ -83,10 +83,15 @@ import SwiftUI
             presenter: UIViewController,
             context: UIViewControllerRepresentableContext<FullScreenView>
         ) {
-            guard !viewController.isBeingPresented, !viewController.isBeingDismissed else { return }
-            presenter.present(viewController, animated: true) {
-                context.coordinator.currentlyPresentedViewController = viewController
+            guard context.coordinator.currentlyPresentedViewController !== viewController,
+                  viewController.presentingViewController == nil,
+                  !viewController.isBeingPresented,
+                  !viewController.isBeingDismissed else {
+                return
             }
+
+            context.coordinator.currentlyPresentedViewController = viewController
+            presenter.present(viewController, animated: true, completion: nil)
         }
 
         private func dismiss(
