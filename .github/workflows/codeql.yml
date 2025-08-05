@@ -18,7 +18,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'swift' ]
+        include:
+          - language: swift
+            build-mode: autobuild
+          - language: actions
+            build-mode: none
 
     steps:
     - name: Checkout repository
