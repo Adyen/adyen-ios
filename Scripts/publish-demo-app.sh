@@ -47,7 +47,6 @@ xcodebuild archive -project Adyen.xcodeproj \
   -configuration Release \
   -archivePath "$ARCHIVE_PATH" \
   -skipPackagePluginValidation \
-  -verbose \
   CODE_SIGNING_ALLOWED=NO \
   ADYEN_CLIENT_KEY="$CLIENT_KEY" \
   ADYEN_DEMO_SERVER_API_KEY="$DEMO_SERVER_API_KEY" \
@@ -62,7 +61,6 @@ xcodebuild -exportArchive \
   -exportPath "$BUILD_PATH" \
   -allowProvisioningUpdates \
   -skipPackagePluginValidation \
-  -verbose \
   -authenticationKeyID "$XCODE_AUTHENTICATION_KEY_ID" \
   -authenticationKeyIssuerID "$XCODE_AUTHENTICATION_KEY_ISSUER_ID" \
   -authenticationKeyPath "$AUTH_KEY_PATH" \
