@@ -228,11 +228,11 @@ public final class UPIComponent: PaymentComponent,
             formViewController.append(instructionsLabelItem.padding())
             formViewController.append(FormSpacerItem(numberOfSpaces: 1))
             formViewController.append(upiFlowSelectionItem.padding())
+            formViewController.append(errorItem)
+            formViewController.append(FormSpacerItem(numberOfSpaces: 1))
+            upiAppsList.forEach { formViewController.append($0) }
         }
-        formViewController.append(errorItem)
-        formViewController.append(FormSpacerItem(numberOfSpaces: 1))
 
-        upiAppsList.forEach { formViewController.append($0) }
         // If apps get returned we hide the vpa input field until the vpa selection item is selected
         vpaInputItem.isVisible = upiAppsList.isEmpty
         
