@@ -21,21 +21,6 @@ public struct ColorScheme: Equatable {
     public var text: UIColor
     public var textSecondary: UIColor
 
-    /// Create new UIColor from hex value.
-    /// - Parameter hex: The hex value of color. Should be between 0 and 0xFFFFFF.
-    internal static func color(hex: UInt) -> UIColor {
-        assert(
-            hex >= 0x000000 && hex <= 0xFFFFFF,
-            "Invalid Hexadecimal color, Hexadecimal number should be between 0x0 and 0xFFFFFF"
-        )
-        return UIColor(
-            red: CGFloat((hex >> 16) & 0xFF) / 255.0,
-            green: CGFloat((hex >> 8) & 0xFF) / 255.0,
-            blue: CGFloat(hex & 0xFF) / 255.0,
-            alpha: 1.0
-        )
-    }
-
     // MARK: - Initializers
 
     // A static default ColorScheme
@@ -45,51 +30,51 @@ public struct ColorScheme: Equatable {
 
     private init() {
         self.background = UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0x121212) : ColorScheme.color(hex: 0xFFFFFF)
+            traitCollection.userInterfaceStyle == .dark ? .color(hex: 0x121212) : .color(hex: 0xFFFFFF)
         }
 
         self.container = UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0x1C1C1E) : ColorScheme.color(hex: 0xF7F7F8)
+            traitCollection.userInterfaceStyle == .dark ? .color(hex: 0x1C1C1E) : .color(hex: 0xF7F7F8)
         }
 
         self.primary = UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0xEFEFEF) : ColorScheme.color(hex: 0x00112C)
+            traitCollection.userInterfaceStyle == .dark ? .color(hex: 0xEFEFEF) : .color(hex: 0x00112C)
         }
 
         self.textOnPrimary = UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0x121212) : ColorScheme.color(hex: 0xFFFFFF)
+            traitCollection.userInterfaceStyle == .dark ? .color(hex: 0x121212) : .color(hex: 0xFFFFFF)
         }
 
         self.action = UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0x7DB9FF) : ColorScheme.color(hex: 0x0070F5)
+            traitCollection.userInterfaceStyle == .dark ? .color(hex: 0x7DB9FF) : .color(hex: 0x0070F5)
         }
 
         self.destructive = UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0xF99C9C) : ColorScheme.color(hex: 0xE22D2D)
+            traitCollection.userInterfaceStyle == .dark ? .color(hex: 0xF99C9C) : .color(hex: 0xE22D2D)
         }
 
         self.textOnDestructive = UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0x121212) : ColorScheme.color(hex: 0xFFFFFF)
+            traitCollection.userInterfaceStyle == .dark ? .color(hex: 0x121212) : .color(hex: 0xFFFFFF)
         }
 
         self.disabled = UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0x373737) : ColorScheme.color(hex: 0xEEEFF1)
+            traitCollection.userInterfaceStyle == .dark ? .color(hex: 0x373737) : .color(hex: 0xEEEFF1)
         }
 
         self.outline = UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0x454545) : ColorScheme.color(hex: 0xDBDEE2)
+            traitCollection.userInterfaceStyle == .dark ? .color(hex: 0x454545) : .color(hex: 0xDBDEE2)
         }
 
         self.textOnDisabled = UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0xEFEFEF) : ColorScheme.color(hex: 0x00112C)
+            traitCollection.userInterfaceStyle == .dark ? .color(hex: 0xEFEFEF) : .color(hex: 0x00112C)
         }
 
         self.text = UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0xEFEFEF) : ColorScheme.color(hex: 0x00112C)
+            traitCollection.userInterfaceStyle == .dark ? .color(hex: 0xEFEFEF) : .color(hex: 0x00112C)
         }
 
         self.textSecondary = UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? ColorScheme.color(hex: 0xEFEFEF) : ColorScheme.color(hex: 0x5C687C)
+            traitCollection.userInterfaceStyle == .dark ? .color(hex: 0xEFEFEF) : .color(hex: 0x5C687C)
         }
     }
 

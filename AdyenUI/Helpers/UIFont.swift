@@ -6,7 +6,7 @@
 
 import UIKit
 
-internal extension UIFont {
+public extension UIFont {
 
     /// Get new instance of `UIFont` with the same familyName and pointSize, but specified weight.
     /// - Parameter weight: The desired font's weight.
