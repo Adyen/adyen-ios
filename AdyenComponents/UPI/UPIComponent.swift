@@ -165,31 +165,7 @@ public final class UPIComponent: PaymentComponent,
         guard let apps = upiPaymentMethod.apps, !apps.isEmpty else { return [] }
         
         var upiAppslist = apps.map { selectableFormItem(from: $0) }
-        upiAppslist.append(vpaSelectionItem)
         return upiAppslist
-    }()
-
-    /// The UPI enter UPI/VPA list item.
-    internal lazy var vpaSelectionItem: SelectableFormItem = {
-        let selectableItem = SelectableFormItem(
-            title: localizedString(
-                .UPICollectDropdownLabel,
-                configuration.localizationParameters
-            ),
-            imageUrl: nil,
-            isSelected: false,
-            isSeparatorViewShown: true,
-            style: .init(title: configuration.style.textField.title),
-            identifier: Constants.vpaFlowIdentifier
-        )
-        selectableItem.selectionHandler = { [weak self, weak selectableItem] in
-            guard let self, let selectableItem else { return }
-            self.handleSelection(
-                item: selectableItem,
-                showVpaInputItem: true
-            )
-        }
-        return selectableItem
     }()
 
     /// The QRCode generation message item.
@@ -388,6 +364,9 @@ private extension UPIComponent {
             
             qrCodeGenerationLabelContainerItem.isVisible = true
             qrCodeGenerationImageItem.isVisible = true
+            
+            vpaInputItem.isVisible = true
+            focusVpaInput()
             
             continueButton.title = localizedString(.QRCodeGenerateQRCode, configuration.localizationParameters)
         }
