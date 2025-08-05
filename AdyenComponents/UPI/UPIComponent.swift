@@ -223,12 +223,13 @@ public final class UPIComponent: PaymentComponent,
         )
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
-        formViewController.append(instructionsLabelItem.padding())
-        formViewController.append(FormSpacerItem(numberOfSpaces: 1))
-        formViewController.append(upiFlowSelectionItem.padding())
-        formViewController.append(errorItem)
         
-        // TODO: - Remove QR items
+        if !upiAppsList.isEmpty {
+            formViewController.append(instructionsLabelItem.padding())
+            formViewController.append(FormSpacerItem(numberOfSpaces: 1))
+            formViewController.append(upiFlowSelectionItem.padding())
+        }
+        formViewController.append(errorItem)
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
 
         upiAppsList.forEach { formViewController.append($0) }
