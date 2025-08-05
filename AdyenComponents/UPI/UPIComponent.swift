@@ -240,10 +240,7 @@ public final class UPIComponent: PaymentComponent,
         )
         selectableItem.selectionHandler = { [weak self, weak selectableItem] in
             guard let self, let selectableItem else { return }
-            self.handleSelection(
-                item: selectableItem,
-                showVpaInputItem: false
-            )
+            self.handleSelection(item: selectableItem)
         }
         return selectableItem
     }
@@ -284,17 +281,9 @@ public final class UPIComponent: PaymentComponent,
 
 extension UPIComponent {
     
-    private func handleSelection(item: SelectableFormItem?, showVpaInputItem: Bool) {
+    private func handleSelection(item: SelectableFormItem?) {
         self.currentSelectedItemIdentifier = item?.identifier
         self.updateSelection()
-        self.vpaInputItem.isHidden.wrappedValue = !showVpaInputItem
-
-        if showVpaInputItem {
-            self.focusVpaInput()
-            item?.isSeparatorViewShown = false
-        } else {
-            item?.isSeparatorViewShown = true
-        }
     }
     
     private func didSelectContinueButton() {
