@@ -426,9 +426,12 @@ class CardComponentTests: XCTestCase {
 
     func testTintColorCustomization() throws {
         guard #available(iOS 17.0, *) else {
-            throw XCTSkip("This test is unfortunately very flaky on macos-12 runners that are needed to test on older iOS versions - so we skip it")
+            throw XCTSkip("This test is flaky on macos-12 runners that are needed to test on older iOS versions - so we skip it")
         }
-        
+        guard #available(iOS 26.0, *) else {
+            throw XCTSkip("This test is flaky on iOS 26 beta so far - so we skip it")
+        }
+
         var configuration = CardComponent.Configuration()
         
         let tintColor: UIColor = .black

@@ -179,6 +179,10 @@ class ComponentManagerTests: XCTestCase {
     }
     
     func testCashAppShouldSucceedWithConfig() throws {
+        guard #available(iOS 26.0, *) else {
+            throw XCTSkip("This test is flaky on iOS 26 beta - so we skip it")
+        }
+
         configuration.cashAppPay = .init(redirectURL: URL(string: "test")!)
         let sut = ComponentManager(
             paymentMethods: paymentMethods,

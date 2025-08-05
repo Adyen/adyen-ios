@@ -24,16 +24,17 @@ jobs:
       with:
         xcode-version: '16.1'
 
-    - name: Lint Cocoapods
+    - name: Lint Cocoapods and check test project integration
       run: |
+
         brew update
         brew install xcodegen
+        
         gem install cocoapods -v 1.10.2
         pod repo update
-        # pod lib lint Adyen.podspec --allow-warnings --verbose
+        
+        pod lib lint Adyen.podspec --allow-warnings --verbose
         # pod lib lint AdyenCardScanner.podspec --allow-warnings --verbose
 
-    - name: Test Cocoapods Integration
-      run: |
         Scripts/test-CocoaPods-integration.sh -w
         Scripts/test-CocoaPods-integration.sh
