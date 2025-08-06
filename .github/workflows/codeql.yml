@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'swift' ]
+        language: [ 'swift', 'actions' ]
 
     steps:
     - name: Checkout repository
