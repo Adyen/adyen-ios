@@ -63,6 +63,10 @@ let package = Package(
         .library(
             name: "AdyenCheckout",
             targets: ["AdyenCheckout"]
+        ),
+	.library(
+            name: "AdyenUI",
+            targets: ["AdyenUI"]
         )
     ],
     dependencies: [
@@ -206,6 +210,12 @@ let package = Package(
                 .target(name: "AdyenActions")
             ],
             path: "AdyenCheckout",
+            exclude: ["Info.plist"]
+        ),
+	.target(
+            name: "AdyenUI",
+            dependencies: [],
+            path: "AdyenUI",
             exclude: ["Info.plist"]
         ),
         .binaryTarget(
