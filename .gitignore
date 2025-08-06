@@ -46,4 +46,4 @@ TempProject/
 .tmp
 
 # Configuration files with secrets
-Demo/Secrets.test.xcconfig
+Demo/Secrets.*.xcconfig
