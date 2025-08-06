@@ -36,8 +36,9 @@ extension InitialDataFlowProtocol {
     }
     
     func generateContext() -> AdyenContext {
-        var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
+        let analyticsConfiguration = AnalyticsConfiguration(
+            isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
+        )
         return AdyenContext(
             apiContext: ConfigurationConstants.apiContext,
             payment: ConfigurationConstants.current.payment,

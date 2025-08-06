@@ -6,6 +6,7 @@
 
 import Foundation
 
+// TODO: this could also just be a protocol and they can conform to it (CheckoutCallbackResult below may replace it)
 /// Data model to contain relevant parts of `/payments` and `/payment/details` call responses.
 public struct CheckoutPaymentsResponse: Decodable, Sendable {
     
@@ -22,7 +23,7 @@ public struct CheckoutPaymentsResponse: Decodable, Sendable {
         self.order = try container.decodeIfPresent(PartialPaymentOrder.self, forKey: .order)
     }
     
-    internal init(
+    public init(
         resultCode: CheckoutResultCode,
         action: Action? = nil,
         order: PartialPaymentOrder? = nil
@@ -39,7 +40,20 @@ public struct CheckoutPaymentsResponse: Decodable, Sendable {
     }
 }
 
-/// Data model that contains information regarding the status of a payment.
+/// Represents the interface to contain the relevant parts of `/payments` and `/payment/details` call responses.
+public protocol CheckoutCallbackResult: Decodable, Sendable {
+    
+    /// Result code of the response.
+    var resultCode: CheckoutResultCode { get }
+    
+    /// Action object, if there is any.
+    var action: Action? { get }
+    
+    /// Order object related to the partial payment, if there is any.
+    var order: PartialPaymentOrder? { get }
+}
+
+/// A model that holds information regarding the result status of a payment.
 public struct CheckoutResult {
     
     public let resultCode: CheckoutResultCode
