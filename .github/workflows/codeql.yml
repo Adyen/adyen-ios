@@ -19,6 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         - language: swift
+          build-mode: manual
         - language: actions
           build-mode: none
 
@@ -30,6 +31,7 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
+        build-mode: ${{ matrix.build-mode }}
 
     - name: "Run, Build Application using script"
       run: |
