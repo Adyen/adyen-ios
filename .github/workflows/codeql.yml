@@ -19,7 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - language: [ 'swift' ]
+          - language: swift
           - language: actions
             build-mode: none
 
