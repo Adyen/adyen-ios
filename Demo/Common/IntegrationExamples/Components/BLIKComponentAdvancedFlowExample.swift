@@ -14,7 +14,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     internal weak var presenter: PresenterExampleProtocol?
     
     private var adyenCheckout: AdyenCheckout?
-    private var component: AdyenCheckoutComponent?
+    private var adyenComponent: AdyenCheckoutComponent?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     
@@ -80,9 +80,12 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             switch result {
             case let .success(checkout):
                 self.adyenCheckout = checkout
-                let component = checkout.createComponent(with: blikPaymentMethod)
-                self.component = component
-                self.presenter?.present(viewController: viewController(for: component!), completion: nil)
+                guard let component = checkout.createComponent(with: blikPaymentMethod) else {
+                    print("component not found")
+                    return
+                }
+                self.adyenComponent = component
+                self.presenter?.present(viewController: viewController(for: component), completion: nil)
             case let .failure(error):
                 print("failed to create adyen checkout \(error)")
             }
@@ -90,6 +93,8 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         
         // add all the config options to settings? like show submit button
     }
+    
+    // MARK: - Backend calls
     
     private func callPayments(with data: PaymentComponentData, completion: PaymentsResponseHandler?) {
         let request = PaymentsRequest(data: data)
@@ -121,6 +126,8 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         }
     }
     
+    // MARK: - Private
+    
     private func viewController(for component: AdyenCheckoutComponent) -> UIViewController {
         let navigation = UINavigationController(rootViewController: component.viewController!)
         component.viewController?.navigationItem.leftBarButtonItem = .init(
@@ -132,6 +139,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     }
     
     @objc private func cancelPressed() {
+        //TODO: component cancellation?
 //        component?.cancelIfNeeded()
         presenter?.dismiss(completion: nil)
     }
