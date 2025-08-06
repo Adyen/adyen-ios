@@ -20,8 +20,6 @@ jobs:
       matrix:
         - language: swift
           build-mode: manual
-        - language: actions
-          build-mode: none
 
     steps:
     - name: Checkout repository
