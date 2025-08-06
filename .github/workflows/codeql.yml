@@ -18,10 +18,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - language: swift
-          - language: actions
-            build-mode: none
+        - language: swift
+        - language: actions
+          build-mode: none
 
     steps:
     - name: Checkout repository
@@ -31,10 +30,8 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
-        build-mode: ${{ matrix.build-mode }}
 
-    - name: Build Swift project manually
-      if: matrix.language == 'swift' && matrix.build-mode == 'manual'
+    - name: "Run, Build Application using script"
       run: |
         xcodebuild -project Adyen.xcodeproj -scheme Adyen -destination 'generic/platform=iOS' SKIP_INSTALL=NO build | xcpretty --utf --color
 
