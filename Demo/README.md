@@ -6,19 +6,36 @@ Sample project to try out iOS Drop-in and Components integrations.
 
 ## Configuration
 
-To start testing SDK, you need to open `Adyen.xcodeproj` in Xcode and provide the following information to `Demo/Configuration.swift`
+### Setup using .xcconfig files
 
-| Field name | Placeholder | Description |
-| ------------- |:-------------:| ----- |
-| Adyen Client key| **{YOUR_CLIENT_KEY}** | We use your client key to authenticate requests from your payment environment. [How to get Client key](https://docs.adyen.com/development-resources/client-side-authentication#get-your-client-key) |
-| Demo server API key | **{YOUR_DEMO_SERVER_API_KEY}** | Each API request that you make to Adyen is processed through an API credential linked to your company account. [How to get API key](https://docs.adyen.com/development-resources/api-credentials#generate-api-key)] |
-| Apple MerchantID | **{YOUR_APPLE_PAY_MERCHANT_IDENTIFIER}** | A merchant identifier uniquely identifies you as a merchant who can accept Apple Pay payments. Provide your Apple MerchantID to `Configuration.swift` and `Shared.entitlements`. [How to create MerchantID](https://docs.adyen.com/payment-methods/apple-pay/enable-apple-pay#create-merchant-identifier) |
-| Adyen's merchant identifier | **{YOUR_MERCHANT_ACCOUNT}**  | Your Adyen merchant account name. You can also change the merchant identifier in 'Options' (top right corner). |
+The demo app uses xcconfig files for secure secret management. To set up your local development environment:
 
+1. Create the following file(s) in the `Demo` folder (these files are git-ignored), following the `Demo/Secrets.template.xcconfig` template (this file is a placeholder file and can be safely renamed to `Secrets.{environment}.xcconfig`):
+   - `Secrets.test.xcconfig` - For test environment
+   - `Secrets.beta.xcconfig` - For beta environment
+   - `Secrets.live.xcconfig` - For production environment
 
-DISCLAIMER:
-Provide API-key to `Configuration.swift` for test purposes only!
-The market-ready application must not connect to Adyen API directly.
+2. Fill in required configuration values:
+
+```
+ADYEN_CLIENT_KEY = your_client_key_here // we use your client key to authenticate requests from your payment environment. ADYEN_DEMO_SERVER_API_KEY = your_api_key_here // each API request that you make to Adyen is processed through an API credential linked to your company account.
+ADYEN_MERCHANT_ACCOUNT = your_merchant_account_here // Your Adyen merchant account name. You can also change the merchant identifier in app 'Settings' (top right corner).
+APPLE_TEAM_IDENTIFIER = your_team_id_here
+APPLE_PAY_MERCHANT_IDENTIFIER = your_apple_pay_merchant_id_here
+ENVIRONMENT = test // or beta/live depending on the file
+```
+
+#### Useful links:
+
+- [How to get Client key](https://docs.adyen.com/development-resources/client-side-authentication#get-your-client-key)
+- [How to get API key](https://docs.adyen.com/development-resources/api-credentials#generate-api-key)
+- [How to create MerchantID](https://docs.adyen.com/payment-methods/apple-pay/enable-apple-pay#create-merchant-identifier)
+
+3. Update the `Secrets.xcconfig` file to import your chosen environment file:
+
+```
+#include? "Secrets.test.xcconfig" // Change to the environment you want to use
+```
 
 ## Structure
 
