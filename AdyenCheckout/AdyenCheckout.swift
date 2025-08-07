@@ -147,7 +147,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     ) {
         self.configuration = configuration
         self.session = session
-        self.paymentMethods = paymentMethods ?? session?.sessionContext.paymentMethods
+        self.paymentMethods = paymentMethods ?? session?.state.paymentMethods
         self.checkoutAttemptId = checkoutAttemptId
         self.presentationDelegate = presentationDelegate
         

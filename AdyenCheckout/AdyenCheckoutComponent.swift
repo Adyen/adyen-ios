@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) import AdyenDropIn
 @_spi(AdyenInternal) import AdyenComponents
 @_spi(AdyenInternal) import AdyenActions
+import UIKit
 
 package typealias CheckoutComponentDelegate = (PaymentComponentDelegate & ActionComponentDelegate)
 
@@ -22,6 +23,13 @@ public final class AdyenCheckoutComponent {
     private var configuration: CheckoutConfiguration
     
     internal weak var delegate: CheckoutComponentDelegate?
+    
+    public var viewController: UIViewController? {
+        guard let presentableComponent = paymentComponent as? PresentableComponent else {
+            return nil
+        }
+        return presentableComponent.viewController
+    }
     
     package init(
         paymentMethod: PaymentMethod,

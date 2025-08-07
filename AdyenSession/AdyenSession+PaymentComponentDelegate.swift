@@ -54,8 +54,8 @@ extension AdyenSession {
         dropInComponent: AnyDropInComponent?
     ) {
         let request = PaymentsRequest(
-            sessionId: sessionContext.identifier,
-            sessionData: sessionContext.data,
+            sessionId: state.identifier,
+            sessionData: state.data,
             data: paymentComponentData
         )
         apiClient.perform(request) { [weak self] in
@@ -151,12 +151,16 @@ extension AdyenSession {
             )
             return
         }
+        let initialInfo = AdyenSession.InitialInfo(
+            sessionIdentifier: state.identifier,
+            initialSessionData: state.data
+        )
         Self.makeSetupCall(
-            with: configuration,
+            with: initialInfo,
             baseAPIClient: apiClient,
             order: order
         ) { [weak self] result in
-            self?.updateContext(with: result, component: currentComponent)
+            self?.updateState(with: result, component: currentComponent)
             self?.reload(
                 dropInComponent: dropInComponent,
                 with: order,
@@ -165,10 +169,10 @@ extension AdyenSession {
         }
     }
     
-    private func updateContext(with result: Result<Context, Error>, component: Component) {
+    private func updateState(with result: Result<State, Error>, component: Component) {
         switch result {
-        case let .success(context):
-            sessionContext = context
+        case let .success(state):
+            self.state = state
         case let .failure(error):
             finish(with: error, component: component)
         }
@@ -180,7 +184,7 @@ extension AdyenSession {
         currentComponent: Component
     ) {
         do {
-            try dropInComponent.reload(with: order, sessionContext.paymentMethods)
+            try dropInComponent.reload(with: order, state.paymentMethods)
         } catch {
             finish(with: error, component: currentComponent)
         }

@@ -47,11 +47,11 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
     // MARK: - Networking
 
     private func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
-        requestAdyenSessionConfiguration { [weak self] response in
+        requestSessionInitialInfo { [weak self] response in
             guard let self else { return }
             
             switch response {
-            case let .success(configuration):
+            case let .success(model):
 //                AdyenSession.initialize(
 //                    with: configuration,
 //                    delegate: self,
@@ -79,7 +79,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
     }
     
     private func cardComponent(from session: AdyenSession) throws -> CardComponent {
-        let paymentMethods = session.sessionContext.paymentMethods
+        let paymentMethods = session.state.paymentMethods
         
         guard let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)

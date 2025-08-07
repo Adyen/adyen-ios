@@ -43,6 +43,7 @@ extension AdyenCheckout: PaymentComponentDelegate {
         if let action = paymentsResponse.action {
             actionHandlingComponent.handle(action)
         } else {
+            // TODO: check for error cases here
             finish(with: CheckoutResult(resultCode: paymentsResponse.resultCode))
         }
     }

@@ -21,13 +21,13 @@ extension AdyenSession: ActionComponentDelegate {
     }
     
     internal func didComplete(currentComponent: Component) {
-        guard let resultCode = sessionContext.resultCode else {
+        guard let resultCode = state.resultCode else {
             AdyenAssertion.assertionFailure(message: "Missing resultCode.")
             return
         }
         let result = CheckoutResult(
             resultCode: resultCode,
-            sessionResult: sessionContext.sessionResult
+            sessionResult: state.sessionResult
         )
         delegate?.didComplete(with: result, component: currentComponent, session: self)
     }
@@ -53,8 +53,8 @@ extension AdyenSession {
     ) {
         (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
         let request = PaymentDetailsRequest(
-            sessionId: sessionContext.identifier,
-            sessionData: sessionContext.data,
+            sessionId: state.identifier,
+            sessionData: state.data,
             paymentData: actionComponentData.paymentData,
             details: actionComponentData.details
         )

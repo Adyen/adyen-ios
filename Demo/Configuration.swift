@@ -317,9 +317,9 @@ internal struct DemoAppSettings: Codable {
     }
 
     internal var analyticsConfiguration: AnalyticsConfiguration {
-        var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
-        return analyticsConfiguration
+        AnalyticsConfiguration(
+            isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
+        )
     }
 
 }
