@@ -10,7 +10,7 @@ Sample project to try out iOS Drop-in and Components integrations.
 
 The demo app uses xcconfig files for secure secret management. To set up your local development environment:
 
-1. Create the following file(s) in the `Demo` folder (these files are git-ignored), following the `Demo/Secrets.template.xcconfig` template (this file is a placeholder file and can be safely renamed to `Secrets.{environment}.xcconfig`):
+1. Create the following file(s) in the `Demo` folder (these files are git-ignored), by copying `Demo/Secrets.template.xcconfig` and renaming the copy (e.g. to `Secrets.test.xcconfig`):
    - `Secrets.test.xcconfig` - For test environment
    - `Secrets.beta.xcconfig` - For beta environment
    - `Secrets.live.xcconfig` - For production environment
