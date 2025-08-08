@@ -39,7 +39,7 @@ The [`Common`](Common/) folder contains all basic code necessary to handle UI, A
 
 ### Integration examples
 
-#### Sessions
+#### Session
 
 ##### Drop-in
 
