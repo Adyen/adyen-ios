@@ -35,22 +35,40 @@ The demo app uses xcconfig files for secure secret management. To set up your lo
 
 ### Shared code
 
-The `Common` folder contains all basic code necessary to handle UI, Adyen checkout's state, and network calls.
+The [`Common`](Common/) folder contains all basic code necessary to handle UI, Adyen checkout's state, and network calls.
 
-#### Drop-in sample
+### Integration examples
 
-In `IntegrationExampleDropIn.swift` you can find example setup for DropIn integration.
+#### Sessions
+
+##### Drop-in
+
+In [`Common/IntegrationExamples/Session/DropIn/DropInExample.swift`](Common/IntegrationExamples/Session/DropIn/DropInExample.swift) you can find example setup for DropIn integration.
 You can try different UI customization and component configurations.
 
-#### Components sample
+##### Components
 
-In `IntegrationExampleComponents.swift` you can find example setup for different components integration.
-You can try different components and UI customizations.
+The following component examples can be found in the [`Common/IntegrationExamples/Session/Components/`](Common/IntegrationExamples/Session/Components/) directory:
+- [`CardComponentExample.swift`](Common/IntegrationExamples/Session/Components/CardComponentExample.swift) - Example for card payments
+- [`ApplePayComponentExample.swift`](Common/IntegrationExamples/Session/Components/ApplePayComponentExample.swift) - Example for Apple Pay integration
+- [`InstantPaymentComponentExample.swift`](Common/IntegrationExamples/Session/Components/InstantPaymentComponentExample.swift) - Example for instant payment methods
+- [`IssuerListComponentExample.swift`](Common/IntegrationExamples/Session/Components/IssuerListComponentExample.swift) - Example for issuer list payments
 
-#### Partial payments sample
+#### Advanced flow
 
-In `IntegrationExamplePartialPayment.swift` you can find example setup for partial payment integration.
-This example is used to support Drop-in gift card flow.
+##### Drop-in (with partial payments support)
+
+In [`Common/IntegrationExamples/AdvancedFlow/DropIn/DropInAdvancedFlowExample.swift`](Common/IntegrationExamples/AdvancedFlow/DropIn/DropInAdvancedFlowExample.swift) you can find example setup for:
+- Advanced Drop-In integration
+- Partial payment integration (gift card flow)
+
+##### Components
+
+Advanced flow examples for components can be found in the [`Common/IntegrationExamples/AdvancedFlow/Components/`](Common/IntegrationExamples/AdvancedFlow/Components/) directory:
+- [`CardComponentAdvancedFlowExample.swift`](Common/IntegrationExamples/AdvancedFlow/Components/CardComponentAdvancedFlowExample.swift)
+- [`ApplePayComponentAdvancedFlowExample.swift`](Common/IntegrationExamples/AdvancedFlow/Components/ApplePayComponentAdvancedFlowExample.swift)
+- [`InstantPaymentComponentAdvancedFlowExample.swift`](Common/IntegrationExamples/AdvancedFlow/Components/InstantPaymentComponentAdvancedFlowExample.swift)
+- [`IssuerListComponentAdvancedFlowExample.swift`](Common/IntegrationExamples/AdvancedFlow/Components/IssuerListComponentAdvancedFlowExample.swift)
 
 ### UIKit Demo
 
