@@ -15,21 +15,16 @@ The demo app uses xcconfig files for secure secret management. To set up your lo
    - `Secrets.beta.xcconfig` - For beta environment
    - `Secrets.live.xcconfig` - For production environment
 
-2. Fill in required configuration values:
+2. Fill in required configuration values in each file:
 
-```
-ADYEN_CLIENT_KEY = your_client_key_here // we use your client key to authenticate requests from your payment environment. ADYEN_DEMO_SERVER_API_KEY = your_api_key_here // each API request that you make to Adyen is processed through an API credential linked to your company account.
-ADYEN_MERCHANT_ACCOUNT = your_merchant_account_here // Your Adyen merchant account name. You can also change the merchant identifier in app 'Settings' (top right corner).
-APPLE_TEAM_IDENTIFIER = your_team_id_here
-APPLE_PAY_MERCHANT_IDENTIFIER = your_apple_pay_merchant_id_here
-ENVIRONMENT = test // or beta/live depending on the file
-```
-
-#### Useful links:
-
-- [How to get Client key](https://docs.adyen.com/development-resources/client-side-authentication#get-your-client-key)
-- [How to get API key](https://docs.adyen.com/development-resources/api-credentials#generate-api-key)
-- [How to create MerchantID](https://docs.adyen.com/payment-methods/apple-pay/enable-apple-pay#create-merchant-identifier)
+| Variable Name | Value | Description |
+| ------------- | ----- | ----------- |
+| ADYEN_CLIENT_KEY | your_client_key_here | We use your client key to authenticate requests from your payment environment. [How to get Client key](https://docs.adyen.com/development-resources/client-side-authentication#get-your-client-key) |
+| ADYEN_DEMO_SERVER_API_KEY | your_api_key_here | Each API request that you make to Adyen is processed through an API credential linked to your company account. [How to get API key](https://docs.adyen.com/development-resources/api-credentials#generate-api-key) |
+| ADYEN_MERCHANT_ACCOUNT | your_merchant_account_here | Your Adyen merchant account name. You can also change the merchant identifier in app 'Settings' (top right corner). [How to create MerchantID](https://docs.adyen.com/payment-methods/apple-pay/enable-apple-pay#create-merchant-identifier) |
+| APPLE_TEAM_IDENTIFIER | your_team_id_here | Your Apple Developer Team Identifier. |
+| APPLE_PAY_MERCHANT_IDENTIFIER | your_apple_pay_merchant_id_here | A merchant identifier that uniquely identifies you as a merchant who can accept Apple Pay payments. |
+| ENVIRONMENT | test | Environment to use - can be `test`, `beta`, or `live` depending on the file. |
 
 3. Update the `Secrets.xcconfig` file to import your chosen environment file:
 
