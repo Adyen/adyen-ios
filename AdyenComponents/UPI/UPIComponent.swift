@@ -139,7 +139,7 @@ public final class UPIComponent: PaymentComponent,
     }()
     
     /// The virtual payment address text input title item.
-    internal lazy var vpaInputTitleItem: FormLabelItem = {
+    internal lazy var vpaInputTitleItem: FormContainerItem<FormLabelItem> = {
         let text = "Enter your UPI ID"
         let item = FormLabelItem(
             text: text,
@@ -150,7 +150,7 @@ public final class UPIComponent: PaymentComponent,
             scopeInstance: self,
             postfix: ViewIdentifier.vpaInputTitleItem
         )
-        return item
+        return item.padding()
     }()
     
     /// The  virtual payment address text input item.
@@ -171,7 +171,7 @@ public final class UPIComponent: PaymentComponent,
         )
         return item
     }()
-    
+        
     /// The UPI app list item.
     internal lazy var upiAppsList: [SelectableFormItem] = {
         guard let apps = upiPaymentMethod.apps, !apps.isEmpty else { return [] }
@@ -246,11 +246,11 @@ public final class UPIComponent: PaymentComponent,
             upiAppsList.forEach { formViewController.append($0) }
         }
         
+        vpaInputTitleItem.isVisible = upiAppsList.isEmpty
         vpaInputItem.isVisible = upiAppsList.isEmpty
-        
-        formViewController.append(vpaInputTitleItem.padding())
+        formViewController.append(vpaInputTitleItem)
         formViewController.append(vpaInputItem)
-        
+                
         if configuration.showsSubmitButton {
             formViewController.append(FormSpacerItem(numberOfSpaces: 2))
             formViewController.append(continueButton)
@@ -321,10 +321,12 @@ private extension UPIComponent {
         switch selectedUPIFlow {
         case .upiIntent:
             upiAppsList.forEach { $0.isHidden.wrappedValue = false }
+            vpaInputTitleItem.isVisible = false
             vpaInputItem.isVisible = false
             focusVpaInput()
         case .upiCollect:
             upiAppsList.forEach { $0.isHidden.wrappedValue = true }
+            vpaInputTitleItem.isVisible = true
             vpaInputItem.isVisible = true
             focusVpaInput()
         }
