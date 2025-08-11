@@ -8,6 +8,10 @@ on:
     branches:
       - develop
       
+permissions:
+  contents: read
+  pull-requests: write # sonar
+      
 jobs:
 
   build:

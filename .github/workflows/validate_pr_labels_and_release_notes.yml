@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, labeled, unlabeled, edited]
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
   get-pr-labels:
     if: "!startsWith(github.event.pull_request.head.ref, 'release/') && !contains(github.event.pull_request.user.login, '[bot]')"
