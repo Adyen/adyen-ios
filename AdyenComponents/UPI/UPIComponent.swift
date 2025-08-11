@@ -26,6 +26,7 @@ public final class UPIComponent: PaymentComponent,
         static let upiFlowSelectionItem = "upiFlowSelectionSegmentedControlItem"
         static let continueButtonItem = "continueButton"
         static let errorItem = "errorItem"
+        static let vpaInputTitleItem = "vpaInputTitleItem"
         static let virtualPaymentAddressInputItem = "virtualPaymentAddressInputItem"
     }
     
@@ -83,7 +84,7 @@ public final class UPIComponent: PaymentComponent,
         self.context = context
         self.configuration = configuration
         
-        upiAppsList = []
+//        upiAppsList = []
         if upiAppsList.isEmpty {
             selectedUPIFlow = .upiCollect
         }
@@ -134,6 +135,21 @@ public final class UPIComponent: PaymentComponent,
         item.selectionHandler = { [weak self] in
             self?.didChangeSegmentedControlIndex($0)
         }
+        return item
+    }()
+    
+    /// The virtual payment address text input title item.
+    internal lazy var vpaInputTitleItem: FormLabelItem = {
+        let text = "Enter your UPI ID"
+        let item = FormLabelItem(
+            text: text,
+            style: configuration.style.footnoteLabel
+        )
+        item.style.textAlignment = .left
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.vpaInputTitleItem
+        )
         return item
     }()
     
@@ -230,9 +246,9 @@ public final class UPIComponent: PaymentComponent,
             upiAppsList.forEach { formViewController.append($0) }
         }
         
-        // If apps get returned we hide the vpa input field until the vpa selection item is selected
         vpaInputItem.isVisible = upiAppsList.isEmpty
         
+        formViewController.append(vpaInputTitleItem.padding())
         formViewController.append(vpaInputItem)
         
         if configuration.showsSubmitButton {
