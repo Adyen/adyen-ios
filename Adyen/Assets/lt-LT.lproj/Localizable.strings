@@ -192,7 +192,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Įveskite UPI ID";
 "adyen.UPI.collectFieldLabel" = "UPI ID";
-"adyen.UPI.error.noAppSelected" = "Norėdami tęsti, pasirinkite mokėjimo metodą";
+"adyen.UPI.error.noAppSelected" = "Norėdami tęsti, pasirinkite pageidaujamą UPI programėlę";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Šiame įrenginyje neįdiegta arba pasenusi TWINT versija. Atnaujinkite arba įdiekite TWINT programą.";

@@ -192,7 +192,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Sláðu inn UPI-auðkenni";
 "adyen.UPI.collectFieldLabel" = "UPI-auðkenni";
-"adyen.UPI.error.noAppSelected" = "Veldu greiðslumáta til að halda áfram";
+"adyen.UPI.error.noAppSelected" = "Veldu UPI-forrit sem þú vilt nota til að halda áfram";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Engin eða úrelt útgáfa af TWINT er uppsett á þessu tæki. Uppfærðu eða settu TWINT-forritið upp.";

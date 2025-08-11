@@ -188,7 +188,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Vnesite UPI ID";
 "adyen.UPI.collectFieldLabel" = "UPI ID";
-"adyen.UPI.error.noAppSelected" = "Za nadaljevanje izberite način plačila";
+"adyen.UPI.error.noAppSelected" = "Za nadaljevanje izberite svojo želeno aplikacijo UPI";
 "adyen.twint.noAppsInstalled.message" = "V tej napravi ni nameščena različica aplikacije TWINT ali pa je zastarela. Posodobite ali namestite aplikacijo TWINT.";
 "adyen.threeds2.DA.registration.title" = "Secure Checkout";
 "adyen.threeds2.DA.biometrics" = "biometrični podatki";

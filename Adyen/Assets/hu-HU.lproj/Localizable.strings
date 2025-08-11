@@ -192,7 +192,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "UPI-azonosító megadása";
 "adyen.UPI.collectFieldLabel" = "UPI-azonosító";
-"adyen.UPI.error.noAppSelected" = "A folytatáshoz válasszon fizetési módot";
+"adyen.UPI.error.noAppSelected" = "A folytatáshoz válassza ki a kívánt UPI-alkalmazást";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Az eszközről hiányzik a TWINT, vagy egy elavult verziója van telepítve. Frissítse vagy telepítse a TWINT alkalmazást.";

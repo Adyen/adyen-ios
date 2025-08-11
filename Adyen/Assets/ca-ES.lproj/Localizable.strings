@@ -192,7 +192,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Introduïu el PIN d'UPI";
 "adyen.UPI.collectFieldLabel" = "Identificador d'UPI";
-"adyen.UPI.error.noAppSelected" = "Seleccioneu una forma de pagament per continuar";
+"adyen.UPI.error.noAppSelected" = "Selecciona la teva aplicació UPI preferida per continuar";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "En aquest dispositiu, no hi ha cap versió de TWINT instal·lada o la versió instal·lada és obsoleta. Instal·leu l'aplicació TWINT o actualitzeu-la.";

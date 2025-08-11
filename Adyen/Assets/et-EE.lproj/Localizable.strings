@@ -192,7 +192,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Sisestage UPI ID";
 "adyen.UPI.collectFieldLabel" = "UPI ID";
-"adyen.UPI.error.noAppSelected" = "Jätkamiseks valige makseviis";
+"adyen.UPI.error.noAppSelected" = "Valige jätkamiseks oma eelistatud UPI rakendus";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "TWINT pole sellesse seadmesse installitud või on selle versioon aegunud. Installige TWINT või värskendage seda.";

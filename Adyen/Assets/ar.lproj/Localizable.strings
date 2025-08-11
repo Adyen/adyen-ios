@@ -192,7 +192,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "أدخل معرف UPI";
 "adyen.UPI.collectFieldLabel" = "معرف UPI";
-"adyen.UPI.error.noAppSelected" = "للمتابعة؛ حدد وسيلة للدفع";
+"adyen.UPI.error.noAppSelected" = "للمتابعة؛ حدد تطبيق UPI المفضّل لديك";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "لم يتم تثبيت أي إصدار من TWINT على هذا الجهاز أو الإصدار قديم. يُرجى تحديث أو تثبيت تطبيق TWINT.";

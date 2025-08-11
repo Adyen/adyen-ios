@@ -188,7 +188,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Введите идентификатор UPI";
 "adyen.UPI.collectFieldLabel" = "Идентификатор UPI";
-"adyen.UPI.error.noAppSelected" = "Для продолжения выберите способ оплаты";
+"adyen.UPI.error.noAppSelected" = "Для продолжения выберите предпочитаемое приложение UPI";
 "adyen.twint.noAppsInstalled.message" = "На этом устройстве либо установлена устаревшая версия TWINT, либо это приложение не установлено вообще. Обновите или установите TWINT.";
 "adyen.threeds2.DA.registration.title" = "Безопасная оплата";
 "adyen.threeds2.DA.biometrics" = "биометрика";

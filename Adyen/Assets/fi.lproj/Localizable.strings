@@ -192,7 +192,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Syötä UPI-tunnus";
 "adyen.UPI.collectFieldLabel" = "UPI-tunnus";
-"adyen.UPI.error.noAppSelected" = "Jatka valitsemalla maksutapa";
+"adyen.UPI.error.noAppSelected" = "Jos haluat jatkaa, valitse haluamasi UPI-sovellus";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Laitteeseen ei ole asennettu TWINT-sovellusta tai laitteessa on sen vanhentunut versio. Päivitä tai asenna TWINT-sovellus.";

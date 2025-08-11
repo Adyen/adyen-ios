@@ -188,7 +188,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Introduceți ID-ul UPI";
 "adyen.UPI.collectFieldLabel" = "ID UPI";
-"adyen.UPI.error.noAppSelected" = "Selectați o metodă de plată pentru a continua";
+"adyen.UPI.error.noAppSelected" = "Selectați aplicația UPI preferată pentru a continua";
 "adyen.twint.noAppsInstalled.message" = "Pe acest dispozitiv nu este instalată nicio versiune sau este o versiune depășită a TWINT. Actualizați sau instalați aplicația TWINT.";
 "adyen.threeds2.DA.registration.title" = "Plată securizată";
 "adyen.threeds2.DA.biometrics" = "biometric";

@@ -192,7 +192,7 @@
 "adyen.UPI.secondTabTitle" = "Other UPI options";
 "adyen.UPI.collectDropdownLabel" = "Unesite UPI ID";
 "adyen.UPI.collectFieldLabel" = "UPI ID";
-"adyen.UPI.error.noAppSelected" = "Za nastavak odaberite način plaćanja";
+"adyen.UPI.error.noAppSelected" = "Da biste nastavili, odaberite željenu UPI aplikaciju";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Na ovom uređaju nije instalirana niti jedna ili je instalirana zastarjela verzija aplikacije TWINT. Ažurirajte ili instalirajte aplikaciju TWINT.";
