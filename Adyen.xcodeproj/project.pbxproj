@@ -572,6 +572,7 @@
 		C95071492E40B99100FEBF7E /* AdyenSwiftUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F95899C625FA524100E4113F /* AdyenSwiftUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C950714D2E40B99B00FEBF7E /* AdyenSwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F95899C625FA524100E4113F /* AdyenSwiftUI.framework */; };
 		C950714E2E40B99B00FEBF7E /* AdyenSwiftUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F95899C625FA524100E4113F /* AdyenSwiftUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C9571D002E4B678300E349E8 /* UPIFlowType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9571CFF2E4B678200E349E8 /* UPIFlowType.swift */; };
 		C95903DE275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95903DD275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift */; };
 		C96688BF26A6FC1C00DC7297 /* AffirmComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */; };
 		C9680BE62D6CAD590076B93D /* CardScannerAssembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9680BE52D6CAD590076B93D /* CardScannerAssembler.swift */; };
@@ -2027,6 +2028,7 @@
 		C94639CF2D5F68BC004A1B0C /* CaptureSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSessionManager.swift; sourceTree = "<group>"; };
 		C948B6662D8AC5C9000331AA /* CardImageParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImageParserTests.swift; sourceTree = "<group>"; };
 		C948B6682D8AD0CA000331AA /* ExpirationDateFormattingMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationDateFormattingMock.swift; sourceTree = "<group>"; };
+		C9571CFF2E4B678200E349E8 /* UPIFlowType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIFlowType.swift; sourceTree = "<group>"; };
 		C95903DD275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		C95C89312BF63A3500C47296 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentTests.swift; sourceTree = "<group>"; };
@@ -2936,6 +2938,7 @@
 			children = (
 				002B92F2294B2857000B93F4 /* UPIComponent.swift */,
 				002B92F4294B6987000B93F4 /* UPIComponentDetails.swift */,
+				C9571CFF2E4B678200E349E8 /* UPIFlowType.swift */,
 			);
 			path = UPI;
 			sourceTree = "<group>";
@@ -8064,6 +8067,7 @@
 				C9D8EBA02745556B006D8CA1 /* BACSDirectDebitDetails.swift in Sources */,
 				E7D874F327DF5CDC00D3C00A /* ApplePayComponentError.swift in Sources */,
 				00F621C027EB153400C04097 /* AtomeDetails.swift in Sources */,
+				C9571D002E4B678300E349E8 /* UPIFlowType.swift in Sources */,
 				F9175E8B259394E100D653BE /* SEPADirectDebitComponent.swift in Sources */,
 				5A15D589264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift in Sources */,
 				F9175E8A259394E100D653BE /* SEPADirectDebitDetails.swift in Sources */,

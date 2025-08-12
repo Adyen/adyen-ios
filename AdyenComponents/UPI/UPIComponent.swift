@@ -12,15 +12,7 @@ public final class UPIComponent: PaymentComponent,
     PresentableComponent,
     PaymentAware,
     LoadingComponent {
-    
-    /// The flow types for UPI component.
-    public enum UPIFlowType: Int {
-        /// Transaction handled through UPI-enabled apps.
-        case upiIntent = 0
-        /// Transaction initiated by scanning a QR code.
-        case upiCollect = 1
-    }
-    
+        
     private enum ViewIdentifier {
         static let instructionsItem = "instructionsLabelItem"
         static let upiFlowSelectionItem = "upiFlowSelectionSegmentedControlItem"
@@ -28,13 +20,6 @@ public final class UPIComponent: PaymentComponent,
         static let errorItem = "errorItem"
         static let vpaInputTitleItem = "vpaInputTitleItem"
         static let virtualPaymentAddressInputItem = "virtualPaymentAddressInputItem"
-    }
-    
-    internal enum Constants {
-        internal static let upiCollect = "upi_collect"
-        internal static let upiIntent = "upi_intent"
-        internal static let vpaFlowIdentifier = "UPI/VPA"
-        internal static let noAppsVpaSegmentTitle = "VPA"
     }
     
     internal enum Images {
@@ -54,7 +39,7 @@ public final class UPIComponent: PaymentComponent,
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
     
-    /// The viewController for the component.
+    /// The view controller for the component.
     public lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
@@ -88,7 +73,7 @@ public final class UPIComponent: PaymentComponent,
         self.context = context
         self.configuration = configuration
         
-//        upiAppsList = []
+        //        upiAppsList = []
         selectedUPIFlow = upiAppsList.isEmpty ? .upiCollect : .upiIntent
     }
     
@@ -193,7 +178,7 @@ public final class UPIComponent: PaymentComponent,
         )
         return item.padding()
     }()
-        
+    
     /// The UPI app list item.
     internal lazy var upiAppsList: [SelectableFormItem] = {
         guard let apps = upiPaymentMethod.apps, !apps.isEmpty else { return [] }
@@ -273,7 +258,7 @@ public final class UPIComponent: PaymentComponent,
         vpaInputItem.isVisible = upiAppsList.isEmpty
         formViewController.append(collectInstructionsLabelItem)
         formViewController.append(vpaInputItem)
-                
+        
         if configuration.showsSubmitButton {
             formViewController.append(FormSpacerItem(numberOfSpaces: 2))
             formViewController.append(continueButton)
@@ -319,11 +304,7 @@ extension UPIComponent {
 private extension UPIComponent {
     
     var firstSegmentTitle: String {
-        guard let apps = upiPaymentMethod.apps, !apps.isEmpty else {
-            return Constants.noAppsVpaSegmentTitle
-        }
-        
-        return localizedString(
+        localizedString(
             .upiModePayByAnyUpi,
             configuration.localizationParameters
         )
@@ -342,13 +323,13 @@ private extension UPIComponent {
     
     func updateInterface() {
         switch selectedUPIFlow {
-        case .upiIntent:
+        case .upiIntent, .upiApps:
             upiAppsList.forEach { $0.isHidden.wrappedValue = false }
             intentInstructionsLabelItem.isVisible = true
             collectInstructionsLabelItem.isVisible = false
             vpaInputItem.isVisible = false
             focusVpaInput()
-        case .upiCollect:
+        case .upiCollect, .qrCode:
             upiAppsList.forEach { $0.isHidden.wrappedValue = true }
             intentInstructionsLabelItem.isVisible = false
             collectInstructionsLabelItem.isVisible = true
@@ -377,25 +358,25 @@ private extension UPIComponent {
     
     func canSubmit() -> Bool {
         switch selectedUPIFlow {
-        case .upiIntent:
+        case .upiIntent, .qrCode:
             return currentSelectedItemIdentifier != nil
-        case .upiCollect:
+        case .upiCollect, .upiApps:
             return vpaInputItem.isValid()
         }
     }
     
     func submitPayment() {
         switch selectedUPIFlow {
-        case .upiIntent:
+        case .upiIntent, .qrCode:
             let details = UPIComponentDetails(
-                type: Constants.upiIntent,
+                type: selectedUPIFlow.value,
                 virtualPaymentAddress: nil,
                 appId: currentSelectedItemIdentifier
             )
             submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
-        case .upiCollect:
+        case .upiCollect, .upiApps:
             let details = UPIComponentDetails(
-                type: Constants.upiCollect,
+                type: selectedUPIFlow.value,
                 virtualPaymentAddress: vpaInputItem.value,
                 appId: nil
             )
