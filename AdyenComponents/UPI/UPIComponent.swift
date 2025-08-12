@@ -73,7 +73,6 @@ public final class UPIComponent: PaymentComponent,
         self.context = context
         self.configuration = configuration
         
-        //        upiAppsList = []
         selectedUPIFlow = upiAppsList.isEmpty ? .upiCollect : .upiIntent
     }
     
