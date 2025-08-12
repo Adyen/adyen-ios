@@ -89,9 +89,7 @@ public final class UPIComponent: PaymentComponent,
         self.configuration = configuration
         
 //        upiAppsList = []
-        if upiAppsList.isEmpty {
-            selectedUPIFlow = .upiCollect
-        }
+        selectedUPIFlow = upiAppsList.isEmpty ? .upiCollect : .upiIntent
     }
     
     // MARK: - LoadingComponent
@@ -112,6 +110,7 @@ public final class UPIComponent: PaymentComponent,
             ),
             style: configuration.style.footnoteLabel
         )
+        item.style.color = .Adyen.componentLabel
         item.style.textAlignment = .left
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
@@ -126,7 +125,7 @@ public final class UPIComponent: PaymentComponent,
             items: [
                 firstSegmentTitle,
                 localizedString(
-                    .UPIModeEnterUpiId,
+                    .upiModeEnterUpiId,
                     configuration.localizationParameters
                 )
             ],
@@ -146,7 +145,7 @@ public final class UPIComponent: PaymentComponent,
     internal lazy var collectInstructionsLabelItem: FormContainerItem<FormLabelItem> = {
         let item = FormLabelItem(
             text: localizedString(
-                .UPICollectInstruction,
+                .upiCollectInstruction,
                 configuration.localizationParameters
             ),
             style: configuration.style.footnoteLabel
@@ -163,12 +162,12 @@ public final class UPIComponent: PaymentComponent,
     internal lazy var vpaInputItem: FormTextInputItem = {
         let item = FormTextInputItem(style: configuration.style.textField)
         item.title = localizedString(
-            .UPICollectFieldLabel,
+            .upiCollectFieldLabel,
             configuration.localizationParameters
         )
         item.validator = LengthValidator(minimumLength: 1)
         item.validationFailureMessage = localizedString(
-            .UPICollectFieldInvalidIdError,
+            .upiCollectFieldInvalidIdError,
             configuration.localizationParameters
         )
         item.identifier = ViewIdentifierBuilder.build(
@@ -182,7 +181,7 @@ public final class UPIComponent: PaymentComponent,
     internal lazy var intentInstructionsLabelItem: FormContainerItem<FormLabelItem> = {
         let item = FormLabelItem(
             text: localizedString(
-                .UPIIntentInstruction,
+                .upiIntentInstruction,
                 configuration.localizationParameters
             ),
             style: configuration.style.footnoteLabel
@@ -218,7 +217,7 @@ public final class UPIComponent: PaymentComponent,
     }()
     
     internal lazy var errorItem: FormErrorItem = {
-        let errorMessage = localizedString(LocalizationKey.UPIErrorNoAppSelected, configuration.localizationParameters)
+        let errorMessage = localizedString(LocalizationKey.upiErrorNoAppSelected, configuration.localizationParameters)
         let item = FormErrorItem(message: errorMessage, iconName: Images.errorIcon)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
@@ -325,7 +324,7 @@ private extension UPIComponent {
         }
         
         return localizedString(
-            .UPIModePayByAnyUpi,
+            .upiModePayByAnyUpi,
             configuration.localizationParameters
         )
     }
