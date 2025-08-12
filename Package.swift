@@ -64,7 +64,7 @@ let package = Package(
             name: "AdyenCheckout",
             targets: ["AdyenCheckout"]
         ),
-	.library(
+        .library(
             name: "AdyenUI",
             targets: ["AdyenUI"]
         )
@@ -95,9 +95,9 @@ let package = Package(
         .target(
             name: "Adyen",
             dependencies: [
-		.product(name: "AdyenNetworking", package: "adyen-networking-ios"),
-		.target(name: "AdyenUI")
-	    ],
+                .product(name: "AdyenNetworking", package: "adyen-networking-ios"),
+                .target(name: "AdyenUI")
+            ],
             path: "Adyen",
             exclude: [
                 "Info.plist",
@@ -215,7 +215,7 @@ let package = Package(
             path: "AdyenCheckout",
             exclude: ["Info.plist"]
         ),
-	.target(
+        .target(
             name: "AdyenUI",
             dependencies: [],
             path: "AdyenUI",

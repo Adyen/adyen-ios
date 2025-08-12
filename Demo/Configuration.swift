@@ -272,21 +272,8 @@ internal struct DemoAppSettings: Codable {
         var style = DropInComponent.Style()
         style.navigation.tintColor = .red
 
+        // TODO: Add new style here
         let theme = AdyenTheme()
-        let currentScheme = theme.currentColorScheme
-        let currentFont = theme.currentFontStyle
-
-        var customLabelStyle = LabelStyle(colorScheme: currentScheme, fontStyle: currentFont)
-        customLabelStyle.font = currentFont.bodyEmphasized
-        customLabelStyle.textAlignment = .left
-
-        let customElementStyles = AdyenElementStyles(label: customLabelStyle)
-
-        theme.applyCustomTheme(
-            colorScheme: currentScheme,
-            fontStyle: currentFont,
-            elementStyles: customElementStyles
-        )
 
         let dropInConfig = DropInComponent.Configuration(
             style: style,

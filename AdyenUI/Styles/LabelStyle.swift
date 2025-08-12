@@ -19,29 +19,8 @@ public struct LabelStyle {
     /// The technique to use for aligning the text.
     public var textAlignment: NSTextAlignment = .center
 
-    /// Initializes the label style.
-    ///
-    /// - Parameter font: The font used to display the text.
-    /// - Parameter color: The color of the text.
-    public init(font: UIFont, color: UIColor) {
-        self.font = font
-        self.color = color
-    }
-
-    /// Initializes the text style.
-    ///
-    /// - Parameter colorScheme: The colorScheme to follow to style the text.
-    /// - Parameter fontStyle: The fontStyle to follow to style the text.
-    public init(colorScheme: ColorScheme, fontStyle: FontStyle) {
-        self.font = fontStyle.bodyEmphasized
-        self.color = colorScheme.primary
-    }
-
-    // Default initializer using the default configurations
-    public init() {
-        self.font = FontStyle.default.title
-        self.color = ColorScheme.default.background
-    }
+    /// A default instance of LabelStyle.
+    public static let `default` = LabelStyle()
 
     /// Initializes the label style.
     ///
@@ -50,22 +29,55 @@ public struct LabelStyle {
     /// - Parameter disabledColor: The color of the text when the element is disabled.
     /// - Parameter textAlignment: The technique to use for aligning the text.
     public init(
-        font: UIFont,
-        color: UIColor,
+        font: UIFont = FontStyle.default.body,
+        color: UIColor = ColorScheme.default.primary,
         disabledColor: UIColor = ColorScheme.default.disabled,
-        textAlignment: NSTextAlignment
+        textAlignment: NSTextAlignment = .left
     ) {
-        self.init(font: font, color: color)
+        self.font = FontStyle.default.body
+        self.color = ColorScheme.default.primary
         self.disabledColor = disabledColor
         self.textAlignment = textAlignment
     }
 }
 
-extension LabelStyle: Equatable {
-    public static func == (lhs: LabelStyle, rhs: LabelStyle) -> Bool {
-        lhs.font == rhs.font &&
-            lhs.color == rhs.color &&
-            lhs.disabledColor == rhs.disabledColor &&
-            lhs.textAlignment == rhs.textAlignment
+// This extension adds the method chaining to the LabelStyle struct.
+extension LabelStyle {
+
+    /// Returns a new LabelStyle with the specified font.
+    /// - Parameter font: The font to set.
+    /// - Returns: A new `LabelStyle` instance.
+    public func font(_ font: UIFont) -> LabelStyle {
+        var newStyle = self
+        newStyle.font = font
+        return newStyle
     }
+
+    /// Returns a new LabelStyle with the specified color.
+    /// - Parameter color: The color to set.
+    /// - Returns: A new `LabelStyle` instance.
+    public func color(_ color: UIColor) -> LabelStyle {
+        var newStyle = self
+        newStyle.color = color
+        return newStyle
+    }
+
+    /// Returns a new LabelStyle with the specified disabled color.
+    /// - Parameter color: The color to set.
+    /// - Returns: A new `LabelStyle` instance.
+    public func disabledColor(_ color: UIColor) -> LabelStyle {
+        var newStyle = self
+        newStyle.disabledColor = color
+        return newStyle
+    }
+
+    /// Returns a new LabelStyle with the specified text alignment.
+    /// - Parameter alignment: The text alignment to set.
+    /// - Returns: A new `LabelStyle` instance.
+    public func textAlignment(_ alignment: NSTextAlignment) -> LabelStyle {
+        var newStyle = self
+        newStyle.textAlignment = alignment
+        return newStyle
+    }
+
 }

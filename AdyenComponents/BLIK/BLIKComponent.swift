@@ -84,7 +84,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
             scopeInstance: self,
             postfix: "blikCodeHintLabel"
         ),
-        labelStyle: configuration.theme.uiElementStyles.label
+        labelStyle: configuration.theme.labelStyle
     )
 
     /// The BLIK code item.
@@ -102,7 +102,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
 
     /// The button item.
     internal lazy var button: FormButtonItem = {
-        let buttonType = configuration.theme.uiElementStyles.button.primary
+        let buttonType = configuration.theme.buttonStyle.primary
         let item = FormButtonItem(style: buttonType)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(
