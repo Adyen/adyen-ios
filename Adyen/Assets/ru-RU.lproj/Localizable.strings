@@ -176,8 +176,6 @@
 "adyen.payByBankAISDD.disclaimer.body" = "Привязывая банковский счет, вы тем самым даете разрешение на списание с него средств за пользование нашими услугами и/или покупку нашей продукции. Данное разрешение продействует до тех пор, пока оно не будет отозвано.";
 "adyen.payByBankAISDD.submit" = "Продолжить оплату через банк";
 "adyen.payByBankAISDD.more" = "+ иное";
-"adyen.upi.qrcode.timerMessage" = "На одобрение отведено %@";
-"adyen.upi.qrcode.instructions" = "Сделайте снимок экрана, чтобы загрузить его в приложение UPI, или отсканируйте QR-код своим любимым приложением UPI, чтобы оформить платеж.";
 "adyen.upi.modeSelection" = "Как вы хотите использовать UPI?";
 "adyen.upi.mode.payByAnyUpi" = "Приложение UPI";
 "adyen.upi.intent.instruction" = "Выберите предпочитаемое приложение UPI";
@@ -188,6 +186,8 @@
 "adyen.upi.collect.field.invalidIdError" = "Введите действительный UPI";
 "adyen.upi.collect.confirmPayment" = "В ожидании подтверждения…";
 "adyen.upi.vpaWaitingMessage" = "Откройте приложение UPI для подтверждения платежа";
+"adyen.upi.qrcode.timerMessage" = "На одобрение отведено %@";
+"adyen.upi.qrcode.instructions" = "Сделайте снимок экрана, чтобы загрузить его в приложение UPI, или отсканируйте QR-код своим любимым приложением UPI, чтобы оформить платеж.";
 "adyen.twint.noAppsInstalled.message" = "На этом устройстве либо установлена устаревшая версия TWINT, либо это приложение не установлено вообще. Обновите или установите TWINT.";
 "adyen.threeds2.DA.registration.title" = "Безопасная оплата";
 "adyen.threeds2.DA.biometrics" = "биометрика";

@@ -180,8 +180,6 @@
 "adyen.payByBankAISDD.disclaimer.body" = "銀行口座を接続することで、お客様は、この承認が取り消されるまで、当社のサービスの利用および/または当社製品の購入のために支払うべき金額をお客様の口座から引き落とすことを承認したことになります。";
 "adyen.payByBankAISDD.submit" = "Pay by Bankに進む";
 "adyen.payByBankAISDD.more" = "+ 詳細を確認";
-"adyen.upi.qrcode.timerMessage" = "承認まで残り%@";
-"adyen.upi.qrcode.instructions" = "スクリーンショットを撮影してUPIアプリにアップロードするか、お好みのUPIアプリを使用してQRコードをスキャンし、支払を完了してください。";
 "adyen.upi.modeSelection" = "UPIをどのように使用しますか？";
 "adyen.upi.mode.payByAnyUpi" = "UPIアプリ";
 "adyen.upi.intent.instruction" = "お好みのUPIアプリを選択";
@@ -192,6 +190,8 @@
 "adyen.upi.collect.field.invalidIdError" = "有効なUPIを入力してください";
 "adyen.upi.collect.confirmPayment" = "確認を待っています…";
 "adyen.upi.vpaWaitingMessage" = "UPIアプリを開いて、支払を確認してください";
+"adyen.upi.qrcode.timerMessage" = "承認まで残り%@";
+"adyen.upi.qrcode.instructions" = "スクリーンショットを撮影してUPIアプリにアップロードするか、お好みのUPIアプリを使用してQRコードをスキャンし、支払を完了してください。";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "このデバイスにはTWINTがインストールされていないか、古いバージョンがインストールされています。 TWINTアプリを更新またはインストールするようお願い申し上げます。";

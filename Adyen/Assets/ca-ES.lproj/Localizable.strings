@@ -180,8 +180,6 @@
 "adyen.payByBankAISDD.disclaimer.body" = "En connectar el vostre compte bancari, esteu autoritzant càrrecs a aquest compte per qualsevol import degut per l'ús dels nostres serveis o la compra dels nostres productes, fins que es revoqui aquesta autorització.";
 "adyen.payByBankAISDD.submit" = "Continua a pagament per banc";
 "adyen.payByBankAISDD.more" = "+ més";
-"adyen.upi.qrcode.timerMessage" = "Teniu %@ per aprovar";
-"adyen.upi.qrcode.instructions" = "Feu una captura de pantalla per pujar-la a l'aplicació UPI o escanegeu el codi QR mitjançant l'aplicació UPI preferida per completar el pagament.";
 "adyen.upi.modeSelection" = "Com us agradaria utilitzar UPI?";
 "adyen.upi.mode.payByAnyUpi" = "Aplicació UPI";
 "adyen.upi.intent.instruction" = "Selecciona la teva aplicació UPI preferida";
@@ -192,6 +190,8 @@
 "adyen.upi.collect.field.invalidIdError" = "Introduïu un UPI vàlid";
 "adyen.upi.collect.confirmPayment" = "Esperant la vostra confirmació…";
 "adyen.upi.vpaWaitingMessage" = "Obriu la vostra aplicació UPI per confirmar el pagament";
+"adyen.upi.qrcode.timerMessage" = "Teniu %@ per aprovar";
+"adyen.upi.qrcode.instructions" = "Feu una captura de pantalla per pujar-la a l'aplicació UPI o escanegeu el codi QR mitjançant l'aplicació UPI preferida per completar el pagament.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "En aquest dispositiu, no hi ha cap versió de TWINT instal·lada o la versió instal·lada és obsoleta. Instal·leu l'aplicació TWINT o actualitzeu-la.";

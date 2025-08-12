@@ -180,8 +180,6 @@
 "adyen.payByBankAISDD.disclaimer.body" = "Συνδέοντας τον τραπεζικό λογαριασμό σας, εξουσιοδοτείτε χρεώσεις στον λογαριασμό σας για οποιοδήποτε ποσό οφείλεται για τη χρήση των υπηρεσιών μας ή/και την αγορά των προϊόντων μας, έως ότου ανακληθεί αυτή η εξουσιοδότηση.";
 "adyen.payByBankAISDD.submit" = "Συνεχίστε να πληρώνετε μέσω τράπεζας";
 "adyen.payByBankAISDD.more" = "+ περισσότερα";
-"adyen.upi.qrcode.timerMessage" = "%@ προς έγκριση";
-"adyen.upi.qrcode.instructions" = "Τραβήξτε ένα στιγμιότυπο οθόνης για να το ανεβάσετε στην εφαρμογή UPI ή σαρώστε τον κωδικό QR χρησιμοποιώντας την εφαρμογή UPI που προτιμάτε για να ολοκληρώσετε την πληρωμή.";
 "adyen.upi.modeSelection" = "Πώς θα θέλατε να χρησιμοποιήσετε το UPI;";
 "adyen.upi.mode.payByAnyUpi" = "Εφαρμογή UPI";
 "adyen.upi.intent.instruction" = "Επιλέξτε την προτιμώμενη εφαρμογή UPI";
@@ -192,6 +190,8 @@
 "adyen.upi.collect.field.invalidIdError" = "Εισαγάγετε έγκυρο UPI";
 "adyen.upi.collect.confirmPayment" = "Αναμονή για την επιβεβαίωσή σας…";
 "adyen.upi.vpaWaitingMessage" = "Ανοίξτε την εφαρμογή UPI για επιβεβαίωση της πληρωμής";
+"adyen.upi.qrcode.timerMessage" = "%@ προς έγκριση";
+"adyen.upi.qrcode.instructions" = "Τραβήξτε ένα στιγμιότυπο οθόνης για να το ανεβάσετε στην εφαρμογή UPI ή σαρώστε τον κωδικό QR χρησιμοποιώντας την εφαρμογή UPI που προτιμάτε για να ολοκληρώσετε την πληρωμή.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Σε αυτή τη συσκευή το TWINT είτε δεν είναι εγκατεστημένο είτε είναι σε παλιά έκδοση. Ενημερώστε ή εγκαταστήστε την εφαρμογή TWINT.";

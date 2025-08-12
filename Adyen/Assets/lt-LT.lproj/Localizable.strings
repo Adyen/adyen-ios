@@ -180,8 +180,6 @@
 "adyen.payByBankAISDD.disclaimer.body" = "Prijungdami savo banko sąskaitą sutinkate, kad iš jos būtų nurašomos visos mokėtinos sumos už naudojimąsi mūsų paslaugomis ir (arba) už mūsų produktų pirkimą, kol šis leidimas bus atšauktas.";
 "adyen.payByBankAISDD.submit" = "Toliau eiti į „Pay by Bank“";
 "adyen.payByBankAISDD.more" = "+ daugiau";
-"adyen.upi.qrcode.timerMessage" = "Turite %@ patvirtinti";
-"adyen.upi.qrcode.instructions" = "Padarykite ekrano kopiją ir įkelkite ją į UPI programą arba nuskaitykite QR kodą naudodami pageidaujamą UPI programą, kad užbaigtumėte mokėjimą.";
 "adyen.upi.modeSelection" = "Kaip norėtumėte naudoti UPI?";
 "adyen.upi.mode.payByAnyUpi" = "UPI programėlė";
 "adyen.upi.intent.instruction" = "Pasirinkite pageidaujamą UPI programėlę";
@@ -192,6 +190,8 @@
 "adyen.upi.collect.field.invalidIdError" = "Įveskite galiojantį UPI";
 "adyen.upi.collect.confirmPayment" = "Laukiama jūsų patvirtinimo…";
 "adyen.upi.vpaWaitingMessage" = "Atidarykite savo UPI programą, kad patvirtintumėte mokėjimą";
+"adyen.upi.qrcode.timerMessage" = "Turite %@ patvirtinti";
+"adyen.upi.qrcode.instructions" = "Padarykite ekrano kopiją ir įkelkite ją į UPI programą arba nuskaitykite QR kodą naudodami pageidaujamą UPI programą, kad užbaigtumėte mokėjimą.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Šiame įrenginyje neįdiegta arba pasenusi TWINT versija. Atnaujinkite arba įdiekite TWINT programą.";

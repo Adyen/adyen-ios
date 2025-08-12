@@ -180,8 +180,6 @@
 "adyen.payByBankAISDD.disclaimer.body" = "Připojením svého bankovního účtu vyjadřujete souhlas s tím, aby z účtu byly strženy všechny dlužné částky za využívání našich služeb a nákup našich produktů, a to až do odvolání tohoto souhlasu.";
 "adyen.payByBankAISDD.submit" = "Pokračovat v platbě přes banku";
 "adyen.payByBankAISDD.more" = "+ více";
-"adyen.upi.qrcode.timerMessage" = "Máte %@ na schválení";
-"adyen.upi.qrcode.instructions" = "Pořiďte snímek obrazovky a nahrajte ho v aplikaci UPI nebo naskenujte QR kód ve své oblíbené aplikaci UPI a dokončete platbu.";
 "adyen.upi.modeSelection" = "Jak chcete použít rozhraní UPI?";
 "adyen.upi.mode.payByAnyUpi" = "Aplikace UPI";
 "adyen.upi.intent.instruction" = "Vyberte preferovanou aplikaci UPI";
@@ -192,6 +190,8 @@
 "adyen.upi.collect.field.invalidIdError" = "Zadejte platné UPI";
 "adyen.upi.collect.confirmPayment" = "Čekáme na vaše potvrzení…";
 "adyen.upi.vpaWaitingMessage" = "Otevřete platební aplikaci UPI a potvrďte platbu";
+"adyen.upi.qrcode.timerMessage" = "Máte %@ na schválení";
+"adyen.upi.qrcode.instructions" = "Pořiďte snímek obrazovky a nahrajte ho v aplikaci UPI nebo naskenujte QR kód ve své oblíbené aplikaci UPI a dokončete platbu.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "V tomto zařízení není nainstalována žádná verze TWINT nebo je zastaralá. Aktualizujte nebo nainstalujte aplikaci TWINT.";

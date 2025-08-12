@@ -180,8 +180,6 @@
 "adyen.payByBankAISDD.disclaimer.body" = "Pangakonto sidumisega annate loa debiteerida oma kontolt meie teenuste kasutamise ja/või meie toodete ostmise eest mis tahes võlgnetavad summad kuni selle loa tühistamiseni.";
 "adyen.payByBankAISDD.submit" = "Jätkake pangaga maksmist";
 "adyen.payByBankAISDD.more" = "+ veel";
-"adyen.upi.qrcode.timerMessage" = "Teil on kinnitamiseks %@";
-"adyen.upi.qrcode.instructions" = "Tehke UPI rakenduses üleslaadimiseks kuvatõmmis või skannige QR-kood, kasutades oma eelistatud UPI rakendust, et makse lõpule viia.";
 "adyen.upi.modeSelection" = "Kuidas soovite UPI-d kasutada?";
 "adyen.upi.mode.payByAnyUpi" = "UPI rakendus";
 "adyen.upi.intent.instruction" = "Valige oma eelistatud UPI rakendus";
@@ -192,6 +190,8 @@
 "adyen.upi.collect.field.invalidIdError" = "Sisestage kehtiv UPI";
 "adyen.upi.collect.confirmPayment" = "Teie kinnituse ootel …";
 "adyen.upi.vpaWaitingMessage" = "Makse kinnitamiseks avage oma UPI rakendus";
+"adyen.upi.qrcode.timerMessage" = "Teil on kinnitamiseks %@";
+"adyen.upi.qrcode.instructions" = "Tehke UPI rakenduses üleslaadimiseks kuvatõmmis või skannige QR-kood, kasutades oma eelistatud UPI rakendust, et makse lõpule viia.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "TWINT pole sellesse seadmesse installitud või on selle versioon aegunud. Installige TWINT või värskendage seda.";

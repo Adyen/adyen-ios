@@ -180,8 +180,6 @@
 "adyen.payByBankAISDD.disclaimer.body" = "Bankszámlája csatlakoztatásával engedélyezi, hogy a szolgáltatásaink használatáért és/vagy termékeink megvásárlásáért levonandó összeget a számlájára terheljük egészen addig, amíg ezt az engedélyt vissza nem vonja.";
 "adyen.payByBankAISDD.submit" = "Tovább a Fizetés bankkal lehetőségre";
 "adyen.payByBankAISDD.more" = "+ továbbiak";
-"adyen.upi.qrcode.timerMessage" = "Jóváhagyásra rendelkezésre álló idő: %@";
-"adyen.upi.qrcode.instructions" = "A fizetés befejezéséhez készítsen képernyőképet és töltse fel az UPI-alkalmazásban, vagy a kívánt UPI-alkalmazással olvassa be a QR-kódot.";
 "adyen.upi.modeSelection" = "Hogyan szeretné használni az UPI-t?";
 "adyen.upi.mode.payByAnyUpi" = "UPI-alkalmazás";
 "adyen.upi.intent.instruction" = "Válassza ki a kívánt UPI-alkalmazást";
@@ -192,6 +190,8 @@
 "adyen.upi.collect.field.invalidIdError" = "Adja meg egy érvényes UPI-t";
 "adyen.upi.collect.confirmPayment" = "Várakozás a megerősítésre…";
 "adyen.upi.vpaWaitingMessage" = "A fizetés megerősítéséhez nyissa meg UPI-alkalmazást";
+"adyen.upi.qrcode.timerMessage" = "Jóváhagyásra rendelkezésre álló idő: %@";
+"adyen.upi.qrcode.instructions" = "A fizetés befejezéséhez készítsen képernyőképet és töltse fel az UPI-alkalmazásban, vagy a kívánt UPI-alkalmazással olvassa be a QR-kódot.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Az eszközről hiányzik a TWINT, vagy egy elavult verziója van telepítve. Frissítse vagy telepítse a TWINT alkalmazást.";

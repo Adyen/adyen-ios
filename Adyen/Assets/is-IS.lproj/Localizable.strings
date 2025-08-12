@@ -180,8 +180,6 @@
 "adyen.payByBankAISDD.disclaimer.body" = "Með því að tengja bankareikninginn þinn heimilar þú skuldfærslu af reikningnum þínum fyrir hvaða upphæð sem þú skuldar vegna notkunar á þjónustu okkar og/eða kaupum á vörum okkar, þar til þessi heimild er afturkölluð.";
 "adyen.payByBankAISDD.submit" = "Fara í Pay by Bank";
 "adyen.payByBankAISDD.more" = "+ meira";
-"adyen.upi.qrcode.timerMessage" = "Þú hefur %@ til að samþykkja";
-"adyen.upi.qrcode.instructions" = "Taktu skjámynd til að hlaða upp í UPI-forritinu eða skannaðu QR-kóðann með því að nota UPI-forrit sem þú vilt til að ljúka greiðslunni.";
 "adyen.upi.modeSelection" = "Hvernig viltu nota UPI?";
 "adyen.upi.mode.payByAnyUpi" = "UPI-forrit";
 "adyen.upi.intent.instruction" = "Veldu UPI-forrit sem þú vilt nota";
@@ -192,6 +190,8 @@
 "adyen.upi.collect.field.invalidIdError" = "Sláið inn gilt UPI";
 "adyen.upi.collect.confirmPayment" = "Bíður staðfestingar þinnar…";
 "adyen.upi.vpaWaitingMessage" = "Opnaðu UPI-forritið þitt til að staðfesta greiðsluna";
+"adyen.upi.qrcode.timerMessage" = "Þú hefur %@ til að samþykkja";
+"adyen.upi.qrcode.instructions" = "Taktu skjámynd til að hlaða upp í UPI-forritinu eða skannaðu QR-kóðann með því að nota UPI-forrit sem þú vilt til að ljúka greiðslunni.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Engin eða úrelt útgáfa af TWINT er uppsett á þessu tæki. Uppfærðu eða settu TWINT-forritið upp.";

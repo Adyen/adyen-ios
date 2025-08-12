@@ -180,8 +180,6 @@
 "adyen.payByBankAISDD.disclaimer.body" = "Pievienojot bankas kontu, jūs atļaujat debetēt no sava konta jebkuru summu, kas maksājama par mūsu pakalpojumu izmantošanu un/vai mūsu produktu iegādi, līdz brīdim, kad šī atļauja tiek atsaukta.";
 "adyen.payByBankAISDD.submit" = "Turpināt maksāt ar bankas starpniecību";
 "adyen.payByBankAISDD.more" = "+ vairāk";
-"adyen.upi.qrcode.timerMessage" = "Jums ir %@, lai apstiprinātu";
-"adyen.upi.qrcode.instructions" = "Lai pabeigtu maksājumu, uzņemiet ekrānuzņēmumu un augšupielādējiet to UPI lietotnē, vai skenējiet QR kodu, izmantojot vēlamo UPI lietotni.";
 "adyen.upi.modeSelection" = "Kā vēlaties izmantot UPI?";
 "adyen.upi.mode.payByAnyUpi" = "UPI lietotne";
 "adyen.upi.intent.instruction" = "Izvēlieties savu vēlamo UPI lietotni";
@@ -192,6 +190,8 @@
 "adyen.upi.collect.field.invalidIdError" = "Ievadiet derīgu UPI";
 "adyen.upi.collect.confirmPayment" = "Gaidām jūsu apstiprinājumu…";
 "adyen.upi.vpaWaitingMessage" = "Atveriet UPI lietotni, lai apstiprinātu maksājumu";
+"adyen.upi.qrcode.timerMessage" = "Jums ir %@, lai apstiprinātu";
+"adyen.upi.qrcode.instructions" = "Lai pabeigtu maksājumu, uzņemiet ekrānuzņēmumu un augšupielādējiet to UPI lietotnē, vai skenējiet QR kodu, izmantojot vēlamo UPI lietotni.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Šajā ierīcē nav instalēta vai ir instalēta novecojusi TWINT versija. Lūdzu, atjauniniet vai instalējiet lietotni TWINT.";

@@ -180,8 +180,6 @@
 "adyen.payByBankAISDD.disclaimer.body" = "Door uw bankrekening te koppelen, machtigt u afschrijvingen van uw rekening voor elk bedrag dat u verschuldigd bent voor het gebruik van onze diensten en/of de aankoop van onze producten, totdat deze machtiging wordt ingetrokken.";
 "adyen.payByBankAISDD.submit" = "Doorgaan met betalen via de bank";
 "adyen.payByBankAISDD.more" = "+ meer";
-"adyen.upi.qrcode.timerMessage" = "Je hebt nog %@ voor je goedkeuring";
-"adyen.upi.qrcode.instructions" = "Maak een schermafbeelding en upload deze in de UPI-app of scan de QR-code met je favoriete UPI-app om de betaling te voltooien.";
 "adyen.upi.modeSelection" = "Hoe wilt u UPI gebruiken?";
 "adyen.upi.mode.payByAnyUpi" = "UPI-app";
 "adyen.upi.intent.instruction" = "Selecteer uw gewenste UPI-app";
@@ -192,6 +190,8 @@
 "adyen.upi.collect.field.invalidIdError" = "Voer een geldige UPI in";
 "adyen.upi.collect.confirmPayment" = "In afwachting van uw bevestiging…";
 "adyen.upi.vpaWaitingMessage" = "Open je UPI-app om de betaling te bevestigen";
+"adyen.upi.qrcode.timerMessage" = "Je hebt nog %@ voor je goedkeuring";
+"adyen.upi.qrcode.instructions" = "Maak een schermafbeelding en upload deze in de UPI-app of scan de QR-code met je favoriete UPI-app om de betaling te voltooien.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Er is geen of een verouderde versie van TWINT geïnstalleerd op dit apparaat. De TWINT-app moet worden bijgewerkt of geïnstalleerd.";

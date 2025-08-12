@@ -372,10 +372,6 @@ public struct LocalizationKey {
     public static let payByBankAISDDSubmit = LocalizationKey(key: "adyen.payByBankAISDD.submit")
     /// + more
     public static let payByBankAISDDMore = LocalizationKey(key: "adyen.payByBankAISDD.more")
-    /// You have %@ to approve
-    public static let upiQrcodeTimerMessage = LocalizationKey(key: "adyen.upi.qrcode.timerMessage")
-    /// Take a screenshot to upload in the UPI app or scan the QR code using your preferred UPI app to complete the payment.
-    public static let upiQrcodeInstructions = LocalizationKey(key: "adyen.upi.qrcode.instructions")
     /// How would you like to use UPI?
     public static let upiModeSelection = LocalizationKey(key: "adyen.upi.modeSelection")
     /// UPI app
@@ -396,6 +392,10 @@ public struct LocalizationKey {
     public static let upiCollectConfirmPayment = LocalizationKey(key: "adyen.upi.collect.confirmPayment")
     /// Open your UPI app to confirm the payment
     public static let upiVpaWaitingMessage = LocalizationKey(key: "adyen.upi.vpaWaitingMessage")
+    /// You have %@ to approve
+    public static let upiQrcodeTimerMessage = LocalizationKey(key: "adyen.upi.qrcode.timerMessage")
+    /// Take a screenshot to upload in the UPI app or scan the QR code using your preferred UPI app to complete the payment.
+    public static let upiQrcodeInstructions = LocalizationKey(key: "adyen.upi.qrcode.instructions")
     /// Cash App Pay
     public static let cashAppPayTitle = LocalizationKey(key: "adyen.cashAppPay.title")
     /// Cashtag

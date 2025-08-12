@@ -180,8 +180,6 @@
 "adyen.payByBankAISDD.disclaimer.body" = "Durch die Verbindung Ihres Bankkontos autorisieren Sie bis auf Widerruf Abbuchungen von Ihrem Konto für alle Beträge, die für die Nutzung unserer Dienste und/oder den Kauf unserer Produkte geschuldet werden.";
 "adyen.payByBankAISDD.submit" = "Weiter zu Pay by Bank";
 "adyen.payByBankAISDD.more" = "+ mehr";
-"adyen.upi.qrcode.timerMessage" = "Sie haben noch %@ Minuten Zeit für die Genehmigung.";
-"adyen.upi.qrcode.instructions" = "Machen Sie einen Screenshot, um ihn in der UPI-App hochzuladen, oder scannen Sie den QR-Code mit Ihrer bevorzugten UPI-App, um die Zahlung abzuschließen.";
 "adyen.upi.modeSelection" = "Wie möchten Sie UPI verwenden?";
 "adyen.upi.mode.payByAnyUpi" = "UPI-App";
 "adyen.upi.intent.instruction" = "Wählen Sie Ihre bevorzugte UPI-App";
@@ -192,6 +190,8 @@
 "adyen.upi.collect.field.invalidIdError" = "Geben Sie eine gültige UPI ein";
 "adyen.upi.collect.confirmPayment" = "Wir warten auf Ihre Bestätigung…";
 "adyen.upi.vpaWaitingMessage" = "Öffnen Sie Ihre UPI-App, um die Zahlung zu bestätigen.";
+"adyen.upi.qrcode.timerMessage" = "Sie haben noch %@ Minuten Zeit für die Genehmigung.";
+"adyen.upi.qrcode.instructions" = "Machen Sie einen Screenshot, um ihn in der UPI-App hochzuladen, oder scannen Sie den QR-Code mit Ihrer bevorzugten UPI-App, um die Zahlung abzuschließen.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Auf diesem Gerät ist keine oder eine veraltete Version von TWINT installiert. Bitte aktualisieren oder installieren Sie die TWINT-App.";

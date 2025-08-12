@@ -177,8 +177,6 @@
 "adyen.payByBankAISDD.disclaimer.body" = "Ao conectar a sua conta bancária, você autoriza débitos na sua conta de qualquer valor devido pela utilização dos nossos serviços e/ou compra dos nossos produtos, até que esta autorização seja revogada.";
 "adyen.payByBankAISDD.submit" = "Continuar para pagamento por banco";
 "adyen.payByBankAISDD.more" = "+ mais";
-"adyen.upi.qrcode.timerMessage" = "Tem %@ para aprovar";
-"adyen.upi.qrcode.instructions" = "Faça uma captura de ecrã para carregar na aplicação UPI ou verificar o código QR usando a sua aplicação UPI preferida para concluir o pagamento.";
 "adyen.upi.modeSelection" = "Como gostaria de usar a UPI?";
 "adyen.upi.mode.payByAnyUpi" = "Aplicação de UPI";
 "adyen.upi.intent.instruction" = "Selecione a aplicação de UPI que prefere";
@@ -189,6 +187,8 @@
 "adyen.upi.collect.field.invalidIdError" = "Introduza uma UPI válida";
 "adyen.upi.collect.confirmPayment" = "A aguardar a sua confirmação…";
 "adyen.upi.vpaWaitingMessage" = "Abra a aplicação UPI para confirmar o pagamento";
+"adyen.upi.qrcode.timerMessage" = "Tem %@ para aprovar";
+"adyen.upi.qrcode.instructions" = "Faça uma captura de ecrã para carregar na aplicação UPI ou verificar o código QR usando a sua aplicação UPI preferida para concluir o pagamento.";
 "adyen.twint.noAppsInstalled.message" = "Nenhuma versão ou uma versão desatualizada do TWINT está instalada neste dispositivo. Atualize ou instale a app TWINT.";
 "adyen.threeds2.DA.registration.title" = "Finalização de compra segura";
 "adyen.threeds2.DA.biometrics" = "Biométrica";

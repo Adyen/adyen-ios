@@ -180,8 +180,6 @@
 "adyen.payByBankAISDD.disclaimer.body" = "Podłączając swoje konto bankowe, zezwalasz na obciążanie swojego konta wszelkimi kwotami należnymi za korzystanie z naszych usług i/lub zakup naszych produktów, do czasu odwołania tego upoważnienia.";
 "adyen.payByBankAISDD.submit" = "Kontynuuj płatność przez bank";
 "adyen.payByBankAISDD.more" = "+ więcej";
-"adyen.upi.qrcode.timerMessage" = "Masz %@ do zatwierdzenia";
-"adyen.upi.qrcode.instructions" = "Zrób zrzut ekranu, aby przesłać go w aplikacji UPI lub zeskanuj kod QR za pomocą preferowanej aplikacji UPI, aby zakończyć płatność.";
 "adyen.upi.modeSelection" = "Jak chcesz korzystać z UPI?";
 "adyen.upi.mode.payByAnyUpi" = "Aplikacja UPI";
 "adyen.upi.intent.instruction" = "Wybierz preferowaną aplikację UPI";
@@ -192,6 +190,8 @@
 "adyen.upi.collect.field.invalidIdError" = "Wprowadź prawidłowy identyfikator UPI";
 "adyen.upi.collect.confirmPayment" = "Oczekiwanie na potwierdzenie…";
 "adyen.upi.vpaWaitingMessage" = "Otwórz aplikację UPI, aby potwierdzić płatność";
+"adyen.upi.qrcode.timerMessage" = "Masz %@ do zatwierdzenia";
+"adyen.upi.qrcode.instructions" = "Zrób zrzut ekranu, aby przesłać go w aplikacji UPI lub zeskanuj kod QR za pomocą preferowanej aplikacji UPI, aby zakończyć płatność.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Na tym urządzeniu nie ma żadnej wersji TWINT lub jest ona nieaktualna. Zaktualizuj lub zainstaluj aplikację TWINT.";

@@ -176,8 +176,6 @@
 "adyen.payByBankAISDD.disclaimer.body" = "Prin conectarea contului dvs. bancar, autorizați debitarea din contul dvs. a oricărei sume datorate cu privire la utilizarea serviciilor noastre și/sau achiziționarea produselor noastre, până la revocarea acestei autorizații.";
 "adyen.payByBankAISDD.submit" = "Continuați către plata prin bancă";
 "adyen.payByBankAISDD.more" = "+ mai multe";
-"adyen.upi.qrcode.timerMessage" = "Aveți %@ ca să aprobați";
-"adyen.upi.qrcode.instructions" = "Faceți o captură de ecran pentru a o încărca în aplicația UPI sau scanați codul QR folosind aplicația UPI preferată pentru a finaliza plata.";
 "adyen.upi.modeSelection" = "Cum doriți să utilizați UPI?";
 "adyen.upi.mode.payByAnyUpi" = "Aplicația UPI";
 "adyen.upi.intent.instruction" = "Selectați aplicația UPI preferată";
@@ -188,6 +186,8 @@
 "adyen.upi.collect.field.invalidIdError" = "Completați un UPI valabil";
 "adyen.upi.collect.confirmPayment" = "Se așteaptă confirmarea dvs…";
 "adyen.upi.vpaWaitingMessage" = "Deschideți aplicația UPI pentru a confirma plata";
+"adyen.upi.qrcode.timerMessage" = "Aveți %@ ca să aprobați";
+"adyen.upi.qrcode.instructions" = "Faceți o captură de ecran pentru a o încărca în aplicația UPI sau scanați codul QR folosind aplicația UPI preferată pentru a finaliza plata.";
 "adyen.twint.noAppsInstalled.message" = "Pe acest dispozitiv nu este instalată nicio versiune sau este o versiune depășită a TWINT. Actualizați sau instalați aplicația TWINT.";
 "adyen.threeds2.DA.registration.title" = "Plată securizată";
 "adyen.threeds2.DA.biometrics" = "biometric";

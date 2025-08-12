@@ -180,8 +180,6 @@
 "adyen.payByBankAISDD.disclaimer.body" = "Ved å koble til bankkontoen din autoriserer du debiteringer av kontoen for ethvert beløp du skylder for din bruk av våre tjenester og/eller kjøp av våre produkter, inntil denne autorisasjonen blir trukket tilbake.";
 "adyen.payByBankAISDD.submit" = "Fortsett for å bruke Pay by Bank";
 "adyen.payByBankAISDD.more" = "+ mer";
-"adyen.upi.qrcode.timerMessage" = "Du har %@ å godkjenne";
-"adyen.upi.qrcode.instructions" = "Ta et skjermbilde for opplasting i UPI-appen, eller skann QR-koden for å bruke din foretrukne UPI-app til å fullføre betalingen.";
 "adyen.upi.modeSelection" = "Hvordan vil du bruke UPI?";
 "adyen.upi.mode.payByAnyUpi" = "UPI-app";
 "adyen.upi.intent.instruction" = "Velg en UPI-app";
@@ -192,6 +190,8 @@
 "adyen.upi.collect.field.invalidIdError" = "Skriv inn en gyldig UPI";
 "adyen.upi.collect.confirmPayment" = "Venter på bekreftelsen din…";
 "adyen.upi.vpaWaitingMessage" = "Åpne UPI-appen for å bekrefte betalingen";
+"adyen.upi.qrcode.timerMessage" = "Du har %@ å godkjenne";
+"adyen.upi.qrcode.instructions" = "Ta et skjermbilde for opplasting i UPI-appen, eller skann QR-koden for å bruke din foretrukne UPI-app til å fullføre betalingen.";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Du har enten ingen eller en utdatert versjon av TWINT på denne enheten. Du må enten oppdatere eller installere TWINT-appen.";
