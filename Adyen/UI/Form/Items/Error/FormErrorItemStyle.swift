@@ -11,7 +11,7 @@ public struct FormErrorItemStyle: ViewStyle {
 
     /// The message style.
     public var message = TextStyle(
-        font: .preferredFont(forTextStyle: .body),
+        font: .preferredFont(forTextStyle: .callout),
         color: UIColor.Adyen.componentLabel,
         textAlignment: .natural
     )

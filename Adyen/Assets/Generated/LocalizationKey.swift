@@ -372,32 +372,30 @@ public struct LocalizationKey {
     public static let payByBankAISDDSubmit = LocalizationKey(key: "adyen.payByBankAISDD.submit")
     /// + more
     public static let payByBankAISDDMore = LocalizationKey(key: "adyen.payByBankAISDD.more")
-    /// How would you like to use UPI?
-    public static let upiModeSelection = LocalizationKey(key: "adyen.upi.modeSelection")
-    /// Enter a correct virtual payment address
-    public static let UPIVpaValidationMessage = LocalizationKey(key: "adyen.UPIVpa.validationMessage")
-    /// Generate the QR code that you can download or screenshot and upload it into the UPI app to complete the payment.
-    public static let UPIQrcodeGenerationMessage = LocalizationKey(key: "adyen.UPIQrcode.generationMessage")
     /// You have %@ to approve
     public static let UPIQrcodeTimerMessage = LocalizationKey(key: "adyen.UPIQrcode.timerMessage")
+    /// Take a screenshot to upload in the UPI app or scan the QR code using your preferred UPI app to complete the payment.
+    public static let UPIQRCodeInstructions = LocalizationKey(key: "adyen.UPI.QRCodeInstructions")
+    /// How would you like to use UPI?
+    public static let upiModeSelection = LocalizationKey(key: "adyen.upi.modeSelection")
+    /// UPI app
+    public static let UPIModePayByAnyUpi = LocalizationKey(key: "adyen.UPI.mode.payByAnyUpi")
+    /// Select your preferred UPI app
+    public static let UPIIntentInstruction = LocalizationKey(key: "adyen.UPI.intent.instruction")
+    /// Select your preferred UPI app to continue
+    public static let UPIErrorNoAppSelected = LocalizationKey(key: "adyen.UPI.error.noAppSelected")
+    /// UPI ID
+    public static let UPICollectFieldLabel = LocalizationKey(key: "adyen.UPI.collectFieldLabel")
+    /// Enter your UPI ID
+    public static let UPICollectInstruction = LocalizationKey(key: "adyen.UPI.collect.instruction")
+    /// UPI ID
+    public static let UPIModeEnterUpiId = LocalizationKey(key: "adyen.UPI.mode.enterUpiId")
+    /// Enter a valid UPI
+    public static let UPICollectFieldInvalidIdError = LocalizationKey(key: "adyen.UPI.collect.field.invalidIdError")
     /// Awaiting your confirmation…
     public static let upiCollectConfirmPayment = LocalizationKey(key: "adyen.upiCollect.confirmPayment")
     /// Open your UPI app to confirm the payment
     public static let upiVpaWaitingMessage = LocalizationKey(key: "adyen.upi.vpaWaitingMessage")
-    /// Generate QR code
-    public static let QRCodeGenerateQRCode = LocalizationKey(key: "adyen.QRCode.generateQRCode")
-    /// Take a screenshot to upload in the UPI app or scan the QR code using your preferred UPI app to complete the payment.
-    public static let UPIQRCodeInstructions = LocalizationKey(key: "adyen.UPI.QRCodeInstructions")
-    /// Pay by any UPI app
-    public static let UPIFirstTabTitle = LocalizationKey(key: "adyen.UPI.firstTabTitle")
-    /// Other UPI options
-    public static let UPISecondTabTitle = LocalizationKey(key: "adyen.UPI.secondTabTitle")
-    /// Enter UPI ID
-    public static let UPICollectDropdownLabel = LocalizationKey(key: "adyen.UPI.collectDropdownLabel")
-    /// UPI ID
-    public static let UPICollectFieldLabel = LocalizationKey(key: "adyen.UPI.collectFieldLabel")
-    /// Select your preferred UPI app to continue
-    public static let UPIErrorNoAppSelected = LocalizationKey(key: "adyen.UPI.error.noAppSelected")
     /// Cash App Pay
     public static let cashAppPayTitle = LocalizationKey(key: "adyen.cashAppPay.title")
     /// Cashtag

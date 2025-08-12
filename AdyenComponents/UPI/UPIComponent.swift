@@ -37,6 +37,10 @@ public final class UPIComponent: PaymentComponent,
         internal static let noAppsVpaSegmentTitle = "VPA"
     }
     
+    internal enum Images {
+        internal static let errorIcon = "error"
+    }
+    
     /// Configuration for UPI Component.
     public typealias Configuration = BasicComponentConfiguration
     
@@ -100,7 +104,7 @@ public final class UPIComponent: PaymentComponent,
     // MARK: - Items
     
     /// The upi based payment instructions label item.
-    internal lazy var instructionsLabelItem: FormLabelItem = {
+    internal lazy var modeInstructionsLabelItem: FormLabelItem = {
         let item = FormLabelItem(
             text: localizedString(
                 .upiModeSelection,
@@ -116,13 +120,13 @@ public final class UPIComponent: PaymentComponent,
         return item
     }()
     
-    /// The upi selection segment control item to choose the upi flow.
+    /// The UPI selection segmented control item to choose the upi flow.
     internal lazy var upiFlowSelectionItem: FormSegmentedControlItem = {
         let item = FormSegmentedControlItem(
             items: [
                 firstSegmentTitle,
                 localizedString(
-                    .UPISecondTabTitle,
+                    .UPIModeEnterUpiId,
                     configuration.localizationParameters
                 )
             ],
@@ -138,11 +142,13 @@ public final class UPIComponent: PaymentComponent,
         return item
     }()
     
-    /// The virtual payment address text input title item.
-    internal lazy var vpaInputTitleItem: FormContainerItem<FormLabelItem> = {
-        let text = "Enter your UPI ID"
+    /// The  collect UPI instructions label item.
+    internal lazy var collectInstructionsLabelItem: FormContainerItem<FormLabelItem> = {
         let item = FormLabelItem(
-            text: text,
+            text: localizedString(
+                .UPICollectInstruction,
+                configuration.localizationParameters
+            ),
             style: configuration.style.footnoteLabel
         )
         item.style.textAlignment = .left
@@ -153,7 +159,7 @@ public final class UPIComponent: PaymentComponent,
         return item.padding()
     }()
     
-    /// The  virtual payment address text input item.
+    /// The  virtual payment address text input item (collect).
     internal lazy var vpaInputItem: FormTextInputItem = {
         let item = FormTextInputItem(style: configuration.style.textField)
         item.title = localizedString(
@@ -162,7 +168,7 @@ public final class UPIComponent: PaymentComponent,
         )
         item.validator = LengthValidator(minimumLength: 1)
         item.validationFailureMessage = localizedString(
-            .UPIVpaValidationMessage,
+            .UPICollectFieldInvalidIdError,
             configuration.localizationParameters
         )
         item.identifier = ViewIdentifierBuilder.build(
@@ -170,6 +176,23 @@ public final class UPIComponent: PaymentComponent,
             postfix: ViewIdentifier.virtualPaymentAddressInputItem
         )
         return item
+    }()
+    
+    /// The  intent UPI instructions label item.
+    internal lazy var intentInstructionsLabelItem: FormContainerItem<FormLabelItem> = {
+        let item = FormLabelItem(
+            text: localizedString(
+                .UPIIntentInstruction,
+                configuration.localizationParameters
+            ),
+            style: configuration.style.footnoteLabel
+        )
+        item.style.textAlignment = .left
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.vpaInputTitleItem
+        )
+        return item.padding()
     }()
         
     /// The UPI app list item.
@@ -196,7 +219,7 @@ public final class UPIComponent: PaymentComponent,
     
     internal lazy var errorItem: FormErrorItem = {
         let errorMessage = localizedString(LocalizationKey.UPIErrorNoAppSelected, configuration.localizationParameters)
-        let item = FormErrorItem(message: errorMessage, iconName: "error")
+        let item = FormErrorItem(message: errorMessage, iconName: Images.errorIcon)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifier.errorItem
@@ -238,17 +261,18 @@ public final class UPIComponent: PaymentComponent,
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
         
         if !upiAppsList.isEmpty {
-            formViewController.append(instructionsLabelItem.padding())
+            formViewController.append(modeInstructionsLabelItem.padding())
             formViewController.append(FormSpacerItem(numberOfSpaces: 1))
             formViewController.append(upiFlowSelectionItem.padding())
-            formViewController.append(errorItem)
             formViewController.append(FormSpacerItem(numberOfSpaces: 1))
+            formViewController.append(intentInstructionsLabelItem)
+            formViewController.append(errorItem)
             upiAppsList.forEach { formViewController.append($0) }
         }
         
-        vpaInputTitleItem.isVisible = upiAppsList.isEmpty
+        collectInstructionsLabelItem.isVisible = upiAppsList.isEmpty
         vpaInputItem.isVisible = upiAppsList.isEmpty
-        formViewController.append(vpaInputTitleItem)
+        formViewController.append(collectInstructionsLabelItem)
         formViewController.append(vpaInputItem)
                 
         if configuration.showsSubmitButton {
@@ -301,7 +325,7 @@ private extension UPIComponent {
         }
         
         return localizedString(
-            .UPIFirstTabTitle,
+            .UPIModePayByAnyUpi,
             configuration.localizationParameters
         )
     }
@@ -321,12 +345,14 @@ private extension UPIComponent {
         switch selectedUPIFlow {
         case .upiIntent:
             upiAppsList.forEach { $0.isHidden.wrappedValue = false }
-            vpaInputTitleItem.isVisible = false
+            intentInstructionsLabelItem.isVisible = true
+            collectInstructionsLabelItem.isVisible = false
             vpaInputItem.isVisible = false
             focusVpaInput()
         case .upiCollect:
             upiAppsList.forEach { $0.isHidden.wrappedValue = true }
-            vpaInputTitleItem.isVisible = true
+            intentInstructionsLabelItem.isVisible = false
+            collectInstructionsLabelItem.isVisible = true
             vpaInputItem.isVisible = true
             focusVpaInput()
         }
