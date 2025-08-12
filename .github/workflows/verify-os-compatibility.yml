@@ -11,6 +11,8 @@ on:
       - 'release/**'
       - 'develop'
     
+permissions:
+  contents: read
 jobs:
   tests:
     runs-on: ${{ matrix.os }}

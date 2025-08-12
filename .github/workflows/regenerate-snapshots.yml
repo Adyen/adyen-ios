@@ -1,7 +1,9 @@
 name: 📸 Generate Snapshots
 on:
     workflow_dispatch:
-          
+
+permissions:
+  contents: read          
 jobs:
   Generate:
     runs-on: macos-15-xlarge

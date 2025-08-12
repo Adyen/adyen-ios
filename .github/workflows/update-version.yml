@@ -5,6 +5,11 @@ on:
       newVersion:
         description: 'The new version'
         required: true
+
+permissions:
+  contents: write
+  pull-requests: write # create new PR
+
 jobs:
 
   Update:
