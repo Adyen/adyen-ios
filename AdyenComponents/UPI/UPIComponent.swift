@@ -357,23 +357,23 @@ private extension UPIComponent {
     
     func canSubmit() -> Bool {
         switch selectedUPIFlow {
-        case .upiIntent, .qrCode:
+        case .upiIntent, .upiApps:
             return currentSelectedItemIdentifier != nil
-        case .upiCollect, .upiApps:
+        case .upiCollect, .qrCode:
             return vpaInputItem.isValid()
         }
     }
     
     func submitPayment() {
         switch selectedUPIFlow {
-        case .upiIntent, .qrCode:
+        case .upiIntent, .upiApps:
             let details = UPIComponentDetails(
                 type: selectedUPIFlow.value,
                 virtualPaymentAddress: nil,
                 appId: currentSelectedItemIdentifier
             )
             submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
-        case .upiCollect, .upiApps:
+        case .upiCollect, .qrCode:
             let details = UPIComponentDetails(
                 type: selectedUPIFlow.value,
                 virtualPaymentAddress: vpaInputItem.value,
