@@ -38,4 +38,4 @@ jobs:
         commit-message: "🤖 Generated Snapshots"
         title: "🤖 Generate Snapshots"
         body: "Regenerate snapshots"
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.AUTOMATION_BOT_TOKEN }}
