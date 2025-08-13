@@ -194,9 +194,11 @@ class UPIComponentUITests: XCTestCase {
             
             didSubmitExpectation.fulfill()
         }
-
-        let selectionHandler = try XCTUnwrap(sut.upiAppsList.last?.selectionHandler)
-        selectionHandler()
+        
+        // Switch to UPI-ID segment
+        let segmentedControl: UISegmentedControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.upiFlowSelectionSegmentedControlItem"))
+        segmentedControl.selectedSegmentIndex = 1
+        segmentedControl.sendActions(for: .valueChanged)
 
         let virtualPaymentAddressItem: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem"))
         
