@@ -13,7 +13,7 @@ public enum UPIFlowType: Int {
     case upiApps = -1 // Old placeholder value
 
     /// Transaction initiated by scanning a QR code.
-    @available(*, deprecated, renamed: "upiCollect", message: "Use `.upiCollect` instead.")
+    @available(*, deprecated, renamed: "upiCollect", message: "The `.qrCode` is deprecated and not available any more. Use, `.upiIntent` instead.")
     case qrCode = -2 // Old placeholder value
 
     /// Transaction handled through UPI-enabled apps.
