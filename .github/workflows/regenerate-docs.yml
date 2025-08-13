@@ -5,6 +5,11 @@ on:
       latestVersion:
         description: 'Whats the latest version of the SDK?'
         required: true
+
+permissions:
+  contents: read
+  pull-requests: write # create new PR
+
 jobs:
 
   Generate:

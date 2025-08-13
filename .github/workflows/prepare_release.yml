@@ -6,6 +6,10 @@ on:
         description: 'SDK Version'
         required: true
 
+permissions:
+  contents: write # create branch and new release
+  pull-requests: write # create PR
+
 jobs:
 
   get-release-notes:
@@ -70,4 +74,4 @@ jobs:
         commit-message: "chore: prepare '${{ github.event.inputs.sdk-version }}' release"
         title: "[Release] ${{ github.event.inputs.sdk-version }}"
         body-path: "${{ github.workspace }}/.tmp/release_notes.md"
-        token: ${{ secrets.PAT_FOR_PR_CREATION }}
+        token: ${{ secrets.AUTOMATION_BOT_TOKEN }}
