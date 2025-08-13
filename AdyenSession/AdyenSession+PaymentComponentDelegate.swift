@@ -155,26 +155,25 @@ extension AdyenSession {
             sessionIdentifier: state.identifier,
             initialSessionData: state.data
         )
-        Self.makeSetupCall(
-            with: initialInfo,
-            baseAPIClient: apiClient,
-            order: order
-        ) { [weak self] result in
-            self?.updateState(with: result, component: currentComponent)
-            self?.reload(
-                dropInComponent: dropInComponent,
-                with: order,
-                currentComponent: currentComponent
-            )
-        }
-    }
-    
-    private func updateState(with result: Result<State, Error>, component: Component) {
-        switch result {
-        case let .success(state):
-            self.state = state
-        case let .failure(error):
-            finish(with: error, component: component)
+        Task {
+            do {
+                let newState = try await Self.makeSetupCall(
+                    with: initialInfo,
+                    baseAPIClient: apiClient,
+                    order: order
+                )
+                
+                // Update state and reload
+                state = newState
+                reload(
+                    dropInComponent: dropInComponent,
+                    with: order,
+                    currentComponent: currentComponent
+                )
+            } catch {
+                // Handle error
+                finish(with: error, component: currentComponent)
+            }
         }
     }
     

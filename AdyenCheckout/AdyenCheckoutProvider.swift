@@ -22,49 +22,35 @@ internal class AdyenCheckoutProvider: AdyenCheckoutProviding {
         with sessionId: String,
         sessionData: String,
         configuration: CheckoutConfiguration,
-        presentationDelegate: PresentationDelegate? = nil,
-        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
-    ) {
-        var checkoutAttemptIdInstance: String?
-        var sessionInstance: AdyenSessionProtocol?
-        let group = DispatchGroup()
+        presentationDelegate: PresentationDelegate?
+    ) async throws -> AdyenCheckout {
+        
+        let apiClient = APIClient(apiContext: configuration.context.apiContext)
         
         // create and store session and payment methods
-        group.enter()
-        setupSession(with: configuration) { result in
-            switch result {
-            case let .success(session):
-                sessionInstance = session
-            case .failure:
-                // TODO: add error
-                break
-            }
-            group.leave()
-        }
+        async let session = setupSession(
+            with: .init(
+                sessionIdentifier: sessionId,
+                initialSessionData: sessionData
+            ),
+            configuration: configuration,
+            apiClient: apiClient
+        )
         
         // fetch and store checkout attempt id
-        group.enter()
-        fetchCheckoutAttemptId(with: configuration) { result in
-            switch result {
-            case let .success(attemptId):
-                checkoutAttemptIdInstance = attemptId
-            case .failure:
-                // TODO: decide what to do for failed attempt
-                break
-            }
-            group.leave()
-        }
+        async let checkoutAttemptId = fetchCheckoutAttemptId(
+            with: configuration,
+            apiClient: apiClient
+        )
         
-        // success case only for now
-        group.notify(queue: .main) {
-            let checkout = AdyenCheckout(
-                configuration: configuration,
-                session: sessionInstance,
-                checkoutAttemptId: checkoutAttemptIdInstance,
-                presentationDelegate: presentationDelegate
-            )
-            completion(.success(checkout))
-        }
+        let checkout = try await AdyenCheckout(
+            configuration: configuration,
+            session: session,
+            checkoutAttemptId: checkoutAttemptId,
+            presentationDelegate: presentationDelegate
+        )
+        
+        return checkout
     }
     
     /// Sets up the checkout object for the advanced flow
@@ -77,42 +63,44 @@ internal class AdyenCheckoutProvider: AdyenCheckoutProviding {
     internal func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
-        presentationDelegate: PresentationDelegate? = nil,
-        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
-    ) {
-        var checkoutAttemptIdInstance: String?
+        presentationDelegate: PresentationDelegate?
+    ) async throws -> AdyenCheckout {
+        let apiClient = APIClient(apiContext: configuration.context.apiContext)
         
         // fetch and store checkout attempt id
-        fetchCheckoutAttemptId(with: configuration) { result in
-            switch result {
-            case let .success(attemptId):
-                checkoutAttemptIdInstance = attemptId
-            case .failure:
-                // TODO: decide what to do for failed attempt
-                break
-            }
-        }
+        let checkoutAttemptId = try await fetchCheckoutAttemptId(
+            with: configuration,
+            apiClient: apiClient
+        )
         
         let checkout = AdyenCheckout(
             configuration: configuration,
             paymentMethods: paymentMethods,
-            checkoutAttemptId: checkoutAttemptIdInstance,
+            checkoutAttemptId: checkoutAttemptId,
             presentationDelegate: presentationDelegate
         )
         
-        completion(.success(checkout))
+        return checkout
     }
     
     // MARK: Internal
     
     internal func setupSession(
-        with configuration: CheckoutConfiguration,
-        order: PartialPaymentOrder? = nil,
-        completion: @escaping (Result<AdyenSessionProtocol, Error>) -> Void
-    ) {}
+        with initialInfo: AdyenSession.InitialInfo,
+        configuration: CheckoutConfiguration,
+        apiClient: APIClientProtocol
+    ) async throws -> AdyenSessionProtocol {
+        try await AdyenSession.setup(
+            with: initialInfo,
+            apiClient: apiClient,
+            context: configuration.context
+        )
+    }
     
     internal func fetchCheckoutAttemptId(
         with configuration: CheckoutConfiguration,
-        completion: @escaping (Result<String, Error>) -> Void
-    ) {}
+        apiClient: APIClientProtocol
+    ) async throws -> String {
+        ""
+    }
 }

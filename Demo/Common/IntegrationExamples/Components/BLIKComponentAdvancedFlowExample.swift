@@ -28,21 +28,24 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         requestPaymentMethods(order: nil) { [weak self] result in
             guard let self else { return }
             
-            do {
-                switch result {
-                case let .success(paymentMethods):
-                    try self.presentBlik(from: paymentMethods)
-                case let .failure(error):
-                    throw error
+            Task {
+                do {
+                    switch result {
+                    case let .success(paymentMethods):
+                        try await self.presentBlik(from: paymentMethods)
+                    case let .failure(error):
+                        throw error
+                    }
+                } catch {
+                    self.presenter?.hideLoadingIndicator()
+                    self.presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
                 }
-            } catch {
-                self.presenter?.hideLoadingIndicator()
-                self.presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
             }
         }
     }
     
-    private func presentBlik(from paymentMethods: PaymentMethods) throws {
+    @MainActor
+    private func presentBlik(from paymentMethods: PaymentMethods) async throws {
         guard let blikPaymentMethod = paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self) else { throw IntegrationError.paymentMethodNotAvailable(paymentMethod: BLIKPaymentMethod.self) }
         
         let configuration = try CheckoutConfiguration(
@@ -54,7 +57,6 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             )
         ) {
             BLIKComponentConfiguration()
-                .showsSubmitButton(false)
         }
         .onSubmit { [weak self] data, handler in
             self?.callPayments(with: data, completion: handler)
@@ -68,30 +70,18 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             }
         }
         
-        AdyenCheckout.setup(
-            with: paymentMethods,
-            configuration: configuration,
-            presentationDelegate: self
-        ) { [weak self] result in
-            guard let self else { return }
-            
-            self.presenter?.hideLoadingIndicator()
-            
-            switch result {
-            case let .success(checkout):
-                self.adyenCheckout = checkout
-                guard let component = checkout.createComponent(with: blikPaymentMethod) else {
-                    print("component not found")
-                    return
-                }
-                self.adyenComponent = component
-                self.presenter?.present(viewController: viewController(for: component), completion: nil)
-            case let .failure(error):
-                print("failed to create adyen checkout \(error)")
-            }
+        let checkout = try await AdyenCheckout.setup(with: paymentMethods, configuration: configuration, presentationDelegate: self)
+        
+        presenter?.hideLoadingIndicator()
+        
+        guard let component = checkout.createComponent(with: blikPaymentMethod) else {
+            print("component not found")
+            return
         }
         
-        // add all the config options to settings? like show submit button
+        self.adyenCheckout = checkout
+        self.adyenComponent = component
+        self.presenter?.present(viewController: viewController(for: component), completion: nil)
     }
     
     // MARK: - Backend calls
@@ -120,7 +110,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             case let .success(response):
                 completion?(CheckoutPaymentsResponse(resultCode: response.resultCode, action: response.action))
             case let .failure(error):
-                // TODO: add error handling
+                // TODO: add error handling but maybe after async callbacks
                 break
             }
         }
@@ -139,7 +129,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     }
     
     @objc private func cancelPressed() {
-        //TODO: component cancellation?
+        // TODO: component cancellation?
 //        component?.cancelIfNeeded()
         presenter?.dismiss(completion: nil)
     }

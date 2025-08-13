@@ -72,77 +72,62 @@ public final class AdyenSession: AdyenSessionProtocol {
         self.context = context
     }
     
-    // swiftlint:disable function_parameter_count
     /// Initializes an instance of ``AdyenSession`` asynchronously.
     /// - Parameter initialInfo: The session setup initial data.
     /// - Parameter apiClient: The api client object for network calls.
-    /// - Parameter actionHandlingComponent: Action component to handle actions.
-    /// - Parameter delegate: The session delegate.
-    /// - Parameter presentationDelegate: The presentation delegate.
-    /// - Parameter completion: The completion closure, that delivers the new instance asynchronously.
-    public static func setup(
+    /// - Parameter context: The context object for the session.
+    /// - Returns: A configured AdyenSession instance.
+    /// - Throws: An error if the session setup fails.
+    package static func setup(
         with initialInfo: AdyenSession.InitialInfo,
         apiClient: APIClientProtocol,
-        context: AdyenContext,
-        delegate: AdyenSessionDelegate?,
-        presentationDelegate: PresentationDelegate?,
-        completion: @escaping ((Result<AdyenSession, Error>) -> Void)
-    ) {
-        makeSetupCall(
+        context: AdyenContext
+    ) async throws -> AdyenSession {
+        
+        let sessionState = try await makeSetupCall(
             with: initialInfo,
             baseAPIClient: apiClient
-        ) { result in
-            switch result {
-            case let .success(sessionState):
-                let session = AdyenSession(
-                    state: sessionState,
-                    baseAPIClient: apiClient,
-                    context: context,
-                    delegate: delegate,
-                    presentationDelegate: presentationDelegate
-                )
-                AnalyticsForSession.sessionId = sessionState.identifier
-                completion(.success(session))
-            case let .failure(error):
-                completion(.failure(error))
-            }
-        }
+        )
+        
+        let session = AdyenSession(
+            state: sessionState,
+            baseAPIClient: apiClient,
+            context: context
+        )
+        AnalyticsForSession.sessionId = sessionState.identifier
+        return session
     }
-
-    // swiftlint:enable function_parameter_count
     
     internal static func makeSetupCall(
         with initialInfo: AdyenSession.InitialInfo,
         baseAPIClient: APIClientProtocol,
-        order: PartialPaymentOrder? = nil,
-        completion: @escaping ((Result<State, Error>) -> Void)
-    ) {
+        order: PartialPaymentOrder? = nil
+    ) async throws -> State {
+        
         let sessionId = initialInfo.sessionIdentifier
         let sessionData = initialInfo.initialSessionData
+        
         let request = SessionSetupRequest(
             sessionId: sessionId,
             sessionData: sessionData,
             order: order
         )
-
-        let apiClient = SelfRetainingAPIClient(apiClient: baseAPIClient)
-        apiClient.perform(request) { result in
-            switch result {
-            case let .success(response):
-                let sessionState = State(
-                    data: response.sessionData,
-                    identifier: sessionId,
-                    countryCode: response.countryCode,
-                    shopperLocale: response.shopperLocale,
-                    amount: response.amount,
-                    paymentMethods: response.paymentMethods,
-                    responseConfiguration: response.configuration
-                )
-                completion(.success(sessionState))
-            case let .failure(error):
-                completion(.failure(error))
+        
+        let response = try await withCheckedThrowingContinuation { continuation in
+            baseAPIClient.perform(request) { result in
+                continuation.resume(with: result)
             }
         }
+        
+        return State(
+            data: response.sessionData,
+            identifier: sessionId,
+            countryCode: response.countryCode,
+            shopperLocale: response.shopperLocale,
+            amount: response.amount,
+            paymentMethods: response.paymentMethods,
+            responseConfiguration: response.configuration
+        )
     }
     
     // MARK: - Private
