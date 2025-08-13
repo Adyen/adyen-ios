@@ -24,7 +24,7 @@ jobs:
     runs-on: macos-15-xlarge 
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - uses: n1hility/cancel-previous-runs@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
