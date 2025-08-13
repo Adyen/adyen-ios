@@ -8,7 +8,6 @@
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
-import AdyenUI
 import UIKit
 
 /// A component that provides a form for gift card payments.

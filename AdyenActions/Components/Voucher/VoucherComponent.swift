@@ -6,7 +6,6 @@
 
 @_spi(AdyenInternal) import Adyen
 import AdyenNetworking
-import AdyenUI
 import PassKit
 import UIKit
 
