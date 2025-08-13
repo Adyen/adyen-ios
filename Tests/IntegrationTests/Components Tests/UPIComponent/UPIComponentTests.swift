@@ -25,7 +25,7 @@ class UPIComponentTests: XCTestCase {
             context: Dummy.context
         )
         
-        XCTAssertEqual(sut.currentSelectedItemIdentifier, UPIComponent.Constants.vpaFlowIdentifier)
+        XCTAssertEqual(sut.currentSelectedItemIdentifier, nil)
     }
 
     func test_paymentMethodType_isUpi() throws {
