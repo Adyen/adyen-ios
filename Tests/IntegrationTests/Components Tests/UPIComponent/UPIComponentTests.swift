@@ -19,7 +19,7 @@ class UPIComponentTests: XCTestCase {
         XCTAssertEqual(sut.currentSelectedItemIdentifier, nil)
     }
     
-    func test_init_withoutApps() throws {
+    func test_init_withoutApps_shouldSetSelectedItemIdentifierToNil() throws {
         let sut = try UPIComponent(
             paymentMethod: AdyenCoder.decode(upi),
             context: Dummy.context
