@@ -5,7 +5,6 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import AdyenUI
 import Foundation
 import LocalAuthentication
 import UIKit
@@ -198,7 +197,7 @@ internal final class DelegatedAuthenticationView: UIView {
     // MARK: Buttons
 
     internal lazy var firstButton: SubmitButton = {
-        let button = SubmitButton(style: .primary(for: .default))
+        let button = SubmitButton(style: style.primaryButton)
 
         button.addTarget(self, action: #selector(firstButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton")
@@ -208,7 +207,7 @@ internal final class DelegatedAuthenticationView: UIView {
     }()
 
     internal lazy var secondButton: SubmitButton = {
-        let button = SubmitButton(style: .primary(for: .default))
+        let button = SubmitButton(style: style.secondaryButton)
         button.addTarget(self, action: #selector(secondButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "secondaryButton")
         button.preservesSuperviewLayoutMargins = true

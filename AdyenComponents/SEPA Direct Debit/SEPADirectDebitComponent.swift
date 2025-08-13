@@ -134,7 +134,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
     }()
 
     internal lazy var button: FormButtonItem = {
-        let item = FormButtonItem(style: .primary(for: .default))
+        let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(
             with: payment?.amount,

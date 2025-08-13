@@ -50,11 +50,10 @@ extension BLIKPaymentMethod {
         if let configuration = configuration.componentConfiguration(for: self) as? BLIKComponentConfiguration {
             blikConfiguration = configuration
         } else {
-            blikConfiguration = .init()
+            blikConfiguration = .init(theme: configuration.theme)
         }
         // TODO: find a better place to carry over global settings to individual configs
         blikConfiguration.showsSubmitButton = configuration.showsSubmitButton
-        blikConfiguration.theme = configuration.theme
         let component = BLIKComponent(
             paymentMethod: self,
             context: configuration.context,

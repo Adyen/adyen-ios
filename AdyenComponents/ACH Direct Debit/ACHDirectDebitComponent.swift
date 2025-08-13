@@ -8,7 +8,6 @@
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
-import AdyenUI
 import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.
@@ -265,7 +264,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     }()
     
     internal lazy var payButton: FormButtonItem = {
-        let item = FormButtonItem(style: .primary(for: .default))
+        let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifier.payButtonItem

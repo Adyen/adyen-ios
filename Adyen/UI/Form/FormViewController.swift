@@ -36,7 +36,7 @@ open class FormViewController: UIViewController, AdyenObserver {
     public var requiresKeyboardInput: Bool { formRequiresInputView() }
 
     /// Indicates the `FormViewController` UI styling.
-    public let style: ViewStyle?
+    public var style: ViewStyle = FormComponentStyle()
 
     /// Indicates the `FormViewController` UI styling theme.
     public var theme: AdyenTheme = .init()
@@ -59,12 +59,21 @@ open class FormViewController: UIViewController, AdyenObserver {
     ///   - localizationParameters: The localization parameters.
     public init(
         scrollEnabled: Bool,
-        style: ViewStyle? = nil,
-        theme: AdyenTheme = AdyenTheme(),
+        style: ViewStyle,
         localizationParameters: LocalizationParameters?
     ) {
         self.scrollEnabled = scrollEnabled
         self.style = style
+        self.localizationParameters = localizationParameters
+        super.init(nibName: nil, bundle: Bundle(for: FormViewController.self))
+    }
+
+    public init(
+        scrollEnabled: Bool,
+        theme: AdyenTheme = AdyenTheme(),
+        localizationParameters: LocalizationParameters?
+    ) {
+        self.scrollEnabled = scrollEnabled
         self.theme = theme
         self.localizationParameters = localizationParameters
         super.init(nibName: nil, bundle: Bundle(for: FormViewController.self))
@@ -260,8 +269,8 @@ open class FormViewController: UIViewController, AdyenObserver {
     }
 
     private func setupViews() {
-        view.backgroundColor = style?.backgroundColor
-        formView.backgroundColor = style?.backgroundColor
+        view.backgroundColor = style.backgroundColor
+        formView.backgroundColor = style.backgroundColor
         formView.isEmbeddedInScrollView = scrollEnabled
     }
 

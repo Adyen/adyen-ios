@@ -5,7 +5,6 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import AdyenUI
 import UIKit
 
 /// A component that provides a form for Online Banking payment.
@@ -72,7 +71,7 @@ public final class OnlineBankingComponent: PaymentComponent,
 
     /// The continue button item.
     internal lazy var continueButton: FormButtonItem = {
-        let item = FormButtonItem(style: .primary(for: .default))
+        let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifier.continueButtonItem

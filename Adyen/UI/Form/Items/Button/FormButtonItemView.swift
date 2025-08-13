@@ -30,7 +30,7 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem> {
     // MARK: - Submit Button
     
     internal lazy var submitButton: SubmitButton = {
-        let submitButton = SubmitButton(style: .primary(for: .default))
+        let submitButton = SubmitButton(style: item.style.button)
 
         submitButton.addTarget(self, action: #selector(didSelectSubmitButton), for: .touchUpInside)
         submitButton.accessibilityIdentifier = item.identifier.map {

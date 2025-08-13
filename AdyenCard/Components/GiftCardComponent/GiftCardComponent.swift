@@ -238,7 +238,7 @@ public final class GiftCardComponent: PresentableComponent,
     }()
 
     internal lazy var button: FormButtonItem = {
-        let item = FormButtonItem(style: .primary(for: .default))
+        let item = FormButtonItem(style: style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedString(.cardApplyGiftcard, localizationParameters)
         item.buttonSelectionHandler = { [weak self] in

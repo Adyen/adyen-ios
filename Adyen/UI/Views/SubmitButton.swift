@@ -10,13 +10,16 @@ import UIKit
 /// A rounded submit button used to submit details.
 @_spi(AdyenInternal)
 public final class SubmitButton: UIControl {
-    private let buttonStyle: AdyenButtonStyle
+
+    private var style: ButtonStyle = .init(title: .init(font: .preferredFont(forTextStyle: .body), color: .red))
+
+    private var buttonStyle: AdyenButtonStyle = .primary(for: .default)
 
     /// Initializes the submit button.
     ///
     /// - Parameter style: The `SubmitButton` UI style.
-    public init(style: AdyenButtonStyle) {
-        self.buttonStyle = style
+    public init(style: ButtonStyle) {
+        self.style = style
         super.init(frame: .zero)
         
         isAccessibilityElement = true
@@ -26,12 +29,32 @@ public final class SubmitButton: UIControl {
         addSubview(activityIndicatorView)
         addSubview(titleLabel)
 
+        backgroundColor = style.backgroundColor
+        self.adyen.round(using: style.cornerRounding)
+
+        configureConstraints()
+    }
+
+    /// Initializes the submit button.
+    ///
+    /// - Parameter style: The `SubmitButton` UI style.
+    public init(buttonStyle: AdyenButtonStyle) {
+        self.buttonStyle = buttonStyle
+        super.init(frame: .zero)
+
+        isAccessibilityElement = true
+        accessibilityTraits = .button
+
+        addSubview(backgroundView)
+        addSubview(activityIndicatorView)
+        addSubview(titleLabel)
+
         backgroundColor = buttonStyle.backgroundColor
         self.adyen.round(using: buttonStyle.cornerRadius ?? .fixed(14.0))
 
         configureConstraints()
     }
-    
+
     @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -42,7 +65,7 @@ public final class SubmitButton: UIControl {
     internal lazy var backgroundView: BackgroundView = {
         let backgroundView = BackgroundView(
             cornerRounding: buttonStyle.cornerRadius ?? .fixed(14.0),
-            color: buttonStyle.backgroundColor ?? .clear
+            color: buttonStyle.backgroundColor
         )
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -62,7 +85,7 @@ public final class SubmitButton: UIControl {
     internal lazy var titleLabel: UILabel = {
         let titleLabel = UILabel(style: TextStyle(
             font: FontStyle.default.bodyEmphasized,
-            color: buttonStyle.textColor ?? ColorScheme.default.textOnPrimary
+            color: buttonStyle.textColor
         ))
         titleLabel.isAccessibilityElement = false
         

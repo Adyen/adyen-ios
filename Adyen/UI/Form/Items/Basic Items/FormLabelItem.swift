@@ -16,14 +16,18 @@ public class FormLabelItem: FormItem {
     
     public var subitems: [FormItem] = []
 
+    public init(text: String, style: TextStyle, identifier: String? = nil) {
+        self.identifier = identifier
+        self.style = style
+        self.text = text
+    }
+
     public init(
         text: String,
-        style: TextStyle? = nil,
         identifier: String? = nil,
         labelStyle: LabelStyle = LabelStyle()
     ) {
         self.identifier = identifier
-        self.style = style
         self.labelStyle = labelStyle
         self.text = text
     }
@@ -31,7 +35,7 @@ public class FormLabelItem: FormItem {
     public var identifier: String?
 
     /// The style of the label.
-    public var style: TextStyle?
+    public var style: TextStyle = .init(font: .preferredFont(forTextStyle: .body), color: .red)
 
     /// The text of the label.
     public var text: String

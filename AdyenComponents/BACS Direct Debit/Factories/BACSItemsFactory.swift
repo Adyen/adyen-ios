@@ -5,7 +5,6 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import AdyenUI
 import Foundation
 
 internal protocol BACSItemsFactoryProtocol {
@@ -147,7 +146,7 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
     }
 
     internal func createContinueButton() -> FormButtonItem {
-        let buttonItem = FormButtonItem(style: .primary(for: .default))
+        let buttonItem = FormButtonItem(style: styleProvider.mainButtonItem)
 
         let localizedTitle = localizedString(.continueTitle, localizationParameters)
         buttonItem.title = localizedTitle
@@ -161,7 +160,7 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
     }
 
     internal func createPaymentButton() -> FormButtonItem {
-        let buttonItem = FormButtonItem(style: .primary(for: .default))
+        let buttonItem = FormButtonItem(style: styleProvider.mainButtonItem)
 
         let localizedTitle = localizedString(.bacsPaymentButtonTitle, localizationParameters)
         buttonItem.title = localizedTitle

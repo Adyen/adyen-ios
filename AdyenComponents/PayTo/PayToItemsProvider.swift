@@ -5,7 +5,6 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import AdyenUI
 import UIKit
 
 internal protocol PayToItemsProviding {
@@ -290,7 +289,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
     
     /// The continue button item.
     internal func createContinueButtonItem() -> FormButtonItem {
-        let item = FormButtonItem(style: .primary(for: .default))
+        let item = FormButtonItem(style: style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: scope,
             postfix: ViewIdentifier.continueButtonItem

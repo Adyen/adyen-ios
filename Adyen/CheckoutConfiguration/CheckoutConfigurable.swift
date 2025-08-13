@@ -20,6 +20,9 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     
     // These are here to work with the current way,
     // to be changed with new styling/localization
+
+    var style: FormComponentStyle { get }
+
     var theme: AdyenTheme { get set }
 
     var localizationParameters: LocalizationParameters? { get }

@@ -210,7 +210,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
 
     /// The button item.
     internal lazy var button: FormButtonItem = {
-        let item = FormButtonItem(style: .primary(for: .default))
+        let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = submitButtonTitle()
         item.buttonSelectionHandler = { [weak self] in

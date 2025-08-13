@@ -16,13 +16,25 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
     
     package var showsSubmitButton: Bool
 
+    package var style: FormComponentStyle = .init()
+
     package var theme: AdyenTheme = .init()
 
     package var localizationParameters: LocalizationParameters?
     
     public init(
         showsSubmitButton: Bool = true,
-        theme: AdyenTheme = AdyenTheme(),
+        style: FormComponentStyle,
+        localizationParameters: LocalizationParameters? = nil
+    ) {
+        self.showsSubmitButton = showsSubmitButton
+        self.style = style
+        self.localizationParameters = localizationParameters
+    }
+
+    public init(
+        showsSubmitButton: Bool = true,
+        theme: AdyenTheme = .init(),
         localizationParameters: LocalizationParameters? = nil
     ) {
         self.showsSubmitButton = showsSubmitButton
@@ -33,12 +45,18 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
 
 extension BLIKComponentConfiguration {
     
+    public func style(_ style: FormComponentStyle) -> Self {
+        var copy = self
+        copy.style = style
+        return copy
+    }
+
     public func style(_ theme: AdyenTheme) -> Self {
         var copy = self
         copy.theme = theme
         return copy
     }
-    
+
     public func localization(_ localizationParameters: LocalizationParameters) -> Self {
         var copy = self
         copy.localizationParameters = localizationParameters

@@ -103,7 +103,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     /// The button item.
     internal lazy var button: FormButtonItem = {
         let buttonType = configuration.theme.buttonStyle.primary
-        let item = FormButtonItem(style: buttonType)
+        let item = FormButtonItem(buttonStyle: buttonType)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(
             with: payment?.amount,

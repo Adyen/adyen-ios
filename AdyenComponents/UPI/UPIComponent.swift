@@ -5,7 +5,6 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import AdyenUI
 import UIKit
 
 /// A component that provides a upi flows for UPI component.
@@ -112,7 +111,7 @@ public final class UPIComponent: PaymentComponent,
             ),
             style: configuration.style.footnoteLabel
         )
-        item.style?.textAlignment = .left
+        item.style.textAlignment = .left
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifier.instructionsItem
@@ -202,7 +201,7 @@ public final class UPIComponent: PaymentComponent,
             ),
             style: configuration.style.footnoteLabel
         )
-        item.style?.textAlignment = .center
+        item.style.textAlignment = .center
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifier.generateQRCodeContainerItem
@@ -224,7 +223,7 @@ public final class UPIComponent: PaymentComponent,
 
     /// The continue button item.
     internal lazy var continueButton: FormButtonItem = {
-        let item = FormButtonItem(style: .primary(for: .default))
+        let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifier.continueButtonItem

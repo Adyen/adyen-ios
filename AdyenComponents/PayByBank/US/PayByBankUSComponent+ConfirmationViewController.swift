@@ -6,7 +6,6 @@
 
 import UIKit
 @_spi(AdyenInternal) import Adyen
-import AdyenUI
 
 extension PayByBankUSComponent {
     
@@ -40,7 +39,7 @@ extension PayByBankUSComponent {
                 trailingText: model.supportedBanksMoreText
             )
            
-            self.submitButton = SubmitButton(style: .primary(for: .default))
+            self.submitButton = SubmitButton(style: model.style.submitButton)
             
             super.init(nibName: nil, bundle: nil)
         }
