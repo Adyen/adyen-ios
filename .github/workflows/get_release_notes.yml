@@ -6,6 +6,9 @@ on:
         RELEASE_NOTES:
             description: "The Release Notes of the Release"
             value: ${{ jobs.generate-release-notes.outputs.RELEASE_NOTES }}
+
+permissions:
+  contents: read
     
 jobs:
   generate-release-notes:

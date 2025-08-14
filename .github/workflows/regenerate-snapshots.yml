@@ -1,7 +1,9 @@
 name: 📸 Generate Snapshots
 on:
     workflow_dispatch:
-          
+
+permissions:
+  contents: read          
 jobs:
   Generate:
     runs-on: macos-15-xlarge
@@ -32,8 +34,8 @@ jobs:
       uses: peter-evans/create-pull-request@v7
       with:
         delete-branch: true
-        branch: update-snapshots-github-action
+        branch: chore/update-snapshots-github-action
         commit-message: "🤖 Generated Snapshots"
         title: "🤖 Generate Snapshots"
         body: "Regenerate snapshots"
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.AUTOMATION_BOT_TOKEN }}

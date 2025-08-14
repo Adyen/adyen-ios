@@ -12,6 +12,10 @@ on:
         description: 'Branch/tag of the old/comparison version'
         required: true
       
+permissions:
+  contents: read
+  pull-requests: write 
+      
 jobs:
 
   build:
