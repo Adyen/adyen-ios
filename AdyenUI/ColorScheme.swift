@@ -24,9 +24,7 @@ public struct ColorScheme: Equatable {
     // MARK: - Initializers
 
     // A static default ColorScheme
-    public static var `default`: ColorScheme {
-        ColorScheme()
-    }
+    public static var `default`: ColorScheme = .init()
 
     private init() {
         self.background = UIColor { traitCollection in

@@ -51,12 +51,6 @@ extension BLIKComponentConfiguration {
         return copy
     }
 
-    public func style(_ theme: AdyenTheme) -> Self {
-        var copy = self
-        copy.theme = theme
-        return copy
-    }
-
     public func localization(_ localizationParameters: LocalizationParameters) -> Self {
         var copy = self
         copy.localizationParameters = localizationParameters

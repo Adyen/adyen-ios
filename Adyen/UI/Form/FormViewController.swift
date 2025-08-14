@@ -70,12 +70,12 @@ open class FormViewController: UIViewController, AdyenObserver {
 
     public init(
         scrollEnabled: Bool,
-        theme: AdyenTheme = AdyenTheme(),
-        localizationParameters: LocalizationParameters?
+        localizationParameters: LocalizationParameters?,
+        theme: AdyenTheme = AdyenTheme()
     ) {
         self.scrollEnabled = scrollEnabled
-        self.theme = theme
         self.localizationParameters = localizationParameters
+        self.theme = theme
         super.init(nibName: nil, bundle: Bundle(for: FormViewController.self))
     }
 

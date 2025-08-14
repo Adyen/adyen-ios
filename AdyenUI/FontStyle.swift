@@ -46,9 +46,7 @@ public struct FontStyle {
     }
     
     // A static default FontStyle
-    public static var `default`: FontStyle {
-        FontStyle()
-    }
+    public static var `default`: FontStyle = .init()
 }
 
 extension FontStyle: Equatable {

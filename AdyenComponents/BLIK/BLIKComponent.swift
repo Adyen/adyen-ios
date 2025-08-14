@@ -55,8 +55,8 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
             scrollEnabled: configuration.showsSubmitButton,
-            theme: configuration.theme,
-            localizationParameters: configuration.localizationParameters
+            localizationParameters: configuration.localizationParameters,
+            theme: configuration.theme
         )
 
         formViewController.delegate = self
