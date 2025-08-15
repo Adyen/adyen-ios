@@ -52,7 +52,7 @@ jobs:
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '16.1'
+        xcode-version: '16.4'
 
     - name: 🛡️ Install the distribution certificate and provisioning profile
       env:
