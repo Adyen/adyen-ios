@@ -30,11 +30,19 @@ jobs:
       uses: maxim-lobanov/setup-xcode@v1
       with:
         xcode-version: '16.4'
-        
+
     - name: 🚚 Fetch repo
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+
+    - name: Install SwiftLint
+      run: |
+        curl -L https://github.com/realm/SwiftLint/releases/download/0.58.2/SwiftLint.pkg -o SwiftLint.pkg
+        sudo installer -pkg SwiftLint.pkg -target /
+
+    - name: Run SwiftLint
+      run: swiftlint
 
     - name: 👾 Define Diff Versions
       run: |
@@ -58,8 +66,6 @@ jobs:
         noTargetBranch: 'no target branch'
         targetBranchName: '${{ github.head_ref }}'
 
-    # The github action automatically posts on a PR (if it's not a fork-PR)
-    # and/or outputs the diff to the $GITHUB_STEP_SUMMARY
     - name: 🔍 Detect Changes
       uses: Adyen/adyen-swift-public-api-diff@0.10.1
       with:
