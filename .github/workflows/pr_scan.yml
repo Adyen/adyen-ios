@@ -37,7 +37,7 @@ jobs:
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '16.1'
+        xcode-version: '16.4'
 
     - name: List available simulators
       run: xcrun simctl list devices
