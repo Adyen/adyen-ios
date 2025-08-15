@@ -39,6 +39,9 @@ jobs:
       with:
         xcode-version: '16.1'
 
+    - name: List available simulators
+      run: xcrun simctl list devices
+
     - name: 🛠️ Install Tools
       run: |
         brew update
