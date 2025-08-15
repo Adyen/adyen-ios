@@ -50,7 +50,7 @@ public final class SubmitButton: UIControl {
         addSubview(titleLabel)
 
         backgroundColor = buttonStyle.backgroundColor
-        self.adyen.round(using: buttonStyle.cornerRadius ?? .fixed(14.0))
+        self.adyen.round(using: buttonStyle.cornerRadius ?? .fixed(AdyenUIConstants.defaultCornerRadius))
 
         configureConstraints()
     }
@@ -64,7 +64,7 @@ public final class SubmitButton: UIControl {
     
     internal lazy var backgroundView: BackgroundView = {
         let backgroundView = BackgroundView(
-            cornerRounding: buttonStyle.cornerRadius ?? .fixed(14.0),
+            cornerRounding: buttonStyle.cornerRadius ?? .fixed(AdyenUIConstants.defaultCornerRadius),
             color: buttonStyle.backgroundColor
         )
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
@@ -143,13 +143,13 @@ public final class SubmitButton: UIControl {
     
     override public func layoutSubviews() {
         super.layoutSubviews()
-        self.adyen.round(using: buttonStyle.cornerRadius ?? .fixed(14.0))
+        self.adyen.round(using: buttonStyle.cornerRadius ?? .fixed(AdyenUIConstants.defaultCornerRadius))
     }
     
     private func configureConstraints() {
         backgroundView.adyen.anchor(inside: self)
         
-        let heightConstraint = heightAnchor.constraint(equalToConstant: 52.0)
+        let heightConstraint = heightAnchor.constraint(equalToConstant: AdyenUIConstants.submitButtonHeight)
         let labelConstraints = [
             titleLabel.topAnchor.constraint(equalTo: topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),

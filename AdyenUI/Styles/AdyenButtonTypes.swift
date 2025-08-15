@@ -80,7 +80,7 @@ public struct AdyenButtonStyle {
             textColor: colorScheme.textOnPrimary,
             disabledBackgroundColor: colorScheme.disabled,
             disabledTextColor: colorScheme.textOnDisabled,
-            cornerRadius: .fixed(14.0)
+            cornerRadius: .fixed(AdyenUIConstants.defaultCornerRadius)
         )
     }
     
@@ -90,7 +90,7 @@ public struct AdyenButtonStyle {
             textColor: colorScheme.text,
             disabledBackgroundColor: colorScheme.disabled,
             disabledTextColor: colorScheme.textOnDisabled,
-            cornerRadius: .fixed(14.0)
+            cornerRadius: .fixed(AdyenUIConstants.defaultCornerRadius)
         )
     }
     
@@ -100,7 +100,7 @@ public struct AdyenButtonStyle {
             textColor: colorScheme.action,
             disabledBackgroundColor: colorScheme.disabled,
             disabledTextColor: colorScheme.textOnDisabled,
-            cornerRadius: .fixed(14.0)
+            cornerRadius: .fixed(AdyenUIConstants.defaultCornerRadius)
         )
     }
     
@@ -110,7 +110,7 @@ public struct AdyenButtonStyle {
             textColor: colorScheme.textOnDestructive,
             disabledBackgroundColor: colorScheme.disabled,
             disabledTextColor: colorScheme.textOnDisabled,
-            cornerRadius: .fixed(14.0)
+            cornerRadius: .fixed(AdyenUIConstants.defaultCornerRadius)
         )
     }
 }
