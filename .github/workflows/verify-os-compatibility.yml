@@ -23,8 +23,8 @@ jobs:
         include:
         
         # Xcode 26 - iOS 18
-        - version: '18.6'
-          runtime: 'iOS-18-6'
+        - version: '18.4'
+          runtime: 'iOS-18-4'
           device: 'iPhone 16 Pro'
           displayname: 'iPhone-16-Pro'
           os: 'macos-15-large'
