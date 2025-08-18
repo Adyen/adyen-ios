@@ -94,4 +94,4 @@ jobs:
         project: 'Adyen.xcodeproj'
         params: "-skipPackagePluginValidation"
         scheme: 'IntegrationUIKitTests'
-        destination: "OS=${{ matrix.runtime }},name=${{ matrix.displayname }}"
+        destination: "OS=${{ matrix.version }},name=${{ matrix.displayname }}"
