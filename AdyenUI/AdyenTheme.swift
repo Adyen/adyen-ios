@@ -29,7 +29,9 @@ public class AdyenTheme {
         self.currentColorScheme = colorScheme
         self.currentFontStyle = fontStyle
     }
+}
 
+extension AdyenTheme {
     // Method to allow method chaining on the theme itself.
     public static func label(_ labelStyle: LabelStyle) -> AdyenTheme {
         let newTheme = AdyenTheme()
