@@ -11,8 +11,7 @@ import UIKit
 @_spi(AdyenInternal)
 public final class SubmitButton: UIControl {
 
-    private var style: ButtonStyle = .init(title: .init(font: .preferredFont(forTextStyle: .body), color: .red))
-
+    private var style: ButtonStyle
     private var buttonStyle: AdyenButtonStyle = .primary(for: .default)
 
     /// Initializes the submit button.
@@ -36,10 +35,14 @@ public final class SubmitButton: UIControl {
     }
 
     /// Initializes the submit button.
-    ///
-    /// - Parameter style: The `SubmitButton` UI style.
-    public init(buttonStyle: AdyenButtonStyle) {
+    /// - Parameter buttonStyle: The  new `SubmitButton` UI style.
+    /// - Parameter style: The  old`SubmitButton` UI style.
+    public init(
+        buttonStyle: AdyenButtonStyle,
+        style: ButtonStyle = .init(title: .init(font: .preferredFont(forTextStyle: .body), color: .red))
+    ) {
         self.buttonStyle = buttonStyle
+        self.style = style
         super.init(frame: .zero)
 
         isAccessibilityElement = true

@@ -17,7 +17,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
 
     internal let childViewController: ChildViewController
 
-    private var style: ViewStyle = FormComponentStyle()
+    private var style: ViewStyle
 
     private var theme: AdyenTheme = .init()
 
@@ -59,9 +59,11 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
 //    /// - Parameter theme: Adyen theme.
     public init(
         child: ChildViewController,
+        style: ViewStyle = FormComponentStyle(),
         theme: AdyenTheme = AdyenTheme()
     ) {
         self.childViewController = child
+        self.style = style
         self.theme = theme
 
         super.init(nibName: nil, bundle: Bundle(for: SecuredViewController.self))

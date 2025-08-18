@@ -25,17 +25,19 @@ public class FormLabelItem: FormItem {
     public init(
         text: String,
         identifier: String? = nil,
-        labelStyle: LabelStyle = LabelStyle()
+        labelStyle: LabelStyle = LabelStyle(),
+        style: TextStyle = .init(font: .preferredFont(forTextStyle: .body), color: .red)
     ) {
         self.identifier = identifier
-        self.labelStyle = labelStyle
         self.text = text
+        self.labelStyle = labelStyle
+        self.style = style
     }
 
     public var identifier: String?
 
     /// The style of the label.
-    public var style: TextStyle = .init(font: .preferredFont(forTextStyle: .body), color: .red)
+    public var style: TextStyle
 
     /// The text of the label.
     public var text: String
