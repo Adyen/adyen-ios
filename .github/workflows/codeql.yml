@@ -51,10 +51,3 @@ jobs:
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{ matrix.language }}"
-
-      - name: Upload CodeQL Database (baseline)
-        if: github.ref == 'refs/heads/develop'
-        uses: actions/upload-artifact@v3
-        with:
-          name: codeql-database-${{ matrix.language }}
-          path: codeql-database
