@@ -439,8 +439,8 @@ private extension ComponentManager {
 
     func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {
         let config = BLIKComponentConfiguration(
-            theme: configuration.theme,
-            localizationParameters: configuration.localizationParameters
+            localizationParameters: configuration.localizationParameters,
+            theme: configuration.theme
         )
         return BLIKComponent(
             paymentMethod: paymentMethod,

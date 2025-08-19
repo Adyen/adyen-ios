@@ -13,13 +13,14 @@ public class AdyenTheme {
     public var currentFontStyle: FontStyle = .default
 
     // Available styles
-    public var buttonStyle = AdyenButtonTypes()
+    public var buttonStyle = AdyenButtonStyles()
     public var labelStyle = LabelStyle()
 
-    // Initialize with a default ButtonTypes and LabelStyle if none is provided
+    // Initialize with a default ButtonStyle and LabelStyle if none is provided
     public init(
-        button: AdyenButtonTypes = AdyenButtonTypes(),
-        label: LabelStyle = LabelStyle()
+        button: AdyenButtonStyles = AdyenButtonStyles(),
+        label: LabelStyle = LabelStyle(),
+        inputTextField: InputTextFieldStyle = InputTextFieldStyle()
     ) {
         self.buttonStyle = button
         self.labelStyle = label
@@ -36,6 +37,12 @@ extension AdyenTheme {
     public static func label(_ labelStyle: LabelStyle) -> AdyenTheme {
         let newTheme = AdyenTheme()
         newTheme.labelStyle = labelStyle
+        return newTheme
+    }
+
+    public static func button(_ buttonStyle: AdyenButtonStyles) -> AdyenTheme {
+        let newTheme = AdyenTheme()
+        newTheme.buttonStyle = buttonStyle
         return newTheme
     }
 }

@@ -18,7 +18,7 @@ public final class FormButtonItem: FormItem {
     public var style: FormButtonItemStyle
 
     /// Indicates the item's UI styling.
-    public var buttonStyle: AdyenButtonStyle = AdyenButtonTypes.default.primary
+    public var buttonStyle: AdyenButtonStyle = AdyenButtonStyles.default.primary
 
     public var identifier: String?
     

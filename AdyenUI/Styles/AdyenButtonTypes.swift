@@ -6,7 +6,7 @@
 
 import UIKit
 
-public struct AdyenButtonTypes {
+public struct AdyenButtonStyles {
     
     public var primary: AdyenButtonStyle
     public var secondary: AdyenButtonStyle
@@ -48,7 +48,7 @@ public struct AdyenButtonTypes {
         )
     }
     
-    public static let `default`: AdyenButtonTypes = .init()
+    public static let `default`: AdyenButtonStyles = .init()
 }
 
 // Defines styles for different button types
@@ -115,8 +115,8 @@ public struct AdyenButtonStyle {
     }
 }
 
-extension AdyenButtonTypes: Equatable {
-    public static func == (lhs: AdyenButtonTypes, rhs: AdyenButtonTypes) -> Bool {
+extension AdyenButtonStyles: Equatable {
+    public static func == (lhs: AdyenButtonStyles, rhs: AdyenButtonStyles) -> Bool {
         lhs.primary == rhs.primary &&
             lhs.destructive == rhs.destructive &&
             lhs.secondary == rhs.secondary &&
