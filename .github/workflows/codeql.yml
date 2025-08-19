@@ -20,7 +20,7 @@ jobs:
       matrix:
         include:
           - language: swift
-            build-mode: autobuild
+            build-mode: manual
           - language: actions
             build-mode: none
 
@@ -34,16 +34,13 @@ jobs:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
 
-      # - name: List available simulators
-      #   run: xcrun simctl list devices
-
-      # - name: Build in simulator
-      #   if: matrix.language == 'swift'
-      #   run: |
-      #     xcodebuild -project Adyen.xcodeproj \
-      #       -scheme Adyen \
-      #       -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.6' \
-      #       SKIP_INSTALL=NO build | xcpretty --utf --color
+      - name: Build project
+        if: matrix.language == 'swift'
+        run: |
+          xcodebuild -project Adyen.xcodeproj \
+            -scheme Adyen \
+            -destination 'generic/platform=iOS Simulator' \
+            SKIP_INSTALL=NO build | xcpretty --utf --color
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
