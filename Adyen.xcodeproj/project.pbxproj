@@ -59,6 +59,7 @@
 		006DCC03295C3E930015EA79 /* SegmentedControlStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006DCC02295C3E930015EA79 /* SegmentedControlStyle.swift */; };
 		0080A7812E423FC700F639DE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080A7802E423FC300F639DE /* UIColor.swift */; };
 		009F92AC2E4F4D5400561B7D /* AdyenUIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009F92AB2E4F4D4B00561B7D /* AdyenUIConstants.swift */; };
+		009F92B02E54797C00561B7D /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 009F92AF2E54797C00561B7D /* Info.plist */; };
 		00A25E5D2A404303001B32B6 /* ComponentCreationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5C2A404303001B32B6 /* ComponentCreationError.swift */; };
 		00A25E5E2A404303001B32B6 /* ComponentCreationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5C2A404303001B32B6 /* ComponentCreationError.swift */; };
 		00A25E602A404342001B32B6 /* AdyenSdkVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5F2A404342001B32B6 /* AdyenSdkVersion.swift */; };
@@ -1756,6 +1757,7 @@
 		0080A7802E423FC300F639DE /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		008AD9DB2982C24000C33983 /* CancellableToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellableToolBar.swift; sourceTree = "<group>"; };
 		009F92AB2E4F4D4B00561B7D /* AdyenUIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenUIConstants.swift; sourceTree = "<group>"; };
+		009F92AF2E54797C00561B7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00A25E5C2A404303001B32B6 /* ComponentCreationError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentCreationError.swift; sourceTree = "<group>"; };
 		00A25E5F2A404342001B32B6 /* AdyenSdkVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdyenSdkVersion.swift; sourceTree = "<group>"; };
 		00BC8F502BF2561900EBE0EB /* SelectableFormItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableFormItem.swift; sourceTree = "<group>"; };
@@ -3086,6 +3088,7 @@
 				009F92AB2E4F4D4B00561B7D /* AdyenUIConstants.swift */,
 				000A7B052E27CDEC005584F2 /* ColorScheme.swift */,
 				000A7B062E27CDEC005584F2 /* FontStyle.swift */,
+				009F92AF2E54797C00561B7D /* Info.plist */,
 			);
 			path = AdyenUI;
 			sourceTree = "<group>";
@@ -7242,6 +7245,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				009F92B02E54797C00561B7D /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
