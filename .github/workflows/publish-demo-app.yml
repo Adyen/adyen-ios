@@ -42,7 +42,7 @@ jobs:
   Publish:
     runs-on: macos-14
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         fetch-depth: 0
     - uses: n1hility/cancel-previous-runs@v3
@@ -52,7 +52,7 @@ jobs:
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '16.1'
+        xcode-version: '16.4'
 
     - name: 🛡️ Install the distribution certificate and provisioning profile
       env:
