@@ -22,12 +22,12 @@ jobs:
       matrix:
         include:
         
-        # Xcode 26
-        - version: '18.4'
-          runtime: 'iOS-18-4'
+        # Xcode 26 - iOS 18
+        - version: '18.6'
+          runtime: 'iOS-18-6'
           device: 'iPhone 16 Pro'
           displayname: 'iPhone-16-Pro'
-          os: 'macos-15-large'
+          os: 'macos-15'
           xcode_version: '26.0'
           needs_custom_sim: false
           
