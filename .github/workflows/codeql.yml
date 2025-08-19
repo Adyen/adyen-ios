@@ -18,17 +18,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - language: swift
-            build-mode: manual
-          - language: actions
-            build-mode: none
+        language: [swift, actions]
+        build-mode: [manual, none]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      # Select Xcode 16.4 explicitly
       - name: Select Xcode 16.4
         uses: maxim-lobanov/setup-xcode@v1
         with:
@@ -40,8 +36,15 @@ jobs:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
 
+      - name: Download baseline CodeQL database
+        if: github.event_name == 'pull_request'
+        uses: actions/download-artifact@v3
+        with:
+          name: codeql-database-${{ matrix.language }}
+          path: codeql-database
+
       - name: Build project
-        if: matrix.language == 'swift'
+        if: matrix.language == 'swift' && matrix.build-mode == 'manual'
         run: |
           xcodebuild -project Adyen.xcodeproj \
             -scheme Adyen \
@@ -52,3 +55,11 @@ jobs:
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{ matrix.language }}"
+          baseline-database: codeql-database/${{ matrix.language }}
+
+      - name: Upload CodeQL Database (baseline)
+        if: github.ref == 'refs/heads/develop'
+        uses: actions/upload-artifact@v3
+        with:
+          name: codeql-database-${{ matrix.language }}
+          path: codeql-database
