@@ -382,3 +382,5 @@ This repository is open source and available under the MIT license. For more inf
 [reference.PayToComponent]:  https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/paytocomponent
 
 [apiExplorer.sessions]: https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/sessions
+
+TEST
