@@ -87,7 +87,7 @@ public final class SubmitButton: UIControl {
     
     internal lazy var titleLabel: UILabel = {
         let titleLabel = UILabel(style: TextStyle(
-            font: FontStyle.default.bodyEmphasized,
+            font: AdyenFonts.default.bodyEmphasized,
             color: buttonStyle.textColor
         ))
         titleLabel.isAccessibilityElement = false

@@ -14,8 +14,8 @@ public enum FontSize: CGFloat {
     case footnote = 13.0
 }
 
-public struct FontStyle {
-    
+public struct AdyenFonts {
+
     public var title: UIFont
     public var subtitle: UIFont
     public var body: UIFont
@@ -45,14 +45,14 @@ public struct FontStyle {
         self.footnoteEmphasized = footnoteEmphasized
     }
     
-    // A static default FontStyle
-    public static var `default`: FontStyle = .init()
+    // A static default AdyenFonts.
+    public static var `default`: AdyenFonts = .init()
 }
 
-extension FontStyle: Equatable {
+extension AdyenFonts: Equatable {
     // MARK: - Equatable Conformance
     
-    public static func == (lhs: FontStyle, rhs: FontStyle) -> Bool {
+    public static func == (lhs: AdyenFonts, rhs: AdyenFonts) -> Bool {
         lhs.title == rhs.title &&
             lhs.subtitle == rhs.subtitle &&
             lhs.body == rhs.body &&

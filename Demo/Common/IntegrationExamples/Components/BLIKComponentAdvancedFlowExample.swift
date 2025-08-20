@@ -57,11 +57,44 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             BLIKComponentConfiguration()
                 .showsSubmitButton(false)
         }
-        .theme(AdyenTheme
-            .label(LabelStyle.default
-                .font(FontStyle.default.body)
-                .color(ColorScheme.default.primary)
-            ))
+        // Providing theme without passing AdyenTheme object with label and button name
+        .theme(
+            label: AdyenLabelStyle()
+                .font(AdyenFonts.default.body)
+                .color(AdyenColorScheme.default.primary),
+            button: AdyenButtonStyles()
+        )
+        // Providing theme without passing AdyenTheme object with default label and button
+        .theme(
+            label: AdyenLabelStyle(),
+            button: AdyenButtonStyles()
+        )
+        // Providing theme without passing AdyenTheme object with custom label and button
+        .theme(
+            label: AdyenLabelStyle(
+                font: AdyenFonts.default.body,
+                color: AdyenColorScheme.default.primary,
+                textAlignment: .natural
+            ),
+            button: AdyenButtonStyles(colorScheme: .default)
+        )
+        // Providing theme without passing AdyenTheme object with only custom label
+        .theme(label: .init()
+            .font(AdyenFonts.default.body)
+        )
+        // Providing theme without passing AdyenTheme object with only custom button
+        .theme(button: AdyenButtonStyles(
+            colorScheme: AdyenColorScheme(background: .red))
+        )
+        // Providing theme by passing AdyenTheme object
+        .theme(AdyenTheme()
+            .label(AdyenLabelStyle()
+                .font(AdyenFonts.default.body)
+                .color(AdyenColorScheme.default.primary)
+
+            )
+            .button(.default)
+        )
         .onSubmit { [weak self] data, handler in
             self?.callPayments(with: data, completion: handler)
         }

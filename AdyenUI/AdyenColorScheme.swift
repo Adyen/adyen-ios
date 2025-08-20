@@ -6,7 +6,7 @@
 
 import UIKit
 
-public struct ColorScheme: Equatable {
+public struct AdyenColorScheme: Equatable {
 
     public var background: UIColor
     public var container: UIColor
@@ -24,7 +24,7 @@ public struct ColorScheme: Equatable {
     // MARK: - Initializers
 
     // A static default ColorScheme
-    public static var `default`: ColorScheme = .init()
+    public static var `default`: AdyenColorScheme = .init()
 
     private init() {
         self.background = UIColor { traitCollection in
@@ -90,7 +90,7 @@ public struct ColorScheme: Equatable {
         text: UIColor? = nil,
         textSecondary: UIColor? = nil
     ) {
-        let defaultScheme = ColorScheme.default
+        let defaultScheme = AdyenColorScheme.default
 
         self.background = background ?? defaultScheme.background
         self.container = container ?? defaultScheme.container

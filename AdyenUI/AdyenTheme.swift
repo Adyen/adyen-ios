@@ -6,28 +6,47 @@
 
 import UIKit
 
+public enum AdyenLabelType {
+    case `default`
+    case title
+    case body
+//    case subtitle
+//    case bodyEmphasized
+//    case subHeadline
+//    case subHeadlineEmphasized
+//    case footnote
+//    case footnoteEmphasized
+}
+
+public enum AdyenButtonType {
+    case primary
+    case secondary
+    case tertiary
+    case destructive
+}
+
 // A shared instance of the  theme for easy access throughout your SDK
-public class AdyenTheme {
-    
-    public var currentColorScheme: ColorScheme = .default
-    public var currentFontStyle: FontStyle = .default
+public struct AdyenTheme {
+
+    public var currentColorScheme: AdyenColorScheme = .default
+    public var currentFonts: AdyenFonts = .default
 
     // Available styles
     public var buttonStyle = AdyenButtonStyles()
-    public var labelStyle = LabelStyle()
+    public var labelStyle = AdyenLabelStyle()
 
     // Initialize with a default ButtonStyle and LabelStyle if none is provided
     public init(
         button: AdyenButtonStyles = AdyenButtonStyles(),
-        label: LabelStyle = LabelStyle()
+        label: AdyenLabelStyle = AdyenLabelStyle()
     ) {
         self.buttonStyle = button
         self.labelStyle = label
     }
     
-    public init(colorScheme: ColorScheme, fontStyle: FontStyle) {
+    public init(colorScheme: AdyenColorScheme, fonts: AdyenFonts) {
         self.currentColorScheme = colorScheme
-        self.currentFontStyle = fontStyle
+        self.currentFonts = fonts
     }
 
     public init() {}
@@ -35,15 +54,18 @@ public class AdyenTheme {
 
 extension AdyenTheme {
     // Method to allow method chaining on the theme itself.
-    public static func label(_ labelStyle: LabelStyle) -> AdyenTheme {
-        let newTheme = AdyenTheme()
-        newTheme.labelStyle = labelStyle
-        return newTheme
+
+    @discardableResult
+    public func label(_ labelStyle: AdyenLabelStyle) -> AdyenTheme {
+        var copy = self
+        copy.labelStyle = labelStyle
+        return copy
     }
 
-    public static func button(_ buttonStyle: AdyenButtonStyles) -> AdyenTheme {
-        let newTheme = AdyenTheme()
-        newTheme.buttonStyle = buttonStyle
-        return newTheme
+    @discardableResult
+    public func button(_ buttonStyle: AdyenButtonStyles) -> AdyenTheme {
+        var copy = self
+        copy.buttonStyle = buttonStyle
+        return copy
     }
 }

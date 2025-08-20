@@ -27,7 +27,7 @@ public struct AdyenButtonStyles {
     
     // Default initializer using the default configurations
     public init() {
-        let defaultColorScheme = ColorScheme.default
+        let defaultColorScheme = AdyenColorScheme.default
         self.init(
             primary: .primary(for: defaultColorScheme),
             secondary: .secondary(for: defaultColorScheme),
@@ -39,7 +39,7 @@ public struct AdyenButtonStyles {
     /// Initializes the button style.
     ///
     /// - Parameter colorScheme: The colorScheme to follow to style the button.
-    public init(colorScheme: ColorScheme) {
+    public init(colorScheme: AdyenColorScheme) {
         self.init(
             primary: .primary(for: colorScheme),
             secondary: .secondary(for: colorScheme),
@@ -47,7 +47,7 @@ public struct AdyenButtonStyles {
             destructive: .destructive(for: colorScheme)
         )
     }
-    
+
     public static let `default`: AdyenButtonStyles = .init()
 }
 
@@ -74,7 +74,7 @@ public struct AdyenButtonStyle {
         self.cornerRadius = cornerRadius
     }
     
-    public static func primary(for colorScheme: ColorScheme) -> AdyenButtonStyle {
+    public static func primary(for colorScheme: AdyenColorScheme) -> AdyenButtonStyle {
         .init(
             backgroundColor: colorScheme.primary,
             textColor: colorScheme.textOnPrimary,
@@ -84,7 +84,7 @@ public struct AdyenButtonStyle {
         )
     }
     
-    public static func secondary(for colorScheme: ColorScheme) -> AdyenButtonStyle {
+    public static func secondary(for colorScheme: AdyenColorScheme) -> AdyenButtonStyle {
         .init(
             backgroundColor: colorScheme.container,
             textColor: colorScheme.text,
@@ -94,7 +94,7 @@ public struct AdyenButtonStyle {
         )
     }
     
-    public static func tertiary(for colorScheme: ColorScheme) -> AdyenButtonStyle {
+    public static func tertiary(for colorScheme: AdyenColorScheme) -> AdyenButtonStyle {
         .init(
             backgroundColor: .clear,
             textColor: colorScheme.action,
@@ -104,7 +104,7 @@ public struct AdyenButtonStyle {
         )
     }
     
-    public static func destructive(for colorScheme: ColorScheme) -> AdyenButtonStyle {
+    public static func destructive(for colorScheme: AdyenColorScheme) -> AdyenButtonStyle {
         .init(
             backgroundColor: colorScheme.destructive,
             textColor: colorScheme.textOnDestructive,

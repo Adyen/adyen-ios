@@ -25,7 +25,7 @@ public class FormLabelItem: FormItem {
     public init(
         text: String,
         identifier: String? = nil,
-        labelStyle: LabelStyle = LabelStyle(),
+        labelStyle: AdyenLabelStyle = AdyenLabelStyle(),
         style: TextStyle = .init(font: .preferredFont(forTextStyle: .body), color: .red)
     ) {
         self.identifier = identifier
@@ -43,7 +43,7 @@ public class FormLabelItem: FormItem {
     public var text: String
 
     /// The labelStyle from the adyen theme
-    public var labelStyle: LabelStyle = .init()
+    public var labelStyle: AdyenLabelStyle = .init()
 
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         let label = ADYLabel()
