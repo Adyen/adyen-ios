@@ -19,8 +19,7 @@ public class AdyenTheme {
     // Initialize with a default ButtonStyle and LabelStyle if none is provided
     public init(
         button: AdyenButtonStyles = AdyenButtonStyles(),
-        label: LabelStyle = LabelStyle(),
-        inputTextField: InputTextFieldStyle = InputTextFieldStyle()
+        label: LabelStyle = LabelStyle()
     ) {
         self.buttonStyle = button
         self.labelStyle = label
@@ -30,6 +29,8 @@ public class AdyenTheme {
         self.currentColorScheme = colorScheme
         self.currentFontStyle = fontStyle
     }
+
+    public init() {}
 }
 
 extension AdyenTheme {
