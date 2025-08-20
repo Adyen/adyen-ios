@@ -9,8 +9,8 @@ import AdyenActions
 import AdyenCheckout
 import AdyenComponents
 
-internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
-
+internal final class BLIKComponentExample: InitialDataFlowProtocol {
+    
     internal weak var presenter: PresenterExampleProtocol?
     
     private var adyenCheckout: AdyenCheckout?
@@ -21,31 +21,28 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     // comes from demo app protocol, unused on new structure
     internal lazy var context: AdyenContext = generateContext()
     
-    internal init() {}
-    
-    internal func start() {
+    func start() {
         presenter?.showLoadingIndicator()
-        requestPaymentMethods(order: nil) { [weak self] result in
+        requestSessionInitialInfo { [weak self] result in
             guard let self else { return }
             
             Task {
                 do {
                     switch result {
-                    case let .success(paymentMethods):
-                        try await self.presentBlik(from: paymentMethods)
+                    case let .success(sessionResponse):
+                        try await self.presentBlik(with: sessionResponse)
                     case let .failure(error):
                         throw error
                     }
                 } catch {
-                    await self.handleError(error)
+                    await self.handle(error)
                 }
             }
         }
     }
     
     @MainActor
-    private func presentBlik(from paymentMethods: PaymentMethods) async throws {
-        guard let blikPaymentMethod = paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self) else { throw IntegrationError.paymentMethodNotAvailable(paymentMethod: BLIKPaymentMethod.self) }
+    private func presentBlik(with sessionResponse: SessionResponse) async throws {
         
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
@@ -57,25 +54,21 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         ) {
             BLIKComponentConfiguration()
         }
-        .onSubmit { [weak self] data, handler in
-            self?.callPayments(with: data, completion: handler)
-        }
-        .onAdditionalDetails { [weak self] data, handler in
-            self?.callDetails(with: data, completion: handler)
-        }
         .onComplete { [weak self] result in
             self?.presenter?.dismiss {
                 self?.presenter?.presentAlert(withTitle: "Result Code", message: result.resultCode.rawValue)
             }
         }
         
-        let checkout = try await AdyenCheckout.setup(with: paymentMethods, configuration: configuration, presentationDelegate: self)
+        let checkout = try await AdyenCheckout.setup(with: sessionResponse.sessionId, sessionData: sessionResponse.sessionData, configuration: configuration, presentationDelegate: self)
         
-        presenter?.hideLoadingIndicator()
-        
-        guard let component = checkout.createComponent(with: blikPaymentMethod) else {
+        guard let paymentMethods = checkout.paymentMethods,
+              let blikPaymentMethod = paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self),
+              let component = checkout.createComponent(with: blikPaymentMethod) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: BLIKPaymentMethod.self)
         }
+        
+        presenter?.hideLoadingIndicator()
         
         self.adyenCheckout = checkout
         self.adyenComponent = component
@@ -83,44 +76,10 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     }
     
     @MainActor
-    private func handleError(_ error: Error) {
+    private func handle(_ error: Error) {
         presenter?.hideLoadingIndicator()
         presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
     }
-    
-    // MARK: - Backend calls
-    
-    private func callPayments(with data: PaymentComponentData, completion: PaymentsResponseHandler?) {
-        let request = PaymentsRequest(data: data)
-        apiClient.perform(request) { [weak self] result in
-            switch result {
-            case let .success(response):
-                completion?(CheckoutPaymentsResponse(resultCode: response.resultCode, action: response.action))
-            case let .failure(error):
-                // TODO: change last parameter to accept error as well Result<CheckoutCallbackResult, Error>
-                break
-            }
-        }
-    }
-    
-    private func callDetails(with data: ActionComponentData, completion: PaymentsResponseHandler?) {
-        let request = PaymentDetailsRequest(
-            details: data.details,
-            paymentData: data.paymentData,
-            merchantAccount: ConfigurationConstants.current.merchantAccount
-        )
-        apiClient.perform(request) { [weak self] result in
-            switch result {
-            case let .success(response):
-                completion?(CheckoutPaymentsResponse(resultCode: response.resultCode, action: response.action))
-            case let .failure(error):
-                // TODO: add error handling but maybe after async callbacks
-                break
-            }
-        }
-    }
-    
-    // MARK: - Private
     
     private func viewController(for component: AdyenCheckoutComponent) -> UIViewController {
         let navigation = UINavigationController(rootViewController: component.viewController!)
@@ -139,7 +98,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     }
 }
 
-extension BLIKComponentAdvancedFlowExample: PresentationDelegate {
+extension BLIKComponentExample: PresentationDelegate {
     
     func present(component: any PresentableComponent) {
         presenter?.present(viewController: component.viewController, completion: nil)

@@ -480,6 +480,8 @@
 		A0DB486C2AFD0BEE00348C83 /* AnalyticsEventLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB486B2AFD0BEE00348C83 /* AnalyticsEventLog.swift */; };
 		A0DB486E2AFD0BFC00348C83 /* AnalyticsEventError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB486D2AFD0BFC00348C83 /* AnalyticsEventError.swift */; };
 		A0DE8F6D26CEA04500F2F1E8 /* Installments.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE8F6C26CEA04500F2F1E8 /* Installments.swift */; };
+		A0E498922E535D6F00F15842 /* BLIKComponentExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E498912E535D6800F15842 /* BLIKComponentExample.swift */; };
+		A0E498932E535D6F00F15842 /* BLIKComponentExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E498912E535D6800F15842 /* BLIKComponentExample.swift */; };
 		A0F41EAC26CD4AA50089AD6C /* FormCardInstallmentsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41EAB26CD4AA50089AD6C /* FormCardInstallmentsItem.swift */; };
 		A0F4559B295F0F58001742C7 /* MealVoucherPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F4559A295F0F58001742C7 /* MealVoucherPaymentMethod.swift */; };
 		A0F455A12968472B001742C7 /* PartialPaymentMethodDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F455A02968472B001742C7 /* PartialPaymentMethodDetails.swift */; };
@@ -2063,6 +2065,7 @@
 		A0DB486B2AFD0BEE00348C83 /* AnalyticsEventLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEventLog.swift; sourceTree = "<group>"; };
 		A0DB486D2AFD0BFC00348C83 /* AnalyticsEventError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEventError.swift; sourceTree = "<group>"; };
 		A0DE8F6C26CEA04500F2F1E8 /* Installments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Installments.swift; sourceTree = "<group>"; };
+		A0E498912E535D6800F15842 /* BLIKComponentExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentExample.swift; sourceTree = "<group>"; };
 		A0F41E5526CBCA6E0089AD6C /* InstallmentOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstallmentOptions.swift; sourceTree = "<group>"; };
 		A0F41EAB26CD4AA50089AD6C /* FormCardInstallmentsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardInstallmentsItem.swift; sourceTree = "<group>"; };
 		A0F4559A295F0F58001742C7 /* MealVoucherPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealVoucherPaymentMethod.swift; sourceTree = "<group>"; };
@@ -3215,6 +3218,7 @@
 		00ED81BA29EEC47C00A6B52C /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				A0E498912E535D6800F15842 /* BLIKComponentExample.swift */,
 				A06C76702E379A5100213E53 /* BLIKComponentAdvancedFlowExample.swift */,
 				002A76782A039C96000684D2 /* ApplePayComponentExample.swift */,
 				002A767B2A050140000684D2 /* ApplePayComponentAdvancedFlowExample.swift */,
@@ -8326,6 +8330,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0290DFA2C480CE9005BE269 /* ExampleContainer.swift in Sources */,
+				A0E498922E535D6F00F15842 /* BLIKComponentExample.swift in Sources */,
 				F9FE24D926259267001874BB /* CreateOrderRequest.swift in Sources */,
 				001BFF422A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */,
 				F9A53C502549887F009000A7 /* PaymentsRequest.swift in Sources */,
@@ -8661,6 +8666,7 @@
 				F95B6D9A2527454E002C9062 /* SceneDelegate.swift in Sources */,
 				00ED81BE29EEC50B00A6B52C /* CardComponentAdvancedFlowExample.swift in Sources */,
 				F95B6DD6252B4654002C9062 /* ComponentsItem.swift in Sources */,
+				A0E498932E535D6F00F15842 /* BLIKComponentExample.swift in Sources */,
 				81C5D0CE2AC4170A002E918F /* IssuerListComponentExample.swift in Sources */,
 				81C5D0D12AC428CB002E918F /* IssuerListComponentAdvancedFlowExample.swift in Sources */,
 				001BFF432A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */,
