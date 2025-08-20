@@ -6,25 +6,6 @@
 
 import UIKit
 
-public enum AdyenLabelType {
-    case `default`
-    case title
-    case body
-//    case subtitle
-//    case bodyEmphasized
-//    case subHeadline
-//    case subHeadlineEmphasized
-//    case footnote
-//    case footnoteEmphasized
-}
-
-public enum AdyenButtonType {
-    case primary
-    case secondary
-    case tertiary
-    case destructive
-}
-
 // A shared instance of the  theme for easy access throughout your SDK
 public struct AdyenTheme {
 
