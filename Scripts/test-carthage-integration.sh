@@ -153,6 +153,8 @@ cp "../Tests/UnitTests/APIClientMock.swift" Source/APIClientMock.swift
 cp -a "../Demo/Common" Source/
 cp -a "../Demo/UIKit" Source/
 cp "../Demo/Configuration.swift" Source/Configuration.swift
+cp "../Demo/Configuration+secrets.swift" Source/Configuration+secrets.swift
+cp "../Tests/IntegrationTests/Helpers/ErrorMock.swift" Tests/ErrorMock.swift
 
 xcodegen generate
 

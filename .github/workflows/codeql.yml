@@ -1,4 +1,4 @@
-name: "CodeQL"
+name: "CodeQL Analysis"
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: macos-latest
+    runs-on: macos-15
     permissions:
       actions: read
       contents: read
@@ -18,20 +18,36 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'swift' ]
+        include:
+          - language: swift
+            build-mode: manual
+          - language: actions
+            build-mode: none
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v5
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: ${{ matrix.language }}
+      - name: Select Xcode 16.4
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16.4'
 
-    - name: "Run, Build Application using script"
-      run: |
-        xcodebuild -project Adyen.xcodeproj -scheme Adyen -destination 'generic/platform=iOS' SKIP_INSTALL=NO build | xcpretty --utf --color
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      - name: Build project
+        if: matrix.language == 'swift'
+        run: |
+          xcodebuild -project Adyen.xcodeproj \
+            -scheme Adyen \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.6' \
+            SKIP_INSTALL=NO build | xcpretty --utf --color
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"
