@@ -183,7 +183,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
             )
         case .upiQRCode:
             expirationText = localizedString(
-                .UPIQrcodeTimerMessage,
+                .upiQrcodeTimerMessage,
                 configuration.localizationParameters,
                 timeLeftString
             )
@@ -218,7 +218,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
             )
         case .upiQRCode:
             return localizedString(
-                .UPIQRCodeInstructions,
+                .upiQrcodeInstructions,
                 configuration.localizationParameters
             )
         }

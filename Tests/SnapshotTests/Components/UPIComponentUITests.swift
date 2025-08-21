@@ -194,9 +194,11 @@ class UPIComponentUITests: XCTestCase {
             
             didSubmitExpectation.fulfill()
         }
-
-        let selectionHandler = try XCTUnwrap(sut.upiAppsList.last?.selectionHandler)
-        selectionHandler()
+        
+        // Switch to UPI-ID segment
+        let segmentedControl: UISegmentedControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.upiFlowSelectionSegmentedControlItem"))
+        segmentedControl.selectedSegmentIndex = 1
+        segmentedControl.sendActions(for: .valueChanged)
 
         let virtualPaymentAddressItem: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.virtualPaymentAddressInputItem"))
         
@@ -211,49 +213,6 @@ class UPIComponentUITests: XCTestCase {
         continueButton.sendActions(for: .touchUpInside)
 
         waitForExpectations(timeout: 10, handler: nil)
-    }
-
-    func testUPIComponentDetailsForUPIQRCodeFlow() throws {
-        // Given
-        let config = UPIComponent.Configuration(style: style)
-        let sut = UPIComponent(
-            paymentMethod: paymentMethod,
-            context: context,
-            configuration: config
-        )
-        
-        let segmentedControl: UISegmentedControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.upiFlowSelectionSegmentedControlItem"))
-        segmentedControl.selectedSegmentIndex = 1
-        segmentedControl.sendActions(for: .valueChanged)
-        
-        wait(for: .aMoment)
-        
-        let continueButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button"))
-        XCTAssertEqual(continueButton.title, localizedString(.QRCodeGenerateQRCode, nil))
-        
-        let dummyExpectation = XCTestExpectation(description: "Dummy Expectation")
-        
-        let delegateMock = PaymentComponentDelegateMock()
-        sut.delegate = delegateMock
-        
-        delegateMock.onDidSubmit = { data, component in
-            // Assert
-            XCTAssertTrue(component === sut)
-            XCTAssertTrue(data.paymentMethod is UPIComponentDetails)
-            let data = data.paymentMethod as! UPIComponentDetails
-            XCTAssertNotNil(data.type)
-            XCTAssertEqual(data.type, "upi_qr")
-            sut.stopLoadingIfNeeded()
-            
-            self.wait(for: .aMoment)
-            
-            self.assertViewControllerImage(matching: sut.viewController, named: "upi_qr_flow")
-            dummyExpectation.fulfill()
-        }
-        
-        continueButton.sendActions(for: .touchUpInside)
-        
-        wait(for: [dummyExpectation], timeout: 5)
     }
 
     func test_noAppSelectedSubmit_shouldShowError() throws {
@@ -296,7 +255,7 @@ class UPIComponentUITests: XCTestCase {
         
         continueButton.sendActions(for: .touchUpInside)
         wait { errorItem.isHidden == false }
-        XCTAssertEqual(errorItem.messageLabel.text, localizedString(.UPIErrorNoAppSelected, nil))
+        XCTAssertEqual(errorItem.messageLabel.text, localizedString(.upiErrorNoAppSelected, nil))
         
         let selectionHandler = try XCTUnwrap(sut.upiAppsList.last?.selectionHandler)
         selectionHandler()

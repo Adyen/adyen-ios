@@ -25,8 +25,12 @@ extension XCTestCase {
         caller: String = #function,
         line: UInt = #line
     ) {
+        // Disable animations for consistent snapshots
+        let wereAnimationsEnabled = UIView.areAnimationsEnabled
+        UIView.setAnimationsEnabled(false)
+        defer { UIView.setAnimationsEnabled(wereAnimationsEnabled) }
         
-        try SnapshotTesting.assertSnapshot(
+        try! SnapshotTesting.assertSnapshot(
             matching: viewController(),
             as: snapshotConfiguration(precision: .default),
             named: name,
@@ -49,11 +53,15 @@ extension XCTestCase {
         caller: String = #function,
         line: UInt = #line
     ) {
+        // Disable animations for consistent snapshots
+        let wereAnimationsEnabled = UIView.areAnimationsEnabled
+        UIView.setAnimationsEnabled(false)
+        defer { UIView.setAnimationsEnabled(wereAnimationsEnabled) }
         
         if XCTestCase.shouldRecordSnapshots {
             // We're recording so we assert immediately
             // to not wait until it finally throws an error on the code below
-            try assertViewControllerImage(
+            try! assertViewControllerImage(
                 matching: viewController(),
                 named: name,
                 file: file,

@@ -26,6 +26,7 @@ internal class CardViewController: FormViewController {
     private let initialCountryCode: String
     private let scope: String
     private let cardLogos: [FormCardLogosItem.CardTypeLogo]
+    private let allowedCoBadgedCardTypes: [CardType] = [.carteBancaire, .bcmc, .dankort]
     private let cardScannerAnalyticsHandler: CardScannerAnalyticsHandler
     private lazy var cardScannerController: CardScannerControlling = {
         var controller: CardScannerControlling
@@ -230,7 +231,7 @@ internal class CardViewController: FormViewController {
             items.coBadgedCardItem.resetItems()
         } else {
             brands = binInfo.brands ?? []
-            items.coBadgedCardItem.updateItems(brands, cardLogos: cardLogos)
+            showCoBadgedCardsUI(for: brands)
         }
         issuingCountryCode = binInfo.issuingCountryCode
         items.numberContainerItem.update(brands: brands)
@@ -243,6 +244,15 @@ internal class CardViewController: FormViewController {
         items.numberContainerItem.numberItem.selectBrand(cardBrand: selectedBrand)
 
         items.triggerInfoEvent(of: .selected, target: .dualBrandButton, brands: [selectedBrand])
+    }
+
+    internal func showCoBadgedCardsUI(for brands: [CardBrand]) {
+        let coBadgedBrands = brands.filter { brand in
+            allowedCoBadgedCardTypes.contains(brand.type)
+        }
+        if !coBadgedBrands.isEmpty { // Check if there are any co-badged brands
+            items.coBadgedCardItem.updateItems(brands, cardLogos: cardLogos)
+        }
     }
 }
 

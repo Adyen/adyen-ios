@@ -3,12 +3,16 @@ on:
   workflow_dispatch:
   workflow_call:
 
+permissions:
+  contents: read
+  pages: write 
+
 jobs:
 
   Deploy:
     runs-on: macos-14
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - uses: n1hility/cancel-previous-runs@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
