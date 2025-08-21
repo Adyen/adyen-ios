@@ -73,11 +73,11 @@ internal final class ComponentsViewController: UIViewController {
         return applePayComponent
     }
     
-//    private var blikAdvancedFlowExample: BLIKComponentAdvancedFlowExample {
-//        let blikAdvanced = BLIKComponentAdvancedFlowExample()
-//        blikAdvanced.presenter = self
-//        return blikAdvanced
-//    }
+    private var blikAdvancedFlowExample: BLIKComponentAdvancedFlowExample {
+        let blikAdvanced = BLIKComponentAdvancedFlowExample()
+        blikAdvanced.presenter = self
+        return blikAdvanced
+    }
 
     // MARK: - View
     
@@ -173,7 +173,7 @@ internal final class ComponentsViewController: UIViewController {
         if componentsView.isUsingSession {
             
         } else {
-//            start(blikAdvancedFlowExample)
+            start(blikAdvancedFlowExample)
         }
     }
 }
