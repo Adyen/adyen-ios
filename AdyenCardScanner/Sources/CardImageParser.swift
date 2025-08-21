@@ -19,7 +19,7 @@ internal protocol CardImageParsing {
 internal class CardImageParser: CardImageParsing {
 
     private enum Constants {
-        static let expirationDateRegex = "\\d{2}\\/\\d{2,4}"
+        static let expirationDateRegex = "^(0[1-9]|1[0-2])[/-]((2[0-9]|[3-9][0-9])|(20[2-9][0-9]))$"
         static let topCandidates = 10
 
         static let cardNumberConfidence: Float = 0.4
@@ -104,6 +104,8 @@ internal class CardImageParser: CardImageParsing {
             .first(where: { $0.isCardNumber && isValidLuhn($0) })
         guard let cardNumberMatch else { return nil }
         self.cachedCardNumber = cardNumberMatch
+        
+        print("Card number: \(cardNumberMatch)")
 
         return cardNumberMatch
     }
@@ -119,7 +121,9 @@ internal class CardImageParser: CardImageParsing {
         guard let match else { return nil }
         let expirationDate = expirationDateFormatter.date(from: match)
         self.cachedExpirationDate = expirationDate
-
+        
+        print("Expiration date: \(match)")
+        
         return expirationDate
     }
 
