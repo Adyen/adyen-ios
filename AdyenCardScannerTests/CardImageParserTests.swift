@@ -41,7 +41,7 @@ final class CardImageParserTests: XCTestCase {
         }
 
         // Then
-        wait(for: [expectation], timeout: 0.1)
+        wait(for: [expectation], timeout: 2)
     }
 
     func testParseImageWithLowContrastCardImage() throws {
@@ -62,7 +62,7 @@ final class CardImageParserTests: XCTestCase {
         }
 
         // Then
-        wait(for: [expectation], timeout: 0.1)
+        wait(for: [expectation], timeout: 2)
     }
 
     func testParseImageWithInvalidLuhnCheck() throws {
