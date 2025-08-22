@@ -75,7 +75,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         presenter?.hideLoadingIndicator()
         
         guard let component = checkout.createComponent(with: blikPaymentMethod) else {
-            print("component not found")
+            print("component not found for payment method: \(blikPaymentMethod)")
             return
         }
         
