@@ -36,7 +36,7 @@ final class AdyenCheckoutTests: XCTestCase {
         paymentMethods = try! AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
     }
 
-    func testSetupWithSession_Success() {
+    func testSetupWithSession_Success() async throws {
         let expectedSession = AdyenSessionMock(state: .init(
             data: "test_session_data",
             identifier: "test_session_id",
@@ -56,53 +56,42 @@ final class AdyenCheckoutTests: XCTestCase {
         )
         mockProvider.setupWithSessionResult = .success(expectedCheckout)
 
-        let expectation = expectation(description: "Completion called")
-        AdyenCheckout.setup(
+        let checkout = try await AdyenCheckout.setup(
             with: "sessionId",
             sessionData: "sessionData",
             configuration: configuration,
             presentationDelegate: nil,
             provider: mockProvider
-        ) { result in
-            if case let .success(checkout) = result {
-                XCTAssertEqual(checkout.checkoutAttemptId, "attemptId")
-                XCTAssertNotNil(checkout.paymentMethods)
-                XCTAssertNotNil(checkout.session)
-                XCTAssertTrue(checkout.session === expectedSession)
-                XCTAssertTrue(checkout.session?.delegate === checkout)
-                XCTAssertEqual(checkout.session?.state.identifier, "test_session_id")
-                XCTAssertEqual(checkout.session?.state.data, "test_session_data")
-            } else {
-                XCTFail("Expected success")
-            }
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 1)
+        )
+        
+        XCTAssertEqual(checkout.checkoutAttemptId, "attemptId")
+        XCTAssertNotNil(checkout.paymentMethods)
+        XCTAssertNotNil(checkout.session)
+        XCTAssertTrue(checkout.session === expectedSession)
+        XCTAssertTrue(checkout.session?.delegate === checkout)
+        XCTAssertEqual(checkout.session?.state.identifier, "test_session_id")
+        XCTAssertEqual(checkout.session?.state.data, "test_session_data")
         XCTAssertTrue(mockProvider.setupSessionCalled)
     }
 
-    func testSetupWithSession_Failure() {
+    func testSetupWithSession_Failure() async {
         mockProvider.setupWithSessionResult = .failure(TestError())
         
-        let expectation = expectation(description: "Completion called")
-        AdyenCheckout.setup(
-            with: "sessionId",
-            sessionData: "sessionData",
-            configuration: configuration,
-            presentationDelegate: nil,
-            provider: mockProvider
-        ) { result in
-            if case let .failure(error) = result {
-                XCTAssertTrue(error is TestError)
-            } else {
-                XCTFail("Expected failure")
-            }
-            expectation.fulfill()
+        do {
+            _ = try await AdyenCheckout.setup(
+                with: "sessionId",
+                sessionData: "sessionData",
+                configuration: configuration,
+                presentationDelegate: nil,
+                provider: mockProvider
+            )
+            XCTFail("Expected error to be thrown")
+        } catch {
+            XCTAssertTrue(error is TestError)
         }
-        waitForExpectations(timeout: 1)
     }
 
-    func testSetupWithPaymentMethods_Success() {
+    func testSetupWithPaymentMethods_Success() async throws {
         let expectedCheckout = AdyenCheckout(
             configuration: configuration,
             session: nil,
@@ -113,64 +102,78 @@ final class AdyenCheckoutTests: XCTestCase {
         
         mockProvider.setupWithPaymentMethodsResult = .success(expectedCheckout)
         
-        let expectation = expectation(description: "Completion called")
-        AdyenCheckout.setup(
+        let checkout = try await AdyenCheckout.setup(
             with: paymentMethods,
             configuration: configuration,
             presentationDelegate: nil,
             provider: mockProvider
-        ) { result in
-            if case let .success(checkout) = result {
-                XCTAssertEqual(checkout.checkoutAttemptId, "attemptId2")
-                XCTAssertNil(checkout.session)
-                XCTAssertNotNil(checkout.paymentMethods)
-            } else {
-                XCTFail("Expected success")
-            }
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 1)
+        )
+
+        XCTAssertEqual(checkout.checkoutAttemptId, "attemptId2")
+        XCTAssertNil(checkout.session)
+        XCTAssertNotNil(checkout.paymentMethods)
         XCTAssertTrue(mockProvider.setupPaymentMethodsCalled)
     }
 
-    func testSetupWithPaymentMethods_Failure() {
+    func testSetupWithPaymentMethods_Failure() async {
         mockProvider.setupWithPaymentMethodsResult = .failure(TestError())
         
-        let expectation = expectation(description: "Completion called")
-        AdyenCheckout.setup(
-            with: paymentMethods,
-            configuration: configuration,
-            presentationDelegate: nil,
-            provider: mockProvider
-        ) { result in
-            if case let .failure(error) = result {
-                XCTAssertTrue(error is TestError)
-            } else {
-                XCTFail("Expected failure")
-            }
-            expectation.fulfill()
+        do {
+            _ = try await AdyenCheckout.setup(
+                with: paymentMethods,
+                configuration: configuration,
+                presentationDelegate: nil,
+                provider: mockProvider
+            )
+            XCTFail("Expected error to be thrown")
+        } catch {
+            XCTAssertTrue(error is TestError)
         }
-        waitForExpectations(timeout: 1)
     }
     
-    func testSetupSessionProtocolCall() {
-        var didCall = false
-        mockProvider.setupSessionHandler = { _, _, completion in
-            didCall = true
-            completion(.failure(NSError(domain: "test", code: 0)))
+    func testSetupSessionProtocolCall() async {
+        let sessionMock = AdyenSessionMock(state: .init(
+            data: "test_data",
+            identifier: "test_id",
+            countryCode: "NL",
+            shopperLocale: "en_NL",
+            amount: Amount(value: 100, currencyCode: "EUR"),
+            paymentMethods: paymentMethods,
+            responseConfiguration: .init(installmentOptions: nil, enableStoreDetails: true)
+        ))
+        
+        mockProvider.mockedSessionResult = .success(sessionMock)
+        
+        let initialInfo = AdyenSession.InitialInfo(sessionIdentifier: "test_id", initialSessionData: "test_data")
+        let apiClient = APIClientMock()
+        
+        do {
+            let result = try await mockProvider.setupSession(
+                with: initialInfo,
+                configuration: configuration,
+                apiClient: apiClient
+            )
+            XCTAssertTrue(result === sessionMock)
+        } catch {
+            XCTFail("Should not throw an error")
         }
-        mockProvider.setupSession(with: configuration, order: nil) { _ in }
-        XCTAssertTrue(didCall)
     }
     
-    func testFetchCheckoutAttemptIdProtocolCall() {
-        var didCall = false
-        mockProvider.fetchCheckoutAttemptIdHandler = { _, completion in
-            didCall = true
-            completion(.failure(NSError(domain: "test", code: 0)))
+    func testFetchCheckoutAttemptIdProtocolCall() async {
+        let expectedId = "test_attempt_id"
+        mockProvider.mockedCheckoutAttemptId = .success(expectedId)
+        let apiClient = APIClientMock()
+        
+        do {
+            let result = try await mockProvider.fetchCheckoutAttemptId(
+                with: configuration,
+                apiClient: apiClient
+            )
+            
+            XCTAssertEqual(result, expectedId)
+        } catch {
+            XCTFail("Should not throw an error")
         }
-        mockProvider.fetchCheckoutAttemptId(with: configuration) { _ in }
-        XCTAssertTrue(didCall)
     }
     
     // MARK: - payment component delegate

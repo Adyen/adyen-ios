@@ -8,6 +8,7 @@
 @_spi(AdyenInternal) import AdyenSession
 @_spi(AdyenInternal) import AdyenDropIn
 @_spi(AdyenInternal) import AdyenActions
+import AdyenNetworking
 
 internal protocol AdyenCheckoutProtocol {
     
@@ -23,29 +24,27 @@ internal protocol AdyenCheckoutProviding: AdyenSessionProviding, CheckoutAttempt
         with sessionId: String,
         sessionData: String,
         configuration: CheckoutConfiguration,
-        presentationDelegate: PresentationDelegate?,
-        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
-    )
+        presentationDelegate: PresentationDelegate?
+    ) async throws -> AdyenCheckout
     
     func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
-        presentationDelegate: PresentationDelegate?,
-        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
-    )
+        presentationDelegate: PresentationDelegate?
+    ) async throws -> AdyenCheckout
 }
 
 internal protocol AdyenSessionProviding {
     func setupSession(
-        with configuration: CheckoutConfiguration,
-        order: PartialPaymentOrder?,
-        completion: @escaping (Result<AdyenSessionProtocol, Error>) -> Void
-    )
+        with initialInfo: AdyenSession.InitialInfo,
+        configuration: CheckoutConfiguration,
+        apiClient: APIClientProtocol
+    ) async throws -> AdyenSessionProtocol
 }
 
 internal protocol CheckoutAttemptIdProviding {
     func fetchCheckoutAttemptId(
         with configuration: CheckoutConfiguration,
-        completion: @escaping (Result<String, Error>) -> Void
-    )
+        apiClient: APIClientProtocol
+    ) async throws -> String
 }
