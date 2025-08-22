@@ -32,20 +32,19 @@ internal class ExpirationDateFormatter: ExpirationDateFormatting {
 
     // MARK: - Properties
 
-    private let locale = Locale.current
-    private let timeZone = TimeZone(secondsFromGMT: 0)
+    private let formatter: DateFormatter
 
     // MARK: - Initializer
 
-    internal init() { /* Empty initializer */ }
+    internal init() {
+        formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+    }
 
     // MARK: - ExpirationDateFormatting
 
     internal func date(from string: String) -> Date? {
-        let formatter = DateFormatter()
-        formatter.locale = locale
-        formatter.timeZone = timeZone
-
         for format in ExpirationDateFormat.allCases {
             formatter.dateFormat = format.pattern
             if let date = formatter.date(from: string) {
