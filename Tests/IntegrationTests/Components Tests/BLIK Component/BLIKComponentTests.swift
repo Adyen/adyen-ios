@@ -213,4 +213,14 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(sut.button.buttonStyle.textColor, .red)
 
     }
+
+    func testDefaultHintLabelItemStyling() {
+        sut.configuration.theme.labelStyle = AdyenLabelStyle(
+            font: .preferredFont(forTextStyle: .caption1),
+            color: .yellow
+        )
+
+        XCTAssertEqual(sut.hintLabelItem.labelStyle.font, .preferredFont(forTextStyle: .caption1))
+        XCTAssertEqual(sut.hintLabelItem.labelStyle.color, .yellow)
+    }
 }

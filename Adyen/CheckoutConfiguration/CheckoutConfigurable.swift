@@ -41,36 +41,6 @@ public extension CheckoutConfigurable {
         copy.showsSubmitButton = showsSubmitButton
         return copy
     }
-
-    // Providing theme using AdyenTheme object
-    func theme(_ theme: AdyenTheme) -> any CheckoutConfigurable {
-        guard let self = self as? CheckoutComponentConfiguration else { return self }
-        var copy = self
-        copy.theme = theme
-        return copy
-    }
-
-    func theme(_ label: AdyenLabelStyle) -> any CheckoutConfigurable {
-        guard let self = self as? CheckoutComponentConfiguration else { return self }
-        var copy = self
-        copy.theme.labelStyle = label
-        return copy
-    }
-
-    func theme(_ button: AdyenButtonStyles) -> any CheckoutConfigurable {
-        guard let self = self as? CheckoutComponentConfiguration else { return self }
-        var copy = self
-        copy.theme.buttonStyle = button
-        return copy
-    }
-
-    func theme(_ label: AdyenLabelStyle, button: AdyenButtonStyles) -> any CheckoutConfigurable {
-        guard let self = self as? CheckoutComponentConfiguration else { return self }
-        var copy = self
-        copy.theme.labelStyle = label
-        copy.theme.buttonStyle = button
-        return copy
-    }
 }
 
 internal struct CompositeCheckoutConfiguration: CheckoutConfigurable {
