@@ -105,8 +105,6 @@ internal class CardImageParser: CardImageParsing {
         guard let cardNumberMatch else { return nil }
         self.cachedCardNumber = cardNumberMatch
         
-        print("Card number: \(cardNumberMatch)")
-
         return cardNumberMatch
     }
     
@@ -125,9 +123,7 @@ internal class CardImageParser: CardImageParsing {
         guard let match else { return nil }
         let expirationDate = expirationDateFormatter.date(from: match)
         self.cachedExpirationDate = expirationDate
-        
-        print("Expiration date: \(match)")
-        
+                
         return expirationDate
     }
 
