@@ -90,8 +90,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         .theme(AdyenTheme()
             .label(AdyenLabelStyle()
                 .font(AdyenFonts.default.body)
-                .color(AdyenColorScheme.default.primary)
-
+                .color(AdyenColorScheme.default.text)
             )
             .button(.default)
         )
