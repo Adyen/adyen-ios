@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       actions: write
+      contents: read
     steps:
       - name: "Cancel build"
         uses: styfle/cancel-workflow-action@0.12.1

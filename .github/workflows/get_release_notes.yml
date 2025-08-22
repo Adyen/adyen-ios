@@ -6,6 +6,9 @@ on:
         RELEASE_NOTES:
             description: "The Release Notes of the Release"
             value: ${{ jobs.generate-release-notes.outputs.RELEASE_NOTES }}
+
+permissions:
+  contents: read
     
 jobs:
   generate-release-notes:
@@ -14,7 +17,7 @@ jobs:
       RELEASE_NOTES: ${{ steps.generate-release-notes.outputs.RELEASE_NOTES }}
     steps:
       - name: Fetch repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
           

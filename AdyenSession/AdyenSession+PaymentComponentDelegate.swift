@@ -86,15 +86,22 @@ extension AdyenSession {
         } else if let order = response.order,
                   let remainingAmount = order.remainingAmount,
                   remainingAmount.value > 0 {
-            let handleOrderBlock: (() -> Void) = { [weak self] in
-                self?.handle(order: order, for: currentComponent, in: dropInComponent)
+            
+            guard let dropInComponent else {
+                finish(
+                    with: PartialPaymentError.notSupportedForComponent,
+                    component: currentComponent
+                )
+                return
             }
             
-            if response.resultCode == .refused {
-                showPaymentFailedAlert(on: dropInComponent, completion: handleOrderBlock)
-            } else {
-                handleOrderBlock()
-            }
+            handle(
+                order: order,
+                resultCode: response.resultCode,
+                currentComponent: currentComponent,
+                dropInComponent: dropInComponent
+            )
+            
         } else {
             let result = CheckoutResult(
                 resultCode: response.resultCode,
@@ -104,11 +111,37 @@ extension AdyenSession {
         }
     }
     
-    private func showPaymentFailedAlert(on dropInComponent: AnyDropInComponent?, completion: @escaping (() -> Void)) {
-        guard let dropInComponent else {
-            completion()
-            return
+    private func handle(
+        action: Action,
+        for currentComponent: Component,
+        in dropInComponent: AnyDropInComponent?
+    ) {
+        if let dropInComponent = dropInComponent as? ActionHandlingComponent {
+            dropInComponent.handle(action)
+        } else {
+            actionHandlingComponent.handle(action)
         }
+    }
+    
+    private func handle(
+        order: PartialPaymentOrder,
+        resultCode: CheckoutResultCode,
+        currentComponent: Component,
+        dropInComponent: AnyDropInComponent
+    ) {
+        let updateDropInBlock: (() -> Void) = { [weak self] in
+            self?.updateDropIn(dropInComponent, with: order, currentComponent: currentComponent)
+        }
+        
+        // dropIn needs to be updated in both cases
+        if resultCode == .refused {
+            showPaymentFailedAlert(on: dropInComponent, completion: updateDropInBlock)
+        } else {
+            updateDropInBlock()
+        }
+    }
+    
+    private func showPaymentFailedAlert(on dropInComponent: AnyDropInComponent, completion: @escaping (() -> Void)) {
         let localizationParameters = (dropInComponent as? Localizable)?.localizationParameters
         let title = localizedString(.errorTitle, localizationParameters)
         let message = localizedString(.paymentRefusedMessage, localizationParameters)
@@ -127,30 +160,7 @@ extension AdyenSession {
         dropInComponent.viewController.present(alertController, animated: true)
     }
     
-    private func handle(
-        action: Action,
-        for currentComponent: Component,
-        in dropInComponent: AnyDropInComponent?
-    ) {
-        if let dropInComponent = dropInComponent as? ActionHandlingComponent {
-            dropInComponent.handle(action)
-        } else {
-            actionHandlingComponent.handle(action)
-        }
-    }
-    
-    private func handle(
-        order: PartialPaymentOrder,
-        for currentComponent: Component,
-        in dropInComponent: AnyDropInComponent?
-    ) {
-        guard let dropInComponent else {
-            finish(
-                with: PartialPaymentError.notSupportedForComponent,
-                component: currentComponent
-            )
-            return
-        }
+    private func updateDropIn(_ dropInComponent: AnyDropInComponent, with order: PartialPaymentOrder, currentComponent: Component) {
         let initialInfo = AdyenSession.InitialInfo(
             sessionIdentifier: state.identifier,
             initialSessionData: state.data
