@@ -57,6 +57,7 @@
 		00A25E5D2A404303001B32B6 /* ComponentCreationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5C2A404303001B32B6 /* ComponentCreationError.swift */; };
 		00A25E5E2A404303001B32B6 /* ComponentCreationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5C2A404303001B32B6 /* ComponentCreationError.swift */; };
 		00A25E602A404342001B32B6 /* AdyenSdkVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5F2A404342001B32B6 /* AdyenSdkVersion.swift */; };
+		00A649642E5C9E1C005F29B0 /* AdyenUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 003BDD192E15200A009177E0 /* AdyenUI.framework */; };
 		00BC8F512BF2561900EBE0EB /* SelectableFormItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BC8F502BF2561900EBE0EB /* SelectableFormItem.swift */; };
 		00BC8F532BF2569200EBE0EB /* SelectableFormItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BC8F522BF2569200EBE0EB /* SelectableFormItemView.swift */; };
 		00BC8F552BF349FC00EBE0EB /* SelectableFormItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BC8F542BF349FC00EBE0EB /* SelectableFormItemStyle.swift */; };
@@ -1268,6 +1269,13 @@
 
 /* Begin PBXContainerItemProxy section */
 		003BDD1F2E15200A009177E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 003BDD182E15200A009177E0;
+			remoteInfo = AdyenUI;
+		};
+		00A649622E5C9E01005F29B0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
 			proxyType = 1;
@@ -2918,6 +2926,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00A649642E5C9E1C005F29B0 /* AdyenUI.framework in Frameworks */,
 				F913B3ED26B7FAA8008F6CD2 /* AdyenNetworking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6857,6 +6866,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				00A649632E5C9E01005F29B0 /* PBXTargetDependency */,
 			);
 			name = Adyen;
 			packageProductDependencies = (
@@ -8906,6 +8916,11 @@
 			isa = PBXTargetDependency;
 			target = 003BDD182E15200A009177E0 /* AdyenUI */;
 			targetProxy = 003BDD1F2E15200A009177E0 /* PBXContainerItemProxy */;
+		};
+		00A649632E5C9E01005F29B0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 003BDD182E15200A009177E0 /* AdyenUI */;
+			targetProxy = 00A649622E5C9E01005F29B0 /* PBXContainerItemProxy */;
 		};
 		81088A222BDBACB7007FCDB9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
