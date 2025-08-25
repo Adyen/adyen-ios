@@ -96,7 +96,7 @@ let package = Package(
             name: "Adyen",
             dependencies: [
                 .product(name: "AdyenNetworking", package: "adyen-networking-ios"),
-                .target(name: "AdyenUI")
+                .target(name: "AdyenUI", package: "adyen-ios")
             ],
             path: "Adyen",
             exclude: [
