@@ -47,16 +47,14 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         with sessionId: String,
         sessionData: String,
         configuration: CheckoutConfiguration,
-        presentationDelegate: PresentationDelegate? = nil,
-        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
-    ) {
-        setup(
+        presentationDelegate: PresentationDelegate? = nil
+    ) async throws -> AdyenCheckout {
+        try await setup(
             with: sessionId,
             sessionData: sessionData,
             configuration: configuration,
             presentationDelegate: presentationDelegate,
-            provider: AdyenCheckoutProvider.default,
-            completion: completion
+            provider: AdyenCheckoutProvider.default
         )
     }
     
@@ -65,15 +63,13 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         sessionData: String,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil,
-        provider: AdyenCheckoutProviding = AdyenCheckoutProvider.default,
-        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
-    ) {
-        provider.setup(
+        provider: AdyenCheckoutProviding = AdyenCheckoutProvider.default
+    ) async throws -> AdyenCheckout {
+        try await provider.setup(
             with: sessionId,
             sessionData: sessionData,
             configuration: configuration,
-            presentationDelegate: presentationDelegate,
-            completion: completion
+            presentationDelegate: presentationDelegate
         )
     }
     
@@ -87,15 +83,13 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     public static func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
-        presentationDelegate: PresentationDelegate? = nil,
-        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
-    ) {
-        setup(
+        presentationDelegate: PresentationDelegate? = nil
+    ) async throws -> AdyenCheckout {
+        try await setup(
             with: paymentMethods,
             configuration: configuration,
             presentationDelegate: presentationDelegate,
-            provider: AdyenCheckoutProvider.default,
-            completion: completion
+            provider: AdyenCheckoutProvider.default
         )
     }
     
@@ -103,14 +97,12 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil,
-        provider: AdyenCheckoutProviding = AdyenCheckoutProvider.default,
-        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
-    ) {
-        provider.setup(
+        provider: AdyenCheckoutProviding = AdyenCheckoutProvider.default
+    ) async throws -> AdyenCheckout {
+        try await provider.setup(
             with: paymentMethods,
             configuration: configuration,
-            presentationDelegate: presentationDelegate,
-            completion: completion
+            presentationDelegate: presentationDelegate
         )
     }
     
@@ -152,5 +144,6 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         self.presentationDelegate = presentationDelegate
         
         self.session?.delegate = self
+        self.session?.presentationDelegate = presentationDelegate
     }
 }

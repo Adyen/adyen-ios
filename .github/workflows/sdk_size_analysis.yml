@@ -5,11 +5,15 @@ on:
     types: [opened, synchronize]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   sdk-size-analysis:
     runs-on: macos-15-xlarge
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 2  # Ensures the base ref is available
@@ -17,7 +21,7 @@ jobs:
       - name: Select Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '16.1'
+          xcode-version: '16.4'
 
       - name: Sanitize branch names
         id: sanitize

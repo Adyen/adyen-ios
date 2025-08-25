@@ -61,7 +61,7 @@ class SessionTests: XCTestCase {
         ]
     ]
 
-    func testInitialization() throws {
+    func testInitialization() async throws {
         let apiClient = APIClientMock()
         apiClient.mockedResults = [.success(SessionSetupResponse(
             countryCode: "US",
@@ -71,36 +71,28 @@ class SessionTests: XCTestCase {
             sessionData: "session_data_1",
             configuration: .init(installmentOptions: nil, enableStoreDetails: false)
         ))]
-        let expectation = expectation(description: "Expect session object to be initialized")
-        AdyenSession.setup(
+        
+        let session = try await AdyenSession.setup(
             with: .init(
                 sessionIdentifier: "session_id",
                 initialSessionData: "session_data_0"
             ),
             apiClient: apiClient,
-            context: context,
-            delegate: SessionDelegateMock(),
-            presentationDelegate: PresentationDelegateMock()
-        ) { result in
-            switch result {
-            case .failure:
-                XCTFail()
-            case let .success(session):
-                XCTAssertEqual(session.state.identifier, "session_id")
-                XCTAssertEqual(session.state.data, "session_data_1")
-                XCTAssertEqual(session.state.shopperLocale, "US")
-                XCTAssertEqual(session.state.countryCode, "US")
-                XCTAssertEqual(session.state.paymentMethods, self.expectedPaymentMethods)
-                XCTAssertEqual(session.state.amount, .init(value: 220, currencyCode: "USD"))
-                XCTAssertFalse(session.state.responseConfiguration.enableStoreDetails)
-                XCTAssertFalse(session.state.responseConfiguration.showRemovePaymentMethodButton)
-                XCTAssertEqual(AnalyticsForSession.sessionId, "session_id")
-                XCTAssertTrue(session.isSession)
-                XCTAssertEqual(session.showStorePaymentMethodField, session.state.responseConfiguration.enableStoreDetails)
-            }
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 2, handler: nil)
+            context: context
+        )
+        
+        XCTAssertEqual(session.state.identifier, "session_id")
+        XCTAssertEqual(session.state.data, "session_data_1")
+        XCTAssertEqual(session.state.shopperLocale, "US")
+        XCTAssertEqual(session.state.countryCode, "US")
+        XCTAssertEqual(session.state.paymentMethods, self.expectedPaymentMethods)
+        XCTAssertEqual(session.state.amount, .init(value: 220, currencyCode: "USD"))
+        XCTAssertFalse(session.state.responseConfiguration.enableStoreDetails)
+        XCTAssertFalse(session.state.responseConfiguration.showRemovePaymentMethodButton)
+        XCTAssertEqual(AnalyticsForSession.sessionId, "session_id")
+        XCTAssertTrue(session.isSession)
+        XCTAssertEqual(session.showStorePaymentMethodField, session.state.responseConfiguration.enableStoreDetails)
+        
     }
     
     func testDidSubmitWithNoActionAndNoOrder() throws {

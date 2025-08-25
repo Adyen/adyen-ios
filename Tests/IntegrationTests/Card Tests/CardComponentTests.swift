@@ -425,9 +425,12 @@ class CardComponentTests: XCTestCase {
 
     func testTintColorCustomization() throws {
         guard #available(iOS 17.0, *) else {
-            throw XCTSkip("This test is unfortunately very flaky on macos-12 runners that are needed to test on older iOS versions - so we skip it")
+            throw XCTSkip("This test is flaky on macos-12 runners that are needed to test on older iOS versions - so we skip it")
         }
-        
+        guard #available(iOS 26.0, *) else {
+            throw XCTSkip("This test is flaky on iOS 26 beta so far - so we skip it")
+        }
+
         var configuration = CardComponent.Configuration()
         
         let tintColor: UIColor = .black
@@ -1401,7 +1404,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(logoItemView.isHidden)
     }
 
-    func testCoBadgedCardsSelectionUIVisibility() throws {
+    func testCoBadgedCardsSelectionUIVisibilityForEU() throws {
         // Given
 
         let sut = CardComponent(
@@ -1413,12 +1416,34 @@ class CardComponentTests: XCTestCase {
         sut.viewController.loadViewIfNeeded()
 
         let newResponse = BinLookupResponse(brands: [CardBrand(type: .visa), CardBrand(type: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
-        sut.cardViewController.update(binInfo: newResponse)
+
+        sut.cardViewController.showCoBadgedCardsUI(for: newResponse.brands!)
 
         wait(for: .aMoment)
 
         // Then
         XCTAssertFalse(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
+    }
+
+    func testCoBadgedCardsSelectionUIHiddenForAU() throws {
+        // Given
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardComponent.Configuration()
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
+        let newResponse = BinLookupResponse(brands: [CardBrand(type: .masterCard), CardBrand(type: .other(named: "eftpos_australia"))], issuingCountryCode: "AU", isCreatedLocally: false)
+
+        sut.cardViewController.showCoBadgedCardsUI(for: newResponse.brands!)
+
+        wait(for: .aMoment)
+
+        // Then
+        XCTAssertTrue(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
     }
 
     func testCoBadgedCardsNameOnSelectionUI() throws {

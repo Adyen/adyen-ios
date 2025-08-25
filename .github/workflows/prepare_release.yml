@@ -6,6 +6,10 @@ on:
         description: 'SDK Version'
         required: true
 
+permissions:
+  contents: write # create branch and new release
+  pull-requests: write # create PR
+
 jobs:
 
   get-release-notes:
@@ -19,7 +23,7 @@ jobs:
     steps:
     
     # Checking out the current branch
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
       with:
         fetch-depth: 0
         
@@ -70,4 +74,4 @@ jobs:
         commit-message: "chore: prepare '${{ github.event.inputs.sdk-version }}' release"
         title: "[Release] ${{ github.event.inputs.sdk-version }}"
         body-path: "${{ github.workspace }}/.tmp/release_notes.md"
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.AUTOMATION_BOT_TOKEN }}
