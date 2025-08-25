@@ -5,18 +5,21 @@ on:
     secrets: # When triggered via another workflow, secrets are not automatically forwarded
       COCOAPODS_TRUNK_TOKEN:
         required: true
+
+permissions:
+  contents: read
   
 jobs:
 
   publish:
     runs-on: macos-14
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '16.1'
+        xcode-version: '16.4'
 
     - name: Publish Adyen.podspec
       run: |

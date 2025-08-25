@@ -96,48 +96,6 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         waitForExpectations(timeout: 5, handler: nil)
     }
-
-    func testQRCodeCancelButtonOnUPI() {
-
-        lazy var method = InstantPaymentMethod(type: .other("upi_qr"), name: "upi")
-        let action = QRCodeAction(paymentMethodType: .upiQRCode, qrCodeData: "DummyData", paymentData: "DummyData")
-
-        let dummyExpectation = expectation(description: "Dummy Expectation")
-        
-        let sut = QRCodeActionComponent(context: Dummy.context)
-        sut.configuration.style = customStyle()
-        let presentationDelegate = PresentationDelegateMock()
-        sut.presentationDelegate = presentationDelegate
-
-        presentationDelegate.doPresent = { component in
-            
-            let qrCodeViewController = try XCTUnwrap(component.viewController as? QRCodeViewController)
-            
-            let pollingComponentToolBar = CancellingToolBar(
-                title: qrCodeViewController.title,
-                style: NavigationStyle()
-            )
-            
-//            let wrapper = WrapperViewController(
-//                child: ModalViewController(
-//                    rootViewController: qrCodeViewController,
-//                    navBarType: .custom(pollingComponentToolBar)
-//                )
-//            )
-
-            let dropInRootViewController = DropInNavigationController(rootViewController: qrCodeViewController)
-
-            self.setupRootViewController(dropInRootViewController)
-            self.wait(for: qrCodeViewController.qrCodeView)
-            self.verifyViewControllerImage(matching: dropInRootViewController, named: "upi_cancel_button")
-
-            dummyExpectation.fulfill()
-        }
-
-        sut.handle(action)
-
-        waitForExpectations(timeout: 5, handler: nil)
-    }
 }
 
 // MARK: - Convenience

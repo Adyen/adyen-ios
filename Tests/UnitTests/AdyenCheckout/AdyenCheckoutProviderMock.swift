@@ -19,24 +19,40 @@ internal class AdyenCheckoutProviderMock: AdyenCheckoutProviding {
     var setupWithPaymentMethodsResult: Result<AdyenCheckout, Error>?
     
     // For AdyenSessionProviding
-    var setupSessionHandler: ((CheckoutConfiguration, PartialPaymentOrder?, @escaping (Result<AdyenSessionProtocol, Error>) -> Void) -> Void)?
+    var mockedSessionResult: Result<AdyenSessionProtocol, Error>?
     // For CheckoutAttemptIdProviding
-    var fetchCheckoutAttemptIdHandler: ((CheckoutConfiguration, @escaping (Result<String, Error>) -> Void) -> Void)?
+    var mockedCheckoutAttemptId: Result<String, Error>?
     
     func setupSession(
-        with configuration: CheckoutConfiguration,
-        order: PartialPaymentOrder?,
-        completion: @escaping (Result<AdyenSessionProtocol, Error>) -> Void
-    ) {
-        setupSessionCalled = true
-        setupSessionHandler?(configuration, order, completion)
+        with initialInfo: AdyenSession.InitialInfo,
+        configuration: CheckoutConfiguration,
+        apiClient: APIClientProtocol
+    ) async throws -> AdyenSessionProtocol {
+        
+        switch mockedSessionResult {
+        case let .success(session):
+            return session
+        case let .failure(error):
+            throw error
+        case nil:
+            throw TestError()
+        }
     }
     
     func fetchCheckoutAttemptId(
         with configuration: CheckoutConfiguration,
-        completion: @escaping (Result<String, Error>) -> Void
-    ) {
-        fetchCheckoutAttemptIdHandler?(configuration, completion)
+        apiClient: APIClientProtocol
+    ) async throws -> String {
+        
+        switch mockedCheckoutAttemptId {
+        case let .success(attemptId):
+            return attemptId
+        case let .failure(error):
+            throw error
+        case nil:
+            throw TestError()
+        }
+
     }
     
     // Convenience for direct AdyenCheckoutProviding use
@@ -44,24 +60,34 @@ internal class AdyenCheckoutProviderMock: AdyenCheckoutProviding {
         with sessionId: String,
         sessionData: String,
         configuration: CheckoutConfiguration,
-        presentationDelegate: PresentationDelegate?,
-        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
-    ) {
+        presentationDelegate: PresentationDelegate?
+    ) async throws -> AdyenCheckout {
         setupSessionCalled = true
-        if let result = setupWithSessionResult {
-            completion(result)
+        
+        switch setupWithSessionResult {
+        case let .success(checkout):
+            return checkout
+        case let .failure(error):
+            throw error
+        case nil:
+            throw TestError()
         }
     }
     
     func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
-        presentationDelegate: PresentationDelegate?,
-        completion: @escaping (Result<AdyenCheckout, Error>) -> Void
-    ) {
+        presentationDelegate: PresentationDelegate?
+    ) async throws -> AdyenCheckout {
         setupPaymentMethodsCalled = true
-        if let result = setupWithPaymentMethodsResult {
-            completion(result)
+        
+        switch setupWithPaymentMethodsResult {
+        case let .success(checkout):
+            return checkout
+        case let .failure(error):
+            throw error
+        case nil:
+            throw TestError()
         }
     }
 }

@@ -89,8 +89,7 @@ class AdyenContextTests: XCTestCase {
     }
     
     func testOnlyAnalyticsProviderShouldBeCreated() {
-        var config = AnalyticsConfiguration()
-        config.isEnabled = false
+        let config = AnalyticsConfiguration(isEnabled: false)
         
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
