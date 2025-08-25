@@ -107,6 +107,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     }
     
     public func createComponent(with paymentMethod: any PaymentMethod) -> AdyenCheckoutComponent? {
+        // TODO: Add new v6 style here
         AdyenCheckoutComponent(
             paymentMethod: paymentMethod,
             configuration: configuration,

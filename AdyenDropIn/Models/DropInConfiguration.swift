@@ -14,6 +14,7 @@
 #if canImport(AdyenActions)
     @_spi(AdyenInternal) import AdyenActions
 #endif
+import AdyenUI
 import Foundation
 import PassKit
 
@@ -52,6 +53,9 @@ public extension DropInComponent {
         /// Indicates the UI configuration of the drop in component.
         public var style: DropInComponent.Style
 
+        /// Indicates the UI style configuration of the drop in component.
+        public var theme: AdyenTheme = .init()
+
         /// Boleto component configuration.
         public var boleto: Boleto = .init()
 
@@ -71,12 +75,14 @@ public extension DropInComponent {
         ///   - allowPreselectedPaymentView: Boolean to enable the preselected stored payment method view step.
         public init(
             style: Style = Style(),
+            theme: AdyenTheme = AdyenTheme(),
             allowsSkippingPaymentList: Bool = false,
             allowPreselectedPaymentView: Bool = true
         ) {
             self.style = style
             self.allowsSkippingPaymentList = allowsSkippingPaymentList
             self.allowPreselectedPaymentView = allowPreselectedPaymentView
+            self.theme = theme
         }
     }
     

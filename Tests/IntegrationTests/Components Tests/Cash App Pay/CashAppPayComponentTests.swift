@@ -112,6 +112,7 @@ import XCTest
             XCTAssertEqual(storeDetailsItemTitleLabel?.textColor, .yellow)
             XCTAssertEqual(storeDetailsItemTitleLabel?.font, .systemFont(ofSize: 5))
 
+            // TODO: FIX LATER
             XCTAssertEqual(sut.viewController.view.backgroundColor, .green)
         }
 
