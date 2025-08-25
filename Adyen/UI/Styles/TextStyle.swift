@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenUI
 import Foundation
 import UIKit
 
@@ -12,9 +13,9 @@ public struct TextStyle: ViewStyle {
     
     /// The font used to display the text.
     public var font: UIFont
-    
+
     /// The color of the text.
-    public var color: UIColor
+    public var color: UIColor = AdyenColorScheme.default.background
 
     /// The color of the text when the element is disabled.
     public var disabledColor = UIColor.Adyen.secondaryComponentBackground
@@ -73,7 +74,7 @@ extension TextStyle: Equatable {
             lhs.textAlignment == rhs.textAlignment
     }
 
-    /// Convert TextSyle into collection of attributes.
+    /// Convert TextStyle into collection of attributes.
     public var stringAttributes: [NSAttributedString.Key: Any] {
         var attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: color,

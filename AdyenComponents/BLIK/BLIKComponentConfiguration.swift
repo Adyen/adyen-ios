@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenUI
 import Foundation
 import UIKit
 
@@ -14,19 +15,33 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
     package let componentType: Adyen.CheckoutComponentType = .payment(.blik)
     
     package var showsSubmitButton: Bool
-    
+
     package var style: FormComponentStyle
-    
+
+    package var theme: AdyenTheme = .init()
+
     package var localizationParameters: LocalizationParameters?
     
     public init(
         showsSubmitButton: Bool = true,
-        style: FormComponentStyle = .init(),
+        style: FormComponentStyle,
         localizationParameters: LocalizationParameters? = nil
     ) {
         self.showsSubmitButton = showsSubmitButton
         self.style = style
         self.localizationParameters = localizationParameters
+    }
+
+    public init(
+        showsSubmitButton: Bool = true,
+        localizationParameters: LocalizationParameters? = nil,
+        theme: AdyenTheme = .init(),
+        style: FormComponentStyle = .init()
+    ) {
+        self.showsSubmitButton = showsSubmitButton
+        self.theme = theme
+        self.localizationParameters = localizationParameters
+        self.style = style
     }
 }
 
@@ -37,7 +52,7 @@ extension BLIKComponentConfiguration {
         copy.style = style
         return copy
     }
-    
+
     public func localization(_ localizationParameters: LocalizationParameters) -> Self {
         var copy = self
         copy.localizationParameters = localizationParameters
