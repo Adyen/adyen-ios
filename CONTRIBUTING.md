@@ -1,5 +1,9 @@
 # Contribution guidelines
 
+## Setting up your development environment
+
+1. Run `./Scripts/setup-env.sh` to set up git hooks for validating branch names and SDK versions.
+
 ## How to contribute step-by-step
 
 1. Fork this repository.
