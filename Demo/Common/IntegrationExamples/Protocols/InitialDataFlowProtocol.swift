@@ -34,6 +34,15 @@ extension InitialDataFlowProtocol {
             analyticsConfiguration: analyticsConfiguration
         )
     }
+    
+    internal func requestSessionInitialInfo() async throws -> SessionResponse {
+        let request = SessionRequest()
+        return try await withCheckedThrowingContinuation { continuation in
+            apiClient.perform(request) { result in
+                continuation.resume(with: result)
+            }
+        }
+    }
 }
 
 extension CheckoutResultCode {

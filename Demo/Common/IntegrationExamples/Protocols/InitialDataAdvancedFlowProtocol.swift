@@ -49,5 +49,19 @@ extension InitialDataAdvancedFlowProtocol {
             analyticsConfiguration: analyticsConfiguration
         )
     }
+    
+    internal func requestPaymentMethods(
+        order: PartialPaymentOrder?,
+        amount: Amount = ConfigurationConstants.current.amount
+    ) async throws -> PaymentMethods {
+        let request = PaymentMethodsRequest(order: order, amount: amount)
+        let response = try await withCheckedThrowingContinuation { continuation in
+            apiClient.perform(request) { result in
+                continuation.resume(with: result)
+            }
+        }
+            
+        return response.paymentMethods
+    }
 
 }
