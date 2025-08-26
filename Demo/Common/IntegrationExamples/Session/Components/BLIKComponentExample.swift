@@ -22,7 +22,7 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
     internal lazy var context: AdyenContext = generateContext()
     
     func start() {
-        presenter?.showLoadingIndicator()
+        startLoading()
         
         Task {
             do {
@@ -52,9 +52,10 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
             BLIKComponentConfiguration()
         }
         .onComplete { [weak self] result in
-            self?.presenter?.dismiss {
-                self?.presenter?.presentAlert(withTitle: "Result Code", message: result.resultCode.rawValue)
-            }
+            self?.dismissAndShowAlert(
+                result.resultCode.isSuccess,
+                result.resultCode.rawValue
+            )
         }
         
         let checkout = try await AdyenCheckout.setup(with: sessionResponse.sessionId, sessionData: sessionResponse.sessionData, configuration: configuration, presentationDelegate: self)
@@ -70,6 +71,10 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
         return component
     }
     
+    private func startLoading() {
+        presenter?.showLoadingIndicator()
+    }
+    
     @MainActor
     private func handleError(_ error: Error) {
         presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
@@ -83,6 +88,14 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
     @MainActor
     private func present(component: AdyenCheckoutComponent) {
         presenter?.present(viewController: viewController(for: component), completion: nil)
+    }
+    
+    private func dismissAndShowAlert(_ success: Bool, _ message: String) {
+        presenter?.dismiss {
+            // Payment is processed. Add your code here.
+            let title = success ? "Success" : "Error"
+            self.presenter?.presentAlert(withTitle: title, message: message)
+        }
     }
     
     private func viewController(for component: AdyenCheckoutComponent) -> UIViewController {

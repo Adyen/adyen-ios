@@ -24,7 +24,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     internal init() {}
     
     internal func start() {
-        presenter?.showLoadingIndicator()
+        startLoading()
         
         Task {
             do {
@@ -59,9 +59,10 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             self?.callDetails(with: data, completion: handler)
         }
         .onComplete { [weak self] result in
-            self?.presenter?.dismiss {
-                self?.presenter?.presentAlert(withTitle: "Result Code", message: result.resultCode.rawValue)
-            }
+            self?.dismissAndShowAlert(
+                result.resultCode.isSuccess,
+                result.resultCode.rawValue
+            )
         }
         
         let checkout = try await AdyenCheckout.setup(with: paymentMethods, configuration: configuration, presentationDelegate: self)
@@ -74,21 +75,6 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         }
         
         return component
-    }
-    
-    @MainActor
-    private func handleError(_ error: Error) {
-        presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
-    }
-    
-    @MainActor
-    private func hideLoading() {
-        presenter?.hideLoadingIndicator()
-    }
-    
-    @MainActor
-    private func present(component: AdyenCheckoutComponent) {
-        presenter?.present(viewController: viewController(for: component), completion: nil)
     }
     
     // MARK: - Backend calls
@@ -124,6 +110,33 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     }
     
     // MARK: - Private
+    
+    private func startLoading() {
+        presenter?.showLoadingIndicator()
+    }
+    
+    @MainActor
+    private func handleError(_ error: Error) {
+        presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
+    }
+    
+    @MainActor
+    private func hideLoading() {
+        presenter?.hideLoadingIndicator()
+    }
+    
+    @MainActor
+    private func present(component: AdyenCheckoutComponent) {
+        presenter?.present(viewController: viewController(for: component), completion: nil)
+    }
+    
+    private func dismissAndShowAlert(_ success: Bool, _ message: String) {
+        presenter?.dismiss {
+            // Payment is processed. Add your code here.
+            let title = success ? "Success" : "Error"
+            self.presenter?.presentAlert(withTitle: title, message: message)
+        }
+    }
     
     private func viewController(for component: AdyenCheckoutComponent) -> UIViewController {
         let navigation = UINavigationController(rootViewController: component.viewController!)
