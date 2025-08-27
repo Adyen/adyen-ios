@@ -19,7 +19,7 @@ internal protocol CardImageParsing {
 internal class CardImageParser: CardImageParsing {
 
     private enum Constants {
-        static let expirationDateRegex = "\\d{2}\\/\\d{2,4}"
+        static let expirationDateRegex = #"(0[1-9]|1[0-2])[\/\-](\d{2}|\d{4})"#
         static let topCandidates = 10
 
         static let cardNumberConfidence: Float = 0.4
@@ -104,9 +104,13 @@ internal class CardImageParser: CardImageParsing {
             .first(where: { $0.isCardNumber && isValidLuhn($0) })
         guard let cardNumberMatch else { return nil }
         self.cachedCardNumber = cardNumberMatch
-
+        
         return cardNumberMatch
     }
+    
+    private let expirationDateRegex: NSRegularExpression? = {
+        try? NSRegularExpression(pattern: Constants.expirationDateRegex, options: [])
+    }()
 
     private func extractExpirationDate(from textObservations: [VNRecognizedTextObservation]) -> Date? {
         if let cachedExpirationDate { return cachedExpirationDate }
@@ -114,12 +118,12 @@ internal class CardImageParser: CardImageParsing {
         let match = textObservations
             .compactMap { $0.topCandidates(Constants.topCandidates).first }
             .filter { $0.confidence > Constants.expirationDateConfidence }
-            .compactMap { extractMatch(from: $0.string, using: Constants.expirationDateRegex) }
+            .compactMap { extractMatch(from: $0.string, using: expirationDateRegex) }
             .first
         guard let match else { return nil }
         let expirationDate = expirationDateFormatter.date(from: match)
         self.cachedExpirationDate = expirationDate
-
+                
         return expirationDate
     }
 
@@ -141,10 +145,10 @@ internal class CardImageParser: CardImageParsing {
         return sum % 10 == 0
     }
 
-    private func extractMatch(from text: String, using regex: String) -> String? {
-        let regex = try? NSRegularExpression(pattern: regex)
-        let matches = regex?.matches(in: text, range: NSRange(text.startIndex..., in: text))
-        guard let match = matches?.first, let range = Range(match.range, in: text) else { return nil }
+    private func extractMatch(from text: String, using regex: NSRegularExpression?) -> String? {
+        guard let regex else { return nil }
+        let matches = regex.matches(in: text, range: NSRange(text.startIndex..., in: text))
+        guard let match = matches.first, let range = Range(match.range, in: text) else { return nil }
         return String(text[range])
     }
 }
