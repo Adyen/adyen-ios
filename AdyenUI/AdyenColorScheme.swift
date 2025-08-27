@@ -40,7 +40,7 @@ public struct AdyenColorScheme: Equatable {
     public var textOnPrimary: UIColor
     public var highlight: UIColor
     public var destructive: UIColor
-    public let success: UIColor
+    public var success: UIColor
     public var textOnDestructive: UIColor
     public var disabled: UIColor
     public var textOnDisabled: UIColor
