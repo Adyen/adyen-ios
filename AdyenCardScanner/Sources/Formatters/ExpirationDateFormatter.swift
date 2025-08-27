@@ -12,40 +12,47 @@ internal protocol ExpirationDateFormatting {
 
 internal class ExpirationDateFormatter: ExpirationDateFormatting {
 
-    private enum ExpirationDateFormat {
-        static let short = "MM/yy"
-        static let long = "MM/yyyy"
+    // MARK: - Supported Formats
+
+    private enum ExpirationDateFormat: CaseIterable {
+        case shortSlash
+        case longSlash
+        case shortDash
+        case longDash
+
+        var pattern: String {
+            switch self {
+            case .shortSlash: return "MM/yy"
+            case .longSlash: return "MM/yyyy"
+            case .shortDash: return "MM-yy"
+            case .longDash: return "MM-yyyy"
+            }
+        }
     }
 
     // MARK: - Properties
 
-    private let shortDateFormatter = DateFormatter()
-    private let longFormatter = DateFormatter()
+    private let formatter: DateFormatter
 
-    // MARK: - Initializers
+    // MARK: - Initializer
 
     internal init() {
-        let locale = Locale.current
-        let timeZone = TimeZone(secondsFromGMT: 0)
-
-        shortDateFormatter.locale = locale
-        shortDateFormatter.timeZone = timeZone
-        shortDateFormatter.dateFormat = ExpirationDateFormat.short
-
-        longFormatter.locale = locale
-        longFormatter.timeZone = timeZone
-        longFormatter.dateFormat = ExpirationDateFormat.long
+        formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
     }
 
-    // MARK: - ExpireDateFormatting
+    // MARK: - ExpirationDateFormatting
 
     internal func date(from string: String) -> Date? {
-        // First, try the short ("MM/YY") format
-        if let shortDate = shortDateFormatter.date(from: string) {
-            return shortDate
+        for format in ExpirationDateFormat.allCases {
+            formatter.dateFormat = format.pattern
+            if let date = formatter.date(from: string) {
+                return date
+            }
         }
 
-        // Then, try the long ("MM/YYYY") format
-        return longFormatter.date(from: string)
+        // No format matched
+        return nil
     }
 }
