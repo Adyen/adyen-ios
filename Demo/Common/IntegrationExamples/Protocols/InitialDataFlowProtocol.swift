@@ -11,28 +11,16 @@ import AdyenSession
 internal protocol InitialDataFlowProtocol: AnyObject {
     var context: AdyenContext { get }
     var apiClient: APIClientProtocol { get }
-    func requestSessionInitialInfo(completion: @escaping (Result<AdyenSession.InitialInfo, Error>) -> Void)
+    func requestSessionInitialInfo(completion: @escaping (Result<SessionResponse, Error>) -> Void)
     func generateContext() -> AdyenContext
     func start()
 }
 
 extension InitialDataFlowProtocol {
 
-    internal func requestSessionInitialInfo(completion: @escaping (Result<AdyenSession.InitialInfo, Error>) -> Void) {
+    internal func requestSessionInitialInfo(completion: @escaping (Result<SessionResponse, Error>) -> Void) {
         let request = SessionRequest()
-        apiClient.perform(request) { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case let .success(response):
-                let initialInfo = AdyenSession.InitialInfo(
-                    sessionIdentifier: response.sessionId,
-                    initialSessionData: response.sessionData
-                )
-                completion(.success(initialInfo))
-            case let .failure(error):
-                completion(.failure(error))
-            }
-        }
+        apiClient.perform(request, completionHandler: completion)
     }
     
     func generateContext() -> AdyenContext {
@@ -46,13 +34,14 @@ extension InitialDataFlowProtocol {
             analyticsConfiguration: analyticsConfiguration
         )
     }
-
-    private func initialInfo(with sessionId: String, data: String) -> AdyenSession.InitialInfo {
-        let initialInfo = AdyenSession.InitialInfo(
-            sessionIdentifier: sessionId,
-            initialSessionData: data
-        )
-        return initialInfo
+    
+    internal func requestSessionInitialInfo() async throws -> SessionResponse {
+        let request = SessionRequest()
+        return try await withCheckedThrowingContinuation { continuation in
+            apiClient.perform(request) { result in
+                continuation.resume(with: result)
+            }
+        }
     }
 }
 
