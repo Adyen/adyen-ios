@@ -19,7 +19,7 @@ jobs:
   post-release-notes:
     name: "Create Release Pull Request"
     needs: get-release-notes
-    runs-on: macos-14
+    runs-on: macos-15-xlarge
     steps:
     
     # Checking out the current branch
