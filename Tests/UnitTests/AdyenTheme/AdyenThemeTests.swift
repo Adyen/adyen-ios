@@ -32,5 +32,25 @@ final class AdyenThemeTests: XCTestCase {
         // Then
         XCTAssertEqual(updatedTheme.buttonStyle.primary.backgroundColor, .blue)
     }
+    
+    func test_toggleMethod_shouldUpdateToggleStyles() {
+        // Given
+        let theme = AdyenTheme()
+        let newButtonStyle = AdyenButtonStyles(colorScheme: .init(primary: .blue))
+        
+        let labelStyle = AdyenLabelStyle().color(.red).font(AdyenFonts.default.bodyEmphasized)
+        
+        var newToggleStyle = AdyenToggleStyle(title: labelStyle)
+        
+        newToggleStyle.tintColor = .black
+
+        // When
+        let updatedTheme = theme.toggle(newToggleStyle)
+
+        // Then
+        XCTAssertEqual(updatedTheme.toggleStyle.title.font, AdyenFonts.default.bodyEmphasized)
+        XCTAssertEqual(updatedTheme.toggleStyle.title.color, .red)
+        XCTAssertEqual(updatedTheme.toggleStyle.tintColor, .black)
+    }
 
 }
