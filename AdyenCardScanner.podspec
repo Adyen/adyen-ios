@@ -1,7 +1,7 @@
 # AdyenCardScanner.podspec
 Pod::Spec.new do |s|
   s.name = 'AdyenCardScanner'
-  s.version = '1.0.1'  
+  s.version = '1.0.2'  
   s.summary = "Adyen Card Scanner Module for iOS"
 
   s.homepage = 'https://adyen.com'
