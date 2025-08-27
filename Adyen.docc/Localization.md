@@ -161,7 +161,7 @@ The SDK includes scripts to update translations and regenerate localization keys
    
    This script:
    - Fetches the latest translations from the internal translations repository
-   - Processes them with StringsGenerator
+   - Processes them with `StringsGenerator` script
    - Generates typed Swift constants for localization keys
 
 ### Adding New Translation Keys
