@@ -97,7 +97,7 @@ public struct AdyenButtonStyle {
     public static func tertiary(for colorScheme: AdyenColorScheme) -> AdyenButtonStyle {
         .init(
             backgroundColor: .clear,
-            textColor: colorScheme.action,
+            textColor: colorScheme.highlight,
             disabledBackgroundColor: colorScheme.disabled,
             disabledTextColor: colorScheme.textOnDisabled,
             cornerRadius: .fixed(AdyenUIConstants.defaultCornerRadius)
