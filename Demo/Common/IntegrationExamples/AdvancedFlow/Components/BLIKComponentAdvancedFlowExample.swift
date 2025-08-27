@@ -59,7 +59,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         ) {
             BLIKComponentConfiguration()
         }
-        // Providing theme without passing AdyenTheme object with custom label and button
+        // Providing theme with custom label and button
         .theme(
             label: AdyenLabelStyle(
                 font: AdyenFonts.default.body,
@@ -68,20 +68,25 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             ),
             button: AdyenButtonStyles(colorScheme: .default)
         )
-        // Providing theme without passing AdyenTheme object with only custom label
+        // Providing theme with only custom label
         .theme(label: .init()
             .font(AdyenFonts.default.body)
         )
-        // Providing theme without passing AdyenTheme object with only custom button
+        // Providing theme with only custom button
         .theme(button: AdyenButtonStyles(
             colorScheme: AdyenColorScheme(background: .red))
         )
-        // Providing theme without passing AdyenTheme object with label and button name
+        // Providing theme with label and button name
         .theme(
             label: AdyenLabelStyle()
                 .font(AdyenFonts.default.body)
                 .color(AdyenColorScheme.default.textOnPrimary),
             button: AdyenButtonStyles()
+        )
+        // Providing theme with only custom label
+        .theme(label: .init()
+            .font(AdyenFonts.default.body)
+            .color(AdyenColorScheme.default.primary)
         )
         .onSubmit { [weak self] data, handler in
             self?.callPayments(with: data, completion: handler)
