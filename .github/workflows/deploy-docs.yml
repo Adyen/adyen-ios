@@ -4,13 +4,13 @@ on:
   workflow_call:
 
 permissions:
-  contents: read
+  contents: write
   pages: write 
 
 jobs:
 
   Deploy:
-    runs-on: macos-14
+    runs-on: macos-15-xlarge
     steps:
     - uses: actions/checkout@v5
     - uses: n1hility/cancel-previous-runs@v3
