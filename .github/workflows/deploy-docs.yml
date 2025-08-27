@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 permissions:
-  contents: read
+  contents: write
   pages: write 
 
 jobs:
@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v5
     - uses: n1hility/cancel-previous-runs@v3
       with:
-        token: ${{ secrets.AUTOMATION_BOT_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
@@ -29,13 +29,13 @@ jobs:
     - name: Deploy to current version 🚀
       uses: peaceiris/actions-gh-pages@v4
       with:
-        github_token: ${{ secrets.AUTOMATION_BOT_TOKEN }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs/html
         destination_dir: ./${{ steps.get-current-marketing-version.outputs.MARKETING_VERSION }}
         
     - name: Deploy to root 🚀
       uses: peaceiris/actions-gh-pages@v4
       with:
-        github_token: ${{ secrets.AUTOMATION_BOT_TOKEN }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs/redirect
         keep_files: true
