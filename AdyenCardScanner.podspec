@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.license = { :type => 'MIT', :file => 'LICENSE' }
   s.author = { 'Adyen' => 'support@adyen.com' }
 
-  s.source = { :git => 'https://github.com/Adyen/adyen-ios.git', :tag => '5.18.1' }
+  s.source = { :git => 'https://github.com/Adyen/adyen-ios.git', :tag => '5.20.0' }
   s.source_files = 'AdyenCardScanner/**/*.swift'
   s.framework = 'Foundation'
   s.ios.deployment_target = '12.0'
