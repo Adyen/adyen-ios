@@ -8,6 +8,7 @@ import Adyen
 import AdyenActions
 import AdyenCheckout
 import AdyenComponents
+import AdyenUI
 
 internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
 
@@ -58,6 +59,35 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         ) {
             BLIKComponentConfiguration()
         }
+        // Providing theme with custom label and button
+        .theme(
+            label: AdyenLabelStyle(
+                font: AdyenFonts.default.body,
+                color: AdyenColorScheme.default.primary,
+                textAlignment: .natural
+            ),
+            button: AdyenButtonStyles(colorScheme: .default)
+        )
+        // Providing theme with only custom label
+        .theme(label: .init()
+            .font(AdyenFonts.default.body)
+        )
+        // Providing theme with only custom button
+        .theme(button: AdyenButtonStyles(
+            colorScheme: AdyenColorScheme(background: .red))
+        )
+        // Providing theme with label and button name
+        .theme(
+            label: AdyenLabelStyle()
+                .font(AdyenFonts.default.body)
+                .color(AdyenColorScheme.default.textOnPrimary),
+            button: AdyenButtonStyles()
+        )
+        // Providing theme with only custom label
+        .theme(label: .init()
+            .font(AdyenFonts.default.body)
+            .color(AdyenColorScheme.default.primary)
+        )
         .onSubmit { [weak self] data, handler in
             self?.callPayments(with: data, completion: handler)
         }
