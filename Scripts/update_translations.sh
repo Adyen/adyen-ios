@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 echo "# Clone the translations repo"
 git clone --progress --verbose https://gitlab.is.adyen.com/adyen/streams/checkout/translations.git ./translations
 
