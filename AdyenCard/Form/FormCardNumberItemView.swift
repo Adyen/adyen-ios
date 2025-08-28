@@ -45,12 +45,14 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         updateValidationStatus()
     }
 
+    @_spi(AdyenInternal)
     override public func textDidChange(textField: UITextField) {
         // Overriding to not use the default behavior of the super class
         _ = item.textDidChange(value: textField.text ?? "")
         notifyDelegateOfMaxLengthIfNeeded()
     }
 
+    @_spi(AdyenInternal)
     override public func textField(
         _ textField: UITextField,
         shouldChangeCharactersIn range: NSRange,
