@@ -441,6 +441,8 @@
 		A06B7AA52A1F9484008FC09D /* CashAppPayButtonItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06B7AA42A1F9484008FC09D /* CashAppPayButtonItemView.swift */; };
 		A06B7AA72A274A83008FC09D /* ResultHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06B7AA62A274A83008FC09D /* ResultHelpers.swift */; };
 		A06C76452E1EAF9700213E53 /* AdyenSessionMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06C76442E1EAF9200213E53 /* AdyenSessionMock.swift */; };
+		A06DAE822E589B9B00748CC6 /* BLIKComponentExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06DAE812E589B9B00748CC6 /* BLIKComponentExample.swift */; };
+		A06DAE832E589B9B00748CC6 /* BLIKComponentExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06DAE812E589B9B00748CC6 /* BLIKComponentExample.swift */; };
 		A07355D7276B350F00530562 /* DocumentActionViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */; };
 		A078327F299BE02F0029DA0D /* CashAppPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A078327E299BE02F0029DA0D /* CashAppPaymentMethod.swift */; };
 		A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */; };
@@ -2081,6 +2083,7 @@
 		A06B7AA42A1F9484008FC09D /* CashAppPayButtonItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPayButtonItemView.swift; sourceTree = "<group>"; };
 		A06B7AA62A274A83008FC09D /* ResultHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultHelpers.swift; sourceTree = "<group>"; };
 		A06C76442E1EAF9200213E53 /* AdyenSessionMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenSessionMock.swift; sourceTree = "<group>"; };
+		A06DAE812E589B9B00748CC6 /* BLIKComponentExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentExample.swift; sourceTree = "<group>"; };
 		A07355D6276B350F00530562 /* DocumentActionViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentActionViewDelegateMock.swift; sourceTree = "<group>"; };
 		A078327E299BE02F0029DA0D /* CashAppPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPaymentMethod.swift; sourceTree = "<group>"; };
 		A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatter.swift; sourceTree = "<group>"; };
@@ -3909,6 +3912,7 @@
 		B67D1F5F2E4615390000C37F /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				A06DAE812E589B9B00748CC6 /* BLIKComponentExample.swift */,
 				B67D1F5B2E4615390000C37F /* ApplePayComponentExample.swift */,
 				B67D1F5C2E4615390000C37F /* CardComponentExample.swift */,
 				B67D1F5D2E4615390000C37F /* InstantPaymentComponentExample.swift */,
@@ -8524,6 +8528,7 @@
 				B67D1F642E4615390000C37F /* DropInExample.swift in Sources */,
 				B67D1F652E4615390000C37F /* IssuerListComponentAdvancedFlowExample.swift in Sources */,
 				B67D1F662E4615390000C37F /* CardComponentExample.swift in Sources */,
+				A06DAE822E589B9B00748CC6 /* BLIKComponentExample.swift in Sources */,
 				B67D1F672E4615390000C37F /* InstantPaymentComponentExample.swift in Sources */,
 				B67D1F682E4615390000C37F /* ApplePayComponentAdvancedFlowExample.swift in Sources */,
 				B67D1F692E4615390000C37F /* InstantPaymentComponentAdvancedFlowExample.swift in Sources */,
@@ -8838,6 +8843,7 @@
 				F95B6DD6252B4654002C9062 /* ComponentsItem.swift in Sources */,
 				001BFF432A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */,
 				A0290DFB2C480CE9005BE269 /* ExampleContainer.swift in Sources */,
+				A06DAE832E589B9B00748CC6 /* BLIKComponentExample.swift in Sources */,
 				B6EE0F3B2BBEA2A800B9810D /* APIClientMock.swift in Sources */,
 				5A545FDC2643CF2400724A87 /* ConfigurationViewModel.swift in Sources */,
 				00ED81B929E550E500A6B52C /* InitialDataAdvancedFlowProtocol.swift in Sources */,
