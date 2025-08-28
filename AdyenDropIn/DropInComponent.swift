@@ -80,14 +80,14 @@ public final class DropInComponent: NSObject,
             .retryAPIClient(with: scheduler)
             .retryOnErrorAPIClient()
 
-        let dropInRootAssembler = DropInAssembler(
+        let dropInAssembler = DropInAssembler(
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
-        self.dropInRouter = dropInRootAssembler.resolveDropInRootRouter()
+        self.dropInRouter = dropInAssembler.resolveDropInRootRouter()
         super.init()
 
         self.dropInRouter.delegate = self
