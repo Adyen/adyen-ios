@@ -63,7 +63,7 @@ extension AdyenToggleStyle {
     /// Returns a new AdyenToggleStyle with the specified cornerRadius.
     /// - Parameter cornerRadius: The cornerRadius to set.
     /// - Returns: A new `AdyenToggleStyle` instance.
-    public func backgroundColor(_ cornerRadius: CornerRounding) -> AdyenToggleStyle {
+    public func cornerRadius(_ cornerRadius: CornerRounding) -> AdyenToggleStyle {
         var newStyle = self
         newStyle.cornerRadius = cornerRadius
         return newStyle
