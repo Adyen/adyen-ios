@@ -15,8 +15,9 @@ public struct AdyenToggleStyle {
     /// The color of `onTintColor` of switch.
     public var tintColor: UIColor?
 
+    // The background color of the switch.
     public var backgroundColor: UIColor = .clear
-    
+
     internal var cornerRadius: CornerRounding = .fixed(AdyenUIConstants.defaultCornerRadius)
     
     /// Initializes the form switch item style.
