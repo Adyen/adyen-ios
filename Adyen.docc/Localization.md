@@ -146,30 +146,4 @@ configuration.localizationParameters = parameters // Apply to any Component conf
 
 ![Localization diagram](Assets/localization_diagram.png)
 
-## For Internal Adyen Developers
-
-> **Note**: This section applies only to internal Adyen developers working on the SDK itself. External contributors and users of the SDK cannot access the internal translation repositories.
-
-### Translation Update Process
-
-The SDK includes scripts to update translations and regenerate localization keys from our internal translation repository:
-
-1. Run the translation update script:
-   ```bash
-   ./Scripts/update_translations.sh
-   ```
-   
-   This script:
-   - Fetches the latest translations from the internal translations repository
-   - Processes them with `StringsGenerator` script
-   - Generates typed Swift constants for localization keys
-
-### Adding New Translation Keys
-
-When adding new localizable strings to the SDK:
-
-1. Add your new key and default English translation to `./Adyen/Assets/en-US.lproj/Localizable.strings`
-2. Run `./Scripts/update_translations.sh` to generate the Swift constants
-3. Use the new key in your code with `localizedString(.yourNewKey, parameters)`
-
-The `generate_localization_keys.swift` script will automatically update the `LocalizationKey.swift` file with the new constants.
+> **Note for Adyen Developers:** For information on adding or modifying localization keys, please refer to the [Localization guide for internal development](LocalizationDevelopment.md) document.
