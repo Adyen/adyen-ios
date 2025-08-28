@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenUI
 import Foundation
 import UIKit
 
@@ -21,6 +22,18 @@ public class FormLabelItem: FormItem {
         self.text = text
     }
 
+    public init(
+        text: String,
+        identifier: String? = nil,
+        labelStyle: AdyenLabelStyle = AdyenLabelStyle(),
+        style: TextStyle = .init(font: .preferredFont(forTextStyle: .body), color: .red)
+    ) {
+        self.identifier = identifier
+        self.text = text
+        self.labelStyle = labelStyle
+        self.style = style
+    }
+
     public var identifier: String?
 
     /// The style of the label.
@@ -29,16 +42,17 @@ public class FormLabelItem: FormItem {
     /// The text of the label.
     public var text: String
 
+    /// The labelStyle from the adyen theme
+    public var labelStyle: AdyenLabelStyle = .init()
+
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         let label = ADYLabel()
         label.text = text
         label.numberOfLines = 0
         label.accessibilityIdentifier = identifier
-        label.font = style.font
-        label.textColor = style.color
-        label.textAlignment = style.textAlignment
-        label.backgroundColor = style.backgroundColor
-        label.adyen.round(using: style.cornerRounding)
+        label.font = labelStyle.font
+        label.textColor = labelStyle.color
+        label.textAlignment = labelStyle.textAlignment
         return label
     }
 }

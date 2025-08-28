@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenUI
 import Foundation
 
 /// `CheckoutConfigurable` represents any type of configuration the SDK may require for its components,
@@ -19,8 +20,11 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     
     // These are here to work with the current way,
     // to be changed with new styling/localization
+
     var style: FormComponentStyle { get }
-    
+
+    var theme: AdyenTheme { get set }
+
     var localizationParameters: LocalizationParameters? { get }
 }
 

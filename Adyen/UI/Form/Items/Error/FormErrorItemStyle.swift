@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenUI
 import UIKit
 
 /// Contains the styling customization options for an error item in a form.

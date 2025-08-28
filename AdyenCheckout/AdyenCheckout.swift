@@ -15,9 +15,9 @@ import Foundation
 /// and it prepares all the required data asynchronously and returns an `AdyenCheckout` instance ready to be used.
 public final class AdyenCheckout: AdyenCheckoutProtocol {
     
+    public let paymentMethods: PaymentMethods?
     internal let session: AdyenSessionProtocol?
     internal let checkoutAttemptId: String?
-    internal let paymentMethods: PaymentMethods?
     internal let configuration: CheckoutConfiguration
     internal weak var presentationDelegate: PresentationDelegate?
     
@@ -107,6 +107,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     }
     
     public func createComponent(with paymentMethod: any PaymentMethod) -> AdyenCheckoutComponent? {
+        // TODO: Add new v6 style here
         AdyenCheckoutComponent(
             paymentMethod: paymentMethod,
             configuration: configuration,

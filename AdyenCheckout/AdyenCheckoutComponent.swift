@@ -38,6 +38,7 @@ public final class AdyenCheckoutComponent {
     ) {
         self.configuration = configuration
         self.delegate = delegate
+        // TODO: Add new v6 style here
         self.paymentComponent = CheckoutComponentBuilder.build(for: paymentMethod, configuration: configuration)
         self.paymentComponent?.delegate = delegate
     }

@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenUI
 import Foundation
 
 /// A configuration container for customizing the behavior of Drop-in and individual components.
@@ -44,7 +45,9 @@ public struct CheckoutConfiguration {
     package var onComplete: CheckoutSuccessHandler?
     
     package let context: AdyenContext
-    
+
+    package var theme: AdyenTheme = .init()
+
     /// Creates a CheckoutConfiguration instance.
     /// - Parameters:
     ///   - environment: The environment to retrieve internal resources from.
@@ -97,5 +100,26 @@ public struct CheckoutConfiguration {
         copy.showsSubmitButton = showsSubmitButton
         return copy
     }
-    
+
+    // Providing label customization without using AdyenTheme object
+    public func theme(label: AdyenLabelStyle) -> Self {
+        var copy = self
+        copy.theme.labelStyle = label
+        return copy
+    }
+
+    // Providing button customization without using AdyenTheme object
+    public func theme(button: AdyenButtonStyles) -> Self {
+        var copy = self
+        copy.theme.buttonStyle = button
+        return copy
+    }
+
+    // Providing label and button customization without using AdyenTheme object
+    public func theme(label labelStyle: AdyenLabelStyle, button buttonStyle: AdyenButtonStyles) -> Self {
+        var copy = self
+        copy.theme.labelStyle = labelStyle
+        copy.theme.buttonStyle = buttonStyle
+        return copy
+    }
 }

@@ -5,6 +5,7 @@
 //
 
 import AdyenNetworking
+import AdyenUI
 import UIKit
 
 /// Adds helper functionality to any `UIViewController` instance through the `adyen` property.

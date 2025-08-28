@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenUI
 import UIKit
 
 /// Contains the styling customization options for the QR code component.
