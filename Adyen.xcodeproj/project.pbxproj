@@ -6541,7 +6541,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E2C0E08E220B039B008616F6 /* Build configuration list for PBXNativeTarget "AdyenUIHost" */;
 			buildPhases = (
-				F91664F123E42D2D00C10738 /* AdyenUIHost configuration */,
 				F9A4A304237323EE00D774E8 /* SwiftFormat */,
 				B64285622BB45D4A005C88C7 /* SwiftLint */,
 				E2C0E079220B0399008616F6 /* Sources */,
@@ -7151,26 +7150,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "swiftlintPath=/usr/local/adyen/bin/swiftlint\n\nif [ ! -f $swiftlintPath ]; then\n  echo \"swiftlint CLI is not installed on your machine at $swiftlintPath, please contact IS to install it for you at /usr/local/adyen/bin/ .\"\n  exit\nfi\n\n$swiftlintPath --config \"$SRCROOT/.swiftlint.yml\"\n";
-		};
-		F91664F123E42D2D00C10738 /* AdyenUIHost configuration */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "AdyenUIHost configuration";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ -f $SRCROOT/Internal/post-commit ]; then\n   $SRCROOT/Internal/post-commit\nfi\n";
+			shellScript = "swiftlintPath=/usr/local/adyen/bin/swiftlint\n\nif [ ! -f $swiftlintPath ]; then\n  echo \"swiftlint CLI is not installed on your machine at $swiftlintPath, please contact IS to install it for you at /usr/local/adyen/bin/ .\"\n  exit 1\nfi\n\n$swiftlintPath --config \"$SRCROOT/.swiftlint.yml\"\n";
 		};
 		F95B6DD2252B1F6A002C9062 /* SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
