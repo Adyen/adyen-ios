@@ -21,7 +21,6 @@ internal protocol ComponentContainerViewModelDelegate: AnyObject {
 }
 
 internal protocol ComponentContainerViewModelProtocol {
-    var delegate: ComponentContainerViewModelDelegate? { get set }
     var componentViewController: UIViewController { get }
     func cancel()
 }
@@ -30,8 +29,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     // MARK: - Properties
 
-    internal weak var delegate: ComponentContainerViewModelDelegate?
-
+    weak var delegate: ComponentContainerViewModelDelegate?
     private let component: PresentableComponent
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
@@ -45,12 +43,14 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     internal init(
         component: PresentableComponent,
         context: AdyenContext,
+        delegate: ComponentContainerViewModelDelegate,
         configuration: DropInComponent.Configuration,
         cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.component = component
         self.context = context
+        self.delegate = delegate
         self.configuration = configuration
         self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate

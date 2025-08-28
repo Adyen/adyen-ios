@@ -88,11 +88,10 @@ public final class DropInComponent: NSObject,
             partialPaymentDelegate: partialPaymentDelegate
         )
         self.dropInRouter = dropInRootAssembler.resolveDropInRootRouter()
-        self.dropInRouter.start()
-
         super.init()
 
         self.dropInRouter.delegate = self
+        self.dropInRouter.start()
     }
 
     //    /// For testing only
@@ -261,38 +260,6 @@ public final class DropInComponent: NSObject,
 //            return view
 //        }
 //    }()
-
-    // ================= COMPONENT MODULE - ASSEMBLER ===============
-
-    internal func resolveComponentView(
-        from component: PresentableComponent
-    ) -> UIViewController {
-        let viewModel = ComponentContainerViewModel(
-            component: component,
-            context: context,
-            configuration: configuration,
-            cardComponentDelegate: nil,
-            partialPaymentDelegate: nil
-        )
-        let componentViewController = ComponentContainerViewController(viewModel: viewModel)
-        return componentViewController
-    }
-
-    // ================= PAYMENT METHOD LIST MODULE - ASSEMBLER ===============
-
-    internal func didSelect(_ component: PaymentComponent) {
-        setNecessaryDelegates(on: component)
-
-        switch component {
-        case let component as PresentableComponent:
-            let componentView = resolveComponentView(from: component)
-            viewController.present(componentView, animated: true)
-        case let component as PaymentInitiable:
-            component.initiatePayment()
-        default:
-            break
-        }
-    }
 
     private func didSelectCancelButton(isRoot: Bool, component: PresentableComponent) {
         guard !paymentInProgress || component is Cancellable else { return }

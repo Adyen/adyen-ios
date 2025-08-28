@@ -44,16 +44,17 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
         for component: PresentableComponent,
         delegate: ComponentContainerRouterDelegate
     ) -> ComponentContainerRouterProtocol {
+        let router = ComponentContainerRouter(delegate: delegate)
         let viewModel = ComponentContainerViewModel(
             component: component,
             context: context,
+            delegate: router,
             configuration: configuration,
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
         let view = ComponentContainerViewController(viewModel: viewModel)
-        let router = ComponentContainerRouter(view: view, viewModel: viewModel)
-        router.delegate = delegate
+        router.view = view
         return router
     }
 }

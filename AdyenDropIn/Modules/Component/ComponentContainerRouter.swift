@@ -14,7 +14,6 @@ internal protocol ComponentContainerRouterDelegate: AnyObject {
 }
 
 internal protocol ComponentContainerRouterProtocol {
-    var delegate: ComponentContainerRouterDelegate? { get set }
     var rootViewController: UIViewController { get }
     func start()
 }
@@ -23,25 +22,20 @@ internal class ComponentContainerRouter: ComponentContainerRouterProtocol {
 
     // MARK: - Properties
 
-    internal weak var delegate: ComponentContainerRouterDelegate?
-    private let view: UIViewController
-    private var viewModel: ComponentContainerViewModelProtocol
+    private weak var delegate: ComponentContainerRouterDelegate?
+    internal var view: UIViewController?
 
     // MARK: - Initializers
 
-    internal init(
-        view: UIViewController,
-        viewModel: ComponentContainerViewModelProtocol
-    ) {
-        self.view = view
-        self.viewModel = viewModel
-        self.viewModel.delegate = self
+    internal init(delegate: ComponentContainerRouterDelegate) {
+        self.delegate = delegate
     }
 
     // MARK: - ComponentContainerRouterProtocol
 
     internal var rootViewController: UIViewController {
         // TODO: - Handle alert view controller scenario [STORED PAYMENT METHODS]
+        guard let view else { fatalError("No view was set") }
         if let alertController = view.children.first as? UIAlertController {
             return alertController
         }
