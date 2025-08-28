@@ -23,8 +23,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     // MARK: - Properties
 
-    internal weak var delegate: PaymentMethodListViewModelDelegate?
-
+    private weak var delegate: PaymentMethodListViewModelDelegate?
     private let paymentMethodListComponent: PaymentMethodListComponent
 
     // MARK: - Initializers
@@ -32,6 +31,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     internal init(
         context: AdyenContext,
         componentManager: ComponentManager,
+        delegate: PaymentMethodListViewModelDelegate,
         configuration: DropInComponent.Configuration
     ) {
         let components = componentManager.sections
@@ -40,6 +40,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             components: components,
             style: configuration.style.listComponent
         )
+        self.delegate = delegate
         self.paymentMethodListComponent.localizationParameters = configuration.localizationParameters
         self.paymentMethodListComponent.delegate = self
     }

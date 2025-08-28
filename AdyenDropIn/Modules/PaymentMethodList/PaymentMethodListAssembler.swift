@@ -50,9 +50,9 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         let viewModel = PaymentMethodListViewModel(
             context: context,
             componentManager: componentManager,
+            delegate: router,
             configuration: configuration
         )
-        viewModel.delegate = router
         let view = PaymentMethodListViewController(viewModel: viewModel)
         router.view = view
         return router
