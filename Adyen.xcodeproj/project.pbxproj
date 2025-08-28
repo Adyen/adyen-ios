@@ -6718,7 +6718,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F95B6DA825274551002C9062 /* Build configuration list for PBXNativeTarget "AdyenSwiftUIHost" */;
 			buildPhases = (
-				F9615FBC252DE30B00FA8EDD /* AdyenSwiftUI configuration */,
 				F95B6DD2252B1F6A002C9062 /* SwiftFormat */,
 				B64285632BB4682A005C88C7 /* SwiftLint */,
 				F95B6D912527454E002C9062 /* Sources */,
@@ -7190,25 +7189,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "swiftformatPath=/usr/local/adyen/bin/swiftformat\n\nif [ ! -f $swiftformatPath ]; then\n  echo \"swiftformat CLI is not installed on your machine at $swiftformatPath, please contact IS to install it for you at /usr/local/adyen/bin/ .\"\n  exit\nfi\n   \n$swiftformatPath $SRCROOT\n";
-		};
-		F9615FBC252DE30B00FA8EDD /* AdyenSwiftUI configuration */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "AdyenSwiftUI configuration";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ -f $SRCROOT/Internal/post-commit ]; then\n   $SRCROOT/Internal/post-commit\nfi\n";
 		};
 		F9A4A304237323EE00D774E8 /* SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
