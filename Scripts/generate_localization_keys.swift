@@ -102,7 +102,8 @@ guard let fileContents = FileManager.default.contents(atPath: inputURL.relativeP
 }
 
 let lines = strings.components(separatedBy: .newlines)
-    .filter { $0.isEmpty == false }
+    .map { $0.trimmingCharacters(in: .whitespaces) }
+    .filter { !$0.isEmpty && !$0.hasPrefix("//") }
     .map(extractKeyAndTranslation)
     .map { (formatKeyToName($0.key), $0.key, $0.translation) }
     .map(generate)
