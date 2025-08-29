@@ -845,7 +845,7 @@ class PaymentMethodTests: XCTestCase {
         testCoding(paymentMethod)
     }
     
-    func expectedStoredCardPaymentMethodDisplayInfo(method: StoredCardPaymentMethod, localizationParameters: LocalizationParameters?) -> DisplayInformation {
+    public func expectedStoredCardPaymentMethodDisplayInfo(method: StoredCardPaymentMethod, localizationParameters: LocalizationParameters?) -> DisplayInformation {
         let expireDate = method.expiryMonth + "/" + method.expiryYear.suffix(2)
         if let customDisplayInformation = method.merchantProvidedDisplayInformation {
             return DisplayInformation(
@@ -1038,7 +1038,7 @@ class PaymentMethodTests: XCTestCase {
         testCoding(paymentMethod)
     }
     
-    func expectedBancontactCardDisplayInfo(
+    public func expectedBancontactCardDisplayInfo(
         method: StoredBCMCPaymentMethod,
         localizationParameters: LocalizationParameters?
     ) -> DisplayInformation {
