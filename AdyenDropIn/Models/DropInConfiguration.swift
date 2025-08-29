@@ -14,7 +14,9 @@
 #if canImport(AdyenActions)
     @_spi(AdyenInternal) import AdyenActions
 #endif
-import AdyenUI
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 import Foundation
 import PassKit
 
