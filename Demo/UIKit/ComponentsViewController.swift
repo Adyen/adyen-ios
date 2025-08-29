@@ -78,6 +78,12 @@ internal final class ComponentsViewController: UIViewController {
         blikAdvanced.presenter = self
         return blikAdvanced
     }
+    
+    private var blikExample: BLIKComponentExample {
+        let blikAdvanced = BLIKComponentExample()
+        blikAdvanced.presenter = self
+        return blikAdvanced
+    }
 
     // MARK: - View
     
@@ -171,7 +177,7 @@ internal final class ComponentsViewController: UIViewController {
     
     internal func presentBlikComponent() {
         if componentsView.isUsingSession {
-            
+            start(blikExample)
         } else {
             start(blikAdvancedFlowExample)
         }
