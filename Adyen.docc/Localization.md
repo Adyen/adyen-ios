@@ -145,5 +145,3 @@ configuration.localizationParameters = parameters // Apply to any Component conf
 ## Localization flow
 
 ![Localization diagram](Assets/localization_diagram.png)
-
-> **Note for Adyen Developers:** For information on adding or modifying localization keys, please refer to the [Localization guide for internal development](LocalizationDevelopment.md) document.

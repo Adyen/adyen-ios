@@ -4,10 +4,6 @@
 
 1. Run `./Scripts/setup-env.sh` to set up git hooks for validating branch names and SDK versions.
 
-## Documentation
-
-For information about adding or modifying translations in the SDK, please refer to the [Localization guide for internal development](Adyen.docc/LocalizationDevelopment.md) guide.
-
 ## How to contribute step-by-step
 
 1. Fork this repository.
