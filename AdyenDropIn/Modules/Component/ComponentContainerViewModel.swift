@@ -63,7 +63,11 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     }
 
     internal func cancel() {
-        handleCancellation()
+        component.cancelIfNeeded()
+
+        if let component = (component as? PaymentComponent) {
+            delegate?.didCancel(component: component)
+        }
     }
 
     // MARK: - Private
@@ -115,7 +119,7 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
         from component: any Adyen.PaymentComponent
     ) {
         if case ComponentError.cancelled = error {
-            handleCancellation()
+            cancel()
         } else {
             delegate?.didFail(with: error)
         }
@@ -123,13 +127,6 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
 
     // MARK: - Private
 
-    private func handleCancellation() {
-        component.cancelIfNeeded()
-
-        if let component = (component as? PaymentComponent) {
-            delegate?.didCancel(component: component)
-        }
-    }
 }
 
 extension ComponentContainerViewModel: ReadyToSubmitPaymentComponentDelegate {
