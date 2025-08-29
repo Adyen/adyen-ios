@@ -5,10 +5,6 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-@_spi(AdyenInternal) import AdyenSession
-@_spi(AdyenInternal) import AdyenDropIn
-@_spi(AdyenInternal) import AdyenComponents
-@_spi(AdyenInternal) import AdyenActions
 import UIKit
 
 package typealias CheckoutComponentDelegate = (PaymentComponentDelegate & ActionComponentDelegate)
