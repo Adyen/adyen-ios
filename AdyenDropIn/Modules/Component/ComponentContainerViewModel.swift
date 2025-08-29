@@ -36,8 +36,6 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     private weak var cardComponentDelegate: CardComponentDelegate?
     private weak var partialPaymentDelegate: PartialPaymentDelegate?
 
-    private let actionComponent: AdyenActionComponent
-
     // MARK: - Initializers
 
     internal init(
@@ -54,10 +52,8 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         self.configuration = configuration
         self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
-        self.actionComponent = AdyenActionComponent(context: context)
 
         setupComponent()
-        setupActionComponent()
     }
 
     // MARK: - Public
@@ -78,14 +74,16 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
     }
-
-    private func setupActionComponent() {
+    
+    private var actionComponent: AdyenActionComponent {
+        let actionComponent = AdyenActionComponent(context: context)
         actionComponent.delegate = self
         actionComponent.presentationDelegate = self
         actionComponent.configuration.style = configuration.style.actionComponent
         actionComponent.configuration.localizationParameters = configuration.localizationParameters
         actionComponent.configuration.threeDS = configuration.actionComponent.threeDS
         actionComponent.configuration.twint = configuration.actionComponent.twint
+        return actionComponent
     }
 }
 
