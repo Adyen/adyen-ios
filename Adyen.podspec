@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '13.0'
   s.swift_version = '5.9'
   s.frameworks = 'Foundation'
-  s.default_subspecs = 'Core', 'Components', 'Actions', 'Card', 'Encryption', 'DropIn', 'Session', 'AdyenCheckout'
+  s.default_subspecs = 'Checkout'
   s.pod_target_xcconfig = {
     'SWIFT_SUPPRESS_WARNINGS' => 'YES',
     'BUILD_LIBRARY_FOR_DISTRIBUTION' => 'YES',
@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
     plugin.dependency 'Adyen/Components'
   end
 
-  s.subspec 'AdyenCheckout' do |plugin|
+  s.subspec 'Checkout' do |plugin|
     plugin.source_files = 'AdyenCheckout/**/*.swift'
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/Actions'
@@ -115,10 +115,15 @@ Pod::Spec.new do |s|
     plugin.dependency 'AdyenAuthentication', '3.1.0'
   end
 
+  s.subspec 'CoreUI' do |plugin|
+    plugin.source_files = 'AdyenUI/**/*.swift'
+  end
+
   s.subspec 'Core' do |plugin|
     plugin.source_files = 'Adyen/**/*.swift'
     plugin.exclude_files = 'Adyen/**/BundleSPMExtension.swift'
     plugin.dependency 'AdyenNetworking', '3.0.1'
+    plugin.dependency 'Adyen/CoreUI'
     plugin.resource_bundles = {
         'Adyen' => [
             'Adyen/Assets/**/*.strings',
