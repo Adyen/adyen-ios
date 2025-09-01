@@ -383,18 +383,18 @@ extension DropInComponent: DropInRouterDelegate {
 
     // MARK: - PaymentComponentDelegate
 
-    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
+    internal func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         paymentInProgress = true
         print("🔵 didSubmit")
         delegate?.didSubmit(data, from: component, in: self)
     }
 
-    func didFail(with error: any Error) {
+    internal func didFail(with error: any Error) {
         print("❌ didFail")
         delegate?.didFail(with: error, from: self)
     }
 
-    func didCancel(component: any PaymentComponent) {
+    internal func didCancel(component: any PaymentComponent) {
         print("⚠️ PAYMENT CANCELLED ⚠️")
         delegate?.didCancel(component: component, from: self)
     }
