@@ -18,6 +18,8 @@
 		000A7B0B2E27CDEC005584F2 /* AdyenUI.docc in Sources */ = {isa = PBXBuildFile; fileRef = 000A7B042E27CDEC005584F2 /* AdyenUI.docc */; };
 		000A7B0C2E27CDEC005584F2 /* AdyenColorScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000A7B052E27CDEC005584F2 /* AdyenColorScheme.swift */; };
 		000A7B0D2E27CDEC005584F2 /* AdyenFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000A7B062E27CDEC005584F2 /* AdyenFonts.swift */; };
+		0019C4092E5F24AC00B0C3A3 /* AdyenToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0019C4082E5F24A300B0C3A3 /* AdyenToggleStyle.swift */; };
+		0019C4182E5F2B2F00B0C3A3 /* AdyenThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0019C4122E5F2B2F00B0C3A3 /* AdyenThemeTests.swift */; };
 		001BFF422A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */; };
 		001BFF432A6E74BD007B2A46 /* DropInSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */; };
 		00220955299B8B1C00B2BACD /* BLIKComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00220953299B885600B2BACD /* BLIKComponentUITests.swift */; };
@@ -1752,6 +1754,8 @@
 		000A7B052E27CDEC005584F2 /* AdyenColorScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenColorScheme.swift; sourceTree = "<group>"; };
 		000A7B062E27CDEC005584F2 /* AdyenFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenFonts.swift; sourceTree = "<group>"; };
 		00165FDF2C05DA8600347399 /* RedireactableAwaitAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedireactableAwaitAction.swift; sourceTree = "<group>"; };
+		0019C4082E5F24A300B0C3A3 /* AdyenToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenToggleStyle.swift; sourceTree = "<group>"; };
+		0019C4122E5F2B2F00B0C3A3 /* AdyenThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenThemeTests.swift; sourceTree = "<group>"; };
 		001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInSettingsView.swift; sourceTree = "<group>"; };
 		00220953299B885600B2BACD /* BLIKComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentUITests.swift; sourceTree = "<group>"; };
 		00220957299E5B1D00B2BACD /* MBWayComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBWayComponentUITests.swift; sourceTree = "<group>"; };
@@ -3139,6 +3143,14 @@
 			path = AdyenUI;
 			sourceTree = "<group>";
 		};
+		0019C4132E5F2B2F00B0C3A3 /* AdyenTheme */ = {
+			isa = PBXGroup;
+			children = (
+				0019C4122E5F2B2F00B0C3A3 /* AdyenThemeTests.swift */,
+			);
+			path = AdyenTheme;
+			sourceTree = "<group>";
+		};
 		002B92EF294B2596000B93F4 /* UPI */ = {
 			isa = PBXGroup;
 			children = (
@@ -3177,6 +3189,7 @@
 		004758102E379397009E3802 /* Styles */ = {
 			isa = PBXGroup;
 			children = (
+				0019C4082E5F24A300B0C3A3 /* AdyenToggleStyle.swift */,
 				004758122E38D643009E3802 /* AdyenLabelStyle.swift */,
 				004757C32E2E6603009E3802 /* AdyenButtonStyles.swift */,
 				E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */,
@@ -3862,6 +3875,7 @@
 				B6D808242BCD154600F3F5EB /* Helpers */,
 				E7CC63D5288016080034108B /* Mocks */,
 				E9E3DB042226B3A100697074 /* Utilities */,
+				0019C4132E5F2B2F00B0C3A3 /* AdyenTheme */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -7656,6 +7670,7 @@
 				000A7B0A2E27CDEC005584F2 /* AdyenTheme.swift in Sources */,
 				000A7B0B2E27CDEC005584F2 /* AdyenUI.docc in Sources */,
 				004758112E379410009E3802 /* CornerRadiusStyle.swift in Sources */,
+				0019C4092E5F24AC00B0C3A3 /* AdyenToggleStyle.swift in Sources */,
 				004757C42E2E6605009E3802 /* AdyenButtonStyles.swift in Sources */,
 				000A7B0C2E27CDEC005584F2 /* AdyenColorScheme.swift in Sources */,
 				004758132E38D64A009E3802 /* AdyenLabelStyle.swift in Sources */,
@@ -7815,6 +7830,7 @@
 				B6ABA1C32CA6B058003514E5 /* ListItemTests.swift in Sources */,
 				B6D808092BCD147600F3F5EB /* StringExtensionsTests.swift in Sources */,
 				B6D808152BCD151F00F3F5EB /* AppLauncherMock.swift in Sources */,
+				0019C4182E5F2B2F00B0C3A3 /* AdyenThemeTests.swift in Sources */,
 				B62D48B52BBE8DBE001EF01A /* AnalyticsEventTests.swift in Sources */,
 				B6D808262BCD165F00F3F5EB /* DummyPaymentMethods.swift in Sources */,
 				B6D808172BCD151F00F3F5EB /* PresenterMock.swift in Sources */,
@@ -9312,6 +9328,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_MODULE = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_PACKAGE_NAME = com.adyen.checkout;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -9356,6 +9373,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_INSTALL_MODULE = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_PACKAGE_NAME = com.adyen.checkout;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
