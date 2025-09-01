@@ -4,8 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import AdyenUI
 import UIKit
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// Displays a form for the user to enter details.
 @objc(ADYFormViewController)

@@ -4,9 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import AdyenUI
 import Foundation
 import UIKit
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// Contains the styling customization options for any labels.
 public struct TextStyle: ViewStyle {

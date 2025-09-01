@@ -5,9 +5,11 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import AdyenUI
 import Foundation
 import UIKit
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// A component that provides a form for BLIK payments.
 public final class BLIKComponent: PaymentComponent, PresentableComponent, PaymentAware, LoadingComponent {

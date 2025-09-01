@@ -90,9 +90,7 @@ then
 
     pod 'AdyenCardScanner', :path => '../'
     pod 'Adyen', :path => '../'
-    pod 'Adyen/AdyenCheckout', :path => '../'
     pod 'Adyen/CardScanner', :path => '../'
-    pod 'Adyen/Session', :path => '../'
     pod 'Adyen/SwiftUI', :path => '../'
     pod 'Adyen/DelegatedAuthentication', :path => '../'
     pod 'Adyen/CashAppPay', :path => '../'
@@ -117,7 +115,6 @@ else
 
     pod 'AdyenCardScanner', :path => '../'
     pod 'Adyen', :path => '../'
-    pod 'Adyen/AdyenCheckout', :path => '../'
     pod 'Adyen/CardScanner', :path => '../'
     pod 'Adyen/WeChatPay', :path => '../'
     pod 'Adyen/SwiftUI', :path => '../'

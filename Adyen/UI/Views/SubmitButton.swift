@@ -4,8 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import AdyenUI
 import UIKit
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// A rounded submit button used to submit details.
 @_spi(AdyenInternal)

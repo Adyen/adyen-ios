@@ -4,9 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import AdyenUI
 import Foundation
 import UIKit
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// A View Controller wrapper to blur its content when going into the background.
 /// Used to wrap view controllers that contain sensitive user info.

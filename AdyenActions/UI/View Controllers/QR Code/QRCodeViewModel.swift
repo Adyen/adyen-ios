@@ -5,8 +5,10 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import AdyenUI
 import UIKit
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 extension QRCodeView {
 
