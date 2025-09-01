@@ -4,8 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import AdyenUI
 import Foundation
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// A configuration container for customizing the behavior of Drop-in and individual components.
 ///

@@ -4,8 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import AdyenUI
 import Foundation
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// `CheckoutConfigurable` represents any type of configuration the SDK may require for its components,
 /// such as `CardComponentConfiguration`,  `DropInConfiguration`, `ActionComponentConfiguration`.

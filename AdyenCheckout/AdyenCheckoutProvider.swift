@@ -5,9 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-@_spi(AdyenInternal) import AdyenSession
-@_spi(AdyenInternal) import AdyenDropIn
-@_spi(AdyenInternal) import AdyenActions
+#if canImport(AdyenSession)
+    @_spi(AdyenInternal) import AdyenSession
+#endif
 import AdyenNetworking
 import Foundation
 
