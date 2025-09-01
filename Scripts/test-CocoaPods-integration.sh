@@ -136,7 +136,7 @@ else
 fi
 
 # Install the pods.
-pod install
+pod install --repo-update
 
 # Archive for generic iOS device
 echo '############# Archive for generic iOS device ###############'
