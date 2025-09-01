@@ -1,14 +1,14 @@
 # AdyenCardScanner.podspec
 Pod::Spec.new do |s|
   s.name = 'AdyenCardScanner'
-  s.version = '1.0.1'  
+  s.version = '1.0.2'  
   s.summary = "Adyen Card Scanner Module for iOS"
 
   s.homepage = 'https://adyen.com'
   s.license = { :type => 'MIT', :file => 'LICENSE' }
   s.author = { 'Adyen' => 'support@adyen.com' }
 
-  s.source = { :git => 'https://github.com/Adyen/adyen-ios.git', :tag => '5.18.1' }
+  s.source = { :git => 'https://github.com/Adyen/adyen-ios.git', :tag => '5.20.0' }
   s.source_files = 'AdyenCardScanner/**/*.swift'
   s.framework = 'Foundation'
   s.ios.deployment_target = '12.0'
