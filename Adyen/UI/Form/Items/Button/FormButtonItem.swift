@@ -4,8 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import AdyenUI
 import Foundation
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// A form item that represents a single button with a spinner.
 @_spi(AdyenInternal)
