@@ -66,7 +66,7 @@ extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
     internal func didLoad(
         _ paymentMethodListComponent: PaymentMethodListComponent
     ) {
-        // TODO: - Handle analytcis
+        // TODO: - Handle analytics
     }
 
     internal func didSelect(
