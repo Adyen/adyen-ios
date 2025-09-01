@@ -115,7 +115,7 @@ Pod::Spec.new do |s|
     plugin.dependency 'AdyenAuthentication', '3.1.0'
   end
 
-  s.subspec 'CoreUI' do |plugin|
+  s.subspec 'AdyenUI' do |plugin|
     plugin.source_files = 'AdyenUI/**/*.swift'
   end
 
@@ -123,7 +123,7 @@ Pod::Spec.new do |s|
     plugin.source_files = 'Adyen/**/*.swift'
     plugin.exclude_files = 'Adyen/**/BundleSPMExtension.swift'
     plugin.dependency 'AdyenNetworking', '3.0.1'
-    plugin.dependency 'Adyen/CoreUI'
+    plugin.dependency 'Adyen/AdyenUI'
     plugin.resource_bundles = {
         'Adyen' => [
             'Adyen/Assets/**/*.strings',
