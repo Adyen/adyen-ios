@@ -6,6 +6,7 @@
 
 import Adyen
 import Foundation
+import UIKit
 
 internal protocol ComponentContainerRouterDelegate: AnyObject {
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)

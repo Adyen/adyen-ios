@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenCard
 import Foundation
 import UIKit
 #if canImport(AdyenActions)

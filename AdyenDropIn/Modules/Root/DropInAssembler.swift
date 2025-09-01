@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import AdyenCard
 import AdyenNetworking
 import Foundation
 import UIKit

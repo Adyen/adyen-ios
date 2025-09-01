@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import AdyenCard
 import Foundation
 
 internal protocol PaymentMethodListAssemblerProtocol {
