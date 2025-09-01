@@ -11,9 +11,6 @@
 #if canImport(AdyenDropIn)
     @_spi(AdyenInternal) import AdyenDropIn
 #endif
-#if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
-#endif
 import AdyenNetworking
 
 internal protocol AdyenCheckoutProtocol {
