@@ -23,12 +23,12 @@ package struct AdyenToggleStyle {
     /// Initializes the form switch item style.
     ///
     /// - Parameter title: The title style.
-    init(title: AdyenLabelStyle) {
+    package init(title: AdyenLabelStyle) {
         self.title = title
     }
     
     /// Initializes the form switch item style with the default style.
-    init() {}
+    package init() {}
 }
 
 // This extension adds the method chaining to the AdyenToggleStyle struct.
