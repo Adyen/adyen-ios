@@ -14,6 +14,8 @@ The demo app uses xcconfig files for secure secret management. To set up your lo
    - `Secrets.test.xcconfig` - For test environment
    - `Secrets.beta.xcconfig` - For beta environment
    - `Secrets.live.xcconfig` - For production environment
+   
+   > **⚠️ IMPORTANT:** Copy these files directly in Finder or using terminal commands like `cp`. Do not copy them using Xcode's "Add Files" or drag and drop functionality, as this will add references to these files in the project structure (.xcodeproj file), causing build failures in CI environments where these files don't exist.
 
 2. Fill in required configuration values in each file:
 
