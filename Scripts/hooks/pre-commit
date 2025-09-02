@@ -1,0 +1,9 @@
+#!/bin/sh
+# Pre-commit hook that runs validation scripts
+
+./Scripts/validate-branch-name.sh || exit 1
+./Scripts/validate-3ds2-SDK-version.sh || exit 1
+./Scripts/validate-Adyen-SDK-version.sh || exit 1
+
+# Success message
+echo "✅ Pre-commit validation passed"

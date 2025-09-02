@@ -334,6 +334,8 @@ A full list of customization options can be found in the [API Reference][referen
 
 * [Advanced flow][reference.advancedFlow]
 
+* [Localization][reference.localization]
+
 
 ## Support
 
@@ -380,5 +382,6 @@ This repository is open source and available under the MIT license. For more inf
 [reference.CashAppPayComponent]:  https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/cashapppaycomponent
 [reference.TwintComponent]:  https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/twintcomponent
 [reference.PayToComponent]:  https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/paytocomponent
+[reference.localization]:  https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/localization
 
 [apiExplorer.sessions]: https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/sessions
