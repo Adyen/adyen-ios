@@ -5,24 +5,59 @@
 //
 
 import Adyen
+#if canImport(AdyenCard)
+    import AdyenCard
+#endif
 import Foundation
 import UIKit
 
 internal protocol ComponentContainerAssemblerProtocol {
-    func resolveContainerView(for component: PresentableComponent) -> UIViewController
+    func resolveComponentContainerRouter(
+        for component: PresentableComponent,
+        delegate: ComponentContainerRouterDelegate
+    ) -> ComponentContainerRouterProtocol
 }
 
 internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol {
 
+    // MARK: - Properties
+
+    private let context: AdyenContext
+    private let configuration: DropInComponent.Configuration
+    private let cardComponentDelegate: CardComponentDelegate?
+    private let partialPaymentDelegate: PartialPaymentDelegate?
+
+    // MARK: - Initializers
+
+    internal init(
+        context: AdyenContext,
+        configuration: DropInComponent.Configuration,
+        cardComponentDelegate: CardComponentDelegate?,
+        partialPaymentDelegate: PartialPaymentDelegate?
+    ) {
+        self.context = context
+        self.configuration = configuration
+        self.cardComponentDelegate = cardComponentDelegate
+        self.partialPaymentDelegate = partialPaymentDelegate
+    }
+
     // MARK: - ComponentContainerAssemblerProtocol
 
-    internal func resolveContainerView(for component: PresentableComponent) -> UIViewController {
+    internal func resolveComponentContainerRouter(
+        for component: PresentableComponent,
+        delegate: ComponentContainerRouterDelegate
+    ) -> ComponentContainerRouterProtocol {
+        let router = ComponentContainerRouter(delegate: delegate)
         let viewModel = ComponentContainerViewModel(
             component: component,
-            isRoot: false,
-            cancelHandler: nil
+            context: context,
+            delegate: router,
+            configuration: configuration,
+            cardComponentDelegate: cardComponentDelegate,
+            partialPaymentDelegate: partialPaymentDelegate
         )
         let view = ComponentContainerViewController(viewModel: viewModel)
-        return view
+        router.view = view
+        return router
     }
 }

@@ -9,33 +9,34 @@ import AdyenNetworking
 import Foundation
 import UIKit
 
+internal protocol DropInRouterDelegate: AnyObject {
+    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
+    func didFail(with error: any Error)
+    func didCancel(component: any PaymentComponent)
+}
+
 internal protocol Router: AnyObject {
     var rootViewController: UIViewController { get }
     func start()
 }
 
-internal protocol DropInRootRouterProtocol: Router {
-    func start()
+internal protocol DropInRouterProtocol: Router {
+    var delegate: DropInRouterDelegate? { get set }
     var rootViewController: UIViewController { get }
+    func start()
 }
 
-internal class DropInRootRouter: DropInRootRouterProtocol {
-
-    private enum DropInRoot {
-        case preselected(_ paymentComponent: PaymentComponent)
-        case component(_ paymentComponent: PresentableComponent)
-        case paymentMethodList
-    }
+internal class DropInRouter: DropInRouterProtocol {
 
     // MARK: - Properties
+
+    internal weak var delegate: DropInRouterDelegate?
+    private let navigationController: DropInNavigationController
+    private let viewModel: DropInViewModelProtocol
 
     private let preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
-    private let componentManager: ComponentManager
-    private let configuration: DropInComponent.Configuration
-
-    private let navigationController: DropInRootViewController
 
     private var preselectedPaymentMethodRouter: PreselectedPaymentMethodRouterProtocol?
     private var paymentMethodListRouter: PaymentMethodListRouterProtocol?
@@ -43,18 +44,16 @@ internal class DropInRootRouter: DropInRootRouterProtocol {
     // MARK: - Initializers
 
     internal init(
+        viewModel: DropInViewModelProtocol,
         preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol,
         paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
-        componentContainerAssembler: ComponentContainerAssemblerProtocol,
-        componentManager: ComponentManager,
-        configuration: DropInComponent.Configuration
+        componentContainerAssembler: ComponentContainerAssemblerProtocol
     ) {
+        self.viewModel = viewModel
         self.preselectedPaymentMethodAssembler = preselectedPaymentMethodAssembler
         self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
-        self.componentManager = componentManager
-        self.configuration = configuration
-        self.navigationController = DropInRootViewController()
+        self.navigationController = DropInNavigationController()
     }
 
     // MARK: - DropInRootRouterProtocol
@@ -71,7 +70,7 @@ internal class DropInRootRouter: DropInRootRouterProtocol {
     // MARK: - Private
 
     private func resolveRootView() -> UIViewController {
-        switch root {
+        switch viewModel.root {
         case let .preselected(paymentComponent):
             let preselectedPaymentMethodRouter = preselectedPaymentMethodAssembler.resolvePreselectedPaymentMethodRouter(
                 component: paymentComponent,
@@ -81,8 +80,10 @@ internal class DropInRootRouter: DropInRootRouterProtocol {
             self.preselectedPaymentMethodRouter = preselectedPaymentMethodRouter
             return preselectedPaymentMethodRouter.rootViewController
         case let .component(paymentComponent):
-            let componentView = componentContainerAssembler.resolveContainerView(for: paymentComponent)
-            return componentView
+            // TODO: - Handle standalone component case
+//            let componentView = componentContainerAssembler.resolveContainerView(for: paymentComponent)
+//            return componentView
+            return UIViewController()
         case .paymentMethodList:
             let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter()
             paymentMethodListRouter.delegate = self
@@ -90,21 +91,11 @@ internal class DropInRootRouter: DropInRootRouterProtocol {
             return paymentMethodListRouter.rootViewController
         }
     }
-
-    private var root: DropInRoot {
-        if configuration.allowPreselectedPaymentView, let storedPaymentMethod = componentManager.storedComponents.first {
-            return .preselected(storedPaymentMethod)
-        } else if configuration.allowsSkippingPaymentList, let paymentComponent = componentManager.singleRegularComponent {
-            return .component(paymentComponent)
-        } else {
-            return .paymentMethodList
-        }
-    }
 }
 
-// PreselectedPaymentMethodRouterDelegate
+extension DropInRouter: PreselectedPaymentMethodRouterDelegate {
 
-extension DropInRootRouter: PreselectedPaymentMethodRouterDelegate {
+    // MARK: - PreselectedPaymentMethodRouterDelegate
 
     func showAllPaymentMethods() {
         let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter()
@@ -114,20 +105,27 @@ extension DropInRootRouter: PreselectedPaymentMethodRouterDelegate {
         
         navigationController.present(paymentMethodListRouter.rootViewController, animated: true)
     }
-
-    func didProceed(with paymentComponent: any PresentableComponent) {
-        let componentViewController = componentContainerAssembler.resolveContainerView(for: paymentComponent)
-        navigationController.present(componentViewController, animated: true)
-    }
 }
 
-// PaymentMethodListRouterDelegate
+extension DropInRouter: PaymentMethodListRouterDelegate {
 
-extension DropInRootRouter: PaymentMethodListRouterDelegate {
+    // MARK: - PaymentMethodListRouterDelegate
 
-    func cancelPayment(completion: (() -> Void)?) {
+    func paymentMethodListDidCancel(completion: (() -> Void)?) {
         navigationController.presentingViewController?.dismiss(animated: true)
         preselectedPaymentMethodRouter = nil
         paymentMethodListRouter = nil
+    }
+
+    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
+        delegate?.didSubmit(data, from: component)
+    }
+
+    func didFail(with error: any Error) {
+        delegate?.didFail(with: error)
+    }
+
+    func didCancel(component: any PaymentComponent) {
+        delegate?.didCancel(component: component)
     }
 }

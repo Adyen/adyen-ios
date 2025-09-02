@@ -39,7 +39,7 @@ internal final class ComponentContainerViewController: UIViewController {
     override public func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         componentView.resignFirstResponder()
-        viewModel.didCancel()
+        viewModel.cancel()
     }
 
     private func setupComponentView() {
@@ -63,8 +63,6 @@ internal final class ComponentContainerViewController: UIViewController {
     private func setupNavigationItem() {
         // TODO: - Replace with actual title
         navigationItem.title = "3"
-
-        if viewModel.isRoot { setupCancelButton() }
     }
 
     private func setupCancelButton() {

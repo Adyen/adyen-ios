@@ -9,7 +9,7 @@ import XCTest
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenActions
 import AdyenComponents
-import AdyenDropIn
+@testable import AdyenDropIn
 
 class SessionTests: XCTestCase {
 
@@ -696,7 +696,7 @@ class SessionTests: XCTestCase {
             didOpenExternalAppExpectation.fulfill()
         }
         
-        dropIn.didFail(with: ComponentError.paymentMethodNotSupported, from: paymentComponent)
+        dropIn.didFail(with: ComponentError.paymentMethodNotSupported)
         dropIn.didOpenExternalApplication(component: QRCodeActionComponent(context: context))
         sut.state.resultCode = .authorised
         dropIn.didComplete(from: actionComponent)

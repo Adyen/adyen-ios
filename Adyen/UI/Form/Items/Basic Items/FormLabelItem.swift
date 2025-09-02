@@ -62,7 +62,7 @@ public class FormLabelItem: FormItem {
 internal class ADYLabel: UILabel, AnyFormItemView {
 
     public var childItemViews: [AnyFormItemView] { [] }
-    
+
     public func reset() { /* Do nothing */ }
     
 }

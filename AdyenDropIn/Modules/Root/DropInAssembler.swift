@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenCard)
+    import AdyenCard
+#endif
 import AdyenNetworking
 import Foundation
 import UIKit
@@ -13,7 +16,7 @@ internal protocol DropInAssemblerProtocol {
     func resolveDropInRootView() -> UIViewController
 }
 
-internal class DropInRootAssembler {
+internal class DropInAssembler {
 
     // MARK: - Properties
 
@@ -21,17 +24,23 @@ internal class DropInRootAssembler {
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
     private let componentManager: ComponentManager
+    private let cardComponentDelegate: CardComponentDelegate?
+    private let partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
 
     internal init(
         paymentMethods: PaymentMethods,
         context: AdyenContext,
-        configuration: DropInComponent.Configuration
+        configuration: DropInComponent.Configuration,
+        cardComponentDelegate: CardComponentDelegate?,
+        partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.paymentMethods = paymentMethods
         self.context = context
         self.configuration = configuration
+        self.cardComponentDelegate = cardComponentDelegate
+        self.partialPaymentDelegate = partialPaymentDelegate
         self.componentManager = ComponentManager(
             paymentMethods: paymentMethods,
             context: context,
@@ -45,25 +54,24 @@ internal class DropInRootAssembler {
 
     // MARK: - Public
 
-    internal func resolveDropInRootRouter() -> DropInRootRouterProtocol {
+    internal func resolveDropInRootRouter() -> DropInRouterProtocol {
         let apiClient = resolveAPIClient()
-        let router = DropInRootRouter(
-            preselectedPaymentMethodAssembler: preselectedPaymentMethodAssembler,
-            paymentMethodListAssembler: paymentMethodListAssembler,
-            componentContainerAssembler: componentContainerAssembler,
-            componentManager: componentManager,
-            configuration: configuration
-        )
 
-        let viewModel = DropInRootViewModel(
+        let viewModel = DropInViewModel(
             componentManager: componentManager,
             apiClient: apiClient,
             paymentMethods: paymentMethods,
             context: context,
-            configuration: configuration,
-            router: router
+            configuration: configuration
         )
-        componentManager.presentationDelegate = viewModel
+
+        let router = DropInRouter(
+            viewModel: viewModel,
+            preselectedPaymentMethodAssembler: preselectedPaymentMethodAssembler,
+            paymentMethodListAssembler: paymentMethodListAssembler,
+            componentContainerAssembler: componentContainerAssembler
+        )
+
         return router
     }
 
@@ -79,18 +87,30 @@ internal class DropInRootAssembler {
     }
 
     private var preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
-        PreselectedPaymentMethodAssembler(configuration: configuration)
+        PreselectedPaymentMethodAssembler(
+            context: context,
+            configuration: configuration,
+            cardComponentDelegate: cardComponentDelegate,
+            partialPaymentDelegate: partialPaymentDelegate
+        )
     }
 
     private var paymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         PaymentMethodListAssembler(
             componentManager: componentManager,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            cardComponentDelegate: cardComponentDelegate,
+            partialPaymentDelegate: partialPaymentDelegate
         )
     }
-
+    
     private var componentContainerAssembler: ComponentContainerAssemblerProtocol {
-        ComponentContainerAssembler()
+        ComponentContainerAssembler(
+            context: context,
+            configuration: configuration,
+            cardComponentDelegate: cardComponentDelegate,
+            partialPaymentDelegate: partialPaymentDelegate
+        )
     }
 }

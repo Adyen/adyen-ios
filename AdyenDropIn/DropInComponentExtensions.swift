@@ -18,35 +18,6 @@ import AdyenNetworking
 import UIKit
 
 @_spi(AdyenInternal)
-extension DropInComponent: PaymentComponentDelegate {
-    
-    public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        paymentInProgress = true
-        
-        let updatedData = data.replacing(checkoutAttemptId: component.context.analyticsProvider?.checkoutAttemptId)
-
-        guard updatedData.browserInfo == nil else {
-            self.delegate?.didSubmit(updatedData, from: component, in: self)
-            return
-        }
-        updatedData.dataByAddingBrowserInfo { [weak self] in
-            guard let self else { return }
-            self.delegate?.didSubmit($0, from: component, in: self)
-        }
-        
-    }
-    
-    public func didFail(with error: Error, from component: PaymentComponent) {
-        if case ComponentError.cancelled = error {
-            userDidCancel(component)
-        } else {
-            delegate?.didFail(with: error, from: self)
-        }
-    }
-
-}
-
-@_spi(AdyenInternal)
 extension DropInComponent: ActionComponentDelegate {
     
     public func didOpenExternalApplication(component: ActionComponent) {

@@ -8,9 +8,11 @@ import Adyen
 import AdyenNetworking
 import Foundation
 
-internal protocol DropInRootViewModelProtocol {}
+internal protocol DropInViewModelProtocol {
+    var root: DropInRoot { get }
+}
 
-internal class DropInRootViewModel: DropInRootViewModelProtocol {
+internal class DropInViewModel: DropInViewModelProtocol {
 
     // MARK: - Properties
 
@@ -20,7 +22,6 @@ internal class DropInRootViewModel: DropInRootViewModelProtocol {
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
     private let title: String?
-    private let router: DropInRootRouterProtocol
 
     // MARK: - Initializers
 
@@ -30,8 +31,7 @@ internal class DropInRootViewModel: DropInRootViewModelProtocol {
         paymentMethods: PaymentMethods,
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
-        title: String? = nil,
-        router: DropInRootRouterProtocol
+        title: String? = nil
     ) {
         self.componentManager = componentManager
         self.apiClient = apiClient
@@ -39,13 +39,24 @@ internal class DropInRootViewModel: DropInRootViewModelProtocol {
         self.context = context
         self.configuration = configuration
         self.title = title
-        self.router = router
+
+        self.componentManager.presentationDelegate = self
     }
 
     // MARK: - DropInRootViewModelProtocol
+
+    internal var root: DropInRoot {
+        if configuration.allowPreselectedPaymentView, let storedPaymentMethod = componentManager.storedComponents.first {
+            return .preselected(storedPaymentMethod)
+        } else if configuration.allowsSkippingPaymentList, let paymentComponent = componentManager.singleRegularComponent {
+            return .component(paymentComponent)
+        } else {
+            return .paymentMethodList
+        }
+    }
 }
 
-extension DropInRootViewModel: PresentationDelegate {
+extension DropInViewModel: PresentationDelegate {
 
     internal func present(component: any Adyen.PresentableComponent) {
         // TODO: -
