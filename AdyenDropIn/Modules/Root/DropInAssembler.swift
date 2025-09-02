@@ -5,7 +5,9 @@
 //
 
 import Adyen
-import AdyenCard
+#if canImport(AdyenCard)
+    import AdyenCard
+#endif
 import AdyenNetworking
 import Foundation
 import UIKit
