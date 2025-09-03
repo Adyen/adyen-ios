@@ -38,7 +38,7 @@ More information about our versioning and the Drop-in/Components lifecycle can b
 
 ## Installation
 
-Adyen iOS are available through either [CocoaPods](http://cocoapods.org) or [Swift Package Manager](https://swift.org/package-manager/).
+Adyen iOS is available through either [CocoaPods](http://cocoapods.org) or [Swift Package Manager](https://swift.org/package-manager/).
 
 ### Minimum Requirements
 
