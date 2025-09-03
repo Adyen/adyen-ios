@@ -17,7 +17,6 @@ excluded:
   - Demo
   - Package.swift
   - DerivedData
-  - Carthage
   - TempProject
   - Scripts
 
