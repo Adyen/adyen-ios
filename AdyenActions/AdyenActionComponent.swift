@@ -5,7 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import Adyen3DS2
+#if canImport(Adyen3DS2)
+    import Adyen3DS2
+#endif
 import Foundation
 import UIKit
 
@@ -39,33 +41,35 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         /// The UI style configurations.
         public var style: ActionComponentStyle = .init()
         
-        /// Three DS configurations
-        public var threeDS: ThreeDS = .init()
+        #if canImport(Adyen3DS2)
+            /// Three DS configurations
+            public var threeDS: ThreeDS = .init()
         
-        /// Three DS configurations
-        public struct ThreeDS {
-            /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
-            public var requestorAppURL: URL?
+            /// Three DS configurations
+            public struct ThreeDS {
+                /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
+                public var requestorAppURL: URL?
             
-            /// The configuration for Delegated Authentication.
-            public var delegateAuthentication: ThreeDS2Component.Configuration.DelegatedAuthentication?
+                /// The configuration for Delegated Authentication.
+                public var delegateAuthentication: ThreeDS2Component.Configuration.DelegatedAuthentication?
             
-            /// ThreeDS2Component UI configuration.
-            public var appearanceConfiguration: ADYAppearanceConfiguration
+                /// ThreeDS2Component UI configuration.
+                public var appearanceConfiguration: ADYAppearanceConfiguration
             
-            /// Initializes a new instance
-            ///
-            /// - Parameter requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
-            public init(
-                requestorAppURL: URL? = nil,
-                delegateAuthentication: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil,
-                appearanceConfiguration: ADYAppearanceConfiguration = .init()
-            ) {
-                self.requestorAppURL = requestorAppURL
-                self.delegateAuthentication = delegateAuthentication
-                self.appearanceConfiguration = appearanceConfiguration
+                /// Initializes a new instance
+                ///
+                /// - Parameter requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
+                public init(
+                    requestorAppURL: URL? = nil,
+                    delegateAuthentication: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil,
+                    appearanceConfiguration: ADYAppearanceConfiguration = .init()
+                ) {
+                    self.requestorAppURL = requestorAppURL
+                    self.delegateAuthentication = delegateAuthentication
+                    self.appearanceConfiguration = appearanceConfiguration
+                }
             }
-        }
+        #endif
         
         public var twint: Twint?
         
@@ -117,24 +121,47 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
             }
         }
         
-        /// Initializes a new instance
-        ///
-        /// - Parameters:
-        ///   - localizationParameters: Localization parameters.
-        ///   - style: The UI style configurations.
-        ///   - threeDS: Three DS configurations
-        ///   - twint: Twint configurations
-        public init(
-            localizationParameters: LocalizationParameters? = nil,
-            style: ActionComponentStyle = .init(),
-            threeDS: AdyenActionComponent.Configuration.ThreeDS = .init(),
-            twint: Twint? = nil
-        ) {
-            self.localizationParameters = localizationParameters
-            self.style = style
-            self.threeDS = threeDS
-            self.twint = twint
-        }
+        #if canImport(Adyen3DS2)
+        
+            /// Initializes a new instance
+            ///
+            /// - Parameters:
+            ///   - localizationParameters: Localization parameters.
+            ///   - style: The UI style configurations.
+            ///   - threeDS: Three DS configurations
+            ///   - twint: Twint configurations
+            public init(
+                localizationParameters: LocalizationParameters? = nil,
+                style: ActionComponentStyle = .init(),
+                threeDS: AdyenActionComponent.Configuration.ThreeDS = .init(),
+                twint: Twint? = nil
+            ) {
+                self.localizationParameters = localizationParameters
+                self.style = style
+                self.threeDS = threeDS
+                self.twint = twint
+            }
+        
+        #else
+        
+            /// Initializes a new instance
+            ///
+            /// - Parameters:
+            ///   - localizationParameters: Localization parameters.
+            ///   - style: The UI style configurations.
+            ///   - threeDS: Three DS configurations
+            ///   - twint: Twint configurations
+            public init(
+                localizationParameters: LocalizationParameters? = nil,
+                style: ActionComponentStyle = .init(),
+                twint: Twint? = nil
+            ) {
+                self.localizationParameters = localizationParameters
+                self.style = style
+                self.twint = twint
+            }
+        
+        #endif
     }
     
     internal var currentActionComponent: Component?
@@ -219,6 +246,8 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         component.handle(action)
     }
     
+    #if canImport(Adyen3DS2)
+    
     private func createThreeDS2Component() -> ThreeDS2Component {
         let threeDS2Configuration = ThreeDS2Component.Configuration(
             redirectComponentStyle: configuration.style.redirectComponentStyle,
@@ -246,6 +275,8 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         }
         threeDS2Component.handle(action)
     }
+    
+    #endif
     
     private func handle(_ sdkAction: SDKAction) {
         switch sdkAction {

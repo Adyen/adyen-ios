@@ -4,6 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+#if canImport(Adyen3DS2)
+
 import Foundation
 
 internal extension ThreeDS2Component {
@@ -29,3 +31,5 @@ internal extension ThreeDS2Component {
         }
     }
 }
+
+#endif

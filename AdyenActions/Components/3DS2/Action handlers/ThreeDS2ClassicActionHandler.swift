@@ -4,115 +4,119 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
-import Adyen3DS2
-import Foundation
+#if canImport(Adyen3DS2)
 
-/// Handles the 3D Secure 2 fingerprint and challenge actions separately.
-internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, ComponentWrapper {
+    @_spi(AdyenInternal) import Adyen
+    import Adyen3DS2
+    import Foundation
+
+    /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
+    internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, ComponentWrapper {
     
-    internal let context: AdyenContext
+        internal let context: AdyenContext
 
-    internal var wrappedComponent: Component { coreActionHandler }
+        internal var wrappedComponent: Component { coreActionHandler }
 
-    internal let coreActionHandler: AnyThreeDS2CoreActionHandler
+        internal let coreActionHandler: AnyThreeDS2CoreActionHandler
     
-    internal weak var presentationDelegate: Adyen.PresentationDelegate? {
-        didSet {
-            coreActionHandler.presentationDelegate = presentationDelegate
+        internal weak var presentationDelegate: Adyen.PresentationDelegate? {
+            didSet {
+                coreActionHandler.presentationDelegate = presentationDelegate
+            }
         }
-    }
 
-    /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
-    internal var threeDSRequestorAppURL: URL? {
-        get {
-            coreActionHandler.threeDSRequestorAppURL
-        }
+        /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
+        internal var threeDSRequestorAppURL: URL? {
+            get {
+                coreActionHandler.threeDSRequestorAppURL
+            }
         
-        set {
-            coreActionHandler.threeDSRequestorAppURL = newValue
+            set {
+                coreActionHandler.threeDSRequestorAppURL = newValue
+            }
         }
-    }
     
-    internal init(
-        context: AdyenContext,
-        appearanceConfiguration: ADYAppearanceConfiguration,
-        service: ThreeDSService,
-        coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
-        delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil
-    ) {
-        self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
-            context: context,
-            service: service,
-            appearanceConfiguration: appearanceConfiguration,
-            delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
-        )
-        self.context = context
+        internal init(
+            context: AdyenContext,
+            appearanceConfiguration: ADYAppearanceConfiguration,
+            service: ThreeDSService,
+            coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
+            delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil
+        ) {
+            self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
+                context: context,
+                service: service,
+                appearanceConfiguration: appearanceConfiguration,
+                delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
+            )
+            self.context = context
+        }
+
+        // MARK: - Fingerprint
+
+        /// Handles the 3D Secure 2 fingerprint action.
+        ///
+        /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
+        /// - Parameter completionHandler: The completion closure.
+        internal func handle(
+            _ fingerprintAction: ThreeDS2FingerprintAction,
+            completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void
+        ) {
+            let event = Analytics.Event(
+                component: fingerprintEventName,
+                flavor: _isDropIn ? .dropin : .components,
+                environment: context.apiContext.environment
+            )
+            coreActionHandler.handle(fingerprintAction, event: event) { result in
+                switch result {
+                case let .success(encodedFingerprint):
+                    let additionalDetails = ThreeDS2Details.fingerprint(encodedFingerprint)
+                    let result = ThreeDSActionHandlerResult.details(additionalDetails)
+                    completionHandler(.success(result))
+                case let .failure(error):
+                    completionHandler(.failure(error))
+                }
+            }
+        }
+
+        // MARK: - Challenge
+
+        /// Handles the 3D Secure 2 challenge action.
+        ///
+        /// - Parameter challengeAction: The challenge action as received from the Checkout API.
+        /// - Parameter completionHandler: The completion closure.
+        internal func handle(
+            _ challengeAction: ThreeDS2ChallengeAction,
+            completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void
+        ) {
+            let event = Analytics.Event(
+                component: challengeEventName,
+                flavor: _isDropIn ? .dropin : .components,
+                environment: context.apiContext.environment
+            )
+            coreActionHandler.handle(challengeAction, event: event) { result in
+                switch result {
+                case let .success(result):
+                    let additionalDetails = ThreeDS2Details.challengeResult(result)
+                    completionHandler(.success(.details(additionalDetails)))
+                case let .failure(error):
+                    completionHandler(.failure(error))
+                }
+            }
+        }
+
+        // MARK: - Private
+
+        private let fingerprintEventName = "3ds2fingerprint"
+
+        private let challengeEventName = "3ds2challenge"
+
     }
 
-    // MARK: - Fingerprint
-
-    /// Handles the 3D Secure 2 fingerprint action.
-    ///
-    /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
-    /// - Parameter completionHandler: The completion closure.
-    internal func handle(
-        _ fingerprintAction: ThreeDS2FingerprintAction,
-        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void
-    ) {
-        let event = Analytics.Event(
-            component: fingerprintEventName,
-            flavor: _isDropIn ? .dropin : .components,
-            environment: context.apiContext.environment
-        )
-        coreActionHandler.handle(fingerprintAction, event: event) { result in
-            switch result {
-            case let .success(encodedFingerprint):
-                let additionalDetails = ThreeDS2Details.fingerprint(encodedFingerprint)
-                let result = ThreeDSActionHandlerResult.details(additionalDetails)
-                completionHandler(.success(result))
-            case let .failure(error):
-                completionHandler(.failure(error))
-            }
+    extension ThreeDS2ClassicActionHandler: PresentationDelegate {
+        func present(component: any Adyen.PresentableComponent) {
+            presentationDelegate?.present(component: component)
         }
     }
 
-    // MARK: - Challenge
-
-    /// Handles the 3D Secure 2 challenge action.
-    ///
-    /// - Parameter challengeAction: The challenge action as received from the Checkout API.
-    /// - Parameter completionHandler: The completion closure.
-    internal func handle(
-        _ challengeAction: ThreeDS2ChallengeAction,
-        completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void
-    ) {
-        let event = Analytics.Event(
-            component: challengeEventName,
-            flavor: _isDropIn ? .dropin : .components,
-            environment: context.apiContext.environment
-        )
-        coreActionHandler.handle(challengeAction, event: event) { result in
-            switch result {
-            case let .success(result):
-                let additionalDetails = ThreeDS2Details.challengeResult(result)
-                completionHandler(.success(.details(additionalDetails)))
-            case let .failure(error):
-                completionHandler(.failure(error))
-            }
-        }
-    }
-
-    // MARK: - Private
-
-    private let fingerprintEventName = "3ds2fingerprint"
-
-    private let challengeEventName = "3ds2challenge"
-
-}
-
-extension ThreeDS2ClassicActionHandler: PresentationDelegate {
-    func present(component: any Adyen.PresentableComponent) {
-        presentationDelegate?.present(component: component)
-    }
-}
+#endif

@@ -4,36 +4,40 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
-import Adyen3DS2
-import Foundation
-#if canImport(AdyenAuthentication)
-    import AdyenAuthentication
-#endif
+#if canImport(Adyen3DS2)
 
-extension ThreeDS2CompactActionHandler {
+    @_spi(AdyenInternal) import Adyen
+    import Adyen3DS2
+    import Foundation
+    #if canImport(AdyenAuthentication)
+        import AdyenAuthentication
+    #endif
+
+    extension ThreeDS2CompactActionHandler {
     
-    /// Initializes the 3D Secure 2 action handler.
-    internal convenience init(
-        context: AdyenContext,
-        service: ThreeDSService,
-        appearanceConfiguration: ADYAppearanceConfiguration,
-        delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?
-    ) {
+        /// Initializes the 3D Secure 2 action handler.
+        internal convenience init(
+            context: AdyenContext,
+            service: ThreeDSService,
+            appearanceConfiguration: ADYAppearanceConfiguration,
+            delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?
+        ) {
         
-        let fingerprintSubmitter = ThreeDS2FingerprintSubmitter(context: context)
-        self.init(
-            context: context,
-            fingerprintSubmitter: fingerprintSubmitter,
-            appearanceConfiguration: appearanceConfiguration,
-            service: service,
-            coreActionHandler: createDefaultThreeDS2CoreActionHandler(
+            let fingerprintSubmitter = ThreeDS2FingerprintSubmitter(context: context)
+            self.init(
                 context: context,
-                service: service,
+                fingerprintSubmitter: fingerprintSubmitter,
                 appearanceConfiguration: appearanceConfiguration,
+                service: service,
+                coreActionHandler: createDefaultThreeDS2CoreActionHandler(
+                    context: context,
+                    service: service,
+                    appearanceConfiguration: appearanceConfiguration,
+                    delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
+                ),
                 delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
-            ),
-            delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
-        )
+            )
+        }
     }
-}
+
+#endif

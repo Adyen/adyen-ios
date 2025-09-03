@@ -4,6 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+#if canImport(Adyen3DS2)
+
 import Foundation
 @_spi(AdyenInternal) import Adyen
 
@@ -70,3 +72,5 @@ internal final class ThreeDSServiceProvider: ThreeDSServiceable, ThreeDSConfigur
         ThreeDSServiceLegacy()
     }
 }
+
+#endif

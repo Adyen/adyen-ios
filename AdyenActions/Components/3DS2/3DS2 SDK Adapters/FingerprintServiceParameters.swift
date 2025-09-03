@@ -4,6 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+#if canImport(Adyen3DS2)
+
 import class Adyen3DS2.ADYAppearanceConfiguration
 import Foundation
 
@@ -15,3 +17,5 @@ internal struct FingerprintServiceParameters {
     internal let appearanceConfiguration: Adyen3DS2.ADYAppearanceConfiguration
     internal let threeDSMessageVersion: String
 }
+
+#endif

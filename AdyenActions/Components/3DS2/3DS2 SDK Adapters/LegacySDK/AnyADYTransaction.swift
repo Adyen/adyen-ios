@@ -4,29 +4,33 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen3DS2
-import Foundation
+#if canImport(Adyen3DS2)
 
-internal protocol AnyADYTransaction {
+    import Adyen3DS2
+    import Foundation
 
-    var authenticationParameters: AnyAuthenticationRequestParameters { get }
+    internal protocol AnyADYTransaction {
 
-    func performChallenge(with parameters: ADYChallengeParameters, completionHandler: @escaping (AnyChallengeResult?, Error?) -> Void)
-}
+        var authenticationParameters: AnyAuthenticationRequestParameters { get }
 
-extension ADYTransaction: AnyADYTransaction {
-
-    internal var authenticationParameters: AnyAuthenticationRequestParameters { authenticationRequestParameters }
-
-    internal func performChallenge(
-        with parameters: ADYChallengeParameters,
-        completionHandler: @escaping (AnyChallengeResult?, Error?) -> Void
-    ) {
-        performChallenge(
-            with: parameters,
-            completionHandler: { (result: ADYChallengeResult?, error: Error?) in
-                completionHandler(result, error)
-            }
-        )
+        func performChallenge(with parameters: ADYChallengeParameters, completionHandler: @escaping (AnyChallengeResult?, Error?) -> Void)
     }
-}
+
+    extension ADYTransaction: AnyADYTransaction {
+
+        internal var authenticationParameters: AnyAuthenticationRequestParameters { authenticationRequestParameters }
+
+        internal func performChallenge(
+            with parameters: ADYChallengeParameters,
+            completionHandler: @escaping (AnyChallengeResult?, Error?) -> Void
+        ) {
+            performChallenge(
+                with: parameters,
+                completionHandler: { (result: ADYChallengeResult?, error: Error?) in
+                    completionHandler(result, error)
+                }
+            )
+        }
+    }
+
+#endif
