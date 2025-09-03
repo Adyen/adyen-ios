@@ -85,8 +85,10 @@ public extension DropInComponent {
         
         public init() { /* Empty initializer */ }
         
-        /// Three DS configurations
-        public var threeDS: AdyenActionComponent.Configuration.ThreeDS = .init()
+        #if canImport(Adyen3DS2)
+            /// Three DS configurations
+            public var threeDS: AdyenActionComponent.Configuration.ThreeDS = .init()
+        #endif
         
         /// Twint configurations
         public var twint: AdyenActionComponent.Configuration.Twint?

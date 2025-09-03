@@ -193,12 +193,14 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         switch action {
         case let .redirect(redirectAction):
             handle(redirectAction)
-        case let .threeDS2Fingerprint(fingerprintAction):
-            handle(fingerprintAction)
-        case let .threeDS2Challenge(challengeAction):
-            handle(challengeAction)
-        case let .threeDS2(threeDS2Action):
-            handle(threeDS2Action)
+        #if canImport(Adyen3DS2)
+            case let .threeDS2Fingerprint(fingerprintAction):
+                handle(fingerprintAction)
+            case let .threeDS2Challenge(challengeAction):
+                handle(challengeAction)
+            case let .threeDS2(threeDS2Action):
+                handle(threeDS2Action)
+        #endif
         case let .sdk(sdkAction):
             handle(sdkAction)
         case let .await(awaitAction):
@@ -232,50 +234,48 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         component.handle(action)
     }
     
-    private func handle(_ action: ThreeDS2Action) {
-        let component = createThreeDS2Component()
-        currentActionComponent = component
-        
-        component.handle(action)
-    }
-    
-    private func handle(_ action: ThreeDS2FingerprintAction) {
-        let component = createThreeDS2Component()
-        currentActionComponent = component
-        
-        component.handle(action)
-    }
-    
     #if canImport(Adyen3DS2)
-    
-    private func createThreeDS2Component() -> ThreeDS2Component {
-        let threeDS2Configuration = ThreeDS2Component.Configuration(
-            redirectComponentStyle: configuration.style.redirectComponentStyle,
-            appearanceConfiguration: configuration.threeDS.appearanceConfiguration,
-            requestorAppURL: configuration.threeDS.requestorAppURL,
-            delegateAuthentication: configuration.threeDS.delegateAuthentication
-        )
-        let component = ThreeDS2Component(
-            context: context,
-            configuration: threeDS2Configuration
-        )
-        component._isDropIn = _isDropIn
-        component.delegate = delegate
-        component.presentationDelegate = presentationDelegate
+        private func handle(_ action: ThreeDS2Action) {
+            let component = createThreeDS2Component()
+            currentActionComponent = component
         
-        return component
-    }
-    
-    private func handle(_ action: ThreeDS2ChallengeAction) {
-        guard let threeDS2Component = currentActionComponent as? ThreeDS2Component else {
-            AdyenAssertion.assertionFailure( // swiftlint:disable:next line_length
-                message: "ThreeDS2Component is nil. There must be a ThreeDS2FingerprintAction action preceding a ThreeDS2ChallengeAction action"
-            )
-            return
+            component.handle(action)
         }
-        threeDS2Component.handle(action)
-    }
     
+        private func handle(_ action: ThreeDS2FingerprintAction) {
+            let component = createThreeDS2Component()
+            currentActionComponent = component
+        
+            component.handle(action)
+        }
+        
+        private func createThreeDS2Component() -> ThreeDS2Component {
+            let threeDS2Configuration = ThreeDS2Component.Configuration(
+                redirectComponentStyle: configuration.style.redirectComponentStyle,
+                appearanceConfiguration: configuration.threeDS.appearanceConfiguration,
+                requestorAppURL: configuration.threeDS.requestorAppURL,
+                delegateAuthentication: configuration.threeDS.delegateAuthentication
+            )
+            let component = ThreeDS2Component(
+                context: context,
+                configuration: threeDS2Configuration
+            )
+            component._isDropIn = _isDropIn
+            component.delegate = delegate
+            component.presentationDelegate = presentationDelegate
+        
+            return component
+        }
+    
+        private func handle(_ action: ThreeDS2ChallengeAction) {
+            guard let threeDS2Component = currentActionComponent as? ThreeDS2Component else {
+                AdyenAssertion.assertionFailure( // swiftlint:disable:next line_length
+                    message: "ThreeDS2Component is nil. There must be a ThreeDS2FingerprintAction action preceding a ThreeDS2ChallengeAction action"
+                )
+                return
+            }
+            threeDS2Component.handle(action)
+        }
     #endif
     
     private func handle(_ sdkAction: SDKAction) {
@@ -398,12 +398,14 @@ private extension Action {
             return "redirect"
         case .sdk:
             return "sdk"
-        case .threeDS2Fingerprint:
-            return "threeDS2Fingerprint"
-        case .threeDS2Challenge:
-            return "threeDS2Challenge"
-        case .threeDS2:
-            return "threeDS2"
+        #if canImport(Adyen3DS2)
+            case .threeDS2Fingerprint:
+                return "threeDS2Fingerprint"
+            case .threeDS2Challenge:
+                return "threeDS2Challenge"
+            case .threeDS2:
+                return "threeDS2"
+        #endif
         case .await, .redirectableAwait:
             return "await"
         case .voucher, .document:

@@ -68,8 +68,6 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
         let configuration = ConfigurationConstants.current.dropInConfiguration
 
         configuration.applePay = try? ConfigurationConstants.current.applePayConfiguration()
-        configuration.actionComponent.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
-        configuration.actionComponent.threeDS.requestorAppURL = ConfigurationConstants.returnUrl
         configuration.card = ConfigurationConstants.current.cardDropInConfiguration
         return configuration
     }

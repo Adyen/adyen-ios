@@ -224,7 +224,10 @@ public final class DropInComponent: NSObject,
         handler.delegate = self
         handler.presentationDelegate = self
         handler.configuration.localizationParameters = configuration.localizationParameters
-        handler.configuration.threeDS = configuration.actionComponent.threeDS
+        
+        #if canImport(Adyen3DS2)
+            handler.configuration.threeDS = configuration.actionComponent.threeDS
+        #endif
         handler.configuration.twint = configuration.actionComponent.twint
         return handler
     }()

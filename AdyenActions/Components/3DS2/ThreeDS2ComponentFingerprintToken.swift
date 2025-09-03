@@ -6,30 +6,30 @@
 
 #if canImport(Adyen3DS2)
 
-import Foundation
+    import Foundation
 
-internal extension ThreeDS2Component {
+    internal extension ThreeDS2Component {
     
-    struct FingerprintToken: Decodable { // swiftlint:disable:this explicit_acl
+        struct FingerprintToken: Decodable { // swiftlint:disable:this explicit_acl
         
-        internal let directoryServerIdentifier: String
-        internal let directoryServerPublicKey: String
-        internal let threeDSMessageVersion: String
-        internal let directoryServerRootCertificates: String
-        internal let delegatedAuthenticationSDKInput: String?
-        internal let paymentInfo: PaymentInfo?
-        internal let configuration: ThreeDSConfiguration?
+            internal let directoryServerIdentifier: String
+            internal let directoryServerPublicKey: String
+            internal let threeDSMessageVersion: String
+            internal let directoryServerRootCertificates: String
+            internal let delegatedAuthenticationSDKInput: String?
+            internal let paymentInfo: PaymentInfo?
+            internal let configuration: ThreeDSConfiguration?
         
-        private enum CodingKeys: String, CodingKey {
-            case directoryServerIdentifier = "directoryServerId"
-            case directoryServerPublicKey
-            case threeDSMessageVersion
-            case directoryServerRootCertificates
-            case delegatedAuthenticationSDKInput
-            case paymentInfo
-            case configuration
+            private enum CodingKeys: String, CodingKey {
+                case directoryServerIdentifier = "directoryServerId"
+                case directoryServerPublicKey
+                case threeDSMessageVersion
+                case directoryServerRootCertificates
+                case delegatedAuthenticationSDKInput
+                case paymentInfo
+                case configuration
+            }
         }
     }
-}
 
 #endif

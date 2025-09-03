@@ -6,16 +6,16 @@
 
 #if canImport(Adyen3DS2)
 
-import class Adyen3DS2.ADYAppearanceConfiguration
-import Foundation
+    import class Adyen3DS2.ADYAppearanceConfiguration
+    import Foundation
 
-internal struct FingerprintServiceParameters {
-    internal let directoryServerIdentifier: String
-    internal let directoryServerPublicKey: String
-    internal let directoryServerRootCertificates: String
-    internal let deviceExcludedParameters: [String: Any]?
-    internal let appearanceConfiguration: Adyen3DS2.ADYAppearanceConfiguration
-    internal let threeDSMessageVersion: String
-}
+    internal struct FingerprintServiceParameters {
+        internal let directoryServerIdentifier: String
+        internal let directoryServerPublicKey: String
+        internal let directoryServerRootCertificates: String
+        internal let deviceExcludedParameters: [String: Any]?
+        internal let appearanceConfiguration: Adyen3DS2.ADYAppearanceConfiguration
+        internal let threeDSMessageVersion: String
+    }
 
 #endif

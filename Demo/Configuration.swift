@@ -69,10 +69,6 @@ internal enum ConfigurationConstants {
         "frequency": "adhoc",
         "remarks": "Remark on mandate"
     ]
-    
-    static var delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication {
-        .init(relyingPartyIdentifier: "test-authentication-adyen.netlify.app")
-    }
 
     static var shippingMethods: [PKShippingMethod] = {
         var shippingByCar = PKShippingMethod(label: "By car", amount: NSDecimalNumber(5.0))

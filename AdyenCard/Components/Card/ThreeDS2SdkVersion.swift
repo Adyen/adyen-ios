@@ -7,4 +7,8 @@
 import Foundation
 
 /// The 3DS2 SDK version.
-public let threeDS2SdkVersion: String = "2.4.3"
+#if canImport(Adyen3DS2)
+    public let threeDS2SdkVersion: String = "2.4.3"
+#else
+    public let threeDS2SdkVersion: String = ""
+#endif

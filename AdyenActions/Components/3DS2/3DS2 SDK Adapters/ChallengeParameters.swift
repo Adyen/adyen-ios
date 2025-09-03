@@ -6,11 +6,11 @@
 
 #if canImport(Adyen3DS2)
 
-import Foundation
+    import Foundation
 
-internal struct ChallengeParameters {
-    internal let challengeToken: ThreeDS2Component.ChallengeToken
-    internal let threeDSRequestorAppURL: URL?
-}
+    internal struct ChallengeParameters {
+        internal let challengeToken: ThreeDS2Component.ChallengeToken
+        internal let threeDSRequestorAppURL: URL?
+    }
 
 #endif

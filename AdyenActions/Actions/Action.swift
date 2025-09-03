@@ -11,26 +11,28 @@ public enum Action: Decodable {
     
     /// Indicates the user should be redirected to a URL.
     case redirect(RedirectAction)
-
+    
     /// Indicates the user should be redirected to an SDK.
     case sdk(SDKAction)
     
-    /// Indicates a 3D Secure device fingerprint should be taken.
-    case threeDS2Fingerprint(ThreeDS2FingerprintAction)
+    #if canImport(Adyen3DS2)
+        /// Indicates a 3D Secure device fingerprint should be taken.
+        case threeDS2Fingerprint(ThreeDS2FingerprintAction)
     
-    /// Indicates a 3D Secure challenge should be presented.
-    case threeDS2Challenge(ThreeDS2ChallengeAction)
-
-    /// Indicates a full 3D Secure 2 flow should be executed including fingerprint collection,
-    /// and potentially a challenge or a fallback to 3DS1.
-    case threeDS2(ThreeDS2Action)
+        /// Indicates a 3D Secure challenge should be presented.
+        case threeDS2Challenge(ThreeDS2ChallengeAction)
+    
+        /// Indicates a full 3D Secure 2 flow should be executed including fingerprint collection,
+        /// and potentially a challenge or a fallback to 3DS1.
+        case threeDS2(ThreeDS2Action)
+    #endif
     
     /// Indicate that the SDK should wait for user action.
     case await (AwaitAction)
-
+    
     /// Indicate that the SDK should wait for user action while redirecting.
     case redirectableAwait(RedirectableAwaitAction)
-
+    
     /// Indicates that a voucher is presented to the shopper.
     case voucher(VoucherAction)
     
@@ -50,11 +52,23 @@ public enum Action: Decodable {
         case .redirect, .nativeRedirect:
             self = try .redirect(RedirectAction(from: decoder))
         case .threeDS2Fingerprint:
-            self = try .threeDS2Fingerprint(ThreeDS2FingerprintAction(from: decoder))
+            #if canImport(Adyen3DS2)
+                self = try .threeDS2Fingerprint(ThreeDS2FingerprintAction(from: decoder))
+            #else
+                throw NSError(domain: "", code: 1)
+            #endif
         case .threeDS2Challenge:
-            self = try .threeDS2Challenge(ThreeDS2ChallengeAction(from: decoder))
+            #if canImport(Adyen3DS2)
+                self = try .threeDS2Challenge(ThreeDS2ChallengeAction(from: decoder))
+            #else
+                throw NSError(domain: "", code: 1)
+            #endif
         case .threeDS2:
-            self = try .threeDS2(ThreeDS2Action(from: decoder))
+            #if canImport(Adyen3DS2)
+                self = try .threeDS2(ThreeDS2Action(from: decoder))
+            #else
+                throw NSError(domain: "", code: 1)
+            #endif
         case .sdk:
             self = try .sdk(SDKAction(from: decoder))
         case .await:
@@ -84,7 +98,7 @@ public enum Action: Decodable {
             return try .voucher(VoucherAction(from: decoder))
         }
     }
-
+    
     private static func handleAwaitType(from decoder: Decoder) throws -> Action {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         if (try? container.decode(URL.self, forKey: .redirectUrl)) != nil {
@@ -93,7 +107,7 @@ public enum Action: Decodable {
             return try .await(AwaitAction(from: decoder))
         }
     }
-
+    
     private enum ActionType: String, Decodable {
         case redirect
         case nativeRedirect
@@ -105,7 +119,7 @@ public enum Action: Decodable {
         case `await`
         case voucher
     }
-
+    
     private enum CodingKeys: String, CodingKey {
         case type
         case paymentMethodType
