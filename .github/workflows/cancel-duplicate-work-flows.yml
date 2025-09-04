@@ -41,13 +41,6 @@ jobs:
           access_token: ${{ secrets.GITHUB_TOKEN }}
           all_but_latest: true
 
-      - name: "Cancel test-carthage-integration"
-        uses: styfle/cancel-workflow-action@0.12.1
-        with:
-          workflow_id: test-carthage-integration.yml
-          access_token: ${{ secrets.GITHUB_TOKEN }}
-          all_but_latest: true
-
       - name: "Cancel test-SPM-integration"
         uses: styfle/cancel-workflow-action@0.12.1
         with:
