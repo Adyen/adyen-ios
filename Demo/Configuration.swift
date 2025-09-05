@@ -16,12 +16,28 @@ internal enum ConfigurationConstants {
     // swiftlint:disable explicit_acl
     // swiftlint:disable line_length
     
+    /// Environment string read from Info.plist
+    static let environment = secretValue(for: .environment)
+    
     /// Please use your own web server between your app and adyen checkout API.
-    static let demoServerEnvironment = DemoCheckoutAPIEnvironment.test
+    static let demoServerEnvironment: DemoCheckoutAPIEnvironment = {
+        DemoCheckoutAPIEnvironment(rawValue: environment) ?? .test
+    }()
     
-    static let classicAPIEnvironment = DemoClassicAPIEnvironment.test
+    static let classicAPIEnvironment: DemoClassicAPIEnvironment = {
+        DemoClassicAPIEnvironment(rawValue: environment) ?? .test
+    }()
     
-    static let componentsEnvironment = Environment.test
+    static let componentsEnvironment: Environment = {
+        switch environment.lowercased() {
+        case "beta":
+            return .beta
+        case "local":
+            return .local
+        default:
+            return .test
+        }
+    }()
     
     static let appName = "Adyen Demo"
     

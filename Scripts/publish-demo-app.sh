@@ -52,7 +52,8 @@ xcodebuild archive -project Adyen.xcodeproj \
   ADYEN_DEMO_SERVER_API_KEY="$DEMO_SERVER_API_KEY" \
   ADYEN_MERCHANT_ACCOUNT="$MERCHANT_ACCOUNT" \
   APPLE_TEAM_IDENTIFIER="$APPLE_DEVELOPMENT_TEAM_ID" \
-  APPLE_PAY_MERCHANT_IDENTIFIER="${APPLE_PAY_MERCHANT_IDENTIFIER:-"merchant.com.adyen.test"}"
+  APPLE_PAY_MERCHANT_IDENTIFIER="${APPLE_PAY_MERCHANT_IDENTIFIER:-"merchant.com.adyen.test"}" \
+  ENVIRONMENT="$ENVIRONMENT"
 
 echo "📤 Exporting .ipa with manual signing..."
 xcodebuild -exportArchive \
@@ -68,7 +69,8 @@ xcodebuild -exportArchive \
   ADYEN_DEMO_SERVER_API_KEY="$DEMO_SERVER_API_KEY" \
   ADYEN_MERCHANT_ACCOUNT="$MERCHANT_ACCOUNT" \
   APPLE_TEAM_IDENTIFIER="$APPLE_DEVELOPMENT_TEAM_ID" \
-  APPLE_PAY_MERCHANT_IDENTIFIER="${APPLE_PAY_MERCHANT_IDENTIFIER:-"merchant.com.adyen.test"}"
+  APPLE_PAY_MERCHANT_IDENTIFIER="${APPLE_PAY_MERCHANT_IDENTIFIER:-"merchant.com.adyen.test"}" \
+  ENVIRONMENT="$ENVIRONMENT"
 
 echo "☁️ Uploading to App Store Connect..."
 xcrun altool --upload-app \

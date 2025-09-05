@@ -2,6 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>ENVIRONMENT</key>
+	<string>$(ENVIRONMENT)</string>
+	<key>ADYEN_CLIENT_KEY</key>
+	<string>$(ADYEN_CLIENT_KEY)</string>
+	<key>ADYEN_DEMO_SERVER_API_KEY</key>
+	<string>$(ADYEN_DEMO_SERVER_API_KEY)</string>
+	<key>ADYEN_MERCHANT_ACCOUNT</key>
+	<string>$(ADYEN_MERCHANT_ACCOUNT)</string>
+	<key>APPLE_PAY_MERCHANT_IDENTIFIER</key>
+	<string>$(APPLE_PAY_MERCHANT_IDENTIFIER)</string>
+	<key>APPLE_TEAM_IDENTIFIER</key>
+	<string>$(APPLE_TEAM_IDENTIFIER)</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>14.0.0</string>
 	<key>CFBundleDevelopmentRegion</key>

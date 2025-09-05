@@ -97,14 +97,8 @@ jobs:
         ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
         APPLE_PAY_MERCHANT_IDENTIFIER: ${{ secrets.APPLE_PAY_MERCHANT_IDENTIFIER }}
       run: |
-        # demoServerEnvironment
-        sed -i '' "s/static let demoServerEnvironment.*=.*/static let demoServerEnvironment = DemoCheckoutAPIEnvironment.$ENVIRONMENT/g" ./Demo/Configuration.swift
-        
-        # classicAPIEnvironment
-        sed -i '' "s/static let classicAPIEnvironment.*=.*/static let classicAPIEnvironment = DemoClassicAPIEnvironment.$ENVIRONMENT/g" ./Demo/Configuration.swift
-        
-        # componentsEnvironment
-        sed -i '' "s/static let componentsEnvironment.*=.*/static let componentsEnvironment = Environment.$ENVIRONMENT/g" ./Demo/Configuration.swift
+        # Environment is now configured via xcconfig and Info.plist
+        echo "Using ENVIRONMENT=$ENVIRONMENT setting from configuration"
     - name: 🚀 Publish Demo App
       env:
         APPLE_ID_USERNAME: ${{ secrets.APPLE_ID_USERNAME }}

@@ -15,6 +15,7 @@ internal extension ConfigurationConstants {
         case merchantAccount = "ADYEN_MERCHANT_ACCOUNT"
         case appleTeamIdentifier = "APPLE_TEAM_IDENTIFIER"
         case applePayMerchantIdentifier = "APPLE_PAY_MERCHANT_IDENTIFIER"
+        case environment = "ENVIRONMENT"
     }
     
     static func secretValue(for key: SecretKey) -> String {

@@ -12,6 +12,8 @@
 	<string>$(APPLE_PAY_MERCHANT_IDENTIFIER)</string>
 	<key>APPLE_TEAM_IDENTIFIER</key>
 	<string>$(APPLE_TEAM_IDENTIFIER)</string>
+	<key>ENVIRONMENT</key>
+	<string>$(ENVIRONMENT)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
