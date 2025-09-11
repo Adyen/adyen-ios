@@ -21,7 +21,6 @@ import UIKit
 extension DropInComponent: PaymentMethodListComponentDelegate {
 
     internal func didLoad(_ paymentMethodListComponent: PaymentMethodListComponent) {
-        sendInitialAnalytics()
         sendDidLoadEvent()
     }
     
