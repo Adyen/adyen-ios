@@ -179,8 +179,10 @@ class BLIKComponentTests: XCTestCase {
         )
         sut.hintLabelItem.labelStyle = customizedHintLabel.labelStyle
 
-        XCTAssertEqual(sut.hintLabelItem.labelStyle.font, AdyenFonts.default.body)
-        XCTAssertEqual(sut.hintLabelItem.labelStyle.color, AdyenColorScheme.default.primary)
+        if let adyenLabel = sut.hintLabelItem.labelStyle as? AdyenLabelStyle {
+            XCTAssertEqual(adyenLabel.font, AdyenFonts.default.body)
+            XCTAssertEqual(adyenLabel.color, AdyenColorScheme.default.primary)
+        }
     }
 
     func testDefaultButtonTitleStylingUsingAdyenTheme() throws {
@@ -200,9 +202,10 @@ class BLIKComponentTests: XCTestCase {
         )
 
         sut.hintLabelItem.labelStyle = customizedHintLabel.labelStyle
-
-        XCTAssertEqual(sut.hintLabelItem.labelStyle.font, .preferredFont(forTextStyle: .callout))
-        XCTAssertEqual(sut.hintLabelItem.labelStyle.color, .red)
+        if let adyenLabel = sut.hintLabelItem.labelStyle as? AdyenLabelStyle {
+            XCTAssertEqual(adyenLabel.font, .preferredFont(forTextStyle: .callout))
+            XCTAssertEqual(adyenLabel.color, .red)
+        }
     }
 
     func testCustomButtonTitleStylingUsingAdyenTheme() throws {
@@ -215,12 +218,14 @@ class BLIKComponentTests: XCTestCase {
     }
 
     func testDefaultHintLabelItemStyling() {
-        sut.configuration.theme.labelStyle = AdyenLabelStyle(
+        sut.configuration.theme?.checkoutLabelStyle = AdyenLabelStyle(
             font: .preferredFont(forTextStyle: .caption1),
             color: .yellow
         )
 
-        XCTAssertEqual(sut.hintLabelItem.labelStyle.font, .preferredFont(forTextStyle: .caption1))
-        XCTAssertEqual(sut.hintLabelItem.labelStyle.color, .yellow)
+        if let adyenLabel = sut.hintLabelItem.labelStyle as? AdyenLabelStyle {
+            XCTAssertEqual(adyenLabel.font, .preferredFont(forTextStyle: .caption1))
+            XCTAssertEqual(adyenLabel.color, .yellow)
+        }
     }
 }

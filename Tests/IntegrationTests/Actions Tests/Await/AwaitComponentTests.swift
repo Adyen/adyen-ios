@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenActions
 @testable import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 final class PollingHandlerMock: AnyPollingHandler {

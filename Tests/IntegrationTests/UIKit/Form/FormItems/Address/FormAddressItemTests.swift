@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class FormAddressItemTests: XCTestCase {
@@ -113,7 +114,7 @@ private class AddressDelegateDummy: SelfRenderingFormItemDelegate {
         self.didUpdateItemsHandler = didUpdateItemsHandler
     }
     
-    func didUpdateItems(_ items: [Adyen.FormItem]) {
+    func didUpdateItems(_ items: [AdyenUI.FormItem]) {
         didUpdateItemsHandler(items)
     }
 }

@@ -8,6 +8,7 @@
 import AdyenActions
 import AdyenComponents
 import AdyenEncryption
+@_spi(AdyenInternal) @testable import AdyenUI
 import Foundation
 import PassKit
 

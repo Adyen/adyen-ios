@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 // TODO: To be rewriten when DropInComponent has its final implementation.

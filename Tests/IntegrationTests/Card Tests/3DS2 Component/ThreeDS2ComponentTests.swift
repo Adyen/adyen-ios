@@ -9,6 +9,7 @@
 import XCTest
 @_spi(AdyenInternal) import Adyen
 import Adyen3DS2
+@_spi(AdyenInternal) import AdyenUI
 
 @available(iOS 16.0, *)
 class ThreeDS2ComponentTests: XCTestCase {

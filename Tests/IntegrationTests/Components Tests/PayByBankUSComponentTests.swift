@@ -8,6 +8,7 @@ import XCTest
 
 @testable @_spi(AdyenInternal) import Adyen
 @testable @_spi(AdyenInternal) import AdyenComponents
+@_spi(AdyenInternal) @testable import AdyenUI
 
 class PayByBankUSComponentTests: XCTestCase {
     
