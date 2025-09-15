@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 // TODO: Remove these colors
@@ -82,7 +83,7 @@ extension UIColor {
         public static var componentLoadingMessageColor: UIColor {
             UIColor(
                 named: "awaitLoadingMessageColor",
-                in: Bundle.main,
+                in: Bundle.coreInternalResources,
                 compatibleWith: nil
             ) ?? componentPlaceholderText
         }
@@ -90,7 +91,7 @@ extension UIColor {
         public static var paidSectionFooterTitleColor: UIColor {
             UIColor(
                 named: "paidPartialPaymentSectionFooterTitleColor",
-                in: Bundle.main,
+                in: Bundle.coreInternalResources,
                 compatibleWith: nil
             ) ?? orange
         }
@@ -98,7 +99,7 @@ extension UIColor {
         public static var paidSectionFooterTitleBackgroundColor: UIColor {
             UIColor(
                 named: "paidPartialPaymentSectionFooterTitleBackgroundColor",
-                in: Bundle.main,
+                in: Bundle.coreInternalResources,
                 compatibleWith: nil
             ) ?? yellow
         }

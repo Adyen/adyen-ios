@@ -73,7 +73,8 @@ public class SelectableFormItem: FormItem {
     }
 
 }
- 
+
+@_spi(AdyenInternal)
 extension SelectableFormItem: Equatable {
 
     public static func == (lhs: SelectableFormItem, rhs: SelectableFormItem) -> Bool {

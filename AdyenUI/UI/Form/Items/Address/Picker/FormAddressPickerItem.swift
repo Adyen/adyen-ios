@@ -115,7 +115,6 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
     override public func validationStatus() -> ValidationStatus? {
         nil
     }
-
 }
 
 // MARK: - Convenience

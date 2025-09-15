@@ -7,7 +7,8 @@
 import Foundation
 import UIKit
 
-package enum ViewIdentifierBuilder {
+@_spi(AdyenInternal)
+public enum ViewIdentifierBuilder {
     /// Builds a UIView's identifier in a standard way.
     ///
     /// - Parameters:

@@ -28,7 +28,7 @@ public final class FormPhoneNumberItem: FormTextItem {
     /// - Parameter selectableValues: The list of values to select from.
     /// - Parameter style: The `FormTextItemStyle` UI style.
     /// - Parameter localizationParameters: Parameters for custom localization, leave it nil to use the default parameters.
-    package init(
+    public init(
         phoneNumber: PhoneNumber?,
         selectableValues: [PhoneExtension],
         style: FormTextItemStyle,

@@ -55,6 +55,7 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
     public var style: FormComponentStyle
 
     /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
+    @_spi(AdyenInternal)
     public let showsSubmitButton: Bool
 
     public var shopperInformation: PrefilledShopperInformation?
