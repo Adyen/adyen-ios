@@ -114,7 +114,7 @@ import XCTest
             XCTAssertEqual(storeDetailsItemTitleLabel?.font, .systemFont(ofSize: 5))
 
             // TODO: FIX LATER
-           // XCTAssertEqual(sut.viewController.view.backgroundColor, .green)
+            // XCTAssertEqual(sut.viewController.view.backgroundColor, .green)
         }
 
         func testSwitchVisible() {

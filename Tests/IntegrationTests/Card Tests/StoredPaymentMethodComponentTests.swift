@@ -11,7 +11,7 @@
 import XCTest
 
 // TODO: FIX Stored PM Tests after UI changes
-//class StoredPaymentMethodComponentTests: XCTestCase {
+// class StoredPaymentMethodComponentTests: XCTestCase {
 //
 //    private var context = Dummy.context
 //
@@ -55,7 +55,7 @@ import XCTest
 //
 //        XCTAssertEqual(viewController?.actions.last?.title, "Confirm preauthorization")
 //    }
-//    
+//
 //    func testLocalizationWithCustomKeySeparator() throws {
 //        let localizationParams = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 //        let sut = StoredPaymentMethodComponent(
@@ -97,7 +97,7 @@ import XCTest
 //        sut.delegate = delegate
 //
 //        presentOnRoot(sut.viewController)
-//        
+//
 //        let uiExpectation = expectation(description: "Dummy Expectation")
 //        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
 //            let alertController = sut.viewController as! UIAlertController
@@ -113,7 +113,7 @@ import XCTest
 //        }
 //        waitForExpectations(timeout: 10, handler: nil)
 //    }
-//    
+//
 //    func testStoredACHComponent() {
 //        let paymentMethod = StoredACHDirectDebitPaymentMethod(
 //            type: .achDirectDebit,
@@ -123,7 +123,7 @@ import XCTest
 //            bankAccountNumber: "5678865"
 //        )
 //        let sut = StoredPaymentMethodComponent(paymentMethod: paymentMethod, context: context)
-//        
+//
 //        let viewController = sut.viewController as? UIAlertController
 //        XCTAssertNotNil(viewController)
 //        XCTAssertEqual(viewController?.actions.count, 2)
@@ -131,7 +131,7 @@ import XCTest
 //        XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, nil))
 //        XCTAssertEqual(viewController?.message, paymentMethod.defaultDisplayInformation(using: nil).title)
 //    }
-//    
+//
 //    func testStoredCashAppPay() {
 //        let paymentMethod = StoredCashAppPayPaymentMethod(
 //            type: .cashAppPay,
@@ -141,7 +141,7 @@ import XCTest
 //            supportedShopperInteractions: [.shopperPresent]
 //        )
 //        let sut = StoredPaymentMethodComponent(paymentMethod: paymentMethod, context: context)
-//        
+//
 //        let viewController = sut.viewController as? UIAlertController
 //        XCTAssertNotNil(viewController)
 //        XCTAssertEqual(viewController?.actions.count, 2)
@@ -170,7 +170,7 @@ import XCTest
 //        XCTAssertEqual(viewController?.message, paymentMethod.defaultDisplayInformation(using: nil).title)
 //        XCTAssertEqual(viewController?.title, localizedString(.dropInStoredTitle, nil, paymentMethod.name))
 //    }
-//    
+//
 //    func test_storedPaymentComponent_matches_payTo() throws {
 //        // Given
 //        let paymentMethod = StoredPayToPaymentMethod(
@@ -181,7 +181,7 @@ import XCTest
 //            supportedShopperInteractions: [.shopperPresent]
 //        )
 //        let sut = StoredPaymentMethodComponent(paymentMethod: paymentMethod, context: context)
-//        
+//
 //        let viewController = sut.viewController as? UIAlertController
 //        XCTAssertNotNil(viewController)
 //        XCTAssertEqual(viewController?.actions.count, 2)
@@ -207,4 +207,4 @@ import XCTest
 //        // Then
 //        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
 //    }
-//}
+// }
