@@ -49,7 +49,6 @@
 		0019C45F2E6ADFB700B0C3A3 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28098BA220DB9F30087928F /* ListViewController.swift */; };
 		0019C4602E6ADFB700B0C3A3 /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28098BF220DBF970087928F /* ListItem.swift */; };
 		0019C4612E6ADFB700B0C3A3 /* ListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9021DF9225E2487009CF7F4 /* ListHeaderView.swift */; };
-		0019C4622E6ADFC700B0C3A3 /* LinkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B001C52A56E9D40015BFA3 /* LinkTextView.swift */; };
 		0019C4632E6ADFC700B0C3A3 /* LinkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A2E3BF2A5C453F00CF5F9C /* LinkTextView.swift */; };
 		0019C4642E6ADFC700B0C3A3 /* CopyLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95A788725C416A60032CF7E /* CopyLabelView.swift */; };
 		0019C4652E6ADFC700B0C3A3 /* SupportedPaymentMethodsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8128977A2CC93CB000275487 /* SupportedPaymentMethodsView.swift */; };
@@ -1999,7 +1998,6 @@
 		81B001B52A5470950015BFA3 /* AddressLookupViewController+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddressLookupViewController+ViewModel.swift"; sourceTree = "<group>"; };
 		81B001BB2A55B4040015BFA3 /* AddressLookupSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressLookupSearchViewController.swift; sourceTree = "<group>"; };
 		81B001C12A55C5C10015BFA3 /* UISearchBar+Prominent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Prominent.swift"; sourceTree = "<group>"; };
-		81B001C52A56E9D40015BFA3 /* LinkTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTextView.swift; sourceTree = "<group>"; };
 		81B505782A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+XCTest.swift"; sourceTree = "<group>"; };
 		81BA08322A45D7C100308160 /* AddressInputFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressInputFormViewController.swift; sourceTree = "<group>"; };
 		81BA08362A49C93100308160 /* FormSelectableValueItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableValueItemView.swift; sourceTree = "<group>"; };
@@ -4938,7 +4936,6 @@
 				81A2E3BF2A5C453F00CF5F9C /* LinkTextView.swift */,
 				F95A788725C416A60032CF7E /* CopyLabelView.swift */,
 				F99D2F852665211600BB5B2F /* LoadingView.swift */,
-				81B001C52A56E9D40015BFA3 /* LinkTextView.swift */,
 				81DC5A5C2A7BADB200DBF2D1 /* EmptyStateView.swift */,
 			);
 			path = Views;
@@ -7775,7 +7772,6 @@
 				0019C49C2E6AE0CE00B0C3A3 /* FormSpacerItem.swift in Sources */,
 				0019C49D2E6AE0CE00B0C3A3 /* FormSpacerItemView.swift in Sources */,
 				0019C4402E6ADF8E00B0C3A3 /* CoreColors.swift in Sources */,
-				0019C4622E6ADFC700B0C3A3 /* LinkTextView.swift in Sources */,
 				0019C4632E6ADFC700B0C3A3 /* LinkTextView.swift in Sources */,
 				0019C46E2E6ADFEC00B0C3A3 /* AddressLookupStyle.swift in Sources */,
 				0019C46F2E6ADFEC00B0C3A3 /* AddressLookupViewController.swift in Sources */,
