@@ -8,9 +8,7 @@
 import Foundation
 import UIKit
 #if canImport(AdyenUI)
-#if canImport(AdyenUI)
     @_spi(AdyenInternal) import AdyenUI
-#endif
 #endif
 
 /// A component that provides a form for BLIK payments.

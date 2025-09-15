@@ -95,8 +95,7 @@ let package = Package(
         .target(
             name: "Adyen",
             dependencies: [
-                .product(name: "AdyenNetworking", package: "adyen-networking-ios"),
-                .target(name: "AdyenUI")
+                .product(name: "AdyenNetworking", package: "adyen-networking-ios")
             ],
             path: "Adyen",
             exclude: [
@@ -120,6 +119,7 @@ let package = Package(
             name: "AdyenActions",
             dependencies: [
                 .target(name: "Adyen"),
+                .target(name: "AdyenUI"),
                 .product(name: "Adyen3DS2", package: "adyen-3ds2-ios")
             ],
             path: "AdyenActions",
@@ -151,6 +151,7 @@ let package = Package(
             name: "AdyenComponents",
             dependencies: [
                 .target(name: "Adyen"),
+                .target(name: "AdyenUI"),
                 .target(name: "AdyenEncryption")
             ],
             path: "AdyenComponents",
@@ -168,6 +169,7 @@ let package = Package(
         .target(
             name: "AdyenDropIn",
             dependencies: [
+                .target(name: "Adyen"),
                 .target(name: "AdyenCard"),
                 .target(name: "AdyenComponents"),
                 .target(name: "AdyenActions")
@@ -187,6 +189,7 @@ let package = Package(
             name: "AdyenCashAppPay",
             dependencies: [
                 .target(name: "Adyen"),
+                .target(name: "AdyenUI"),
                 .product(name: "PayKit", package: "cash-app-pay-ios-sdk"),
                 .product(name: "PayKitUI", package: "cash-app-pay-ios-sdk")
             ],
@@ -197,6 +200,7 @@ let package = Package(
             name: "AdyenTwint",
             dependencies: [
                 .target(name: "Adyen"),
+                .target(name: "AdyenUI"),
                 .target(name: "TwintSDK")
             ],
             path: "AdyenTwint",
@@ -217,7 +221,9 @@ let package = Package(
         ),
         .target(
             name: "AdyenUI",
-            dependencies: [],
+            dependencies: [
+                .target(name: "Adyen")
+            ],
             path: "AdyenUI",
             exclude: ["Info.plist"]
         ),
