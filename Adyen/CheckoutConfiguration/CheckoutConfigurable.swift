@@ -35,7 +35,7 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
 
     //  var style: FormComponentStyle { get }
 
-    var theme: CheckoutTheme? { get set }
+    var theme: CheckoutTheme { get set }
 
     var localizationParameters: LocalizationParameters? { get }
 }

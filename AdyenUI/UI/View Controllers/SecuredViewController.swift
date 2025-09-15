@@ -19,7 +19,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
 
     private var style: ViewStyle
 
-    private var theme: CheckoutTheme?
+    private var theme: CheckoutTheme = AdyenTheme()
 
     private var blurConstraints: [NSLayoutConstraint]?
 
@@ -60,7 +60,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
     public init(
         child: ChildViewController,
         style: ViewStyle = FormComponentStyle(),
-        theme: CheckoutTheme? = nil
+        theme: CheckoutTheme
     ) {
         self.childViewController = child
         self.style = style
