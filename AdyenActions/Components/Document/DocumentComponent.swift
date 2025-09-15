@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) import Adyen
 import AdyenNetworking
+@_spi(AdyenInternal) import AdyenUI
 import UIKit
 
 /// A component that handles document actions.

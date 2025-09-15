@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) import AdyenUI
 import UIKit
 
 /// An error that occurred during the use of QRCodeComponent

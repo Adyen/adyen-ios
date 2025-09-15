@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import Foundation
+@_spi(AdyenInternal) import AdyenUI
 import UIKit
 
 internal protocol DelegatedAuthenticationErrorViewDelegate: AnyObject {

@@ -8,8 +8,9 @@ import Foundation
 
 import UIKit
 
+@_spi(AdyenInternal)
 extension AdyenDependencyValues {
-    internal var imageLoader: ImageLoading {
+    public var imageLoader: ImageLoading {
         get { self[ImageLoaderKey.self] }
         set { self[ImageLoaderKey.self] = newValue }
     }

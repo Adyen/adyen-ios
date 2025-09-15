@@ -63,7 +63,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             button: AdyenButtonStyles(colorScheme: .default)
         )
         // Providing theme with only custom label
-        .theme(label: .init()
+        .theme(label: AdyenLabelStyle()
             .font(AdyenFonts.default.body)
         )
         // Providing theme with only custom button
@@ -78,7 +78,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             button: AdyenButtonStyles()
         )
         // Providing theme with only custom label
-        .theme(label: .init()
+        .theme(label: AdyenLabelStyle()
             .font(AdyenFonts.default.body)
             .color(AdyenColorScheme.default.primary)
         )

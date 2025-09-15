@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import AdyenUI
+@_spi(AdyenInternal) import AdyenUI
 import PassKit
 import UIKit
 

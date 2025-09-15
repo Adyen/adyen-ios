@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) import AdyenUI
 
 /// A form item into which a card's security code (CVC/CVV) is entered.
 internal final class FormCardSecurityCodeItem: FormTextInputItem {

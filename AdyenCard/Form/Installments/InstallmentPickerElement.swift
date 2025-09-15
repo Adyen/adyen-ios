@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) import AdyenUI
 
 /// Type that combines month values and plan selections
 /// to be able to show in a picker item.

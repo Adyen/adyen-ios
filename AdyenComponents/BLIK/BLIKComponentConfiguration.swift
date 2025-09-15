@@ -18,7 +18,7 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
 
     package var style: FormComponentStyle
 
-    package var theme: AdyenTheme = .init()
+    package var theme: CheckoutTheme?
 
     package var localizationParameters: LocalizationParameters?
     

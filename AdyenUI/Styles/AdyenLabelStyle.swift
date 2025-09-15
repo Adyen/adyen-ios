@@ -4,9 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import UIKit
 
-public struct AdyenLabelStyle {
+public struct AdyenLabelStyle: CheckoutLabelStyle {
     /// The font used to display the text.
     public var font: UIFont
 

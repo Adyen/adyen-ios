@@ -4,9 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import UIKit
 
-public struct AdyenButtonStyles {
+public struct AdyenButtonStyles: CheckoutButtonStyles {
     
     public var primary: AdyenButtonStyle
     public var secondary: AdyenButtonStyle

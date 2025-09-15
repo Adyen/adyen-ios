@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import AdyenUI
+@_spi(AdyenInternal) import AdyenUI
 import Foundation
 import UIKit
 
@@ -84,7 +84,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
             scopeInstance: self,
             postfix: "blikCodeHintLabel"
         ),
-        labelStyle: configuration.theme.labelStyle
+        labelStyle: configuration.theme?.checkoutLabelStyle
     )
 
     /// The BLIK code item.
@@ -102,7 +102,8 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
 
     /// The button item.
     internal lazy var button: FormButtonItem = {
-        let item = FormButtonItem(buttonStyle: configuration.theme.buttonStyle.primary)
+        let buttonStyles = configuration.theme?.checkoutButtonStyles as? AdyenButtonStyles ?? AdyenButtonStyles()
+        let item = FormButtonItem(buttonStyle: buttonStyles.primary)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(
             with: payment?.amount,

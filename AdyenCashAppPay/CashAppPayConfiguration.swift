@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import AdyenUI
 import Foundation
 
 /// Configuration for Cash App Pay Component.

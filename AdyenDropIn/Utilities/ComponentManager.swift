@@ -14,6 +14,7 @@
 #if canImport(AdyenActions)
     @_spi(AdyenInternal) import AdyenActions
 #endif
+@_spi(AdyenInternal) import AdyenUI
 import Foundation
 
 internal final class ComponentManager {
