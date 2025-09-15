@@ -27,10 +27,6 @@ DerivedData
 .AppleDouble
 .LSOverride
 
-# Carthage
-Carthage/
-Cartfile.resolved
-
 #Internal
 Internal/
 .gitmodules

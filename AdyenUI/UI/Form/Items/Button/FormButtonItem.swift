@@ -1,10 +1,14 @@
 //
-// Copyright (c) 2025 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Adyen
+import Foundation
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// A form item that represents a single button with a spinner.
 @_spi(AdyenInternal)

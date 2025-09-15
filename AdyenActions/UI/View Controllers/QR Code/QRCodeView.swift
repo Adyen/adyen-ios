@@ -23,7 +23,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     internal weak var delegate: QRCodeViewDelegate?
     
     public var localizationParameters: LocalizationParameters?
-    
+
     private var imageLoadingTask: AdyenCancellable? {
         willSet { imageLoadingTask?.cancel() }
     }

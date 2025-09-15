@@ -5,7 +5,11 @@
 //
 
 import Adyen
+import Foundation
 import UIKit
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// Simple form item that represent a single UILabel element.
 @_spi(AdyenInternal)
@@ -61,7 +65,7 @@ public class FormLabelItem: FormItem {
 internal class ADYLabel: UILabel, AnyFormItemView {
 
     public var childItemViews: [AnyFormItemView] { [] }
-    
+
     public func reset() { /* Do nothing */ }
     
 }

@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenCard)
+    import AdyenCard
+#endif
 import Foundation
 import UIKit
 
@@ -19,12 +22,23 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
 
     // MARK: - Properties
 
+    private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
+    private let cardComponentDelegate: CardComponentDelegate?
+    private let partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
 
-    internal init(configuration: DropInComponent.Configuration) {
+    internal init(
+        context: AdyenContext,
+        configuration: DropInComponent.Configuration,
+        cardComponentDelegate: CardComponentDelegate?,
+        partialPaymentDelegate: PartialPaymentDelegate?
+    ) {
+        self.context = context
         self.configuration = configuration
+        self.cardComponentDelegate = cardComponentDelegate
+        self.partialPaymentDelegate = partialPaymentDelegate
     }
 
     // MARK: - PreselectedPaymentMethodAssemblerProtocol
@@ -33,7 +47,13 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
         component: PaymentComponent,
         title: String
     ) -> PreselectedPaymentMethodRouterProtocol {
-        let router = PreselectedPaymentMethodRouter()
+        let componentContainerAssembler = ComponentContainerAssembler(
+            context: context,
+            configuration: configuration,
+            cardComponentDelegate: cardComponentDelegate,
+            partialPaymentDelegate: partialPaymentDelegate
+        )
+        let router = PreselectedPaymentMethodRouter(componentContainerAssembler: componentContainerAssembler)
         let viewModel = PreselectedPaymentMethodViewModel(
             router: router,
             component: component,

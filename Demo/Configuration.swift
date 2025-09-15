@@ -9,9 +9,11 @@ import AdyenActions
 import AdyenCard
 import AdyenComponents
 import AdyenDropIn
-import AdyenUI
 import Foundation
 import PassKit
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 internal enum ConfigurationConstants {
     // swiftlint:disable explicit_acl

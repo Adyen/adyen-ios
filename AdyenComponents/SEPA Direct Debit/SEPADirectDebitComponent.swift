@@ -8,6 +8,9 @@
 @_spi(AdyenInternal) import AdyenUI
 import Foundation
 import UIKit
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// A component that provides a form for SEPA Direct Debit payments.
 public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, PresentableComponent, LoadingComponent {

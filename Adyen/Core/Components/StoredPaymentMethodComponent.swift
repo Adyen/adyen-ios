@@ -48,7 +48,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
         sendInitialAnalytics()
         sendDidLoadEvent()
         
-    // TODO: Fix
+        // TODO: Fix
 
 //        let localizationParameters = configuration.localizationParameters
 //        let displayInformation = storedPaymentMethod.displayInformation(using: localizationParameters)

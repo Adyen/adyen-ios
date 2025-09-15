@@ -1,10 +1,13 @@
 //
-// Copyright (c) 2025 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import UIKit
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// Contains the styling customization options for any images.
 public struct ImageStyle: TintableStyle {

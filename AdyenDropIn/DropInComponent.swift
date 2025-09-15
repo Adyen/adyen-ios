@@ -33,7 +33,7 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Properties
 
-    private let dropInRootRouter: DropInRootRouterProtocol
+    private let dropInRouter: DropInRouterProtocol
 
     private lazy var componentManager: ComponentManager = {
         let componentManager = createComponentManager(order: nil)
@@ -80,15 +80,18 @@ public final class DropInComponent: NSObject,
             .retryAPIClient(with: scheduler)
             .retryOnErrorAPIClient()
 
-        let dropInRootAssembler = DropInRootAssembler(
+        let dropInAssembler = DropInAssembler(
             paymentMethods: paymentMethods,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            cardComponentDelegate: cardComponentDelegate,
+            partialPaymentDelegate: partialPaymentDelegate
         )
-        self.dropInRootRouter = dropInRootAssembler.resolveDropInRootRouter()
-        self.dropInRootRouter.start()
-
+        self.dropInRouter = dropInAssembler.resolveDropInRootRouter()
         super.init()
+
+        self.dropInRouter.delegate = self
+        self.dropInRouter.start()
     }
 
     //    /// For testing only
@@ -131,9 +134,9 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Presentable Component Protocol
 
-    public var viewController: UIViewController {
-        dropInRootRouter.rootViewController
-    }
+    public lazy var viewController: UIViewController = {
+        dropInRouter.rootViewController
+    }()
 
     // MARK: - Handling Actions
 
@@ -258,37 +261,6 @@ public final class DropInComponent: NSObject,
 //        }
 //    }()
 
-    // ================= COMPONENT MODULE - ASSEMBLER ===============
-
-    internal func resolveComponentView(
-        from component: PresentableComponent
-    ) -> UIViewController {
-        let viewModel = ComponentContainerViewModel(
-            component: component,
-            isRoot: false,
-            cancelHandler: nil
-        )
-
-        let componentViewController = ComponentContainerViewController(viewModel: viewModel)
-        return componentViewController
-    }
-
-    // ================= PAYMENT METHOD LIST MODULE - ASSEMBLER ===============
-
-    internal func didSelect(_ component: PaymentComponent) {
-        setNecessaryDelegates(on: component)
-
-        switch component {
-        case let component as PresentableComponent:
-            let componentView = resolveComponentView(from: component)
-            viewController.present(componentView, animated: true)
-        case let component as PaymentInitiable:
-            component.initiatePayment()
-        default:
-            break
-        }
-    }
-
     private func didSelectCancelButton(isRoot: Bool, component: PresentableComponent) {
         guard !paymentInProgress || component is Cancellable else { return }
 
@@ -323,9 +295,9 @@ public final class DropInComponent: NSObject,
 
     private func setNecessaryDelegates(on component: PaymentComponent) {
         selectedPaymentComponent = component
-        component.delegate = self
-        (component as? CardComponent)?.cardComponentDelegate = cardComponentDelegate
-        (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
+//        component.delegate = self
+//        (component as? CardComponent)?.cardComponentDelegate = cardComponentDelegate
+//        (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
         (component as? PreApplePayComponent)?.presentationDelegate = self
 
@@ -406,3 +378,24 @@ extension DropInComponent: InstallmentConfigurationAware {
 //    }
 
 // ============= PAYMENT METHOD LIST ===============
+
+extension DropInComponent: DropInRouterDelegate {
+
+    // MARK: - PaymentComponentDelegate
+
+    internal func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
+        paymentInProgress = true
+        print("🔵 didSubmit")
+        delegate?.didSubmit(data, from: component, in: self)
+    }
+
+    internal func didFail(with error: any Error) {
+        print("❌ didFail")
+        delegate?.didFail(with: error, from: self)
+    }
+
+    internal func didCancel(component: any PaymentComponent) {
+        print("⚠️ PAYMENT CANCELLED ⚠️")
+        delegate?.didCancel(component: component, from: self)
+    }
+}

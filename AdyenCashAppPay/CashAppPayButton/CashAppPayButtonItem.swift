@@ -13,7 +13,7 @@ import UIKit
 internal class CashAppPayButtonItem: FormItem {
     
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
-    
+
     internal var subitems: [FormItem] = []
     
     internal var identifier: String?

@@ -8,36 +8,39 @@ import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
 
+internal protocol PaymentMethodListViewModelDelegate: AnyObject {
+    func didCancel(completion: (() -> Void)?)
+    func didSelect(_ component: PresentableComponent)
+}
+
 @objc
 internal protocol PaymentMethodListViewModelProtocol {
     var paymentMethodListView: UIViewController { get }
     func cancel()
 }
 
-internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, PaymentMethodListComponentDelegate {
+internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     // MARK: - Properties
 
-    // Weak to avoid retain cycle: view → viewModel → router → view
-    private weak var router: PaymentMethodListRouterProtocol?
+    private weak var delegate: PaymentMethodListViewModelDelegate?
     private let paymentMethodListComponent: PaymentMethodListComponent
 
     // MARK: - Initializers
 
     internal init(
-        router: PaymentMethodListRouterProtocol,
         context: AdyenContext,
         componentManager: ComponentManager,
+        delegate: PaymentMethodListViewModelDelegate,
         configuration: DropInComponent.Configuration
     ) {
-        self.router = router
-
         let components = componentManager.sections
         self.paymentMethodListComponent = PaymentMethodListComponent(
             context: context,
             components: components,
             style: configuration.style.listComponent
         )
+        self.delegate = delegate
         self.paymentMethodListComponent.localizationParameters = configuration.localizationParameters
         self.paymentMethodListComponent.delegate = self
     }
@@ -50,25 +53,30 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
 
     internal func cancel() {
         // TODO: - Handle cancellation
-        router?.cancel(completion: nil)
+        delegate?.didCancel(completion: nil)
     }
+
+    // MARK: - Private
+}
+
+extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
 
     // MARK: - PaymentMethodListComponentDelegate
 
     internal func didLoad(
         _ paymentMethodListComponent: PaymentMethodListComponent
     ) {
-        // TODO: - Handle analytcis
+        // TODO: - Handle analytics
     }
 
     internal func didSelect(
-        _ component: any Adyen.PaymentComponent,
+        _ component: any PaymentComponent,
         in paymentMethodListComponent: PaymentMethodListComponent
     ) {
         // TODO: - Handle non presentable component
         switch component {
         case let component as PresentableComponent:
-            router?.didSelect(component)
+            delegate?.didSelect(component)
         case let component as PaymentInitiable:
             component.initiatePayment()
         default:
@@ -77,12 +85,10 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol, P
     }
 
     internal func didDelete(
-        _ paymentMethod: any Adyen.StoredPaymentMethod,
+        _ paymentMethod: any StoredPaymentMethod,
         in paymentMethodListComponent: PaymentMethodListComponent,
         completion: @escaping Adyen.Completion<Bool>
     ) {
         // TODO: - Logic to delete stored payment method
     }
-
-    // MARK: - Private
 }

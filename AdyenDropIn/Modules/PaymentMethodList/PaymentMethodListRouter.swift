@@ -8,26 +8,28 @@ import Adyen
 import Foundation
 import UIKit
 
+internal protocol PaymentMethodListRouterDelegate: AnyObject {
+    func paymentMethodListDidCancel(completion: (() -> Void)?)
+    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
+    func didFail(with error: any Error)
+    func didCancel(component: any PaymentComponent)
+}
+
 internal protocol PaymentMethodListRouterProtocol: AnyObject {
     var rootViewController: UIViewController { get }
     var delegate: PaymentMethodListRouterDelegate? { get set }
     func start()
-    func cancel(completion: (() -> Void)?)
-    func didSelect(_ component: PresentableComponent)
-}
-
-internal protocol PaymentMethodListRouterDelegate: AnyObject {
-    func cancelPayment(completion: (() -> Void)?)
 }
 
 internal class PaymentMethodListRouter: PaymentMethodListRouterProtocol {
 
     // MARK: - Properties
 
+    internal weak var delegate: PaymentMethodListRouterDelegate?
     private let navigationController = UINavigationController()
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
+    private var componentContainerRouter: ComponentContainerRouterProtocol?
     internal var view: UIViewController?
-    internal weak var delegate: PaymentMethodListRouterDelegate?
 
     // MARK: - Initializers
 
@@ -49,14 +51,51 @@ internal class PaymentMethodListRouter: PaymentMethodListRouterProtocol {
         navigationController.setViewControllers([view], animated: false)
     }
 
-    internal func cancel(completion: (() -> Void)?) {
-        delegate?.cancelPayment(completion: completion)
+    // MARK: - Private
+}
+
+extension PaymentMethodListRouter: PaymentMethodListViewModelDelegate {
+
+    // MARK: - PaymentMethodListViewModelDelegate
+
+    func didCancel(completion: (() -> Void)?) {
+        delegate?.paymentMethodListDidCancel(completion: completion)
+        componentContainerRouter = nil
     }
 
     internal func didSelect(_ component: PresentableComponent) {
-        let componentViewController = componentContainerAssembler.resolveContainerView(for: component)
-        view?.navigationController?.pushViewController(componentViewController, animated: true)
-    }
+        let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
+            for: component,
+            delegate: self
+        )
+        self.componentContainerRouter = componentContainerRouter
 
-    // MARK: - Private
+        componentContainerRouter.start()
+
+        let componentContainerViewController = componentContainerRouter.rootViewController
+
+        // TODO: - Invert `requiresModalPresentation` logic or remove it fully.
+        if component.requiresModalPresentation {
+            view?.navigationController?.pushViewController(componentContainerViewController, animated: true)
+        } else {
+            view?.present(componentContainerViewController, animated: true)
+        }
+    }
+}
+
+extension PaymentMethodListRouter: ComponentContainerRouterDelegate {
+
+    // MARK: - ComponentContainerRouterDelegate
+
+    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
+        delegate?.didSubmit(data, from: component)
+    }
+    
+    func didFail(with error: any Error) {
+        delegate?.didFail(with: error)
+    }
+    
+    func didCancel(component: any PaymentComponent) {
+        delegate?.didCancel(component: component)
+    }
 }

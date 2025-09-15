@@ -1,6 +1,5 @@
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/adyen/adyen-ios/verify-os-compatibility.yml?branch=develop)
 [![Pod](https://img.shields.io/cocoapods/v/Adyen.svg?style=flat)](http://cocoapods.org/pods/Adyen)
-[![carthage compatible](https://img.shields.io/badge/carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![SwiftPM](https://img.shields.io/badge/swift%20package%20manager-compatible-brightgreen.svg)](https://swiftpackageregistry.com/Adyen/adyen-ios)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Adyen_adyen-ios&metric=coverage)](https://sonarcloud.io/component_measures?metric=coverage&id=Adyen_adyen-ios)
 
@@ -39,7 +38,7 @@ More information about our versioning and the Drop-in/Components lifecycle can b
 
 ## Installation
 
-Adyen iOS are available through either [CocoaPods](http://cocoapods.org), [Carthage](https://github.com/Carthage/Carthage) or [Swift Package Manager](https://swift.org/package-manager/).
+Adyen iOS is available through either [CocoaPods](http://cocoapods.org) or [Swift Package Manager](https://swift.org/package-manager/).
 
 ### Minimum Requirements
 
@@ -70,27 +69,6 @@ pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
 
 :warning: _`Adyen/AdyenWeChatPay` and `AdyenWeChatPayInternal` modules doesn't support any simulators and can only be tested on a real device._
 
-### Carthage
-
-1. Add `github "adyen/adyen-ios"` to your `Cartfile`.
-2. Run `carthage update`.
-3. Link the framework with your target as described in [Carthage Readme](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
-
-You can add all modules or select individual modules to add to your integration. But make sure to include each module dependency modules.
-
-* `AdyenDropIn`: DropInComponent.
-* `AdyenSession`: handler for the simplified checkout flow.
-* `AdyenCard`: the card components.
-* `AdyenComponents`: all other payment components except WeChat Pay.
-* `AdyenActions`:  action components.
-* `AdyenEncryption`: encryption.
-* `AdyenWeChatPay`: WeChat Pay component.
-* `AdyenWeChatPayInternal`: WeChat Pay component.
-* `AdyenTwint`: Twint component.
-* `AdyenSwiftUI`: SwiftUI apps specific module.
-
-:warning: _`AdyenWeChatPay` and `AdyenWeChatPayInternal` modules doesn't support any simulators and can only be tested on a real device._
-
 ### Swift Package Manager
 
 1. Follow Apple's [Adding Package Dependencies to Your App](
@@ -120,7 +98,7 @@ The `AdyenSwiftUI` module needs to be explicitly added to use the SwiftUI specif
 
 ## Drop-in
 
-The [Drop-in](https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/dropincomponent) handles the presentation of available payment methods and the subsequent entry of a customer's payment details. It is initialized with the response of [`/sessions`][apiExplorer.sessions], and handles the entire checkout flow under the hood.
+The [Drop-in](https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/dropincomponent) handles the presentation of available payment methods and the subsequent entry of a customer's payment details. It is initialized with the response of [`/sessions`][apiExplorer.sessions], and handles the entire checkout flow under the hood.
 
 ### Usage
 
@@ -128,7 +106,7 @@ The [Drop-in](https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/dropi
 
 All Components need an `AdyenContext`. An instance of `AdyenContext` wraps your client key, environment, analytics configuration and so on.
 Please read more [here](https://docs.adyen.com/development-resources/client-side-authentication) about the client key and how to get one.
-Use **Environment.test** for environment. When you're ready to accept live payments, change the value to one of our [live environments](https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/environment)
+Use **Environment.test** for environment. When you're ready to accept live payments, change the value to one of our [live environments](https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/environment)
 
 ```swift
 let apiContext = try! APIContext(environment: componentsEnvironment, clientKey: clientKey)
@@ -337,7 +315,7 @@ A full list of customization options can be found in the [API Reference][referen
 
 ## Support
 
-If you have a feature request, or spotted a bug or a technical problem, create a GitHub issue. For other questions, contact our [support team](https://www.adyen.help/hc/en-us/requests/new?ticket_form_id=360000705420).
+If you have a feature request, or spotted a bug or a technical problem, create a GitHub issue. For other questions, contact our Support Team via [Customer Area](https://ca-live.adyen.com/ca/ca/contactUs/support.shtml) or via email: [support@adyen.com](mailto:support@adyen.com)
 
 ## Contributing
 We strongly encourage you to join us in contributing to this repository so everyone can benefit from:
@@ -352,33 +330,33 @@ Read our [**contribution guidelines**](CONTRIBUTING.md) to find out how.
 
 This repository is open source and available under the MIT license. For more information, see the LICENSE file.
 
-[reference]: https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/
-[reference.dropInComponent]: https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/dropin
-[reference.installation]: https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/installation
-[reference.styles]: https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/customization
-[reference.advancedFlow]: https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/threeapis
-[reference.cardComponent]: https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/cardcomponent
-[reference.threeDS2Component]: https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/threeds2component
-[reference.applePayComponent]: https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/applepaycomponent
-[reference.bcmcComponent]: https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/bcmccomponent
-[reference.issuerListComponent]: https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/issuerlistcomponent
-[reference.weChatPaySDKActionComponent]: https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/wechatpaysdkactioncomponent
-[reference.qiwiWalletComponent]: https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/qiwiwalletcomponent
-[reference.sepaDirectDebitComponent]: https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/sepadirectdebitcomponent
-[reference.redirectComponent]: https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/redirectcomponent
-[reference.mbWayComponent]: https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/mbwaycomponent
-[reference.BLIKComponent]: https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/blikcomponent
-[reference.DokuComponent]:  https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/dokucomponent
-[reference.BoletoComponent]:  https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/boletocomponent
-[reference.ACHDirectDebitComponent]:  https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/achdirectdebitcomponent
-[reference.AffirmComponent]:  https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/affirmcomponent
-[reference.BACSDirectDebitComponent]:  https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/bacsdirectdebitcomponent
-[reference.OnlineBankingComponent]:  https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/onlinebankingcomponent
-[reference.AtomeComponent]:  https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/atomecomponent
-[reference.UPIComponent]:  https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/upicomponent
-[reference.QRCodeActionComponent]:  https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/qrcodeactioncomponent
-[reference.CashAppPayComponent]:  https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/cashapppaycomponent
-[reference.TwintComponent]:  https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/twintcomponent
-[reference.PayToComponent]:  https://adyen.github.io/adyen-ios/5.19.2/documentation/adyen/paytocomponent
+[reference]: https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/
+[reference.dropInComponent]: https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/dropin
+[reference.installation]: https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/installation
+[reference.styles]: https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/customization
+[reference.advancedFlow]: https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/threeapis
+[reference.cardComponent]: https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/cardcomponent
+[reference.threeDS2Component]: https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/threeds2component
+[reference.applePayComponent]: https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/applepaycomponent
+[reference.bcmcComponent]: https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/bcmccomponent
+[reference.issuerListComponent]: https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/issuerlistcomponent
+[reference.weChatPaySDKActionComponent]: https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/wechatpaysdkactioncomponent
+[reference.qiwiWalletComponent]: https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/qiwiwalletcomponent
+[reference.sepaDirectDebitComponent]: https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/sepadirectdebitcomponent
+[reference.redirectComponent]: https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/redirectcomponent
+[reference.mbWayComponent]: https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/mbwaycomponent
+[reference.BLIKComponent]: https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/blikcomponent
+[reference.DokuComponent]:  https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/dokucomponent
+[reference.BoletoComponent]:  https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/boletocomponent
+[reference.ACHDirectDebitComponent]:  https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/achdirectdebitcomponent
+[reference.AffirmComponent]:  https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/affirmcomponent
+[reference.BACSDirectDebitComponent]:  https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/bacsdirectdebitcomponent
+[reference.OnlineBankingComponent]:  https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/onlinebankingcomponent
+[reference.AtomeComponent]:  https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/atomecomponent
+[reference.UPIComponent]:  https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/upicomponent
+[reference.QRCodeActionComponent]:  https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/qrcodeactioncomponent
+[reference.CashAppPayComponent]:  https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/cashapppaycomponent
+[reference.TwintComponent]:  https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/twintcomponent
+[reference.PayToComponent]:  https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/paytocomponent
 
 [apiExplorer.sessions]: https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/sessions
