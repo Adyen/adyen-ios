@@ -10,11 +10,14 @@ import Foundation
 public protocol CheckoutTheme {
     var checkoutLabelStyle: CheckoutLabelStyle { get set }
     var checkoutButtonStyles: CheckoutButtonStyles { get set }
+    var checkoutTextFieldStyle: CheckoutTextFieldStyle { get set }
     
     // methods to produce a new theme with updated styles
     func withLabelStyle(_ style: CheckoutLabelStyle) -> CheckoutTheme
     func withButtonStyle(_ style: CheckoutButtonStyles) -> CheckoutTheme
+    func withTextFieldStyle(_ style: CheckoutTextFieldStyle) -> CheckoutTheme
 }
 
 public protocol CheckoutLabelStyle {}
 public protocol CheckoutButtonStyles {}
+public protocol CheckoutTextFieldStyle {}

@@ -191,6 +191,7 @@
 		00600F282E73034B00637477 /* AdyenUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 003BDD192E15200A009177E0 /* AdyenUI.framework */; };
 		00600F2A2E788C3F00637477 /* CheckoutTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00600F292E788C3800637477 /* CheckoutTheme.swift */; };
 		00600F2D2E78A1C800637477 /* AdyenUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 003BDD192E15200A009177E0 /* AdyenUI.framework */; };
+		00600F2F2E78B02F00637477 /* AdyenTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00600F2E2E78B02F00637477 /* AdyenTextFieldStyle.swift */; };
 		0067E740296C161E005B8D76 /* UPIComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0067E73F296C161E005B8D76 /* UPIComponentTests.swift */; };
 		0080A7812E423FC700F639DE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080A7802E423FC300F639DE /* UIColor.swift */; };
 		009F92AC2E4F4D5400561B7D /* AdyenUIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009F92AB2E4F4D4B00561B7D /* AdyenUIConstants.swift */; };
@@ -1828,6 +1829,7 @@
 		005ECD682E5857CC00ADC9BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00600F242E73030900637477 /* CoreBundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CoreBundleExtension.swift; path = "Adyen/Utilities/Non SPM Bundle Extension/CoreBundleExtension.swift"; sourceTree = SOURCE_ROOT; };
 		00600F292E788C3800637477 /* CheckoutTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutTheme.swift; sourceTree = "<group>"; };
+		00600F2E2E78B02F00637477 /* AdyenTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenTextFieldStyle.swift; sourceTree = "<group>"; };
 		0067E73C29658CB6005B8D76 /* FormImageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormImageItem.swift; sourceTree = "<group>"; };
 		0067E73F296C161E005B8D76 /* UPIComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentTests.swift; sourceTree = "<group>"; };
 		006DCC02295C3E930015EA79 /* SegmentedControlStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlStyle.swift; sourceTree = "<group>"; };
@@ -3279,6 +3281,7 @@
 				0019C4082E5F24A300B0C3A3 /* AdyenToggleStyle.swift */,
 				004758122E38D643009E3802 /* AdyenLabelStyle.swift */,
 				004757C32E2E6603009E3802 /* AdyenButtonStyles.swift */,
+				00600F2E2E78B02F00637477 /* AdyenTextFieldStyle.swift */,
 				E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */,
 			);
 			path = Styles;
@@ -7880,6 +7883,7 @@
 				0019C4D42E6ECF5900B0C3A3 /* ViewIdentifierBuilder.swift in Sources */,
 				0019C4C22E6B07EA00B0C3A3 /* UIButtonHelpers.swift in Sources */,
 				0019C4962E6AE0AC00B0C3A3 /* FormPhoneNumberItem.swift in Sources */,
+				00600F2F2E78B02F00637477 /* AdyenTextFieldStyle.swift in Sources */,
 				0019C4972E6AE0AC00B0C3A3 /* FormPhoneNumberItemView.swift in Sources */,
 				0019C4512E6ADF9D00B0C3A3 /* FormItemViewBuilder.swift in Sources */,
 				0019C4522E6ADF9D00B0C3A3 /* FormView.swift in Sources */,

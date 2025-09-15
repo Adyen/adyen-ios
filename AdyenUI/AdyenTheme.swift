@@ -16,16 +16,19 @@ public struct AdyenTheme {
     // Available styles
     package var buttonStyle = AdyenButtonStyles()
     package var labelStyle = AdyenLabelStyle()
+    package var textFieldStyle = AdyenTextFieldStyle()
     package var toggleStyle = AdyenToggleStyle()
 
     // Initialize with a default ButtonStyle, LabelStyle and ToggleStyle if none is provided
     package init(
         button: AdyenButtonStyles = AdyenButtonStyles(),
         label: AdyenLabelStyle = AdyenLabelStyle(),
+        textField: AdyenTextFieldStyle = AdyenTextFieldStyle(),
         toggle: AdyenToggleStyle = AdyenToggleStyle()
     ) {
         self.buttonStyle = button
         self.labelStyle = label
+        self.textFieldStyle = textField
         self.toggleStyle = toggle
     }
     
@@ -51,6 +54,11 @@ extension AdyenTheme: CheckoutTheme {
         set { buttonStyle = newValue as? AdyenButtonStyles ?? AdyenButtonStyles() }
     }
     
+    public var checkoutTextFieldStyle: CheckoutTextFieldStyle {
+        get { textFieldStyle }
+        set { textFieldStyle = newValue as? AdyenTextFieldStyle ?? AdyenTextFieldStyle() }
+    }
+    
     public func withLabelStyle(_ style: CheckoutLabelStyle) -> CheckoutTheme {
         var copy = self
         if let newStyle = style as? AdyenLabelStyle {
@@ -63,6 +71,14 @@ extension AdyenTheme: CheckoutTheme {
         var copy = self
         if let newStyle = style as? AdyenButtonStyles {
             copy.checkoutButtonStyles = newStyle
+        }
+        return copy
+    }
+    
+    public func withTextFieldStyle(_ style: any CheckoutTextFieldStyle) -> any CheckoutTheme {
+        var copy = self
+        if let newStyle = style as? AdyenTextFieldStyle {
+            copy.checkoutTextFieldStyle = newStyle
         }
         return copy
     }
@@ -89,6 +105,13 @@ extension AdyenTheme {
     package func toggle(_ toggleStyle: AdyenToggleStyle) -> AdyenTheme {
         var copy = self
         copy.toggleStyle = toggleStyle
+        return copy
+    }
+    
+    @discardableResult
+    public func textfield(_ textfieldStyle: AdyenTextFieldStyle) -> AdyenTheme {
+        var copy = self
+        copy.textFieldStyle = textfieldStyle
         return copy
     }
 }
