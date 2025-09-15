@@ -7,9 +7,6 @@
 import Adyen
 import Foundation
 import UIKit
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 /// Simple form item that represent a single UILabel element.
 @_spi(AdyenInternal)

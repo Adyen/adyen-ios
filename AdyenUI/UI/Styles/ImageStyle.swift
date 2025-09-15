@@ -5,9 +5,6 @@
 //
 
 import UIKit
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 /// Contains the styling customization options for any images.
 public struct ImageStyle: TintableStyle {

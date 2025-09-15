@@ -6,9 +6,6 @@
 
 import Foundation
 import UIKit
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 /// Contains the styling customization options for a form button item.
 public struct FormButtonItemStyle: ViewStyle {

@@ -5,9 +5,6 @@
 //
 
 import UIKit
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 /// Contains the styling customization options for an error item in a form.
 public struct FormErrorItemStyle: ViewStyle {

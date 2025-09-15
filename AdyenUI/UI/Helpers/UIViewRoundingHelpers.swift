@@ -7,9 +7,6 @@
 @_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import UIKit
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 
 /// Adds helper functionality to any `UIViewController` instance through the `adyen` property.
 @_spi(AdyenInternal)
