@@ -5,7 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-@_spi(AdyenInternal) import AdyenUI
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 import UIKit
 
 /// A component that provides a upi flows for UPI component.

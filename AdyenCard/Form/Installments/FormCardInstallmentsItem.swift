@@ -5,7 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-@_spi(AdyenInternal) import AdyenUI
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 
 /// A form element that handles the display and selection of installment options based on the configuration.
 internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentElement>, AdyenObserver {

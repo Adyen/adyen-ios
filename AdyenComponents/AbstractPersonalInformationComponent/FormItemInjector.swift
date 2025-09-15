@@ -4,7 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import AdyenUI
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 import Foundation
 
 /// Builds a `FormItem` and injects it into a `FormViewController`.

@@ -5,7 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-@_spi(AdyenInternal) import AdyenUI
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 import UIKit
 
 /// A form item into which a card number is entered.
