@@ -10,19 +10,6 @@ import Foundation
 /// such as `CardComponentConfiguration`,  `DropInConfiguration`, `ActionComponentConfiguration`.
 public protocol CheckoutConfigurable {}
 
-/// `CheckoutTheme` represents theme of the SDK required for dropIn and components UI.
-public protocol CheckoutTheme {
-    var checkoutLabelStyle: CheckoutLabelStyle { get set }
-    var checkoutButtonStyles: CheckoutButtonStyles { get set }
-    
-    // methods to produce a new theme with updated styles
-    func withLabelStyle(_ style: CheckoutLabelStyle) -> CheckoutTheme
-    func withButtonStyle(_ style: CheckoutButtonStyles) -> CheckoutTheme
-}
-
-public protocol CheckoutLabelStyle {}
-public protocol CheckoutButtonStyles {}
-
 /// Configuration interface for all Checkout Components.
 package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     

@@ -190,6 +190,7 @@
 		00600F1B2E6F14C600637477 /* AdyenUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 003BDD192E15200A009177E0 /* AdyenUI.framework */; };
 		00600F252E73030900637477 /* CoreBundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00600F242E73030900637477 /* CoreBundleExtension.swift */; };
 		00600F282E73034B00637477 /* AdyenUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 003BDD192E15200A009177E0 /* AdyenUI.framework */; };
+		00600F2A2E788C3F00637477 /* CheckoutTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00600F292E788C3800637477 /* CheckoutTheme.swift */; };
 		0067E740296C161E005B8D76 /* UPIComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0067E73F296C161E005B8D76 /* UPIComponentTests.swift */; };
 		0080A7812E423FC700F639DE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080A7802E423FC300F639DE /* UIColor.swift */; };
 		009F92AC2E4F4D5400561B7D /* AdyenUIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009F92AB2E4F4D4B00561B7D /* AdyenUIConstants.swift */; };
@@ -842,9 +843,6 @@
 		E72375D927AABF400020DCF9 /* AdyenWeChatPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E72375DD27AABF450020DCF9 /* AdyenWeChatPayInternal in Frameworks */ = {isa = PBXBuildFile; productRef = E72375DC27AABF450020DCF9 /* AdyenWeChatPayInternal */; };
 		E72521EE25517EB100533E35 /* BLIKComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72521ED25517EB100533E35 /* BLIKComponentTests.swift */; };
-		E72DA34123E1BE5300707638 /* DropInNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72DA34023E1BE5300707638 /* DropInNavigationController.swift */; };
-		E7275BF9255012F600907CF9 /* FormLabelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7275BF8255012F600907CF9 /* FormLabelItem.swift */; };
-		E72D9BAA26A6E66800FBDA48 /* Dimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72D9BA926A6E66800FBDA48 /* Dimensions.swift */; };
 		E73C54E425EBD2DC00B57758 /* BrowserComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C54E325EBD2DC00B57758 /* BrowserComponent.swift */; };
 		E73C567F25EFCC4200B57758 /* IssuerListComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C567E25EFCC4200B57758 /* IssuerListComponentTests.swift */; };
 		E745175525FB6A59000BDCCF /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E745175425FB6A59000BDCCF /* CardViewController.swift */; };
@@ -1822,6 +1820,7 @@
 		0058692428BE0FB700B65A19 /* QRCodeViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewDelegateMock.swift; sourceTree = "<group>"; };
 		005ECD682E5857CC00ADC9BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00600F242E73030900637477 /* CoreBundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CoreBundleExtension.swift; path = "Adyen/Utilities/Non SPM Bundle Extension/CoreBundleExtension.swift"; sourceTree = SOURCE_ROOT; };
+		00600F292E788C3800637477 /* CheckoutTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutTheme.swift; sourceTree = "<group>"; };
 		0067E73C29658CB6005B8D76 /* FormImageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormImageItem.swift; sourceTree = "<group>"; };
 		0067E73F296C161E005B8D76 /* UPIComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentTests.swift; sourceTree = "<group>"; };
 		006DCC02295C3E930015EA79 /* SegmentedControlStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlStyle.swift; sourceTree = "<group>"; };
@@ -3774,6 +3773,7 @@
 				A0A26BF92DC101B600DB5B4E /* CheckoutBaseCallbacks.swift */,
 				A052F5D72DB124FC00C47D3E /* CheckoutComponentType.swift */,
 				A052F5DB2DB145FB00C47D3E /* CheckoutConfigurable.swift */,
+				00600F292E788C3800637477 /* CheckoutTheme.swift */,
 				A01948562D92BFAB00AA27AC /* ConfigurationBuilder.swift */,
 				A01948542D91AD8700AA27AC /* CheckoutConfiguration.swift */,
 				A0D87A252D9420AF00763AD6 /* CheckoutConfiguration+Callbacks.swift */,
@@ -8153,6 +8153,7 @@
 				F967580327D0BD4700A16FB6 /* PaymentMethodType.swift in Sources */,
 				F919DF8F24E682250027976E /* ClientKeyRequest.swift in Sources */,
 				F9639B2424DC38460073F38A /* PresentationDelegate.swift in Sources */,
+				00600F2A2E788C3F00637477 /* CheckoutTheme.swift in Sources */,
 				E2028F5C2227F1930007FF8B /* Details.swift in Sources */,
 				5A988BF6265675ED0007F4C0 /* BoletoPaymentMethod.swift in Sources */,
 				A001676A2BC9567B0099A6AE /* AnalyticsValidationError.swift in Sources */,
