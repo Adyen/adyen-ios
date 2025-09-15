@@ -67,6 +67,7 @@ Pod::Spec.new do |s|
   s.subspec 'Card' do |plugin|
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/Encryption'
+    plugin.dependency 'Adyen/CoreUI'
     plugin.source_files = 'AdyenCard/**/*.swift'
     plugin.exclude_files = 'AdyenCard/**/BundleSPMExtension.swift'
     plugin.resource_bundles = {
