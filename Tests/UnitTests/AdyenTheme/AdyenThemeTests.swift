@@ -196,4 +196,73 @@ final class AdyenThemeTests: XCTestCase {
         // Then
         XCTAssertEqual(updatedTheme.textFieldStyle.borderWidth, 2.0)
     }
+    
+    func test_textFieldMethod_shouldUpdateTitleStyle() {
+        // Given
+        let theme = AdyenTheme()
+        
+        let newTitleStyle = AdyenLabelStyle(
+            font: .preferredFont(forTextStyle: .title1),
+            color: .red,
+            textAlignment: .natural
+        )
+        
+        var newTextFieldStyle = AdyenTextFieldStyle()
+        
+        newTextFieldStyle.title = newTitleStyle
+        
+        // When
+        let updatedTheme = theme.textfield(newTextFieldStyle)
+        
+        // Then
+        XCTAssertEqual(updatedTheme.textFieldStyle.title.color, .red)
+        XCTAssertEqual(updatedTheme.textFieldStyle.title.font, .preferredFont(forTextStyle: .title1))
+        XCTAssertEqual(updatedTheme.textFieldStyle.title.textAlignment, .natural)
+    }
+    
+    func test_textFieldMethod_shouldUpdateTextStyle() {
+        // Given
+        let theme = AdyenTheme()
+        
+        let newTextStyle = AdyenLabelStyle(
+            font: .preferredFont(forTextStyle: .title2),
+            color: .systemPink,
+            textAlignment: .left
+        )
+        
+        var newTextFieldStyle = AdyenTextFieldStyle()
+        
+        newTextFieldStyle.text = newTextStyle
+        
+        // When
+        let updatedTheme = theme.textfield(newTextFieldStyle)
+        
+        // Then
+        XCTAssertEqual(updatedTheme.textFieldStyle.text.color, .systemPink)
+        XCTAssertEqual(updatedTheme.textFieldStyle.text.font, .preferredFont(forTextStyle: .title2))
+        XCTAssertEqual(updatedTheme.textFieldStyle.text.textAlignment, .left)
+    }
+    
+    func test_textFieldMethod_shouldUpdatePlaceholderStyle() {
+        // Given
+        let theme = AdyenTheme()
+        
+        let newPlaceholderTextStyle = AdyenLabelStyle(
+            font: .preferredFont(forTextStyle: .footnote),
+            color: .red,
+            textAlignment: .right
+        )
+        
+        var newTextFieldStyle = AdyenTextFieldStyle()
+        
+        newTextFieldStyle.placeholderText = newPlaceholderTextStyle
+        
+        // When
+        let updatedTheme = theme.textfield(newTextFieldStyle)
+        
+        // Then
+        XCTAssertEqual(updatedTheme.textFieldStyle.placeholderText?.color, .red)
+        XCTAssertEqual(updatedTheme.textFieldStyle.placeholderText?.font, .preferredFont(forTextStyle: .footnote))
+        XCTAssertEqual(updatedTheme.textFieldStyle.placeholderText?.textAlignment, .right)
+    }
 }

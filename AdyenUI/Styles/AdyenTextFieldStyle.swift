@@ -8,6 +8,24 @@ import Adyen
 import UIKit
 
 public struct AdyenTextFieldStyle: CheckoutTextFieldStyle {
+    
+    /// The title style.
+    package var title = AdyenLabelStyle(
+        font: .preferredFont(forTextStyle: .footnote),
+        color: UIColor.Adyen.componentSecondaryLabel,
+        textAlignment: .natural
+    )
+    
+    /// The text field's style.
+    package var text = AdyenLabelStyle(
+        font: .preferredFont(forTextStyle: .body),
+        color: UIColor.Adyen.componentLabel,
+        textAlignment: .natural
+    )
+    
+    /// The text field's placeholder text style.
+    package var placeholderText: AdyenLabelStyle?
+
     /// The color of the background.
     public var backgroundColor: UIColor
 
