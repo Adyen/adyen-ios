@@ -72,6 +72,8 @@ public final class DropInComponent: NSObject,
             .retryOnErrorAPIClient()
 
         super.init()
+        
+        sendInitialAnalytics()
     }
 
     /// For testing only
@@ -203,6 +205,9 @@ public final class DropInComponent: NSObject,
         } else if configuration.allowsSkippingPaymentList,
                   let singleRegularComponent = componentManager.singleRegularComponent {
             setNecessaryDelegates(on: singleRegularComponent)
+            // on this case we also need to send a dropin render event
+            // and there is no other place at the current structure than here
+            sendDidLoadEvent()
             return singleRegularComponent
         } else {
             return paymentMethodListComponent(onCancel: nil)
@@ -257,6 +262,9 @@ public final class DropInComponent: NSObject,
         component.delegate = self
         component.onCancel = onCancel
         component._isDropIn = true
+        component.onDidLoad = { [weak self] in
+            self?.sendDidLoadEvent()
+        }
         return component
     }
 

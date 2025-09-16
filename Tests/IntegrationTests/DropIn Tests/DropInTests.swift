@@ -166,6 +166,24 @@ class DropInTests: XCTestCase {
         XCTAssertEqual(style.formComponent.separatorColor, .green)
         XCTAssertEqual(style.navigation.separatorColor, .green)
     }
+    
+    func test_Initialization_Should_Send_InitialCall() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        analyticsProviderMock._checkoutAttemptId = "testAttemptId"
+        let context = Dummy.context(with: analyticsProviderMock)
+        let config = DropInComponent.Configuration(allowPreselectedPaymentView: false)
+
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
+        _ = DropInComponent(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: config
+        )
+        
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.checkoutAttemptId, "testAttemptId")
+    }
 
     func testViewDidLoadShouldSendRenderCall() throws {
         // Given
@@ -181,19 +199,80 @@ class DropInTests: XCTestCase {
         )
 
         // When
-        sut.sendDidLoadEvent()
+        presentOnRoot(sut.viewController)
 
         // Then
         XCTAssertEqual(analyticsProviderMock.infos.count, 1)
 
         let info = analyticsProviderMock.infos.first
         XCTAssertEqual(info?.type, .rendered)
+        XCTAssertEqual(info?.component, "dropin")
 
         let configDataDict = try XCTUnwrap(info?.configData?.stringOnlyDictionary)
         XCTAssertNotNil(configDataDict)
         XCTAssertEqual(configDataDict["skipPaymentMethodList"], "false")
         XCTAssertEqual(configDataDict["openFirstStoredPaymentMethod"], "false")
         XCTAssertEqual(configDataDict.keys.count, 2)
+    }
+    
+    func test_Should_Send_RenderEvent_For_Preselected() throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+        let config = DropInComponent.Configuration(allowPreselectedPaymentView: true)
+
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
+        let sut = DropInComponent(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: config
+        )
+
+        // When
+        presentOnRoot(sut.viewController)
+        
+        // Then
+        XCTAssertEqual(analyticsProviderMock.infos.count, 1)
+
+        let info = analyticsProviderMock.infos.first
+        XCTAssertEqual(info?.type, .rendered)
+        XCTAssertEqual(info?.component, "dropin")
+    }
+    
+    func test_Should_Send_RenderEvent_For_SkippedPaymentList() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        analyticsProviderMock._checkoutAttemptId = "testAttemptId"
+        let context = Dummy.context(with: analyticsProviderMock)
+        let config = DropInComponent.Configuration(allowsSkippingPaymentList: true)
+
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleNonInstant.data(using: .utf8)!)
+        let sut = DropInComponent(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: config
+        )
+        
+        // When
+        presentOnRoot(sut.viewController)
+
+        // Then
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
+        XCTAssertEqual(analyticsProviderMock.checkoutAttemptId, "testAttemptId")
+        XCTAssertEqual(analyticsProviderMock.infos.count, 2)
+
+        // 2 render events, dropin and single component
+        let info = analyticsProviderMock.infos.first
+        XCTAssertEqual(info?.type, .rendered)
+        XCTAssertEqual(info?.component, "dropin")
+        let configDataDict = try XCTUnwrap(info?.configData?.stringOnlyDictionary)
+        XCTAssertNotNil(configDataDict)
+        XCTAssertEqual(configDataDict["skipPaymentMethodList"], "true")
+        XCTAssertEqual(configDataDict["openFirstStoredPaymentMethod"], "true")
+        XCTAssertEqual(configDataDict.keys.count, 2)
+        
+        let info2 = analyticsProviderMock.infos[1]
+        XCTAssertEqual(info2.type, .rendered)
+        XCTAssertEqual(info2.component, "sepadirectdebit")
     }
 
     func testOpenDropInAsList() throws {
