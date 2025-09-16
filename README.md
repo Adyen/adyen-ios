@@ -39,13 +39,38 @@ More information about our versioning and the Drop-in/Components lifecycle can b
 
 ## Installation
 
-Adyen iOS are available through either [CocoaPods](http://cocoapods.org), [Carthage](https://github.com/Carthage/Carthage) or [Swift Package Manager](https://swift.org/package-manager/).
+Adyen iOS are available through [Swift Package Manager](https://swift.org/package-manager/), [CocoaPods](http://cocoapods.org) or [Carthage](https://github.com/Carthage/Carthage).
 
 ### Minimum Requirements
 
 - iOS 12.0
 - Xcode 15.0
 - Swift 5.7
+
+### Swift Package Manager
+
+1. Follow Apple's [Adding Package Dependencies to Your App](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app) guide on how to add a Swift Package dependency.
+2. Use `https://github.com/Adyen/adyen-ios` as the repository URL.
+3. Specify the version to be at least `4.9.0`.
+
+You can add all modules or select individual modules to add to your integration.
+The `AdyenWeChatPay` module needs to be explicitly added to support WeChat Pay.
+The `AdyenTwint` module needs to be explicitly added to support Twint native flow.
+The `AdyenSwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers.
+
+* `AdyenDropIn`: all modules except `AdyenWeChatPay`.
+* `AdyenSession`: handler for the simplified checkout flow.
+* `AdyenCard`: the card components.
+* `AdyenComponents`: all other payment components except WeChat Pay.
+* `AdyenActions`:  action components.
+* `AdyenEncryption`: encryption.
+* `AdyenWeChatPay`: WeChat Pay component.
+* `AdyenTwint`: Twint component.
+* `AdyenSwiftUI`: SwiftUI apps specific module.
+
+:warning: _Swift Package Manager for Xcode 12.0 and 12.1 has a [known issue](https://bugs.swift.org/browse/SR-13343) when it comes to importing a dependency that in turn depend on a binary dependencies. A workaround is described [here](https://forums.swift.org/t/swiftpm-binarytarget-dependency-and-code-signing/38953)._
+
+:warning: _`AdyenWeChatPay` and `AdyenWeChatPayInternal` modules don't support any simulators and can only be tested on a real device._
 
 ### CocoaPods
 
@@ -88,33 +113,6 @@ You can add all modules or select individual modules to add to your integration.
 * `AdyenWeChatPayInternal`: WeChat Pay component.
 * `AdyenTwint`: Twint component.
 * `AdyenSwiftUI`: SwiftUI apps specific module.
-
-:warning: _`AdyenWeChatPay` and `AdyenWeChatPayInternal` modules doesn't support any simulators and can only be tested on a real device._
-
-### Swift Package Manager
-
-1. Follow Apple's [Adding Package Dependencies to Your App](
-https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app
-) guide on how to add a Swift Package dependency.
-2. Use `https://github.com/Adyen/adyen-ios` as the repository URL.
-3. Specify the version to be at least `4.9.0`.
-
-You can add all modules or select individual modules to add to your integration.
-The `AdyenWeChatPay` module needs to be explicitly added to support WeChat Pay.
-The `AdyenTwint` module needs to be explicitly added to support Twint native flow.
-The `AdyenSwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers.
-
-* `AdyenDropIn`: all modules except `AdyenWeChatPay`.
-* `AdyenSession`: handler for the simplified checkout flow.
-* `AdyenCard`: the card components.
-* `AdyenComponents`: all other payment components except WeChat Pay.
-* `AdyenActions`:  action components.
-* `AdyenEncryption`: encryption.
-* `AdyenWeChatPay`: WeChat Pay component.
-* `AdyenTwint`: Twint component.
-* `AdyenSwiftUI`: SwiftUI apps specific module.
-
-:warning: _Swift Package Manager for Xcode 12.0 and 12.1 has a [know issue](https://bugs.swift.org/browse/SR-13343) when it comes to importing a dependency that in turn depend on a binary dependencies. A workaround is described [here](https://forums.swift.org/t/swiftpm-binarytarget-dependency-and-code-signing/38953)._
 
 :warning: _`AdyenWeChatPay` and `AdyenWeChatPayInternal` modules doesn't support any simulators and can only be tested on a real device._
 
