@@ -26,7 +26,7 @@ internal protocol AnyThreeDS2CoreActionHandler: Component {
     )
 }
 
-internal typealias ThreeDSService = ThreeDSConfigurable & ThreeDSServiceable
+internal typealias ThreeDSServiceOrchestrator = ThreeDSConfigurable & ThreeDSServiceable
 
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
 internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
@@ -41,7 +41,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     /// The appearance configuration of the 3D Secure 2 challenge UI.
     internal let appearanceConfiguration: ADYAppearanceConfiguration
     
-    private var service: ThreeDSService
+    private var service: ThreeDSServiceOrchestrator
     
     internal weak var presentationDelegate: PresentationDelegate?
     
@@ -55,7 +55,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     /// - Parameter appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
     internal init(
         context: AdyenContext,
-        service: ThreeDSService,
+        service: ThreeDSServiceOrchestrator,
         appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()
     ) {
         self.context = context
@@ -119,7 +119,10 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     ) {
         let errorPayload: String = {
             switch error {
-            case let .fingerprintingError(errorPayload: errorPayload):
+            case let .fingerprintingError(errorPayload: errorPayload),
+                 let .messageVersionCreationError(errorPayload: errorPayload),
+                 let .transactionCreationError(errorPayload: errorPayload),
+                 let .serviceParameterCreationError(errorPayload: errorPayload):
                 errorPayload
             }
         }()
@@ -233,7 +236,8 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
             return didFail(with: ThreeDS2Component.Error.missingTransaction, completionHandler: completionHandler)
 
         case let .challengeError(errorPayload),
-             let .errorAndResultAreNil(errorPayload):
+             let .errorAndResultAreNil(errorPayload),
+             let .topViewControllerCouldNotBeDetermined(errorPayload):
             opaqueRepresentationOfError = errorPayload
             sendErrorEvent(
                 .threeDS2ChallengeHandlingFailed,

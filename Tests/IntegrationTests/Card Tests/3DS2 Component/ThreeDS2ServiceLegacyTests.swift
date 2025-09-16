@@ -71,6 +71,10 @@ final class ThreeDS2ServiceLegacyTests: XCTestCase {
                 switch failure {
                 case let .fingerprintingError(errorPayload: payload):
                     XCTAssertFalse(payload.isEmpty)
+                case .messageVersionCreationError,
+                     .serviceParameterCreationError,
+                     .transactionCreationError:
+                    XCTFail("Unexpected errors")
                 }
             }
             expectationFingerprintCreated.fulfill()
@@ -235,4 +239,5 @@ final class ThreeDS2ServiceLegacyTests: XCTestCase {
         }
         wait(for: [expectationFingerprintCreated], timeout: 0.1)
     }
+    
 }

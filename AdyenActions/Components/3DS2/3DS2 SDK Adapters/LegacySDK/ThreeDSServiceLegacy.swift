@@ -103,6 +103,7 @@ internal final class ThreeDSServiceLegacy: ThreeDSServiceable {
     }
 
     internal func resetTransaction() {
+        self.transaction?.reset()
         self.transaction = nil
     }
 }

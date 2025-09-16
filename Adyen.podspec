@@ -78,6 +78,7 @@ Pod::Spec.new do |s|
   s.subspec 'Actions' do |plugin|
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen3DS2', '2.4.3'
+    plugin.dependency 'Adyen3DS2_Swift', '3.0.1'
     plugin.source_files = 'AdyenActions/**/*.swift'
     plugin.exclude_files = 'AdyenActions/**/BundleSPMExtension.swift'
     plugin.resource_bundles = {

@@ -16,7 +16,7 @@ extension ThreeDS2CompactActionHandler {
     /// Initializes the 3D Secure 2 action handler.
     internal convenience init(
         context: AdyenContext,
-        service: ThreeDSService,
+        service: ThreeDSServiceOrchestrator,
         appearanceConfiguration: ADYAppearanceConfiguration,
         delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?
     ) {

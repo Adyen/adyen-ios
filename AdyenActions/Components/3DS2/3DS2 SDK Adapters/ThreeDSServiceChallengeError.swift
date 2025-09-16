@@ -16,4 +16,5 @@ internal enum ThreeDSServiceChallengeError: Error, Equatable {
     case cancelled(errorPayload: String)
     /// The sdk faced an error performing the challenge.
     case challengeError(errorPayload: String)
+    case topViewControllerCouldNotBeDetermined(errorPayload: String)
 }

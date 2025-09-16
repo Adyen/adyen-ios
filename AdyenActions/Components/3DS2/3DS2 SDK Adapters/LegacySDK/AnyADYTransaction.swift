@@ -8,14 +8,12 @@ import Adyen3DS2
 import Foundation
 
 internal protocol AnyADYTransaction {
-
     var authenticationParameters: AnyAuthenticationRequestParameters { get }
-
     func performChallenge(with parameters: ADYChallengeParameters, completionHandler: @escaping (AnyChallengeResult?, Error?) -> Void)
+    func reset()
 }
 
 extension ADYTransaction: AnyADYTransaction {
-
     internal var authenticationParameters: AnyAuthenticationRequestParameters { authenticationRequestParameters }
 
     internal func performChallenge(
@@ -28,5 +26,9 @@ extension ADYTransaction: AnyADYTransaction {
                 completionHandler(result, error)
             }
         )
+    }
+    
+    internal func reset() {
+        close()
     }
 }

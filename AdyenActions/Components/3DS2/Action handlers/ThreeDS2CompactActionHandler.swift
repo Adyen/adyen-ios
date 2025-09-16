@@ -53,7 +53,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
         context: AdyenContext,
         fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter? = nil,
         appearanceConfiguration: ADYAppearanceConfiguration,
-        service: ThreeDSService,
+        service: ThreeDSServiceOrchestrator,
         coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
         delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil
     ) {

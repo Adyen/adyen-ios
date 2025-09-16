@@ -11,8 +11,12 @@ internal protocol ThreeDSConfigurable {
     var configuration: ThreeDSFeatureChecker? { get set }
 }
 
+internal enum Feature: String {
+    case useSwiftSDK
+}
+
 internal protocol ThreeDSFeatureChecker {
-    func isFeatureEnabled(_ name: String) -> Bool
+    func isFeatureEnabled(_ feature: Feature) -> Bool
 }
 
 /// This type creates a ThreeDSServiceable implementation and consumes ThreeDSConfigurable.
@@ -67,6 +71,15 @@ internal final class ThreeDSServiceProvider: ThreeDSServiceable, ThreeDSConfigur
     internal static func createService(
         configuration: ThreeDSFeatureChecker?
     ) -> ThreeDSServiceable {
-        ThreeDSServiceLegacy()
+        if let configuration,
+           configuration.isFeatureEnabled(.useSwiftSDK) {
+            if #available(iOS 13, *) {
+                ThreeDSService()
+            } else {
+                ThreeDSServiceLegacy()
+            }
+        } else {
+            ThreeDSServiceLegacy()
+        }
     }
 }

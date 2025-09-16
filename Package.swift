@@ -67,6 +67,10 @@ let package = Package(
             exact: "2.4.3"
         ),
         .package(
+            url: "https://github.com/adyen/adyen-3ds2-ios-swift",
+            exact: "3.0.1"
+        ),
+        .package(
             url: "https://github.com/Adyen/adyen-authentication-ios",
             exact: "3.1.0"
         ),
@@ -109,7 +113,8 @@ let package = Package(
             name: "AdyenActions",
             dependencies: [
                 .target(name: "Adyen"),
-                .product(name: "Adyen3DS2", package: "adyen-3ds2-ios")
+                .product(name: "Adyen3DS2", package: "adyen-3ds2-ios"),
+                .product(name: "Adyen3DS2_Swift", package: "adyen-3ds2-ios-swift")
             ],
             path: "AdyenActions",
             exclude: [

@@ -8,7 +8,7 @@ import Adyen3DS2
 @_spi(AdyenInternal) @testable import AdyenActions
 import Foundation
 
-final class ThreeDSServiceableMock: ThreeDSService {
+final class ThreeDSServiceableMock: ThreeDSServiceOrchestrator {
     var configuration: ThreeDSFeatureChecker?
     
     var onResetTransaction: (() -> Void)?

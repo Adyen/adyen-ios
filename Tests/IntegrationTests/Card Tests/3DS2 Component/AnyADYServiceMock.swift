@@ -71,5 +71,6 @@ final class AnyADYTransactionMock: AnyADYTransaction {
     func performChallenge(with parameters: ADYChallengeParameters, completionHandler: @escaping (AnyChallengeResult?, Error?) -> Void) {
         onPerformChallenge?(parameters, completionHandler)
     }
-
+    
+    func reset() {}
 }
