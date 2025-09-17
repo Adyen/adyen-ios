@@ -9,9 +9,16 @@ import Foundation
 import UIKit
 
 internal protocol ComponentContainerRouterDelegate: AnyObject {
+    // MARK: - PaymentComponentDelegate
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
     func didFail(with error: any Error)
     func didCancel(component: any PaymentComponent)
+    
+    // MARK: - ActionComponentDelegate
+    func didOpenExternalApplication(component: ActionComponent)
+    func didProvide(_ data: ActionComponentData, from component: ActionComponent)
+    func didComplete(from component: ActionComponent)
+    func didFail(with error: Error, from component: ActionComponent)
 }
 
 internal protocol ComponentContainerRouterProtocol {
@@ -50,22 +57,8 @@ internal class ComponentContainerRouter: ComponentContainerRouterProtocol {
 }
 
 extension ComponentContainerRouter: ComponentContainerViewModelDelegate {
-    
-    func didOpenExternalApplication(component: any Adyen.ActionComponent) {
-        // TODO:
-    }
-    
-    func didProvide(_ data: Adyen.ActionComponentData, from component: any Adyen.ActionComponent) {
-        // TODO:
-    }
-    
-    func didComplete(from component: any Adyen.ActionComponent) {
-        // TODO:
-    }
-    
-    func didFail(with error: any Error, from component: any Adyen.ActionComponent) {
-        // TODO:
-    }
+        
+    // MARK: - PaymentComponentDelegate
 
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         delegate?.didSubmit(data, from: component)
@@ -78,4 +71,23 @@ extension ComponentContainerRouter: ComponentContainerViewModelDelegate {
     func didCancel(component: any Adyen.PaymentComponent) {
         delegate?.didCancel(component: component)
     }
+    
+    // MARK: - ActionComponentDelegate
+    
+    func didOpenExternalApplication(component: any ActionComponent) {
+        delegate?.didOpenExternalApplication(component: component)
+    }
+    
+    func didProvide(_ data: Adyen.ActionComponentData, from component: any ActionComponent) {
+        delegate?.didProvide(data, from: component)
+    }
+    
+    func didComplete(from component: any ActionComponent) {
+        delegate?.didComplete(from: component)
+    }
+    
+    func didFail(with error: any Error, from component: any ActionComponent) {
+        delegate?.didFail(with: error, from: component)
+    }
+
 }

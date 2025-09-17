@@ -13,6 +13,11 @@ internal protocol PaymentMethodListRouterDelegate: AnyObject {
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
     func didFail(with error: any Error)
     func didCancel(component: any PaymentComponent)
+    
+    func didOpenExternalApplication(component: ActionComponent)
+    func didProvide(_ data: ActionComponentData, from component: ActionComponent)
+    func didComplete(from component: ActionComponent)
+    func didFail(with error: Error, from component: ActionComponent)
 }
 
 internal protocol PaymentMethodListRouterProtocol: AnyObject {
@@ -93,5 +98,21 @@ extension PaymentMethodListRouter: ComponentContainerRouterDelegate {
     
     func didCancel(component: any PaymentComponent) {
         delegate?.didCancel(component: component)
+    }
+    
+    func didOpenExternalApplication(component: any ActionComponent) {
+        delegate?.didOpenExternalApplication(component: component)
+    }
+    
+    func didProvide(_ data: Adyen.ActionComponentData, from component: any ActionComponent) {
+        delegate?.didProvide(data, from: component)
+    }
+    
+    func didComplete(from component: any ActionComponent) {
+        delegate?.didComplete(from: component)
+    }
+    
+    func didFail(with error: any Error, from component: any ActionComponent) {
+        delegate?.didFail(with: error, from: component)
     }
 }
