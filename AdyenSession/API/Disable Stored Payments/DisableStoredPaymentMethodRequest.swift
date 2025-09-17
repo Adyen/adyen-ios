@@ -10,8 +10,8 @@ import Foundation
 
 internal struct DisableStoredPaymentMethodRequest: APIRequest {
     
-    internal typealias ResponseType = DisableStoredPaymentMethodResponse
-    
+    internal typealias ResponseType = EmptyResponse
+
     internal let path: String
     
     internal var counter: UInt = 0
@@ -42,5 +42,3 @@ internal struct DisableStoredPaymentMethodRequest: APIRequest {
     }
     
 }
-
-internal struct DisableStoredPaymentMethodResponse: Response {}

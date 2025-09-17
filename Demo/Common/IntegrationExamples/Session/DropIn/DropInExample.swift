@@ -150,8 +150,8 @@ extension DropInExample {
         case let .failure(error):
             self.presenter?.presentAlert(with: error, retryHandler: nil)
             completion(false)
-        case let .success(response):
-            completion(response.response == .detailsDisabled)
+        case .success:
+            completion(true)
         }
     }
 }
