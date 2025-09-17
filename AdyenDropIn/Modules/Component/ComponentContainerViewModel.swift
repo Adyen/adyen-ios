@@ -44,7 +44,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     // MARK: - Properties
 
-    weak var delegate: ComponentContainerViewModelDelegate?
+    internal weak var delegate: ComponentContainerViewModelDelegate?
     private let component: PresentableComponent
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
@@ -160,6 +160,7 @@ extension ComponentContainerViewModel: ReadyToSubmitPaymentComponentDelegate {
 extension ComponentContainerViewModel: ActionComponentDelegate {
     
     func didOpenExternalApplication(component: any ActionComponent) {
+        component.stopLoadingIfNeeded()
         delegate?.didOpenExternalApplication(component: component)
     }
 
