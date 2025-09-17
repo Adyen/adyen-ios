@@ -15,12 +15,22 @@ import UIKit
 #endif
 
 internal protocol ComponentContainerViewModelDelegate: AnyObject {
+    // MARK: - PaymentComponentDelegate
     func didSubmit(
         _ data: PaymentComponentData,
         from component: PaymentComponent
     )
     func didFail(with error: Error)
     func didCancel(component: PaymentComponent)
+    
+    // MARK: - ActionComponentDelegate
+    func didOpenExternalApplication(component: ActionComponent)
+    func didProvide(
+        _ data: ActionComponentData,
+        from component: ActionComponent
+    )
+    func didComplete(from component: ActionComponent)
+    func didFail(with error: Error, from component: ActionComponent)
 }
 
 internal protocol ComponentContainerViewModelProtocol {
@@ -146,26 +156,27 @@ extension ComponentContainerViewModel: ReadyToSubmitPaymentComponentDelegate {
 }
 
 extension ComponentContainerViewModel: ActionComponentDelegate {
+    
+    func didOpenExternalApplication(component: any ActionComponent) {
+        delegate?.didOpenExternalApplication(component: component)
+    }
 
     func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
-        // TODO: - Handle action details
+        delegate?.didProvide(data, from: component)
     }
     
     func didComplete(from component: any ActionComponent) {
-        // TODO: - Handle action complete
+        delegate?.didComplete(from: component)
     }
     
     func didFail(with error: any Error, from component: any ActionComponent) {
         if case ComponentError.cancelled = error {
             cancel()
         } else {
-            delegate?.didFail(with: error)
+            delegate?.didFail(with: error, from: component)
         }
     }
 
-    func didOpenExternalApplication(component: any ActionComponent) {
-        // TODO: - Handle app redirect
-    }
 }
 
 extension ComponentContainerViewModel: PresentationDelegate {
