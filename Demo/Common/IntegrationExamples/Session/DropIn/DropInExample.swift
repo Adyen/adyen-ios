@@ -142,16 +142,3 @@ extension DropInExample: PresentationDelegate {
         // The implementation of this delegate method is not needed when using AdyenSession as the session handles the presentation
     }
 }
-
-extension DropInExample {
-
-    private func handleDisableResult(_ result: Result<DisableStoredPaymentMethodRequest.ResponseType, Error>, completion: (Bool) -> Void) {
-        switch result {
-        case let .failure(error):
-            self.presenter?.presentAlert(with: error, retryHandler: nil)
-            completion(false)
-        case .success:
-            completion(true)
-        }
-    }
-}
