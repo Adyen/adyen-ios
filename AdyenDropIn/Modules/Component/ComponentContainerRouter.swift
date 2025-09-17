@@ -50,6 +50,22 @@ internal class ComponentContainerRouter: ComponentContainerRouterProtocol {
 }
 
 extension ComponentContainerRouter: ComponentContainerViewModelDelegate {
+    
+    func didOpenExternalApplication(component: any Adyen.ActionComponent) {
+        // TODO:
+    }
+    
+    func didProvide(_ data: Adyen.ActionComponentData, from component: any Adyen.ActionComponent) {
+        // TODO:
+    }
+    
+    func didComplete(from component: any Adyen.ActionComponent) {
+        // TODO:
+    }
+    
+    func didFail(with error: any Error, from component: any Adyen.ActionComponent) {
+        // TODO:
+    }
 
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         delegate?.didSubmit(data, from: component)

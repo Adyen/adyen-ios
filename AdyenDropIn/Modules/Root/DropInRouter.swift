@@ -17,13 +17,10 @@ internal protocol DropInRouterDelegate: AnyObject {
 
 internal protocol Router: AnyObject {
     var rootViewController: UIViewController { get }
-    func start()
 }
 
 internal protocol DropInRouterProtocol: Router {
     var delegate: DropInRouterDelegate? { get set }
-    var rootViewController: UIViewController { get }
-    func start()
 }
 
 internal class DropInRouter: DropInRouterProtocol {
@@ -31,7 +28,11 @@ internal class DropInRouter: DropInRouterProtocol {
     // MARK: - Properties
 
     internal weak var delegate: DropInRouterDelegate?
-    private let navigationController: DropInNavigationController
+    
+    internal private(set) lazy var rootViewController: UIViewController = {
+        resolveRootView()
+    }()
+
     private let viewModel: DropInViewModelProtocol
 
     private let preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol
@@ -53,19 +54,9 @@ internal class DropInRouter: DropInRouterProtocol {
         self.preselectedPaymentMethodAssembler = preselectedPaymentMethodAssembler
         self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
-        self.navigationController = DropInNavigationController()
     }
 
     // MARK: - DropInRootRouterProtocol
-
-    internal func start() {
-        let rootView = resolveRootView()
-        navigationController.setViewControllers([rootView], animated: false)
-    }
-
-    internal var rootViewController: UIViewController {
-        navigationController
-    }
 
     // MARK: - Private
 
@@ -78,7 +69,9 @@ internal class DropInRouter: DropInRouterProtocol {
             )
             preselectedPaymentMethodRouter.delegate = self
             self.preselectedPaymentMethodRouter = preselectedPaymentMethodRouter
-            return preselectedPaymentMethodRouter.rootViewController
+            let preselectedPaymentMethodViewController = preselectedPaymentMethodRouter.rootViewController
+            let navigationController = DropInNavigationController(rootViewController: preselectedPaymentMethodViewController)
+            return navigationController
         case let .component(paymentComponent):
             // TODO: - Handle standalone component case
 //            let componentView = componentContainerAssembler.resolveContainerView(for: paymentComponent)
@@ -101,9 +94,8 @@ extension DropInRouter: PreselectedPaymentMethodRouterDelegate {
         let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter()
         self.paymentMethodListRouter = paymentMethodListRouter
         paymentMethodListRouter.delegate = self
-        paymentMethodListRouter.start()
         
-        navigationController.present(paymentMethodListRouter.rootViewController, animated: true)
+        rootViewController.present(paymentMethodListRouter.rootViewController, animated: true)
     }
 }
 
@@ -112,7 +104,7 @@ extension DropInRouter: PaymentMethodListRouterDelegate {
     // MARK: - PaymentMethodListRouterDelegate
 
     func paymentMethodListDidCancel(completion: (() -> Void)?) {
-        navigationController.presentingViewController?.dismiss(animated: true)
+        rootViewController.presentingViewController?.dismiss(animated: true)
         preselectedPaymentMethodRouter = nil
         paymentMethodListRouter = nil
     }

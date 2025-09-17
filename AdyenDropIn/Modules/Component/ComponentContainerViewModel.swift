@@ -16,6 +16,7 @@ import UIKit
 
 internal protocol ComponentContainerViewModelDelegate: AnyObject {
     // MARK: - PaymentComponentDelegate
+
     func didSubmit(
         _ data: PaymentComponentData,
         from component: PaymentComponent
@@ -24,6 +25,7 @@ internal protocol ComponentContainerViewModelDelegate: AnyObject {
     func didCancel(component: PaymentComponent)
     
     // MARK: - ActionComponentDelegate
+
     func didOpenExternalApplication(component: ActionComponent)
     func didProvide(
         _ data: ActionComponentData,

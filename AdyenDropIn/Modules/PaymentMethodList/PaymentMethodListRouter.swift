@@ -18,7 +18,6 @@ internal protocol PaymentMethodListRouterDelegate: AnyObject {
 internal protocol PaymentMethodListRouterProtocol: AnyObject {
     var rootViewController: UIViewController { get }
     var delegate: PaymentMethodListRouterDelegate? { get set }
-    func start()
 }
 
 internal class PaymentMethodListRouter: PaymentMethodListRouterProtocol {
@@ -40,15 +39,12 @@ internal class PaymentMethodListRouter: PaymentMethodListRouterProtocol {
     // MARK: - PaymentMethodListRouterProtocol
 
     internal var rootViewController: UIViewController {
-        navigationController
-    }
-
-    internal func start() {
         guard let view else {
             fatalError("Router's view was not set.")
         }
 
         navigationController.setViewControllers([view], animated: false)
+        return navigationController
     }
 
     // MARK: - Private

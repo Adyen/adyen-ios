@@ -91,7 +91,6 @@ public final class DropInComponent: NSObject,
         super.init()
 
         self.dropInRouter.delegate = self
-        self.dropInRouter.start()
     }
 
     //    /// For testing only
@@ -134,7 +133,7 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Presentable Component Protocol
 
-    public lazy var viewController: UIViewController = {
+    public private(set) lazy var viewController: UIViewController = {
         dropInRouter.rootViewController
     }()
 

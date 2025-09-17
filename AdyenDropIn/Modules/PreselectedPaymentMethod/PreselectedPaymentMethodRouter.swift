@@ -30,7 +30,7 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouterPro
 
     // MARK: - Initializers
     
-    init(componentContainerAssembler: ComponentContainerAssemblerProtocol) {
+    internal init(componentContainerAssembler: ComponentContainerAssemblerProtocol) {
         self.componentContainerAssembler = componentContainerAssembler
     }
 
