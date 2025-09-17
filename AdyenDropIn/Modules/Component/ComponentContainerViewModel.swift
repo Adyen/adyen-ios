@@ -71,6 +71,8 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         if let component = (component as? PaymentComponent) {
             delegate?.didCancel(component: component)
         }
+        
+        component.stopLoadingIfNeeded()
     }
 
     // MARK: - Private
@@ -145,16 +147,20 @@ extension ComponentContainerViewModel: ReadyToSubmitPaymentComponentDelegate {
 
 extension ComponentContainerViewModel: ActionComponentDelegate {
 
-    func didProvide(_ data: Adyen.ActionComponentData, from component: any Adyen.ActionComponent) {
+    func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
         // TODO: - Handle action details
     }
     
-    func didComplete(from component: any Adyen.ActionComponent) {
+    func didComplete(from component: any ActionComponent) {
         // TODO: - Handle action complete
     }
     
-    func didFail(with error: any Error, from component: any Adyen.ActionComponent) {
-        // TODO: - Handle action cancellation
+    func didFail(with error: any Error, from component: any ActionComponent) {
+        if case ComponentError.cancelled = error {
+            cancel()
+        } else {
+            delegate?.didFail(with: error)
+        }
     }
 
     func didOpenExternalApplication(component: any ActionComponent) {

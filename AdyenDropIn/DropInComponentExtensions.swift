@@ -29,13 +29,13 @@ extension DropInComponent: ActionComponentDelegate {
         delegate?.didComplete(from: component, in: self)
     }
     
-    public func didFail(with error: Error, from component: ActionComponent) {
-        if case ComponentError.cancelled = error {
-            userDidCancel(component)
-        } else {
-            delegate?.didFail(with: error, from: component, in: self)
-        }
-    }
+//    public func didFail(with error: Error, from component: ActionComponent) {
+//        if case ComponentError.cancelled = error {
+//            userDidCancel(component)
+//        } else {
+//            delegate?.didFail(with: error, from: component, in: self)
+//        }
+//    }
     
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         delegate?.didProvide(data, from: component, in: self)
