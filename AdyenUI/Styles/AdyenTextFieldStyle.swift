@@ -56,7 +56,7 @@ public struct AdyenTextFieldStyle: CheckoutTextFieldStyle {
         textColor: UIColor = AdyenColorScheme.default.text,
         activeColor: UIColor = AdyenColorScheme.default.highlight,
         errorColor: UIColor = AdyenColorScheme.default.destructive,
-        cornerRadius: CornerRounding = CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius),
+        cornerRadius: CornerRounding = CornerRounding.fixed(12.0),
         borderColor: UIColor = AdyenColorScheme.default.outline,
         borderWidth: CGFloat = AdyenUIConstants.defaultBorderWidth
     ) {
@@ -74,7 +74,7 @@ public struct AdyenTextFieldStyle: CheckoutTextFieldStyle {
         self.textColor = AdyenColorScheme.default.text
         self.activeColor = AdyenColorScheme.default.highlight
         self.errorColor = AdyenColorScheme.default.destructive
-        self.cornerRadius = CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius)
+        self.cornerRadius = CornerRounding.fixed(12.0)
         self.borderColor = AdyenColorScheme.default.outline
         self.borderWidth = AdyenUIConstants.defaultBorderWidth
     }
