@@ -8,5 +8,6 @@ public enum AdyenUIConstants {
 
     public static let defaultCornerRadius = 14.0
     public static let submitButtonHeight = 52.0
+    public static let defaultBorderWidth = 1.5
 
 }
