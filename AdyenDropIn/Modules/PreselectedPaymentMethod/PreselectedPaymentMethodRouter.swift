@@ -65,7 +65,7 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouterPro
 }
 
 extension PreselectedPaymentMethodRouter: ComponentContainerRouterDelegate {
-    
+
     func didSubmit(_ data: Adyen.PaymentComponentData, from component: any Adyen.PaymentComponent) {
         // TODO: - Logic didSubmit
     }
@@ -76,5 +76,23 @@ extension PreselectedPaymentMethodRouter: ComponentContainerRouterDelegate {
     
     func didCancel(component: any Adyen.PaymentComponent) {
         // TODO: - Logic didCancel
+    }
+    
+    // MARK: - ActionComponentDelegate
+    
+    func didOpenExternalApplication(component: any ActionComponent) {
+        // TODO: - Logic to open external app
+    }
+    
+    func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
+        // TODO: - Logic to handle action details
+    }
+    
+    func didComplete(from component: any ActionComponent) {
+        // TODO: - Logic to handle action completion
+    }
+    
+    func didFail(with error: any Error, from component: any ActionComponent) {
+        // TODO: - Logic to handle action error
     }
 }

@@ -10,11 +10,13 @@ import UIKit
 
 internal protocol ComponentContainerRouterDelegate: AnyObject {
     // MARK: - PaymentComponentDelegate
+
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
     func didFail(with error: any Error)
     func didCancel(component: any PaymentComponent)
     
     // MARK: - ActionComponentDelegate
+
     func didOpenExternalApplication(component: ActionComponent)
     func didProvide(_ data: ActionComponentData, from component: ActionComponent)
     func didComplete(from component: ActionComponent)

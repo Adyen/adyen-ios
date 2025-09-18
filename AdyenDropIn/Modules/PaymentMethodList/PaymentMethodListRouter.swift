@@ -104,7 +104,7 @@ extension PaymentMethodListRouter: ComponentContainerRouterDelegate {
         delegate?.didOpenExternalApplication(component: component)
     }
     
-    func didProvide(_ data: Adyen.ActionComponentData, from component: any ActionComponent) {
+    func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
         delegate?.didProvide(data, from: component)
     }
     
