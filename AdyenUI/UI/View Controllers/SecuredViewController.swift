@@ -57,7 +57,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
 //    ///
 //    /// - Parameter child: The wrapped `UIViewController`.
 //    /// - Parameter theme: checkout theme.
-    public init(
+    package init(
         child: ChildViewController,
         style: ViewStyle = FormComponentStyle(),
         theme: CheckoutTheme

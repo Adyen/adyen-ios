@@ -41,17 +41,17 @@ extension AdyenTheme: CheckoutTheme {
 
     // Conformance to protocol
 
-    public var checkoutLabelStyle: CheckoutLabelStyle {
+    package var checkoutLabelStyle: CheckoutLabelStyle {
         get { labelStyle }
         set { labelStyle = newValue as? AdyenLabelStyle ?? AdyenLabelStyle() }
     }
     
-    public var checkoutButtonStyles: CheckoutButtonStyles {
+    package var checkoutButtonStyles: CheckoutButtonStyles {
         get { buttonStyle }
         set { buttonStyle = newValue as? AdyenButtonStyles ?? AdyenButtonStyles() }
     }
     
-    public func withLabelStyle(_ style: CheckoutLabelStyle) -> CheckoutTheme {
+    package func label(_ style: CheckoutLabelStyle) -> CheckoutTheme {
         var copy = self
         if let newStyle = style as? AdyenLabelStyle {
             copy.checkoutLabelStyle = newStyle
@@ -59,7 +59,7 @@ extension AdyenTheme: CheckoutTheme {
         return copy
     }
     
-    public func withButtonStyle(_ style: CheckoutButtonStyles) -> CheckoutTheme {
+    package func button(_ style: CheckoutButtonStyles) -> CheckoutTheme {
         var copy = self
         if let newStyle = style as? AdyenButtonStyles {
             copy.checkoutButtonStyles = newStyle

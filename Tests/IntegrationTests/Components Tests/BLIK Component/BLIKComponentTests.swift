@@ -218,7 +218,7 @@ class BLIKComponentTests: XCTestCase {
     }
 
     func testDefaultHintLabelItemStyling() {
-        sut.configuration.theme?.checkoutLabelStyle = AdyenLabelStyle(
+        sut.configuration.theme.checkoutLabelStyle = AdyenLabelStyle(
             font: .preferredFont(forTextStyle: .caption1),
             color: .yellow
         )

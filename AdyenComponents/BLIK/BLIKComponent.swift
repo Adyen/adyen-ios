@@ -24,7 +24,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
 
     public lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
-        theme: configuration.theme ?? AdyenTheme()
+        theme: configuration.theme
     )
     
     /// Component's configuration
@@ -58,7 +58,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
         let formViewController = FormViewController(
             scrollEnabled: configuration.showsSubmitButton,
             localizationParameters: configuration.localizationParameters,
-            theme: configuration.theme ?? AdyenTheme()
+            theme: configuration.theme
         )
 
         formViewController.delegate = self
@@ -86,7 +86,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
             scopeInstance: self,
             postfix: "blikCodeHintLabel"
         ),
-        labelStyle: configuration.theme?.checkoutLabelStyle
+        labelStyle: configuration.theme.checkoutLabelStyle
     )
 
     /// The BLIK code item.
@@ -104,7 +104,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
 
     /// The button item.
     internal lazy var button: FormButtonItem = {
-        let buttonStyles = configuration.theme?.checkoutButtonStyles as? AdyenButtonStyles ?? AdyenButtonStyles()
+        let buttonStyles = configuration.theme.checkoutButtonStyles as? AdyenButtonStyles ?? AdyenButtonStyles()
         let item = FormButtonItem(buttonStyle: buttonStyles.primary)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(

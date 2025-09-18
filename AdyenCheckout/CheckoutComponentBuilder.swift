@@ -54,7 +54,9 @@ extension BLIKPaymentMethod {
         }
         // TODO: find a better place to carry over global settings to individual configs
         blikConfiguration.showsSubmitButton = configuration.showsSubmitButton
-        blikConfiguration.theme = configuration.theme
+        if let theme = configuration.theme {
+            blikConfiguration.theme = theme
+        }
         let component = BLIKComponent(
             paymentMethod: self,
             context: configuration.context,

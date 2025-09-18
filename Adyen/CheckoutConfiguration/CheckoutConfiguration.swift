@@ -103,21 +103,21 @@ public struct CheckoutConfiguration {
     // Providing label customization without using AdyenTheme object
     public func theme(label: CheckoutLabelStyle) -> Self {
         var copy = self
-        copy.theme = theme?.withLabelStyle(label)
+        copy.theme = theme?.label(label)
         return copy
     }
     
     // Providing button customization without using AdyenTheme object
     public func theme(button: CheckoutButtonStyles) -> Self {
         var copy = self
-        copy.theme = theme?.withButtonStyle(button)
+        copy.theme = theme?.button(button)
         return copy
     }
     
     // Providing label and button customization without using AdyenTheme object
     public func theme(label labelStyle: CheckoutLabelStyle, button buttonStyle: CheckoutButtonStyles) -> Self {
         var copy = self
-        copy.theme = theme?.withLabelStyle(labelStyle).withButtonStyle(buttonStyle)
+        copy.theme = theme?.label(labelStyle).button(buttonStyle)
         return copy
     }
 }
