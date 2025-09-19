@@ -45,6 +45,7 @@ public struct CheckoutConfiguration {
     
     package let context: AdyenContext
 
+    //TODO: Make theme non-optional
     package var theme: CheckoutTheme?
 
     /// Creates a CheckoutConfiguration instance.
