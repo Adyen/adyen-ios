@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// `CheckoutTheme` represents theme of the SDK required for dropIn and components UI.
 package protocol CheckoutTheme: CheckoutColorScheme {
