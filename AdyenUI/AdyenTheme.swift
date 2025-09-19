@@ -38,33 +38,34 @@ public struct AdyenTheme {
 }
 
 extension AdyenTheme: CheckoutTheme {
-
+    
     // Conformance to protocol
-
-    package var checkoutLabelStyle: CheckoutLabelStyle {
-        get { labelStyle }
-        set { labelStyle = newValue as? AdyenLabelStyle ?? AdyenLabelStyle() }
-    }
+    public var checkoutLabelStyle: CheckoutLabelStyle { labelStyle }
     
-    package var checkoutButtonStyles: CheckoutButtonStyles {
-        get { buttonStyle }
-        set { buttonStyle = newValue as? AdyenButtonStyles ?? AdyenButtonStyles() }
-    }
+    public var checkoutButtonStyles: CheckoutButtonStyles { buttonStyle }
     
-    package func label(_ style: CheckoutLabelStyle) -> CheckoutTheme {
+    public func label(_ style: CheckoutLabelStyle) -> CheckoutTheme {
         var copy = self
         if let newStyle = style as? AdyenLabelStyle {
-            copy.checkoutLabelStyle = newStyle
+            copy.labelStyle = newStyle
         }
         return copy
     }
     
-    package func button(_ style: CheckoutButtonStyles) -> CheckoutTheme {
+    public func button(_ style: CheckoutButtonStyles) -> CheckoutTheme {
         var copy = self
         if let newStyle = style as? AdyenButtonStyles {
-            copy.checkoutButtonStyles = newStyle
+            copy.buttonStyle = newStyle
         }
         return copy
+    }
+}
+
+extension AdyenTheme: CheckoutColorScheme {
+    
+    // Conformance to protocol
+    public var background: UIColor {
+        self.currentColorScheme.background
     }
 }
 

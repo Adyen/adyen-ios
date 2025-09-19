@@ -7,9 +7,9 @@
 import Foundation
 
 /// `CheckoutTheme` represents theme of the SDK required for dropIn and components UI.
-package protocol CheckoutTheme {
-    var checkoutLabelStyle: CheckoutLabelStyle { get set }
-    var checkoutButtonStyles: CheckoutButtonStyles { get set }
+public protocol CheckoutTheme: CheckoutColorScheme {
+    var checkoutLabelStyle: CheckoutLabelStyle { get }
+    var checkoutButtonStyles: CheckoutButtonStyles { get }
     
     // methods to produce a new theme with updated styles
     func label(_ style: CheckoutLabelStyle) -> CheckoutTheme
@@ -18,3 +18,7 @@ package protocol CheckoutTheme {
 
 public protocol CheckoutLabelStyle {}
 public protocol CheckoutButtonStyles {}
+
+public protocol CheckoutColorScheme {
+    var background: UIColor { get }
+}

@@ -23,7 +23,7 @@ public class FormLabelItem: FormItem {
         self.labelStyle = AdyenLabelStyle()
     }
 
-    public init(
+    package init(
         text: String,
         identifier: String? = nil,
         labelStyle: CheckoutLabelStyle
@@ -44,7 +44,7 @@ public class FormLabelItem: FormItem {
     public var text: String
 
     /// The labelStyle from the adyen theme
-    public var labelStyle: CheckoutLabelStyle = AdyenLabelStyle()
+    package var labelStyle: CheckoutLabelStyle = AdyenLabelStyle()
 
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         let label = ADYLabel()

@@ -82,10 +82,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-
-        if let adyenTheme = self.theme as? AdyenTheme {
-            view.backgroundColor = adyenTheme.currentColorScheme.background
-        }
+        view.backgroundColor = self.theme.background
         addChildViewController()
         listenToBackgroundNotifications()
 
