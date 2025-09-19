@@ -44,7 +44,7 @@ extension AdyenTheme: CheckoutTheme {
     
     public var checkoutButtonStyles: CheckoutButtonStyles { buttonStyle }
     
-    public func label(_ style: CheckoutLabelStyle) -> CheckoutTheme {
+    package func label(_ style: CheckoutLabelStyle) -> CheckoutTheme {
         var copy = self
         if let newStyle = style as? AdyenLabelStyle {
             copy.labelStyle = newStyle
@@ -52,7 +52,7 @@ extension AdyenTheme: CheckoutTheme {
         return copy
     }
     
-    public func button(_ style: CheckoutButtonStyles) -> CheckoutTheme {
+    package func button(_ style: CheckoutButtonStyles) -> CheckoutTheme {
         var copy = self
         if let newStyle = style as? AdyenButtonStyles {
             copy.buttonStyle = newStyle
