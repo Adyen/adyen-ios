@@ -10,6 +10,7 @@ import XCTest
 @_spi(AdyenInternal) @testable import AdyenActions
 import AdyenComponents
 import AdyenDropIn
+import AdyenNetworking
 
 class SessionTests: XCTestCase {
 
@@ -685,8 +686,8 @@ class SessionTests: XCTestCase {
         
         let apiClient = APIClientMock()
         sut.apiClient = apiClient
-        apiClient.mockedResults = [.success(DisableStoredPaymentMethodResponse())]
-        
+        apiClient.mockedResults = [.success(EmptyResponse())]
+
         let deleteExpectation = expectation(description: "Expect delete call to succeed")
         apiClient.onExecute = { _ in
             deleteExpectation.fulfill()

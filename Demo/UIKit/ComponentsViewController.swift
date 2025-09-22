@@ -203,6 +203,7 @@ extension ComponentsViewController: PresenterExampleProtocol {
 
     internal func dismiss(completion: (() -> Void)?) {
         dismiss(animated: true, completion: completion)
+        currentExample = nil
     }
 }
 
