@@ -23,9 +23,4 @@ internal enum ApiClientHelper {
         apiClient.mockedResults = [.success(paymentMethodsResponse), .success(sessionResponse)]
         return apiClient
     }
-    
-    internal static func generatePalApiClient() -> APIClientProtocol {
-        let context = DemoAPIContext(environment: ConfigurationConstants.classicAPIEnvironment)
-        return DefaultAPIClient(apiContext: context)
-    }
 }
