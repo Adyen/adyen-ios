@@ -5,7 +5,9 @@
 //
 
 import Adyen
-import AdyenUI
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import Foundation
 
 /// A configuration container for customizing the behavior of Drop-in and individual components.
