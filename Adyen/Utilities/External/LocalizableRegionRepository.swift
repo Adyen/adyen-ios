@@ -27,9 +27,10 @@ public struct Region: Decodable, CustomStringConvertible, Equatable {
 }
 
 /// Fetch localized geographic regions from external.
-internal enum RegionRepository {
+@_spi(AdyenInternal)
+public enum RegionRepository {
 
-    internal static func regions(
+    public static func regions(
         from locale: NSLocale,
         with countryCodes: [String]? = nil
     ) -> [Region] {
@@ -41,7 +42,7 @@ internal enum RegionRepository {
         }
     }
 
-    internal static func subRegions(for countryCode: String) -> [Region]? {
+    public static func subRegions(for countryCode: String) -> [Region]? {
         allRegions[countryCode]
     }
     

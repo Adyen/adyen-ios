@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenActions
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class QRCodeActionComponentTests: XCTestCase {

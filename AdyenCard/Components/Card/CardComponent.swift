@@ -6,6 +6,9 @@
 
 @_spi(AdyenInternal) import Adyen
 import AdyenNetworking
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 import Foundation
 import UIKit
 
@@ -156,22 +159,26 @@ public class CardComponent: PresentableComponent,
         guard let paymentMethod = paymentMethod as? StoredCardPaymentMethod else {
             return nil
         }
+        // TODO: FIX StoredCard UI
         var component: PaymentComponent & PresentableComponent
-        if configuration.stored.showsSecurityCodeField {
-            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context)
-            storedComponent.localizationParameters = configuration.localizationParameters
-            component = storedComponent
-        } else {
-            let storedConfiguration: StoredPaymentMethodComponent.Configuration
-            storedConfiguration = .init(localizationParameters: configuration.localizationParameters)
-            let storedComponent = StoredPaymentMethodComponent(
-                paymentMethod: paymentMethod,
-                context: context,
-                configuration: storedConfiguration
-            )
-            component = storedComponent
-        }
+        // if configuration.stored.showsSecurityCodeField {
+        let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context)
+        storedComponent.localizationParameters = configuration.localizationParameters
+        component = storedComponent
         return component
+        // }
+       
+        // else {
+//            let storedConfiguration: StoredPaymentMethodComponent.Configuration
+//            storedConfiguration = .init(localizationParameters: configuration.localizationParameters)
+//            let storedComponent = StoredPaymentMethodComponent(
+//                paymentMethod: paymentMethod,
+//                context: context,
+//                configuration: storedConfiguration
+//            )
+//            component = storedComponent
+//        }
+        
     }()
     
     /// Updates the visibility of the store payment method switch.

@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) import Adyen
 @testable @_spi(AdyenInternal) import AdyenCard
+@_spi(AdyenInternal) @testable import AdyenUI
 import Foundation
 
 final class FormTextItemViewDelegateMock<ItemType: FormTextItem, TextViewType: FormTextItemView<ItemType>>: FormTextItemViewDelegate {

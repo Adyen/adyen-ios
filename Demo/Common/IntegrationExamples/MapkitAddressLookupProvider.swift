@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import AdyenUI
 import Contacts
 import Foundation
 import MapKit

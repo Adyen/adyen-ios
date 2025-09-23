@@ -178,7 +178,7 @@ class BLIKComponentTests: XCTestCase {
             .color(AdyenColorScheme.default.primary)
         )
         sut.hintLabelItem.labelStyle = customizedHintLabel.labelStyle
-
+        
         XCTAssertEqual(sut.hintLabelItem.labelStyle.font, AdyenFonts.default.body)
         XCTAssertEqual(sut.hintLabelItem.labelStyle.color, AdyenColorScheme.default.primary)
     }
@@ -186,7 +186,7 @@ class BLIKComponentTests: XCTestCase {
     func testDefaultButtonTitleStylingUsingAdyenTheme() throws {
         let customizedSubmitButtonStyle = AdyenTheme().button(AdyenButtonStyles(colorScheme: .default))
 
-        sut.button.buttonStyle = customizedSubmitButtonStyle.buttonStyle.primary
+        sut.button.buttonStyle = customizedSubmitButtonStyle.buttonStyles.primary
 
         XCTAssertEqual(sut.button.buttonStyle, AdyenButtonStyles.default.primary)
         XCTAssertEqual(sut.button.buttonStyle.textColor, AdyenColorScheme.default.textOnPrimary)
@@ -198,9 +198,8 @@ class BLIKComponentTests: XCTestCase {
             .font(.preferredFont(forTextStyle: .callout))
             .color(.red)
         )
-
+        
         sut.hintLabelItem.labelStyle = customizedHintLabel.labelStyle
-
         XCTAssertEqual(sut.hintLabelItem.labelStyle.font, .preferredFont(forTextStyle: .callout))
         XCTAssertEqual(sut.hintLabelItem.labelStyle.color, .red)
     }
@@ -208,18 +207,18 @@ class BLIKComponentTests: XCTestCase {
     func testCustomButtonTitleStylingUsingAdyenTheme() throws {
         let customizedSubmitButtonStyle = AdyenTheme().button(AdyenButtonStyles(colorScheme: AdyenColorScheme(primary: .purple, textOnPrimary: .red)))
 
-        sut.button.buttonStyle = customizedSubmitButtonStyle.buttonStyle.primary
+        sut.button.buttonStyle = customizedSubmitButtonStyle.buttonStyles.primary
 
         XCTAssertEqual(sut.button.buttonStyle.textColor, .red)
 
     }
-
+    
     func testDefaultHintLabelItemStyling() {
         sut.configuration.theme.labelStyle = AdyenLabelStyle(
             font: .preferredFont(forTextStyle: .caption1),
             color: .yellow
         )
-
+        
         XCTAssertEqual(sut.hintLabelItem.labelStyle.font, .preferredFont(forTextStyle: .caption1))
         XCTAssertEqual(sut.hintLabelItem.labelStyle.color, .yellow)
     }

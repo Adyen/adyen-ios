@@ -4,8 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
+import Foundation
 
 /// A form item into which card expiry date is entered, formatted and validated.
 internal final class FormCardExpiryDateItem: FormTextInputItem {

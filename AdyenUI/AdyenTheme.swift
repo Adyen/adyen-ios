@@ -4,16 +4,17 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import UIKit
 
 // A shared instance of the  theme for easy access throughout your SDK
 public struct AdyenTheme {
-
+    
     public var currentColorScheme: AdyenColorScheme = .default
     public var currentFonts: AdyenFonts = .default
 
     // Available styles
-    public var buttonStyle = AdyenButtonStyles()
+    public var buttonStyles = AdyenButtonStyles()
     public var labelStyle = AdyenLabelStyle()
     package var toggleStyle = AdyenToggleStyle()
 
@@ -23,7 +24,7 @@ public struct AdyenTheme {
         label: AdyenLabelStyle = AdyenLabelStyle(),
         toggle: AdyenToggleStyle = AdyenToggleStyle()
     ) {
-        self.buttonStyle = button
+        self.buttonStyles = button
         self.labelStyle = label
         self.toggleStyle = toggle
     }
@@ -49,7 +50,7 @@ extension AdyenTheme {
     @discardableResult
     public func button(_ buttonStyle: AdyenButtonStyles) -> AdyenTheme {
         var copy = self
-        copy.buttonStyle = buttonStyle
+        copy.buttonStyles = buttonStyle
         return copy
     }
     

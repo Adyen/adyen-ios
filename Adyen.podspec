@@ -52,6 +52,7 @@ Pod::Spec.new do |s|
   s.subspec 'CashAppPay' do |plugin|
     plugin.source_files = 'AdyenCashAppPay/**/*.swift'
     plugin.dependency 'Adyen/Core'
+    plugin.dependency 'Adyen/CoreUI'
     plugin.dependency 'CashAppPayKit', '0.6.2'
     plugin.dependency 'CashAppPayKitUI', '0.6.2'
   end
@@ -59,12 +60,14 @@ Pod::Spec.new do |s|
   s.subspec 'AdyenTwint' do |plugin|
     plugin.source_files = 'AdyenTwint/**/*.swift'
     plugin.dependency 'Adyen/Core'
+    plugin.dependency 'Adyen/CoreUI'
     plugin.vendored_frameworks = 'XCFramework/Dynamic/TwintSDK.xcframework'
   end
 
   s.subspec 'Card' do |plugin|
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/Encryption'
+    plugin.dependency 'Adyen/CoreUI'
     plugin.source_files = 'AdyenCard/**/*.swift'
     plugin.exclude_files = 'AdyenCard/**/BundleSPMExtension.swift'
     plugin.resource_bundles = {
@@ -80,6 +83,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Components' do |plugin|
     plugin.dependency 'Adyen/Core'
+    plugin.dependency 'Adyen/CoreUI'
     plugin.dependency 'Adyen/Encryption'
     plugin.source_files = 'AdyenComponents/**/*.swift'
   end
@@ -92,6 +96,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Actions' do |plugin|
     plugin.dependency 'Adyen/Core'
+    plugin.dependency 'Adyen/CoreUI'
     plugin.dependency 'Adyen3DS2', '2.4.3'
     plugin.source_files = 'AdyenActions/**/*.swift'
     plugin.exclude_files = 'AdyenActions/**/BundleSPMExtension.swift'
@@ -117,13 +122,13 @@ Pod::Spec.new do |s|
 
   s.subspec 'CoreUI' do |plugin|
     plugin.source_files = 'AdyenUI/**/*.swift'
+    plugin.dependency 'Adyen/Core'
   end
 
   s.subspec 'Core' do |plugin|
     plugin.source_files = 'Adyen/**/*.swift'
     plugin.exclude_files = 'Adyen/**/BundleSPMExtension.swift'
     plugin.dependency 'AdyenNetworking', '3.0.1'
-    plugin.dependency 'Adyen/CoreUI'
     plugin.resource_bundles = {
         'Adyen' => [
             'Adyen/Assets/**/*.strings',

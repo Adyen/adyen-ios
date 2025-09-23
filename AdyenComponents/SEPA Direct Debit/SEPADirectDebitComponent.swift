@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 #if canImport(AdyenUI)
-    import AdyenUI
+    @_spi(AdyenInternal) import AdyenUI
 #endif
 
 /// A component that provides a form for SEPA Direct Debit payments.
