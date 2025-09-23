@@ -30,7 +30,7 @@ final class AdyenThemeTests: XCTestCase {
         let updatedTheme = theme.button(newButtonStyle)
 
         // Then
-        XCTAssertEqual(updatedTheme.buttonStyle.primary.backgroundColor, .blue)
+        XCTAssertEqual(updatedTheme.buttonStyles.primary.backgroundColor, .blue)
     }
     
     func test_toggleMethod_shouldUpdateToggleTitleLabel() {
