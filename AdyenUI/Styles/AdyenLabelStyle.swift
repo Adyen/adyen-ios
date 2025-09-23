@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 
-public struct AdyenLabelStyle: CheckoutLabelStyle {
+public struct AdyenLabelStyle {
     /// The font used to display the text.
     public var font: UIFont
 

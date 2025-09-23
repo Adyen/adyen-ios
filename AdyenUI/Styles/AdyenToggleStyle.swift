@@ -13,10 +13,10 @@ package struct AdyenToggleStyle {
     var title = AdyenLabelStyle()
     
     /// The color of `onTintColor` of switch.
-    var tintColor: UIColor?
+    package var tintColor: UIColor?
 
     // The background color of the switch.
-    var backgroundColor: UIColor = .clear
+    package var backgroundColor: UIColor = .clear
 
     var cornerRadius: CornerRounding = .fixed(AdyenUIConstants.defaultCornerRadius)
     

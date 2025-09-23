@@ -14,8 +14,8 @@ public struct AdyenTheme {
     public var currentFonts: AdyenFonts = .default
 
     // Available styles
-    package var buttonStyle = AdyenButtonStyles()
-    package var labelStyle = AdyenLabelStyle()
+    public var buttonStyles = AdyenButtonStyles()
+    public var labelStyle = AdyenLabelStyle()
     package var toggleStyle = AdyenToggleStyle()
 
     // Initialize with a default ButtonStyle, LabelStyle and ToggleStyle if none is provided
@@ -24,7 +24,7 @@ public struct AdyenTheme {
         label: AdyenLabelStyle = AdyenLabelStyle(),
         toggle: AdyenToggleStyle = AdyenToggleStyle()
     ) {
-        self.buttonStyle = button
+        self.buttonStyles = button
         self.labelStyle = label
         self.toggleStyle = toggle
     }
@@ -35,38 +35,6 @@ public struct AdyenTheme {
     }
 
     public init() {}
-}
-
-extension AdyenTheme: CheckoutTheme {
-    
-    // Conformance to protocol
-    public var checkoutLabelStyle: CheckoutLabelStyle { labelStyle }
-    
-    public var checkoutButtonStyles: CheckoutButtonStyles { buttonStyle }
-    
-    package func label(_ style: CheckoutLabelStyle) -> CheckoutTheme {
-        var copy = self
-        if let newStyle = style as? AdyenLabelStyle {
-            copy.labelStyle = newStyle
-        }
-        return copy
-    }
-    
-    package func button(_ style: CheckoutButtonStyles) -> CheckoutTheme {
-        var copy = self
-        if let newStyle = style as? AdyenButtonStyles {
-            copy.buttonStyle = newStyle
-        }
-        return copy
-    }
-}
-
-extension AdyenTheme: CheckoutColorScheme {
-    
-    // Conformance to protocol
-    public var background: UIColor {
-        self.currentColorScheme.background
-    }
 }
 
 extension AdyenTheme {
@@ -82,7 +50,7 @@ extension AdyenTheme {
     @discardableResult
     public func button(_ buttonStyle: AdyenButtonStyles) -> AdyenTheme {
         var copy = self
-        copy.buttonStyle = buttonStyle
+        copy.buttonStyles = buttonStyle
         return copy
     }
     

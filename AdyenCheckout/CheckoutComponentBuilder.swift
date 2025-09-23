@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenUI
 #if canImport(AdyenComponents)
     @_spi(AdyenInternal) import AdyenComponents
 #endif
@@ -54,9 +55,7 @@ extension BLIKPaymentMethod {
         }
         // TODO: find a better place to carry over global settings to individual configs
         blikConfiguration.showsSubmitButton = configuration.showsSubmitButton
-        if let theme = configuration.theme {
-            blikConfiguration.theme = theme
-        }
+        blikConfiguration.theme = configuration.theme
         let component = BLIKComponent(
             paymentMethod: self,
             context: configuration.context,

@@ -4,6 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
+import AdyenUI
 import Foundation
 
 /// A configuration container for customizing the behavior of Drop-in and individual components.
@@ -45,8 +47,7 @@ public struct CheckoutConfiguration {
     
     package let context: AdyenContext
 
-    //TODO: Make theme non-optional
-    package var theme: CheckoutTheme?
+    package var theme: AdyenTheme
 
     /// Creates a CheckoutConfiguration instance.
     /// - Parameters:
@@ -89,10 +90,12 @@ public struct CheckoutConfiguration {
     
     internal init(
         context: AdyenContext,
-        configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
+        configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:],
+        theme: AdyenTheme = .init()
     ) {
         self.context = context
         self.configurations = configurations
+        self.theme = theme
     }
     
     public func showsSubmitButton(_ showsSubmitButton: Bool) -> Self {
@@ -102,23 +105,24 @@ public struct CheckoutConfiguration {
     }
 
     // Providing label customization without using AdyenTheme object
-    public func theme(label: CheckoutLabelStyle) -> Self {
+    public func theme(label: AdyenLabelStyle) -> Self {
         var copy = self
-        copy.theme = theme?.label(label)
+        copy.theme.labelStyle = label
         return copy
     }
     
     // Providing button customization without using AdyenTheme object
-    public func theme(button: CheckoutButtonStyles) -> Self {
+    public func theme(button: AdyenButtonStyles) -> Self {
         var copy = self
-        copy.theme = theme?.button(button)
+        copy.theme.buttonStyles = button
         return copy
     }
     
     // Providing label and button customization without using AdyenTheme object
-    public func theme(label labelStyle: CheckoutLabelStyle, button buttonStyle: CheckoutButtonStyles) -> Self {
+    public func theme(label labelStyle: AdyenLabelStyle, button buttonStyle: AdyenButtonStyles) -> Self {
         var copy = self
-        copy.theme = theme?.label(labelStyle).button(buttonStyle)
+        copy.theme.labelStyle = labelStyle
+        copy.theme.buttonStyles = buttonStyle
         return copy
     }
 }
