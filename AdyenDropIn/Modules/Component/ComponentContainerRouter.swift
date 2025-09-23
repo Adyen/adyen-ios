@@ -25,7 +25,6 @@ internal protocol ComponentContainerRouterDelegate: AnyObject {
 
 internal protocol ComponentContainerRouterProtocol {
     var rootViewController: UIViewController { get }
-    func start()
 }
 
 internal class ComponentContainerRouter: ComponentContainerRouterProtocol {
@@ -51,10 +50,6 @@ internal class ComponentContainerRouter: ComponentContainerRouterProtocol {
         }
 
         return view
-    }
-
-    internal func start() {
-        // TODO: -
     }
 }
 

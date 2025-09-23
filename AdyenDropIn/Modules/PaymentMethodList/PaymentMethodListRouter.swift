@@ -71,8 +71,6 @@ extension PaymentMethodListRouter: PaymentMethodListViewModelDelegate {
         )
         self.componentContainerRouter = componentContainerRouter
 
-        componentContainerRouter.start()
-
         let componentContainerViewController = componentContainerRouter.rootViewController
 
         // TODO: - Invert `requiresModalPresentation` logic or remove it fully.

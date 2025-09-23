@@ -59,7 +59,6 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouterPro
             for: paymentComponent,
             delegate: self
         )
-        componentContainerRouter.start()
         rootViewController.present(componentContainerRouter.rootViewController, animated: true)
     }
 }
