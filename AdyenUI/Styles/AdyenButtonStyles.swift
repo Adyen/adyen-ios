@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 
-public struct AdyenButtonStyles: CheckoutButtonStyles {
+public struct AdyenButtonStyles {
     
     public var primary: AdyenButtonStyle
     public var secondary: AdyenButtonStyle

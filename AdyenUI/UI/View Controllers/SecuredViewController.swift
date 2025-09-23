@@ -19,7 +19,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
 
     private var style: ViewStyle
 
-    private var theme: CheckoutTheme = AdyenTheme()
+    private var theme: AdyenTheme = .init()
 
     private var blurConstraints: [NSLayoutConstraint]?
 
@@ -57,10 +57,10 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
 //    ///
 //    /// - Parameter child: The wrapped `UIViewController`.
 //    /// - Parameter theme: checkout theme.
-    public init(
+    package init(
         child: ChildViewController,
         style: ViewStyle = FormComponentStyle(),
-        theme: CheckoutTheme
+        theme: AdyenTheme
     ) {
         self.childViewController = child
         self.style = style
@@ -82,10 +82,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-
-        if let adyenTheme = self.theme as? AdyenTheme {
-            view.backgroundColor = adyenTheme.currentColorScheme.background
-        }
+        view.backgroundColor = self.theme.currentColorScheme.background
         addChildViewController()
         listenToBackgroundNotifications()
 

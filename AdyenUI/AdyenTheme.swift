@@ -14,10 +14,10 @@ public struct AdyenTheme {
     public var currentFonts: AdyenFonts = .default
 
     // Available styles
-    package var buttonStyle = AdyenButtonStyles()
-    package var labelStyle = AdyenLabelStyle()
-    package var textFieldStyle = AdyenTextFieldStyle()
+    public var buttonStyles = AdyenButtonStyles()
+    public var labelStyle = AdyenLabelStyle()
     package var toggleStyle = AdyenToggleStyle()
+    public var textFieldStyle = AdyenTextFieldStyle()
 
     // Initialize with a default ButtonStyle, LabelStyle and ToggleStyle if none is provided
     package init(
@@ -26,7 +26,7 @@ public struct AdyenTheme {
         textField: AdyenTextFieldStyle = AdyenTextFieldStyle(),
         toggle: AdyenToggleStyle = AdyenToggleStyle()
     ) {
-        self.buttonStyle = button
+        self.buttonStyles = button
         self.labelStyle = label
         self.textFieldStyle = textField
         self.toggleStyle = toggle
@@ -38,50 +38,6 @@ public struct AdyenTheme {
     }
 
     public init() {}
-}
-
-extension AdyenTheme: CheckoutTheme {
-
-    // Conformance to protocol
-
-    public var checkoutLabelStyle: CheckoutLabelStyle {
-        get { labelStyle }
-        set { labelStyle = newValue as? AdyenLabelStyle ?? AdyenLabelStyle() }
-    }
-    
-    public var checkoutButtonStyles: CheckoutButtonStyles {
-        get { buttonStyle }
-        set { buttonStyle = newValue as? AdyenButtonStyles ?? AdyenButtonStyles() }
-    }
-    
-    public var checkoutTextFieldStyle: CheckoutTextFieldStyle {
-        get { textFieldStyle }
-        set { textFieldStyle = newValue as? AdyenTextFieldStyle ?? AdyenTextFieldStyle() }
-    }
-    
-    public func withLabelStyle(_ style: CheckoutLabelStyle) -> CheckoutTheme {
-        var copy = self
-        if let newStyle = style as? AdyenLabelStyle {
-            copy.checkoutLabelStyle = newStyle
-        }
-        return copy
-    }
-    
-    public func withButtonStyle(_ style: CheckoutButtonStyles) -> CheckoutTheme {
-        var copy = self
-        if let newStyle = style as? AdyenButtonStyles {
-            copy.checkoutButtonStyles = newStyle
-        }
-        return copy
-    }
-    
-    public func withTextFieldStyle(_ style: any CheckoutTextFieldStyle) -> any CheckoutTheme {
-        var copy = self
-        if let newStyle = style as? AdyenTextFieldStyle {
-            copy.checkoutTextFieldStyle = newStyle
-        }
-        return copy
-    }
 }
 
 extension AdyenTheme {
@@ -97,7 +53,7 @@ extension AdyenTheme {
     @discardableResult
     public func button(_ buttonStyle: AdyenButtonStyles) -> AdyenTheme {
         var copy = self
-        copy.buttonStyle = buttonStyle
+        copy.buttonStyles = buttonStyle
         return copy
     }
     

@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
 
 /// `CheckoutConfigurable` represents any type of configuration the SDK may require for its components,
@@ -22,7 +23,7 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
 
     //  var style: FormComponentStyle { get }
 
-    var theme: CheckoutTheme? { get set }
+    var theme: AdyenTheme { get }
 
     var localizationParameters: LocalizationParameters? { get }
 }
@@ -42,7 +43,11 @@ public extension CheckoutConfigurable {
     }
 }
 
-internal struct CompositeCheckoutConfiguration: CheckoutConfigurable {
+package struct CompositeCheckoutConfiguration: CheckoutConfigurable {
     
-    internal var configurations: [CheckoutConfigurable]
+    package var configurations: [CheckoutConfigurable]
+    
+    package init(configurations: [CheckoutConfigurable]) {
+        self.configurations = configurations
+    }
 }
