@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 
-public struct AdyenTextFieldStyle: CheckoutTextFieldStyle {
+public struct AdyenTextFieldStyle {
     
     /// The title style.
     package var title = AdyenLabelStyle(
