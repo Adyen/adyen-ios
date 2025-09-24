@@ -56,7 +56,7 @@ public struct AdyenTextFieldStyle {
         textColor: UIColor = AdyenColorScheme.default.text,
         activeColor: UIColor = AdyenColorScheme.default.highlight,
         errorColor: UIColor = AdyenColorScheme.default.destructive,
-        cornerRadius: CornerRounding = CornerRounding.fixed(12.0),
+        cornerRadius: CornerRounding = CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius),
         borderColor: UIColor = AdyenColorScheme.default.outline,
         borderWidth: CGFloat = AdyenUIConstants.defaultBorderWidth
     ) {
@@ -74,7 +74,7 @@ public struct AdyenTextFieldStyle {
         self.textColor = AdyenColorScheme.default.text
         self.activeColor = AdyenColorScheme.default.highlight
         self.errorColor = AdyenColorScheme.default.destructive
-        self.cornerRadius = CornerRounding.fixed(12.0)
+        self.cornerRadius = CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius)
         self.borderColor = AdyenColorScheme.default.outline
         self.borderWidth = AdyenUIConstants.defaultBorderWidth
     }
