@@ -80,15 +80,13 @@ public struct AdyenTextFieldStyle {
     }
 }
 
-// MARK: - Method Chaining for AdyenTextFieldStyle Properties
-
 // This extension adds the method chaining to the AdyenTextFieldStyle struct.
 extension AdyenTextFieldStyle {
     
     /// Returns a new style with the specified background color.
     /// - Parameter backgroundColor: The color to set.
     /// - Returns: A new `AdyenTextFieldStyle` instance.
-    public func with(backgroundColor: UIColor) -> AdyenTextFieldStyle {
+    public func backgroundColor(backgroundColor: UIColor) -> AdyenTextFieldStyle {
         var newStyle = self
         newStyle.backgroundColor = backgroundColor
         return newStyle
@@ -97,7 +95,7 @@ extension AdyenTextFieldStyle {
     /// Returns a new style with the specified text color.
     /// - Parameter textColor: The color to set.
     /// - Returns: A new `AdyenTextFieldStyle` instance.
-    public func with(textColor: UIColor) -> AdyenTextFieldStyle {
+    public func textColor(textColor: UIColor) -> AdyenTextFieldStyle {
         var newStyle = self
         newStyle.textColor = textColor
         return newStyle
@@ -106,7 +104,7 @@ extension AdyenTextFieldStyle {
     /// Returns a new style with the specified active color.
     /// - Parameter activeColor: The color to set.
     /// - Returns: A new `AdyenTextFieldStyle` instance.
-    public func with(activeColor: UIColor) -> AdyenTextFieldStyle {
+    public func activeColor(activeColor: UIColor) -> AdyenTextFieldStyle {
         var newStyle = self
         newStyle.activeColor = activeColor
         return newStyle
@@ -115,7 +113,7 @@ extension AdyenTextFieldStyle {
     /// Returns a new style with the specified error color.
     /// - Parameter errorColor: The color to set.
     /// - Returns: A new `AdyenTextFieldStyle` instance.
-    public func with(errorColor: UIColor) -> AdyenTextFieldStyle {
+    public func errorColor(errorColor: UIColor) -> AdyenTextFieldStyle {
         var newStyle = self
         newStyle.errorColor = errorColor
         return newStyle
@@ -124,7 +122,7 @@ extension AdyenTextFieldStyle {
     /// Returns a new style with the specified corner radius.
     /// - Parameter cornerRadius: The corner radius to set.
     /// - Returns: A new `AdyenTextFieldStyle` instance.
-    public func with(cornerRadius: CornerRounding) -> AdyenTextFieldStyle {
+    public func cornerRadius(cornerRadius: CornerRounding) -> AdyenTextFieldStyle {
         var newStyle = self
         newStyle.cornerRadius = cornerRadius
         return newStyle
@@ -133,7 +131,7 @@ extension AdyenTextFieldStyle {
     /// Returns a new style with the specified border color.
     /// - Parameter borderColor: The color to set.
     /// - Returns: A new `AdyenTextFieldStyle` instance.
-    public func with(borderColor: UIColor) -> AdyenTextFieldStyle {
+    public func borderColor(borderColor: UIColor) -> AdyenTextFieldStyle {
         var newStyle = self
         newStyle.borderColor = borderColor
         return newStyle
@@ -142,7 +140,7 @@ extension AdyenTextFieldStyle {
     /// Returns a new style with the specified border width.
     /// - Parameter borderWidth: The border width to set.
     /// - Returns: A new `AdyenTextFieldStyle` instance.
-    public func with(borderWidth: CGFloat) -> AdyenTextFieldStyle {
+    public func borderWidth(borderWidth: CGFloat) -> AdyenTextFieldStyle {
         var newStyle = self
         newStyle.borderWidth = borderWidth
         return newStyle

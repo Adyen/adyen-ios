@@ -198,6 +198,8 @@
 		00600F372E7D9FE600637477 /* CheckoutConfiguration+Callbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D87A252D9420AF00763AD6 /* CheckoutConfiguration+Callbacks.swift */; };
 		0067E740296C161E005B8D76 /* UPIComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0067E73F296C161E005B8D76 /* UPIComponentTests.swift */; };
 		0080A7812E423FC700F639DE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080A7802E423FC300F639DE /* UIColor.swift */; };
+		009A2BFE2E83E8C1002D3459 /* AdyenThemeTextFieldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009A2BFD2E83E8BA002D3459 /* AdyenThemeTextFieldTests.swift */; };
+		009A2C002E83E909002D3459 /* AdyenThemeToggleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009A2BFF2E83E902002D3459 /* AdyenThemeToggleTests.swift */; };
 		009F92AC2E4F4D5400561B7D /* AdyenUIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009F92AB2E4F4D4B00561B7D /* AdyenUIConstants.swift */; };
 		00A25E5D2A404303001B32B6 /* ComponentCreationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5C2A404303001B32B6 /* ComponentCreationError.swift */; };
 		00A25E5E2A404303001B32B6 /* ComponentCreationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A25E5C2A404303001B32B6 /* ComponentCreationError.swift */; };
@@ -1836,7 +1838,6 @@
 		005ECD682E5857CC00ADC9BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00600F242E73030900637477 /* CoreBundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CoreBundleExtension.swift; path = "Adyen/Utilities/Non SPM Bundle Extension/CoreBundleExtension.swift"; sourceTree = SOURCE_ROOT; };
 		00600F2E2E78B02F00637477 /* AdyenTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenTextFieldStyle.swift; sourceTree = "<group>"; };
-
 		0067E73C29658CB6005B8D76 /* FormImageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormImageItem.swift; sourceTree = "<group>"; };
 		0067E73F296C161E005B8D76 /* UPIComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentTests.swift; sourceTree = "<group>"; };
 		006DCC02295C3E930015EA79 /* SegmentedControlStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlStyle.swift; sourceTree = "<group>"; };
@@ -1844,6 +1845,8 @@
 		007D791E2823A84C00382D31 /* AffirmComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentUITests.swift; sourceTree = "<group>"; };
 		0080A7802E423FC300F639DE /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		008AD9DB2982C24000C33983 /* CancellableToolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancellableToolBar.swift; sourceTree = "<group>"; };
+		009A2BFD2E83E8BA002D3459 /* AdyenThemeTextFieldTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenThemeTextFieldTests.swift; sourceTree = "<group>"; };
+		009A2BFF2E83E902002D3459 /* AdyenThemeToggleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenThemeToggleTests.swift; sourceTree = "<group>"; };
 		009F92AB2E4F4D4B00561B7D /* AdyenUIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenUIConstants.swift; sourceTree = "<group>"; };
 		009F92AF2E54797C00561B7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00A25E5C2A404303001B32B6 /* ComponentCreationError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentCreationError.swift; sourceTree = "<group>"; };
@@ -3208,6 +3211,8 @@
 			isa = PBXGroup;
 			children = (
 				0019C4122E5F2B2F00B0C3A3 /* AdyenThemeTests.swift */,
+				009A2BFF2E83E902002D3459 /* AdyenThemeToggleTests.swift */,
+				009A2BFD2E83E8BA002D3459 /* AdyenThemeTextFieldTests.swift */,
 			);
 			path = AdyenTheme;
 			sourceTree = "<group>";
@@ -8054,9 +8059,11 @@
 				B6D808182BCD151F00F3F5EB /* PresentationDelegateMock.swift in Sources */,
 				B6D8081C2BCD151F00F3F5EB /* MockAddressLookupProvider.swift in Sources */,
 				B6D808132BCD149F00F3F5EB /* Dummy.swift in Sources */,
+				009A2BFE2E83E8C1002D3459 /* AdyenThemeTextFieldTests.swift in Sources */,
 				81DA70812BDA5F66006CE5D5 /* PaymentMethods+Equatable.swift in Sources */,
 				B6D808382BCD1F8900F3F5EB /* AssertsTests.swift in Sources */,
 				B6D808392BCD1F8900F3F5EB /* LengthValidatorTests.swift in Sources */,
+				009A2C002E83E909002D3459 /* AdyenThemeToggleTests.swift in Sources */,
 				B6D808342BCD1F8900F3F5EB /* LazyOptionalTests.swift in Sources */,
 				B6D808072BCD147600F3F5EB /* TimeIntervalExtensionsTests.swift in Sources */,
 				B6D808082BCD147600F3F5EB /* URLExtensionsTest.swift in Sources */,
