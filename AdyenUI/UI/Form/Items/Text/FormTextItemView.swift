@@ -85,6 +85,10 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     private lazy var entryTextStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [textField, accessoryStackView])
+        stackView.backgroundColor = AdyenTheme().currentColorScheme.container
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = .init(top: 11, left: 16, bottom: 11, right: 16)
+        stackView.layer.cornerRadius = AdyenUIConstants.defaultCornerRadius
         stackView.axis = .horizontal
         stackView.alignment = .bottom
         stackView.preservesSuperviewLayoutMargins = true
@@ -107,11 +111,10 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     public lazy var textField: TextField = {
         let textField = TextField()
-        textField.font = item.style.text.font
+        textField.font = AdyenTheme().currentFonts.body
         textField.adjustsFontForContentSizeCategory = true
-        textField.textColor = item.style.text.color
+        textField.textColor = AdyenTheme().currentColorScheme.primary
         textField.textAlignment = item.style.text.textAlignment
-        textField.backgroundColor = item.style.backgroundColor
         textField.text = item.value
         textField.apply(placeholderText: item.placeholder, with: item.style.placeholderText)
         textField.autocorrectionType = item.autocorrectionType
@@ -197,19 +200,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     // MARK: - Layout
     
-    override open func configureSeparatorView() {
-        let constraints = [
-            separatorView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            separatorView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: 1.0)
-        ]
-
-        NSLayoutConstraint.activate(constraints)
-    }
-    
     private func configureConstraints() {
         textStackView.adyen.anchor(inside: self)
-        separatorView.bottomAnchor.constraint(equalTo: accessoryStackView.bottomAnchor, constant: 4).isActive = true
     }
     
     override open var lastBaselineAnchor: NSLayoutYAxisAnchor {
@@ -249,6 +241,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// Subclasses can override this method to stay notified when the text field resigns its first responder status.
     open func textFieldDidEndEditing(_ textField: UITextField) {
         isEditing = false
+        entryTextStackView.layer.borderWidth = 0.0
         item.onDidEndEditing?()
     }
     
@@ -256,6 +249,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// Subclasses can override this method to stay notified when textField became the first responder.
     open func textFieldDidBeginEditing(_ textField: UITextField) {
         isEditing = true
+        entryTextStackView.layer.borderWidth = 2.0
+        entryTextStackView.layer.borderColor = AdyenTheme().currentColorScheme.primary.cgColor
         item.onDidBeginEditing?()
     }
 

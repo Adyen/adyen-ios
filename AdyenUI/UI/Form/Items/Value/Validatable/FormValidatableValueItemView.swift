@@ -51,16 +51,6 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         }
     }
     
-    override open func configureSeparatorView() {
-        let constraints = [
-            separatorView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            separatorView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: 1.0)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
-    }
-    
     // MARK: - Validation
     
     public var isValid: Bool {
@@ -75,7 +65,6 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         
         guard forced else {
             hideAlertLabel(true)
-            isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
             titleLabel.textColor = defaultTitleColor
             accessibilityLabelView?.accessibilityLabel = item.title
             return
@@ -83,12 +72,10 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         
         if item.isValid() {
             hideAlertLabel(true)
-            highlightSeparatorView(color: tintColor)
             titleLabel.textColor = tintColor
             accessibilityLabelView?.accessibilityLabel = item.title
         } else {
             hideAlertLabel(false)
-            highlightSeparatorView(color: item.style.errorColor)
             titleLabel.textColor = item.style.errorColor
             accessibilityLabelView?.accessibilityLabel = [
                 item.title,
@@ -114,7 +101,6 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     
     internal func resetValidationStatus() {
         hideAlertLabel(true, animated: false)
-        unhighlightSeparatorView()
         titleLabel.textColor = defaultTitleColor
         accessibilityLabelView?.accessibilityLabel = item.title
     }
