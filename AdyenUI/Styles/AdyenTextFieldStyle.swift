@@ -10,27 +10,16 @@ import UIKit
 public struct AdyenTextFieldStyle {
     
     /// The title style.
-    package var title = AdyenLabelStyle(
-        font: .preferredFont(forTextStyle: .footnote),
-        color: UIColor.Adyen.componentSecondaryLabel,
-        textAlignment: .natural
-    )
+    package var title: AdyenLabelStyle
     
     /// The text field's style.
-    package var text = AdyenLabelStyle(
-        font: .preferredFont(forTextStyle: .body),
-        color: UIColor.Adyen.componentLabel,
-        textAlignment: .natural
-    )
+    package var text: AdyenLabelStyle
     
     /// The text field's placeholder text style.
     package var placeholderText: AdyenLabelStyle?
 
     /// The color of the background.
     public var backgroundColor: UIColor
-
-    /// The color of the text.
-    public var textColor: UIColor
 
     /// The color of the text when the element is active.
     public var activeColor: UIColor
@@ -52,31 +41,46 @@ public struct AdyenTextFieldStyle {
 
     /// Initializes a new AdyenTextFieldStyle with default values.
     public init(
+        title: AdyenLabelStyle,
+        text: AdyenLabelStyle,
         backgroundColor: UIColor = AdyenColorScheme.default.background,
         textColor: UIColor = AdyenColorScheme.default.text,
         activeColor: UIColor = AdyenColorScheme.default.highlight,
         errorColor: UIColor = AdyenColorScheme.default.destructive,
         cornerRadius: CornerRounding = CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius),
         borderColor: UIColor = AdyenColorScheme.default.outline,
-        borderWidth: CGFloat = AdyenUIConstants.defaultBorderWidth
+        borderWidth: CGFloat = AdyenUIConstants.defaultBorderWidth,
+        placeholderText: AdyenLabelStyle? = nil
     ) {
+        self.title = title
+        self.text = text
         self.backgroundColor = backgroundColor
-        self.textColor = textColor
         self.activeColor = activeColor
         self.errorColor = errorColor
         self.cornerRadius = cornerRadius
         self.borderColor = borderColor
         self.borderWidth = borderWidth
+        self.placeholderText = placeholderText
     }
 
     public init() {
+        self.title = AdyenLabelStyle(
+            font: .preferredFont(forTextStyle: .footnote),
+            color: UIColor.Adyen.componentSecondaryLabel,
+            textAlignment: .natural
+        )
+        self.text = AdyenLabelStyle(
+            font: .preferredFont(forTextStyle: .body),
+            color: UIColor.Adyen.componentLabel,
+            textAlignment: .natural
+        )
         self.backgroundColor = AdyenColorScheme.default.background
-        self.textColor = AdyenColorScheme.default.text
         self.activeColor = AdyenColorScheme.default.highlight
         self.errorColor = AdyenColorScheme.default.destructive
         self.cornerRadius = CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius)
         self.borderColor = AdyenColorScheme.default.outline
         self.borderWidth = AdyenUIConstants.defaultBorderWidth
+        self.placeholderText = nil
     }
 }
 
@@ -89,15 +93,6 @@ extension AdyenTextFieldStyle {
     public func backgroundColor(backgroundColor: UIColor) -> AdyenTextFieldStyle {
         var newStyle = self
         newStyle.backgroundColor = backgroundColor
-        return newStyle
-    }
-    
-    /// Returns a new style with the specified text color.
-    /// - Parameter textColor: The color to set.
-    /// - Returns: A new `AdyenTextFieldStyle` instance.
-    public func textColor(textColor: UIColor) -> AdyenTextFieldStyle {
-        var newStyle = self
-        newStyle.textColor = textColor
         return newStyle
     }
     
