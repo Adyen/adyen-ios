@@ -24,6 +24,8 @@ internal protocol ComponentContainerRouterDelegate: AnyObject {
 }
 
 internal protocol ComponentContainerRouterProtocol: AnyObject {
+    func present(_ viewController: UIViewController, animated: Bool)
+    
     // MARK: - PaymentComponentDelegate
     
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
@@ -43,19 +45,30 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouterProtoco
     // MARK: - Properties
 
     internal let rootViewController: UIViewController
+    private let viewModel: ComponentContainerViewModelProtocol
     private weak var delegate: ComponentContainerRouterDelegate?
 
     // MARK: - Initializers
 
     internal init(
         viewController: UIViewController,
+        viewModel: ComponentContainerViewModelProtocol,
         delegate: ComponentContainerRouterDelegate
     ) {
         self.rootViewController = viewController
+        self.viewModel = viewModel
         self.delegate = delegate
+    }
+    
+    internal func handle(action: Action) {
+        viewModel.handle(action: action)
     }
 
     // MARK: - ComponentContainerRouterProtocol
+    
+    internal func present(_ viewController: UIViewController, animated: Bool) {
+        rootViewController.present(viewController, animated: animated)
+    }
     
     internal func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         delegate?.didSubmit(data, from: component)
@@ -68,9 +81,7 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouterProtoco
     internal func didCancel(component: any Adyen.PaymentComponent) {
         delegate?.didCancel(component: component)
     }
-    
-    // MARK: - ActionComponentDelegate
-    
+        
     internal func didOpenExternalApplication(component: any ActionComponent) {
         delegate?.didOpenExternalApplication(component: component)
     }

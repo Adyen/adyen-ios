@@ -55,7 +55,11 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
             partialPaymentDelegate: partialPaymentDelegate
         )
         let viewController = ComponentContainerViewController(viewModel: viewModel)
-        let router = ComponentContainerRouter(viewController: viewController, delegate: delegate)
+        let router = ComponentContainerRouter(
+            viewController: viewController,
+            viewModel: viewModel,
+            delegate: delegate
+        )
         viewModel.router = router
         return router
     }

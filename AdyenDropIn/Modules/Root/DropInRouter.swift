@@ -22,6 +22,7 @@ internal protocol DropInRouterDelegate: AnyObject {
 
 internal protocol Router: AnyObject {
     var rootViewController: UIViewController { get }
+    func handle(action: Action)
 }
 
 internal protocol DropInRouterProtocol: Router {
@@ -62,6 +63,11 @@ internal class DropInRouter: Router, DropInRouterProtocol {
     }
     
     // MARK: - DropInRootRouterProtocol
+    
+    internal func handle(action: Action) {
+        preselectedPaymentMethodRouter?.handle(action: action)
+        paymentMethodListRouter?.handle(action: action)
+    }
     
     // MARK: - Private
     

@@ -25,6 +25,7 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     internal let rootViewController: UIViewController
     private weak var delegate: PreselectedPaymentMethodRouterDelegate?
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
+    private var componentContainerRouter: Router?
 
     // MARK: - Initializers
     
@@ -36,6 +37,12 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         self.rootViewController = viewController
         self.delegate = delegate
         self.componentContainerAssembler = componentContainerAssembler
+    }
+    
+    // MARK: - Router
+    
+    internal func handle(action: Action) {
+        componentContainerRouter?.handle(action: action)
     }
 
     // MARK: - PreselectedPaymentMethodRouterProtocol
@@ -56,6 +63,7 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
             for: paymentComponent,
             delegate: self
         )
+        self.componentContainerRouter = componentContainerRouter
         rootViewController.present(componentContainerRouter.rootViewController, animated: true)
     }
 }

@@ -17,6 +17,7 @@ import UIKit
 internal protocol ComponentContainerViewModelProtocol {
     var componentViewController: UIViewController { get }
     func cancel()
+    func handle(action: Action)
 }
 
 internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol {
@@ -62,6 +63,10 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         }
         
         component.stopLoadingIfNeeded()
+    }
+    
+    internal func handle(action: Action) {
+        actionComponent.handle(action)
     }
 
     // MARK: - Private
@@ -118,21 +123,9 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
             router?.didFail(with: error)
         }
     }
-
-    // MARK: - Private
-
 }
 
-extension ComponentContainerViewModel: ReadyToSubmitPaymentComponentDelegate {
-
-    func showConfirmation(
-        for component: InstantPaymentComponent,
-        with order: PartialPaymentOrder?
-    ) {
-        // TODO: - Handle gift card balance confirmation
-        // 1. Present preselected payment method.
-    }
-}
+// MARK: - ActionComponentDelegate
 
 extension ComponentContainerViewModel: ActionComponentDelegate {
     
@@ -156,12 +149,26 @@ extension ComponentContainerViewModel: ActionComponentDelegate {
             router?.didFail(with: error, from: component)
         }
     }
-
 }
+
+// MARK: - PresentationDelegate
 
 extension ComponentContainerViewModel: PresentationDelegate {
 
-    func present(component: any Adyen.PresentableComponent) {
-        // TODO: - Handle subsequent presentations
+    func present(component: any PresentableComponent) {
+        router?.present(component.viewController, animated: true)
+    }
+}
+
+// MARK: - ReadyToSubmitPaymentComponentDelegate
+
+extension ComponentContainerViewModel: ReadyToSubmitPaymentComponentDelegate {
+
+    func showConfirmation(
+        for component: InstantPaymentComponent,
+        with order: PartialPaymentOrder?
+    ) {
+        // TODO: - Handle gift card balance confirmation
+        // 1. Present preselected payment method.
     }
 }

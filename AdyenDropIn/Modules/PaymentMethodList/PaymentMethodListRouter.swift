@@ -53,6 +53,10 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouterProtocol 
         navigationController.setViewControllers([viewController], animated: false)
         return navigationController
     }
+    
+    internal func handle(action: Action) {
+        componentContainerRouter?.handle(action: action)
+    }
 
     // MARK: - PaymentMethodListRouterProtocol
 
