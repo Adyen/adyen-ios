@@ -14,10 +14,7 @@ final class AdyenThemeLabelTests: XCTestCase {
         let defaultTheme = AdyenTheme()
         
         // Then
-        XCTAssertEqual(defaultTheme.labelStyle.font, AdyenFonts.default.body)
-        XCTAssertEqual(defaultTheme.labelStyle.color, AdyenColorScheme.default.primary)
-        XCTAssertEqual(defaultTheme.labelStyle.disabledColor, AdyenColorScheme.default.disabled)
-        XCTAssertEqual(defaultTheme.labelStyle.textAlignment, .natural)
+        expect(defaultTheme.labelStyle, toMatch: AdyenLabelStyle())
     }
 
     func test_labelMethod_shouldUpdateLabelColor() {
@@ -31,7 +28,7 @@ final class AdyenThemeLabelTests: XCTestCase {
         let updatedTheme = theme.label(newLabelStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.labelStyle.color, expectedColorValue)
+        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
     }
     
     func test_labelMethod_shouldUpdateLabelFont() {
@@ -45,7 +42,7 @@ final class AdyenThemeLabelTests: XCTestCase {
         let updatedTheme = theme.label(newLabelStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.labelStyle.font, expectedFontValue)
+        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
     }
     
     func test_labelMethod_shouldUpdateLabelDisabledColor() {
@@ -59,7 +56,7 @@ final class AdyenThemeLabelTests: XCTestCase {
         let updatedTheme = theme.label(newLabelStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.labelStyle.disabledColor, expectedColorValue)
+        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
     }
     
     func test_labelMethod_shouldUpdateLabelTextAlignment() {
@@ -73,7 +70,7 @@ final class AdyenThemeLabelTests: XCTestCase {
         let updatedTheme = theme.label(newLabelStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.labelStyle.textAlignment, expectedTextAlignment)
+        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
     }
     
     func test_labelMethod_shouldPreserveDefaultButtonStyle() {
@@ -87,11 +84,8 @@ final class AdyenThemeLabelTests: XCTestCase {
         let updatedTheme = theme.label(newLabelStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.buttonStyles.primary, AdyenButtonStyles.default.primary)
-        XCTAssertEqual(updatedTheme.buttonStyles.secondary, AdyenButtonStyles.default.secondary)
-        XCTAssertEqual(updatedTheme.buttonStyles.tertiary, AdyenButtonStyles.default.tertiary)
-        XCTAssertEqual(updatedTheme.buttonStyles.destructive, AdyenButtonStyles.default.destructive)
-        XCTAssertEqual(updatedTheme.labelStyle.textAlignment, expectedTextAlignment)
+        expect(updatedTheme.buttonStyles, toMatch: AdyenButtonStyles())
+        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
     }
     
     func test_labelMethod_shouldPreserveDefaultToggleStyle() {
@@ -105,12 +99,8 @@ final class AdyenThemeLabelTests: XCTestCase {
         let updatedTheme = theme.label(newLabelStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.toggleStyle.title.font, AdyenLabelStyle().font)
-        XCTAssertEqual(updatedTheme.toggleStyle.title.color, AdyenLabelStyle().color)
-        XCTAssertEqual(updatedTheme.toggleStyle.tintColor, nil)
-        XCTAssertEqual(updatedTheme.toggleStyle.backgroundColor, .clear)
-        XCTAssertEqual(updatedTheme.toggleStyle.cornerRadius, CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius))
-        XCTAssertEqual(updatedTheme.labelStyle.color, expectedColorValue)
+        expect(updatedTheme.toggleStyle, toMatch: AdyenToggleStyle())
+        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
     }
     
     func test_labelMethod_shouldPreserveDefaultTextFieldStyle() {
@@ -124,13 +114,8 @@ final class AdyenThemeLabelTests: XCTestCase {
         let updatedTheme = theme.label(newLabelStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.textFieldStyle.backgroundColor, AdyenColorScheme.default.background)
-        XCTAssertEqual(updatedTheme.textFieldStyle.activeColor, AdyenColorScheme.default.highlight)
-        XCTAssertEqual(updatedTheme.textFieldStyle.errorColor, AdyenColorScheme.default.destructive)
-        XCTAssertEqual(updatedTheme.textFieldStyle.cornerRadius, CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius))
-        XCTAssertEqual(updatedTheme.textFieldStyle.borderColor, AdyenColorScheme.default.outline)
-        XCTAssertEqual(updatedTheme.textFieldStyle.borderWidth, AdyenUIConstants.defaultBorderWidth)
-        XCTAssertEqual(updatedTheme.labelStyle.textAlignment, expectedTextAlignment)
+        expect(updatedTheme.textFieldStyle, toMatch: AdyenTextFieldStyle())
+        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
     }
     
     func test_labelMethod_shouldPreserveUpdatedButtonStyle() {
@@ -142,16 +127,15 @@ final class AdyenThemeLabelTests: XCTestCase {
     
         let newLabelStyle = AdyenLabelStyle(color: expectedColorValue).font(expectedFontValue)
         
-        let newButtonStyle = AdyenButtonStyles(colorScheme: .init(primary: expectedButtonBackgroundColorValue))
+        let newButtonStyles = AdyenButtonStyles(colorScheme: .init(primary: expectedButtonBackgroundColorValue))
         
         // When
-        var updatedTheme = theme.button(newButtonStyle)
+        var updatedTheme = theme.button(newButtonStyles)
         updatedTheme = updatedTheme.label(newLabelStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.buttonStyles.primary.backgroundColor, expectedButtonBackgroundColorValue)
-        XCTAssertEqual(updatedTheme.labelStyle.font, expectedFontValue)
-        XCTAssertEqual(updatedTheme.labelStyle.color, expectedColorValue)
+        expect(updatedTheme.buttonStyles, toMatch: newButtonStyles)
+        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
     }
     
     func test_labelMethod_shouldPreserveUpdatedToggleStyle() {
@@ -163,25 +147,21 @@ final class AdyenThemeLabelTests: XCTestCase {
         let expectedCornerRadius = 12.0
         let expectedFont: UIFont = .preferredFont(forTextStyle: .body)
     
-        let labelStyle = AdyenLabelStyle().color(expectedLabelColorValue).font(expectedFont)
+        let newLabelStyle = AdyenLabelStyle().color(expectedLabelColorValue).font(expectedFont)
 
         var newToggleStyle = AdyenToggleStyle()
         newToggleStyle.backgroundColor = expectedToggleBackgroundColorValue
         newToggleStyle.tintColor = expectedTintValue
-        newToggleStyle.title = labelStyle
+        newToggleStyle.title = newLabelStyle
         newToggleStyle.cornerRadius = CornerRounding.fixed(expectedCornerRadius)
         
         // When
         var updatedTheme = theme.toggle(newToggleStyle)
-        updatedTheme = updatedTheme.label(labelStyle)
+        updatedTheme = updatedTheme.label(newLabelStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.toggleStyle.backgroundColor, expectedToggleBackgroundColorValue)
-        XCTAssertEqual(updatedTheme.toggleStyle.tintColor, expectedTintValue)
-        XCTAssertEqual(updatedTheme.toggleStyle.title.color, expectedLabelColorValue)
-        XCTAssertEqual(updatedTheme.toggleStyle.cornerRadius, CornerRounding.fixed(expectedCornerRadius))
-        XCTAssertEqual(updatedTheme.labelStyle.color, expectedLabelColorValue)
-        XCTAssertEqual(updatedTheme.labelStyle.font, expectedFont)
+        expect(updatedTheme.toggleStyle, toMatch: newToggleStyle)
+        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
     }
     
     func test_labelMethod_shouldPreserveUpdatedTextFieldStyle() {
@@ -189,7 +169,6 @@ final class AdyenThemeLabelTests: XCTestCase {
         let expectedBorderWidth: CGFloat = 2.0
         let expectedCornerRadius: CGFloat = 10.0
         let expectedBackgroundColorValue = UIColor.red
-        let expectedActiveColorValue = UIColor.green
         let expectedLabelColorValue = UIColor.brown
         let expectedErrorColorValue = UIColor.purple
         let expectedBorderColorValue = UIColor.brown
@@ -199,7 +178,6 @@ final class AdyenThemeLabelTests: XCTestCase {
     
         var newTextFieldStyle = AdyenTextFieldStyle()
         newTextFieldStyle.backgroundColor = expectedBackgroundColorValue
-        newTextFieldStyle.activeColor = expectedActiveColorValue
         newTextFieldStyle.errorColor = expectedErrorColorValue
         newTextFieldStyle.borderColor = expectedBorderColorValue
         newTextFieldStyle.cornerRadius = cornerRadius
@@ -212,14 +190,8 @@ final class AdyenThemeLabelTests: XCTestCase {
         updatedTheme = updatedTheme.label(labelStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.textFieldStyle.backgroundColor, expectedBackgroundColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.activeColor, expectedActiveColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.errorColor, expectedErrorColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.borderColor, expectedBorderColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.cornerRadius, cornerRadius)
-        XCTAssertEqual(updatedTheme.textFieldStyle.borderWidth, expectedBorderWidth)
-        XCTAssertEqual(updatedTheme.labelStyle.color, expectedLabelColorValue)
-        XCTAssertEqual(updatedTheme.labelStyle.font, expectedFont)
+        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
+        expect(updatedTheme.labelStyle, toMatch: labelStyle)
     }
     
 }

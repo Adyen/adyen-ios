@@ -14,77 +14,66 @@ final class AdyenThemeButtonTests: XCTestCase {
         let defaultTheme = AdyenTheme()
         
         // Then
-        XCTAssertEqual(defaultTheme.buttonStyles.primary, AdyenButtonStyles.default.primary)
-        XCTAssertEqual(defaultTheme.buttonStyles.secondary, AdyenButtonStyles.default.secondary)
-        XCTAssertEqual(defaultTheme.buttonStyles.tertiary, AdyenButtonStyles.default.tertiary)
-        XCTAssertEqual(defaultTheme.buttonStyles.destructive, AdyenButtonStyles.default.destructive)
+        expect(defaultTheme.buttonStyles, toMatch: AdyenButtonStyles())
     }
     
     func test_buttonMethod_shouldUpdateButtonStyles() {
         // Given
         let expectedValue = UIColor.blue
         let theme = AdyenTheme()
-        let newButtonStyle = AdyenButtonStyles(colorScheme: .init(primary: expectedValue))
+        
+        let newButtonStyles = AdyenButtonStyles(colorScheme: .init(primary: expectedValue))
         
         // When
-        let updatedTheme = theme.button(newButtonStyle)
+        let updatedTheme = theme.button(newButtonStyles)
         
         // Then
-        XCTAssertEqual(updatedTheme.buttonStyles.primary.backgroundColor, expectedValue)
+        expect(updatedTheme.buttonStyles, toMatch: newButtonStyles)
     }
     
     func test_buttonMethod_shouldPreserveDefaultLabelStyle() {
         // Given
         let expectedValue = UIColor.blue
         let theme = AdyenTheme()
-        let newButtonStyle = AdyenButtonStyles(colorScheme: .init(primary: expectedValue))
+    
+        let newButtonStyles = AdyenButtonStyles(colorScheme: .init(primary: expectedValue))
         
         // When
-        let updatedTheme = theme.button(newButtonStyle)
+        let updatedTheme = theme.button(newButtonStyles)
         
         // Then
-        XCTAssertEqual(updatedTheme.labelStyle.font, AdyenFonts.default.body)
-        XCTAssertEqual(updatedTheme.labelStyle.color, AdyenColorScheme.default.primary)
-        XCTAssertEqual(updatedTheme.labelStyle.disabledColor, AdyenColorScheme.default.disabled)
-        XCTAssertEqual(updatedTheme.labelStyle.textAlignment, .natural)
-        XCTAssertEqual(updatedTheme.buttonStyles.primary.backgroundColor, expectedValue)
+        expect(updatedTheme.labelStyle, toMatch: AdyenLabelStyle())
+        expect(updatedTheme.buttonStyles, toMatch: newButtonStyles)
     }
     
     func test_buttonMethod_shouldPreserveDefaultToggleStyle() {
         // Given
         let expectedValue = UIColor.blue
         let theme = AdyenTheme()
-        let newButtonStyle = AdyenButtonStyles(colorScheme: .init(primary: expectedValue))
+
+        let newButtonStyles = AdyenButtonStyles(colorScheme: .init(primary: expectedValue))
         
         // When
-        let updatedTheme = theme.button(newButtonStyle)
+        let updatedTheme = theme.button(newButtonStyles)
         
         // Then
-        XCTAssertEqual(updatedTheme.toggleStyle.title.font, AdyenLabelStyle().font)
-        XCTAssertEqual(updatedTheme.toggleStyle.title.color, AdyenLabelStyle().color)
-        XCTAssertEqual(updatedTheme.toggleStyle.tintColor, nil)
-        XCTAssertEqual(updatedTheme.toggleStyle.backgroundColor, .clear)
-        XCTAssertEqual(updatedTheme.toggleStyle.cornerRadius, CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius))
-        XCTAssertEqual(updatedTheme.buttonStyles.primary.backgroundColor, expectedValue)
+        expect(updatedTheme.toggleStyle, toMatch: AdyenToggleStyle())
+        expect(updatedTheme.buttonStyles, toMatch: newButtonStyles)
     }
     
     func test_buttonMethod_shouldPreserveDefaultTextFieldStyle() {
         // Given
         let expectedValue = UIColor.blue
         let theme = AdyenTheme()
-        let newButtonStyle = AdyenButtonStyles(colorScheme: .init(primary: expectedValue))
+
+        let newButtonStyles = AdyenButtonStyles(colorScheme: .init(primary: expectedValue))
         
         // When
-        let updatedTheme = theme.button(newButtonStyle)
+        let updatedTheme = theme.button(newButtonStyles)
         
         // Then
-        XCTAssertEqual(updatedTheme.textFieldStyle.backgroundColor, AdyenColorScheme.default.background)
-        XCTAssertEqual(updatedTheme.textFieldStyle.activeColor, AdyenColorScheme.default.highlight)
-        XCTAssertEqual(updatedTheme.textFieldStyle.errorColor, AdyenColorScheme.default.destructive)
-        XCTAssertEqual(updatedTheme.textFieldStyle.cornerRadius, CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius))
-        XCTAssertEqual(updatedTheme.textFieldStyle.borderColor, AdyenColorScheme.default.outline)
-        XCTAssertEqual(updatedTheme.textFieldStyle.borderWidth, AdyenUIConstants.defaultBorderWidth)
-        XCTAssertEqual(updatedTheme.buttonStyles.primary.backgroundColor, expectedValue)
+        expect(updatedTheme.textFieldStyle, toMatch: AdyenTextFieldStyle())
+        expect(updatedTheme.buttonStyles, toMatch: newButtonStyles)
     }
     
     func test_buttonMethod_shouldPreserveUpdatedLabelStyle() {
@@ -95,16 +84,15 @@ final class AdyenThemeButtonTests: XCTestCase {
         let theme = AdyenTheme()
         
         let newLabelStyle = AdyenLabelStyle(color: expectedLabelColorValue).font(expectedFontValue)
-        let newButtonStyle = AdyenButtonStyles(colorScheme: .init(primary: expectedButtonColorValue))
+        let newButtonStyles = AdyenButtonStyles(colorScheme: .init(primary: expectedButtonColorValue))
         
         // When
         var updatedTheme = theme.label(newLabelStyle)
-        updatedTheme = updatedTheme.button(newButtonStyle)
+        updatedTheme = updatedTheme.button(newButtonStyles)
         
         // Then
-        XCTAssertEqual(updatedTheme.labelStyle.font, expectedFontValue)
-        XCTAssertEqual(updatedTheme.labelStyle.color, expectedLabelColorValue)
-        XCTAssertEqual(updatedTheme.buttonStyles.primary.backgroundColor, expectedButtonColorValue)
+        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
+        expect(updatedTheme.buttonStyles, toMatch: newButtonStyles)
     }
     
     func test_buttonMethod_shouldPreserveUpdatedToggleStyle() {
@@ -126,19 +114,15 @@ final class AdyenThemeButtonTests: XCTestCase {
         newToggleStyle.title = labelStyle
         newToggleStyle.cornerRadius = CornerRounding.fixed(expectedCornerRadiusValue)
         
-        let newButtonStyle = AdyenButtonStyles(colorScheme: .init(primary: expectedButtonBackgroundColorValue))
+        let newButtonStyles = AdyenButtonStyles(colorScheme: .init(primary: expectedButtonBackgroundColorValue))
         
         // When
         var updatedTheme = theme.toggle(newToggleStyle)
-        updatedTheme = updatedTheme.button(newButtonStyle)
+        updatedTheme = updatedTheme.button(newButtonStyles)
         
         // Then
-        XCTAssertEqual(updatedTheme.toggleStyle.backgroundColor, expectedToggleBackgroundColorValue)
-        XCTAssertEqual(updatedTheme.toggleStyle.tintColor, expectedToggleTintColorValue)
-        XCTAssertEqual(updatedTheme.toggleStyle.title.font, expectedFontValue)
-        XCTAssertEqual(updatedTheme.toggleStyle.title.color, expectedLabelColorValue)
-        XCTAssertEqual(updatedTheme.toggleStyle.cornerRadius, CornerRounding.fixed(expectedCornerRadiusValue))
-        XCTAssertEqual(updatedTheme.buttonStyles.primary.backgroundColor, expectedButtonBackgroundColorValue)
+        expect(updatedTheme.toggleStyle, toMatch: newToggleStyle)
+        expect(updatedTheme.buttonStyles, toMatch: newButtonStyles)
     }
     
     func test_buttonMethod_shouldPreserveUpdatedTextFieldStyle() {
@@ -146,7 +130,6 @@ final class AdyenThemeButtonTests: XCTestCase {
         let expectedBorderWidth: CGFloat = 2.0
         let expectedCornerRadius: CGFloat = 10.0
         let cornerRadius = CornerRounding.fixed(expectedCornerRadius)
-        let expectedActiveColorValue = UIColor.gray
         let expectedBackgroundColorValue = UIColor.red
         let expectedBorderColorValue = UIColor.cyan
         let expectedErrorColorValue = UIColor.orange
@@ -155,25 +138,19 @@ final class AdyenThemeButtonTests: XCTestCase {
     
         var newTextFieldStyle = AdyenTextFieldStyle()
         newTextFieldStyle.backgroundColor = expectedBackgroundColorValue
-        newTextFieldStyle.activeColor = expectedActiveColorValue
         newTextFieldStyle.errorColor = expectedErrorColorValue
         newTextFieldStyle.borderColor = expectedBorderColorValue
         newTextFieldStyle.cornerRadius = cornerRadius
         newTextFieldStyle.borderWidth = expectedBorderWidth
         
-        let newButtonStyle = AdyenButtonStyles(colorScheme: .init(primary: expectedBackgroundColorValue))
+        let newButtonStyles = AdyenButtonStyles(colorScheme: .init(primary: expectedBackgroundColorValue))
         
         // When
         var updatedTheme = theme.textfield(newTextFieldStyle)
-        updatedTheme = updatedTheme.button(newButtonStyle)
+        updatedTheme = updatedTheme.button(newButtonStyles)
         
         // Then
-        XCTAssertEqual(updatedTheme.textFieldStyle.backgroundColor, expectedBackgroundColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.activeColor, expectedActiveColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.errorColor, expectedErrorColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.borderColor, expectedBorderColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.cornerRadius, cornerRadius)
-        XCTAssertEqual(updatedTheme.textFieldStyle.borderWidth, expectedBorderWidth)
-        XCTAssertEqual(updatedTheme.buttonStyles.primary.backgroundColor, expectedBackgroundColorValue)
+        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
+        expect(updatedTheme.buttonStyles, toMatch: newButtonStyles)
     }
 }

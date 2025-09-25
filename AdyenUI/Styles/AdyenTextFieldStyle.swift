@@ -21,9 +21,6 @@ public struct AdyenTextFieldStyle {
     /// The color of the background.
     package var backgroundColor: UIColor
 
-    /// The color of the text when the element is active.
-    package var activeColor: UIColor
-    
     /// The error color of the text.
     package var errorColor: UIColor
     
@@ -45,7 +42,6 @@ public struct AdyenTextFieldStyle {
         text: AdyenLabelStyle,
         backgroundColor: UIColor = AdyenColorScheme.default.background,
         textColor: UIColor = AdyenColorScheme.default.text,
-        activeColor: UIColor = AdyenColorScheme.default.highlight,
         errorColor: UIColor = AdyenColorScheme.default.destructive,
         cornerRadius: CornerRounding,
         borderColor: UIColor = AdyenColorScheme.default.outline,
@@ -55,7 +51,6 @@ public struct AdyenTextFieldStyle {
         self.title = title
         self.text = text
         self.backgroundColor = backgroundColor
-        self.activeColor = activeColor
         self.errorColor = errorColor
         self.cornerRadius = cornerRadius
         self.borderColor = borderColor
@@ -64,18 +59,9 @@ public struct AdyenTextFieldStyle {
     }
 
     public init() {
-        self.title = AdyenLabelStyle(
-            font: .preferredFont(forTextStyle: .footnote),
-            color: UIColor.Adyen.componentSecondaryLabel,
-            textAlignment: .natural
-        )
-        self.text = AdyenLabelStyle(
-            font: .preferredFont(forTextStyle: .body),
-            color: UIColor.Adyen.componentLabel,
-            textAlignment: .natural
-        )
+        self.title = AdyenLabelStyle.default
+        self.text = AdyenLabelStyle.default
         self.backgroundColor = AdyenColorScheme.default.background
-        self.activeColor = AdyenColorScheme.default.highlight
         self.errorColor = AdyenColorScheme.default.destructive
         self.cornerRadius = CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius)
         self.borderColor = AdyenColorScheme.default.outline
@@ -93,15 +79,6 @@ extension AdyenTextFieldStyle {
     public func backgroundColor(backgroundColor: UIColor) -> AdyenTextFieldStyle {
         var newStyle = self
         newStyle.backgroundColor = backgroundColor
-        return newStyle
-    }
-    
-    /// Returns a new style with the specified active color.
-    /// - Parameter activeColor: The color to set.
-    /// - Returns: A new `AdyenTextFieldStyle` instance.
-    public func activeColor(activeColor: UIColor) -> AdyenTextFieldStyle {
-        var newStyle = self
-        newStyle.activeColor = activeColor
         return newStyle
     }
     

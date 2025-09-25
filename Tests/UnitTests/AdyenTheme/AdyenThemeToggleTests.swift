@@ -14,11 +14,7 @@ final class AdyenThemeToggleTests: XCTestCase {
         let defaultTheme = AdyenTheme()
         
         // Then
-        XCTAssertEqual(defaultTheme.toggleStyle.title.font, AdyenLabelStyle().font)
-        XCTAssertEqual(defaultTheme.toggleStyle.title.color, AdyenLabelStyle().color)
-        XCTAssertEqual(defaultTheme.toggleStyle.tintColor, nil)
-        XCTAssertEqual(defaultTheme.toggleStyle.backgroundColor, .clear)
-        XCTAssertEqual(defaultTheme.toggleStyle.cornerRadius, CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius))
+        expect(defaultTheme.toggleStyle, toMatch: AdyenToggleStyle())
     }
 
     func test_toggleMethod_shouldUpdateToggleTitleLabel() {
@@ -38,9 +34,7 @@ final class AdyenThemeToggleTests: XCTestCase {
         let updatedTheme = theme.toggle(newToggleStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.toggleStyle.title.font, expectedFontValue)
-        XCTAssertEqual(updatedTheme.toggleStyle.title.color, expectedColorValue)
-        XCTAssertEqual(updatedTheme.toggleStyle.tintColor, expectedTintColorValue)
+        expect(updatedTheme.toggleStyle, toMatch: newToggleStyle)
     }
     
     func test_toggleMethod_shouldUpdateToggleTintColor() {
@@ -55,7 +49,7 @@ final class AdyenThemeToggleTests: XCTestCase {
         let updatedTheme = theme.toggle(newToggleStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.toggleStyle.tintColor, expectedTintColorValue)
+        expect(updatedTheme.toggleStyle, toMatch: newToggleStyle)
     }
     
     func test_toggleMethod_shouldUpdateToggleBackgroundColor() {
@@ -70,7 +64,7 @@ final class AdyenThemeToggleTests: XCTestCase {
         let updatedTheme = theme.toggle(newToggleStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.toggleStyle.backgroundColor, expectedColorValue)
+        expect(updatedTheme.toggleStyle, toMatch: newToggleStyle)
     }
     
     func test_toggleMethod_shouldUpdateToggleCornerRadius() {
@@ -86,7 +80,7 @@ final class AdyenThemeToggleTests: XCTestCase {
         let updatedTheme = theme.toggle(newToggleStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.toggleStyle.cornerRadius, cornerRadius)
+        expect(updatedTheme.toggleStyle, toMatch: newToggleStyle)
     }
     
     func test_toggleMethod_shouldPreserveDefaultLabelStyle() {
@@ -101,11 +95,8 @@ final class AdyenThemeToggleTests: XCTestCase {
         let updatedTheme = theme.toggle(newToggleStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.labelStyle.font, AdyenFonts.default.body)
-        XCTAssertEqual(updatedTheme.labelStyle.color, AdyenColorScheme.default.primary)
-        XCTAssertEqual(updatedTheme.labelStyle.disabledColor, AdyenColorScheme.default.disabled)
-        XCTAssertEqual(updatedTheme.labelStyle.textAlignment, .natural)
-        XCTAssertEqual(updatedTheme.toggleStyle.backgroundColor, expectedColorValue)
+        expect(updatedTheme.labelStyle, matches: AdyenLabelStyle(), property: "text")
+        expect(updatedTheme.toggleStyle, toMatch: newToggleStyle)
     }
     
     func test_toggleMethod_shouldPreserveDefaultButtonStyle() {
@@ -120,11 +111,8 @@ final class AdyenThemeToggleTests: XCTestCase {
         let updatedTheme = theme.toggle(newToggleStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.buttonStyles.primary, AdyenButtonStyles.default.primary)
-        XCTAssertEqual(updatedTheme.buttonStyles.secondary, AdyenButtonStyles.default.secondary)
-        XCTAssertEqual(updatedTheme.buttonStyles.tertiary, AdyenButtonStyles.default.tertiary)
-        XCTAssertEqual(updatedTheme.buttonStyles.destructive, AdyenButtonStyles.default.destructive)
-        XCTAssertEqual(updatedTheme.toggleStyle.backgroundColor, expectedColorValue)
+        expect(updatedTheme.buttonStyles, toMatch: AdyenButtonStyles())
+        expect(updatedTheme.toggleStyle, toMatch: newToggleStyle)
     }
     
     func test_toggleMethod_shouldPreserveDefaultTextFieldStyle() {
@@ -139,13 +127,8 @@ final class AdyenThemeToggleTests: XCTestCase {
         let updatedTheme = theme.toggle(newToggleStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.textFieldStyle.backgroundColor, AdyenColorScheme.default.background)
-        XCTAssertEqual(updatedTheme.textFieldStyle.activeColor, AdyenColorScheme.default.highlight)
-        XCTAssertEqual(updatedTheme.textFieldStyle.errorColor, AdyenColorScheme.default.destructive)
-        XCTAssertEqual(updatedTheme.textFieldStyle.cornerRadius, CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius))
-        XCTAssertEqual(updatedTheme.textFieldStyle.borderColor, AdyenColorScheme.default.outline)
-        XCTAssertEqual(updatedTheme.textFieldStyle.borderWidth, AdyenUIConstants.defaultBorderWidth)
-        XCTAssertEqual(updatedTheme.toggleStyle.backgroundColor, expectedColorValue)
+        expect(updatedTheme.textFieldStyle, toMatch: AdyenTextFieldStyle())
+        expect(updatedTheme.toggleStyle, toMatch: newToggleStyle)
     }
     
     func test_toggleMethod_shouldPreserveUpdatedLabelStyle() {
@@ -165,9 +148,8 @@ final class AdyenThemeToggleTests: XCTestCase {
         updatedTheme = updatedTheme.toggle(newToggleStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.labelStyle.font, expectedFontValue)
-        XCTAssertEqual(updatedTheme.labelStyle.color, expectedColorValue)
-        XCTAssertEqual(updatedTheme.toggleStyle.backgroundColor, expectedToggleBackgroundColorValue)
+        expect(updatedTheme.labelStyle, matches: newLabelStyle, property: "text")
+        expect(updatedTheme.toggleStyle, toMatch: newToggleStyle)
     }
     
     func test_toggleMethod_shouldPreserveUpdatedButtonStyle() {
@@ -186,8 +168,8 @@ final class AdyenThemeToggleTests: XCTestCase {
         updatedTheme = updatedTheme.toggle(newToggleStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.buttonStyles.primary.backgroundColor, expectedColorValue)
-        XCTAssertEqual(updatedTheme.toggleStyle.backgroundColor, expectedToggleBackgroundColorValue)
+        expect(updatedTheme.buttonStyles, toMatch: newButtonStyle)
+        expect(updatedTheme.toggleStyle, toMatch: newToggleStyle)
     }
     
     func test_toggleMethod_shouldPreserveUpdatedTextFieldStyle() {
@@ -196,7 +178,6 @@ final class AdyenThemeToggleTests: XCTestCase {
         let expectedCornerRadius: CGFloat = 10.0
         let expectedToggleBackgroundColorValue = UIColor.systemPink
         let expectedTextFieldBackgroundColorValue = UIColor.gray
-        let expectedTextFieldActiveColorValue = UIColor.green
         let expectedTextFieldErrorColorValue = UIColor.red
         let expectedTextFieldBorderColorValue = UIColor.black
         let cornerRadius = CornerRounding.fixed(expectedCornerRadius)
@@ -207,7 +188,6 @@ final class AdyenThemeToggleTests: XCTestCase {
         
         var newTextFieldStyle = AdyenTextFieldStyle()
         newTextFieldStyle.backgroundColor = expectedTextFieldBackgroundColorValue
-        newTextFieldStyle.activeColor = expectedTextFieldActiveColorValue
         newTextFieldStyle.errorColor = expectedTextFieldErrorColorValue
         newTextFieldStyle.borderColor = expectedTextFieldBorderColorValue
         newTextFieldStyle.cornerRadius = cornerRadius
@@ -218,12 +198,7 @@ final class AdyenThemeToggleTests: XCTestCase {
         updatedTheme = updatedTheme.toggle(newToggleStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.textFieldStyle.backgroundColor, expectedTextFieldBackgroundColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.activeColor, expectedTextFieldActiveColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.errorColor, expectedTextFieldErrorColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.borderColor, expectedTextFieldBorderColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.cornerRadius, cornerRadius)
-        XCTAssertEqual(updatedTheme.textFieldStyle.borderWidth, expectedBorderWidth)
-        XCTAssertEqual(updatedTheme.toggleStyle.backgroundColor, expectedToggleBackgroundColorValue)
+        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
+        expect(updatedTheme.toggleStyle, toMatch: newToggleStyle)
     }
 }

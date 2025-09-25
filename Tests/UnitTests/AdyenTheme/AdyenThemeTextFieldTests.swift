@@ -12,14 +12,9 @@ final class AdyenThemeTextFieldTests: XCTestCase {
     func test_textFieldMethod_defaultTheme() {
         // Given
         let defaultTheme = AdyenTheme()
-        
+    
         // Then
-        XCTAssertEqual(defaultTheme.textFieldStyle.backgroundColor, AdyenColorScheme.default.background)
-        XCTAssertEqual(defaultTheme.textFieldStyle.activeColor, AdyenColorScheme.default.highlight)
-        XCTAssertEqual(defaultTheme.textFieldStyle.errorColor, AdyenColorScheme.default.destructive)
-        XCTAssertEqual(defaultTheme.textFieldStyle.cornerRadius, CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius))
-        XCTAssertEqual(defaultTheme.textFieldStyle.borderColor, AdyenColorScheme.default.outline)
-        XCTAssertEqual(defaultTheme.textFieldStyle.borderWidth, AdyenUIConstants.defaultBorderWidth)
+        expect(defaultTheme.textFieldStyle, toMatch: AdyenTextFieldStyle())
     }
 
     func test_textfieldMethod_shouldUpdateBackgroundColor() {
@@ -34,22 +29,7 @@ final class AdyenThemeTextFieldTests: XCTestCase {
         let updatedTheme = theme.textfield(newTextFieldStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.textFieldStyle.backgroundColor, expectedValue)
-    }
-    
-    func test_textfieldMethod_shouldUpdateActiveColor() {
-        // Given
-        let expectedValue = UIColor.red
-        let theme = AdyenTheme()
-        
-        var newTextFieldStyle = AdyenTextFieldStyle()
-        newTextFieldStyle.activeColor = expectedValue
-        
-        // When
-        let updatedTheme = theme.textfield(newTextFieldStyle)
-        
-        // Then
-        XCTAssertEqual(updatedTheme.textFieldStyle.activeColor, expectedValue)
+        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
     }
     
     func test_textfieldMethod_shouldUpdateErrorColor() {
@@ -64,7 +44,7 @@ final class AdyenThemeTextFieldTests: XCTestCase {
         let updatedTheme = theme.textfield(newTextFieldStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.textFieldStyle.errorColor, expectedValue)
+        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
     }
     
     func test_textfieldMethod_shouldUpdateBorderColor() {
@@ -79,7 +59,7 @@ final class AdyenThemeTextFieldTests: XCTestCase {
         let updatedTheme = theme.textfield(newTextFieldStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.textFieldStyle.borderColor, expectedValue)
+        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
     }
     
     func test_textFieldMethod_shouldUpdateCornerRadius() {
@@ -95,7 +75,7 @@ final class AdyenThemeTextFieldTests: XCTestCase {
         let updatedTheme = theme.textfield(newTextFieldStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.textFieldStyle.cornerRadius, cornerRadius)
+        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
     }
     
     func test_textFieldMethod_shouldUpdateBorderWidth() {
@@ -110,7 +90,7 @@ final class AdyenThemeTextFieldTests: XCTestCase {
         let updatedTheme = theme.textfield(newTextFieldStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.textFieldStyle.borderWidth, expectedBorderWidth)
+        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
     }
     
     func test_textFieldMethod_shouldUpdateTitleStyle() {
@@ -133,9 +113,7 @@ final class AdyenThemeTextFieldTests: XCTestCase {
         let updatedTheme = theme.textfield(newTextFieldStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.textFieldStyle.title.color, expectedTitleColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.title.font, expectedFontValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.title.textAlignment, expectedTextAlignmentValue)
+        expect(updatedTheme.textFieldStyle.title, matches: newTitleStyle, property: "title")
     }
     
     func test_textFieldMethod_shouldUpdateTextStyle() {
@@ -158,9 +136,7 @@ final class AdyenThemeTextFieldTests: XCTestCase {
         let updatedTheme = theme.textfield(newTextFieldStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.color, expectedColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.font, expectedFontValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.textAlignment, expectedTextAlignmentValue)
+        expect(updatedTheme.textFieldStyle.text, matches: newTextStyle, property: "text")
     }
     
     func test_textFieldMethod_shouldUpdatePlaceholderStyle() {
@@ -183,9 +159,7 @@ final class AdyenThemeTextFieldTests: XCTestCase {
         let updatedTheme = theme.textfield(newTextFieldStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.textFieldStyle.placeholderText?.color, expectedColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.placeholderText?.font, expectedFontValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.placeholderText?.textAlignment, expectedTextAlignmentValue)
+        expect(updatedTheme.textFieldStyle.placeholderText!, matches: newPlaceholderTextStyle, property: "placeholderText")
     }
     
     func test_textFieldMethod_shouldPreserveDefaultToggleStyle() {
@@ -208,43 +182,24 @@ final class AdyenThemeTextFieldTests: XCTestCase {
         let updatedTheme = theme.textfield(newTextFieldStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.toggleStyle.title.font, AdyenLabelStyle().font)
-        XCTAssertEqual(updatedTheme.toggleStyle.title.color, AdyenLabelStyle().color)
-        XCTAssertEqual(updatedTheme.toggleStyle.tintColor, nil)
-        XCTAssertEqual(updatedTheme.toggleStyle.backgroundColor, .clear)
-        XCTAssertEqual(updatedTheme.toggleStyle.cornerRadius, CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius))
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.color, expectedColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.font, expectedFontValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.textAlignment, expectedTextAlignmentValue)
+        expect(updatedTheme.toggleStyle, toMatch: AdyenToggleStyle())
+        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
     }
     
     func test_textFieldMethod_shouldPreserveDefaultLabelStyle() {
         // Given
-        let expectedFontValue: UIFont = .preferredFont(forTextStyle: .title2)
-        let expectedColorValue = UIColor.systemPink
-        let expectedTextAlignmentValue: NSTextAlignment = .left
+        let expectedErrorColorValue = UIColor.systemPink
         let theme = AdyenTheme()
-    
-        let newTextStyle = AdyenLabelStyle(
-            font: expectedFontValue,
-            color: expectedColorValue,
-            textAlignment: expectedTextAlignmentValue
-        )
         
         var newTextFieldStyle = AdyenTextFieldStyle()
-        newTextFieldStyle.text = newTextStyle
+        newTextFieldStyle.errorColor = expectedErrorColorValue
         
         // When
         let updatedTheme = theme.textfield(newTextFieldStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.labelStyle.font, AdyenFonts.default.body)
-        XCTAssertEqual(updatedTheme.labelStyle.color, AdyenColorScheme.default.primary)
-        XCTAssertEqual(updatedTheme.labelStyle.disabledColor, AdyenColorScheme.default.disabled)
-        XCTAssertEqual(updatedTheme.labelStyle.textAlignment, .natural)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.color, expectedColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.font, expectedFontValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.textAlignment, expectedTextAlignmentValue)
+        expect(updatedTheme.labelStyle, toMatch: AdyenLabelStyle())
+        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
     }
     
     func test_textFieldMethod_shouldPreserveDefaultButtonStyle() {
@@ -267,13 +222,8 @@ final class AdyenThemeTextFieldTests: XCTestCase {
         let updatedTheme = theme.textfield(newTextFieldStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.buttonStyles.primary, AdyenButtonStyles.default.primary)
-        XCTAssertEqual(updatedTheme.buttonStyles.secondary, AdyenButtonStyles.default.secondary)
-        XCTAssertEqual(updatedTheme.buttonStyles.tertiary, AdyenButtonStyles.default.tertiary)
-        XCTAssertEqual(updatedTheme.buttonStyles.destructive, AdyenButtonStyles.default.destructive)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.color, expectedColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.font, expectedFontValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.textAlignment, expectedTextAlignmentValue)
+        expect(updatedTheme.buttonStyles, toMatch: AdyenButtonStyles.default)
+        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
     }
     
     func test_textFieldMethod_shouldPreserveUpdatedToggleStyle() {
@@ -307,14 +257,9 @@ final class AdyenThemeTextFieldTests: XCTestCase {
         updatedTheme = updatedTheme.textfield(newTextFieldStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.toggleStyle.title.font, expectedFontValue)
-        XCTAssertEqual(updatedTheme.toggleStyle.title.color, expectedLabelColorValue)
-        XCTAssertEqual(updatedTheme.toggleStyle.tintColor, expectedToggleTintColorValue)
-        XCTAssertEqual(updatedTheme.toggleStyle.backgroundColor, expectedToggleBackgroundColorValue)
-        XCTAssertEqual(updatedTheme.toggleStyle.cornerRadius, cornerRadius)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.color, expectedLabelColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.font, expectedFontValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.textAlignment, expectedTextAlignmentValue)
+        expect(updatedTheme.toggleStyle, toMatch: newToggleStyle)
+        expect(updatedTheme.toggleStyle.title, matches: newTextStyle, property: "title")
+        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
     }
     
     func test_textFieldMethod_shouldPreserveUpdatedLabelStyle() {
@@ -339,12 +284,8 @@ final class AdyenThemeTextFieldTests: XCTestCase {
         updatedTheme = updatedTheme.textfield(newTextFieldStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.labelStyle.font, expectedFontValue)
-        XCTAssertEqual(updatedTheme.labelStyle.color, expectedLabelColorValue)
-        XCTAssertEqual(updatedTheme.labelStyle.textAlignment, expectedTextAlignment)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.color, expectedLabelColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.font, expectedFontValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.textAlignment, expectedTextAlignment)
+        expect(updatedTheme.labelStyle, matches: newTextStyle, property: "text")
+        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
     }
     
     func test_textFieldMethod_shouldPreserveUpdatedButtonStyle() {
@@ -373,8 +314,6 @@ final class AdyenThemeTextFieldTests: XCTestCase {
         
         // Then
         XCTAssertEqual(updatedTheme.buttonStyles.primary.backgroundColor, expectedButtonBackgroundColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.color, expectedLabelColorValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.font, expectedFontValue)
-        XCTAssertEqual(updatedTheme.textFieldStyle.text.textAlignment, expectedTextAlignment)
+        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
     }
 }
