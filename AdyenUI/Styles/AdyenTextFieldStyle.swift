@@ -19,22 +19,22 @@ public struct AdyenTextFieldStyle {
     package var placeholderText: AdyenLabelStyle?
 
     /// The color of the background.
-    public var backgroundColor: UIColor
+    package var backgroundColor: UIColor
 
     /// The color of the text when the element is active.
-    public var activeColor: UIColor
+    package var activeColor: UIColor
     
     /// The error color of the text.
-    public var errorColor: UIColor
+    package var errorColor: UIColor
     
     /// The cornerRadius
-    public var cornerRadius: CornerRounding
+    package var cornerRadius: CornerRounding = .fixed(AdyenUIConstants.defaultCornerRadius)
 
     /// The border color of the element
-    public var borderColor: UIColor
+    package var borderColor: UIColor
     
     /// The border width of the element
-    public var borderWidth: CGFloat
+    package var borderWidth: CGFloat = AdyenUIConstants.defaultBorderWidth
     
     /// A default instance of AdyenTextFieldStyle.
     public static let `default` = AdyenTextFieldStyle()
@@ -47,9 +47,9 @@ public struct AdyenTextFieldStyle {
         textColor: UIColor = AdyenColorScheme.default.text,
         activeColor: UIColor = AdyenColorScheme.default.highlight,
         errorColor: UIColor = AdyenColorScheme.default.destructive,
-        cornerRadius: CornerRounding = CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius),
+        cornerRadius: CornerRounding,
         borderColor: UIColor = AdyenColorScheme.default.outline,
-        borderWidth: CGFloat = AdyenUIConstants.defaultBorderWidth,
+        borderWidth: CGFloat,
         placeholderText: AdyenLabelStyle? = nil
     ) {
         self.title = title
