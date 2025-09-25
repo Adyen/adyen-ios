@@ -11,7 +11,7 @@ import Adyen
 import Foundation
 
 internal protocol PaymentMethodListAssemblerProtocol {
-    func resolvePaymentMethodListRouter() -> PaymentMethodListRouterProtocol
+    func resolvePaymentMethodListRouter(delegate: PaymentMethodListRouterDelegate?) -> Router
 }
 
 internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
@@ -42,22 +42,27 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
 
     // MARK: - PaymentMethodListAssemblerProtocol
 
-    internal func resolvePaymentMethodListRouter() -> PaymentMethodListRouterProtocol {
+    internal func resolvePaymentMethodListRouter(
+        delegate: PaymentMethodListRouterDelegate?
+    ) -> Router {
         let componentContainerAssembler = ComponentContainerAssembler(
             context: context,
             configuration: configuration,
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
-        let router = PaymentMethodListRouter(componentContainerAssembler: componentContainerAssembler)
         let viewModel = PaymentMethodListViewModel(
             context: context,
             componentManager: componentManager,
-            delegate: router,
             configuration: configuration
         )
         let view = PaymentMethodListViewController(viewModel: viewModel)
-        router.view = view
+        let router = PaymentMethodListRouter(
+            viewController: view,
+            delegate: delegate,
+            componentContainerAssembler: componentContainerAssembler
+        )
+        viewModel.router = router
         return router
     }
 }

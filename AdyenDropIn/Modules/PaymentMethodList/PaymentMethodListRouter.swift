@@ -21,45 +21,42 @@ internal protocol PaymentMethodListRouterDelegate: AnyObject {
 }
 
 internal protocol PaymentMethodListRouterProtocol: AnyObject {
-    var rootViewController: UIViewController { get }
-    var delegate: PaymentMethodListRouterDelegate? { get set }
+    func didCancel(completion: (() -> Void)?)
+    func didSelect(_ component: PresentableComponent)
 }
 
-internal class PaymentMethodListRouter: PaymentMethodListRouterProtocol {
+internal class PaymentMethodListRouter: Router, PaymentMethodListRouterProtocol {
 
     // MARK: - Properties
 
-    internal weak var delegate: PaymentMethodListRouterDelegate?
+    private let viewController: UIViewController
+    private weak var delegate: PaymentMethodListRouterDelegate?
     private let navigationController = UINavigationController()
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
-    private var componentContainerRouter: ComponentContainerRouterProtocol?
-    internal var view: UIViewController?
+    private var componentContainerRouter: Router?
 
     // MARK: - Initializers
 
-    internal init(componentContainerAssembler: ComponentContainerAssemblerProtocol) {
+    internal init(
+        viewController: UIViewController,
+        delegate: PaymentMethodListRouterDelegate?,
+        componentContainerAssembler: ComponentContainerAssemblerProtocol
+    ) {
+        self.viewController = viewController
+        self.delegate = delegate
         self.componentContainerAssembler = componentContainerAssembler
+    }
+    
+    // MARK: - Router
+    
+    internal var rootViewController: UIViewController {
+        navigationController.setViewControllers([viewController], animated: false)
+        return navigationController
     }
 
     // MARK: - PaymentMethodListRouterProtocol
 
-    internal var rootViewController: UIViewController {
-        guard let view else {
-            fatalError("Router's view was not set.")
-        }
-
-        navigationController.setViewControllers([view], animated: false)
-        return navigationController
-    }
-
-    // MARK: - Private
-}
-
-extension PaymentMethodListRouter: PaymentMethodListViewModelDelegate {
-
-    // MARK: - PaymentMethodListViewModelDelegate
-
-    func didCancel(completion: (() -> Void)?) {
+    internal func didCancel(completion: (() -> Void)?) {
         delegate?.paymentMethodListDidCancel(completion: completion)
         componentContainerRouter = nil
     }
@@ -75,9 +72,9 @@ extension PaymentMethodListRouter: PaymentMethodListViewModelDelegate {
 
         // TODO: - Invert `requiresModalPresentation` logic or remove it fully.
         if component.requiresModalPresentation {
-            view?.navigationController?.pushViewController(componentContainerViewController, animated: true)
+            viewController.navigationController?.pushViewController(componentContainerViewController, animated: true)
         } else {
-            view?.present(componentContainerViewController, animated: true)
+            viewController.present(componentContainerViewController, animated: true)
         }
     }
 }

@@ -9,8 +9,6 @@ import Foundation
 import UIKit
 
 internal protocol PreselectedPaymentMethodRouterProtocol: AnyObject {
-    var rootViewController: UIViewController { get }
-    var delegate: PreselectedPaymentMethodRouterDelegate? { get set }
     func dismiss(completion: (() -> Void)?)
     func showAllPaymentMethods()
     func proceed(with paymentComponent: PresentableComponent)
@@ -20,31 +18,30 @@ internal protocol PreselectedPaymentMethodRouterDelegate: AnyObject {
     func showAllPaymentMethods()
 }
 
-internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouterProtocol {
+internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodRouterProtocol {
     
     // MARK: - Properties
 
-    internal var view: UIViewController?
-    internal weak var delegate: PreselectedPaymentMethodRouterDelegate?
+    internal let rootViewController: UIViewController
+    private weak var delegate: PreselectedPaymentMethodRouterDelegate?
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
 
     // MARK: - Initializers
     
-    internal init(componentContainerAssembler: ComponentContainerAssemblerProtocol) {
+    internal init(
+        viewController: UIViewController,
+        delegate: PreselectedPaymentMethodRouterDelegate?,
+        componentContainerAssembler: ComponentContainerAssemblerProtocol
+    ) {
+        self.rootViewController = viewController
+        self.delegate = delegate
         self.componentContainerAssembler = componentContainerAssembler
     }
 
     // MARK: - PreselectedPaymentMethodRouterProtocol
 
-    internal var rootViewController: UIViewController {
-        guard let view else {
-            fatalError("Router's view was not set.")
-        }
-        return view
-    }
-
     internal func dismiss(completion: (() -> Void)?) {
-        view?.dismiss(animated: true, completion: completion)
+        rootViewController.dismiss(animated: true, completion: completion)
     }
 
     internal func showAllPaymentMethods() {

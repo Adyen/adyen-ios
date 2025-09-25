@@ -8,11 +8,6 @@ import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
 
-internal protocol PaymentMethodListViewModelDelegate: AnyObject {
-    func didCancel(completion: (() -> Void)?)
-    func didSelect(_ component: PresentableComponent)
-}
-
 @objc
 internal protocol PaymentMethodListViewModelProtocol {
     var paymentMethodListView: UIViewController { get }
@@ -23,7 +18,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     // MARK: - Properties
 
-    private weak var delegate: PaymentMethodListViewModelDelegate?
+    internal weak var router: PaymentMethodListRouterProtocol?
     private let paymentMethodListComponent: PaymentMethodListComponent
 
     // MARK: - Initializers
@@ -31,7 +26,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     internal init(
         context: AdyenContext,
         componentManager: ComponentManager,
-        delegate: PaymentMethodListViewModelDelegate,
         configuration: DropInComponent.Configuration
     ) {
         let components = componentManager.sections
@@ -40,7 +34,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             components: components,
             style: configuration.style.listComponent
         )
-        self.delegate = delegate
         self.paymentMethodListComponent.localizationParameters = configuration.localizationParameters
         self.paymentMethodListComponent.delegate = self
     }
@@ -53,7 +46,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     internal func cancel() {
         // TODO: - Handle cancellation
-        delegate?.didCancel(completion: nil)
+        router?.didCancel(completion: nil)
     }
 
     // MARK: - Private
@@ -76,7 +69,7 @@ extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
         // TODO: - Handle non presentable component
         switch component {
         case let component as PresentableComponent:
-            delegate?.didSelect(component)
+            router?.didSelect(component)
         case let component as PaymentInitiable:
             component.initiatePayment()
         default:

@@ -13,7 +13,6 @@ internal final class ComponentContainerViewController: UIViewController {
     // MARK: - Properties
 
     private let viewModel: ComponentContainerViewModelProtocol
-    internal weak var delegate: ViewControllerDelegate?
 
     // MARK: - Initializers
 

@@ -15,7 +15,7 @@ internal protocol ComponentContainerAssemblerProtocol {
     func resolveComponentContainerRouter(
         for component: PresentableComponent,
         delegate: ComponentContainerRouterDelegate
-    ) -> ComponentContainerRouterProtocol
+    ) -> Router
 }
 
 internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol {
@@ -46,18 +46,17 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
     internal func resolveComponentContainerRouter(
         for component: PresentableComponent,
         delegate: ComponentContainerRouterDelegate
-    ) -> ComponentContainerRouterProtocol {
-        let router = ComponentContainerRouter(delegate: delegate)
+    ) -> Router {
         let viewModel = ComponentContainerViewModel(
             component: component,
             context: context,
-            delegate: router,
             configuration: configuration,
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
-        let view = ComponentContainerViewController(viewModel: viewModel)
-        router.view = view
+        let viewController = ComponentContainerViewController(viewModel: viewModel)
+        let router = ComponentContainerRouter(viewController: viewController, delegate: delegate)
+        viewModel.router = router
         return router
     }
 }

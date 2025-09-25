@@ -143,7 +143,7 @@ public final class DropInComponent: NSObject,
     ///
     /// - Parameter action: The action to handle.
     public func handle(_ action: Action) {
-        actionComponent.handle(action)
+//        actionComponent.handle(action)
     }
 
     // MARK: - Handling Partial Payments
@@ -226,18 +226,6 @@ public final class DropInComponent: NSObject,
 //    internal lazy var navigationController: UIViewController = {
 //        self.dropInRootRouter.rootViewController
 //    }()
-
-    private lazy var actionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(context: context)
-        handler.configuration.style = configuration.style.actionComponent
-        handler._isDropIn = true
-        handler.delegate = self
-        handler.presentationDelegate = self
-        handler.configuration.localizationParameters = configuration.localizationParameters
-        handler.configuration.threeDS = configuration.actionComponent.threeDS
-        handler.configuration.twint = configuration.actionComponent.twint
-        return handler
-    }()
 
     // ================= ROOT VIEW CONTROLLER ===============
 

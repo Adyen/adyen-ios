@@ -18,21 +18,17 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
 
     // MARK: - Properties
 
-    // Weak to avoid retain cycle: view → viewModel → router → view
-    private weak var router: PreselectedPaymentMethodRouterProtocol?
+    internal weak var router: PreselectedPaymentMethodRouterProtocol?
     private let component: PaymentComponent
     private let preselectedPaymentMethodComponent: PreselectedPaymentMethodComponent
 
     // MARK: - Initializers
 
     internal init(
-        router: PreselectedPaymentMethodRouterProtocol,
         component: PaymentComponent,
         title: String,
         configuration: DropInComponent.Configuration
     ) {
-        self.router = router
-
         let style = configuration.style
         self.component = component
         self.preselectedPaymentMethodComponent = PreselectedPaymentMethodComponent(

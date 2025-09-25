@@ -14,27 +14,6 @@ import UIKit
     @_spi(AdyenInternal) import AdyenActions
 #endif
 
-internal protocol ComponentContainerViewModelDelegate: AnyObject {
-    // MARK: - PaymentComponentDelegate
-
-    func didSubmit(
-        _ data: PaymentComponentData,
-        from component: PaymentComponent
-    )
-    func didFail(with error: Error)
-    func didCancel(component: PaymentComponent)
-    
-    // MARK: - ActionComponentDelegate
-
-    func didOpenExternalApplication(component: ActionComponent)
-    func didProvide(
-        _ data: ActionComponentData,
-        from component: ActionComponent
-    )
-    func didComplete(from component: ActionComponent)
-    func didFail(with error: Error, from component: ActionComponent)
-}
-
 internal protocol ComponentContainerViewModelProtocol {
     var componentViewController: UIViewController { get }
     func cancel()
@@ -44,7 +23,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     // MARK: - Properties
 
-    internal weak var delegate: ComponentContainerViewModelDelegate?
+    internal weak var router: ComponentContainerRouterProtocol?
     private let component: PresentableComponent
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
@@ -56,14 +35,12 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     internal init(
         component: PresentableComponent,
         context: AdyenContext,
-        delegate: ComponentContainerViewModelDelegate,
         configuration: DropInComponent.Configuration,
         cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.component = component
         self.context = context
-        self.delegate = delegate
         self.configuration = configuration
         self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
@@ -81,7 +58,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         component.cancelIfNeeded()
 
         if let component = (component as? PaymentComponent) {
-            delegate?.didCancel(component: component)
+            router?.didCancel(component: component)
         }
         
         component.stopLoadingIfNeeded()
@@ -122,12 +99,12 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
         )
 
         guard updatedData.browserInfo == nil else {
-            delegate?.didSubmit(updatedData, from: component)
+            router?.didSubmit(updatedData, from: component)
             return
         }
         updatedData.dataByAddingBrowserInfo { [weak self] in
             guard let self else { return }
-            delegate?.didSubmit($0, from: component)
+            router?.didSubmit($0, from: component)
         }
     }
     
@@ -138,7 +115,7 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
         if case ComponentError.cancelled = error {
             cancel()
         } else {
-            delegate?.didFail(with: error)
+            router?.didFail(with: error)
         }
     }
 
@@ -161,22 +138,22 @@ extension ComponentContainerViewModel: ActionComponentDelegate {
     
     func didOpenExternalApplication(component: any ActionComponent) {
         component.stopLoadingIfNeeded()
-        delegate?.didOpenExternalApplication(component: component)
+        router?.didOpenExternalApplication(component: component)
     }
 
     func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
-        delegate?.didProvide(data, from: component)
+        router?.didProvide(data, from: component)
     }
     
     func didComplete(from component: any ActionComponent) {
-        delegate?.didComplete(from: component)
+        router?.didComplete(from: component)
     }
     
     func didFail(with error: any Error, from component: any ActionComponent) {
         if case ComponentError.cancelled = error {
             cancel()
         } else {
-            delegate?.didFail(with: error, from: component)
+            router?.didFail(with: error, from: component)
         }
     }
 

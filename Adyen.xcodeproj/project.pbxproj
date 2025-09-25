@@ -4296,7 +4296,7 @@
 			path = Analytics;
 			sourceTree = "<group>";
 		};
-		C9C22D912DE5F9620028C23F /* Component */ = {
+		C9C22D912DE5F9620028C23F /* ComponentContainer */ = {
 			isa = PBXGroup;
 			children = (
 				C9C22D902DE5F9620028C23F /* ComponentContainerViewModel.swift */,
@@ -4304,7 +4304,7 @@
 				C941A5252DF9CB790014AFF1 /* ComponentContainerAssembler.swift */,
 				C93DDAED2E2A789A00B78DED /* ComponentContainerRouter.swift */,
 			);
-			path = Component;
+			path = ComponentContainer;
 			sourceTree = "<group>";
 		};
 		C9C22D922DE5F9620028C23F /* Modules */ = {
@@ -4314,7 +4314,7 @@
 				C9C22D9B2DE5F9BB0028C23F /* PreApplePay */,
 				C9C22D9E2DE5F9BE0028C23F /* PaymentMethodList */,
 				C9C22D962DE5F9920028C23F /* PreselectedPaymentMethod */,
-				C9C22D912DE5F9620028C23F /* Component */,
+				C9C22D912DE5F9620028C23F /* ComponentContainer */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
