@@ -379,22 +379,37 @@ extension DropInComponent: InstallmentConfigurationAware {
 // ============= PAYMENT METHOD LIST ===============
 
 extension DropInComponent: DropInRouterDelegate {
-
+    
     // MARK: - PaymentComponentDelegate
 
     internal func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         paymentInProgress = true
-        print("🔵 didSubmit")
         delegate?.didSubmit(data, from: component, in: self)
     }
 
     internal func didFail(with error: any Error) {
-        print("❌ didFail")
         delegate?.didFail(with: error, from: self)
     }
 
     internal func didCancel(component: any PaymentComponent) {
-        print("⚠️ PAYMENT CANCELLED ⚠️")
         delegate?.didCancel(component: component, from: self)
+    }
+    
+    // MARK: - ActionComponentDelegate
+    
+    func didOpenExternalApplication(component: any ActionComponent) {
+        delegate?.didOpenExternalApplication(component: component, in: self)
+    }
+    
+    func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
+        delegate?.didProvide(data, from: component, in: self)
+    }
+    
+    func didComplete(from component: any ActionComponent) {
+        delegate?.didComplete(from: component, in: self)
+    }
+    
+    func didFail(with error: any Error, from component: any ActionComponent) {
+        delegate?.didFail(with: error, from: self)
     }
 }

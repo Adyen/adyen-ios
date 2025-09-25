@@ -106,7 +106,7 @@ extension DropInRouter: PreselectedPaymentMethodRouterDelegate {
 
 extension DropInRouter: PaymentMethodListRouterDelegate {
 
-    // MARK: - PaymentMethodListRouterDelegate
+    // MARK: - PaymentComponentDelegate
 
     func paymentMethodListDidCancel(completion: (() -> Void)?) {
         rootViewController.presentingViewController?.dismiss(animated: true)
@@ -125,6 +125,8 @@ extension DropInRouter: PaymentMethodListRouterDelegate {
     func didCancel(component: any PaymentComponent) {
         delegate?.didCancel(component: component)
     }
+    
+    // MARK: - ActionComponentDelegate
     
     func didOpenExternalApplication(component: any ActionComponent) {
         delegate?.didOpenExternalApplication(component: component)

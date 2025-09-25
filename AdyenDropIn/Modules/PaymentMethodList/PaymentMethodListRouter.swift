@@ -84,7 +84,7 @@ extension PaymentMethodListRouter: PaymentMethodListViewModelDelegate {
 
 extension PaymentMethodListRouter: ComponentContainerRouterDelegate {
 
-    // MARK: - ComponentContainerRouterDelegate
+    // MARK: - PaymentComponentDelegate
 
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         delegate?.didSubmit(data, from: component)
@@ -97,6 +97,8 @@ extension PaymentMethodListRouter: ComponentContainerRouterDelegate {
     func didCancel(component: any PaymentComponent) {
         delegate?.didCancel(component: component)
     }
+    
+    // MARK: - ActionComponentDelegate
     
     func didOpenExternalApplication(component: any ActionComponent) {
         delegate?.didOpenExternalApplication(component: component)
