@@ -111,6 +111,7 @@ final class AdyenThemeButtonTests: XCTestCase {
         // Given
         let expectedLabelColorValue = UIColor.gray
         let expectedToggleBackgroundColorValue = UIColor.red
+        let expectedButtonBackgroundColorValue = UIColor.red
         let expectedToggleTintColorValue = UIColor.orange
         let expectedFontValue: UIFont = .preferredFont(forTextStyle: .callout)
         let expectedCornerRadiusValue = 16.0
@@ -125,7 +126,7 @@ final class AdyenThemeButtonTests: XCTestCase {
         newToggleStyle.title = labelStyle
         newToggleStyle.cornerRadius = CornerRounding.fixed(expectedCornerRadiusValue)
         
-        let newButtonStyle = AdyenButtonStyles(colorScheme: .init(primary: .yellow))
+        let newButtonStyle = AdyenButtonStyles(colorScheme: .init(primary: expectedButtonBackgroundColorValue))
         
         // When
         var updatedTheme = theme.toggle(newToggleStyle)
@@ -137,7 +138,7 @@ final class AdyenThemeButtonTests: XCTestCase {
         XCTAssertEqual(updatedTheme.toggleStyle.title.font, expectedFontValue)
         XCTAssertEqual(updatedTheme.toggleStyle.title.color, expectedLabelColorValue)
         XCTAssertEqual(updatedTheme.toggleStyle.cornerRadius, CornerRounding.fixed(expectedCornerRadiusValue))
-        XCTAssertEqual(updatedTheme.buttonStyles.primary.backgroundColor, .yellow)
+        XCTAssertEqual(updatedTheme.buttonStyles.primary.backgroundColor, expectedButtonBackgroundColorValue)
     }
     
     func test_buttonMethod_shouldPreserveUpdatedTextFieldStyle() {

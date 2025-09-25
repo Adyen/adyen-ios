@@ -36,14 +36,16 @@ final class AdyenThemeLabelTests: XCTestCase {
     
     func test_labelMethod_shouldUpdateLabelFont() {
         // Given
+        let expectedFontValue: UIFont = .preferredFont(forTextStyle: .body)
         let theme = AdyenTheme()
-        let newLabelStyle = AdyenLabelStyle(font: AdyenFonts.default.title)
+        
+        let newLabelStyle = AdyenLabelStyle(font: expectedFontValue)
         
         // When
         let updatedTheme = theme.label(newLabelStyle)
         
         // Then
-        XCTAssertEqual(updatedTheme.labelStyle.font, AdyenFonts.default.title)
+        XCTAssertEqual(updatedTheme.labelStyle.font, expectedFontValue)
     }
     
     func test_labelMethod_shouldUpdateLabelDisabledColor() {
@@ -188,6 +190,7 @@ final class AdyenThemeLabelTests: XCTestCase {
         let expectedCornerRadius: CGFloat = 10.0
         let expectedBackgroundColorValue = UIColor.red
         let expectedActiveColorValue = UIColor.green
+        let expectedLabelColorValue = UIColor.brown
         let expectedErrorColorValue = UIColor.purple
         let expectedBorderColorValue = UIColor.brown
         let expectedFont: UIFont = .preferredFont(forTextStyle: .body)
@@ -202,7 +205,7 @@ final class AdyenThemeLabelTests: XCTestCase {
         newTextFieldStyle.cornerRadius = cornerRadius
         newTextFieldStyle.borderWidth = expectedBorderWidth
         
-        let labelStyle = AdyenLabelStyle().color(.red).font(expectedFont)
+        let labelStyle = AdyenLabelStyle().color(expectedLabelColorValue).font(expectedFont)
         
         // When
         var updatedTheme = theme.textfield(newTextFieldStyle)
@@ -215,7 +218,7 @@ final class AdyenThemeLabelTests: XCTestCase {
         XCTAssertEqual(updatedTheme.textFieldStyle.borderColor, expectedBorderColorValue)
         XCTAssertEqual(updatedTheme.textFieldStyle.cornerRadius, cornerRadius)
         XCTAssertEqual(updatedTheme.textFieldStyle.borderWidth, expectedBorderWidth)
-        XCTAssertEqual(updatedTheme.labelStyle.color, .red)
+        XCTAssertEqual(updatedTheme.labelStyle.color, expectedLabelColorValue)
         XCTAssertEqual(updatedTheme.labelStyle.font, expectedFont)
     }
     
