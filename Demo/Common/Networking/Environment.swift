@@ -43,20 +43,3 @@ internal enum DemoCheckoutAPIEnvironment: String, AnyAPIEnvironment, CaseIterabl
     internal var version: Int { ConfigurationConstants.current.apiVersion }
     
 }
-
-internal enum DemoClassicAPIEnvironment: String, AnyAPIEnvironment, CaseIterable {
-    
-    case beta, test, local
-    
-    internal var baseURL: URL {
-        switch self {
-        case .beta:
-            return URL(string: "https://pal-beta.adyen.com/pal/servlet/")!
-        case .test:
-            return URL(string: "https://pal-test.adyen.com/pal/servlet/")!
-        case .local:
-            return URL(string: "http://localhost:8080/pal/servlet/")!
-        }
-    }
-    
-}

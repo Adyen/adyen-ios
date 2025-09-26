@@ -24,10 +24,6 @@ internal enum ConfigurationConstants {
         DemoCheckoutAPIEnvironment(rawValue: environment) ?? .test
     }()
     
-    static let classicAPIEnvironment: DemoClassicAPIEnvironment = {
-        DemoClassicAPIEnvironment(rawValue: environment) ?? .test
-    }()
-    
     static let componentsEnvironment: Environment = {
         switch environment.lowercased() {
         case "beta":
