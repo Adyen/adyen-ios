@@ -74,7 +74,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         
         if item.isValid() {
             hideAlertLabel(true)
-            titleLabel.textColor = tintColor
+            titleLabel.textColor = defaultTitleColor
             accessibilityLabelView?.accessibilityLabel = item.title
         } else {
             hideAlertLabel(false)

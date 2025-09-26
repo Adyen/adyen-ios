@@ -67,6 +67,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     // MARK: - Separator View
 
     internal var defaultTitleColor: UIColor {
+        // TODO: Change this later
         if isEditing {
             return AdyenTheme().currentColorScheme.primary
         } else {

@@ -159,7 +159,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         }
         
         accessoryStackView.isHidden = false
-        accessoryView.tintColor = item.style.icon.tintColor
+        accessoryView.tintColor = defaultTitleColor
         accessoryStackView.addArrangedSubview(accessoryView)
     }
     
