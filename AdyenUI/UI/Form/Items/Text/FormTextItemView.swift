@@ -84,6 +84,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     }()
     
     private lazy var entryTextStackView: UIStackView = {
+        // TODO: Replace AdyenTheme with config's theme object
         let stackView = UIStackView(arrangedSubviews: [textField, accessoryStackView])
         stackView.backgroundColor = AdyenTheme().currentColorScheme.container
         stackView.isLayoutMarginsRelativeArrangement = true
@@ -110,6 +111,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     // MARK: - Text Field
     
     public lazy var textField: TextField = {
+        // TODO: Replace AdyenTheme with config's theme object
         let textField = TextField()
         textField.font = AdyenTheme().currentFonts.body
         textField.adjustsFontForContentSizeCategory = true
@@ -250,6 +252,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     open func textFieldDidBeginEditing(_ textField: UITextField) {
         isEditing = true
         entryTextStackView.layer.borderWidth = 2.0
+        // TODO: Replace AdyenTheme with config's theme object
         entryTextStackView.layer.borderColor = AdyenTheme().currentColorScheme.primary.cgColor
         item.onDidBeginEditing?()
     }

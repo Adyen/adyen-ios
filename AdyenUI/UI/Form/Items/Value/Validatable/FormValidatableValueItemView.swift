@@ -28,8 +28,10 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     ///
     /// The intended use is to put it inside of a UIStackView as it will be hidden based on the validity of the item
     internal lazy var alertLabel: UILabel = {
-        let alertLabel = UILabel(style: item.style.title)
+        let alertLabel = UILabel()
         alertLabel.textColor = item.style.errorColor
+        // TODO: Replace AdyenTheme with config's object theme style
+        alertLabel.font = AdyenTheme().currentFonts.subHeadline
         alertLabel.isAccessibilityElement = false
         alertLabel.numberOfLines = 0
         alertLabel.text = item.validationFailureMessage
