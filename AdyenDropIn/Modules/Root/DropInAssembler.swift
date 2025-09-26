@@ -71,6 +71,7 @@ internal class DropInAssembler {
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler
         )
+        viewModel.router = router
 
         return router
     }

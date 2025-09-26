@@ -22,14 +22,21 @@ internal protocol DropInRouterDelegate: AnyObject {
 
 internal protocol Router: AnyObject {
     var rootViewController: UIViewController { get }
-    func handle(action: Action)
 }
 
-internal protocol DropInRouterProtocol: Router {
+internal protocol DropInRouterProtocol: Router, AnyObject {
     var delegate: DropInRouterDelegate? { get set }
+    
+    func handle(action: Action)
+    func present(_ viewController: UIViewController, animated: Bool)
+    
+    func didOpenExternalApplication(component: any ActionComponent)
+    func didProvide(_ data: ActionComponentData, from component: any ActionComponent)
+    func didComplete(from component: any ActionComponent)
+    func didFail(with error: any Error, from component: any ActionComponent)
 }
 
-internal class DropInRouter: Router, DropInRouterProtocol {
+internal class DropInRouter: DropInRouterProtocol {
     
     // MARK: - Properties
     
@@ -65,10 +72,29 @@ internal class DropInRouter: Router, DropInRouterProtocol {
     // MARK: - DropInRootRouterProtocol
     
     internal func handle(action: Action) {
-        preselectedPaymentMethodRouter?.handle(action: action)
-        paymentMethodListRouter?.handle(action: action)
+        viewModel.handle(action: action)
     }
     
+    internal func present(_ viewController: UIViewController, animated: Bool) {
+        paymentMethodListRouter?.rootViewController.present(viewController, animated: animated)
+    }
+    
+    internal func didOpenExternalApplication(component: any ActionComponent) {
+        delegate?.didOpenExternalApplication(component: component)
+    }
+    
+    internal func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
+        delegate?.didProvide(data, from: component)
+    }
+    
+    internal func didComplete(from component: any ActionComponent) {
+        delegate?.didComplete(from: component)
+    }
+    
+    internal func didFail(with error: any Error, from component: any ActionComponent) {
+        delegate?.didFail(with: error, from: component)
+    }
+
     // MARK: - Private
     
     private func resolveRootView() -> UIViewController {
@@ -81,7 +107,7 @@ internal class DropInRouter: Router, DropInRouterProtocol {
             )
             self.preselectedPaymentMethodRouter = preselectedPaymentMethodRouter
             let preselectedPaymentMethodViewController = preselectedPaymentMethodRouter.rootViewController
-            let navigationController = DropInNavigationController(rootViewController: preselectedPaymentMethodViewController)
+            let navigationController = UINavigationController(rootViewController: preselectedPaymentMethodViewController)
             return navigationController
         case let .component(paymentComponent):
             // TODO: - Handle standalone component case
@@ -127,23 +153,5 @@ extension DropInRouter: PaymentMethodListRouterDelegate {
     
     func didCancel(component: any PaymentComponent) {
         delegate?.didCancel(component: component)
-    }
-    
-    // MARK: - ActionComponentDelegate
-    
-    func didOpenExternalApplication(component: any ActionComponent) {
-        delegate?.didOpenExternalApplication(component: component)
-    }
-    
-    func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
-        delegate?.didProvide(data, from: component)
-    }
-    
-    func didComplete(from component: any ActionComponent) {
-        delegate?.didComplete(from: component)
-    }
-    
-    func didFail(with error: any Error, from component: any ActionComponent) {
-        delegate?.didFail(with: error, from: component)
     }
 }

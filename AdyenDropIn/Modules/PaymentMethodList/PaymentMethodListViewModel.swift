@@ -71,6 +71,7 @@ extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
         case let component as PresentableComponent:
             router?.didSelect(component)
         case let component as PaymentInitiable:
+            (component as? PaymentComponent)?.delegate = self
             component.initiatePayment()
         default:
             break
@@ -83,5 +84,40 @@ extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
         completion: @escaping Adyen.Completion<Bool>
     ) {
         // TODO: - Logic to delete stored payment method
+    }
+}
+
+// MARK: - PaymentComponentDelegate
+
+extension PaymentMethodListViewModel: PaymentComponentDelegate {
+    
+    func didSubmit(
+        _ data: PaymentComponentData,
+        from component: any PaymentComponent
+    ) {
+        let checkoutAttemptId = component.context.analyticsProvider?.checkoutAttemptId
+        let updatedData = data.replacing(
+            checkoutAttemptId: checkoutAttemptId
+        )
+
+        guard updatedData.browserInfo == nil else {
+            router?.didSubmit(updatedData, from: component)
+            return
+        }
+        updatedData.dataByAddingBrowserInfo { [weak self] in
+            guard let self else { return }
+            router?.didSubmit($0, from: component)
+        }
+    }
+    
+    func didFail(
+        with error: any Error,
+        from component: any Adyen.PaymentComponent
+    ) {
+        if case ComponentError.cancelled = error {
+            cancel()
+        } else {
+            router?.didFail(with: error)
+        }
     }
 }

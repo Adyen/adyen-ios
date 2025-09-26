@@ -38,12 +38,6 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         self.delegate = delegate
         self.componentContainerAssembler = componentContainerAssembler
     }
-    
-    // MARK: - Router
-    
-    internal func handle(action: Action) {
-        componentContainerRouter?.handle(action: action)
-    }
 
     // MARK: - PreselectedPaymentMethodRouterProtocol
 

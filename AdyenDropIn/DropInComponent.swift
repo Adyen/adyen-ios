@@ -143,7 +143,6 @@ public final class DropInComponent: NSObject,
     ///
     /// - Parameter action: The action to handle.
     public func handle(_ action: Action) {
-//        actionComponent.handle(action)
         dropInRouter.handle(action: action)
     }
 

@@ -9,18 +9,9 @@ import Foundation
 import UIKit
 
 internal protocol ComponentContainerRouterDelegate: AnyObject {
-    // MARK: - PaymentComponentDelegate
-
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
     func didFail(with error: any Error)
     func didCancel(component: any PaymentComponent)
-    
-    // MARK: - ActionComponentDelegate
-
-    func didOpenExternalApplication(component: ActionComponent)
-    func didProvide(_ data: ActionComponentData, from component: ActionComponent)
-    func didComplete(from component: ActionComponent)
-    func didFail(with error: Error, from component: ActionComponent)
 }
 
 internal protocol ComponentContainerRouterProtocol: AnyObject {
@@ -31,13 +22,6 @@ internal protocol ComponentContainerRouterProtocol: AnyObject {
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
     func didFail(with error: any Error)
     func didCancel(component: any PaymentComponent)
-    
-    // MARK: - ActionComponentDelegate
-    
-    func didOpenExternalApplication(component: ActionComponent)
-    func didProvide(_ data: ActionComponentData, from component: ActionComponent)
-    func didComplete(from component: ActionComponent)
-    func didFail(with error: Error, from component: ActionComponent)
 }
 
 internal class ComponentContainerRouter: Router, ComponentContainerRouterProtocol {
@@ -59,10 +43,6 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouterProtoco
         self.viewModel = viewModel
         self.delegate = delegate
     }
-    
-    internal func handle(action: Action) {
-        viewModel.handle(action: action)
-    }
 
     // MARK: - ComponentContainerRouterProtocol
     
@@ -80,21 +60,5 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouterProtoco
     
     internal func didCancel(component: any Adyen.PaymentComponent) {
         delegate?.didCancel(component: component)
-    }
-        
-    internal func didOpenExternalApplication(component: any ActionComponent) {
-        delegate?.didOpenExternalApplication(component: component)
-    }
-    
-    internal func didProvide(_ data: Adyen.ActionComponentData, from component: any ActionComponent) {
-        delegate?.didProvide(data, from: component)
-    }
-    
-    internal func didComplete(from component: any ActionComponent) {
-        delegate?.didComplete(from: component)
-    }
-    
-    internal func didFail(with error: any Error, from component: any ActionComponent) {
-        delegate?.didFail(with: error, from: component)
     }
 }
