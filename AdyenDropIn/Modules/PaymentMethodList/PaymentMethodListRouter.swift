@@ -11,7 +11,7 @@ import UIKit
 internal protocol PaymentMethodListRouterDelegate: AnyObject {
     func paymentMethodListDidCancel(completion: (() -> Void)?)
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
-    func didFail(with error: any Error)
+    func didFail(with error: any Error, from component: any PaymentComponent)
     func didCancel(component: any PaymentComponent)
 }
 
@@ -19,7 +19,7 @@ internal protocol PaymentMethodListRouterProtocol: AnyObject {
     func didCancel(completion: (() -> Void)?)
     func didSelect(_ component: PresentableComponent)
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
-    func didFail(with error: any Error)
+    func didFail(with error: any Error, from component: any PaymentComponent)
     func didCancel(component: any PaymentComponent)
 }
 
@@ -85,8 +85,8 @@ extension PaymentMethodListRouter: ComponentContainerRouterDelegate {
         delegate?.didSubmit(data, from: component)
     }
     
-    func didFail(with error: any Error) {
-        delegate?.didFail(with: error)
+    func didFail(with error: any Error, from component: any PaymentComponent) {
+        delegate?.didFail(with: error, from: component)
     }
     
     func didCancel(component: any PaymentComponent) {

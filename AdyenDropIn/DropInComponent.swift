@@ -375,7 +375,7 @@ extension DropInComponent: DropInRouterDelegate {
         delegate?.didSubmit(data, from: component, in: self)
     }
 
-    internal func didFail(with error: any Error) {
+    internal func didFail(with error: any Error, from component: any PaymentComponent) {
         delegate?.didFail(with: error, from: self)
     }
 

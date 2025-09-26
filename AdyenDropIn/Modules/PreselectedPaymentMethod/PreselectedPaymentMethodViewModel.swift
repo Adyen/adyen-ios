@@ -49,7 +49,7 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
 
     internal func cancel() {
         stopLoading()
-        router?.dismiss(completion: nil)
+        router?.didCancel(component: component)
     }
 
     // MARK: - PreselectedPaymentMethodComponentDelegate
@@ -66,13 +66,11 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
     // MARK: - Private
 
     private func startPaymentFlow(for component: PaymentComponent) {
-        // TODO: - Handle payment delegation
-//        setNecessaryDelegates(on: component)
-
         switch component {
         case let component as PresentableComponent:
             router?.proceed(with: component)
         case let component as PaymentInitiable:
+            (component as? PaymentComponent)?.delegate = self
             component.initiatePayment()
         default:
             break
@@ -85,5 +83,26 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
 
     private func stopLoading() {
         preselectedPaymentMethodComponent.stopLoadingIfNeeded()
+    }
+}
+
+extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
+    
+    func didSubmit(
+        _ data: PaymentComponentData,
+        from component: any PaymentComponent
+    ) {
+        router?.didSubmit(data, from: component)
+    }
+    
+    func didFail(
+        with error: any Error,
+        from component: any PaymentComponent
+    ) {
+        if case ComponentError.cancelled = error {
+            cancel()
+        } else {
+            router?.didFail(with: error, from: component)
+        }
     }
 }

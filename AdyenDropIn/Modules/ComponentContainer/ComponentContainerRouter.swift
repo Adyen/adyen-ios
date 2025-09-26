@@ -10,17 +10,14 @@ import UIKit
 
 internal protocol ComponentContainerRouterDelegate: AnyObject {
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
-    func didFail(with error: any Error)
+    func didFail(with error: any Error, from component: any PaymentComponent)
     func didCancel(component: any PaymentComponent)
 }
 
 internal protocol ComponentContainerRouterProtocol: AnyObject {
     func present(_ viewController: UIViewController, animated: Bool)
-    
-    // MARK: - PaymentComponentDelegate
-    
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
-    func didFail(with error: any Error)
+    func didFail(with error: any Error, from component: any PaymentComponent)
     func didCancel(component: any PaymentComponent)
 }
 
@@ -54,8 +51,8 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouterProtoco
         delegate?.didSubmit(data, from: component)
     }
     
-    internal func didFail(with error: any Error) {
-        delegate?.didFail(with: error)
+    internal func didFail(with error: any Error, from component: any PaymentComponent) {
+        delegate?.didFail(with: error, from: component)
     }
     
     internal func didCancel(component: any Adyen.PaymentComponent) {

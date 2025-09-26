@@ -11,7 +11,7 @@ import UIKit
 
 internal protocol DropInRouterDelegate: AnyObject {
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
-    func didFail(with error: any Error)
+    func didFail(with error: any Error, from component: any PaymentComponent)
     func didCancel(component: any PaymentComponent)
     
     func didOpenExternalApplication(component: ActionComponent)
@@ -122,10 +122,10 @@ internal class DropInRouter: DropInRouterProtocol {
     }
 }
 
+// MARK: - PreselectedPaymentMethodRouterDelegate
+
 extension DropInRouter: PreselectedPaymentMethodRouterDelegate {
-    
-    // MARK: - PreselectedPaymentMethodRouterDelegate
-    
+        
     func showAllPaymentMethods() {
         let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter(delegate: self)
         self.paymentMethodListRouter = paymentMethodListRouter
@@ -133,10 +133,10 @@ extension DropInRouter: PreselectedPaymentMethodRouterDelegate {
     }
 }
 
+// MARK: - PaymentMethodListRouterDelegate
+
 extension DropInRouter: PaymentMethodListRouterDelegate {
-    
-    // MARK: - PaymentComponentDelegate
-    
+        
     func paymentMethodListDidCancel(completion: (() -> Void)?) {
         rootViewController.presentingViewController?.dismiss(animated: true)
         preselectedPaymentMethodRouter = nil
@@ -147,8 +147,8 @@ extension DropInRouter: PaymentMethodListRouterDelegate {
         delegate?.didSubmit(data, from: component)
     }
     
-    func didFail(with error: any Error) {
-        delegate?.didFail(with: error)
+    func didFail(with error: any Error, from component: any PaymentComponent) {
+        delegate?.didFail(with: error, from: component)
     }
     
     func didCancel(component: any PaymentComponent) {

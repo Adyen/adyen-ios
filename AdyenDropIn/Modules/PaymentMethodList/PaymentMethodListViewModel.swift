@@ -112,12 +112,12 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
     
     func didFail(
         with error: any Error,
-        from component: any Adyen.PaymentComponent
+        from component: any PaymentComponent
     ) {
         if case ComponentError.cancelled = error {
             cancel()
         } else {
-            router?.didFail(with: error)
+            router?.didFail(with: error, from: component)
         }
     }
 }

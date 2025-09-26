@@ -9,13 +9,19 @@ import Foundation
 import UIKit
 
 internal protocol PreselectedPaymentMethodRouterProtocol: AnyObject {
-    func dismiss(completion: (() -> Void)?)
     func showAllPaymentMethods()
     func proceed(with paymentComponent: PresentableComponent)
+    
+    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
+    func didFail(with error: any Error, from component: any PaymentComponent)
+    func didCancel(component: any PaymentComponent)
 }
 
 internal protocol PreselectedPaymentMethodRouterDelegate: AnyObject {
     func showAllPaymentMethods()
+    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
+    func didFail(with error: any Error, from component: any PaymentComponent)
+    func didCancel(component: any PaymentComponent)
 }
 
 internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodRouterProtocol {
@@ -64,33 +70,15 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
 
 extension PreselectedPaymentMethodRouter: ComponentContainerRouterDelegate {
 
-    func didSubmit(_ data: Adyen.PaymentComponentData, from component: any Adyen.PaymentComponent) {
-        // TODO: - Logic didSubmit
+    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
+        delegate?.didSubmit(data, from: component)
     }
     
-    func didFail(with error: any Error) {
-        // TODO: - Logic didFail
+    func didFail(with error: any Error, from component: any PaymentComponent) {
+        delegate?.didFail(with: error, from: component)
     }
     
-    func didCancel(component: any Adyen.PaymentComponent) {
-        // TODO: - Logic didCancel
-    }
-    
-    // MARK: - ActionComponentDelegate
-    
-    func didOpenExternalApplication(component: any ActionComponent) {
-        // TODO: - Logic to open external app
-    }
-    
-    func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
-        // TODO: - Logic to handle action details
-    }
-    
-    func didComplete(from component: any ActionComponent) {
-        // TODO: - Logic to handle action completion
-    }
-    
-    func didFail(with error: any Error, from component: any ActionComponent) {
-        // TODO: - Logic to handle action error
+    func didCancel(component: any PaymentComponent) {
+        delegate?.didCancel(component: component)
     }
 }

@@ -18,7 +18,6 @@ internal final class ComponentContainerViewController: UIViewController {
 
     internal init(viewModel: ComponentContainerViewModelProtocol) {
         self.viewModel = viewModel
-
         super.init(nibName: nil, bundle: Bundle(for: ComponentContainerViewController.self))
     }
 
@@ -60,8 +59,7 @@ internal final class ComponentContainerViewController: UIViewController {
     }
 
     private func setupNavigationItem() {
-        // TODO: - Replace with actual title
-        navigationItem.title = "3"
+        navigationItem.title = componentView.title
     }
 
     private func setupCancelButton() {
