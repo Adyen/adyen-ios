@@ -17,7 +17,7 @@ public struct AdyenTheme {
     public var buttonStyles = AdyenButtonStyles()
     public var labelStyle = AdyenLabelStyle()
     package var toggleStyle = AdyenToggleStyle()
-    public var textFieldStyle = AdyenTextFieldStyle()
+    package var textFieldStyle = AdyenTextFieldStyle()
 
     // Initialize with a default ButtonStyle, LabelStyle and ToggleStyle if none is provided
     package init(
