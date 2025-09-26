@@ -34,6 +34,7 @@ internal protocol DropInRouterProtocol: Router, AnyObject {
     func didProvide(_ data: ActionComponentData, from component: any ActionComponent)
     func didComplete(from component: any ActionComponent)
     func didFail(with error: any Error, from component: any ActionComponent)
+    func didCancel(with error: any Error, from component: any ActionComponent)
 }
 
 internal class DropInRouter: DropInRouterProtocol {
@@ -94,6 +95,11 @@ internal class DropInRouter: DropInRouterProtocol {
     internal func didFail(with error: any Error, from component: any ActionComponent) {
         delegate?.didFail(with: error, from: component)
     }
+    
+    internal func didCancel(with error: any Error, from component: any ActionComponent) {
+        // TODO: - Handle action cancellation
+        print("⚠️ ACTION WAS CANCELLED")
+    }
 
     // MARK: - Private
     
@@ -103,7 +109,7 @@ internal class DropInRouter: DropInRouterProtocol {
             let preselectedPaymentMethodRouter = preselectedPaymentMethodAssembler.resolvePreselectedPaymentMethodRouter(
                 delegate: self,
                 component: paymentComponent,
-                title: "Preselected PM"
+                title: "DropIn V6"
             )
             self.preselectedPaymentMethodRouter = preselectedPaymentMethodRouter
             let preselectedPaymentMethodViewController = preselectedPaymentMethodRouter.rootViewController

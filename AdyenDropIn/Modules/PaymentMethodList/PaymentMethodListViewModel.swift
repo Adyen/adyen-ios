@@ -8,6 +8,10 @@ import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
 
+internal protocol RoutablePaymentMethodListViewModel {
+    func stopComponentLoading()
+}
+
 @objc
 internal protocol PaymentMethodListViewModelProtocol {
     var paymentMethodListView: UIViewController { get }
@@ -50,6 +54,14 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     // MARK: - Private
+    
+    private func startLoading(for component: any PaymentComponent) {
+        paymentMethodListComponent.startLoading(for: component)
+    }
+    
+    private func stopLoading() {
+        paymentMethodListComponent.stopLoading()
+    }
 }
 
 extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
@@ -66,7 +78,8 @@ extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
         _ component: any PaymentComponent,
         in paymentMethodListComponent: PaymentMethodListComponent
     ) {
-        // TODO: - Handle non presentable component
+        startLoading(for: component)
+        
         switch component {
         case let component as PresentableComponent:
             router?.didSelect(component)
@@ -91,7 +104,7 @@ extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
 
 extension PaymentMethodListViewModel: PaymentComponentDelegate {
     
-    func didSubmit(
+    internal func didSubmit(
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
@@ -110,14 +123,25 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         }
     }
     
-    func didFail(
+    internal func didFail(
         with error: any Error,
         from component: any PaymentComponent
     ) {
+        defer { stopLoading() }
+        
         if case ComponentError.cancelled = error {
             cancel()
         } else {
             router?.didFail(with: error, from: component)
         }
+    }
+}
+
+// MARK: - RoutableViewModel
+
+extension PaymentMethodListViewModel: RoutablePaymentMethodListViewModel {
+    
+    func stopComponentLoading() {
+        stopLoading()
     }
 }

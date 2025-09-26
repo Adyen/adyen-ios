@@ -59,13 +59,14 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
     }
 
     internal func didProceed(with component: any PaymentComponent) {
-        startLoading()
         startPaymentFlow(for: component)
     }
 
     // MARK: - Private
 
     private func startPaymentFlow(for component: PaymentComponent) {
+        startLoading()
+        
         switch component {
         case let component as PresentableComponent:
             router?.proceed(with: component)

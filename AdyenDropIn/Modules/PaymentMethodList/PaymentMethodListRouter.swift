@@ -28,6 +28,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouterProtocol 
     // MARK: - Properties
 
     private let viewController: UIViewController
+    private let viewModel: RoutablePaymentMethodListViewModel
     private weak var delegate: PaymentMethodListRouterDelegate?
     private let navigationController = UINavigationController()
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
@@ -37,10 +38,12 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouterProtocol 
 
     internal init(
         viewController: UIViewController,
+        viewModel: RoutablePaymentMethodListViewModel,
         delegate: PaymentMethodListRouterDelegate?,
         componentContainerAssembler: ComponentContainerAssemblerProtocol
     ) {
         self.viewController = viewController
+        self.viewModel = viewModel
         self.delegate = delegate
         self.componentContainerAssembler = componentContainerAssembler
     }
@@ -90,6 +93,7 @@ extension PaymentMethodListRouter: ComponentContainerRouterDelegate {
     }
     
     func didCancel(component: any PaymentComponent) {
+        viewModel.stopComponentLoading()
         delegate?.didCancel(component: component)
     }
 }

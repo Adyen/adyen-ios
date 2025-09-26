@@ -50,7 +50,7 @@ internal class PaymentMethodListViewController: UIViewController {
     }
 
     private func setupNavigationItem() {
-        navigationItem.title = "2"
+        navigationItem.title = viewModel.paymentMethodListView.title
         let cancelButton = UIBarButtonItem(
             title: "Cancel",
             style: .plain,

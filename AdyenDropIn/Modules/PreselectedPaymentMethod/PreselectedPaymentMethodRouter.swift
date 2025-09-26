@@ -8,17 +8,17 @@ import Adyen
 import Foundation
 import UIKit
 
-internal protocol PreselectedPaymentMethodRouterProtocol: AnyObject {
+internal protocol PreselectedPaymentMethodRouterDelegate: AnyObject {
     func showAllPaymentMethods()
-    func proceed(with paymentComponent: PresentableComponent)
-    
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
     func didFail(with error: any Error, from component: any PaymentComponent)
     func didCancel(component: any PaymentComponent)
 }
 
-internal protocol PreselectedPaymentMethodRouterDelegate: AnyObject {
+internal protocol PreselectedPaymentMethodRouterProtocol: AnyObject {
     func showAllPaymentMethods()
+    func proceed(with paymentComponent: PresentableComponent)
+    
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
     func didFail(with error: any Error, from component: any PaymentComponent)
     func didCancel(component: any PaymentComponent)
@@ -47,18 +47,11 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
 
     // MARK: - PreselectedPaymentMethodRouterProtocol
 
-    internal func dismiss(completion: (() -> Void)?) {
-        rootViewController.dismiss(animated: true, completion: completion)
-    }
-
     internal func showAllPaymentMethods() {
         delegate?.showAllPaymentMethods()
     }
 
     internal func proceed(with paymentComponent: any PresentableComponent) {
-        // TODO: - Handle logic with preselected payment method
-//        delegate?.didProceed(with: paymentComponent)
-
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: paymentComponent,
             delegate: self
@@ -79,6 +72,8 @@ extension PreselectedPaymentMethodRouter: ComponentContainerRouterDelegate {
     }
     
     func didCancel(component: any PaymentComponent) {
+        rootViewController.dismiss(animated: true)
+        componentContainerRouter = nil
         delegate?.didCancel(component: component)
     }
 }

@@ -47,7 +47,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     }
 
     private func setupNavigationItem() {
-        navigationItem.title = "1"
+        navigationItem.title = viewModel.paymentMethodView.title
         let cancelButton = UIBarButtonItem(
             title: "Cancel",
             style: .plain,

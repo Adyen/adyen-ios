@@ -98,7 +98,7 @@ extension DropInViewModel: ActionComponentDelegate {
     
     func didFail(with error: any Error, from component: any ActionComponent) {
         if case ComponentError.cancelled = error {
-            // TODO: - Handle action cancel
+            router?.didCancel(with: error, from: component)
         } else {
             router?.didFail(with: error, from: component)
         }
