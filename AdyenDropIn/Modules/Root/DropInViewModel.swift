@@ -61,7 +61,6 @@ internal class DropInViewModel: DropInViewModelProtocol {
     }
     
     internal func handle(action: Action) {
-        // TODO: - Handle action
         actionComponent.handle(action)
     }
     

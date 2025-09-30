@@ -54,6 +54,7 @@ internal class DropInRouter: DropInRouterProtocol {
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
     
     private var preselectedPaymentMethodRouter: Router?
+    private var componentContainerRouter: Router?
     private var paymentMethodListRouter: Router?
     
     // MARK: - Initializers
@@ -99,6 +100,7 @@ internal class DropInRouter: DropInRouterProtocol {
     internal func didCancel(with error: any Error, from component: any ActionComponent) {
         // TODO: - Handle action cancellation
         print("⚠️ ACTION WAS CANCELLED")
+        
     }
 
     // MARK: - Private
@@ -116,10 +118,12 @@ internal class DropInRouter: DropInRouterProtocol {
             let navigationController = UINavigationController(rootViewController: preselectedPaymentMethodViewController)
             return navigationController
         case let .component(paymentComponent):
-            // TODO: - Handle standalone component case
-            //            let componentView = componentContainerAssembler.resolveContainerView(for: paymentComponent)
-            //            return componentView
-            return UIViewController()
+            let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
+                for: paymentComponent,
+                delegate: self
+            )
+            self.componentContainerRouter = componentContainerRouter
+            return componentContainerRouter.rootViewController
         case .paymentMethodList:
             let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter(delegate: self)
             self.paymentMethodListRouter = paymentMethodListRouter
@@ -161,3 +165,7 @@ extension DropInRouter: PaymentMethodListRouterDelegate {
         delegate?.didCancel(component: component)
     }
 }
+
+// MARK: - ComponentContainerRouter
+
+extension DropInRouter: ComponentContainerRouterDelegate {}
