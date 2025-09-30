@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import AdyenUI
 import Contacts
 
 /// Example implementation of an address lookup provider with debouncing and cancelling previous calls

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 #if canImport(AdyenUI)
-    import AdyenUI
+    @_spi(AdyenInternal) import AdyenUI
 #endif
 
 /// A component that provides a form for BLIK payments.
@@ -104,7 +104,8 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
 
     /// The button item.
     internal lazy var button: FormButtonItem = {
-        let item = FormButtonItem(buttonStyle: configuration.theme.buttonStyle.primary)
+        let buttonStyles = configuration.theme.buttonStyles
+        let item = FormButtonItem(buttonStyle: buttonStyles.primary)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(
             with: payment?.amount,

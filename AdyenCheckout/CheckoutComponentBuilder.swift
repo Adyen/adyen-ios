@@ -5,6 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 #if canImport(AdyenComponents)
     @_spi(AdyenInternal) import AdyenComponents
 #endif

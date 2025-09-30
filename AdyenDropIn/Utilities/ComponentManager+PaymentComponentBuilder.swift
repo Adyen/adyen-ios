@@ -24,6 +24,7 @@ import Foundation
 
 extension ComponentManager: PaymentComponentBuilder {
 
+    // TODO: FIX StoredPaymentMethodComponent
     internal func build(paymentMethod: StoredCardPaymentMethod) -> PaymentComponent? {
         createCardComponent(with: paymentMethod)
     }
@@ -31,40 +32,40 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(
             paymentMethod: paymentMethod,
-            context: context,
-            configuration: .init(localizationParameters: configuration.localizationParameters)
+            context: context
+            // configuration: .init(localizationParameters: configuration.localizationParameters)
         )
     }
 
     internal func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(
             paymentMethod: paymentMethod,
-            context: context,
-            configuration: .init(localizationParameters: configuration.localizationParameters)
+            context: context
+            // configuration: .init(localizationParameters: configuration.localizationParameters)
         )
     }
 
     internal func build(paymentMethod: StoredACHDirectDebitPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(
             paymentMethod: paymentMethod,
-            context: context,
-            configuration: .init(localizationParameters: configuration.localizationParameters)
+            context: context
+            // configuration: .init(localizationParameters: configuration.localizationParameters)
         )
     }
 
     internal func build(paymentMethod: StoredCashAppPayPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(
             paymentMethod: paymentMethod,
-            context: context,
-            configuration: .init(localizationParameters: configuration.localizationParameters)
+            context: context
+            // configuration: .init(localizationParameters: configuration.localizationParameters)
         )
     }
 
     internal func build(paymentMethod: StoredTwintPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(
             paymentMethod: paymentMethod,
-            context: context,
-            configuration: .init(localizationParameters: configuration.localizationParameters)
+            context: context
+            // configuration: .init(localizationParameters: configuration.localizationParameters)
         )
     }
 
@@ -292,8 +293,8 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: StoredPayToPaymentMethod) -> (any PaymentComponent)? {
         StoredPaymentMethodComponent(
             paymentMethod: paymentMethod,
-            context: context,
-            configuration: .init(localizationParameters: configuration.localizationParameters)
+            context: context
+            // configuration: .init(localizationParameters: configuration.localizationParameters)
         )
     }
 }

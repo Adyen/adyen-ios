@@ -7,6 +7,7 @@
 import Foundation
 
 @_spi(AdyenInternal) @testable import Adyen
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class AddressInputFormViewControllerTests: XCTestCase {

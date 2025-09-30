@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class FormAddressItemTests: XCTestCase {
@@ -26,7 +27,7 @@ class FormAddressItemTests: XCTestCase {
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
-        XCTAssertTrue(formAddressItem.flatSubitems.contains { $0.identifier == "Adyen.FormAddressItem.title" })
+        XCTAssertTrue(formAddressItem.flatSubitems.contains { $0.identifier == "AdyenUI.FormAddressItem.title" })
         
         let formAddressItemWithoutHeader = FormAddressItem(
             initialCountry: "NL",
@@ -38,7 +39,7 @@ class FormAddressItemTests: XCTestCase {
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
 
-        XCTAssertFalse(formAddressItemWithoutHeader.flatSubitems.contains { $0.identifier == "Adyen.FormAddressItem.title" })
+        XCTAssertFalse(formAddressItemWithoutHeader.flatSubitems.contains { $0.identifier == "AdyenUI.FormAddressItem.title" })
     }
     
     func testCountryPickerItemUpdate() throws {
@@ -113,7 +114,7 @@ private class AddressDelegateDummy: SelfRenderingFormItemDelegate {
         self.didUpdateItemsHandler = didUpdateItemsHandler
     }
     
-    func didUpdateItems(_ items: [Adyen.FormItem]) {
+    func didUpdateItems(_ items: [AdyenUI.FormItem]) {
         didUpdateItemsHandler(items)
     }
 }

@@ -7,6 +7,7 @@
 import XCTest
 @_spi(AdyenInternal) @testable import Adyen
 @testable @_spi(AdyenInternal) import AdyenCard
+@_spi(AdyenInternal) @testable import AdyenUI
 
 final class DualBrandAccessoryViewTests: XCTestCase {
     var sut: FormCardNumberItemView.DualBrandAccessoryView!

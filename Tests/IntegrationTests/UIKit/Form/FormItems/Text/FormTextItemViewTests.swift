@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) import AdyenCard
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class FormTextItemViewTests: XCTestCase {
