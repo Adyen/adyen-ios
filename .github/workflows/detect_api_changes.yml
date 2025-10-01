@@ -19,7 +19,7 @@ permissions:
 jobs:
 
   build:
-    runs-on: macos-14
+    runs-on: macos-15
 
     steps:
     - uses: n1hility/cancel-previous-runs@v3
