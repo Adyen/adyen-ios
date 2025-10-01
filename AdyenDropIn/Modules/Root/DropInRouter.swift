@@ -78,7 +78,14 @@ internal class DropInRouter: DropInRouterProtocol {
     }
     
     internal func present(_ viewController: UIViewController, animated: Bool) {
-        paymentMethodListRouter?.rootViewController.present(viewController, animated: animated)
+        switch viewModel.root {
+        case .preselected:
+            preselectedPaymentMethodRouter?.rootViewController.present(viewController, animated: animated)
+        case .component:
+            componentContainerRouter?.rootViewController.present(viewController, animated: animated)
+        case .paymentMethodList:
+            paymentMethodListRouter?.rootViewController.present(viewController, animated: animated)
+        }
     }
     
     internal func didOpenExternalApplication(component: any ActionComponent) {
@@ -100,7 +107,6 @@ internal class DropInRouter: DropInRouterProtocol {
     internal func didCancel(with error: any Error, from component: any ActionComponent) {
         // TODO: - Handle action cancellation
         print("⚠️ ACTION WAS CANCELLED")
-        
     }
 
     // MARK: - Private
@@ -137,6 +143,7 @@ internal class DropInRouter: DropInRouterProtocol {
 extension DropInRouter: PreselectedPaymentMethodRouterDelegate {
         
     func showAllPaymentMethods() {
+        self.preselectedPaymentMethodRouter = nil
         let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter(delegate: self)
         self.paymentMethodListRouter = paymentMethodListRouter
         rootViewController.present(paymentMethodListRouter.rootViewController, animated: true)

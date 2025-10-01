@@ -14,7 +14,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
 
     private let viewModel: PreselectedPaymentMethodViewModelProtocol
 
-    // MARK: - Initalizers
+    // MARK: - Initializers
 
     internal init(viewModel: PreselectedPaymentMethodViewModelProtocol) {
         self.viewModel = viewModel
