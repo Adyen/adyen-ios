@@ -60,20 +60,7 @@ internal final class ComponentContainerViewController: UIViewController {
 
     private func setupNavigationItem() {
         navigationItem.title = componentView.title
-    }
-
-    private func setupCancelButton() {
-        // TODO: - Implement logic to cancel ongoing payment
-        let cancelButton = UIBarButtonItem(
-            title: "Cancel",
-            style: .plain,
-            target: self,
-            action: #selector(cancelButtonTapped)
-        )
-        navigationItem.rightBarButtonItem = cancelButton
-    }
-
-    @objc private func cancelButtonTapped() {
-        navigationController?.dismiss(animated: true)
+        navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 }

@@ -32,7 +32,7 @@ internal enum ConfigurationConstants {
     
     static var returnUrl: URL { .init(string: "ui-host://payments")! }
     
-    static let shopperReference = "iOS Checkout Shopper"
+    static let shopperReference = "test-android-components"
 
     static let shopperEmail = "checkoutShopperiOS@example.org"
     static let recurringProcessingModel = "CardOnFile"

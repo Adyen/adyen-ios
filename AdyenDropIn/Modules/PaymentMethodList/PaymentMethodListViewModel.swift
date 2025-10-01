@@ -12,7 +12,6 @@ internal protocol RoutablePaymentMethodListViewModel {
     func stopComponentLoading()
 }
 
-@objc
 internal protocol PaymentMethodListViewModelProtocol {
     var paymentMethodListView: UIViewController { get }
     func cancel()
@@ -49,7 +48,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     internal func cancel() {
-        // TODO: - Handle cancellation
         router?.didCancel(completion: nil)
     }
 
@@ -71,7 +69,7 @@ extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
     internal func didLoad(
         _ paymentMethodListComponent: PaymentMethodListComponent
     ) {
-        // TODO: - Handle analytics
+        // TODO: - Handle analytics on list load.
     }
 
     internal func didSelect(

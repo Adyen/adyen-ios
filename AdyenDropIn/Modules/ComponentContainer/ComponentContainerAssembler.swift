@@ -54,7 +54,7 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
-        let viewController = ComponentContainerViewController(viewModel: viewModel)
+        let viewController = resolveRouterViewController(for: component, viewModel: viewModel)
         let router = ComponentContainerRouter(
             viewController: viewController,
             viewModel: viewModel,
@@ -62,5 +62,16 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
         )
         viewModel.router = router
         return router
+    }
+    
+    private func resolveRouterViewController(
+        for component: PresentableComponent,
+        viewModel: ComponentContainerViewModelProtocol
+    ) -> UIViewController {
+        if let alertController = component.viewController as? UIAlertController {
+            return alertController
+        } else {
+            return ComponentContainerViewController(viewModel: viewModel)
+        }
     }
 }

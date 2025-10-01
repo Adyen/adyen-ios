@@ -30,11 +30,9 @@ internal class PaymentMethodListViewController: UIViewController {
 
     override internal func viewDidLoad() {
         super.viewDidLoad()
-
+        isModalInPresentation = true
         setupNavigationItem()
         setupPaymentMethodListView()
-
-        // TODO: - Implement analytics
     }
 
     // MARK: - Private
@@ -51,12 +49,22 @@ internal class PaymentMethodListViewController: UIViewController {
 
     private func setupNavigationItem() {
         navigationItem.title = viewModel.paymentMethodListView.title
+        navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
+        setupCancelButton()
+    }
+    
+    private func setupCancelButton() {
         let cancelButton = UIBarButtonItem(
-            title: "Cancel",
-            style: .plain,
-            target: viewModel,
-            action: #selector(viewModel.cancel)
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(cancelTapped)
         )
         navigationItem.leftBarButtonItem = cancelButton
+    }
+    
+    @objc private func cancelTapped() {
+        viewModel.cancel()
     }
 }
