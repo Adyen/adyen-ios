@@ -11,6 +11,10 @@
 import Foundation
 import UIKit
 
+internal protocol RoutableComponentContainerViewModel {
+    func stopLoading()
+}
+
 internal protocol ComponentContainerViewModelProtocol {
     var componentViewController: UIViewController { get }
     func cancel()
@@ -58,7 +62,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
             router?.didCancel(component: component)
         }
         
-        component.stopLoadingIfNeeded()
+        stopLoading()
     }
 
     // MARK: - Private
@@ -68,6 +72,15 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         (component as? CardComponent)?.cardComponentDelegate = cardComponentDelegate
         (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
+    }
+}
+
+// MARK: - RoutableComponentContainerViewModel
+
+extension ComponentContainerViewModel: RoutableComponentContainerViewModel {
+    
+    func stopLoading() {
+        component.stopLoadingIfNeeded()
     }
 }
 

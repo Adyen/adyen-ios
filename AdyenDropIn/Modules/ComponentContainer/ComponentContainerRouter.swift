@@ -26,14 +26,14 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouterProtoco
     // MARK: - Properties
 
     internal let rootViewController: UIViewController
-    private let viewModel: ComponentContainerViewModelProtocol
+    private let viewModel: RoutableComponentContainerViewModel
     private weak var delegate: ComponentContainerRouterDelegate?
 
     // MARK: - Initializers
 
     internal init(
         viewController: UIViewController,
-        viewModel: ComponentContainerViewModelProtocol,
+        viewModel: RoutableComponentContainerViewModel,
         delegate: ComponentContainerRouterDelegate
     ) {
         self.rootViewController = viewController
@@ -57,5 +57,11 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouterProtoco
     
     internal func didCancel(component: any Adyen.PaymentComponent) {
         delegate?.didCancel(component: component)
+    }
+    
+    // MARK: - Router
+    
+    internal func stopLoading() {
+        viewModel.stopLoading()
     }
 }

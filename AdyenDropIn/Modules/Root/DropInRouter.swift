@@ -22,6 +22,11 @@ internal protocol DropInRouterDelegate: AnyObject {
 
 internal protocol Router: AnyObject {
     var rootViewController: UIViewController { get }
+    func stopLoading()
+}
+
+extension Router {
+    func stopLoading() { /* Optional implementation */ }
 }
 
 internal protocol DropInRouterProtocol: Router, AnyObject {
@@ -53,9 +58,7 @@ internal class DropInRouter: DropInRouterProtocol {
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
     
-    private var preselectedPaymentMethodRouter: Router?
-    private var componentContainerRouter: Router?
-    private var paymentMethodListRouter: Router?
+    private var childRouter: Router?
     
     // MARK: - Initializers
     
@@ -78,14 +81,7 @@ internal class DropInRouter: DropInRouterProtocol {
     }
     
     internal func present(_ viewController: UIViewController, animated: Bool) {
-        switch viewModel.root {
-        case .preselected:
-            preselectedPaymentMethodRouter?.rootViewController.present(viewController, animated: animated)
-        case .component:
-            componentContainerRouter?.rootViewController.present(viewController, animated: animated)
-        case .paymentMethodList:
-            paymentMethodListRouter?.rootViewController.present(viewController, animated: animated)
-        }
+        childRouter?.rootViewController.present(viewController, animated: animated)
     }
     
     internal func didOpenExternalApplication(component: any ActionComponent) {
@@ -105,8 +101,13 @@ internal class DropInRouter: DropInRouterProtocol {
     }
     
     internal func didCancel(with error: any Error, from component: any ActionComponent) {
-        // TODO: - Handle action cancellation
-        print("⚠️ ACTION WAS CANCELLED")
+        stopLoading()
+    }
+    
+    // MARK: - Router
+    
+    func stopLoading() {
+        childRouter?.stopLoading()
     }
 
     // MARK: - Private
@@ -119,7 +120,7 @@ internal class DropInRouter: DropInRouterProtocol {
                 component: paymentComponent,
                 title: "DropIn V6"
             )
-            self.preselectedPaymentMethodRouter = preselectedPaymentMethodRouter
+            self.childRouter = preselectedPaymentMethodRouter
             let preselectedPaymentMethodViewController = preselectedPaymentMethodRouter.rootViewController
             let navigationController = UINavigationController(rootViewController: preselectedPaymentMethodViewController)
             return navigationController
@@ -128,11 +129,11 @@ internal class DropInRouter: DropInRouterProtocol {
                 for: paymentComponent,
                 delegate: self
             )
-            self.componentContainerRouter = componentContainerRouter
+            self.childRouter = componentContainerRouter
             return componentContainerRouter.rootViewController
         case .paymentMethodList:
             let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter(delegate: self)
-            self.paymentMethodListRouter = paymentMethodListRouter
+            self.childRouter = paymentMethodListRouter
             return paymentMethodListRouter.rootViewController
         }
     }
@@ -143,9 +144,8 @@ internal class DropInRouter: DropInRouterProtocol {
 extension DropInRouter: PreselectedPaymentMethodRouterDelegate {
         
     func showAllPaymentMethods() {
-        self.preselectedPaymentMethodRouter = nil
         let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter(delegate: self)
-        self.paymentMethodListRouter = paymentMethodListRouter
+        self.childRouter = paymentMethodListRouter
         rootViewController.present(paymentMethodListRouter.rootViewController, animated: true)
     }
 }
@@ -156,8 +156,7 @@ extension DropInRouter: PaymentMethodListRouterDelegate {
         
     func paymentMethodListDidCancel(completion: (() -> Void)?) {
         rootViewController.presentingViewController?.dismiss(animated: true)
-        preselectedPaymentMethodRouter = nil
-        paymentMethodListRouter = nil
+        childRouter = nil
     }
     
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
@@ -173,6 +172,6 @@ extension DropInRouter: PaymentMethodListRouterDelegate {
     }
 }
 
-// MARK: - ComponentContainerRouter
+// MARK: - ComponentContainerRouterDelegate
 
 extension DropInRouter: ComponentContainerRouterDelegate {}

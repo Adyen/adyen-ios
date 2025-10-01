@@ -8,6 +8,10 @@ import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
 
+internal protocol RoutablePreselectedPaymentMethodViewModel {
+    func stopLoading()
+}
+
 internal protocol PreselectedPaymentMethodViewModelProtocol {
     var paymentMethodView: UIViewController { get }
     func cancel()
@@ -48,7 +52,7 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
 
     internal func cancel() {
         stopLoading()
-        router?.didCancel(component: component)
+        router?.didCancelPreselect(component: component)
     }
 
     // MARK: - PreselectedPaymentMethodComponentDelegate
@@ -80,11 +84,9 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
     private func startLoading() {
         preselectedPaymentMethodComponent.startLoading(for: component)
     }
-
-    private func stopLoading() {
-        preselectedPaymentMethodComponent.stopLoadingIfNeeded()
-    }
 }
+
+// MARK: - PaymentComponentDelegate
 
 extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
     
@@ -104,5 +106,14 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         } else {
             router?.didFail(with: error, from: component)
         }
+    }
+}
+
+// MARK: - RoutablePreselectedPaymentMethodViewModel
+
+extension PreselectedPaymentMethodViewModel: RoutablePreselectedPaymentMethodViewModel {
+    
+    internal func stopLoading() {
+        preselectedPaymentMethodComponent.stopLoadingIfNeeded()
     }
 }

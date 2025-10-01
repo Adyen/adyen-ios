@@ -18,6 +18,7 @@ internal protocol PaymentMethodListRouterDelegate: AnyObject {
 internal protocol PaymentMethodListRouterProtocol: AnyObject {
     func didCancel(completion: (() -> Void)?)
     func didSelect(_ component: PresentableComponent)
+    
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
     func didFail(with error: any Error, from component: any PaymentComponent)
     func didCancel(component: any PaymentComponent)
@@ -32,7 +33,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouterProtocol 
     private weak var delegate: PaymentMethodListRouterDelegate?
     private let navigationController = UINavigationController()
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
-    private var componentContainerRouter: Router?
+    private var childRouter: Router?
 
     // MARK: - Initializers
 
@@ -54,12 +55,16 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouterProtocol 
         navigationController.setViewControllers([viewController], animated: false)
         return navigationController
     }
+    
+    internal func stopLoading() {
+        viewModel.stopLoading()
+    }
 
     // MARK: - PaymentMethodListRouterProtocol
 
     internal func didCancel(completion: (() -> Void)?) {
         delegate?.paymentMethodListDidCancel(completion: completion)
-        componentContainerRouter = nil
+        childRouter = nil
     }
 
     internal func didSelect(_ component: PresentableComponent) {
@@ -67,7 +72,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouterProtocol 
             for: component,
             delegate: self
         )
-        self.componentContainerRouter = componentContainerRouter
+        self.childRouter = componentContainerRouter
 
         let componentContainerViewController = componentContainerRouter.rootViewController
 
@@ -93,7 +98,7 @@ extension PaymentMethodListRouter: ComponentContainerRouterDelegate {
     }
     
     func didCancel(component: any PaymentComponent) {
-        viewModel.stopComponentLoading()
+        viewModel.stopLoading()
         delegate?.didCancel(component: component)
     }
 }

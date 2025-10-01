@@ -9,7 +9,7 @@ import UIKit
 @_spi(AdyenInternal) import Adyen
 
 internal protocol RoutablePaymentMethodListViewModel {
-    func stopComponentLoading()
+    func stopLoading()
 }
 
 internal protocol PaymentMethodListViewModelProtocol {
@@ -55,10 +55,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     
     private func startLoading(for component: any PaymentComponent) {
         paymentMethodListComponent.startLoading(for: component)
-    }
-    
-    private func stopLoading() {
-        paymentMethodListComponent.stopLoading()
     }
 }
 
@@ -135,11 +131,11 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
     }
 }
 
-// MARK: - RoutableViewModel
+// MARK: - RoutablePaymentMethodListViewModel
 
 extension PaymentMethodListViewModel: RoutablePaymentMethodListViewModel {
     
-    func stopComponentLoading() {
-        stopLoading()
+    internal func stopLoading() {
+        paymentMethodListComponent.stopLoading()
     }
 }

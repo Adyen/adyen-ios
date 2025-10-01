@@ -21,7 +21,7 @@ internal protocol PreselectedPaymentMethodRouterProtocol: AnyObject {
     
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
     func didFail(with error: any Error, from component: any PaymentComponent)
-    func didCancel(component: any PaymentComponent)
+    func didCancelPreselect(component: any PaymentComponent)
 }
 
 internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodRouterProtocol {
@@ -29,6 +29,7 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     // MARK: - Properties
 
     internal let rootViewController: UIViewController
+    private let viewModel: RoutablePreselectedPaymentMethodViewModel
     private weak var delegate: PreselectedPaymentMethodRouterDelegate?
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
     private var componentContainerRouter: Router?
@@ -37,10 +38,12 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     
     internal init(
         viewController: UIViewController,
+        viewModel: RoutablePreselectedPaymentMethodViewModel,
         delegate: PreselectedPaymentMethodRouterDelegate?,
         componentContainerAssembler: ComponentContainerAssemblerProtocol
     ) {
         self.rootViewController = viewController
+        self.viewModel = viewModel
         self.delegate = delegate
         self.componentContainerAssembler = componentContainerAssembler
     }
@@ -59,6 +62,17 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         self.componentContainerRouter = componentContainerRouter
         rootViewController.present(componentContainerRouter.rootViewController, animated: true)
     }
+    
+    internal func didCancelPreselect(component: any PaymentComponent) {
+        rootViewController.dismiss(animated: true)
+        delegate?.didCancel(component: component)
+    }
+    
+    // MARK: - Router
+    
+    internal func stopLoading() {
+        viewModel.stopLoading()
+    }
 }
 
 extension PreselectedPaymentMethodRouter: ComponentContainerRouterDelegate {
@@ -72,7 +86,7 @@ extension PreselectedPaymentMethodRouter: ComponentContainerRouterDelegate {
     }
     
     func didCancel(component: any PaymentComponent) {
-        rootViewController.dismiss(animated: true)
+        stopLoading()
         componentContainerRouter = nil
         delegate?.didCancel(component: component)
     }
