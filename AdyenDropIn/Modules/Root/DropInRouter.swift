@@ -106,7 +106,7 @@ internal class DropInRouter: DropInRouterProtocol {
     
     // MARK: - Router
     
-    func stopLoading() {
+    internal func stopLoading() {
         childRouter?.stopLoading()
     }
 
