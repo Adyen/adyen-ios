@@ -110,7 +110,7 @@ public struct PaymentComponentData {
         self.amount = amount
         self.paymentMethod = paymentMethodDetails
         self.order = order
-        self.storePaymentMethod = true
+        self.storePaymentMethod = storePaymentMethod
         self.browserInfo = browserInfo
         self.installments = installments
     }

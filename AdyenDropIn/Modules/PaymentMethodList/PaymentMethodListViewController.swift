@@ -14,7 +14,7 @@ internal class PaymentMethodListViewController: UIViewController {
 
     private let viewModel: PaymentMethodListViewModelProtocol
 
-    // MARK: - Initalizers
+    // MARK: - Initializers
 
     internal init(viewModel: PaymentMethodListViewModelProtocol) {
         self.viewModel = viewModel
