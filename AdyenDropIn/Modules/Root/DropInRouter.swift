@@ -155,6 +155,7 @@ extension DropInRouter: PreselectedPaymentMethodRouterDelegate {
 extension DropInRouter: PaymentMethodListRouterDelegate {
         
     func paymentMethodListDidCancel(completion: (() -> Void)?) {
+        // TODO: - Decide wether dismissal this logic belongs to dropIn or merchant's side
         rootViewController.presentingViewController?.dismiss(animated: true)
         childRouter = nil
     }
