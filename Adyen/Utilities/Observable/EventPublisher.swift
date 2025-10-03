@@ -58,10 +58,10 @@ public extension EventPublisher {
     }
     
     @discardableResult
-    private func handleWithinLock<T>(action: () throws -> T) rethrows -> T {
+    private func handleWithinLock<T>(action: () -> T) -> T {
         defer { eventHandlersLock.unlock() }
         eventHandlersLock.lock()
-        return try action()
+        return action()
     }
     
 }

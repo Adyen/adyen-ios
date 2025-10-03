@@ -50,9 +50,9 @@ internal class ObservationManager {
     }
     
     @discardableResult
-    private func handleWithinLock<T>(action: () throws -> T) rethrows -> T {
+    private func handleWithinLock<T>(action: () -> T) -> T {
         defer { lock.unlock() }
         lock.lock()
-        return try action()
+        return action()
     }
 }
