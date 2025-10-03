@@ -100,7 +100,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
         wait(for: .milliseconds(300))
         
         XCTAssertTrue(button.showsActivityIndicator)
-        self.sut.stopLoadingIfNeeded()
+        self.sut.stopLoading()
         XCTAssertFalse(button.showsActivityIndicator)
     }
     

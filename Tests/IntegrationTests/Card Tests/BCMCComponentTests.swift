@@ -218,7 +218,7 @@ class BCMCComponentTests: XCTestCase {
             XCTAssertNil(resultJson["encryptedSecurityCode"] as? String)
             XCTAssertNotNil(resultJson["encryptedExpiryMonth"] as? String)
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             didSubmitExpectation.fulfill()
         }
         delegate.onDidFail = { error, _ in

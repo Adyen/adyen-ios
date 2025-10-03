@@ -104,7 +104,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
             XCTAssertEqual(details.bankAccountNumber, self?.bacsDataMock.bankAccountNumber)
             XCTAssertEqual(details.bankLocationId, self?.bacsDataMock.bankLocationId)
 
-            self?.sut.stopLoadingIfNeeded()
+            self?.sut.stopLoading()
             didSubmitExpectation.fulfill()
         }
 

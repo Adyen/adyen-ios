@@ -13,7 +13,7 @@ import UIKit
 
 internal protocol PreselectedPaymentMethodAssemblerProtocol {
     func resolvePreselectedPaymentMethodRouter(
-        delegate: PreselectedPaymentMethodRouterDelegate?,
+        delegate: PreselectedPaymentMethodRouterListener?,
         component: PaymentComponent,
         title: String
     ) -> Router
@@ -45,7 +45,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     // MARK: - PreselectedPaymentMethodAssemblerProtocol
     
     internal func resolvePreselectedPaymentMethodRouter(
-        delegate: PreselectedPaymentMethodRouterDelegate?,
+        delegate: PreselectedPaymentMethodRouterListener?,
         component: PaymentComponent,
         title: String
     ) -> Router {
@@ -64,7 +64,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
         let router = PreselectedPaymentMethodRouter(
             viewController: view,
             viewModel: viewModel,
-            delegate: delegate,
+            listener: delegate,
             componentContainerAssembler: componentContainerAssembler
         )
         viewModel.router = router

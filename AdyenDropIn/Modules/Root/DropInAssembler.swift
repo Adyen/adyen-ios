@@ -12,11 +12,7 @@ import AdyenNetworking
 import Foundation
 import UIKit
 
-internal protocol DropInAssemblerProtocol {
-    func resolveDropInRootView() -> UIViewController
-}
-
-internal class DropInAssembler {
+internal struct DropInAssembler {
 
     // MARK: - Properties
 
@@ -54,7 +50,7 @@ internal class DropInAssembler {
 
     // MARK: - Public
 
-    internal func resolveDropInRootRouter() -> DropInRouterProtocol {
+    internal func resolveDropInRouter(listener: DropInRouterListener) -> DropInRouting {
         let apiClient = resolveAPIClient()
 
         let viewModel = DropInViewModel(
@@ -67,6 +63,7 @@ internal class DropInAssembler {
 
         let router = DropInRouter(
             viewModel: viewModel,
+            listener: listener,
             preselectedPaymentMethodAssembler: preselectedPaymentMethodAssembler,
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler

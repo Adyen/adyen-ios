@@ -14,7 +14,7 @@ import UIKit
 internal protocol ComponentContainerAssemblerProtocol {
     func resolveComponentContainerRouter(
         for component: PresentableComponent,
-        delegate: ComponentContainerRouterDelegate
+        delegate: ComponentContainerRouterListener
     ) -> Router
 }
 
@@ -45,7 +45,7 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
 
     internal func resolveComponentContainerRouter(
         for component: PresentableComponent,
-        delegate: ComponentContainerRouterDelegate
+        delegate: ComponentContainerRouterListener
     ) -> Router {
         let viewModel = ComponentContainerViewModel(
             component: component,
@@ -58,7 +58,7 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
         let router = ComponentContainerRouter(
             viewController: viewController,
             viewModel: viewModel,
-            delegate: delegate
+            listener: delegate
         )
         viewModel.router = router
         return router

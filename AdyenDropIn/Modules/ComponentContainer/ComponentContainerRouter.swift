@@ -8,55 +8,52 @@ import Adyen
 import Foundation
 import UIKit
 
-internal protocol ComponentContainerRouterDelegate: AnyObject {
+internal protocol ComponentContainerRouterListener: AnyObject {
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
     func didFail(with error: any Error, from component: any PaymentComponent)
     func didCancel(component: any PaymentComponent)
 }
 
-internal protocol ComponentContainerRouterProtocol: AnyObject {
+internal protocol ComponentContainerRouting: AnyObject, PaymentComponentRouting {
     func present(_ viewController: UIViewController, animated: Bool)
-    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
-    func didFail(with error: any Error, from component: any PaymentComponent)
-    func didCancel(component: any PaymentComponent)
 }
 
-internal class ComponentContainerRouter: Router, ComponentContainerRouterProtocol {
+internal class ComponentContainerRouter: Router, ComponentContainerRouting {
 
     // MARK: - Properties
 
     internal let rootViewController: UIViewController
     private let viewModel: RoutableComponentContainerViewModel
-    private weak var delegate: ComponentContainerRouterDelegate?
+    private weak var listener: ComponentContainerRouterListener?
 
     // MARK: - Initializers
 
     internal init(
         viewController: UIViewController,
         viewModel: RoutableComponentContainerViewModel,
-        delegate: ComponentContainerRouterDelegate
+        listener: ComponentContainerRouterListener
     ) {
         self.rootViewController = viewController
         self.viewModel = viewModel
-        self.delegate = delegate
+        self.listener = listener
     }
 
-    // MARK: - ComponentContainerRouterProtocol
+    // MARK: - ComponentContainerRouting
     
     internal func present(_ viewController: UIViewController, animated: Bool) {
         rootViewController.present(viewController, animated: animated)
     }
     
-    internal func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
-        delegate?.didSubmit(data, from: component)
+    internal func submit(_ data: PaymentComponentData, from component: any PaymentComponent) {
+        listener?.didSubmit(data, from: component)
     }
     
-    internal func didFail(with error: any Error, from component: any PaymentComponent) {
-        delegate?.didFail(with: error, from: component)
+    internal func fail(with error: any Error, from component: any PaymentComponent) {
+        listener?.didFail(with: error, from: component)
     }
     
-    internal func didCancel(component: any Adyen.PaymentComponent) {
-        delegate?.didCancel(component: component)
+    internal func cancel(component: any Adyen.PaymentComponent) {
+        listener?.didCancel(component: component)
     }
     
     // MARK: - Router

@@ -704,6 +704,7 @@
 		C9037F122D5A1976003A5154 /* CardScannerOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F112D5A1976003A5154 /* CardScannerOverlayView.swift */; };
 		C9037F142D5A19BD003A5154 /* ROIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F132D5A19BD003A5154 /* ROIView.swift */; };
 		C9037F162D5A1AC0003A5154 /* CardScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F152D5A1AC0003A5154 /* CardScannerViewController.swift */; };
+		C90494542E8FE5D2007C4EB5 /* PaymentComponentRouting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90494532E8FE5D2007C4EB5 /* PaymentComponentRouting.swift */; };
 		C9126051275A3A2800C03DC4 /* BACSItemsFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9126050275A3A2800C03DC4 /* BACSItemsFactoryTests.swift */; };
 		C91BF2582D771667001F19DE /* CardImageParsingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91BF2572D771667001F19DE /* CardImageParsingMock.swift */; };
 		C91BF25A2D7716D4001F19DE /* CaptureSessionManagingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91BF2592D7716D4001F19DE /* CaptureSessionManagingMock.swift */; };
@@ -2218,6 +2219,7 @@
 		C9037F112D5A1976003A5154 /* CardScannerOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerOverlayView.swift; sourceTree = "<group>"; };
 		C9037F132D5A19BD003A5154 /* ROIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ROIView.swift; sourceTree = "<group>"; };
 		C9037F152D5A1AC0003A5154 /* CardScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerViewController.swift; sourceTree = "<group>"; };
+		C90494532E8FE5D2007C4EB5 /* PaymentComponentRouting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentRouting.swift; sourceTree = "<group>"; };
 		C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormViewController+ViewProtocol.swift"; sourceTree = "<group>"; };
 		C90D26B1275900B9001A488F /* BACSInputFormViewProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewProtocolMock.swift; sourceTree = "<group>"; };
 		C90D26B32759048C001A488F /* BACSInputPresenterProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputPresenterProtocolMock.swift; sourceTree = "<group>"; };
@@ -4128,6 +4130,22 @@
 			path = Root;
 			sourceTree = "<group>";
 		};
+		C90494502E8FE5B4007C4EB5 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				C90494522E8FE5CB007C4EB5 /* Protocols */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		C90494522E8FE5CB007C4EB5 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				C90494532E8FE5D2007C4EB5 /* PaymentComponentRouting.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		C90D26AF2757C270001A488F /* BACS Direct Debit */ = {
 			isa = PBXGroup;
 			children = (
@@ -4438,6 +4456,7 @@
 		C9C22D922DE5F9620028C23F /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				C90494502E8FE5B4007C4EB5 /* Common */,
 				C9025A422DF3135700E0D191 /* Root */,
 				C9C22D9B2DE5F9BB0028C23F /* PreApplePay */,
 				C9C22D9E2DE5F9BE0028C23F /* PaymentMethodList */,
@@ -8721,6 +8740,7 @@
 				E7DE050627F7243000CB5F83 /* NavigationDelegate.swift in Sources */,
 				C941A5242DF9CB350014AFF1 /* ComponentContainerViewController.swift in Sources */,
 				E9B36CC522451C7100EAA368 /* ComponentManager.swift in Sources */,
+				C90494542E8FE5D2007C4EB5 /* PaymentComponentRouting.swift in Sources */,
 				C941A51E2DF9C21F0014AFF1 /* PaymentMethodListRouter.swift in Sources */,
 				C941A51C2DF9C0B40014AFF1 /* PreselectedPaymentMethodRouter.swift in Sources */,
 			);

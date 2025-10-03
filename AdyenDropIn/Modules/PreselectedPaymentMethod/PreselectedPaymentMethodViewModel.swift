@@ -21,7 +21,7 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
 
     // MARK: - Properties
 
-    internal weak var router: PreselectedPaymentMethodRouterProtocol?
+    internal weak var router: PreselectedPaymentMethodRouting?
     private let component: PaymentComponent
     private let preselectedPaymentMethodComponent: PreselectedPaymentMethodComponent
 
@@ -52,13 +52,13 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
 
     internal func cancel() {
         stopLoading()
-        router?.didCancelPreselect(component: component)
+        router?.cancel(component: component)
     }
 
     // MARK: - PreselectedPaymentMethodComponentDelegate
 
     internal func didRequestAllPaymentMethods() {
-        router?.showAllPaymentMethods()
+        router?.presentPaymentMethodList()
     }
 
     internal func didProceed(with component: any PaymentComponent) {
@@ -94,7 +94,7 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        router?.didSubmit(data, from: component)
+        router?.submit(data, from: component)
     }
     
     func didFail(
@@ -104,7 +104,7 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         if case ComponentError.cancelled = error {
             cancel()
         } else {
-            router?.didFail(with: error, from: component)
+            router?.fail(with: error, from: component)
         }
     }
 }
@@ -114,6 +114,6 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
 extension PreselectedPaymentMethodViewModel: RoutablePreselectedPaymentMethodViewModel {
     
     internal func stopLoading() {
-        preselectedPaymentMethodComponent.stopLoadingIfNeeded()
+        preselectedPaymentMethodComponent.stopLoading()
     }
 }

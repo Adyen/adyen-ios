@@ -69,7 +69,7 @@ class PaymentMethodListComponentTests: XCTestCase {
         XCTAssertFalse(cell.showsActivityIndicator)
         sut.startLoading(for: self.storedComponent)
         XCTAssertTrue(cell.showsActivityIndicator)
-        sut.stopLoadingIfNeeded()
+        sut.stopLoading()
         XCTAssertFalse(cell.showsActivityIndicator)
     }
     

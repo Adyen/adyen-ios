@@ -848,7 +848,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertNil(data.billingAddress?.country)
             XCTAssertEqual(data.billingAddress?.postalCode, "12345")
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             delegateExpectation.fulfill()
         }
         
@@ -900,7 +900,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertTrue(paymentDetails!.password!.starts(with: "eyJhbGciOiJSU0EtT0FFUC0yNTYiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwidmVyc2lvbiI6IjEifQ"))
             XCTAssertEqual(paymentDetails?.taxNumber, "121212")
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             delegateExpectation.fulfill()
         }
         
@@ -958,7 +958,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertNotNil(paymentDetails)
             XCTAssertEqual(paymentDetails?.socialSecurityNumber, "12312312312")
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             delegateExpectation.fulfill()
         }
 
@@ -2041,7 +2041,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertEqual(data.billingAddress?.city, billingAddressView.item.value?.city)
             XCTAssertEqual(data.billingAddress?.stateOrProvince, billingAddressView.item.value?.stateOrProvince)
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             delegateExpectation.fulfill()
         }
         
@@ -2096,7 +2096,7 @@ class CardComponentTests: XCTestCase {
 
             XCTAssertEqual(data.billingAddress, self.shopperInformation.billingAddress)
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             delegateExpectation.fulfill()
         }
         
@@ -2154,7 +2154,7 @@ class CardComponentTests: XCTestCase {
 
             XCTAssertEqual(data.billingAddress, PostalAddress(postalCode: "123"))
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             delegateExpectation.fulfill()
         }
         
@@ -2212,7 +2212,7 @@ class CardComponentTests: XCTestCase {
 
             XCTAssertNil(data.billingAddress)
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             delegateExpectation.fulfill()
         }
         
@@ -2343,7 +2343,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertTrue(data.paymentMethod is CardDetails)
             XCTAssertNotNil(sut.cardViewController.validAddress)
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             delegateExpectation.fulfill()
         }
 
@@ -2405,7 +2405,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertTrue(data.paymentMethod is CardDetails)
             XCTAssertNotNil(sut.cardViewController.validAddress)
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             delegateExpectation.fulfill()
         }
 
@@ -2466,7 +2466,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertTrue(data.paymentMethod is CardDetails)
             XCTAssertNotNil(sut.cardViewController.validAddress)
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             delegateExpectation.fulfill()
         }
 

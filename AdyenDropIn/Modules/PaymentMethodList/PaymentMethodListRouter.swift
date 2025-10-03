@@ -8,29 +8,25 @@ import Adyen
 import Foundation
 import UIKit
 
-internal protocol PaymentMethodListRouterDelegate: AnyObject {
-    func paymentMethodListDidCancel(completion: (() -> Void)?)
+internal protocol PaymentMethodListRouterListener: AnyObject {
+    func didDismiss(completion: (() -> Void)?)
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
     func didFail(with error: any Error, from component: any PaymentComponent)
     func didCancel(component: any PaymentComponent)
 }
 
-internal protocol PaymentMethodListRouterProtocol: AnyObject {
-    func didCancel(completion: (() -> Void)?)
-    func didSelect(_ component: PresentableComponent)
-    
-    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
-    func didFail(with error: any Error, from component: any PaymentComponent)
-    func didCancel(component: any PaymentComponent)
+internal protocol PaymentMethodListRouting: AnyObject, PaymentComponentRouting {
+    func dismiss(completion: (() -> Void)?)
+    func present(_ component: PresentableComponent)
 }
 
-internal class PaymentMethodListRouter: Router, PaymentMethodListRouterProtocol {
+internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
 
     // MARK: - Properties
 
     private let viewController: UIViewController
     private let viewModel: RoutablePaymentMethodListViewModel
-    private weak var delegate: PaymentMethodListRouterDelegate?
+    private weak var listener: PaymentMethodListRouterListener?
     private let navigationController = UINavigationController()
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
     private var childRouter: Router?
@@ -40,12 +36,12 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouterProtocol 
     internal init(
         viewController: UIViewController,
         viewModel: RoutablePaymentMethodListViewModel,
-        delegate: PaymentMethodListRouterDelegate?,
+        listener: PaymentMethodListRouterListener?,
         componentContainerAssembler: ComponentContainerAssemblerProtocol
     ) {
         self.viewController = viewController
         self.viewModel = viewModel
-        self.delegate = delegate
+        self.listener = listener
         self.componentContainerAssembler = componentContainerAssembler
     }
     
@@ -60,14 +56,14 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouterProtocol 
         viewModel.stopLoading()
     }
 
-    // MARK: - PaymentMethodListRouterProtocol
+    // MARK: - PaymentMethodListRouting
 
-    internal func didCancel(completion: (() -> Void)?) {
-        delegate?.paymentMethodListDidCancel(completion: completion)
+    internal func dismiss(completion: (() -> Void)?) {
+        listener?.didDismiss(completion: completion)
         childRouter = nil
     }
 
-    internal func didSelect(_ component: PresentableComponent) {
+    internal func present(_ component: PresentableComponent) {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: component,
             delegate: self
@@ -83,22 +79,35 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouterProtocol 
             viewController.present(componentContainerViewController, animated: true)
         }
     }
+    
+    internal func submit(_ data: PaymentComponentData, from component: any PaymentComponent) {
+        listener?.didSubmit(data, from: component)
+    }
+    
+    internal func fail(with error: any Error, from component: any PaymentComponent) {
+        listener?.didFail(with: error, from: component)
+    }
+    
+    internal func cancel(component: any PaymentComponent) {
+        viewModel.stopLoading()
+        listener?.didCancel(component: component)
+    }
 }
 
-extension PaymentMethodListRouter: ComponentContainerRouterDelegate {
+// MARK: - ComponentContainerRouterListener
 
-    // MARK: - PaymentComponentDelegate
-
+extension PaymentMethodListRouter: ComponentContainerRouterListener {
+    
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
-        delegate?.didSubmit(data, from: component)
+        listener?.didSubmit(data, from: component)
     }
     
-    func didFail(with error: any Error, from component: any PaymentComponent) {
-        delegate?.didFail(with: error, from: component)
+    func didFail(with error: any Error, from component: any Adyen.PaymentComponent) {
+        listener?.didFail(with: error, from: component)
     }
     
-    func didCancel(component: any PaymentComponent) {
+    func didCancel(component: any Adyen.PaymentComponent) {
         viewModel.stopLoading()
-        delegate?.didCancel(component: component)
+        listener?.didCancel(component: component)
     }
 }

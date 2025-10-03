@@ -79,7 +79,7 @@ final class BLIKComponentUITests: XCTestCase {
             let data = data.paymentMethod as! BLIKDetails
             XCTAssertEqual(data.blikCode, "123456")
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
             

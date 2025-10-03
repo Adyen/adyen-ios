@@ -24,7 +24,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     // MARK: - Properties
 
-    internal weak var router: ComponentContainerRouterProtocol?
+    internal weak var router: ComponentContainerRouting?
     private let component: PresentableComponent
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
@@ -59,7 +59,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         component.cancelIfNeeded()
 
         if let component = (component as? PaymentComponent) {
-            router?.didCancel(component: component)
+            router?.cancel(component: component)
         }
         
         stopLoading()
@@ -80,7 +80,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 extension ComponentContainerViewModel: RoutableComponentContainerViewModel {
     
     func stopLoading() {
-        component.stopLoadingIfNeeded()
+        component.stopLoading()
     }
 }
 
@@ -98,12 +98,12 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
         )
 
         guard updatedData.browserInfo == nil else {
-            router?.didSubmit(updatedData, from: component)
+            router?.submit(updatedData, from: component)
             return
         }
         updatedData.dataByAddingBrowserInfo { [weak self] in
             guard let self else { return }
-            router?.didSubmit($0, from: component)
+            router?.submit($0, from: component)
         }
     }
     
@@ -114,7 +114,7 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
         if case ComponentError.cancelled = error {
             cancel()
         } else {
-            router?.didFail(with: error, from: component)
+            router?.fail(with: error, from: component)
         }
     }
 }

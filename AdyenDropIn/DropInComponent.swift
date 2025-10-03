@@ -33,7 +33,16 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Properties
 
-    private let dropInRouter: DropInRouterProtocol
+    private lazy var router: DropInRouting = {
+        let dropInAssembler = DropInAssembler(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            cardComponentDelegate: cardComponentDelegate,
+            partialPaymentDelegate: partialPaymentDelegate
+        )
+        return dropInAssembler.resolveDropInRouter(listener: self)
+    }()
 
     private lazy var componentManager: ComponentManager = {
         let componentManager = createComponentManager(order: nil)
@@ -79,18 +88,7 @@ public final class DropInComponent: NSObject,
         self.apiClient = APIClient(apiContext: context.apiContext)
             .retryAPIClient(with: scheduler)
             .retryOnErrorAPIClient()
-
-        let dropInAssembler = DropInAssembler(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            cardComponentDelegate: cardComponentDelegate,
-            partialPaymentDelegate: partialPaymentDelegate
-        )
-        self.dropInRouter = dropInAssembler.resolveDropInRootRouter()
         super.init()
-
-        self.dropInRouter.delegate = self
     }
 
     //    /// For testing only
@@ -134,7 +132,7 @@ public final class DropInComponent: NSObject,
     // MARK: - Presentable Component Protocol
 
     public private(set) lazy var viewController: UIViewController = {
-        dropInRouter.rootViewController
+        router.rootViewController
     }()
 
     // MARK: - Handling Actions
@@ -143,7 +141,7 @@ public final class DropInComponent: NSObject,
     ///
     /// - Parameter action: The action to handle.
     public func handle(_ action: Action) {
-        dropInRouter.handle(action: action)
+        router.handle(action: action)
     }
 
     // MARK: - Handling Partial Payments
@@ -277,7 +275,7 @@ public final class DropInComponent: NSObject,
         paymentInProgress = false
         // TODO: - Handle loading logic in its own module
 //        (rootViewController as? ComponentLoader)?.stopLoading()
-        selectedPaymentComponent?.stopLoadingIfNeeded()
+        selectedPaymentComponent?.stopLoading()
     }
 
     private func setNecessaryDelegates(on component: PaymentComponent) {
@@ -366,7 +364,7 @@ extension DropInComponent: InstallmentConfigurationAware {
 
 // ============= PAYMENT METHOD LIST ===============
 
-extension DropInComponent: DropInRouterDelegate {
+extension DropInComponent: DropInRouterListener {
     
     // MARK: - PaymentComponentDelegate
 

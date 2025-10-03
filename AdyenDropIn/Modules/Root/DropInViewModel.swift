@@ -20,7 +20,7 @@ internal class DropInViewModel: DropInViewModelProtocol {
 
     // MARK: - Properties
 
-    internal weak var router: DropInRouterProtocol?
+    internal weak var router: DropInRouting?
     private let componentManager: ComponentManager
     private let apiClient: APIClientProtocol
     private let paymentMethods: PaymentMethods
@@ -83,23 +83,23 @@ internal class DropInViewModel: DropInViewModelProtocol {
 extension DropInViewModel: ActionComponentDelegate {
     
     func didOpenExternalApplication(component: any ActionComponent) {
-        component.stopLoadingIfNeeded()
-        router?.didOpenExternalApplication(component: component)
+        component.stopLoading()
+        router?.openExternalApplication(component: component)
     }
 
     func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
-        router?.didProvide(data, from: component)
+        router?.provide(data, from: component)
     }
     
     func didComplete(from component: any ActionComponent) {
-        router?.didComplete(from: component)
+        router?.complete(from: component)
     }
     
     func didFail(with error: any Error, from component: any ActionComponent) {
         if case ComponentError.cancelled = error {
-            router?.didCancel(with: error, from: component)
+            router?.cancel(with: error, from: component)
         } else {
-            router?.didFail(with: error, from: component)
+            router?.fail(with: error, from: component)
         }
     }
 }

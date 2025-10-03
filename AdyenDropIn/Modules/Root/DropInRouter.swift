@@ -9,7 +9,7 @@ import AdyenNetworking
 import Foundation
 import UIKit
 
-internal protocol DropInRouterDelegate: AnyObject {
+internal protocol DropInRouterListener: AnyObject {
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
     func didFail(with error: any Error, from component: any PaymentComponent)
     func didCancel(component: any PaymentComponent)
@@ -29,31 +29,27 @@ extension Router {
     func stopLoading() { /* Optional implementation */ }
 }
 
-internal protocol DropInRouterProtocol: Router, AnyObject {
-    var delegate: DropInRouterDelegate? { get set }
-    
+internal protocol DropInRouting: Router, AnyObject {
     func handle(action: Action)
     func present(_ viewController: UIViewController, animated: Bool)
     
-    func didOpenExternalApplication(component: any ActionComponent)
-    func didProvide(_ data: ActionComponentData, from component: any ActionComponent)
-    func didComplete(from component: any ActionComponent)
-    func didFail(with error: any Error, from component: any ActionComponent)
-    func didCancel(with error: any Error, from component: any ActionComponent)
+    func openExternalApplication(component: any ActionComponent)
+    func provide(_ data: ActionComponentData, from component: any ActionComponent)
+    func complete(from component: any ActionComponent)
+    func fail(with error: any Error, from component: any ActionComponent)
+    func cancel(with error: any Error, from component: any ActionComponent)
 }
 
-internal class DropInRouter: DropInRouterProtocol {
+internal class DropInRouter: DropInRouting {
     
     // MARK: - Properties
-    
-    internal weak var delegate: DropInRouterDelegate?
     
     internal private(set) lazy var rootViewController: UIViewController = {
         resolveRootView()
     }()
     
     private let viewModel: DropInViewModelProtocol
-    
+    private weak var listener: DropInRouterListener?
     private let preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
@@ -64,17 +60,19 @@ internal class DropInRouter: DropInRouterProtocol {
     
     internal init(
         viewModel: DropInViewModelProtocol,
+        listener: DropInRouterListener,
         preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol,
         paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
         componentContainerAssembler: ComponentContainerAssemblerProtocol
     ) {
         self.viewModel = viewModel
+        self.listener = listener
         self.preselectedPaymentMethodAssembler = preselectedPaymentMethodAssembler
         self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
     }
     
-    // MARK: - DropInRootRouterProtocol
+    // MARK: - DropInRouting
     
     internal func handle(action: Action) {
         viewModel.handle(action: action)
@@ -84,23 +82,23 @@ internal class DropInRouter: DropInRouterProtocol {
         childRouter?.rootViewController.present(viewController, animated: animated)
     }
     
-    internal func didOpenExternalApplication(component: any ActionComponent) {
-        delegate?.didOpenExternalApplication(component: component)
+    internal func openExternalApplication(component: any ActionComponent) {
+        listener?.didOpenExternalApplication(component: component)
     }
     
-    internal func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
-        delegate?.didProvide(data, from: component)
+    internal func provide(_ data: ActionComponentData, from component: any ActionComponent) {
+        listener?.didProvide(data, from: component)
     }
     
-    internal func didComplete(from component: any ActionComponent) {
-        delegate?.didComplete(from: component)
+    internal func complete(from component: any ActionComponent) {
+        listener?.didComplete(from: component)
     }
     
-    internal func didFail(with error: any Error, from component: any ActionComponent) {
-        delegate?.didFail(with: error, from: component)
+    internal func fail(with error: any Error, from component: any ActionComponent) {
+        listener?.didFail(with: error, from: component)
     }
     
-    internal func didCancel(with error: any Error, from component: any ActionComponent) {
+    internal func cancel(with error: any Error, from component: any ActionComponent) {
         stopLoading()
     }
     
@@ -139,40 +137,36 @@ internal class DropInRouter: DropInRouterProtocol {
     }
 }
 
-// MARK: - PreselectedPaymentMethodRouterDelegate
+// MARK: - PreselectedPaymentMethodRouterListener
 
-extension DropInRouter: PreselectedPaymentMethodRouterDelegate {
+extension DropInRouter: PreselectedPaymentMethodRouterListener {
         
-    func showAllPaymentMethods() {
+    func didPresentPaymentMethodList() {
         let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter(delegate: self)
         self.childRouter = paymentMethodListRouter
         rootViewController.present(paymentMethodListRouter.rootViewController, animated: true)
     }
 }
 
-// MARK: - PaymentMethodListRouterDelegate
+// MARK: - PaymentMethodListRouterListener, ComponentContainerRouterListener
 
-extension DropInRouter: PaymentMethodListRouterDelegate {
+extension DropInRouter: PaymentMethodListRouterListener, ComponentContainerRouterListener {
         
-    func paymentMethodListDidCancel(completion: (() -> Void)?) {
+    func didDismiss(completion: (() -> Void)?) {
         // TODO: - Decide wether dismissal this logic belongs to dropIn or merchant's side
         rootViewController.presentingViewController?.dismiss(animated: true)
         childRouter = nil
     }
     
     func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
-        delegate?.didSubmit(data, from: component)
+        listener?.didSubmit(data, from: component)
     }
     
     func didFail(with error: any Error, from component: any PaymentComponent) {
-        delegate?.didFail(with: error, from: component)
+        listener?.didFail(with: error, from: component)
     }
     
     func didCancel(component: any PaymentComponent) {
-        delegate?.didCancel(component: component)
+        listener?.didCancel(component: component)
     }
 }
-
-// MARK: - ComponentContainerRouterDelegate
-
-extension DropInRouter: ComponentContainerRouterDelegate {}

@@ -21,7 +21,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     // MARK: - Properties
 
-    internal weak var router: PaymentMethodListRouterProtocol?
+    internal weak var router: PaymentMethodListRouting?
     private let paymentMethodListComponent: PaymentMethodListComponent
 
     // MARK: - Initializers
@@ -48,7 +48,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     internal func cancel() {
-        router?.didCancel(completion: nil)
+        router?.dismiss(completion: nil)
     }
 
     // MARK: - Private
@@ -76,7 +76,7 @@ extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
         
         switch component {
         case let component as PresentableComponent:
-            router?.didSelect(component)
+            router?.present(component)
         case let component as PaymentInitiable:
             (component as? PaymentComponent)?.delegate = self
             component.initiatePayment()
@@ -108,12 +108,12 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         )
 
         guard updatedData.browserInfo == nil else {
-            router?.didSubmit(updatedData, from: component)
+            router?.submit(updatedData, from: component)
             return
         }
         updatedData.dataByAddingBrowserInfo { [weak self] in
             guard let self else { return }
-            router?.didSubmit($0, from: component)
+            router?.submit($0, from: component)
         }
     }
     
@@ -126,7 +126,7 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         if case ComponentError.cancelled = error {
             cancel()
         } else {
-            router?.didFail(with: error, from: component)
+            router?.fail(with: error, from: component)
         }
     }
 }

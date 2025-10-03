@@ -54,6 +54,6 @@ public final class PresentableComponentWrapper: PresentableComponent,
     }
 
     public func stopLoading() {
-        component.stopLoadingIfNeeded()
+        component.stopLoading()
     }
 }

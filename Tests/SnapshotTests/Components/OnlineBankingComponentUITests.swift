@@ -89,7 +89,7 @@ class OnlineBankingComponentUITests: XCTestCase {
             let details = data.paymentMethod as! OnlineBankingDetails
             XCTAssertEqual(details.type, .onlineBankingCZ)
             XCTAssertEqual(details.issuer, "jp")
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             
             self.verifyViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
             didContinueExpectation.fulfill()
