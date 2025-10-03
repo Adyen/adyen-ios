@@ -11,10 +11,6 @@
 import Foundation
 import UIKit
 
-internal protocol RoutableComponentContainerViewModel {
-    func stopLoading()
-}
-
 internal protocol ComponentContainerViewModelProtocol {
     var componentViewController: UIViewController { get }
     func cancel()
@@ -75,9 +71,9 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     }
 }
 
-// MARK: - RoutableComponentContainerViewModel
+// MARK: - LoadControllable
 
-extension ComponentContainerViewModel: RoutableComponentContainerViewModel {
+extension ComponentContainerViewModel: LoadControllable {
     
     func stopLoading() {
         component.stopLoading()

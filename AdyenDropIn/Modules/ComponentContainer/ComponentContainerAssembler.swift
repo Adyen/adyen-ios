@@ -57,7 +57,7 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
         let viewController = resolveRouterViewController(for: component, viewModel: viewModel)
         let router = ComponentContainerRouter(
             viewController: viewController,
-            viewModel: viewModel,
+            loadable: viewModel,
             listener: delegate
         )
         viewModel.router = router

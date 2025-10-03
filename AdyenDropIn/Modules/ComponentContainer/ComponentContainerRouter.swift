@@ -23,18 +23,18 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouting {
     // MARK: - Properties
 
     internal let rootViewController: UIViewController
-    private let viewModel: RoutableComponentContainerViewModel
+    private let loadable: LoadControllable
     private weak var listener: ComponentContainerRouterListener?
 
     // MARK: - Initializers
 
     internal init(
         viewController: UIViewController,
-        viewModel: RoutableComponentContainerViewModel,
+        loadable: LoadControllable,
         listener: ComponentContainerRouterListener
     ) {
         self.rootViewController = viewController
-        self.viewModel = viewModel
+        self.loadable = loadable
         self.listener = listener
     }
 
@@ -59,6 +59,6 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouting {
     // MARK: - Router
     
     internal func stopLoading() {
-        viewModel.stopLoading()
+        loadable.stopLoading()
     }
 }

@@ -63,7 +63,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
         let view = PreselectedPaymentMethodViewController(viewModel: viewModel)
         let router = PreselectedPaymentMethodRouter(
             viewController: view,
-            viewModel: viewModel,
+            loadable: viewModel,
             listener: delegate,
             componentContainerAssembler: componentContainerAssembler
         )

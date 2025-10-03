@@ -25,7 +25,7 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     // MARK: - Properties
 
     internal let rootViewController: UIViewController
-    private let viewModel: RoutablePreselectedPaymentMethodViewModel
+    private let loadable: LoadControllable
     private weak var listener: PreselectedPaymentMethodRouterListener?
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
     private var componentContainerRouter: Router?
@@ -34,12 +34,12 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     
     internal init(
         viewController: UIViewController,
-        viewModel: RoutablePreselectedPaymentMethodViewModel,
+        loadable: LoadControllable,
         listener: PreselectedPaymentMethodRouterListener?,
         componentContainerAssembler: ComponentContainerAssemblerProtocol
     ) {
         self.rootViewController = viewController
-        self.viewModel = viewModel
+        self.loadable = loadable
         self.listener = listener
         self.componentContainerAssembler = componentContainerAssembler
     }
@@ -75,7 +75,7 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     // MARK: - Router
     
     internal func stopLoading() {
-        viewModel.stopLoading()
+        loadable.stopLoading()
     }
 }
 

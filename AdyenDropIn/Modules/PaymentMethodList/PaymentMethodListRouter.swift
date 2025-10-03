@@ -25,7 +25,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     // MARK: - Properties
 
     private let viewController: UIViewController
-    private let viewModel: RoutablePaymentMethodListViewModel
+    private let loadable: LoadControllable
     private weak var listener: PaymentMethodListRouterListener?
     private let navigationController = UINavigationController()
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
@@ -35,12 +35,12 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
 
     internal init(
         viewController: UIViewController,
-        viewModel: RoutablePaymentMethodListViewModel,
+        loadable: LoadControllable,
         listener: PaymentMethodListRouterListener?,
         componentContainerAssembler: ComponentContainerAssemblerProtocol
     ) {
         self.viewController = viewController
-        self.viewModel = viewModel
+        self.loadable = loadable
         self.listener = listener
         self.componentContainerAssembler = componentContainerAssembler
     }
@@ -53,7 +53,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     }
     
     internal func stopLoading() {
-        viewModel.stopLoading()
+        loadable.stopLoading()
     }
 
     // MARK: - PaymentMethodListRouting
@@ -89,7 +89,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     }
     
     internal func cancel(component: any PaymentComponent) {
-        viewModel.stopLoading()
+        loadable.stopLoading()
         listener?.didCancel(component: component)
     }
 }
@@ -107,7 +107,7 @@ extension PaymentMethodListRouter: ComponentContainerRouterListener {
     }
     
     func didCancel(component: any Adyen.PaymentComponent) {
-        viewModel.stopLoading()
+        loadable.stopLoading()
         listener?.didCancel(component: component)
     }
 }
