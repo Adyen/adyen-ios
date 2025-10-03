@@ -15,6 +15,8 @@ public protocol EventPublisher: AnyObject {
     /// The event handlers that are attached to the publisher.
     var eventHandlers: [EventHandlerToken: EventHandler<Event>] { get set }
     
+    @_spi(AdyenInternal)
+    var eventHandlersLock: NSLock { get }
 }
 
 @_spi(AdyenInternal)
@@ -26,7 +28,9 @@ public extension EventPublisher {
     /// - Returns: A token, used to identify and later remove the event handler.
     func addEventHandler(_ eventHandler: @escaping EventHandler<Event>) -> EventHandlerToken {
         let token = EventHandlerToken()
-        eventHandlers[token] = eventHandler
+        handleWithinLock {
+            eventHandlers[token] = eventHandler
+        }
         
         return token
     }
@@ -35,16 +39,29 @@ public extension EventPublisher {
     ///
     /// - Parameter token: The token associated with the event handler to remove.
     func removeEventHandler(with token: EventHandlerToken) {
-        eventHandlers.removeValue(forKey: token)
+        handleWithinLock {
+            eventHandlers.removeValue(forKey: token)
+        }
     }
     
     /// Publishes an event.
     ///
     /// - Parameter event: The event to publish.
     func publish(_ event: Event) {
-        eventHandlers.forEach { _, eventHandler in
+        let handlers = handleWithinLock {
+            Array(eventHandlers.values)
+        }
+        
+        handlers.forEach { eventHandler in
             eventHandler(event)
         }
+    }
+    
+    @discardableResult
+    private func handleWithinLock<T>(action: () throws -> T) rethrows -> T {
+        defer { eventHandlersLock.unlock() }
+        eventHandlersLock.lock()
+        return try action()
     }
     
 }
