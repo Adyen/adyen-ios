@@ -45,7 +45,7 @@ public final class PresentableComponentWrapper: PresentableComponent,
     }
 
     public func didCancel() {
-        component.cancelIfNeeded()
+        component.cancel()
         stopLoading()
     }
 

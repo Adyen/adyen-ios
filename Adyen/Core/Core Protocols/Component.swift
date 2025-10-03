@@ -26,7 +26,7 @@ extension Component {
     }
 
     /// Called when the user cancels the component.
-    public func cancelIfNeeded() {
+    public func cancel() {
         (self as? Cancellable)?.didCancel()
         stopLoading()
     }

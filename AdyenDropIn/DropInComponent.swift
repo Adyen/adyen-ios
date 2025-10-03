@@ -258,7 +258,7 @@ public final class DropInComponent: NSObject,
     }
 
     internal func userDidCancel(_ component: Component) {
-        component.cancelIfNeeded()
+        component.cancel()
 
         defer {
             // As `stopLoading` sets the paymentInProgress to false

@@ -56,7 +56,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     }
 
     internal func cancel() {
-        component.cancelIfNeeded()
+        component.cancel()
 
         if let component = (component as? PaymentComponent) {
             router?.cancel(component: component)

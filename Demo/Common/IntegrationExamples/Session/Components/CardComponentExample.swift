@@ -163,7 +163,7 @@ private extension CardComponentExample {
     }
     
     @objc private func cancelPressed() {
-        cardComponent?.cancelIfNeeded()
+        cardComponent?.cancel()
         presenter?.dismiss(completion: nil)
     }
 }
