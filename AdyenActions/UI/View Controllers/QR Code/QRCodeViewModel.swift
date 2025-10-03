@@ -7,78 +7,68 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-extension QRCodeView {
+internal protocol QRCodeViewModelDelegate: AnyObject {
+    func saveQRCode(image: UIImage?, sourceView: UIView)
+}
 
-    internal class Model {
-
-        internal enum ActionButton {
-            case copyCode
-            case saveAsImage
+internal class QRCodeViewModel: Localizable {
+    
+    // MARK: - Properties
+        
+    internal let action: QRCodeAction
+    internal let instruction: String
+    internal var payment: Payment?
+    internal let logoUrl: URL
+    internal let observedProgress: Progress?
+    internal let expiration: AdyenObservable<String?>
+    internal let style: QRCodeViewStyle
+    internal let imageLoader: ImageLoading
+    internal var localizationParameters: LocalizationParameters?
+    private weak var delegate: QRCodeViewModelDelegate?
+    
+    internal init(
+        action: QRCodeAction,
+        instruction: String,
+        payment: Payment?,
+        logoUrl: URL,
+        observedProgress: Progress?,
+        expiration: AdyenObservable<String?>,
+        style: QRCodeViewStyle,
+        imageLoader: ImageLoading = ImageLoaderProvider.imageLoader(),
+        localizationParameters: LocalizationParameters?,
+        delegate: QRCodeViewModelDelegate
+    ) {
+        self.action = action
+        self.instruction = instruction
+        self.payment = payment
+        self.logoUrl = logoUrl
+        self.observedProgress = observedProgress
+        self.expiration = expiration
+        self.style = style
+        self.imageLoader = imageLoader
+        self.localizationParameters = localizationParameters
+        self.delegate = delegate
+    }
+    
+    // MARK: - Public
+    
+    internal var flowType: QRCodeFlowType {
+        switch action.paymentMethodType {
+        case .promptPay, .duitNow, .payNow, .upiQRCode:
+            return .saveAsImage
+        case .pix:
+            return .copyCode
         }
-
-        internal let action: QRCodeAction
-        
-        internal var actionButtonType: ActionButton {
-            switch action.paymentMethodType {
-            case .promptPay, .duitNow, .payNow, .upiQRCode:
-                return .saveAsImage
-            case .pix:
-                return .copyCode
-            }
+    }
+    
+    // TODO: - Improve loading
+    internal func loadLogoImage(completion: @escaping (UIImage?) -> (())) {
+        imageLoader.load(url: logoUrl) { image in
+            completion(image)
         }
+    }
 
-        internal let instruction: String
-        
-        internal var payment: Payment?
-        
-        internal let logoUrl: URL
-        
-        internal let observedProgress: Progress?
-        
-        internal let expiration: AdyenObservable<String?>
-        
-        internal let style: Style
-        
-        internal let imageLoader: ImageLoading
-        
-        internal struct Style {
-            
-            internal let copyCodeButton: ButtonStyle
-
-            internal let saveAsImageButton: ButtonStyle
-            
-            internal let instructionLabel: TextStyle
-            
-            internal let amountToPayLabel: TextStyle
-            
-            internal let progressView: ProgressViewStyle
-            
-            internal let expirationLabel: TextStyle
-            
-            internal let logoCornerRounding: CornerRounding
-            
-            internal let backgroundColor: UIColor
-        }
-        
-        internal init(
-            action: QRCodeAction,
-            instruction: String,
-            payment: Payment?,
-            logoUrl: URL,
-            observedProgress: Progress?,
-            expiration: AdyenObservable<String?>,
-            style: QRCodeView.Model.Style,
-            imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
-        ) {
-            self.action = action
-            self.instruction = instruction
-            self.payment = payment
-            self.logoUrl = logoUrl
-            self.observedProgress = observedProgress
-            self.expiration = expiration
-            self.style = style
-            self.imageLoader = imageLoader
-        }
-        
+    internal func saveQRCode(image: UIImage?, sourceView: UIView) {
+        delegate?.saveQRCode(image: image, sourceView: sourceView)
     }
 }

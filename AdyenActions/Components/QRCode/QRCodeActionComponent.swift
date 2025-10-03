@@ -199,9 +199,8 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     }
     
     private func createViewController(with action: QRCodeAction) -> UIViewController {
-        let viewController = QRCodeViewController(viewModel: createViewModel(with: action))
-        viewController.qrCodeView.delegate = self
-        return viewController
+        let viewModel = createViewModel(with: action, delegate: self)
+        return QRCodeViewController(viewModel: viewModel)
     }
 
     private func QRCodeInstruction(with action: QRCodeAction) -> String {
@@ -224,25 +223,28 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
         }
     }
 
-    private func createViewModel(with action: QRCodeAction) -> QRCodeView.Model {
+    private func createViewModel(with action: QRCodeAction, delegate: QRCodeViewModelDelegate) -> QRCodeViewModel {
         let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment)
-        return QRCodeView.Model(
+        let style = QRCodeViewStyle(
+            copyCodeButton: configuration.style.copyCodeButton,
+            saveAsImageButton: configuration.style.saveAsImageButton,
+            instructionLabel: configuration.style.instructionLabel,
+            amountToPayLabel: configuration.style.amountToPayLabel,
+            progressView: configuration.style.progressView,
+            expirationLabel: configuration.style.expirationLabel,
+            logoCornerRounding: configuration.style.logoCornerRounding,
+            backgroundColor: configuration.style.backgroundColor
+        )
+        return QRCodeViewModel(
             action: action,
             instruction: QRCodeInstruction(with: action),
             payment: context.payment,
             logoUrl: url,
             observedProgress: progress,
             expiration: $expirationText,
-            style: QRCodeView.Model.Style(
-                copyCodeButton: configuration.style.copyCodeButton,
-                saveAsImageButton: configuration.style.saveAsImageButton,
-                instructionLabel: configuration.style.instructionLabel,
-                amountToPayLabel: configuration.style.amountToPayLabel,
-                progressView: configuration.style.progressView,
-                expirationLabel: configuration.style.expirationLabel,
-                logoCornerRounding: configuration.style.logoCornerRounding,
-                backgroundColor: configuration.style.backgroundColor
-            )
+            style: style,
+            localizationParameters: configuration.localizationParameters,
+            delegate: delegate
         )
     }
 
@@ -274,13 +276,13 @@ extension QRCodeActionComponent: ActionComponentDelegate {
 }
 
 @_spi(AdyenInternal)
-extension QRCodeActionComponent: QRCodeViewDelegate {
+extension QRCodeActionComponent: QRCodeViewModelDelegate {
+    
+    internal func saveQRCode(image: UIImage?, sourceView: UIView) {
+        presentSharePopover(with: image as Any, sourceView: sourceView)
+    }
     
     internal func copyToPasteboard(with action: QRCodeAction) {
         UIPasteboard.general.string = action.qrCodeData
-    }
-
-    internal func saveAsImage(qrCodeImage: UIImage?, sourceView: UIView) {
-        presentSharePopover(with: qrCodeImage as Any, sourceView: sourceView)
     }
 }
