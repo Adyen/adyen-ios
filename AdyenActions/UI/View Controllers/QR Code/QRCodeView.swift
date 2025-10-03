@@ -81,9 +81,12 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     }()
     
     private lazy var qrCodeImageView: UIImageView = {
-        let qrCodeImage = model.action.qrCodeData.generateQRCode()
+        let size = CGSize(width: Layout.qrCodeImageWidth, height: Layout.qrCodeImageWidth)
+        let qrCodeImage = model.action.qrCodeData.generateQRCode(size: size)
         let qrCodeView = UIImageView(image: qrCodeImage)
         qrCodeView.translatesAutoresizingMaskIntoConstraints = false
+        qrCodeView.contentMode = .scaleAspectFit
+        qrCodeView.clipsToBounds = true
         return qrCodeView
     }()
     
@@ -204,6 +207,7 @@ private extension QRCodeView {
     private enum Layout {
         static let logoSize = CGSize(width: 74.0, height: 48.0)
         static let progressViewSize = CGSize(width: 120, height: 4)
+        static let qrCodeImageWidth: CGFloat = 170
     }
         
     func setupViews() {
@@ -254,7 +258,7 @@ private extension QRCodeView {
             instructionLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.9),
             
             // QR code image view
-            qrCodeImageView.widthAnchor.constraint(equalToConstant: 170),
+            qrCodeImageView.widthAnchor.constraint(equalToConstant: Layout.qrCodeImageWidth),
             qrCodeImageView.heightAnchor.constraint(equalTo: qrCodeImageView.widthAnchor),
             
             // Progress View
