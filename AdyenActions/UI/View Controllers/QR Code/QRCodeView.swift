@@ -10,7 +10,7 @@ import UIKit
 internal protocol QRCodeViewDelegate: AnyObject {
     
     func saveAsImage(qrCodeImage: UIImage?, sourceView: UIView)
-
+    
     func copyToPasteboard(with action: QRCodeAction)
 }
 
@@ -59,7 +59,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-
+    
     internal lazy var logo: UIImageView = {
         let logo = UIImageView()
         logo.adyen.round(using: model.style.logoCornerRounding)
@@ -84,7 +84,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         qrCodeView.translatesAutoresizingMaskIntoConstraints = false
         return qrCodeView
     }()
-
+    
     private lazy var amountToPayLabel: UILabel = {
         let amountToPayLabel = UILabel(style: model.style.amountToPayLabel)
         amountToPayLabel.numberOfLines = 0
@@ -124,12 +124,16 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         return expirationLabel
     }()
     
-    private lazy var actionButton: SubmitButton = {
+    private lazy var actionButton: UIView = {
         switch model.actionButtonType {
         case .copyCode:
-            let button = SubmitButton(style: model.style.copyCodeButton)
-            button.title = localizedString(.pixCopyButton, localizationParameters)
-            button.addTarget(self, action: #selector(copyCode), for: .touchUpInside)
+            let title = localizedString(.pixCopyButton, localizationParameters)
+            let button = CopyButton(
+                title: title,
+                copyTitle: "PIX code copied",
+                value: model.action.qrCodeData,
+                style: model.style.copyCodeButton
+            )
             button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "copyCodeButton")
             button.translatesAutoresizingMaskIntoConstraints = false
             return button
@@ -143,15 +147,37 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         }
     }()
     
+    private lazy var codeTextView: UIView = {
+        let textView = UITextView()
+        textView.text = "This is a very long text that needs truncation \(model.action.qrCodeData)"
+        textView.font = UIFont.systemFont(ofSize: 16)
+        textView.isScrollEnabled = false
+        textView.isEditable = false
+        textView.isSelectable = true
+        textView.backgroundColor = .lightGray
+        textView.layer.cornerRadius = 8
+        textView.textContainer.lineBreakMode = .byTruncatingMiddle
+        textView.textContainer.maximumNumberOfLines = 1
+        textView.textContainerInset = .init(top: 4, left: 4, bottom: 4, right: 4)
+        textView.textContainer.lineFragmentPadding = 0
+//        return textView
+        
+        let copyLabelView = CopyLabelView(
+            text: textView.text,
+            style: .init(font: .systemFont(ofSize: 16), color: .black)
+        )
+        return copyLabelView
+    }()
+    
     // MARK: Action Handling
-
+    
     @objc private func saveQRCodeAsImage() {
         delegate?.saveAsImage(qrCodeImage: qrCodeImageView.adyen.snapshot(), sourceView: actionButton)
     }
-
-    @objc private func copyCode() {
-        delegate?.copyToPasteboard(with: model.action)
-    }
+    
+//    @objc private func copyCode() {
+//        delegate?.copyToPasteboard(with: model.action)
+//    }
     
     // MARK: UI Handling
     
@@ -192,6 +218,7 @@ private extension QRCodeView {
         stackView.addArrangedSubview(amountToPayLabel)
         stackView.addArrangedSubview(progressView)
         stackView.addArrangedSubview(expirationLabel)
+        stackView.addArrangedSubview(codeTextView)
         
         let logoSize = CGSize(width: 74.0, height: 48.0)
         let progressViewSize = CGSize(width: 120, height: 4)
