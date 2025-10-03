@@ -15,6 +15,8 @@ internal protocol QRCodeViewDelegate: AnyObject {
 }
 
 internal final class QRCodeView: UIView, Localizable, AdyenObserver {
+        
+    // MARK: - Properties
     
     private let model: Model
     
@@ -34,7 +36,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         backgroundColor = model.style.backgroundColor
         accessibilityIdentifier = "adyen.QRCode"
         
-        setupUI()
+        setupViews()
     }
     
     @available(*, unavailable)
@@ -42,15 +44,15 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Views
+    // MARK: UI elements
     
-    private lazy var scrollView: UIScrollView = {
+    private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
     
-    private lazy var stackView: UIStackView = {
+    private let contentView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.distribution = .fill
@@ -79,8 +81,8 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     }()
     
     private lazy var qrCodeImageView: UIImageView = {
-        let qrCode = model.action.qrCodeData.generateQRCode()
-        let qrCodeView = UIImageView(image: qrCode)
+        let qrCodeImage = model.action.qrCodeData.generateQRCode()
+        let qrCodeView = UIImageView(image: qrCodeImage)
         qrCodeView.translatesAutoresizingMaskIntoConstraints = false
         return qrCodeView
     }()
@@ -160,7 +162,7 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         textView.textContainer.maximumNumberOfLines = 1
         textView.textContainerInset = .init(top: 4, left: 4, bottom: 4, right: 4)
         textView.textContainer.lineFragmentPadding = 0
-//        return textView
+        //        return textView
         
         let copyLabelView = CopyLabelView(
             text: textView.text,
@@ -175,9 +177,9 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
         delegate?.saveAsImage(qrCodeImage: qrCodeImageView.adyen.snapshot(), sourceView: actionButton)
     }
     
-//    @objc private func copyCode() {
-//        delegate?.copyToPasteboard(with: model.action)
-//    }
+    //    @objc private func copyCode() {
+    //        delegate?.copyToPasteboard(with: model.action)
+    //    }
     
     // MARK: UI Handling
     
@@ -195,55 +197,70 @@ internal final class QRCodeView: UIView, Localizable, AdyenObserver {
     }
 }
 
-// MARK: - Setup
+// MARK: - Private
 
 private extension QRCodeView {
     
-    func setupUI() {
-        let wrapperStackView = UIStackView()
-        wrapperStackView.axis = .vertical
-        wrapperStackView.addArrangedSubview(scrollView)
-        wrapperStackView.addArrangedSubview(actionButton)
-        addSubview(wrapperStackView)
-        wrapperStackView.adyen.anchor(
-            inside: self.safeAreaLayoutGuide,
-            with: .init(top: 0, left: 0, bottom: -8, right: 0)
-        )
+    private enum Layout {
+        static let logoSize = CGSize(width: 74.0, height: 48.0)
+        static let progressViewSize = CGSize(width: 120, height: 4)
+    }
         
-        scrollView.addSubview(stackView)
+    func setupViews() {
+        addSubview(scrollView)
         
-        stackView.addArrangedSubview(logo)
-        stackView.addArrangedSubview(instructionLabel)
-        stackView.addArrangedSubview(qrCodeImageView)
-        stackView.addArrangedSubview(amountToPayLabel)
-        stackView.addArrangedSubview(progressView)
-        stackView.addArrangedSubview(expirationLabel)
-        stackView.addArrangedSubview(codeTextView)
+        contentView.addArrangedSubview(logo)
+        contentView.addArrangedSubview(instructionLabel)
+        contentView.addArrangedSubview(qrCodeImageView)
+        contentView.addArrangedSubview(amountToPayLabel)
+        contentView.addArrangedSubview(progressView)
+        contentView.addArrangedSubview(expirationLabel)
+        contentView.addArrangedSubview(codeTextView)
         
-        let logoSize = CGSize(width: 74.0, height: 48.0)
-        let progressViewSize = CGSize(width: 120, height: 4)
+        scrollView.addSubview(contentView)
+        scrollView.addSubview(actionButton)
         
+        setupLayout()
+    }
+    
+    func setupLayout() {
         NSLayoutConstraint.activate([
-            // Action Button
+            // ScrollView edges
+            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            
+            // ContentView inside scrollView
+            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+            
+            // Action button pinned to safe area
             actionButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
             actionButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            actionButton.heightAnchor.constraint(equalToConstant: 50.0),
-            // Stack View
-            stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -16),
+            actionButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            actionButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
+        NSLayoutConstraint.activate([
             // Logo
-            logo.widthAnchor.constraint(equalToConstant: logoSize.width),
-            logo.heightAnchor.constraint(equalToConstant: logoSize.height),
-            // Instruction Label
-            instructionLabel.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 0.9),
-            // QR Code
+            logo.widthAnchor.constraint(equalToConstant: Layout.logoSize.width),
+            logo.heightAnchor.constraint(equalToConstant: Layout.logoSize.height),
+            
+            // Instruction label
+            instructionLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.9),
+            
+            // QR code image view
             qrCodeImageView.widthAnchor.constraint(equalToConstant: 170),
             qrCodeImageView.heightAnchor.constraint(equalTo: qrCodeImageView.widthAnchor),
+            
             // Progress View
-            progressView.widthAnchor.constraint(equalToConstant: progressViewSize.width),
-            progressView.heightAnchor.constraint(equalToConstant: progressViewSize.height)
+            progressView.widthAnchor.constraint(equalToConstant: Layout.progressViewSize.width),
+            progressView.heightAnchor.constraint(equalToConstant: Layout.progressViewSize.height)
         ])
+        
     }
 }
