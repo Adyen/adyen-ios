@@ -13,7 +13,7 @@ internal class ObservationManager {
     private let lock = NSLock()
     
     deinit {
-        let observationsToRemove = handleWithinLock {
+        let observationsToRemove = lock.withLock {
             let copy = observations
             observations = []
             return copy
@@ -33,7 +33,7 @@ internal class ObservationManager {
             eventPublisher?.removeEventHandler(with: eventHandlerToken)
         })
         
-        handleWithinLock {
+        lock.withLock {
             observations.append(observation)
         }
         
@@ -41,18 +41,11 @@ internal class ObservationManager {
     }
     
     internal func remove(_ observation: Observation) {
-        handleWithinLock {
+        lock.withLock {
             observations.removeAll { element in
                 element == observation
             }
         }
         observation.unobserveHandler()
-    }
-    
-    @discardableResult
-    private func handleWithinLock<T>(action: () -> T) -> T {
-        defer { lock.unlock() }
-        lock.lock()
-        return action()
     }
 }

@@ -28,7 +28,7 @@ public extension EventPublisher {
     /// - Returns: A token, used to identify and later remove the event handler.
     func addEventHandler(_ eventHandler: @escaping EventHandler<Event>) -> EventHandlerToken {
         let token = EventHandlerToken()
-        handleWithinLock {
+        eventHandlersLock.withLock {
             eventHandlers[token] = eventHandler
         }
         
@@ -39,7 +39,7 @@ public extension EventPublisher {
     ///
     /// - Parameter token: The token associated with the event handler to remove.
     func removeEventHandler(with token: EventHandlerToken) {
-        handleWithinLock {
+        _ = eventHandlersLock.withLock {
             eventHandlers.removeValue(forKey: token)
         }
     }
@@ -48,7 +48,7 @@ public extension EventPublisher {
     ///
     /// - Parameter event: The event to publish.
     func publish(_ event: Event) {
-        let handlers = handleWithinLock {
+        let handlers = eventHandlersLock.withLock {
             Array(eventHandlers.values)
         }
         
@@ -57,13 +57,8 @@ public extension EventPublisher {
         }
     }
     
-    @discardableResult
-    private func handleWithinLock<T>(action: () -> T) -> T {
-        defer { eventHandlersLock.unlock() }
-        eventHandlersLock.lock()
-        return action()
-    }
-    
+    // default extension to satisfy lib evolution
+    var eventHandlersLock: NSLock { NSLock() }
 }
 
 /// Alias for a closure that handles an event.
