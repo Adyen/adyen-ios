@@ -24,17 +24,17 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
             _ = observable.addEventHandler { _ in }
         }
         
-        // If we got here without crashing, locks are working
-        // Verify dictionary is in valid state by triggering all handlers
-        var callCount = 0
+        // If we got here without crashing, the dictionary wasn't corrupted
+        // Now verify the dictionary is in a valid state by adding and triggering a new handler
+        var newHandlerCalled = false
         _ = observable.addEventHandler { _ in
-            callCount += 1
+            newHandlerCalled = true
         }
         
         observable.wrappedValue = "trigger"
         
-        // Should have called the new handler plus all the concurrent ones
-        XCTAssertGreaterThan(callCount, 0)
+        // The new handler should have been called, proving dictionary is functional
+        XCTAssertTrue(newHandlerCalled, "Dictionary should be in valid state after concurrent additions")
     }
     
     func testConcurrentHandlerRemovalDoesNotCorruptDictionary() {
@@ -53,11 +53,11 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
             observable.removeEventHandler(with: tokens[index])
         }
         
-        // Dictionary should be empty or nearly empty
+        // If we got here without crashing, the dictionary wasn't corrupted
+        // Verify it's still functional by publishing
         observable.wrappedValue = "test"
         
-        // If we got here without crashing, locks are working
-        XCTAssertTrue(true)
+        XCTAssertTrue(true, "Dictionary survived concurrent removals without corruption")
     }
     
     func testConcurrentAddAndRemoveDoesNotCrash() {
@@ -66,7 +66,7 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
         let expectation = expectation(description: "All operations complete")
         expectation.expectedFulfillmentCount = iterations * 2
         
-        // Simultaneously add and remove handlers
+        // Simultaneously add and remove handlers from different threads
         DispatchQueue.concurrentPerform(iterations: iterations) { _ in
             let token = observable.addEventHandler { _ in }
             expectation.fulfill()
@@ -80,8 +80,9 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
         wait(for: [expectation], timeout: 10.0)
         
         // If we got here, the locks prevented dictionary corruption
+        // Verify observable still works
         observable.wrappedValue = 999
-        XCTAssertEqual(observable.wrappedValue, 999)
+        XCTAssertEqual(observable.wrappedValue, 999, "Observable should still be functional")
     }
     
     func testConcurrentPublishDoesNotCrashDuringIteration() {
@@ -90,19 +91,18 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
         // Add handlers that take time to execute
         for _ in 0..<50 {
             _ = observable.addEventHandler { _ in
-                // Simulate work
-                usleep(100) // 0.1ms
+                usleep(100) // 0.1ms - simulate work
             }
         }
         
         // Publish from multiple threads simultaneously
-        // Without locks, this would crash when iterating eventHandlers
+        // Without locks, this would crash when iterating eventHandlers while they're being modified
         DispatchQueue.concurrentPerform(iterations: 100) { index in
             observable.wrappedValue = index
         }
         
         // If we got here without crashing, the lock protected the iteration
-        XCTAssertTrue(true)
+        XCTAssertTrue(true, "Concurrent publishing didn't crash during handler iteration")
     }
     
     func testConcurrentPublishAndModifyHandlers() {
@@ -148,9 +148,9 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
         // Wait for all operations to complete
         Thread.sleep(forTimeInterval: duration + 0.5)
         
-        // If we got here without crashing, locks are working correctly
+        // If we got here without crashing, locks prevented race conditions
         observable.wrappedValue = 999
-        XCTAssertEqual(observable.wrappedValue, 999)
+        XCTAssertEqual(observable.wrappedValue, 999, "Observable survived extreme concurrent access")
     }
     
     // MARK: - Observer Manager Thread Safety Tests
@@ -159,16 +159,16 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
         let observable = AdyenObservable("test")
         let iterations = 1000
         
-        // Concurrently add observations - would crash without proper locking
+        // Concurrently add observations - would crash without proper locking in ObservationManager
         DispatchQueue.concurrentPerform(iterations: iterations) { _ in
             _ = observe(observable) { _ in }
         }
         
-        // Trigger all observations
+        // If we got here without crashing, ObservationManager's array wasn't corrupted
+        // Trigger all observations to verify they're functional
         observable.wrappedValue = "trigger"
         
-        // If we got here without crashing, the ObservationManager's lock is working
-        XCTAssertTrue(true)
+        XCTAssertTrue(true, "ObservationManager survived concurrent observation additions")
     }
     
     func testConcurrentObservationRemovalDoesNotCorruptArray() {
@@ -180,14 +180,79 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
             observations.append(observe(observable) { _ in })
         }
         
-        // Concurrently remove observations - would crash without proper locking
+        // Concurrently remove observations - would crash without proper locking in ObservationManager
         DispatchQueue.concurrentPerform(iterations: iterations) { index in
             remove(observations[index])
         }
         
-        // If we got here without crashing, the ObservationManager's lock is working
+        // If we got here without crashing, ObservationManager's array wasn't corrupted
         observable.wrappedValue = "test"
-        XCTAssertTrue(true)
+        XCTAssertTrue(true, "ObservationManager survived concurrent observation removals")
+    }
+    
+    func testObservationManagerDeinitCleansUpObservations() {
+        let observable = AdyenObservable(0)
+        var handlerCallCount = 0
+        
+        // Create observer in autoreleasepool so it gets deallocated
+        autoreleasepool {
+            let observer = TestObserver()
+            
+            // Add multiple observations
+            for _ in 0..<10 {
+                observer.observe(observable) { _ in
+                    handlerCallCount += 1
+                }
+            }
+            
+            // Trigger handlers - should be called
+            observable.wrappedValue = 1
+            XCTAssertEqual(handlerCallCount, 10, "All handlers should be called before observer deallocation")
+            
+            handlerCallCount = 0
+            
+            // Observer will be deallocated here, triggering ObservationManager.deinit
+        }
+        
+        // After observer deallocation, handlers should be removed
+        observable.wrappedValue = 2
+        
+        XCTAssertEqual(handlerCallCount, 0, "Handlers should be removed after observer deallocation")
+    }
+    
+    func testObservationManagerDeinitDuringConcurrentPublish() {
+        let observable = AdyenObservable(0)
+        
+        autoreleasepool {
+            let observer = TestObserver()
+            
+            // Add observations
+            for _ in 0..<20 {
+                observer.observe(observable) { _ in
+                    usleep(1000) // Slow handler
+                }
+            }
+            
+            // Start publishing on background thread
+            DispatchQueue.global().async {
+                for i in 0..<100 {
+                    observable.wrappedValue = i
+                    usleep(500)
+                }
+            }
+            
+            // Let some publishes happen
+            usleep(10000) // 10ms
+            
+            // Observer deallocates while publishing is happening
+            // ObservationManager.deinit should safely clean up
+        }
+        
+        Thread.sleep(forTimeInterval: 0.5)
+        
+        // Should not crash when observer is deallocated during concurrent publishing
+        observable.wrappedValue = 999
+        XCTAssertEqual(observable.wrappedValue, 999, "Observable should work after observer cleanup during concurrent access")
     }
     
     func testConcurrentObserveAndRemove() {
@@ -195,6 +260,7 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
         let duration: TimeInterval = 2.0
         let startTime = Date()
         
+        // Note: observationCounter is accessed from single thread only, no lock needed
         var observationCounter = 0
         
         // Thread 1: Continuously add observations
@@ -220,8 +286,8 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
         
         Thread.sleep(forTimeInterval: duration + 0.5)
         
-        // If we got here without crashing, locks are working
-        XCTAssertGreaterThan(observationCounter, 0)
+        // If we got here without crashing, locks prevented race conditions
+        XCTAssertGreaterThan(observationCounter, 0, "Should have added observations during test")
     }
     
     // MARK: - Race Condition Detection Tests
@@ -230,10 +296,10 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
         let observable = AdyenObservable(0)
         let handlerCount = 100
         
-        // Use atomic counter (OSAtomic is deprecated, use class with lock)
+        // Use atomic counter to track handler calls safely
         let counter = AtomicCounter()
         
-        // Add handlers while publishing
+        // Thread 1: Add handlers while publishing is happening
         DispatchQueue.global().async {
             for _ in 0..<handlerCount {
                 _ = observable.addEventHandler { _ in
@@ -243,7 +309,7 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
             }
         }
         
-        // Publish multiple times
+        // Thread 2: Publish multiple times while handlers are being added
         DispatchQueue.global().async {
             for i in 0..<50 {
                 observable.wrappedValue = i
@@ -253,18 +319,18 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
         
         Thread.sleep(forTimeInterval: 2.0)
         
-        // Final publish to trigger all handlers
+        // Final publish to trigger all handlers that were successfully added
         observable.wrappedValue = 999
         Thread.sleep(forTimeInterval: 0.1)
         
-        // Should have received calls (exact count depends on timing)
-        XCTAssertGreaterThan(counter.value, 0)
+        // Should have received calls (exact count depends on timing of when handlers were added)
+        XCTAssertGreaterThan(counter.value, 0, "Handlers added during publishing should still be called")
     }
     
     func testRemovingHandlerDuringPublishDoesNotCrash() {
         let observable = AdyenObservable(0)
         
-        // Add handlers with slow execution
+        // Add handlers with slow execution to increase chance of concurrent access
         var tokens = [EventHandlerToken]()
         for _ in 0..<50 {
             let token = observable.addEventHandler { _ in
@@ -273,7 +339,7 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
             tokens.append(token)
         }
         
-        // Start publishing
+        // Thread 1: Start publishing
         DispatchQueue.global().async {
             for i in 0..<100 {
                 observable.wrappedValue = i
@@ -281,7 +347,7 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
             }
         }
         
-        // Remove handlers while publishing
+        // Thread 2: Remove handlers while publishing is iterating over them
         DispatchQueue.global().async {
             usleep(5000) // Wait a bit for publishing to start
             for token in tokens {
@@ -293,7 +359,7 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
         Thread.sleep(forTimeInterval: 2.0)
         
         // If we got here, the lock prevented crashes during concurrent iteration/modification
-        XCTAssertTrue(true)
+        XCTAssertTrue(true, "Removing handlers during publish didn't cause iterator invalidation")
     }
     
     // MARK: - Memory Safety Tests
@@ -309,7 +375,7 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
             }
         }
         
-        // Start concurrent operations
+        // Start concurrent operations that will continue briefly after deallocation
         DispatchQueue.global().async {
             for i in 0..<50 {
                 observable?.wrappedValue = i
@@ -317,14 +383,14 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
             }
         }
         
-        // Deallocate while operations are happening
-        usleep(10000) // 10ms
+        // Deallocate observable while operations are happening
+        usleep(10000) // 10ms - let some operations start
         observable = nil
         
         Thread.sleep(forTimeInterval: 0.5)
         
-        // Observable should be deallocated
-        XCTAssertNil(weakObservable)
+        // Observable should be deallocated without crashing
+        XCTAssertNil(weakObservable, "Observable should be deallocated")
     }
     
     func testObserverDeallocationDuringConcurrentPublish() {
@@ -346,15 +412,15 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
                 }
             }
             
-            // Observer deallocates while publishing
-            usleep(10000)
+            // Observer deallocates while publishing is happening
+            usleep(10000) // 10ms
         }
         
         Thread.sleep(forTimeInterval: 0.5)
         
-        // Should not crash
+        // Should not crash when observer is deallocated during publishing
         observable.wrappedValue = 999
-        XCTAssertEqual(observable.wrappedValue, 999)
+        XCTAssertEqual(observable.wrappedValue, 999, "Observable should work after observer deallocation")
     }
     
     // MARK: - Stress Tests
@@ -367,7 +433,7 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
         // Multiple threads doing different operations simultaneously
         let group = DispatchGroup()
         
-        // Thread 1-3: Publishing
+        // Threads 1-3: Publishing
         for _ in 0..<3 {
             group.enter()
             DispatchQueue.global().async {
@@ -381,7 +447,7 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
             }
         }
         
-        // Thread 4-5: Adding handlers
+        // Threads 4-5: Adding handlers
         for _ in 0..<2 {
             group.enter()
             DispatchQueue.global().async {
@@ -409,7 +475,7 @@ class ObservableThreadSafetyTests: XCTestCase, AdyenObserver {
         
         // If we survived this chaos, locks are working correctly
         observable.wrappedValue = 999
-        XCTAssertEqual(observable.wrappedValue, 999)
+        XCTAssertEqual(observable.wrappedValue, 999, "Observable survived extreme concurrent stress test")
     }
     
     // MARK: - Helper Classes
