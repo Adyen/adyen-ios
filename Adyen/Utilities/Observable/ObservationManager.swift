@@ -9,8 +9,17 @@ import Foundation
 /// Manages all the observations of an observer.
 internal class ObservationManager {
     
+    private var observations = [Observation]()
+    private let lock = NSLock()
+    
     deinit {
-        observations.forEach {
+        let observationsToRemove = lock.withLock {
+            let copy = observations
+            observations = []
+            return copy
+        }
+        
+        observationsToRemove.forEach {
             $0.unobserveHandler()
         }
     }
@@ -23,21 +32,20 @@ internal class ObservationManager {
         let observation = Observation(unobserveHandler: { [weak eventPublisher] in
             eventPublisher?.removeEventHandler(with: eventHandlerToken)
         })
-        observations.append(observation)
+        
+        lock.withLock {
+            observations.append(observation)
+        }
         
         return observation
     }
     
     internal func remove(_ observation: Observation) {
-        guard let index = observations.firstIndex(of: observation) else {
-            return
+        lock.withLock {
+            observations.removeAll { element in
+                element == observation
+            }
         }
-        
-        observations.remove(at: index)
-        
         observation.unobserveHandler()
     }
-    
-    private var observations = [Observation]()
-    
 }

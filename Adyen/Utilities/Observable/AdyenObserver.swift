@@ -40,7 +40,8 @@ public extension AdyenObserver {
         // Set the initial value.
         target[keyPath: keyPath] = observable.wrappedValue
         
-        return observe(observable, eventHandler: { [unowned target] newValue in
+        return observe(observable, eventHandler: { [weak target] newValue in
+            guard let target else { return }
             target[keyPath: keyPath] = newValue
         })
     }
@@ -62,7 +63,8 @@ public extension AdyenObserver {
         // Set the initial value.
         target[keyPath: keyPath] = observable.wrappedValue
 
-        return observe(observable, eventHandler: { [unowned target] newValue in
+        return observe(observable, eventHandler: { [weak target] newValue in
+            guard let target else { return }
             target[keyPath: keyPath] = newValue
         })
     }
@@ -86,7 +88,8 @@ public extension AdyenObserver {
         // Set the initial value.
         target[keyPath: keyPath] = transformation(observable.wrappedValue)
 
-        return observe(observable, eventHandler: { [unowned target] newValue in
+        return observe(observable, eventHandler: { [weak target] newValue in
+            guard let target else { return }
             target[keyPath: keyPath] = transformation(newValue)
         })
     }
@@ -110,7 +113,8 @@ public extension AdyenObserver {
         // Set the initial value.
         target[keyPath: keyPath] = observable.wrappedValue[keyPath: originKeyPath]
 
-        return observe(observable, eventHandler: { [unowned target] newValue in
+        return observe(observable, eventHandler: { [weak target] newValue in
+            guard let target else { return }
             target[keyPath: keyPath] = newValue[keyPath: originKeyPath]
         })
     }
@@ -134,7 +138,8 @@ public extension AdyenObserver {
         // Set the initial value.
         target[keyPath: keyPath] = observable.wrappedValue[keyPath: originKeyPath]
 
-        return observe(observable, eventHandler: { [unowned target] newValue in
+        return observe(observable, eventHandler: { [weak target] newValue in
+            guard let target else { return }
             target[keyPath: keyPath] = newValue[keyPath: originKeyPath]
         })
     }
