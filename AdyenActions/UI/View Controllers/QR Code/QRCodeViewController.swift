@@ -16,7 +16,7 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
         static let progressViewSize = CGSize(width: 120, height: 4)
         static let qrCodeImageWidth: CGFloat = 170
     }
-        
+    
     // MARK: - View elements
     
     private let scrollView: UIScrollView = {
@@ -25,23 +25,21 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
         return scrollView
     }()
     
-    private let contentView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.alignment = .center
-        stackView.spacing = 20
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
+    private let contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        return view
     }()
     
     internal lazy var logoImageView: UIImageView = {
-        let logo = UIImageView()
-        logo.adyen.round(using: style.logoCornerRounding)
-        logo.clipsToBounds = true
-        logo.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "logo")
-        logo.translatesAutoresizingMaskIntoConstraints = false
-        return logo
+        let imageView = UIImageView()
+        imageView.adyen.round(using: style.logoCornerRounding)
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
+        imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "logo")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
     
     private lazy var instructionLabel: UILabel = {
@@ -125,7 +123,8 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
         }
     }()
     
-    private lazy var codeTextView: UIView = {
+    private lazy var codeTextView: UIView? = {
+        guard case .copyCode = viewModel.flowType else { return nil }
         let textView = UITextView()
         textView.text = "This is a very long text that needs truncation \(viewModel.action.qrCodeData)"
         textView.font = UIFont.systemFont(ofSize: 16)
@@ -147,10 +146,28 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
         return copyLabelView
     }()
     
+    private let actionContentView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 20
+        stackView.distribution = .fillProportionally
+        return stackView
+    }()
+    
+    private let qrCodeContentView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 20
+        stackView.alignment = .center
+        return stackView
+    }()
+    
     // MARK: - Properties
     
     private let viewModel: QRCodeViewModel
-        
+    
     // MARK: - Initializers
     
     internal init(viewModel: QRCodeViewModel) {
@@ -207,61 +224,94 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
     private var localizationParameters: LocalizationParameters? {
         viewModel.localizationParameters
     }
-     
+    
     private func addSubviews() {
         view.addSubview(scrollView)
-        
-        contentView.addArrangedSubview(logoImageView)
-        contentView.addArrangedSubview(instructionLabel)
-        contentView.addArrangedSubview(qrCodeImageView)
-        contentView.addArrangedSubview(amountToPayLabel)
-        contentView.addArrangedSubview(progressView)
-        contentView.addArrangedSubview(expirationLabel)
-        contentView.addArrangedSubview(codeTextView)
-        
         scrollView.addSubview(contentView)
-        scrollView.addSubview(actionButton)
         
+        [
+            qrCodeImageView,
+            amountToPayLabel,
+            progressView,
+            expirationLabel
+        ].forEach(qrCodeContentView.addArrangedSubview)
+        
+        [
+            codeTextView,
+            actionButton
+        ]
+        .compactMap { $0 }
+        .forEach(actionContentView.addArrangedSubview)
+        
+        [
+            logoImageView,
+            instructionLabel,
+            qrCodeContentView,
+            actionContentView
+        ]
+        .forEach(contentView.addSubview)
+        
+        setupQRCodeContentLayout()
         setupLayout()
+    }
+    
+    private func setupQRCodeContentLayout() {
+        NSLayoutConstraint.activate([
+            // QRCode Image View
+            qrCodeImageView.widthAnchor.constraint(equalToConstant: Layout.qrCodeImageWidth),
+            qrCodeImageView.heightAnchor.constraint(equalTo: qrCodeImageView.widthAnchor),
+            
+            // Progress View
+            progressView.topAnchor.constraint(equalTo: amountToPayLabel.bottomAnchor, constant: 20),
+            progressView.centerXAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.centerXAnchor),
+            progressView.widthAnchor.constraint(equalToConstant: Layout.progressViewSize.width),
+            progressView.heightAnchor.constraint(equalToConstant: Layout.progressViewSize.height),
+            
+            // Expiration label
+            expirationLabel.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 12)
+        ])
     }
     
     private func setupLayout() {
         NSLayoutConstraint.activate([
-            // ScrollView edges
+            // Scroll View
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
-            // ContentView inside scrollView
+            // Content View
             contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+            contentView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.frameLayoutGuide.heightAnchor),
             
-            // Action button pinned to safe area
-            actionButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            actionButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            actionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-            actionButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
-        
-        NSLayoutConstraint.activate([
-            // Logo
+            // Logo Image View
+            logoImageView.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor, constant: 8),
+            logoImageView.centerXAnchor.constraint(equalTo: contentView.layoutMarginsGuide.centerXAnchor),
             logoImageView.widthAnchor.constraint(equalToConstant: Layout.logoSize.width),
             logoImageView.heightAnchor.constraint(equalToConstant: Layout.logoSize.height),
             
-            // Instruction label
-            instructionLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.9),
+            // Instruction Label
+            instructionLabel.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 28),
+            instructionLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            instructionLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
             
-            // QR code image view
-            qrCodeImageView.widthAnchor.constraint(equalToConstant: Layout.qrCodeImageWidth),
-            qrCodeImageView.heightAnchor.constraint(equalTo: qrCodeImageView.widthAnchor),
+            // QR Code Content View
+            qrCodeContentView.topAnchor.constraint(greaterThanOrEqualTo: instructionLabel.bottomAnchor, constant: 20),
+            qrCodeContentView.centerXAnchor.constraint(equalTo: contentView.layoutMarginsGuide.centerXAnchor),
+            qrCodeContentView.centerYAnchor.constraint(equalTo: contentView.layoutMarginsGuide.centerYAnchor),
             
-            // Progress View
-            progressView.widthAnchor.constraint(equalToConstant: Layout.progressViewSize.width),
-            progressView.heightAnchor.constraint(equalToConstant: Layout.progressViewSize.height)
+            // Action Content View
+            actionContentView.topAnchor.constraint(greaterThanOrEqualTo: qrCodeContentView.bottomAnchor, constant: 20),
+            actionContentView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            actionContentView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+            actionContentView.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
+            
+            // Button height
+            actionButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
     

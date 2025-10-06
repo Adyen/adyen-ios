@@ -71,4 +71,6 @@ internal class QRCodeViewModel: Localizable {
     internal func saveQRCode(image: UIImage?, sourceView: UIView) {
         delegate?.saveQRCode(image: image, sourceView: sourceView)
     }
+    
+    // MARK: - Content
 }

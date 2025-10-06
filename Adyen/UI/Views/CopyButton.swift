@@ -55,7 +55,6 @@ public class CopyButton: UIButton {
         let originalTitle = title(for: .normal)
         
         UIView.transition(with: self, duration: 0.25, options: .transitionCrossDissolve, animations: {
-            self.backgroundColor = UIColor.Adyen.green40
             self.setTitle(self.copyTitle, for: .normal)
         })
         
