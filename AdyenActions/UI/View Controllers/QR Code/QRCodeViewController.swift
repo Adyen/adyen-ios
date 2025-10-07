@@ -93,14 +93,19 @@ internal final class QRCodeViewController: UIViewController {
         }
     }()
     
-    private lazy var codeTextView: UIView? = {
+    private lazy var copyCodeLabel: CopyLabelView? = {
         guard case .copyCode = viewModel.flowType else { return nil }
         
-        let textStyle = TextStyle(font: .systemFont(ofSize: 20, weight: .semibold), color: .black)
+        let textStyle = TextStyle(
+            font: .systemFont(ofSize: 20, weight: .semibold),
+            color: UIColor.Adyen.componentLabel
+        )
         let copyLabelView = CopyLabelView(
             text: viewModel.qrCodeData,
             style: textStyle
         )
+        copyLabelView.adyen.round(using: style.logoCornerRounding)
+        
         return copyLabelView
     }()
     
@@ -153,14 +158,14 @@ internal final class QRCodeViewController: UIViewController {
         let image = qrCodeView.imageView.adyen.snapshot()
         viewModel.saveQRCode(image: image, sourceView: view)
     }
+        
+    // MARK: - Private
     
     private func loadLogoImage() {
         viewModel.loadLogoImage { [weak self] image in
             self?.logoImageView.image = image
         }
     }
-    
-    // MARK: - Private
     
     private var style: QRCodeViewStyle {
         viewModel.style
@@ -170,7 +175,7 @@ internal final class QRCodeViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         
-        [codeTextView, actionButton]
+        [copyCodeLabel, actionButton]
             .compactMap { $0 }
             .forEach(actionContentView.addArrangedSubview)
 
