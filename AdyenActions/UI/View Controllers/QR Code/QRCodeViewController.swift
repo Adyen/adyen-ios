@@ -19,9 +19,6 @@ internal final class QRCodeViewController: UIViewController {
         static let view = "adyen.QRCode"
         static let logo = "logo"
         static let instructionLabel = "instructionLabel"
-        static let amountToPayLabel = "amountToPayLabel"
-        static let progressView = "progressView"
-        static let expirationLabel = "expirationLabel"
         static let copyCodeButton = "copyCodeButton"
         static let saveAsImageButton = "saveAsImageButton"
     }

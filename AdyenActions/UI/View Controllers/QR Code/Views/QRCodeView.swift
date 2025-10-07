@@ -14,6 +14,13 @@ internal final class QRCodeView: UIView, AdyenObserver {
         static let progressViewSize = CGSize(width: 120, height: 4)
     }
     
+    private enum ViewIdentifier {
+        static let qrCodeImage = "qrCodeImage"
+        static let amountToPayLabel = "amountToPayLabel"
+        static let progressView = "progressView"
+        static let expirationLabel = "expirationLabel"
+    }
+    
     // MARK: - Subviews
     
     internal let imageView: UIImageView = {
@@ -36,11 +43,10 @@ internal final class QRCodeView: UIView, AdyenObserver {
         self.expirationLabel = UILabel(style: style.expirationLabel)
         
         super.init(frame: .zero)
-        translatesAutoresizingMaskIntoConstraints = false
         
         buildViewHierarchy()
         setupLayoutConstraints()
-        configureAppearance()
+        setupSubviews()
         configure(with: viewModel)
     }
     
@@ -80,11 +86,17 @@ internal final class QRCodeView: UIView, AdyenObserver {
         ])
     }
     
-    private func configureAppearance() {
+    private func setupSubviews() {
         amountLabel.numberOfLines = 0
         amountLabel.font = UIFont.preferredFont(forTextStyle: .callout).adyen.font(with: .bold)
+        amountLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.amountToPayLabel)
+        
+        progressView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.progressView)
         
         expirationLabel.numberOfLines = 0
+        expirationLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.expirationLabel)
+        
+        imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.qrCodeImage)
     }
     
     // MARK: - Configuration
