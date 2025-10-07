@@ -8,27 +8,27 @@
 import UIKit
 
 internal protocol QRCodeViewModelDelegate: AnyObject {
-    func saveQRCode(image: UIImage?, sourceView: UIView)
+    func didSaveQRCode(image: UIImage?, sourceView: UIView)
 }
 
 internal class QRCodeViewModel: Localizable {
     
     // MARK: - Properties
         
-    internal let action: QRCodeAction
-    internal let instruction: String
-    internal var payment: Payment?
-    internal let logoUrl: URL
+    private let action: QRCodeAction
+    private let instruction: String
+    private var payment: Payment?
+    private let logoUrl: URL
     internal let observedProgress: Progress?
     internal let expiration: AdyenObservable<String?>
     internal let style: QRCodeViewStyle
-    internal let imageLoader: ImageLoading
+    private let imageLoader: ImageLoading
     internal var localizationParameters: LocalizationParameters?
-    private weak var delegate: QRCodeViewModelDelegate?
+    private let onSaveQRCode: (_ image: UIImage?, _ sourceView: UIView) -> Void
     
     internal init(
         action: QRCodeAction,
-        instruction: String,
+        instructionText: String,
         payment: Payment?,
         logoUrl: URL,
         observedProgress: Progress?,
@@ -36,10 +36,10 @@ internal class QRCodeViewModel: Localizable {
         style: QRCodeViewStyle,
         imageLoader: ImageLoading = ImageLoaderProvider.imageLoader(),
         localizationParameters: LocalizationParameters?,
-        delegate: QRCodeViewModelDelegate
+        onSaveQRCode: @escaping (_ image: UIImage?, _ sourceView: UIView) -> Void
     ) {
         self.action = action
-        self.instruction = instruction
+        self.instruction = instructionText
         self.payment = payment
         self.logoUrl = logoUrl
         self.observedProgress = observedProgress
@@ -47,7 +47,7 @@ internal class QRCodeViewModel: Localizable {
         self.style = style
         self.imageLoader = imageLoader
         self.localizationParameters = localizationParameters
-        self.delegate = delegate
+        self.onSaveQRCode = onSaveQRCode
     }
     
     // MARK: - Public
@@ -61,6 +61,10 @@ internal class QRCodeViewModel: Localizable {
         }
     }
     
+    internal var qrCodeData: String {
+        action.qrCodeData
+    }
+    
     // TODO: - Improve loading
     internal func loadLogoImage(completion: @escaping (UIImage?) -> (())) {
         imageLoader.load(url: logoUrl) { image in
@@ -69,8 +73,25 @@ internal class QRCodeViewModel: Localizable {
     }
 
     internal func saveQRCode(image: UIImage?, sourceView: UIView) {
-        delegate?.saveQRCode(image: image, sourceView: sourceView)
+        onSaveQRCode(image, sourceView)
     }
     
     // MARK: - Content
+    
+    internal var instructionText: String {
+        instruction
+    }
+    
+    internal var amountText: String? {
+        payment?.amount.formatted
+    }
+    
+    internal var actionButtonTitle: String {
+        switch flowType {
+        case .copyCode:
+            return localizedString(.pixCopyButton, localizationParameters)
+        case .saveAsImage:
+            return localizedString(.voucherSaveImage, localizationParameters)
+        }
+    }
 }

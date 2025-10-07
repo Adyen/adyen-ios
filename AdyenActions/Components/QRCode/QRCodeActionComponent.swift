@@ -199,7 +199,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     }
     
     private func createViewController(with action: QRCodeAction) -> UIViewController {
-        let viewModel = createViewModel(with: action, delegate: self)
+        let viewModel = createViewModel(with: action)
         return QRCodeViewController(viewModel: viewModel)
     }
 
@@ -223,7 +223,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
         }
     }
 
-    private func createViewModel(with action: QRCodeAction, delegate: QRCodeViewModelDelegate) -> QRCodeViewModel {
+    private func createViewModel(with action: QRCodeAction) -> QRCodeViewModel {
         let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment)
         let style = QRCodeViewStyle(
             copyCodeButton: configuration.style.copyCodeButton,
@@ -237,15 +237,16 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
         )
         return QRCodeViewModel(
             action: action,
-            instruction: QRCodeInstruction(with: action),
+            instructionText: QRCodeInstruction(with: action),
             payment: context.payment,
             logoUrl: url,
             observedProgress: progress,
             expiration: $expirationText,
             style: style,
-            localizationParameters: configuration.localizationParameters,
-            delegate: delegate
-        )
+            localizationParameters: configuration.localizationParameters
+        ) { [weak self] image, sourceView in
+            self?.presentSharePopover(with: image as Any, sourceView: sourceView)
+        }
     }
 
     public func didCancel() {
@@ -273,16 +274,4 @@ extension QRCodeActionComponent: ActionComponentDelegate {
         delegate?.didFail(with: error, from: self)
     }
 
-}
-
-@_spi(AdyenInternal)
-extension QRCodeActionComponent: QRCodeViewModelDelegate {
-    
-    internal func saveQRCode(image: UIImage?, sourceView: UIView) {
-        presentSharePopover(with: image as Any, sourceView: sourceView)
-    }
-    
-    internal func copyToPasteboard(with action: QRCodeAction) {
-        UIPasteboard.general.string = action.qrCodeData
-    }
 }

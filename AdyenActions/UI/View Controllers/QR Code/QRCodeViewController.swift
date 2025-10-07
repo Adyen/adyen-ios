@@ -17,6 +17,17 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
         static let qrCodeImageWidth: CGFloat = 170
     }
     
+    private enum ViewIdentifier {
+        static let view = "adyen.QRCode"
+        static let logo = "logo"
+        static let instructionLabel = "instructionLabel"
+        static let amountToPayLabel = "amountToPayLabel"
+        static let progressView = "progressView"
+        static let expirationLabel = "expirationLabel"
+        static let copyCodeButton = "copyCodeButton"
+        static let saveAsImageButton = "saveAsImageButton"
+    }
+    
     // MARK: - View elements
     
     private let scrollView: UIScrollView = {
@@ -32,28 +43,52 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
         return view
     }()
     
+    private let qrCodeContentView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 20
+        stackView.alignment = .center
+        stackView.distribution = .fillProportionally
+        return stackView
+    }()
+    
+    private let actionContentView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 20
+        return stackView
+    }()
+    
     internal lazy var logoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.adyen.round(using: style.logoCornerRounding)
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFit
-        imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "logo")
+        imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.logo
+        )
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
     private lazy var instructionLabel: UILabel = {
         let instructionLabel = UILabel(style: style.instructionLabel)
-        instructionLabel.text = viewModel.instruction
+        instructionLabel.text = viewModel.instructionText
         instructionLabel.numberOfLines = 0
-        instructionLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "instructionLabel")
+        instructionLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.instructionLabel
+        )
         instructionLabel.translatesAutoresizingMaskIntoConstraints = false
         return instructionLabel
     }()
     
     private lazy var qrCodeImageView: UIImageView = {
         let size = CGSize(width: Layout.qrCodeImageWidth, height: Layout.qrCodeImageWidth)
-        let qrCodeImage = viewModel.action.qrCodeData.generateQRCode(size: size)
+        let qrCodeImage = viewModel.qrCodeData.generateQRCode(size: size)
         let qrCodeView = UIImageView(image: qrCodeImage)
         qrCodeView.translatesAutoresizingMaskIntoConstraints = false
         qrCodeView.contentMode = .scaleAspectFit
@@ -65,10 +100,11 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
         let amountToPayLabel = UILabel(style: style.amountToPayLabel)
         amountToPayLabel.numberOfLines = 0
         amountToPayLabel.font = UIFont.preferredFont(forTextStyle: .callout).adyen.font(with: .bold)
-        if let currencyCode = viewModel.payment?.amount.currencyCode {
-            amountToPayLabel.text = viewModel.payment?.amount.formatted
-        }
-        amountToPayLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "amountToPayLabel")
+        amountToPayLabel.text = viewModel.amountText
+        amountToPayLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.amountToPayLabel
+        )
         amountToPayLabel.translatesAutoresizingMaskIntoConstraints = false
         return amountToPayLabel
     }()
@@ -76,7 +112,10 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
     private lazy var progressView: UIProgressView = {
         let progressView = UIProgressView(style: style.progressView)
         progressView.observedProgress = viewModel.observedProgress
-        progressView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "progressView")
+        progressView.accessibilityIdentifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.progressView
+        )
         progressView.translatesAutoresizingMaskIntoConstraints = false
         return progressView
     }()
@@ -84,7 +123,10 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
     private lazy var expirationLabel: UILabel = {
         let expirationLabel = UILabel(style: style.expirationLabel)
         expirationLabel.numberOfLines = 0
-        expirationLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "expirationLabel")
+        expirationLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.expirationLabel
+        )
         bind(viewModel.expiration, to: expirationLabel, at: \.text) { string in
             let expirationString: String
             if let string, !string.isEmpty {
@@ -103,21 +145,20 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
     private lazy var actionButton: UIView = {
         switch viewModel.flowType {
         case .copyCode:
-            let title = localizedString(.pixCopyButton, localizationParameters)
             let button = CopyButton(
-                title: title,
-                copyTitle: "PIX code copied",
-                value: viewModel.action.qrCodeData,
+                title: viewModel.actionButtonTitle,
+                copyTitle: "Code copied",
+                value: viewModel.qrCodeData,
                 style: style.copyCodeButton
             )
-            button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "copyCodeButton")
+            button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.copyCodeButton)
             button.translatesAutoresizingMaskIntoConstraints = false
             return button
         case .saveAsImage:
             let button = SubmitButton(style: style.saveAsImageButton)
-            button.title = localizedString(.voucherSaveImage, localizationParameters)
+            button.title = viewModel.actionButtonTitle
             button.addTarget(self, action: #selector(saveQRCodeImage), for: .touchUpInside)
-            button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "saveAsImageButton")
+            button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.saveAsImageButton)
             button.translatesAutoresizingMaskIntoConstraints = false
             return button
         }
@@ -125,43 +166,13 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
     
     private lazy var codeTextView: UIView? = {
         guard case .copyCode = viewModel.flowType else { return nil }
-        let textView = UITextView()
-        textView.text = "This is a very long text that needs truncation \(viewModel.action.qrCodeData)"
-        textView.font = UIFont.systemFont(ofSize: 16)
-        textView.isScrollEnabled = false
-        textView.isEditable = false
-        textView.isSelectable = true
-        textView.backgroundColor = .lightGray
-        textView.layer.cornerRadius = 8
-        textView.textContainer.lineBreakMode = .byTruncatingMiddle
-        textView.textContainer.maximumNumberOfLines = 1
-        textView.textContainerInset = .init(top: 4, left: 4, bottom: 4, right: 4)
-        textView.textContainer.lineFragmentPadding = 0
-        //        return textView
         
+        let textStyle = TextStyle(font: .systemFont(ofSize: 20, weight: .semibold), color: .black)
         let copyLabelView = CopyLabelView(
-            text: textView.text,
-            style: .init(font: .systemFont(ofSize: 16), color: .black)
+            text: viewModel.qrCodeData,
+            style: textStyle
         )
         return copyLabelView
-    }()
-    
-    private let actionContentView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.spacing = 20
-        stackView.distribution = .fillProportionally
-        return stackView
-    }()
-    
-    private let qrCodeContentView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.spacing = 20
-        stackView.alignment = .center
-        return stackView
     }()
     
     // MARK: - Properties
@@ -212,7 +223,7 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
     
     @objc internal func saveQRCodeImage() {
         let image = qrCodeImageView.adyen.snapshot()
-        viewModel.saveQRCode(image: image, sourceView: actionButton)
+        viewModel.saveQRCode(image: image, sourceView: view)
     }
     
     // MARK: - Private
@@ -220,11 +231,7 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
     private var style: QRCodeViewStyle {
         viewModel.style
     }
-    
-    private var localizationParameters: LocalizationParameters? {
-        viewModel.localizationParameters
-    }
-    
+        
     private func addSubviews() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -251,72 +258,62 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
         ]
         .forEach(contentView.addSubview)
         
-        setupQRCodeContentLayout()
         setupLayout()
     }
     
-    private func setupQRCodeContentLayout() {
-        NSLayoutConstraint.activate([
-            // QRCode Image View
-            qrCodeImageView.widthAnchor.constraint(equalToConstant: Layout.qrCodeImageWidth),
-            qrCodeImageView.heightAnchor.constraint(equalTo: qrCodeImageView.widthAnchor),
-            
-            // Progress View
-            progressView.topAnchor.constraint(equalTo: amountToPayLabel.bottomAnchor, constant: 20),
-            progressView.centerXAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.centerXAnchor),
-            progressView.widthAnchor.constraint(equalToConstant: Layout.progressViewSize.width),
-            progressView.heightAnchor.constraint(equalToConstant: Layout.progressViewSize.height),
-            
-            // Expiration label
-            expirationLabel.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 12)
-        ])
-    }
-    
     private func setupLayout() {
+        scrollView.adyen.anchor(inside: view.safeAreaLayoutGuide)
+        contentView.adyen.anchor(inside: scrollView.contentLayoutGuide)
+        
         NSLayoutConstraint.activate([
-            // Scroll View
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
-            // Content View
-            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            // MARK: - ContentView
+
             contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
             contentView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.frameLayoutGuide.heightAnchor),
             
-            // Logo Image View
+            // MARK: - Logo
+
             logoImageView.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor, constant: 8),
             logoImageView.centerXAnchor.constraint(equalTo: contentView.layoutMarginsGuide.centerXAnchor),
             logoImageView.widthAnchor.constraint(equalToConstant: Layout.logoSize.width),
             logoImageView.heightAnchor.constraint(equalToConstant: Layout.logoSize.height),
             
-            // Instruction Label
+            // MARK: - QR Code Image
+
+            qrCodeImageView.widthAnchor.constraint(equalToConstant: Layout.qrCodeImageWidth),
+            qrCodeImageView.heightAnchor.constraint(equalTo: qrCodeImageView.widthAnchor),
+            
+            // MARK: - Progress View
+
+            progressView.widthAnchor.constraint(equalToConstant: Layout.progressViewSize.width),
+            progressView.heightAnchor.constraint(equalToConstant: Layout.progressViewSize.height),
+            expirationLabel.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 12),
+            
+            // MARK: - Instruction Label
+
             instructionLabel.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 28),
             instructionLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             instructionLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
             
-            // QR Code Content View
+            // MARK: - QR Code Content Stack
+
             qrCodeContentView.topAnchor.constraint(greaterThanOrEqualTo: instructionLabel.bottomAnchor, constant: 20),
             qrCodeContentView.centerXAnchor.constraint(equalTo: contentView.layoutMarginsGuide.centerXAnchor),
             qrCodeContentView.centerYAnchor.constraint(equalTo: contentView.layoutMarginsGuide.centerYAnchor),
             
-            // Action Content View
+            // MARK: - Action Content Stack
+
             actionContentView.topAnchor.constraint(greaterThanOrEqualTo: qrCodeContentView.bottomAnchor, constant: 20),
             actionContentView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             actionContentView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
             actionContentView.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
-            
-            // Button height
             actionButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
-    
+
     private func setupViews() {
-        view.accessibilityIdentifier = "adyen.QRCode"
+        view.accessibilityIdentifier = ViewIdentifier.view
         view.backgroundColor = viewModel.style.backgroundColor
     }
 }
