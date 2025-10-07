@@ -80,7 +80,7 @@
 "adyen.voucher.readInstructions" = "Прочитайте инструкции";
 "adyen.amount" = "Сумма";
 "adyen.voucher.entity" = "Объект";
-"adyen.pix.instructions" = "";
+"adyen.pix.instructions" = "Для оформления оплаты используйте свое банковское приложение, чтобы отсканировать QR-код или скопировать PIX-код ниже.";
 "adyen.pix.expirationLabel" = "У вас %@ на оплату";
 "adyen.pix.copyButton" = "Скопировать код";
 "adyen.pix.instructions.copiedMessage" = "Код скопирован в буфер обмена";

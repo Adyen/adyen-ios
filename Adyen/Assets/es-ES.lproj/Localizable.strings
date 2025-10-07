@@ -84,7 +84,7 @@
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Cantidad";
 "adyen.voucher.entity" = "Entidad";
-"adyen.pix.instructions" = "";
+"adyen.pix.instructions" = "Usa la app de tu banco para escanear el código QR o copia el código PIX que aparece a continuación para completar el pago.";
 "adyen.pix.expirationLabel" = "Tiene %@ para pagar";
 "adyen.pix.copyButton" = "Copiar código";
 "adyen.pix.instructions.copiedMessage" = "Código copiado al portapapeles";

@@ -84,7 +84,7 @@
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Suma";
 "adyen.voucher.entity" = "Subjektas";
-"adyen.pix.instructions" = "Atidarykite programą su PIX registruotu raktu, pasirinkite „Mokėti su PIX“ ir nuskaitykite QR kodą arba nukopijuokite ir įklijuokite kodą.";
+"adyen.pix.instructions" = "Norėdami užbaigti mokėjimą, savo banko programėle nuskaitykite QR kodą arba nukopijuokite toliau pateiktą PIX kodą.";
 "adyen.pix.expirationLabel" = "Jūs turite mokėti %@";
 "adyen.pix.copyButton" = "Kopijuoti kodą";
 "adyen.pix.instructions.copiedMessage" = "Į iškarpinę nukopijuotas kodas";

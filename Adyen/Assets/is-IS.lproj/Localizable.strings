@@ -84,7 +84,7 @@
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Upphæð";
 "adyen.voucher.entity" = "Aðili";
-"adyen.pix.instructions" = "Opnaðu forritið með PIX skráða lyklinum, veldu „Greiða með PIX“ og skannaðu QR-kóðann eða afritaðu og límdu kóðann";
+"adyen.pix.instructions" = "Notaðu bankaforritið til að skanna QR-kóðann eða afritaðu PIX-kóðann fyrir neðan til að ljúka greiðslunni.";
 "adyen.pix.expirationLabel" = "Þú þarft að greiða %@";
 "adyen.pix.copyButton" = "Afrita kóða";
 "adyen.pix.instructions.copiedMessage" = "Kóði afritaður á klemmuspjald";

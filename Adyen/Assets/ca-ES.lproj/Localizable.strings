@@ -84,7 +84,7 @@
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Import";
 "adyen.voucher.entity" = "Entitat";
-"adyen.pix.instructions" = "Obriu l'aplicació amb la clau registrada PIX, trieu Paga amb PIX i escanegeu el codi QR o copieu i enganxeu el codi";
+"adyen.pix.instructions" = "Utilitzeu la vostra aplicació bancària per escanejar el codi QR o copiar el codi PIX següent per tal de completar el pagament.";
 "adyen.pix.expirationLabel" = "Teniu %@ per pagar";
 "adyen.pix.copyButton" = "Copiar el codi";
 "adyen.pix.instructions.copiedMessage" = "Codi copiat al porta-retalls";

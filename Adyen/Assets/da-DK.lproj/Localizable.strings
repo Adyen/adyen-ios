@@ -84,7 +84,7 @@
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Beløb";
 "adyen.voucher.entity" = "Enhed";
-"adyen.pix.instructions" = "";
+"adyen.pix.instructions" = "Brug din bankapp til at scanne QR-koden, eller kopiér PIX-koden nedenfor for at gennemføre din betaling.";
 "adyen.pix.expirationLabel" = "Du har %@ at betale";
 "adyen.pix.copyButton" = "Kopiér koden";
 "adyen.pix.instructions.copiedMessage" = "Koden er kopieret til udklipsholderen";

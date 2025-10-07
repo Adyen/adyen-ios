@@ -84,7 +84,7 @@
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Summa";
 "adyen.voucher.entity" = "Kokonaisuus";
-"adyen.pix.instructions" = "";
+"adyen.pix.instructions" = "Suorita maksu skannaamalla QR-koodi pankkisovelluksellasi tai kopioimalla alla oleva PIX-koodi.";
 "adyen.pix.expirationLabel" = "Sinulla on %@ maksettavana";
 "adyen.pix.copyButton" = "Kopioi koodi";
 "adyen.pix.instructions.copiedMessage" = "Koodi kopioitu leikepöydälle";
