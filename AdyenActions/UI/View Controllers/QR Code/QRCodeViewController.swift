@@ -108,11 +108,11 @@ internal final class QRCodeViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let viewModel: QRCodeViewModel
+    private let viewModel: QRCodeViewModelProtocol
     
     // MARK: - Initializers
     
-    internal init(viewModel: QRCodeViewModel) {
+    internal init(viewModel: QRCodeViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }

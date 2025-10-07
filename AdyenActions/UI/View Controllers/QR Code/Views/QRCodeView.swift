@@ -37,7 +37,7 @@ internal final class QRCodeView: UIView, AdyenObserver {
     
     // MARK: - Initialization
     
-    internal init(viewModel: QRCodeViewModel, style: QRCodeViewStyle) {
+    internal init(viewModel: QRCodeViewModelProtocol, style: QRCodeViewStyle) {
         self.amountLabel = UILabel(style: style.amountToPayLabel)
         self.progressView = UIProgressView(style: style.progressView)
         self.expirationLabel = UILabel(style: style.expirationLabel)
@@ -101,7 +101,7 @@ internal final class QRCodeView: UIView, AdyenObserver {
     
     // MARK: - Configuration
     
-    private func configure(with viewModel: QRCodeViewModel) {
+    private func configure(with viewModel: QRCodeViewModelProtocol) {
         let qrCodeSize = CGSize(width: Layout.qrCodeImageWidth, height: Layout.qrCodeImageWidth)
         imageView.image = viewModel.qrCodeData.generateQRCode(size: qrCodeSize)
         
