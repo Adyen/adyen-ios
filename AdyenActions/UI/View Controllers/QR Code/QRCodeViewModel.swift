@@ -4,12 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
 import UIKit
-
-internal protocol QRCodeViewModelDelegate: AnyObject {
-    func didSaveQRCode(image: UIImage?, sourceView: UIView)
-}
+@_spi(AdyenInternal) import Adyen
 
 internal class QRCodeViewModel: Localizable {
     
@@ -65,7 +61,6 @@ internal class QRCodeViewModel: Localizable {
         action.qrCodeData
     }
     
-    // TODO: - Improve loading
     internal func loadLogoImage(completion: @escaping (UIImage?) -> (())) {
         imageLoader.load(url: logoUrl) { image in
             completion(image)
