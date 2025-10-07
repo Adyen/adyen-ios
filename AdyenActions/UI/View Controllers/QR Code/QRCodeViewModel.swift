@@ -12,6 +12,7 @@ internal protocol QRCodeViewModelProtocol {
     var instructionText: String { get }
     var amountText: String? { get }
     var actionButtonTitle: String { get }
+    var onCopyButtonTitle: String { get }
     var qrCodeData: String { get }
     var style: QRCodeViewStyle { get }
     var expiration: AdyenObservable<String?> { get }
@@ -70,9 +71,9 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
             }
         }()
     }
-
+    
     // MARK: - Public
-        
+    
     internal var qrCodeData: String {
         action.qrCodeData
     }
@@ -80,7 +81,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
     internal func loadLogoImage(completion: @escaping (UIImage?) -> Void) {
         imageLoader.load(url: logoUrl, completion: completion)
     }
-
+    
     internal func saveQRCode(image: UIImage?, sourceView: UIView) {
         onSaveQRCode(image, sourceView)
     }
@@ -91,6 +92,15 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
         switch flowType {
         case .copyCode:
             return localizedString(.pixCopyButton, localizationParameters)
+        case .saveAsImage:
+            return localizedString(.voucherSaveImage, localizationParameters)
+        }
+    }
+    
+    internal var onCopyButtonTitle: String {
+        switch flowType {
+        case .copyCode:
+            return "PIX code copied"
         case .saveAsImage:
             return localizedString(.voucherSaveImage, localizationParameters)
         }

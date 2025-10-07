@@ -13,19 +13,19 @@ public class CopyButton: UIButton {
     // MARK: - Properties
     
     private let title: String
-    private let copyTitle: String
+    private let onCopyTitle: String
     private let value: String?
     
     // MARK: - Initializers
     
     public init(
         title: String,
-        copyTitle: String,
+        onCopyTitle: String,
         value: String?,
         style: ButtonStyle
     ) {
         self.title = title
-        self.copyTitle = copyTitle
+        self.onCopyTitle = onCopyTitle
         self.value = value
         super.init(frame: .zero)
         
@@ -55,7 +55,7 @@ public class CopyButton: UIButton {
         let originalTitle = title(for: .normal)
         
         UIView.transition(with: self, duration: 0.25, options: .transitionCrossDissolve, animations: {
-            self.setTitle(self.copyTitle, for: .normal)
+            self.setTitle(self.onCopyTitle, for: .normal)
         })
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {

@@ -75,7 +75,7 @@ internal final class QRCodeViewController: UIViewController {
         case .copyCode:
             let button = CopyButton(
                 title: viewModel.actionButtonTitle,
-                copyTitle: "Code copied",
+                onCopyTitle: viewModel.onCopyButtonTitle,
                 value: viewModel.qrCodeData,
                 style: style.copyCodeButton
             )
