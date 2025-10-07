@@ -199,11 +199,34 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     }
     
     private func createViewController(with action: QRCodeAction) -> UIViewController {
-        let viewModel = createViewModel(with: action)
+        let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment)
+        let style = QRCodeViewStyle(
+            copyCodeButton: configuration.style.copyCodeButton,
+            saveAsImageButton: configuration.style.saveAsImageButton,
+            instructionLabel: configuration.style.instructionLabel,
+            amountToPayLabel: configuration.style.amountToPayLabel,
+            progressView: configuration.style.progressView,
+            expirationLabel: configuration.style.expirationLabel,
+            logoCornerRounding: configuration.style.logoCornerRounding,
+            backgroundColor: configuration.style.backgroundColor
+        )
+        let viewModel = QRCodeViewModel(
+            action: action,
+            instructionText: qrCodeInstructions(for: action),
+            payment: context.payment,
+            logoUrl: url,
+            observedProgress: progress,
+            expiration: $expirationText,
+            style: style,
+            localizationParameters: configuration.localizationParameters
+        ) { [weak self] image, sourceView in
+            self?.presentSharePopover(with: image as Any, sourceView: sourceView)
+        }
+        
         return QRCodeViewController(viewModel: viewModel)
     }
-
-    private func QRCodeInstruction(with action: QRCodeAction) -> String {
+    
+    private func qrCodeInstructions(for action: QRCodeAction) -> String {
         switch action.paymentMethodType {
         case .promptPay, .duitNow, .payNow:
             return localizedString(
@@ -220,32 +243,6 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
                 .upiQrcodeInstructions,
                 configuration.localizationParameters
             )
-        }
-    }
-
-    private func createViewModel(with action: QRCodeAction) -> QRCodeViewModel {
-        let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment)
-        let style = QRCodeViewStyle(
-            copyCodeButton: configuration.style.copyCodeButton,
-            saveAsImageButton: configuration.style.saveAsImageButton,
-            instructionLabel: configuration.style.instructionLabel,
-            amountToPayLabel: configuration.style.amountToPayLabel,
-            progressView: configuration.style.progressView,
-            expirationLabel: configuration.style.expirationLabel,
-            logoCornerRounding: configuration.style.logoCornerRounding,
-            backgroundColor: configuration.style.backgroundColor
-        )
-        return QRCodeViewModel(
-            action: action,
-            instructionText: QRCodeInstruction(with: action),
-            payment: context.payment,
-            logoUrl: url,
-            observedProgress: progress,
-            expiration: $expirationText,
-            style: style,
-            localizationParameters: configuration.localizationParameters
-        ) { [weak self] image, sourceView in
-            self?.presentSharePopover(with: image as Any, sourceView: sourceView)
         }
     }
 
