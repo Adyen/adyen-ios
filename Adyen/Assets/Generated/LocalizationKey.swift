@@ -185,8 +185,8 @@ public struct LocalizationKey {
     public static let pixInstructions = LocalizationKey(key: "adyen.pix.instructions")
     /// You have %@ to pay
     public static let pixExpirationLabel = LocalizationKey(key: "adyen.pix.expirationLabel")
-    /// Copy code
-    public static let pixCopyButton = LocalizationKey(key: "adyen.pix.copyButton")
+    /// Copy PIX code
+    public static let pixCodeCopyLabel = LocalizationKey(key: "adyen.pix.code.copy.label")
     /// Code copied to clipboard
     public static let pixInstructionsCopiedMessage = LocalizationKey(key: "adyen.pix.instructions.copiedMessage")
     /// Billing address

@@ -86,7 +86,7 @@
 "adyen.voucher.entity" = "Kokonaisuus";
 "adyen.pix.instructions" = "Suorita maksu skannaamalla QR-koodi pankkisovelluksellasi tai kopioimalla alla oleva PIX-koodi.";
 "adyen.pix.expirationLabel" = "Sinulla on %@ maksettavana";
-"adyen.pix.copyButton" = "Kopioi koodi";
+"adyen.pix.code.copy.label" = "Kopioi PIX-koodi";
 "adyen.pix.instructions.copiedMessage" = "Koodi kopioitu leikepöydälle";
 "adyen.billingAddressSection.title" = "Laskutusosoite";
 "adyen.billingAddress.placeholder" = "Laskutusosoitteesi";

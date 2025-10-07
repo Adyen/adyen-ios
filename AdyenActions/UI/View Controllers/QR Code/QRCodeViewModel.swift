@@ -91,7 +91,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
     internal var actionButtonTitle: String {
         switch flowType {
         case .copyCode:
-            return localizedString(.pixCopyButton, localizationParameters)
+            return localizedString(.pixCodeCopyLabel, localizationParameters)
         case .saveAsImage:
             return localizedString(.voucherSaveImage, localizationParameters)
         }

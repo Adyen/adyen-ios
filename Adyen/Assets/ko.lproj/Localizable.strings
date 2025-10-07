@@ -86,7 +86,7 @@
 "adyen.voucher.entity" = "발급사";
 "adyen.pix.instructions" = "은행 앱을 사용해 QR 코드를 스캔하거나 아래의 PIX 코드를 복사하여 결제를 완료하세요.";
 "adyen.pix.expirationLabel" = "남은 결제 시한: %@";
-"adyen.pix.copyButton" = "코드 복사하기";
+"adyen.pix.code.copy.label" = "PIX 코드 복사";
 "adyen.pix.instructions.copiedMessage" = "코드가 클립보드에 복사되었습니다";
 "adyen.billingAddressSection.title" = "청구지 주소";
 "adyen.billingAddress.placeholder" = "청구 주소";

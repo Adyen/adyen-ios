@@ -86,7 +86,7 @@
 "adyen.voucher.entity" = "Entidade";
 "adyen.pix.instructions" = "Use o aplicativo do seu banco para escanear o código QR ou copie o código PIX abaixo para concluir o pagamento.";
 "adyen.pix.expirationLabel" = "Você tem %@ para pagar";
-"adyen.pix.copyButton" = "Copiar código";
+"adyen.pix.code.copy.label" = "Copiar código PIX";
 "adyen.pix.instructions.copiedMessage" = "Código copiado";
 "adyen.billingAddressSection.title" = "Endereço de cobrança";
 "adyen.billingAddress.placeholder" = "Endereço de cobrança";

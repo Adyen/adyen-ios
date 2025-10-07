@@ -86,7 +86,7 @@
 "adyen.voucher.entity" = "Subjekt";
 "adyen.pix.instructions" = "Pomocí bankovní aplikace naskenujte QR kód nebo zkopírujte uvedený PIX kód a platbu dokončete.";
 "adyen.pix.expirationLabel" = "Na zaplacení vám zbývá %@";
-"adyen.pix.copyButton" = "Kopírovat kód";
+"adyen.pix.code.copy.label" = "Kopírovat kód PIX";
 "adyen.pix.instructions.copiedMessage" = "Kód zkopírován do schránky";
 "adyen.billingAddressSection.title" = "Fakturační adresa";
 "adyen.billingAddress.placeholder" = "Vaše fakturační adresa";

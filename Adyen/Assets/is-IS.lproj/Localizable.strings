@@ -86,7 +86,7 @@
 "adyen.voucher.entity" = "Aðili";
 "adyen.pix.instructions" = "Notaðu bankaforritið til að skanna QR-kóðann eða afritaðu PIX-kóðann fyrir neðan til að ljúka greiðslunni.";
 "adyen.pix.expirationLabel" = "Þú þarft að greiða %@";
-"adyen.pix.copyButton" = "Afrita kóða";
+"adyen.pix.code.copy.label" = "Afrita PIX-kóða";
 "adyen.pix.instructions.copiedMessage" = "Kóði afritaður á klemmuspjald";
 "adyen.billingAddressSection.title" = "Heimilisfang greiðanda";
 "adyen.billingAddress.placeholder" = "Heimilisfang";

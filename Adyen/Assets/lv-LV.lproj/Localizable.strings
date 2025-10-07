@@ -86,7 +86,7 @@
 "adyen.voucher.entity" = "Vienība";
 "adyen.pix.instructions" = "Izmantojiet savu bankas lietotni, lai skenētu kvadrātkodu vai nokopētu zemāk esošo PIX kodu un pabeigtu maksājumu.";
 "adyen.pix.expirationLabel" = "Jums ir jāmaksā %@";
-"adyen.pix.copyButton" = "Kopēt kodu";
+"adyen.pix.code.copy.label" = "Kopēt PIX kodu";
 "adyen.pix.instructions.copiedMessage" = "Kods ir nokopēts starpliktuvē";
 "adyen.billingAddressSection.title" = "Norēķinu adrese";
 "adyen.billingAddress.placeholder" = "Jūsu norēķinu adrese";

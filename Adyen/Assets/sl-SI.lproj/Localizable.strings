@@ -82,7 +82,7 @@
 "adyen.voucher.entity" = "Entiteta";
 "adyen.pix.instructions" = "S svojo bančno aplikacijo optično preberite kodo QR ali kopirajte spodnjo kodo PIX, da dokončate plačilo.";
 "adyen.pix.expirationLabel" = "Plačati morate %@";
-"adyen.pix.copyButton" = "Kopiraj kodo";
+"adyen.pix.code.copy.label" = "Kopiraj kodo PIX";
 "adyen.pix.instructions.copiedMessage" = "Koda je kopirana v odložišče";
 "adyen.billingAddressSection.title" = "Naslov za račun";
 "adyen.billingAddress.placeholder" = "Vaš naslov za račun";

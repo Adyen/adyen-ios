@@ -82,7 +82,7 @@
 "adyen.voucher.entity" = "Enhet";
 "adyen.pix.instructions" = "Använd din bankapp för att skanna QR-koden eller kopiera PIX-koden nedan för att slutföra din betalning.";
 "adyen.pix.expirationLabel" = "Du har %@ att betala";
-"adyen.pix.copyButton" = "Kopiera kod";
+"adyen.pix.code.copy.label" = "Kopiera PIX-kod";
 "adyen.pix.instructions.copiedMessage" = "Koden kopierades till Urklipp";
 "adyen.billingAddressSection.title" = "Faktureringsadress";
 "adyen.billingAddress.placeholder" = "Din faktureringsadress";

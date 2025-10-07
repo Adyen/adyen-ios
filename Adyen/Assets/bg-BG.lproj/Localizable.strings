@@ -86,7 +86,7 @@
 "adyen.voucher.entity" = "Обект";
 "adyen.pix.instructions" = "Използвайте банковото си приложение, за да сканирате QR кода, или копирайте PIX кода по-долу, за да завършите плащането.";
 "adyen.pix.expirationLabel" = "Имате %@ за плащане";
-"adyen.pix.copyButton" = "Копиране на кода";
+"adyen.pix.code.copy.label" = "Копирайте PIX кода";
 "adyen.pix.instructions.copiedMessage" = "Код, копиран в клипборда";
 "adyen.billingAddressSection.title" = "Адрес за фактуриране";
 "adyen.billingAddress.placeholder" = "Вашият адрес за фактуриране";

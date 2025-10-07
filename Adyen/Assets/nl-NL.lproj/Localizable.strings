@@ -86,7 +86,7 @@
 "adyen.voucher.entity" = "Entiteit";
 "adyen.pix.instructions" = "Gebruik uw bank-app om de QR-code te scannen of kopieer de PIX-code hieronder om uw betaling af te ronden.";
 "adyen.pix.expirationLabel" = "U heeft %@ om te betalen";
-"adyen.pix.copyButton" = "Code kopiëren";
+"adyen.pix.code.copy.label" = "PIX-code kopiëren";
 "adyen.pix.instructions.copiedMessage" = "De code is naar het klembord gekopieerd";
 "adyen.billingAddressSection.title" = "Factuuradres";
 "adyen.billingAddress.placeholder" = "Uw factuuradres";
