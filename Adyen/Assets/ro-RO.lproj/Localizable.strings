@@ -80,10 +80,12 @@
 "adyen.voucher.readInstructions" = "Citiți instrucțiunile";
 "adyen.amount" = "Sumă";
 "adyen.voucher.entity" = "Entitate";
-"adyen.pix.instructions" = "";
+"adyen.pix.instructions" = "Utilizați aplicația de banking pentru a scana codul QR sau pentru a copia codul PIX de mai jos pentru a finaliza plata.";
 "adyen.pix.expirationLabel" = "Trebuie să achitați %@";
 "adyen.pix.copyButton" = "Copiați codul";
 "adyen.pix.instructions.copiedMessage" = "Cod copiat în clipboard";
+"adyen.pix.code.copy.label" = "Copiați codul PIX";
+"adyen.pix.code.copied.label" = "Codul PIX a fost copiat";
 "adyen.billingAddressSection.title" = "Adresa de facturare";
 "adyen.billingAddress.placeholder" = "Adresa dvs. de facturare";
 "adyen.deliveryAddressSection.title" = "Adresă de livrare";
