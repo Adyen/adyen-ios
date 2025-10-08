@@ -16,7 +16,7 @@ public struct AdyenTextFieldStyle {
     package var text: AdyenLabelStyle
     
     /// The text field's placeholder text style.
-    package var placeholderText: AdyenLabelStyle?
+    package var placeholder: AdyenLabelStyle
 
     /// The color of the background.
     package var backgroundColor: UIColor
@@ -40,13 +40,13 @@ public struct AdyenTextFieldStyle {
     public init(
         title: AdyenLabelStyle,
         text: AdyenLabelStyle,
+        placeholder: AdyenLabelStyle,
         backgroundColor: UIColor = AdyenColorScheme.default.background,
         textColor: UIColor = AdyenColorScheme.default.text,
         errorColor: UIColor = AdyenColorScheme.default.destructive,
         cornerRadius: CornerRounding,
         borderColor: UIColor = AdyenColorScheme.default.outline,
-        borderWidth: CGFloat,
-        placeholderText: AdyenLabelStyle? = nil
+        borderWidth: CGFloat
     ) {
         self.title = title
         self.text = text
@@ -55,18 +55,19 @@ public struct AdyenTextFieldStyle {
         self.cornerRadius = cornerRadius
         self.borderColor = borderColor
         self.borderWidth = borderWidth
-        self.placeholderText = placeholderText
+        self.placeholder = placeholder
     }
 
     public init() {
         self.title = AdyenLabelStyle.default
         self.text = AdyenLabelStyle.default
+        // TODO: // create a default placeholder style extension for AdyenTextFieldStyle
+        self.placeholder = AdyenLabelStyle.default
         self.backgroundColor = AdyenColorScheme.default.background
         self.errorColor = AdyenColorScheme.default.destructive
         self.cornerRadius = CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius)
         self.borderColor = AdyenColorScheme.default.outline
         self.borderWidth = AdyenUIConstants.defaultBorderWidth
-        self.placeholderText = nil
     }
 }
 
