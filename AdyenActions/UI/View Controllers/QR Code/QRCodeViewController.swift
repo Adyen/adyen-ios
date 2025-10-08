@@ -98,10 +98,26 @@ internal final class QRCodeViewController: UIViewController {
             color: UIColor.Adyen.componentLabel
         )
         let copyLabelView = CopyLabelView(
-            text: viewModel.qrCodeData,
+            text: /* viewModel.qrCodeData */ "Arjen came with his son to the office and they had a great time.",
             style: textStyle
         )
         copyLabelView.adyen.round(using: style.logoCornerRounding)
+        copyLabelView.layoutMargins = .init(top: 8, left: 32, bottom: 8, right: 32)
+        
+//        let selectableLabel = UITextView()
+//        selectableLabel.text = "Your selectable text"
+//        selectableLabel.isEditable = false
+//        selectableLabel.isSelectable = true
+//        selectableLabel.isScrollEnabled = false
+//        selectableLabel.backgroundColor = .clear
+//        selectableLabel.textContainerInset = .zero
+//        selectableLabel.textContainer.lineFragmentPadding = 0
+//        selectableLabel.font = UIFont.systemFont(ofSize: 16)
+//        selectableLabel.textColor = .black
+//        selectableLabel.textAlignment = .left
+//        selectableLabel.isUserInteractionEnabled = true
+//        selectableLabel.textContainer.maximumNumberOfLines = 1
+//        selectableLabel.textContainer.lineBreakMode = .byTruncatingTail
         
         return copyLabelView
     }()
