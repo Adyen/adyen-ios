@@ -82,8 +82,10 @@
 "adyen.voucher.entity" = "Объект";
 "adyen.pix.instructions" = "Для оформления оплаты используйте свое банковское приложение, чтобы отсканировать QR-код или скопировать PIX-код ниже.";
 "adyen.pix.expirationLabel" = "У вас %@ на оплату";
-"adyen.pix.code.copy.label" = "Скопировать код PIX";
+"adyen.pix.copyButton" = "Скопировать код";
 "adyen.pix.instructions.copiedMessage" = "Код скопирован в буфер обмена";
+"adyen.pix.code.copy.label" = "Скопировать код PIX";
+"adyen.pix.code.copied.label" = "Код PIX скопирован";
 "adyen.billingAddressSection.title" = "Платежный адрес";
 "adyen.billingAddress.placeholder" = "Ваш платежный адрес";
 "adyen.deliveryAddressSection.title" = "Адрес доставки";

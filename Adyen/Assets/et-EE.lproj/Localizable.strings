@@ -86,8 +86,10 @@
 "adyen.voucher.entity" = "Ettevõte";
 "adyen.pix.instructions" = "Makse lõpuleviimiseks skannige oma pangarakenduse abil QR-kood või kopeerige allolev PIX-kood.";
 "adyen.pix.expirationLabel" = "Teil on maksmiseks %@";
-"adyen.pix.code.copy.label" = "Kopeeri PIX-kood";
+"adyen.pix.copyButton" = "Kopeeri kood";
 "adyen.pix.instructions.copiedMessage" = "Kood kopeeriti lõikelauale";
+"adyen.pix.code.copy.label" = "Kopeeri PIX-kood";
+"adyen.pix.code.copied.label" = "PIX-kood kopeeritud";
 "adyen.billingAddressSection.title" = "Arveldusaadress";
 "adyen.billingAddress.placeholder" = "Teie arveldusaadress";
 "adyen.deliveryAddressSection.title" = "Kohaletoimetamise aadress";

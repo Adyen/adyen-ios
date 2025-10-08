@@ -82,8 +82,10 @@
 "adyen.voucher.entity" = "實體";
 "adyen.pix.instructions" = "使用您的銀行帳戶應用程式來掃描 QR 碼，或是複製下列的 PIX 代碼以完成付款。";
 "adyen.pix.expirationLabel" = "您有 %@ 可以支付";
-"adyen.pix.code.copy.label" = "複製 PIX 代碼";
+"adyen.pix.copyButton" = "複製代碼";
 "adyen.pix.instructions.copiedMessage" = "已將代碼複製到剪貼簿";
+"adyen.pix.code.copy.label" = "複製 PIX 代碼";
+"adyen.pix.code.copied.label" = "已複製 PIX 代碼";
 "adyen.billingAddressSection.title" = "帳單地址";
 "adyen.billingAddress.placeholder" = "您的帳單地址";
 "adyen.deliveryAddressSection.title" = "派送地址";

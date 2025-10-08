@@ -86,8 +86,10 @@
 "adyen.voucher.entity" = "Entitás";
 "adyen.pix.instructions" = "A fizetés végrehajtásához a banki alkalmazással olvassa be a QR-kódot, vagy másolja ki az alábbi PIX-kódot.";
 "adyen.pix.expirationLabel" = "Fizetéshez rendelkezésre álló idő: %@";
-"adyen.pix.code.copy.label" = "PIX-kód másolása";
+"adyen.pix.copyButton" = "Kód másolása";
 "adyen.pix.instructions.copiedMessage" = "Kód a vágólapra másolva";
+"adyen.pix.code.copy.label" = "PIX-kód másolása";
+"adyen.pix.code.copied.label" = "PIX-kód másolva";
 "adyen.billingAddressSection.title" = "Számlázási cím";
 "adyen.billingAddress.placeholder" = "Az Ön számlázási címe";
 "adyen.deliveryAddressSection.title" = "Szállítási cím";

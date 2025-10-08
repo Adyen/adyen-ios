@@ -86,8 +86,10 @@
 "adyen.voucher.entity" = "Subjektas";
 "adyen.pix.instructions" = "Norėdami užbaigti mokėjimą, savo banko programėle nuskaitykite QR kodą arba nukopijuokite toliau pateiktą PIX kodą.";
 "adyen.pix.expirationLabel" = "Jūs turite mokėti %@";
-"adyen.pix.code.copy.label" = "Kopijuoti „PIX“ kodą";
+"adyen.pix.copyButton" = "Kopijuoti kodą";
 "adyen.pix.instructions.copiedMessage" = "Į iškarpinę nukopijuotas kodas";
+"adyen.pix.code.copy.label" = "Kopijuoti „PIX“ kodą";
+"adyen.pix.code.copied.label" = "„PIX“ kodas nukopijuotas";
 "adyen.billingAddressSection.title" = "Sąskaitų siuntimo adresas";
 "adyen.billingAddress.placeholder" = "Jūsų sąskaitų siuntimo adresas";
 "adyen.deliveryAddressSection.title" = "Pristatymo adresas";

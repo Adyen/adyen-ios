@@ -100,7 +100,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
     internal var onCopyButtonTitle: String {
         switch flowType {
         case .copyCode:
-            return "PIX code copied"
+            return localizedString(.pixCodeCopiedLabel, localizationParameters)
         case .saveAsImage:
             return localizedString(.voucherSaveImage, localizationParameters)
         }

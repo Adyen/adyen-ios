@@ -86,8 +86,10 @@
 "adyen.voucher.entity" = "الكيان";
 "adyen.pix.instructions" = "استخدم تطبيق الخدمات البنكية لمسح رمز الاستجابة السريعة أو انسخ رمز PIX أدناه لإتمام عملية الدفع.";
 "adyen.pix.expirationLabel" = "لديك %@ للدفع";
-"adyen.pix.code.copy.label" = "انسخ رمز PIX";
+"adyen.pix.copyButton" = "نسخ الرمز";
 "adyen.pix.instructions.copiedMessage" = "تم نسخ الرمز إلى الحافظة";
+"adyen.pix.code.copy.label" = "انسخ رمز PIX";
+"adyen.pix.code.copied.label" = "تم نسخ رمز PIX";
 "adyen.billingAddressSection.title" = "عنوان الفواتير";
 "adyen.billingAddress.placeholder" = "عنوانك الخاص بإرسال الفواتير";
 "adyen.deliveryAddressSection.title" = "عنوان التسليم";

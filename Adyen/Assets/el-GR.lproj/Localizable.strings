@@ -86,8 +86,10 @@
 "adyen.voucher.entity" = "Οντότητα";
 "adyen.pix.instructions" = "Χρησιμοποιήστε την εφαρμογή τραπεζικής σας για να σαρώσετε τον κωδικό QR ή αντιγράψτε τον κωδικό Pix παρακάτω για να ολοκληρώσετε την πληρωμή σας.";
 "adyen.pix.expirationLabel" = "Έχετε στη διάθεσή σας %@ για την πληρωμή";
-"adyen.pix.code.copy.label" = "Αντιγραφή κωδικού PIX";
+"adyen.pix.copyButton" = "Αντιγραφή κωδικού";
 "adyen.pix.instructions.copiedMessage" = "Ο κωδικός αντιγράφτηκε στο πρόχειρο";
+"adyen.pix.code.copy.label" = "Αντιγραφή κωδικού PIX";
+"adyen.pix.code.copied.label" = "Ο κωδικός PIX αντιγράφηκε";
 "adyen.billingAddressSection.title" = "Διεύθυνση τιμολόγησης";
 "adyen.billingAddress.placeholder" = "Η διεύθυνση τιμολόγησής σας";
 "adyen.deliveryAddressSection.title" = "Διεύθυνση παράδοσης";

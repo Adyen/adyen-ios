@@ -82,8 +82,10 @@
 "adyen.voucher.entity" = "实体";
 "adyen.pix.instructions" = "使用您的银行应用程序扫描二维码或复制下方的 PIX 代码以完成支付。";
 "adyen.pix.expirationLabel" = "您有 %@ 可以支付";
-"adyen.pix.code.copy.label" = "复制 PIX 代码";
+"adyen.pix.copyButton" = "复制代码";
 "adyen.pix.instructions.copiedMessage" = "代码复制到剪贴板";
+"adyen.pix.code.copy.label" = "复制 PIX 代码";
+"adyen.pix.code.copied.label" = "PIX 代码已复制";
 "adyen.billingAddressSection.title" = "账单地址";
 "adyen.billingAddress.placeholder" = "您的账单地址";
 "adyen.deliveryAddressSection.title" = "寄送地址";
