@@ -20,8 +20,56 @@ extension CardViewController {
     }
 
     internal final class ItemsProvider {
+        /// Helper method to create a text field style based on theme
+        private func createTextFieldStyleFromTheme(theme: AdyenTheme) -> FormTextItemStyle {
+            let themeTextFieldStyle = theme.textFieldStyle
+            
+            let titleStyle = TextStyle(
+                font: themeTextFieldStyle.title.font,
+                color: themeTextFieldStyle.title.color,
+                textAlignment: themeTextFieldStyle.title.textAlignment,
+                backgroundColor: themeTextFieldStyle.backgroundColor
+            )
+            
+            let textStyle = TextStyle(
+                font: themeTextFieldStyle.text.font,
+                color: themeTextFieldStyle.text.color,
+                textAlignment: themeTextFieldStyle.text.textAlignment,
+                backgroundColor: themeTextFieldStyle.backgroundColor
+            )
+            
+            let placeholderStyle = TextStyle(
+                font: themeTextFieldStyle.placeholder.font,
+                color: themeTextFieldStyle.placeholder.color,
+                textAlignment: themeTextFieldStyle.placeholder.textAlignment,
+                backgroundColor: themeTextFieldStyle.backgroundColor
+            )
 
+            let iconStyle = ImageStyle(
+                borderColor: themeTextFieldStyle.borderColor,
+                borderWidth: themeTextFieldStyle.borderWidth,
+                cornerRadius: AdyenUIConstants.defaultCornerRadius,
+                clipsToBounds: true,
+                contentMode: .scaleAspectFit
+            )
+            
+            var style = FormTextItemStyle(
+                title: titleStyle,
+                text: textStyle,
+                placeholderText: placeholderStyle,
+                icon: iconStyle
+            )
+
+            // adding those that are not available via init
+            style.backgroundColor = themeTextFieldStyle.backgroundColor
+            style.errorColor = themeTextFieldStyle.errorColor
+            style.separatorColor = themeTextFieldStyle.borderColor
+            
+            return style
+        }
+        
         private let formStyle: FormComponentStyle
+        private let theme: AdyenTheme
         private let amount: Amount?
         private var localizationParameters: LocalizationParameters?
         private let configuration: CardComponent.Configuration
@@ -39,6 +87,7 @@ extension CardViewController {
 
         internal init(
             formStyle: FormComponentStyle,
+            theme: AdyenTheme,
             payment: Payment?,
             configuration: CardComponent.Configuration,
             shopperInformation: PrefilledShopperInformation?,
@@ -63,6 +112,7 @@ extension CardViewController {
             self.presenter = .init(presenter)
             self.addressMode = addressMode
             self.scanCardHandler = scanCardHandler
+            self.theme = theme
         }
         
         internal lazy var billingAddressPickerItem: FormAddressPickerItem? = {
@@ -95,7 +145,8 @@ extension CardViewController {
         }
 
         internal lazy var postalCodeItem: FormPostalCodeItem = {
-            let zipCodeItem = FormPostalCodeItem(style: formStyle.textField, localizationParameters: localizationParameters)
+            let style = createTextFieldStyleFromTheme(theme: theme)
+            let zipCodeItem = FormPostalCodeItem(style: style, localizationParameters: localizationParameters)
             zipCodeItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "postalCodeItem")
             
             setupEventTriggers(for: zipCodeItem, target: .addressPostalCode)
@@ -104,10 +155,11 @@ extension CardViewController {
         }()
 
         internal lazy var numberContainerItem: FormCardNumberContainerItem = {
+            let style = createTextFieldStyleFromTheme(theme: theme)
             let item = FormCardNumberContainerItem(
                 cardTypeLogos: cardLogos,
                 showsSupportedCardLogos: configuration.showsSupportedCardLogos,
-                style: formStyle.textField,
+                style: style,
                 localizationParameters: localizationParameters,
                 scanCardHandler: scanCardHandler
             )
@@ -119,8 +171,9 @@ extension CardViewController {
         }()
 
         internal lazy var expiryDateItem: FormCardExpiryDateItem = {
+            let style = createTextFieldStyleFromTheme(theme: theme)
             let expiryDateItem = FormCardExpiryDateItem(
-                style: formStyle.textField,
+                style: style,
                 localizationParameters: localizationParameters
             )
             expiryDateItem.localizationParameters = localizationParameters
@@ -132,8 +185,9 @@ extension CardViewController {
         }()
 
         internal lazy var securityCodeItem: FormCardSecurityCodeItem = {
+            let style = createTextFieldStyleFromTheme(theme: theme)
             let securityCodeItem = FormCardSecurityCodeItem(
-                style: formStyle.textField,
+                style: style,
                 localizationParameters: localizationParameters
             )
             securityCodeItem.localizationParameters = localizationParameters
@@ -145,7 +199,8 @@ extension CardViewController {
         }()
 
         internal lazy var holderNameItem: FormTextInputItem = {
-            let holderNameItem = FormTextInputItem(style: formStyle.textField)
+            let style = createTextFieldStyleFromTheme(theme: theme)
+            let holderNameItem = FormTextInputItem(style: style)
             holderNameItem.title = localizedString(.cardNameItemTitle, localizationParameters)
             holderNameItem.placeholder = localizedString(.cardNameItemPlaceholder, localizationParameters)
             holderNameItem.validator = CardHolderNameValidator()
@@ -184,7 +239,8 @@ extension CardViewController {
         }()
 
         internal lazy var additionalAuthCodeItem: FormTextInputItem = {
-            var additionalItem = FormTextInputItem(style: formStyle.textField)
+            let style = createTextFieldStyleFromTheme(theme: theme)
+            var additionalItem = FormTextInputItem(style: style)
             additionalItem.title = localizedString(.cardTaxNumberLabelShort, localizationParameters)
             additionalItem.placeholder = localizedString(.cardTaxNumberPlaceholder, localizationParameters)
             additionalItem.validator = CardKCPFieldValidator()
@@ -200,7 +256,8 @@ extension CardViewController {
         }()
 
         internal lazy var additionalAuthPasswordItem: FormTextInputItem = {
-            var additionalItem = FormTextInputItem(style: formStyle.textField)
+            let style = createTextFieldStyleFromTheme(theme: theme)
+            var additionalItem = FormTextInputItem(style: style)
             additionalItem.title = localizedString(.cardEncryptedPasswordLabel, localizationParameters)
             additionalItem.placeholder = localizedString(.cardEncryptedPasswordPlaceholder, localizationParameters)
             additionalItem.validator = CardKCPPasswordValidator()
@@ -216,7 +273,8 @@ extension CardViewController {
         }()
 
         internal lazy var socialSecurityNumberItem: FormTextInputItem = {
-            var securityNumberItem = FormTextInputItem(style: formStyle.textField)
+            let style = createTextFieldStyleFromTheme(theme: theme)
+            var securityNumberItem = FormTextInputItem(style: style)
             securityNumberItem.title = localizedString(.boletoSocialSecurityNumber, localizationParameters)
             securityNumberItem.placeholder = localizedString(.cardBrazilSSNPlaceholder, localizationParameters)
             securityNumberItem.formatter = BrazilSocialSecurityNumberFormatter()
