@@ -14,7 +14,10 @@ class ImageLoaderMock: ImageLoading {
     
     var cancellable: AdyenCancellable = CancellableMock(onCancelHandler: {})
     
+    var loadCallsCount = 0
+    var loadWasCalled: Bool { loadCallsCount > 0 }
     func load(url: URL, completion: @escaping ((UIImage?) -> Void)) -> any AdyenCancellable {
+        loadCallsCount += 1
         DispatchQueue.main.async {
             completion(self.imageProvider(url))
         }
