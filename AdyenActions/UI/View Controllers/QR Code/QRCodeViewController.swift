@@ -57,7 +57,7 @@ internal final class QRCodeViewController: UIViewController {
         return imageView
     }()
     
-    private lazy var instructionLabel: UILabel = {
+    internal private(set) lazy var instructionLabel: UILabel = {
         let instructionLabel = UILabel(style: style.instructionLabel)
         instructionLabel.text = viewModel.instructionText
         instructionLabel.numberOfLines = 0
@@ -68,9 +68,9 @@ internal final class QRCodeViewController: UIViewController {
         return instructionLabel
     }()
     
-    private lazy var qrCodeView = QRCodeView(viewModel: viewModel, style: style)
+    internal private(set) lazy var qrCodeView = QRCodeView(viewModel: viewModel, style: style)
     
-    private lazy var actionButton: SubmitButton = {
+    internal private(set) lazy var actionButton: SubmitButton = {
         switch viewModel.flowType {
         case .copyCode:
             let button = SubmitButton(style: style.copyCodeButton)
@@ -93,7 +93,7 @@ internal final class QRCodeViewController: UIViewController {
         }
     }()
     
-    private lazy var copyCodeLabel: CopyLabelView? = {
+    internal private(set) lazy var copyCodeLabel: CopyLabelView? = {
         guard case .copyCode = viewModel.flowType else { return nil }
         
         let textStyle = TextStyle(
@@ -155,12 +155,12 @@ internal final class QRCodeViewController: UIViewController {
     
     // MARK: - Actions
     
-    @objc private func saveQRCodeImage() {
+    @objc internal func saveQRCodeImage() {
         let image = qrCodeView.imageView.adyen.snapshot()
         viewModel.saveQRCode(image: image, sourceView: view)
     }
     
-    @objc private func copyCode() {
+    @objc internal func copyCode() {
         viewModel.copyCode()
         animateCopyButton()
     }

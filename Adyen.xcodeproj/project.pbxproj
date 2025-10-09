@@ -309,7 +309,6 @@
 		81DF94292BAAD8EB0001DCBC /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 81DF94072BAAD8EB0001DCBC /* SnapshotTesting */; };
 		81E031942A0A75F200EA965E /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67461F264262F000E9184D /* ConfigurationView.swift */; };
 		81E031952A0A75F800EA965E /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54600E264433CD00724A87 /* SearchBar.swift */; };
-		81E4231B2C74DC3600349A5E /* String+QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E4231A2C74DC3600349A5E /* String+QRCode.swift */; };
 		81EA6C122A44836E0071A141 /* FormAddressItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EA6C112A44836E0071A141 /* FormAddressItemTests.swift */; };
 		81EE958A2BB1D700006B21CB /* ImageLoader+DependencyKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE95892BB1D700006B21CB /* ImageLoader+DependencyKey.swift */; };
 		81EE958D2BB2DC98006B21CB /* UIImageView+ImageLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE958C2BB2DC98006B21CB /* UIImageView+ImageLoading.swift */; };
@@ -606,6 +605,10 @@
 		C9D8EB9E27452D3B006D8CA1 /* BACSItemsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9D27452D3B006D8CA1 /* BACSItemsFactory.swift */; };
 		C9D8EBA02745556B006D8CA1 /* BACSDirectDebitDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9F2745556B006D8CA1 /* BACSDirectDebitDetails.swift */; };
 		C9D8EBA2274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */; };
+		C9DA53D92E97F5CF00D83C94 /* String+QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53D72E97F5CF00D83C94 /* String+QRCode.swift */; };
+		C9DA53DD2E97F65900D83C94 /* QRCodeViewModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53DC2E97F65900D83C94 /* QRCodeViewModelMock.swift */; };
+		C9DA53E12E97F6DE00D83C94 /* QRCodeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53DF2E97F6DE00D83C94 /* QRCodeViewControllerTests.swift */; };
+		C9DA53E32E97F71C00D83C94 /* QRCodeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */; };
 		C9DCCD122E3CE5B500B88C52 /* TestPresentingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DCCD112E3CE5B500B88C52 /* TestPresentingView.swift */; };
 		C9DCCD142E3CE83C00B88C52 /* FullScreenViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DCCD132E3CE83C00B88C52 /* FullScreenViewControllerTests.swift */; };
 		C9EEEFEC2D5516B300B7AFFC /* ExpirationDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EEEFEA2D5516B300B7AFFC /* ExpirationDateFormatter.swift */; };
@@ -1861,7 +1864,6 @@
 		81DC5A5C2A7BADB200DBF2D1 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		81DF942E2BAAD8EB0001DCBC /* GenerateSnapshots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GenerateSnapshots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		81DF942F2BAAD9A20001DCBC /* GenerateSnapshots.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GenerateSnapshots.xctestplan; sourceTree = "<group>"; };
-		81E4231A2C74DC3600349A5E /* String+QRCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+QRCode.swift"; sourceTree = "<group>"; };
 		81EA6C112A44836E0071A141 /* FormAddressItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAddressItemTests.swift; sourceTree = "<group>"; };
 		81EE95892BB1D700006B21CB /* ImageLoader+DependencyKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageLoader+DependencyKey.swift"; sourceTree = "<group>"; };
 		81EE958C2BB2DC98006B21CB /* UIImageView+ImageLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+ImageLoading.swift"; sourceTree = "<group>"; };
@@ -2073,6 +2075,10 @@
 		C9D8EB9D27452D3B006D8CA1 /* BACSItemsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSItemsFactory.swift; sourceTree = "<group>"; };
 		C9D8EB9F2745556B006D8CA1 /* BACSDirectDebitDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitDetails.swift; sourceTree = "<group>"; };
 		C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitPaymentMethod.swift; sourceTree = "<group>"; };
+		C9DA53D72E97F5CF00D83C94 /* String+QRCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+QRCode.swift"; sourceTree = "<group>"; };
+		C9DA53DC2E97F65900D83C94 /* QRCodeViewModelMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewModelMock.swift; sourceTree = "<group>"; };
+		C9DA53DF2E97F6DE00D83C94 /* QRCodeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewControllerTests.swift; sourceTree = "<group>"; };
+		C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewModelTests.swift; sourceTree = "<group>"; };
 		C9DCCD112E3CE5B500B88C52 /* TestPresentingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPresentingView.swift; sourceTree = "<group>"; };
 		C9DCCD132E3CE83C00B88C52 /* FullScreenViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewControllerTests.swift; sourceTree = "<group>"; };
 		C9EEEFEA2D5516B300B7AFFC /* ExpirationDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationDateFormatter.swift; sourceTree = "<group>"; };
@@ -3194,11 +3200,11 @@
 		5A64570D2625CB02001824F0 /* QR Code */ = {
 			isa = PBXGroup;
 			children = (
-				C92960022E95401E00BC97CF /* Views */,
+				C9DA53D82E97F5CF00D83C94 /* Extensions */,
 				C923A8212E90015C004AC234 /* Models */,
 				0058691628B6450900B65A19 /* QRCodeViewController.swift */,
 				0058691828B6451000B65A19 /* QRCodeViewModel.swift */,
-				81E4231A2C74DC3600349A5E /* String+QRCode.swift */,
+				C92960022E95401E00BC97CF /* Views */,
 			);
 			path = "QR Code";
 			sourceTree = "<group>";
@@ -4039,6 +4045,24 @@
 			path = Scenes;
 			sourceTree = "<group>";
 		};
+		C9DA53D82E97F5CF00D83C94 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C9DA53D72E97F5CF00D83C94 /* String+QRCode.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		C9DA53DB2E97F63200D83C94 /* QRCode */ = {
+			isa = PBXGroup;
+			children = (
+				C9DA53DC2E97F65900D83C94 /* QRCodeViewModelMock.swift */,
+				C9DA53DF2E97F6DE00D83C94 /* QRCodeViewControllerTests.swift */,
+				C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */,
+			);
+			path = QRCode;
+			sourceTree = "<group>";
+		};
 		C9DCCD0E2E3CE57300B88C52 /* AdyenSwiftUI */ = {
 			isa = PBXGroup;
 			children = (
@@ -4841,6 +4865,7 @@
 			children = (
 				E7975F952880253400A12C40 /* ActionComponent */,
 				F9639B4E24E29D080073F38A /* Await */,
+				C9DA53DB2E97F63200D83C94 /* QRCode */,
 				E9021DF0225CC6BD009CF7F4 /* Redirect */,
 				F9C5F0DB25CAB8DB005A6E54 /* Voucher */,
 			);
@@ -7742,6 +7767,7 @@
 				C927084027590FE800D15EA0 /* BACSInputPresenterTests.swift in Sources */,
 				A009837D279859DC007E68C4 /* ACHDirectDebitComponentTests.swift in Sources */,
 				81BBB34B2A692F6500AF1F9E /* FormPickerSearchViewControllerTests.swift in Sources */,
+				C9DA53E32E97F71C00D83C94 /* QRCodeViewModelTests.swift in Sources */,
 				8109FF4E2AD6D8A9000748C8 /* MockAddressLookupProvider.swift in Sources */,
 				E72521EE25517EB100533E35 /* BLIKComponentTests.swift in Sources */,
 				F9B019442611E965001F23FC /* EContextATMShareableVoucherViewProviderTests.swift in Sources */,
@@ -7772,6 +7798,7 @@
 				81FC2C982BB1BB68007F1316 /* URLProtocolMock.swift in Sources */,
 				F97BC2AD2668C63200F1D242 /* AppleWalletPassProviderTests.swift in Sources */,
 				F957AA6A2552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift in Sources */,
+				C9DA53DD2E97F65900D83C94 /* QRCodeViewModelMock.swift in Sources */,
 				A07355D7276B350F00530562 /* DocumentActionViewDelegateMock.swift in Sources */,
 				F99F085A2383EAC800EBB948 /* FormatterMock.swift in Sources */,
 				A0B4B9B12BC027DE00C99926 /* CardComponentEventTests.swift in Sources */,
@@ -7864,6 +7891,7 @@
 				A04E60DB27F30D900051C72C /* SessionDelegateMock.swift in Sources */,
 				F9AC61C424375F510062A00D /* PresentingViewControllerMock.swift in Sources */,
 				5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */,
+				C9DA53E12E97F6DE00D83C94 /* QRCodeViewControllerTests.swift in Sources */,
 				F9885435272C17BD00F34557 /* PaymentMethodListComponentDelegateMock.swift in Sources */,
 				8100F2C02A4C37E4008C09E7 /* FormSelectableItemViewTests.swift in Sources */,
 				E9021DF2225CC6D0009CF7F4 /* RedirectDetailsTests.swift in Sources */,
@@ -8179,11 +8207,11 @@
 				F9175FFA259499D500D653BE /* AwaitViewController.swift in Sources */,
 				21C711112D67FE6B00A08111 /* ThreeDSServiceChallengeError.swift in Sources */,
 				21CBEF642D8B0A0700178809 /* ThreeDSServiceProvider.swift in Sources */,
+				C9DA53D92E97F5CF00D83C94 /* String+QRCode.swift in Sources */,
 				F96757C327CF909900A16FB6 /* AnyWeChatPaySDKActionComponent.swift in Sources */,
 				F9175FD22594999600D653BE /* RedirectComponent.swift in Sources */,
 				00165FE02C05DA8600347399 /* RedireactableAwaitAction.swift in Sources */,
 				F9237D3D28CB470E004F9929 /* ThreeDS2ClassicActionHandler+Initializers.swift in Sources */,
-				81E4231B2C74DC3600349A5E /* String+QRCode.swift in Sources */,
 				8182AAB72B95D3560087568E /* Twint+Injectable.swift in Sources */,
 				F97C851625C192D000D7F85C /* VoucherViewController.swift in Sources */,
 				C92960042E95402500BC97CF /* QRCodeView.swift in Sources */,
