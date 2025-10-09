@@ -30,6 +30,9 @@ public struct AdyenTextFieldStyle {
     /// The border color of the element
     package var borderColor: UIColor
     
+    /// The border color of the element in active state
+    package var borderActiveColor: UIColor
+
     /// The border width of the element
     package var borderWidth: CGFloat = AdyenUIConstants.defaultBorderWidth
     
@@ -46,6 +49,7 @@ public struct AdyenTextFieldStyle {
         errorColor: UIColor = AdyenColorScheme.default.destructive,
         cornerRadius: CornerRounding,
         borderColor: UIColor = AdyenColorScheme.default.outline,
+        borderActiveColor: UIColor = AdyenColorScheme.default.outlineActive,
         borderWidth: CGFloat
     ) {
         self.title = title
@@ -55,6 +59,7 @@ public struct AdyenTextFieldStyle {
         self.cornerRadius = cornerRadius
         self.borderColor = borderColor
         self.borderWidth = borderWidth
+        self.borderActiveColor = borderActiveColor
         self.placeholder = placeholder
     }
 
@@ -67,6 +72,7 @@ public struct AdyenTextFieldStyle {
         self.errorColor = AdyenColorScheme.default.destructive
         self.cornerRadius = CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius)
         self.borderColor = AdyenColorScheme.default.outline
+        self.borderActiveColor = AdyenColorScheme.default.outlineActive
         self.borderWidth = AdyenUIConstants.defaultBorderWidth
     }
 }
@@ -110,6 +116,15 @@ extension AdyenTextFieldStyle {
         return newStyle
     }
     
+    /// Returns a new style with the specified border color for active state.
+    /// - Parameter borderActiveColor: The color to set.
+    /// - Returns: A new `AdyenTextFieldStyle` instance.
+    public func borderActiveColor(borderActiveColor: UIColor) -> AdyenTextFieldStyle {
+        var newStyle = self
+        newStyle.borderActiveColor = borderActiveColor
+        return newStyle
+    }
+
     /// Returns a new style with the specified border width.
     /// - Parameter borderWidth: The border width to set.
     /// - Returns: A new `AdyenTextFieldStyle` instance.
