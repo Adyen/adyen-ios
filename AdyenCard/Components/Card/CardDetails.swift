@@ -57,6 +57,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
     public let socialSecurityNumber: String?
 
     /// The 3DS2 SDK version.
+    @available(*, deprecated, message: "This property is deprecated. Use the new sdkData property of the PaymentComponentData object instead.")
     public let threeDS2SDKVersion: String = threeDS2SdkVersion
     
     /// Brand of the card.
@@ -157,3 +158,10 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
 
 @_spi(AdyenInternal)
 extension CardDetails: DelegatedAuthenticationAware {}
+
+@_spi(AdyenInternal)
+extension CardDetails: SDKDataAuthenticationProvider {
+    public var authentication: SDKData.Authentication {
+        .init(threeDS2SdkVersion: threeDS2SdkVersion)
+    }
+}

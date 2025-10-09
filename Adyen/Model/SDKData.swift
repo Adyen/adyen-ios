@@ -1,0 +1,54 @@
+//
+// Copyright (c) 2025 Adyen N.V.
+//
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//
+
+import Foundation
+
+@_spi(AdyenInternal)
+public struct SDKData: Codable {
+    
+    internal struct Analytics: Codable {
+        let checkoutAttemptId: String
+    }
+    
+    public struct Authentication: Codable {
+        let threeDS2SdkVersion: String
+        
+        public init(threeDS2SdkVersion: String) {
+            self.threeDS2SdkVersion = threeDS2SdkVersion
+        }
+    }
+    
+    private let analytics: Analytics
+    private var authentication: Authentication?
+    private let supportNativeRedirect: Bool = true
+    private let schemaVersion: String = "1.0"
+    private let timestamp = Int(Date().timeIntervalSince1970 * 1000)
+    
+    internal var encodedValue: String? {
+        try? AdyenCoder.encodeBase64(self)
+    }
+    
+    internal init(
+        checkoutAttemptId: String,
+        authenticationProvider: SDKDataAuthenticationProvider? = nil
+    ) {
+        self.analytics = .init(checkoutAttemptId: checkoutAttemptId)
+        self.authentication = authenticationProvider?.authentication
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case analytics
+        case authentication
+        case supportNativeRedirect
+        case schemaVersion
+        case timestamp = "createdAt"
+    }
+}
+
+@_spi(AdyenInternal)
+public protocol SDKDataAuthenticationProvider {
+    var authentication: SDKData.Authentication { get }
+}

@@ -40,7 +40,6 @@ internal struct PaymentsRequest: APIRequest {
         }
         
         try container.encode(data.paymentMethod.encodable, forKey: .details)
-        try container.encode(data.supportNativeRedirect, forKey: .supportNativeRedirect)
         try container.encode(data.storePaymentMethod, forKey: .storePaymentMethod)
         try container.encodeIfPresent(
             data.delegatedAuthenticationData,
@@ -69,7 +68,7 @@ internal struct PaymentsRequest: APIRequest {
         try container.encodeIfPresent(data.installments, forKey: .installments)
         try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
         try container.encode(ConfigurationConstants.recurringProcessingModel, forKey: .recurringProcessingModel)
-        try container.encodeIfPresent(data.checkoutAttemptId, forKey: .checkoutAttemptId)
+        try container.encodeIfPresent(data.sdkData, forKey: .sdkData)
         try container.encode(ConfigurationConstants.mandate, forKey: .mandate)
     }
     
@@ -96,7 +95,6 @@ internal struct PaymentsRequest: APIRequest {
     
     private enum CodingKeys: String, CodingKey {
         case details = "paymentMethod"
-        case supportNativeRedirect
         case storePaymentMethod
         case amount
         case reference
@@ -108,7 +106,6 @@ internal struct PaymentsRequest: APIRequest {
         case additionalData
         case merchantAccount
         case browserInfo
-        case checkoutAttemptId
         case shopperName
         case telephoneNumber
         case shopperLocale
@@ -121,6 +118,7 @@ internal struct PaymentsRequest: APIRequest {
         case delegatedAuthenticationData
         case recurringProcessingModel
         case mandate
+        case sdkData
     }
     
 }

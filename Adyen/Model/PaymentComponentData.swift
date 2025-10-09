@@ -8,7 +8,7 @@ import Foundation
 
 /**
  The data supplied by a payment component upon completion.
-
+ 
  - SeeAlso:
  [API Reference](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__example_payments-klarna)
  */
@@ -36,6 +36,7 @@ public struct PaymentComponentData {
     public let installments: Installments?
     
     /// Indicates whether the current SDK version suports native redirect without glue pages.
+    @available(*, deprecated, message: "This property is deprecated. Use the new sdkData property instead.")
     public let supportNativeRedirect: Bool = true
 
     /// Shopper name.
@@ -60,6 +61,7 @@ public struct PaymentComponentData {
     public let browserInfo: BrowserInfo?
 
     /// A unique identifier for a checkout attempt.
+    @available(*, deprecated, message: "This property is deprecated. Use the new sdkData property instead.")
     public var checkoutAttemptId: String? {
         paymentMethod.checkoutAttemptId
     }
@@ -87,6 +89,10 @@ public struct PaymentComponentData {
         return paymentMethod.delegatedAuthenticationData
     }
     
+    /// An ecnoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum reliability.
+    public var sdkData: String?
+    
     /// Initializes the payment component data.
     ///
     ///
@@ -98,6 +104,7 @@ public struct PaymentComponentData {
     ///   - browserInfo: The device default browser info.
     ///   - checkoutAttemptId: The checkoutAttempt identifier.
     ///   - installments: Installments selection if specified.
+    ///   - sdkData: The encoded SDK data if specified.
     @_spi(AdyenInternal)
     public init(
         paymentMethodDetails: some PaymentMethodDetails,
@@ -105,7 +112,8 @@ public struct PaymentComponentData {
         order: PartialPaymentOrder?,
         storePaymentMethod: Bool? = nil,
         browserInfo: BrowserInfo? = nil,
-        installments: Installments? = nil
+        installments: Installments? = nil,
+        sdkData: String? = nil
     ) {
         self.amount = amount
         self.paymentMethod = paymentMethodDetails
@@ -113,6 +121,19 @@ public struct PaymentComponentData {
         self.storePaymentMethod = storePaymentMethod
         self.browserInfo = browserInfo
         self.installments = installments
+        self.sdkData = sdkData
+    }
+    
+    internal func replacing(sdkData: SDKData) -> PaymentComponentData {
+        PaymentComponentData(
+            paymentMethodDetails: paymentMethod,
+            amount: amount,
+            order: order,
+            storePaymentMethod: storePaymentMethod,
+            browserInfo: browserInfo,
+            installments: installments,
+            sdkData: sdkData.encodedValue
+        )
     }
 
     @_spi(AdyenInternal)
@@ -123,7 +144,8 @@ public struct PaymentComponentData {
             order: order,
             storePaymentMethod: storePaymentMethod,
             browserInfo: browserInfo,
-            installments: installments
+            installments: installments,
+            sdkData: sdkData
         )
     }
 
@@ -135,7 +157,8 @@ public struct PaymentComponentData {
             order: order,
             storePaymentMethod: storePaymentMethod,
             browserInfo: browserInfo,
-            installments: installments
+            installments: installments,
+            sdkData: sdkData
         )
     }
 
@@ -150,7 +173,8 @@ public struct PaymentComponentData {
             order: order,
             storePaymentMethod: storePaymentMethod,
             browserInfo: browserInfo,
-            installments: installments
+            installments: installments,
+            sdkData: sdkData
         )
     }
     
@@ -168,7 +192,8 @@ public struct PaymentComponentData {
                 order: order,
                 storePaymentMethod: storePaymentMethod,
                 browserInfo: $0,
-                installments: installments
+                installments: installments,
+                sdkData: sdkData
             ))
         }
     }

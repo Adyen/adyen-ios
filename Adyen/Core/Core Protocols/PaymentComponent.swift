@@ -33,16 +33,30 @@ extension PaymentComponent {
         sendSubmitEvent()
         
         let component = component ?? self
-        let checkoutAttemptId = component.context.analyticsProvider?.checkoutAttemptId ?? AnalyticsConstants.fetchCheckoutAttemptIdFailed
-        let updatedData = data.replacing(checkoutAttemptId: checkoutAttemptId)
-
-        guard updatedData.browserInfo == nil else {
-            delegate?.didSubmit(updatedData, from: component)
-            return
+        
+        prepareSubmitData(from: data) { [weak self] updatedData in
+            guard let self else { return }
+            self.delegate?.didSubmit(updatedData, from: component)
         }
-        updatedData.dataByAddingBrowserInfo { [weak self] in
-            self?.delegate?.didSubmit($0, from: component)
-        }
+    }
+    
+    public var checkoutAttemptId: String {
+        context.analyticsProvider?.checkoutAttemptId ?? AnalyticsConstants.fetchCheckoutAttemptIdFailed
+    }
+    
+    /// Adds SDK related info to payment data object and returns the final data in the completion.
+    public func prepareSubmitData(from data: PaymentComponentData, completion: @escaping (PaymentComponentData) -> Void) {
+        
+        let sdkData = SDKData(
+            checkoutAttemptId: checkoutAttemptId,
+            authenticationProvider: data.paymentMethod as? SDKDataAuthenticationProvider
+        )
+        
+        let updatedData = data
+            .replacing(checkoutAttemptId: checkoutAttemptId)
+            .replacing(sdkData: sdkData)
+        
+        updatedData.dataByAddingBrowserInfo(completion: completion)
     }
     
     private func sendSubmitEvent() {
