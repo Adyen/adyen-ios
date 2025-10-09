@@ -7,7 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenActions
 
-final class QRCodeViewDelegateMock: QRCodeViewDelegate {
+final class QRCodeViewDelegateMock {
 
     var saveAsImageCallsCount = 0
     var copyToPasteboardCount = 0
@@ -27,5 +27,4 @@ final class QRCodeViewDelegateMock: QRCodeViewDelegate {
     func copyToPasteboard(with action: QRCodeAction) {
         copyToPasteboardCount += 1
     }
-
 }

@@ -589,7 +589,6 @@
 		C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */; };
 		C98FF6672C5A793A00B0050D /* StoredTwintPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98FF6662C5A793A00B0050D /* StoredTwintPaymentMethod.swift */; };
 		C99AA1422D6DF6480043AA96 /* CardScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99AA1412D6DF6480043AA96 /* CardScanner.swift */; };
-		C99F2D732E8EC2A6008F2696 /* CopyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99F2D722E8EC2A6008F2696 /* CopyButton.swift */; };
 		C99FF2BB2D50E872007179C5 /* CardScannerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99FF2B22D50E872007179C5 /* CardScannerError.swift */; };
 		C99FF2BC2D50E872007179C5 /* CreditCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99FF2B32D50E872007179C5 /* CreditCard.swift */; };
 		C99FF2BD2D50E872007179C5 /* CardImageParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99FF2B52D50E872007179C5 /* CardImageParser.swift */; };
@@ -2053,7 +2052,6 @@
 		C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmPaymentMethod.swift; sourceTree = "<group>"; };
 		C98FF6662C5A793A00B0050D /* StoredTwintPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredTwintPaymentMethod.swift; sourceTree = "<group>"; };
 		C99AA1412D6DF6480043AA96 /* CardScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScanner.swift; sourceTree = "<group>"; };
-		C99F2D722E8EC2A6008F2696 /* CopyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyButton.swift; sourceTree = "<group>"; };
 		C99FF2B22D50E872007179C5 /* CardScannerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerError.swift; sourceTree = "<group>"; };
 		C99FF2B32D50E872007179C5 /* CreditCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCard.swift; sourceTree = "<group>"; };
 		C99FF2B52D50E872007179C5 /* CardImageParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImageParser.swift; sourceTree = "<group>"; };
@@ -4506,7 +4504,6 @@
 				F99D2F852665211600BB5B2F /* LoadingView.swift */,
 				81B001C52A56E9D40015BFA3 /* LinkTextView.swift */,
 				81DC5A5C2A7BADB200DBF2D1 /* EmptyStateView.swift */,
-				C99F2D722E8EC2A6008F2696 /* CopyButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -7643,7 +7640,6 @@
 				F9172F742643E0D200985310 /* OrderStatusResponse.swift in Sources */,
 				E270FDE9225CC4B1006C2CD0 /* ObservationManager.swift in Sources */,
 				81B001C22A55C5C10015BFA3 /* UISearchBar+Prominent.swift in Sources */,
-				C99F2D732E8EC2A6008F2696 /* CopyButton.swift in Sources */,
 				F99D453E2627165400880D72 /* FormErrorItem.swift in Sources */,
 				E2D12BF1221D561600EF682F /* FormValueItemView.swift in Sources */,
 				F9639B3B24E14A940073F38A /* APIError.swift in Sources */,

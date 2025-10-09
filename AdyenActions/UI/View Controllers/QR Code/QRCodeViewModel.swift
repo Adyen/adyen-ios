@@ -20,6 +20,7 @@ internal protocol QRCodeViewModelProtocol {
     
     func loadLogoImage(completion: @escaping (UIImage?) -> Void)
     func saveQRCode(image: UIImage?, sourceView: UIView)
+    func copyCode()
 }
 
 internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
@@ -30,6 +31,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
     private let logoUrl: URL
     private let imageLoader: ImageLoading
     private let onSaveQRCode: (_ image: UIImage?, _ sourceView: UIView) -> Void
+    private let onCopyCode: (_ code: String?) -> Void
     internal let observedProgress: Progress?
     internal let expiration: AdyenObservable<String?>
     internal let style: QRCodeViewStyle
@@ -51,7 +53,8 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
         style: QRCodeViewStyle,
         imageLoader: ImageLoading = ImageLoaderProvider.imageLoader(),
         localizationParameters: LocalizationParameters?,
-        onSaveQRCode: @escaping (_ image: UIImage?, _ sourceView: UIView) -> Void
+        onSaveQRCode: @escaping (_ image: UIImage?, _ sourceView: UIView) -> Void,
+        onCopyCode: @escaping (_ code: String?) -> Void
     ) {
         self.action = action
         self.instructionText = instructionText
@@ -63,6 +66,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
         self.imageLoader = imageLoader
         self.localizationParameters = localizationParameters
         self.onSaveQRCode = onSaveQRCode
+        self.onCopyCode = onCopyCode
         
         self.flowType = {
             switch action.paymentMethodType {
@@ -84,6 +88,10 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
     
     internal func saveQRCode(image: UIImage?, sourceView: UIView) {
         onSaveQRCode(image, sourceView)
+    }
+    
+    internal func copyCode() {
+        onCopyCode(qrCodeData)
     }
     
     // MARK: - Content

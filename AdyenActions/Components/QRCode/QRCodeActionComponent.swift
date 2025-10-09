@@ -218,11 +218,15 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
             observedProgress: progress,
             expiration: $expirationText,
             style: style,
-            localizationParameters: configuration.localizationParameters
-        ) { [weak self] image, sourceView in
-            self?.presentSharePopover(with: image as Any, sourceView: sourceView)
-        }
-        
+            localizationParameters: configuration.localizationParameters,
+            onSaveQRCode: { [weak self] image, sourceView in
+                self?.presentSharePopover(with: image as Any, sourceView: sourceView)
+            },
+            onCopyCode: { code in
+                UIPasteboard.general.string = code
+            }
+        )
+
         return QRCodeViewController(viewModel: viewModel)
     }
     

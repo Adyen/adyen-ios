@@ -70,22 +70,25 @@ internal final class QRCodeViewController: UIViewController {
     
     private lazy var qrCodeView = QRCodeView(viewModel: viewModel, style: style)
     
-    private lazy var actionButton: UIView = {
+    private lazy var actionButton: SubmitButton = {
         switch viewModel.flowType {
         case .copyCode:
-            let button = CopyButton(
-                title: viewModel.actionButtonTitle,
-                onCopyTitle: viewModel.onCopyButtonTitle,
-                value: viewModel.qrCodeData,
-                style: style.copyCodeButton
+            let button = SubmitButton(style: style.copyCodeButton)
+            button.title = viewModel.actionButtonTitle
+            button.addTarget(self, action: #selector(copyCode), for: .touchUpInside)
+            button.accessibilityIdentifier = ViewIdentifierBuilder.build(
+                scopeInstance: self,
+                postfix: ViewIdentifier.copyCodeButton
             )
-            button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.copyCodeButton)
             return button
         case .saveAsImage:
             let button = SubmitButton(style: style.saveAsImageButton)
             button.title = viewModel.actionButtonTitle
             button.addTarget(self, action: #selector(saveQRCodeImage), for: .touchUpInside)
-            button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.saveAsImageButton)
+            button.accessibilityIdentifier = ViewIdentifierBuilder.build(
+                scopeInstance: self,
+                postfix: ViewIdentifier.saveAsImageButton
+            )
             return button
         }
     }()
@@ -98,26 +101,11 @@ internal final class QRCodeViewController: UIViewController {
             color: UIColor.Adyen.componentLabel
         )
         let copyLabelView = CopyLabelView(
-            text: /* viewModel.qrCodeData */ "Arjen came with his son to the office and they had a great time.",
+            text: viewModel.qrCodeData,
             style: textStyle
         )
         copyLabelView.adyen.round(using: style.logoCornerRounding)
         copyLabelView.layoutMargins = .init(top: 8, left: 32, bottom: 8, right: 32)
-        
-//        let selectableLabel = UITextView()
-//        selectableLabel.text = "Your selectable text"
-//        selectableLabel.isEditable = false
-//        selectableLabel.isSelectable = true
-//        selectableLabel.isScrollEnabled = false
-//        selectableLabel.backgroundColor = .clear
-//        selectableLabel.textContainerInset = .zero
-//        selectableLabel.textContainer.lineFragmentPadding = 0
-//        selectableLabel.font = UIFont.systemFont(ofSize: 16)
-//        selectableLabel.textColor = .black
-//        selectableLabel.textAlignment = .left
-//        selectableLabel.isUserInteractionEnabled = true
-//        selectableLabel.textContainer.maximumNumberOfLines = 1
-//        selectableLabel.textContainer.lineBreakMode = .byTruncatingTail
         
         return copyLabelView
     }()
@@ -167,9 +155,29 @@ internal final class QRCodeViewController: UIViewController {
     
     // MARK: - Actions
     
-    @objc internal func saveQRCodeImage() {
+    @objc private func saveQRCodeImage() {
         let image = qrCodeView.imageView.adyen.snapshot()
         viewModel.saveQRCode(image: image, sourceView: view)
+    }
+    
+    @objc private func copyCode() {
+        viewModel.copyCode()
+        animateCopyButton()
+    }
+    
+    private func animateCopyButton() {
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+                
+        UIView.transition(with: actionButton, duration: 0.25, options: .transitionCrossDissolve, animations: {
+            self.actionButton.title = self.viewModel.onCopyButtonTitle
+        })
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            UIView.transition(with: self.view, duration: 0.25, options: .transitionCrossDissolve, animations: {
+                self.actionButton.title = self.viewModel.actionButtonTitle
+            })
+        }
     }
         
     // MARK: - Private
