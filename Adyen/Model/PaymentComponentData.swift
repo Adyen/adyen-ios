@@ -89,7 +89,7 @@ public struct PaymentComponentData {
         return paymentMethod.delegatedAuthenticationData
     }
     
-    /// An ecnoded string containing important SDK-specific data.
+    /// An encoded string containing important SDK-specific data.
     /// It is recommended to pass this field to your server to ensure maximum reliability.
     public var sdkData: String?
     
