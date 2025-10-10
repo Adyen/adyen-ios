@@ -14,9 +14,6 @@ public struct AdyenLabelStyle {
     /// The color of the text.
     public var color: UIColor
 
-    /// The color of the background
-    public var backgroundColor: UIColor
-
     /// The color of the text when the element is disabled.
     public var disabledColor: UIColor
 
@@ -30,19 +27,16 @@ public struct AdyenLabelStyle {
     ///
     /// - Parameter font: The font used to display the text.
     /// - Parameter color: The color of the text.
-    /// - Parameter backgroundColor: The color of the background.
     /// - Parameter disabledColor: The color of the text when the element is disabled.
     /// - Parameter textAlignment: The technique to use for aligning the text.
     public init(
         font: UIFont = AdyenFonts.default.body,
         color: UIColor = AdyenColorScheme.default.primary,
-        backgroundColor: UIColor = AdyenColorScheme.default.background,
         disabledColor: UIColor = AdyenColorScheme.default.textOnDisabled,
         textAlignment: NSTextAlignment = .left
     ) {
         self.font = font
         self.color = color
-        self.backgroundColor = backgroundColor
         self.disabledColor = disabledColor
         self.textAlignment = textAlignment
     }
@@ -50,7 +44,6 @@ public struct AdyenLabelStyle {
 //    public init() {
 //        self.font = AdyenFonts.default.body
 //        self.color = AdyenColorScheme.default.primary
-//        self.backgroundColor = backgroundColor
 //        self.disabledColor = AdyenColorScheme.default.disabled
 //        self.textAlignment = .natural
 //    }
@@ -100,7 +93,6 @@ package extension AdyenLabelStyle {
     var stringAttributes: [NSAttributedString.Key: Any] {
         var attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: color,
-            .backgroundColor: backgroundColor,
             .font: font
         ]
 
