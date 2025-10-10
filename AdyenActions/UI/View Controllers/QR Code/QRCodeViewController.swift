@@ -113,11 +113,13 @@ internal final class QRCodeViewController: UIViewController {
     // MARK: - Properties
     
     private let viewModel: QRCodeViewModelProtocol
+    private let style: QRCodeViewStyle
     
     // MARK: - Initializers
     
-    internal init(viewModel: QRCodeViewModelProtocol) {
+    internal init(viewModel: QRCodeViewModelProtocol, style: QRCodeViewStyle) {
         self.viewModel = viewModel
+        self.style = style
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -187,11 +189,7 @@ internal final class QRCodeViewController: UIViewController {
             self?.logoImageView.image = image
         }
     }
-    
-    private var style: QRCodeViewStyle {
-        viewModel.style
-    }
-    
+        
     private func buildViewHierarchy() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -251,6 +249,6 @@ internal final class QRCodeViewController: UIViewController {
     
     private func configureAppearance() {
         view.accessibilityIdentifier = ViewIdentifier.view
-        view.backgroundColor = viewModel.style.backgroundColor
+        view.backgroundColor = style.backgroundColor
     }
 }

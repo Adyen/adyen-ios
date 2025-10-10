@@ -217,7 +217,6 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
             logoUrl: url,
             observedProgress: progress,
             expiration: $expirationText,
-            style: style,
             localizationParameters: configuration.localizationParameters,
             onSaveQRCode: { [weak self] image, sourceView in
                 self?.presentSharePopover(with: image as Any, sourceView: sourceView)
@@ -227,7 +226,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
             }
         )
 
-        return QRCodeViewController(viewModel: viewModel)
+        return QRCodeViewController(viewModel: viewModel, style: style)
     }
     
     private func qrCodeInstructions(for action: QRCodeAction) -> String {

@@ -14,7 +14,6 @@ internal protocol QRCodeViewModelProtocol {
     var actionButtonTitle: String { get }
     var onCopyButtonTitle: String { get }
     var qrCodeData: String { get }
-    var style: QRCodeViewStyle { get }
     var expiration: AdyenObservable<String?> { get }
     var observedProgress: Progress? { get }
     
@@ -34,7 +33,6 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
     private let onCopyCode: (_ code: String?) -> Void
     internal let observedProgress: Progress?
     internal let expiration: AdyenObservable<String?>
-    internal let style: QRCodeViewStyle
     internal var localizationParameters: LocalizationParameters?
     
     internal let instructionText: String
@@ -50,7 +48,6 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
         logoUrl: URL,
         observedProgress: Progress?,
         expiration: AdyenObservable<String?>,
-        style: QRCodeViewStyle,
         imageLoader: ImageLoading = ImageLoaderProvider.imageLoader(),
         localizationParameters: LocalizationParameters?,
         onSaveQRCode: @escaping (_ image: UIImage?, _ sourceView: UIView) -> Void,
@@ -62,7 +59,6 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
         self.logoUrl = logoUrl
         self.observedProgress = observedProgress
         self.expiration = expiration
-        self.style = style
         self.imageLoader = imageLoader
         self.localizationParameters = localizationParameters
         self.onSaveQRCode = onSaveQRCode

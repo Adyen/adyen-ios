@@ -96,11 +96,11 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         waitForExpectations(timeout: 5, handler: nil)
     }
-     }
+}
 
-    // MARK: - Convenience
+// MARK: - Convenience
 
-     private extension QRCodeActionComponentUITests {
+private extension QRCodeActionComponentUITests {
 
     func wait(for qrCodeView: QRCodeView) {
         self.wait { qrCodeView.expirationLabel.text?.isEmpty == false }
