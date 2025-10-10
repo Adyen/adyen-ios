@@ -21,16 +21,6 @@ final class QRCodeViewModelTests: XCTestCase {
         saveCalled = false
         copyCalled = false
         
-        let style = QRCodeViewStyle(
-            copyCodeButton: .init(title: .init(font: .systemFont(ofSize: 16), color: .black)),
-            saveAsImageButton: .init(title: .init(font: .systemFont(ofSize: 16), color: .black)),
-            instructionLabel: .init(font: .systemFont(ofSize: 16), color: .black),
-            amountToPayLabel: .init(font: .systemFont(ofSize: 16), color: .black),
-            progressView: .init(progressTintColor: .blue, trackTintColor: .gray),
-            expirationLabel: .init(font: .systemFont(ofSize: 16), color: .black),
-            logoCornerRounding: .fixed(8),
-            backgroundColor: .white
-        )
         let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "123456", paymentData: "paymentData")
         sut = QRCodeViewModel(
             action: action,
@@ -39,7 +29,6 @@ final class QRCodeViewModelTests: XCTestCase {
             logoUrl: URL(string: "https://example.com/logo.png")!,
             observedProgress: nil,
             expiration: AdyenObservable(nil),
-            style: style,
             imageLoader: imageLoaderMock,
             localizationParameters: nil,
             onSaveQRCode: { _, _ in self.saveCalled = true },
