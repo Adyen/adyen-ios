@@ -38,7 +38,10 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     AnyFormTextItemView {
     
     override public var accessibilityLabelView: UIView? { textField }
-    
+
+    // TODO: TO be passed as a dependency by FormViewController.ItemManager
+    package let style: AdyenTextFieldStyle = .init()
+
     /// Initializes the text item view.
     ///
     /// - Parameter item: The item represented by the view.
@@ -59,8 +62,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
             self?.alertLabel.text = newValue
         }
     
-        // TODO: TO be replaced with DI or item.style
-        let style = AdyenTextFieldStyle()
         applyAdyenStyle(style)
     }
     
@@ -290,7 +291,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// Applies all the style properties from AdyenTextFieldStyle to the FormTextItemView.
     ///
     /// - Parameter style: The style to apply.
-    private func applyAdyenStyle(_ style: AdyenTextFieldStyle = AdyenTextFieldStyle()) {
+    private func applyAdyenStyle(_ style: AdyenTextFieldStyle) {
         // Title
         titleLabel.font = style.title.font
         titleLabel.textColor = style.title.color
@@ -309,7 +310,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         entryTextStackView.layer.borderWidth = style.borderWidth
         entryTextStackView.layer.cornerRadius = AdyenUIConstants.defaultCornerRadius
 
-
         // Alert
         alertLabel.textColor = style.errorColor
 
@@ -324,7 +324,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     }
 
     func updateBorderStyling() {
-        let style = AdyenTextFieldStyle()
         entryTextStackView.layer.borderWidth = AdyenUIConstants.defaultBorderWidth
         let borderColor = isEditing ? style.borderActiveColor : style.borderColor
         entryTextStackView.layer.borderColor = borderColor.cgColor
