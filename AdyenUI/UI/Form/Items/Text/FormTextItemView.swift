@@ -58,8 +58,12 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         observe(item.$validationFailureMessage) { [weak self] newValue in
             self?.alertLabel.text = newValue
         }
+    
+        // TODO: TO be replaced with DI or item.style
+        let style = AdyenTextFieldStyle()
+        applyAdyenStyle(style)
     }
-
+    
     override public func reset() {
         textField.text = ""
         item.value = ""
