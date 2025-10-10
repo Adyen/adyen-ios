@@ -88,12 +88,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     }()
     
     private lazy var entryTextStackView: UIStackView = {
-        // TODO: Replace AdyenTheme with config's theme object
         let stackView = UIStackView(arrangedSubviews: [textField, accessoryStackView])
-        stackView.backgroundColor = AdyenTheme().currentColorScheme.container
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.layoutMargins = .init(top: 11, left: 16, bottom: 11, right: 16)
-        stackView.layer.cornerRadius = AdyenUIConstants.defaultCornerRadius
         stackView.axis = .horizontal
         stackView.alignment = .bottom
         stackView.preservesSuperviewLayoutMargins = true
@@ -115,14 +112,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     // MARK: - Text Field
     
     public lazy var textField: TextField = {
-        // TODO: Replace AdyenTheme with config's theme object
         let textField = TextField()
-        textField.font = AdyenTheme().currentFonts.body
         textField.adjustsFontForContentSizeCategory = true
-        textField.textColor = AdyenTheme().currentColorScheme.primary
-        textField.textAlignment = item.style.text.textAlignment
         textField.text = item.value
-        textField.apply(placeholderText: item.placeholder, with: item.style.placeholderText)
         textField.autocorrectionType = item.autocorrectionType
         textField.autocapitalizationType = item.autocapitalizationType
         textField.keyboardType = item.keyboardType
@@ -202,6 +194,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     override internal func didChangeEditingStatus() {
         updateValidationStatus()
+        updateBorderStyling()
     }
     
     // MARK: - Layout
@@ -247,7 +240,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// Subclasses can override this method to stay notified when the text field resigns its first responder status.
     open func textFieldDidEndEditing(_ textField: UITextField) {
         isEditing = false
-        entryTextStackView.layer.borderWidth = 0.0
+        updateBorderStyling()
         item.onDidEndEditing?()
     }
     
@@ -255,12 +248,10 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// Subclasses can override this method to stay notified when textField became the first responder.
     open func textFieldDidBeginEditing(_ textField: UITextField) {
         isEditing = true
-        entryTextStackView.layer.borderWidth = 2.0
-        // TODO: Replace AdyenTheme with config's theme object
-        entryTextStackView.layer.borderColor = AdyenTheme().currentColorScheme.primary.cgColor
+        updateBorderStyling()
         item.onDidBeginEditing?()
     }
-
+    
     override open func updateValidationStatus(forced: Bool = false) {
         let textFieldNotEmpty = !(textField.text ?? "").isEmpty
         
@@ -292,6 +283,51 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     private func removeAccessoryIfNeeded() {
         if case .customView = accessory { return }
         accessory = .none
+    }
+
+    // MARK: - AdyenTheme
+
+    /// Applies all the style properties from AdyenTextFieldStyle to the FormTextItemView.
+    ///
+    /// - Parameter style: The style to apply.
+    private func applyAdyenStyle(_ style: AdyenTextFieldStyle = AdyenTextFieldStyle()) {
+        // Title
+        titleLabel.font = style.title.font
+        titleLabel.textColor = style.title.color
+        titleLabel.textAlignment = style.title.textAlignment
+
+        // Text field
+        textField.font = style.text.font
+        textField.textColor = style.text.color
+        textField.textAlignment = style.text.textAlignment
+
+        // Placeholder
+        textField.apply(placeholderText: textField.placeholder, with: style.placeholder)
+
+        // Container
+        entryTextStackView.backgroundColor = style.containerColor
+        entryTextStackView.layer.borderWidth = style.borderWidth
+        entryTextStackView.layer.cornerRadius = AdyenUIConstants.defaultCornerRadius
+
+
+        // Alert
+        alertLabel.textColor = style.errorColor
+
+        switch style.cornerRadius {
+        case let .fixed(radius):
+            entryTextStackView.layer.cornerRadius = radius
+        default:
+            break
+        }
+
+        updateBorderStyling()
+    }
+
+    func updateBorderStyling() {
+        let style = AdyenTextFieldStyle()
+        entryTextStackView.layer.borderWidth = AdyenUIConstants.defaultBorderWidth
+        let borderColor = isEditing ? style.borderActiveColor : style.borderColor
+        entryTextStackView.layer.borderColor = borderColor.cgColor
     }
 }
 
