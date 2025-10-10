@@ -10,11 +10,11 @@ import Foundation
 public struct SDKData: Codable {
     
     internal struct Analytics: Codable {
-        let checkoutAttemptId: String
+        internal let checkoutAttemptId: String
     }
     
     public struct Authentication: Codable {
-        let threeDS2SdkVersion: String
+        private let threeDS2SdkVersion: String
         
         public init(threeDS2SdkVersion: String) {
             self.threeDS2SdkVersion = threeDS2SdkVersion
@@ -24,7 +24,7 @@ public struct SDKData: Codable {
     private let analytics: Analytics
     private var authentication: Authentication?
     private let supportNativeRedirect: Bool = true
-    private let schemaVersion: String = "1.0"
+    private let schemaVersion: String = SchemaVersions.v1_0
     private let timestamp = Int(Date().timeIntervalSince1970 * 1000)
     
     internal var encodedValue: String? {
@@ -45,6 +45,10 @@ public struct SDKData: Codable {
         case supportNativeRedirect
         case schemaVersion
         case timestamp = "createdAt"
+    }
+    
+    private enum SchemaVersions {
+        internal static let v1_0 = "1.0"
     }
 }
 
