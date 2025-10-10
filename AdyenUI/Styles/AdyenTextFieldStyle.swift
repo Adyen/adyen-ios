@@ -49,7 +49,6 @@ public struct AdyenTextFieldStyle {
         placeholder: AdyenLabelStyle,
         backgroundColor: UIColor = AdyenColorScheme.default.background,
         containerColor: UIColor = AdyenColorScheme.default.container,
-        textColor: UIColor = AdyenColorScheme.default.text,
         errorColor: UIColor = AdyenColorScheme.default.destructive,
         cornerRadius: CornerRounding,
         borderColor: UIColor = AdyenColorScheme.default.container,
