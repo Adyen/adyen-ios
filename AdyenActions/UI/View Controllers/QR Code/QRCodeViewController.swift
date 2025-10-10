@@ -176,7 +176,7 @@ internal final class QRCodeViewController: UIViewController {
         })
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            UIView.transition(with: self.view, duration: 0.25, options: .transitionCrossDissolve, animations: {
+            UIView.transition(with: self.actionButton, duration: 0.25, options: .transitionCrossDissolve, animations: {
                 self.actionButton.title = self.viewModel.actionButtonTitle
             })
         }

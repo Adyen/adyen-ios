@@ -30,7 +30,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
     private let logoUrl: URL
     private let imageLoader: ImageLoading
     private let onSaveQRCode: (_ image: UIImage?, _ sourceView: UIView) -> Void
-    private let onCopyCode: (_ code: String?) -> Void
+    private let onCopyCode: (_ code: String) -> Void
     internal let observedProgress: Progress?
     internal let expiration: AdyenObservable<String?>
     internal var localizationParameters: LocalizationParameters?
@@ -51,7 +51,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
         imageLoader: ImageLoading = ImageLoaderProvider.imageLoader(),
         localizationParameters: LocalizationParameters?,
         onSaveQRCode: @escaping (_ image: UIImage?, _ sourceView: UIView) -> Void,
-        onCopyCode: @escaping (_ code: String?) -> Void
+        onCopyCode: @escaping (_ code: String) -> Void
     ) {
         self.action = action
         self.instructionText = instructionText
