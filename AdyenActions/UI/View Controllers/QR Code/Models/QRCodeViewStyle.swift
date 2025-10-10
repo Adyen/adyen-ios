@@ -6,6 +6,7 @@
 
 import Adyen
 import Foundation
+import UIKit
 
 internal struct QRCodeViewStyle {
     internal let copyCodeButton: ButtonStyle
