@@ -21,6 +21,9 @@ public struct AdyenTextFieldStyle {
     /// The color of the background.
     package var backgroundColor: UIColor
 
+    /// The color of the text input container background.
+    package var containerColor: UIColor
+
     /// The error color of the text.
     package var errorColor: UIColor
     
@@ -45,16 +48,18 @@ public struct AdyenTextFieldStyle {
         text: AdyenLabelStyle,
         placeholder: AdyenLabelStyle,
         backgroundColor: UIColor = AdyenColorScheme.default.background,
+        containerColor: UIColor = AdyenColorScheme.default.container,
         textColor: UIColor = AdyenColorScheme.default.text,
         errorColor: UIColor = AdyenColorScheme.default.destructive,
         cornerRadius: CornerRounding,
-        borderColor: UIColor = AdyenColorScheme.default.outline,
+        borderColor: UIColor = AdyenColorScheme.default.container,
         borderActiveColor: UIColor = AdyenColorScheme.default.outlineActive,
         borderWidth: CGFloat
     ) {
         self.title = title
         self.text = text
         self.backgroundColor = backgroundColor
+        self.containerColor = containerColor
         self.errorColor = errorColor
         self.cornerRadius = cornerRadius
         self.borderColor = borderColor
@@ -69,9 +74,10 @@ public struct AdyenTextFieldStyle {
         // TODO: // create a default placeholder style extension for AdyenTextFieldStyle
         self.placeholder = AdyenLabelStyle.default
         self.backgroundColor = AdyenColorScheme.default.background
+        self.containerColor = AdyenColorScheme.default.container
         self.errorColor = AdyenColorScheme.default.destructive
         self.cornerRadius = CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius)
-        self.borderColor = AdyenColorScheme.default.outline
+        self.borderColor = AdyenColorScheme.default.container
         self.borderActiveColor = AdyenColorScheme.default.outlineActive
         self.borderWidth = AdyenUIConstants.defaultBorderWidth
     }
@@ -89,6 +95,15 @@ extension AdyenTextFieldStyle {
         return newStyle
     }
     
+    /// Returns a new style with the specified background color of the text input container.
+    /// - Parameter containerColor: The color to set.
+    /// - Returns: A new `AdyenTextFieldStyle` instance.
+    public func containerColor(containerColor: UIColor) -> AdyenTextFieldStyle {
+        var newStyle = self
+        newStyle.containerColor = containerColor
+        return newStyle
+    }
+
     /// Returns a new style with the specified error color.
     /// - Parameter errorColor: The color to set.
     /// - Returns: A new `AdyenTextFieldStyle` instance.
