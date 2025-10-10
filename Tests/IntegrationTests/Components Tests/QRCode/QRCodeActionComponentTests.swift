@@ -164,7 +164,6 @@ class QRCodeActionComponentTests: XCTestCase {
             logoUrl: logoUrl,
             observedProgress: nil,
             expiration: AdyenObservable(nil),
-            style: style,
             localizationParameters: nil,
             onSaveQRCode: { _, _ in /* Empty implementation */ },
             onCopyCode: { receivedCode in
@@ -172,7 +171,7 @@ class QRCodeActionComponentTests: XCTestCase {
                 copyCodeExpectation.fulfill()
             }
         )
-        let qrCodeViewController = QRCodeViewController(viewModel: viewModel)
+        let qrCodeViewController = QRCodeViewController(viewModel: viewModel, style: style)
         
         setupRootViewController(qrCodeViewController)
         
@@ -215,14 +214,13 @@ class QRCodeActionComponentTests: XCTestCase {
             logoUrl: logoUrl,
             observedProgress: nil,
             expiration: AdyenObservable(nil),
-            style: style,
             localizationParameters: nil,
             onSaveQRCode: { _, _ in
                 // Then
                 saveImageExpectation.fulfill()
             }, onCopyCode: { _ in /* Empty implementation */ }
         )
-        let qrCodeViewController = QRCodeViewController(viewModel: viewModel)
+        let qrCodeViewController = QRCodeViewController(viewModel: viewModel, style: style)
         
         setupRootViewController(qrCodeViewController)
         
@@ -238,17 +236,6 @@ class QRCodeActionComponentTests: XCTestCase {
         
         let sut = QRCodeActionComponent(context: context)
         
-        let style = QRCodeViewStyle(
-            copyCodeButton: .init(title: .init(font: UIFont(), color: .red)),
-            saveAsImageButton: .init(title: .init(font: UIFont(), color: .red)),
-            instructionLabel: .init(font: UIFont(), color: .red),
-            amountToPayLabel: .init(font: UIFont(), color: .red),
-            progressView: .init(progressTintColor: .red, trackTintColor: .red),
-            expirationLabel: .init(font: UIFont(), color: .red),
-            logoCornerRounding: .fixed(5.0),
-            backgroundColor: .red
-        )
-        
         let qrCodeViewModel = QRCodeViewModel(
             action: action,
             instructionText: localizedString(.qrCodeInstructionMessage, sut.configuration.localizationParameters),
@@ -256,7 +243,6 @@ class QRCodeActionComponentTests: XCTestCase {
             logoUrl: LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment),
             observedProgress: nil,
             expiration: AdyenObservable(nil),
-            style: style,
             localizationParameters: nil,
             onSaveQRCode: ({ _, _ in /* Empty implementation */ }),
             onCopyCode: ({ _ in /* Empty implementation */ })
@@ -270,18 +256,7 @@ class QRCodeActionComponentTests: XCTestCase {
         let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
         
         let sut = QRCodeActionComponent(context: context)
-        
-        let style = QRCodeViewStyle(
-            copyCodeButton: .init(title: .init(font: UIFont(), color: .red)),
-            saveAsImageButton: .init(title: .init(font: UIFont(), color: .red)),
-            instructionLabel: .init(font: UIFont(), color: .red),
-            amountToPayLabel: .init(font: UIFont(), color: .red),
-            progressView: .init(progressTintColor: .red, trackTintColor: .red),
-            expirationLabel: .init(font: UIFont(), color: .red),
-            logoCornerRounding: .fixed(5.0),
-            backgroundColor: .red
-        )
-        
+                
         let qrCodeViewModel = QRCodeViewModel(
             action: action,
             instructionText: localizedString(.qrCodeTimerExpirationMessage, sut.configuration.localizationParameters),
@@ -289,7 +264,6 @@ class QRCodeActionComponentTests: XCTestCase {
             logoUrl: LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment),
             observedProgress: nil,
             expiration: AdyenObservable(nil),
-            style: style,
             localizationParameters: nil,
             onSaveQRCode: ({ _, _ in /* Empty implementation */ }),
             onCopyCode: ({ _ in /* Empty implementation */ })
