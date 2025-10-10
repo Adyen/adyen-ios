@@ -41,12 +41,12 @@ public struct AdyenLabelStyle {
         self.textAlignment = textAlignment
     }
 
-//    public init() {
-//        self.font = AdyenFonts.default.body
-//        self.color = AdyenColorScheme.default.primary
-//        self.disabledColor = AdyenColorScheme.default.disabled
-//        self.textAlignment = .natural
-//    }
+    public init() {
+        self.font = AdyenFonts.default.body
+        self.color = AdyenColorScheme.default.primary
+        self.disabledColor = AdyenColorScheme.default.disabled
+        self.textAlignment = .natural
+    }
 }
 
 // This extension adds the method chaining to the AdyenLabelStyle struct.
