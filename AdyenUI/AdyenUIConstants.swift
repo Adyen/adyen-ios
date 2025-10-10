@@ -7,11 +7,10 @@
 import UIKit
 
 package enum AdyenUIConstants {
-
     package static let defaultCornerRadius = 14.0
     package static let submitButtonHeight = 52.0
-    package static let defaultBorderWidth = 1.5
-    
+    package static let defaultBorderWidth = 2.0
+
     package static let stackViewSpacing = 8.0
     package static let contentInsets = UIEdgeInsets(top: 11, left: 16, bottom: 11, right: 16)
 }
