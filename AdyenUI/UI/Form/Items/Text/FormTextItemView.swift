@@ -308,7 +308,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         // Container
         entryTextStackView.backgroundColor = style.containerColor
         entryTextStackView.layer.borderWidth = style.borderWidth
-        entryTextStackView.layer.cornerRadius = AdyenUIConstants.defaultCornerRadius
 
         // Alert
         alertLabel.textColor = style.errorColor
@@ -324,7 +323,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     }
 
     func updateBorderStyling() {
-        entryTextStackView.layer.borderWidth = AdyenUIConstants.defaultBorderWidth
         let borderColor = isEditing ? style.borderActiveColor : style.borderColor
         entryTextStackView.layer.borderColor = borderColor.cgColor
     }
