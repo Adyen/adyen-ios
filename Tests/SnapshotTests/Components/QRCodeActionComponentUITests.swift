@@ -34,7 +34,7 @@ class QRCodeActionComponentUITests: XCTestCase {
             let qrCodeViewController = try XCTUnwrap(component.viewController as? QRCodeViewController)
 
             self.setupRootViewController(qrCodeViewController)
-            self.wait(for: qrCodeViewController.qrCodeView)
+            self.wait(for: qrCodeViewController)
             self.assertViewControllerImage(matching: qrCodeViewController, named: "promptPay")
 
             dummyExpectation.fulfill()
@@ -60,7 +60,7 @@ class QRCodeActionComponentUITests: XCTestCase {
             let qrCodeViewController = try XCTUnwrap(component.viewController as? QRCodeViewController)
 
             self.setupRootViewController(qrCodeViewController)
-            self.wait(for: qrCodeViewController.qrCodeView)
+            self.wait(for: qrCodeViewController)
             self.verifyViewControllerImage(matching: qrCodeViewController, named: "pix")
 
             dummyExpectation.fulfill()
@@ -86,7 +86,7 @@ class QRCodeActionComponentUITests: XCTestCase {
             let qrCodeViewController = try XCTUnwrap(component.viewController as? QRCodeViewController)
 
             self.setupRootViewController(qrCodeViewController)
-            self.wait(for: qrCodeViewController.qrCodeView)
+            self.wait(for: qrCodeViewController)
             self.verifyViewControllerImage(matching: qrCodeViewController, named: "upi")
 
             dummyExpectation.fulfill()
@@ -102,9 +102,7 @@ class QRCodeActionComponentUITests: XCTestCase {
 
 private extension QRCodeActionComponentUITests {
 
-    func wait(for qrCodeView: QRCodeView) {
-        self.wait { qrCodeView.expirationLabel.text?.isEmpty == false }
-        self.wait { qrCodeView.logo.image != nil }
+    func wait(for qrCodeView: QRCodeViewController) {
         // Allow the ui to reflect all changes
         self.wait(for: .aMoment)
     }
