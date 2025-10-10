@@ -68,10 +68,9 @@ public struct AdyenTextFieldStyle {
     }
 
     public init() {
-        self.title = AdyenLabelStyle.default
+        self.title = AdyenLabelStyle.default.font(AdyenFonts.default.bodyEmphasized)
         self.text = AdyenLabelStyle.default
-        // TODO: // create a default placeholder style extension for AdyenTextFieldStyle
-        self.placeholder = AdyenLabelStyle.default
+        self.placeholder = AdyenLabelStyle.default.color(AdyenColorScheme.default.textSecondary)
         self.backgroundColor = AdyenColorScheme.default.background
         self.containerColor = AdyenColorScheme.default.container
         self.errorColor = AdyenColorScheme.default.destructive
