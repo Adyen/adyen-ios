@@ -90,7 +90,7 @@ public struct PaymentComponentData {
     }
     
     /// An encoded string containing important SDK-specific data.
-    /// It is recommended to pass this field to your server to ensure maximum reliability.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
     public var sdkData: String?
     
     /// Initializes the payment component data.

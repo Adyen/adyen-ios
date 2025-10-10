@@ -48,6 +48,7 @@ public struct SDKData: Codable {
     }
     
     private enum SchemaVersions {
+        // swiftlint:disable:next identifier_name
         internal static let v1_0 = "1.0"
     }
 }
