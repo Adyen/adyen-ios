@@ -55,8 +55,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         paymentComponentDelegate.onDidSubmit = { data, _ in
             XCTAssertNotNil(data.sdkData)
             
-            guard let sdkDataString = data.sdkData,
-                  let sdkDataDecoded: SDKData = try? AdyenCoder.decodeBase64(sdkDataString) else {
+            guard let sdkDataDecoded = self.sdkData(from: data.sdkData) else {
                 XCTFail("SDKData should be present and decodable")
                 return
             }
@@ -129,14 +128,14 @@ class PaymentComponentSubjectTests: XCTestCase {
         paymentComponentDelegate.onDidSubmit = { data, _ in
             XCTAssertNotNil(data.sdkData)
             
-            guard let sdkDataString = data.sdkData,
-                  let sdkDataDecoded: SDKData = try? AdyenCoder.decodeBase64(sdkDataString) else {
+            guard let sdkDataDecoded = self.sdkData(from: data.sdkData) else {
                 XCTFail("SDKData should be present and decodable")
                 return
             }
             
             // Verify SDKData contains checkoutAttemptId
             XCTAssertEqual(sdkDataDecoded.analytics.checkoutAttemptId, expectedCheckoutAttemptId)
+            XCTAssertEqual(sdkDataDecoded.schemaVersion, "1.0")
             // Verify through the deprecated property for backward compatibility
             XCTAssertEqual(data.checkoutAttemptId, expectedCheckoutAttemptId)
             didSubmitExpectation.fulfill()
@@ -163,8 +162,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         paymentComponentDelegate.onDidSubmit = { data, _ in
             XCTAssertNotNil(data.sdkData, "SDKData should be created")
             
-            guard let sdkDataString = data.sdkData,
-                  let sdkDataDecoded: SDKData = try? AdyenCoder.decodeBase64(sdkDataString) else {
+            guard let sdkDataDecoded = self.sdkData(from: data.sdkData) else {
                 XCTFail("SDKData should be present and decodable")
                 return
             }
@@ -194,8 +192,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
             
-            guard let sdkDataString = data.sdkData,
-                  let sdkDataDecoded: SDKData = try? AdyenCoder.decodeBase64(sdkDataString) else {
+            guard let sdkDataDecoded = self.sdkData(from: data.sdkData) else {
                 XCTFail("SDKData should be present and decodable")
                 return
             }
@@ -210,7 +207,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         wait(for: [didSubmitExpectation], timeout: 3)
     }
     
-    func test_submit_includes_sdkData_timestamp() throws {
+    func test_submit_includes_sdkData_other_fields() throws {
         // Given
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
@@ -229,12 +226,22 @@ class PaymentComponentSubjectTests: XCTestCase {
                 return
             }
             XCTAssertTrue(jsonString.contains("\"createdAt\""), "SDKData should contain the createdAt timestamp")
+            XCTAssertTrue(jsonString.contains("\"supportNativeRedirext\""), "SDKData should contain supportNativeRedirext ")
             didSubmitExpectation.fulfill()
         }
         
         sut.submit(data: paymentComponentData, component: sut)
         
         wait(for: [didSubmitExpectation], timeout: 3)
+    }
+    
+    private func sdkData(from sdkDataString: String?) -> SDKData? {
+        guard let sdkDataString,
+              let sdkDataDecoded: SDKData = try? AdyenCoder.decodeBase64(sdkDataString) else {
+            XCTFail("SDKData should be present and decodable")
+            return nil
+        }
+        return sdkDataDecoded
     }
 }
 

@@ -23,8 +23,8 @@ public struct SDKData: Codable {
     
     internal let analytics: Analytics
     internal private(set) var authentication: Authentication?
+    internal let schemaVersion: String = SchemaVersions.v1_0
     private let supportNativeRedirect: Bool = true
-    private let schemaVersion: String = SchemaVersions.v1_0
     private let timestamp = Int(Date().timeIntervalSince1970 * 1000)
     
     internal var encodedValue: String? {
