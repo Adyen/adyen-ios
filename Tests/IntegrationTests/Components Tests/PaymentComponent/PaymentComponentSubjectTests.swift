@@ -40,39 +40,6 @@ class PaymentComponentSubjectTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func test_submit_with_analytics_enabled_sets_checkoutAttemptId_in_sdkData() throws {
-        // Given
-        let expectedCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
-        analyticsProviderMock.checkoutAttemptId = expectedCheckoutAttemptId
-        let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
-
-        let didSubmitExpectation = expectation(description: "didSubmit should get called")
-        
-        // When
-        XCTAssertNil(paymentComponentData.sdkData)
-
-        // Then
-        paymentComponentDelegate.onDidSubmit = { data, _ in
-            XCTAssertNotNil(data.sdkData)
-            
-            // Verify SDKData contains checkoutAttemptId
-            guard let sdkDataString = data.sdkData,
-                  let sdkDataDecoded: SDKData = try? AdyenCoder.decodeBase64(sdkDataString) else {
-                XCTFail("SDKData should be present and decodable")
-                return
-            }
-            
-            // Verify through the deprecated property for backward compatibility
-            XCTAssertEqual(expectedCheckoutAttemptId, data.checkoutAttemptId)
-            didSubmitExpectation.fulfill()
-        }
-        
-        sut.submit(data: paymentComponentData, component: sut)
-        
-        wait(for: [didSubmitExpectation], timeout: 3)
-    }
-
     func test_submit_with_no_attemptId_sets_constant_in_sdkData() throws {
         // Given
         analyticsProviderMock.checkoutAttemptId = nil
@@ -87,6 +54,14 @@ class PaymentComponentSubjectTests: XCTestCase {
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
             XCTAssertNotNil(data.sdkData)
+            
+            guard let sdkDataString = data.sdkData,
+                  let sdkDataDecoded: SDKData = try? AdyenCoder.decodeBase64(sdkDataString) else {
+                XCTFail("SDKData should be present and decodable")
+                return
+            }
+            
+            XCTAssertEqual(sdkDataDecoded.analytics.checkoutAttemptId, "fetch-checkoutAttemptId-failed")
             XCTAssertEqual(data.checkoutAttemptId, "fetch-checkoutAttemptId-failed")
             didSubmitExpectation.fulfill()
         }
@@ -96,7 +71,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         wait(for: [didSubmitExpectation], timeout: 3)
     }
 
-    func test_submit_when_browserInfo_is_nil_sets_browserInfo() throws {
+    func test_submit_sets_browserInfo() throws {
         // Given
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
@@ -107,29 +82,6 @@ class PaymentComponentSubjectTests: XCTestCase {
         XCTAssertNil(paymentComponentData.browserInfo)
 
         // Then
-        paymentComponentDelegate.onDidSubmit = { data, _ in
-            XCTAssertNotNil(data.browserInfo)
-            didSubmitExpectation.fulfill()
-        }
-        
-        sut.submit(data: paymentComponentData, component: sut)
-        
-        wait(for: [didSubmitExpectation], timeout: 3)
-    }
-
-    func test_submit_when_browserInfo_is_not_nil_preserves_browserInfo() throws {
-        // Given
-        let expectedBrowserInfo = BrowserInfo(userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)")
-        let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
-        let paymentComponentData = PaymentComponentData(
-            paymentMethodDetails: paymentMethodDetails,
-            amount: nil,
-            order: nil,
-            browserInfo: expectedBrowserInfo
-        )
-        
-        let didSubmitExpectation = expectation(description: "didSubmit should get called")
-
         paymentComponentDelegate.onDidSubmit = { data, _ in
             XCTAssertNotNil(data.browserInfo)
             didSubmitExpectation.fulfill()
@@ -163,24 +115,30 @@ class PaymentComponentSubjectTests: XCTestCase {
     
     func test_submit_creates_sdkData_with_analytics() throws {
         // Given
-        let expectedCheckoutAttemptId = "test-checkout-attempt-id"
+        let expectedCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
         analyticsProviderMock.checkoutAttemptId = expectedCheckoutAttemptId
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
-        
+
         let didSubmitExpectation = expectation(description: "didSubmit should get called")
         
+        // When
+        XCTAssertNil(paymentComponentData.sdkData)
+
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
-            XCTAssertNotNil(data.sdkData, "SDKData should be created")
+            XCTAssertNotNil(data.sdkData)
             
-            // Verify SDKData is properly encoded
-            guard let sdkDataString = data.sdkData else {
-                XCTFail("SDKData string should be present")
+            guard let sdkDataString = data.sdkData,
+                  let sdkDataDecoded: SDKData = try? AdyenCoder.decodeBase64(sdkDataString) else {
+                XCTFail("SDKData should be present and decodable")
                 return
             }
             
-            XCTAssertFalse(sdkDataString.isEmpty, "SDKData should not be empty")
+            // Verify SDKData contains checkoutAttemptId
+            XCTAssertEqual(sdkDataDecoded.analytics.checkoutAttemptId, expectedCheckoutAttemptId)
+            // Verify through the deprecated property for backward compatibility
+            XCTAssertEqual(data.checkoutAttemptId, expectedCheckoutAttemptId)
             didSubmitExpectation.fulfill()
         }
         
@@ -205,13 +163,15 @@ class PaymentComponentSubjectTests: XCTestCase {
         paymentComponentDelegate.onDidSubmit = { data, _ in
             XCTAssertNotNil(data.sdkData, "SDKData should be created")
             
-            guard let sdkDataString = data.sdkData else {
-                XCTFail("SDKData string should be present")
+            guard let sdkDataString = data.sdkData,
+                  let sdkDataDecoded: SDKData = try? AdyenCoder.decodeBase64(sdkDataString) else {
+                XCTFail("SDKData should be present and decodable")
                 return
             }
             
-            // Verify the SDKData contains both analytics and authentication
-            XCTAssertFalse(sdkDataString.isEmpty)
+            // Verify the SDKData contains authentication
+            XCTAssertNotNil(sdkDataDecoded.authentication)
+            XCTAssertEqual(sdkDataDecoded.authentication?.threeDS2SdkVersion, "0.0.0")
             didSubmitExpectation.fulfill()
         }
         
@@ -233,7 +193,15 @@ class PaymentComponentSubjectTests: XCTestCase {
         
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
-            XCTAssertNotNil(data.sdkData, "SDKData should be created even without authentication")
+            
+            guard let sdkDataString = data.sdkData,
+                  let sdkDataDecoded: SDKData = try? AdyenCoder.decodeBase64(sdkDataString) else {
+                XCTFail("SDKData should be present and decodable")
+                return
+            }
+            
+            XCTAssertEqual(sdkDataDecoded.analytics.checkoutAttemptId, expectedCheckoutAttemptId)
+            XCTAssertNil(sdkDataDecoded.authentication)
             didSubmitExpectation.fulfill()
         }
         
@@ -253,10 +221,14 @@ class PaymentComponentSubjectTests: XCTestCase {
         paymentComponentDelegate.onDidSubmit = { data, _ in
             XCTAssertNotNil(data.sdkData)
             
-            // Verify timestamp is recent (within last 5 seconds)
-            let now = Int(Date().timeIntervalSince1970 * 1000)
-            // We can't directly access timestamp due to private access, but we verify SDKData exists
-            XCTAssertNotNil(data.sdkData)
+            // Verify timestamp is present
+            guard let sdkDataString = data.sdkData,
+                  let decodedData = Data(base64Encoded: sdkDataString),
+                  let jsonString = String(data: decodedData, encoding: .utf8) else {
+                XCTFail("SDKData should be present and decodable to a string")
+                return
+            }
+            XCTAssertTrue(jsonString.contains("\"createdAt\""), "SDKData should contain the createdAt timestamp")
             didSubmitExpectation.fulfill()
         }
         
@@ -270,7 +242,7 @@ class PaymentComponentSubjectTests: XCTestCase {
 
 private class MockSDKDataAuthenticationProvider: SDKDataAuthenticationProvider {
     var authentication: SDKData.Authentication {
-        SDKData.Authentication(threeDS2SdkVersion: "2.2.0")
+        SDKData.Authentication(threeDS2SdkVersion: "0.0.0")
     }
 }
 

@@ -14,15 +14,15 @@ public struct SDKData: Codable {
     }
     
     public struct Authentication: Codable {
-        private let threeDS2SdkVersion: String
+        internal let threeDS2SdkVersion: String
         
         public init(threeDS2SdkVersion: String) {
             self.threeDS2SdkVersion = threeDS2SdkVersion
         }
     }
     
-    private let analytics: Analytics
-    private var authentication: Authentication?
+    internal let analytics: Analytics
+    internal private(set) var authentication: Authentication?
     private let supportNativeRedirect: Bool = true
     private let schemaVersion: String = SchemaVersions.v1_0
     private let timestamp = Int(Date().timeIntervalSince1970 * 1000)
