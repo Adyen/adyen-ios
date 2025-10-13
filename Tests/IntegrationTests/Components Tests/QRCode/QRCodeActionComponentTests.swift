@@ -172,6 +172,7 @@ class QRCodeActionComponentTests: XCTestCase {
             }
         )
         let qrCodeViewController = QRCodeViewController(viewModel: viewModel, style: style)
+        viewModel.view = qrCodeViewController
         
         setupRootViewController(qrCodeViewController)
         
@@ -221,6 +222,7 @@ class QRCodeActionComponentTests: XCTestCase {
             }, onCopyCode: { _ in /* Empty implementation */ }
         )
         let qrCodeViewController = QRCodeViewController(viewModel: viewModel, style: style)
+        viewModel.view = qrCodeViewController
         
         setupRootViewController(qrCodeViewController)
         

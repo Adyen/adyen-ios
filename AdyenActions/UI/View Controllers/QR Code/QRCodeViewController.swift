@@ -8,8 +8,13 @@
 import Foundation
 import UIKit
 
+internal protocol QRCodeViewProtocol: AnyObject {
+    var rootView: UIView { get }
+    func startCopyAnimation()
+}
+
 /// A `UIViewController` that shows the QRcode action UI.
-internal final class QRCodeViewController: UIViewController {
+internal final class QRCodeViewController: UIViewController, QRCodeViewProtocol {
     
     private enum Layout {
         static let logoSize = CGSize(width: 74.0, height: 48.0)
@@ -71,26 +76,16 @@ internal final class QRCodeViewController: UIViewController {
     private lazy var qrCodeView = QRCodeView(viewModel: viewModel, style: style)
     
     private lazy var actionButton: SubmitButton = {
-        switch viewModel.flowType {
-        case .copyCode:
-            let button = SubmitButton(style: style.copyCodeButton)
-            button.title = viewModel.actionButtonTitle
-            button.addTarget(self, action: #selector(copyCode), for: .touchUpInside)
-            button.accessibilityIdentifier = ViewIdentifierBuilder.build(
-                scopeInstance: self,
-                postfix: ViewIdentifier.copyCodeButton
-            )
-            return button
-        case .saveCodeAsImage:
-            let button = SubmitButton(style: style.saveAsImageButton)
-            button.title = viewModel.actionButtonTitle
-            button.addTarget(self, action: #selector(saveQRCodeImage), for: .touchUpInside)
-            button.accessibilityIdentifier = ViewIdentifierBuilder.build(
-                scopeInstance: self,
-                postfix: ViewIdentifier.saveAsImageButton
-            )
-            return button
-        }
+        let button = SubmitButton(style: actionButtonStyle)
+        
+        button.title = viewModel.actionButtonTitle
+        button.accessibilityIdentifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: actionButtonAccessibilityIdentifier
+        )
+        button.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
+
+        return button
     }()
     
     private lazy var copyCodeLabel: CopyLabelView? = {
@@ -111,6 +106,10 @@ internal final class QRCodeViewController: UIViewController {
     }()
     
     // MARK: - Properties
+    
+    internal var rootView: UIView {
+        self.view
+    }
     
     private let viewModel: QRCodeViewModelProtocol
     private let style: QRCodeViewStyle
@@ -155,19 +154,9 @@ internal final class QRCodeViewController: UIViewController {
         """) }
     }
     
-    // MARK: - Actions
+    // MARK: - QRCodeViewProtocol
     
-    @objc private func saveQRCodeImage() {
-        let image = qrCodeView.imageView.adyen.snapshot()
-        viewModel.saveQRCode(image: image, sourceView: view)
-    }
-    
-    @objc private func copyCode() {
-        viewModel.copyCode()
-        animateCopyButton()
-    }
-    
-    private func animateCopyButton() {
+    internal func startCopyAnimation() {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
                 
@@ -181,8 +170,33 @@ internal final class QRCodeViewController: UIViewController {
             })
         }
     }
-        
+    
+    // MARK: - Actions
+    
+    @objc private func actionButtonTapped() {
+        let qrCodeImage = qrCodeView.imageView.adyen.snapshot()
+        viewModel.performAction(qrCodeImage: qrCodeImage)
+    }
+            
     // MARK: - Private
+    
+    private var actionButtonStyle: ButtonStyle {
+        switch viewModel.flowType {
+        case .copyCode:
+            return style.copyCodeButton
+        case .saveCodeAsImage:
+            return style.saveAsImageButton
+        }
+    }
+    
+    private var actionButtonAccessibilityIdentifier: String {
+        switch viewModel.flowType {
+        case .copyCode:
+            return ViewIdentifier.copyCodeButton
+        case .saveCodeAsImage:
+            return ViewIdentifier.saveAsImageButton
+        }
+    }
     
     private func loadLogoImage() {
         viewModel.loadLogoImage { [weak self] image in
