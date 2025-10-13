@@ -226,7 +226,7 @@ class PaymentComponentSubjectTests: XCTestCase {
                 return
             }
             XCTAssertTrue(jsonString.contains("\"createdAt\""), "SDKData should contain the createdAt timestamp")
-            XCTAssertTrue(jsonString.contains("\"supportNativeRedirext\""), "SDKData should contain supportNativeRedirext ")
+            XCTAssertTrue(jsonString.contains("\"supportNativeRedirect\""), "SDKData should contain supportNativeRedirect ")
             didSubmitExpectation.fulfill()
         }
         
