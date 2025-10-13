@@ -45,7 +45,7 @@ internal final class QRCodeViewController: UIViewController {
         return stackView
     }()
     
-    internal lazy var logoImageView: UIImageView = {
+    internal private(set) lazy var logoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.adyen.round(using: style.logoCornerRounding)
         imageView.clipsToBounds = true
