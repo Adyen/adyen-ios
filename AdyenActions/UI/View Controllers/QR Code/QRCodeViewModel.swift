@@ -66,7 +66,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
         
         self.flowType = {
             switch action.paymentMethodType {
-            case .promptPay, .duitNow, .payNow, .upiQRCode: return .saveAsImage
+            case .promptPay, .duitNow, .payNow, .upiQRCode: return .saveCodeAsImage
             case .pix: return .copyCode
             }
         }()
@@ -96,7 +96,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
         switch flowType {
         case .copyCode:
             return localizedString(.pixCodeCopyLabel, localizationParameters)
-        case .saveAsImage:
+        case .saveCodeAsImage:
             return localizedString(.voucherSaveImage, localizationParameters)
         }
     }
@@ -105,7 +105,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
         switch flowType {
         case .copyCode:
             return localizedString(.pixCodeCopiedLabel, localizationParameters)
-        case .saveAsImage:
+        case .saveCodeAsImage:
             return localizedString(.voucherSaveImage, localizationParameters)
         }
     }

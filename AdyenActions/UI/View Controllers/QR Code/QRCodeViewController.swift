@@ -81,7 +81,7 @@ internal final class QRCodeViewController: UIViewController {
                 postfix: ViewIdentifier.copyCodeButton
             )
             return button
-        case .saveAsImage:
+        case .saveCodeAsImage:
             let button = SubmitButton(style: style.saveAsImageButton)
             button.title = viewModel.actionButtonTitle
             button.addTarget(self, action: #selector(saveQRCodeImage), for: .touchUpInside)
