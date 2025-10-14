@@ -8,5 +8,5 @@ import Foundation
 
 internal enum QRCodeFlowType {
     case copyCode
-    case saveAsImage
+    case saveCodeAsImage
 }

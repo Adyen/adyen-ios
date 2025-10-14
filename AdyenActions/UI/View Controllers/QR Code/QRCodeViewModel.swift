@@ -18,13 +18,14 @@ internal protocol QRCodeViewModelProtocol {
     var observedProgress: Progress? { get }
     
     func loadLogoImage(completion: @escaping (UIImage?) -> Void)
-    func saveQRCode(image: UIImage?, sourceView: UIView)
-    func copyCode()
+    func performAction(qrCodeImage: UIImage?)
 }
 
 internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
     
     // MARK: - Properties
+    
+    internal weak var view: QRCodeViewProtocol?
     
     private let action: QRCodeAction
     private let logoUrl: URL
@@ -66,7 +67,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
         
         self.flowType = {
             switch action.paymentMethodType {
-            case .promptPay, .duitNow, .payNow, .upiQRCode: return .saveAsImage
+            case .promptPay, .duitNow, .payNow, .upiQRCode: return .saveCodeAsImage
             case .pix: return .copyCode
             }
         }()
@@ -82,12 +83,15 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
         imageLoader.load(url: logoUrl, completion: completion)
     }
     
-    internal func saveQRCode(image: UIImage?, sourceView: UIView) {
-        onSaveQRCode(image, sourceView)
-    }
-    
-    internal func copyCode() {
-        onCopyCode(qrCodeData)
+    internal func performAction(qrCodeImage: UIImage?) {
+        switch flowType {
+        case .copyCode:
+            view?.startCopyAnimation()
+            onCopyCode(qrCodeData)
+        case .saveCodeAsImage:
+            guard let qrCodeImage, let sourceView = view?.rootView else { return }
+            onSaveQRCode(qrCodeImage, sourceView)
+        }
     }
     
     // MARK: - Content
@@ -96,7 +100,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
         switch flowType {
         case .copyCode:
             return localizedString(.pixCodeCopyLabel, localizationParameters)
-        case .saveAsImage:
+        case .saveCodeAsImage:
             return localizedString(.voucherSaveImage, localizationParameters)
         }
     }
@@ -105,7 +109,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
         switch flowType {
         case .copyCode:
             return localizedString(.pixCodeCopiedLabel, localizationParameters)
-        case .saveAsImage:
+        case .saveCodeAsImage:
             return localizedString(.voucherSaveImage, localizationParameters)
         }
     }

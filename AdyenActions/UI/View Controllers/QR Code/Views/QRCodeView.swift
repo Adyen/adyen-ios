@@ -12,6 +12,7 @@ internal final class QRCodeView: UIView, AdyenObserver {
     private enum Layout {
         static let qrCodeImageWidth: CGFloat = 170
         static let progressViewSize = CGSize(width: 120, height: 4)
+        static let verticalSpacing: CGFloat = 12.0
     }
     
     private enum ViewIdentifier {
@@ -31,9 +32,9 @@ internal final class QRCodeView: UIView, AdyenObserver {
         return imageView
     }()
         
-    internal let amountLabel: UILabel
-    internal let progressView: UIProgressView
-    internal let expirationLabel: UILabel
+    private let amountLabel: UILabel
+    private let progressView: UIProgressView
+    private let expirationLabel: UILabel
     
     // MARK: - Initialization
     
@@ -72,15 +73,15 @@ internal final class QRCodeView: UIView, AdyenObserver {
             imageView.widthAnchor.constraint(equalToConstant: Layout.qrCodeImageWidth),
             imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
             
-            amountLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 12),
+            amountLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: Layout.verticalSpacing),
             amountLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            progressView.topAnchor.constraint(equalTo: amountLabel.bottomAnchor, constant: 12),
+            progressView.topAnchor.constraint(equalTo: amountLabel.bottomAnchor, constant: Layout.verticalSpacing),
             progressView.centerXAnchor.constraint(equalTo: centerXAnchor),
             progressView.widthAnchor.constraint(equalToConstant: Layout.progressViewSize.width),
             progressView.heightAnchor.constraint(equalToConstant: Layout.progressViewSize.height),
             
-            expirationLabel.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 12),
+            expirationLabel.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: Layout.verticalSpacing),
             expirationLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             expirationLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
