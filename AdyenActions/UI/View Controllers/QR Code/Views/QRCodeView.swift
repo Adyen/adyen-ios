@@ -110,12 +110,12 @@ internal final class QRCodeView: UIView, AdyenObserver {
         
         progressView.observedProgress = viewModel.observedProgress
         
-        bind(viewModel.expiration, to: expirationLabel, at: \.text) { string in
+        bind(viewModel.expiration, to: expirationLabel, at: \.text) { [weak self] string in
             guard let text = string, !text.isEmpty else {
-                self.expirationLabel.alpha = 0
+                self?.expirationLabel.alpha = 0
                 return " "
             }
-            self.expirationLabel.alpha = 1
+            self?.expirationLabel.alpha = 1
             return text
         }
     }
