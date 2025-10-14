@@ -71,10 +71,11 @@ extension TextField {
     }
 
     package func apply(placeholderText: String?, with style: AdyenLabelStyle) {
-        if let text = placeholderText {
+        if let text = placeholderText, !text.isEmpty {
             attributedPlaceholder = NSAttributedString(string: text, attributes: style.stringAttributes)
         } else {
-            placeholder = placeholderText
+            placeholder = nil
+            attributedPlaceholder = nil
         }
     }
 }

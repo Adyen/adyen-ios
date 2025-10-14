@@ -54,16 +54,19 @@ final class TextField_AdyenLabelStyle_Tests: XCTestCase {
         XCTAssertNil(sut.placeholder)
     }
     
-    func testApplyPlaceholderWithAdyenLabelStyle_emptyPlaceholder_shouldSetEmptyAttributedPlaceholder() {
+    func testApplyPlaceholderWithAdyenLabelStyle_emptyPlaceholder_shouldClearPreviousPlaceholder() {
         // Given
-        let placeholderText = ""
+        let placeholderText = "Test"
         let labelStyle = makeAdyenlabelStyle()
+        sut.apply(placeholderText: placeholderText, with: labelStyle)
 
         // When
-        sut.apply(placeholderText: placeholderText, with: labelStyle)
-        
+        let emptyPlaceholderText = ""
+        sut.apply(placeholderText: emptyPlaceholderText, with: labelStyle)
+
         // Then
         XCTAssertNil(sut.attributedPlaceholder)
+        XCTAssertNil(sut.placeholder)
     }
     
     func testApplyPlaceholderWithAdyenLabelStyle_differentFonts_shouldApplyCorrectly() {
