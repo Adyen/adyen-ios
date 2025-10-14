@@ -4,10 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-public enum AdyenUIConstants {
+package enum AdyenUIConstants {
 
-    public static let defaultCornerRadius = 14.0
-    public static let submitButtonHeight = 52.0
-    public static let defaultBorderWidth = 1.5
+    package static let defaultCornerRadius = 14.0
+    package static let submitButtonHeight = 52.0
+    package static let defaultBorderWidth = 1.5
 
 }
