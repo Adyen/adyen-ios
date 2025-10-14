@@ -303,7 +303,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         textField.textAlignment = style.text.textAlignment
 
         // Placeholder
-        textField.apply(placeholderText: textField.placeholder, with: style.placeholder)
+        textField.apply(placeholderText: item.placeholder, with: style.placeholder)
 
         // Container
         entryTextStackView.backgroundColor = style.containerColor
