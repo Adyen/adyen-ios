@@ -601,6 +601,7 @@
 		C9BB460927622F4100E6730B /* BACSConfirmationPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB460827622F4100E6730B /* BACSConfirmationPresenterTests.swift */; };
 		C9BF0DB327353A2600DCAA1E /* BACSDirectDebitComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BF0DB227353A2600DCAA1E /* BACSDirectDebitComponent.swift */; };
 		C9C21914276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21913276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift */; };
+		C9C2C6C72E9E72DA001344B2 /* QRCodeViewMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C2C6C62E9E72DA001344B2 /* QRCodeViewMock.swift */; };
 		C9D8EB9927452355006D8CA1 /* BACSInputFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9827452355006D8CA1 /* BACSInputFormViewController.swift */; };
 		C9D8EB9B2745282E006D8CA1 /* BACSInputPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9A2745282E006D8CA1 /* BACSInputPresenter.swift */; };
 		C9D8EB9E27452D3B006D8CA1 /* BACSItemsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9D27452D3B006D8CA1 /* BACSItemsFactory.swift */; };
@@ -2072,6 +2073,7 @@
 		C9C0005B280468E100CE2EEC /* AnalyticsProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsProviderMock.swift; sourceTree = "<group>"; };
 		C9C0005D280474DF00CE2EEC /* AnalyticsProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsProviderTests.swift; sourceTree = "<group>"; };
 		C9C21913276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationViewControllerTests.swift; sourceTree = "<group>"; };
+		C9C2C6C62E9E72DA001344B2 /* QRCodeViewMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewMock.swift; sourceTree = "<group>"; };
 		C9D8EB9827452355006D8CA1 /* BACSInputFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewController.swift; sourceTree = "<group>"; };
 		C9D8EB9A2745282E006D8CA1 /* BACSInputPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputPresenter.swift; sourceTree = "<group>"; };
 		C9D8EB9D27452D3B006D8CA1 /* BACSItemsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSItemsFactory.swift; sourceTree = "<group>"; };
@@ -4061,6 +4063,7 @@
 				C9DA53DC2E97F65900D83C94 /* QRCodeViewModelMock.swift */,
 				C9DA53DF2E97F6DE00D83C94 /* QRCodeViewControllerTests.swift */,
 				C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */,
+				C9C2C6C62E9E72DA001344B2 /* QRCodeViewMock.swift */,
 			);
 			path = QRCode;
 			sourceTree = "<group>";
@@ -7870,6 +7873,7 @@
 				A05D7212276A28EE0087F3E9 /* DocumentComponentTests.swift in Sources */,
 				F96AE5052603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift in Sources */,
 				F9EDB78F23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift in Sources */,
+				C9C2C6C72E9E72DA001344B2 /* QRCodeViewMock.swift in Sources */,
 				E7F563EA28B7758D00082D4C /* DropInTestInternal.swift in Sources */,
 				F97BC2CE2668EB4500F1D242 /* VoucherViewDelegateMock.swift in Sources */,
 				F9AC61C2243751A70062A00D /* ActionComponentDelegateMock.swift in Sources */,
