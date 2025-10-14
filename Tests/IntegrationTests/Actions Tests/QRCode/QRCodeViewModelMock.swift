@@ -6,63 +6,49 @@
 
 import Adyen
 @testable import AdyenActions
+import UIKit
 import XCTest
 
-// MARK: - Mocks
-
-final class QRCodeViewModelMock: QRCodeViewModelProtocol {
+internal final class QRCodeViewModelMock: QRCodeViewModelProtocol {
     
     // MARK: - Properties
     
-    var flowType: QRCodeFlowType
-    var instructionText: String
+    var flowType: QRCodeFlowType = .copyCode
+    var instructionText: String = ""
     var amountText: String?
-    var actionButtonTitle: String
-    var onCopyButtonTitle: String
-    var qrCodeData: String
-    var style: QRCodeViewStyle
+    var actionButtonTitle: String = ""
+    var onCopyButtonTitle: String = ""
+    var qrCodeData: String = ""
     var expiration: AdyenObservable<String?> = AdyenObservable(nil)
     var observedProgress: Progress?
     
-    // MARK: - Initializers
-
-    init(
-        flowType: QRCodeFlowType = .copyCode,
-        instructionText: String = "Scan QR code",
-        actionButtonTitle: String = "Copy",
-        onCopyButtonTitle: String = "Copied",
-        qrCodeData: String = "123456"
-    ) {
-        self.flowType = flowType
-        self.instructionText = instructionText
-        self.actionButtonTitle = actionButtonTitle
-        self.onCopyButtonTitle = onCopyButtonTitle
-        self.qrCodeData = qrCodeData
-        self.style = .init(
-            copyCodeButton: .init(title: .init(font: .systemFont(ofSize: 16), color: .black)),
-            saveAsImageButton: .init(title: .init(font: .systemFont(ofSize: 16), color: .black)),
-            instructionLabel: .init(font: .systemFont(ofSize: 16), color: .black),
-            amountToPayLabel: .init(font: .systemFont(ofSize: 16), color: .black),
-            progressView: .init(progressTintColor: .blue, trackTintColor: .gray),
-            expirationLabel: .init(font: .systemFont(ofSize: 16), color: .black),
-            logoCornerRounding: .fixed(8),
-            backgroundColor: .white
-        )
-    }
+    // MARK: - loadLogoImage
     
-    var loadLogoImageCalled = false
+    private(set) var loadLogoImageCalled = false
+    private(set) var loadLogoImageCallsCount = 0
+    private(set) var loadLogoImageCompletions: [(UIImage?) -> Void] = []
+    
     func loadLogoImage(completion: @escaping (UIImage?) -> Void) {
         loadLogoImageCalled = true
-        completion(UIImage())
+        loadLogoImageCallsCount += 1
+        loadLogoImageCompletions.append(completion)
     }
-
-    var saveQRCodeCalled: (image: UIImage?, sourceView: UIView?)?
-    func saveQRCode(image: UIImage?, sourceView: UIView) {
-        saveQRCodeCalled = (image, sourceView)
+    
+    // Helper to trigger completion manually in tests
+    func completeLoadLogoImage(with image: UIImage?, at index: Int = 0) {
+        guard loadLogoImageCompletions.indices.contains(index) else { return }
+        loadLogoImageCompletions[index](image)
     }
-
-    var copyCodeCalled = false
-    func copyCode() {
-        copyCodeCalled = true
+    
+    // MARK: - performAction
+    
+    private(set) var performActionCalled = false
+    private(set) var performActionCallsCount = 0
+    private(set) var performActionReceivedImage: UIImage?
+    
+    func performAction(qrCodeImage: UIImage?) {
+        performActionCalled = true
+        performActionCallsCount += 1
+        performActionReceivedImage = qrCodeImage
     }
 }

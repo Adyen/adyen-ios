@@ -62,7 +62,7 @@ internal final class QRCodeViewController: UIViewController, QRCodeViewProtocol 
         return imageView
     }()
     
-    private lazy var instructionLabel: UILabel = {
+    internal private(set) lazy var instructionLabel: UILabel = {
         let instructionLabel = UILabel(style: style.instructionLabel)
         instructionLabel.text = viewModel.instructionText
         instructionLabel.numberOfLines = 0
@@ -73,9 +73,9 @@ internal final class QRCodeViewController: UIViewController, QRCodeViewProtocol 
         return instructionLabel
     }()
     
-    private lazy var qrCodeView = QRCodeView(viewModel: viewModel, style: style)
+    internal private(set) lazy var qrCodeView = QRCodeView(viewModel: viewModel, style: style)
     
-    private lazy var actionButton: SubmitButton = {
+    internal private(set) lazy var actionButton: SubmitButton = {
         let button = SubmitButton(style: actionButtonStyle)
         
         button.title = viewModel.actionButtonTitle

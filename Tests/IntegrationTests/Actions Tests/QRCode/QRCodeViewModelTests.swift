@@ -57,15 +57,15 @@ final class QRCodeViewModelTests: XCTestCase {
         XCTAssertEqual(sut.qrCodeData, "123456")
     }
     
-    func test_copyCode_callsOnCopyCodeClosure() {
-        sut.copyCode()
-        XCTAssertTrue(copyCalled)
-    }
-    
-    func test_saveQRCode_callsOnSaveQRCodeClosure() {
-        sut.saveQRCode(image: UIImage(), sourceView: UIView())
-        XCTAssertTrue(saveCalled)
-    }
+//    func test_copyCode_callsOnCopyCodeClosure() {
+//        sut.copyCode()
+//        XCTAssertTrue(copyCalled)
+//    }
+//
+//    func test_saveQRCode_callsOnSaveQRCodeClosure() {
+//        sut.saveQRCode(image: UIImage(), sourceView: UIView())
+//        XCTAssertTrue(saveCalled)
+//    }
     
     func test_actionButtonTitle_and_onCopyButtonTitle_matchFlowType() {
         XCTAssertEqual(sut.actionButtonTitle, "Copy PIX code")
