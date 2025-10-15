@@ -18,6 +18,8 @@ internal final class QRCodeViewController: UIViewController, QRCodeViewProtocol 
     
     private enum Layout {
         static let logoSize = CGSize(width: 74.0, height: 48.0)
+        static let contentViewMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        static let copyLabelViewMargins = UIEdgeInsets(top: 8, left: 32, bottom: 8, right: 32)
     }
     
     private enum ViewIdentifier {
@@ -39,7 +41,7 @@ internal final class QRCodeViewController: UIViewController, QRCodeViewProtocol 
     private let contentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        view.layoutMargins = Layout.contentViewMargins
         return view
     }()
         
@@ -100,7 +102,7 @@ internal final class QRCodeViewController: UIViewController, QRCodeViewProtocol 
             style: textStyle
         )
         copyLabelView.adyen.round(using: style.logoCornerRounding)
-        copyLabelView.layoutMargins = .init(top: 8, left: 32, bottom: 8, right: 32)
+        copyLabelView.layoutMargins = Layout.copyLabelViewMargins
         
         return copyLabelView
     }()
