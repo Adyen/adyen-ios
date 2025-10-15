@@ -87,5 +87,20 @@ extension AdyenLabelStyle {
         newStyle.textAlignment = alignment
         return newStyle
     }
+}
 
+package extension AdyenLabelStyle {
+    var stringAttributes: [NSAttributedString.Key: Any] {
+        var attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: color,
+            .font: font
+        ]
+
+        if let paragraphStyle = NSParagraphStyle.default.mutableCopy() as? NSMutableParagraphStyle {
+            paragraphStyle.alignment = textAlignment
+            attributes[NSAttributedString.Key.paragraphStyle] = paragraphStyle
+        }
+
+        return attributes
+    }
 }
