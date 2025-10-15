@@ -9,6 +9,7 @@ import UIKit
 internal enum DefaultColorsLight {
     static let backgroundPrimary = UIColor.color(hex: 0xFFFFFF)
     static let backgroundSecondary = UIColor.color(hex: 0xF7F7F8)
+    static let backgroundQuaternary = UIColor.color(hex: 0x525252)
     static let backgroundDisabled = UIColor.color(hex: 0xEEEFF1)
     static let critical = UIColor.color(hex: 0xE22D2D)
     static let success = UIColor.color(hex: 0x07893C)
@@ -17,11 +18,13 @@ internal enum DefaultColorsLight {
     static let labelSecondary = UIColor.color(hex: 0x5C687C)
     static let labelDisabled = UIColor.color(hex: 0x8D95A3)
     static let separatorPrimary = UIColor.color(hex: 0xDBDEE2)
+    static let outlinePrimaryActive = UIColor.color(hex: 0x001222)
 }
 
 internal enum DefaultColorsDark {
     static let backgroundPrimary = UIColor.color(hex: 0x121212)
     static let backgroundSecondary = UIColor.color(hex: 0x1C1C1E)
+    static let backgroundQuaternary = UIColor.color(hex: 0xC0C5CA)
     static let backgroundDisabled = UIColor.color(hex: 0xEEEFF1)
     static let critical = UIColor.color(hex: 0xF99C9C)
     static let success = UIColor.color(hex: 0x41CD7A)
@@ -30,6 +33,7 @@ internal enum DefaultColorsDark {
     static let labelSecondary = UIColor.color(hex: 0xA5A5A5)
     static let labelDisabled = UIColor.color(hex: 0x7E7E7E)
     static let separatorPrimary = UIColor.color(hex: 0x454545)
+    static let outlinePrimaryActive = UIColor.color(hex: 0xFFFFFF)
 }
 
 public struct AdyenColorScheme: Equatable {
@@ -45,6 +49,7 @@ public struct AdyenColorScheme: Equatable {
     public var disabled: UIColor
     public var textOnDisabled: UIColor
     public var outline: UIColor
+    public var outlineActive: UIColor
     public var text: UIColor
     public var textSecondary: UIColor
 
@@ -95,7 +100,11 @@ public struct AdyenColorScheme: Equatable {
         }
 
         self.outline = UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.separatorPrimary : DefaultColorsLight.separatorPrimary
+            traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.backgroundQuaternary : DefaultColorsLight.backgroundQuaternary
+        }
+
+        self.outlineActive = UIColor { traitCollection in
+            traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.outlinePrimaryActive : DefaultColorsLight.outlinePrimaryActive
         }
 
         self.text = UIColor { traitCollection in
@@ -119,6 +128,7 @@ public struct AdyenColorScheme: Equatable {
         disabled: UIColor? = nil,
         textOnDisabled: UIColor? = nil,
         outline: UIColor? = nil,
+        outlineActive: UIColor? = nil,
         text: UIColor? = nil,
         textSecondary: UIColor? = nil
     ) {
@@ -135,6 +145,7 @@ public struct AdyenColorScheme: Equatable {
         self.disabled = disabled ?? defaultScheme.disabled
         self.textOnDisabled = textOnDisabled ?? defaultScheme.textOnDisabled
         self.outline = outline ?? defaultScheme.outline
+        self.outlineActive = outlineActive ?? defaultScheme.outlineActive
         self.text = text ?? defaultScheme.text
         self.textSecondary = textSecondary ?? defaultScheme.textSecondary
     }

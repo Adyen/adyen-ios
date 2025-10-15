@@ -60,6 +60,7 @@ internal class CardViewController: FormViewController {
         
         return ItemsProvider(
             formStyle: formStyle,
+            theme: theme,
             payment: payment,
             configuration: configuration,
             shopperInformation: shopperInformation,
