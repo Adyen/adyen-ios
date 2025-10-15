@@ -67,18 +67,14 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         
         guard forced else {
             hideAlertLabel(true)
-            titleLabel.textColor = defaultTitleColor
             accessibilityLabelView?.accessibilityLabel = item.title
             return
         }
-        
         if item.isValid() {
             hideAlertLabel(true)
-            titleLabel.textColor = defaultTitleColor
             accessibilityLabelView?.accessibilityLabel = item.title
         } else {
             hideAlertLabel(false)
-            titleLabel.textColor = item.style.errorColor
             accessibilityLabelView?.accessibilityLabel = [
                 item.title,
                 item.validationFailureMessage
