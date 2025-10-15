@@ -91,7 +91,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     private lazy var entryTextStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [textField, accessoryStackView])
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = .init(top: 11, left: 16, bottom: 11, right: 16)
+        stackView.layoutMargins = AdyenUIConstants.contentInsets
         stackView.axis = .horizontal
         stackView.alignment = .bottom
         stackView.preservesSuperviewLayoutMargins = true
