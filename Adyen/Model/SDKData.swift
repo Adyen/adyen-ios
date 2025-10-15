@@ -23,7 +23,7 @@ public struct SDKData: Codable {
     
     internal let analytics: Analytics
     internal private(set) var authentication: Authentication?
-    internal let schemaVersion: String = SchemaVersions.v1_0
+    internal let schemaVersion: Int = SchemaVersions.v1
     private let supportNativeRedirect: Bool = true
     private let timestamp = Int(Date().timeIntervalSince1970 * 1000)
     
@@ -48,8 +48,7 @@ public struct SDKData: Codable {
     }
     
     private enum SchemaVersions {
-        // swiftlint:disable:next identifier_name
-        internal static let v1_0 = "1.0"
+        internal static let v1 = 1
     }
 }
 
