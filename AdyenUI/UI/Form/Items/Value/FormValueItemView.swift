@@ -61,7 +61,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     }
     
     internal func didChangeEditingStatus() {
-        // TODO: Change UI elements if needed
+        // TODO: Change UI in edit mode
     }
     
     // MARK: - Separator View
