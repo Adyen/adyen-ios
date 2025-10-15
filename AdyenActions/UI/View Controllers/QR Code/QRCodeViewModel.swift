@@ -15,18 +15,17 @@ internal protocol QRCodeViewModelProtocol {
     var onCopyButtonTitle: String { get }
     var qrCodeData: String { get }
     var expiration: AdyenObservable<String?> { get }
+    var copyInProgress: AdyenObservable<Bool> { get }
     var observedProgress: Progress? { get }
     
     func loadLogoImage(completion: @escaping (UIImage?) -> Void)
-    func performAction(qrCodeImage: UIImage?)
+    func performAction(qrCodeImage: UIImage?, from: UIView)
 }
 
 internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
     
     // MARK: - Properties
-    
-    internal weak var view: QRCodeViewProtocol?
-    
+        
     private let action: QRCodeAction
     private let logoUrl: URL
     private let imageLoader: ImageLoading
@@ -34,6 +33,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
     private let onCopyCode: (_ code: String) -> Void
     internal let observedProgress: Progress?
     internal let expiration: AdyenObservable<String?>
+    internal var copyInProgress: AdyenObservable<Bool> = .init(false)
     internal var localizationParameters: LocalizationParameters?
     
     internal let instructionText: String
@@ -83,14 +83,14 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
         imageLoader.load(url: logoUrl, completion: completion)
     }
     
-    internal func performAction(qrCodeImage: UIImage?) {
+    internal func performAction(qrCodeImage: UIImage?, from view: UIView) {
         switch flowType {
         case .copyCode:
-            view?.startCopyAnimation()
+            copyInProgress.wrappedValue = true
             onCopyCode(qrCodeData)
         case .saveCodeAsImage:
-            guard let qrCodeImage, let sourceView = view?.rootView else { return }
-            onSaveQRCode(qrCodeImage, sourceView)
+            guard let qrCodeImage else { return }
+            onSaveQRCode(qrCodeImage, view)
         }
     }
     

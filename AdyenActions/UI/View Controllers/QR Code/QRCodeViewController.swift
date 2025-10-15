@@ -8,13 +8,8 @@
 import Foundation
 import UIKit
 
-internal protocol QRCodeViewProtocol: AnyObject {
-    var rootView: UIView { get }
-    func startCopyAnimation()
-}
-
 /// A `UIViewController` that shows the QRcode action UI.
-internal final class QRCodeViewController: UIViewController, QRCodeViewProtocol {
+internal final class QRCodeViewController: UIViewController, AdyenObserver {
     
     private enum Layout {
         static let logoSize = CGSize(width: 74.0, height: 48.0)
@@ -32,20 +27,20 @@ internal final class QRCodeViewController: UIViewController, QRCodeViewProtocol 
     
     // MARK: - View elements
     
-    private let scrollView: UIScrollView = {
+    private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
     
-    private let contentView: UIView = {
+    private lazy var contentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layoutMargins = Layout.contentViewMargins
         return view
     }()
         
-    private let actionContentView: UIStackView = {
+    private lazy var actionContentView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = 20
@@ -76,7 +71,7 @@ internal final class QRCodeViewController: UIViewController, QRCodeViewProtocol 
     }()
     
     private lazy var qrCodeView = QRCodeView(viewModel: viewModel, style: style)
-    
+        
     private lazy var actionButton: SubmitButton = {
         let button = SubmitButton(style: actionButtonStyle)
         
@@ -86,7 +81,9 @@ internal final class QRCodeViewController: UIViewController, QRCodeViewProtocol 
             postfix: actionButtonAccessibilityIdentifier
         )
         button.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
-
+        
+        bindCopyInProgress()
+        
         return button
     }()
     
@@ -108,11 +105,7 @@ internal final class QRCodeViewController: UIViewController, QRCodeViewProtocol 
     }()
     
     // MARK: - Properties
-    
-    internal var rootView: UIView {
-        self.view
-    }
-    
+        
     private let viewModel: QRCodeViewModelProtocol
     private let style: QRCodeViewStyle
     
@@ -155,10 +148,17 @@ internal final class QRCodeViewController: UIViewController, QRCodeViewProtocol 
         setter - no implemented.
         """) }
     }
+        
+    // MARK: - Actions
     
-    // MARK: - QRCodeViewProtocol
+    private func bindCopyInProgress() {
+        observe(viewModel.copyInProgress) { [weak self] copyInProgress in
+            guard copyInProgress else { return }
+            self?.startCopyAnimation()
+        }
+    }
     
-    internal func startCopyAnimation() {
+    private func startCopyAnimation() {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)
                 
@@ -166,18 +166,19 @@ internal final class QRCodeViewController: UIViewController, QRCodeViewProtocol 
             self.actionButton.title = self.viewModel.onCopyButtonTitle
         })
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+            guard let self else { return }
+            
             UIView.transition(with: self.actionButton, duration: 0.25, options: .transitionCrossDissolve, animations: {
                 self.actionButton.title = self.viewModel.actionButtonTitle
+                self.viewModel.copyInProgress.wrappedValue = false
             })
         }
     }
     
-    // MARK: - Actions
-    
     @objc private func actionButtonTapped() {
         let qrCodeImage = qrCodeView.imageView.adyen.snapshot()
-        viewModel.performAction(qrCodeImage: qrCodeImage)
+        viewModel.performAction(qrCodeImage: qrCodeImage, from: view)
     }
             
     // MARK: - Private
