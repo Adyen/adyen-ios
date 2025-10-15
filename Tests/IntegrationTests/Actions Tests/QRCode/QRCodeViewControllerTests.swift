@@ -13,7 +13,7 @@ final class QRCodeViewControllerTests: XCTestCase {
     
     // MARK: - Tests
     
-    func test_viewDidLoad_callsLoadLogoImageOnce() {
+    func test_viewLoad_callsLoadLogoImageOnce() {
         // Given
         let (sut, viewModel) = makeSUT()
         
@@ -21,7 +21,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         sut.loadViewIfNeeded()
         
         // Then
-        XCTAssertTrue(viewModel.loadLogoImageCalled, "Expected loadLogoImage to be called once on viewDidLoad")
+        XCTAssertTrue(viewModel.loadLogoImageCalled, "Expected loadLogoImage to be called once on viewLoad")
         XCTAssertEqual(viewModel.loadLogoImageCallsCount, 1)
     }
     
@@ -31,7 +31,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         let expectedImage = UIImage(systemName: "star")
         
         // When
-        sut.viewDidLoad()
+        sut.loadViewIfNeeded()
         viewModel.completeLoadLogoImage(with: expectedImage)
         
         // Then
@@ -43,7 +43,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         let (sut, viewModel) = makeSUT()
         
         // When
-        sut.viewDidLoad()
+        sut.loadViewIfNeeded()
         
         // Then
         XCTAssertEqual(sut.instructionLabel.text, viewModel.instructionText)
@@ -55,7 +55,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         let (sut, viewModel) = makeSUT(flowType: .copyCode)
         
         // When
-        sut.viewDidLoad()
+        sut.loadViewIfNeeded()
         
         // Then
         XCTAssertEqual(sut.actionButton.title, viewModel.actionButtonTitle)
@@ -70,7 +70,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         let (sut, viewModel) = makeSUT(flowType: .saveCodeAsImage)
         
         // When
-        sut.viewDidLoad()
+        sut.loadViewIfNeeded()
         
         // Then
         XCTAssertEqual(sut.actionButton.title, viewModel.actionButtonTitle)
@@ -97,7 +97,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         let (sut, _) = makeSUT()
         
         // When
-        sut.viewDidLoad()
+        sut.loadViewIfNeeded()
         
         // Then
         XCTAssertEqual(sut.view.accessibilityIdentifier, "adyen.QRCode")
@@ -107,7 +107,7 @@ final class QRCodeViewControllerTests: XCTestCase {
     func test_copyCodeLabel_existsOnlyForCopyCodeFlow() {
         // copyCode flow
         var (sut, _) = makeSUT(flowType: .copyCode)
-        sut.viewDidLoad()
+        sut.loadViewIfNeeded()
         
         XCTAssertTrue(
             sut.view.subviews.contains(where: { $0 is UIScrollView }),
@@ -120,7 +120,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         
         // saveAsImage flow
         (sut, _) = makeSUT(flowType: .saveCodeAsImage)
-        sut.viewDidLoad()
+        sut.loadViewIfNeeded()
         
         XCTAssertNil(
             sut.view.findSubview(ofType: CopyLabelView.self),
@@ -128,15 +128,15 @@ final class QRCodeViewControllerTests: XCTestCase {
         )
     }
     
-    func test_startCopyAnimation_changesButtonTitleTemporarily() {
+    func test_copyAnimation_changesButtonTitleTemporarily() {
         // Given
         let (sut, viewModel) = makeSUT()
-        sut.viewDidLoad()
+        sut.loadViewIfNeeded()
         
         let initialTitle = sut.actionButton.title
         
         // When
-        sut.startCopyAnimation()
+        viewModel.copyInProgress.wrappedValue = true
         
         // Then
         XCTAssertEqual(sut.actionButton.title, viewModel.onCopyButtonTitle)
@@ -184,7 +184,6 @@ final class QRCodeViewControllerTests: XCTestCase {
         )
         
         let sut = QRCodeViewController(viewModel: viewModel, style: style)
-        sut.loadViewIfNeeded()
         return (sut, viewModel)
     }
 }

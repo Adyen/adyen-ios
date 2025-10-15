@@ -14,12 +14,13 @@ internal final class QRCodeViewModelMock: QRCodeViewModelProtocol {
     // MARK: - Properties
     
     var flowType: QRCodeFlowType = .copyCode
-    var instructionText: String = ""
-    var amountText: String?
-    var actionButtonTitle: String = ""
-    var onCopyButtonTitle: String = ""
-    var qrCodeData: String = ""
+    var instructionText: String = "Scan the QR code"
+    var amountText: String? = "€10.00"
+    var actionButtonTitle: String = "Pay"
+    var onCopyButtonTitle: String = "Copied!"
+    var qrCodeData: String = "mock-qr-code-data"
     var expiration: AdyenObservable<String?> = AdyenObservable(nil)
+    var copyInProgress: AdyenObservable<Bool> = AdyenObservable(false)
     var observedProgress: Progress?
     
     // MARK: - loadLogoImage
@@ -45,10 +46,12 @@ internal final class QRCodeViewModelMock: QRCodeViewModelProtocol {
     private(set) var performActionCalled = false
     private(set) var performActionCallsCount = 0
     private(set) var performActionReceivedImage: UIImage?
+    private(set) var performActionReceivedFromView: UIView?
     
-    func performAction(qrCodeImage: UIImage?) {
+    func performAction(qrCodeImage: UIImage?, from: UIView) {
         performActionCalled = true
         performActionCallsCount += 1
         performActionReceivedImage = qrCodeImage
+        performActionReceivedFromView = from
     }
 }
