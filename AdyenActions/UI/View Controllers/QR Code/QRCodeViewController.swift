@@ -153,27 +153,25 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
     
     private func bindCopyInProgress() {
         observe(viewModel.copyInProgress) { [weak self] copyInProgress in
-            guard copyInProgress else { return }
-            self?.startCopyAnimation()
+            guard let self else { return }
+            performCopyAnimation(inProgress: copyInProgress)
         }
     }
     
-    private func startCopyAnimation() {
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.success)
-                
-        UIView.transition(with: actionButton, duration: 0.25, options: .transitionCrossDissolve, animations: {
-            self.actionButton.title = self.viewModel.onCopyButtonTitle
-        })
+    private func performCopyAnimation(inProgress: Bool) {
+        let title: String
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
-            guard let self else { return }
-            
-            UIView.transition(with: self.actionButton, duration: 0.25, options: .transitionCrossDissolve, animations: {
-                self.actionButton.title = self.viewModel.actionButtonTitle
-                self.viewModel.copyInProgress.wrappedValue = false
-            })
+        if inProgress {
+            title = viewModel.onCopyButtonTitle
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+        } else {
+            title = viewModel.actionButtonTitle
         }
+        
+        UIView.transition(with: actionButton, duration: 0.25, options: .transitionCrossDissolve, animations: {
+            self.actionButton.title = title
+        })
     }
     
     @objc private func actionButtonTapped() {

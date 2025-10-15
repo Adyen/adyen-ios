@@ -24,6 +24,10 @@ internal protocol QRCodeViewModelProtocol {
 
 internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
     
+    private enum Constants {
+        static let copyAnimationDuration: TimeInterval = 2
+    }
+    
     // MARK: - Properties
         
     private let action: QRCodeAction
@@ -86,7 +90,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
     internal func performAction(qrCodeImage: UIImage?, from view: UIView) {
         switch flowType {
         case .copyCode:
-            copyInProgress.wrappedValue = true
+            enableCopyInProgress(for: Constants.copyAnimationDuration)
             onCopyCode(qrCodeData)
         case .saveCodeAsImage:
             guard let qrCodeImage else { return }
@@ -95,6 +99,14 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
     }
     
     // MARK: - Content
+    
+    private func enableCopyInProgress(for timeInterval: TimeInterval) {
+        copyInProgress.wrappedValue = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + timeInterval) { [weak self] in
+            self?.copyInProgress.wrappedValue = false
+        }
+    }
     
     internal var actionButtonTitle: String {
         switch flowType {
