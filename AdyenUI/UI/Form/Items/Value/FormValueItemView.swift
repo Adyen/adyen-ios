@@ -67,6 +67,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     // MARK: - Separator View
 
     internal var defaultTitleColor: UIColor {
+        // TODO: Use theme passed via dependency
         AdyenTheme().currentColorScheme.primary
     }
 }
