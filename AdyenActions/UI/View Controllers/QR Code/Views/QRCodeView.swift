@@ -89,7 +89,6 @@ internal final class QRCodeView: UIView, AdyenObserver {
     
     private func setupSubviews() {
         amountLabel.numberOfLines = 0
-        amountLabel.font = UIFont.preferredFont(forTextStyle: .callout).adyen.font(with: .bold)
         amountLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.amountToPayLabel)
         
         progressView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.progressView)
