@@ -89,7 +89,6 @@ internal final class QRCodeView: UIView, AdyenObserver {
     
     private func setupSubviews() {
         amountLabel.numberOfLines = 0
-        amountLabel.font = UIFont.preferredFont(forTextStyle: .callout).adyen.font(with: .bold)
         amountLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.amountToPayLabel)
         
         progressView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.progressView)
@@ -110,12 +109,12 @@ internal final class QRCodeView: UIView, AdyenObserver {
         
         progressView.observedProgress = viewModel.observedProgress
         
-        bind(viewModel.expiration, to: expirationLabel, at: \.text) { string in
+        bind(viewModel.expiration, to: expirationLabel, at: \.text) { [weak self] string in
             guard let text = string, !text.isEmpty else {
-                self.expirationLabel.alpha = 0
+                self?.expirationLabel.alpha = 0
                 return " "
             }
-            self.expirationLabel.alpha = 1
+            self?.expirationLabel.alpha = 1
             return text
         }
     }

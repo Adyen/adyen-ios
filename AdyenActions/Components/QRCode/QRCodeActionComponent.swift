@@ -226,8 +226,6 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
             }
         )
         let viewController = QRCodeViewController(viewModel: viewModel, style: style)
-        viewModel.view = viewController
-
         return viewController
     }
     
