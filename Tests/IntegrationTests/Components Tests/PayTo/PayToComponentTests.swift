@@ -88,10 +88,10 @@ class PayToComponentTests: XCTestCase {
     func test_phoneNumberItem_invalidNumbers() throws {
         // Given
         let invalidNumbers = [
-            "",         // empty
-            "05",       // too short
-            "01231",    // maybe not valid in context
-            "9"         // single digit
+            "", // empty
+            "05", // too short
+            "01231", // maybe not valid in context
+            "9" // single digit
         ]
         
         for number in invalidNumbers {
@@ -108,9 +108,9 @@ class PayToComponentTests: XCTestCase {
         let validNumbers = [
             "10",
             "99",
-            "41124123",    // short AU mobile without leading zero
-            "412345678",   // common AU mobile number
-            "434567890"    // common AU mobile number
+            "41124123", // short AU mobile without leading zero
+            "412345678", // common AU mobile number
+            "434567890" // common AU mobile number
         ]
         
         for number in validNumbers {
@@ -119,6 +119,23 @@ class PayToComponentTests: XCTestCase {
             
             // Then
             XCTAssertTrue(sut.phoneNumberItem.isValid(), "Number \(number) should be valid without leading zero")
+        }
+    }
+    
+    func test_phoneNumberItem_validNumbers_withLeadingZero() throws {
+        // Given
+        let validNumbersWithZero = [
+            "041124123",
+            "0412345678",
+            "0434567890"
+        ]
+        
+        for number in validNumbersWithZero {
+            // When
+            sut.phoneNumberItem.value = number
+            
+            // Then
+            XCTAssertTrue(sut.phoneNumberItem.isValid(), "Number \(number) should be valid with leading zero")
         }
     }
 
