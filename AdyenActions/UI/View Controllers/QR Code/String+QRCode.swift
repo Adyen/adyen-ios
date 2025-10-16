@@ -4,24 +4,26 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import CoreImage
 import UIKit
 
 extension String {
     
-    /// Generates a QRCode as UIImage representing the string
-    func generateQRCode() -> UIImage? {
-        guard let filter = CIFilter(name: "CIQRCodeGenerator") else {
-            return nil
-        }
+    /// Generates a QR code UIImage representing the string
+    internal func generateQRCode(size: CGSize) -> UIImage? {
+        guard let data = self.data(using: .utf8),
+              let filter = CIFilter(name: "CIQRCodeGenerator") else { return nil }
         
-        let data = self.data(using: String.Encoding.ascii)
         filter.setValue(data, forKey: "inputMessage")
-        let transform = CGAffineTransform(scaleX: 3, y: 3)
-
-        guard let output = filter.outputImage?.transformed(by: transform) else {
-            return nil
-        }
+        filter.setValue("Q", forKey: "inputCorrectionLevel") // optional error correction level
         
-        return UIImage(ciImage: output)
+        guard let ciImage = filter.outputImage else { return nil }
+        
+        // Scale the CIImage to the desired size
+        let scaleX = size.width / ciImage.extent.size.width
+        let scaleY = size.height / ciImage.extent.size.height
+        let transformedImage = ciImage.transformed(by: CGAffineTransform(scaleX: scaleX, y: scaleY))
+        
+        return UIImage(ciImage: transformedImage)
     }
 }
