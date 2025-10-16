@@ -31,7 +31,7 @@ internal enum ConfigurationConstants {
         case "local":
             return .local
         default:
-            return .test
+            fatalError("Wrong environment: \(environment)")
         }
     }()
     
