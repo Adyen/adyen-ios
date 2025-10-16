@@ -249,7 +249,8 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
             // MARK: - QRCode View
             
             qrCodeView.topAnchor.constraint(greaterThanOrEqualTo: instructionLabel.bottomAnchor, constant: 20),
-            qrCodeView.centerXAnchor.constraint(equalTo: margins.centerXAnchor),
+            qrCodeView.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
+            qrCodeView.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
             qrCodeView.centerYAnchor.constraint(equalTo: margins.centerYAnchor),
             
             // MARK: - Action Content Stack

@@ -82,7 +82,8 @@ internal final class QRCodeView: UIView, AdyenObserver {
             progressView.heightAnchor.constraint(equalToConstant: Layout.progressViewSize.height),
             
             expirationLabel.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: Layout.verticalSpacing),
-            expirationLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            expirationLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+            expirationLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             expirationLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
