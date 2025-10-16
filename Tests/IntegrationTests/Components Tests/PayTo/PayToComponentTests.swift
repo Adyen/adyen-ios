@@ -55,36 +55,20 @@ class PayToComponentTests: XCTestCase {
         // Then
         XCTAssertNotNil(flowSelectionItem, "Flow selection item should exist")
     }
-    
-    func test_phoneNumberItem() throws {
-        // invalid
-        sut.phoneNumberItem.value = ""
-        XCTAssertFalse(sut.phoneNumberItem.isValid())
-        sut.phoneNumberItem.value = "01231"
-        XCTAssertFalse(sut.phoneNumberItem.isValid())
-        sut.phoneNumberItem.value = "05"
-        XCTAssertFalse(sut.phoneNumberItem.isValid())
-        sut.phoneNumberItem.value = "9"
-        XCTAssertFalse(sut.phoneNumberItem.isValid())
         
-        // valid
-        sut.phoneNumberItem.value = "10"
-        XCTAssertTrue(sut.phoneNumberItem.isValid())
-        sut.phoneNumberItem.value = "99"
-        XCTAssertTrue(sut.phoneNumberItem.isValid())
-        sut.phoneNumberItem.value = "41124123"
-        XCTAssertTrue(sut.phoneNumberItem.isValid())
-        
+    func test_phoneNumberItem_viewExists() throws {
         // Given
         sut.viewController.loadViewIfNeeded()
-
-        // Check by accessibility identifier
-        let phoneNumberItem: FormPhoneNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.phoneNumberItem"))
-
+        
+        // When
+        let phoneNumberItem: FormPhoneNumberItemView = try XCTUnwrap(
+            sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.phoneNumberItem")
+        )
+        
         // Then
         XCTAssertNotNil(phoneNumberItem, "Phone number item should exist")
     }
-    
+
     func test_phoneNumberItem_invalidNumbers() throws {
         // Given
         let invalidNumbers = [
