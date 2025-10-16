@@ -84,6 +84,24 @@ class PayToComponentTests: XCTestCase {
         // Then
         XCTAssertNotNil(phoneNumberItem, "Phone number item should exist")
     }
+    
+    func test_phoneNumberItem_invalidNumbers() throws {
+        // Given
+        let invalidNumbers = [
+            "",         // empty
+            "05",       // too short
+            "01231",    // maybe not valid in context
+            "9"         // single digit
+        ]
+        
+        for number in invalidNumbers {
+            // When
+            sut.phoneNumberItem.value = number
+            
+            // Then
+            XCTAssertFalse(sut.phoneNumberItem.isValid(), "Number \(number) should be invalid")
+        }
+    }
 
     func test_payid_titleLabel_exists() throws {
         // Given
