@@ -41,4 +41,7 @@ public final class AdyenObservable<ValueType: Equatable>: EventPublisher {
     
     public var projectedValue: AdyenObservable { self }
     
+    @_spi(AdyenInternal)
+    public let eventHandlersLock: NSLock = .init()
+    
 }
