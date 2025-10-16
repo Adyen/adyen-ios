@@ -55,7 +55,7 @@ class PayToComponentTests: XCTestCase {
         // Then
         XCTAssertNotNil(flowSelectionItem, "Flow selection item should exist")
     }
-        
+    
     func test_phoneNumberItem_viewExists() throws {
         // Given
         sut.viewController.loadViewIfNeeded()
