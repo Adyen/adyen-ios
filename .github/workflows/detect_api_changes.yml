@@ -29,8 +29,8 @@ jobs:
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '16.2'
-        
+        xcode-version: '16.4'
+
     - name: 🚚 Fetch repo
       uses: actions/checkout@v5
       with:
