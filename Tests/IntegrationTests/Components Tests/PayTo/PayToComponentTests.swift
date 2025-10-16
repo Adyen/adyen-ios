@@ -102,6 +102,25 @@ class PayToComponentTests: XCTestCase {
             XCTAssertFalse(sut.phoneNumberItem.isValid(), "Number \(number) should be invalid")
         }
     }
+    
+    func test_phoneNumberItem_validNumbers_withoutLeadingZero() throws {
+        // Given
+        let validNumbers = [
+            "10",
+            "99",
+            "41124123",    // short AU mobile without leading zero
+            "412345678",   // common AU mobile number
+            "434567890"    // common AU mobile number
+        ]
+        
+        for number in validNumbers {
+            // When
+            sut.phoneNumberItem.value = number
+            
+            // Then
+            XCTAssertTrue(sut.phoneNumberItem.isValid(), "Number \(number) should be valid without leading zero")
+        }
+    }
 
     func test_payid_titleLabel_exists() throws {
         // Given
