@@ -33,7 +33,7 @@ internal enum ConfigurationConstants {
         case "local":
             return .local
         default:
-            fatalError("Wrong environment: \(environment). Supported environemnts: `test`, `beta` and `local`")
+            fatalError("Wrong environment: \(environment). Supported environments: `test`, `beta` and `local`")
         }
     }()
     
