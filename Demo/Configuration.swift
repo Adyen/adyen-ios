@@ -26,12 +26,14 @@ internal enum ConfigurationConstants {
     
     static let componentsEnvironment: Environment = {
         switch environment.lowercased() {
+        case "test":
+            return .beta
         case "beta":
             return .beta
         case "local":
             return .local
         default:
-            fatalError("Wrong environment: \(environment)")
+            fatalError("Wrong environment: \(environment). Supported environemnts: `test`, `beta` and `local`")
         }
     }()
     
