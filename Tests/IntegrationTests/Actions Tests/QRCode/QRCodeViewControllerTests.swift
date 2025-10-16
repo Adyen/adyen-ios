@@ -128,26 +128,31 @@ final class QRCodeViewControllerTests: XCTestCase {
         )
     }
     
-    func test_copyAnimation_changesButtonTitleTemporarily() {
+    func test_copyAnimation_givenCopyInProgressFalse_changesButtonTitleToOnCopyTitle() {
         // Given
         let (sut, viewModel) = makeSUT()
         sut.loadViewIfNeeded()
-        
-        let initialTitle = sut.actionButton.title
-        
+        XCTAssertFalse(viewModel.copyInProgress.wrappedValue)
+                
         // When
         viewModel.copyInProgress.wrappedValue = true
         
         // Then
         XCTAssertEqual(sut.actionButton.title, viewModel.onCopyButtonTitle)
+    }
+    
+    func test_copyAnimation_givenCopyInProgressTrue_changesButtonTitleToActionTitle() {
+        // Given
+        let (sut, viewModel) = makeSUT()
+        sut.loadViewIfNeeded()
+        viewModel.copyInProgress.wrappedValue = true
+        XCTAssertTrue(viewModel.copyInProgress.wrappedValue)
+                
+        // When
+        viewModel.copyInProgress.wrappedValue = false
         
-        // Simulate 2-second delay completion
-        let animationExpectation = expectation(description: "Wait for title reset")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.1) {
-            XCTAssertEqual(sut.actionButton.title, initialTitle)
-            animationExpectation.fulfill()
-        }
-        wait(for: [animationExpectation], timeout: 2.5)
+        // Then
+        XCTAssertEqual(sut.actionButton.title, viewModel.actionButtonTitle)
     }
     
     func test_preferredContentSize_returnsGreatestFiniteMagnitude() {

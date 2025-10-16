@@ -58,7 +58,51 @@ class QRCodeViewModelTests: XCTestCase {
     
     // MARK: - performAction (.copyCode)
     
-    func test_performAction_copyCode_callsStartCopyAnimationAndOnCopyCode() throws {
+    func test_performAction_copyCode_callOnCopyCode() throws {
+        // Given
+        let copyCodeExpectation = expectation(description: "copyCode was not called")
+        var receivedCode: String?
+        
+        let (sut, _) = makeSUT(
+            paymentMethodType: .pix,
+            onCopyCode: ({ code in
+                copyCodeExpectation.fulfill()
+                receivedCode = code
+            })
+        )
+        
+        // When
+        sut.performAction(qrCodeImage: nil, from: UIView())
+        
+        // Then
+        wait(for: [copyCodeExpectation], timeout: 0.1)
+        XCTAssertEqual(sut.qrCodeData, receivedCode)
+    }
+    
+    func test_performAction_copyCode_togglesCopyInProgressTemporarily() {
+        // Given
+        let expectation = self.expectation(description: "copyInProgress reset to false")
+        let (sut, _) = makeSUT(
+            paymentMethodType: .pix,
+            onCopyCode: ({ _ in })
+        )
+        
+        // When
+        sut.performAction(qrCodeImage: nil, from: UIView())
+        
+        // Then
+        XCTAssertTrue(sut.copyInProgress.wrappedValue, "copyInProgress should be true immediately")
+        
+        // After delay of 2 seconds, should become false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.1) {
+            XCTAssertFalse(sut.copyInProgress.wrappedValue, "copyInProgress should reset to false after delay")
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 2.5)
+    }
+    
+    func test_performAction_copyCode_startAnimation() throws {
         // Given
         let expectedView = UIView()
         let copyCodeExpectation = expectation(description: "copyCode was not called")
