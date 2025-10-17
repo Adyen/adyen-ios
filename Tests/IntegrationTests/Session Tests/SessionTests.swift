@@ -10,6 +10,7 @@ import XCTest
 @_spi(AdyenInternal) @testable import AdyenActions
 import AdyenComponents
 @testable import AdyenDropIn
+import AdyenNetworking
 
 class SessionTests: XCTestCase {
 
@@ -605,7 +606,7 @@ class SessionTests: XCTestCase {
 
     func testRemoveStoredPaymentMethodSuccess() throws {
         let apiClient = APIClientMock()
-        apiClient.mockedResults = [.success(DisableStoredPaymentMethodResponse())]
+        apiClient.mockedResults = [.success(EmptyResponse())]
 
         sut = initializeSession(
             expectedPaymentMethods: expectedPaymentMethods,
