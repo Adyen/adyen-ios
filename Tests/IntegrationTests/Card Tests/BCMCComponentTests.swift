@@ -45,9 +45,12 @@ class BCMCComponentTests: XCTestCase {
             context: context,
             configuration: CardComponent.Configuration()
         )
-
-        let formViewController = try XCTUnwrap(sut.viewController as? FormViewController)
-        XCTAssertTrue(formViewController.requiresKeyboardInput)
+        
+        sut.viewController.loadViewIfNeeded()
+        
+        let securedViewController = try XCTUnwrap(sut.viewController as? SecuredViewController<CardViewController>)
+        let cardViewController = try XCTUnwrap(securedViewController.childViewController)
+        XCTAssertTrue(cardViewController.requiresKeyboardInput)
     }
     
     func testDefaultConfigAllFieldsArePresent() {
