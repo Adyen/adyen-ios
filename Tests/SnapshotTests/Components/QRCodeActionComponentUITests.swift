@@ -102,7 +102,8 @@ class QRCodeActionComponentUITests: XCTestCase {
 
 private extension QRCodeActionComponentUITests {
 
-    func wait(for qrCodeView: QRCodeViewController) {
+    func wait(for qrCodeViewController: QRCodeViewController) {
+        self.wait { qrCodeViewController.logoImageView.image != nil }
         // Allow the ui to reflect all changes
         self.wait(for: .aMoment)
     }
