@@ -99,7 +99,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     
     internal func resetValidationStatus() {
         hideAlertLabel(true, animated: false)
-        titleLabel.textColor = defaultTitleColor
+        titleLabel.textColor = AdyenTheme().currentColorScheme.primary
         accessibilityLabelView?.accessibilityLabel = item.title
     }
 }

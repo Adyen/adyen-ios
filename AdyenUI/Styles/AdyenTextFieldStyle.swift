@@ -47,13 +47,13 @@ public struct AdyenTextFieldStyle {
         title: AdyenLabelStyle,
         text: AdyenLabelStyle,
         placeholder: AdyenLabelStyle,
+        borderWidth: CGFloat,
+        cornerRadius: CornerRounding,
         backgroundColor: UIColor = AdyenColorScheme.default.background,
         containerColor: UIColor = AdyenColorScheme.default.container,
         errorColor: UIColor = AdyenColorScheme.default.destructive,
-        cornerRadius: CornerRounding,
         borderColor: UIColor = AdyenColorScheme.default.container,
-        borderActiveColor: UIColor = AdyenColorScheme.default.outlineActive,
-        borderWidth: CGFloat
+        borderActiveColor: UIColor = AdyenColorScheme.default.outlineActive
     ) {
         self.title = title
         self.text = text

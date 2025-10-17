@@ -19,7 +19,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     public lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.font = AdyenTheme().currentFonts.bodyEmphasized
-        titleLabel.textColor = defaultTitleColor
+        titleLabel.textColor = AdyenTheme().currentColorScheme.primary
         titleLabel.text = item.title
         titleLabel.numberOfLines = 0
         titleLabel.isAccessibilityElement = false
@@ -63,13 +63,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     internal func didChangeEditingStatus() {
         // TODO: Change UI in edit mode
     }
-    
-    // MARK: - Separator View
 
-    internal var defaultTitleColor: UIColor {
-        // TODO: Use theme passed via dependency
-        AdyenTheme().currentColorScheme.primary
-    }
 }
 
 /// A type-erased form value item view.

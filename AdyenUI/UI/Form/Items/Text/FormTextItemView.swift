@@ -156,7 +156,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         }
         
         accessoryStackView.isHidden = false
-        accessoryView.tintColor = defaultTitleColor
+        accessoryView.tintColor = AdyenTheme().currentColorScheme.primary
         accessoryStackView.addArrangedSubview(accessoryView)
     }
     
@@ -195,7 +195,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     override internal func didChangeEditingStatus() {
         updateValidationStatus()
-        updateBorderStyling()
     }
     
     // MARK: - Layout
