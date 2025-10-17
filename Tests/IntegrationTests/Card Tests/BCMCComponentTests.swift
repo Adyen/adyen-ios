@@ -38,6 +38,7 @@ class BCMCComponentTests: XCTestCase {
     }
 
     func testRequiresKeyboardInput() throws {
+        // Given
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.accel])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(
@@ -46,8 +47,10 @@ class BCMCComponentTests: XCTestCase {
             configuration: CardComponent.Configuration()
         )
         
+        // When
         sut.viewController.loadViewIfNeeded()
         
+        // Then
         let securedViewController = try XCTUnwrap(sut.viewController as? SecuredViewController<CardViewController>)
         let cardViewController = try XCTUnwrap(securedViewController.childViewController)
         XCTAssertTrue(cardViewController.requiresKeyboardInput)
