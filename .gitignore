@@ -21,6 +21,7 @@ xcuserdata
 [Bb]uild*
 DerivedData
 .index-build
+.build
 
 # macOS
 .DS_Store
