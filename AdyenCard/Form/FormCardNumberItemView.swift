@@ -25,7 +25,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         if item.supportsCardScanning {
             textField.inputAccessoryView = makeCardScanAccessoryView(
                 title: item.scanYourCardButtonTitle,
-                    #selector(openCardScanner)
+                #selector(openCardScanner)
             )
         }
         textField.textContentType = .creditCardNumber
