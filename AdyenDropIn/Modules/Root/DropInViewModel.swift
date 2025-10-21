@@ -13,6 +13,7 @@ import Foundation
 
 internal protocol DropInViewModelProtocol {
     var root: DropInRoot { get }
+    var title: String { get }
     func handle(action: Action)
 }
 
@@ -21,29 +22,29 @@ internal class DropInViewModel: DropInViewModelProtocol {
     // MARK: - Properties
 
     internal weak var router: DropInRouting?
+    internal let title: String
     private let componentManager: ComponentManager
     private let apiClient: APIClientProtocol
     private let paymentMethods: PaymentMethods
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
-    private let title: String?
 
     // MARK: - Initializers
 
     internal init(
+        title: String,
         componentManager: ComponentManager,
         apiClient: APIClientProtocol,
         paymentMethods: PaymentMethods,
         context: AdyenContext,
-        configuration: DropInComponent.Configuration,
-        title: String? = nil
+        configuration: DropInComponent.Configuration
     ) {
+        self.title = title
         self.componentManager = componentManager
         self.apiClient = apiClient
         self.paymentMethods = paymentMethods
         self.context = context
         self.configuration = configuration
-        self.title = title
 
         self.componentManager.presentationDelegate = self
     }
@@ -82,20 +83,20 @@ internal class DropInViewModel: DropInViewModelProtocol {
 
 extension DropInViewModel: ActionComponentDelegate {
     
-    func didOpenExternalApplication(component: any ActionComponent) {
+    internal func didOpenExternalApplication(component: any ActionComponent) {
         component.stopLoading()
         router?.openExternalApplication(component: component)
     }
 
-    func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
+    internal func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
         router?.provide(data, from: component)
     }
     
-    func didComplete(from component: any ActionComponent) {
+    internal func didComplete(from component: any ActionComponent) {
         router?.complete(from: component)
     }
     
-    func didFail(with error: any Error, from component: any ActionComponent) {
+    internal func didFail(with error: any Error, from component: any ActionComponent) {
         if case ComponentError.cancelled = error {
             router?.cancel(with: error, from: component)
         } else {

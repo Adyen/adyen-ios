@@ -26,7 +26,7 @@ internal protocol Router: AnyObject {
 }
 
 extension Router {
-    func stopLoading() { /* Optional implementation */ }
+    internal func stopLoading() { /* Optional implementation */ }
 }
 
 internal protocol DropInRouting: Router, AnyObject {
@@ -116,7 +116,7 @@ internal class DropInRouter: DropInRouting {
             let preselectedPaymentMethodRouter = preselectedPaymentMethodAssembler.resolvePreselectedPaymentMethodRouter(
                 delegate: self,
                 component: paymentComponent,
-                title: "DropIn V6"
+                title: viewModel.title
             )
             self.childRouter = preselectedPaymentMethodRouter
             let preselectedPaymentMethodViewController = preselectedPaymentMethodRouter.rootViewController
@@ -141,7 +141,7 @@ internal class DropInRouter: DropInRouting {
 
 extension DropInRouter: PreselectedPaymentMethodRouterListener {
         
-    func didPresentPaymentMethodList() {
+    internal func didPresentPaymentMethodList() {
         let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter(delegate: self)
         self.childRouter = paymentMethodListRouter
         rootViewController.present(paymentMethodListRouter.rootViewController, animated: true)
@@ -152,21 +152,21 @@ extension DropInRouter: PreselectedPaymentMethodRouterListener {
 
 extension DropInRouter: PaymentMethodListRouterListener, ComponentContainerRouterListener {
         
-    func didDismiss(completion: (() -> Void)?) {
+    internal func didDismiss(completion: (() -> Void)?) {
         // TODO: - Decide wether dismissal this logic belongs to dropIn or merchant's side
         rootViewController.presentingViewController?.dismiss(animated: true)
         childRouter = nil
     }
     
-    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
+    internal func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         listener?.didSubmit(data, from: component)
     }
     
-    func didFail(with error: any Error, from component: any PaymentComponent) {
+    internal func didFail(with error: any Error, from component: any PaymentComponent) {
         listener?.didFail(with: error, from: component)
     }
     
-    func didCancel(component: any PaymentComponent) {
+    internal func didCancel(component: any PaymentComponent) {
         listener?.didCancel(component: component)
     }
 }

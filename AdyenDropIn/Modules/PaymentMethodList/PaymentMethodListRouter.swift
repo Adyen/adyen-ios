@@ -98,15 +98,15 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
 
 extension PaymentMethodListRouter: ComponentContainerRouterListener {
     
-    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
+    internal func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         listener?.didSubmit(data, from: component)
     }
     
-    func didFail(with error: any Error, from component: any Adyen.PaymentComponent) {
+    internal func didFail(with error: any Error, from component: any Adyen.PaymentComponent) {
         listener?.didFail(with: error, from: component)
     }
     
-    func didCancel(component: any Adyen.PaymentComponent) {
+    internal func didCancel(component: any Adyen.PaymentComponent) {
         loadable.stopLoading()
         listener?.didCancel(component: component)
     }

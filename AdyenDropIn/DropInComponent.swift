@@ -35,6 +35,7 @@ public final class DropInComponent: NSObject,
 
     private lazy var router: DropInRouting = {
         let dropInAssembler = DropInAssembler(
+            title: title,
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,

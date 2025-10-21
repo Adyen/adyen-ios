@@ -16,6 +16,7 @@ internal struct DropInAssembler {
 
     // MARK: - Properties
 
+    private let title: String
     private let paymentMethods: PaymentMethods
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
@@ -26,12 +27,14 @@ internal struct DropInAssembler {
     // MARK: - Initializers
 
     internal init(
+        title: String,
         paymentMethods: PaymentMethods,
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
         cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
+        self.title = title
         self.paymentMethods = paymentMethods
         self.context = context
         self.configuration = configuration
@@ -54,6 +57,7 @@ internal struct DropInAssembler {
         let apiClient = resolveAPIClient()
 
         let viewModel = DropInViewModel(
+            title: title,
             componentManager: componentManager,
             apiClient: apiClient,
             paymentMethods: paymentMethods,
