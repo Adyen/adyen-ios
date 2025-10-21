@@ -10,43 +10,25 @@ import Foundation
 
 internal struct DisableStoredPaymentMethodRequest: APIRequest {
     
-    internal typealias ResponseType = DisableStoredPaymentMethodResponse
+    internal typealias ResponseType = EmptyResponse
     
-    internal let recurringDetailReference: String
-    
-    internal let path = "Recurring/v68/disable"
+    internal let storedPaymentId: String
+    internal let merchantAccount: String
+    internal let shopperReference: String
+
+    internal var path: String { "storedPaymentMethods/\(storedPaymentId)" }
 
     internal var counter: UInt = 0
 
-    internal var method: HTTPMethod = .post
+    internal var method: HTTPMethod = .delete
 
     internal var headers: [String: String] = [:]
 
-    internal var queryParameters: [URLQueryItem] = []
+    internal var queryParameters: [URLQueryItem] { [
+        .init(name: "merchantAccount", value: merchantAccount),
+        .init(name: "shopperReference", value: shopperReference)
+    ] }
 
-    internal func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
+    internal func encode(to encoder: Encoder) throws {}
 
-        let configurations = ConfigurationConstants.current
-
-        try container.encode(recurringDetailReference, forKey: .recurringDetailReference)
-        try container.encode(ConfigurationConstants.shopperReference, forKey: .shopperReference)
-        try container.encode(configurations.merchantAccount, forKey: .merchantAccount)
-    }
-
-    private enum CodingKeys: String, CodingKey {
-        case recurringDetailReference
-        case shopperReference
-        case merchantAccount
-    }
-}
-
-internal struct DisableStoredPaymentMethodResponse: Response {
-
-    internal enum ResultCode: String, Decodable {
-        case detailsDisabled = "[detail-successfully-disabled]"
-        case allDetailsDisabled = "[all-details-successfully-disabled]"
-    }
-
-    internal let response: ResultCode
 }

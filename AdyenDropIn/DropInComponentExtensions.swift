@@ -19,16 +19,16 @@ import UIKit
 
 @_spi(AdyenInternal)
 extension DropInComponent: ActionComponentDelegate {
-    
+
     public func didOpenExternalApplication(component: ActionComponent) {
         stopLoading()
         delegate?.didOpenExternalApplication(component: component, in: self)
     }
-    
+
     public func didComplete(from component: ActionComponent) {
         delegate?.didComplete(from: component, in: self)
     }
-    
+
     public func didFail(with error: Error, from component: ActionComponent) {
         if case ComponentError.cancelled = error {
             userDidCancel(component)
@@ -36,11 +36,11 @@ extension DropInComponent: ActionComponentDelegate {
             delegate?.didFail(with: error, from: component, in: self)
         }
     }
-    
+
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         delegate?.didProvide(data, from: component, in: self)
     }
-    
+
 }
 
 extension DropInComponent: NavigationDelegate {
@@ -91,7 +91,7 @@ extension DropInComponent: TrackableComponent {
         let paymentMethodTypes = paymentMethods.regular.map(\.type.rawValue)
         return .dropIn(paymentMethods: paymentMethodTypes)
     }
-    
+
     public func sendDidLoadEvent() {
         var infoEvent = AnalyticsEventInfo(component: "dropin", type: .rendered)
         infoEvent.configData = DropInAnalyticsConfiguration(configuration: configuration)
