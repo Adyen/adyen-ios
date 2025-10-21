@@ -697,7 +697,7 @@ class SessionTests: XCTestCase {
             didOpenExternalAppExpectation.fulfill()
         }
 
-        dropIn.didFail(with: ComponentError.paymentMethodNotSupported)
+        dropIn.didFail(with: ComponentError.paymentMethodNotSupported, from: paymentComponent)
         dropIn.didOpenExternalApplication(component: QRCodeActionComponent(context: context))
         sut.state.resultCode = .authorised
         dropIn.didComplete(from: actionComponent)

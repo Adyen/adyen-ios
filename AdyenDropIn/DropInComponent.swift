@@ -383,19 +383,19 @@ extension DropInComponent: DropInRouterListener {
     
     // MARK: - ActionComponentDelegate
     
-    func didOpenExternalApplication(component: any ActionComponent) {
+    internal func didOpenExternalApplication(component: any ActionComponent) {
         delegate?.didOpenExternalApplication(component: component, in: self)
     }
     
-    func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
+    internal func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
         delegate?.didProvide(data, from: component, in: self)
     }
     
-    func didComplete(from component: any ActionComponent) {
+    internal func didComplete(from component: any ActionComponent) {
         delegate?.didComplete(from: component, in: self)
     }
     
-    func didFail(with error: any Error, from component: any ActionComponent) {
+    internal func didFail(with error: any Error, from component: any ActionComponent) {
         delegate?.didFail(with: error, from: self)
     }
 }

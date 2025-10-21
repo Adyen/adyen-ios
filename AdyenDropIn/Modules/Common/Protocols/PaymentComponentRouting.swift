@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import Adyen
 
 internal protocol PaymentComponentRouting {
     func submit(_ data: PaymentComponentData, from component: any PaymentComponent)
