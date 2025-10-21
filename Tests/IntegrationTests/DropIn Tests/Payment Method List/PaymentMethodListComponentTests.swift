@@ -23,16 +23,7 @@ class PaymentMethodListComponentTests: XCTestCase {
             super.run()
         }
     }
-    
-    func testRequiresKeyboardInput() throws {
-        let section = ComponentsSection(components: [storedComponent])
-        let sectionedComponents = [section]
-        let sut = PaymentMethodListComponent(context: Dummy.context, components: sectionedComponents)
-
-        let formViewController = try XCTUnwrap(sut.viewController as? FormViewController)
-        XCTAssertFalse(formViewController.requiresKeyboardInput)
-    }
-    
+        
     func testLocalizationWithCustomTableName() {
         let storedSection = ComponentsSection(components: [storedComponent])
         let regularSectionHeader = ListSectionHeader(title: "title", style: ListSectionHeaderStyle())

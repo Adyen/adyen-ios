@@ -54,14 +54,20 @@ class CardComponentTests: XCTestCase {
     }
     
     func testRequiresKeyboardInput() throws {
+        // Given
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
             configuration: CardComponent.Configuration()
         )
+        
+        // When
+        sut.viewController.loadViewIfNeeded()
 
-        let formViewController = try XCTUnwrap(sut.viewController as? FormViewController)
-        XCTAssertTrue(formViewController.requiresKeyboardInput)
+        // Then
+        let securedViewController = try XCTUnwrap(sut.viewController as? SecuredViewController<CardViewController>)
+        let cardViewController = securedViewController.childViewController
+        XCTAssertTrue(cardViewController.requiresKeyboardInput)
     }
 
     func testLocalizationWithCustomTableName() {
