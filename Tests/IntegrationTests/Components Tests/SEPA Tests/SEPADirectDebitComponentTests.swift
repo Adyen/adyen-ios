@@ -26,9 +26,15 @@ class SEPADirectDebitComponentTests: XCTestCase {
     }
 
     func testRequiresKeyboardInput() throws {
+        // Given
         let sut = SEPADirectDebitComponent(paymentMethod: method, context: context)
+        
+        // When
+        sut.viewController.loadViewIfNeeded()
 
-        let formViewController = try XCTUnwrap(sut.viewController as? FormViewController)
+        // Then
+        let securedViewController = try XCTUnwrap(sut.viewController as? SecuredViewController<FormViewController>)
+        let formViewController = securedViewController.childViewController
         XCTAssertTrue(formViewController.requiresKeyboardInput)
     }
     

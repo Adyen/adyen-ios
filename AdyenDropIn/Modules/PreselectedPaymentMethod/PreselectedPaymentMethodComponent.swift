@@ -49,6 +49,9 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     /// Call back when the list is dismissed.
     internal var onCancel: (() -> Void)?
     
+    /// Callback for when the component is loaded on display.
+    internal var onDidLoad: (() -> Void)?
+    
     /// Initializes the pre selected payment component.
     /// - Parameter component: The pre-selected component.
     /// - Parameter title: The title.
@@ -175,7 +178,11 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
 }
 
-extension PreselectedPaymentMethodComponent: ViewControllerDelegate {}
+extension PreselectedPaymentMethodComponent: ViewControllerDelegate {
+    func viewDidLoad(viewController: UIViewController) {
+        onDidLoad?()
+    }
+}
 
 @_spi(AdyenInternal)
 extension PreselectedPaymentMethodComponent: TrackableComponent {}
