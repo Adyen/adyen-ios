@@ -33,7 +33,7 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Properties
 
-    private lazy var router: DropInRouting = {
+    internal private(set) lazy var router: DropInRouting = {
         let dropInAssembler = DropInAssembler(
             title: title,
             paymentMethods: paymentMethods,
