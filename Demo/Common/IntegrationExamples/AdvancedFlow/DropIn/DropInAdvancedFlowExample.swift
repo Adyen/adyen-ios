@@ -15,7 +15,6 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
     private var dropInComponent: DropInComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
-    private lazy var palApiClient = ApiClientHelper.generatePalApiClient()
 
     internal lazy var context: AdyenContext = generateContext()
 
@@ -285,8 +284,12 @@ extension DropInAdvancedFlowExample: PartialPaymentDelegate {
 
 extension DropInAdvancedFlowExample: StoredPaymentMethodsDelegate {
     internal func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping (Bool) -> Void) {
-        let request = DisableStoredPaymentMethodRequest(recurringDetailReference: storedPaymentMethod.identifier)
-        palApiClient.perform(request) { [weak self] result in
+        let request = DisableStoredPaymentMethodRequest(
+            storedPaymentId: storedPaymentMethod.identifier,
+            merchantAccount: ConfigurationConstants.merchantAccount,
+            shopperReference: ConfigurationConstants.shopperReference
+        )
+        apiClient.perform(request) { [weak self] result in
             self?.handleDisableResult(result, completion: completion)
         }
     }
@@ -296,8 +299,8 @@ extension DropInAdvancedFlowExample: StoredPaymentMethodsDelegate {
         case let .failure(error):
             self.presenter?.presentAlert(with: error, retryHandler: nil)
             completion(false)
-        case let .success(response):
-            completion(response.response == .detailsDisabled)
+        case .success:
+            completion(true)
         }
     }
 }

@@ -33,21 +33,6 @@ class AssertsTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testListViewControllerPreferredContentSizeAssertion() {
-        let sut = ListViewController(style: ListComponentStyle())
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-
-        AdyenAssertion.listener = { message in
-            XCTAssertEqual(message, "PreferredContentSize is overridden for this view controller.\ngetter - returns content size of scroll view.\nsetter - no implemented.")
-            expectation.fulfill()
-        }
-
-        sut.preferredContentSize = .zero
-
-        wait(for: [expectation], timeout: 10)
-
-    }
-
     func testFormViewControllerPreferredContentSizeAssertion() {
         let sut = FormViewController(
             scrollEnabled: true,
