@@ -321,7 +321,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         updateBorderStyling()
     }
 
-    func updateBorderStyling() {
+    private func updateBorderStyling() {
         let borderColor = isEditing ? style.borderActiveColor : style.borderColor
         entryTextStackView.layer.borderColor = borderColor.cgColor
     }
