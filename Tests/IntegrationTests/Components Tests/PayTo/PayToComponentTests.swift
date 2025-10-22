@@ -69,12 +69,19 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(phoneNumberItem, "Phone number item should exist")
     }
 
-    func test_phoneNumberItem_emptyPhoneNumber() throws {
-        // When
-        sut.phoneNumberItem.value = ""
-
-        // Then
-        XCTAssertFalse(sut.phoneNumberItem.isValid(), "Number should be invalid")
+    func test_phoneNumberItem_invalidNumbers() throws {
+        // Given
+        let invalidNumbers = [
+            "" // Empty phone number
+        ]
+        
+        for number in invalidNumbers {
+            // When
+            sut.phoneNumberItem.value = number
+            
+            // Then
+            XCTAssertFalse(sut.phoneNumberItem.isValid(), "Number \(number) should be invalid")
+        }
     }
     
     func test_phoneNumberItem_validNumbers_withoutLeadingZero() throws {
