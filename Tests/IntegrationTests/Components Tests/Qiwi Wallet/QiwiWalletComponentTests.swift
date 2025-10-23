@@ -103,7 +103,7 @@ class QiwiWalletComponentTests: XCTestCase {
         let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.payButtonItem.button.titleLabel")
         
         /// Test phone number field
-        // TODO: Fix Later
+        // TODO: Fix phoneNumberView, phoneExtensionViewLabel and payButtonItemViewButton UI asserts
 //        XCTAssertEqual(phoneNumberView?.backgroundColor, .red)
 //        XCTAssertEqual(phoneNumberViewTitleLabel?.textColor, sut.viewController.view.tintColor)
 //        XCTAssertEqual(phoneNumberViewTitleLabel?.backgroundColor, .blue)
@@ -114,14 +114,12 @@ class QiwiWalletComponentTests: XCTestCase {
 //        XCTAssertEqual(phoneNumberViewTextField?.textColor, .red)
 //        XCTAssertEqual(phoneNumberViewTextField?.font, .systemFont(ofSize: 13))
         
-        // TODO: FIX ME
         /// Test phone extension
 //        XCTAssertEqual(phoneExtensionViewLabel?.textAlignment, .right)
 //        XCTAssertEqual(phoneExtensionViewLabel?.textColor, .red)
 //        XCTAssertEqual(phoneExtensionViewLabel?.font, .systemFont(ofSize: 13))
         
         /// Test footer
-        // TODO: FIX LATER
 //        XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
 //        XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
 //        XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)

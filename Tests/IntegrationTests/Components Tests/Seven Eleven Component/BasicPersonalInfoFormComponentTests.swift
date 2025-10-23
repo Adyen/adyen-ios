@@ -100,7 +100,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         
         wait(for: .milliseconds(300))
         
-        // TODO: Fix Later
+        // TODO: Fix assertTextInputUI
         /// Test firstName field
 //        self.assertTextInputUI(
 //            ViewIdentifier.firstName,
@@ -133,7 +133,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: ViewIdentifier.payButton)
         let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: ViewIdentifier.payButtonTitleLabel)
 
-        // TODO: FIX LATER
+        // TODO: FIX payButtonItemViewButton, payButtonItemViewButtonTitle, phoneNumberView, phoneNumberViewTitleLabel and phoneNumberViewTextField UI asserts
 //        XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
 //        XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
 //        XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
@@ -141,7 +141,6 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
 //        XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
 
         /// Test phone number field
-        // TODO: Fix Later
 //        XCTAssertEqual(phoneNumberView?.backgroundColor, .red)
 //        XCTAssertEqual(phoneNumberViewTitleLabel?.textColor, .yellow)
 //        XCTAssertEqual(phoneNumberViewTitleLabel?.backgroundColor, .blue)
@@ -164,7 +163,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         let textViewTitleLabel: UILabel? = view.findView(with: "\(identifier).titleLabel")
         let textViewTextField: UITextField? = view.findView(with: "\(identifier).textField")
 
-        // TODO: Fix Later
+        // TODO: Fix textView, textViewTitleLabel, textViewTextField UI asserts
 //        XCTAssertEqual(textView?.backgroundColor, .red)
 //        XCTAssertEqual(textViewTitleLabel?.textColor, isFirstField ? view.tintColor : style.title.color)
 //        XCTAssertEqual(textViewTitleLabel?.backgroundColor, style.title.backgroundColor)

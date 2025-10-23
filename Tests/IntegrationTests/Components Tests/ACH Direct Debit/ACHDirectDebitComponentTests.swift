@@ -129,7 +129,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.payButtonItem.button.titleLabel")
         
         XCTAssertNotNil(sut.viewController.view.findView(by: "AdyenComponents.ACHDirectDebitComponent.billingAddressItem"))
-        // TODO: Fix Later
+        // TODO: Fix nameItemView, accountNumberItemView, routingNumberItemView and payButtonItemViewButton UI asserts
         /// holder name
 //        XCTAssertEqual(nameItemView?.backgroundColor, .red)
 //        XCTAssertEqual(nameItemViewTitleLabel?.backgroundColor, .blue)

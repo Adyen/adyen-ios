@@ -133,7 +133,8 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button")
         let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button.titleLabel")
         
-        // TODO: Fix Later
+        // TODO: Fix nameItemView, ibanItemView, ibanItemTitleLabel, ibanItemTextField, payButtonItemViewButton and payButtonItemViewButtonTitle UI asserts
+
         /// Test card number field
 //        XCTAssertEqual(nameItemView?.backgroundColor, .red)
 //        XCTAssertEqual(nameItemViewTitleLabel?.textColor, sut.viewController.view.tintColor)
@@ -156,7 +157,6 @@ class SEPADirectDebitComponentTests: XCTestCase {
 //        XCTAssertEqual(ibanItemTextField?.textColor, .red)
 //        XCTAssertEqual(ibanItemTextField?.font, .systemFont(ofSize: 13))
         
-        // TODO: FIX LATER
 //        /// Test footer
 //        XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
 //        XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)

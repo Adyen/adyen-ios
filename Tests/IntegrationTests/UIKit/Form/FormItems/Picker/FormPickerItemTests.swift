@@ -18,21 +18,21 @@ class FormPickerItemTests: XCTestCase {
         }
     }
     
-    // TODO: FIX later
+    // TODO: FIX testPresentation test
 //    func testPresentation() throws {
-//        
+//
 //        let presentViewControllerExpectation = expectation(description: "presenter.presentViewController was called")
 //        let dismissViewControllerExpectation = expectation(description: "presenter.dismissViewController was called")
-//        
+//
 //        var presentedViewController: FormPickerSearchViewController<FormPickerElement>?
-//        
+//
 //        let mockPresenter = PresenterMock { viewController, animated in
 //            presentedViewController = viewController as? FormPickerSearchViewController<FormPickerElement>
 //            presentViewControllerExpectation.fulfill()
 //        } dismiss: { animated in
 //            dismissViewControllerExpectation.fulfill()
 //        }
-//        
+//
 //        let formPickerItem = FormPickerItem(
 //            preselectedValue: nil,
 //            selectableValues: [FormPickerElement(identifier: "Identifier", title: "Title", subtitle: "Subtitle")],
@@ -41,19 +41,19 @@ class FormPickerItemTests: XCTestCase {
 //            style: .init(),
 //            presenter: mockPresenter
 //        )
-//        
+//
 //        // Setting up formPickerItem
 //        _ = FormPickerItemView(item: formPickerItem)
-//        
+//
 //        formPickerItem.selectionHandler()
-//        
+//
 //        wait(for: [presentViewControllerExpectation], timeout: 10)
-//        
+//
 //        setupRootViewController(presentedViewController!)
-//        
+//
 //        let searchViewController = presentedViewController!.viewControllers.first as! SearchViewController
 //        searchViewController.viewModel.interfaceState.results?.first?.selectionHandler?()
-//        
+//
 //        wait(for: [dismissViewControllerExpectation], timeout: 10)
 //    }
     
