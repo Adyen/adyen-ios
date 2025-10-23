@@ -119,7 +119,6 @@ class FormTextItemViewTests: XCTestCase {
     }
     
     func testValidationStatusIsInvalidWhenValueIsInvalid() {
-        // Given
         let validationExpectation = XCTestExpectation(description: "Expect validator.isValid() to be called.")
         validator.handleIsValid = { _ in
             validationExpectation.fulfill()
