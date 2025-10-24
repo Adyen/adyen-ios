@@ -56,33 +56,70 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(flowSelectionItem, "Flow selection item should exist")
     }
     
-    func test_phoneNumberItem() throws {
-        // invalid
-        sut.phoneNumberItem.value = ""
-        XCTAssertFalse(sut.phoneNumberItem.isValid())
-        sut.phoneNumberItem.value = "01231"
-        XCTAssertFalse(sut.phoneNumberItem.isValid())
-        sut.phoneNumberItem.value = "05"
-        XCTAssertFalse(sut.phoneNumberItem.isValid())
-        sut.phoneNumberItem.value = "9"
-        XCTAssertFalse(sut.phoneNumberItem.isValid())
-        
-        // valid
-        sut.phoneNumberItem.value = "10"
-        XCTAssertTrue(sut.phoneNumberItem.isValid())
-        sut.phoneNumberItem.value = "99"
-        XCTAssertTrue(sut.phoneNumberItem.isValid())
-        sut.phoneNumberItem.value = "41124123"
-        XCTAssertTrue(sut.phoneNumberItem.isValid())
-        
+    func test_phoneNumberItem_viewExists() throws {
         // Given
         sut.viewController.loadViewIfNeeded()
-
-        // Check by accessibility identifier
-        let phoneNumberItem: FormPhoneNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.phoneNumberItem"))
-
+        
+        // When
+        let phoneNumberItem: FormPhoneNumberItemView = try XCTUnwrap(
+            sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.phoneNumberItem")
+        )
+        
         // Then
         XCTAssertNotNil(phoneNumberItem, "Phone number item should exist")
+    }
+
+    func test_phoneNumberItem_invalidNumbers() throws {
+        // Given
+        let invalidNumbers = [
+            "" // Empty phone number
+        ]
+        
+        for number in invalidNumbers {
+            // When
+            sut.phoneNumberItem.value = number
+            
+            // Then
+            XCTAssertFalse(sut.phoneNumberItem.isValid(), "Number \(number) should be invalid")
+        }
+    }
+    
+    func test_phoneNumberItem_validNumbers_withoutLeadingZero() throws {
+        // Given
+        let validNumbers = [
+            "9",
+            "10",
+            "99",
+            "01231",
+            "41124123", // short AU mobile without leading zero
+            "412345678", // common AU mobile number
+            "434567890" // common AU mobile number
+        ]
+        
+        for number in validNumbers {
+            // When
+            sut.phoneNumberItem.value = number
+            
+            // Then
+            XCTAssertTrue(sut.phoneNumberItem.isValid(), "Number \(number) should be valid without leading zero")
+        }
+    }
+    
+    func test_phoneNumberItem_validNumbers_withLeadingZero() throws {
+        // Given
+        let validNumbersWithZero = [
+            "041124123",
+            "0412345678",
+            "0434567890"
+        ]
+        
+        for number in validNumbersWithZero {
+            // When
+            sut.phoneNumberItem.value = number
+            
+            // Then
+            XCTAssertTrue(sut.phoneNumberItem.isValid(), "Number \(number) should be valid with leading zero")
+        }
     }
 
     func test_payid_titleLabel_exists() throws {
