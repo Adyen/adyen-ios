@@ -48,9 +48,9 @@ public struct CheckoutConfiguration {
     package var onComplete: CheckoutSuccessHandler?
     
     package let context: AdyenContext
-
+    
     package var theme: AdyenTheme
-
+    
     /// Creates a CheckoutConfiguration instance.
     /// - Parameters:
     ///   - environment: The environment to retrieve internal resources from.
@@ -99,6 +99,25 @@ public struct CheckoutConfiguration {
         self.configurations = configurations
         self.theme = theme
     }
+    
+    internal func componentConfiguration(for paymentMethod: PaymentMethod) -> CheckoutComponentConfiguration? {
+        configurations[.payment(paymentMethod.type)]
+    }
+    
+    internal func configuration<T: CheckoutComponentConfiguration>(for paymentMethod: PaymentMethod, defaultValue: @autoclosure () -> T) -> T {
+        if let config = configurations[.payment(paymentMethod.type)] as? T {
+            return config
+        }
+        return defaultValue()
+    }
+    
+    //    internal func componentConfiguration(for action: Action) -> CheckoutComponentConfiguration? {
+    //        configurations[.action(...)]
+    //    }
+    
+}
+
+extension CheckoutConfiguration {
     
     public func showsSubmitButton(_ showsSubmitButton: Bool) -> Self {
         var copy = self

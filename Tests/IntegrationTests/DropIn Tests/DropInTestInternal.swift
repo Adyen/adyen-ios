@@ -10,7 +10,7 @@ import AdyenDropIn
 import XCTest
 
 // TODO: To be rewriten when DropInComponent has its final implementation.
-//class DropInInternalTests: XCTestCase {
+// class DropInInternalTests: XCTestCase {
 //
 //    override func run() {
 //        AdyenDependencyValues.runTestWithValues {
@@ -47,4 +47,4 @@ import XCTest
 //
 //        waitForExpectations(timeout: 5, handler: nil)
 //    }
-//}
+// }

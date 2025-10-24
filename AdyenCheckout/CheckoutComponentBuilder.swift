@@ -11,6 +11,9 @@
 #if canImport(AdyenComponents)
     @_spi(AdyenInternal) import AdyenComponents
 #endif
+#if canImport(AdyenCard)
+    @_spi(AdyenInternal) import AdyenCard
+#endif
 
 internal enum CheckoutComponentBuilder {
     
@@ -18,9 +21,28 @@ internal enum CheckoutComponentBuilder {
         for paymentMethod: PaymentMethod,
         configuration: CheckoutConfiguration
     ) -> PaymentComponent {
-        if let blikPaymentMethod = paymentMethod as? BLIKPaymentMethod {
-            return blikPaymentMethod.buildComponent(with: configuration)
-        } else if let atomePaymentMethod = paymentMethod as? AtomePaymentMethod {}
+        
+        // Assembly layer
+        switch paymentMethod {
+            
+        // components module
+        #if canImport(AdyenComponents)
+            case let blikPaymentMethod as BLIKPaymentMethod:
+                return createComponent(
+                    using: BLIKComponentFactory(),
+                    paymentMethod: blikPaymentMethod,
+                    configuration: configuration
+                )
+        #endif
+            
+        // card module
+        #if canImport(AdyenCard)
+            case let cardPaymentMethod as AnyCardPaymentMethod:
+                // create card
+        #endif
+        default:
+            break
+        }
         
         // TODO: create real checkout errors
         fatalError()
@@ -32,37 +54,36 @@ internal enum CheckoutComponentBuilder {
     ) -> ActionComponent {
         fatalError()
     }
-}
-
-extension CheckoutConfiguration {
-    func componentConfiguration(for paymentMethod: PaymentMethod) -> CheckoutComponentConfiguration? {
-        configurations[.payment(paymentMethod.type)]
-    }
     
-//    func componentConfiguration(for action: Action) -> CheckoutComponentConfiguration? {
-//        configurations[.action(...)]
-//    }
-}
-
-// TODO: testing different ways of creating the component
-// we can go back to payment component builder or choose another way as well
-extension BLIKPaymentMethod {
-    
-    func buildComponent(with configuration: CheckoutConfiguration) -> BLIKComponent {
-        var blikConfiguration: BLIKComponentConfiguration
-        if let configuration = configuration.componentConfiguration(for: self) as? BLIKComponentConfiguration {
-            blikConfiguration = configuration
-        } else {
-            blikConfiguration = .init()
-        }
-        // TODO: find a better place to carry over global settings to individual configs
-        blikConfiguration.showsSubmitButton = configuration.showsSubmitButton
-        blikConfiguration.theme = configuration.theme
-        let component = BLIKComponent(
-            paymentMethod: self,
-            context: configuration.context,
-            configuration: blikConfiguration
+    /// Creates a component using the provided factory for standard payment methods.
+    ///
+    /// This works for all components whose configurations conform to
+    /// `CheckoutComponentConfiguration` and have mutable properties.
+    ///
+    /// - Parameters:
+    ///   - factory: The factory to use for component creation.
+    ///   - paymentMethod: The payment method to create a component for.
+    ///   - configuration: The checkout configuration.
+    /// - Returns: A configured payment component.
+    private static func createComponent<Factory: PaymentComponentFactory>(
+        using factory: Factory,
+        paymentMethod: Factory.Method,
+        configuration: CheckoutConfiguration
+    ) -> PaymentComponent where Factory.Configuration: CheckoutComponentConfiguration {
+        
+        var componentConfiguration = configuration.configuration(
+            for: paymentMethod,
+            defaultValue: factory.provideDefaultConfiguration()
         )
-        return component
+        
+        // Apply global checkout settings to component configuration
+        componentConfiguration.showsSubmitButton = configuration.showsSubmitButton
+        componentConfiguration.theme = configuration.theme
+        
+        return factory.create(
+            with: paymentMethod,
+            context: configuration.context,
+            configuration: componentConfiguration
+        )
     }
 }
