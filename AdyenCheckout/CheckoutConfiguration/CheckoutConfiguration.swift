@@ -100,10 +100,6 @@ public struct CheckoutConfiguration {
         self.theme = theme
     }
     
-    internal func componentConfiguration(for paymentMethod: PaymentMethod) -> CheckoutComponentConfiguration? {
-        configurations[.payment(paymentMethod.type)]
-    }
-    
     internal func configuration<T: CheckoutComponentConfiguration>(for paymentMethod: PaymentMethod, defaultValue: @autoclosure () -> T) -> T {
         if let config = configurations[.payment(paymentMethod.type)] as? T {
             return config
@@ -111,9 +107,7 @@ public struct CheckoutConfiguration {
         return defaultValue()
     }
     
-    //    internal func componentConfiguration(for action: Action) -> CheckoutComponentConfiguration? {
-    //        configurations[.action(...)]
-    //    }
+    // TODO: same for action
     
 }
 

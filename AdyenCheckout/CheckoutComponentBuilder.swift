@@ -58,7 +58,7 @@ internal enum CheckoutComponentBuilder {
     /// Creates a component using the provided factory for standard payment methods.
     ///
     /// This works for all components whose configurations conform to
-    /// `CheckoutComponentConfiguration` and have mutable properties.
+    /// `CheckoutComponentConfiguration`.
     ///
     /// - Parameters:
     ///   - factory: The factory to use for component creation.
@@ -76,7 +76,6 @@ internal enum CheckoutComponentBuilder {
             defaultValue: factory.provideDefaultConfiguration()
         )
         
-        // Apply global checkout settings to component configuration
         componentConfiguration.showsSubmitButton = configuration.showsSubmitButton
         componentConfiguration.theme = configuration.theme
         
