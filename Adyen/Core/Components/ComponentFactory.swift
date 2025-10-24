@@ -28,7 +28,7 @@ package protocol PaymentComponentFactory {
     ///   - paymentMethod: The payment method for which to create a component.
     ///   - context: The context object.
     ///   - configuration: The configuration to use for component creation.
-    /// - Returns: A configured payment component, or `nil` if creation fails.
+    /// - Returns: A configured payment component.
     func create(
         with paymentMethod: Method,
         context: AdyenContext,

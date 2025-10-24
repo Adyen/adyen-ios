@@ -123,27 +123,13 @@ final class CheckoutConfigurationTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         
         // When
-        let resolvedConfig = checkoutConfig.componentConfiguration(for: paymentMethod)
+        let resolvedConfig = checkoutConfig.configuration(for: paymentMethod, defaultValue: BLIKComponentConfiguration())
         
         // Then
         XCTAssertNotNil(resolvedConfig)
         
-        // Verify it's the correct type
-        let typedConfig = resolvedConfig as? BLIKComponentConfiguration
-        XCTAssertNotNil(typedConfig, "Should be BLIKComponentConfiguration")
-        XCTAssertEqual(typedConfig?.componentType, .payment(.blik))
-    }
-    
-    func testComponentConfiguration_WithoutExistingConfiguration_ReturnsNil() throws {
-        // Given
-        let checkoutConfig = CheckoutConfiguration(context: context)
-        let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
-        
-        // When
-        let resolvedConfig = checkoutConfig.componentConfiguration(for: paymentMethod)
-        
-        // Then
-        XCTAssertNil(resolvedConfig)
+        XCTAssertNotNil(resolvedConfig, "Should be BLIKComponentConfiguration")
+        XCTAssertEqual(resolvedConfig.componentType, .payment(.blik))
     }
     
     // MARK: - Helper Methods

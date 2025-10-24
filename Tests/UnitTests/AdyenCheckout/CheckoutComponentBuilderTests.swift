@@ -194,7 +194,12 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         
         // Then - Component should be created
         XCTAssertEqual(component.paymentMethod.type, .blik)
-        // Global setting should override component-specific (verified by factory logic)
+        
+        guard let blikComponent = component as? BLIKComponent else {
+            XCTFail("Component should be of type BLIKComponent")
+            return
+        }
+        XCTAssertFalse(blikComponent.configuration.showsSubmitButton)
     }
     
     func testBuild_UsesStoredConfigurationWhenAvailable() throws {

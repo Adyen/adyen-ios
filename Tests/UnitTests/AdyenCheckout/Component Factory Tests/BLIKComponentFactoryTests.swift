@@ -84,7 +84,7 @@ final class BLIKComponentFactoryTests: XCTestCase {
         
         // Then
         XCTAssertEqual(component.paymentMethod.type, .blik)
-        // Configuration is used by component (verified by component creation)
+        XCTAssertFalse(component.configuration.showsSubmitButton, "The component's configuration should reflect the custom setting.")
     }
     
     func testCreate_PreservesPaymentMethodReference() throws {
