@@ -62,12 +62,12 @@ public final class TextField: UITextField {
 @_spi(AdyenInternal)
 extension TextField {
 
-    public func apply(placeholderText: String?, with style: TextStyle?) {
-        if let text = placeholderText, let style {
+    package func apply(placeholderText: String?, with style: AdyenLabelStyle) {
+        if let text = placeholderText, !text.isEmpty {
             attributedPlaceholder = NSAttributedString(string: text, attributes: style.stringAttributes)
         } else {
-            placeholder = placeholderText
+            placeholder = nil
+            attributedPlaceholder = nil
         }
     }
-
 }

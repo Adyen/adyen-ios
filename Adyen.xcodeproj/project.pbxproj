@@ -608,6 +608,7 @@
 		B62D48C52BBE8F3B001EF01A /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */; };
 		B62D48C62BBE8F45001EF01A /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */; };
 		B62D48C82BBE8F47001EF01A /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */; };
+		B62F51802E97AAD200610EFD /* TextFieldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62F517F2E97AA6600610EFD /* TextFieldTests.swift */; };
 		B639C0822D8039F600472EBB /* CardScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B639C0812D80399800472EBB /* CardScannerController.swift */; };
 		B66CAF3A2DAEB16D0017984C /* DummyCardScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66CAF392DAEB16D0017984C /* DummyCardScannerController.swift */; };
 		B67D1F632E4615390000C37F /* DropInAdvancedFlowExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D1F582E4615390000C37F /* DropInAdvancedFlowExample.swift */; };
@@ -2206,6 +2207,7 @@
 		B62D48AC2BBE8D79001EF01A /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
 		B62D48CA2BBE9059001EF01A /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
+		B62F517F2E97AA6600610EFD /* TextFieldTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTests.swift; sourceTree = "<group>"; };
 		B639C0812D80399800472EBB /* CardScannerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerController.swift; sourceTree = "<group>"; };
 		B66CAF392DAEB16D0017984C /* DummyCardScannerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyCardScannerController.swift; sourceTree = "<group>"; };
 		B67D1F532E4615390000C37F /* ApplePayComponentAdvancedFlowExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayComponentAdvancedFlowExample.swift; sourceTree = "<group>"; };
@@ -3227,16 +3229,17 @@
 			path = AdyenUI;
 			sourceTree = "<group>";
 		};
-		0019C4132E5F2B2F00B0C3A3 /* AdyenTheme */ = {
+		0019C4132E5F2B2F00B0C3A3 /* AdyenUI */ = {
 			isa = PBXGroup;
 			children = (
+				B62F517C2E97A47000610EFD /* Form */,
 				00731C9D2E85899D0019BA29 /* Helpers */,
 				009A2C032E842ED0002D3459 /* AdyenThemeLabelTests.swift */,
 				009A2C052E842EDC002D3459 /* AdyenThemeButtonTests.swift */,
 				009A2BFF2E83E902002D3459 /* AdyenThemeToggleTests.swift */,
 				009A2BFD2E83E8BA002D3459 /* AdyenThemeTextFieldTests.swift */,
 			);
-			path = AdyenTheme;
+			path = AdyenUI;
 			sourceTree = "<group>";
 		};
 		0019C4BD2E6B078D00B0C3A3 /* Helpers */ = {
@@ -4043,9 +4046,17 @@
 				B6D808242BCD154600F3F5EB /* Helpers */,
 				E7CC63D5288016080034108B /* Mocks */,
 				E9E3DB042226B3A100697074 /* Utilities */,
-				0019C4132E5F2B2F00B0C3A3 /* AdyenTheme */,
+				0019C4132E5F2B2F00B0C3A3 /* AdyenUI */,
 			);
 			path = UnitTests;
+			sourceTree = "<group>";
+		};
+		B62F517C2E97A47000610EFD /* Form */ = {
+			isa = PBXGroup;
+			children = (
+				B62F517F2E97AA6600610EFD /* TextFieldTests.swift */,
+			);
+			path = Form;
 			sourceTree = "<group>";
 		};
 		B67D1F572E4615390000C37F /* Components */ = {
@@ -8057,6 +8068,7 @@
 				B6D808112BCD147D00F3F5EB /* BankDetailsEncryptorTests.swift in Sources */,
 				A00580A62CD8CBC300294F2E /* EventAnalyticsProviderTests.swift in Sources */,
 				B6D808332BCD1F8900F3F5EB /* LogoGeneratorTests.swift in Sources */,
+				B62F51802E97AAD200610EFD /* TextFieldTests.swift in Sources */,
 				B6D808302BCD1F8900F3F5EB /* DateValidationTests.swift in Sources */,
 				B6D808442BCD2B0600F3F5EB /* JWAA256CBCHS512AlgorithmTests.swift in Sources */,
 				B6D8080D2BCD147D00F3F5EB /* AdyenContextTests.swift in Sources */,
