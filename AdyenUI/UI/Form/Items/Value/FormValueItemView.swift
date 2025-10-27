@@ -61,7 +61,9 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     }
     
     internal func didChangeEditingStatus() {
-        // TODO: Change UI in edit mode
+        // TODO: Make Following UI in edit mode
+        // 1. Change textField border color
+        // 2. Show/Hide accessory view
     }
 
 }
