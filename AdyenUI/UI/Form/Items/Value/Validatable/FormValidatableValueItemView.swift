@@ -28,8 +28,10 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     ///
     /// The intended use is to put it inside of a UIStackView as it will be hidden based on the validity of the item
     internal lazy var alertLabel: UILabel = {
-        let alertLabel = UILabel(style: item.style.title)
+        let alertLabel = UILabel()
         alertLabel.textColor = item.style.errorColor
+        // TODO: Replace AdyenTheme with config's object theme style
+        alertLabel.font = AdyenTheme().currentFonts.subHeadline
         alertLabel.isAccessibilityElement = false
         alertLabel.numberOfLines = 0
         alertLabel.text = item.validationFailureMessage
@@ -51,16 +53,6 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         }
     }
     
-    override open func configureSeparatorView() {
-        let constraints = [
-            separatorView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            separatorView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: 1.0)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
-    }
-    
     // MARK: - Validation
     
     public var isValid: Bool {
@@ -75,21 +67,14 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         
         guard forced else {
             hideAlertLabel(true)
-            isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
-            titleLabel.textColor = defaultTitleColor
             accessibilityLabelView?.accessibilityLabel = item.title
             return
         }
-        
         if item.isValid() {
             hideAlertLabel(true)
-            highlightSeparatorView(color: tintColor)
-            titleLabel.textColor = tintColor
             accessibilityLabelView?.accessibilityLabel = item.title
         } else {
             hideAlertLabel(false)
-            highlightSeparatorView(color: item.style.errorColor)
-            titleLabel.textColor = item.style.errorColor
             accessibilityLabelView?.accessibilityLabel = [
                 item.title,
                 item.validationFailureMessage
@@ -114,8 +99,8 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     
     internal func resetValidationStatus() {
         hideAlertLabel(true, animated: false)
-        unhighlightSeparatorView()
-        titleLabel.textColor = defaultTitleColor
+        // TODO: Replace AdyenTheme with config's object theme style
+        titleLabel.textColor = AdyenTheme().currentColorScheme.primary
         accessibilityLabelView?.accessibilityLabel = item.title
     }
 }
