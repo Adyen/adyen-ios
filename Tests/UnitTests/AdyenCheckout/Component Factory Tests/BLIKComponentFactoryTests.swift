@@ -28,19 +28,19 @@ final class BLIKComponentFactoryTests: XCTestCase {
     
     // MARK: - Default Configuration Tests
     
-    func testProvideDefaultConfiguration_ReturnsValidConfiguration() {
+    func testdefaultConfiguration_ReturnsValidConfiguration() {
         // When
-        let configuration = factory.provideDefaultConfiguration()
+        let configuration = factory.defaultConfiguration()
         
         // Then
         XCTAssertEqual(configuration.componentType, .payment(.blik))
         XCTAssertTrue(configuration.showsSubmitButton)
     }
     
-    func testProvideDefaultConfiguration_ReturnsNewInstanceEachTime() {
+    func testdefaultConfiguration_ReturnsNewInstanceEachTime() {
         // When
-        let config1 = factory.provideDefaultConfiguration()
-        let config2 = factory.provideDefaultConfiguration()
+        let config1 = factory.defaultConfiguration()
+        let config2 = factory.defaultConfiguration()
         
         // Then - Verify they are independent instances by checking identity
         // (For structs, we can modify one and verify the other is unchanged)
@@ -137,7 +137,7 @@ final class BLIKComponentFactoryTests: XCTestCase {
     func testFactory_HasCorrectAssociatedTypes() {
         // Given
         let paymentMethod = createBLIKPaymentMethod()!
-        let configuration = factory.provideDefaultConfiguration()
+        let configuration = factory.defaultConfiguration()
         
         // When
         let component = factory.create(

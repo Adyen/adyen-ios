@@ -62,7 +62,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         typealias Method = MockPaymentMethod
         typealias Component = MockComponent
         
-        func provideDefaultConfiguration() -> MockConfiguration {
+        func defaultConfiguration() -> MockConfiguration {
             MockConfiguration(value: "factory_default", showsSubmitButton: true)
         }
         
@@ -94,7 +94,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         let factory = MockFactory()
         
         // When
-        let config = factory.provideDefaultConfiguration()
+        let config = factory.defaultConfiguration()
         
         // Then
         XCTAssertEqual(config.value, "factory_default")
@@ -126,7 +126,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         let factory = MockFactory()
         
         // When
-        let config = factory.provideDefaultConfiguration()
+        let config = factory.defaultConfiguration()
         let paymentMethod = MockPaymentMethod()
         let component = factory.create(
             with: paymentMethod,
@@ -162,7 +162,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         // Given
         let factory = MockFactory()
         let paymentMethod = MockPaymentMethod()
-        let config = factory.provideDefaultConfiguration()
+        let config = factory.defaultConfiguration()
         
         // When
         let component = factory.create(
@@ -186,7 +186,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
             payment: Payment(amount: customAmount, countryCode: "GB"),
             amount: customAmount
         )
-        let config = factory.provideDefaultConfiguration()
+        let config = factory.defaultConfiguration()
         
         // When
         let component = factory.create(
@@ -222,7 +222,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         // Given
         let factory = MockFactory()
         let paymentMethod = MockPaymentMethod()
-        let config = factory.provideDefaultConfiguration()
+        let config = factory.defaultConfiguration()
         
         // When
         let component = factory.create(
@@ -242,8 +242,8 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         let factory = MockFactory()
         
         // When
-        let config1 = factory.provideDefaultConfiguration()
-        let config2 = factory.provideDefaultConfiguration()
+        let config1 = factory.defaultConfiguration()
+        let config2 = factory.defaultConfiguration()
         
         // Then - Default configurations should have same values
         XCTAssertEqual(config1.value, config2.value)

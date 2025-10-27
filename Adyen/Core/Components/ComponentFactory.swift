@@ -35,7 +35,7 @@ package protocol PaymentComponentFactory {
         configuration: Configuration
     ) -> Component
     
-    /// Provides the default configuration for the component.
+    /// Creates the default configuration for the component.
     /// - Returns: A new configuration instance for the component.
-    func provideDefaultConfiguration() -> Configuration
+    func defaultConfiguration() -> Configuration
 }

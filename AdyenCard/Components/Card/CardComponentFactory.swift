@@ -38,7 +38,7 @@ package struct CardComponentFactory<CardMethod: AnyCardPaymentMethod>: PaymentCo
         )
     }
     
-    package func provideDefaultConfiguration() -> CardComponent.Configuration {
+    package func defaultConfiguration() -> CardComponent.Configuration {
         CardComponent.Configuration()
     }
 }

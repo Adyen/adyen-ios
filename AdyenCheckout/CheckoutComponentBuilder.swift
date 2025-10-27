@@ -73,7 +73,7 @@ internal enum CheckoutComponentBuilder {
         
         var componentConfiguration = configuration.configuration(
             for: paymentMethod,
-            defaultValue: factory.provideDefaultConfiguration()
+            defaultValue: factory.defaultConfiguration()
         )
         
         componentConfiguration.showsSubmitButton = configuration.showsSubmitButton
