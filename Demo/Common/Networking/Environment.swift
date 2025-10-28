@@ -17,11 +17,12 @@ internal struct DemoAPIContext: AnyAPIContext {
     internal let environment: AnyAPIEnvironment
     
     internal let headers: [String: String] = [
-        "Content-Type": "application/json",
-        "X-API-Key": ConfigurationConstants.demoServerAPIKey
+        "Content-Type": "application/json"
     ]
     
-    internal let queryParameters: [URLQueryItem] = []
+    internal let queryParameters: [URLQueryItem] = [
+        .init(name: "clientKey", value: ConfigurationConstants.clientKey)
+    ]
     
 }
 
@@ -32,14 +33,14 @@ internal enum DemoCheckoutAPIEnvironment: String, AnyAPIEnvironment, CaseIterabl
     internal var baseURL: URL {
         switch self {
         case .beta:
-            return URL(string: "https://checkout-beta.adyen.com/checkout/v\(version)")!
+            return URL(string: "https://checkout-web-dev.adyen.com/api")!
         case .test:
-            return URL(string: "https://checkout-test.adyen.com/v\(version)")!
+            return URL(string: "https://checkout-web-dev.adyen.com/api")!
         case .local:
             return URL(string: "http://localhost:8080/checkout/v\(version)")!
         }
     }
-
+    
     internal var version: Int { ConfigurationConstants.current.apiVersion }
     
 }
