@@ -6,6 +6,10 @@ on:
         description: 'SDK Version'
         required: true
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write # create branch and new release
   pull-requests: write # create PR
@@ -26,11 +30,6 @@ jobs:
     - uses: actions/checkout@v5
       with:
         fetch-depth: 0
-        
-    # Cancel previous runs
-    - uses: n1hility/cancel-previous-runs@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
     
     # Update Version
     - name: Updating Version Number
