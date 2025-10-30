@@ -7,33 +7,12 @@
 import Adyen
 import AdyenNetworking
 import Foundation
+import SafariServices
 import UIKit
 
-internal protocol DropInRouterListener: AnyObject {
-    func didOpenExternalApplication(component: ActionComponent)
-    func didProvide(_ data: ActionComponentData, from component: ActionComponent)
-    func didComplete(from component: ActionComponent)
-    func didFail(with error: Error, from component: ActionComponent)
-}
-
-internal protocol Router: AnyObject {
-    var rootViewController: UIViewController { get }
-    func stopLoading()
-}
-
-extension Router {
-    internal func stopLoading() { /* Optional implementation */ }
-}
-
 internal protocol DropInRouting: Router, AnyObject {
+    func presentActionComponent(_ component: any PresentableComponent)
     func handle(action: Action)
-    func present(_ viewController: UIViewController, animated: Bool)
-    
-    func openExternalApplication(component: any ActionComponent)
-    func provide(_ data: ActionComponentData, from component: any ActionComponent)
-    func complete(from component: any ActionComponent)
-    func fail(with error: any Error, from component: any ActionComponent)
-    func cancel(with error: any Error, from component: any ActionComponent)
 }
 
 internal class DropInRouter: DropInRouting {
@@ -45,24 +24,20 @@ internal class DropInRouter: DropInRouting {
     }()
     
     private let viewModel: DropInViewModelProtocol
-    private weak var listener: DropInRouterListener?
     private let preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
-    
-    private var childRouter: Router?
+    internal private(set) var childRouter: Router?
     
     // MARK: - Initializers
     
     internal init(
         viewModel: DropInViewModelProtocol,
-        listener: DropInRouterListener,
         preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol,
         paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
         componentContainerAssembler: ComponentContainerAssemblerProtocol
     ) {
         self.viewModel = viewModel
-        self.listener = listener
         self.preselectedPaymentMethodAssembler = preselectedPaymentMethodAssembler
         self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
@@ -74,36 +49,29 @@ internal class DropInRouter: DropInRouting {
         viewModel.handle(action: action)
     }
     
-    internal func present(_ viewController: UIViewController, animated: Bool) {
-        childRouter?.rootViewController.present(viewController, animated: animated)
-    }
-    
-    internal func openExternalApplication(component: any ActionComponent) {
-        listener?.didOpenExternalApplication(component: component)
-    }
-    
-    internal func provide(_ data: ActionComponentData, from component: any ActionComponent) {
-        listener?.didProvide(data, from: component)
-    }
-    
-    internal func complete(from component: any ActionComponent) {
-        listener?.didComplete(from: component)
-    }
-    
-    internal func fail(with error: any Error, from component: any ActionComponent) {
-        listener?.didFail(with: error, from: component)
-    }
-    
-    internal func cancel(with error: any Error, from component: any ActionComponent) {
-        stopLoading()
+    internal func presentActionComponent(_ component: any PresentableComponent) {
+        let actionViewController = component.viewController
+        let viewControllerToPresent: UIViewController
+        
+        if actionViewController is SFSafariViewController {
+            viewControllerToPresent = actionViewController
+        } else {
+            viewControllerToPresent = ActionWrapperViewController(
+                rootViewController: component.viewController
+            ) { [weak self] in
+                self?.stopLoading()
+            }
+        }
+        
+        latestChildRouter.rootViewController.present(viewControllerToPresent, animated: true)
     }
     
     // MARK: - Router
     
     internal func stopLoading() {
-        childRouter?.stopLoading()
+        latestChildRouter.stopLoading()
     }
-
+    
     // MARK: - Private
     
     private func resolveRootView() -> UIViewController {
@@ -136,22 +104,21 @@ internal class DropInRouter: DropInRouting {
 // MARK: - PreselectedPaymentMethodRouterListener
 
 extension DropInRouter: PreselectedPaymentMethodRouterListener {
-        
-    internal func didPresentPaymentMethodList() {
-        let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter(delegate: self)
-        self.childRouter = paymentMethodListRouter
-        rootViewController.present(paymentMethodListRouter.rootViewController, animated: true)
+    internal func didDismissPreselectedPaymentMethod(completion: (() -> Void)?) {
+        stopLoading()
+        childRouter = nil
+        completion?()
     }
 }
 
-// MARK: - PaymentMethodListRouterListener, ComponentContainerRouterListener
+// MARK: - PaymentMethodListRouterListener
 
 extension DropInRouter: PaymentMethodListRouterListener {
-
-    internal func didDismiss(completion: (() -> Void)?) {
-        // TODO: - Decide wether dismissal this logic belongs to dropIn or merchant's side
-        rootViewController.presentingViewController?.dismiss(animated: true)
+    
+    internal func didDismissPaymentMethodList(completion: (() -> Void)?) {
+        stopLoading()
         childRouter = nil
+        completion?()
     }
 }
 
@@ -159,7 +126,9 @@ extension DropInRouter: PaymentMethodListRouterListener {
 
 extension DropInRouter: ComponentContainerRouterListener {
     
-    func didDismiss() {
+    internal func didDismissComponentContainer(completion: (() -> Void)?) {
+        stopLoading()
         childRouter = nil
+        completion?()
     }
 }

@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 internal protocol PaymentMethodListRouterListener: AnyObject {
-    func didDismiss(completion: (() -> Void)?)
+    func didDismissPaymentMethodList(completion: (() -> Void)?)
 }
 
 internal protocol PaymentMethodListRouting: AnyObject {
@@ -26,8 +26,8 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     private weak var listener: PaymentMethodListRouterListener?
     private let navigationController = UINavigationController()
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
-    private var childRouter: Router?
-
+    internal private(set) var childRouter: Router?
+    
     // MARK: - Initializers
 
     internal init(
@@ -56,8 +56,8 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     // MARK: - PaymentMethodListRouting
 
     internal func dismiss(completion: (() -> Void)?) {
-        listener?.didDismiss(completion: completion)
         childRouter = nil
+        listener?.didDismissPaymentMethodList(completion: completion)
     }
 
     internal func present(_ component: PresentableComponent) {
@@ -86,8 +86,9 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
 
 extension PaymentMethodListRouter: ComponentContainerRouterListener {
     
-    internal func didDismiss() {
+    internal func didDismissComponentContainer(completion: (() -> Void)?) {
         stopLoading()
         childRouter = nil
+        completion?()
     }
 }

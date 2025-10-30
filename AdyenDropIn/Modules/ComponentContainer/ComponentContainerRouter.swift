@@ -9,12 +9,12 @@ import Foundation
 import UIKit
 
 internal protocol ComponentContainerRouterListener: AnyObject {
-    func didDismiss()
+    func didDismissComponentContainer(completion: (() -> Void)?)
 }
 
 internal protocol ComponentContainerRouting: AnyObject {
-    func presentComponent(_ component: any PresentableComponent)
-    func dismissPresentedComponent()
+    func present(component: any PresentableComponent)
+    func dismiss(completion: (() -> Void)?)
 }
 
 internal class ComponentContainerRouter: Router, ComponentContainerRouting {
@@ -24,6 +24,7 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouting {
     internal let rootViewController: UIViewController
     private let loadable: LoadControllable
     private weak var listener: ComponentContainerRouterListener?
+    internal private(set) var childRouter: Router?
 
     // MARK: - Initializers
 
@@ -39,12 +40,14 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouting {
 
     // MARK: - ComponentContainerRouting
     
-    internal func presentComponent(_ component: any PresentableComponent) {
+    internal func present(component: any PresentableComponent) {
         rootViewController.present(component.viewController, animated: true)
     }
     
-    internal func dismissPresentedComponent() {
-        listener?.didDismiss()
+    internal func dismiss(completion: (() -> Void)?) {
+        rootViewController.dismiss(animated: true) { [weak self] in
+            self?.listener?.didDismissComponentContainer(completion: completion)
+        }
     }
     
     // MARK: - Router

@@ -66,7 +66,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         
         stopLoading()
         component.cancel()
-        router?.dismissPresentedComponent()
+        router?.dismiss(completion: nil)
     }
 
     // MARK: - Private
@@ -132,7 +132,7 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
 extension ComponentContainerViewModel: PresentationDelegate {
 
     internal func present(component: any PresentableComponent) {
-        router?.presentComponent(component)
+        router?.present(component: component)
     }
 }
 

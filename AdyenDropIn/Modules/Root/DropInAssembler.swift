@@ -59,7 +59,7 @@ internal struct DropInAssembler {
 
     // MARK: - Public
 
-    internal func resolveDropInRouter(listener: DropInRouterListener) -> DropInRouting {
+    internal func resolveDropInRouter() -> DropInRouting {
         let apiClient = resolveAPIClient()
 
         let viewModel = DropInViewModel(
@@ -68,12 +68,13 @@ internal struct DropInAssembler {
             apiClient: apiClient,
             paymentMethods: paymentMethods,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            dropInComponent: dropInComponent,
+            dropInComponentDelegate: dropInComponentDelegate
         )
 
         let router = DropInRouter(
             viewModel: viewModel,
-            listener: listener,
             preselectedPaymentMethodAssembler: preselectedPaymentMethodAssembler,
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler
@@ -96,6 +97,8 @@ internal struct DropInAssembler {
 
     private var preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
         PreselectedPaymentMethodAssembler(
+            paymentMethodListAssembler: paymentMethodListAssembler,
+            componentContainerAssembler: componentContainerAssembler,
             context: context,
             configuration: configuration,
             dropInComponent: dropInComponent,
@@ -107,6 +110,7 @@ internal struct DropInAssembler {
 
     private var paymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         PaymentMethodListAssembler(
+            componentContainerAssembler: componentContainerAssembler,
             componentManager: componentManager,
             context: context,
             configuration: configuration,

@@ -23,6 +23,8 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     
     // MARK: - Properties
     
+    private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
+    private let componentContainerAssembler: ComponentContainerAssemblerProtocol
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
     private let dropInComponent: DropInComponent
@@ -33,6 +35,8 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     // MARK: - Initializers
     
     internal init(
+        paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
+        componentContainerAssembler: ComponentContainerAssemblerProtocol,
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
         dropInComponent: DropInComponent,
@@ -40,6 +44,8 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
         cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
+        self.paymentMethodListAssembler = paymentMethodListAssembler
+        self.componentContainerAssembler = componentContainerAssembler
         self.context = context
         self.configuration = configuration
         self.dropInComponent = dropInComponent
@@ -55,14 +61,6 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
         component: PaymentComponent,
         title: String
     ) -> Router {
-        let componentContainerAssembler = ComponentContainerAssembler(
-            context: context,
-            configuration: configuration,
-            dropInComponent: dropInComponent,
-            dropInComponentDelegate: dropInComponentDelegate,
-            cardComponentDelegate: cardComponentDelegate,
-            partialPaymentDelegate: partialPaymentDelegate
-        )
         let viewModel = PreselectedPaymentMethodViewModel(
             component: component,
             title: title,
@@ -75,6 +73,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
             viewController: view,
             loadable: viewModel,
             listener: delegate,
+            paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler
         )
         viewModel.router = router

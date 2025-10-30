@@ -707,6 +707,8 @@
 		C9037F162D5A1AC0003A5154 /* CardScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F152D5A1AC0003A5154 /* CardScannerViewController.swift */; };
 		C90494562E8FF2CE007C4EB5 /* LoadControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90494552E8FF2CE007C4EB5 /* LoadControllable.swift */; };
 		C9126051275A3A2800C03DC4 /* BACSItemsFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9126050275A3A2800C03DC4 /* BACSItemsFactoryTests.swift */; };
+		C9174FF32EB3A89800AA1609 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9174FF22EB3A89800AA1609 /* Router.swift */; };
+		C9174FF92EB3B20B00AA1609 /* ActionWrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9174FF72EB3B20B00AA1609 /* ActionWrapperViewController.swift */; };
 		C91BF2582D771667001F19DE /* CardImageParsingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91BF2572D771667001F19DE /* CardImageParsingMock.swift */; };
 		C91BF25A2D7716D4001F19DE /* CaptureSessionManagingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91BF2592D7716D4001F19DE /* CaptureSessionManagingMock.swift */; };
 		C91BF25C2D772233001F19DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C91BF25B2D772233001F19DE /* Assets.xcassets */; };
@@ -2227,6 +2229,8 @@
 		C90D26B32759048C001A488F /* BACSInputPresenterProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputPresenterProtocolMock.swift; sourceTree = "<group>"; };
 		C90D26B5275905B8001A488F /* BACSItemsFactoryProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSItemsFactoryProtocolMock.swift; sourceTree = "<group>"; };
 		C9126050275A3A2800C03DC4 /* BACSItemsFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSItemsFactoryTests.swift; sourceTree = "<group>"; };
+		C9174FF22EB3A89800AA1609 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		C9174FF72EB3B20B00AA1609 /* ActionWrapperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionWrapperViewController.swift; sourceTree = "<group>"; };
 		C91BF2572D771667001F19DE /* CardImageParsingMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImageParsingMock.swift; sourceTree = "<group>"; };
 		C91BF2592D7716D4001F19DE /* CaptureSessionManagingMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSessionManagingMock.swift; sourceTree = "<group>"; };
 		C91BF25B2D772233001F19DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -4135,6 +4139,7 @@
 		C90494502E8FE5B4007C4EB5 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				C9174FF82EB3B20B00AA1609 /* Utilities */,
 				C90494522E8FE5CB007C4EB5 /* Protocols */,
 			);
 			path = Common;
@@ -4144,6 +4149,7 @@
 			isa = PBXGroup;
 			children = (
 				C90494552E8FF2CE007C4EB5 /* LoadControllable.swift */,
+				C9174FF22EB3A89800AA1609 /* Router.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -4182,6 +4188,14 @@
 				C9126050275A3A2800C03DC4 /* BACSItemsFactoryTests.swift */,
 			);
 			path = Factories;
+			sourceTree = "<group>";
+		};
+		C9174FF82EB3B20B00AA1609 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				C9174FF72EB3B20B00AA1609 /* ActionWrapperViewController.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		C91BF2562D7715D8001F19DE /* Mocks */ = {
@@ -8682,6 +8696,7 @@
 				E9021DFC2260D626009CF7F4 /* ComponentSections.swift in Sources */,
 				5A238C93263AEA0800758FEF /* PreApplePayView.swift in Sources */,
 				C941A5262DF9CB790014AFF1 /* ComponentContainerAssembler.swift in Sources */,
+				C9174FF32EB3A89800AA1609 /* Router.swift in Sources */,
 				E9B36CC722451C8300EAA368 /* DropInConfiguration.swift in Sources */,
 				C94E350B2E00561B00B89290 /* DropInRouter.swift in Sources */,
 				C96ECA302E2160B600A86C59 /* DropInRoot.swift in Sources */,
@@ -8690,6 +8705,7 @@
 				C941A5222DF9C34E0014AFF1 /* PaymentMethodListViewController.swift in Sources */,
 				C9025A452DF3167900E0D191 /* DropInAssembler.swift in Sources */,
 				C9C22DA12DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift in Sources */,
+				C9174FF92EB3B20B00AA1609 /* ActionWrapperViewController.swift in Sources */,
 				C9C22D972DE5F9920028C23F /* PreselectedPaymentMethodComponent.swift in Sources */,
 				F90E95F02726B625007E382B /* DropInComponentExtensions.swift in Sources */,
 				C9C22D9C2DE5F9BB0028C23F /* PreApplePayComponent.swift in Sources */,

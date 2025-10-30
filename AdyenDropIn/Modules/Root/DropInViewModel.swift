@@ -28,6 +28,8 @@ internal class DropInViewModel: DropInViewModelProtocol {
     private let paymentMethods: PaymentMethods
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
+    private weak var dropInComponent: DropInComponent?
+    private weak var dropInComponentDelegate: DropInComponentDelegate?
 
     // MARK: - Initializers
 
@@ -37,7 +39,9 @@ internal class DropInViewModel: DropInViewModelProtocol {
         apiClient: APIClientProtocol,
         paymentMethods: PaymentMethods,
         context: AdyenContext,
-        configuration: DropInComponent.Configuration
+        configuration: DropInComponent.Configuration,
+        dropInComponent: DropInComponent,
+        dropInComponentDelegate: DropInComponentDelegate?
     ) {
         self.title = title
         self.componentManager = componentManager
@@ -45,6 +49,8 @@ internal class DropInViewModel: DropInViewModelProtocol {
         self.paymentMethods = paymentMethods
         self.context = context
         self.configuration = configuration
+        self.dropInComponent = dropInComponent
+        self.dropInComponentDelegate = dropInComponentDelegate
 
         self.componentManager.presentationDelegate = self
     }
@@ -85,22 +91,28 @@ extension DropInViewModel: ActionComponentDelegate {
     
     internal func didOpenExternalApplication(component: any ActionComponent) {
         component.stopLoading()
-        router?.openExternalApplication(component: component)
+        
+        guard let dropInComponent else { return }
+        dropInComponentDelegate?.didOpenExternalApplication(component: component, in: dropInComponent)
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
-        router?.provide(data, from: component)
+        guard let dropInComponent else { return }
+        dropInComponentDelegate?.didProvide(data, from: component, in: dropInComponent)
     }
     
     internal func didComplete(from component: any ActionComponent) {
-        router?.complete(from: component)
+        guard let dropInComponent else { return }
+        dropInComponentDelegate?.didComplete(from: component, in: dropInComponent)
     }
     
     internal func didFail(with error: any Error, from component: any ActionComponent) {
+        guard let dropInComponent else { return }
+
         if case ComponentError.cancelled = error {
-            router?.cancel(with: error, from: component)
+            router?.stopLoading()
         } else {
-            router?.fail(with: error, from: component)
+            dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
         }
     }
 }
@@ -110,7 +122,6 @@ extension DropInViewModel: ActionComponentDelegate {
 extension DropInViewModel: PresentationDelegate {
 
     internal func present(component: any PresentableComponent) {
-        let componentViewController = component.viewController
-        router?.present(componentViewController, animated: true)
+        router?.presentActionComponent(component)
     }
 }

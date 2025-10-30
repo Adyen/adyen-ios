@@ -18,6 +18,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
 
     // MARK: - Properties
 
+    private let componentContainerAssembler: ComponentContainerAssemblerProtocol
     private let componentManager: ComponentManager
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
@@ -29,6 +30,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     // MARK: - Initializers
 
     internal init(
+        componentContainerAssembler: ComponentContainerAssemblerProtocol,
         componentManager: ComponentManager,
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
@@ -37,6 +39,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
+        self.componentContainerAssembler = componentContainerAssembler
         self.componentManager = componentManager
         self.context = context
         self.configuration = configuration
@@ -51,14 +54,6 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     internal func resolvePaymentMethodListRouter(
         delegate: PaymentMethodListRouterListener?
     ) -> Router {
-        let componentContainerAssembler = ComponentContainerAssembler(
-            context: context,
-            configuration: configuration,
-            dropInComponent: dropInComponent,
-            dropInComponentDelegate: dropInComponentDelegate,
-            cardComponentDelegate: cardComponentDelegate,
-            partialPaymentDelegate: partialPaymentDelegate
-        )
         let viewModel = PaymentMethodListViewModel(
             context: context,
             componentManager: componentManager,
