@@ -109,15 +109,13 @@ class FormTextItemViewTests: XCTestCase {
         
         wait(for: .milliseconds(500))
         
-        XCTAssertEqual(sut.separatorView.backgroundColor?.toHexString(), sut.tintColor.toHexString())
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.tintColor.toHexString())
+        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.style.title.color.toHexString())
         
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
         XCTAssertEqual(sut.accessory, .none)
-        
-        XCTAssertEqual(sut.separatorView.backgroundColor?.toHexString(), item.style.separatorColor?.toHexString())
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), item.style.title.color.toHexString())
+    
+        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.style.text.color.toHexString())
     }
     
     func testValidationStatusIsInvalidWhenValueIsInvalid() {
@@ -130,9 +128,8 @@ class FormTextItemViewTests: XCTestCase {
         sut.isEditing = true
         
         wait(for: .milliseconds(500))
-        
-        XCTAssertEqual(sut.separatorView.backgroundColor?.toHexString(), sut.tintColor.toHexString())
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.tintColor.toHexString())
+
+        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.style.title.color.toHexString())
         
         sut.textField.text = "123456H"
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
@@ -142,8 +139,7 @@ class FormTextItemViewTests: XCTestCase {
         
         wait(for: .seconds(1))
         
-        XCTAssertEqual(sut.separatorView.backgroundColor?.toHexString(), item.style.errorColor.toHexString())
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), item.style.errorColor.toHexString())
+        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.style.text.color.toHexString())
     }
     
     func testValidationStatusIsValidWhenValueIsValid() {
@@ -156,17 +152,15 @@ class FormTextItemViewTests: XCTestCase {
         sut.isEditing = true
     
         wait(for: .milliseconds(500))
-        
-        XCTAssertEqual(sut.separatorView.backgroundColor?.toHexString(), sut.tintColor.toHexString())
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.tintColor.toHexString())
+
+        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.style.title.color.toHexString())
         
         sut.textField.text = "123456H"
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
         wait(for: [validationExpectation], timeout: 10)
         XCTAssertEqual(sut.accessory, .valid)
-        XCTAssertEqual(sut.separatorView.backgroundColor?.toHexString(), sut.tintColor.toHexString())
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.tintColor.toHexString())
+        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.style.text.color.toHexString())
     }
 
     func testTextFieldSanitizationGivenNonAllowedCharactersShouldSanitizeAndFormatInput() throws {

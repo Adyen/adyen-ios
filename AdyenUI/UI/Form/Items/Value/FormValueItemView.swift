@@ -17,7 +17,9 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
 
     /// The top label view.
     public lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel(style: item.style.title)
+        let titleLabel = UILabel()
+        titleLabel.font = AdyenTheme().currentFonts.bodyEmphasized
+        titleLabel.textColor = AdyenTheme().currentColorScheme.primary
         titleLabel.text = item.title
         titleLabel.numberOfLines = 0
         titleLabel.isAccessibilityElement = false
@@ -31,8 +33,6 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     /// - Parameter item: The item represented by the view.
     public required init(item: ItemType) {
         super.init(item: item)
-        addSubview(separatorView)
-        configureSeparatorView()
 
         bind(item.$title, to: self.titleLabel, at: \.text)
         
@@ -43,7 +43,6 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     
     override open func didAddSubview(_ subview: UIView) {
         super.didAddSubview(subview)
-        bringSubviewToFront(separatorView)
     }
     
     // MARK: - Editing
@@ -62,116 +61,11 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     }
     
     internal func didChangeEditingStatus() {
-        isEditing ? highlightSeparatorView(color: tintColor) : unhighlightSeparatorView()
+        // TODO: Make Following UI in edit mode
+        // 1. Change textField border color
+        // 2. Show/Hide accessory view
     }
-    
-    // MARK: - Separator View
-    
-    internal lazy var separatorView: UIView = {
-        let separatorView = UIView()
-        separatorView.backgroundColor = defaultSeparatorColor
-        separatorView.isUserInteractionEnabled = false
-        separatorView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return separatorView
-    }()
-    
-    internal var defaultSeparatorColor: UIColor {
-        if isEditing {
-            return tintColor
-        } else {
-            return item.style.separatorColor ?? UIColor.Adyen.componentSeparator
-        }
-    }
-    
-    internal var defaultTitleColor: UIColor {
-        if isEditing {
-            return tintColor
-        } else {
-            return item.style.title.color
-        }
-    }
-    
-    internal func highlightSeparatorView(color: UIColor) {
-        
-        if window == nil {
-            // We don't want to animate the separator if the view is not visible yet
-            // as this can cause glitches on first appearance with a prefilled value
-            self.separatorView.backgroundColor = color
-            adyen.cancelAnimations(with: Animation.separatorHighlighting.rawValue)
-            return
-        }
-        
-        let transitionView = UIView()
-        transitionView.backgroundColor = color
-        transitionView.frame = separatorView.frame
-        transitionView.frame.size.width = 0.0
-        addSubview(transitionView)
-        
-        let context = AnimationContext(
-            animationKey: Animation.separatorHighlighting.rawValue,
-            duration: 0.25,
-            delay: 0.0,
-            options: [.curveEaseInOut],
-            animations: { [weak self] in
-                guard let self else { return }
-                transitionView.frame = self.separatorView.frame
-            },
-            completion: { [weak self] _ in
-                guard let self else { return }
-                self.separatorView.backgroundColor = color
-                transitionView.removeFromSuperview()
-            }
-        )
-        
-        adyen.animate(context: context)
-    }
-    
-    private enum Animation: String {
-        case separatorHighlighting = "separator_highlighting"
-    }
-    
-    internal func unhighlightSeparatorView() {
-        
-        if window == nil {
-            // We don't want to animate the separator if the view is not visible yet
-            // as this can cause glitches on first appearance with a prefilled value
-            self.separatorView.backgroundColor = self.item.style.separatorColor
-            adyen.cancelAnimations(with: Animation.separatorHighlighting.rawValue)
-            return
-        }
-        
-        let context = AnimationContext(
-            animationKey: Animation.separatorHighlighting.rawValue,
-            duration: 0.0,
-            delay: 0.0,
-            animations: { [weak self] in
-                self?.separatorView.backgroundColor = self?.item.style.separatorColor
-            },
-            completion: { [weak self] _ in
-                self?.separatorView.backgroundColor = self?.item.style.separatorColor
-            }
-        )
-        
-        adyen.animate(context: context)
-        
-    }
-    
-    // MARK: - Layout
-    
-    /// This method places separatorView at the bottom of a view.
-    /// Subclasses can override this method to setup alternative placement for a separatorView.
-    open func configureSeparatorView() {
-        let constraints = [
-            separatorView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            separatorView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            separatorView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: 1.0)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
-    }
-    
+
 }
 
 /// A type-erased form value item view.

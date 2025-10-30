@@ -20,8 +20,8 @@ extension CardViewController {
     }
 
     internal final class ItemsProvider {
-
         private let formStyle: FormComponentStyle
+        private let theme: AdyenTheme
         private let amount: Amount?
         private var localizationParameters: LocalizationParameters?
         private let configuration: CardComponentConfiguration
@@ -39,6 +39,7 @@ extension CardViewController {
 
         internal init(
             formStyle: FormComponentStyle,
+            theme: AdyenTheme,
             payment: Payment?,
             configuration: CardComponentConfiguration,
             shopperInformation: PrefilledShopperInformation?,
@@ -63,6 +64,7 @@ extension CardViewController {
             self.presenter = .init(presenter)
             self.addressMode = addressMode
             self.scanCardHandler = scanCardHandler
+            self.theme = theme
         }
         
         internal lazy var billingAddressPickerItem: FormAddressPickerItem? = {

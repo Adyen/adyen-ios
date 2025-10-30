@@ -130,7 +130,6 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
     
     private func configureConstraints() {
         selectionButton.adyen.anchor(inside: self)
-        separatorView.bottomAnchor.constraint(equalTo: valueLabel.bottomAnchor, constant: 4).isActive = true
     }
 }
 
