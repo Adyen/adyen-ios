@@ -7,18 +7,17 @@
 import Adyen
 import Foundation
 
-/// Any component's most basic configuration.
-public protocol AnyBasicComponentConfiguration: Localizable {}
+// TODO: These configurations may be removed/changed to fit the new configuration structure.
 
-/// The configuration of any component thats aware of shoppers' personal information.
-public protocol AnyPersonalInformationConfiguration: AnyBasicComponentConfiguration {
+/// The configuration of any component that can contain shopper information.
+package protocol AnyPersonalInformationConfiguration {
     
     /// The shopper information to be prefilled.
     var shopperInformation: PrefilledShopperInformation? { get }
 }
 
 /// Any component's most basic configuration.
-public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
+public struct BasicComponentConfiguration {
 
     /// The UI style of the component.
     public var style: FormComponentStyle
@@ -27,6 +26,7 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
     @_spi(AdyenInternal)
     public private(set) var showsSubmitButton: Bool
 
+    /// Indicates the localization parameters, leave it nil to use the default parameters.
     public var localizationParameters: LocalizationParameters?
 
     /// Initializes a new instance of `BasicComponentConfiguration`
@@ -48,7 +48,7 @@ public struct BasicComponentConfiguration: AnyBasicComponentConfiguration {
 
 }
 
-/// The configuration of any component thats aware of shoppers' personal information.
+/// The concrete configuration of any component that can contain shopper information.
 public struct PersonalInformationConfiguration: AnyPersonalInformationConfiguration {
 
     /// The UI style of the component.

@@ -103,8 +103,8 @@ internal struct CardSettings: Codable {
     internal var showsStoredCardSecurityCodeField = true
     internal var showsSecurityCodeField = true
     internal var addressMode: AddressFormType = .none
-    internal var socialSecurityNumberMode: CardComponent.FieldVisibility = .auto
-    internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
+    internal var socialSecurityNumberMode: CardComponentConfiguration.FieldVisibility = .auto
+    internal var koreanAuthenticationMode: CardComponentConfiguration.FieldVisibility = .auto
     internal var enableInstallments = false
     internal var showsInstallmentAmount = false
     
@@ -228,7 +228,7 @@ internal struct DemoAppSettings: Codable {
         }
     }
 
-    internal var cardConfiguration: CardComponent.Configuration {
+    internal var cardConfiguration: CardComponentConfiguration {
         var storedCardConfig = StoredCardConfiguration()
         storedCardConfig.showsSecurityCodeField = cardSettings.showsStoredCardSecurityCodeField
 
@@ -243,11 +243,11 @@ internal struct DemoAppSettings: Codable {
             showsStorePaymentMethodField: cardSettings.showsStorePaymentMethodField,
             showsSecurityCodeField: cardSettings.showsSecurityCodeField,
             koreanAuthenticationMode: cardSettings.koreanAuthenticationMode,
-            socialSecurityNumberMode: cardSettings.socialSecurityNumberMode,
-            storedCardConfiguration: storedCardConfig,
-            installmentConfiguration: installmentConfiguration,
-            billingAddress: billingAddressConfig
+            socialSecurityNumberMode: cardSettings.socialSecurityNumberMode
         )
+        .stored(storedCardConfig)
+        .installmentConfiguration(installmentConfiguration)
+        .billingAddress(billingAddressConfig)
     }
 
     internal var cardDropInConfiguration: DropInComponent.Card {
@@ -315,7 +315,7 @@ internal struct DemoAppSettings: Codable {
 
 private extension DemoAppSettings {
     
-    private func cardComponentAddressFormType(from addressFormType: CardSettings.AddressFormType) -> CardComponent.AddressFormType {
+    private func cardComponentAddressFormType(from addressFormType: CardSettings.AddressFormType) -> CardComponentConfiguration.AddressFormType {
         switch addressFormType {
         case .lookup:
             return .lookup(provider: DemoAddressLookupProvider())

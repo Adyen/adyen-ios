@@ -9,47 +9,197 @@
     @_spi(AdyenInternal) import AdyenUI
 #endif
 
-/// Billing address fields configurations
-public struct BillingAddressConfiguration {
+/// Card component configuration.
+public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPersonalInformationConfiguration {
     
-    /// Initializes a new instance of `BillingAddressConfiguration`.
-    public init() { /* Empty initializer */ }
+    package let componentType: Adyen.CheckoutComponentType = .payment(.scheme)
     
-    /// Indicates the display mode of the billing address form. Defaults to none.
-    public var mode: CardComponent.AddressFormType = .none
+    package var theme: AdyenTheme = .init()
     
-    /// List of ISO country codes that is supported for the billing address.
-    /// When nil, all countries are provided.
-    public var countryCodes: [String]?
-    
-    /// Indicates the requirement level of a field.
-    public var requirementPolicy: RequirementPolicy = .required
-    
-    /// Indicates the requirement level of a field.
-    public enum RequirementPolicy {
+    /// Describes the component's UI style.
+    package var style: FormComponentStyle
 
-        /// Field is required.
-        case required
+    /// A boolean value that determines whether the payment button is displayed. Defaults to `true`.
+    package var showsSubmitButton: Bool
 
-        /// Field is optional.
-        case optional
+    /// The shopper's information to be prefilled.
+    package var shopperInformation: PrefilledShopperInformation?
+    
+    package var localizationParameters: LocalizationParameters?
 
-        /// Field is optional only for provided card types.
-        case optionalForCardTypes(Set<CardType>)
+    /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
+    internal var showsHolderNameField: Bool
+
+    /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
+    internal var showsStorePaymentMethodField: Bool
+
+    /// Indicates whether to show the security code field at all. Defaults to true.
+    internal var showsSecurityCodeField: Bool
+
+    /// Indicates whether to show the security fields for South Korea issued cards. Defaults to `auto`.
+    /// In AUTO mode the field will appear only for card issued in "KR" (South Korea).
+    internal var koreanAuthenticationMode: FieldVisibility
+
+    /// Indicates the visibility mode for the social security number field (CPF/CNPJ) for Brazilian cards. Defaults to `auto`.
+    /// In `auto` mode the field will appear based on card bin lookup.
+    internal var socialSecurityNumberMode: FieldVisibility
+
+    // TODO: Move this to its own config?
+    /// Stored card configuration.
+    internal var stored: StoredCardConfiguration = .init()
+
+    /// The list of allowed card types.  Defaults to nil.
+    /// By default list of supported cards is extracted from component's `AnyCardPaymentMethod`.
+    /// Use this property to enforce a custom collection of card types.
+    internal var allowedCardTypes: [CardType]?
+
+    /// Installments options to present to the user.
+    internal var installmentConfiguration: InstallmentConfiguration?
+    
+    /// Billing address fields configurations.
+    internal var billingAddress: BillingAddressConfiguration = .init()
+    
+    /// The type used for the bin lookup
+    internal var binLookupType: BinLookupRequestType = .card
+    
+    /// Indicates whether or not to show the supported card logos under the card number item
+    internal var showsSupportedCardLogos: Bool = true
+
+    /// Configuration of Card component.
+    /// - Parameters:
+    ///   - style: The component's UI style.
+    ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
+    ///   Defaults to `true`.
+    ///   - shopperInformation: The shopper's information to be prefilled.
+    ///   - localizationParameters: Localization parameters.
+    ///   - showsHolderNameField: Indicates if the field for entering the holder name should be displayed in the form.
+    ///   Defaults to `false`.
+    ///   - showsStorePaymentMethodField: Indicates if the field for storing the card payment method should be displayed in the form.
+    ///   Defaults to `true`.
+    ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
+    ///   Defaults to `true`.
+    ///   - koreanAuthenticationMode: Indicates the visibility option for the security fields for South Korea issued cards.
+    ///   Defaults to `.auto`.
+    ///   - socialSecurityNumberMode: Indicates the visibility option for the security code field. Defaults to `.auto`
+    ///   - storedCardConfiguration: Stored card configuration.
+    ///   - allowedCardTypes: The enforced list of allowed card types.
+    ///   - installmentConfiguration: Configuration for installments. Defaults to `nil`.
+    ///   - billingAddress: Billing address fields configurations.
+    public init(
+        style: FormComponentStyle = FormComponentStyle(),
+        showsSubmitButton: Bool = true,
+        shopperInformation: PrefilledShopperInformation? = nil,
+        localizationParameters: LocalizationParameters? = nil,
+        showsHolderNameField: Bool = false,
+        showsStorePaymentMethodField: Bool = true,
+        showsSecurityCodeField: Bool = true,
+        koreanAuthenticationMode: FieldVisibility = .auto,
+        socialSecurityNumberMode: FieldVisibility = .auto,
+        allowedCardTypes: [CardType]? = nil
+    ) {
+        self.style = style
+        self.showsSubmitButton = showsSubmitButton
+        self.shopperInformation = shopperInformation
+        self.localizationParameters = localizationParameters
+        self.showsHolderNameField = showsHolderNameField
+        self.showsSecurityCodeField = showsSecurityCodeField
+        self.showsStorePaymentMethodField = showsStorePaymentMethodField
+        self.allowedCardTypes = allowedCardTypes
+        self.koreanAuthenticationMode = koreanAuthenticationMode
+        self.socialSecurityNumberMode = socialSecurityNumberMode
+    }
+
+    internal func showAdditionalAuthenticationFields(for issuingCountryCode: String?) -> Bool {
+        koreanAuthenticationMode != .hide && issuingCountryCode == "KR"
+    }
+}
+
+// MARK: - Public modifiers
+
+extension CardComponentConfiguration {
+    
+    /// Sets the shopper's information to be prefilled.
+    /// - Parameter shopperInformation: The shopper's information to be prefilled.
+    /// - Returns: A modified copy of the configuration.
+    public func shopperInformataion(_ shopperInformation: PrefilledShopperInformation) -> Self {
+        var copy = self
+        copy.shopperInformation = shopperInformation
+        return copy
     }
     
-    @_spi(AdyenInternal)
-    public func isOptional(for cardTypes: [CardType]) -> Bool {
-        switch requirementPolicy {
-        case .required:
-            return false
-        case .optional:
-            return true
-        case let .optionalForCardTypes(optionalCardTypes):
-            return !optionalCardTypes.isDisjoint(with: cardTypes)
-        }
+    /// Sets whether the field for storing the card payment method should be displayed in the form.
+    /// - Parameter showsStorePaymentMethodField: Boolean value indicating if the store payment method toggle should be shown.
+    /// - Returns: A modified copy of the configuration.
+    public func showsStorePaymentMethodField(_ showsStorePaymentMethodField: Bool) -> Self {
+        var copy = self
+        copy.showsStorePaymentMethodField = showsStorePaymentMethodField
+        return copy
     }
     
+    /// Sets whether to show the security code field.
+    /// - Parameter showsSecurityCodeField: Boolean value indicating if the security code field should be shown.
+    /// - Returns: A modified copy of the configuration.
+    public func showsSecurityCodeField(_ showsSecurityCodeField: Bool) -> Self {
+        var copy = self
+        copy.showsSecurityCodeField = showsSecurityCodeField
+        return copy
+    }
+    
+    /// Sets the visibility mode for the security fields for South Korea issued cards.
+    /// - Parameter koreanAuthenticationMode: The visibility mode. In `.auto` mode the field will appear only for cards issued in "KR" (South Korea).
+    /// - Returns: A modified copy of the configuration.
+    public func koreanAuthenticationMode(_ koreanAuthenticationMode: FieldVisibility) -> Self {
+        var copy = self
+        copy.koreanAuthenticationMode = koreanAuthenticationMode
+        return copy
+    }
+    
+    /// Sets the visibility mode for the social security number field (CPF/CNPJ) for Brazilian cards.
+    /// - Parameter socialSecurityNumberMode: The visibility mode. In `.auto` mode the field will appear based on card bin lookup.
+    /// - Returns: A modified copy of the configuration.
+    public func socialSecurityNumberMode(_ socialSecurityNumberMode: FieldVisibility) -> Self {
+        var copy = self
+        copy.socialSecurityNumberMode = socialSecurityNumberMode
+        return copy
+    }
+    
+    /// Sets the stored card configuration.
+    /// - Parameter stored: The stored card configuration.
+    /// - Returns: A modified copy of the configuration.
+    public func stored(_ stored: StoredCardConfiguration) -> Self {
+        var copy = self
+        copy.stored = stored
+        return copy
+    }
+    
+    /// Sets the list of allowed card types.
+    /// By default list of supported cards is extracted from component's `AnyCardPaymentMethod`.
+    /// Use this to enforce a custom collection of card types.
+    /// - Parameter allowedCardTypes: The list of allowed card types, or `nil` to use the default.
+    /// - Returns: A modified copy of the configuration.
+    public func allowedCardTypes(_ allowedCardTypes: [CardType]?) -> Self {
+        var copy = self
+        copy.allowedCardTypes = allowedCardTypes
+        return copy
+    }
+    
+    /// Sets the installment configuration.
+    /// - Parameter installmentConfiguration: The installment options to present to the user, or `nil` for no installments.
+    /// - Returns: A modified copy of the configuration.
+    public func installmentConfiguration(_ installmentConfiguration: InstallmentConfiguration?) -> Self {
+        var copy = self
+        copy.installmentConfiguration = installmentConfiguration
+        return copy
+    }
+    
+    /// Sets the billing address fields configuration.
+    /// - Parameter billingAddress: The billing address configuration.
+    /// - Returns: A modified copy of the configuration.
+    public func billingAddress(_ billingAddress: BillingAddressConfiguration) -> Self {
+        var copy = self
+        copy.billingAddress = billingAddress
+        return copy
+    }
 }
 
 /// Describes any configuration for the card component.
@@ -66,14 +216,14 @@ public protocol AnyCardComponentConfiguration {
 
     /// Indicates whether to show the security fields for South Korea issued cards. Defaults to `auto`.
     /// In AUTO mode the field will appear only for card issued in "KR" (South Korea).
-    var koreanAuthenticationMode: CardComponent.FieldVisibility { get }
+    var koreanAuthenticationMode: CardComponentConfiguration.FieldVisibility { get }
 
     /// Indicates the visibility mode for the social security number field (CPF/CNPJ) for Brazilian cards. Defaults to `auto`.
     /// In `auto` mode the field will appear based on card bin lookup.
-    var socialSecurityNumberMode: CardComponent.FieldVisibility { get }
+    var socialSecurityNumberMode: CardComponentConfiguration.FieldVisibility { get }
 
     /// Billing address fields configurations
-    var billingAddress: BillingAddressConfiguration { get }
+//    var billingAddress: BillingAddressConfiguration { get }
 
     /// Stored card configuration.
     var stored: StoredCardConfiguration { get }
@@ -87,23 +237,7 @@ public protocol AnyCardComponentConfiguration {
     var installmentConfiguration: InstallmentConfiguration? { get }
 }
 
-extension CardComponent {
-    
-    /// The mode of the address form of the card component
-    public enum AddressFormType {
-        
-        /// Display a form item that allows address lookup and entering the address on a separate screen
-        case lookup(provider: AddressLookupProvider)
-
-        /// Display full address form
-        case full
-        
-        /// Display simple form with only zip code field
-        case postalCode
-
-        /// Do not display address form
-        case none
-    }
+extension CardComponentConfiguration {
 
     /// The mode of input field on Component UI
     public enum FieldVisibility: String, Codable, CaseIterable {
@@ -116,112 +250,6 @@ extension CardComponent {
 
         /// Show the field when a specific condition is met.
         case auto
-    }
-
-    /// Card component configuration.
-    public struct Configuration: AnyCardComponentConfiguration, AnyPersonalInformationConfiguration {
-
-        /// Describes the component's UI style.
-        public var style: FormComponentStyle
-
-        /// A boolean value that determines whether the payment button is displayed. Defaults to `true`.
-        internal let showsSubmitButton: Bool
-
-        /// The shopper's information to be prefilled.
-        public var shopperInformation: PrefilledShopperInformation?
-        
-        public var localizationParameters: LocalizationParameters?
-
-        /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
-        public var showsHolderNameField: Bool
-
-        /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
-        public var showsStorePaymentMethodField: Bool
-
-        /// Indicates whether to show the security code field at all. Defaults to true.
-        public var showsSecurityCodeField: Bool
-
-        /// Indicates whether to show the security fields for South Korea issued cards. Defaults to `auto`.
-        /// In AUTO mode the field will appear only for card issued in "KR" (South Korea).
-        public var koreanAuthenticationMode: FieldVisibility
-
-        /// Indicates the visibility mode for the social security number field (CPF/CNPJ) for Brazilian cards. Defaults to `auto`.
-        /// In `auto` mode the field will appear based on card bin lookup.
-        public var socialSecurityNumberMode: FieldVisibility
-
-        /// Stored card configuration.
-        public var stored: StoredCardConfiguration
-
-        /// The list of allowed card types.  Defaults to nil.
-        /// By default list of supported cards is extracted from component's `AnyCardPaymentMethod`.
-        /// Use this property to enforce a custom collection of card types.
-        public var allowedCardTypes: [CardType]?
-        
-        /// Indicates whether or not to show the supported card logos under the card number item
-        internal var showsSupportedCardLogos: Bool = true
-
-        /// Installments options to present to the user.
-        public var installmentConfiguration: InstallmentConfiguration?
-        
-        /// Billing address fields configurations.
-        public var billingAddress: BillingAddressConfiguration
-        
-        /// The type used for the bin lookup
-        internal var binLookupType: BinLookupRequestType = .card
-
-        /// Configuration of Card component.
-        /// - Parameters:
-        ///   - style: The component's UI style.
-        ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
-        ///   Defaults to `true`.
-        ///   - shopperInformation: The shopper's information to be prefilled.
-        ///   - localizationParameters: Localization parameters.
-        ///   - showsHolderNameField: Indicates if the field for entering the holder name should be displayed in the form.
-        ///   Defaults to `false`.
-        ///   - showsStorePaymentMethodField: Indicates if the field for storing the card payment method should be displayed in the form.
-        ///   Defaults to `true`.
-        ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
-        ///   Defaults to `true`.
-        ///   - koreanAuthenticationMode: Indicates the visibility option for the security fields for South Korea issued cards.
-        ///   Defaults to `.auto`.
-        ///   - socialSecurityNumberMode: Indicates the visibility option for the security code field. Defaults to `.auto`
-        ///   - storedCardConfiguration: Stored card configuration.
-        ///   - allowedCardTypes: The enforced list of allowed card types.
-        ///   - installmentConfiguration: Configuration for installments. Defaults to `nil`.
-        ///   - billingAddress: Billing address fields configurations.
-        public init(
-            style: FormComponentStyle = FormComponentStyle(),
-            showsSubmitButton: Bool = true,
-            shopperInformation: PrefilledShopperInformation? = nil,
-            localizationParameters: LocalizationParameters? = nil,
-            showsHolderNameField: Bool = false,
-            showsStorePaymentMethodField: Bool = true,
-            showsSecurityCodeField: Bool = true,
-            koreanAuthenticationMode: FieldVisibility = .auto,
-            socialSecurityNumberMode: FieldVisibility = .auto,
-            storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
-            allowedCardTypes: [CardType]? = nil,
-            installmentConfiguration: InstallmentConfiguration? = nil,
-            billingAddress: BillingAddressConfiguration = .init()
-        ) {
-            self.style = style
-            self.showsSubmitButton = showsSubmitButton
-            self.shopperInformation = shopperInformation
-            self.localizationParameters = localizationParameters
-            self.showsHolderNameField = showsHolderNameField
-            self.showsSecurityCodeField = showsSecurityCodeField
-            self.showsStorePaymentMethodField = showsStorePaymentMethodField
-            self.stored = storedCardConfiguration
-            self.allowedCardTypes = allowedCardTypes
-            self.koreanAuthenticationMode = koreanAuthenticationMode
-            self.socialSecurityNumberMode = socialSecurityNumberMode
-            self.installmentConfiguration = installmentConfiguration
-            self.billingAddress = billingAddress
-        }
-
-        internal func showAdditionalAuthenticationFields(for issuingCountryCode: String?) -> Bool {
-            koreanAuthenticationMode != .hide && issuingCountryCode == "KR"
-        }
     }
 
 }

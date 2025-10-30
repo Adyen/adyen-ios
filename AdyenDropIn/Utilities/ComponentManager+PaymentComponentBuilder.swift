@@ -317,15 +317,15 @@ private extension ComponentManager {
 
     func createBancontactComponent(with paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
         let cardConfiguration = configuration.card
-        let configuration = CardComponent.Configuration(
+        let configuration = CardComponentConfiguration(
             style: configuration.style.formComponent,
             shopperInformation: configuration.shopperInformation,
             localizationParameters: configuration.localizationParameters,
             showsHolderNameField: cardConfiguration.showsHolderNameField,
             showsStorePaymentMethodField: cardConfiguration.showsStorePaymentMethodField,
-            showsSecurityCodeField: cardConfiguration.showsSecurityCodeField,
-            storedCardConfiguration: cardConfiguration.stored
+            showsSecurityCodeField: cardConfiguration.showsSecurityCodeField
         )
+        .stored(cardConfiguration.stored)
 
         return BCMCComponent(
             paymentMethod: paymentMethod,

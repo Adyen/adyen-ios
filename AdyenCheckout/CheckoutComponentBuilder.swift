@@ -37,8 +37,14 @@ internal enum CheckoutComponentBuilder {
             
         // card module
         #if canImport(AdyenCard)
-            case let cardPaymentMethod as AnyCardPaymentMethod:
-                // create card
+            case let cardPaymentMethod as CardPaymentMethod:
+                return createComponent(
+                    using: CardComponentFactory(),
+                    paymentMethod: cardPaymentMethod,
+                    configuration: configuration
+                )
+                // TODO: add other card methods like stored or write a generic
+            
         #endif
         default:
             break

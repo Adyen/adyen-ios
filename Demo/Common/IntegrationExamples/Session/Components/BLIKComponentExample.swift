@@ -35,7 +35,6 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
                 await hideLoading()
                 await handleError(error)
             }
-            
         }
     }
     

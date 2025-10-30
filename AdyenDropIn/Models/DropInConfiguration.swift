@@ -161,11 +161,11 @@ public extension DropInComponent {
 
         /// Indicates whether to show the security fields for South Korea issued cards. Defaults to `auto`.
         /// In AUTO mode the field will appear only for card issued in "KR" (South Korea).
-        public var koreanAuthenticationMode: CardComponent.FieldVisibility
+        public var koreanAuthenticationMode: CardComponentConfiguration.FieldVisibility
 
         /// Indicates the visibility mode for the social security number field (CPF/CNPJ) for Brazilian cards. Defaults to `auto`.
         /// In `auto` mode the field will appear based on card bin lookup.
-        public var socialSecurityNumberMode: CardComponent.FieldVisibility
+        public var socialSecurityNumberMode: CardComponentConfiguration.FieldVisibility
 
         /// Stored card configuration.
         public var stored: StoredCardConfiguration
@@ -201,8 +201,8 @@ public extension DropInComponent {
             showsHolderNameField: Bool = false,
             showsStorePaymentMethodField: Bool = true,
             showsSecurityCodeField: Bool = true,
-            koreanAuthenticationMode: CardComponent.FieldVisibility = .auto,
-            socialSecurityNumberMode: CardComponent.FieldVisibility = .auto,
+            koreanAuthenticationMode: CardComponentConfiguration.FieldVisibility = .auto,
+            socialSecurityNumberMode: CardComponentConfiguration.FieldVisibility = .auto,
             storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
             allowedCardTypes: [CardType]? = nil,
             installmentConfiguration: InstallmentConfiguration? = nil,
@@ -219,18 +219,18 @@ public extension DropInComponent {
             self.billingAddress = billingAddress
         }
         
-        internal var cardComponentConfiguration: CardComponent.Configuration {
-            CardComponent.Configuration(
+        internal var cardComponentConfiguration: CardComponentConfiguration {
+            CardComponentConfiguration(
                 showsHolderNameField: showsHolderNameField,
                 showsStorePaymentMethodField: showsStorePaymentMethodField,
                 showsSecurityCodeField: showsSecurityCodeField,
                 koreanAuthenticationMode: koreanAuthenticationMode,
                 socialSecurityNumberMode: socialSecurityNumberMode,
-                storedCardConfiguration: stored,
-                allowedCardTypes: allowedCardTypes,
-                installmentConfiguration: installmentConfiguration,
-                billingAddress: billingAddress
+                allowedCardTypes: allowedCardTypes
             )
+            .stored(stored)
+            .installmentConfiguration(installmentConfiguration)
+            .billingAddress(billingAddress)
         }
         
     }
