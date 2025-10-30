@@ -13,8 +13,8 @@ internal protocol ComponentContainerRouterListener: AnyObject {
 }
 
 internal protocol ComponentContainerRouting: AnyObject {
-    func present(component: any PresentableComponent)
-    func dismiss()
+    func presentComponent(_ component: any PresentableComponent)
+    func dismissPresentedComponent()
 }
 
 internal class ComponentContainerRouter: Router, ComponentContainerRouting {
@@ -39,11 +39,11 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouting {
 
     // MARK: - ComponentContainerRouting
     
-    internal func present(component: any PresentableComponent) {
+    internal func presentComponent(_ component: any PresentableComponent) {
         rootViewController.present(component.viewController, animated: true)
     }
     
-    internal func dismiss() {
+    internal func dismissPresentedComponent() {
         listener?.didDismiss()
     }
     

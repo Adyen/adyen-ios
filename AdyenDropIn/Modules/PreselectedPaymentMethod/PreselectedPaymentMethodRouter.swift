@@ -14,8 +14,8 @@ internal protocol PreselectedPaymentMethodRouterListener: AnyObject {
 
 internal protocol PreselectedPaymentMethodRouting: AnyObject {
     func presentPaymentMethodList()
-    func dismiss()
-    func present(component: any PresentableComponent)
+    func presentComponent(_ component: any PresentableComponent)
+    func dismissPresentedComponent()
 }
 
 internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodRouting {
@@ -48,7 +48,7 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         listener?.didPresentPaymentMethodList()
     }
 
-    internal func present(component: any PresentableComponent) {
+    internal func presentComponent(_ component: any PresentableComponent) {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: component,
             delegate: self
@@ -57,7 +57,7 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         rootViewController.present(componentContainerRouter.rootViewController, animated: true)
     }
     
-    internal func dismiss() {
+    internal func dismissPresentedComponent() {
         rootViewController.dismiss(animated: true)
     }
     

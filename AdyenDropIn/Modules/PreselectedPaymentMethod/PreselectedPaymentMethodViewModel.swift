@@ -58,7 +58,7 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
         
         stopLoading()
         component.cancel()
-        router?.dismiss()
+        router?.dismissPresentedComponent()
     }
 
     // MARK: - PreselectedPaymentMethodComponentDelegate
@@ -78,7 +78,7 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
         
         switch component {
         case let component as PresentableComponent:
-            router?.present(component: component)
+            router?.presentComponent(component)
         case let component as PaymentInitiable:
             (component as? PaymentComponent)?.delegate = self
             component.initiatePayment()
