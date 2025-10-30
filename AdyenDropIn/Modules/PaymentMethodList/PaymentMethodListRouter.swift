@@ -10,12 +10,9 @@ import UIKit
 
 internal protocol PaymentMethodListRouterListener: AnyObject {
     func didDismiss(completion: (() -> Void)?)
-    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
-    func didFail(with error: any Error, from component: any PaymentComponent)
-    func didCancel(component: any PaymentComponent)
 }
 
-internal protocol PaymentMethodListRouting: AnyObject, PaymentComponentRouting {
+internal protocol PaymentMethodListRouting: AnyObject {
     func dismiss(completion: (() -> Void)?)
     func present(_ component: PresentableComponent)
 }
@@ -80,17 +77,8 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         }
     }
     
-    internal func submit(_ data: PaymentComponentData, from component: any PaymentComponent) {
-        listener?.didSubmit(data, from: component)
-    }
-    
-    internal func fail(with error: any Error, from component: any PaymentComponent) {
-        listener?.didFail(with: error, from: component)
-    }
-    
     internal func cancel(component: any PaymentComponent) {
-        loadable.stopLoading()
-        listener?.didCancel(component: component)
+        stopLoading()
     }
 }
 
@@ -98,16 +86,8 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
 
 extension PaymentMethodListRouter: ComponentContainerRouterListener {
     
-    internal func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
-        listener?.didSubmit(data, from: component)
-    }
-    
-    internal func didFail(with error: any Error, from component: any Adyen.PaymentComponent) {
-        listener?.didFail(with: error, from: component)
-    }
-    
-    internal func didCancel(component: any Adyen.PaymentComponent) {
-        loadable.stopLoading()
-        listener?.didCancel(component: component)
+    internal func didDismiss() {
+        stopLoading()
+        childRouter = nil
     }
 }

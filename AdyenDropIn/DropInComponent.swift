@@ -369,21 +369,6 @@ extension DropInComponent: InstallmentConfigurationAware {
 
 extension DropInComponent: DropInRouterListener {
     
-    // MARK: - PaymentComponentDelegate
-
-    internal func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
-        paymentInProgress = true
-        delegate?.didSubmit(data, from: component, in: self)
-    }
-
-    internal func didFail(with error: any Error, from component: any PaymentComponent) {
-        delegate?.didFail(with: error, from: self)
-    }
-
-    internal func didCancel(component: any PaymentComponent) {
-        delegate?.didCancel(component: component, from: self)
-    }
-    
     // MARK: - ActionComponentDelegate
     
     internal func didOpenExternalApplication(component: any ActionComponent) {

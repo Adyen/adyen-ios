@@ -10,14 +10,12 @@ import UIKit
 
 internal protocol PreselectedPaymentMethodRouterListener: AnyObject {
     func didPresentPaymentMethodList()
-    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
-    func didFail(with error: any Error, from component: any PaymentComponent)
-    func didCancel(component: any PaymentComponent)
 }
 
-internal protocol PreselectedPaymentMethodRouting: AnyObject, PaymentComponentRouting {
+internal protocol PreselectedPaymentMethodRouting: AnyObject {
     func presentPaymentMethodList()
-    func proceed(with paymentComponent: PresentableComponent)
+    func dismiss()
+    func present(component: any PresentableComponent)
 }
 
 internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodRouting {
@@ -28,7 +26,7 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     private let loadable: LoadControllable
     private weak var listener: PreselectedPaymentMethodRouterListener?
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
-    private var componentContainerRouter: Router?
+    private var childRouter: Router?
 
     // MARK: - Initializers
     
@@ -50,26 +48,17 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         listener?.didPresentPaymentMethodList()
     }
 
-    internal func proceed(with paymentComponent: any PresentableComponent) {
+    internal func present(component: any PresentableComponent) {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
-            for: paymentComponent,
+            for: component,
             delegate: self
         )
-        self.componentContainerRouter = componentContainerRouter
+        self.childRouter = componentContainerRouter
         rootViewController.present(componentContainerRouter.rootViewController, animated: true)
     }
     
-    internal func submit(_ data: PaymentComponentData, from component: any PaymentComponent) {
-        listener?.didSubmit(data, from: component)
-    }
-    
-    internal func fail(with error: any Error, from component: any PaymentComponent) {
-        listener?.didFail(with: error, from: component)
-    }
-    
-    internal func cancel(component: any PaymentComponent) {
+    internal func dismiss() {
         rootViewController.dismiss(animated: true)
-        listener?.didCancel(component: component)
     }
     
     // MARK: - Router
@@ -83,17 +72,8 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
 
 extension PreselectedPaymentMethodRouter: ComponentContainerRouterListener {
     
-    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
-        listener?.didSubmit(data, from: component)
-    }
-    
-    func didFail(with error: any Error, from component: any PaymentComponent) {
-        listener?.didFail(with: error, from: component)
-    }
-    
-    func didCancel(component: any PaymentComponent) {
+    internal func didDismiss() {
         stopLoading()
-        componentContainerRouter = nil
-        listener?.didCancel(component: component)
+        childRouter = nil
     }
 }

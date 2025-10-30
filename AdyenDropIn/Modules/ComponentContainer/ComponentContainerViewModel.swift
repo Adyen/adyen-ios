@@ -59,13 +59,14 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     internal func cancel() {
         guard let dropInComponent else { return }
-        component.cancel()
 
         if let component = (component as? PaymentComponent) {
             dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
         }
         
         stopLoading()
+        component.cancel()
+        router?.dismiss()
     }
 
     // MARK: - Private
@@ -131,7 +132,7 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
 extension ComponentContainerViewModel: PresentationDelegate {
 
     internal func present(component: any PresentableComponent) {
-        router?.present(component.viewController, animated: true)
+        router?.present(component: component)
     }
 }
 

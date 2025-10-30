@@ -10,10 +10,6 @@ import Foundation
 import UIKit
 
 internal protocol DropInRouterListener: AnyObject {
-    func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent)
-    func didFail(with error: any Error, from component: any PaymentComponent)
-    func didCancel(component: any PaymentComponent)
-    
     func didOpenExternalApplication(component: ActionComponent)
     func didProvide(_ data: ActionComponentData, from component: ActionComponent)
     func didComplete(from component: ActionComponent)
@@ -150,23 +146,20 @@ extension DropInRouter: PreselectedPaymentMethodRouterListener {
 
 // MARK: - PaymentMethodListRouterListener, ComponentContainerRouterListener
 
-extension DropInRouter: PaymentMethodListRouterListener, ComponentContainerRouterListener {
-        
+extension DropInRouter: PaymentMethodListRouterListener {
+
     internal func didDismiss(completion: (() -> Void)?) {
         // TODO: - Decide wether dismissal this logic belongs to dropIn or merchant's side
         rootViewController.presentingViewController?.dismiss(animated: true)
         childRouter = nil
     }
+}
+
+// MARK: - ComponentContainerRouterListener
+
+extension DropInRouter: ComponentContainerRouterListener {
     
-    internal func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
-        listener?.didSubmit(data, from: component)
-    }
-    
-    internal func didFail(with error: any Error, from component: any PaymentComponent) {
-        listener?.didFail(with: error, from: component)
-    }
-    
-    internal func didCancel(component: any PaymentComponent) {
-        listener?.didCancel(component: component)
+    func didDismiss() {
+        childRouter = nil
     }
 }
