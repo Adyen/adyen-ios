@@ -21,6 +21,8 @@ internal struct DropInAssembler {
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
     private let componentManager: ComponentManager
+    private let dropInComponent: DropInComponent
+    private let dropInComponentDelegate: DropInComponentDelegate?
     private let cardComponentDelegate: CardComponentDelegate?
     private let partialPaymentDelegate: PartialPaymentDelegate?
 
@@ -31,6 +33,8 @@ internal struct DropInAssembler {
         paymentMethods: PaymentMethods,
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
+        dropInComponent: DropInComponent,
+        dropInComponentDelegate: DropInComponentDelegate?,
         cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
@@ -38,6 +42,8 @@ internal struct DropInAssembler {
         self.paymentMethods = paymentMethods
         self.context = context
         self.configuration = configuration
+        self.dropInComponent = dropInComponent
+        self.dropInComponentDelegate = dropInComponentDelegate
         self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
         self.componentManager = ComponentManager(
@@ -92,6 +98,8 @@ internal struct DropInAssembler {
         PreselectedPaymentMethodAssembler(
             context: context,
             configuration: configuration,
+            dropInComponent: dropInComponent,
+            dropInComponentDelegate: dropInComponentDelegate,
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
@@ -102,6 +110,8 @@ internal struct DropInAssembler {
             componentManager: componentManager,
             context: context,
             configuration: configuration,
+            dropInComponent: dropInComponent,
+            dropInComponentDelegate: dropInComponentDelegate,
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
@@ -111,6 +121,8 @@ internal struct DropInAssembler {
         ComponentContainerAssembler(
             context: context,
             configuration: configuration,
+            dropInComponent: dropInComponent,
+            dropInComponentDelegate: dropInComponentDelegate,
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )

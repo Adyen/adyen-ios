@@ -39,6 +39,8 @@ public final class DropInComponent: NSObject,
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
+            dropInComponent: self,
+            dropInComponentDelegate: delegate,
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )

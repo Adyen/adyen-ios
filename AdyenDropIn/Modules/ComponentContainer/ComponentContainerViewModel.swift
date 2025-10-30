@@ -24,6 +24,8 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     private let component: PresentableComponent
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
+    private weak var dropInComponent: DropInComponent?
+    private weak var dropInComponentDelegate: DropInComponentDelegate?
     private weak var cardComponentDelegate: CardComponentDelegate?
     private weak var partialPaymentDelegate: PartialPaymentDelegate?
 
@@ -33,12 +35,16 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         component: PresentableComponent,
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
+        dropInComponent: DropInComponent,
+        dropInComponentDelegate: DropInComponentDelegate?,
         cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.component = component
         self.context = context
         self.configuration = configuration
+        self.dropInComponent = dropInComponent
+        self.dropInComponentDelegate = dropInComponentDelegate
         self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
 
@@ -52,10 +58,11 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     }
 
     internal func cancel() {
+        guard let dropInComponent else { return }
         component.cancel()
 
         if let component = (component as? PaymentComponent) {
-            router?.cancel(component: component)
+            dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
         }
         
         stopLoading()
@@ -75,7 +82,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
 extension ComponentContainerViewModel: LoadControllable {
     
-    func stopLoading() {
+    internal func stopLoading() {
         component.stopLoading()
     }
 }
@@ -84,33 +91,37 @@ extension ComponentContainerViewModel: LoadControllable {
 
 extension ComponentContainerViewModel: PaymentComponentDelegate {
 
-    func didSubmit(
+    internal func didSubmit(
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
+        guard let dropInComponent else { return }
+        
         let checkoutAttemptId = component.context.analyticsProvider?.checkoutAttemptId
         let updatedData = data.replacing(
             checkoutAttemptId: checkoutAttemptId
         )
 
         guard updatedData.browserInfo == nil else {
-            router?.submit(updatedData, from: component)
+            dropInComponentDelegate?.didSubmit(updatedData, from: component, in: dropInComponent)
             return
         }
-        updatedData.dataByAddingBrowserInfo { [weak self] in
+        updatedData.dataByAddingBrowserInfo { [weak self] newData in
             guard let self else { return }
-            router?.submit($0, from: component)
+            dropInComponentDelegate?.didSubmit(newData, from: component, in: dropInComponent)
         }
     }
     
-    func didFail(
+    internal func didFail(
         with error: any Error,
         from component: any PaymentComponent
     ) {
+        guard let dropInComponent else { return }
+        
         if case ComponentError.cancelled = error {
             cancel()
         } else {
-            router?.fail(with: error, from: component)
+            dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
         }
     }
 }
@@ -119,7 +130,7 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
 
 extension ComponentContainerViewModel: PresentationDelegate {
 
-    func present(component: any PresentableComponent) {
+    internal func present(component: any PresentableComponent) {
         router?.present(component.viewController, animated: true)
     }
 }
@@ -128,7 +139,7 @@ extension ComponentContainerViewModel: PresentationDelegate {
 
 extension ComponentContainerViewModel: ReadyToSubmitPaymentComponentDelegate {
 
-    func showConfirmation(
+    internal func showConfirmation(
         for component: InstantPaymentComponent,
         with order: PartialPaymentOrder?
     ) {
