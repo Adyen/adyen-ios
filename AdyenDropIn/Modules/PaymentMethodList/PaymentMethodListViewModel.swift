@@ -19,13 +19,17 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     internal weak var router: PaymentMethodListRouting?
     private let paymentMethodListComponent: PaymentMethodListComponent
+    private weak var dropInComponent: DropInComponent?
+    private weak var dropInComponentDelegate: DropInComponentDelegate?
 
     // MARK: - Initializers
 
     internal init(
         context: AdyenContext,
         componentManager: ComponentManager,
-        configuration: DropInComponent.Configuration
+        configuration: DropInComponent.Configuration,
+        dropInComponent: DropInComponent,
+        dropInComponentDelegate: DropInComponentDelegate?
     ) {
         let components = componentManager.sections
         self.paymentMethodListComponent = PaymentMethodListComponent(
@@ -35,6 +39,8 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         )
         self.paymentMethodListComponent.localizationParameters = configuration.localizationParameters
         self.paymentMethodListComponent.delegate = self
+        self.dropInComponent = dropInComponent
+        self.dropInComponentDelegate = dropInComponentDelegate
     }
 
     // MARK: - PaymentMethodListViewModelProtocol
@@ -98,18 +104,20 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
+        guard let dropInComponent else { return }
+        
         let checkoutAttemptId = component.context.analyticsProvider?.checkoutAttemptId
         let updatedData = data.replacing(
             checkoutAttemptId: checkoutAttemptId
         )
 
         guard updatedData.browserInfo == nil else {
-            router?.submit(updatedData, from: component)
+            dropInComponentDelegate?.didSubmit(data, from: component, in: dropInComponent)
             return
         }
-        updatedData.dataByAddingBrowserInfo { [weak self] in
+        updatedData.dataByAddingBrowserInfo { [weak self] newData in
             guard let self else { return }
-            router?.submit($0, from: component)
+            dropInComponentDelegate?.didSubmit(newData, from: component, in: dropInComponent)
         }
     }
     
@@ -119,10 +127,12 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
     ) {
         defer { stopLoading() }
         
+        guard let dropInComponent else { return }
+
         if case ComponentError.cancelled = error {
             cancel()
         } else {
-            router?.fail(with: error, from: component)
+            dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
         }
     }
 }
