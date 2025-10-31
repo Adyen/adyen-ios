@@ -11,10 +11,13 @@ import UIKit
 @_spi(AdyenInternal)
 public final class FormToggleItemView: FormItemView<FormToggleItem> {
 
+    // TODO: TO be passed as a dependency by FormViewController.ItemManager
+    package let style: AdyenToggleStyle = .init()
+
     // MARK: - UI elements
     
     private lazy var label: UILabel = {
-        let label = UILabel(style: item.style.title)
+        let label = UILabel()
         label.text = item.title
         label.numberOfLines = 0
         label.accessibilityIdentifier = item.identifier.map {
@@ -28,7 +31,11 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .fill
-        stackView.spacing = 8.0
+        stackView.spacing = AdyenUIConstants.stackViewSpacing
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = AdyenUIConstants.contentInsets
+        stackView.preservesSuperviewLayoutMargins = true
+      
         return stackView
     }()
 
@@ -36,7 +43,6 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
         let switchControl = UISwitch()
         switchControl.translatesAutoresizingMaskIntoConstraints = false
         switchControl.isOn = item.value
-        switchControl.onTintColor = item.style.tintColor
         switchControl.isAccessibilityElement = true
         switchControl.setContentHuggingPriority(.required, for: .horizontal)
         switchControl.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -52,9 +58,9 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
     /// - Parameter item: The item represented by the view.
     public required init(item: FormToggleItem) {
         super.init(item: item)
-        
-        backgroundColor = item.style.backgroundColor
 
+        applyAdyenStyle(style)
+        
         isAccessibilityElement = false
         accessibilityTraits = switchControl.accessibilityTraits
         accessibilityValue = switchControl.accessibilityValue
@@ -75,6 +81,31 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
     override public func reset() {
         item.value = false
     }
+    
+    // MARK: - AdyenTheme
+
+    /// Applies all the style properties from AdyenToggleStyle to the FormToggleItemView.
+    ///
+    /// - Parameter style: The style to apply.
+    private func applyAdyenStyle(_ style: AdyenToggleStyle) {
+        
+        // View's background color
+        stackView.backgroundColor = style.backgroundColor
+        
+        // ToggleView's label 
+        label.font = style.title.font
+        
+        // SwitchControl
+        switchControl.onTintColor = style.tintColor
+        
+        switch style.cornerRadius {
+        case let .fixed(radius):
+            stackView.layer.cornerRadius = radius
+        default:
+            break
+        }
+    }
+
 }
 
 // MARK: - Private
