@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, labeled, unlabeled, edited]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
   pull-requests: write # post PR comment
