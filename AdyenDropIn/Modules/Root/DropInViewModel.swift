@@ -110,7 +110,7 @@ extension DropInViewModel: ActionComponentDelegate {
         guard let dropInComponent else { return }
 
         if case ComponentError.cancelled = error {
-            router?.stopLoading()
+            // TODO: - Handle action cancellation
         } else {
             dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
         }

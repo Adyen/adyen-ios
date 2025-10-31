@@ -22,7 +22,6 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouting {
     // MARK: - Properties
 
     internal let rootViewController: UIViewController
-    private let loadable: LoadControllable
     private weak var listener: ComponentContainerRouterListener?
     internal private(set) var childRouter: Router?
 
@@ -30,11 +29,9 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouting {
 
     internal init(
         viewController: UIViewController,
-        loadable: LoadControllable,
         listener: ComponentContainerRouterListener
     ) {
         self.rootViewController = viewController
-        self.loadable = loadable
         self.listener = listener
     }
 
@@ -48,11 +45,5 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouting {
         rootViewController.dismiss(animated: true) { [weak self] in
             self?.listener?.didDismissComponentContainer(completion: completion)
         }
-    }
-    
-    // MARK: - Router
-    
-    internal func stopLoading() {
-        loadable.stopLoading()
     }
 }

@@ -14,7 +14,8 @@ import UIKit
 internal protocol ComponentContainerAssemblerProtocol {
     func resolveComponentContainerRouter(
         for component: PresentableComponent,
-        delegate: ComponentContainerRouterListener
+        delegate: ComponentContainerRouterListener,
+        onCancel: (() -> Void)?
     ) -> Router
 }
 
@@ -51,7 +52,8 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
 
     internal func resolveComponentContainerRouter(
         for component: PresentableComponent,
-        delegate: ComponentContainerRouterListener
+        delegate: ComponentContainerRouterListener,
+        onCancel: (() -> Void)?
     ) -> Router {
         let viewModel = ComponentContainerViewModel(
             component: component,
@@ -60,26 +62,26 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
             dropInComponent: dropInComponent,
             dropInComponentDelegate: dropInComponentDelegate,
             cardComponentDelegate: cardComponentDelegate,
-            partialPaymentDelegate: partialPaymentDelegate
+            partialPaymentDelegate: partialPaymentDelegate,
+            onCancel: onCancel
         )
-        let viewController = resolveComponentContainerViewController(for: component, viewModel: viewModel)
+        let viewController = ComponentContainerViewController(viewModel: viewModel)
         let router = ComponentContainerRouter(
             viewController: viewController,
-            loadable: viewModel,
             listener: delegate
         )
         viewModel.router = router
         return router
     }
     
-    private func resolveComponentContainerViewController(
-        for component: PresentableComponent,
-        viewModel: ComponentContainerViewModelProtocol
-    ) -> UIViewController {
-        if let alertController = component.viewController as? UIAlertController {
-            return alertController
-        } else {
-            return ComponentContainerViewController(viewModel: viewModel)
-        }
-    }
+//    private func resolveComponentContainerViewController(
+//        for component: PresentableComponent,
+//        viewModel: ComponentContainerViewModelProtocol
+//    ) -> UIViewController {
+//        if let alertController = component.viewController as? UIAlertController {
+//            return alertController
+//        } else {
+//            return ComponentContainerViewController(viewModel: viewModel)
+//        }
+//    }
 }

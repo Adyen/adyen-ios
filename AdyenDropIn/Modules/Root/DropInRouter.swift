@@ -59,17 +59,11 @@ internal class DropInRouter: DropInRouting {
             viewControllerToPresent = ActionWrapperViewController(
                 rootViewController: component.viewController
             ) { [weak self] in
-                self?.stopLoading()
+                // TODO: - Handle action cancellation - stopLoading in component
             }
         }
         
         latestChildRouter.rootViewController.present(viewControllerToPresent, animated: true)
-    }
-    
-    // MARK: - Router
-    
-    internal func stopLoading() {
-        latestChildRouter.stopLoading()
     }
     
     // MARK: - Private
@@ -89,7 +83,8 @@ internal class DropInRouter: DropInRouting {
         case let .component(paymentComponent):
             let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
                 for: paymentComponent,
-                delegate: self
+                delegate: self,
+                onCancel: nil
             )
             self.childRouter = componentContainerRouter
             return componentContainerRouter.rootViewController
@@ -105,7 +100,6 @@ internal class DropInRouter: DropInRouting {
 
 extension DropInRouter: PreselectedPaymentMethodRouterListener {
     internal func didDismissPreselectedPaymentMethod(completion: (() -> Void)?) {
-        stopLoading()
         childRouter = nil
         completion?()
     }
@@ -116,7 +110,6 @@ extension DropInRouter: PreselectedPaymentMethodRouterListener {
 extension DropInRouter: PaymentMethodListRouterListener {
     
     internal func didDismissPaymentMethodList(completion: (() -> Void)?) {
-        stopLoading()
         childRouter = nil
         completion?()
     }
@@ -127,7 +120,6 @@ extension DropInRouter: PaymentMethodListRouterListener {
 extension DropInRouter: ComponentContainerRouterListener {
     
     internal func didDismissComponentContainer(completion: (() -> Void)?) {
-        stopLoading()
         childRouter = nil
         completion?()
     }

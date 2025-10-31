@@ -14,7 +14,7 @@ internal protocol PaymentMethodListRouterListener: AnyObject {
 
 internal protocol PaymentMethodListRouting: AnyObject {
     func dismiss(completion: (() -> Void)?)
-    func present(_ component: PresentableComponent)
+    func present(_ component: PresentableComponent, onCancel: @escaping () -> Void)
 }
 
 internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
@@ -22,7 +22,6 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     // MARK: - Properties
 
     private let viewController: UIViewController
-    private let loadable: LoadControllable
     private weak var listener: PaymentMethodListRouterListener?
     private let navigationController = UINavigationController()
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
@@ -32,12 +31,10 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
 
     internal init(
         viewController: UIViewController,
-        loadable: LoadControllable,
         listener: PaymentMethodListRouterListener?,
         componentContainerAssembler: ComponentContainerAssemblerProtocol
     ) {
         self.viewController = viewController
-        self.loadable = loadable
         self.listener = listener
         self.componentContainerAssembler = componentContainerAssembler
     }
@@ -48,10 +45,6 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         navigationController.setViewControllers([viewController], animated: false)
         return navigationController
     }
-    
-    internal func stopLoading() {
-        loadable.stopLoading()
-    }
 
     // MARK: - PaymentMethodListRouting
 
@@ -60,10 +53,11 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         listener?.didDismissPaymentMethodList(completion: completion)
     }
 
-    internal func present(_ component: PresentableComponent) {
+    internal func present(_ component: PresentableComponent, onCancel: @escaping () -> Void) {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: component,
-            delegate: self
+            delegate: self,
+            onCancel: onCancel
         )
         self.childRouter = componentContainerRouter
 
@@ -76,10 +70,6 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
             viewController.present(componentContainerViewController, animated: true)
         }
     }
-    
-    internal func cancel(component: any PaymentComponent) {
-        stopLoading()
-    }
 }
 
 // MARK: - ComponentContainerRouterListener
@@ -87,7 +77,6 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
 extension PaymentMethodListRouter: ComponentContainerRouterListener {
     
     internal func didDismissComponentContainer(completion: (() -> Void)?) {
-        stopLoading()
         childRouter = nil
         completion?()
     }

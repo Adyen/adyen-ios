@@ -58,6 +58,10 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     private func startLoading(for component: any PaymentComponent) {
         paymentMethodListComponent.startLoading(for: component)
     }
+    
+    private func stopLoading() {
+        paymentMethodListComponent.cancel()
+    }
 }
 
 extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
@@ -78,7 +82,9 @@ extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
         
         switch component {
         case let component as PresentableComponent:
-            router?.present(component)
+            router?.present(component) { [weak self] in
+                self?.stopLoading()
+            }
         case let component as PaymentInitiable:
             (component as? PaymentComponent)?.delegate = self
             component.initiatePayment()
@@ -134,14 +140,5 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         } else {
             dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
         }
-    }
-}
-
-// MARK: - LoadControllable
-
-extension PaymentMethodListViewModel: LoadControllable {
-    
-    internal func stopLoading() {
-        paymentMethodListComponent.stopLoading()
     }
 }

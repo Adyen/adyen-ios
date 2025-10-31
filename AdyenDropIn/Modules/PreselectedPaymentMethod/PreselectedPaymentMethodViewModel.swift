@@ -57,7 +57,6 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
         dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
         
         stopLoading()
-        component.cancel()
         router?.dismiss(completion: nil)
     }
 
@@ -74,11 +73,13 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
     // MARK: - Private
 
     private func startPaymentFlow(for component: PaymentComponent) {
-        startLoading()
+        startLoading(for: component)
         
         switch component {
         case let component as PresentableComponent:
-            router?.present(component: component)
+            router?.present(component: component) { [weak self] in
+                self?.stopLoading()
+            }
         case let component as PaymentInitiable:
             (component as? PaymentComponent)?.delegate = self
             component.initiatePayment()
@@ -86,9 +87,13 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
             break
         }
     }
-
-    private func startLoading() {
+    
+    private func startLoading(for component: PaymentComponent) {
         preselectedPaymentMethodComponent.startLoading(for: component)
+    }
+    
+    private func stopLoading() {
+        preselectedPaymentMethodComponent.cancel()
     }
 }
 
@@ -115,14 +120,5 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         } else {
             dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
         }
-    }
-}
-
-// MARK: - LoadControllable
-
-extension PreselectedPaymentMethodViewModel: LoadControllable {
-    
-    internal func stopLoading() {
-        preselectedPaymentMethodComponent.stopLoading()
     }
 }

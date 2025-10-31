@@ -28,6 +28,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     private weak var dropInComponentDelegate: DropInComponentDelegate?
     private weak var cardComponentDelegate: CardComponentDelegate?
     private weak var partialPaymentDelegate: PartialPaymentDelegate?
+    private let onCancel: (() -> Void)?
 
     // MARK: - Initializers
 
@@ -38,7 +39,8 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         dropInComponent: DropInComponent,
         dropInComponentDelegate: DropInComponentDelegate?,
         cardComponentDelegate: CardComponentDelegate?,
-        partialPaymentDelegate: PartialPaymentDelegate?
+        partialPaymentDelegate: PartialPaymentDelegate?,
+        onCancel: (() -> Void)? = nil
     ) {
         self.component = component
         self.context = context
@@ -47,6 +49,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         self.dropInComponentDelegate = dropInComponentDelegate
         self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
+        self.onCancel = onCancel
 
         setupComponent()
     }
@@ -64,8 +67,8 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
             dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
         }
         
-        stopLoading()
         component.cancel()
+        onCancel?()
         router?.dismiss(completion: nil)
     }
 
@@ -76,15 +79,6 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         (component as? CardComponent)?.cardComponentDelegate = cardComponentDelegate
         (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
-    }
-}
-
-// MARK: - LoadControllable
-
-extension ComponentContainerViewModel: LoadControllable {
-    
-    internal func stopLoading() {
-        component.stopLoading()
     }
 }
 

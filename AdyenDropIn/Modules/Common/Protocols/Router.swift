@@ -9,11 +9,9 @@ import Foundation
 internal protocol Router: AnyObject {
     var childRouter: Router? { get }
     var rootViewController: UIViewController { get }
-    func stopLoading()
 }
 
 extension Router {
-    internal func stopLoading() { /* Optional implementation */ }
     
     internal var latestChildRouter: Router {
         childRouter?.latestChildRouter ?? self

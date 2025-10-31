@@ -14,7 +14,7 @@ internal protocol PreselectedPaymentMethodRouterListener: AnyObject {
 
 internal protocol PreselectedPaymentMethodRouting: AnyObject {
     func presentPaymentMethodList()
-    func present(component: any PresentableComponent)
+    func present(component: any PresentableComponent, onCancel: @escaping (() -> Void))
     func dismiss(completion: (() -> Void)?)
 }
 
@@ -23,7 +23,6 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     // MARK: - Properties
 
     internal let rootViewController: UIViewController
-    private let loadable: LoadControllable
     private weak var listener: PreselectedPaymentMethodRouterListener?
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
@@ -33,13 +32,11 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     
     internal init(
         viewController: UIViewController,
-        loadable: LoadControllable,
         listener: PreselectedPaymentMethodRouterListener?,
         paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
         componentContainerAssembler: ComponentContainerAssemblerProtocol
     ) {
         self.rootViewController = viewController
-        self.loadable = loadable
         self.listener = listener
         self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
@@ -53,10 +50,11 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         rootViewController.present(paymentMethodListRouter.rootViewController, animated: true)
     }
 
-    internal func present(component: any PresentableComponent) {
+    internal func present(component: any PresentableComponent, onCancel: @escaping (() -> Void)) {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: component,
-            delegate: self
+            delegate: self,
+            onCancel: onCancel
         )
         self.childRouter = componentContainerRouter
         rootViewController.present(componentContainerRouter.rootViewController, animated: true)
@@ -67,12 +65,6 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
             self?.childRouter = nil
             self?.listener?.didDismissPreselectedPaymentMethod(completion: completion)
         }
-    }
-    
-    // MARK: - Router
-    
-    internal func stopLoading() {
-        loadable.stopLoading()
     }
 }
 
@@ -93,7 +85,6 @@ extension PreselectedPaymentMethodRouter: PaymentMethodListRouterListener {
 extension PreselectedPaymentMethodRouter: ComponentContainerRouterListener {
     
     internal func didDismissComponentContainer(completion: (() -> Void)?) {
-        stopLoading()
         childRouter = nil
         completion?()
     }
