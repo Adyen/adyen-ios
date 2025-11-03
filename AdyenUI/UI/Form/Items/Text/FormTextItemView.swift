@@ -38,7 +38,10 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     AnyFormTextItemView {
     
     override public var accessibilityLabelView: UIView? { textField }
-    
+
+    // TODO: TO be passed as a dependency by FormViewController.ItemManager
+    package let style: AdyenTextFieldStyle = .init()
+
     /// Initializes the text item view.
     ///
     /// - Parameter item: The item represented by the view.
@@ -58,8 +61,10 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         observe(item.$validationFailureMessage) { [weak self] newValue in
             self?.alertLabel.text = newValue
         }
+    
+        applyAdyenStyle(style)
     }
-
+    
     override public func reset() {
         textField.text = ""
         item.value = ""
@@ -85,6 +90,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     private lazy var entryTextStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [textField, accessoryStackView])
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = AdyenUIConstants.contentInsets
         stackView.axis = .horizontal
         stackView.alignment = .bottom
         stackView.preservesSuperviewLayoutMargins = true
@@ -107,13 +114,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     public lazy var textField: TextField = {
         let textField = TextField()
-        textField.font = item.style.text.font
         textField.adjustsFontForContentSizeCategory = true
-        textField.textColor = item.style.text.color
-        textField.textAlignment = item.style.text.textAlignment
-        textField.backgroundColor = item.style.backgroundColor
         textField.text = item.value
-        textField.apply(placeholderText: item.placeholder, with: item.style.placeholderText)
         textField.autocorrectionType = item.autocorrectionType
         textField.autocapitalizationType = item.autocapitalizationType
         textField.keyboardType = item.keyboardType
@@ -154,7 +156,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         }
         
         accessoryStackView.isHidden = false
-        accessoryView.tintColor = item.style.icon.tintColor
+        accessoryView.tintColor = AdyenTheme().currentColorScheme.primary
         accessoryStackView.addArrangedSubview(accessoryView)
     }
     
@@ -197,19 +199,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     // MARK: - Layout
     
-    override open func configureSeparatorView() {
-        let constraints = [
-            separatorView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            separatorView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: 1.0)
-        ]
-
-        NSLayoutConstraint.activate(constraints)
-    }
-    
     private func configureConstraints() {
         textStackView.adyen.anchor(inside: self)
-        separatorView.bottomAnchor.constraint(equalTo: accessoryStackView.bottomAnchor, constant: 4).isActive = true
     }
     
     override open var lastBaselineAnchor: NSLayoutYAxisAnchor {
@@ -249,6 +240,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// Subclasses can override this method to stay notified when the text field resigns its first responder status.
     open func textFieldDidEndEditing(_ textField: UITextField) {
         isEditing = false
+        updateBorderStyling()
         item.onDidEndEditing?()
     }
     
@@ -256,9 +248,10 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// Subclasses can override this method to stay notified when textField became the first responder.
     open func textFieldDidBeginEditing(_ textField: UITextField) {
         isEditing = true
+        updateBorderStyling()
         item.onDidBeginEditing?()
     }
-
+    
     override open func updateValidationStatus(forced: Bool = false) {
         let textFieldNotEmpty = !(textField.text ?? "").isEmpty
         
@@ -290,6 +283,47 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     private func removeAccessoryIfNeeded() {
         if case .customView = accessory { return }
         accessory = .none
+    }
+
+    // MARK: - AdyenTheme
+
+    /// Applies all the style properties from AdyenTextFieldStyle to the FormTextItemView.
+    ///
+    /// - Parameter style: The style to apply.
+    private func applyAdyenStyle(_ style: AdyenTextFieldStyle) {
+        // Title
+        titleLabel.font = style.title.font
+        titleLabel.textColor = style.title.color
+        titleLabel.textAlignment = style.title.textAlignment
+
+        // Text field
+        textField.font = style.text.font
+        textField.textColor = style.text.color
+        textField.textAlignment = style.text.textAlignment
+
+        // Placeholder
+        textField.apply(placeholderText: item.placeholder, with: style.placeholder)
+
+        // Container
+        entryTextStackView.backgroundColor = style.containerColor
+        entryTextStackView.layer.borderWidth = style.borderWidth
+
+        // Alert
+        alertLabel.textColor = style.errorColor
+
+        switch style.cornerRadius {
+        case let .fixed(radius):
+            entryTextStackView.layer.cornerRadius = radius
+        default:
+            break
+        }
+
+        updateBorderStyling()
+    }
+
+    private func updateBorderStyling() {
+        let borderColor = isEditing ? style.borderActiveColor : style.borderColor
+        entryTextStackView.layer.borderColor = borderColor.cgColor
     }
 }
 

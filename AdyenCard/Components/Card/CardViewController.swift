@@ -60,6 +60,7 @@ internal class CardViewController: FormViewController {
         
         return ItemsProvider(
             formStyle: formStyle,
+            theme: theme,
             payment: payment,
             configuration: configuration,
             shopperInformation: shopperInformation,
@@ -319,12 +320,11 @@ extension CardViewController {
     
     private func setupView() {
         append(items.numberContainerItem)
+
+        append(items.expiryDateItem)
         
         if configuration.showsSecurityCodeField {
-            let splitTextItem = FormSplitItem(items: items.expiryDateItem, items.securityCodeItem, style: formStyle.textField)
-            append(splitTextItem)
-        } else {
-            append(items.expiryDateItem)
+            append(items.securityCodeItem)
         }
         
         if configuration.showsHolderNameField {
