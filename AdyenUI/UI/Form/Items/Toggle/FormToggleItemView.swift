@@ -88,14 +88,13 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
     ///
     /// - Parameter style: The style to apply.
     private func applyAdyenStyle(_ style: AdyenToggleStyle) {
-        
-        // View's background color
         stackView.backgroundColor = style.backgroundColor
-        
-        // ToggleView's label 
-        label.font = style.title.font
-        
-        // SwitchControl
+
+        let titleStyle = style.title
+        label.font = titleStyle.font
+        label.textColor = titleStyle.color
+        label.textAlignment = titleStyle.textAlignment
+
         switchControl.onTintColor = style.tintColor
         
         switch style.cornerRadius {
@@ -105,7 +104,6 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
             break
         }
     }
-
 }
 
 // MARK: - Private
