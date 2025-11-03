@@ -697,10 +697,10 @@ class SessionTests: XCTestCase {
             didOpenExternalAppExpectation.fulfill()
         }
 
-        dropIn.didFail(with: ComponentError.paymentMethodNotSupported, from: paymentComponent)
-        dropIn.didOpenExternalApplication(component: QRCodeActionComponent(context: context))
+        dropIn.delegate?.didFail(with: ComponentError.paymentMethodNotSupported, from: paymentComponent, in: dropIn)
+        dropIn.delegate?.didOpenExternalApplication(component: QRCodeActionComponent(context: context), in: dropIn)
         sut.state.resultCode = .authorised
-        dropIn.didComplete(from: actionComponent)
+        dropIn.delegate?.didComplete(from: actionComponent, in: dropIn)
 
         wait(for: [didFailExpectation, didCompleteExpectation, didOpenExternalAppExpectation], timeout: 2)
     }

@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 internal protocol Router: AnyObject {
     var childRouter: Router? { get }

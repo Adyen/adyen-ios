@@ -40,6 +40,14 @@ internal final class ComponentContainerViewController: UIViewController {
         viewModel.cancel()
     }
     
+    // MARK: - Internal
+    
+    internal var componentView: UIViewController {
+        viewModel.componentViewController
+    }
+    
+    // MARK: - Private
+
     private func setupComponentView() {
         componentView.willMove(toParent: self)
         addChild(componentView)
@@ -47,13 +55,7 @@ internal final class ComponentContainerViewController: UIViewController {
         componentView.didMove(toParent: self)
         setupLayout()
     }
-    
-    // MARK: - Private
-    
-    private var componentView: UIViewController {
-        viewModel.componentViewController
-    }
-    
+        
     private func setupLayout() {
         componentView.view.adyen.anchor(inside: view)
     }

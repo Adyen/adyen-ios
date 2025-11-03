@@ -21,18 +21,28 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouting {
 
     // MARK: - Properties
 
-    internal let rootViewController: UIViewController
+    private let viewController: ComponentContainerViewController
     private weak var listener: ComponentContainerRouterListener?
     internal private(set) var childRouter: Router?
 
     // MARK: - Initializers
 
     internal init(
-        viewController: UIViewController,
+        viewController: ComponentContainerViewController,
         listener: ComponentContainerRouterListener
     ) {
-        self.rootViewController = viewController
+        self.viewController = viewController
         self.listener = listener
+    }
+    
+    // MARK: - Router
+    
+    internal var rootViewController: UIViewController {
+        if viewController.componentView is UIAlertController {
+            return viewController.componentView
+        }
+        
+        return viewController
     }
 
     // MARK: - ComponentContainerRouting

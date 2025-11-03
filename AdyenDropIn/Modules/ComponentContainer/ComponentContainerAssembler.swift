@@ -73,15 +73,4 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
         viewModel.router = router
         return router
     }
-    
-//    private func resolveComponentContainerViewController(
-//        for component: PresentableComponent,
-//        viewModel: ComponentContainerViewModelProtocol
-//    ) -> UIViewController {
-//        if let alertController = component.viewController as? UIAlertController {
-//            return alertController
-//        } else {
-//            return ComponentContainerViewController(viewModel: viewModel)
-//        }
-//    }
 }

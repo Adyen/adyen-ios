@@ -34,11 +34,6 @@ internal class PaymentMethodListViewController: UIViewController {
         setupNavigationItem()
         setupPaymentMethodListView()
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        print("VIEW DID APPEAR")
-    }
 
     // MARK: - Private
 
