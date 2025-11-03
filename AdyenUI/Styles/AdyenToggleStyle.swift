@@ -25,7 +25,7 @@ package struct AdyenToggleStyle {
     /// - Parameter title: The title label style.
     /// - Parameter tintColor: The tint color.
     /// - Parameter backgroundColor: The background color.
-    /// - Parameter cornderRadius: The corner radius..
+    /// - Parameter cornerRadius: The corner radius..
     package init(
         title: AdyenLabelStyle = .init(),
         tintColor: UIColor = AdyenColorScheme.default.primary,
