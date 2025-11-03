@@ -153,13 +153,13 @@ final class AdyenThemeTextFieldTests: XCTestCase {
         )
         
         var newTextFieldStyle = AdyenTextFieldStyle()
-        newTextFieldStyle.placeholderText = newPlaceholderTextStyle
+        newTextFieldStyle.placeholder = newPlaceholderTextStyle
         
         // When
         let updatedTheme = theme.textfield(newTextFieldStyle)
         
         // Then
-        expect(updatedTheme.textFieldStyle.placeholderText!, matches: newPlaceholderTextStyle, property: "placeholderText")
+        expect(updatedTheme.textFieldStyle.placeholder, matches: newPlaceholderTextStyle, property: "placeholder")
     }
     
     func test_textFieldMethod_shouldPreserveDefaultToggleStyle() {
