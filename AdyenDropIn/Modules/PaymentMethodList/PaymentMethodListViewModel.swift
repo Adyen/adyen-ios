@@ -60,7 +60,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
     
     private func stopLoading() {
-        paymentMethodListComponent.cancel()
+        paymentMethodListComponent.stopLoading()
     }
 }
 

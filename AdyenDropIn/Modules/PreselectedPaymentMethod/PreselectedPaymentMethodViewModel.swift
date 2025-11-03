@@ -93,7 +93,7 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
     }
     
     private func stopLoading() {
-        preselectedPaymentMethodComponent.cancel()
+        preselectedPaymentMethodComponent.stopLoading()
     }
 }
 

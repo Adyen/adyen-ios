@@ -67,7 +67,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
             dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
         }
         
-        component.cancel()
+        stopLoading()
         onCancel?()
         router?.dismiss(completion: nil)
     }
@@ -79,6 +79,10 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         (component as? CardComponent)?.cardComponentDelegate = cardComponentDelegate
         (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
+    }
+        
+    private func stopLoading() {
+        component.stopLoading()
     }
 }
 
