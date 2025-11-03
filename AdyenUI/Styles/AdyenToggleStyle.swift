@@ -22,20 +22,21 @@ package struct AdyenToggleStyle {
     
     /// Initializes the form switch item style.
     ///
-    /// - Parameter title: The title style.
-    package init(title: AdyenLabelStyle) {
-        self.init()
+    /// - Parameter title: The title label style.
+    /// - Parameter tintColor: The tint color.
+    /// - Parameter backgroundColor: The background color.
+    /// - Parameter cornderRadius: The corner radius..
+    package init(
+        title: AdyenLabelStyle = .init(),
+        tintColor: UIColor = AdyenColorScheme.default.primary,
+        backgroundColor: UIColor = AdyenColorScheme.default.container,
+        cornerRadius: CornerRounding = CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius)
+    ) {
         self.title = title
+        self.tintColor = tintColor
+        self.backgroundColor = backgroundColor
+        self.cornerRadius = cornerRadius
     }
-    
-    /// Initializes the form switch item style with the default style.
-    package init() {
-        title = AdyenLabelStyle()
-        tintColor = AdyenColorScheme.default.primary
-        backgroundColor = AdyenColorScheme.default.container
-        cornerRadius = .fixed(AdyenUIConstants.defaultCornerRadius)
-    }
-    
 }
 
 // This extension adds the method chaining to the AdyenToggleStyle struct.
