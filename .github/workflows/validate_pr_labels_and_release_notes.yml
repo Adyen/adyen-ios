@@ -13,6 +13,17 @@ permissions:
   pull-requests: write # post PR comment
 
 jobs:
+  tag-release-branch:
+    if: "startsWith(github.event.pull_request.head.ref, 'release/') && !contains(github.event.pull_request.user.login, '[bot]')"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Add release label
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: "release"
+
   get-pr-labels:
     if: "!startsWith(github.event.pull_request.head.ref, 'release/') && !contains(github.event.pull_request.user.login, '[bot]')"
     runs-on: ubuntu-latest
