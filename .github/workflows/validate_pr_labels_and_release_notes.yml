@@ -13,36 +13,18 @@ permissions:
   pull-requests: write
 
 jobs:
-  # ✅ Handle release branch PRs: assign label, pass job, no approval
-  release-pr:
-    if: startsWith(github.event.pull_request.head.ref, 'release/') &&
-        ((!contains(github.event.pull_request.user.login, '[bot]')) ||
-         github.event.pull_request.user.login == 'github-actions[bot]')
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Add release label
-        uses: actions-ecosystem/action-add-labels@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          labels: "release"
-
-      - name: Mark release PR job as passed
-        run: echo "Release PR detected — label applied, job passes."
-
-  # 📋 Validate labels and release notes for non-release PRs
-  validate-pr-labels:
+  validate-pr:
     if: "((!contains(github.event.pull_request.user.login, '[bot]')) ||
          github.event.pull_request.user.login == 'github-actions[bot]')"
     runs-on: ubuntu-latest
 
     steps:
-      - name: Fetch repo
+      - name: Checkout repository
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - name: Get the list of allowed pull request labels
+      - name: Get allowed PR labels
         id: get-allowed_labels
         env:
           PROJECT_ROOT: ${{ github.workspace }}
@@ -55,17 +37,19 @@ jobs:
              echo -e "${RED}$FILE_NAME file doesn't exist in the root of the repository${NC}"
              exit 1
           fi
-          echo "LABELS=$(cat $FILE_PATH),chore,improvement" >> $GITHUB_OUTPUT
-
-      - name: Validate labels
-        uses: jesusvasquez333/verify-pr-label-action@v1.4.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          valid-labels: ${{ steps.get-allowed_labels.outputs.LABELS }}
+          # Add 'chore', 'improvement', 'release' as allowed labels
+          echo "LABELS=$(cat $FILE_PATH),chore,improvement,release" >> $GITHUB_OUTPUT
 
       - name: Get PR labels
         id: pr-labels
         uses: joerick/pr-labels-action@v1.0.9
+
+      - name: Add release label for release PRs
+        if: startsWith(github.event.pull_request.head.ref, 'release/')
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: "release"
 
       - name: Validate release notes per label
         env:
@@ -82,18 +66,21 @@ jobs:
 
           for LABEL in "${ALLOWED_LABELS_ARRAY[@]}"; do
             LABEL=$(echo "$LABEL" | sed 's/^ *//g' | sed 's/ *$//g')
-            if [[ "$LABEL" == "chore"  || "$LABEL" == "improvement" || "$LABEL" == "release" ]]; then
+            # Skip labels that do not require release notes
+            if [[ "$LABEL" == "chore" || "$LABEL" == "improvement" || "$LABEL" == "release" ]]; then
               continue
             fi
+
             if [[ "$PR_LABELS" == *"$LABEL"* ]]; then
               cmd="awk '/<$LABEL>.*<\/$LABEL>/'"
-              FEATURE_RELEASE_NOTE="$(echo $PR_BODY | eval $cmd)"
+              FEATURE_RELEASE_NOTE="$(echo "$PR_BODY" | eval "$cmd")"
               if [[ -z "$FEATURE_RELEASE_NOTE" ]]; then
-                 echo -e "${RED}Pull requests labeled with '$LABEL' must have the release note in the pull request body in the following format '<$LABEL> {THE RELEASE NOTE} </$LABEL>'${NC}"
+                 echo -e "${RED}Pull requests labeled with '$LABEL' must have a release note in the PR body formatted as '<$LABEL> {{YOUR NOTE}} </$LABEL>'${NC}"
                  SHOULD_FAIL_JOB="true"
               fi
             fi
           done
+
           if [[ "$SHOULD_FAIL_JOB" == "true" ]]; then
             exit 1
           fi
