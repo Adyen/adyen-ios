@@ -28,24 +28,24 @@ public struct AdyenButtonStyles {
     
     // Default initializer using the default configurations
     public init() {
-        let defaultColorScheme = AdyenColors.default
+        let colors = AdyenColors.default
         self.init(
-            primary: .primary(for: defaultColorScheme),
-            secondary: .secondary(for: defaultColorScheme),
-            tertiary: .tertiary(for: defaultColorScheme),
-            destructive: .destructive(for: defaultColorScheme)
+            primary: .primary(for: colors),
+            secondary: .secondary(for: colors),
+            tertiary: .tertiary(for: colors),
+            destructive: .destructive(for: colors)
         )
     }
     
     /// Initializes the button style.
     ///
     /// - Parameter colorScheme: The colorScheme to follow to style the button.
-    public init(colorScheme: AdyenColors) {
+    public init(colors: AdyenColors) {
         self.init(
-            primary: .primary(for: colorScheme),
-            secondary: .secondary(for: colorScheme),
-            tertiary: .tertiary(for: colorScheme),
-            destructive: .destructive(for: colorScheme)
+            primary: .primary(for: colors),
+            secondary: .secondary(for: colors),
+            tertiary: .tertiary(for: colors),
+            destructive: .destructive(for: colors)
         )
     }
 
@@ -75,42 +75,42 @@ public struct AdyenButtonStyle {
         self.cornerRadius = cornerRadius
     }
     
-    public static func primary(for colorScheme: AdyenColors) -> AdyenButtonStyle {
+    public static func primary(for colors: AdyenColors) -> AdyenButtonStyle {
         .init(
-            backgroundColor: colorScheme.primary,
-            textColor: colorScheme.textOnPrimary,
-            disabledBackgroundColor: colorScheme.disabled,
-            disabledTextColor: colorScheme.textOnDisabled,
+            backgroundColor: colors.primary,
+            textColor: colors.textOnPrimary,
+            disabledBackgroundColor: colors.disabled,
+            disabledTextColor: colors.textOnDisabled,
             cornerRadius: .fixed(AdyenUIConstants.defaultCornerRadius)
         )
     }
     
-    public static func secondary(for colorScheme: AdyenColors) -> AdyenButtonStyle {
+    public static func secondary(for colors: AdyenColors) -> AdyenButtonStyle {
         .init(
-            backgroundColor: colorScheme.container,
-            textColor: colorScheme.text,
-            disabledBackgroundColor: colorScheme.disabled,
-            disabledTextColor: colorScheme.textOnDisabled,
+            backgroundColor: colors.container,
+            textColor: colors.text,
+            disabledBackgroundColor: colors.disabled,
+            disabledTextColor: colors.textOnDisabled,
             cornerRadius: .fixed(AdyenUIConstants.defaultCornerRadius)
         )
     }
     
-    public static func tertiary(for colorScheme: AdyenColors) -> AdyenButtonStyle {
+    public static func tertiary(for colors: AdyenColors) -> AdyenButtonStyle {
         .init(
             backgroundColor: .clear,
-            textColor: colorScheme.highlight,
-            disabledBackgroundColor: colorScheme.disabled,
-            disabledTextColor: colorScheme.textOnDisabled,
+            textColor: colors.highlight,
+            disabledBackgroundColor: colors.disabled,
+            disabledTextColor: colors.textOnDisabled,
             cornerRadius: .fixed(AdyenUIConstants.defaultCornerRadius)
         )
     }
     
-    public static func destructive(for colorScheme: AdyenColors) -> AdyenButtonStyle {
+    public static func destructive(for colors: AdyenColors) -> AdyenButtonStyle {
         .init(
-            backgroundColor: colorScheme.destructive,
-            textColor: colorScheme.textOnDestructive,
-            disabledBackgroundColor: colorScheme.disabled,
-            disabledTextColor: colorScheme.textOnDisabled,
+            backgroundColor: colors.destructive,
+            textColor: colors.textOnDestructive,
+            disabledBackgroundColor: colors.disabled,
+            disabledTextColor: colors.textOnDisabled,
             cornerRadius: .fixed(AdyenUIConstants.defaultCornerRadius)
         )
     }
