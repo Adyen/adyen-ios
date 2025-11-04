@@ -32,8 +32,7 @@ jobs:
 
   # 📋 Validate labels and release notes for non-release PRs
   validate-pr-labels:
-    if: "!startsWith(github.event.pull_request.head.ref, 'release/') &&
-        ((!contains(github.event.pull_request.user.login, '[bot]')) ||
+    if: "((!contains(github.event.pull_request.user.login, '[bot]')) ||
          github.event.pull_request.user.login == 'github-actions[bot]')"
     runs-on: ubuntu-latest
 
