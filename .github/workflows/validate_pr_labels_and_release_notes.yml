@@ -56,10 +56,8 @@ jobs:
           PR_LABELS: ${{ steps.pr-labels.outputs.labels }}
           ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}
         run: |
-          # Split allowed labels into an array
           IFS=',' read -r -a LABELS_ARRAY <<< "$ALLOWED_LABELS"
 
-          # Labels that do NOT require release notes
           SKIP_LABELS=("chore" "improvement" "release")
 
           SHOULD_FAIL_JOB="false"
@@ -69,15 +67,12 @@ jobs:
           for LABEL in "${LABELS_ARRAY[@]}"; do
             LABEL=$(echo "$LABEL" | sed 's/^ *//;s/ *$//')
             
-            # Skip labels that do not require release notes
             if [[ " ${SKIP_LABELS[*]} " == *" $LABEL "* ]]; then
               continue
             fi
 
-            # Check if PR has this label
             if [[ "$PR_LABELS" == *"$LABEL"* ]]; then
-              # Look for release note in PR body
-              NOTE=$(echo "$PR_BODY" | awk "/<$LABEL>.*<\/$LABEL>/")
+              NOTE=$(echo "$PR_BODY" | grep -Poz "(?s)<$LABEL>.*?</$LABEL>" || true)
               if [[ -z "$NOTE" ]]; then
                 echo -e "${RED}Pull requests labeled with '$LABEL' must have a release note in the PR body formatted as '<$LABEL> {{YOUR NOTE}} </$LABEL>'${NC}"
                 SHOULD_FAIL_JOB="true"
