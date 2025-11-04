@@ -14,7 +14,7 @@ final class AdyenThemeToggleTests: XCTestCase {
         let defaultTheme = AdyenTheme()
         
         // Then
-        expect(defaultTheme.toggleStyle, toMatch: AdyenToggleStyle())
+        expect(defaultTheme.toggleStyle, toMatch: AdyenSwitchStyle())
     }
 
     func test_toggleMethod_shouldUpdateToggleTitleLabel() {
@@ -26,7 +26,7 @@ final class AdyenThemeToggleTests: XCTestCase {
         
         let labelStyle = AdyenLabelStyle().color(expectedColorValue).font(expectedFontValue)
         
-        var newToggleStyle = AdyenToggleStyle(title: labelStyle)
+        var newToggleStyle = AdyenSwitchStyle(title: labelStyle)
         
         newToggleStyle.tintColor = expectedTintColorValue
         
@@ -42,7 +42,7 @@ final class AdyenThemeToggleTests: XCTestCase {
         let expectedTintColorValue = UIColor.black
         let theme = AdyenTheme()
         
-        var newToggleStyle = AdyenToggleStyle()
+        var newToggleStyle = AdyenSwitchStyle()
         newToggleStyle.tintColor = expectedTintColorValue
         
         // When
@@ -57,7 +57,7 @@ final class AdyenThemeToggleTests: XCTestCase {
         let expectedColorValue = UIColor.gray
         let theme = AdyenTheme()
         
-        var newToggleStyle = AdyenToggleStyle()
+        var newToggleStyle = AdyenSwitchStyle()
         newToggleStyle.backgroundColor = expectedColorValue
         
         // When
@@ -72,7 +72,7 @@ final class AdyenThemeToggleTests: XCTestCase {
         let cornerRadius = CornerRounding.fixed(10.0)
         let theme = AdyenTheme()
         
-        var newToggleStyle = AdyenToggleStyle()
+        var newToggleStyle = AdyenSwitchStyle()
         
         newToggleStyle.cornerRadius = cornerRadius
         
@@ -88,7 +88,7 @@ final class AdyenThemeToggleTests: XCTestCase {
         let expectedColorValue = UIColor.gray
         let theme = AdyenTheme()
     
-        var newToggleStyle = AdyenToggleStyle()
+        var newToggleStyle = AdyenSwitchStyle()
         newToggleStyle.backgroundColor = expectedColorValue
         
         // When
@@ -104,7 +104,7 @@ final class AdyenThemeToggleTests: XCTestCase {
         let expectedColorValue = UIColor.gray
         let theme = AdyenTheme()
 
-        var newToggleStyle = AdyenToggleStyle()
+        var newToggleStyle = AdyenSwitchStyle()
         newToggleStyle.backgroundColor = expectedColorValue
         
         // When
@@ -120,7 +120,7 @@ final class AdyenThemeToggleTests: XCTestCase {
         let expectedColorValue = UIColor.gray
         let theme = AdyenTheme()
     
-        var newToggleStyle = AdyenToggleStyle()
+        var newToggleStyle = AdyenSwitchStyle()
         newToggleStyle.backgroundColor = expectedColorValue
         
         // When
@@ -140,7 +140,7 @@ final class AdyenThemeToggleTests: XCTestCase {
 
         let newLabelStyle = AdyenLabelStyle(color: expectedColorValue).font(expectedFontValue)
         
-        var newToggleStyle = AdyenToggleStyle()
+        var newToggleStyle = AdyenSwitchStyle()
         newToggleStyle.backgroundColor = expectedToggleBackgroundColorValue
         
         // When
@@ -160,7 +160,7 @@ final class AdyenThemeToggleTests: XCTestCase {
     
         let newButtonStyle = AdyenButtonStyles(colorScheme: .init(primary: expectedColorValue))
         
-        var newToggleStyle = AdyenToggleStyle()
+        var newToggleStyle = AdyenSwitchStyle()
         newToggleStyle.backgroundColor = expectedToggleBackgroundColorValue
         
         // When
@@ -183,7 +183,7 @@ final class AdyenThemeToggleTests: XCTestCase {
         let cornerRadius = CornerRounding.fixed(expectedCornerRadius)
         let theme = AdyenTheme()
         
-        var newToggleStyle = AdyenToggleStyle()
+        var newToggleStyle = AdyenSwitchStyle()
         newToggleStyle.backgroundColor = expectedToggleBackgroundColorValue
         
         var newTextFieldStyle = AdyenTextFieldStyle()

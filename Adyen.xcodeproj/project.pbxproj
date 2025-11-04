@@ -17,7 +17,7 @@
 		000A7B0B2E27CDEC005584F2 /* AdyenUI.docc in Sources */ = {isa = PBXBuildFile; fileRef = 000A7B042E27CDEC005584F2 /* AdyenUI.docc */; };
 		000A7B0C2E27CDEC005584F2 /* AdyenColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000A7B052E27CDEC005584F2 /* AdyenColors.swift */; };
 		000A7B0D2E27CDEC005584F2 /* AdyenFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000A7B062E27CDEC005584F2 /* AdyenFonts.swift */; };
-		0019C4092E5F24AC00B0C3A3 /* AdyenToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0019C4082E5F24A300B0C3A3 /* AdyenToggleStyle.swift */; };
+		0019C4092E5F24AC00B0C3A3 /* AdyenSwitchStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0019C4082E5F24A300B0C3A3 /* AdyenSwitchStyle.swift */; };
 		0019C43F2E6ADF8E00B0C3A3 /* ApplePayStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3DE274FB30200E1636C /* ApplePayStyle.swift */; };
 		0019C4402E6ADF8E00B0C3A3 /* CoreColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26EAD91233A1A340060BBA7 /* CoreColors.swift */; };
 		0019C4412E6ADF8E00B0C3A3 /* ProgressViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1315C826296B100092366D /* ProgressViewStyle.swift */; };
@@ -1822,7 +1822,7 @@
 		000A7B052E27CDEC005584F2 /* AdyenColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenColors.swift; sourceTree = "<group>"; };
 		000A7B062E27CDEC005584F2 /* AdyenFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenFonts.swift; sourceTree = "<group>"; };
 		00165FDF2C05DA8600347399 /* RedireactableAwaitAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedireactableAwaitAction.swift; sourceTree = "<group>"; };
-		0019C4082E5F24A300B0C3A3 /* AdyenToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenToggleStyle.swift; sourceTree = "<group>"; };
+		0019C4082E5F24A300B0C3A3 /* AdyenSwitchStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenSwitchStyle.swift; sourceTree = "<group>"; };
 		001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInSettingsView.swift; sourceTree = "<group>"; };
 		00220953299B885600B2BACD /* BLIKComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentUITests.swift; sourceTree = "<group>"; };
 		00220957299E5B1D00B2BACD /* MBWayComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBWayComponentUITests.swift; sourceTree = "<group>"; };
@@ -3348,7 +3348,7 @@
 				B6271FF02EBA2D4A009E9149 /* Buttons */,
 				B6271FEF2EBA2D3D009E9149 /* Labels */,
 				B6271FE82EB9F8B8009E9149 /* UIKitHelpers */,
-				0019C4082E5F24A300B0C3A3 /* AdyenToggleStyle.swift */,
+				0019C4082E5F24A300B0C3A3 /* AdyenSwitchStyle.swift */,
 				00600F2E2E78B02F00637477 /* AdyenTextFieldStyle.swift */,
 				E787C9AB24696A8900B401E0 /* CornerRadiusStyle.swift */,
 			);
@@ -7883,7 +7883,7 @@
 				000A7B0A2E27CDEC005584F2 /* AdyenTheme.swift in Sources */,
 				000A7B0B2E27CDEC005584F2 /* AdyenUI.docc in Sources */,
 				004758112E379410009E3802 /* CornerRadiusStyle.swift in Sources */,
-				0019C4092E5F24AC00B0C3A3 /* AdyenToggleStyle.swift in Sources */,
+				0019C4092E5F24AC00B0C3A3 /* AdyenSwitchStyle.swift in Sources */,
 				004757C42E2E6605009E3802 /* AdyenButtonStyles.swift in Sources */,
 				000A7B0C2E27CDEC005584F2 /* AdyenColors.swift in Sources */,
 				004758132E38D64A009E3802 /* AdyenLabelStyle.swift in Sources */,

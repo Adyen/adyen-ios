@@ -16,7 +16,7 @@ public struct AdyenTheme {
     // Available styles
     public var buttonStyles = AdyenButtonStyles()
     public var labelStyle = AdyenLabelStyle()
-    package var toggleStyle = AdyenToggleStyle()
+    package var toggleStyle = AdyenSwitchStyle()
     package var textFieldStyle = AdyenTextFieldStyle()
 
     // Initialize with a default ButtonStyle, LabelStyle and ToggleStyle if none is provided
@@ -24,7 +24,7 @@ public struct AdyenTheme {
         button: AdyenButtonStyles = AdyenButtonStyles(),
         label: AdyenLabelStyle = AdyenLabelStyle(),
         textField: AdyenTextFieldStyle = AdyenTextFieldStyle(),
-        toggle: AdyenToggleStyle = AdyenToggleStyle()
+        toggle: AdyenSwitchStyle = AdyenSwitchStyle()
     ) {
         self.buttonStyles = button
         self.labelStyle = label
@@ -58,7 +58,7 @@ extension AdyenTheme {
     }
     
     @discardableResult
-    package func toggle(_ toggleStyle: AdyenToggleStyle) -> AdyenTheme {
+    package func toggle(_ toggleStyle: AdyenSwitchStyle) -> AdyenTheme {
         var copy = self
         copy.toggleStyle = toggleStyle
         return copy

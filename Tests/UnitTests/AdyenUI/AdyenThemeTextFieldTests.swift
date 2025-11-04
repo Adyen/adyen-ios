@@ -182,7 +182,7 @@ final class AdyenThemeTextFieldTests: XCTestCase {
         let updatedTheme = theme.textfield(newTextFieldStyle)
         
         // Then
-        expect(updatedTheme.toggleStyle, toMatch: AdyenToggleStyle())
+        expect(updatedTheme.toggleStyle, toMatch: AdyenSwitchStyle())
         expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
     }
     
@@ -243,7 +243,7 @@ final class AdyenThemeTextFieldTests: XCTestCase {
             textAlignment: expectedTextAlignmentValue
         )
         
-        var newToggleStyle = AdyenToggleStyle()
+        var newToggleStyle = AdyenSwitchStyle()
         newToggleStyle.backgroundColor = expectedToggleBackgroundColorValue
         newToggleStyle.tintColor = expectedToggleTintColorValue
         newToggleStyle.title = newTextStyle

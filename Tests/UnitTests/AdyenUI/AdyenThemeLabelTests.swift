@@ -99,7 +99,7 @@ final class AdyenThemeLabelTests: XCTestCase {
         let updatedTheme = theme.label(newLabelStyle)
         
         // Then
-        expect(updatedTheme.toggleStyle, toMatch: AdyenToggleStyle())
+        expect(updatedTheme.toggleStyle, toMatch: AdyenSwitchStyle())
         expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
     }
     
@@ -149,7 +149,7 @@ final class AdyenThemeLabelTests: XCTestCase {
     
         let newLabelStyle = AdyenLabelStyle().color(expectedLabelColorValue).font(expectedFont)
 
-        var newToggleStyle = AdyenToggleStyle()
+        var newToggleStyle = AdyenSwitchStyle()
         newToggleStyle.backgroundColor = expectedToggleBackgroundColorValue
         newToggleStyle.tintColor = expectedTintValue
         newToggleStyle.title = newLabelStyle

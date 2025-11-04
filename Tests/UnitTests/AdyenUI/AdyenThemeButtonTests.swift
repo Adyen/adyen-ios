@@ -57,7 +57,7 @@ final class AdyenThemeButtonTests: XCTestCase {
         let updatedTheme = theme.button(newButtonStyles)
         
         // Then
-        expect(updatedTheme.toggleStyle, toMatch: AdyenToggleStyle())
+        expect(updatedTheme.toggleStyle, toMatch: AdyenSwitchStyle())
         expect(updatedTheme.buttonStyles, toMatch: newButtonStyles)
     }
     
@@ -108,7 +108,7 @@ final class AdyenThemeButtonTests: XCTestCase {
     
         let labelStyle = AdyenLabelStyle().color(expectedLabelColorValue).font(expectedFontValue)
 
-        var newToggleStyle = AdyenToggleStyle()
+        var newToggleStyle = AdyenSwitchStyle()
         newToggleStyle.backgroundColor = expectedToggleBackgroundColorValue
         newToggleStyle.tintColor = expectedToggleTintColorValue
         newToggleStyle.title = labelStyle
