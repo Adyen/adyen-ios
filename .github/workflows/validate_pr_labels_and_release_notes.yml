@@ -82,7 +82,7 @@ jobs:
 
           for LABEL in "${ALLOWED_LABELS_ARRAY[@]}"; do
             LABEL=$(echo "$LABEL" | sed 's/^ *//;s/ *$//')
-            if [[ "$LABEL" == "chore" || "$LABEL" == "improvement" ]]; then
+            if [[ "$LABEL" == "chore" || "$LABEL" == "improvement" || "$LABEL" == "release" ]]; then
               continue
             fi
             if [[ "$PR_LABELS" == *"$LABEL"* ]]; then
