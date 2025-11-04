@@ -15,7 +15,6 @@ public struct AdyenLabelStyles {
     package var subheadlineEmphasized: AdyenLabelStyle
     package var footnote: AdyenLabelStyle
     package var footnoteEmphasized: AdyenLabelStyle
-    package var `default`: AdyenLabelStyle
 
     /// A default instance of AdyenLabelStyles.
     public static let `default` = AdyenLabelStyles()
@@ -28,8 +27,7 @@ public struct AdyenLabelStyles {
         subheadline: AdyenLabelStyle,
         subheadlineEmphasized: AdyenLabelStyle,
         footnote: AdyenLabelStyle,
-        footnoteEmphasized: AdyenLabelStyle,
-        default: AdyenLabelStyle
+        footnoteEmphasized: AdyenLabelStyle
     ) {
         self.title = title
         self.subtitle = subtitle
@@ -39,7 +37,6 @@ public struct AdyenLabelStyles {
         self.subheadlineEmphasized = subheadlineEmphasized
         self.footnote = footnote
         self.footnoteEmphasized = footnoteEmphasized
-        self.default = `default`
     }
     
     package init() {
@@ -77,6 +74,5 @@ public struct AdyenLabelStyles {
             font: UIFont.systemFont(ofSize: 13.0, weight: .semibold),
             color: defaultColors.text
         )
-        self.default = AdyenLabelStyle.default
     }
 }

@@ -86,7 +86,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
             scopeInstance: self,
             postfix: "blikCodeHintLabel"
         ),
-        labelStyle: configuration.theme.elements.labels.default
+        labelStyle: configuration.theme.elements.labels.body
     )
 
     /// The BLIK code item.
