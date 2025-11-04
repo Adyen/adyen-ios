@@ -37,7 +37,7 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
     public init(
         showsSubmitButton: Bool = true,
         localizationParameters: LocalizationParameters? = nil,
-        theme: AdyenTheme = .init(),
+        theme: AdyenTheme = .default,
         style: FormComponentStyle = .init()
     ) {
         self.showsSubmitButton = showsSubmitButton

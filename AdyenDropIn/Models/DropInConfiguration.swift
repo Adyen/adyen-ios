@@ -77,7 +77,7 @@ public extension DropInComponent {
         ///   - allowPreselectedPaymentView: Boolean to enable the preselected stored payment method view step.
         public init(
             style: Style = Style(),
-            theme: AdyenTheme = AdyenTheme(),
+            theme: AdyenTheme = .default,
             allowsSkippingPaymentList: Bool = false,
             allowPreselectedPaymentView: Bool = true
         ) {
