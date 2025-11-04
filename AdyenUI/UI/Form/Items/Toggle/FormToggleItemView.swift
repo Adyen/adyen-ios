@@ -59,8 +59,8 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
     public required init(item: FormToggleItem) {
         super.init(item: item)
 
-        applyAdyenStyle(style)
-        
+        apply(style: style)
+
         isAccessibilityElement = false
         accessibilityTraits = switchControl.accessibilityTraits
         accessibilityValue = switchControl.accessibilityValue
@@ -87,13 +87,10 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
     /// Applies all the style properties from AdyenToggleStyle to the FormToggleItemView.
     ///
     /// - Parameter style: The style to apply.
-    private func applyAdyenStyle(_ style: AdyenToggleStyle) {
+    private func apply(style: AdyenToggleStyle) {
         stackView.backgroundColor = style.backgroundColor
 
-        let titleStyle = style.title
-        label.font = titleStyle.font
-        label.textColor = titleStyle.color
-        label.textAlignment = titleStyle.textAlignment
+        label.apply(style.title)
 
         switchControl.onTintColor = style.tintColor
         
