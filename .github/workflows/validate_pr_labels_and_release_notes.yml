@@ -14,8 +14,6 @@ permissions:
 
 jobs:
   validate-pr:
-    if: "((!contains(github.event.pull_request.user.login, '[bot]')) ||
-         github.event.pull_request.user.login == 'github-actions[bot]')"
     runs-on: ubuntu-latest
 
     steps:
