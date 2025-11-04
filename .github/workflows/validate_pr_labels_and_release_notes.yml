@@ -13,8 +13,8 @@ permissions:
   pull-requests: write
 
 jobs:
-  # ✅ Auto-tag and approve release branch PRs
-  tag-and-approve-release:
+  # ✅ Handle release branch PRs: assign label, pass job, no approval
+  release-pr:
     if: startsWith(github.event.pull_request.head.ref, 'release/') &&
         ((!contains(github.event.pull_request.user.login, '[bot]')) ||
          github.event.pull_request.user.login == 'github-actions[bot]')
@@ -27,10 +27,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: "release"
 
-      - name: Auto approve PR
-        uses: hmarr/auto-approve-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Mark release PR job as passed
+        run: echo "Release PR detected — label applied, job passes."
 
   # 📋 Validate labels and release notes for non-release PRs
   validate-pr-labels:
