@@ -12,7 +12,7 @@ public struct AdyenElements {
     package var `switch`: AdyenSwitchStyle = .default
     package var textField: AdyenTextFieldStyle = .default
 
-    package init(
+    public init(
         buttons: AdyenButtonStyles = .default,
         labels: AdyenLabelStyles = .default,
         switch: AdyenSwitchStyle = .default,

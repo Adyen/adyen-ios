@@ -16,7 +16,7 @@ public struct AdyenTheme {
     /// A default instance of AdyenTheme.
     public static let `default` = AdyenTheme()
 
-    package init(
+    public init(
         colors: AdyenColors = .default,
         elements: AdyenElements = .default,
         attributes: AdyenAttributes = .default
