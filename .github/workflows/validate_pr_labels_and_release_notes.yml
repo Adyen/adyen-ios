@@ -15,7 +15,9 @@ permissions:
 jobs:
   # ✅ Auto-tag and approve release branch PRs
   tag-and-approve-release:
-    if: "startsWith(github.event.pull_request.head.ref, 'release/') && ((!contains(github.event.pull_request.user.login, '[bot]')) || github.event.pull_request.user.login == 'github-actions[bot]'))"
+    if: startsWith(github.event.pull_request.head.ref, 'release/') &&
+        ((!contains(github.event.pull_request.user.login, '[bot]')) ||
+         github.event.pull_request.user.login == 'github-actions[bot]')
     runs-on: ubuntu-latest
 
     steps:
@@ -32,7 +34,9 @@ jobs:
 
   # 📋 Validate labels and release notes for non-release PRs
   validate-pr-labels:
-    if: "!startsWith(github.event.pull_request.head.ref, 'release/') && ((!contains(github.event.pull_request.user.login, '[bot]')) || github.event.pull_request.user.login == 'github-actions[bot]'))"
+    if: "!startsWith(github.event.pull_request.head.ref, 'release/') &&
+        ((!contains(github.event.pull_request.user.login, '[bot]')) ||
+         github.event.pull_request.user.login == 'github-actions[bot]')"
     runs-on: ubuntu-latest
 
     steps:
@@ -42,6 +46,9 @@ jobs:
           fetch-depth: 0
 
       - name: Get the list of allowed pull request labels
+        id: get-allowed_labels
+        env:
+          PROJECT_ROOT: ${{ github.workspace }}
         run: |
           RED='\033[0;31m'
           NC='\033[0m'
@@ -52,9 +59,6 @@ jobs:
              exit 1
           fi
           echo "LABELS=$(cat $FILE_PATH),chore,improvement" >> $GITHUB_OUTPUT
-        id: get-allowed_labels
-        env:
-          PROJECT_ROOT: ${{ github.workspace }}
 
       - name: Validate labels
         uses: jesusvasquez333/verify-pr-label-action@v1.4.0
@@ -63,30 +67,33 @@ jobs:
           valid-labels: ${{ steps.get-allowed_labels.outputs.LABELS }}
 
       - name: Get PR labels
-        uses: joerick/pr-labels-action@v1.0.9
         id: pr-labels
+        uses: joerick/pr-labels-action@v1.0.9
 
       - name: Validate release notes per label
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_LABELS: ${{ steps.pr-labels.outputs.labels }}
+          ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}
         run: |
           ALLOWED_LABELS="$ALLOWED_LABELS,chore,improvement"
           IFS=',' read -r -a ALLOWED_LABELS_ARRAY <<< "$ALLOWED_LABELS"
 
           SHOULD_FAIL_JOB="false"
-
           RED='\033[0;31m'
           NC='\033[0m'
 
           for LABEL in "${ALLOWED_LABELS_ARRAY[@]}"; do
-            LABEL=$(echo "$LABEL" | sed 's/^ *//g' | sed 's/ *$//g')
+            LABEL=$(echo "$LABEL" | sed 's/^ *//;s/ *$//')
             if [[ "$LABEL" == "chore" || "$LABEL" == "improvement" ]]; then
               continue
             fi
             if [[ "$PR_LABELS" == *"$LABEL"* ]]; then
               cmd="awk '/<$LABEL>.*<\/$LABEL>/'"
-              FEATURE_RELEASE_NOTE="$(echo $PR_BODY | eval $cmd)"
+              FEATURE_RELEASE_NOTE="$(echo "$PR_BODY" | eval "$cmd")"
               if [[ -z "$FEATURE_RELEASE_NOTE" ]]; then
-                 echo -e "${RED}Pull requests labeled with '$LABEL' must have the release note in the PR body in the format '<$LABEL> {THE RELEASE NOTE} </$LABEL>'${NC}"
-                 SHOULD_FAIL_JOB="true"
+                echo -e "${RED}Pull requests labeled with '$LABEL' must have a release note in the body formatted as '<$LABEL> {{YOUR NOTE}} </$LABEL>'${NC}"
+                SHOULD_FAIL_JOB="true"
               fi
             fi
           done
@@ -94,7 +101,3 @@ jobs:
           if [[ "$SHOULD_FAIL_JOB" == "true" ]]; then
             exit 1
           fi
-        env:
-          PR_BODY: ${{ github.event.pull_request.body }}
-          PR_LABELS: ${{ steps.pr-labels.outputs.labels }}
-          ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}
