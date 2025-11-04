@@ -13,7 +13,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  # ✅ Handle release branch PRs: assign label, pass job, no approval
+  # ✅ Handle release branch PRs: assign label
   release-pr:
     if: startsWith(github.event.pull_request.head.ref, 'release/') &&
         ((!contains(github.event.pull_request.user.login, '[bot]')) ||
