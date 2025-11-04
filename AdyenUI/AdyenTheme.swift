@@ -10,7 +10,7 @@ import UIKit
 // A shared instance of the  theme for easy access throughout your SDK
 public struct AdyenTheme {
     
-    public var currentColorScheme: AdyenColorScheme = .default
+    public var currentColorScheme: AdyenColors = .default
     public var currentFonts: AdyenFonts = .default
 
     // Available styles
@@ -32,7 +32,7 @@ public struct AdyenTheme {
         self.toggleStyle = toggle
     }
     
-    public init(colorScheme: AdyenColorScheme, fonts: AdyenFonts) {
+    public init(colorScheme: AdyenColors, fonts: AdyenFonts) {
         self.currentColorScheme = colorScheme
         self.currentFonts = fonts
     }

@@ -28,7 +28,7 @@ public struct AdyenButtonStyles {
     
     // Default initializer using the default configurations
     public init() {
-        let defaultColorScheme = AdyenColorScheme.default
+        let defaultColorScheme = AdyenColors.default
         self.init(
             primary: .primary(for: defaultColorScheme),
             secondary: .secondary(for: defaultColorScheme),
@@ -40,7 +40,7 @@ public struct AdyenButtonStyles {
     /// Initializes the button style.
     ///
     /// - Parameter colorScheme: The colorScheme to follow to style the button.
-    public init(colorScheme: AdyenColorScheme) {
+    public init(colorScheme: AdyenColors) {
         self.init(
             primary: .primary(for: colorScheme),
             secondary: .secondary(for: colorScheme),
@@ -75,7 +75,7 @@ public struct AdyenButtonStyle {
         self.cornerRadius = cornerRadius
     }
     
-    public static func primary(for colorScheme: AdyenColorScheme) -> AdyenButtonStyle {
+    public static func primary(for colorScheme: AdyenColors) -> AdyenButtonStyle {
         .init(
             backgroundColor: colorScheme.primary,
             textColor: colorScheme.textOnPrimary,
@@ -85,7 +85,7 @@ public struct AdyenButtonStyle {
         )
     }
     
-    public static func secondary(for colorScheme: AdyenColorScheme) -> AdyenButtonStyle {
+    public static func secondary(for colorScheme: AdyenColors) -> AdyenButtonStyle {
         .init(
             backgroundColor: colorScheme.container,
             textColor: colorScheme.text,
@@ -95,7 +95,7 @@ public struct AdyenButtonStyle {
         )
     }
     
-    public static func tertiary(for colorScheme: AdyenColorScheme) -> AdyenButtonStyle {
+    public static func tertiary(for colorScheme: AdyenColors) -> AdyenButtonStyle {
         .init(
             backgroundColor: .clear,
             textColor: colorScheme.highlight,
@@ -105,7 +105,7 @@ public struct AdyenButtonStyle {
         )
     }
     
-    public static func destructive(for colorScheme: AdyenColorScheme) -> AdyenButtonStyle {
+    public static func destructive(for colorScheme: AdyenColors) -> AdyenButtonStyle {
         .init(
             backgroundColor: colorScheme.destructive,
             textColor: colorScheme.textOnDestructive,

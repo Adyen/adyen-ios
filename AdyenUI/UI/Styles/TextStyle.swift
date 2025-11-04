@@ -14,7 +14,7 @@ public struct TextStyle: ViewStyle {
     public var font: UIFont
 
     /// The color of the text.
-    public var color: UIColor = AdyenColorScheme.default.background
+    public var color: UIColor = AdyenColors.default.background
 
     /// The color of the text when the element is disabled.
     public var disabledColor = UIColor.Adyen.secondaryComponentBackground

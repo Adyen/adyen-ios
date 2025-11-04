@@ -28,8 +28,8 @@ package struct AdyenToggleStyle {
     /// - Parameter cornerRadius: The corner radius.
     package init(
         title: AdyenLabelStyle = .init(),
-        tintColor: UIColor = AdyenColorScheme.default.primary,
-        backgroundColor: UIColor = AdyenColorScheme.default.container,
+        tintColor: UIColor = AdyenColors.default.primary,
+        backgroundColor: UIColor = AdyenColors.default.container,
         cornerRadius: CornerRounding = CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius)
     ) {
         self.title = title

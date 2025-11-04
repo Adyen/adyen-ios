@@ -175,12 +175,12 @@ class BLIKComponentTests: XCTestCase {
     func testDefaultHintLabelItemStylingUsingAdyenTheme() throws {
         let customizedHintLabel = AdyenTheme().label(AdyenLabelStyle()
             .font(AdyenFonts.default.body)
-            .color(AdyenColorScheme.default.primary)
+            .color(AdyenColors.default.primary)
         )
         sut.hintLabelItem.labelStyle = customizedHintLabel.labelStyle
         
         XCTAssertEqual(sut.hintLabelItem.labelStyle.font, AdyenFonts.default.body)
-        XCTAssertEqual(sut.hintLabelItem.labelStyle.color, AdyenColorScheme.default.primary)
+        XCTAssertEqual(sut.hintLabelItem.labelStyle.color, AdyenColors.default.primary)
     }
 
     func testDefaultButtonTitleStylingUsingAdyenTheme() throws {
@@ -189,7 +189,7 @@ class BLIKComponentTests: XCTestCase {
         sut.button.buttonStyle = customizedSubmitButtonStyle.buttonStyles.primary
 
         XCTAssertEqual(sut.button.buttonStyle, AdyenButtonStyles.default.primary)
-        XCTAssertEqual(sut.button.buttonStyle.textColor, AdyenColorScheme.default.textOnPrimary)
+        XCTAssertEqual(sut.button.buttonStyle.textColor, AdyenColors.default.textOnPrimary)
 
     }
 
@@ -205,7 +205,7 @@ class BLIKComponentTests: XCTestCase {
     }
 
     func testCustomButtonTitleStylingUsingAdyenTheme() throws {
-        let customizedSubmitButtonStyle = AdyenTheme().button(AdyenButtonStyles(colorScheme: AdyenColorScheme(primary: .purple, textOnPrimary: .red)))
+        let customizedSubmitButtonStyle = AdyenTheme().button(AdyenButtonStyles(colorScheme: AdyenColors(primary: .purple, textOnPrimary: .red)))
 
         sut.button.buttonStyle = customizedSubmitButtonStyle.buttonStyles.primary
 

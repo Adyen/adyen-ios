@@ -31,8 +31,8 @@ public struct AdyenLabelStyle {
     /// - Parameter textAlignment: The technique to use for aligning the text.
     public init(
         font: UIFont = AdyenFonts.default.body,
-        color: UIColor = AdyenColorScheme.default.primary,
-        disabledColor: UIColor = AdyenColorScheme.default.textOnDisabled,
+        color: UIColor = AdyenColors.default.primary,
+        disabledColor: UIColor = AdyenColors.default.textOnDisabled,
         textAlignment: NSTextAlignment = .left
     ) {
         self.font = font
@@ -43,8 +43,8 @@ public struct AdyenLabelStyle {
 
     public init() {
         self.font = AdyenFonts.default.body
-        self.color = AdyenColorScheme.default.primary
-        self.disabledColor = AdyenColorScheme.default.disabled
+        self.color = AdyenColors.default.primary
+        self.disabledColor = AdyenColors.default.disabled
         self.textAlignment = .natural
     }
 }
