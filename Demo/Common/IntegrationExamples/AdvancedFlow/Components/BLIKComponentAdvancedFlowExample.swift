@@ -53,34 +53,24 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         ) {
             BLIKComponentConfiguration()
         }
-        // Providing theme with custom label and button
+        // Example 1: Selectively customize the colors
         .theme(
-            label: AdyenLabelStyle(
-                font: AdyenFonts.default.body,
-                color: AdyenColors.default.primary,
-                textAlignment: .natural
-            ),
-            button: AdyenButtonStyles(colorScheme: .default)
+            AdyenTheme()
+                .colors(AdyenColors(primary: .systemBlue))
         )
-        // Providing theme with only custom label
-        .theme(label: AdyenLabelStyle()
-            .font(AdyenFonts.default.body)
-        )
-        // Providing theme with only custom button
-        .theme(button: AdyenButtonStyles(
-            colorScheme: AdyenColors(background: .red))
-        )
-        // Providing theme with label and button name
+        // Example 2: Selectively customize labels and buttons
         .theme(
-            label: AdyenLabelStyle()
-                .font(AdyenFonts.default.body)
-                .color(AdyenColors.default.textOnPrimary),
-            button: AdyenButtonStyles()
-        )
-        // Providing theme with only custom label
-        .theme(label: AdyenLabelStyle()
-            .font(AdyenFonts.default.body)
-            .color(AdyenColors.default.primary)
+            AdyenTheme()
+                .elements(
+                    AdyenElements()
+                        .labels(
+                            AdyenLabelStyles()
+                                .body(AdyenLabelStyle()
+                                    .font(AdyenFonts.default.body)
+                                    .color(AdyenColors.default.textOnPrimary))
+                        )
+                        .buttons(AdyenButtonStyles(colors: .default))
+                )
         )
         .onSubmit { [weak self] data, handler in
             self?.callPayments(with: data, completion: handler)
