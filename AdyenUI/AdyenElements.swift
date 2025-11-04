@@ -36,4 +36,32 @@ public extension AdyenElements {
             textField: self.textField
         )
     }
+
+    func labels(_ labels: AdyenLabelStyles) -> Self {
+        AdyenElements(
+            buttons: self.buttons,
+            labels: labels,
+            switch: self.switch,
+            textField: self.textField
+        )
+    }
+
+    func `switch`(_ switch: AdyenSwitchStyle) -> Self {
+        AdyenElements(
+            buttons: self.buttons,
+            labels: self.labels,
+            switch: `switch`,
+            textField: self.textField
+        )
+    }
+
+    func textField(_ textField: AdyenTextFieldStyle) -> Self {
+        AdyenElements(
+            buttons: self.buttons,
+            labels: self.labels,
+            switch: self.switch,
+            textField: textField
+        )
+    }
+
 }
