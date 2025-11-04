@@ -602,6 +602,7 @@
 		B6271FEA2EB9F8CD009E9149 /* AdyenLabelStyle+UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6271FE92EB9F8CD009E9149 /* AdyenLabelStyle+UILabel.swift */; };
 		B6271FEC2EBA0342009E9149 /* UILabelApplyStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6271FEB2EBA0342009E9149 /* UILabelApplyStyleTests.swift */; };
 		B6271FEE2EBA2CFD009E9149 /* AdyenLabelStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6271FED2EBA2CFD009E9149 /* AdyenLabelStyles.swift */; };
+		B6271FF82EBA3497009E9149 /* AdyenElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6271FF72EBA3497009E9149 /* AdyenElements.swift */; };
 		B62A075C2D71FB43006072E7 /* FormCardNumberItemView+ScanCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62A075B2D71FB43006072E7 /* FormCardNumberItemView+ScanCard.swift */; };
 		B62D48B42BBE8DBE001EF01A /* AnalyticsFlavorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16AB280702B200534419 /* AnalyticsFlavorTests.swift */; };
 		B62D48B52BBE8DBE001EF01A /* AnalyticsEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16A928059A5A00534419 /* AnalyticsEventTests.swift */; };
@@ -2211,6 +2212,7 @@
 		B6271FE92EB9F8CD009E9149 /* AdyenLabelStyle+UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AdyenLabelStyle+UILabel.swift"; sourceTree = "<group>"; };
 		B6271FEB2EBA0342009E9149 /* UILabelApplyStyleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelApplyStyleTests.swift; sourceTree = "<group>"; };
 		B6271FED2EBA2CFD009E9149 /* AdyenLabelStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenLabelStyles.swift; sourceTree = "<group>"; };
+		B6271FF72EBA3497009E9149 /* AdyenElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenElements.swift; sourceTree = "<group>"; };
 		B62A075B2D71FB43006072E7 /* FormCardNumberItemView+ScanCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormCardNumberItemView+ScanCard.swift"; sourceTree = "<group>"; };
 		B62D48AC2BBE8D79001EF01A /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
@@ -3232,6 +3234,7 @@
 				000A7B042E27CDEC005584F2 /* AdyenUI.docc */,
 				000A7B032E27CDEC005584F2 /* AdyenTheme.swift */,
 				000A7B052E27CDEC005584F2 /* AdyenColors.swift */,
+				B6271FF72EBA3497009E9149 /* AdyenElements.swift */,
 				000A7B062E27CDEC005584F2 /* AdyenFonts.swift */,
 				009F92AB2E4F4D4B00561B7D /* AdyenUIConstants.swift */,
 				009F92AF2E54797C00561B7D /* Info.plist */,
@@ -7915,6 +7918,7 @@
 				0019C4772E6AE00600B0C3A3 /* AddressInputFormViewController.swift in Sources */,
 				0019C4752E6ADFFC00B0C3A3 /* AddressLookupSearchViewController+ViewModel.swift in Sources */,
 				0019C4662E6ADFC700B0C3A3 /* UIView+Accessibility.swift in Sources */,
+				B6271FF82EBA3497009E9149 /* AdyenElements.swift in Sources */,
 				0019C4982E6AE0B700B0C3A3 /* FormPhoneExtensionPickerItem.swift in Sources */,
 				0019C4992E6AE0B700B0C3A3 /* FormPhoneExtensionPickerItemView.swift in Sources */,
 				0019C4672E6ADFC700B0C3A3 /* SubmitButton.swift in Sources */,
