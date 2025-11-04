@@ -187,7 +187,7 @@ private extension IssuerListComponentAdvancedFlowExample {
     }
 
     @objc private func cancelPressed() {
-        issuerListComponent?.cancelIfNeeded()
+        issuerListComponent?.cancel()
         presenter?.dismiss(completion: nil)
     }
 }

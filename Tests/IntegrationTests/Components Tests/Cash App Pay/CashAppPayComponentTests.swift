@@ -149,7 +149,7 @@ import XCTest
 
             XCTAssertFalse(sut.cashAppPayButton.showsActivityIndicator)
             sut.cashAppPayButton.showsActivityIndicator = true
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             XCTAssertFalse(sut.cashAppPayButton.showsActivityIndicator)
         }
         

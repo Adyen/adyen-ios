@@ -154,7 +154,7 @@ private extension InstantPaymentComponentExample {
     }
 
     @objc private func cancelPressed() {
-        instantPaymentComponent?.cancelIfNeeded()
+        instantPaymentComponent?.cancel()
         presenter?.dismiss(completion: nil)
     }
 }

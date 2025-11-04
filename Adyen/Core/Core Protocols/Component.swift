@@ -17,7 +17,7 @@ extension Component {
     /// - Parameter completion: The block to execute after the component finalizes its activity.
     /// Use of this block is recommended for ApplePayComponent. You may specify nil for this parameter.
     public func finalizeIfNeeded(with success: Bool, completion: (() -> Void)?) {
-        stopLoadingIfNeeded()
+        stopLoading()
         if let finalizable = self as? FinalizableComponent {
             finalizable.didFinalize(with: success, completion: completion)
         } else {
@@ -26,13 +26,13 @@ extension Component {
     }
 
     /// Called when the user cancels the component.
-    public func cancelIfNeeded() {
+    public func cancel() {
         (self as? Cancellable)?.didCancel()
-        stopLoadingIfNeeded()
+        stopLoading()
     }
 
     /// Stops any processing animation that might be running.
-    public func stopLoadingIfNeeded() {
+    public func stopLoading() {
         (self as? LoadingComponent)?.stopLoading()
     }
 }

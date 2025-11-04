@@ -103,7 +103,7 @@ class AtomeComponentUITests: XCTestCase {
             XCTAssertEqual(details.shopperName?.lastName, "Del Mar")
             XCTAssertEqual(details.telephoneNumber, "+11234567")
             XCTAssertEqual(details.billingAddress, expectedBillingAddress)
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             didSubmitExpectation.fulfill()
         }
 

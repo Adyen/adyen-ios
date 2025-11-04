@@ -11,53 +11,63 @@ import Adyen
 import Foundation
 
 internal protocol PaymentMethodListAssemblerProtocol {
-    func resolvePaymentMethodListRouter() -> PaymentMethodListRouterProtocol
+    func resolvePaymentMethodListRouter(delegate: PaymentMethodListRouterListener?) -> Router
 }
 
 internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
 
     // MARK: - Properties
 
+    private let componentContainerAssembler: ComponentContainerAssemblerProtocol
     private let componentManager: ComponentManager
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
+    private let dropInComponent: DropInComponent
+    private let dropInComponentDelegate: DropInComponentDelegate?
     private let cardComponentDelegate: CardComponentDelegate?
     private let partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
 
     internal init(
+        componentContainerAssembler: ComponentContainerAssemblerProtocol,
         componentManager: ComponentManager,
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
+        dropInComponent: DropInComponent,
+        dropInComponentDelegate: DropInComponentDelegate?,
         cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
+        self.componentContainerAssembler = componentContainerAssembler
         self.componentManager = componentManager
         self.context = context
         self.configuration = configuration
+        self.dropInComponent = dropInComponent
+        self.dropInComponentDelegate = dropInComponentDelegate
         self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
     }
 
     // MARK: - PaymentMethodListAssemblerProtocol
 
-    internal func resolvePaymentMethodListRouter() -> PaymentMethodListRouterProtocol {
-        let componentContainerAssembler = ComponentContainerAssembler(
-            context: context,
-            configuration: configuration,
-            cardComponentDelegate: cardComponentDelegate,
-            partialPaymentDelegate: partialPaymentDelegate
-        )
-        let router = PaymentMethodListRouter(componentContainerAssembler: componentContainerAssembler)
+    internal func resolvePaymentMethodListRouter(
+        delegate: PaymentMethodListRouterListener?
+    ) -> Router {
         let viewModel = PaymentMethodListViewModel(
             context: context,
             componentManager: componentManager,
-            delegate: router,
-            configuration: configuration
+            configuration: configuration,
+            dropInComponent: dropInComponent,
+            dropInComponentDelegate: dropInComponentDelegate
         )
         let view = PaymentMethodListViewController(viewModel: viewModel)
-        router.view = view
+        let router = PaymentMethodListRouter(
+            viewController: view,
+            listener: delegate,
+            componentContainerAssembler: componentContainerAssembler
+        )
+        viewModel.router = router
         return router
     }
 }

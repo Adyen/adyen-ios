@@ -8,73 +8,84 @@ import Adyen
 import Foundation
 import UIKit
 
-internal protocol PreselectedPaymentMethodRouterProtocol: AnyObject {
-    var rootViewController: UIViewController { get }
-    var delegate: PreselectedPaymentMethodRouterDelegate? { get set }
+internal protocol PreselectedPaymentMethodRouterListener: AnyObject {
+    func didDismissPreselectedPaymentMethod(completion: (() -> Void)?)
+}
+
+internal protocol PreselectedPaymentMethodRouting: AnyObject {
+    func presentPaymentMethodList()
+    func present(component: any PresentableComponent, onCancel: @escaping (() -> Void))
     func dismiss(completion: (() -> Void)?)
-    func showAllPaymentMethods()
-    func proceed(with paymentComponent: PresentableComponent)
 }
 
-internal protocol PreselectedPaymentMethodRouterDelegate: AnyObject {
-    func showAllPaymentMethods()
-}
+internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodRouting {
 
-internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouterProtocol {
-    
     // MARK: - Properties
 
-    internal var view: UIViewController?
-    internal weak var delegate: PreselectedPaymentMethodRouterDelegate?
+    internal let rootViewController: UIViewController
+    private weak var listener: PreselectedPaymentMethodRouterListener?
+    private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
-
+    internal private(set) var childRouter: Router?
+    
     // MARK: - Initializers
     
-    init(componentContainerAssembler: ComponentContainerAssemblerProtocol) {
+    internal init(
+        viewController: UIViewController,
+        listener: PreselectedPaymentMethodRouterListener?,
+        paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
+        componentContainerAssembler: ComponentContainerAssemblerProtocol
+    ) {
+        self.rootViewController = viewController
+        self.listener = listener
+        self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
     }
 
-    // MARK: - PreselectedPaymentMethodRouterProtocol
+    // MARK: - PreselectedPaymentMethodRouting
 
-    internal var rootViewController: UIViewController {
-        guard let view else {
-            fatalError("Router's view was not set.")
-        }
-        return view
+    internal func presentPaymentMethodList() {
+        let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter(delegate: self)
+        self.childRouter = paymentMethodListRouter
+        rootViewController.present(paymentMethodListRouter.rootViewController, animated: true)
     }
 
-    internal func dismiss(completion: (() -> Void)?) {
-        view?.dismiss(animated: true, completion: completion)
-    }
-
-    internal func showAllPaymentMethods() {
-        delegate?.showAllPaymentMethods()
-    }
-
-    internal func proceed(with paymentComponent: any PresentableComponent) {
-        // TODO: - Handle logic with preselected payment method
-//        delegate?.didProceed(with: paymentComponent)
-
+    internal func present(component: any PresentableComponent, onCancel: @escaping (() -> Void)) {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
-            for: paymentComponent,
-            delegate: self
+            for: component,
+            delegate: self,
+            onCancel: onCancel
         )
-        componentContainerRouter.start()
+        self.childRouter = componentContainerRouter
         rootViewController.present(componentContainerRouter.rootViewController, animated: true)
+    }
+    
+    internal func dismiss(completion: (() -> Void)?) {
+        rootViewController.dismiss(animated: true) { [weak self] in
+            self?.childRouter = nil
+            self?.listener?.didDismissPreselectedPaymentMethod(completion: completion)
+        }
     }
 }
 
-extension PreselectedPaymentMethodRouter: ComponentContainerRouterDelegate {
+// MARK: - PaymentMethodListRouterListener
+
+extension PreselectedPaymentMethodRouter: PaymentMethodListRouterListener {
     
-    func didSubmit(_ data: Adyen.PaymentComponentData, from component: any Adyen.PaymentComponent) {
-        // TODO: - Logic didSubmit
+    internal func didDismissPaymentMethodList(completion: (() -> Void)?) {
+        rootViewController.presentingViewController?.dismiss(animated: true) { [weak self] in
+            self?.childRouter = nil
+            self?.listener?.didDismissPreselectedPaymentMethod(completion: completion)
+        }
     }
+}
+
+// MARK: - ComponentContainerRouterListener
+
+extension PreselectedPaymentMethodRouter: ComponentContainerRouterListener {
     
-    func didFail(with error: any Error) {
-        // TODO: - Logic didFail
-    }
-    
-    func didCancel(component: any Adyen.PaymentComponent) {
-        // TODO: - Logic didCancel
+    internal func didDismissComponentContainer(completion: (() -> Void)?) {
+        childRouter = nil
+        completion?()
     }
 }

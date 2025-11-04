@@ -13,55 +13,69 @@ import UIKit
 
 internal protocol PreselectedPaymentMethodAssemblerProtocol {
     func resolvePreselectedPaymentMethodRouter(
+        delegate: PreselectedPaymentMethodRouterListener?,
         component: PaymentComponent,
         title: String
-    ) -> PreselectedPaymentMethodRouterProtocol
+    ) -> Router
 }
 
 internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
-
+    
     // MARK: - Properties
-
+    
+    private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
+    private let componentContainerAssembler: ComponentContainerAssemblerProtocol
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
+    private let dropInComponent: DropInComponent
+    private let dropInComponentDelegate: DropInComponentDelegate?
     private let cardComponentDelegate: CardComponentDelegate?
     private let partialPaymentDelegate: PartialPaymentDelegate?
-
+    
     // MARK: - Initializers
-
+    
     internal init(
+        paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
+        componentContainerAssembler: ComponentContainerAssemblerProtocol,
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
+        dropInComponent: DropInComponent,
+        dropInComponentDelegate: DropInComponentDelegate?,
         cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
+        self.paymentMethodListAssembler = paymentMethodListAssembler
+        self.componentContainerAssembler = componentContainerAssembler
         self.context = context
         self.configuration = configuration
+        self.dropInComponent = dropInComponent
+        self.dropInComponentDelegate = dropInComponentDelegate
         self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
     }
-
+    
     // MARK: - PreselectedPaymentMethodAssemblerProtocol
-
+    
     internal func resolvePreselectedPaymentMethodRouter(
+        delegate: PreselectedPaymentMethodRouterListener?,
         component: PaymentComponent,
         title: String
-    ) -> PreselectedPaymentMethodRouterProtocol {
-        let componentContainerAssembler = ComponentContainerAssembler(
-            context: context,
-            configuration: configuration,
-            cardComponentDelegate: cardComponentDelegate,
-            partialPaymentDelegate: partialPaymentDelegate
-        )
-        let router = PreselectedPaymentMethodRouter(componentContainerAssembler: componentContainerAssembler)
+    ) -> Router {
         let viewModel = PreselectedPaymentMethodViewModel(
-            router: router,
             component: component,
             title: title,
-            configuration: configuration
+            configuration: configuration,
+            dropInComponent: dropInComponent,
+            dropInComponentDelegate: dropInComponentDelegate
         )
-        let view = PreselectedPaymentMethodViewController(viewModel: viewModel)
-        router.view = view
+        let viewController = PreselectedPaymentMethodViewController(viewModel: viewModel)
+        let router = PreselectedPaymentMethodRouter(
+            viewController: viewController,
+            listener: delegate,
+            paymentMethodListAssembler: paymentMethodListAssembler,
+            componentContainerAssembler: componentContainerAssembler
+        )
+        viewModel.router = router
         return router
     }
 }

@@ -194,7 +194,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         
         XCTAssertFalse(sut.button.showsActivityIndicator)
         sut.button.showsActivityIndicator = true
-        sut.stopLoadingIfNeeded()
+        sut.stopLoading()
         XCTAssertFalse(sut.button.showsActivityIndicator)
     }
 

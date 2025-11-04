@@ -14,7 +14,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
 
     private let viewModel: PreselectedPaymentMethodViewModelProtocol
 
-    // MARK: - Initalizers
+    // MARK: - Initializers
 
     internal init(viewModel: PreselectedPaymentMethodViewModelProtocol) {
         self.viewModel = viewModel
@@ -47,13 +47,20 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     }
 
     private func setupNavigationItem() {
-        navigationItem.title = "1"
+        navigationItem.title = viewModel.paymentMethodView.title
+        setupCancelButton()
+    }
+    
+    private func setupCancelButton() {
         let cancelButton = UIBarButtonItem(
-            title: "Cancel",
-            style: .plain,
-            target: viewModel,
-            action: #selector(viewModel.cancel)
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(cancelTapped)
         )
         navigationItem.leftBarButtonItem = cancelButton
+    }
+    
+    @objc private func cancelTapped() {
+        viewModel.cancel()
     }
 }
