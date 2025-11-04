@@ -7,67 +7,51 @@
 import Adyen
 import UIKit
 
-// A shared instance of the  theme for easy access throughout your SDK
 public struct AdyenTheme {
-    
-    public var currentColorScheme: AdyenColors = .default
-    public var currentFonts: AdyenFonts = .default
 
-    // Available styles
-    public var buttonStyles = AdyenButtonStyles()
-    public var labelStyle = AdyenLabelStyle()
-    package var toggleStyle = AdyenSwitchStyle()
-    package var textFieldStyle = AdyenTextFieldStyle()
+    package private(set) var colors: AdyenColors
+    package private(set) var attributes: AdyenAttributes
+    package private(set) var elements: AdyenElements
 
-    // Initialize with a default ButtonStyle, LabelStyle and ToggleStyle if none is provided
+    /// A default instance of AdyenTheme.
+    package static let `default` = AdyenTheme()
+
     package init(
-        button: AdyenButtonStyles = AdyenButtonStyles(),
-        label: AdyenLabelStyle = AdyenLabelStyle(),
-        textField: AdyenTextFieldStyle = AdyenTextFieldStyle(),
-        toggle: AdyenSwitchStyle = AdyenSwitchStyle()
+        colors: AdyenColors = .default,
+        elements: AdyenElements = .default,
+        attributes: AdyenAttributes = .default
     ) {
-        self.buttonStyles = button
-        self.labelStyle = label
-        self.textFieldStyle = textField
-        self.toggleStyle = toggle
+        self.colors = colors
+        self.attributes = attributes
+        self.elements = elements
     }
-    
-    public init(colorScheme: AdyenColors, fonts: AdyenFonts) {
-        self.currentColorScheme = colorScheme
-        self.currentFonts = fonts
-    }
-
-    public init() {}
 }
 
 extension AdyenTheme {
-    // Method to allow method chaining on the theme itself.
-
     @discardableResult
-    public func label(_ labelStyle: AdyenLabelStyle) -> AdyenTheme {
-        var copy = self
-        copy.labelStyle = labelStyle
-        return copy
+    public func colors(_ colors: AdyenColors) -> AdyenTheme {
+        AdyenTheme(
+            colors: colors,
+            elements: elements,
+            attributes: attributes
+        )
     }
 
     @discardableResult
-    public func button(_ buttonStyle: AdyenButtonStyles) -> AdyenTheme {
-        var copy = self
-        copy.buttonStyles = buttonStyle
-        return copy
+    public func elements(_ elements: AdyenElements) -> AdyenTheme {
+        AdyenTheme(
+            colors: colors,
+            elements: elements,
+            attributes: attributes
+        )
     }
-    
+
     @discardableResult
-    package func toggle(_ toggleStyle: AdyenSwitchStyle) -> AdyenTheme {
-        var copy = self
-        copy.toggleStyle = toggleStyle
-        return copy
-    }
-    
-    @discardableResult
-    public func textfield(_ textfieldStyle: AdyenTextFieldStyle) -> AdyenTheme {
-        var copy = self
-        copy.textFieldStyle = textfieldStyle
-        return copy
+    public func attributes(_ attributes: AdyenAttributes) -> AdyenTheme {
+        AdyenTheme(
+            colors: colors,
+            elements: elements,
+            attributes: attributes
+        )
     }
 }
