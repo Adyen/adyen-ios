@@ -24,7 +24,7 @@ public struct AdyenElements {
         self.textField = textField
     }
 
-    package static let `default` = AdyenElements()
+    public static let `default` = AdyenElements()
 }
 
 public extension AdyenElements {

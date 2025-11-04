@@ -13,5 +13,5 @@ public struct AdyenAttributes: Equatable {
         self.cornerRadius = cornerRadius
     }
 
-    package static let `default` = AdyenAttributes(cornerRadius: AdyenUIConstants.defaultCornerRadius)
+    public static let `default` = AdyenAttributes(cornerRadius: AdyenUIConstants.defaultCornerRadius)
 }
