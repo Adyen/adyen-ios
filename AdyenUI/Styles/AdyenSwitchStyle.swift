@@ -7,7 +7,7 @@
 import UIKit
 
 /// Contains the styling customization options for a switch item in a form.
-package struct AdyenSwitchStyle {
+public struct AdyenSwitchStyle {
     
     /// The title style.
     package var title: AdyenLabelStyle

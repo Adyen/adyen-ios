@@ -14,7 +14,7 @@ public struct AdyenTheme {
     package private(set) var elements: AdyenElements
 
     /// A default instance of AdyenTheme.
-    package static let `default` = AdyenTheme()
+    public static let `default` = AdyenTheme()
 
     package init(
         colors: AdyenColors = .default,
