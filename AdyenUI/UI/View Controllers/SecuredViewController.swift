@@ -82,7 +82,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = self.theme.currentColorScheme.background
+        view.backgroundColor = theme.colors.background
         addChildViewController()
         listenToBackgroundNotifications()
 
@@ -159,7 +159,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
                 self?.$blurEffectView.reset()
                 
                 if let adyenTheme = self?.theme as? AdyenTheme {
-                    self?.view.backgroundColor = adyenTheme.currentColorScheme.background
+                    self?.view.backgroundColor = adyenTheme.colors.background
                 }
             }
         )

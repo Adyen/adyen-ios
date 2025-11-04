@@ -14,7 +14,10 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     AnyFormValidatableValueItemView {
     
     private var itemObserver: Observation?
-        
+
+    // TODO: Pass as dependency
+    private let theme: AdyenTheme = .default
+
     public required init(item: ItemType) {
         super.init(item: item)
         
@@ -31,7 +34,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         let alertLabel = UILabel()
         alertLabel.textColor = item.style.errorColor
         // TODO: Replace AdyenTheme with config's object theme style
-        alertLabel.font = AdyenTheme().currentFonts.subHeadline
+        alertLabel.apply(theme.elements.labels.subheadline)
         alertLabel.isAccessibilityElement = false
         alertLabel.numberOfLines = 0
         alertLabel.text = item.validationFailureMessage
@@ -99,8 +102,6 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     
     internal func resetValidationStatus() {
         hideAlertLabel(true, animated: false)
-        // TODO: Replace AdyenTheme with config's object theme style
-        titleLabel.textColor = AdyenTheme().currentColorScheme.primary
         accessibilityLabelView?.accessibilityLabel = item.title
     }
 }
