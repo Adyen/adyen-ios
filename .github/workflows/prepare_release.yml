@@ -66,6 +66,7 @@ jobs:
     
     # Creates a release/[sdk-version] branch with a PR to develop
     - name: Create Pull Request
+      id: create_pr
       uses: peter-evans/create-pull-request@v7
       with:
         delete-branch: true
@@ -80,9 +81,10 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         labels: "release"
-        issue_number: ${{ steps.create_pr.outputs.pull-request-number }}
+        number: ${{ steps.create_pr.outputs.pull-request-number }}
 
     - name: Auto approve release PR
       uses: hmarr/auto-approve-action@v3
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
+        pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
