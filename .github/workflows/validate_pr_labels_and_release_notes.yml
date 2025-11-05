@@ -10,41 +10,19 @@ concurrency:
 
 permissions:
   contents: read
-  pull-requests: write
+  pull-requests: write # post PR comment
 
 jobs:
-  validate-and-approve:
+  get-pr-labels:
+    if: "!startsWith(github.event.pull_request.head.ref, 'release/') && !contains(github.event.pull_request.user.login, '[bot]')"
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Fetch repo
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      # ✅ Add release label and approve if this is a release PR
-      - name: Handle release PRs
-        if: startsWith(github.event.pull_request.head.ref, 'release/')
-        run: |
-          echo "Release branch PR detected."
-        # Add release label
-      - uses: actions-ecosystem/action-add-labels@v1
-        if: startsWith(github.event.pull_request.head.ref, 'release/')
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          labels: "release"
-
-      # Auto approve release PRs
-      - uses: hmarr/auto-approve-action@v3
-        if: startsWith(github.event.pull_request.head.ref, 'release/')
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      # 📋 Fetch allowed labels for non-release PRs
-      - name: Get allowed PR labels
-        if: "!startsWith(github.event.pull_request.head.ref, 'release/') && !contains(github.event.pull_request.user.login, '[bot]')"
-        id: get-allowed_labels
-        env:
-          PROJECT_ROOT: ${{ github.workspace }}
+      - name: Get the list of allowed pull request labels
         run: |
           RED='\033[0;31m'
           NC='\033[0m'
@@ -53,31 +31,23 @@ jobs:
           if [[ ! -f "$FILE_PATH" ]]; then
              echo -e "${RED}$FILE_NAME file doesn't exist in the root of the repository${NC}"
              exit 1
-          fi
-          echo "LABELS=$(cat $FILE_PATH),chore,improvement,release" >> $GITHUB_OUTPUT
+          fi 
+          echo "LABELS=$(cat $FILE_PATH),chore,improvement" >> $GITHUB_OUTPUT
+        id: get-allowed_labels
+        env:
+          PROJECT_ROOT: ${{ github.workspace }}
 
-      # Get PR labels
-      - name: Get PR labels
-        if: "!startsWith(github.event.pull_request.head.ref, 'release/') && !contains(github.event.pull_request.user.login, '[bot]')"
-        id: pr-labels
-        uses: joerick/pr-labels-action@v1.0.9
-
-      # Validate labels
       - name: Validate labels
-        if: "!startsWith(github.event.pull_request.head.ref, 'release/') && !contains(github.event.pull_request.user.login, '[bot]')"
         uses: jesusvasquez333/verify-pr-label-action@v1.4.0
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: '${{ secrets.GITHUB_TOKEN }}'
           valid-labels: ${{ steps.get-allowed_labels.outputs.LABELS }}
 
-      # Validate release notes for non-release PRs
-      - name: Validate release notes per label
-        if: "!startsWith(github.event.pull_request.head.ref, 'release/') && !contains(github.event.pull_request.user.login, '[bot]')"
-        env:
-          PR_BODY: ${{ github.event.pull_request.body }}
-          PR_LABELS: ${{ steps.pr-labels.outputs.labels }}
-          ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}
-        run: |
+      - name: Get PR labels
+        uses: joerick/pr-labels-action@v1.0.9
+        id: pr-labels
+
+      - run: |
           ALLOWED_LABELS="$ALLOWED_LABELS,chore,improvement"
           IFS=',' read -r -a ALLOWED_LABELS_ARRAY <<< "$ALLOWED_LABELS"
 
@@ -103,3 +73,7 @@ jobs:
           if [[ "$SHOULD_FAIL_JOB" == "true" ]]; then
             exit 1
           fi
+        env:
+          PR_BODY: ${{github.event.pull_request.body}}
+          PR_LABELS: ${{steps.pr-labels.outputs.labels}}
+          ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}

@@ -74,3 +74,15 @@ jobs:
         title: "[Release] ${{ github.event.inputs.sdk-version }}"
         body-path: "${{ github.workspace }}/.tmp/release_notes.md"
         token: ${{ secrets.AUTOMATION_BOT_TOKEN }}
+    
+    - name: Add release label
+      uses: actions-ecosystem/action-add-labels@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        labels: "release"
+
+    - name: Auto approve release PR
+      uses: hmarr/auto-approve-action@v3
+      if: startsWith(github.event.pull_request.head.ref, 'release/')
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
