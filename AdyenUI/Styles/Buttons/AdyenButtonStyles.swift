@@ -105,10 +105,3 @@ extension AdyenButtonStyles {
         )
     }
 }
-
-extension AdyenButtonStyles: Equatable {
-    public static func == (lhs: AdyenButtonStyles, rhs: AdyenButtonStyles) -> Bool {
-        lhs.primary == rhs.primary && lhs.destructive == rhs.destructive
-            && lhs.secondary == rhs.secondary && lhs.tertiary == rhs.tertiary
-    }
-}
