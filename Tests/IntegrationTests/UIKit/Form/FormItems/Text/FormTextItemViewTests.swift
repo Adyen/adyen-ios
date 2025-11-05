@@ -109,13 +109,13 @@ class FormTextItemViewTests: XCTestCase {
         
         wait(for: .milliseconds(500))
         
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.style.title.color.toHexString())
+        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.theme.elements.textField.title.color.toHexString())
         
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
         XCTAssertEqual(sut.accessory, .none)
     
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.style.text.color.toHexString())
+        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.theme.elements.textField.text.color.toHexString())
     }
     
     func testValidationStatusIsInvalidWhenValueIsInvalid() {
@@ -129,7 +129,7 @@ class FormTextItemViewTests: XCTestCase {
         
         wait(for: .milliseconds(500))
 
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.style.title.color.toHexString())
+        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.theme.elements.textField.title.color.toHexString())
         
         sut.textField.text = "123456H"
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
@@ -139,7 +139,7 @@ class FormTextItemViewTests: XCTestCase {
         
         wait(for: .seconds(1))
         
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.style.text.color.toHexString())
+        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.theme.elements.textField.text.color.toHexString())
     }
     
     func testValidationStatusIsValidWhenValueIsValid() {
@@ -153,14 +153,14 @@ class FormTextItemViewTests: XCTestCase {
     
         wait(for: .milliseconds(500))
 
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.style.title.color.toHexString())
+        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.theme.elements.textField.title.color.toHexString())
         
         sut.textField.text = "123456H"
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
         wait(for: [validationExpectation], timeout: 10)
         XCTAssertEqual(sut.accessory, .valid)
-        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.style.text.color.toHexString())
+        XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.theme.elements.textField.text.color.toHexString())
     }
 
     func testTextFieldSanitizationGivenNonAllowedCharactersShouldSanitizeAndFormatInput() throws {

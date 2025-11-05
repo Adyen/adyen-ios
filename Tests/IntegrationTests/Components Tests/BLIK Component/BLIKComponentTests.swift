@@ -173,20 +173,30 @@ class BLIKComponentTests: XCTestCase {
     }
 
     func testDefaultHintLabelItemStylingUsingAdyenTheme() throws {
-        let customizedHintLabel = AdyenTheme().label(AdyenLabelStyle()
-            .font(AdyenFonts.default.body)
-            .color(AdyenColors.default.primary)
+        let customizedHintLabel = AdyenTheme(
+            elements: AdyenElements(
+                labels: AdyenLabelStyles(
+                    body: AdyenLabelStyle(
+                        font: AdyenFonts.default.body,
+                        color: AdyenColors.default.primary
+                    )
+                )
+            )
         )
-        sut.hintLabelItem.labelStyle = customizedHintLabel.labelStyle
+        sut.hintLabelItem.labelStyle = customizedHintLabel.elements.labels.body
         
         XCTAssertEqual(sut.hintLabelItem.labelStyle.font, AdyenFonts.default.body)
         XCTAssertEqual(sut.hintLabelItem.labelStyle.color, AdyenColors.default.primary)
     }
 
     func testDefaultButtonTitleStylingUsingAdyenTheme() throws {
-        let customizedSubmitButtonStyle = AdyenTheme().button(AdyenButtonStyles(colorScheme: .default))
+        let customizedSubmitButtonStyle = AdyenTheme(
+            elements: AdyenElements(
+                buttons: AdyenButtonStyles()
+            )
+        )
 
-        sut.button.buttonStyle = customizedSubmitButtonStyle.buttonStyles.primary
+        sut.button.buttonStyle = customizedSubmitButtonStyle.elements.buttons.primary
 
         XCTAssertEqual(sut.button.buttonStyle, AdyenButtonStyles.default.primary)
         XCTAssertEqual(sut.button.buttonStyle.textColor, AdyenColors.default.textOnPrimary)
@@ -194,30 +204,54 @@ class BLIKComponentTests: XCTestCase {
     }
 
     func testCustomHintLabelItemStylingUsingAdyenTheme() throws {
-        let customizedHintLabel = AdyenTheme().label(AdyenLabelStyle()
-            .font(.preferredFont(forTextStyle: .callout))
-            .color(.red)
+        let customizedHintLabel = AdyenTheme(
+            elements: AdyenElements(
+                labels: AdyenLabelStyles(
+                    body: AdyenLabelStyle(
+                        font: .preferredFont(forTextStyle: .callout),
+                        color: .red
+                    )
+                )
+            )
         )
         
-        sut.hintLabelItem.labelStyle = customizedHintLabel.labelStyle
+        sut.hintLabelItem.labelStyle = customizedHintLabel.elements.labels.body
         XCTAssertEqual(sut.hintLabelItem.labelStyle.font, .preferredFont(forTextStyle: .callout))
         XCTAssertEqual(sut.hintLabelItem.labelStyle.color, .red)
     }
 
     func testCustomButtonTitleStylingUsingAdyenTheme() throws {
-        let customizedSubmitButtonStyle = AdyenTheme().button(AdyenButtonStyles(colorScheme: AdyenColors(primary: .purple, textOnPrimary: .red)))
+        let customizedSubmitButtonStyle = AdyenTheme(
+            elements: AdyenElements(
+                buttons: AdyenButtonStyles(
+                    primary: AdyenButtonStyle(
+                        backgroundColor: .purple,
+                        textColor: .red,
+                        disabledBackgroundColor: .gray,
+                        disabledTextColor: .lightGray
+                    )
+                )
+            )
+        )
 
-        sut.button.buttonStyle = customizedSubmitButtonStyle.buttonStyles.primary
+        sut.button.buttonStyle = customizedSubmitButtonStyle.elements.buttons.primary
 
         XCTAssertEqual(sut.button.buttonStyle.textColor, .red)
 
     }
     
     func testDefaultHintLabelItemStyling() {
-        sut.configuration.theme.labelStyle = AdyenLabelStyle(
-            font: .preferredFont(forTextStyle: .caption1),
-            color: .yellow
+        let customTheme = AdyenTheme(
+            elements: AdyenElements(
+                labels: AdyenLabelStyles(
+                    body: AdyenLabelStyle(
+                        font: .preferredFont(forTextStyle: .caption1),
+                        color: .yellow
+                    )
+                )
+            )
         )
+        sut.configuration.theme = customTheme
         
         XCTAssertEqual(sut.hintLabelItem.labelStyle.font, .preferredFont(forTextStyle: .caption1))
         XCTAssertEqual(sut.hintLabelItem.labelStyle.color, .yellow)

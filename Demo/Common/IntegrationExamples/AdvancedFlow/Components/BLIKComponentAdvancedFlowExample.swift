@@ -65,7 +65,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                             textColor: .white,
                             disabledBackgroundColor: .systemGray,
                             disabledTextColor: .lightGray
-                        ),
+                        )
                         // other button styles are omitted, using defaults
                     ),
                     labels: AdyenLabelStyles(
@@ -74,7 +74,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                             // color is omitted, using defaults
                         )
                     )
-                ),
+                )
                 // AdyenAttributes are omitted, using defaults for corner radius
             )
         )
