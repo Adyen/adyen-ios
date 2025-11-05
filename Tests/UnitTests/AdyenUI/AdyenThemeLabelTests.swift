@@ -67,8 +67,7 @@ final class AdyenThemeLabelTests: XCTestCase {
     func test_customTheme_withCustomLabelFont_shouldPreserveOtherProperties() {
         // Given
         let expectedFont = UIFont.systemFont(ofSize: 20, weight: .bold)
-        let expectedLabelColor = UIColor.black
-        let customLabelStyle = AdyenLabelStyle(font: expectedFont, color: expectedLabelColor)
+        let customLabelStyle = AdyenLabelStyle(font: expectedFont)
         
         // When
         let theme = AdyenTheme(
