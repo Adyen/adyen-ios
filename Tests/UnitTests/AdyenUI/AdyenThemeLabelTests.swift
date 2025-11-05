@@ -9,189 +9,187 @@ import XCTest
 
 final class AdyenThemeLabelTests: XCTestCase {
     
-    func test_labelMethod_defaultTheme() {
+    func test_defaultTheme_shouldUseDefaultLabelStyles() {
         // Given
         let defaultTheme = AdyenTheme()
         
         // Then
-        expect(defaultTheme.labelStyle, toMatch: AdyenLabelStyle())
+        expect(defaultTheme.elements.labels.body, toMatch: AdyenLabelStyles.default.body)
+        expect(defaultTheme.elements.labels.title, toMatch: AdyenLabelStyles.default.title)
+        expect(defaultTheme.elements.labels.subtitle, toMatch: AdyenLabelStyles.default.subtitle)
     }
 
-    func test_labelMethod_shouldUpdateLabelColor() {
+    func test_customTheme_withCustomLabelStyles_shouldUseProvidedValues() {
         // Given
-        let expectedColorValue = UIColor.red
-        let theme = AdyenTheme()
+        let customBodyLabel = AdyenLabelStyle(
+            font: .systemFont(ofSize: 18, weight: .bold),
+            color: .red
+        )
+        let customTitleLabel = AdyenLabelStyle(
+            font: .systemFont(ofSize: 42),
+            color: .blue
+        )
         
-        let newLabelStyle = AdyenLabelStyle(color: expectedColorValue)
+        let customLabels = AdyenLabelStyles(
+            title: customTitleLabel,
+            body: customBodyLabel
+        )
         
         // When
-        let updatedTheme = theme.label(newLabelStyle)
+        let theme = AdyenTheme(
+            elements: AdyenElements(labels: customLabels)
+        )
         
         // Then
-        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
+        expect(theme.elements.labels.body, toMatch: customBodyLabel)
+        expect(theme.elements.labels.title, toMatch: customTitleLabel)
+        expect(theme.elements.labels.subtitle, toMatch: AdyenLabelStyles.default.subtitle)
     }
     
-    func test_labelMethod_shouldUpdateLabelFont() {
+    func test_customTheme_withCustomLabelColor_shouldPreserveOtherProperties() {
         // Given
-        let expectedFontValue: UIFont = .preferredFont(forTextStyle: .body)
-        let theme = AdyenTheme()
-        
-        let newLabelStyle = AdyenLabelStyle(font: expectedFontValue)
+        let expectedColor = UIColor.red
+        let customLabel = AdyenLabelStyle(font: AdyenFonts.default.body, color: expectedColor)
         
         // When
-        let updatedTheme = theme.label(newLabelStyle)
+        let theme = AdyenTheme(
+            elements: AdyenElements(
+                labels: AdyenLabelStyles(body: customLabel)
+            )
+        )
         
         // Then
-        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
+        XCTAssertEqual(theme.elements.labels.body.color, expectedColor)
+        XCTAssertEqual(theme.elements.labels.body.font, AdyenLabelStyles.default.body.font)
+        XCTAssertEqual(theme.elements.labels.body.textAlignment, AdyenLabelStyles.default.body.textAlignment)
     }
     
-    func test_labelMethod_shouldUpdateLabelDisabledColor() {
+    func test_customTheme_withCustomLabelFont_shouldPreserveOtherProperties() {
         // Given
-        let expectedColorValue = UIColor.gray
-        let theme = AdyenTheme()
-    
-        let newLabelStyle = AdyenLabelStyle(disabledColor: expectedColorValue)
+        let expectedFont = UIFont.systemFont(ofSize: 20, weight: .bold)
+        let expectedLabelColor = UIColor.black
+        let customLabelStyle = AdyenLabelStyle(font: expectedFont, color: expectedLabelColor)
         
         // When
-        let updatedTheme = theme.label(newLabelStyle)
+        let theme = AdyenTheme(
+            elements: AdyenElements(
+                labels: AdyenLabelStyles(body: customLabelStyle)
+            )
+        )
         
         // Then
-        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
+        XCTAssertEqual(theme.elements.labels.body.font, expectedFont)
+        XCTAssertEqual(theme.elements.labels.body.color, AdyenLabelStyles.default.body.color)
+        XCTAssertEqual(theme.elements.labels.body.textAlignment, AdyenLabelStyles.default.body.textAlignment)
     }
     
-    func test_labelMethod_shouldUpdateLabelTextAlignment() {
+    func test_customTheme_withCustomLabelDisabledColor_shouldPreserveOtherProperties() {
         // Given
-        let expectedTextAlignment: NSTextAlignment = .left
-        let theme = AdyenTheme()
-
-        let newLabelStyle = AdyenLabelStyle(textAlignment: expectedTextAlignment)
+        let expectedDisabledColor = UIColor.gray
+        let customLabel = AdyenLabelStyle(font: AdyenFonts.default.body, disabledColor: expectedDisabledColor)
         
         // When
-        let updatedTheme = theme.label(newLabelStyle)
+        let theme = AdyenTheme(
+            elements: AdyenElements(
+                labels: AdyenLabelStyles(body: customLabel)
+            )
+        )
         
         // Then
-        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
+        XCTAssertEqual(theme.elements.labels.body.disabledColor, expectedDisabledColor)
+        XCTAssertEqual(theme.elements.labels.body.font, AdyenLabelStyles.default.body.font)
+        XCTAssertEqual(theme.elements.labels.body.color, AdyenLabelStyles.default.body.color)
     }
     
-    func test_labelMethod_shouldPreserveDefaultButtonStyle() {
+    func test_customTheme_withCustomLabelTextAlignment_shouldPreserveOtherProperties() {
         // Given
-        let expectedTextAlignment: NSTextAlignment = .left
-        let theme = AdyenTheme()
-    
-        let newLabelStyle = AdyenLabelStyle(textAlignment: expectedTextAlignment)
+        let expectedTextAlignment: NSTextAlignment = .center
+        let customLabel = AdyenLabelStyle(font: AdyenFonts.default.body, textAlignment: expectedTextAlignment)
         
         // When
-        let updatedTheme = theme.label(newLabelStyle)
+        let theme = AdyenTheme(
+            elements: AdyenElements(
+                labels: AdyenLabelStyles(body: customLabel)
+            )
+        )
         
         // Then
-        expect(updatedTheme.buttonStyles, toMatch: AdyenButtonStyles())
-        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
+        XCTAssertEqual(theme.elements.labels.body.textAlignment, expectedTextAlignment)
+        XCTAssertEqual(theme.elements.labels.body.font, AdyenLabelStyles.default.body.font)
+        XCTAssertEqual(theme.elements.labels.body.color, AdyenLabelStyles.default.body.color)
     }
     
-    func test_labelMethod_shouldPreserveDefaultToggleStyle() {
+    func test_customTheme_withCustomLabelStyles_shouldPreserveDefaultButtonStyles() {
         // Given
-        let expectedColorValue = UIColor.red
-        let theme = AdyenTheme()
-    
-        let newLabelStyle = AdyenLabelStyle(color: expectedColorValue)
+        let customLabel = AdyenLabelStyle(font: AdyenFonts.default.body, color: .red)
         
         // When
-        let updatedTheme = theme.label(newLabelStyle)
+        let theme = AdyenTheme(
+            elements: AdyenElements(
+                labels: AdyenLabelStyles(body: customLabel)
+            )
+        )
         
         // Then
-        expect(updatedTheme.toggleStyle, toMatch: AdyenSwitchStyle())
-        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
+        expect(theme.elements.buttons, toMatch: AdyenButtonStyles.default)
+        expect(theme.elements.labels.body, toMatch: customLabel)
     }
     
-    func test_labelMethod_shouldPreserveDefaultTextFieldStyle() {
+    func test_customTheme_withCustomLabelStyles_shouldPreserveDefaultToggleStyle() {
         // Given
-        let expectedTextAlignment: NSTextAlignment = .left
-        let theme = AdyenTheme()
-        
-        let newLabelStyle = AdyenLabelStyle(textAlignment: expectedTextAlignment)
+        let customLabel = AdyenLabelStyle(font: AdyenFonts.default.body, color: .red)
         
         // When
-        let updatedTheme = theme.label(newLabelStyle)
+        let theme = AdyenTheme(
+            elements: AdyenElements(
+                labels: AdyenLabelStyles(body: customLabel)
+            )
+        )
         
         // Then
-        expect(updatedTheme.textFieldStyle, toMatch: AdyenTextFieldStyle())
-        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
+        expect(theme.elements.switch, toMatch: AdyenSwitchStyle.default)
+        expect(theme.elements.labels.body, toMatch: customLabel)
     }
     
-    func test_labelMethod_shouldPreserveUpdatedButtonStyle() {
+    func test_customTheme_withCustomLabelStyles_shouldPreserveDefaultTextFieldStyle() {
         // Given
-        let expectedColorValue = UIColor.red
-        let expectedButtonBackgroundColorValue = UIColor.blue
-        let expectedFontValue: UIFont = .preferredFont(forTextStyle: .body)
-        let theme = AdyenTheme()
-    
-        let newLabelStyle = AdyenLabelStyle(color: expectedColorValue).font(expectedFontValue)
-        
-        let newButtonStyles = AdyenButtonStyles(colorScheme: .init(primary: expectedButtonBackgroundColorValue))
+        let customLabel = AdyenLabelStyle(font: AdyenFonts.default.body, color: .red)
         
         // When
-        var updatedTheme = theme.button(newButtonStyles)
-        updatedTheme = updatedTheme.label(newLabelStyle)
+        let theme = AdyenTheme(
+            elements: AdyenElements(
+                labels: AdyenLabelStyles(body: customLabel)
+            )
+        )
         
         // Then
-        expect(updatedTheme.buttonStyles, toMatch: newButtonStyles)
-        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
+        expect(theme.elements.textField, toMatch: AdyenTextFieldStyle.default)
+        expect(theme.elements.labels.body, toMatch: customLabel)
     }
     
-    func test_labelMethod_shouldPreserveUpdatedToggleStyle() {
+    func test_customTheme_withCustomButtonAndLabelStyles_shouldPreserveBoth() {
         // Given
-        let theme = AdyenTheme()
-        let expectedToggleBackgroundColorValue = UIColor.systemOrange
-        let expectedLabelColorValue = UIColor.red
-        let expectedTintValue = UIColor.systemPink
-        let expectedCornerRadius = 12.0
-        let expectedFont: UIFont = .preferredFont(forTextStyle: .body)
-    
-        let newLabelStyle = AdyenLabelStyle().color(expectedLabelColorValue).font(expectedFont)
-
-        var newToggleStyle = AdyenSwitchStyle()
-        newToggleStyle.backgroundColor = expectedToggleBackgroundColorValue
-        newToggleStyle.tintColor = expectedTintValue
-        newToggleStyle.title = newLabelStyle
-        newToggleStyle.cornerRadius = CornerRounding.fixed(expectedCornerRadius)
+        let customLabel = AdyenLabelStyle(font: AdyenFonts.default.body, color: .red)
+        let customButtonStyle = AdyenButtonStyle(
+            backgroundColor: .blue,
+            textColor: .white,
+            disabledBackgroundColor: .gray,
+            disabledTextColor: .lightGray
+        )
         
         // When
-        var updatedTheme = theme.toggle(newToggleStyle)
-        updatedTheme = updatedTheme.label(newLabelStyle)
+        let theme = AdyenTheme(
+            elements: AdyenElements(
+                buttons: AdyenButtonStyles(primary: customButtonStyle),
+                labels: AdyenLabelStyles(
+                    body: customLabel
+                )
+            )
+        )
         
         // Then
-        expect(updatedTheme.toggleStyle, toMatch: newToggleStyle)
-        expect(updatedTheme.labelStyle, toMatch: newLabelStyle)
-    }
-    
-    func test_labelMethod_shouldPreserveUpdatedTextFieldStyle() {
-        // Given
-        let expectedBorderWidth: CGFloat = 2.0
-        let expectedCornerRadius: CGFloat = 10.0
-        let expectedBackgroundColorValue = UIColor.red
-        let expectedLabelColorValue = UIColor.brown
-        let expectedErrorColorValue = UIColor.purple
-        let expectedBorderColorValue = UIColor.brown
-        let expectedFont: UIFont = .preferredFont(forTextStyle: .body)
-        let cornerRadius = CornerRounding.fixed(expectedCornerRadius)
-        let theme = AdyenTheme()
-    
-        var newTextFieldStyle = AdyenTextFieldStyle()
-        newTextFieldStyle.backgroundColor = expectedBackgroundColorValue
-        newTextFieldStyle.errorColor = expectedErrorColorValue
-        newTextFieldStyle.borderColor = expectedBorderColorValue
-        newTextFieldStyle.cornerRadius = cornerRadius
-        newTextFieldStyle.borderWidth = expectedBorderWidth
-        
-        let labelStyle = AdyenLabelStyle().color(expectedLabelColorValue).font(expectedFont)
-        
-        // When
-        var updatedTheme = theme.textfield(newTextFieldStyle)
-        updatedTheme = updatedTheme.label(labelStyle)
-        
-        // Then
-        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
-        expect(updatedTheme.labelStyle, toMatch: labelStyle)
+        XCTAssertEqual(theme.elements.buttons.primary, customButtonStyle)
+        XCTAssertEqual(theme.elements.labels.body, customLabel)
     }
     
 }
