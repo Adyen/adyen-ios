@@ -52,6 +52,59 @@ public struct AdyenButtonStyles {
     public static let `default`: AdyenButtonStyles = .init()
 }
 
+// MARK: - Builder Methods
+
+public extension AdyenButtonStyles {
+    
+    /// Returns a new AdyenButtonStyles with the specified primary button style.
+    /// - Parameter style: The primary button style to set.
+    /// - Returns: A new `AdyenButtonStyles` instance.
+    func primary(_ style: AdyenButtonStyle) -> AdyenButtonStyles {
+        AdyenButtonStyles(
+            primary: style,
+            secondary: secondary,
+            tertiary: tertiary,
+            destructive: destructive
+        )
+    }
+    
+    /// Returns a new AdyenButtonStyles with the specified secondary button style.
+    /// - Parameter style: The secondary button style to set.
+    /// - Returns: A new `AdyenButtonStyles` instance.
+    func secondary(_ style: AdyenButtonStyle) -> AdyenButtonStyles {
+        AdyenButtonStyles(
+            primary: primary,
+            secondary: style,
+            tertiary: tertiary,
+            destructive: destructive
+        )
+    }
+    
+    /// Returns a new AdyenButtonStyles with the specified tertiary button style.
+    /// - Parameter style: The tertiary button style to set.
+    /// - Returns: A new `AdyenButtonStyles` instance.
+    func tertiary(_ style: AdyenButtonStyle) -> AdyenButtonStyles {
+        AdyenButtonStyles(
+            primary: primary,
+            secondary: secondary,
+            tertiary: style,
+            destructive: destructive
+        )
+    }
+    
+    /// Returns a new AdyenButtonStyles with the specified destructive button style.
+    /// - Parameter style: The destructive button style to set.
+    /// - Returns: A new `AdyenButtonStyles` instance.
+    func destructive(_ style: AdyenButtonStyle) -> AdyenButtonStyles {
+        AdyenButtonStyles(
+            primary: primary,
+            secondary: secondary,
+            tertiary: tertiary,
+            destructive: style
+        )
+    }
+}
+
 // Defines styles for different button types
 public struct AdyenButtonStyle {
     
