@@ -16,6 +16,13 @@ public struct AdyenTheme {
     /// A default instance of AdyenTheme.
     public static let `default` = AdyenTheme()
 
+    /// Initializes the theme with optional overrides.
+    /// Any parameter left as default will use the default value.
+    ///
+    /// - Parameters:
+    ///   - colors: The color scheme. Defaults to `.default`.
+    ///   - elements: The UI elements styles. Defaults to `.default`.
+    ///   - attributes: The UI attributes. Defaults to `.default`.
     public init(
         colors: AdyenColors = .default,
         elements: AdyenElements = .default,
@@ -24,34 +31,5 @@ public struct AdyenTheme {
         self.colors = colors
         self.attributes = attributes
         self.elements = elements
-    }
-}
-
-extension AdyenTheme {
-    @discardableResult
-    public func colors(_ colors: AdyenColors) -> AdyenTheme {
-        AdyenTheme(
-            colors: colors,
-            elements: elements,
-            attributes: attributes
-        )
-    }
-
-    @discardableResult
-    public func elements(_ elements: AdyenElements) -> AdyenTheme {
-        AdyenTheme(
-            colors: colors,
-            elements: elements,
-            attributes: attributes
-        )
-    }
-
-    @discardableResult
-    public func attributes(_ attributes: AdyenAttributes) -> AdyenTheme {
-        AdyenTheme(
-            colors: colors,
-            elements: elements,
-            attributes: attributes
-        )
     }
 }

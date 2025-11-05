@@ -15,11 +15,18 @@ public struct AdyenButtonStyles {
     public var tertiary: AdyenButtonStyle
     public var destructive: AdyenButtonStyle
 
+    /// Initializes the button styles.
+    ///
+    /// - Parameters:
+    ///   - primary: The primary button style. Defaults to standard primary style.
+    ///   - secondary: The secondary button style. Defaults to standard secondary style.
+    ///   - tertiary: The tertiary button style. Defaults to standard tertiary style.
+    ///   - destructive: The destructive button style. Defaults to standard destructive style.
     public init(
-        primary: AdyenButtonStyle,
-        secondary: AdyenButtonStyle,
-        tertiary: AdyenButtonStyle,
-        destructive: AdyenButtonStyle
+        primary: AdyenButtonStyle = .primary(for: .default),
+        secondary: AdyenButtonStyle = .secondary(for: .default),
+        tertiary: AdyenButtonStyle = .tertiary(for: .default),
+        destructive: AdyenButtonStyle = .destructive(for: .default)
     ) {
         self.primary = primary
         self.secondary = secondary
@@ -27,81 +34,5 @@ public struct AdyenButtonStyles {
         self.destructive = destructive
     }
 
-    // Default initializer using the default configurations
-    public init() {
-        let colors = AdyenColors.default
-        self.init(
-            primary: .primary(for: colors),
-            secondary: .secondary(for: colors),
-            tertiary: .tertiary(for: colors),
-            destructive: .destructive(for: colors)
-        )
-    }
-
-    /// Initializes the button style.
-    ///
-    /// - Parameter colors: The colors to follow to style the button.
-    public init(colors: AdyenColors) {
-        self.init(
-            primary: .primary(for: colors),
-            secondary: .secondary(for: colors),
-            tertiary: .tertiary(for: colors),
-            destructive: .destructive(for: colors)
-        )
-    }
-
     public static let `default`: AdyenButtonStyles = .init()
-}
-
-// MARK: - Builder Methods
-
-extension AdyenButtonStyles {
-
-    /// Returns a new AdyenButtonStyles with the specified primary button style.
-    /// - Parameter style: The primary button style to set.
-    /// - Returns: A new `AdyenButtonStyles` instance.
-    public func primary(_ style: AdyenButtonStyle) -> AdyenButtonStyles {
-        AdyenButtonStyles(
-            primary: style,
-            secondary: secondary,
-            tertiary: tertiary,
-            destructive: destructive
-        )
-    }
-
-    /// Returns a new AdyenButtonStyles with the specified secondary button style.
-    /// - Parameter style: The secondary button style to set.
-    /// - Returns: A new `AdyenButtonStyles` instance.
-    public func secondary(_ style: AdyenButtonStyle) -> AdyenButtonStyles {
-        AdyenButtonStyles(
-            primary: primary,
-            secondary: style,
-            tertiary: tertiary,
-            destructive: destructive
-        )
-    }
-
-    /// Returns a new AdyenButtonStyles with the specified tertiary button style.
-    /// - Parameter style: The tertiary button style to set.
-    /// - Returns: A new `AdyenButtonStyles` instance.
-    public func tertiary(_ style: AdyenButtonStyle) -> AdyenButtonStyles {
-        AdyenButtonStyles(
-            primary: primary,
-            secondary: secondary,
-            tertiary: style,
-            destructive: destructive
-        )
-    }
-
-    /// Returns a new AdyenButtonStyles with the specified destructive button style.
-    /// - Parameter style: The destructive button style to set.
-    /// - Returns: A new `AdyenButtonStyles` instance.
-    public func destructive(_ style: AdyenButtonStyle) -> AdyenButtonStyles {
-        AdyenButtonStyles(
-            primary: primary,
-            secondary: secondary,
-            tertiary: tertiary,
-            destructive: style
-        )
-    }
 }

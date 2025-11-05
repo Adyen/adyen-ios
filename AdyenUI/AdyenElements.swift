@@ -7,11 +7,19 @@
 import UIKit
 
 public struct AdyenElements {
-    package var buttons: AdyenButtonStyles = .default
-    package var labels: AdyenLabelStyles = .default
-    package var `switch`: AdyenSwitchStyle = .default
-    package var textField: AdyenTextFieldStyle = .default
+    package var buttons: AdyenButtonStyles
+    package var labels: AdyenLabelStyles
+    package var `switch`: AdyenSwitchStyle
+    package var textField: AdyenTextFieldStyle
 
+    /// Initializes the elements with optional overrides.
+    /// Any parameter left as default will use the default value.
+    ///
+    /// - Parameters:
+    ///   - buttons: The button styles. Defaults to `.default`.
+    ///   - labels: The label styles. Defaults to `.default`.
+    ///   - switch: The switch style. Defaults to `.default`.
+    ///   - textField: The text field style. Defaults to `.default`.
     public init(
         buttons: AdyenButtonStyles = .default,
         labels: AdyenLabelStyles = .default,
@@ -25,43 +33,4 @@ public struct AdyenElements {
     }
 
     public static let `default` = AdyenElements()
-}
-
-public extension AdyenElements {
-    func buttons(_ buttons: AdyenButtonStyles) -> Self {
-        AdyenElements(
-            buttons: buttons,
-            labels: self.labels,
-            switch: self.switch,
-            textField: self.textField
-        )
-    }
-
-    func labels(_ labels: AdyenLabelStyles) -> Self {
-        AdyenElements(
-            buttons: self.buttons,
-            labels: labels,
-            switch: self.switch,
-            textField: self.textField
-        )
-    }
-
-    func `switch`(_ switch: AdyenSwitchStyle) -> Self {
-        AdyenElements(
-            buttons: self.buttons,
-            labels: self.labels,
-            switch: `switch`,
-            textField: self.textField
-        )
-    }
-
-    func textField(_ textField: AdyenTextFieldStyle) -> Self {
-        AdyenElements(
-            buttons: self.buttons,
-            labels: self.labels,
-            switch: self.switch,
-            textField: textField
-        )
-    }
-
 }
