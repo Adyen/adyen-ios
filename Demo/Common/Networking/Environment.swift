@@ -32,9 +32,7 @@ internal enum DemoCheckoutAPIEnvironment: String, AnyAPIEnvironment, CaseIterabl
     
     internal var baseURL: URL {
         switch self {
-        case .beta:
-            return URL(string: "https://checkout-web-dev.adyen.com/api")!
-        case .test:
+        case .beta, .test:
             return URL(string: "https://checkout-web-dev.adyen.com/api")!
         case .local:
             return URL(string: "http://localhost:8080/checkout/v\(version)")!
