@@ -572,6 +572,47 @@ class PayToComponentTests: XCTestCase {
         waitForExpectations(timeout: 1.0)
     }
     
+    func testPayToComponent_givenOrganizationIdPayIdPaymentOption_submitsCorrectAccountIdentifier() throws {
+        // Given
+        let payToPaymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)
+        let paymentMethodMock = PaymentMethodMock(type: payToPaymentMethod.type, name: payToPaymentMethod.name)
+        let organizationId = "*hello123.world*"
+        let shopperName = ShopperName(firstName: "Katrina", lastName: "Del Mar")
+        
+        let expectedDetails = PayToDetails(
+            paymentMethod: paymentMethodMock,
+            accountIdentifier: "\(organizationId)",
+            shopperName: shopperName
+        )
+        
+        let sut = PayToComponent(
+            paymentMethod: payToPaymentMethod,
+            context: Dummy.context
+        )
+        sut.selectedPaymentOption = .payId(.organizationId)
+        
+        let delegateMock = PaymentComponentDelegateMock()
+        sut.delegate = delegateMock
+        
+        let didSubmitExpectation = expectation(description: "Delegate's didSubmit must be called")
+        
+        delegateMock.onDidSubmit = { data, _ in
+            // Then
+            didSubmitExpectation.fulfill()
+            let receivedDetails = try? XCTUnwrap(data.paymentMethod as? PayToDetails)
+            XCTAssertTrue(self.payToDetailsEqual(expectedDetails, receivedDetails), "Submitted PayToDetails should match expected details")
+        }
+        
+        // When
+        sut.organizationIdInputItem.value = organizationId
+        sut.firstNameInputItem.value = shopperName.firstName
+        sut.lastNameInputItem.value = shopperName.lastName
+        
+        sut.submit()
+        
+        waitForExpectations(timeout: 1.0)
+    }
+    
     func testPayToComponent_givenBsbPaymentOption_submitsCorrectAccountIdentifier() throws {
         // Given
         let payToPaymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)
