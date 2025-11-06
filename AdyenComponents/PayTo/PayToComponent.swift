@@ -19,7 +19,7 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
 
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
-
+    
     /// Component's configuration
     public var configuration: Configuration
 
@@ -298,7 +298,8 @@ private extension PayToComponent {
         case let .payId(identifier):
             switch identifier {
             case .phone:
-                phoneNumberItem.phoneNumber
+                // Insert hyphen between prefix and number to match PayTo backend format for accountIdentifier (e.g., +61-012345678)
+                [phoneNumberItem.prefix, phoneNumberItem.value].joined(separator: "-")
             case .email:
                 emailInputItem.value
             case .abn:
