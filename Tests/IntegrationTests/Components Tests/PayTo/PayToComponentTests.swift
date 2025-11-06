@@ -449,7 +449,7 @@ class PayToComponentTests: XCTestCase {
         XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
     }
     
-    func testPayToComponent_givenPhonePayId_submitsCorrectFormattedAccountIdentifier() throws {
+    func testPayToComponent_givenPhonePayIdPaymentOption_submitsCorrectFormattedAccountIdentifier() throws {
         // Given
         let payToPaymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)
         let paymentMethodMock = PaymentMethodMock(type: payToPaymentMethod.type, name: payToPaymentMethod.name)
@@ -490,7 +490,7 @@ class PayToComponentTests: XCTestCase {
         waitForExpectations(timeout: 1.0)
     }
     
-    func testPayToComponent_givenEmailPayId_submitsCorrectAccountIdentifier() throws {
+    func testPayToComponent_givenEmailPayIdPaymentOption_submitsCorrectAccountIdentifier() throws {
         // Given
         let payToPaymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)
         let paymentMethodMock = PaymentMethodMock(type: payToPaymentMethod.type, name: payToPaymentMethod.name)
@@ -531,7 +531,7 @@ class PayToComponentTests: XCTestCase {
         waitForExpectations(timeout: 1.0)
     }
     
-    func testPayToComponent_givenAbnPayId_submitsCorrectAccountIdentifier() throws {
+    func testPayToComponent_givenAbnPayIdPaymentOption_submitsCorrectAccountIdentifier() throws {
         // Given
         let payToPaymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)
         let paymentMethodMock = PaymentMethodMock(type: payToPaymentMethod.type, name: payToPaymentMethod.name)
@@ -572,7 +572,7 @@ class PayToComponentTests: XCTestCase {
         waitForExpectations(timeout: 1.0)
     }
     
-    func testPayToComponent_givenBSB_submitsCorrectAccountIdentifier() throws {
+    func testPayToComponent_givenBsbPaymentOption_submitsCorrectAccountIdentifier() throws {
         // Given
         let payToPaymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)
         let paymentMethodMock = PaymentMethodMock(type: payToPaymentMethod.type, name: payToPaymentMethod.name)
