@@ -531,6 +531,47 @@ class PayToComponentTests: XCTestCase {
         waitForExpectations(timeout: 1.0)
     }
     
+    func testPayToComponent_givenAbnPayId_submitsCorrectAccountIdentifier() throws {
+        // Given
+        let payToPaymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)
+        let paymentMethodMock = PaymentMethodMock(type: payToPaymentMethod.type, name: payToPaymentMethod.name)
+        let abn = "51824753556" // ABN (Australian Business Number) is a unique 11-digit identifier issued to businesses in Australia
+        let shopperName = ShopperName(firstName: "Katrina", lastName: "Del Mar")
+        
+        let expectedDetails = PayToDetails(
+            paymentMethod: paymentMethodMock,
+            accountIdentifier: "\(abn)", // ensure correct hyphenated format
+            shopperName: shopperName
+        )
+        
+        let sut = PayToComponent(
+            paymentMethod: payToPaymentMethod,
+            context: Dummy.context
+        )
+        sut.selectedPaymentOption = .payId(.abn)
+        
+        let delegateMock = PaymentComponentDelegateMock()
+        sut.delegate = delegateMock
+        
+        let didSubmitExpectation = expectation(description: "Delegate's didSubmit must be called")
+        
+        delegateMock.onDidSubmit = { data, _ in
+            // Then
+            didSubmitExpectation.fulfill()
+            let receivedDetails = try? XCTUnwrap(data.paymentMethod as? PayToDetails)
+            XCTAssertTrue(self.payToDetailsEqual(expectedDetails, receivedDetails), "Submitted PayToDetails should match expected details")
+        }
+        
+        // When
+        sut.abnInputItem.value = abn
+        sut.firstNameInputItem.value = shopperName.firstName
+        sut.lastNameInputItem.value = shopperName.lastName
+        
+        sut.submit()
+        
+        waitForExpectations(timeout: 1.0)
+    }
+    
     private func populateValidFields(sut: PayToComponent) throws {
         let phoneNumberItem: FormPhoneNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.phoneNumberItem"))
         let firstNameInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.firstNameTextfield"))
