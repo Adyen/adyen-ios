@@ -19,39 +19,39 @@ class PayToComponentTests: XCTestCase {
             context: Dummy.context
         )
     }
-
+    
     func test_init() throws {
         let sut = try PayToComponent(
             paymentMethod: AdyenCoder.decode(payto),
             context: Dummy.context
         )
-
+        
         XCTAssertNotNil(sut)
     }
-
+    
     func test_paymentMethodType_isPayto() throws {
         XCTAssertEqual(sut.paymentMethod.type, .payTo)
     }
-
+    
     func test_flowSelection_titleLabel_exists() throws {
         // Given
         sut.viewController.loadViewIfNeeded()
-
+        
         // Check by accessibility identifier
         let flowSelectionTitleLabelItem = sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.flowSelectionTitleLabel") as? UILabel
-
+        
         // Then
         XCTAssertNotNil(flowSelectionTitleLabelItem, "Flow selection title label should exist")
     }
-
+    
     func test_flowSelectionItem_exists() throws {
         // Given
         sut.viewController.loadViewIfNeeded()
-
+        
         // Check by accessibility identifier
         let flowSelectionItem = sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.flowSelectionSegmentedControl") as? UISegmentedControl
         flowSelectionItem?.selectedSegmentIndex = 1
-
+        
         // Then
         XCTAssertNotNil(flowSelectionItem, "Flow selection item should exist")
     }
@@ -68,7 +68,7 @@ class PayToComponentTests: XCTestCase {
         // Then
         XCTAssertNotNil(phoneNumberItem, "Phone number item should exist")
     }
-
+    
     func test_phoneNumberItem_invalidNumbers() throws {
         // Given
         let invalidNumbers = [
@@ -121,30 +121,30 @@ class PayToComponentTests: XCTestCase {
             XCTAssertTrue(sut.phoneNumberItem.isValid(), "Number \(number) should be valid with leading zero")
         }
     }
-
+    
     func test_payid_titleLabel_exists() throws {
         // Given
         sut.viewController.loadViewIfNeeded()
-
+        
         // Check by accessibility identifier
         let payIdTitleLabelItem = sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.payIdFlowTitleTitleLabel") as? UILabel
-
+        
         // Then
         XCTAssertNotNil(payIdTitleLabelItem, "PayId flow title label should exist")
     }
-
+    
     func test_identifierPicker_exists() throws {
         // Given
         sut.viewController.loadViewIfNeeded()
-
+        
         // Check by accessibility identifier
         let identifierPickerItem: PayToFormPickerItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.identifierPicker"))
-
+        
         // Then
         XCTAssertNotNil(identifierPickerItem, "identifier picker should exist")
         XCTAssertFalse(identifierPickerItem.canBecomeFirstResponder)
     }
-
+    
     func test_firstname_textfield() throws {
         sut.firstNameInputItem.value = ""
         XCTAssertFalse(sut.firstNameInputItem.isValid())
@@ -153,14 +153,14 @@ class PayToComponentTests: XCTestCase {
         
         // Given
         sut.viewController.loadViewIfNeeded()
-
+        
         // Check by accessibility identifier
         let firstNameInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.firstNameTextfield"))
-
+        
         // Then
         XCTAssertNotNil(firstNameInputItem, "first name input field should exist")
     }
-
+    
     func test_lastname_textfield() throws {
         sut.lastNameInputItem.value = ""
         XCTAssertFalse(sut.lastNameInputItem.isValid())
@@ -169,14 +169,14 @@ class PayToComponentTests: XCTestCase {
         
         // Given
         sut.viewController.loadViewIfNeeded()
-
+        
         // Check by accessibility identifier
         let lastNameInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.lastNameTextfield"))
-
+        
         // Then
         XCTAssertNotNil(lastNameInputItem, "last name input field should exist")
     }
-
+    
     func test_email_textfield() throws {
         
         // invalid
@@ -197,14 +197,14 @@ class PayToComponentTests: XCTestCase {
         
         // Given
         sut.viewController.loadViewIfNeeded()
-
+        
         // Check by accessibility identifier
         let emailInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.emailTextfield"))
-
+        
         // Then
         XCTAssertNotNil(emailInputItem, "email input field should exist")
     }
-
+    
     func test_abn_textfield() throws {
         
         // only 9 or 11 integers are valid
@@ -227,14 +227,14 @@ class PayToComponentTests: XCTestCase {
         
         // Given
         sut.viewController.loadViewIfNeeded()
-
+        
         // Check by accessibility identifier
         let abnInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.abnTextfield"))
-
+        
         // Then
         XCTAssertNotNil(abnInputItem, "abn input field should exist")
     }
-
+    
     func test_organizationID_textfield() throws {
         // invalid
         sut.organizationIdInputItem.value = ""
@@ -264,14 +264,14 @@ class PayToComponentTests: XCTestCase {
         
         // Given
         sut.viewController.loadViewIfNeeded()
-
+        
         // Check by accessibility identifier
         let organizationIDInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.organizationIDTextfield"))
-
+        
         // Then
         XCTAssertNotNil(organizationIDInputItem, "organizationID input field should exist")
     }
-
+    
     func test_accountNumber_textfield() throws {
         // invalid
         sut.accountNumberInputItem.value = ""
@@ -293,14 +293,14 @@ class PayToComponentTests: XCTestCase {
         
         // Given
         sut.viewController.loadViewIfNeeded()
-
+        
         // Check by accessibility identifier
         let accountNumberInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.accountNumberTextfield"))
-
+        
         // Then
         XCTAssertNotNil(accountNumberInputItem, "Bank account number input field should exist")
     }
-
+    
     func test_bank_state_number_textfield() throws {
         
         // invalid
@@ -327,21 +327,21 @@ class PayToComponentTests: XCTestCase {
         
         // Given
         sut.viewController.loadViewIfNeeded()
-
+        
         // Check by accessibility identifier
         let bankStateNumberInputItem: FormTextInputItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.bankStateBranchTextfield"))
-
+        
         // Then
         XCTAssertNotNil(bankStateNumberInputItem, "Bank state number input field should exist")
     }
-
+    
     func test_payment_instruction_titleLabel_exists() throws {
         // Given
         sut.viewController.loadViewIfNeeded()
-
+        
         // Check by accessibility identifier
         let paymentInstructionTitleLabelItem = sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.paymentInstructionTitleLabel") as? UILabel
-
+        
         // Then
         XCTAssertNotNil(paymentInstructionTitleLabelItem, "Payment instruction title label should exist")
     }
@@ -349,10 +349,10 @@ class PayToComponentTests: XCTestCase {
     func test_continueButton_exists() throws {
         // Given
         sut.viewController.loadViewIfNeeded()
-
+        
         // Check by accessibility identifier
         let continueButton: FormButtonItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.continueButton"))
-
+        
         // Then
         XCTAssertNotNil(continueButton, "ContinueButton should exist")
     }
@@ -371,10 +371,10 @@ class PayToComponentTests: XCTestCase {
             paymentMethod: paymentMethod,
             context: context
         )
-
+        
         // When
         sut.viewDidLoad(viewController: sut.viewController)
-
+        
         // Then
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
         XCTAssertEqual(analyticsProviderMock.infos.count, 1)
@@ -391,20 +391,20 @@ class PayToComponentTests: XCTestCase {
             context: Dummy.context,
             configuration: configuration
         )
-
+        
         try populateValidFields(sut: sut)
-
+        
         let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
         let expectedResult = formViewController.validate()
-
+        
         // When
         let validationResult = sut.validate()
-
+        
         // Then
         XCTAssertTrue(validationResult)
         XCTAssertEqual(expectedResult, validationResult)
     }
-
+    
     func testValidateGivenInvalidInputShouldReturnFormViewControllerValidateResult() throws {
         // Given
         let paymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)
@@ -414,39 +414,79 @@ class PayToComponentTests: XCTestCase {
             context: Dummy.context,
             configuration: configuration
         )
-
+        
         let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
         let expectedResult = formViewController.validate()
-
+        
         // When
         let validationResult = sut.validate()
-
+        
         // Then
         XCTAssertFalse(validationResult)
         XCTAssertEqual(expectedResult, validationResult)
     }
-
+    
     func testSubmit_shouldCallPaymentDelegateDidSubmit() throws {
         // Given
         
         sut.viewController.loadViewIfNeeded()
-
+        
         let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
-
+        
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
         delegateMock.onDidSubmit = { data, component in
             didSubmitExpectation.fulfill()
         }
-
+        
         try populateValidFields(sut: sut)
-
+        
         // When
         sut.submit()
-
+        
         // Then
         wait(for: [didSubmitExpectation], timeout: 10)
         XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
+    }
+    
+    func testPayToComponent_submitsCorrectAccountIdentifier_forPhoneNumber() throws {
+        // Given
+        let payToPaymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)
+        let paymentMethodMock = PaymentMethodMock(type: payToPaymentMethod.type, name: payToPaymentMethod.name)
+        let phoneNumber = "0666555444"
+        let shopperName = ShopperName(firstName: "Katrina", lastName: "Del Mar")
+        
+        let expectedDetails = PayToDetails(
+            paymentMethod: paymentMethodMock,
+            accountIdentifier: "+61-\(phoneNumber)", // ensure correct hyphenated format
+            shopperName: shopperName
+        )
+        
+        let sut = PayToComponent(
+            paymentMethod: payToPaymentMethod,
+            context: Dummy.context
+        )
+        
+        let delegateMock = PaymentComponentDelegateMock()
+        sut.delegate = delegateMock
+        
+        let didSubmitExpectation = expectation(description: "Delegate's didSubmit must be called")
+        
+        delegateMock.onDidSubmit = { data, _ in
+            // Then
+            didSubmitExpectation.fulfill()
+            let receivedDetails = try? XCTUnwrap(data.paymentMethod as? PayToDetails)
+            XCTAssertTrue(self.payToDetailsEqual(expectedDetails, receivedDetails), "Submitted PayToDetails should match expected details")
+        }
+        
+        // When
+        sut.phoneNumberItem.value = phoneNumber
+        sut.firstNameInputItem.value = shopperName.firstName
+        sut.lastNameInputItem.value = shopperName.lastName
+        
+        sut.submit()
+        
+        waitForExpectations(timeout: 1.0)
     }
     
     private func populateValidFields(sut: PayToComponent) throws {
@@ -457,5 +497,13 @@ class PayToComponentTests: XCTestCase {
         self.populate(textItemView: phoneNumberItem, with: "4123466")
         self.populate(textItemView: firstNameInputItem, with: "test")
         self.populate(textItemView: lastNameInputItem, with: "lastname")
+    }
+    
+    private func payToDetailsEqual(_ lhs: PayToDetails?, _ rhs: PayToDetails?) -> Bool {
+        guard let lhs, let rhs else { return false }
+        
+        return lhs.type == rhs.type &&
+            lhs.shopperName == rhs.shopperName &&
+            lhs.accountIdentifier == rhs.accountIdentifier
     }
 }
