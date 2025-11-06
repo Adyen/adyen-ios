@@ -449,7 +449,7 @@ class PayToComponentTests: XCTestCase {
         XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
     }
     
-    func testPayToComponent_submitsCorrectAccountIdentifier_forPhoneNumber() throws {
+    func testPayToComponent_givenPhonePayId_submitsCorrectFormattedAccountIdentifier() throws {
         // Given
         let payToPaymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)
         let paymentMethodMock = PaymentMethodMock(type: payToPaymentMethod.type, name: payToPaymentMethod.name)
@@ -466,6 +466,7 @@ class PayToComponentTests: XCTestCase {
             paymentMethod: payToPaymentMethod,
             context: Dummy.context
         )
+        sut.selectedPaymentOption = .payId(.phone)
         
         let delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
@@ -481,6 +482,47 @@ class PayToComponentTests: XCTestCase {
         
         // When
         sut.phoneNumberItem.value = phoneNumber
+        sut.firstNameInputItem.value = shopperName.firstName
+        sut.lastNameInputItem.value = shopperName.lastName
+        
+        sut.submit()
+        
+        waitForExpectations(timeout: 1.0)
+    }
+    
+    func testPayToComponent_givenEmailPayId_submitsCorrectAccountIdentifier() throws {
+        // Given
+        let payToPaymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)
+        let paymentMethodMock = PaymentMethodMock(type: payToPaymentMethod.type, name: payToPaymentMethod.name)
+        let email = "katrina.mar@email.com"
+        let shopperName = ShopperName(firstName: "Katrina", lastName: "Del Mar")
+        
+        let expectedDetails = PayToDetails(
+            paymentMethod: paymentMethodMock,
+            accountIdentifier: "\(email)", // ensure correct hyphenated format
+            shopperName: shopperName
+        )
+        
+        let sut = PayToComponent(
+            paymentMethod: payToPaymentMethod,
+            context: Dummy.context
+        )
+        sut.selectedPaymentOption = .payId(.email)
+        
+        let delegateMock = PaymentComponentDelegateMock()
+        sut.delegate = delegateMock
+        
+        let didSubmitExpectation = expectation(description: "Delegate's didSubmit must be called")
+        
+        delegateMock.onDidSubmit = { data, _ in
+            // Then
+            didSubmitExpectation.fulfill()
+            let receivedDetails = try? XCTUnwrap(data.paymentMethod as? PayToDetails)
+            XCTAssertTrue(self.payToDetailsEqual(expectedDetails, receivedDetails), "Submitted PayToDetails should match expected details")
+        }
+        
+        // When
+        sut.emailInputItem.value = email
         sut.firstNameInputItem.value = shopperName.firstName
         sut.lastNameInputItem.value = shopperName.lastName
         
