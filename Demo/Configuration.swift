@@ -42,9 +42,7 @@ internal enum ConfigurationConstants {
         return try! APIContext(environment: componentsEnvironment, clientKey: "local_DUMMYKEYFORTESTING")
     }
 
-    static let clientKey = "{YOUR_CLIENT_KEY}" /* secretValue(for: .clientKey) */
-
-    static let demoServerAPIKey = secretValue(for: .demoServerAPIKey)
+    static let clientKey = secretValue(for: .clientKey)
 
     static let merchantAccount = secretValue(for: .merchantAccount)
 
