@@ -4,8 +4,6 @@
 <dict>
 	<key>ADYEN_CLIENT_KEY</key>
 	<string>$(ADYEN_CLIENT_KEY)</string>
-	<key>ADYEN_DEMO_SERVER_API_KEY</key>
-	<string>$(ADYEN_DEMO_SERVER_API_KEY)</string>
 	<key>ADYEN_MERCHANT_ACCOUNT</key>
 	<string>$(ADYEN_MERCHANT_ACCOUNT)</string>
 	<key>APPLE_PAY_MERCHANT_IDENTIFIER</key>
