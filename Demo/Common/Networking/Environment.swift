@@ -28,11 +28,11 @@ internal struct DemoAPIContext: AnyAPIContext {
 
 internal enum DemoCheckoutAPIEnvironment: String, AnyAPIEnvironment, CaseIterable {
     
-    case beta, test, local
+    case test, local
     
     internal var baseURL: URL {
         switch self {
-        case .beta, .test:
+        case .test:
             return URL(string: "https://checkout-web-dev.adyen.com/api")!
         case .local:
             return URL(string: "http://localhost:8080/checkout/v\(version)")!
