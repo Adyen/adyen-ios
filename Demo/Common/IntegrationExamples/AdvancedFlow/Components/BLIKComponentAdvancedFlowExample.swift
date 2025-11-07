@@ -54,7 +54,9 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         ) {
             BLIKComponentConfiguration()
         }
-        // Example 1: Selectively customize the colors, explicitly mentioning data types for verbosity
+        // Example 1: Selectively customize the colors, explicitly mentioning data types for verbosity,
+        //  and using type inference for AdyenAttributes
+        //  Colors, elements, attributes are optional
         .theme(
             AdyenTheme(
                 colors: AdyenColors(primary: .systemBlue),
@@ -71,11 +73,13 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                     labels: AdyenLabelStyles(
                         body: AdyenLabelStyle(
                             font: AdyenFonts.default.bodyEmphasized
-                            // color is omitted, using defaults
+                            // color is omitted, using default
                         )
                     )
+                ),
+                attributes: .init(
+                    cornerRadius: 8.0
                 )
-                // AdyenAttributes are omitted, using defaults for corner radius
             )
         )
         .onSubmit { [weak self] data, handler in
