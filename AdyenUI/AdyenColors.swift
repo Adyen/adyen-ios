@@ -55,7 +55,6 @@ public struct AdyenColors: Equatable {
 
     // MARK: - Initializers
 
-    // A static default ColorScheme
     public static var `default`: AdyenColors = .init()
 
     private init() {
