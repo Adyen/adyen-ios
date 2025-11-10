@@ -56,7 +56,7 @@ public extension DropInComponent {
         public var style: DropInComponent.Style
 
         /// Indicates the UI style configuration of the drop in component.
-        public var theme: AdyenTheme = .init()
+        public var theme: AdyenTheme = .default
 
         /// Boleto component configuration.
         public var boleto: Boleto = .init()

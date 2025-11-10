@@ -93,7 +93,7 @@ public struct CheckoutConfiguration {
     internal init(
         context: AdyenContext,
         configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:],
-        theme: AdyenTheme = .init()
+        theme: AdyenTheme = .default
     ) {
         self.context = context
         self.configurations = configurations

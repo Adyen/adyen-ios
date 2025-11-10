@@ -23,7 +23,7 @@ public struct AdyenTheme {
     ///   - colors: The color scheme. Defaults to `.default`.
     ///   - elements: The UI elements styles. Defaults to `.default`.
     ///   - attributes: The UI attributes. Defaults to `.default`.
-    public init(
+    internal init(
         colors: AdyenColors = .default,
         elements: AdyenElements = .default,
         attributes: AdyenAttributes = .default

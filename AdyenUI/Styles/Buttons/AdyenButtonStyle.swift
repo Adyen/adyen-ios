@@ -10,15 +10,15 @@ import UIKit
 // MARK: - AdyenButtonStyle
 
 /// Defines the style for a button.
-public struct AdyenButtonStyle {
+package struct AdyenButtonStyle {
     
-    public var backgroundColor: UIColor
-    public var textColor: UIColor
-    public var disabledBackgroundColor: UIColor
-    public var disabledTextColor: UIColor
-    public var cornerRadius: CornerRounding?
+    package var backgroundColor: UIColor
+    package var textColor: UIColor
+    package var disabledBackgroundColor: UIColor
+    package var disabledTextColor: UIColor
+    package var cornerRadius: CornerRounding?
 
-    public init(
+    internal init(
         backgroundColor: UIColor,
         textColor: UIColor,
         disabledBackgroundColor: UIColor,
@@ -32,7 +32,7 @@ public struct AdyenButtonStyle {
         self.cornerRadius = cornerRadius
     }
     
-    public static func primary(for colors: AdyenColors) -> AdyenButtonStyle {
+    internal static func primary(for colors: AdyenColors) -> AdyenButtonStyle {
         .init(
             backgroundColor: colors.primary,
             textColor: colors.textOnPrimary,
@@ -42,7 +42,7 @@ public struct AdyenButtonStyle {
         )
     }
     
-    public static func secondary(for colors: AdyenColors) -> AdyenButtonStyle {
+    internal static func secondary(for colors: AdyenColors) -> AdyenButtonStyle {
         .init(
             backgroundColor: colors.container,
             textColor: colors.text,
@@ -52,7 +52,7 @@ public struct AdyenButtonStyle {
         )
     }
     
-    public static func tertiary(for colors: AdyenColors) -> AdyenButtonStyle {
+    internal static func tertiary(for colors: AdyenColors) -> AdyenButtonStyle {
         .init(
             backgroundColor: .clear,
             textColor: colors.highlight,
@@ -62,7 +62,7 @@ public struct AdyenButtonStyle {
         )
     }
     
-    public static func destructive(for colors: AdyenColors) -> AdyenButtonStyle {
+    internal static func destructive(for colors: AdyenColors) -> AdyenButtonStyle {
         .init(
             backgroundColor: colors.destructive,
             textColor: colors.textOnDestructive,

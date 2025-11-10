@@ -12,7 +12,7 @@ import UIKit
 public final class FormToggleItemView: FormItemView<FormToggleItem> {
 
     // TODO: TO be passed as a dependency by FormViewController.ItemManager
-    package let style: AdyenSwitchStyle = .init()
+    internal let style: AdyenSwitchStyle = .init()
 
     // MARK: - UI elements
     

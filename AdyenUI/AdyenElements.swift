@@ -6,7 +6,7 @@
 
 import UIKit
 
-public struct AdyenElements {
+package struct AdyenElements {
     package var buttons: AdyenButtonStyles
     package var labels: AdyenLabelStyles
     package var `switch`: AdyenSwitchStyle
@@ -20,7 +20,7 @@ public struct AdyenElements {
     ///   - labels: The label styles. Defaults to `.default`.
     ///   - switch: The switch style. Defaults to `.default`.
     ///   - textField: The text field style. Defaults to `.default`.
-    public init(
+    internal init(
         buttons: AdyenButtonStyles = .default,
         labels: AdyenLabelStyles = .default,
         switch: AdyenSwitchStyle = .default,
@@ -32,5 +32,5 @@ public struct AdyenElements {
         self.textField = textField
     }
 
-    public static let `default` = AdyenElements()
+    internal static let `default` = AdyenElements()
 }

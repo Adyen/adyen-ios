@@ -6,7 +6,7 @@
 
 import UIKit
 
-public struct AdyenLabelStyles {
+package struct AdyenLabelStyles {
     package var title: AdyenLabelStyle
     package var subtitle: AdyenLabelStyle
     package var body: AdyenLabelStyle
@@ -17,7 +17,7 @@ public struct AdyenLabelStyles {
     package var footnoteEmphasized: AdyenLabelStyle
 
     /// A default instance of AdyenLabelStyles.
-    public static let `default` = AdyenLabelStyles()
+    internal static let `default` = AdyenLabelStyles()
     
     /// Initializes the label styles.
     ///
@@ -30,7 +30,7 @@ public struct AdyenLabelStyles {
     ///   - subheadlineEmphasized: The emphasized subheadline label style. Defaults to 15pt semibold.
     ///   - footnote: The footnote label style. Defaults to 13pt regular.
     ///   - footnoteEmphasized: The emphasized footnote label style. Defaults to 13pt semibold.
-    public init(
+    internal init(
         title: AdyenLabelStyle = AdyenLabelStyle(
             font: UIFont.systemFont(ofSize: 34.0, weight: .bold),
             color: AdyenColors.default.primary

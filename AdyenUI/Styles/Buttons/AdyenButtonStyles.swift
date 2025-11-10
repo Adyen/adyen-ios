@@ -8,12 +8,12 @@ import Adyen
 import UIKit
 
 /// Defines styles for different button types.
-public struct AdyenButtonStyles {
+package struct AdyenButtonStyles {
 
-    public var primary: AdyenButtonStyle
-    public var secondary: AdyenButtonStyle
-    public var tertiary: AdyenButtonStyle
-    public var destructive: AdyenButtonStyle
+    package var primary: AdyenButtonStyle
+    package var secondary: AdyenButtonStyle
+    package var tertiary: AdyenButtonStyle
+    package var destructive: AdyenButtonStyle
 
     /// Initializes the button styles.
     ///
@@ -22,7 +22,7 @@ public struct AdyenButtonStyles {
     ///   - secondary: The secondary button style. Defaults to standard secondary style.
     ///   - tertiary: The tertiary button style. Defaults to standard tertiary style.
     ///   - destructive: The destructive button style. Defaults to standard destructive style.
-    public init(
+    internal init(
         primary: AdyenButtonStyle = .primary(for: .default),
         secondary: AdyenButtonStyle = .secondary(for: .default),
         tertiary: AdyenButtonStyle = .tertiary(for: .default),
@@ -34,5 +34,5 @@ public struct AdyenButtonStyles {
         self.destructive = destructive
     }
 
-    public static let `default`: AdyenButtonStyles = .init()
+    internal static let `default`: AdyenButtonStyles = .init()
 }
