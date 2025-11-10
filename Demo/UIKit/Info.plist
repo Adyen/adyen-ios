@@ -4,8 +4,8 @@
 <dict>
 	<key>MERCHANT_CLIENT_KEY</key>
 	<string>$(MERCHANT_CLIENT_KEY)</string>
-	<key>MERCHANT_SERVER_URL</key>
-	<string>$(MERCHANT_SERVER_URL)</string>
+	<key>MERCHANT_SERVER_HOST</key>
+	<string>$(MERCHANT_SERVER_HOST)</string>
 	<key>MERCHANT_ACCOUNT</key>
 	<string>$(MERCHANT_ACCOUNT)</string>
 	<key>ADYEN_SERVER_API_KEY</key>

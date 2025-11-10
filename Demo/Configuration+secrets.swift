@@ -11,7 +11,7 @@ internal extension ConfigurationConstants {
     
     enum SecretKey: String {
         case clientKey = "MERCHANT_CLIENT_KEY"
-        case serverUrl = "MERCHANT_SERVER_URL"
+        case serverUrl = "MERCHANT_SERVER_HOST"
         case merchantAccount = "MERCHANT_ACCOUNT"
         case adyenServerKey = "ADYEN_SERVER_API_KEY"
         case appleTeamIdentifier = "APPLE_TEAM_IDENTIFIER"
