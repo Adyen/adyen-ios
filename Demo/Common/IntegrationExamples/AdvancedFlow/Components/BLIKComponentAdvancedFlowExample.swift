@@ -54,33 +54,16 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         ) {
             BLIKComponentConfiguration()
         }
-        // Example 1: Selectively customize the colors, explicitly mentioning data types for verbosity,
-        //  and using type inference for AdyenAttributes
-        //  Colors, elements, attributes are optional
         .theme(
-            AdyenTheme(
-                colors: AdyenColors(primary: .systemBlue),
-                elements: AdyenElements(
-                    buttons: AdyenButtonStyles(
-                        destructive: AdyenButtonStyle(
-                            backgroundColor: .systemRed,
-                            textColor: .white,
-                            disabledBackgroundColor: .systemGray,
-                            disabledTextColor: .lightGray
-                        )
-                        // other button styles are omitted, using defaults
-                    ),
-                    labels: AdyenLabelStyles(
-                        body: AdyenLabelStyle(
-                            font: AdyenFonts.default.bodyEmphasized
-                            // color is omitted, using default
-                        )
-                    )
-                ),
-                attributes: .init(
-                    cornerRadius: 8.0
+            AdyenTheme(colors: AdyenColors(primary: .systemBlue))
+                .bodyLabel(font: AdyenFonts.default.bodyEmphasized)
+                .destructiveButton(
+                    backgroundColor: .systemRed,
+                    textColor: .white,
+                    disabledBackgroundColor: .systemGray,
+                    disabledTextColor: .lightGray
                 )
-            )
+                .cornerRadius(8.0)
         )
         .onSubmit { [weak self] data, handler in
             self?.callPayments(with: data, completion: handler)

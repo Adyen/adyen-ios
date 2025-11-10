@@ -6,12 +6,12 @@
 
 import Foundation
 
-public struct AdyenAttributes: Equatable {
-    public var cornerRadius: CGFloat
+package struct AdyenAttributes: Equatable {
+    package var cornerRadius: CGFloat
 
-    public init(cornerRadius: CGFloat) {
+    internal init(cornerRadius: CGFloat) {
         self.cornerRadius = cornerRadius
     }
 
-    public static let `default` = AdyenAttributes(cornerRadius: AdyenUIConstants.defaultCornerRadius)
+    internal static let `default` = AdyenAttributes(cornerRadius: AdyenUIConstants.defaultCornerRadius)
 }
