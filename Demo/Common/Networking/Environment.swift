@@ -17,7 +17,8 @@ internal struct DemoAPIContext: AnyAPIContext {
     internal let environment: AnyAPIEnvironment
     
     internal let headers: [String: String] = [
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "X-API-Key": ConfigurationConstants.adyenServerKey
     ]
     
     internal let queryParameters: [URLQueryItem] = [
@@ -33,7 +34,7 @@ internal enum DemoCheckoutAPIEnvironment: String, AnyAPIEnvironment, CaseIterabl
     internal var baseURL: URL {
         switch self {
         case .test:
-            return URL(string: "https://checkout-web-dev.adyen.com/api")!
+            return URL(string: ConfigurationConstants.serverUrl)!
         case .local:
             return URL(string: "http://localhost:8080/checkout/v\(version)")!
         }

@@ -8,10 +8,12 @@ import Foundation
 
 /// Helper for reading configuration values from .xcconfig locally or environment variables on CI
 internal extension ConfigurationConstants {
-
+    
     enum SecretKey: String {
-        case clientKey = "ADYEN_CLIENT_KEY"
-        case merchantAccount = "ADYEN_MERCHANT_ACCOUNT"
+        case clientKey = "MERCHANT_CLIENT_KEY"
+        case serverUrl = "MERCHANT_SERVER_URL"
+        case merchantAccount = "MERCHANT_ACCOUNT"
+        case adyenServerKey = "ADYEN_SERVER_API_KEY"
         case appleTeamIdentifier = "APPLE_TEAM_IDENTIFIER"
         case applePayMerchantIdentifier = "APPLE_PAY_MERCHANT_IDENTIFIER"
     }
