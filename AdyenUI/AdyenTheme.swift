@@ -7,67 +7,172 @@
 import Adyen
 import UIKit
 
-// A shared instance of the  theme for easy access throughout your SDK
 public struct AdyenTheme {
+
+    package private(set) var colors: AdyenColors
+    package private(set) var attributes: AdyenAttributes
+    package private(set) var elements: AdyenElements
+
+    /// A default instance of AdyenTheme.
+    public static let `default` = AdyenTheme()
+
+    /// Initializes the theme with optional color overrides.
+    ///
+    /// - Parameter colors: The color scheme. Defaults to `.default`.
+    public init(colors: AdyenColors = .default) {
+        self.colors = colors
+        self.attributes = .default
+        self.elements = .default
+    }
     
-    public var currentColorScheme: AdyenColorScheme = .default
-    public var currentFonts: AdyenFonts = .default
-
-    // Available styles
-    public var buttonStyles = AdyenButtonStyles()
-    public var labelStyle = AdyenLabelStyle()
-    package var toggleStyle = AdyenToggleStyle()
-    package var textFieldStyle = AdyenTextFieldStyle()
-
-    // Initialize with a default ButtonStyle, LabelStyle and ToggleStyle if none is provided
-    package init(
-        button: AdyenButtonStyles = AdyenButtonStyles(),
-        label: AdyenLabelStyle = AdyenLabelStyle(),
-        textField: AdyenTextFieldStyle = AdyenTextFieldStyle(),
-        toggle: AdyenToggleStyle = AdyenToggleStyle()
+    /// Internal initializer that accepts elements (for SDK use).
+    internal init(
+        colors: AdyenColors = .default,
+        elements: AdyenElements = .default,
+        attributes: AdyenAttributes = .default
     ) {
-        self.buttonStyles = button
-        self.labelStyle = label
-        self.textFieldStyle = textField
-        self.toggleStyle = toggle
+        self.colors = colors
+        self.attributes = attributes
+        self.elements = elements
     }
-    
-    public init(colorScheme: AdyenColorScheme, fonts: AdyenFonts) {
-        self.currentColorScheme = colorScheme
-        self.currentFonts = fonts
-    }
-
-    public init() {}
 }
 
+// MARK: - Builder Methods
+
 extension AdyenTheme {
-    // Method to allow method chaining on the theme itself.
-
-    @discardableResult
-    public func label(_ labelStyle: AdyenLabelStyle) -> AdyenTheme {
-        var copy = self
-        copy.labelStyle = labelStyle
-        return copy
-    }
-
-    @discardableResult
-    public func button(_ buttonStyle: AdyenButtonStyles) -> AdyenTheme {
-        var copy = self
-        copy.buttonStyles = buttonStyle
-        return copy
+    
+    /// Returns a new theme with the specified colors.
+    /// - Parameter colors: The color scheme to apply.
+    /// - Returns: A new `AdyenTheme` instance.
+    public func colors(_ colors: AdyenColors) -> AdyenTheme {
+        AdyenTheme(
+            colors: colors,
+            elements: elements,
+            attributes: attributes
+        )
     }
     
-    @discardableResult
-    package func toggle(_ toggleStyle: AdyenToggleStyle) -> AdyenTheme {
-        var copy = self
-        copy.toggleStyle = toggleStyle
-        return copy
+    /// Returns a new theme with the specified corner radius.
+    /// - Parameter cornerRadius: The corner radius to apply to UI elements.
+    /// - Returns: A new `AdyenTheme` instance.
+    public func cornerRadius(_ cornerRadius: CGFloat) -> AdyenTheme {
+        AdyenTheme(
+            colors: colors,
+            elements: elements,
+            attributes: AdyenAttributes(cornerRadius: cornerRadius)
+        )
     }
     
-    @discardableResult
-    public func textfield(_ textfieldStyle: AdyenTextFieldStyle) -> AdyenTheme {
-        var copy = self
-        copy.textFieldStyle = textfieldStyle
-        return copy
+    /// Returns a new theme with the specified attributes.
+    /// - Parameter attributes: The UI attributes to apply.
+    /// - Returns: A new `AdyenTheme` instance.
+    internal func attributes(_ attributes: AdyenAttributes) -> AdyenTheme {
+        AdyenTheme(
+            colors: colors,
+            elements: elements,
+            attributes: attributes
+        )
+    }
+    
+    /// Customizes the body label style using UIKit primitives.
+    ///
+    /// All parameters are optional and use smart merging - only the specified values are changed,
+    /// while others retain their current values.
+    ///
+    /// - Parameters:
+    ///   - font: The font for the label. Defaults to current value.
+    ///   - color: The text color. Defaults to current value.
+    ///   - disabledColor: The disabled text color. Defaults to current value.
+    ///   - textAlignment: The text alignment. Defaults to current value.
+    /// - Returns: A new `AdyenTheme` instance with the updated body label style.
+    public func bodyLabel(
+        font: UIFont? = nil,
+        color: UIColor? = nil,
+        disabledColor: UIColor? = nil,
+        textAlignment: NSTextAlignment? = nil
+    ) -> AdyenTheme {
+        var newElements = elements
+        newElements.labels.body.font = font ?? newElements.labels.body.font
+        newElements.labels.body.color = color ?? newElements.labels.body.color
+        newElements.labels.body.disabledColor = disabledColor ?? newElements.labels.body.disabledColor
+        newElements.labels.body.textAlignment = textAlignment ?? newElements.labels.body.textAlignment
+        
+        return AdyenTheme(
+            colors: colors,
+            elements: newElements,
+            attributes: attributes
+        )
+    }
+    
+    /// Customizes the primary button style using UIKit primitives.
+    ///
+    /// All parameters are optional and use smart merging - only the specified values are changed,
+    /// while others retain their current values.
+    ///
+    /// - Parameters:
+    ///   - backgroundColor: The button background color. Defaults to current value.
+    ///   - textColor: The button text color. Defaults to current value.
+    ///   - disabledBackgroundColor: The disabled background color. Defaults to current value.
+    ///   - disabledTextColor: The disabled text color. Defaults to current value.
+    ///   - cornerRadius: The corner radius. Defaults to current value.
+    /// - Returns: A new `AdyenTheme` instance with the updated primary button style.
+    public func primaryButton(
+        backgroundColor: UIColor? = nil,
+        textColor: UIColor? = nil,
+        disabledBackgroundColor: UIColor? = nil,
+        disabledTextColor: UIColor? = nil,
+        cornerRadius: CGFloat? = nil
+    ) -> AdyenTheme {
+        var newElements = elements
+        newElements.buttons.primary.backgroundColor = backgroundColor ?? newElements.buttons.primary.backgroundColor
+        newElements.buttons.primary.textColor = textColor ?? newElements.buttons.primary.textColor
+        newElements.buttons.primary.disabledBackgroundColor = disabledBackgroundColor ?? newElements.buttons.primary.disabledBackgroundColor
+        newElements.buttons.primary.disabledTextColor = disabledTextColor ?? newElements.buttons.primary.disabledTextColor
+        
+        if let cornerRadius {
+            newElements.buttons.primary.cornerRadius = .fixed(cornerRadius)
+        }
+        
+        return AdyenTheme(
+            colors: colors,
+            elements: newElements,
+            attributes: attributes
+        )
+    }
+    
+    /// Customizes the destructive button style using UIKit primitives.
+    ///
+    /// All parameters are optional and use smart merging - only the specified values are changed,
+    /// while others retain their current values.
+    ///
+    /// - Parameters:
+    ///   - backgroundColor: The button background color. Defaults to current value.
+    ///   - textColor: The button text color. Defaults to current value.
+    ///   - disabledBackgroundColor: The disabled background color. Defaults to current value.
+    ///   - disabledTextColor: The disabled text color. Defaults to current value.
+    ///   - cornerRadius: The corner radius. Defaults to current value.
+    /// - Returns: A new `AdyenTheme` instance with the updated destructive button style.
+    public func destructiveButton(
+        backgroundColor: UIColor? = nil,
+        textColor: UIColor? = nil,
+        disabledBackgroundColor: UIColor? = nil,
+        disabledTextColor: UIColor? = nil,
+        cornerRadius: CGFloat? = nil
+    ) -> AdyenTheme {
+        var newElements = elements
+        newElements.buttons.destructive.backgroundColor = backgroundColor ?? newElements.buttons.destructive.backgroundColor
+        newElements.buttons.destructive.textColor = textColor ?? newElements.buttons.destructive.textColor
+        newElements.buttons.destructive.disabledBackgroundColor = disabledBackgroundColor ?? newElements.buttons.destructive.disabledBackgroundColor
+        newElements.buttons.destructive.disabledTextColor = disabledTextColor ?? newElements.buttons.destructive.disabledTextColor
+        
+        if let cornerRadius {
+            newElements.buttons.destructive.cornerRadius = .fixed(cornerRadius)
+        }
+        
+        return AdyenTheme(
+            colors: colors,
+            elements: newElements,
+            attributes: attributes
+        )
     }
 }

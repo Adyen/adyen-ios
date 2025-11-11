@@ -60,8 +60,8 @@ extension XCTestCase {
     }
     
     package func expect(
-        _ actualStyle: AdyenToggleStyle,
-        toMatch expectedStyle: AdyenToggleStyle,
+        _ actualStyle: AdyenSwitchStyle,
+        toMatch expectedStyle: AdyenSwitchStyle,
         file: StaticString = #file,
         line: UInt = #line
     ) {

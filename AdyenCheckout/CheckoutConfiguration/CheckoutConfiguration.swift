@@ -93,7 +93,7 @@ public struct CheckoutConfiguration {
     internal init(
         context: AdyenContext,
         configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:],
-        theme: AdyenTheme = .init()
+        theme: AdyenTheme = .default
     ) {
         self.context = context
         self.configurations = configurations
@@ -119,25 +119,15 @@ extension CheckoutConfiguration {
         return copy
     }
 
-    // Providing label customization without using AdyenTheme object
-    public func theme(label: AdyenLabelStyle) -> Self {
+    /// Sets the theme for the checkout configuration.
+    ///
+    /// Use `AdyenTheme` builder methods to customize colors, attributes, and elements:
+    ///
+    /// - Parameter theme: The AdyenTheme to apply to the checkout configuration.
+    /// - Returns: A modified CheckoutConfiguration with the specified theme.
+    public func theme(_ theme: AdyenTheme) -> Self {
         var copy = self
-        copy.theme.labelStyle = label
-        return copy
-    }
-    
-    // Providing button customization without using AdyenTheme object
-    public func theme(button: AdyenButtonStyles) -> Self {
-        var copy = self
-        copy.theme.buttonStyles = button
-        return copy
-    }
-    
-    // Providing label and button customization without using AdyenTheme object
-    public func theme(label labelStyle: AdyenLabelStyle, button buttonStyle: AdyenButtonStyles) -> Self {
-        var copy = self
-        copy.theme.labelStyle = labelStyle
-        copy.theme.buttonStyles = buttonStyle
+        copy.theme = theme
         return copy
     }
 }

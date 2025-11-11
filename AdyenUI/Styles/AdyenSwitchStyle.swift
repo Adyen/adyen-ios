@@ -7,7 +7,7 @@
 import UIKit
 
 /// Contains the styling customization options for a switch item in a form.
-package struct AdyenToggleStyle {
+package struct AdyenSwitchStyle {
     
     /// The title style.
     package var title: AdyenLabelStyle
@@ -20,16 +20,19 @@ package struct AdyenToggleStyle {
 
     package var cornerRadius: CornerRounding
     
+    /// A default instance of AdyenSwitchStyle.
+    internal static let `default` = AdyenSwitchStyle()
+    
     /// Initializes the form switch item style.
     ///
     /// - Parameter title: The title label style.
     /// - Parameter tintColor: The tint color.
     /// - Parameter backgroundColor: The background color.
     /// - Parameter cornerRadius: The corner radius.
-    package init(
+    internal init(
         title: AdyenLabelStyle = .init(),
-        tintColor: UIColor = AdyenColorScheme.default.primary,
-        backgroundColor: UIColor = AdyenColorScheme.default.container,
+        tintColor: UIColor = AdyenColors.default.primary,
+        backgroundColor: UIColor = AdyenColors.default.container,
         cornerRadius: CornerRounding = CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius)
     ) {
         self.title = title
@@ -40,12 +43,12 @@ package struct AdyenToggleStyle {
 }
 
 // This extension adds the method chaining to the AdyenToggleStyle struct.
-extension AdyenToggleStyle {
+extension AdyenSwitchStyle {
 
     /// Returns a new AdyenToggleStyle with the specified title.
     /// - Parameter title: The title to set.
     /// - Returns: A new `AdyenToggleStyle` instance.
-    package func title(_ title: AdyenLabelStyle) -> AdyenToggleStyle {
+    internal func title(_ title: AdyenLabelStyle) -> AdyenSwitchStyle {
         var newStyle = self
         newStyle.title = title
         return newStyle
@@ -54,7 +57,7 @@ extension AdyenToggleStyle {
     /// Returns a new AdyenToggleStyle with the specified tintColor.
     /// - Parameter tintColor: The tintColor to set.
     /// - Returns: A new `AdyenToggleStyle` instance.
-    package func tintColor(_ tintColor: UIColor) -> AdyenToggleStyle {
+    internal func tintColor(_ tintColor: UIColor) -> AdyenSwitchStyle {
         var newStyle = self
         newStyle.tintColor = tintColor
         return newStyle
@@ -63,7 +66,7 @@ extension AdyenToggleStyle {
     /// Returns a new AdyenToggleStyle with the specified backgroundColor.
     /// - Parameter backgroundColor: The backgroundColor to set.
     /// - Returns: A new `AdyenToggleStyle` instance.
-    package func backgroundColor(_ backgroundColor: UIColor) -> AdyenToggleStyle {
+    internal func backgroundColor(_ backgroundColor: UIColor) -> AdyenSwitchStyle {
         var newStyle = self
         newStyle.backgroundColor = backgroundColor
         return newStyle
@@ -72,7 +75,7 @@ extension AdyenToggleStyle {
     /// Returns a new AdyenToggleStyle with the specified cornerRadius.
     /// - Parameter cornerRadius: The cornerRadius to set.
     /// - Returns: A new `AdyenToggleStyle` instance.
-    package func cornerRadius(_ cornerRadius: CornerRounding) -> AdyenToggleStyle {
+    internal func cornerRadius(_ cornerRadius: CornerRounding) -> AdyenSwitchStyle {
         var newStyle = self
         newStyle.cornerRadius = cornerRadius
         return newStyle

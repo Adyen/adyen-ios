@@ -275,7 +275,7 @@ internal struct DemoAppSettings: Codable {
         style.navigation.tintColor = .red
 
         // TODO: Add new style here
-        let theme = AdyenTheme()
+        let theme = AdyenTheme.default
 
         let dropInConfig = DropInComponent.Configuration(
             style: style,

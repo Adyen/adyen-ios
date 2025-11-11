@@ -9,311 +9,289 @@ import XCTest
 
 final class AdyenThemeTextFieldTests: XCTestCase {
     
-    func test_textFieldMethod_defaultTheme() {
+    func test_defaultTheme_shouldUseDefaultTextFieldStyle() {
         // Given
         let defaultTheme = AdyenTheme()
     
         // Then
-        expect(defaultTheme.textFieldStyle, toMatch: AdyenTextFieldStyle())
+        expect(defaultTheme.elements.textField, toMatch: AdyenTextFieldStyle.default)
     }
 
-    func test_textfieldMethod_shouldUpdateBackgroundColor() {
+    func test_customTheme_withCustomTextFieldStyle_shouldUseProvidedValues() {
         // Given
-        let expectedValue = UIColor.green
-        let theme = AdyenTheme()
-        
-        var newTextFieldStyle = AdyenTextFieldStyle()
-        newTextFieldStyle.backgroundColor = expectedValue
+        let expectedBackgroundColor = UIColor.green
+        var customTextFieldStyle = AdyenTextFieldStyle()
+        customTextFieldStyle.backgroundColor = expectedBackgroundColor
         
         // When
-        let updatedTheme = theme.textfield(newTextFieldStyle)
+        let theme = AdyenTheme(
+            elements: AdyenElements(textField: customTextFieldStyle)
+        )
         
         // Then
-        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
+        XCTAssertEqual(theme.elements.textField.backgroundColor, expectedBackgroundColor)
     }
     
-    func test_textfieldMethod_shouldUpdateErrorColor() {
+    func test_customTheme_withCustomTextFieldErrorColor_shouldUseProvidedValues() {
         // Given
-        let expectedValue = UIColor.red
-        let theme = AdyenTheme()
-        
-        var newTextFieldStyle = AdyenTextFieldStyle()
-        newTextFieldStyle.errorColor = expectedValue
+        let expectedErrorColor = UIColor.red
+        var customTextFieldStyle = AdyenTextFieldStyle()
+        customTextFieldStyle.errorColor = expectedErrorColor
         
         // When
-        let updatedTheme = theme.textfield(newTextFieldStyle)
+        let theme = AdyenTheme(
+            elements: AdyenElements(textField: customTextFieldStyle)
+        )
         
         // Then
-        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
+        XCTAssertEqual(theme.elements.textField.errorColor, expectedErrorColor)
     }
     
-    func test_textfieldMethod_shouldUpdateBorderColor() {
+    func test_customTheme_withCustomTextFieldBorderColor_shouldUseProvidedValues() {
         // Given
-        let expectedValue = UIColor.black
-        let theme = AdyenTheme()
-        
-        var newTextFieldStyle = AdyenTextFieldStyle()
-        newTextFieldStyle.borderColor = expectedValue
+        let expectedBorderColor = UIColor.brown
+        var customTextFieldStyle = AdyenTextFieldStyle()
+        customTextFieldStyle.borderColor = expectedBorderColor
         
         // When
-        let updatedTheme = theme.textfield(newTextFieldStyle)
+        let theme = AdyenTheme(
+            elements: AdyenElements(textField: customTextFieldStyle)
+        )
         
         // Then
-        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
+        XCTAssertEqual(theme.elements.textField.borderColor, expectedBorderColor)
     }
     
-    func test_textFieldMethod_shouldUpdateCornerRadius() {
+    func test_customTheme_withCustomTextFieldCornerRadius_shouldUseProvidedValues() {
         // Given
         let expectedCornerRadius: CGFloat = 10.0
         let cornerRadius = CornerRounding.fixed(expectedCornerRadius)
-        let theme = AdyenTheme()
-        
-        var newTextFieldStyle = AdyenTextFieldStyle()
-        newTextFieldStyle.cornerRadius = cornerRadius
+        var customTextFieldStyle = AdyenTextFieldStyle()
+        customTextFieldStyle.cornerRadius = cornerRadius
         
         // When
-        let updatedTheme = theme.textfield(newTextFieldStyle)
-        
-        // Then
-        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
-    }
-    
-    func test_textFieldMethod_shouldUpdateBorderWidth() {
-        // Given
-        let expectedBorderWidth: CGFloat = 3.0
-        let theme = AdyenTheme()
-        
-        var newTextFieldStyle = AdyenTextFieldStyle()
-        newTextFieldStyle.borderWidth = expectedBorderWidth
-        
-        // When
-        let updatedTheme = theme.textfield(newTextFieldStyle)
-        
-        // Then
-        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
-    }
-    
-    func test_textFieldMethod_shouldUpdateTitleStyle() {
-        // Given
-        let expectedFontValue: UIFont = .preferredFont(forTextStyle: .title1)
-        let expectedTitleColorValue = UIColor.red
-        let expectedTextAlignmentValue: NSTextAlignment = .left
-        let theme = AdyenTheme()
-        
-        let newTitleStyle = AdyenLabelStyle(
-            font: expectedFontValue,
-            color: expectedTitleColorValue,
-            textAlignment: expectedTextAlignmentValue
+        let theme = AdyenTheme(
+            elements: AdyenElements(textField: customTextFieldStyle)
         )
         
-        var newTextFieldStyle = AdyenTextFieldStyle()
-        newTextFieldStyle.title = newTitleStyle
-        
-        // When
-        let updatedTheme = theme.textfield(newTextFieldStyle)
-        
         // Then
-        expect(updatedTheme.textFieldStyle.title, matches: newTitleStyle, property: "title")
+        XCTAssertEqual(theme.elements.textField.cornerRadius, cornerRadius)
     }
     
-    func test_textFieldMethod_shouldUpdateTextStyle() {
+    func test_customTheme_withCustomTextFieldBorderWidth_shouldUseProvidedValues() {
         // Given
-        let expectedFontValue: UIFont = .preferredFont(forTextStyle: .title2)
-        let expectedColorValue = UIColor.systemPink
-        let expectedTextAlignmentValue: NSTextAlignment = .left
-        let theme = AdyenTheme()
+        let expectedBorderWidth: CGFloat = 2.0
+        var customTextFieldStyle = AdyenTextFieldStyle()
+        customTextFieldStyle.borderWidth = expectedBorderWidth
         
-        let newTextStyle = AdyenLabelStyle(
-            font: expectedFontValue,
-            color: expectedColorValue,
-            textAlignment: expectedTextAlignmentValue
+        // When
+        let theme = AdyenTheme(
+            elements: AdyenElements(textField: customTextFieldStyle)
         )
         
-        var newTextFieldStyle = AdyenTextFieldStyle()
-        newTextFieldStyle.text = newTextStyle
-        
-        // When
-        let updatedTheme = theme.textfield(newTextFieldStyle)
-        
         // Then
-        expect(updatedTheme.textFieldStyle.text, matches: newTextStyle, property: "text")
+        XCTAssertEqual(theme.elements.textField.borderWidth, expectedBorderWidth)
     }
     
-    func test_textFieldMethod_shouldUpdatePlaceholderStyle() {
+    func test_customTheme_withCustomTextFieldTitle_shouldUseProvidedValues() {
         // Given
-        let expectedFontValue: UIFont = .preferredFont(forTextStyle: .footnote)
-        let expectedColorValue = UIColor.red
-        let expectedTextAlignmentValue: NSTextAlignment = .right
-        let theme = AdyenTheme()
+        let expectedFont = UIFont.preferredFont(forTextStyle: .body)
+        let expectedColor = UIColor.red
+        let customTitleStyle = AdyenLabelStyle(font: expectedFont, color: expectedColor)
         
-        let newPlaceholderTextStyle = AdyenLabelStyle(
-            font: expectedFontValue,
-            color: expectedColorValue,
-            textAlignment: expectedTextAlignmentValue
+        var customTextFieldStyle = AdyenTextFieldStyle()
+        customTextFieldStyle.title = customTitleStyle
+        
+        // When
+        let theme = AdyenTheme(
+            elements: AdyenElements(textField: customTextFieldStyle)
         )
         
-        var newTextFieldStyle = AdyenTextFieldStyle()
-        newTextFieldStyle.placeholder = newPlaceholderTextStyle
-        
-        // When
-        let updatedTheme = theme.textfield(newTextFieldStyle)
-        
         // Then
-        expect(updatedTheme.textFieldStyle.placeholder, matches: newPlaceholderTextStyle, property: "placeholder")
+        expect(theme.elements.textField.title, matches: customTitleStyle, property: "title")
     }
     
-    func test_textFieldMethod_shouldPreserveDefaultToggleStyle() {
+    func test_customTheme_withCustomTextFieldText_shouldUseProvidedValues() {
         // Given
-        let expectedFontValue: UIFont = .preferredFont(forTextStyle: .title2)
-        let expectedColorValue = UIColor.systemPink
-        let expectedTextAlignmentValue: NSTextAlignment = .left
-        let theme = AdyenTheme()
-    
-        let newTextStyle = AdyenLabelStyle(
-            font: expectedFontValue,
-            color: expectedColorValue,
-            textAlignment: expectedTextAlignmentValue
+        let expectedFont = UIFont.preferredFont(forTextStyle: .body)
+        let expectedColor = UIColor.red
+        let customTextStyle = AdyenLabelStyle(font: expectedFont, color: expectedColor)
+        
+        var customTextFieldStyle = AdyenTextFieldStyle()
+        customTextFieldStyle.text = customTextStyle
+        
+        // When
+        let theme = AdyenTheme(
+            elements: AdyenElements(textField: customTextFieldStyle)
         )
         
-        var newTextFieldStyle = AdyenTextFieldStyle()
-        newTextFieldStyle.text = newTextStyle
-        
-        // When
-        let updatedTheme = theme.textfield(newTextFieldStyle)
-        
         // Then
-        expect(updatedTheme.toggleStyle, toMatch: AdyenToggleStyle())
-        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
+        expect(theme.elements.textField.text, matches: customTextStyle, property: "text")
     }
     
-    func test_textFieldMethod_shouldPreserveDefaultLabelStyle() {
+    func test_customTheme_withCustomTextFieldPlaceholder_shouldUseProvidedValues() {
         // Given
-        let expectedErrorColorValue = UIColor.systemPink
-        let theme = AdyenTheme()
+        let expectedFont = UIFont.preferredFont(forTextStyle: .body)
+        let expectedColor = UIColor.red
+        let customPlaceholderStyle = AdyenLabelStyle(font: expectedFont, color: expectedColor)
         
-        var newTextFieldStyle = AdyenTextFieldStyle()
-        newTextFieldStyle.errorColor = expectedErrorColorValue
+        var customTextFieldStyle = AdyenTextFieldStyle()
+        customTextFieldStyle.placeholder = customPlaceholderStyle
         
         // When
-        let updatedTheme = theme.textfield(newTextFieldStyle)
+        let theme = AdyenTheme(
+            elements: AdyenElements(textField: customTextFieldStyle)
+        )
         
         // Then
-        expect(updatedTheme.labelStyle, toMatch: AdyenLabelStyle())
-        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
+        expect(theme.elements.textField.placeholder, matches: customPlaceholderStyle, property: "placeholder")
     }
     
-    func test_textFieldMethod_shouldPreserveDefaultButtonStyle() {
+    func test_customTheme_withCustomTextFieldStyle_shouldPreserveDefaultToggleStyle() {
         // Given
-        let theme = AdyenTheme()
-        let expectedFontValue: UIFont = .preferredFont(forTextStyle: .title2)
-        let expectedColorValue = UIColor.systemPink
-        let expectedTextAlignmentValue: NSTextAlignment = .left
+        let expectedFont = UIFont.preferredFont(forTextStyle: .body)
+        let expectedColor = UIColor.red
+        let customTextStyle = AdyenLabelStyle(font: expectedFont, color: expectedColor)
+        
+        var customTextFieldStyle = AdyenTextFieldStyle()
+        customTextFieldStyle.text = customTextStyle
+        
+        // When
+        let theme = AdyenTheme(
+            elements: AdyenElements(textField: customTextFieldStyle)
+        )
+        
+        // Then
+        expect(theme.elements.switch, toMatch: AdyenSwitchStyle.default)
+        expect(theme.elements.textField.text, matches: customTextStyle, property: "text")
+    }
+    
+    func test_customTheme_withCustomTextFieldStyle_shouldPreserveDefaultLabelStyles() {
+        // Given
+        let expectedErrorColor = UIColor.purple
+        var customTextFieldStyle = AdyenTextFieldStyle()
+        customTextFieldStyle.errorColor = expectedErrorColor
+        
+        // When
+        let theme = AdyenTheme(
+            elements: AdyenElements(textField: customTextFieldStyle)
+        )
+        
+        // Then
+        XCTAssertEqual(theme.elements.labels.body, AdyenLabelStyles.default.body)
+        XCTAssertEqual(theme.elements.labels.title, AdyenLabelStyles.default.title)
+        XCTAssertEqual(theme.elements.labels.footnote, AdyenLabelStyles.default.footnote)
+        XCTAssertEqual(theme.elements.labels.body, AdyenLabelStyles.default.body)
 
-        let newTextStyle = AdyenLabelStyle(
-            font: expectedFontValue,
-            color: expectedColorValue,
-            textAlignment: expectedTextAlignmentValue
-        )
-        
-        var newTextFieldStyle = AdyenTextFieldStyle()
-        newTextFieldStyle.text = newTextStyle
-        
-        // When
-        let updatedTheme = theme.textfield(newTextFieldStyle)
-        
-        // Then
-        expect(updatedTheme.buttonStyles, toMatch: AdyenButtonStyles.default)
-        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
+        XCTAssertEqual(theme.elements.textField.errorColor, expectedErrorColor)
     }
     
-    func test_textFieldMethod_shouldPreserveUpdatedToggleStyle() {
+    func test_customTheme_withCustomTextFieldStyle_shouldPreserveDefaultButtonStyles() {
         // Given
-        let theme = AdyenTheme()
-        let expectedToggleBackgroundColorValue = UIColor.yellow
-        let expectedLabelColorValue = UIColor.systemPink
-        let expectedToggleTintColorValue = UIColor.blue
-        let expectedTextAlignmentValue: NSTextAlignment = .left
-        let expectedFontValue: UIFont = .preferredFont(forTextStyle: .title2)
-        let expectedCornerRadius: CGFloat = 10.0
-        let cornerRadius = CornerRounding.fixed(expectedCornerRadius)
-    
-        let newTextStyle = AdyenLabelStyle(
-            font: expectedFontValue,
-            color: expectedLabelColorValue,
-            textAlignment: expectedTextAlignmentValue
-        )
+        let expectedFont = UIFont.preferredFont(forTextStyle: .body)
+        let expectedColor = UIColor.red
+        let customTextStyle = AdyenLabelStyle(font: expectedFont, color: expectedColor)
         
-        var newToggleStyle = AdyenToggleStyle()
-        newToggleStyle.backgroundColor = expectedToggleBackgroundColorValue
-        newToggleStyle.tintColor = expectedToggleTintColorValue
-        newToggleStyle.title = newTextStyle
-        newToggleStyle.cornerRadius = cornerRadius
-        
-        var newTextFieldStyle = AdyenTextFieldStyle()
-        newTextFieldStyle.text = newTextStyle
+        var customTextFieldStyle = AdyenTextFieldStyle()
+        customTextFieldStyle.text = customTextStyle
         
         // When
-        var updatedTheme = theme.toggle(newToggleStyle)
-        updatedTheme = updatedTheme.textfield(newTextFieldStyle)
-        
-        // Then
-        expect(updatedTheme.toggleStyle, toMatch: newToggleStyle)
-        expect(updatedTheme.toggleStyle.title, matches: newTextStyle, property: "title")
-        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
-    }
-    
-    func test_textFieldMethod_shouldPreserveUpdatedLabelStyle() {
-        // Given
-        let expectedFontValue: UIFont = .preferredFont(forTextStyle: .title2)
-        let expectedLabelColorValue = UIColor.systemPink
-        let expectedTextAlignment: NSTextAlignment = .left
-        let theme = AdyenTheme()
-    
-        let newTextStyle = AdyenLabelStyle(
-            font: expectedFontValue,
-            color: expectedLabelColorValue,
-            textAlignment: expectedTextAlignment
+        let theme = AdyenTheme(
+            elements: AdyenElements(textField: customTextFieldStyle)
         )
         
-        var newTextFieldStyle = AdyenTextFieldStyle()
-        
-        newTextFieldStyle.text = newTextStyle
-        
-        // When
-        var updatedTheme = theme.label(newTextStyle)
-        updatedTheme = updatedTheme.textfield(newTextFieldStyle)
-        
         // Then
-        expect(updatedTheme.labelStyle, matches: newTextStyle, property: "text")
-        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
+        expect(theme.elements.buttons, toMatch: AdyenButtonStyles.default)
+        expect(theme.elements.textField.text, matches: customTextStyle, property: "text")
     }
     
-    func test_textFieldMethod_shouldPreserveUpdatedButtonStyle() {
+    func test_customTheme_withCustomTextFieldAndToggleStyles_shouldPreserveBoth() {
         // Given
-        let expectedFontValue: UIFont = .preferredFont(forTextStyle: .title2)
-        let expectedLabelColorValue = UIColor.systemPink
-        let expectedButtonBackgroundColorValue = UIColor.blue
-        let expectedTextAlignment: NSTextAlignment = .left
-        let theme = AdyenTheme()
+        let expectedFont = UIFont.preferredFont(forTextStyle: .body)
+        let expectedColor = UIColor.red
+        let expectedToggleBackgroundColor = UIColor.systemOrange
+        let expectedTintColor = UIColor.systemPink
+        let expectedCornerRadius = 12.0
         
-        let newButtonStyle = AdyenButtonStyles(colorScheme: .init(primary: expectedButtonBackgroundColorValue))
+        let customTextStyle = AdyenLabelStyle(font: expectedFont, color: expectedColor)
 
-        let newTextStyle = AdyenLabelStyle(
-            font: expectedFontValue,
-            color: expectedLabelColorValue,
-            textAlignment: expectedTextAlignment
-        )
+        var customTextFieldStyle = AdyenTextFieldStyle()
+        customTextFieldStyle.text = customTextStyle
         
-        var newTextFieldStyle = AdyenTextFieldStyle()
-        
-        newTextFieldStyle.text = newTextStyle
+        var customToggleStyle = AdyenSwitchStyle()
+        customToggleStyle.backgroundColor = expectedToggleBackgroundColor
+        customToggleStyle.tintColor = expectedTintColor
+        customToggleStyle.cornerRadius = CornerRounding.fixed(expectedCornerRadius)
         
         // When
-        var updatedTheme = theme.button(newButtonStyle)
-        updatedTheme = updatedTheme.textfield(newTextFieldStyle)
+        let theme = AdyenTheme(
+            elements: AdyenElements(
+                switch: customToggleStyle,
+                textField: customTextFieldStyle
+            )
+        )
         
         // Then
-        XCTAssertEqual(updatedTheme.buttonStyles.primary.backgroundColor, expectedButtonBackgroundColorValue)
-        expect(updatedTheme.textFieldStyle, toMatch: newTextFieldStyle)
+        expect(theme.elements.switch, toMatch: customToggleStyle)
+        expect(theme.elements.textField.text, matches: customTextStyle, property: "text")
+    }
+    
+    func test_customTheme_withCustomTextFieldAndLabelStyles_shouldPreserveBoth() {
+        // Given
+        let expectedFont = UIFont.preferredFont(forTextStyle: .body)
+        let expectedColor = UIColor.red
+        let expectedLabelColor = UIColor.brown
+        
+        let customTextStyle = AdyenLabelStyle(font: expectedFont, color: expectedColor)
+        let customLabelStyle = AdyenLabelStyle(
+            font: expectedFont,
+            color: expectedLabelColor
+        )
+
+        var customTextFieldStyle = AdyenTextFieldStyle()
+        customTextFieldStyle.text = customTextStyle
+        
+        // When
+        let theme = AdyenTheme(
+            elements: AdyenElements(
+                labels: AdyenLabelStyles(body: customLabelStyle),
+                textField: customTextFieldStyle
+            )
+        )
+        
+        // Then
+        expect(theme.elements.labels.body, toMatch: customLabelStyle)
+        expect(theme.elements.textField.text, matches: customTextStyle, property: "text")
+    }
+    
+    func test_customTheme_withCustomTextFieldAndButtonStyles_shouldPreserveBoth() {
+        // Given
+        let expectedFont = UIFont.preferredFont(forTextStyle: .body)
+        let expectedColor = UIColor.red
+        let expectedButtonBackgroundColor = UIColor.blue
+        
+        let customTextStyle = AdyenLabelStyle(font: expectedFont, color: expectedColor)
+        
+        var customTextFieldStyle = AdyenTextFieldStyle()
+        customTextFieldStyle.text = customTextStyle
+        
+        let customButtonStyle = AdyenButtonStyle(
+            backgroundColor: expectedButtonBackgroundColor,
+            textColor: .white,
+            disabledBackgroundColor: .gray,
+            disabledTextColor: .lightGray
+        )
+        
+        // When
+        let theme = AdyenTheme(
+            elements: AdyenElements(
+                buttons: AdyenButtonStyles(primary: customButtonStyle),
+                textField: customTextFieldStyle
+            )
+        )
+        
+        // Then
+        XCTAssertEqual(theme.elements.buttons.primary, customButtonStyle)
+        expect(theme.elements.textField.text, matches: customTextStyle, property: "text")
     }
 }

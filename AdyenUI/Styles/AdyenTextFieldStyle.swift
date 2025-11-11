@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 
-public struct AdyenTextFieldStyle {
+package struct AdyenTextFieldStyle {
     
     /// The title style.
     package var title: AdyenLabelStyle
@@ -40,20 +40,20 @@ public struct AdyenTextFieldStyle {
     package var borderWidth: CGFloat = AdyenUIConstants.defaultBorderWidth
     
     /// A default instance of AdyenTextFieldStyle.
-    public static let `default` = AdyenTextFieldStyle()
+    internal static let `default` = AdyenTextFieldStyle()
 
     /// Initializes a new AdyenTextFieldStyle with default values.
-    public init(
+    internal init(
         title: AdyenLabelStyle,
         text: AdyenLabelStyle,
         placeholder: AdyenLabelStyle,
         borderWidth: CGFloat,
         cornerRadius: CornerRounding,
-        backgroundColor: UIColor = AdyenColorScheme.default.background,
-        containerColor: UIColor = AdyenColorScheme.default.container,
-        errorColor: UIColor = AdyenColorScheme.default.destructive,
-        borderColor: UIColor = AdyenColorScheme.default.container,
-        borderActiveColor: UIColor = AdyenColorScheme.default.outlineActive
+        backgroundColor: UIColor = AdyenColors.default.background,
+        containerColor: UIColor = AdyenColors.default.container,
+        errorColor: UIColor = AdyenColors.default.destructive,
+        borderColor: UIColor = AdyenColors.default.container,
+        borderActiveColor: UIColor = AdyenColors.default.outlineActive
     ) {
         self.title = title
         self.text = text
@@ -67,16 +67,16 @@ public struct AdyenTextFieldStyle {
         self.placeholder = placeholder
     }
 
-    public init() {
+    internal init() {
         self.title = AdyenLabelStyle.default.font(AdyenFonts.default.bodyEmphasized)
         self.text = AdyenLabelStyle.default
-        self.placeholder = AdyenLabelStyle.default.color(AdyenColorScheme.default.textSecondary)
-        self.backgroundColor = AdyenColorScheme.default.background
-        self.containerColor = AdyenColorScheme.default.container
-        self.errorColor = AdyenColorScheme.default.destructive
+        self.placeholder = AdyenLabelStyle.default.color(AdyenColors.default.textSecondary)
+        self.backgroundColor = AdyenColors.default.background
+        self.containerColor = AdyenColors.default.container
+        self.errorColor = AdyenColors.default.destructive
         self.cornerRadius = CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius)
-        self.borderColor = AdyenColorScheme.default.container
-        self.borderActiveColor = AdyenColorScheme.default.outlineActive
+        self.borderColor = AdyenColors.default.container
+        self.borderActiveColor = AdyenColors.default.outlineActive
         self.borderWidth = AdyenUIConstants.defaultBorderWidth
     }
 }
@@ -87,7 +87,7 @@ extension AdyenTextFieldStyle {
     /// Returns a new style with the specified background color.
     /// - Parameter backgroundColor: The color to set.
     /// - Returns: A new `AdyenTextFieldStyle` instance.
-    package func backgroundColor(_ backgroundColor: UIColor) -> AdyenTextFieldStyle {
+    internal func backgroundColor(_ backgroundColor: UIColor) -> AdyenTextFieldStyle {
         var newStyle = self
         newStyle.backgroundColor = backgroundColor
         return newStyle
@@ -96,7 +96,7 @@ extension AdyenTextFieldStyle {
     /// Returns a new style with the specified background color of the text input container.
     /// - Parameter containerColor: The color to set.
     /// - Returns: A new `AdyenTextFieldStyle` instance.
-    package func containerColor(_ containerColor: UIColor) -> AdyenTextFieldStyle {
+    internal func containerColor(_ containerColor: UIColor) -> AdyenTextFieldStyle {
         var newStyle = self
         newStyle.containerColor = containerColor
         return newStyle
@@ -105,7 +105,7 @@ extension AdyenTextFieldStyle {
     /// Returns a new style with the specified error color.
     /// - Parameter errorColor: The color to set.
     /// - Returns: A new `AdyenTextFieldStyle` instance.
-    package func errorColor(_ errorColor: UIColor) -> AdyenTextFieldStyle {
+    internal func errorColor(_ errorColor: UIColor) -> AdyenTextFieldStyle {
         var newStyle = self
         newStyle.errorColor = errorColor
         return newStyle
@@ -114,7 +114,7 @@ extension AdyenTextFieldStyle {
     /// Returns a new style with the specified corner radius.
     /// - Parameter cornerRadius: The corner radius to set.
     /// - Returns: A new `AdyenTextFieldStyle` instance.
-    package func cornerRadius(_ cornerRadius: CornerRounding) -> AdyenTextFieldStyle {
+    internal func cornerRadius(_ cornerRadius: CornerRounding) -> AdyenTextFieldStyle {
         var newStyle = self
         newStyle.cornerRadius = cornerRadius
         return newStyle
@@ -123,7 +123,7 @@ extension AdyenTextFieldStyle {
     /// Returns a new style with the specified border color.
     /// - Parameter borderColor: The color to set.
     /// - Returns: A new `AdyenTextFieldStyle` instance.
-    package func borderColor(_ borderColor: UIColor) -> AdyenTextFieldStyle {
+    internal func borderColor(_ borderColor: UIColor) -> AdyenTextFieldStyle {
         var newStyle = self
         newStyle.borderColor = borderColor
         return newStyle
@@ -132,7 +132,7 @@ extension AdyenTextFieldStyle {
     /// Returns a new style with the specified border color for active state.
     /// - Parameter borderActiveColor: The color to set.
     /// - Returns: A new `AdyenTextFieldStyle` instance.
-    package func borderActiveColor(_ borderActiveColor: UIColor) -> AdyenTextFieldStyle {
+    internal func borderActiveColor(_ borderActiveColor: UIColor) -> AdyenTextFieldStyle {
         var newStyle = self
         newStyle.borderActiveColor = borderActiveColor
         return newStyle
@@ -141,7 +141,7 @@ extension AdyenTextFieldStyle {
     /// Returns a new style with the specified border width.
     /// - Parameter borderWidth: The border width to set.
     /// - Returns: A new `AdyenTextFieldStyle` instance.
-    package func borderWidth(_ borderWidth: CGFloat) -> AdyenTextFieldStyle {
+    internal func borderWidth(_ borderWidth: CGFloat) -> AdyenTextFieldStyle {
         var newStyle = self
         newStyle.borderWidth = borderWidth
         return newStyle

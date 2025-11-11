@@ -18,7 +18,7 @@ public final class FormButtonItem: FormItem {
     public var style: FormButtonItemStyle
 
     /// Indicates the item's UI styling.
-    public var buttonStyle: AdyenButtonStyle = AdyenButtonStyles.default.primary
+    internal var buttonStyle: AdyenButtonStyle = AdyenButtonStyles.default.primary
 
     public var identifier: String?
     
@@ -41,7 +41,7 @@ public final class FormButtonItem: FormItem {
     /// Initializes the button item.
     ///
     /// - Parameter style: The item's UI style.
-    public init(buttonStyle: AdyenButtonStyle = AdyenButtonStyle.primary(for: .default)) {
+    package init(buttonStyle: AdyenButtonStyle = AdyenButtonStyle.primary(for: .default)) {
         self.buttonStyle = buttonStyle
         self.style = .init(button: .init(title: .init(font: .preferredFont(forTextStyle: .body), color: .red)))
     }

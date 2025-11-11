@@ -39,8 +39,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     override public var accessibilityLabelView: UIView? { textField }
 
-    // TODO: TO be passed as a dependency by FormViewController.ItemManager
-    package let style: AdyenTextFieldStyle = .init()
+    // TODO: To be passed as a dependency by FormViewController.ItemManager
+    package let theme: AdyenTheme = .default
 
     /// Initializes the text item view.
     ///
@@ -62,7 +62,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
             self?.alertLabel.text = newValue
         }
     
-        applyAdyenStyle(style)
+        apply(style: theme.elements.textField)
     }
     
     override public func reset() {
@@ -156,7 +156,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         }
         
         accessoryStackView.isHidden = false
-        accessoryView.tintColor = AdyenTheme().currentColorScheme.primary
+        accessoryView.tintColor = theme.colors.primary
         accessoryStackView.addArrangedSubview(accessoryView)
     }
     
@@ -290,7 +290,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// Applies all the style properties from AdyenTextFieldStyle to the FormTextItemView.
     ///
     /// - Parameter style: The style to apply.
-    private func applyAdyenStyle(_ style: AdyenTextFieldStyle) {
+    private func apply(style: AdyenTextFieldStyle) {
         // Title
         titleLabel.font = style.title.font
         titleLabel.textColor = style.title.color
@@ -322,7 +322,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     }
 
     private func updateBorderStyling() {
-        let borderColor = isEditing ? style.borderActiveColor : style.borderColor
+        let borderColor = isEditing ? theme.elements.textField.borderActiveColor : theme.elements.textField.borderColor
         entryTextStackView.layer.borderColor = borderColor.cgColor
     }
 }

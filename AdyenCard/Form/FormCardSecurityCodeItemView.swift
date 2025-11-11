@@ -22,7 +22,7 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
             let number = cardsType == CardType.americanExpress ? "4" : "3"
             let localizedPlaceholder = localizedString(.cardCvcItemPlaceholderDigits, item.localizationParameters, number)
 
-            if let textField = self?.textField, let style = self?.style {
+            if let textField = self?.textField, let style = self?.theme.elements.textField {
                 textField.apply(placeholderText: localizedPlaceholder, with: style.placeholder)
                 textField.accessibilityLabel = self?.accessibilityLabel(placeholder: localizedPlaceholder)
             }

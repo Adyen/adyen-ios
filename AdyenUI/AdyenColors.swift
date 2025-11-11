@@ -36,7 +36,7 @@ internal enum DefaultColorsDark {
     static let outlinePrimaryActive = UIColor.color(hex: 0xFFFFFF)
 }
 
-public struct AdyenColorScheme: Equatable {
+public struct AdyenColors: Equatable {
 
     public var background: UIColor
     public var container: UIColor
@@ -55,8 +55,7 @@ public struct AdyenColorScheme: Equatable {
 
     // MARK: - Initializers
 
-    // A static default ColorScheme
-    public static var `default`: AdyenColorScheme = .init()
+    public static var `default`: AdyenColors = .init()
 
     private init() {
         self.background = UIColor { traitCollection in
@@ -132,7 +131,7 @@ public struct AdyenColorScheme: Equatable {
         text: UIColor? = nil,
         textSecondary: UIColor? = nil
     ) {
-        let defaultScheme = AdyenColorScheme.default
+        let defaultScheme = AdyenColors.default
 
         self.background = background ?? defaultScheme.background
         self.container = container ?? defaultScheme.container

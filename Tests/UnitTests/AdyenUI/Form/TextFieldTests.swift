@@ -145,8 +145,8 @@ final class TextField_AdyenLabelStyle_Tests: XCTestCase {
     // MARK: - Helpers
 
     func makeAdyenlabelStyle(
-        font: UIFont = AdyenTheme().currentFonts.bodyEmphasized,
-        color: UIColor = AdyenTheme().currentColorScheme.textOnDisabled,
+        font: UIFont = AdyenFonts.default.bodyEmphasized,
+        color: UIColor = AdyenColors.default.textOnDisabled,
         textAlignment: NSTextAlignment = .center
     ) -> AdyenLabelStyle {
         AdyenLabelStyle(
