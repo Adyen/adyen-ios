@@ -10,18 +10,6 @@
 #endif
 import Foundation
 import UIKit
-#if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
-#endif
-
-internal protocol ComponentContainerViewModelDelegate: AnyObject {
-    func didSubmit(
-        _ data: PaymentComponentData,
-        from component: PaymentComponent
-    )
-    func didFail(with error: Error)
-    func didCancel(component: PaymentComponent)
-}
 
 internal protocol ComponentContainerViewModelProtocol {
     var componentViewController: UIViewController { get }
@@ -32,29 +20,36 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     // MARK: - Properties
 
-    weak var delegate: ComponentContainerViewModelDelegate?
+    internal weak var router: ComponentContainerRouting?
     private let component: PresentableComponent
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
+    private weak var dropInComponent: DropInComponent?
+    private weak var dropInComponentDelegate: DropInComponentDelegate?
     private weak var cardComponentDelegate: CardComponentDelegate?
     private weak var partialPaymentDelegate: PartialPaymentDelegate?
+    private let onCancel: (() -> Void)?
 
     // MARK: - Initializers
 
     internal init(
         component: PresentableComponent,
         context: AdyenContext,
-        delegate: ComponentContainerViewModelDelegate,
         configuration: DropInComponent.Configuration,
+        dropInComponent: DropInComponent,
+        dropInComponentDelegate: DropInComponentDelegate?,
         cardComponentDelegate: CardComponentDelegate?,
-        partialPaymentDelegate: PartialPaymentDelegate?
+        partialPaymentDelegate: PartialPaymentDelegate?,
+        onCancel: (() -> Void)? = nil
     ) {
         self.component = component
         self.context = context
-        self.delegate = delegate
         self.configuration = configuration
+        self.dropInComponent = dropInComponent
+        self.dropInComponentDelegate = dropInComponentDelegate
         self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
+        self.onCancel = onCancel
 
         setupComponent()
     }
@@ -66,11 +61,15 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     }
 
     internal func cancel() {
-        component.cancelIfNeeded()
+        guard let dropInComponent else { return }
 
         if let component = (component as? PaymentComponent) {
-            delegate?.didCancel(component: component)
+            dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
         }
+        
+        stopLoading()
+        onCancel?()
+        router?.dismiss(completion: nil)
     }
 
     // MARK: - Private
@@ -81,16 +80,9 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
     }
-    
-    private var actionComponent: AdyenActionComponent {
-        let actionComponent = AdyenActionComponent(context: context)
-        actionComponent.delegate = self
-        actionComponent.presentationDelegate = self
-        actionComponent.configuration.style = configuration.style.actionComponent
-        actionComponent.configuration.localizationParameters = configuration.localizationParameters
-        actionComponent.configuration.threeDS = configuration.actionComponent.threeDS
-        actionComponent.configuration.twint = configuration.actionComponent.twint
-        return actionComponent
+        
+    private func stopLoading() {
+        component.stopLoading()
     }
 }
 
@@ -98,73 +90,59 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
 extension ComponentContainerViewModel: PaymentComponentDelegate {
 
-    func didSubmit(
+    internal func didSubmit(
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
+        guard let dropInComponent else { return }
+        
         let checkoutAttemptId = component.context.analyticsProvider?.checkoutAttemptId
         let updatedData = data.replacing(
             checkoutAttemptId: checkoutAttemptId
         )
 
         guard updatedData.browserInfo == nil else {
-            delegate?.didSubmit(updatedData, from: component)
+            dropInComponentDelegate?.didSubmit(updatedData, from: component, in: dropInComponent)
             return
         }
-        updatedData.dataByAddingBrowserInfo { [weak self] in
+        updatedData.dataByAddingBrowserInfo { [weak self] newData in
             guard let self else { return }
-            delegate?.didSubmit($0, from: component)
+            dropInComponentDelegate?.didSubmit(newData, from: component, in: dropInComponent)
         }
     }
     
-    func didFail(
+    internal func didFail(
         with error: any Error,
-        from component: any Adyen.PaymentComponent
+        from component: any PaymentComponent
     ) {
+        guard let dropInComponent else { return }
+        
         if case ComponentError.cancelled = error {
             cancel()
         } else {
-            delegate?.didFail(with: error)
+            dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
         }
     }
-
-    // MARK: - Private
-
 }
+
+// MARK: - PresentationDelegate
+
+extension ComponentContainerViewModel: PresentationDelegate {
+
+    internal func present(component: any PresentableComponent) {
+        router?.present(component: component)
+    }
+}
+
+// MARK: - ReadyToSubmitPaymentComponentDelegate
 
 extension ComponentContainerViewModel: ReadyToSubmitPaymentComponentDelegate {
 
-    func showConfirmation(
+    internal func showConfirmation(
         for component: InstantPaymentComponent,
         with order: PartialPaymentOrder?
     ) {
         // TODO: - Handle gift card balance confirmation
         // 1. Present preselected payment method.
-    }
-}
-
-extension ComponentContainerViewModel: ActionComponentDelegate {
-
-    func didProvide(_ data: Adyen.ActionComponentData, from component: any Adyen.ActionComponent) {
-        // TODO: - Handle action details
-    }
-    
-    func didComplete(from component: any Adyen.ActionComponent) {
-        // TODO: - Handle action complete
-    }
-    
-    func didFail(with error: any Error, from component: any Adyen.ActionComponent) {
-        // TODO: - Handle action cancellation
-    }
-
-    func didOpenExternalApplication(component: any ActionComponent) {
-        // TODO: - Handle app redirect
-    }
-}
-
-extension ComponentContainerViewModel: PresentationDelegate {
-
-    func present(component: any Adyen.PresentableComponent) {
-        // TODO: - Handle subsequent presentations
     }
 }

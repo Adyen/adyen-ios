@@ -238,7 +238,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         
         XCTAssertFalse(sut.payButton.showsActivityIndicator)
         sut.payButton.showsActivityIndicator = true
-        sut.stopLoadingIfNeeded()
+        sut.stopLoading()
         XCTAssertFalse(sut.payButton.showsActivityIndicator)
     }
 

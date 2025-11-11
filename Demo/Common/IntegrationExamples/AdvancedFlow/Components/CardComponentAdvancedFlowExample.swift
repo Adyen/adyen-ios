@@ -99,7 +99,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     }
 
     @objc private func cancelPressed() {
-        cardComponent?.cancelIfNeeded()
+        cardComponent?.cancel()
         presenter?.dismiss(completion: nil)
     }
 

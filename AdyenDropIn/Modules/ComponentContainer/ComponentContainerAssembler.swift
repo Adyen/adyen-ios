@@ -14,8 +14,9 @@ import UIKit
 internal protocol ComponentContainerAssemblerProtocol {
     func resolveComponentContainerRouter(
         for component: PresentableComponent,
-        delegate: ComponentContainerRouterDelegate
-    ) -> ComponentContainerRouterProtocol
+        delegate: ComponentContainerRouterListener,
+        onCancel: (() -> Void)?
+    ) -> Router
 }
 
 internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol {
@@ -24,6 +25,8 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
 
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
+    private let dropInComponent: DropInComponent
+    private let dropInComponentDelegate: DropInComponentDelegate?
     private let cardComponentDelegate: CardComponentDelegate?
     private let partialPaymentDelegate: PartialPaymentDelegate?
 
@@ -32,11 +35,15 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
     internal init(
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
+        dropInComponent: DropInComponent,
+        dropInComponentDelegate: DropInComponentDelegate?,
         cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.context = context
         self.configuration = configuration
+        self.dropInComponent = dropInComponent
+        self.dropInComponentDelegate = dropInComponentDelegate
         self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
     }
@@ -45,19 +52,25 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
 
     internal func resolveComponentContainerRouter(
         for component: PresentableComponent,
-        delegate: ComponentContainerRouterDelegate
-    ) -> ComponentContainerRouterProtocol {
-        let router = ComponentContainerRouter(delegate: delegate)
+        delegate: ComponentContainerRouterListener,
+        onCancel: (() -> Void)?
+    ) -> Router {
         let viewModel = ComponentContainerViewModel(
             component: component,
             context: context,
-            delegate: router,
             configuration: configuration,
+            dropInComponent: dropInComponent,
+            dropInComponentDelegate: dropInComponentDelegate,
             cardComponentDelegate: cardComponentDelegate,
-            partialPaymentDelegate: partialPaymentDelegate
+            partialPaymentDelegate: partialPaymentDelegate,
+            onCancel: onCancel
         )
-        let view = ComponentContainerViewController(viewModel: viewModel)
-        router.view = view
+        let viewController = ComponentContainerViewController(viewModel: viewModel)
+        let router = ComponentContainerRouter(
+            viewController: viewController,
+            listener: delegate
+        )
+        viewModel.router = router
         return router
     }
 }

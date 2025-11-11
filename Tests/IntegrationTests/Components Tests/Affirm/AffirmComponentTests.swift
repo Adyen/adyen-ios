@@ -138,7 +138,7 @@ class AffirmComponentTests: XCTestCase {
             XCTAssertEqual(details.billingAddress, expectedBillingAddress)
             XCTAssertEqual(details.deliveryAddress, expectedDeliveryAddress)
             
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             didSubmitExpectation.fulfill()
         }
         

@@ -12,33 +12,38 @@ import AdyenNetworking
 import Foundation
 import UIKit
 
-internal protocol DropInAssemblerProtocol {
-    func resolveDropInRootView() -> UIViewController
-}
-
-internal class DropInAssembler {
+internal struct DropInAssembler {
 
     // MARK: - Properties
 
+    private let title: String
     private let paymentMethods: PaymentMethods
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
     private let componentManager: ComponentManager
+    private let dropInComponent: DropInComponent
+    private let dropInComponentDelegate: DropInComponentDelegate?
     private let cardComponentDelegate: CardComponentDelegate?
     private let partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
 
     internal init(
+        title: String,
         paymentMethods: PaymentMethods,
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
+        dropInComponent: DropInComponent,
+        dropInComponentDelegate: DropInComponentDelegate?,
         cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
+        self.title = title
         self.paymentMethods = paymentMethods
         self.context = context
         self.configuration = configuration
+        self.dropInComponent = dropInComponent
+        self.dropInComponentDelegate = dropInComponentDelegate
         self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
         self.componentManager = ComponentManager(
@@ -54,15 +59,18 @@ internal class DropInAssembler {
 
     // MARK: - Public
 
-    internal func resolveDropInRootRouter() -> DropInRouterProtocol {
+    internal func resolveDropInRouter() -> DropInRouting {
         let apiClient = resolveAPIClient()
 
         let viewModel = DropInViewModel(
+            title: title,
             componentManager: componentManager,
             apiClient: apiClient,
             paymentMethods: paymentMethods,
             context: context,
-            configuration: configuration
+            configuration: configuration,
+            dropInComponent: dropInComponent,
+            dropInComponentDelegate: dropInComponentDelegate
         )
 
         let router = DropInRouter(
@@ -71,6 +79,7 @@ internal class DropInAssembler {
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler
         )
+        viewModel.router = router
 
         return router
     }
@@ -88,8 +97,12 @@ internal class DropInAssembler {
 
     private var preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
         PreselectedPaymentMethodAssembler(
+            paymentMethodListAssembler: paymentMethodListAssembler,
+            componentContainerAssembler: componentContainerAssembler,
             context: context,
             configuration: configuration,
+            dropInComponent: dropInComponent,
+            dropInComponentDelegate: dropInComponentDelegate,
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
@@ -97,9 +110,12 @@ internal class DropInAssembler {
 
     private var paymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         PaymentMethodListAssembler(
+            componentContainerAssembler: componentContainerAssembler,
             componentManager: componentManager,
             context: context,
             configuration: configuration,
+            dropInComponent: dropInComponent,
+            dropInComponentDelegate: dropInComponentDelegate,
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
@@ -109,6 +125,8 @@ internal class DropInAssembler {
         ComponentContainerAssembler(
             context: context,
             configuration: configuration,
+            dropInComponent: dropInComponent,
+            dropInComponentDelegate: dropInComponentDelegate,
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )

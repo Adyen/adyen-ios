@@ -8,12 +8,6 @@ import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
 
-internal protocol PaymentMethodListViewModelDelegate: AnyObject {
-    func didCancel(completion: (() -> Void)?)
-    func didSelect(_ component: PresentableComponent)
-}
-
-@objc
 internal protocol PaymentMethodListViewModelProtocol {
     var paymentMethodListView: UIViewController { get }
     func cancel()
@@ -23,16 +17,19 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     // MARK: - Properties
 
-    private weak var delegate: PaymentMethodListViewModelDelegate?
+    internal weak var router: PaymentMethodListRouting?
     private let paymentMethodListComponent: PaymentMethodListComponent
+    private weak var dropInComponent: DropInComponent?
+    private weak var dropInComponentDelegate: DropInComponentDelegate?
 
     // MARK: - Initializers
 
     internal init(
         context: AdyenContext,
         componentManager: ComponentManager,
-        delegate: PaymentMethodListViewModelDelegate,
-        configuration: DropInComponent.Configuration
+        configuration: DropInComponent.Configuration,
+        dropInComponent: DropInComponent,
+        dropInComponentDelegate: DropInComponentDelegate?
     ) {
         let components = componentManager.sections
         self.paymentMethodListComponent = PaymentMethodListComponent(
@@ -40,9 +37,10 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             components: components,
             style: configuration.style.listComponent
         )
-        self.delegate = delegate
         self.paymentMethodListComponent.localizationParameters = configuration.localizationParameters
         self.paymentMethodListComponent.delegate = self
+        self.dropInComponent = dropInComponent
+        self.dropInComponentDelegate = dropInComponentDelegate
     }
 
     // MARK: - PaymentMethodListViewModelProtocol
@@ -52,11 +50,18 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     internal func cancel() {
-        // TODO: - Handle cancellation
-        delegate?.didCancel(completion: nil)
+        router?.dismiss(completion: nil)
     }
 
     // MARK: - Private
+    
+    private func startLoading(for component: any PaymentComponent) {
+        paymentMethodListComponent.startLoading(for: component)
+    }
+    
+    private func stopLoading() {
+        paymentMethodListComponent.stopLoading()
+    }
 }
 
 extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
@@ -66,18 +71,22 @@ extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
     internal func didLoad(
         _ paymentMethodListComponent: PaymentMethodListComponent
     ) {
-        // TODO: - Handle analytics
+        // TODO: - Handle analytics on list load.
     }
 
     internal func didSelect(
         _ component: any PaymentComponent,
         in paymentMethodListComponent: PaymentMethodListComponent
     ) {
-        // TODO: - Handle non presentable component
+        startLoading(for: component)
+        
         switch component {
         case let component as PresentableComponent:
-            delegate?.didSelect(component)
+            router?.present(component) { [weak self] in
+                self?.stopLoading()
+            }
         case let component as PaymentInitiable:
+            (component as? PaymentComponent)?.delegate = self
             component.initiatePayment()
         default:
             break
@@ -90,5 +99,46 @@ extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
         completion: @escaping Adyen.Completion<Bool>
     ) {
         // TODO: - Logic to delete stored payment method
+    }
+}
+
+// MARK: - PaymentComponentDelegate
+
+extension PaymentMethodListViewModel: PaymentComponentDelegate {
+    
+    internal func didSubmit(
+        _ data: PaymentComponentData,
+        from component: any PaymentComponent
+    ) {
+        guard let dropInComponent else { return }
+        
+        let checkoutAttemptId = component.context.analyticsProvider?.checkoutAttemptId
+        let updatedData = data.replacing(
+            checkoutAttemptId: checkoutAttemptId
+        )
+
+        guard updatedData.browserInfo == nil else {
+            dropInComponentDelegate?.didSubmit(data, from: component, in: dropInComponent)
+            return
+        }
+        updatedData.dataByAddingBrowserInfo { [weak self] newData in
+            guard let self else { return }
+            dropInComponentDelegate?.didSubmit(newData, from: component, in: dropInComponent)
+        }
+    }
+    
+    internal func didFail(
+        with error: any Error,
+        from component: any PaymentComponent
+    ) {
+        defer { stopLoading() }
+        
+        guard let dropInComponent else { return }
+
+        if case ComponentError.cancelled = error {
+            cancel()
+        } else {
+            dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
+        }
     }
 }

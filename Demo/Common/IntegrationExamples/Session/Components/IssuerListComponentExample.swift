@@ -145,7 +145,7 @@ private extension IssuerListComponentExample {
     }
     
     @objc private func cancelPressed() {
-        issuerListComponent?.cancelIfNeeded()
+        issuerListComponent?.cancel()
         presenter?.dismiss(completion: nil)
     }
 }

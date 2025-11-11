@@ -8,7 +8,6 @@ import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
 
-@objc
 internal protocol PreselectedPaymentMethodViewModelProtocol {
     var paymentMethodView: UIViewController { get }
     func cancel()
@@ -18,21 +17,21 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
 
     // MARK: - Properties
 
-    // Weak to avoid retain cycle: view → viewModel → router → view
-    private weak var router: PreselectedPaymentMethodRouterProtocol?
+    internal weak var router: PreselectedPaymentMethodRouting?
     private let component: PaymentComponent
     private let preselectedPaymentMethodComponent: PreselectedPaymentMethodComponent
+    private weak var dropInComponent: DropInComponent?
+    private weak var dropInComponentDelegate: DropInComponentDelegate?
 
     // MARK: - Initializers
 
     internal init(
-        router: PreselectedPaymentMethodRouterProtocol,
         component: PaymentComponent,
         title: String,
-        configuration: DropInComponent.Configuration
+        configuration: DropInComponent.Configuration,
+        dropInComponent: DropInComponent,
+        dropInComponentDelegate: DropInComponentDelegate?
     ) {
-        self.router = router
-
         let style = configuration.style
         self.component = component
         self.preselectedPaymentMethodComponent = PreselectedPaymentMethodComponent(
@@ -43,6 +42,8 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
         )
         self.preselectedPaymentMethodComponent.localizationParameters = configuration.localizationParameters
         self.preselectedPaymentMethodComponent.delegate = self
+        self.dropInComponent = dropInComponent
+        self.dropInComponentDelegate = dropInComponentDelegate
     }
 
     // MARK: - PreselectedPaymentMethodViewModelProtocol
@@ -52,6 +53,9 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
     }
 
     internal func cancel() {
+        guard let dropInComponent else { return }
+        dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
+        
         stopLoading()
         router?.dismiss(completion: nil)
     }
@@ -59,35 +63,62 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
     // MARK: - PreselectedPaymentMethodComponentDelegate
 
     internal func didRequestAllPaymentMethods() {
-        router?.showAllPaymentMethods()
+        router?.presentPaymentMethodList()
     }
 
     internal func didProceed(with component: any PaymentComponent) {
-        startLoading()
         startPaymentFlow(for: component)
     }
 
     // MARK: - Private
 
     private func startPaymentFlow(for component: PaymentComponent) {
-        // TODO: - Handle payment delegation
-//        setNecessaryDelegates(on: component)
-
+        startLoading(for: component)
+        
         switch component {
         case let component as PresentableComponent:
-            router?.proceed(with: component)
+            router?.present(component: component) { [weak self] in
+                self?.stopLoading()
+            }
         case let component as PaymentInitiable:
+            (component as? PaymentComponent)?.delegate = self
             component.initiatePayment()
         default:
             break
         }
     }
-
-    private func startLoading() {
+    
+    private func startLoading(for component: PaymentComponent) {
         preselectedPaymentMethodComponent.startLoading(for: component)
     }
-
+    
     private func stopLoading() {
-        preselectedPaymentMethodComponent.stopLoadingIfNeeded()
+        preselectedPaymentMethodComponent.stopLoading()
+    }
+}
+
+// MARK: - PaymentComponentDelegate
+
+extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
+    
+    internal func didSubmit(
+        _ data: PaymentComponentData,
+        from component: any PaymentComponent
+    ) {
+        guard let dropInComponent else { return }
+        dropInComponentDelegate?.didSubmit(data, from: component, in: dropInComponent)
+    }
+    
+    internal func didFail(
+        with error: any Error,
+        from component: any PaymentComponent
+    ) {
+        guard let dropInComponent else { return }
+        
+        if case ComponentError.cancelled = error {
+            cancel()
+        } else {
+            dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
+        }
     }
 }

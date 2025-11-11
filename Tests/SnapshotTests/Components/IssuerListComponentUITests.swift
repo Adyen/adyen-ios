@@ -45,7 +45,7 @@ final class IssuerListComponentUITests: XCTestCase {
         assertViewControllerImage(matching: sut.viewController, named: "loading_first_cell")
         
         // stop loading
-        sut.stopLoadingIfNeeded()
+        sut.stopLoading()
         cell = try XCTUnwrap(Self.getCell(for: item, tableView: listViewController.tableView))
         XCTAssertFalse(cell.showsActivityIndicator)
         XCTAssertTrue(listViewController.tableView.isUserInteractionEnabled)

@@ -194,7 +194,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
             XCTAssertEqual(data.emailAddress, "mohamed.smith@domain.com")
             XCTAssertEqual(data.telephoneNumber, "+11233456789")
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             delegateExpectation.fulfill()
             XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
