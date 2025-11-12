@@ -79,7 +79,9 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         }
 
         let checkout = try await AdyenCheckout.setup(
-            with: paymentMethods, configuration: configuration, presentationDelegate: self
+            with: paymentMethods,
+            configuration: configuration,
+            presentationDelegate: self
         )
 
         self.adyenCheckout = checkout

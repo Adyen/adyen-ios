@@ -43,7 +43,7 @@ internal enum CheckoutComponentBuilder {
                     paymentMethod: cardPaymentMethod,
                     configuration: configuration
                 )
-                // TODO: add other card methods like stored or write a generic
+                // TODO: add other card methods like stored or write a generic one.
             
         #endif
         default:

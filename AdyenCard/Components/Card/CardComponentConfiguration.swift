@@ -121,7 +121,7 @@ extension CardComponentConfiguration {
     /// Sets the shopper's information to be prefilled.
     /// - Parameter shopperInformation: The shopper's information to be prefilled.
     /// - Returns: A modified copy of the configuration.
-    public func shopperInformataion(_ shopperInformation: PrefilledShopperInformation) -> Self {
+    public func shopperInformation(_ shopperInformation: PrefilledShopperInformation) -> Self {
         var copy = self
         copy.shopperInformation = shopperInformation
         return copy

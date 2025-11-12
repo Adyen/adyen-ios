@@ -63,7 +63,12 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
             )
         }
         
-        let checkout = try await AdyenCheckout.setup(with: sessionResponse.sessionId, sessionData: sessionResponse.sessionData, configuration: configuration, presentationDelegate: self)
+        let checkout = try await AdyenCheckout.setup(
+            with: sessionResponse.sessionId,
+            sessionData: sessionResponse.sessionData,
+            configuration: configuration,
+            presentationDelegate: self
+        )
         
         self.adyenCheckout = checkout
         
@@ -129,8 +134,10 @@ extension CardComponentExample: PresentationDelegate {
 private extension CardComponentExample {
     
     func viewController(for component: AdyenCheckoutComponent) -> UIViewController {
-        let navigation = UINavigationController(rootViewController: component.viewController!)
-        component.viewController?.navigationItem.leftBarButtonItem = .init(
+        guard let viewController = component.viewController else { fatalError("Cannot find component's view controller") }
+        
+        let navigation = UINavigationController(rootViewController: viewController)
+        viewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
             target: self,
             action: #selector(cancelPressed)
@@ -139,6 +146,7 @@ private extension CardComponentExample {
     }
     
     @objc private func cancelPressed() {
+        // TODO: how to do component cancellation
 //        cardComponent?.cancelIfNeeded()
         presenter?.dismiss(completion: nil)
     }
