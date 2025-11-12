@@ -62,6 +62,9 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
                 result.resultCode.rawValue
             )
         }
+        .onError { [weak self] error in
+            self?.dismissAndShowAlert(false, error.localizedDescription)
+        }
         
         let checkout = try await AdyenCheckout.setup(
             with: sessionResponse.sessionId,
