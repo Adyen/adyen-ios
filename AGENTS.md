@@ -61,21 +61,30 @@ xcodebuild -project Adyen.xcodeproj -scheme Adyen -configuration Debug build
 
 ### Testing
 
+**List available simulators:**
+```bash
+xcrun simctl list devices available
+```
+
 **Run unit tests:**
 ```bash
-xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,name=iPhone 15 Pro'
+# Option 1: Use a standard iPhone simulator (recommended)
+xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,name=iPhone 17'
+
+# Option 2: Use specific device by ID (most reliable)
+xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,id=<DEVICE_ID>'
 ```
 
 **Run integration tests:**
 ```bash
-xcodebuild test -project Adyen.xcodeproj -scheme IntegrationUIKitTests -destination 'platform=iOS Simulator,name=iPhone 15 Pro'
+xcodebuild test -project Adyen.xcodeproj -scheme IntegrationUIKitTests -destination 'platform=iOS Simulator,name=iPhone 17'
 ```
 
 **Note:** Do not use `swift test` - it doesn't work well with the Xcode project structure. The `SnapshotTests` target is primarily for CI and not typically run during local development.
 
 **Run single test:**
 ```bash
-xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,name=iPhone 15 Pro' -only-testing:UnitTests/TestClassName/testMethodName
+xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,name=iPhone 17' -only-testing:UnitTests/TestClassName/testMethodName
 ```
 
 ### Code Quality
