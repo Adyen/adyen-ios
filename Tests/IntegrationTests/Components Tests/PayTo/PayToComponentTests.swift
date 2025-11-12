@@ -559,7 +559,7 @@ class PayToComponentTests: XCTestCase {
         guard let lhs, let rhs else { return false }
 
         return lhs.type == rhs.type &&
-        lhs.shopperName == rhs.shopperName &&
-        lhs.accountIdentifier == rhs.accountIdentifier
+            lhs.shopperName == rhs.shopperName &&
+            lhs.accountIdentifier == rhs.accountIdentifier
     }
 }
