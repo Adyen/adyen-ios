@@ -798,6 +798,7 @@
 		C9D8EB9E27452D3B006D8CA1 /* BACSItemsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9D27452D3B006D8CA1 /* BACSItemsFactory.swift */; };
 		C9D8EBA02745556B006D8CA1 /* BACSDirectDebitDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9F2745556B006D8CA1 /* BACSDirectDebitDetails.swift */; };
 		C9D8EBA2274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */; };
+		C9DC5B132EC4BF6A00E75C93 /* DropInFlowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC5B122EC4BF6A00E75C93 /* DropInFlowManager.swift */; };
 		C9EEEFEC2D5516B300B7AFFC /* ExpirationDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EEEFEA2D5516B300B7AFFC /* ExpirationDateFormatter.swift */; };
 		C9F468E227465FCF00500FF5 /* BACSDirectDebitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F468E127465FCF00500FF5 /* BACSDirectDebitData.swift */; };
 		C9F9905D2DC2566C00D2BFB0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C9F9905C2DC2566C00D2BFB0 /* README.md */; };
@@ -2340,6 +2341,7 @@
 		C9D8EB9D27452D3B006D8CA1 /* BACSItemsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSItemsFactory.swift; sourceTree = "<group>"; };
 		C9D8EB9F2745556B006D8CA1 /* BACSDirectDebitDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitDetails.swift; sourceTree = "<group>"; };
 		C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitPaymentMethod.swift; sourceTree = "<group>"; };
+		C9DC5B122EC4BF6A00E75C93 /* DropInFlowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInFlowManager.swift; sourceTree = "<group>"; };
 		C9DCCD112E3CE5B500B88C52 /* TestPresentingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPresentingView.swift; sourceTree = "<group>"; };
 		C9DCCD132E3CE83C00B88C52 /* FullScreenViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewControllerTests.swift; sourceTree = "<group>"; };
 		C9EEEFEA2D5516B300B7AFFC /* ExpirationDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationDateFormatter.swift; sourceTree = "<group>"; };
@@ -4570,6 +4572,7 @@
 				C9C22D9E2DE5F9BE0028C23F /* PaymentMethodList */,
 				C9C22D962DE5F9920028C23F /* PreselectedPaymentMethod */,
 				C9C22D912DE5F9620028C23F /* ComponentContainer */,
+				C9DC5B122EC4BF6A00E75C93 /* DropInFlowManager.swift */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -8821,6 +8824,7 @@
 				F90E95F02726B625007E382B /* DropInComponentExtensions.swift in Sources */,
 				C9C22D9C2DE5F9BB0028C23F /* PreApplePayComponent.swift in Sources */,
 				C90494562E8FF2CE007C4EB5 /* LoadControllable.swift in Sources */,
+				C9DC5B132EC4BF6A00E75C93 /* DropInFlowManager.swift in Sources */,
 				C9025A4B2DF3188700E0D191 /* PreselectedPaymentMethodViewController.swift in Sources */,
 				C9025A432DF3135700E0D191 /* DropInViewModel.swift in Sources */,
 				E7D418B3286F531500E9A7F4 /* ComponentManager+PaymentComponentBuilder.swift in Sources */,
