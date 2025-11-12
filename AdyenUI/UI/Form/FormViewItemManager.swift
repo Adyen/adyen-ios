@@ -9,6 +9,10 @@ import UIKit
 /// Manages the form items and their views.
 internal final class FormViewItemManager {
     
+    // MARK: - Properties
+    
+    private let theme: AdyenTheme
+    
     // MARK: - Items
 
     internal private(set) var topLevelItem: [FormItem] = []
@@ -18,6 +22,12 @@ internal final class FormViewItemManager {
         topLevelItem.flatMap(\.flatSubitems)
     }
 
+    /// Initializes the FormViewItemManager with a theme.
+    /// - Parameter theme: The theme to use for styling views.
+    internal init(theme: AdyenTheme) {
+        self.theme = theme
+    }
+    
     /// Appends an item to the list of managed items.
     ///
     /// - Parameters:
@@ -44,7 +54,6 @@ internal final class FormViewItemManager {
     }
 
     private func newItemView(for item: some FormItem) -> AnyFormItemView {
-        item.build(with: FormItemViewBuilder())
+        item.build(with: FormItemViewBuilder(theme: theme))
     }
-    
 }
