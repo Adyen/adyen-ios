@@ -12,7 +12,7 @@ import UIKit
 public final class FormToggleItemView: FormItemView<FormToggleItem> {
 
     // TODO: TO be passed as a dependency by FormViewController.ItemManager
-    package let style: AdyenToggleStyle = .init()
+    internal let style: AdyenSwitchStyle = .init()
 
     // MARK: - UI elements
     
@@ -87,7 +87,7 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
     /// Applies all the style properties from AdyenToggleStyle to the FormToggleItemView.
     ///
     /// - Parameter style: The style to apply.
-    private func apply(style: AdyenToggleStyle) {
+    private func apply(style: AdyenSwitchStyle) {
         stackView.backgroundColor = style.backgroundColor
 
         label.apply(style.title)

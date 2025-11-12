@@ -13,20 +13,20 @@ import AdyenUI
 internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
 
     internal weak var presenter: PresenterExampleProtocol?
-    
+
     private var adyenCheckout: AdyenCheckout?
     private var adyenComponent: AdyenCheckoutComponent?
-    
+
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
-    
+
     // comes from demo app protocol, unused on new structure
     internal lazy var context: AdyenContext = generateContext()
-    
+
     internal init() {}
-    
+
     internal func start() {
         startLoading()
-        
+
         Task {
             do {
                 let paymentMethods = try await requestPaymentMethods(order: nil)
@@ -40,9 +40,10 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             }
         }
     }
-    
-    private func blikComponent(from paymentMethods: PaymentMethods) async throws -> AdyenCheckoutComponent {
-        
+
+    private func blikComponent(from paymentMethods: PaymentMethods) async throws
+        -> AdyenCheckoutComponent {
+
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
             amount: ConfigurationConstants.current.amount,
@@ -53,34 +54,16 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         ) {
             BLIKComponentConfiguration()
         }
-        // Providing theme with custom label and button
         .theme(
-            label: AdyenLabelStyle(
-                font: AdyenFonts.default.body,
-                color: AdyenColorScheme.default.primary,
-                textAlignment: .natural
-            ),
-            button: AdyenButtonStyles(colorScheme: .default)
-        )
-        // Providing theme with only custom label
-        .theme(label: AdyenLabelStyle()
-            .font(AdyenFonts.default.body)
-        )
-        // Providing theme with only custom button
-        .theme(button: AdyenButtonStyles(
-            colorScheme: AdyenColorScheme(background: .red))
-        )
-        // Providing theme with label and button name
-        .theme(
-            label: AdyenLabelStyle()
-                .font(AdyenFonts.default.body)
-                .color(AdyenColorScheme.default.textOnPrimary),
-            button: AdyenButtonStyles()
-        )
-        // Providing theme with only custom label
-        .theme(label: AdyenLabelStyle()
-            .font(AdyenFonts.default.body)
-            .color(AdyenColorScheme.default.primary)
+            AdyenTheme(colors: AdyenColors(primary: .systemBlue))
+                .bodyLabel(font: AdyenFonts.default.bodyEmphasized)
+                .destructiveButton(
+                    backgroundColor: .systemRed,
+                    textColor: .white,
+                    disabledBackgroundColor: .systemGray,
+                    disabledTextColor: .lightGray
+                )
+                .cornerRadius(8.0)
         )
         .onSubmit { [weak self] data, handler in
             self?.callPayments(with: data, completion: handler)
@@ -94,34 +77,40 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 result.resultCode.rawValue
             )
         }
-        
-        let checkout = try await AdyenCheckout.setup(with: paymentMethods, configuration: configuration, presentationDelegate: self)
-        
+
+        let checkout = try await AdyenCheckout.setup(
+            with: paymentMethods, configuration: configuration, presentationDelegate: self
+        )
+
         self.adyenCheckout = checkout
-        
+
         guard let blikPaymentMethod = paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self),
-              let component = checkout.createComponent(with: blikPaymentMethod) else {
+              let component = checkout.createComponent(with: blikPaymentMethod)
+        else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: BLIKPaymentMethod.self)
         }
-        
+
         return component
     }
-    
+
     // MARK: - Backend calls
-    
+
     private func callPayments(with data: PaymentComponentData, completion: PaymentsResponseHandler?) {
         let request = PaymentsRequest(data: data)
         apiClient.perform(request) { result in
             switch result {
             case let .success(response):
-                completion?(CheckoutPaymentsResponse(resultCode: response.resultCode, action: response.action))
+                completion?(
+                    CheckoutPaymentsResponse(
+                        resultCode: response.resultCode, action: response.action
+                    ))
             case let .failure(error):
                 // TODO: change last parameter to accept error as well Result<CheckoutCallbackResult, Error>
                 break
             }
         }
     }
-    
+
     private func callDetails(with data: ActionComponentData, completion: PaymentsResponseHandler?) {
         let request = PaymentDetailsRequest(
             details: data.details,
@@ -131,35 +120,38 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         apiClient.perform(request) { result in
             switch result {
             case let .success(response):
-                completion?(CheckoutPaymentsResponse(resultCode: response.resultCode, action: response.action))
+                completion?(
+                    CheckoutPaymentsResponse(
+                        resultCode: response.resultCode, action: response.action
+                    ))
             case let .failure(error):
                 // TODO: add error handling but maybe after async callbacks
                 break
             }
         }
     }
-    
+
     // MARK: - Private
-    
+
     private func startLoading() {
         presenter?.showLoadingIndicator()
     }
-    
+
     @MainActor
     private func handleError(_ error: Error) {
         presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
     }
-    
+
     @MainActor
     private func hideLoading() {
         presenter?.hideLoadingIndicator()
     }
-    
+
     @MainActor
     private func present(component: AdyenCheckoutComponent) {
         presenter?.present(viewController: viewController(for: component), completion: nil)
     }
-    
+
     private func dismissAndShowAlert(_ success: Bool, _ message: String) {
         presenter?.dismiss {
             // Payment is processed. Add your code here.
@@ -167,7 +159,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             self.presenter?.presentAlert(withTitle: title, message: message)
         }
     }
-    
+
     private func viewController(for component: AdyenCheckoutComponent) -> UIViewController {
         let navigation = UINavigationController(rootViewController: component.viewController!)
         component.viewController?.navigationItem.leftBarButtonItem = .init(
@@ -177,16 +169,16 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         )
         return navigation
     }
-    
+
     @objc private func cancelPressed() {
         // TODO: component cancellation?
-//        component?.cancelIfNeeded()
+        //        component?.cancelIfNeeded()
         presenter?.dismiss(completion: nil)
     }
 }
 
 extension BLIKComponentAdvancedFlowExample: PresentationDelegate {
-    
+
     func present(component: any PresentableComponent) {
         presenter?.present(viewController: component.viewController, completion: nil)
     }

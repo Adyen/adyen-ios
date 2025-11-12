@@ -13,13 +13,15 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     FormItemView<ItemType>,
     AnyFormValueItemView {
 
+    // TODO: Pass as a dependency
+    private let theme: AdyenTheme = .default
+
     // MARK: - Title Label
 
     /// The top label view.
     public lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.font = AdyenTheme().currentFonts.bodyEmphasized
-        titleLabel.textColor = AdyenTheme().currentColorScheme.primary
+        titleLabel.apply(theme.elements.labels.bodyEmphasized)
         titleLabel.text = item.title
         titleLabel.numberOfLines = 0
         titleLabel.isAccessibilityElement = false

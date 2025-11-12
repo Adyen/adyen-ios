@@ -6,7 +6,7 @@
 
 import UIKit
 
-package extension UILabel {
+internal extension UILabel {
     func apply(_ style: AdyenLabelStyle) {
         font = style.font
         textColor = style.color
