@@ -11,7 +11,7 @@ import Foundation
 public struct FormItemViewBuilder {
     
     /// The theme to use for building views. Optional during migration.
-    package var theme: AdyenTheme?
+    package let theme: AdyenTheme?
     
     /// Initializes the form item view builder.
     /// - Parameter theme: The theme to use for building views. If nil, views will use item.style.
