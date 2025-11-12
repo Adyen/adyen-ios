@@ -8,6 +8,7 @@ import XCTest
 @_spi(AdyenInternal) @testable import AdyenSession
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenActions
+@testable import AdyenCard
 import AdyenComponents
 @testable import AdyenDropIn
 import AdyenNetworking
@@ -994,8 +995,8 @@ class SessionTests: XCTestCase {
         let config = try! JSONDecoder().decode(SessionSetupResponse.Configuration.self, from: sessionConfigJson.data(using: .utf8)!)
         let sut = initializeSession(expectedPaymentMethods: expectedPaymentMethods, configuration: config)
         let paymentMethod = expectedPaymentMethods.regular[1] as! CardPaymentMethod
-        var cardConfig = CardComponent.Configuration()
-        cardConfig.installmentConfiguration = .init(cardBasedOptions: [.americanExpress: .init(maxInstallmentMonth: 5, includesRevolving: false)], defaultOptions: .init(monthValues: [3, 5], includesRevolving: true))
+        let cardConfig = CardComponentConfiguration()
+            .installmentConfiguration(.init(cardBasedOptions: [.americanExpress: .init(maxInstallmentMonth: 5, includesRevolving: false)], defaultOptions: .init(monthValues: [3, 5], includesRevolving: true)))
         let cardComponent = CardComponent(paymentMethod: paymentMethod, context: context)
         cardComponent.delegate = sut
 
@@ -1013,8 +1014,8 @@ class SessionTests: XCTestCase {
         let config = try! JSONDecoder().decode(SessionSetupResponse.Configuration.self, from: sessionConfigJson.data(using: .utf8)!)
         let sut = initializeSession(expectedPaymentMethods: expectedPaymentMethods, configuration: config)
         let paymentMethod = expectedPaymentMethods.regular[1] as! CardPaymentMethod
-        var cardConfig = CardComponent.Configuration()
-        cardConfig.showsStorePaymentMethodField = false // will be overriden as true by session response
+        let cardConfig = CardComponentConfiguration()
+            .showsStorePaymentMethodField(false) // will be overriden as true by session response
 
         let cardComponent = CardComponent(paymentMethod: paymentMethod, context: context)
         cardComponent.delegate = sut
@@ -1030,8 +1031,8 @@ class SessionTests: XCTestCase {
         let expectedPaymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
         let sut = initializeSession(expectedPaymentMethods: expectedPaymentMethods, configuration: .init(installmentOptions: nil, enableStoreDetails: false))
         let paymentMethod = expectedPaymentMethods.regular[1] as! CardPaymentMethod
-        var cardConfig = CardComponent.Configuration()
-        cardConfig.showsStorePaymentMethodField = true // will be overriden as false by session response
+        let cardConfig = CardComponentConfiguration()
+            .showsStorePaymentMethodField(true) // will be overriden as false by session response
 
         let cardComponent = CardComponent(paymentMethod: paymentMethod, context: context)
         cardComponent.delegate = sut
