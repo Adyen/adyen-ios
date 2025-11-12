@@ -4,9 +4,13 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
 import Adyen
 import AdyenActions
+import Foundation
+
+internal protocol DropInFlowManagerDelegate: AnyObject {
+    func dropInFlowManager(_ manager: DropInFlowManager, didPresent component: PresentableComponent)
+}
 
 internal protocol DropInFlowManaging {
     func submit(_ data: PaymentComponentData, from component: PaymentComponent)
@@ -23,6 +27,7 @@ internal class DropInFlowManager: DropInFlowManaging {
     private weak var dropInComponentDelegate: DropInComponentDelegate?
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
+    internal weak var delegate: DropInFlowManagerDelegate?
 
     // MARK: - Initializers
 
@@ -111,7 +116,6 @@ extension DropInFlowManager: ActionComponentDelegate {
 extension DropInFlowManager: PresentationDelegate {
 
     internal func present(component: any PresentableComponent) {
-        // TODO: - Handle presentation
+        delegate?.dropInFlowManager(self, didPresent: component)
     }
 }
-
