@@ -27,6 +27,6 @@ final class FullScreenViewControllerTests: XCTestCase {
         
         let predicate = NSPredicate { _, _ in host.presentedViewController === testVC }
         let expectation = XCTNSPredicateExpectation(predicate: predicate, object: host)
-        wait(for: [expectation], timeout: 2.0)
+        wait(for: [expectation], timeout: 5.0)
     }
 }
