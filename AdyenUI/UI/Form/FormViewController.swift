@@ -144,7 +144,7 @@ open class FormViewController: UIViewController, AdyenObserver {
 
     // MARK: - Private Properties
 
-    private lazy var itemManager = FormViewItemManager()
+    private lazy var itemManager = FormViewItemManager(theme: theme)
 
     // MARK: - Items
 
