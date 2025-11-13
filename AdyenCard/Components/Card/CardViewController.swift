@@ -20,7 +20,7 @@ internal protocol CardViewControllerProtocol {
 
 internal class CardViewController: FormViewController {
     
-    private let configuration: CardComponent.Configuration
+    private let configuration: CardComponentConfiguration
     private let shopperInformation: PrefilledShopperInformation?
     private let supportedCardTypes: [CardType]
     private let formStyle: FormComponentStyle
@@ -89,7 +89,7 @@ internal class CardViewController: FormViewController {
     ///   - scope: The view's scope.
     ///   - localizationParameters: Localization parameters.
     internal init(
-        configuration: CardComponent.Configuration,
+        configuration: CardComponentConfiguration,
         shopperInformation: PrefilledShopperInformation?,
         formStyle: FormComponentStyle,
         payment: Payment?,

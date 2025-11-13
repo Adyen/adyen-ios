@@ -92,7 +92,7 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
 extension StoredPaymentMethodComponent {
 
     /// Configuration for Stored Payment type components.
-//    public struct Configuration: AnyBasicComponentConfiguration {
+//    public struct Configuration {
 //
 //        public var localizationParameters: LocalizationParameters?
 //

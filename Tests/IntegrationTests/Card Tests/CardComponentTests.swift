@@ -58,7 +58,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
         
         // When
@@ -72,7 +72,7 @@ class CardComponentTests: XCTestCase {
 
     func testLocalizationWithCustomTableName() {
 
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let sut = CardComponent(
@@ -101,7 +101,7 @@ class CardComponentTests: XCTestCase {
 
     func testLocalizationWithCustomKeySeparator() {
         
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         let sut = CardComponent(
@@ -163,7 +163,7 @@ class CardComponentTests: XCTestCase {
 //        cardComponentStyle.toggle.title.textAlignment = .left
 //        cardComponentStyle.toggle.backgroundColor = .magenta
 //
-//        var configuration = CardComponent.Configuration()
+//        var configuration = CardComponentConfiguration()
 //        configuration.showsHolderNameField = true
 //        configuration.style = cardComponentStyle
 //        let sut = CardComponent(
@@ -268,7 +268,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
         
         setupRootViewController(sut.viewController)
@@ -278,7 +278,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testHideCVVField() {
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.showsSecurityCodeField = false
         let sut = CardComponent(
             paymentMethod: method,
@@ -298,7 +298,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
         
         setupRootViewController(sut.viewController)
@@ -313,7 +313,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
         
         setupRootViewController(sut.viewController)
@@ -341,7 +341,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration(),
+            configuration: CardComponentConfiguration(),
             publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
@@ -373,7 +373,7 @@ class CardComponentTests: XCTestCase {
     func testAddressLookupPrefill() throws {
         
         // Given
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
         configuration.billingAddress.mode = .lookup(provider: MockAddressLookupProvider { searchTerm in
             XCTFail("Lookup handler should not be called")
@@ -412,7 +412,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
         
         setupRootViewController(sut.viewController)
@@ -439,7 +439,7 @@ class CardComponentTests: XCTestCase {
             throw XCTSkip("This test is flaky on iOS 26 beta so far - so we skip it")
         }
 
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         
         let tintColor: UIColor = .black
         let titleColor: UIColor = .gray
@@ -476,7 +476,7 @@ class CardComponentTests: XCTestCase {
 //        // Given
 //        var style = FormComponentStyle(tintColor: .systemYellow)
 //        style.textField.title.color = .gray
-//        var configuration = CardComponent.Configuration()
+//        var configuration = CardComponentConfiguration()
 //        configuration.style = style
 //        let sut = CardComponent(
 //            paymentMethod: method,
@@ -510,7 +510,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration(),
+            configuration: CardComponentConfiguration(),
             publicKeyProvider: publicKeyProvider,
             binProvider: BinInfoProviderMock()
         )
@@ -552,7 +552,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testStoredCardPaymentLocalization() throws {
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         let sut = CardComponent(
             paymentMethod: storedMethod,
@@ -572,7 +572,7 @@ class CardComponentTests: XCTestCase {
 
     // TODO: FIX ME
 //    func testStoredCardPaymentLocalizationWithNoCVV() throws {
-//        var configuration = CardComponent.Configuration()
+//        var configuration = CardComponentConfiguration()
 //        configuration.stored.showsSecurityCodeField = false
 //        configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 //        let sut = CardComponent(
@@ -592,7 +592,7 @@ class CardComponentTests: XCTestCase {
 //    }
 
 //    func testStoredCardPaymentWithNoCVV() throws {
-//        var configuration = CardComponent.Configuration()
+//        var configuration = CardComponentConfiguration()
 //        configuration.stored.showsSecurityCodeField = false
 //        let sut = CardComponent(
 //            paymentMethod: storedMethod,
@@ -611,7 +611,7 @@ class CardComponentTests: XCTestCase {
 //    }
 
 //    func testStoredCardPaymentWithNoCVVAndNoPayment() {
-//        var configuration = CardComponent.Configuration()
+//        var configuration = CardComponentConfiguration()
 //        configuration.stored.showsSecurityCodeField = false
 //        let context = Dummy.context(with: nil)
 //        let sut = CardComponent(
@@ -630,7 +630,7 @@ class CardComponentTests: XCTestCase {
 //    }
 //
 //    func testOneClickPayment() {
-//        var configuration = CardComponent.Configuration()
+//        var configuration = CardComponentConfiguration()
 //        configuration.stored.showsSecurityCodeField = false
 //        let sut = CardComponent(
 //            paymentMethod: storedMethod,
@@ -670,7 +670,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
         
         setupRootViewController(sut.viewController)
@@ -688,7 +688,7 @@ class CardComponentTests: XCTestCase {
 
     func testSubmit() throws {
         // Given
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .full
         let sut = CardComponent(
             paymentMethod: method,
@@ -748,7 +748,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
         
         setupRootViewController(sut.viewController)
@@ -797,7 +797,7 @@ class CardComponentTests: XCTestCase {
     func testDateShouldPassFocusToCVC() throws {
         // Given
         
-        let configuration = CardComponent.Configuration()
+        let configuration = CardComponentConfiguration()
         let component = CardComponent(
             paymentMethod: method,
             context: context,
@@ -826,7 +826,7 @@ class CardComponentTests: XCTestCase {
 
     func testPostalCode() throws {
         // Given
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .postalCode
 
         let sut = CardComponent(
@@ -874,7 +874,7 @@ class CardComponentTests: XCTestCase {
 
     func testKCP() throws {
         // Given
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.koreanAuthenticationMode = .auto
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
@@ -935,7 +935,7 @@ class CardComponentTests: XCTestCase {
 
     func testBrazilSSNAuto() throws {
         // Given
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.socialSecurityNumberMode = .auto
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
@@ -990,7 +990,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testBrazilSSNDisabled() {
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.socialSecurityNumberMode = .hide
 
         let sut = CardComponent(
@@ -1012,7 +1012,7 @@ class CardComponentTests: XCTestCase {
     func testBrazilSSNEnabled() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard, .elo])
 
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.socialSecurityNumberMode = .show
 
         let sut = CardComponent(
@@ -1035,7 +1035,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
         
         let brands = [
@@ -1061,7 +1061,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
         
         XCTAssertTrue(sut.cardViewController.items.numberContainerItem.showsSupportedCardLogos)
@@ -1096,7 +1096,7 @@ class CardComponentTests: XCTestCase {
             fundingSource: .credit,
             brands: [.visa, .americanExpress, .masterCard]
         )
-        let config = CardComponent.Configuration()
+        let config = CardComponentConfiguration()
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
@@ -1136,7 +1136,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
         
         let brands = [
@@ -1190,7 +1190,7 @@ class CardComponentTests: XCTestCase {
         ]
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
 
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(
             cardBasedOptions: cardBasedInstallmentOptions,
             defaultOptions: defaultInstallmentOptions
@@ -1236,7 +1236,7 @@ class CardComponentTests: XCTestCase {
     
     func testInstallmentsWithDefaultOptions() {
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(defaultOptions: defaultInstallmentOptions)
         let cardTypeProviderMock = BinInfoProviderMock()
 
@@ -1275,7 +1275,7 @@ class CardComponentTests: XCTestCase {
             .visa:
                 InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
         ]
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions)
         let cardTypeProviderMock = BinInfoProviderMock()
 
@@ -1327,7 +1327,7 @@ class CardComponentTests: XCTestCase {
                 InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
         ]
 
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions, showInstallmentAmount: true)
         let cardTypeProviderMock = BinInfoProviderMock()
 
@@ -1382,7 +1382,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
 
         setupRootViewController(sut.viewController)
@@ -1420,7 +1420,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
 
         sut.viewController.loadViewIfNeeded()
@@ -1441,7 +1441,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
 
         sut.viewController.loadViewIfNeeded()
@@ -1462,7 +1462,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
 
         sut.viewController.loadViewIfNeeded()
@@ -1504,7 +1504,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
 
         let brands = [CardBrand(type: .visa), CardBrand(type: .carteBancaire)]
@@ -1530,7 +1530,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
 
         setupRootViewController(sut.viewController)
@@ -1558,7 +1558,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
 
         let cardViewController = sut.cardViewController
@@ -1588,7 +1588,7 @@ class CardComponentTests: XCTestCase {
 
     func testClearShouldResetPostalCodeItemToEmptyValue() throws {
         // Given
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .postalCode
         let sut = CardComponent(
             paymentMethod: method,
@@ -1610,7 +1610,7 @@ class CardComponentTests: XCTestCase {
 
     func testClearShouldResetNumberItemToEmptyValue() throws {
         // Given
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .postalCode
         let sut = CardComponent(
             paymentMethod: method,
@@ -1632,7 +1632,7 @@ class CardComponentTests: XCTestCase {
 
     func testClearShouldResetExpiryDateItemToEmptyValue() throws {
         // Given
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .postalCode
         let sut = CardComponent(
             paymentMethod: method,
@@ -1654,7 +1654,7 @@ class CardComponentTests: XCTestCase {
 
     func testClearShouldResetSecurityCodeItemToEmptyValue() throws {
         // Given
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .postalCode
         let sut = CardComponent(
             paymentMethod: method,
@@ -1676,7 +1676,7 @@ class CardComponentTests: XCTestCase {
 
     func testClearShouldResetHolderNameItemToEmptyValue() throws {
         // Given
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
         configuration.billingAddress.mode = .postalCode
         let sut = CardComponent(
@@ -1700,7 +1700,7 @@ class CardComponentTests: XCTestCase {
     func testClearShouldDisableStoreDetailsItem() throws {
         // Given
 
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .postalCode
         let sut = CardComponent(
             paymentMethod: method,
@@ -1722,7 +1722,7 @@ class CardComponentTests: XCTestCase {
     
     func testCardPrefillingGivenBillingAddressInLookupModeShouldPrefillItems() throws {
         // Given
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
         configuration.billingAddress.mode = .lookup(provider: MockAddressLookupProvider { searchTerm in
             [.init(identifier: searchTerm, postalAddress: .init(city: searchTerm))]
@@ -1760,7 +1760,7 @@ class CardComponentTests: XCTestCase {
 
     func testCardPrefillingGivenBillingAddressInFullModeShouldPrefillItems() throws {
         // Given
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
         configuration.billingAddress.mode = .full
         configuration.shopperInformation = shopperInformation
@@ -1796,7 +1796,7 @@ class CardComponentTests: XCTestCase {
     func testCardPrefillingGivenBillingAddressInPostalCodeModeShouldPrefillItems() throws {
         // Given
 
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
         configuration.billingAddress.mode = .postalCode
         configuration.shopperInformation = shopperInformation
@@ -1831,7 +1831,7 @@ class CardComponentTests: XCTestCase {
 
     func testCardPrefillingGivenNoShopperInformationAndFullAddressModeShouldNotPrefillItems() throws {
         // Given
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
         configuration.billingAddress.mode = .full
 
@@ -1862,7 +1862,7 @@ class CardComponentTests: XCTestCase {
 
     func testCardPrefillingGivenNoShopperInformationAndPostalCodeModeShouldNotPrefillItems() throws {
         // Given
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
         configuration.billingAddress.mode = .postalCode
 
@@ -1892,7 +1892,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testAddressWithSupportedCountries() throws {
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .full
         configuration.billingAddress.countryCodes = ["UK"]
 
@@ -1924,7 +1924,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testAddressWithSupportedCountriesWithMatchingPrefill() throws {
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .full
         configuration.billingAddress.countryCodes = ["US", "JP"]
         configuration.shopperInformation = shopperInformation
@@ -1960,7 +1960,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testAddressWithSupportedCountriesWithNonMatchingPrefill() throws {
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .full
         configuration.billingAddress.countryCodes = ["UK"]
         configuration.shopperInformation = shopperInformation
@@ -1991,7 +1991,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testOptionalInvalidFullAddressWithCertainSchemes() throws {
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .full
         configuration.billingAddress.countryCodes = ["US"]
         configuration.billingAddress.requirementPolicy = .optionalForCardTypes([.visa])
@@ -2058,7 +2058,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func testOptionalValidFullAddressWithCertainSchemes() throws {
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .full
         configuration.billingAddress.countryCodes = ["US"]
         configuration.billingAddress.requirementPolicy = .optionalForCardTypes([.visa])
@@ -2114,7 +2114,7 @@ class CardComponentTests: XCTestCase {
     
     func testOptionalValidPostalAddressWithCertainSchemes() throws {
 
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .postalCode
         configuration.billingAddress.countryCodes = ["US"]
         configuration.billingAddress.requirementPolicy = .optionalForCardTypes([.visa])
@@ -2172,7 +2172,7 @@ class CardComponentTests: XCTestCase {
     
     func testOptionalInvalidPostalAddressWithCertainSchemes() throws {
         
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .postalCode
         configuration.billingAddress.countryCodes = ["US"]
         configuration.billingAddress.requirementPolicy = .optionalForCardTypes([.visa])
@@ -2229,7 +2229,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testCardHolderNameValidatorWithEmptyName() {
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
@@ -2252,7 +2252,7 @@ class CardComponentTests: XCTestCase {
         )
 
         // When
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.localizationParameters = LocalizationParameters(locale: "ko-KR")
         let sut = CardComponent(
             paymentMethod: method,
@@ -2274,7 +2274,7 @@ class CardComponentTests: XCTestCase {
         )
 
         // When
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.localizationParameters = LocalizationParameters(enforcedLocale: "ru-RU")
         let sut = CardComponent(
             paymentMethod: method,
@@ -2288,7 +2288,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testCardHolderNameValidatorWithMinimumLength() {
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
@@ -2304,7 +2304,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testOptionalApartmentNameNil() throws {
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .full
         configuration.billingAddress.countryCodes = ["US"]
 
@@ -2360,7 +2360,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testOptionalApartmentNameNonNil() throws {
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .full
         configuration.billingAddress.countryCodes = ["US"]
 
@@ -2422,7 +2422,7 @@ class CardComponentTests: XCTestCase {
     }
 
     func testNoStateOrProvincePresentInBillingAddress() throws {
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .full
         configuration.billingAddress.countryCodes = ["GB"]
 
@@ -2486,7 +2486,7 @@ class CardComponentTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
         
         let expiryDateItem = sut.cardViewController.items.expiryDateItem
@@ -2502,7 +2502,7 @@ class CardComponentTests: XCTestCase {
 
     func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
         // Given
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .none
         let sut = CardComponent(
             paymentMethod: method,
@@ -2529,7 +2529,7 @@ class CardComponentTests: XCTestCase {
 
     func testValidateGivenInvalidInputShouldReturnFormViewControllerValidateResult() throws {
         // Given
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .none
         let sut = CardComponent(
             paymentMethod: method,

@@ -14,7 +14,7 @@
 package struct CardComponentFactory<CardMethod: AnyCardPaymentMethod>: PaymentComponentFactory {
     
     package typealias Method = CardMethod
-    package typealias Configuration = CardComponent.Configuration
+    package typealias Configuration = CardComponentConfiguration
     package typealias Component = CardComponent
     
     package init() {}
@@ -29,7 +29,7 @@ package struct CardComponentFactory<CardMethod: AnyCardPaymentMethod>: PaymentCo
     package func create(
         with paymentMethod: CardMethod,
         context: AdyenContext,
-        configuration: CardComponent.Configuration
+        configuration: CardComponentConfiguration
     ) -> CardComponent {
         CardComponent(
             paymentMethod: paymentMethod,
@@ -38,7 +38,7 @@ package struct CardComponentFactory<CardMethod: AnyCardPaymentMethod>: PaymentCo
         )
     }
     
-    package func defaultConfiguration() -> CardComponent.Configuration {
-        CardComponent.Configuration()
+    package func defaultConfiguration() -> CardComponentConfiguration {
+        CardComponentConfiguration()
     }
 }
