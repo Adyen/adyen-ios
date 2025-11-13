@@ -9,28 +9,28 @@ import Foundation
 /// Builds different types of `FormItemView's`  from the corresponding concrete `FormItem`.
 @_spi(AdyenInternal)
 public struct FormItemViewBuilder {
-    
-    /// The theme to use for building views. Optional during migration.
-    package let theme: AdyenTheme?
-    
+
+    /// The theme to use for building views.
+    package let theme: AdyenTheme
+
     /// Initializes the form item view builder.
-    /// - Parameter theme: The theme to use for building views. If nil, views will use item.style.
+    /// - Parameter theme: The theme to use for building views. Defaults to `.default` if nil.
     package init(theme: AdyenTheme? = nil) {
-        self.theme = theme
+        self.theme = theme ?? .default
     }
-    
+
     /// Builds `FormToggleItemView` from `FormToggleItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormToggleItem) -> FormItemView<FormToggleItem> {
         FormToggleItemView(item: item)
     }
-    
+
     /// Builds `FormSplitItemView` from `FormSplitItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormSplitItem) -> FormItemView<FormSplitItem> {
         FormSplitItemView(item: item)
     }
-    
+
     /// Builds `PhoneNumberItemView` from `PhoneNumberItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormPhoneNumberItem) -> FormItemView<FormPhoneNumberItem> {
@@ -39,16 +39,17 @@ public struct FormItemViewBuilder {
 
     /// Builds `FormIssuerPickerItemView` from `FormIssuerPickerItem`.
     @_spi(AdyenInternal)
-    public func build<Value: CustomStringConvertible>(with item: BaseFormPickerItem<Value>) -> BaseFormPickerItemView<Value> {
+    public func build<Value: CustomStringConvertible>(with item: BaseFormPickerItem<Value>)
+        -> BaseFormPickerItemView<Value> {
         BaseFormPickerItemView(item: item)
     }
 
     /// Builds `FormTextInputItemView` from `FormTextInputItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormTextInputItem) -> FormItemView<FormTextInputItem> {
-        FormTextInputItemView(item: item)
+        FormTextInputItemView(item: item, theme: theme)
     }
-    
+
     /// Builds `ListItemView` from `ListItem`.
     @_spi(AdyenInternal)
     public func build(with item: ListItem) -> ListItemView {
@@ -68,7 +69,7 @@ public struct FormItemViewBuilder {
     public func build(with item: FormButtonItem) -> FormItemView<FormButtonItem> {
         FormButtonItemView(item: item)
     }
-    
+
     /// Builds `FormImageView` from `FormImageItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormImageItem) -> FormItemView<FormImageItem> {
@@ -86,7 +87,7 @@ public struct FormItemViewBuilder {
     public func build(with item: FormErrorItem) -> FormItemView<FormErrorItem> {
         FormErrorItemView(item: item)
     }
-    
+
     /// Builds `FormVerticalStackItemView` from `FormAddressItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormAddressItem) -> FormItemView<FormAddressItem> {
@@ -98,31 +99,33 @@ public struct FormItemViewBuilder {
     public func build(with item: FormSpacerItem) -> FormItemView<FormSpacerItem> {
         FormSpacerItemView(item: item)
     }
-    
+
     /// Builds `FormTextItemView` from `FormPostalCodeItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormPostalCodeItem) -> FormItemView<FormPostalCodeItem> {
-        FormTextItemView(item: item)
+        FormTextItemView(item: item, theme: theme)
     }
-    
+
     /// Builds `FormSearchButtonItemView` from `FormSearchButtonItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormSearchButtonItem) -> FormItemView<FormSearchButtonItem> {
         FormSearchButtonItemView(item: item)
     }
-    
+
     /// Builds `FormAddressPickerItemView` from `FormAddressPickerItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormAddressPickerItem) -> FormItemView<FormAddressPickerItem> {
         FormAddressPickerItemView(item: item)
     }
-    
+
     /// Builds `FormPickerItemView` from `FormPickerItem`.
     @_spi(AdyenInternal)
-    public func build<Value>(with item: FormPickerItem<Value>) -> FormItemView<FormPickerItem<Value>> {
+    public func build<Value>(with item: FormPickerItem<Value>) -> FormItemView<
+        FormPickerItem<Value>
+    > {
         FormPickerItemView(item: item)
     }
-    
+
     /// Builds `FormPhoneExtensionPickerItemView` from `FormPhoneExtensionPickerItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormPhoneExtensionPickerItem) -> FormPhoneExtensionPickerItemView {

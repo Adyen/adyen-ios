@@ -12,9 +12,13 @@ import UIKit
 
 /// A view representing a form card security code item.
 internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> {
-    
-    internal required init(item: FormCardSecurityCodeItem) {
-        super.init(item: item)
+
+    /// Initializes the form card security code item view with theme.
+    /// - Parameters:
+    ///   - item: The item represented by the view.
+    ///   - theme: The theme to use for styling.
+    override internal init(item: FormCardSecurityCodeItem, theme: AdyenTheme) {
+        super.init(item: item, theme: theme)
         accessory = .customView(cardHintView)
         textField.allowsEditingActions = false
         
@@ -38,7 +42,13 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
             self?.becomeFirstResponder()
         }
     }
-    
+
+    // TODO: Should be deleted after the cleanup phase
+    /// Satisfies parent's required initializer. Delegates to main initializer with default theme.
+    internal required convenience init(item: FormCardSecurityCodeItem) {
+        self.init(item: item, theme: .default)
+    }
+
     internal lazy var cardHintView: HintView = {
         let view = HintView(item: self.item)
         view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cvvHintIcon")

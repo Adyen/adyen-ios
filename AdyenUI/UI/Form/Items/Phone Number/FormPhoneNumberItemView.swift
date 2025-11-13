@@ -9,13 +9,19 @@ import UIKit
 
 internal final class FormPhoneNumberItemView: FormTextItemView<FormPhoneNumberItem> {
     
-    /// Initializes the phone number item view.
-    ///
-    /// - Parameter item: The item represented by the view.
-    internal required init(item: FormPhoneNumberItem) {
-        super.init(item: item)
+    /// Initializes the phone number item view with theme.
+    /// - Parameters:
+    ///   - item: The item represented by the view.
+    ///   - theme: The theme to use for styling.
+    override internal init(item: FormPhoneNumberItem, theme: AdyenTheme) {
+        super.init(item: item, theme: theme)
         applyTextFieldLeftAccessoryView(textField: textField)
         textField.textContentType = .telephoneNumber
+    }
+
+    /// Satisfies parent's required initializer. Delegates to main initializer with default theme.
+    internal required convenience init(item: FormPhoneNumberItem) {
+        self.init(item: item, theme: .default)
     }
     
     override internal var childItemViews: [AnyFormItemView] {

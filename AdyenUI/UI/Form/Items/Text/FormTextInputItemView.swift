@@ -13,20 +13,22 @@ open class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
 
     // MARK: - Initializers
 
-    /// Initializes the text item view.
-    /// - Parameter item: The item represented by the view.
-    public required init(item: FormTextInputItem) {
-        super.init(item: item)
+    /// Initializes the text item view with theme.
+    /// - Parameters:
+    ///   - item: The item represented by the view.
+    ///   - theme: The theme to use for styling.
+    override public init(item: FormTextInputItem, theme: AdyenTheme) {
+        super.init(item: item, theme: theme)
 
         observe(item.$isEnabled) { [weak self] isEnabled in
             guard let self else { return }
             self.textField.isEnabled = isEnabled
             if isEnabled {
                 self.updateValidationStatus()
-                self.textField.textColor = item.style.text.color
+                self.textField.textColor = self.theme.elements.textField.text.color
             } else {
                 self.resetValidationStatus()
-                self.textField.textColor = item.style.text.disabledColor
+                self.textField.textColor = self.theme.elements.textField.text.disabledColor
             }
         }
         
@@ -39,5 +41,10 @@ open class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
         item.focusHandler = { [weak self] in
             self?.becomeFirstResponder()
         }
+    }
+
+    /// Satisfies parent's required initializer. Delegates to main initializer with default theme.
+    public required convenience init(item: FormTextInputItem) {
+        self.init(item: item, theme: .default)
     }
 }

@@ -16,11 +16,12 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     private static let cardSpacing: CGFloat = 4.0
     private static let cardSize = CGSize(width: 24.0, height: 16.0)
     
-    /// Initializes the form card number item view.
-    ///
-    /// - Parameter item: The item represented by the view.
-    internal required init(item: FormCardNumberItem) {
-        super.init(item: item)
+    /// Initializes the form card number item view with theme.
+    /// - Parameters:
+    ///   - item: The item represented by the view.
+    ///   - theme: The theme to use for styling.
+    override internal init(item: FormCardNumberItem, theme: AdyenTheme) {
+        super.init(item: item, theme: theme)
         accessory = .customView(detectedBrandsView)
         if item.supportsCardScanning {
             textField.inputAccessoryView = makeCardScanAccessoryView(
@@ -31,7 +32,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         textField.textContentType = .creditCardNumber
         textField.returnKeyType = .default
         textField.allowsEditingActions = false
-        
+
         observe(item.$initialBrand) { [weak self] _ in
             guard let self else { return }
             self.updateValidationStatus(forced: true)
@@ -42,7 +43,13 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
             self?.detectedBrandsView.updateCurrentLogos(newValue)
         }
     }
-    
+
+    // TODO: Should be deleted after the cleanup phase
+    /// Satisfies parent's required initializer. Delegates to main initializer with default theme.
+    internal required convenience init(item: FormCardNumberItem) {
+        self.init(item: item, theme: .default)
+    }
+
     override public func handleFormattedValueDidChange(_ newValue: String) {
         textField.text = newValue
         updateValidationStatus()
