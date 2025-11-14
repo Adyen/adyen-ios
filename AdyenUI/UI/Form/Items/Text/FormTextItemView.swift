@@ -140,7 +140,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         stackView.axis = .horizontal
         stackView.alignment = .bottom
         stackView.preservesSuperviewLayoutMargins = true
-        
+        stackView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "entryTextStackView")
+
         return stackView
     }()
     
