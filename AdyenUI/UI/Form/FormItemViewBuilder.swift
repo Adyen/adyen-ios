@@ -14,9 +14,9 @@ public struct FormItemViewBuilder {
     package let theme: AdyenTheme
 
     /// Initializes the form item view builder.
-    /// - Parameter theme: The theme to use for building views. Defaults to `.default` if nil.
-    package init(theme: AdyenTheme? = nil) {
-        self.theme = theme ?? .default
+    /// - Parameter theme: The theme to use for building views. Defaults to `.default`.
+    package init(theme: AdyenTheme = .default) {
+        self.theme = theme
     }
 
     /// Builds `FormToggleItemView` from `FormToggleItem`.
@@ -134,7 +134,7 @@ public struct FormItemViewBuilder {
 
     @_spi(AdyenInternal)
     public static func build(_ item: FormItem) -> AnyFormItemView {
-        let itemView = item.build(with: FormItemViewBuilder(theme: nil))
+        let itemView = item.build(with: FormItemViewBuilder())
         itemView.accessibilityIdentifier = item.identifier
         return itemView
     }
