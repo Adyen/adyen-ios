@@ -11,7 +11,7 @@
 
 extension PayByBankUSComponent {
     
-    public struct Configuration: AnyBasicComponentConfiguration {
+    public struct Configuration {
         
         /// The UI style of the component.
         public var style: PayByBankUSComponent.Style

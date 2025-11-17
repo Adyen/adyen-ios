@@ -24,6 +24,7 @@ public struct LookupAddressModel {
     }
 }
 
+// TODO: This should not be in UI module. To be checked later
 public protocol AddressLookupProvider: AnyObject {
     
     /// Provides a list of ``LookupAddressModel`` based on a `searchTerm`
