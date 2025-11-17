@@ -42,10 +42,4 @@ open class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
             self?.becomeFirstResponder()
         }
     }
-
-    // TODO: Should be deleted after the cleanup phase
-    /// Satisfies parent's required initializer. Delegates to main initializer with default theme.
-    public required convenience init(item: FormTextInputItem) {
-        self.init(item: item, theme: .default)
-    }
 }

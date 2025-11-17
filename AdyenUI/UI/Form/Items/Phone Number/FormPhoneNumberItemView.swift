@@ -19,12 +19,6 @@ internal final class FormPhoneNumberItemView: FormTextItemView<FormPhoneNumberIt
         textField.textContentType = .telephoneNumber
     }
 
-    // TODO: Should be deleted after the cleanup phase
-    /// Satisfies parent's required initializer. Delegates to main initializer with default theme.
-    internal required convenience init(item: FormPhoneNumberItem) {
-        self.init(item: item, theme: .default)
-    }
-    
     override internal var childItemViews: [AnyFormItemView] {
         [phoneExtensionView]
     }

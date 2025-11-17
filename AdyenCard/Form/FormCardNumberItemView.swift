@@ -44,12 +44,6 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         }
     }
 
-    // TODO: Should be deleted after the cleanup phase
-    /// Satisfies parent's required initializer. Delegates to main initializer with default theme.
-    internal required convenience init(item: FormCardNumberItem) {
-        self.init(item: item, theme: .default)
-    }
-
     override public func handleFormattedValueDidChange(_ newValue: String) {
         textField.text = newValue
         updateValidationStatus()

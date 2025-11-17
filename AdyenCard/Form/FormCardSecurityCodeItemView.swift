@@ -43,12 +43,6 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         }
     }
 
-    // TODO: Should be deleted after the cleanup phase
-    /// Satisfies parent's required initializer. Delegates to main initializer with default theme.
-    internal required convenience init(item: FormCardSecurityCodeItem) {
-        self.init(item: item, theme: .default)
-    }
-
     internal lazy var cardHintView: HintView = {
         let view = HintView(item: self.item)
         view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cvvHintIcon")
