@@ -144,6 +144,20 @@ fix: Resolve race condition in session handler
 - SwiftFormat is configured with inline commas, no space ranges, and specific wrapping rules
 - All files must include copyright header (auto-applied by SwiftFormat)
 
+**IMPORTANT: Always run SwiftFormat after editing Swift files**
+
+After making any code changes using editing tools, always run SwiftFormat to ensure compliance with the project's formatting rules:
+
+```bash
+# Format a single file
+swiftformat path/to/edited/file.swift
+
+# Format multiple files
+swiftformat AdyenUI/UI/Form/Items/Text/
+```
+
+This prevents unintended whitespace changes and formatting inconsistencies that create noise in pull request diffs and increase reviewer burden.
+
 ### Access Control
 
 Use `@_spi(AdyenInternal)` for internal-but-cross-module APIs. The SDK uses explicit access control levels (`explicit_acl` SwiftLint rule is enabled).

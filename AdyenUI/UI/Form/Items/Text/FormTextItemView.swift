@@ -39,13 +39,15 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     override public var accessibilityLabelView: UIView? { textField }
 
-    // TODO: To be passed as a dependency by FormViewController.ItemManager
-    package let theme: AdyenTheme = .default
+    /// The theme for styling (accessible to subclasses)
+    package let theme: AdyenTheme
 
-    /// Initializes the text item view.
-    ///
-    /// - Parameter item: The item represented by the view.
-    public required init(item: ItemType) {
+    /// Initializes the text item view with theme.
+    /// - Parameters:
+    ///   - item: The item represented by the view.
+    ///   - theme: The theme to use for styling.
+    public init(item: ItemType, theme: AdyenTheme) {
+        self.theme = theme
         super.init(item: item)
 
         bind(item.$placeholder, to: textField, at: \.placeholder)
@@ -61,8 +63,51 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         observe(item.$validationFailureMessage) { [weak self] newValue in
             self?.alertLabel.text = newValue
         }
-    
-        apply(style: theme.elements.textField)
+
+        configure()
+    }
+
+    /// Satisfies parent's required initializer. Delegates to main initializer with default theme.
+    public required convenience init(item: ItemType) {
+        self.init(item: item, theme: .default)
+    }
+
+    // MARK: - Configuration
+
+    /// Configures all static styling from theme.
+    private func configure() {
+        let style = theme.elements.textField
+
+        // Title
+        titleLabel.font = style.title.font
+        titleLabel.textColor = style.title.color
+        titleLabel.textAlignment = style.title.textAlignment
+
+        // Text field
+        textField.font = style.text.font
+        textField.textColor = style.text.color
+        textField.textAlignment = style.text.textAlignment
+
+        // Placeholder
+        textField.apply(placeholderText: item.placeholder, with: style.placeholder)
+
+        // Container
+        entryTextStackView.backgroundColor = style.containerColor
+        entryTextStackView.layer.borderWidth = style.borderWidth
+
+        // Alert
+        alertLabel.textColor = style.errorColor
+
+        // Corner radius
+        switch style.cornerRadius {
+        case let .fixed(radius):
+            entryTextStackView.layer.cornerRadius = radius
+        default:
+            break
+        }
+
+        // Border styling
+        updateBorderStyling()
     }
     
     override public func reset() {
@@ -95,7 +140,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         stackView.axis = .horizontal
         stackView.alignment = .bottom
         stackView.preservesSuperviewLayoutMargins = true
-        
+        stackView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "entryTextStackView")
+
         return stackView
     }()
     
@@ -105,8 +151,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         stackView.alignment = .fill
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.isHidden = true
-        stackView.layoutMargins.bottom = abs(item.style.text.font.descender)
-        
+        stackView.layoutMargins.bottom = abs(theme.elements.textField.text.font.descender)
+
         return stackView
     }()
     
@@ -285,42 +331,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         accessory = .none
     }
 
-    // MARK: - AdyenTheme
+    // MARK: - Border Styling
 
-    /// Applies all the style properties from AdyenTextFieldStyle to the FormTextItemView.
-    ///
-    /// - Parameter style: The style to apply.
-    private func apply(style: AdyenTextFieldStyle) {
-        // Title
-        titleLabel.font = style.title.font
-        titleLabel.textColor = style.title.color
-        titleLabel.textAlignment = style.title.textAlignment
-
-        // Text field
-        textField.font = style.text.font
-        textField.textColor = style.text.color
-        textField.textAlignment = style.text.textAlignment
-
-        // Placeholder
-        textField.apply(placeholderText: item.placeholder, with: style.placeholder)
-
-        // Container
-        entryTextStackView.backgroundColor = style.containerColor
-        entryTextStackView.layer.borderWidth = style.borderWidth
-
-        // Alert
-        alertLabel.textColor = style.errorColor
-
-        switch style.cornerRadius {
-        case let .fixed(radius):
-            entryTextStackView.layer.cornerRadius = radius
-        default:
-            break
-        }
-
-        updateBorderStyling()
-    }
-
+    /// Updates the border color based on editing state.
     private func updateBorderStyling() {
         let borderColor = isEditing ? theme.elements.textField.borderActiveColor : theme.elements.textField.borderColor
         entryTextStackView.layer.borderColor = borderColor.cgColor
