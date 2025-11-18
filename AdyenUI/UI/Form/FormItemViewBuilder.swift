@@ -34,7 +34,7 @@ public struct FormItemViewBuilder {
     /// Builds `PhoneNumberItemView` from `PhoneNumberItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormPhoneNumberItem) -> FormItemView<FormPhoneNumberItem> {
-        FormPhoneNumberItemView(item: item)
+        FormPhoneNumberItemView(item: item, theme: theme)
     }
 
     /// Builds `FormIssuerPickerItemView` from `FormIssuerPickerItem`.
