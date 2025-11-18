@@ -189,13 +189,14 @@ Localization keys are generated automatically. After modifying `.strings` files,
 swift Scripts/generate_localization_keys.swift
 ```
 
-### Testing Philosophy
+### Testing
 
-- Unit tests go in `Tests/UnitTests/`
-- Integration tests go in `Tests/IntegrationTests/`
-- Integration tests may use `XCTestCase+Wait` helpers for async operations
-- Integration tests often create and present view controllers using `XCTestCase+RootViewController`
-- Mock types follow the naming convention `*Mock` (e.g., `APIClientMock`, `PaymentComponentDelegateMock`)
+For detailed testing guidance, see [TESTING.md](TESTING.md).
+
+Quick reference:
+- Unit tests: `Tests/UnitTests/`
+- Integration tests: `Tests/IntegrationTests/`
+- Run tests: `xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,name=iPhone 17'`
 
 ## CI/CD
 
