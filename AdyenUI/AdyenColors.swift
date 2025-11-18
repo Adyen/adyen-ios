@@ -38,6 +38,7 @@ public struct AdyenColors: Equatable {
 
     public var background: UIColor
     public var container: UIColor
+    public var containerOutline: UIColor
     public var primary: UIColor
     public var textOnPrimary: UIColor
     public var highlight: UIColor
@@ -60,6 +61,10 @@ public struct AdyenColors: Equatable {
         }
 
         self.container = UIColor { traitCollection in
+            traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.backgroundSecondary : DefaultColorsLight.backgroundSecondary
+        }
+
+        self.containerOutline = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.backgroundSecondary : DefaultColorsLight.backgroundSecondary
         }
 
@@ -111,6 +116,7 @@ public struct AdyenColors: Equatable {
     public init(
         background: UIColor? = nil,
         container: UIColor? = nil,
+        containerOutline: UIColor? = nil,
         primary: UIColor? = nil,
         textOnPrimary: UIColor? = nil,
         highlight: UIColor? = nil,
@@ -127,6 +133,7 @@ public struct AdyenColors: Equatable {
 
         self.background = background ?? defaultScheme.background
         self.container = container ?? defaultScheme.container
+        self.containerOutline = containerOutline ?? defaultScheme.containerOutline
         self.primary = primary ?? defaultScheme.primary
         self.textOnPrimary = textOnPrimary ?? defaultScheme.textOnPrimary
         self.success = success ?? defaultScheme.success
