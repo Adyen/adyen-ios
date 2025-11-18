@@ -18,7 +18,6 @@ internal enum DefaultColorsLight {
     static let labelSecondary = UIColor.color(hex: 0x5C687C)
     static let labelDisabled = UIColor.color(hex: 0x8D95A3)
     static let separatorPrimary = UIColor.color(hex: 0xDBDEE2)
-    static let outlinePrimaryActive = UIColor.color(hex: 0x001222)
 }
 
 internal enum DefaultColorsDark {
@@ -33,7 +32,6 @@ internal enum DefaultColorsDark {
     static let labelSecondary = UIColor.color(hex: 0xA5A5A5)
     static let labelDisabled = UIColor.color(hex: 0x7E7E7E)
     static let separatorPrimary = UIColor.color(hex: 0x454545)
-    static let outlinePrimaryActive = UIColor.color(hex: 0xFFFFFF)
 }
 
 public struct AdyenColors: Equatable {
@@ -49,7 +47,6 @@ public struct AdyenColors: Equatable {
     public var disabled: UIColor
     public var textOnDisabled: UIColor
     public var outline: UIColor
-    public var outlineActive: UIColor
     public var text: UIColor
     public var textSecondary: UIColor
 
@@ -102,10 +99,6 @@ public struct AdyenColors: Equatable {
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.backgroundQuaternary : DefaultColorsLight.backgroundQuaternary
         }
 
-        self.outlineActive = UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.outlinePrimaryActive : DefaultColorsLight.outlinePrimaryActive
-        }
-
         self.text = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.labelPrimary : DefaultColorsLight.labelPrimary
         }
@@ -127,7 +120,6 @@ public struct AdyenColors: Equatable {
         disabled: UIColor? = nil,
         textOnDisabled: UIColor? = nil,
         outline: UIColor? = nil,
-        outlineActive: UIColor? = nil,
         text: UIColor? = nil,
         textSecondary: UIColor? = nil
     ) {
@@ -144,7 +136,6 @@ public struct AdyenColors: Equatable {
         self.disabled = disabled ?? defaultScheme.disabled
         self.textOnDisabled = textOnDisabled ?? defaultScheme.textOnDisabled
         self.outline = outline ?? defaultScheme.outline
-        self.outlineActive = outlineActive ?? defaultScheme.outlineActive
         self.text = text ?? defaultScheme.text
         self.textSecondary = textSecondary ?? defaultScheme.textSecondary
     }

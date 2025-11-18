@@ -53,7 +53,7 @@ package struct AdyenTextFieldStyle {
         containerColor: UIColor = AdyenColors.default.container,
         errorColor: UIColor = AdyenColors.default.destructive,
         borderColor: UIColor = AdyenColors.default.container,
-        borderActiveColor: UIColor = AdyenColors.default.outlineActive
+        borderActiveColor: UIColor = AdyenColors.default.primary
     ) {
         self.title = title
         self.text = text
@@ -76,7 +76,7 @@ package struct AdyenTextFieldStyle {
         self.errorColor = AdyenColors.default.destructive
         self.cornerRadius = CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius)
         self.borderColor = AdyenColors.default.container
-        self.borderActiveColor = AdyenColors.default.outlineActive
+        self.borderActiveColor = AdyenColors.default.primary
         self.borderWidth = AdyenUIConstants.defaultBorderWidth
     }
 }
