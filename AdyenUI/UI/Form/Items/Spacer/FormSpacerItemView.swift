@@ -11,10 +11,12 @@ import UIKit
 @_spi(AdyenInternal)
 public final class FormSpacerItemView: FormItemView<FormSpacerItem> {
 
-    /// Initializes the spacer item view.
+    /// Initializes the spacer item view with theme.
     ///
-    /// - Parameter item: The item represented by the view.
-    internal required init(item: FormSpacerItem) {
+    /// - Parameters:
+    ///   - item: The item represented by the view.
+    ///   - theme: The theme to use for styling.
+    internal init(item: FormSpacerItem, theme: AdyenTheme) {
         super.init(item: item)
         addSubview(stackView)
         NSLayoutConstraint.activate([
@@ -23,6 +25,11 @@ public final class FormSpacerItemView: FormItemView<FormSpacerItem> {
             stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor, constant: 0),
             stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor, constant: 0)
         ])
+    }
+
+    /// Satisfies parent's required initializer. Delegates to main initializer with default theme.
+    internal required convenience init(item: FormSpacerItem) {
+        self.init(item: item, theme: .default)
     }
 
     // MARK: - Stack View

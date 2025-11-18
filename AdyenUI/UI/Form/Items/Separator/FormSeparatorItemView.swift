@@ -9,16 +9,23 @@ import UIKit
 
 /// A view representing a separator line item.
 internal final class FormSeparatorItemView: FormItemView<FormSeparatorItem> {
-    
-    /// Initializes the separator line item view.
+
+    /// Initializes the separator line item view with theme.
     ///
-    /// - Parameter item: The item represented by the view.
-    internal required init(item: FormSeparatorItem) {
+    /// - Parameters:
+    ///   - item: The item represented by the view.
+    ///   - theme: The theme to use for styling.
+    internal init(item: FormSeparatorItem, theme: AdyenTheme) {
         super.init(item: item)
-        
+
         addSubview(separator)
-        
+
         configureConstraints()
+    }
+
+    /// Satisfies parent's required initializer. Delegates to main initializer with default theme.
+    internal required convenience init(item: FormSeparatorItem) {
+        self.init(item: item, theme: .default)
     }
     
     // MARK: - Separator
