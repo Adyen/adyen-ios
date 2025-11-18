@@ -26,17 +26,21 @@ final class FormSeparatorItemViewThemeTests: XCTestCase {
         XCTAssertEqual(heightConstraint?.constant, expectedHeight)
     }
 
+    // TODO: To be removed with the old initializer
     func test_formSeparatorItemView_convenienceInitializer_shouldUseDefaultTheme() {
         let item = FormSeparatorItem(color: .blue)
+        item.identifier = "testSeparatorConvenience"
         let sut = FormSeparatorItemView(item: item)
 
-        XCTAssertEqual(getSeparatorView(from: sut)?.backgroundColor, .blue)
+        let separatorView = sut.findView(by: "testSeparatorConvenience.separatorLine") as UIView?
+        XCTAssertEqual(separatorView?.backgroundColor, .blue)
     }
 
     // MARK: - SUT Factory
 
     private func makeSUT(separatorColor: UIColor) -> FormSeparatorItemView {
         let item = FormSeparatorItem(color: separatorColor)
+        item.identifier = "testSeparator"
         let theme = AdyenTheme.default
         return FormSeparatorItemView(item: item, theme: theme)
     }
@@ -44,6 +48,6 @@ final class FormSeparatorItemViewThemeTests: XCTestCase {
     // MARK: - Helpers
 
     private func getSeparatorView(from sut: FormSeparatorItemView) -> UIView? {
-        sut.findView(by: "separatorLine")
+        sut.findView(by: "testSeparator.separatorLine")
     }
 }
