@@ -10,12 +10,16 @@ import UIKit
 /// A view representing a separator line item.
 internal final class FormSeparatorItemView: FormItemView<FormSeparatorItem> {
 
+    /// Theme for styling (accessible to subclasses if needed).
+    package let theme: AdyenTheme
+
     /// Initializes the separator line item view with theme.
     ///
     /// - Parameters:
     ///   - item: The item represented by the view.
     ///   - theme: The theme to use for styling.
     internal init(item: FormSeparatorItem, theme: AdyenTheme) {
+        self.theme = theme
         super.init(item: item)
 
         addSubview(separator)
@@ -27,13 +31,13 @@ internal final class FormSeparatorItemView: FormItemView<FormSeparatorItem> {
     internal required convenience init(item: FormSeparatorItem) {
         self.init(item: item, theme: .default)
     }
-    
+
     // MARK: - Separator
-    
+
     private lazy var separator: UIView = {
         let view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = item.color
+        view.backgroundColor = theme.colors.separator
         view.accessibilityIdentifier = item.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "separatorLine")
         }
