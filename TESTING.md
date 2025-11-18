@@ -17,10 +17,12 @@ This file provides guidance for writing tests in the Adyen iOS SDK.
 xcrun simctl list devices available
 ```
 
+Choose an available simulator name from the output (e.g., "iPhone 15 Pro", "iPhone 16", etc.) and use it in the commands below by replacing `<SIMULATOR_NAME>`.
+
 **Run unit tests:**
 ```bash
 # Option 1: Use a standard iPhone simulator (recommended)
-xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,name=iPhone 17'
+xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,name=<SIMULATOR_NAME>'
 
 # Option 2: Use specific device by ID (most reliable)
 xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,id=<DEVICE_ID>'
@@ -28,12 +30,12 @@ xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platfor
 
 **Run integration tests:**
 ```bash
-xcodebuild test -project Adyen.xcodeproj -scheme IntegrationUIKitTests -destination 'platform=iOS Simulator,name=iPhone 17'
+xcodebuild test -project Adyen.xcodeproj -scheme IntegrationUIKitTests -destination 'platform=iOS Simulator,name=<SIMULATOR_NAME>'
 ```
 
 **Run single test:**
 ```bash
-xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,name=iPhone 17' -only-testing:UnitTests/TestClassName/testMethodName
+xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,name=<SIMULATOR_NAME>' -only-testing:UnitTests/TestClassName/testMethodName
 ```
 
 **Note:** Do not use `swift test` - it doesn't work well with the Xcode project structure. The `SnapshotTests` target is primarily for CI and not typically run during local development.
@@ -107,25 +109,35 @@ private func triggerEditing(on sut: FormTextItemView<FormTextInputItem>, isEditi
     }
 }
 
-private func setEnabled(_ enabled: Bool, on item: FormTextInputItem) {
+private func setEnabled(_ enabled: Bool, on item: FormTextInputItem, sut: FormTextInputItemView) {
     item.isEnabled = enabled
-    waitForObservableUpdate()
+    wait(until: { sut.textField.isEnabled == enabled }, timeout: 2.0)
 }
 ```
 
 #### 4. Async Utilities
 
-Helper methods like `waitForObservableUpdate()` for reactive property changes:
+Helper methods for waiting on reactive property changes. Use polling-based waits instead of fixed delays to avoid flaky tests:
 
 ```swift
-private func waitForObservableUpdate() {
-    let expectation = XCTestExpectation(description: "Wait for observable update")
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-        expectation.fulfill()
-    }
-    wait(for: [expectation], timeout: 1.0)
+// Preferred: Polling-based wait (robust)
+private func setEnabled(_ enabled: Bool, on item: FormTextInputItem, sut: FormTextInputItemView) {
+    item.isEnabled = enabled
+    wait(until: { sut.textField.isEnabled == enabled }, timeout: 2.0)
+}
+
+// Or more generic:
+private func waitUntil(
+    _ condition: @escaping () -> Bool,
+    timeout: TimeInterval = 2.0,
+    file: StaticString = #file,
+    line: UInt = #line
+) {
+    wait(until: condition, timeout: timeout)
 }
 ```
+
+**Note:** Avoid fixed delays like `DispatchQueue.main.asyncAfter(deadline: .now() + 0.1)` as they can be flaky. Use condition-based polling with `wait(until:timeout:)` instead.
 
 ### Accessing Private Views for Testing
 
@@ -179,6 +191,32 @@ final class FormTextItemViewThemeTests: XCTestCase {
         FormTextItemView(item: FormTextInputItem(), theme: theme)
     }
 
+    private func makeSUT(
+        borderColor: UIColor,
+        borderActiveColor: UIColor
+    ) -> FormTextItemView<FormTextInputItem> {
+        var style = AdyenTextFieldStyle()
+        style.borderColor = borderColor
+        style.borderActiveColor = borderActiveColor
+        let theme = AdyenTheme(elements: AdyenElements(textField: style))
+        return makeSUT(with: theme)
+    }
+
+    // MARK: - Style Factory
+
+    private func makeTextFieldStyle() -> AdyenTextFieldStyle {
+        var style = AdyenTextFieldStyle()
+        style.title = AdyenLabelStyle(font: .systemFont(ofSize: 18, weight: .bold), color: .red)
+        style.text = AdyenLabelStyle(font: .systemFont(ofSize: 16), color: .blue)
+        style.placeholder = AdyenLabelStyle(font: .systemFont(ofSize: 14), color: .gray)
+        style.containerColor = .yellow
+        style.borderColor = .green
+        style.borderWidth = 3.0
+        style.cornerRadius = .fixed(12.0)
+        style.errorColor = .purple
+        return style
+    }
+
     // MARK: - Assertions
 
     private func expect(
@@ -187,13 +225,34 @@ final class FormTextItemViewThemeTests: XCTestCase {
         file: StaticString = #file,
         line: UInt = #line
     ) {
-        // assertions...
+        XCTAssertEqual(sut.titleLabel.font, style.title.font, file: file, line: line)
+        XCTAssertEqual(sut.titleLabel.textColor, style.title.color, file: file, line: line)
+        XCTAssertEqual(sut.textField.font, style.text.font, file: file, line: line)
+        XCTAssertEqual(sut.textField.textColor, style.text.color, file: file, line: line)
+        // ... more assertions
+    }
+
+    private func expectBorderColor(
+        _ containerView: UIStackView?,
+        toBe color: UIColor,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) {
+        XCTAssertEqual(containerView?.layer.borderColor, color.cgColor, file: file, line: line)
     }
 
     // MARK: - Helpers
 
     private func getContainerView(from sut: FormTextItemView<FormTextInputItem>) -> UIStackView? {
         sut.findView(by: "entryTextStackView")
+    }
+
+    private func triggerEditing(on sut: FormTextItemView<FormTextInputItem>, isEditing: Bool) {
+        if isEditing {
+            sut.textField.delegate?.textFieldDidBeginEditing?(sut.textField)
+        } else {
+            sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
+        }
     }
 }
 ```

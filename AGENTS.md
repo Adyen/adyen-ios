@@ -61,31 +61,7 @@ xcodebuild -project Adyen.xcodeproj -scheme Adyen -configuration Debug build
 
 ### Testing
 
-**List available simulators:**
-```bash
-xcrun simctl list devices available
-```
-
-**Run unit tests:**
-```bash
-# Option 1: Use a standard iPhone simulator (recommended)
-xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,name=iPhone 17'
-
-# Option 2: Use specific device by ID (most reliable)
-xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,id=<DEVICE_ID>'
-```
-
-**Run integration tests:**
-```bash
-xcodebuild test -project Adyen.xcodeproj -scheme IntegrationUIKitTests -destination 'platform=iOS Simulator,name=iPhone 17'
-```
-
-**Note:** Do not use `swift test` - it doesn't work well with the Xcode project structure. The `SnapshotTests` target is primarily for CI and not typically run during local development.
-
-**Run single test:**
-```bash
-xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,name=iPhone 17' -only-testing:UnitTests/TestClassName/testMethodName
-```
+For detailed testing guidance including test commands, patterns, and best practices, see [TESTING.md](TESTING.md).
 
 ### Code Quality
 
@@ -188,15 +164,6 @@ Localization keys are generated automatically. After modifying `.strings` files,
 ```bash
 swift Scripts/generate_localization_keys.swift
 ```
-
-### Testing
-
-For detailed testing guidance, see [TESTING.md](TESTING.md).
-
-Quick reference:
-- Unit tests: `Tests/UnitTests/`
-- Integration tests: `Tests/IntegrationTests/`
-- Run tests: `xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,name=iPhone 17'`
 
 ## CI/CD
 
