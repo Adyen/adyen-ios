@@ -21,19 +21,19 @@ package struct AdyenSwitchStyle {
     package var cornerRadius: CornerRounding
     
     /// A default instance of AdyenSwitchStyle.
-    internal static let `default` = AdyenSwitchStyle()
-    
-    /// Initializes the form switch item style.
+    internal static let `default` = AdyenElements.default.switch
+
+    /// Initializes the form switch item style with all parameters required.
     ///
     /// - Parameter title: The title label style.
     /// - Parameter tintColor: The tint color.
     /// - Parameter backgroundColor: The background color.
     /// - Parameter cornerRadius: The corner radius.
     internal init(
-        title: AdyenLabelStyle = .init(),
-        tintColor: UIColor = AdyenColors.default.primary,
-        backgroundColor: UIColor = AdyenColors.default.container,
-        cornerRadius: CornerRounding = CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius)
+        title: AdyenLabelStyle,
+        tintColor: UIColor,
+        backgroundColor: UIColor,
+        cornerRadius: CornerRounding
     ) {
         self.title = title
         self.tintColor = tintColor

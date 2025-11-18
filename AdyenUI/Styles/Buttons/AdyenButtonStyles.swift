@@ -15,18 +15,18 @@ package struct AdyenButtonStyles {
     package var tertiary: AdyenButtonStyle
     package var destructive: AdyenButtonStyle
 
-    /// Initializes the button styles.
+    /// Initializes the button styles with all parameters required.
     ///
     /// - Parameters:
-    ///   - primary: The primary button style. Defaults to standard primary style.
-    ///   - secondary: The secondary button style. Defaults to standard secondary style.
-    ///   - tertiary: The tertiary button style. Defaults to standard tertiary style.
-    ///   - destructive: The destructive button style. Defaults to standard destructive style.
+    ///   - primary: The primary button style.
+    ///   - secondary: The secondary button style.
+    ///   - tertiary: The tertiary button style.
+    ///   - destructive: The destructive button style.
     internal init(
-        primary: AdyenButtonStyle = .primary(for: .default),
-        secondary: AdyenButtonStyle = .secondary(for: .default),
-        tertiary: AdyenButtonStyle = .tertiary(for: .default),
-        destructive: AdyenButtonStyle = .destructive(for: .default)
+        primary: AdyenButtonStyle,
+        secondary: AdyenButtonStyle,
+        tertiary: AdyenButtonStyle,
+        destructive: AdyenButtonStyle
     ) {
         self.primary = primary
         self.secondary = secondary
@@ -34,5 +34,5 @@ package struct AdyenButtonStyles {
         self.destructive = destructive
     }
 
-    internal static let `default`: AdyenButtonStyles = .init()
+    internal static let `default`: AdyenButtonStyles = AdyenElements.default.buttons
 }

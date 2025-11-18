@@ -17,52 +17,28 @@ package struct AdyenLabelStyles {
     package var footnoteEmphasized: AdyenLabelStyle
 
     /// A default instance of AdyenLabelStyles.
-    internal static let `default` = AdyenLabelStyles()
-    
-    /// Initializes the label styles.
+    internal static let `default` = AdyenElements.default.labels
+
+    /// Initializes the label styles with all parameters required.
     ///
     /// - Parameters:
-    ///   - title: The title label style. Defaults to 34pt bold.
-    ///   - subtitle: The subtitle label style. Defaults to 20pt semibold.
-    ///   - body: The body label style. Defaults to 17pt regular.
-    ///   - bodyEmphasized: The emphasized body label style. Defaults to 17pt semibold.
-    ///   - subheadline: The subheadline label style. Defaults to 15pt regular.
-    ///   - subheadlineEmphasized: The emphasized subheadline label style. Defaults to 15pt semibold.
-    ///   - footnote: The footnote label style. Defaults to 13pt regular.
-    ///   - footnoteEmphasized: The emphasized footnote label style. Defaults to 13pt semibold.
+    ///   - title: The title label style (34pt bold).
+    ///   - subtitle: The subtitle label style (20pt semibold).
+    ///   - body: The body label style (17pt regular).
+    ///   - bodyEmphasized: The emphasized body label style (17pt semibold).
+    ///   - subheadline: The subheadline label style (15pt regular).
+    ///   - subheadlineEmphasized: The emphasized subheadline label style (15pt semibold).
+    ///   - footnote: The footnote label style (13pt regular).
+    ///   - footnoteEmphasized: The emphasized footnote label style (13pt semibold).
     internal init(
-        title: AdyenLabelStyle = AdyenLabelStyle(
-            font: UIFont.systemFont(ofSize: 34.0, weight: .bold),
-            color: AdyenColors.default.primary
-        ),
-        subtitle: AdyenLabelStyle = AdyenLabelStyle(
-            font: UIFont.systemFont(ofSize: 20.0, weight: .semibold),
-            color: AdyenColors.default.primary
-        ),
-        body: AdyenLabelStyle = AdyenLabelStyle(
-            font: UIFont.systemFont(ofSize: 17.0, weight: .regular),
-            color: AdyenColors.default.primary
-        ),
-        bodyEmphasized: AdyenLabelStyle = AdyenLabelStyle(
-            font: UIFont.systemFont(ofSize: 17.0, weight: .semibold),
-            color: AdyenColors.default.primary
-        ),
-        subheadline: AdyenLabelStyle = AdyenLabelStyle(
-            font: UIFont.systemFont(ofSize: 15.0, weight: .regular),
-            color: AdyenColors.default.text
-        ),
-        subheadlineEmphasized: AdyenLabelStyle = AdyenLabelStyle(
-            font: UIFont.systemFont(ofSize: 15.0, weight: .semibold),
-            color: AdyenColors.default.text
-        ),
-        footnote: AdyenLabelStyle = AdyenLabelStyle(
-            font: UIFont.systemFont(ofSize: 13.0, weight: .regular),
-            color: AdyenColors.default.textSecondary
-        ),
-        footnoteEmphasized: AdyenLabelStyle = AdyenLabelStyle(
-            font: UIFont.systemFont(ofSize: 13.0, weight: .semibold),
-            color: AdyenColors.default.text
-        )
+        title: AdyenLabelStyle,
+        subtitle: AdyenLabelStyle,
+        body: AdyenLabelStyle,
+        bodyEmphasized: AdyenLabelStyle,
+        subheadline: AdyenLabelStyle,
+        subheadlineEmphasized: AdyenLabelStyle,
+        footnote: AdyenLabelStyle,
+        footnoteEmphasized: AdyenLabelStyle
     ) {
         self.title = title
         self.subtitle = subtitle
