@@ -133,7 +133,7 @@ private func waitUntil(
     file: StaticString = #file,
     line: UInt = #line
 ) {
-    wait(until: condition, timeout: timeout)
+    wait(until: condition, timeout: timeout, file: file, line: line)
 }
 ```
 
