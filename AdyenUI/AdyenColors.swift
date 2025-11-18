@@ -17,7 +17,7 @@ internal enum DefaultColorsLight {
     static let labelPrimary = UIColor.color(hex: 0x00112C)
     static let labelSecondary = UIColor.color(hex: 0x5C687C)
     static let labelDisabled = UIColor.color(hex: 0x8D95A3)
-    static let separatorPrimary = UIColor.color(hex: 0xDBDEE2)
+    static let separatorPrimary = UIColor.color(hex: 0xDADDDF)
 }
 
 internal enum DefaultColorsDark {
@@ -31,7 +31,7 @@ internal enum DefaultColorsDark {
     static let labelPrimary = UIColor.color(hex: 0xFFFFFF)
     static let labelSecondary = UIColor.color(hex: 0xA5A5A5)
     static let labelDisabled = UIColor.color(hex: 0x7E7E7E)
-    static let separatorPrimary = UIColor.color(hex: 0x454545)
+    static let separatorPrimary = UIColor.color(hex: 0x444444)
 }
 
 public struct AdyenColors: Equatable {
