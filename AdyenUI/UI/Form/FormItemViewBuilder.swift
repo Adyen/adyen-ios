@@ -97,7 +97,7 @@ public struct FormItemViewBuilder {
     /// Builds `FormSpacerItemView` from `FormSpacerItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormSpacerItem) -> FormItemView<FormSpacerItem> {
-        FormSpacerItemView(item: item, theme: theme)
+        FormSpacerItemView(item: item)
     }
 
     /// Builds `FormTextItemView` from `FormPostalCodeItem`.
