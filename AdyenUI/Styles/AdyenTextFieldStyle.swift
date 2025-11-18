@@ -43,6 +43,8 @@ package struct AdyenTextFieldStyle {
     internal static let `default` = AdyenElements.default.textField
 
     /// Initializes a new AdyenTextFieldStyle with all parameters required.
+    ///
+    /// Note: Default values are defined in `AdyenElements.init(colors:)`.
     internal init(
         title: AdyenLabelStyle,
         text: AdyenLabelStyle,

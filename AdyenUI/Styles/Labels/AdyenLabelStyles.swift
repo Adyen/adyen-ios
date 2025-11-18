@@ -21,15 +21,17 @@ package struct AdyenLabelStyles {
 
     /// Initializes the label styles with all parameters required.
     ///
+    /// Note: Default values are defined in `AdyenElements.init(colors:)`.
+    ///
     /// - Parameters:
-    ///   - title: The title label style (34pt bold).
-    ///   - subtitle: The subtitle label style (20pt semibold).
-    ///   - body: The body label style (17pt regular).
-    ///   - bodyEmphasized: The emphasized body label style (17pt semibold).
-    ///   - subheadline: The subheadline label style (15pt regular).
-    ///   - subheadlineEmphasized: The emphasized subheadline label style (15pt semibold).
-    ///   - footnote: The footnote label style (13pt regular).
-    ///   - footnoteEmphasized: The emphasized footnote label style (13pt semibold).
+    ///   - title: The title label style.
+    ///   - subtitle: The subtitle label style.
+    ///   - body: The body label style.
+    ///   - bodyEmphasized: The emphasized body label style.
+    ///   - subheadline: The subheadline label style.
+    ///   - subheadlineEmphasized: The emphasized subheadline label style.
+    ///   - footnote: The footnote label style.
+    ///   - footnoteEmphasized: The emphasized footnote label style.
     internal init(
         title: AdyenLabelStyle,
         subtitle: AdyenLabelStyle,

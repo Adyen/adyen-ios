@@ -17,6 +17,8 @@ package struct AdyenButtonStyles {
 
     /// Initializes the button styles with all parameters required.
     ///
+    /// Note: Default values are defined in `AdyenElements.init(colors:)`.
+    ///
     /// - Parameters:
     ///   - primary: The primary button style.
     ///   - secondary: The secondary button style.

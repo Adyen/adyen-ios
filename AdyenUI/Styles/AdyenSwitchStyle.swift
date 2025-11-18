@@ -25,6 +25,8 @@ package struct AdyenSwitchStyle {
 
     /// Initializes the form switch item style with all parameters required.
     ///
+    /// Note: Default values are defined in `AdyenElements.init(colors:)`.
+    ///
     /// - Parameter title: The title label style.
     /// - Parameter tintColor: The tint color.
     /// - Parameter backgroundColor: The background color.
