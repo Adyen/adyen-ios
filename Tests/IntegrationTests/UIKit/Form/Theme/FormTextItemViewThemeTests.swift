@@ -10,143 +10,109 @@ import XCTest
 
 final class FormTextItemViewThemeTests: XCTestCase {
 
-    func test_formTextItemView_shouldApplyThemeAttributesCorrectly() {
-        let textFieldStyle = makeTextFieldStyle()
-        let sut = makeSUT(with: textFieldStyle)
-        expect(sut, toMatchStyle: textFieldStyle)
+    func test_formTextItemView_withDefaultTheme_shouldUseDefaultColors() {
+        // Given
+        let sut = makeSUT()
+
+        // Then
+        XCTAssertEqual(sut.titleLabel.textColor, AdyenColors.default.primary)
+        XCTAssertEqual(sut.textField.textColor, AdyenColors.default.primary)
+        XCTAssertEqual(sut.alertLabel.textColor, AdyenColors.default.destructive)
+
+        let containerView = getContainerView(from: sut)
+        XCTAssertEqual(containerView?.backgroundColor, AdyenColors.default.container)
+        XCTAssertEqual(containerView?.layer.borderColor, AdyenColors.default.containerOutline.cgColor)
     }
 
-    func test_formTextItemView_withDefaultTheme_shouldUseDefaultAttributes() {
-        let defaultTheme = AdyenTheme.default
-        let sut = makeSUT(with: defaultTheme)
-        expect(sut, toMatchStyle: defaultTheme.elements.textField)
+    func test_formTextItemView_withCustomColors_shouldApplyToUI() {
+        // Given
+        let customColors = AdyenColors(
+            primary: .systemPink,
+            destructive: .systemOrange,
+            container: .systemYellow,
+            containerOutline: .systemPurple
+        )
+
+        // When
+        let sut = makeSUT(colors: customColors)
+
+        // Then
+        XCTAssertEqual(sut.titleLabel.textColor, .systemPink)
+        XCTAssertEqual(sut.textField.textColor, .systemPink)
+        XCTAssertEqual(sut.alertLabel.textColor, .systemOrange)
+
+        let containerView = getContainerView(from: sut)
+        XCTAssertEqual(containerView?.backgroundColor, .systemYellow)
+        XCTAssertEqual(containerView?.layer.borderColor, UIColor.systemPurple.cgColor)
     }
 
     func test_formTextItemView_borderColor_shouldUpdateOnEditingStateChange() {
-        let sut = makeSUT(borderColor: .green, borderActiveColor: .orange)
+        // Given
+        let customColors = AdyenColors(
+            containerOutline: .systemGreen,
+            primary: .systemOrange
+        )
+        let sut = makeSUT(colors: customColors)
         let containerView = getContainerView(from: sut)
 
-        expectBorderColor(containerView, toBe: .green)
+        // Then - inactive border uses containerOutline
+        XCTAssertEqual(containerView?.layer.borderColor, UIColor.systemGreen.cgColor)
+
+        // When - editing triggers active border (uses primary)
         triggerEditing(on: sut, isEditing: true)
-        expectBorderColor(containerView, toBe: .orange)
+
+        // Then
+        XCTAssertEqual(containerView?.layer.borderColor, UIColor.systemOrange.cgColor)
+
+        // When - stop editing
         triggerEditing(on: sut, isEditing: false)
-        expectBorderColor(containerView, toBe: .green)
+
+        // Then - back to inactive
+        XCTAssertEqual(containerView?.layer.borderColor, UIColor.systemGreen.cgColor)
     }
 
     func test_formTextInputItemView_isEnabled_shouldApplyCorrectTextColor() {
+        // Given
+        let customColors = AdyenColors(primary: .systemBlue)
         let item = FormTextInputItem()
-        let sut = makeSUT(item: item, textColor: .blue, disabledTextColor: .lightGray)
+        let sut = makeSUT(item: item, colors: customColors)
 
-        XCTAssertEqual(sut.textField.textColor, .blue)
+        // Then - enabled
+        XCTAssertEqual(sut.textField.textColor, .systemBlue)
         XCTAssertTrue(sut.textField.isEnabled)
 
+        // When - disable
         setEnabled(false, on: item)
-        XCTAssertEqual(sut.textField.textColor, .lightGray)
+
+        // Then - disabled color applied (SDK default for disabled is textSecondary)
+        XCTAssertEqual(sut.textField.textColor, AdyenColors.default.textSecondary)
         XCTAssertFalse(sut.textField.isEnabled)
 
+        // When - re-enable
         setEnabled(true, on: item)
-        XCTAssertEqual(sut.textField.textColor, .blue)
+
+        // Then - back to custom color
+        XCTAssertEqual(sut.textField.textColor, .systemBlue)
         XCTAssertTrue(sut.textField.isEnabled)
     }
 
     func test_formTextItemView_convenienceInitializer_shouldUseDefaultTheme() {
+        // Given & When
         let sut = FormTextItemView(item: FormTextInputItem())
-        let defaultTextFieldStyle = AdyenTheme.default.elements.textField
 
-        XCTAssertEqual(sut.titleLabel.font, defaultTextFieldStyle.title.font)
-        XCTAssertEqual(sut.titleLabel.textColor, defaultTextFieldStyle.title.color)
-        XCTAssertEqual(sut.textField.font, defaultTextFieldStyle.text.font)
-        XCTAssertEqual(sut.textField.textColor, defaultTextFieldStyle.text.color)
+        // Then
+        XCTAssertEqual(sut.titleLabel.textColor, AdyenColors.default.primary)
+        XCTAssertEqual(sut.textField.textColor, AdyenColors.default.primary)
     }
 
     // MARK: - SUT Factory
 
     private func makeSUT(
         item: FormTextInputItem = FormTextInputItem(),
-        with theme: AdyenTheme
+        colors: AdyenColors = .default
     ) -> FormTextItemView<FormTextInputItem> {
-        FormTextItemView(item: item, theme: theme)
-    }
-
-    private func makeSUT(
-        with textFieldStyle: AdyenTextFieldStyle
-    ) -> FormTextItemView<FormTextInputItem> {
-        let theme = AdyenTheme(elements: AdyenElements(textField: textFieldStyle))
-        return makeSUT(with: theme)
-    }
-
-    private func makeSUT(
-        borderColor: UIColor,
-        borderActiveColor: UIColor
-    ) -> FormTextItemView<FormTextInputItem> {
-        var style = AdyenTextFieldStyle()
-        style.borderColor = borderColor
-        style.borderActiveColor = borderActiveColor
-        return makeSUT(with: style)
-    }
-
-    private func makeSUT(
-        item: FormTextInputItem,
-        textColor: UIColor,
-        disabledTextColor: UIColor
-    ) -> FormTextInputItemView {
-        var style = AdyenTextFieldStyle()
-        style.text = AdyenLabelStyle(
-            font: .systemFont(ofSize: 16),
-            color: textColor,
-            disabledColor: disabledTextColor
-        )
-        let theme = AdyenTheme(elements: AdyenElements(textField: style))
-        return FormTextInputItemView(item: item, theme: theme)
-    }
-
-    // MARK: - Style Factory
-
-    private func makeTextFieldStyle() -> AdyenTextFieldStyle {
-        var style = AdyenTextFieldStyle()
-        style.title = AdyenLabelStyle(font: .systemFont(ofSize: 18, weight: .bold), color: .red)
-        style.text = AdyenLabelStyle(font: .systemFont(ofSize: 16), color: .blue)
-        style.placeholder = AdyenLabelStyle(font: .systemFont(ofSize: 14), color: .gray)
-        style.containerColor = .yellow
-        style.borderColor = .green
-        style.borderWidth = 3.0
-        style.cornerRadius = .fixed(12.0)
-        style.errorColor = .purple
-        return style
-    }
-
-    // MARK: - Assertions
-
-    private func expect(
-        _ sut: FormTextItemView<FormTextInputItem>,
-        toMatchStyle style: AdyenTextFieldStyle,
-        file: StaticString = #file,
-        line: UInt = #line
-    ) {
-        XCTAssertEqual(sut.titleLabel.font, style.title.font, file: file, line: line)
-        XCTAssertEqual(sut.titleLabel.textColor, style.title.color, file: file, line: line)
-        XCTAssertEqual(sut.textField.font, style.text.font, file: file, line: line)
-        XCTAssertEqual(sut.textField.textColor, style.text.color, file: file, line: line)
-
-        let containerView = getContainerView(from: sut)
-        XCTAssertEqual(containerView?.backgroundColor, style.containerColor, file: file, line: line)
-        XCTAssertEqual(containerView?.layer.borderWidth, style.borderWidth, file: file, line: line)
-        XCTAssertEqual(containerView?.layer.borderColor, style.borderColor.cgColor, file: file, line: line)
-
-        if case let .fixed(radius) = style.cornerRadius {
-            XCTAssertEqual(containerView?.layer.cornerRadius, radius, file: file, line: line)
-        }
-
-        XCTAssertEqual(sut.alertLabel.textColor, style.errorColor, file: file, line: line)
-    }
-
-    private func expectBorderColor(
-        _ containerView: UIStackView?,
-        toBe color: UIColor,
-        file: StaticString = #file,
-        line: UInt = #line
-    ) {
-        XCTAssertEqual(containerView?.layer.borderColor, color.cgColor, file: file, line: line)
+        let theme = AdyenTheme(colors: colors)
+        return FormTextItemView(item: item, theme: theme)
     }
 
     // MARK: - Helpers
