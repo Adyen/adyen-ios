@@ -110,9 +110,9 @@ final class FormTextItemViewThemeTests: XCTestCase {
     private func makeSUT(
         item: FormTextInputItem = FormTextInputItem(),
         colors: AdyenColors = .default
-    ) -> FormTextItemView<FormTextInputItem> {
+    ) -> FormTextInputItemView {
         let theme = AdyenTheme(colors: colors)
-        return FormTextItemView(item: item, theme: theme)
+        return FormTextInputItemView(item: item, theme: theme)
     }
 
     // MARK: - Helpers
