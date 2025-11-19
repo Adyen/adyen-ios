@@ -79,7 +79,7 @@ public struct FormItemViewBuilder {
     /// Builds `FormSeparatorItemView` from `FormSeparatorItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormSeparatorItem) -> FormItemView<FormSeparatorItem> {
-        FormSeparatorItemView(item: item)
+        FormSeparatorItemView(item: item, theme: theme)
     }
 
     /// Builds `FormErrorItemView` from `FormErrorItem`.
