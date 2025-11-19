@@ -27,10 +27,10 @@ final class FormTextItemViewThemeTests: XCTestCase {
     func test_formTextItemView_withCustomColors_shouldApplyToUI() {
         // Given
         let customColors = AdyenColors(
-            primary: .systemPink,
-            destructive: .systemOrange,
             container: .systemYellow,
-            containerOutline: .systemPurple
+            containerOutline: .systemPurple,
+            primary: .systemPink,
+            destructive: .systemOrange
         )
 
         // When
