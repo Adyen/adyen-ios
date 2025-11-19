@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenActions
 import Foundation
 
@@ -58,22 +58,35 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     // MARK: - DropInFlowManaging
 
-    func submit(_ data: PaymentComponentData, from component: PaymentComponent) {
+    internal func submit(_ data: PaymentComponentData, from component: PaymentComponent) {
         guard let dropInComponent else { return }
-        dropInComponentDelegate?.didSubmit(data, from: component, in: dropInComponent)
+
+        let checkoutAttemptId = component.context.analyticsProvider?.checkoutAttemptId
+        let updatedData = data.replacing(
+            checkoutAttemptId: checkoutAttemptId
+        )
+
+        guard updatedData.browserInfo == nil else {
+            dropInComponentDelegate?.didSubmit(updatedData, from: component, in: dropInComponent)
+            return
+        }
+        updatedData.dataByAddingBrowserInfo { [weak self] newData in
+            guard let self else { return }
+            dropInComponentDelegate?.didSubmit(newData, from: component, in: dropInComponent)
+        }
     }
 
-    func fail(with error: Error, from component: PaymentComponent) {
+    internal func fail(with error: Error, from component: PaymentComponent) {
         guard let dropInComponent else { return }
         dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
     }
 
-    func fail(with error: Error) {
+    internal func fail(with error: Error) {
         guard let dropInComponent else { return }
         dropInComponentDelegate?.didFail(with: error, from: dropInComponent)
     }
 
-    func cancel(component: PaymentComponent) {
+    internal func cancel(component: PaymentComponent) {
         guard let dropInComponent else { return }
         dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
     }
