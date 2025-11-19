@@ -25,8 +25,7 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
 
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
-    private let dropInComponent: DropInComponent
-    private let dropInComponentDelegate: DropInComponentDelegate?
+    private let dropInFlowManager: DropInFlowManaging
     private let cardComponentDelegate: CardComponentDelegate?
     private let partialPaymentDelegate: PartialPaymentDelegate?
 
@@ -35,15 +34,13 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
     internal init(
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
-        dropInComponent: DropInComponent,
-        dropInComponentDelegate: DropInComponentDelegate?,
+        dropInFlowManager: DropInFlowManaging,
         cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.context = context
         self.configuration = configuration
-        self.dropInComponent = dropInComponent
-        self.dropInComponentDelegate = dropInComponentDelegate
+        self.dropInFlowManager = dropInFlowManager
         self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
     }
@@ -59,8 +56,7 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
             component: component,
             context: context,
             configuration: configuration,
-            dropInComponent: dropInComponent,
-            dropInComponentDelegate: dropInComponentDelegate,
+            dropInFlowManager: dropInFlowManager,
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate,
             onCancel: onCancel

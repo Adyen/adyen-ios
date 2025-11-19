@@ -24,8 +24,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     private let component: PresentableComponent
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
-    private weak var dropInComponent: DropInComponent?
-    private weak var dropInComponentDelegate: DropInComponentDelegate?
+    private let dropInFlowManager: DropInFlowManaging
     private weak var cardComponentDelegate: CardComponentDelegate?
     private weak var partialPaymentDelegate: PartialPaymentDelegate?
     private let onCancel: (() -> Void)?
@@ -36,8 +35,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         component: PresentableComponent,
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
-        dropInComponent: DropInComponent,
-        dropInComponentDelegate: DropInComponentDelegate?,
+        dropInFlowManager: DropInFlowManaging,
         cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?,
         onCancel: (() -> Void)? = nil
@@ -45,8 +43,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         self.component = component
         self.context = context
         self.configuration = configuration
-        self.dropInComponent = dropInComponent
-        self.dropInComponentDelegate = dropInComponentDelegate
+        self.dropInFlowManager = dropInFlowManager
         self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
         self.onCancel = onCancel
@@ -61,10 +58,8 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     }
 
     internal func cancel() {
-        guard let dropInComponent else { return }
-
         if let component = (component as? PaymentComponent) {
-            dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
+            dropInFlowManager.cancel(component: component)
         }
         
         stopLoading()
@@ -94,34 +89,14 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        guard let dropInComponent else { return }
-        
-        let checkoutAttemptId = component.context.analyticsProvider?.checkoutAttemptId
-        let updatedData = data.replacing(
-            checkoutAttemptId: checkoutAttemptId
-        )
-
-        guard updatedData.browserInfo == nil else {
-            dropInComponentDelegate?.didSubmit(updatedData, from: component, in: dropInComponent)
-            return
-        }
-        updatedData.dataByAddingBrowserInfo { [weak self] newData in
-            guard let self else { return }
-            dropInComponentDelegate?.didSubmit(newData, from: component, in: dropInComponent)
-        }
+        dropInFlowManager.submit(data, from: component)
     }
     
     internal func didFail(
         with error: any Error,
         from component: any PaymentComponent
     ) {
-        guard let dropInComponent else { return }
-        
-        if case ComponentError.cancelled = error {
-            cancel()
-        } else {
-            dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
-        }
+        dropInFlowManager.fail(with: error, from: component)
     }
 }
 
