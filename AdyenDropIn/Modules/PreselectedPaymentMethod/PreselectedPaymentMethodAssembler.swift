@@ -27,8 +27,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
-    private let dropInComponent: DropInComponent
-    private let dropInComponentDelegate: DropInComponentDelegate?
+    private let dropInFlowManager: DropInFlowManaging
     private let cardComponentDelegate: CardComponentDelegate?
     private let partialPaymentDelegate: PartialPaymentDelegate?
     
@@ -39,8 +38,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
         componentContainerAssembler: ComponentContainerAssemblerProtocol,
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
-        dropInComponent: DropInComponent,
-        dropInComponentDelegate: DropInComponentDelegate?,
+        dropInFlowManager: DropInFlowManaging,
         cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
@@ -48,8 +46,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
         self.componentContainerAssembler = componentContainerAssembler
         self.context = context
         self.configuration = configuration
-        self.dropInComponent = dropInComponent
-        self.dropInComponentDelegate = dropInComponentDelegate
+        self.dropInFlowManager = dropInFlowManager
         self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
     }
@@ -65,8 +62,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
             component: component,
             title: title,
             configuration: configuration,
-            dropInComponent: dropInComponent,
-            dropInComponentDelegate: dropInComponentDelegate
+            dropInFlowManager: dropInFlowManager
         )
         let viewController = PreselectedPaymentMethodViewController(viewModel: viewModel)
         let router = PreselectedPaymentMethodRouter(

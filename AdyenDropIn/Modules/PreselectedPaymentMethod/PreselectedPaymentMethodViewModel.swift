@@ -20,8 +20,7 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
     internal weak var router: PreselectedPaymentMethodRouting?
     private let component: PaymentComponent
     private let preselectedPaymentMethodComponent: PreselectedPaymentMethodComponent
-    private weak var dropInComponent: DropInComponent?
-    private weak var dropInComponentDelegate: DropInComponentDelegate?
+    private let dropInFlowManager: DropInFlowManaging
 
     // MARK: - Initializers
 
@@ -29,11 +28,11 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
         component: PaymentComponent,
         title: String,
         configuration: DropInComponent.Configuration,
-        dropInComponent: DropInComponent,
-        dropInComponentDelegate: DropInComponentDelegate?
+        dropInFlowManager: DropInFlowManaging
     ) {
         let style = configuration.style
         self.component = component
+        self.dropInFlowManager = dropInFlowManager
         self.preselectedPaymentMethodComponent = PreselectedPaymentMethodComponent(
             component: component,
             title: title,
@@ -42,8 +41,6 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
         )
         self.preselectedPaymentMethodComponent.localizationParameters = configuration.localizationParameters
         self.preselectedPaymentMethodComponent.delegate = self
-        self.dropInComponent = dropInComponent
-        self.dropInComponentDelegate = dropInComponentDelegate
     }
 
     // MARK: - PreselectedPaymentMethodViewModelProtocol
@@ -53,9 +50,8 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
     }
 
     internal func cancel() {
-        guard let dropInComponent else { return }
-        dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
-        
+        dropInFlowManager.cancel(component: component)
+
         stopLoading()
         router?.dismiss(completion: nil)
     }
@@ -105,20 +101,17 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        guard let dropInComponent else { return }
-        dropInComponentDelegate?.didSubmit(data, from: component, in: dropInComponent)
+        dropInFlowManager.submit(data, from: component)
     }
     
     internal func didFail(
         with error: any Error,
         from component: any PaymentComponent
     ) {
-        guard let dropInComponent else { return }
-        
         if case ComponentError.cancelled = error {
             cancel()
         } else {
-            dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
+            dropInFlowManager.fail(with: error, from: component)
         }
     }
 }
