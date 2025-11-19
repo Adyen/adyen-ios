@@ -32,7 +32,7 @@ package struct AdyenLabelStyle {
     internal init(
         font: UIFont = AdyenFonts.default.body,
         color: UIColor = AdyenColors.default.primary,
-        disabledColor: UIColor = AdyenColors.default.textOnDisabled,
+        disabledColor: UIColor = AdyenColors.default.textSecondary,
         textAlignment: NSTextAlignment = .left
     ) {
         self.font = font
@@ -44,7 +44,7 @@ package struct AdyenLabelStyle {
     internal init() {
         self.font = AdyenFonts.default.body
         self.color = AdyenColors.default.primary
-        self.disabledColor = AdyenColors.default.disabled
+        self.disabledColor = AdyenColors.default.textSecondary
         self.textAlignment = .natural
     }
 }
