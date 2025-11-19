@@ -638,6 +638,7 @@
 		B686B6532DEEE2250071AFCA /* FormCardExpiryDateItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B686B6522DEEE2250071AFCA /* FormCardExpiryDateItemViewTests.swift */; };
 		B6ABA1C32CA6B058003514E5 /* ListItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ABA1C22CA6B058003514E5 /* ListItemTests.swift */; };
 		B6BFF8012EC7249200BAC3B7 /* FormTextItemViewThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BFF7FF2EC7249200BAC3B7 /* FormTextItemViewThemeTests.swift */; };
+		B6BFF8022EC7250000BAC3B7 /* FormSeparatorItemViewThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BFF8002EC7250000BAC3B7 /* FormSeparatorItemViewThemeTests.swift */; };
 		B6C9DA792D0C3F62005D65C7 /* DualBrandAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C9DA782D0C3F62005D65C7 /* DualBrandAccessoryView.swift */; };
 		B6C9DA7B2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C9DA7A2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift */; };
 		B6D808032BCD140E00F3F5EB /* AssetsAccessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91760A62594C5DF00D653BE /* AssetsAccessTests.swift */; };
@@ -2235,6 +2236,7 @@
 		B693408F2DAE6ACB0026AD7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B6ABA1C22CA6B058003514E5 /* ListItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemTests.swift; sourceTree = "<group>"; };
 		B6BFF7FF2EC7249200BAC3B7 /* FormTextItemViewThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextItemViewThemeTests.swift; sourceTree = "<group>"; };
+		B6BFF8002EC7250000BAC3B7 /* FormSeparatorItemViewThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSeparatorItemViewThemeTests.swift; sourceTree = "<group>"; };
 		B6C9DA782D0C3F62005D65C7 /* DualBrandAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualBrandAccessoryView.swift; sourceTree = "<group>"; };
 		B6C9DA7A2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualBrandAccessoryViewTests.swift; sourceTree = "<group>"; };
 		B6EE0F432BBEBFD000B9810D /* IntegrationTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = IntegrationTests.xctestplan; sourceTree = "<group>"; };
@@ -4170,6 +4172,7 @@
 			isa = PBXGroup;
 			children = (
 				B6BFF7FF2EC7249200BAC3B7 /* FormTextItemViewThemeTests.swift */,
+				B6BFF8002EC7250000BAC3B7 /* FormSeparatorItemViewThemeTests.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -8513,6 +8516,7 @@
 				E7877803282409FF004A6366 /* ApplePayDelegateMock.swift in Sources */,
 				F99F08642383F2B000EBB948 /* FormTextItemViewTests.swift in Sources */,
 				B6BFF8012EC7249200BAC3B7 /* FormTextItemViewThemeTests.swift in Sources */,
+				B6BFF8022EC7250000BAC3B7 /* FormSeparatorItemViewThemeTests.swift in Sources */,
 				F96A25432371AB75007DBF0B /* PaymentComponentDelegateMock.swift in Sources */,
 				F9CA6BC627D7503200D7BE6E /* SessionTests.swift in Sources */,
 				E79A64812490D98F00368E9F /* CardComponentDelegateMock.swift in Sources */,
