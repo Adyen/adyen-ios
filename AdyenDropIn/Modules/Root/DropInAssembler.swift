@@ -113,8 +113,7 @@ internal struct DropInAssembler {
             componentManager: componentManager,
             context: context,
             configuration: configuration,
-            dropInComponent: dropInComponent,
-            dropInComponentDelegate: dropInComponentDelegate,
+            dropInFlowManager: dropInFlowManager,
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
