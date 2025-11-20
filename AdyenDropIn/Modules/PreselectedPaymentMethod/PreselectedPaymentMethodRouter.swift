@@ -62,11 +62,11 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     }
 
     internal func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?) {
-        let actionWrapperViewController = ActionWrapperViewController(
-            actionComponent: actionComponent,
+        let actionViewController = ActionPresentationHelper.viewController(
+            for: actionComponent,
             onCancel: onCancel
         )
-        rootViewController.present(actionWrapperViewController, animated: true)
+        rootViewController.present(actionViewController, animated: true)
     }
 
     internal func dismiss(completion: (() -> Void)?) {

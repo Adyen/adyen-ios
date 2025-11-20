@@ -73,11 +73,11 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     }
 
     internal func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?) {
-        let actionWrapperViewController = ActionWrapperViewController(
-            actionComponent: actionComponent,
+        let actionViewController = ActionPresentationHelper.viewController(
+            for: actionComponent,
             onCancel: onCancel
         )
-        viewController.present(actionWrapperViewController, animated: true)
+        viewController.present(actionViewController, animated: true)
     }
 }
 
