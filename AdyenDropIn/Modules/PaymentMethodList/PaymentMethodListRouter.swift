@@ -15,7 +15,7 @@ internal protocol PaymentMethodListRouterListener: AnyObject {
 internal protocol PaymentMethodListRouting: AnyObject {
     func dismiss(completion: (() -> Void)?)
     func present(_ component: PresentableComponent, onCancel: @escaping () -> Void)
-    func present(actionComponent: PresentableComponent)
+    func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?)
 }
 
 internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
@@ -72,8 +72,11 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         }
     }
 
-    internal func present(actionComponent: any PresentableComponent) {
-        let actionWrapperViewController = ActionWrapperViewController(actionComponent: actionComponent)
+    internal func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?) {
+        let actionWrapperViewController = ActionWrapperViewController(
+            actionComponent: actionComponent,
+            onCancel: onCancel
+        )
         viewController.present(actionWrapperViewController, animated: true)
     }
 }

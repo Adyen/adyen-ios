@@ -14,7 +14,7 @@ internal protocol ComponentContainerRouterListener: AnyObject {
 
 internal protocol ComponentContainerRouting: AnyObject {
     func present(component: any PresentableComponent)
-    func present(actionComponent: any PresentableComponent)
+    func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?)
     func dismiss(completion: (() -> Void)?)
 }
 
@@ -53,8 +53,11 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouting {
         rootViewController.navigationController?.pushViewController(componentViewController, animated: true)
     }
 
-    internal func present(actionComponent: any PresentableComponent) {
-        let actionWrapperViewController = ActionWrapperViewController(actionComponent: actionComponent)
+    internal func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?) {
+        let actionWrapperViewController = ActionWrapperViewController(
+            actionComponent: actionComponent,
+            onCancel: onCancel
+        )
         rootViewController.present(actionWrapperViewController, animated: true)
     }
 

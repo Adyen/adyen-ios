@@ -122,7 +122,9 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
 extension PreselectedPaymentMethodViewModel: DropInFlowManagerDelegate {
 
     internal func didPresent(actionComponent: any PresentableComponent) {
-        router?.present(actionComponent: actionComponent)
+        router?.present(actionComponent: actionComponent) { [weak self] in
+            self?.stopLoading()
+        }
     }
 
     internal func didCancel(actionComponent: any ActionComponent) {

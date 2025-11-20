@@ -10,11 +10,19 @@ import UIKit
 /// A modal wrapper for action view controllers, adds a navigation bar with cancel button and handles dismissal.
 internal class ActionWrapperViewController: UINavigationController {
 
+    // MARK: - Properties
+
+    private var onCancel: (() -> Void)?
+
     // MARK: - Initializers
 
-    internal init(actionComponent: any PresentableComponent) {
+    internal init(
+        actionComponent: any PresentableComponent,
+        onCancel: (() -> Void)? = nil
+    ) {
         let actionComponentViewController = actionComponent.viewController
         super.init(rootViewController: actionComponentViewController)
+        self.onCancel = onCancel
 
         actionComponentViewController.navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .cancel,
@@ -28,9 +36,18 @@ internal class ActionWrapperViewController: UINavigationController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - View life cycle
+
+    override internal func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        onCancel?()
+    }
+
     // MARK: - Private
 
     @objc private func didTapCancel() {
-        dismiss(animated: true)
+        dismiss(animated: true) { [weak self] in
+            self?.onCancel?()
+        }
     }
 }
