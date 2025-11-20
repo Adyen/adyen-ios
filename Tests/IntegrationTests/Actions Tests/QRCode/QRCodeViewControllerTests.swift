@@ -8,6 +8,7 @@
 import UIKit
 import XCTest
 @_spi(AdyenInternal) @testable import Adyen
+@_spi(AdyenInternal) @testable import AdyenUI
 
 final class QRCodeViewControllerTests: XCTestCase {
     
