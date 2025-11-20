@@ -10,18 +10,17 @@ import XCTest
 
 final class FormLabelItemTests: XCTestCase {
 
-    func test_formLabelItem_shouldApplyStyleAttributes() {
-        let customFont = UIFont.systemFont(ofSize: 24, weight: .bold)
-        let customColor = UIColor.red
-        let style = TextStyle(
-            font: customFont,
-            color: customColor,
-            textAlignment: .right
-        )
-        let sut = makeSUT(style: style)
+    func test_formLabelItem_shouldApplyThemeAttributes() {
+        let customTheme = AdyenTheme()
+            .bodyLabel(
+                font: UIFont.systemFont(ofSize: 24, weight: .bold),
+                color: .red,
+                textAlignment: .right
+            )
+        let sut = makeSUT(theme: customTheme)
 
-        XCTAssertEqual(sut.font, customFont)
-        XCTAssertEqual(sut.textColor, customColor)
+        XCTAssertEqual(sut.font, UIFont.systemFont(ofSize: 24, weight: .bold))
+        XCTAssertEqual(sut.textColor, .red)
         XCTAssertEqual(sut.textAlignment, .right)
     }
 
@@ -40,26 +39,31 @@ final class FormLabelItemTests: XCTestCase {
 
     func test_formLabelItem_shouldSetAccessibilityIdentifier() {
         let expectedIdentifier = "testLabel"
+        let sut = makeSUT(identifier: expectedIdentifier)
+
+        XCTAssertEqual(sut.accessibilityIdentifier, expectedIdentifier)
+    }
+
+    func test_formLabelItem_convenienceInitializer_shouldUseDefaultTheme() {
         let item = FormLabelItem(
             text: "Test",
-            style: TextStyle(font: .systemFont(ofSize: 16), color: .black),
-            identifier: expectedIdentifier
+            style: TextStyle(font: .systemFont(ofSize: 16), color: .black)
         )
-        let builder = FormItemViewBuilder()
-        let sut = item.build(with: builder) as? UILabel
+        let sut = FormLabelItemView(item: item)
 
-        XCTAssertEqual(sut?.accessibilityIdentifier, expectedIdentifier)
+        XCTAssertEqual(sut.textColor, AdyenTheme.default.elements.labels.body.color)
+        XCTAssertEqual(sut.font, AdyenTheme.default.elements.labels.body.font)
     }
 
     // MARK: - SUT Factory
 
     private func makeSUT(
         text: String = "Test Label",
-        style: TextStyle = TextStyle(font: .systemFont(ofSize: 16), color: .black),
+        theme: AdyenTheme = .default,
         identifier: String? = "testLabel"
     ) -> UILabel {
-        let item = FormLabelItem(text: text, style: style, identifier: identifier)
-        let builder = FormItemViewBuilder()
+        let item = FormLabelItem(text: text, style: TextStyle(font: .systemFont(ofSize: 16), color: .black), identifier: identifier)
+        let builder = FormItemViewBuilder(theme: theme)
         let view = item.build(with: builder)
         guard let label = view as? UILabel else {
             XCTFail("Expected UILabel but got \(type(of: view))")
