@@ -24,7 +24,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     private let component: PresentableComponent
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
-    private let dropInFlowManager: DropInFlowManaging
+    private var dropInFlowManager: DropInFlowManaging
     private weak var cardComponentDelegate: CardComponentDelegate?
     private weak var partialPaymentDelegate: PartialPaymentDelegate?
     private let onCancel: (() -> Void)?
@@ -48,6 +48,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         self.partialPaymentDelegate = partialPaymentDelegate
         self.onCancel = onCancel
 
+        self.dropInFlowManager.delegate = self
         setupComponent()
     }
 
@@ -100,12 +101,16 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
     }
 }
 
-// MARK: - PresentationDelegate
+// MARK: - DropInFlowManagerDelegate
 
-extension ComponentContainerViewModel: PresentationDelegate {
+extension ComponentContainerViewModel: DropInFlowManagerDelegate {
 
-    internal func present(component: any PresentableComponent) {
-        router?.present(component: component)
+    internal func didPresent(actionComponent: any PresentableComponent) {
+        router?.present(actionComponent: actionComponent)
+    }
+
+    internal func didCancel(actionComponent: any ActionComponent) {
+        stopLoading()
     }
 }
 

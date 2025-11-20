@@ -19,7 +19,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     internal weak var router: PaymentMethodListRouting?
     private let paymentMethodListComponent: PaymentMethodListComponent
-    private let dropInFlowManager: DropInFlowManaging
+    private var dropInFlowManager: DropInFlowManaging
 
     // MARK: - Initializers
 
@@ -27,7 +27,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         context: AdyenContext,
         componentManager: ComponentManager,
         configuration: DropInComponent.Configuration,
-        dropInFlowManager: DropInFlowManaging,
+        dropInFlowManager: DropInFlowManaging
     ) {
         let components = componentManager.sections
         self.paymentMethodListComponent = PaymentMethodListComponent(
@@ -36,6 +36,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             style: configuration.style.listComponent
         )
         self.dropInFlowManager = dropInFlowManager
+        self.dropInFlowManager.delegate = self
         self.paymentMethodListComponent.localizationParameters = configuration.localizationParameters
         self.paymentMethodListComponent.delegate = self
     }
@@ -121,5 +122,18 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         } else {
             dropInFlowManager.fail(with: error, from: component)
         }
+    }
+}
+
+// MARK: - DropInFlowManagerDelegate
+
+extension PaymentMethodListViewModel: DropInFlowManagerDelegate {
+
+    internal func didPresent(actionComponent: any PresentableComponent) {
+        router?.present(actionComponent: actionComponent)
+    }
+
+    internal func didCancel(actionComponent: any ActionComponent) {
+        stopLoading()
     }
 }

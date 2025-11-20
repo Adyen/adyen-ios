@@ -9,14 +9,17 @@ import AdyenActions
 import Foundation
 
 internal protocol DropInFlowManagerDelegate: AnyObject {
-    func dropInFlowManager(_ manager: DropInFlowManager, didPresent component: PresentableComponent)
+    func didPresent(actionComponent: PresentableComponent)
+    func didCancel(actionComponent: ActionComponent)
 }
 
 internal protocol DropInFlowManaging {
+    var delegate: DropInFlowManagerDelegate? { get set }
     func submit(_ data: PaymentComponentData, from component: PaymentComponent)
     func fail(with error: Error, from component: PaymentComponent)
     func fail(with error: Error)
     func cancel(component: PaymentComponent)
+    func handle(action: Action)
 }
 
 internal class DropInFlowManager: DropInFlowManaging {
@@ -33,7 +36,7 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     internal init(
         dropInComponent: DropInComponent,
-        dropInComponentDelegate: DropInComponentDelegate,
+        dropInComponentDelegate: DropInComponentDelegate?,
         context: AdyenContext,
         configuration: DropInComponent.Configuration
     ) {
@@ -90,6 +93,10 @@ internal class DropInFlowManager: DropInFlowManaging {
         guard let dropInComponent else { return }
         dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
     }
+
+    internal func handle(action: Action) {
+        actionComponent.handle(action)
+    }
 }
 
 // MARK: - ActionComponentDelegate
@@ -117,7 +124,7 @@ extension DropInFlowManager: ActionComponentDelegate {
         guard let dropInComponent else { return }
 
         if case ComponentError.cancelled = error {
-            // TODO: - Handle action cancellation
+            delegate?.didCancel(actionComponent: component)
         } else {
             dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
         }
@@ -129,6 +136,6 @@ extension DropInFlowManager: ActionComponentDelegate {
 extension DropInFlowManager: PresentationDelegate {
 
     internal func present(component: any PresentableComponent) {
-        delegate?.dropInFlowManager(self, didPresent: component)
+        delegate?.didPresent(actionComponent: component)
     }
 }
