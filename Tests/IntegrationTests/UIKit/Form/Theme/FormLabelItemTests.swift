@@ -49,10 +49,11 @@ final class FormLabelItemTests: XCTestCase {
             text: "Test",
             style: TextStyle(font: .systemFont(ofSize: 16), color: .black)
         )
-        let sut = FormLabelItemView(item: item)
+        let defaultTheme = AdyenTheme.default
+        let sut = FormLabelItemView(item: item, theme: defaultTheme)
 
-        XCTAssertEqual(sut.textColor, AdyenTheme.default.elements.labels.body.color)
-        XCTAssertEqual(sut.font, AdyenTheme.default.elements.labels.body.font)
+        XCTAssertEqual(sut.textColor, defaultTheme.elements.labels.body.color)
+        XCTAssertEqual(sut.font, defaultTheme.elements.labels.body.font)
     }
 
     // MARK: - SUT Factory

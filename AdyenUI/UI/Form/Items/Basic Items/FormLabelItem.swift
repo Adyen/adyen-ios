@@ -61,10 +61,6 @@ internal final class FormLabelItemView: UILabel, AnyFormItemView {
         configure(with: item)
     }
 
-    internal required convenience init(item: FormLabelItem) {
-        self.init(item: item, theme: .default)
-    }
-
     @available(*, unavailable)
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -75,11 +71,7 @@ internal final class FormLabelItemView: UILabel, AnyFormItemView {
         numberOfLines = 0
         accessibilityIdentifier = item.identifier
 
-        // Apply theme-based label style
-        let labelStyle = theme.elements.labels.body
-        font = labelStyle.font
-        textColor = labelStyle.color
-        textAlignment = labelStyle.textAlignment
+        apply(theme.elements.labels.body)
     }
 
     // MARK: - AnyFormItemView
