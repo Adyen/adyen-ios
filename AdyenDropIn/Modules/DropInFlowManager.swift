@@ -17,7 +17,6 @@ internal protocol DropInFlowManaging {
     var delegate: DropInFlowManagerDelegate? { get set }
     func submit(_ data: PaymentComponentData, from component: PaymentComponent)
     func fail(with error: Error, from component: PaymentComponent)
-    func fail(with error: Error)
     func cancel(component: PaymentComponent)
     func handle(action: Action)
 }
@@ -82,11 +81,6 @@ internal class DropInFlowManager: DropInFlowManaging {
     internal func fail(with error: Error, from component: PaymentComponent) {
         guard let dropInComponent else { return }
         dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
-    }
-
-    internal func fail(with error: Error) {
-        guard let dropInComponent else { return }
-        dropInComponentDelegate?.didFail(with: error, from: dropInComponent)
     }
 
     internal func cancel(component: PaymentComponent) {
