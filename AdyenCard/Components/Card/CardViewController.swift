@@ -88,6 +88,7 @@ internal class CardViewController: FormViewController {
     ///   - initialCountryCode: The initially used country code for the billing address
     ///   - scope: The view's scope.
     ///   - localizationParameters: Localization parameters.
+    ///   - theme: The theme to use for styling.
     internal init(
         configuration: CardComponentConfiguration,
         shopperInformation: PrefilledShopperInformation?,
@@ -98,6 +99,7 @@ internal class CardViewController: FormViewController {
         initialCountryCode: String,
         scope: String,
         localizationParameters: LocalizationParameters?,
+        theme: AdyenTheme,
         cardScannerAnalyticsHandler: @escaping CardScannerAnalyticsHandler
     ) {
         self.configuration = configuration
@@ -112,11 +114,11 @@ internal class CardViewController: FormViewController {
         self.cardLogos = supportedCardTypes.map {
             .init(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
         }
-        
+
         super.init(
             scrollEnabled: configuration.showsSubmitButton,
-            style: formStyle,
-            localizationParameters: localizationParameters
+            localizationParameters: localizationParameters,
+            theme: theme
         )
     }
 

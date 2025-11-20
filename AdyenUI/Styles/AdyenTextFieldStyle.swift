@@ -40,20 +40,22 @@ package struct AdyenTextFieldStyle {
     package var borderWidth: CGFloat = AdyenUIConstants.defaultBorderWidth
     
     /// A default instance of AdyenTextFieldStyle.
-    internal static let `default` = AdyenTextFieldStyle()
+    internal static let `default` = AdyenElements.default.textField
 
-    /// Initializes a new AdyenTextFieldStyle with default values.
+    /// Initializes a new AdyenTextFieldStyle with all parameters required.
+    ///
+    /// Note: Default values are defined in `AdyenElements.init(colors:)`.
     internal init(
         title: AdyenLabelStyle,
         text: AdyenLabelStyle,
         placeholder: AdyenLabelStyle,
         borderWidth: CGFloat,
         cornerRadius: CornerRounding,
-        backgroundColor: UIColor = AdyenColors.default.background,
-        containerColor: UIColor = AdyenColors.default.container,
-        errorColor: UIColor = AdyenColors.default.destructive,
-        borderColor: UIColor = AdyenColors.default.containerOutline,
-        borderActiveColor: UIColor = AdyenColors.default.primary
+        backgroundColor: UIColor,
+        containerColor: UIColor,
+        errorColor: UIColor,
+        borderColor: UIColor,
+        borderActiveColor: UIColor
     ) {
         self.title = title
         self.text = text
@@ -65,19 +67,6 @@ package struct AdyenTextFieldStyle {
         self.borderWidth = borderWidth
         self.borderActiveColor = borderActiveColor
         self.placeholder = placeholder
-    }
-
-    internal init() {
-        self.title = AdyenLabelStyle.default.font(AdyenFonts.default.bodyEmphasized)
-        self.text = AdyenLabelStyle.default
-        self.placeholder = AdyenLabelStyle.default.color(AdyenColors.default.textSecondary)
-        self.backgroundColor = AdyenColors.default.background
-        self.containerColor = AdyenColors.default.container
-        self.errorColor = AdyenColors.default.destructive
-        self.cornerRadius = CornerRounding.fixed(AdyenUIConstants.defaultCornerRadius)
-        self.borderColor = AdyenColors.default.containerOutline
-        self.borderActiveColor = AdyenColors.default.primary
-        self.borderWidth = AdyenUIConstants.defaultBorderWidth
     }
 }
 
