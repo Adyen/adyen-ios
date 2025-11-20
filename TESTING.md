@@ -10,6 +10,41 @@ This file provides guidance for writing tests in the Adyen iOS SDK.
 - Integration tests often create and present view controllers using `XCTestCase+RootViewController`
 - Mock types follow the naming convention `*Mock` (e.g., `APIClientMock`, `PaymentComponentDelegateMock`)
 
+### When to Avoid Unit Tests
+
+**During rapid API changes or structural migrations:**
+- ❌ **Avoid testing API surface details** (e.g., theme/style initializer variations)
+- ❌ **Avoid testing construction patterns** that are in flux
+- ✅ **Focus on integration tests** that verify actual behavior and UI outcomes
+
+**Why?** Unit tests that verify "how" things are built (rather than "what" they do) become a maintenance burden during migrations. They:
+- Break with every structural change
+- Create PR review overhead
+- Test implementation details, not functionality
+- Provide little value when the API is changing
+
+**Example:**
+```swift
+// ❌ Avoid during migrations - tests API surface
+func test_themeInitialization_withCustomColors() {
+    let theme = AdyenTheme(colors: AdyenColors(primary: .red))
+    XCTAssertEqual(theme.colors.primary, .red)
+}
+
+// ✅ Prefer - tests actual behavior
+func test_formTextField_appliesCustomThemeColors() {
+    var customElements = AdyenElements(colors: .default)
+    customElements.textField.borderColor = .systemPink
+    let theme = AdyenTheme(elements: customElements)
+
+    let sut = FormTextItemView(item: FormTextInputItem(), theme: theme)
+
+    XCTAssertEqual(getContainerView(from: sut)?.layer.borderColor, UIColor.systemPink.cgColor)
+}
+```
+
+Once the structure stabilizes, focused unit tests can be added back for specific edge cases.
+
 ## Running Tests
 
 **List available simulators:**
