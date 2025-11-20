@@ -49,7 +49,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
     }
     
     private enum ValidationRegex {
-        static let phone = #"^[1-9]{1,1}[0-9]{1,29}$"#
+        static let phone = #"^[0-9]{1,29}$"#
         static let abn = #"^((\d{9})|(\d{11}))$"#
         static let organizationId = #"^[!-@\[-~][ -@\[-~]{0,254}[!-@\[-~]$"#
         static let bsb = #"^\d{6}$"#

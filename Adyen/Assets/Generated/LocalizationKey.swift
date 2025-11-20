@@ -180,7 +180,7 @@ public struct LocalizationKey {
     public static let amount = LocalizationKey(key: "adyen.amount")
     /// Entity
     public static let voucherEntity = LocalizationKey(key: "adyen.voucher.entity")
-    /// Open the app with the PIX registered key, choose Pay with PIX and scan the QR Code or copy and paste the code
+    /// Use your banking app to scan the QR code or copy the PIX code below to complete your payment.
     public static let pixInstructions = LocalizationKey(key: "adyen.pix.instructions")
     /// You have %@ to pay
     public static let pixExpirationLabel = LocalizationKey(key: "adyen.pix.expirationLabel")
@@ -188,6 +188,10 @@ public struct LocalizationKey {
     public static let pixCopyButton = LocalizationKey(key: "adyen.pix.copyButton")
     /// Code copied to clipboard
     public static let pixInstructionsCopiedMessage = LocalizationKey(key: "adyen.pix.instructions.copiedMessage")
+    /// Copy PIX code
+    public static let pixCodeCopyLabel = LocalizationKey(key: "adyen.pix.code.copy.label")
+    /// PIX code copied
+    public static let pixCodeCopiedLabel = LocalizationKey(key: "adyen.pix.code.copied.label")
     /// Billing address
     public static let billingAddressSectionTitle = LocalizationKey(key: "adyen.billingAddressSection.title")
     /// Your billing address

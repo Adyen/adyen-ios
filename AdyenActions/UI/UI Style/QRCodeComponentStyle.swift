@@ -31,7 +31,10 @@ public struct QRCodeComponentStyle: ViewStyle {
     public var instructionLabel = TextStyle(font: .preferredFont(forTextStyle: .subheadline), color: UIColor.Adyen.componentLabel)
     
     /// The amount to pay label style.
-    public var amountToPayLabel = TextStyle(font: .preferredFont(forTextStyle: .subheadline), color: UIColor.Adyen.componentLabel)
+    public var amountToPayLabel = TextStyle(
+        font: .preferredFont(forTextStyle: .callout).adyen.font(with: .bold),
+        color: UIColor.Adyen.componentLabel
+    )
 
     /// The progress view style.
     public var progressView = ProgressViewStyle(
