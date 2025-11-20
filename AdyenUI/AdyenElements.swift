@@ -22,35 +22,35 @@ package struct AdyenElements {
         // Define labels first so we can reuse them
         let labels = AdyenLabelStyles(
             title: AdyenLabelStyle(
-                font: UIFont.systemFont(ofSize: 34.0, weight: .bold),
+                font: UIFont.systemFont(ofSize: FontSize.title.rawValue, weight: .bold),
                 color: colors.primary
             ),
             subtitle: AdyenLabelStyle(
-                font: UIFont.systemFont(ofSize: 20.0, weight: .semibold),
+                font: UIFont.systemFont(ofSize: FontSize.subtitle.rawValue, weight: .semibold),
                 color: colors.primary
             ),
             body: AdyenLabelStyle(
-                font: UIFont.systemFont(ofSize: 17.0, weight: .regular),
+                font: UIFont.systemFont(ofSize: FontSize.body.rawValue, weight: .regular),
                 color: colors.primary
             ),
             bodyEmphasized: AdyenLabelStyle(
-                font: UIFont.systemFont(ofSize: 17.0, weight: .semibold),
+                font: UIFont.systemFont(ofSize: FontSize.body.rawValue, weight: .semibold),
                 color: colors.primary
             ),
             subheadline: AdyenLabelStyle(
-                font: UIFont.systemFont(ofSize: 15.0, weight: .regular),
+                font: UIFont.systemFont(ofSize: FontSize.subheadline.rawValue, weight: .regular),
                 color: colors.text
             ),
             subheadlineEmphasized: AdyenLabelStyle(
-                font: UIFont.systemFont(ofSize: 15.0, weight: .semibold),
+                font: UIFont.systemFont(ofSize: FontSize.subheadline.rawValue, weight: .semibold),
                 color: colors.text
             ),
             footnote: AdyenLabelStyle(
-                font: UIFont.systemFont(ofSize: 13.0, weight: .regular),
+                font: UIFont.systemFont(ofSize: FontSize.footnote.rawValue, weight: .regular),
                 color: colors.textSecondary
             ),
             footnoteEmphasized: AdyenLabelStyle(
-                font: UIFont.systemFont(ofSize: 13.0, weight: .semibold),
+                font: UIFont.systemFont(ofSize: FontSize.footnote.rawValue, weight: .semibold),
                 color: colors.text
             )
         )
