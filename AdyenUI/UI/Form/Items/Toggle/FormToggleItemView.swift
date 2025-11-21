@@ -11,8 +11,7 @@ import UIKit
 @_spi(AdyenInternal)
 public final class FormToggleItemView: FormItemView<FormToggleItem> {
 
-    // TODO: TO be passed as a dependency by FormViewController.ItemManager
-    internal let style: AdyenSwitchStyle = .default
+    package let theme: AdyenTheme
 
     // MARK: - UI elements
     
@@ -53,20 +52,24 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
         return switchControl
     }()
 
-    /// Initializes the switch item view.
-    ///
-    /// - Parameter item: The item represented by the view.
-    public required init(item: FormToggleItem) {
+    /// Initializes the switch item view with a theme.
+    public init(item: FormToggleItem, theme: AdyenTheme) {
+        self.theme = theme
         super.init(item: item)
 
-        apply(style: style)
+        configure()
 
         isAccessibilityElement = false
         accessibilityTraits = switchControl.accessibilityTraits
         accessibilityValue = switchControl.accessibilityValue
-        
+
         setupObservation()
         addSubviews()
+    }
+
+    /// Initializes the switch item view with default theme.
+    public required convenience init(item: FormToggleItem) {
+        self.init(item: item, theme: .default)
     }
     
     // MARK: - Public
@@ -81,19 +84,19 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
     override public func reset() {
         item.value = false
     }
-    
-    // MARK: - AdyenTheme
 
-    /// Applies all the style properties from AdyenToggleStyle to the FormToggleItemView.
-    ///
-    /// - Parameter style: The style to apply.
-    private func apply(style: AdyenSwitchStyle) {
+    // MARK: - Private
+
+    /// Configures all styling from theme.
+    private func configure() {
+        let style = theme.elements.switch
+
         stackView.backgroundColor = style.backgroundColor
 
         label.apply(style.title)
 
         switchControl.onTintColor = style.tintColor
-        
+
         switch style.cornerRadius {
         case let .fixed(radius):
             stackView.layer.cornerRadius = radius
