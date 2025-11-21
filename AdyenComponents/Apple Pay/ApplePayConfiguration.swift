@@ -174,15 +174,40 @@ extension ApplePayComponent {
 
 }
 
-extension ApplePayPaymentMethod {
-
-    internal var supportedNetworks: [PKPaymentNetwork] {
-        var networks = PKPaymentRequest.availableNetworks()
+internal enum ApplePayBrandsMapper {
+    static func map(brands: [String]?, supportedNetworks: [PKPaymentNetwork]) -> [PKPaymentNetwork] {
+        var networks: [PKPaymentNetwork] = supportedNetworks
         if let brands {
             let brandsSet = Set(brands)
             networks = networks.filter { brandsSet.contains($0.txVariantName) }
         }
         return networks
+    }
+}
+
+internal enum ApplePayBrandsMapperRepsectingBrandsOrder {
+    static func map(brands: [String]?, supportedNetworks: [PKPaymentNetwork]) -> [PKPaymentNetwork] {
+        guard let brands else { return [] }
+
+        return brands.compactMap { brand in
+            supportedNetworks.first(where: { $0.txVariantName == brand })
+        }
+    }
+}
+
+extension ApplePayPaymentMethod {
+
+//    internal var supportedNetworks: [PKPaymentNetwork] {
+//        let networks: [PKPaymentNetwork] = PKPaymentRequest.availableNetworks()
+//        return ApplePayBrandsMapper.map(brands: brands, supportedNetworks: networks)
+//    }
+
+    // =====================
+
+    internal var supportedNetworks: [PKPaymentNetwork] {
+        let networks: [PKPaymentNetwork] = PKPaymentRequest.availableNetworks()
+        let brands: [String]? = brands?.reversed()
+        return ApplePayBrandsMapperRepsectingBrandsOrder.map(brands: brands, supportedNetworks: networks)
     }
 
 }
