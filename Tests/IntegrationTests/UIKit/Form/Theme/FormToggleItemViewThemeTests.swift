@@ -10,12 +10,13 @@ import XCTest
 
 final class FormToggleItemViewThemeTests: XCTestCase {
 
-    func test_formToggleItemView_shouldApplyDefaultStyling() {
+    func test_formToggleItemView_shouldApplyDefaultStyling() throws {
         let sut = makeSUT()
         let defaultStyle = AdyenSwitchStyle.default
 
-        XCTAssertEqual(sut.findLabel()?.font, defaultStyle.title.font)
-        XCTAssertEqual(sut.findLabel()?.textColor, defaultStyle.title.color)
+        let toggleLabel = try XCTUnwrap(sut.findLabel())
+        XCTAssertEqual(toggleLabel.font, defaultStyle.title.font)
+        XCTAssertEqual(toggleLabel.textColor, defaultStyle.title.color)
         XCTAssertEqual(sut.switchControl.onTintColor, defaultStyle.tintColor)
 
         let stackView = sut.findStackView()
