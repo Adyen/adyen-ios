@@ -12,25 +12,75 @@ package struct AdyenElements {
     package var `switch`: AdyenSwitchStyle
     package var textField: AdyenTextFieldStyle
 
-    /// Initializes the elements with optional overrides.
-    /// Any parameter left as default will use the default value.
+    /// Initializes all UI elements from the provided color scheme.
+    /// This is the SINGLE SOURCE OF TRUTH for all default styling values.
     ///
-    /// - Parameters:
-    ///   - buttons: The button styles. Defaults to `.default`.
-    ///   - labels: The label styles. Defaults to `.default`.
-    ///   - switch: The switch style. Defaults to `.default`.
-    ///   - textField: The text field style. Defaults to `.default`.
-    internal init(
-        buttons: AdyenButtonStyles = .default,
-        labels: AdyenLabelStyles = .default,
-        switch: AdyenSwitchStyle = .default,
-        textField: AdyenTextFieldStyle = .default
-    ) {
-        self.buttons = buttons
+    /// - Parameter colors: The color scheme to use.
+    internal init(colors: AdyenColors) {
+        // ALL default styling configuration is defined HERE in one place
+
+        // Define labels first so we can reuse them
+        let labels = AdyenLabelStyles(
+            title: AdyenLabelStyle(
+                font: UIFont.systemFont(ofSize: FontSize.title.rawValue, weight: .bold),
+                color: colors.primary
+            ),
+            subtitle: AdyenLabelStyle(
+                font: UIFont.systemFont(ofSize: FontSize.subtitle.rawValue, weight: .semibold),
+                color: colors.primary
+            ),
+            body: AdyenLabelStyle(
+                font: UIFont.systemFont(ofSize: FontSize.body.rawValue, weight: .regular),
+                color: colors.primary
+            ),
+            bodyEmphasized: AdyenLabelStyle(
+                font: UIFont.systemFont(ofSize: FontSize.body.rawValue, weight: .semibold),
+                color: colors.primary
+            ),
+            subheadline: AdyenLabelStyle(
+                font: UIFont.systemFont(ofSize: FontSize.subheadline.rawValue, weight: .regular),
+                color: colors.text
+            ),
+            subheadlineEmphasized: AdyenLabelStyle(
+                font: UIFont.systemFont(ofSize: FontSize.subheadline.rawValue, weight: .semibold),
+                color: colors.text
+            ),
+            footnote: AdyenLabelStyle(
+                font: UIFont.systemFont(ofSize: FontSize.footnote.rawValue, weight: .regular),
+                color: colors.textSecondary
+            ),
+            footnoteEmphasized: AdyenLabelStyle(
+                font: UIFont.systemFont(ofSize: FontSize.footnote.rawValue, weight: .semibold),
+                color: colors.text
+            )
+        )
+
+        self.buttons = AdyenButtonStyles(
+            primary: .primary(for: colors),
+            secondary: .secondary(for: colors),
+            tertiary: .tertiary(for: colors),
+            destructive: .destructive(for: colors)
+        )
         self.labels = labels
-        self.switch = `switch`
-        self.textField = textField
+        self.switch = AdyenSwitchStyle(
+            title: labels.body,
+            tintColor: colors.primary,
+            backgroundColor: colors.container,
+            cornerRadius: .fixed(AdyenUIConstants.defaultCornerRadius)
+        )
+        self.textField = AdyenTextFieldStyle(
+            title: labels.bodyEmphasized,
+            text: labels.body,
+            placeholder: labels.body.color(colors.textSecondary),
+            borderWidth: AdyenUIConstants.defaultBorderWidth,
+            cornerRadius: .fixed(AdyenUIConstants.defaultCornerRadius),
+            backgroundColor: colors.background,
+            containerColor: colors.container,
+            errorColor: colors.destructive,
+            borderColor: colors.containerOutline,
+            borderActiveColor: colors.primary
+        )
     }
 
-    internal static let `default` = AdyenElements()
+    internal static let `default` = AdyenElements(colors: .default)
 }

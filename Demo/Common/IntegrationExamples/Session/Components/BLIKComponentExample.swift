@@ -35,7 +35,6 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
                 await hideLoading()
                 await handleError(error)
             }
-            
         }
     }
     
@@ -57,8 +56,16 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
                 result.resultCode.rawValue
             )
         }
+        .onError { [weak self] error in
+            self?.dismissAndShowAlert(false, error.localizedDescription)
+        }
         
-        let checkout = try await AdyenCheckout.setup(with: sessionResponse.sessionId, sessionData: sessionResponse.sessionData, configuration: configuration, presentationDelegate: self)
+        let checkout = try await AdyenCheckout.setup(
+            with: sessionResponse.sessionId,
+            sessionData: sessionResponse.sessionData,
+            configuration: configuration,
+            presentationDelegate: self
+        )
         
         self.adyenCheckout = checkout
         
@@ -99,8 +106,10 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
     }
     
     private func viewController(for component: AdyenCheckoutComponent) -> UIViewController {
-        let navigation = UINavigationController(rootViewController: component.viewController!)
-        component.viewController?.navigationItem.leftBarButtonItem = .init(
+        guard let viewController = component.viewController else { fatalError("Cannot find component's view controller") }
+        
+        let navigation = UINavigationController(rootViewController: viewController)
+        viewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
             target: self,
             action: #selector(cancelPressed)
@@ -109,7 +118,7 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
     }
     
     @objc private func cancelPressed() {
-        // TODO: component cancellation?
+        // TODO: how to do component cancellation
 //        component?.cancelIfNeeded()
         presenter?.dismiss(completion: nil)
     }

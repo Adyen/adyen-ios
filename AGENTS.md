@@ -61,31 +61,7 @@ xcodebuild -project Adyen.xcodeproj -scheme Adyen -configuration Debug build
 
 ### Testing
 
-**List available simulators:**
-```bash
-xcrun simctl list devices available
-```
-
-**Run unit tests:**
-```bash
-# Option 1: Use a standard iPhone simulator (recommended)
-xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,name=iPhone 17'
-
-# Option 2: Use specific device by ID (most reliable)
-xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,id=<DEVICE_ID>'
-```
-
-**Run integration tests:**
-```bash
-xcodebuild test -project Adyen.xcodeproj -scheme IntegrationUIKitTests -destination 'platform=iOS Simulator,name=iPhone 17'
-```
-
-**Note:** Do not use `swift test` - it doesn't work well with the Xcode project structure. The `SnapshotTests` target is primarily for CI and not typically run during local development.
-
-**Run single test:**
-```bash
-xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,name=iPhone 17' -only-testing:UnitTests/TestClassName/testMethodName
-```
+For detailed testing guidance including test commands, patterns, and best practices, see [TESTING.md](TESTING.md).
 
 ### Code Quality
 
@@ -144,6 +120,20 @@ fix: Resolve race condition in session handler
 - SwiftFormat is configured with inline commas, no space ranges, and specific wrapping rules
 - All files must include copyright header (auto-applied by SwiftFormat)
 
+**IMPORTANT: Always run SwiftFormat after editing Swift files**
+
+After making any code changes using editing tools, always run SwiftFormat to ensure compliance with the project's formatting rules:
+
+```bash
+# Format a single file
+swiftformat path/to/edited/file.swift
+
+# Format multiple files
+swiftformat AdyenUI/UI/Form/Items/Text/
+```
+
+This prevents unintended whitespace changes and formatting inconsistencies that create noise in pull request diffs and increase reviewer burden.
+
 ### Access Control
 
 Use `@_spi(AdyenInternal)` for internal-but-cross-module APIs. The SDK uses explicit access control levels (`explicit_acl` SwiftLint rule is enabled).
@@ -174,14 +164,6 @@ Localization keys are generated automatically. After modifying `.strings` files,
 ```bash
 swift Scripts/generate_localization_keys.swift
 ```
-
-### Testing Philosophy
-
-- Unit tests go in `Tests/UnitTests/`
-- Integration tests go in `Tests/IntegrationTests/`
-- Integration tests may use `XCTestCase+Wait` helpers for async operations
-- Integration tests often create and present view controllers using `XCTestCase+RootViewController`
-- Mock types follow the naming convention `*Mock` (e.g., `APIClientMock`, `PaymentComponentDelegateMock`)
 
 ## CI/CD
 

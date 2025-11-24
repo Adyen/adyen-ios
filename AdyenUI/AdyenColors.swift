@@ -17,8 +17,7 @@ internal enum DefaultColorsLight {
     static let labelPrimary = UIColor.color(hex: 0x00112C)
     static let labelSecondary = UIColor.color(hex: 0x5C687C)
     static let labelDisabled = UIColor.color(hex: 0x8D95A3)
-    static let separatorPrimary = UIColor.color(hex: 0xDBDEE2)
-    static let outlinePrimaryActive = UIColor.color(hex: 0x001222)
+    static let separatorPrimary = UIColor.color(hex: 0xDADDDF)
 }
 
 internal enum DefaultColorsDark {
@@ -32,14 +31,14 @@ internal enum DefaultColorsDark {
     static let labelPrimary = UIColor.color(hex: 0xFFFFFF)
     static let labelSecondary = UIColor.color(hex: 0xA5A5A5)
     static let labelDisabled = UIColor.color(hex: 0x7E7E7E)
-    static let separatorPrimary = UIColor.color(hex: 0x454545)
-    static let outlinePrimaryActive = UIColor.color(hex: 0xFFFFFF)
+    static let separatorPrimary = UIColor.color(hex: 0x444444)
 }
 
 public struct AdyenColors: Equatable {
 
     public var background: UIColor
     public var container: UIColor
+    public var containerOutline: UIColor
     public var primary: UIColor
     public var textOnPrimary: UIColor
     public var highlight: UIColor
@@ -48,8 +47,7 @@ public struct AdyenColors: Equatable {
     public var textOnDestructive: UIColor
     public var disabled: UIColor
     public var textOnDisabled: UIColor
-    public var outline: UIColor
-    public var outlineActive: UIColor
+    public var separator: UIColor
     public var text: UIColor
     public var textSecondary: UIColor
 
@@ -63,6 +61,10 @@ public struct AdyenColors: Equatable {
         }
 
         self.container = UIColor { traitCollection in
+            traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.backgroundSecondary : DefaultColorsLight.backgroundSecondary
+        }
+
+        self.containerOutline = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.backgroundSecondary : DefaultColorsLight.backgroundSecondary
         }
 
@@ -98,12 +100,8 @@ public struct AdyenColors: Equatable {
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.labelDisabled : DefaultColorsLight.labelDisabled
         }
 
-        self.outline = UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.backgroundQuaternary : DefaultColorsLight.backgroundQuaternary
-        }
-
-        self.outlineActive = UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.outlinePrimaryActive : DefaultColorsLight.outlinePrimaryActive
+        self.separator = UIColor { traitCollection in
+            traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.separatorPrimary : DefaultColorsLight.separatorPrimary
         }
 
         self.text = UIColor { traitCollection in
@@ -118,6 +116,7 @@ public struct AdyenColors: Equatable {
     public init(
         background: UIColor? = nil,
         container: UIColor? = nil,
+        containerOutline: UIColor? = nil,
         primary: UIColor? = nil,
         textOnPrimary: UIColor? = nil,
         highlight: UIColor? = nil,
@@ -126,8 +125,7 @@ public struct AdyenColors: Equatable {
         textOnDestructive: UIColor? = nil,
         disabled: UIColor? = nil,
         textOnDisabled: UIColor? = nil,
-        outline: UIColor? = nil,
-        outlineActive: UIColor? = nil,
+        separator: UIColor? = nil,
         text: UIColor? = nil,
         textSecondary: UIColor? = nil
     ) {
@@ -135,6 +133,7 @@ public struct AdyenColors: Equatable {
 
         self.background = background ?? defaultScheme.background
         self.container = container ?? defaultScheme.container
+        self.containerOutline = containerOutline ?? defaultScheme.containerOutline
         self.primary = primary ?? defaultScheme.primary
         self.textOnPrimary = textOnPrimary ?? defaultScheme.textOnPrimary
         self.success = success ?? defaultScheme.success
@@ -143,8 +142,7 @@ public struct AdyenColors: Equatable {
         self.textOnDestructive = textOnDestructive ?? defaultScheme.textOnDestructive
         self.disabled = disabled ?? defaultScheme.disabled
         self.textOnDisabled = textOnDisabled ?? defaultScheme.textOnDisabled
-        self.outline = outline ?? defaultScheme.outline
-        self.outlineActive = outlineActive ?? defaultScheme.outlineActive
+        self.separator = separator ?? defaultScheme.separator
         self.text = text ?? defaultScheme.text
         self.textSecondary = textSecondary ?? defaultScheme.textSecondary
     }

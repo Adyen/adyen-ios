@@ -173,7 +173,7 @@ extension IssuerListComponent: TrackableComponent {}
 extension IssuerListComponent {
     
     /// Configuration for Issuer List type components.
-    public struct Configuration: AnyBasicComponentConfiguration {
+    public struct Configuration {
         
         /// The UI style of the component.
         public var style: ListComponentStyle

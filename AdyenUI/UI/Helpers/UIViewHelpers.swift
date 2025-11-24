@@ -17,12 +17,15 @@ extension AdyenScope where Base: UIView {
         if forceRedraw {
             snapshot(forceRedraw: false)
         }
-        
-        UIGraphicsBeginImageContextWithOptions(base.bounds.size, false, 0.0)
-        base.drawHierarchy(in: base.bounds, afterScreenUpdates: true)
 
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
+        // Ensure the view has a valid size
+        let size = base.bounds.size
+        guard size.width > 0, size.height > 0 else { return nil }
+
+        let renderer = UIGraphicsImageRenderer(size: size)
+        let image = renderer.image { _ in
+            base.drawHierarchy(in: base.bounds, afterScreenUpdates: true)
+        }
 
         return image
     }

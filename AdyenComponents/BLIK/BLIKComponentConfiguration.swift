@@ -46,18 +46,3 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
         self.style = style
     }
 }
-
-extension BLIKComponentConfiguration {
-    
-    public func style(_ style: FormComponentStyle) -> Self {
-        var copy = self
-        copy.style = style
-        return copy
-    }
-
-    public func localization(_ localizationParameters: LocalizationParameters) -> Self {
-        var copy = self
-        copy.localizationParameters = localizationParameters
-        return copy
-    }
-}
