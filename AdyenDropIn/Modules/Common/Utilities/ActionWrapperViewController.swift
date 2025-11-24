@@ -46,8 +46,6 @@ internal class ActionWrapperViewController: UINavigationController {
     // MARK: - Private
 
     @objc private func didTapCancel() {
-        dismiss(animated: true) { [weak self] in
-            self?.onCancel?()
-        }
+        dismiss(animated: true)
     }
 }
