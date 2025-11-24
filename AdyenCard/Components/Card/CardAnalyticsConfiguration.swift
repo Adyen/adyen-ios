@@ -25,7 +25,7 @@ internal struct CardAnalyticsConfiguration: AnalyticsStringDictionaryConvertible
     private let brands: String?
     
     internal init(configuration: CardComponentConfiguration) {
-        self.billingAddressMode = configuration.billingAddress.mode.analyticsDescription
+        self.billingAddressMode = configuration.billingAddress.displayMode.analyticsDescription
         self.billingAddressAllowedCountries = configuration.billingAddress.countryCodes?.joined(separator: Constants.stringSeparator)
         if case .required = configuration.billingAddress.requirementPolicy {
             self.billingAddressRequired = true
@@ -44,7 +44,7 @@ internal struct CardAnalyticsConfiguration: AnalyticsStringDictionaryConvertible
     }
 }
 
-private extension CardComponentConfiguration.AddressFormType {
+private extension BillingAddressConfiguration.AddressDisplayMode {
     var analyticsDescription: String? {
         switch self {
         case .lookup:

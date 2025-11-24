@@ -17,6 +17,7 @@ public final class AdyenContext: PaymentAware {
     /// The API context used to retrieve internal resources.
     public let apiContext: APIContext
     
+    // TODO: get rid of payment
     /// The payment information.
     public private(set) var payment: Payment?
     

@@ -232,8 +232,8 @@ internal struct DemoAppSettings: Codable {
         var storedCardConfig = StoredCardConfiguration()
         storedCardConfig.showsSecurityCodeField = cardSettings.showsStoredCardSecurityCodeField
 
-        var billingAddressConfig = BillingAddressConfiguration()
-        billingAddressConfig.mode = cardComponentAddressFormType(from: cardSettings.addressMode)
+        let billingAddressConfig = BillingAddressConfiguration()
+            .displayMode(cardComponentAddressFormType(from: cardSettings.addressMode))
         
         let style = FormComponentStyle()
 
@@ -254,9 +254,9 @@ internal struct DemoAppSettings: Codable {
         var storedCardConfig = StoredCardConfiguration()
         storedCardConfig.showsSecurityCodeField = cardSettings.showsStoredCardSecurityCodeField
 
-        var billingAddressConfig = BillingAddressConfiguration()
-        billingAddressConfig.mode = cardComponentAddressFormType(from: cardSettings.addressMode)
-
+        let billingAddressConfig = BillingAddressConfiguration()
+            .displayMode(cardComponentAddressFormType(from: cardSettings.addressMode))
+        
         return .init(
             showsHolderNameField: cardSettings.showsHolderNameField,
             showsStorePaymentMethodField: cardSettings.showsStorePaymentMethodField,
@@ -315,7 +315,7 @@ internal struct DemoAppSettings: Codable {
 
 private extension DemoAppSettings {
     
-    private func cardComponentAddressFormType(from addressFormType: CardSettings.AddressFormType) -> CardComponentConfiguration.AddressFormType {
+    private func cardComponentAddressFormType(from addressFormType: CardSettings.AddressFormType) -> BillingAddressConfiguration.AddressDisplayMode {
         switch addressFormType {
         case .lookup:
             return .lookup(provider: DemoAddressLookupProvider())

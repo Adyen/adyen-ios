@@ -12,9 +12,9 @@ package typealias CheckoutComponentDelegate = (PaymentComponentDelegate & Action
 // TODO: add description
 public final class AdyenCheckoutComponent {
     
-    private var paymentComponent: PaymentComponent?
+    internal let paymentComponent: PaymentComponent?
     
-    private var actionComponent: ActionComponent?
+    private let actionComponent: ActionComponent?
     
     private var configuration: CheckoutConfiguration
     
@@ -37,6 +37,7 @@ public final class AdyenCheckoutComponent {
         // TODO: Add new v6 style here
         self.paymentComponent = CheckoutComponentBuilder.build(for: paymentMethod, configuration: configuration)
         self.paymentComponent?.delegate = delegate
+        self.actionComponent = nil
     }
     
     package init(
@@ -48,5 +49,6 @@ public final class AdyenCheckoutComponent {
         self.delegate = delegate
         self.actionComponent = CheckoutComponentBuilder.build(for: action, configuration: configuration)
         self.actionComponent?.delegate = delegate
+        self.paymentComponent = nil
     }
 }

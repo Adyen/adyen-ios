@@ -13,19 +13,6 @@
 /// Billing address fields configurations
 public struct BillingAddressConfiguration {
     
-    /// Initializes a new instance of `BillingAddressConfiguration`.
-    public init() { /* Empty initializer */ }
-    
-    /// Indicates the display mode of the billing address form. Defaults to none.
-    public var mode: CardComponentConfiguration.AddressFormType = .none
-    
-    /// List of ISO country codes that is supported for the billing address.
-    /// When nil, all countries are provided.
-    public var countryCodes: [String]?
-    
-    /// Indicates the requirement level of a field.
-    public var requirementPolicy: RequirementPolicy = .required
-    
     /// Indicates the requirement level of a field.
     public enum RequirementPolicy {
 
@@ -39,23 +26,8 @@ public struct BillingAddressConfiguration {
         case optionalForCardTypes(Set<CardType>)
     }
     
-    package func isOptional(for cardTypes: [CardType]) -> Bool {
-        switch requirementPolicy {
-        case .required:
-            return false
-        case .optional:
-            return true
-        case let .optionalForCardTypes(optionalCardTypes):
-            return !optionalCardTypes.isDisjoint(with: cardTypes)
-        }
-    }
-    
-}
-
-extension CardComponentConfiguration {
-    
     /// The mode of the address form of the card component
-    public enum AddressFormType {
+    public enum AddressDisplayMode {
         
         /// Display a form item that allows address lookup and entering the address on a separate screen
         case lookup(provider: AddressLookupProvider)
@@ -68,6 +40,65 @@ extension CardComponentConfiguration {
 
         /// Do not display address form
         case none
+    }
+    
+    // TODO: Should we provide both init and builder functions?
+    /// Initializes a new instance of `BillingAddressConfiguration`.
+    public init() {
+        self.displayMode = .none
+        self.countryCodes = nil
+        self.requirementPolicy = .required
+    }
+    
+    /// Indicates the display mode of the billing address form.
+    package var displayMode: AddressDisplayMode
+    
+    /// List of ISO country codes that is supported for the billing address.
+    /// When nil, all countries are provided.
+    package var countryCodes: [String]?
+    
+    /// Indicates the requirement level of a field.
+    package var requirementPolicy: RequirementPolicy
+    
+    package func isOptional(for cardTypes: [CardType]) -> Bool {
+        switch requirementPolicy {
+        case .required:
+            return false
+        case .optional:
+            return true
+        case let .optionalForCardTypes(optionalCardTypes):
+            return !optionalCardTypes.isDisjoint(with: cardTypes)
+        }
+    }
+}
+
+extension BillingAddressConfiguration {
+    
+    /// Sets the display mode of the address form.
+    /// - Parameter displayMode: The display mode.
+    /// - Returns: A modified copy of the configuration.
+    public func displayMode(_ displayMode: AddressDisplayMode) -> Self {
+        var copy = self
+        copy.displayMode = displayMode
+        return copy
+    }
+    
+    /// Sets the supported country codes for the address configuration.
+    /// - Parameter countryCodes: List of ISO country codes that is supported for the billing address.
+    /// - Returns: A modified copy of the configuration.
+    public func countryCodes(_ countryCodes: [String]) -> Self {
+        var copy = self
+        copy.countryCodes = countryCodes
+        return copy
+    }
+    
+    /// Sets the requirement level of fields where applicable.
+    /// - Parameter requirementPolicy: The requirement level.
+    /// - Returns: A modified copy of the configuration.
+    public func requirementPolicy(_ requirementPolicy: RequirementPolicy) -> Self {
+        var copy = self
+        copy.requirementPolicy = requirementPolicy
+        return copy
     }
 
 }

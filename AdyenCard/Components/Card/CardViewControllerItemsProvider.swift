@@ -31,7 +31,7 @@ extension CardViewController {
         private let initialCountry: String
         private let addressViewModelBuilder: AddressViewModelBuilder
         private let presenter: WeakReferenceViewControllerPresenter
-        private let addressMode: CardComponentConfiguration.AddressFormType
+        private let addressMode: BillingAddressConfiguration.AddressDisplayMode
         private let scanCardHandler: (() -> Void)?
 
         /// Closure that is called when an event is triggered via the field items.
@@ -49,7 +49,7 @@ extension CardViewController {
             localizationParameters: LocalizationParameters?,
             addressViewModelBuilder: AddressViewModelBuilder,
             presenter: ViewControllerPresenter,
-            addressMode: CardComponentConfiguration.AddressFormType,
+            addressMode: BillingAddressConfiguration.AddressDisplayMode,
             scanCardHandler: (() -> Void)?
         ) {
             self.formStyle = formStyle

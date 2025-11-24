@@ -10,7 +10,7 @@ import UIKit
 extension AddressLookupSearchViewController {
     
     /// The model for ``AddressLookupSearchViewController``
-    struct ViewModel {
+    internal struct ViewModel {
         
         internal let localizationParameters: LocalizationParameters?
         internal let style: AddressLookupSearchStyle
