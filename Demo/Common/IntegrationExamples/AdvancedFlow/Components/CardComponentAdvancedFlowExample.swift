@@ -58,7 +58,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             ConfigurationConstants.current.cardConfiguration
         }
         .theme(
-            AdyenTheme(colors: AdyenColors(primary: .systemBlue))
+            AdyenTheme(colors: AdyenColors(primary: .systemPurple))
                 .bodyLabel(font: AdyenFonts.default.bodyEmphasized)
                 .destructiveButton(
                     backgroundColor: .systemRed,
