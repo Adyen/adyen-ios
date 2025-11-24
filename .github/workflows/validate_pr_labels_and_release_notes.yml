@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -29,7 +29,7 @@ jobs:
           FILE_NAME=.pull-requests-allowed-labels-list
           FILE_PATH=$PROJECT_ROOT/$FILE_NAME
           if [[ ! -f "$FILE_PATH" ]]; then
-             echo -e "${RED}$FILE_NAME file doesn't exits in the root of the respository${NC}"
+             echo -e "${RED}$FILE_NAME file doesn't exist in the root of the repository${NC}"
              exit 1
           fi 
           echo "LABELS=$(cat $FILE_PATH),chore,improvement" >> $GITHUB_OUTPUT

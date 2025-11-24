@@ -15,11 +15,15 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-      
+
 permissions:
   contents: read
-  pull-requests: write 
-      
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
 
   build:
@@ -32,7 +36,7 @@ jobs:
         xcode-version: '16.4'
 
     - name: 🚚 Fetch repo
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
 
@@ -40,13 +44,13 @@ jobs:
       run: |
         NEW="${{ env.source }}~${{ env.headGithubRepo }}"
         OLD="${{ env.target }}~${{ env.baseGithubRepo }}"
-        
+
         if [[ '${{ env.targetBranchName || env.noTargetBranch }}' == release/* ]]
         then
             LATEST_TAG=$(git describe --tags --abbrev=0)
-            OLD="$LATEST_TAG~${{ env.baseGithubRepo }}" 
+            OLD="$LATEST_TAG~${{ env.baseGithubRepo }}"
         fi
-        
+
         # Providing the output to the environment
         echo "OLD_VERSION=$OLD" >> $GITHUB_ENV
         echo "NEW_VERSION=$NEW" >> $GITHUB_ENV
