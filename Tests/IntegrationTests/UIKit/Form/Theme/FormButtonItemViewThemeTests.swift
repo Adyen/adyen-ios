@@ -10,39 +10,46 @@ import XCTest
 
 final class FormButtonItemViewThemeTests: XCTestCase {
 
-    // MARK: - Baseline Test (Current Behavior)
+    func test_formButtonItemView_withCustomTheme_shouldApplyThemeColors() throws {
+        // Given - expected colors and custom theme
+        let expectedBackgroundColor: UIColor = .systemPurple
+        let expectedTextColor: UIColor = .systemYellow
 
-    /// This test captures the CURRENT behavior before theme migration.
-    /// SubmitButton is partially migrated - it uses backgroundColor from item.style,
-    /// but titleLabel and cornerRadius use default theme values.
-    func test_formButtonItemView_withCustomStyle_appliesBackgroundFromStyle() throws {
-        // Given - custom button style using the current API
-        let customButtonStyle = ButtonStyle(
-            title: TextStyle(font: .systemFont(ofSize: 18), color: .systemYellow),
-            cornerRounding: .fixed(12),
-            background: .systemPurple
+        let customColors = AdyenColors(
+            primary: expectedBackgroundColor,
+            textOnPrimary: expectedTextColor
         )
-        let itemStyle = FormButtonItemStyle(button: customButtonStyle)
+        let customTheme = AdyenTheme(colors: customColors)
 
-        // When - create view with current init
-        let item = FormButtonItem(style: itemStyle)
+        // When - create view with theme
+        let item = FormButtonItem()
         item.identifier = "testButtonView"
-        item.title = "Submit"
-        let sut = FormButtonItemView(item: item)
+        item.title = "Pay Now"
+        let sut = FormButtonItemView(item: item, theme: customTheme)
 
-        // Then - backgroundColor comes from item.style
+        // Then - button uses expected theme colors
         let submitButton = try XCTUnwrap(sut.submitButton)
-        XCTAssertEqual(submitButton.backgroundColor, .systemPurple)
+        XCTAssertEqual(submitButton.backgroundColor, expectedBackgroundColor)
 
-        // Note: titleLabel currently uses default theme colors (AdyenButtonStyle.primary textColor)
-        // not the style.title.color - this is the partially migrated state
         let titleLabel = try XCTUnwrap(submitButton.titleLabel)
-        let defaultButtonStyle = AdyenButtonStyle.primary(for: .default)
-        XCTAssertEqual(titleLabel.textColor, defaultButtonStyle.textColor)
-
-        // Note: Corner radius also comes from default theme (14.0), not from item.style (12.0)
-        submitButton.layoutIfNeeded()
-        XCTAssertEqual(submitButton.layer.cornerRadius, AdyenUIConstants.defaultCornerRadius)
+        XCTAssertEqual(titleLabel.textColor, expectedTextColor)
     }
 
+    func test_formButtonItemView_convenienceInitializer_shouldUseDefaultTheme() throws {
+        // Given - using old init
+        let item = FormButtonItem()
+        item.title = "Submit"
+        let expectedBackgroundColor = AdyenColors.default.primary
+        let expectedTextColor = AdyenColors.default.textOnPrimary
+
+        // When
+        let sut = FormButtonItemView(item: item)
+
+        // Then - should use default theme colors
+        let submitButton = try XCTUnwrap(sut.submitButton)
+        XCTAssertEqual(submitButton.backgroundColor, expectedBackgroundColor)
+
+        let titleLabel = try XCTUnwrap(submitButton.titleLabel)
+        XCTAssertEqual(titleLabel.textColor, expectedTextColor)
+    }
 }
