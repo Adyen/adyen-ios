@@ -9,6 +9,10 @@ permissions:
   contents: read
   pull-requests: write
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   sdk-size-analysis:
     runs-on: macos-15-xlarge
@@ -39,7 +43,7 @@ jobs:
 
       - name: Upload current SDK size JSON
         if: ${{ github.event_name != 'pull_request' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: sdk-sizes-${{ steps.sanitize.outputs.sanitized_head }}
           path: sdk_size_output/sdk_sizes.json

@@ -84,10 +84,12 @@
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Summa";
 "adyen.voucher.entity" = "Ettevõte";
-"adyen.pix.instructions" = "Avage rakendus PIX-i registreeritud võtmega, valige PIX-iga maksmine ja skannige QR-kood või kopeerige ja kleepige kood";
+"adyen.pix.instructions" = "Makse lõpuleviimiseks skannige oma pangarakenduse abil QR-kood või kopeerige allolev PIX-kood.";
 "adyen.pix.expirationLabel" = "Teil on maksmiseks %@";
 "adyen.pix.copyButton" = "Kopeeri kood";
 "adyen.pix.instructions.copiedMessage" = "Kood kopeeriti lõikelauale";
+"adyen.pix.code.copy.label" = "Kopeeri PIX-kood";
+"adyen.pix.code.copied.label" = "PIX-kood kopeeritud";
 "adyen.billingAddressSection.title" = "Arveldusaadress";
 "adyen.billingAddress.placeholder" = "Teie arveldusaadress";
 "adyen.deliveryAddressSection.title" = "Kohaletoimetamise aadress";
