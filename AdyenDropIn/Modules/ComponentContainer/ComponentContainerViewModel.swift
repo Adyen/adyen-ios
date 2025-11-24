@@ -97,7 +97,11 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
         with error: any Error,
         from component: any PaymentComponent
     ) {
-        dropInFlowManager.fail(with: error, from: component)
+        if case ComponentError.cancelled = error {
+            cancel()
+        } else {
+            dropInFlowManager.fail(with: error, from: component)
+        }
     }
 }
 
