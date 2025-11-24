@@ -613,6 +613,7 @@
 		B62D48C82BBE8F47001EF01A /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */; };
 		B62F51802E97AAD200610EFD /* TextFieldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62F517F2E97AA6600610EFD /* TextFieldTests.swift */; };
 		B639C0822D8039F600472EBB /* CardScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B639C0812D80399800472EBB /* CardScannerController.swift */; };
+		B65F0EB42ED493250015AC41 /* FormButtonItemViewThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65F0EB32ED493250015AC41 /* FormButtonItemViewThemeTests.swift */; };
 		B66CAF3A2DAEB16D0017984C /* DummyCardScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66CAF392DAEB16D0017984C /* DummyCardScannerController.swift */; };
 		B67D1F632E4615390000C37F /* DropInAdvancedFlowExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D1F582E4615390000C37F /* DropInAdvancedFlowExample.swift */; };
 		B67D1F642E4615390000C37F /* DropInExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D1F602E4615390000C37F /* DropInExample.swift */; };
@@ -2229,6 +2230,7 @@
 		B62D48CA2BBE9059001EF01A /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
 		B62F517F2E97AA6600610EFD /* TextFieldTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTests.swift; sourceTree = "<group>"; };
 		B639C0812D80399800472EBB /* CardScannerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerController.swift; sourceTree = "<group>"; };
+		B65F0EB32ED493250015AC41 /* FormButtonItemViewThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormButtonItemViewThemeTests.swift; sourceTree = "<group>"; };
 		B66CAF392DAEB16D0017984C /* DummyCardScannerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyCardScannerController.swift; sourceTree = "<group>"; };
 		B67D1F532E4615390000C37F /* ApplePayComponentAdvancedFlowExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayComponentAdvancedFlowExample.swift; sourceTree = "<group>"; };
 		B67D1F542E4615390000C37F /* CardComponentAdvancedFlowExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentAdvancedFlowExample.swift; sourceTree = "<group>"; };
@@ -4188,6 +4190,7 @@
 		B6BFF8002EC7249200BAC3B7 /* Theme */ = {
 			isa = PBXGroup;
 			children = (
+				B65F0EB32ED493250015AC41 /* FormButtonItemViewThemeTests.swift */,
 				B6BFF7FF2EC7249200BAC3B7 /* FormTextItemViewThemeTests.swift */,
 				B6C4C6672ECF61E000500BCD /* FormLabelItemTests.swift */,
 				B6BFF8002EC7250000BAC3B7 /* FormSeparatorItemViewThemeTests.swift */,
@@ -8576,6 +8579,7 @@
 				F9EDB796239663F800CFB3C9 /* PaymentComponentMock.swift in Sources */,
 				F9B9F625295485A2008C2E49 /* ThreeDSResultExtension.swift in Sources */,
 				E7D189B025D31936006AD3B7 /* DropInActionTests.swift in Sources */,
+				B65F0EB42ED493250015AC41 /* FormButtonItemViewThemeTests.swift in Sources */,
 				C95903DE275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift in Sources */,
 				81DA70882BDA6075006CE5D5 /* TwintSDKActionTests.swift in Sources */,
 				81825CBB2AC59C4000F91912 /* UIViewController+Search.swift in Sources */,
