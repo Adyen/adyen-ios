@@ -7,6 +7,10 @@ on:
   push:
     branches:
       - develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
       
 permissions:
   contents: read
@@ -18,9 +22,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v5
-    - uses: n1hility/cancel-previous-runs@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1

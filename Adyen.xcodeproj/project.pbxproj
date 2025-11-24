@@ -180,7 +180,6 @@
 		004BA67F29D45A2E00A8C69B /* InitialDataFlowProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004BA67E29D45A2E00A8C69B /* InitialDataFlowProtocol.swift */; };
 		004BA68129D4639900A8C69B /* PresenterExampleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004BA68029D4639900A8C69B /* PresenterExampleProtocol.swift */; };
 		0055CDA72DD215DF0019F1D9 /* CoBadgedCardAnalyticsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0055CDA62DD215CC0019F1D9 /* CoBadgedCardAnalyticsConfiguration.swift */; };
-		0058691528B644FB00B65A19 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691428B644FB00B65A19 /* QRCodeView.swift */; };
 		0058691728B6450900B65A19 /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691628B6450900B65A19 /* QRCodeViewController.swift */; };
 		0058691928B6451000B65A19 /* QRCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691828B6451000B65A19 /* QRCodeViewModel.swift */; };
 		0058691C28B6457700B65A19 /* QRCodeActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691B28B6457700B65A19 /* QRCodeActionComponent.swift */; };
@@ -195,6 +194,7 @@
 		00600F332E7D9D6F00637477 /* CheckoutConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01948542D91AD8700AA27AC /* CheckoutConfiguration.swift */; };
 		00600F362E7D9D8800637477 /* AdyenUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 003BDD192E15200A009177E0 /* AdyenUI.framework */; };
 		00600F372E7D9FE600637477 /* CheckoutConfiguration+Callbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D87A252D9420AF00763AD6 /* CheckoutConfiguration+Callbacks.swift */; };
+		0067E73D29658CB6005B8D76 /* FormImageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0067E73C29658CB6005B8D76 /* FormImageItem.swift */; };
 		0067E740296C161E005B8D76 /* UPIComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0067E73F296C161E005B8D76 /* UPIComponentTests.swift */; };
 		00731C9F2E8589C20019BA29 /* AdyenStyleAssertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00731C9E2E8589B60019BA29 /* AdyenStyleAssertions.swift */; };
 		0080A7812E423FC700F639DE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080A7802E423FC300F639DE /* UIColor.swift */; };
@@ -416,7 +416,6 @@
 		81DF94292BAAD8EB0001DCBC /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 81DF94072BAAD8EB0001DCBC /* SnapshotTesting */; };
 		81E031942A0A75F200EA965E /* ConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A67461F264262F000E9184D /* ConfigurationView.swift */; };
 		81E031952A0A75F800EA965E /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A54600E264433CD00724A87 /* SearchBar.swift */; };
-		81E4231B2C74DC3600349A5E /* String+QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E4231A2C74DC3600349A5E /* String+QRCode.swift */; };
 		81EA6C122A44836E0071A141 /* FormAddressItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EA6C112A44836E0071A141 /* FormAddressItemTests.swift */; };
 		81EE958A2BB1D700006B21CB /* ImageLoader+DependencyKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE95892BB1D700006B21CB /* ImageLoader+DependencyKey.swift */; };
 		81EE958D2BB2DC98006B21CB /* UIImageView+ImageLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE958C2BB2DC98006B21CB /* UIImageView+ImageLoading.swift */; };
@@ -640,6 +639,7 @@
 		B6BFF8012EC7249200BAC3B7 /* FormTextItemViewThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BFF7FF2EC7249200BAC3B7 /* FormTextItemViewThemeTests.swift */; };
 		B6BFF8022EC7250000BAC3B7 /* FormSeparatorItemViewThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BFF8002EC7250000BAC3B7 /* FormSeparatorItemViewThemeTests.swift */; };
 		B6C4C6682ECF61E000500BCD /* FormLabelItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C4C6672ECF61E000500BCD /* FormLabelItemTests.swift */; };
+		B6C4C66A2ED0BEA600500BCD /* FormToggleItemViewThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C4C6692ED0BEA600500BCD /* FormToggleItemViewThemeTests.swift */; };
 		B6C9DA792D0C3F62005D65C7 /* DualBrandAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C9DA782D0C3F62005D65C7 /* DualBrandAccessoryView.swift */; };
 		B6C9DA7B2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C9DA7A2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift */; };
 		B6D808032BCD140E00F3F5EB /* AssetsAccessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91760A62594C5DF00D653BE /* AssetsAccessTests.swift */; };
@@ -727,6 +727,8 @@
 		C91BF2582D771667001F19DE /* CardImageParsingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91BF2572D771667001F19DE /* CardImageParsingMock.swift */; };
 		C91BF25A2D7716D4001F19DE /* CaptureSessionManagingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91BF2592D7716D4001F19DE /* CaptureSessionManagingMock.swift */; };
 		C91BF25C2D772233001F19DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C91BF25B2D772233001F19DE /* Assets.xcassets */; };
+		C923A8232E900165004AC234 /* QRCodeViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923A8222E900165004AC234 /* QRCodeViewStyle.swift */; };
+		C923A8252E9001B9004AC234 /* QRCodeFlowType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923A8242E9001B9004AC234 /* QRCodeFlowType.swift */; };
 		C92665362C49346200D3D852 /* SubmittableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92665352C49346200D3D852 /* SubmittableComponent.swift */; };
 		C927083827590B7500D15EA0 /* BACSInputFormViewProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26B1275900B9001A488F /* BACSInputFormViewProtocolMock.swift */; };
 		C927083927590B7900D15EA0 /* BACSInputPresenterProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26B32759048C001A488F /* BACSInputPresenterProtocolMock.swift */; };
@@ -734,6 +736,7 @@
 		C927083E27590BDB00D15EA0 /* BACSInputFormViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C927083D27590BDB00D15EA0 /* BACSInputFormViewControllerTests.swift */; };
 		C927084027590FE800D15EA0 /* BACSInputPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C927083F27590FE800D15EA0 /* BACSInputPresenterTests.swift */; };
 		C92708422759106500D15EA0 /* BACSRouterProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92708412759106500D15EA0 /* BACSRouterProtocolMock.swift */; };
+		C92960042E95402500BC97CF /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92960032E95402500BC97CF /* QRCodeView.swift */; };
 		C92B807C2D5B69CF0020A099 /* AVCaptureVideoOrientation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92B807A2D5B69CF0020A099 /* AVCaptureVideoOrientation+Extensions.swift */; };
 		C92F6DBE26AFF336004BD516 /* PostalAddressMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */; };
 		C92F6DC126B04B63004BD516 /* XCTestCase+FormAddressItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */; };
@@ -797,6 +800,12 @@
 		C9D8EB9E27452D3B006D8CA1 /* BACSItemsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9D27452D3B006D8CA1 /* BACSItemsFactory.swift */; };
 		C9D8EBA02745556B006D8CA1 /* BACSDirectDebitDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9F2745556B006D8CA1 /* BACSDirectDebitDetails.swift */; };
 		C9D8EBA2274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */; };
+		C9DA53D92E97F5CF00D83C94 /* String+QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53D72E97F5CF00D83C94 /* String+QRCode.swift */; };
+		C9DA53DD2E97F65900D83C94 /* QRCodeViewModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53DC2E97F65900D83C94 /* QRCodeViewModelMock.swift */; };
+		C9DA53E12E97F6DE00D83C94 /* QRCodeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53DF2E97F6DE00D83C94 /* QRCodeViewControllerTests.swift */; };
+		C9DA53E32E97F71C00D83C94 /* QRCodeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */; };
+		C9DCCD122E3CE5B500B88C52 /* TestPresentingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DCCD112E3CE5B500B88C52 /* TestPresentingView.swift */; };
+		C9DCCD142E3CE83C00B88C52 /* FullScreenViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DCCD132E3CE83C00B88C52 /* FullScreenViewControllerTests.swift */; };
 		C9EEEFEC2D5516B300B7AFFC /* ExpirationDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EEEFEA2D5516B300B7AFFC /* ExpirationDateFormatter.swift */; };
 		C9F468E227465FCF00500FF5 /* BACSDirectDebitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F468E127465FCF00500FF5 /* BACSDirectDebitData.swift */; };
 		C9F9905D2DC2566C00D2BFB0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C9F9905C2DC2566C00D2BFB0 /* README.md */; };
@@ -1848,7 +1857,6 @@
 		004BA67E29D45A2E00A8C69B /* InitialDataFlowProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialDataFlowProtocol.swift; sourceTree = "<group>"; };
 		004BA68029D4639900A8C69B /* PresenterExampleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterExampleProtocol.swift; sourceTree = "<group>"; };
 		0055CDA62DD215CC0019F1D9 /* CoBadgedCardAnalyticsConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoBadgedCardAnalyticsConfiguration.swift; sourceTree = "<group>"; };
-		0058691428B644FB00B65A19 /* QRCodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
 		0058691628B6450900B65A19 /* QRCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
 		0058691828B6451000B65A19 /* QRCodeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeViewModel.swift; sourceTree = "<group>"; };
 		0058691B28B6457700B65A19 /* QRCodeActionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeActionComponent.swift; sourceTree = "<group>"; };
@@ -2062,7 +2070,6 @@
 		81DC5A5C2A7BADB200DBF2D1 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		81DF942E2BAAD8EB0001DCBC /* GenerateSnapshots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GenerateSnapshots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		81DF942F2BAAD9A20001DCBC /* GenerateSnapshots.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GenerateSnapshots.xctestplan; sourceTree = "<group>"; };
-		81E4231A2C74DC3600349A5E /* String+QRCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+QRCode.swift"; sourceTree = "<group>"; };
 		81EA6C112A44836E0071A141 /* FormAddressItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAddressItemTests.swift; sourceTree = "<group>"; };
 		81EE95892BB1D700006B21CB /* ImageLoader+DependencyKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageLoader+DependencyKey.swift"; sourceTree = "<group>"; };
 		81EE958C2BB2DC98006B21CB /* UIImageView+ImageLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+ImageLoading.swift"; sourceTree = "<group>"; };
@@ -2239,6 +2246,7 @@
 		B6BFF7FF2EC7249200BAC3B7 /* FormTextItemViewThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextItemViewThemeTests.swift; sourceTree = "<group>"; };
 		B6BFF8002EC7250000BAC3B7 /* FormSeparatorItemViewThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSeparatorItemViewThemeTests.swift; sourceTree = "<group>"; };
 		B6C4C6672ECF61E000500BCD /* FormLabelItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabelItemTests.swift; sourceTree = "<group>"; };
+		B6C4C6692ED0BEA600500BCD /* FormToggleItemViewThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormToggleItemViewThemeTests.swift; sourceTree = "<group>"; };
 		B6C9DA782D0C3F62005D65C7 /* DualBrandAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualBrandAccessoryView.swift; sourceTree = "<group>"; };
 		B6C9DA7A2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualBrandAccessoryViewTests.swift; sourceTree = "<group>"; };
 		B6EE0F432BBEBFD000B9810D /* IntegrationTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = IntegrationTests.xctestplan; sourceTree = "<group>"; };
@@ -2264,10 +2272,13 @@
 		C91BF2572D771667001F19DE /* CardImageParsingMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImageParsingMock.swift; sourceTree = "<group>"; };
 		C91BF2592D7716D4001F19DE /* CaptureSessionManagingMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSessionManagingMock.swift; sourceTree = "<group>"; };
 		C91BF25B2D772233001F19DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C923A8222E900165004AC234 /* QRCodeViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewStyle.swift; sourceTree = "<group>"; };
+		C923A8242E9001B9004AC234 /* QRCodeFlowType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeFlowType.swift; sourceTree = "<group>"; };
 		C92665352C49346200D3D852 /* SubmittableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittableComponent.swift; sourceTree = "<group>"; };
 		C927083D27590BDB00D15EA0 /* BACSInputFormViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewControllerTests.swift; sourceTree = "<group>"; };
 		C927083F27590FE800D15EA0 /* BACSInputPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputPresenterTests.swift; sourceTree = "<group>"; };
 		C92708412759106500D15EA0 /* BACSRouterProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSRouterProtocolMock.swift; sourceTree = "<group>"; };
+		C92960032E95402500BC97CF /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
 		C92B807A2D5B69CF0020A099 /* AVCaptureVideoOrientation+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVCaptureVideoOrientation+Extensions.swift"; sourceTree = "<group>"; };
 		C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostalAddressMocks.swift; sourceTree = "<group>"; };
 		C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FormAddressItem.swift"; sourceTree = "<group>"; };
@@ -2338,6 +2349,10 @@
 		C9D8EB9D27452D3B006D8CA1 /* BACSItemsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSItemsFactory.swift; sourceTree = "<group>"; };
 		C9D8EB9F2745556B006D8CA1 /* BACSDirectDebitDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitDetails.swift; sourceTree = "<group>"; };
 		C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitPaymentMethod.swift; sourceTree = "<group>"; };
+		C9DA53D72E97F5CF00D83C94 /* String+QRCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+QRCode.swift"; sourceTree = "<group>"; };
+		C9DA53DC2E97F65900D83C94 /* QRCodeViewModelMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewModelMock.swift; sourceTree = "<group>"; };
+		C9DA53DF2E97F6DE00D83C94 /* QRCodeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewControllerTests.swift; sourceTree = "<group>"; };
+		C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewModelTests.swift; sourceTree = "<group>"; };
 		C9DCCD112E3CE5B500B88C52 /* TestPresentingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPresentingView.swift; sourceTree = "<group>"; };
 		C9DCCD132E3CE83C00B88C52 /* FullScreenViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewControllerTests.swift; sourceTree = "<group>"; };
 		C9EEEFEA2D5516B300B7AFFC /* ExpirationDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationDateFormatter.swift; sourceTree = "<group>"; };
@@ -3560,7 +3575,6 @@
 			isa = PBXGroup;
 			children = (
 				5A22C26D262D686200F12D97 /* QRCodeActionComponentTests.swift */,
-				0058692428BE0FB700B65A19 /* QRCodeViewDelegateMock.swift */,
 			);
 			path = QRCode;
 			sourceTree = "<group>";
@@ -3595,10 +3609,11 @@
 		5A64570D2625CB02001824F0 /* QR Code */ = {
 			isa = PBXGroup;
 			children = (
+				C9DA53D82E97F5CF00D83C94 /* Extensions */,
+				C923A8212E90015C004AC234 /* Models */,
 				0058691628B6450900B65A19 /* QRCodeViewController.swift */,
 				0058691828B6451000B65A19 /* QRCodeViewModel.swift */,
-				0058691428B644FB00B65A19 /* QRCodeView.swift */,
-				81E4231A2C74DC3600349A5E /* String+QRCode.swift */,
+				C92960022E95401E00BC97CF /* Views */,
 			);
 			path = "QR Code";
 			sourceTree = "<group>";
@@ -4176,6 +4191,7 @@
 				B6BFF7FF2EC7249200BAC3B7 /* FormTextItemViewThemeTests.swift */,
 				B6C4C6672ECF61E000500BCD /* FormLabelItemTests.swift */,
 				B6BFF8002EC7250000BAC3B7 /* FormSeparatorItemViewThemeTests.swift */,
+				B6C4C6692ED0BEA600500BCD /* FormToggleItemViewThemeTests.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -4306,6 +4322,15 @@
 			path = Mocks;
 			sourceTree = "<group>";
 		};
+		C923A8212E90015C004AC234 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C923A8222E900165004AC234 /* QRCodeViewStyle.swift */,
+				C923A8242E9001B9004AC234 /* QRCodeFlowType.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		C927083B27590B9100D15EA0 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
@@ -4322,6 +4347,14 @@
 				C927083F27590FE800D15EA0 /* BACSInputPresenterTests.swift */,
 			);
 			path = Input;
+			sourceTree = "<group>";
+		};
+		C92960022E95401E00BC97CF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C92960032E95402500BC97CF /* QRCodeView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		C92B807B2D5B69CF0020A099 /* Extensions */ = {
@@ -4658,6 +4691,41 @@
 				C9D8EB9527440297006D8CA1 /* Input */,
 			);
 			path = Scenes;
+			sourceTree = "<group>";
+		};
+		C9DA53D82E97F5CF00D83C94 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C9DA53D72E97F5CF00D83C94 /* String+QRCode.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		C9DA53DB2E97F63200D83C94 /* QRCode */ = {
+			isa = PBXGroup;
+			children = (
+				C9DA53DC2E97F65900D83C94 /* QRCodeViewModelMock.swift */,
+				C9DA53DF2E97F6DE00D83C94 /* QRCodeViewControllerTests.swift */,
+				C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */,
+			);
+			path = QRCode;
+			sourceTree = "<group>";
+		};
+		C9DCCD0E2E3CE57300B88C52 /* AdyenSwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				C9DCCD102E3CE58600B88C52 /* Present View Controller */,
+			);
+			path = AdyenSwiftUI;
+			sourceTree = "<group>";
+		};
+		C9DCCD102E3CE58600B88C52 /* Present View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C9DCCD112E3CE5B500B88C52 /* TestPresentingView.swift */,
+				C9DCCD132E3CE83C00B88C52 /* FullScreenViewControllerTests.swift */,
+			);
+			path = "Present View Controller";
 			sourceTree = "<group>";
 		};
 		C9EEEFEB2D5516B300B7AFFC /* Formatters */ = {
@@ -5429,6 +5497,7 @@
 			children = (
 				E7975F952880253400A12C40 /* ActionComponent */,
 				F9639B4E24E29D080073F38A /* Await */,
+				C9DA53DB2E97F63200D83C94 /* QRCode */,
 				E9021DF0225CC6BD009CF7F4 /* Redirect */,
 				F9C5F0DB25CAB8DB005A6E54 /* Voucher */,
 			);
@@ -8499,6 +8568,7 @@
 				C927084027590FE800D15EA0 /* BACSInputPresenterTests.swift in Sources */,
 				A009837D279859DC007E68C4 /* ACHDirectDebitComponentTests.swift in Sources */,
 				81BBB34B2A692F6500AF1F9E /* FormPickerSearchViewControllerTests.swift in Sources */,
+				C9DA53E32E97F71C00D83C94 /* QRCodeViewModelTests.swift in Sources */,
 				8109FF4E2AD6D8A9000748C8 /* MockAddressLookupProvider.swift in Sources */,
 				E72521EE25517EB100533E35 /* BLIKComponentTests.swift in Sources */,
 				F9B019442611E965001F23FC /* EContextATMShareableVoucherViewProviderTests.swift in Sources */,
@@ -8531,6 +8601,7 @@
 				81FC2C982BB1BB68007F1316 /* URLProtocolMock.swift in Sources */,
 				F97BC2AD2668C63200F1D242 /* AppleWalletPassProviderTests.swift in Sources */,
 				F957AA6A2552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift in Sources */,
+				C9DA53DD2E97F65900D83C94 /* QRCodeViewModelMock.swift in Sources */,
 				A07355D7276B350F00530562 /* DocumentActionViewDelegateMock.swift in Sources */,
 				F99F085A2383EAC800EBB948 /* FormatterMock.swift in Sources */,
 				A0B4B9B12BC027DE00C99926 /* CardComponentEventTests.swift in Sources */,
@@ -8564,7 +8635,6 @@
 				C9126051275A3A2800C03DC4 /* BACSItemsFactoryTests.swift in Sources */,
 				F9D5751423757013009C18B5 /* CardPublicKeyValidatorTests.swift in Sources */,
 				A00167712BD125A30099A6AE /* CardHolderNameValidatorTests.swift in Sources */,
-				0058692528BE0FB700B65A19 /* QRCodeViewDelegateMock.swift in Sources */,
 				F957AAAE2552FDD70099AD73 /* AnyADYServiceMock.swift in Sources */,
 				F957AA622552D8D20099AD73 /* AnyThreeDS2ActionHandlerMock.swift in Sources */,
 				F99F08582383EA2A00EBB948 /* ValidatorMock.swift in Sources */,
@@ -8624,6 +8694,7 @@
 				A04E60DB27F30D900051C72C /* SessionDelegateMock.swift in Sources */,
 				F9AC61C424375F510062A00D /* PresentingViewControllerMock.swift in Sources */,
 				5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */,
+				C9DA53E12E97F6DE00D83C94 /* QRCodeViewControllerTests.swift in Sources */,
 				F9885435272C17BD00F34557 /* PaymentMethodListComponentDelegateMock.swift in Sources */,
 				8100F2C02A4C37E4008C09E7 /* FormSelectableItemViewTests.swift in Sources */,
 				E9021DF2225CC6D0009CF7F4 /* RedirectDetailsTests.swift in Sources */,
@@ -8672,6 +8743,7 @@
 				E7D3ED84243B667500E73F59 /* FormCardNumberItemViewTests.swift in Sources */,
 				F957AAA62552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift in Sources */,
 				F9B997A425C8554F00891084 /* DokuVoucherUITests.swift in Sources */,
+				B6C4C66A2ED0BEA600500BCD /* FormToggleItemViewThemeTests.swift in Sources */,
 				E9E3DAD3221EEFF700697074 /* CardExpiryDateValidatorTests.swift in Sources */,
 				E7D5311C2447065B000046B4 /* PreselectedPaymentComponentTests.swift in Sources */,
 				81A6B4E72AD54F6C00A089A1 /* OpenExternalAppDetector+Mock.swift in Sources */,
@@ -8929,11 +9001,14 @@
 				F9175FFB259499D500D653BE /* AwaitView.swift in Sources */,
 				F917617225A30B6A00D653BE /* AnyThreeDS2ActionHandler.swift in Sources */,
 				5AD755DB268E11DA0040B919 /* VoucherComponentExtensions.swift in Sources */,
+				C923A8252E9001B9004AC234 /* QRCodeFlowType.swift in Sources */,
 				F91760812594B1F400D653BE /* RedirectComponentStyle.swift in Sources */,
 				F9175FF9259499D500D653BE /* AwaitComponentViewModel.swift in Sources */,
 				F9175FE32594999C00D653BE /* PollingComponent.swift in Sources */,
 				F917617325A30B6A00D653BE /* ThreeDS2ClassicActionHandler.swift in Sources */,
 				0058691528B644FB00B65A19 /* QRCodeView.swift in Sources */,
+				F99D2F702664EDC900BB5B2F /* AnyVoucherAction.swift in Sources */,
+				F9175FB82594996000D653BE /* ThreeDS2Action.swift in Sources */,
 				5A4633B6265FBE88005FE0D8 /* VoucherViewModel.swift in Sources */,
 				21CBEF4F2D88CA2300178809 /* ThreeDS2ComponentThreeDSConfiguration.swift in Sources */,
 				F97C855A25C1ABD700D7F85C /* VoucherCardView.swift in Sources */,
@@ -8953,12 +9028,13 @@
 				F9175FFA259499D500D653BE /* AwaitViewController.swift in Sources */,
 				21C711112D67FE6B00A08111 /* ThreeDSServiceChallengeError.swift in Sources */,
 				21CBEF642D8B0A0700178809 /* ThreeDSServiceProvider.swift in Sources */,
+				C9DA53D92E97F5CF00D83C94 /* String+QRCode.swift in Sources */,
 				F96757C327CF909900A16FB6 /* AnyWeChatPaySDKActionComponent.swift in Sources */,
 				F9175FD22594999600D653BE /* RedirectComponent.swift in Sources */,
 				F9237D3D28CB470E004F9929 /* ThreeDS2ClassicActionHandler+Initializers.swift in Sources */,
-				81E4231B2C74DC3600349A5E /* String+QRCode.swift in Sources */,
 				8182AAB72B95D3560087568E /* Twint+Injectable.swift in Sources */,
 				F97C851625C192D000D7F85C /* VoucherViewController.swift in Sources */,
+				C92960042E95402500BC97CF /* QRCodeView.swift in Sources */,
 				F95A78B925C4302A0032CF7E /* ShareableVoucherView.swift in Sources */,
 				F95A78CD25C43C4F0032CF7E /* VoucherSeparatorView.swift in Sources */,
 				E745256925C1C9E1006A941F /* AdyenActionComponent.swift in Sources */,
@@ -9002,6 +9078,7 @@
 				21C711132D67FE8300A08111 /* ThreeDSServiceFingerprintError.swift in Sources */,
 				21099B0D2CB7276E0096502C /* PaymentInfo.swift in Sources */,
 				F917613825A30B5700D653BE /* ThreeDS2ComponentFingerprint.swift in Sources */,
+				C923A8232E900165004AC234 /* QRCodeViewStyle.swift in Sources */,
 				F970143925D139BE007E74D9 /* VoucherComponentStyle.swift in Sources */,
 				F917613925A30B5700D653BE /* ThreeDS2ComponentFingerprintToken.swift in Sources */,
 				21C711202D6D388700A08111 /* AnyADYTransaction.swift in Sources */,
@@ -9671,11 +9748,11 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = AdyenTwint/Info.plist;
@@ -9706,11 +9783,11 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = AdyenTwint/Info.plist;
@@ -9742,7 +9819,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
@@ -9768,7 +9845,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
@@ -9794,11 +9871,11 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -9835,11 +9912,11 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -9965,7 +10042,7 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -9993,7 +10070,7 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -10020,7 +10097,7 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -10045,7 +10122,7 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -10070,11 +10147,11 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -10113,11 +10190,11 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -10188,7 +10265,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -10260,7 +10337,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -10292,11 +10369,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Adyen/Info.plist;
@@ -10325,11 +10402,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Adyen/Info.plist;
@@ -10355,7 +10432,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/IntegrationTests/Info.plist;
@@ -10376,7 +10453,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/IntegrationTests/Info.plist;
@@ -10396,11 +10473,11 @@
 		E2C0E065220982AE008616F6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenCard/Info.plist;
@@ -10423,11 +10500,11 @@
 		E2C0E066220982AE008616F6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenCard/Info.plist;
@@ -10455,7 +10532,7 @@
 				CODE_SIGN_ENTITLEMENTS = Demo/Shared.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Demo/UIKit/Info.plist;
@@ -10485,7 +10562,7 @@
 				CODE_SIGN_ENTITLEMENTS = Demo/Shared.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Demo/UIKit/Info.plist;
@@ -10511,11 +10588,11 @@
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenDropIn/Info.plist;
@@ -10541,11 +10618,11 @@
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenDropIn/Info.plist;
@@ -10570,11 +10647,11 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenComponents/Info.plist;
@@ -10603,11 +10680,11 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenComponents/Info.plist;
@@ -10636,11 +10713,11 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenActions/Info.plist;
@@ -10669,11 +10746,11 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenActions/Info.plist;
@@ -10702,11 +10779,11 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenEncryption/Info.plist;
@@ -10735,11 +10812,11 @@
 			buildSettings = {
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenEncryption/Info.plist;
@@ -10768,11 +10845,11 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = AdyenSession/Info.plist;
@@ -10803,11 +10880,11 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = AdyenSession/Info.plist;
@@ -10839,11 +10916,11 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -10881,11 +10958,11 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -10921,11 +10998,11 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenSwiftUI/Info.plist;
@@ -10954,11 +11031,11 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = AdyenSwiftUI/Info.plist;
@@ -10989,7 +11066,7 @@
 				CODE_SIGN_ENTITLEMENTS = Demo/Shared.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "\"Demo/SwiftUI/Preview Content\"";
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				ENABLE_PREVIEWS = YES;
@@ -11019,7 +11096,7 @@
 				CODE_SIGN_ENTITLEMENTS = Demo/Shared.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "\"Demo/SwiftUI/Preview Content\"";
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				ENABLE_PREVIEWS = YES;
@@ -11047,11 +11124,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "";
@@ -11091,11 +11168,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 9;
+				DYLIB_CURRENT_VERSION = 12;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "";
@@ -11136,7 +11213,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
@@ -11161,7 +11238,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
@@ -11428,7 +11505,7 @@
 			repositoryURL = "https://github.com/Adyen/adyen-3ds2-ios";
 			requirement = {
 				kind = exactVersion;
-				version = 2.4.3;
+				version = 2.4.4;
 			};
 		};
 		F94D65E42B0365C30095D61E /* XCRemoteSwiftPackageReference "adyen-authentication-ios" */ = {

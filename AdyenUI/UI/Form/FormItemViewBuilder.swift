@@ -22,7 +22,7 @@ public struct FormItemViewBuilder {
     /// Builds `FormToggleItemView` from `FormToggleItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormToggleItem) -> FormItemView<FormToggleItem> {
-        FormToggleItemView(item: item)
+        FormToggleItemView(item: item, theme: theme)
     }
 
     /// Builds `FormSplitItemView` from `FormSplitItem`.

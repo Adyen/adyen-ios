@@ -84,10 +84,12 @@
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Summa";
 "adyen.voucher.entity" = "Vienība";
-"adyen.pix.instructions" = "Atveriet lietotni ar reģistrēto PIX atslēgu, izvēlieties Maksāt ar PIX un skenējiet QR kodu vai arī kodu kopējiet un ielīmējiet.";
+"adyen.pix.instructions" = "Izmantojiet savu bankas lietotni, lai skenētu kvadrātkodu vai nokopētu zemāk esošo PIX kodu un pabeigtu maksājumu.";
 "adyen.pix.expirationLabel" = "Jums ir jāmaksā %@";
 "adyen.pix.copyButton" = "Kopēt kodu";
 "adyen.pix.instructions.copiedMessage" = "Kods ir nokopēts starpliktuvē";
+"adyen.pix.code.copy.label" = "Kopēt PIX kodu";
+"adyen.pix.code.copied.label" = "PIX kods nokopēts";
 "adyen.billingAddressSection.title" = "Norēķinu adrese";
 "adyen.billingAddress.placeholder" = "Jūsu norēķinu adrese";
 "adyen.deliveryAddressSection.title" = "Piegādes adrese";

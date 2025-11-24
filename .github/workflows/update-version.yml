@@ -6,6 +6,10 @@ on:
         description: 'The new version'
         required: true
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
   pull-requests: write # create new PR
@@ -18,9 +22,6 @@ jobs:
     - uses: actions/checkout@v5
       with:
         fetch-depth: 0
-    - uses: n1hility/cancel-previous-runs@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1

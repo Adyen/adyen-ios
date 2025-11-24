@@ -137,13 +137,11 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
     }
 
     private func dismissAndShowAlert(_ success: Bool, _ message: String) {
-        presenter?.dismiss { [weak self] in
-            // Payment is processed. Add your code here.
+        presenter?.dismiss {
             let title = success ? "Success" : "Error"
-            self?.presenter?.presentAlert(withTitle: title, message: message)
+            self.presenter?.presentAlert(withTitle: title, message: message)
         }
     }
-
 }
 
 extension DropInAdvancedFlowExample: DropInComponentDelegate {

@@ -202,12 +202,37 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     }
     
     private func createViewController(with action: QRCodeAction) -> UIViewController {
-        let viewController = QRCodeViewController(viewModel: createViewModel(with: action))
-        viewController.qrCodeView.delegate = self
+        let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment)
+        let style = QRCodeViewStyle(
+            copyCodeButton: configuration.style.copyCodeButton,
+            saveAsImageButton: configuration.style.saveAsImageButton,
+            instructionLabel: configuration.style.instructionLabel,
+            amountToPayLabel: configuration.style.amountToPayLabel,
+            progressView: configuration.style.progressView,
+            expirationLabel: configuration.style.expirationLabel,
+            logoCornerRounding: configuration.style.logoCornerRounding,
+            backgroundColor: configuration.style.backgroundColor
+        )
+        let viewModel = QRCodeViewModel(
+            action: action,
+            instructionText: qrCodeInstructions(for: action),
+            payment: context.payment,
+            logoUrl: url,
+            observedProgress: progress,
+            expiration: $expirationText,
+            localizationParameters: configuration.localizationParameters,
+            onSaveQRCode: { [weak self] image, sourceView in
+                self?.presentSharePopover(with: image as Any, sourceView: sourceView)
+            },
+            onCopyCode: { code in
+                UIPasteboard.general.string = code
+            }
+        )
+        let viewController = QRCodeViewController(viewModel: viewModel, style: style)
         return viewController
     }
-
-    private func QRCodeInstruction(with action: QRCodeAction) -> String {
+    
+    private func qrCodeInstructions(for action: QRCodeAction) -> String {
         switch action.paymentMethodType {
         case .promptPay, .duitNow, .payNow:
             return localizedString(
@@ -225,28 +250,6 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
                 configuration.localizationParameters
             )
         }
-    }
-
-    private func createViewModel(with action: QRCodeAction) -> QRCodeView.Model {
-        let url = LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment)
-        return QRCodeView.Model(
-            action: action,
-            instruction: QRCodeInstruction(with: action),
-            payment: context.payment,
-            logoUrl: url,
-            observedProgress: progress,
-            expiration: $expirationText,
-            style: QRCodeView.Model.Style(
-                copyCodeButton: configuration.style.copyCodeButton,
-                saveAsImageButton: configuration.style.saveAsImageButton,
-                instructionLabel: configuration.style.instructionLabel,
-                amountToPayLabel: configuration.style.amountToPayLabel,
-                progressView: configuration.style.progressView,
-                expirationLabel: configuration.style.expirationLabel,
-                logoCornerRounding: configuration.style.logoCornerRounding,
-                backgroundColor: configuration.style.backgroundColor
-            )
-        )
     }
 
     public func didCancel() {
@@ -274,16 +277,4 @@ extension QRCodeActionComponent: ActionComponentDelegate {
         delegate?.didFail(with: error, from: self)
     }
 
-}
-
-@_spi(AdyenInternal)
-extension QRCodeActionComponent: QRCodeViewDelegate {
-    
-    internal func copyToPasteboard(with action: QRCodeAction) {
-        UIPasteboard.general.string = action.qrCodeData
-    }
-
-    internal func saveAsImage(qrCodeImage: UIImage?, sourceView: UIView) {
-        presentSharePopover(with: qrCodeImage as Any, sourceView: sourceView)
-    }
 }

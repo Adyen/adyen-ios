@@ -168,7 +168,7 @@ class PayToComponentUITests: XCTestCase {
             XCTAssertTrue(component === sut)
             let details = data.paymentMethod as! PayToDetails
             XCTAssertEqual(details.type, .payTo)
-            XCTAssertEqual(details.accountIdentifier, "+614123466")
+            XCTAssertEqual(details.accountIdentifier, "+61-4123466")
             XCTAssertEqual(details.shopperName?.firstName, "test")
             XCTAssertEqual(details.shopperName?.lastName, "lastname")
 
