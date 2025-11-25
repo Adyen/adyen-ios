@@ -35,7 +35,7 @@ class VoucherViewTests: XCTestCase {
 //        check(layer: sut.findView(by: "logo")!.layer, forCornerRounding: style.logoCornerRounding)
 //        check(label: sut.findView(by: "amountLabel")!, forStyle: style.amountLabel)
 //        check(label: sut.findView(by: "currencyLabel")!, forStyle: style.currencyLabel)
-//        check(submitButton: sut.findView(by: "mainButton")! as! SubmitButton, forStyle: style.mainButton)
+//        check(submitButton: sut.findView(by: "mainButton")! as! FormButton, forStyle: style.mainButton)
 //        check(button: sut.findView(by: "secondaryButton")!, forStyle: style.secondaryButton)
 //
 //    }
@@ -89,7 +89,7 @@ class VoucherViewTests: XCTestCase {
         let sut = try getSut(model: mockModel)
         sut.delegate = delegateMock
         
-        let mainButton: SubmitButton? = sut.findView(by: "mainButton")
+        let mainButton: FormButton? = sut.findView(by: "mainButton")
         let secondaryButton: UIButton? = sut.findView(by: "secondaryButton")
         let addToAppleWalletButton: PKAddPassButton? = sut.findView(by: "appleWalletButton")
         

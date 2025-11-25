@@ -302,7 +302,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
         wait(until: routingNumberItemView, at: \.textField.text, is: "121000358")
         
-        payButtonItemViewButton.didSelectSubmitButton()
+        payButtonItemViewButton.didTapButton()
         wait(until: payButtonItemViewButton, at: \.item.showsActivityIndicator, is: true)
         
         wait(for: [expectation], timeout: 100)

@@ -164,8 +164,8 @@ internal final class VoucherView: UIView, Localizable {
         return currencyLabel
     }()
     
-    private lazy var mainButton: SubmitButton = {
-        let button = SubmitButton(style: model.style.mainButton)
+    private lazy var mainButton: FormButton = {
+        let button = FormButton(style: model.style.mainButton)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.title = model.mainButton
         button.addTarget(self, action: #selector(onMainButtonTap), for: .touchUpInside)

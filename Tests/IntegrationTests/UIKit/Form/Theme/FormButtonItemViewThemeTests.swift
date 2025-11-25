@@ -28,10 +28,10 @@ final class FormButtonItemViewThemeTests: XCTestCase {
         let sut = FormButtonItemView(item: item, theme: customTheme)
 
         // Then - button uses expected theme colors
-        let submitButton = try XCTUnwrap(sut.submitButton)
-        XCTAssertEqual(submitButton.backgroundColor, expectedBackgroundColor)
+        let button = try XCTUnwrap(sut.button)
+        XCTAssertEqual(button.backgroundColor, expectedBackgroundColor)
 
-        let titleLabel = try XCTUnwrap(submitButton.titleLabel)
+        let titleLabel = try XCTUnwrap(button.titleLabel)
         XCTAssertEqual(titleLabel.textColor, expectedTextColor)
     }
 
@@ -46,10 +46,10 @@ final class FormButtonItemViewThemeTests: XCTestCase {
         let sut = FormButtonItemView(item: item)
 
         // Then - should use default theme colors
-        let submitButton = try XCTUnwrap(sut.submitButton)
-        XCTAssertEqual(submitButton.backgroundColor, expectedBackgroundColor)
+        let button = try XCTUnwrap(sut.button)
+        XCTAssertEqual(button.backgroundColor, expectedBackgroundColor)
 
-        let titleLabel = try XCTUnwrap(submitButton.titleLabel)
+        let titleLabel = try XCTUnwrap(button.titleLabel)
         XCTAssertEqual(titleLabel.textColor, expectedTextColor)
     }
 }
