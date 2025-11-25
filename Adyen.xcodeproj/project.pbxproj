@@ -638,6 +638,7 @@
 		B6ABA1C32CA6B058003514E5 /* ListItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ABA1C22CA6B058003514E5 /* ListItemTests.swift */; };
 		B6BFF8012EC7249200BAC3B7 /* FormTextItemViewThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BFF7FF2EC7249200BAC3B7 /* FormTextItemViewThemeTests.swift */; };
 		B6BFF8022EC7250000BAC3B7 /* FormSeparatorItemViewThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BFF8002EC7250000BAC3B7 /* FormSeparatorItemViewThemeTests.swift */; };
+		B6C4C6682ECF61E000500BCD /* FormLabelItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C4C6672ECF61E000500BCD /* FormLabelItemTests.swift */; };
 		B6C4C66A2ED0BEA600500BCD /* FormToggleItemViewThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C4C6692ED0BEA600500BCD /* FormToggleItemViewThemeTests.swift */; };
 		B6C9DA792D0C3F62005D65C7 /* DualBrandAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C9DA782D0C3F62005D65C7 /* DualBrandAccessoryView.swift */; };
 		B6C9DA7B2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C9DA7A2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift */; };
@@ -2246,6 +2247,7 @@
 		B6ABA1C22CA6B058003514E5 /* ListItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItemTests.swift; sourceTree = "<group>"; };
 		B6BFF7FF2EC7249200BAC3B7 /* FormTextItemViewThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextItemViewThemeTests.swift; sourceTree = "<group>"; };
 		B6BFF8002EC7250000BAC3B7 /* FormSeparatorItemViewThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSeparatorItemViewThemeTests.swift; sourceTree = "<group>"; };
+		B6C4C6672ECF61E000500BCD /* FormLabelItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabelItemTests.swift; sourceTree = "<group>"; };
 		B6C4C6692ED0BEA600500BCD /* FormToggleItemViewThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormToggleItemViewThemeTests.swift; sourceTree = "<group>"; };
 		B6C9DA782D0C3F62005D65C7 /* DualBrandAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualBrandAccessoryView.swift; sourceTree = "<group>"; };
 		B6C9DA7A2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DualBrandAccessoryViewTests.swift; sourceTree = "<group>"; };
@@ -4191,6 +4193,7 @@
 			isa = PBXGroup;
 			children = (
 				B6BFF7FF2EC7249200BAC3B7 /* FormTextItemViewThemeTests.swift */,
+				B6C4C6672ECF61E000500BCD /* FormLabelItemTests.swift */,
 				B6BFF8002EC7250000BAC3B7 /* FormSeparatorItemViewThemeTests.swift */,
 				B6C4C6692ED0BEA600500BCD /* FormToggleItemViewThemeTests.swift */,
 			);
@@ -8650,6 +8653,7 @@
 				F95B6D9025231880002C9062 /* PhoneNumberValidatorTests.swift in Sources */,
 				F9639B5224E29E340073F38A /* PresentationDelegateMock.swift in Sources */,
 				F9EDB7922396603F00CFB3C9 /* PaymentMethodListComponentTests.swift in Sources */,
+				B6C4C6682ECF61E000500BCD /* FormLabelItemTests.swift in Sources */,
 				F919DFA224ED599D0027976E /* AdyenActionComponentTests.swift in Sources */,
 				81DA70912BDA6120006CE5D5 /* PaymentMethods+Equatable.swift in Sources */,
 				C927083927590B7900D15EA0 /* BACSInputPresenterProtocolMock.swift in Sources */,
