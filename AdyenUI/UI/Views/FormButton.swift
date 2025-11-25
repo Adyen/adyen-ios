@@ -7,14 +7,14 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-/// A rounded submit button used to submit details.
+/// A rounded button for use in forms.
 @_spi(AdyenInternal)
 public final class FormButton: UIControl {
 
     private var style: ButtonStyle
     private var buttonStyle: AdyenButtonStyle = .primary(for: .default)
 
-    /// Initializes the submit button.
+    /// Initializes the form button.
     ///
     /// - Parameter style: The `FormButton` UI style.
     public init(style: ButtonStyle) {
@@ -34,7 +34,7 @@ public final class FormButton: UIControl {
         configureConstraints()
     }
 
-    /// Initializes the submit button.
+    /// Initializes the form button.
     /// - Parameter buttonStyle: The  new `FormButton` UI style.
     /// - Parameter style: The  old`FormButton` UI style.
     public init(
