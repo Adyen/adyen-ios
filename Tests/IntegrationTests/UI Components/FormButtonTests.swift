@@ -8,7 +8,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
-final class SubmitButtonTests: XCTestCase {
+final class FormButtonTests: XCTestCase {
 
     private let style = ButtonStyle(title: .init(font: .preferredFont(forTextStyle: .body), color: .red))
 
@@ -52,8 +52,8 @@ final class SubmitButtonTests: XCTestCase {
         XCTAssertTrue(sut.isEnabled, "Button should be enabled after activity indicator hides")
     }
 
-    func makeSUT(_ title: String = "Submit") throws -> (SubmitButton, UIActivityIndicatorView) {
-        let sut = SubmitButton(style: style)
+    func makeSUT(_ title: String = "Submit") throws -> (FormButton, UIActivityIndicatorView) {
+        let sut = FormButton(style: style)
         sut.title = title
         let activityIndicatorView: UIActivityIndicatorView = try XCTUnwrap(sut.findView(by: "activityIndicator"))
 

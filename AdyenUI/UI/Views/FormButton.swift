@@ -9,14 +9,14 @@ import UIKit
 
 /// A rounded submit button used to submit details.
 @_spi(AdyenInternal)
-public final class SubmitButton: UIControl {
+public final class FormButton: UIControl {
 
     private var style: ButtonStyle
     private var buttonStyle: AdyenButtonStyle = .primary(for: .default)
 
     /// Initializes the submit button.
     ///
-    /// - Parameter style: The `SubmitButton` UI style.
+    /// - Parameter style: The `FormButton` UI style.
     public init(style: ButtonStyle) {
         self.style = style
         super.init(frame: .zero)
@@ -35,8 +35,8 @@ public final class SubmitButton: UIControl {
     }
 
     /// Initializes the submit button.
-    /// - Parameter buttonStyle: The  new `SubmitButton` UI style.
-    /// - Parameter style: The  old`SubmitButton` UI style.
+    /// - Parameter buttonStyle: The  new `FormButton` UI style.
+    /// - Parameter style: The  old`FormButton` UI style.
     public init(
         theme: AdyenTheme,
         style: ButtonStyle = .init(title: .init(font: .preferredFont(forTextStyle: .body), color: .red))
@@ -180,7 +180,7 @@ public final class SubmitButton: UIControl {
     
 }
 
-extension SubmitButton {
+extension FormButton {
     
     internal final class BackgroundView: UIView {
         

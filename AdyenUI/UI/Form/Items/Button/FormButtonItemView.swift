@@ -13,7 +13,7 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem> {
     /// The theme for styling.
     package let theme: AdyenTheme
 
-    /// Initializes the footer item view.
+    /// Initializes the button item view.
     ///
     /// - Parameters:
     ///   - item: The item represented by the view.
@@ -22,37 +22,37 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem> {
         self.theme = theme
         super.init(item: item)
 
-        addSubview(submitButton)
+        addSubview(button)
 
         preservesSuperviewLayoutMargins = true
 
-        bind(item.$showsActivityIndicator, to: submitButton, at: \.showsActivityIndicator)
-        bind(item.$enabled, to: submitButton, at: \.isEnabled)
-        bind(item.$title, to: submitButton, at: \.title)
+        bind(item.$showsActivityIndicator, to: button, at: \.showsActivityIndicator)
+        bind(item.$enabled, to: button, at: \.isEnabled)
+        bind(item.$title, to: button, at: \.title)
 
-        submitButton.adyen.anchor(inside: self.layoutMarginsGuide)
+        button.adyen.anchor(inside: self.layoutMarginsGuide)
     }
 
-    /// Initializes the footer item view with default theme.
+    /// Initializes the button item view with default theme.
     ///
     /// - Parameter item: The item represented by the view.
     internal required convenience init(item: FormButtonItem) {
         self.init(item: item, theme: .default)
     }
 
-    // MARK: - Submit Button
+    // MARK: - Button
 
-    internal lazy var submitButton: SubmitButton = {
-        let submitButton = SubmitButton(theme: theme, style: item.style.button)
+    internal lazy var button: FormButton = {
+        let button = FormButton(theme: theme, style: item.style.button)
 
-        submitButton.addTarget(self, action: #selector(didSelectSubmitButton), for: .touchUpInside)
-        submitButton.accessibilityIdentifier = item.identifier.map {
+        button.addTarget(self, action: #selector(didSelectSubmitButton), for: .touchUpInside)
+        button.accessibilityIdentifier = item.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "button")
         }
 
-        submitButton.preservesSuperviewLayoutMargins = true
-        submitButton.translatesAutoresizingMaskIntoConstraints = false
-        return submitButton
+        button.preservesSuperviewLayoutMargins = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
 
     @objc internal func didSelectSubmitButton() {

@@ -105,7 +105,7 @@ final class BoletoComponentUITests: XCTestCase {
         let dummyExpectation = XCTestExpectation(description: "Dummy Expectation")
         
         let view = try XCTUnwrap(sut.viewController.view)
-        let submitButton: SubmitButton = try XCTUnwrap(view.findView(by: "payButtonItem.button"))
+        let submitButton: FormButton = try XCTUnwrap(view.findView(by: "payButtonItem.button"))
         let firstNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "firstNameItem"))
         let lastNameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: "lastNameItem"))
         let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: "addressItem"))
@@ -147,7 +147,7 @@ final class BoletoComponentUITests: XCTestCase {
             configuration: mockConfiguration
         )
 
-        let submitButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(by: "payButtonItem.button"))
+        let submitButton: FormButton = try XCTUnwrap(sut.viewController.view.findView(by: "payButtonItem.button"))
         submitButton.sendActions(for: .touchUpInside)
 
         verifyViewControllerImage(matching: sut.viewController, named: "boleto_flow_no_name")

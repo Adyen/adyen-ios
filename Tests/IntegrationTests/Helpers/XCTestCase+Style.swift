@@ -37,11 +37,11 @@ extension XCTestCase {
         check(layer: button.layer, forCornerRounding: style.cornerRounding)
     }
     
-    /// Checks whether the given style was applied properly to the given `SubmitButton`
+    /// Checks whether the given style was applied properly to the given `FormButton`
     /// - Parameters:
-    ///   - submitButton: `SubmitButton` to check
+    ///   - submitButton: `FormButton` to check
     ///   - style: `ButtonStyle` that should be applied
-    func check(submitButton: SubmitButton, forStyle style: ButtonStyle, file: StaticString = #file, line: UInt = #line) {
+    func check(submitButton: FormButton, forStyle style: ButtonStyle, file: StaticString = #file, line: UInt = #line) {
         check(label: submitButton.titleLabel, forStyle: style.title)
         XCTAssertEqual(submitButton.backgroundView.layer.borderColor, style.borderColor?.cgColor)
         XCTAssertEqual(submitButton.backgroundView.layer.borderWidth, style.borderWidth)

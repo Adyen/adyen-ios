@@ -177,7 +177,7 @@ class QRCodeActionComponentTests: XCTestCase {
         setupRootViewController(qrCodeViewController)
         
         // When
-        let saveAsImageButton: SubmitButton = try XCTUnwrap(qrCodeViewController.view.findView(by: "copyCodeButton"))
+        let saveAsImageButton: FormButton = try XCTUnwrap(qrCodeViewController.view.findView(by: "copyCodeButton"))
         saveAsImageButton.sendActions(for: .touchUpInside)
         
         waitForExpectations(timeout: 10, handler: nil)
@@ -226,7 +226,7 @@ class QRCodeActionComponentTests: XCTestCase {
         setupRootViewController(qrCodeViewController)
         
         // When
-        let saveAsImageButton: SubmitButton = try XCTUnwrap(qrCodeViewController.view.findView(by: "saveAsImageButton"))
+        let saveAsImageButton: FormButton = try XCTUnwrap(qrCodeViewController.view.findView(by: "saveAsImageButton"))
         saveAsImageButton.sendActions(for: .touchUpInside)
         
         waitForExpectations(timeout: 10, handler: nil)
