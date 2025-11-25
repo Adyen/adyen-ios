@@ -45,7 +45,7 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem> {
     internal lazy var button: FormButton = {
         let button = FormButton(theme: theme, style: item.style.button)
 
-        button.addTarget(self, action: #selector(didSelectSubmitButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         button.accessibilityIdentifier = item.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "button")
         }
@@ -55,7 +55,7 @@ internal final class FormButtonItemView: FormItemView<FormButtonItem> {
         return button
     }()
 
-    @objc internal func didSelectSubmitButton() {
+    @objc internal func didTapButton() {
         item.buttonSelectionHandler?()
     }
 }
