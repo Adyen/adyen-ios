@@ -36,7 +36,7 @@ public final class FormButton: UIControl {
 
     /// Initializes the form button.
     /// - Parameter buttonStyle: The  new `FormButton` UI style.
-    /// - Parameter style: The  old`FormButton` UI style.
+    /// - Parameter style: The  old `FormButton` UI style.
     public init(
         theme: AdyenTheme,
         style: ButtonStyle = .init(title: .init(font: .preferredFont(forTextStyle: .body), color: .red))
