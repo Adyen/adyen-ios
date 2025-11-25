@@ -67,7 +67,7 @@ public struct FormItemViewBuilder {
     /// Builds `FormButtonItemView` from `FormButtonItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormButtonItem) -> FormItemView<FormButtonItem> {
-        FormButtonItemView(item: item)
+        FormButtonItemView(item: item, theme: theme)
     }
 
     /// Builds `FormImageView` from `FormImageItem`.

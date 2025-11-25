@@ -79,7 +79,7 @@ class OnlineBankingComponentUITests: XCTestCase {
         sut.delegate = delegate
 
         // Then
-        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
+        let button: FormButton! = sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
 
         let didContinueExpectation = XCTestExpectation(description: "Dummy Expectation")
 
@@ -111,7 +111,7 @@ class OnlineBankingComponentUITests: XCTestCase {
 
         UIApplication.shared.adyen.mainKeyWindow?.rootViewController = sut.viewController
        
-        let button: SubmitButton = try XCTUnwrap(
+        let button: FormButton = try XCTUnwrap(
             sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
         )
 

@@ -174,7 +174,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
     
     // MARK: - Configuration Merging Tests
     
-    func testBuild_MergesGlobalShowsSubmitButtonSetting() throws {
+    func testBuild_MergesGlobalShowsFormButtonSetting() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         var blikConfig = BLIKComponentConfiguration()

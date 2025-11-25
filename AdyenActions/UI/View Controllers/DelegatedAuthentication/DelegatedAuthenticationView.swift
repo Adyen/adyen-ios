@@ -199,8 +199,8 @@ internal final class DelegatedAuthenticationView: UIView {
     
     // MARK: Buttons
 
-    internal lazy var firstButton: SubmitButton = {
-        let button = SubmitButton(style: style.primaryButton)
+    internal lazy var firstButton: FormButton = {
+        let button = FormButton(style: style.primaryButton)
 
         button.addTarget(self, action: #selector(firstButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton")
@@ -209,8 +209,8 @@ internal final class DelegatedAuthenticationView: UIView {
         return button
     }()
 
-    internal lazy var secondButton: SubmitButton = {
-        let button = SubmitButton(style: style.secondaryButton)
+    internal lazy var secondButton: FormButton = {
+        let button = FormButton(style: style.secondaryButton)
         button.addTarget(self, action: #selector(secondButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "secondaryButton")
         button.preservesSuperviewLayoutMargins = true
