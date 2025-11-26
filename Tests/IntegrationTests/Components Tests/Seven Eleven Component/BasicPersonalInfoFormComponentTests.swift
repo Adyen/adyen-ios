@@ -63,93 +63,48 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         XCTAssertEqual(sut.button.title, localizedString(LocalizationKey(key: "adyen_confirmPurchase"), sut.configuration.localizationParameters))
     }
 
-    func testUIConfiguration() {
-        var style = FormComponentStyle()
+    func testUIConfiguration() throws {
+        // Given
+        let customColors = AdyenColors(container: .systemYellow, primary: .systemPink, highlight: .systemBlue)
+        let customTheme = AdyenTheme(colors: customColors).primaryButton(backgroundColor: .systemRed, textColor: .white)
 
-        /// Footer
-        style.mainButtonItem.button.title.color = .white
-        style.mainButtonItem.button.title.backgroundColor = .red
-        style.mainButtonItem.button.title.textAlignment = .center
-        style.mainButtonItem.button.title.font = .systemFont(ofSize: 22)
-        style.mainButtonItem.button.backgroundColor = .red
-        style.mainButtonItem.backgroundColor = .brown
+        var config = BasicPersonalInfoFormComponent.Configuration()
+        config.theme = customTheme
+        let sut = SevenElevenComponent(paymentMethod: paymentMethod, context: Dummy.context, configuration: config)
 
-        /// background color
-        style.backgroundColor = .yellow
-
-        /// Text field
-        style.textField.backgroundColor = .cyan
-        style.textField.text.color = .brown
-        style.textField.text.font = .systemFont(ofSize: 13)
-        style.textField.text.textAlignment = .right
-
-        style.textField.title.backgroundColor = .blue
-        style.textField.title.color = .yellow
-        style.textField.title.font = .systemFont(ofSize: 20)
-        style.textField.title.textAlignment = .center
-        style.textField.backgroundColor = .red
-
-        let config = BasicPersonalInfoFormComponent.Configuration(style: style)
-        let sut = SevenElevenComponent(
-            paymentMethod: paymentMethod,
-            context: Dummy.context,
-            configuration: config
-        )
-
+        // When
         setupRootViewController(sut.viewController)
-        
         wait(for: .milliseconds(300))
-        
-        // TODO: Fix assertTextInputUI
-        /// Test firstName field
-//        self.assertTextInputUI(
-//            ViewIdentifier.firstName,
-//            view: sut.viewController.view,
-//            style: style.textField,
-//            isFirstField: true
-//        )
 
-        /// Test lastName field
-//        self.assertTextInputUI(
-//            ViewIdentifier.lastName,
-//            view: sut.viewController.view,
-//            style: style.textField,
-//            isFirstField: false
-//        )
+        // Then
+        let view = sut.viewController.view
+        let firstNameView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(view?.findView(with: ViewIdentifier.firstName))
+        let firstNameTitleLabel: UILabel = try XCTUnwrap(view?.findView(with: ViewIdentifier.firstNameTitleLabel))
+        let firstNameTextField: UITextField = try XCTUnwrap(view?.findView(with: ViewIdentifier.firstNameTextField))
+        let lastNameView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(view?.findView(with: ViewIdentifier.lastName))
+        let lastNameTitleLabel: UILabel = try XCTUnwrap(view?.findView(with: ViewIdentifier.lastNameTitleLabel))
+        let lastNameTextField: UITextField = try XCTUnwrap(view?.findView(with: ViewIdentifier.lastNameTextField))
+        let emailView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(view?.findView(with: ViewIdentifier.email))
+        let emailTitleLabel: UILabel = try XCTUnwrap(view?.findView(with: ViewIdentifier.emailTitleLabel))
+        let emailTextField: UITextField = try XCTUnwrap(view?.findView(with: ViewIdentifier.emailTextField))
+        let phoneNumberView: FormPhoneNumberItemView = try XCTUnwrap(view?.findView(with: ViewIdentifier.phone))
+        let phoneNumberViewTitleLabel: UILabel = try XCTUnwrap(view?.findView(with: ViewIdentifier.phoneTitleLabel))
+        let phoneNumberViewTextField: UITextField = try XCTUnwrap(view?.findView(with: ViewIdentifier.phoneTextField))
+        let payButtonItemView: FormButtonItemView = try XCTUnwrap(view?.findView(with: ViewIdentifier.payButton))
 
-        /// Test email field
-//        self.assertTextInputUI(
-//            ViewIdentifier.email,
-//            view: sut.viewController.view,
-//            style: style.textField,
-//            isFirstField: false
-//        )
-
-        let phoneNumberView: FormPhoneNumberItemView? = sut.viewController.view.findView(with: ViewIdentifier.phone)
-        let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: ViewIdentifier.phoneTitleLabel)
-        let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: ViewIdentifier.phoneTextField)
-
-        /// Test submit button
-        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: ViewIdentifier.payButton)
-        let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: ViewIdentifier.payButtonTitleLabel)
-
-        // TODO: FIX payButtonItemViewButton, payButtonItemViewButtonTitle, phoneNumberView, phoneNumberViewTitleLabel and phoneNumberViewTextField UI asserts
-//        XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
-//        XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
-//        XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
-//        XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
-//        XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
-
-        /// Test phone number field
-//        XCTAssertEqual(phoneNumberView?.backgroundColor, .red)
-//        XCTAssertEqual(phoneNumberViewTitleLabel?.textColor, .yellow)
-//        XCTAssertEqual(phoneNumberViewTitleLabel?.backgroundColor, .blue)
-//        XCTAssertEqual(phoneNumberViewTitleLabel?.textAlignment, .center)
-//        XCTAssertEqual(phoneNumberViewTitleLabel?.font, .systemFont(ofSize: 20))
-//        XCTAssertEqual(phoneNumberViewTextField?.backgroundColor, .red)
-//        XCTAssertEqual(phoneNumberViewTextField?.textAlignment, .right)
-//        XCTAssertEqual(phoneNumberViewTextField?.textColor, .brown)
-//        XCTAssertEqual(phoneNumberViewTextField?.font, .systemFont(ofSize: 13))
+        XCTAssertEqual(firstNameTitleLabel.textColor, .systemPink)
+        XCTAssertEqual(firstNameTextField.textColor, .systemPink)
+        XCTAssertEqual(lastNameTitleLabel.textColor, .systemPink)
+        XCTAssertEqual(lastNameTextField.textColor, .systemPink)
+        XCTAssertEqual(emailTitleLabel.textColor, .systemPink)
+        XCTAssertEqual(emailTextField.textColor, .systemPink)
+        XCTAssertEqual(phoneNumberViewTitleLabel.textColor, .systemPink)
+        XCTAssertEqual(phoneNumberViewTextField.textColor, .systemPink)
+        XCTAssertEqual(firstNameView.backgroundColor, .systemYellow)
+        XCTAssertEqual(lastNameView.backgroundColor, .systemYellow)
+        XCTAssertEqual(emailView.backgroundColor, .systemYellow)
+        XCTAssertEqual(phoneNumberView.backgroundColor, .systemYellow)
+        XCTAssertEqual(payButtonItemView.button.backgroundColor, .systemRed)
     }
 
     private func assertTextInputUI(
