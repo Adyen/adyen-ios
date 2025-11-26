@@ -85,85 +85,37 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, sut.configuration.localizationParameters))
     }
     
-    func testUIConfiguration() {
-        var sepaComponentStyle = FormComponentStyle()
-        
-        /// Footer
-        sepaComponentStyle.mainButtonItem.button.title.color = .white
-        sepaComponentStyle.mainButtonItem.button.title.backgroundColor = .red
-        sepaComponentStyle.mainButtonItem.button.title.textAlignment = .center
-        sepaComponentStyle.mainButtonItem.button.title.font = .systemFont(ofSize: 22)
-        sepaComponentStyle.mainButtonItem.button.backgroundColor = .red
-        sepaComponentStyle.mainButtonItem.backgroundColor = .brown
-        
-        /// background color
-        sepaComponentStyle.backgroundColor = .red
-        
-        /// Text field
-        sepaComponentStyle.textField.text.color = .red
-        sepaComponentStyle.textField.text.font = .systemFont(ofSize: 13)
-        sepaComponentStyle.textField.text.textAlignment = .right
-        
-        sepaComponentStyle.textField.title.backgroundColor = .blue
-        sepaComponentStyle.textField.title.color = .yellow
-        sepaComponentStyle.textField.title.font = .systemFont(ofSize: 20)
-        sepaComponentStyle.textField.title.textAlignment = .center
-        sepaComponentStyle.textField.backgroundColor = .red
-        
-        let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
-        let configuration = SEPADirectDebitComponent.Configuration(style: sepaComponentStyle)
-        let sut = SEPADirectDebitComponent(
-            paymentMethod: sepaPaymentMethod,
-            context: context,
-            configuration: configuration
-        )
-        
-        setupRootViewController(sut.viewController)
-        
-        wait(for: .milliseconds(300))
-        
-        let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
-        let nameItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.titleLabel")
-        let nameItemViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.textField")
-        
-        let ibanItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem")
-        let ibanItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem.titleLabel")
-        let ibanItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem.textField")
-        
-        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button")
-        let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button.titleLabel")
-        
-        // TODO: Fix nameItemView, ibanItemView, ibanItemTitleLabel, ibanItemTextField, payButtonItemViewButton and payButtonItemViewButtonTitle UI asserts
+    func testUIConfiguration() throws {
+        // Given
+        let customColors = AdyenColors(container: .systemYellow, primary: .systemPink, highlight: .systemBlue)
+        let customTheme = AdyenTheme(colors: customColors).primaryButton(backgroundColor: .systemRed, textColor: .white)
 
-        /// Test card number field
-//        XCTAssertEqual(nameItemView?.backgroundColor, .red)
-//        XCTAssertEqual(nameItemViewTitleLabel?.textColor, sut.viewController.view.tintColor)
-//        XCTAssertEqual(nameItemViewTitleLabel?.backgroundColor, .blue)
-//        XCTAssertEqual(nameItemViewTitleLabel?.textAlignment, .center)
-//        XCTAssertEqual(nameItemViewTitleLabel?.font, .systemFont(ofSize: 20))
-//        XCTAssertEqual(nameItemViewTextField?.backgroundColor, .red)
-//        XCTAssertEqual(nameItemViewTextField?.textAlignment, .right)
-//        XCTAssertEqual(nameItemViewTextField?.textColor, .red)
-//        XCTAssertEqual(nameItemViewTextField?.font, .systemFont(ofSize: 13))
-        
-        /// Test IBAN field
-//        XCTAssertEqual(ibanItemView?.backgroundColor, .red)
-//        XCTAssertEqual(ibanItemTitleLabel?.backgroundColor, .blue)
-//        XCTAssertEqual(ibanItemTitleLabel?.textAlignment, .center)
-//        XCTAssertEqual(ibanItemTitleLabel?.font, .systemFont(ofSize: 20))
-//        XCTAssertEqual(ibanItemTitleLabel?.textColor, .yellow)
-//        XCTAssertEqual(ibanItemTextField?.backgroundColor, .red)
-//        XCTAssertEqual(ibanItemTextField?.textAlignment, .right)
-//        XCTAssertEqual(ibanItemTextField?.textColor, .red)
-//        XCTAssertEqual(ibanItemTextField?.font, .systemFont(ofSize: 13))
-        
-//        /// Test footer
-//        XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
-//        XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
-//        XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
-//        XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
-//        XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
-        
+        let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
+        var configuration = SEPADirectDebitComponent.Configuration()
+        configuration.theme = customTheme
+        let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod, context: context, configuration: configuration)
+
+        // When
+        setupRootViewController(sut.viewController)
+        wait(for: .milliseconds(300))
+
+        // Then
+        let view = sut.viewController.view
+        let nameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(view?.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem"))
+        let nameItemViewTitleLabel: UILabel = try XCTUnwrap(view?.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.titleLabel"))
+        let nameItemViewTextField: UITextField = try XCTUnwrap(view?.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.textField"))
+        let ibanItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(view?.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem"))
+        let ibanItemTitleLabel: UILabel = try XCTUnwrap(view?.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem.titleLabel"))
+        let ibanItemTextField: UITextField = try XCTUnwrap(view?.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem.textField"))
+        let payButtonItemView: FormButtonItemView = try XCTUnwrap(view?.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem"))
+
+        XCTAssertEqual(nameItemViewTitleLabel.textColor, .systemPink)
+        XCTAssertEqual(nameItemViewTextField.textColor, .systemPink)
+        XCTAssertEqual(ibanItemTitleLabel.textColor, .systemPink)
+        XCTAssertEqual(ibanItemTextField.textColor, .systemPink)
+        XCTAssertEqual(nameItemView.backgroundColor, .systemYellow)
+        XCTAssertEqual(ibanItemView.backgroundColor, .systemYellow)
+        XCTAssertEqual(payButtonItemView.button.backgroundColor, .systemRed)
     }
     
     func testBigTitle() {
