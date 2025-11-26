@@ -122,7 +122,7 @@ extension FormItemViewBuilder {
     }
     
     internal func build(with item: FormCardNumberContainerItem) -> FormItemView<FormCardNumberContainerItem> {
-        FormVerticalStackItemView(item: item, itemSpacing: 0)
+        FormVerticalStackItemView(item: item, itemSpacing: 0, theme: theme)
     }
 }
 
