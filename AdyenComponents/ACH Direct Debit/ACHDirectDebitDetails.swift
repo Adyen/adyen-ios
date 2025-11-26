@@ -27,6 +27,10 @@ public struct ACHDirectDebitDetails: PaymentMethodDetails, ShopperInformation {
     /// The shopper's billing address.
     public let billingAddress: PostalAddress?
     
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
+    
     /// Initializes the ACH Direct Debit details.
     /// - Parameters:
     ///   - paymentMethod: ACH Direct Debit payment method.
@@ -47,5 +51,6 @@ public struct ACHDirectDebitDetails: PaymentMethodDetails, ShopperInformation {
         case holderName = "ownerName"
         case encryptedBankAccountNumber
         case encryptedBankRoutingNumber = "encryptedBankLocationId"
+        case sdkData
     }
 }

@@ -68,7 +68,6 @@ internal struct PaymentsRequest: APIRequest {
         try container.encodeIfPresent(data.installments, forKey: .installments)
         try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
         try container.encode(ConfigurationConstants.recurringProcessingModel, forKey: .recurringProcessingModel)
-        try container.encodeIfPresent(data.sdkData, forKey: .sdkData)
         try container.encode(ConfigurationConstants.mandate, forKey: .mandate)
     }
     
@@ -118,7 +117,6 @@ internal struct PaymentsRequest: APIRequest {
         case delegatedAuthenticationData
         case recurringProcessingModel
         case mandate
-        case sdkData
     }
     
 }

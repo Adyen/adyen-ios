@@ -49,13 +49,13 @@ class PaymentComponentSubjectTests: XCTestCase {
         let didSubmitExpectation = expectation(description: "didSubmit should get called")
         
         // When
-        XCTAssertNil(paymentComponentData.sdkData)
+        XCTAssertNil(paymentComponentData.paymentMethod.sdkData)
         
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
-            XCTAssertNotNil(data.sdkData)
+            XCTAssertNotNil(data.paymentMethod.sdkData)
             
-            guard let sdkDataDecoded = self.sdkData(from: data.sdkData) else {
+            guard let sdkDataDecoded = self.sdkData(from: data.paymentMethod.sdkData) else {
                 XCTFail("SDKData should be present and decodable")
                 return
             }
@@ -122,13 +122,13 @@ class PaymentComponentSubjectTests: XCTestCase {
         let didSubmitExpectation = expectation(description: "didSubmit should get called")
         
         // When
-        XCTAssertNil(paymentComponentData.sdkData)
+        XCTAssertNil(paymentComponentData.paymentMethod.sdkData)
 
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
-            XCTAssertNotNil(data.sdkData)
+            XCTAssertNotNil(data.paymentMethod.sdkData)
             
-            guard let sdkDataDecoded = self.sdkData(from: data.sdkData) else {
+            guard let sdkDataDecoded = self.sdkData(from: data.paymentMethod.sdkData) else {
                 XCTFail("SDKData should be present and decodable")
                 return
             }
@@ -160,9 +160,9 @@ class PaymentComponentSubjectTests: XCTestCase {
         
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
-            XCTAssertNotNil(data.sdkData, "SDKData should be created")
+            XCTAssertNotNil(data.paymentMethod.sdkData, "SDKData should be created")
             
-            guard let sdkDataDecoded = self.sdkData(from: data.sdkData) else {
+            guard let sdkDataDecoded = self.sdkData(from: data.paymentMethod.sdkData) else {
                 XCTFail("SDKData should be present and decodable")
                 return
             }
@@ -192,7 +192,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
             
-            guard let sdkDataDecoded = self.sdkData(from: data.sdkData) else {
+            guard let sdkDataDecoded = self.sdkData(from: data.paymentMethod.sdkData) else {
                 XCTFail("SDKData should be present and decodable")
                 return
             }
@@ -216,10 +216,10 @@ class PaymentComponentSubjectTests: XCTestCase {
         
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
-            XCTAssertNotNil(data.sdkData)
+            XCTAssertNotNil(data.paymentMethod.sdkData)
             
             // Verify timestamp is present
-            guard let sdkDataString = data.sdkData,
+            guard let sdkDataString = data.paymentMethod.sdkData,
                   let decodedData = Data(base64Encoded: sdkDataString),
                   let jsonString = String(data: decodedData, encoding: .utf8) else {
                 XCTFail("SDKData should be present and decodable to a string")

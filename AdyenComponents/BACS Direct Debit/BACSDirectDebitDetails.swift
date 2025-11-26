@@ -23,6 +23,10 @@ public struct BACSDirectDebitDetails: PaymentMethodDetails {
 
     /// The BACS location's ID.
     public let bankLocationId: String
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
 
     /// Creates and returns a BACS Direct Debit details instance.
     /// - Parameters:
@@ -49,5 +53,6 @@ public struct BACSDirectDebitDetails: PaymentMethodDetails {
         case holderName
         case bankAccountNumber
         case bankLocationId
+        case sdkData
     }
 }

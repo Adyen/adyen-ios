@@ -14,6 +14,10 @@ public protocol PaymentMethodDetails: Details {
     
     @_spi(AdyenInternal)
     var checkoutAttemptId: String? { get set }
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    var sdkData: String? { get set }
 }
 
 public extension PaymentMethodDetails {

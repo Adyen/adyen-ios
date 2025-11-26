@@ -18,6 +18,10 @@ public struct BLIKDetails: PaymentMethodDetails {
 
     /// The telephone number.
     public let blikCode: String
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
 
     /// Initializes the BLIK payment details.
     ///
@@ -32,6 +36,7 @@ public struct BLIKDetails: PaymentMethodDetails {
     private enum CodingKeys: String, CodingKey {
         case type
         case blikCode
+        case sdkData
     }
 
 }

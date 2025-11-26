@@ -27,7 +27,8 @@ public struct SDKData: Codable {
     private let supportNativeRedirect: Bool = true
     private let timestamp = Int(Date().timeIntervalSince1970 * 1000)
     
-    internal var encodedValue: String? {
+    @_spi(AdyenInternal)
+    public var encodedValue: String? {
         try? AdyenCoder.encodeBase64(self)
     }
     

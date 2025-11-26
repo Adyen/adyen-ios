@@ -19,6 +19,10 @@ public struct IssuerListDetails: PaymentMethodDetails {
     /// The selected issuer.
     public let issuer: String
     
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
+    
     /// Initializes the Issuer List details.
     ///
     /// - Parameters:
