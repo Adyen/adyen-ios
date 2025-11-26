@@ -41,7 +41,6 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
         )
         self.preselectedPaymentMethodComponent.localizationParameters = configuration.localizationParameters
         self.preselectedPaymentMethodComponent.delegate = self
-        self.dropInFlowManager.delegate = self
     }
 
     // MARK: - PreselectedPaymentMethodViewModelProtocol
@@ -102,7 +101,7 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        dropInFlowManager.submit(data, from: component)
+        dropInFlowManager.submit(data, from: component, actionPresenter: self)
     }
     
     internal func didFail(
@@ -117,11 +116,11 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
     }
 }
 
-// MARK: - DropInFlowManagerDelegate
+// MARK: - ActionPresenter
 
-extension PreselectedPaymentMethodViewModel: DropInFlowManagerDelegate {
+extension PreselectedPaymentMethodViewModel: ActionPresenter {
 
-    internal func didPresent(actionComponent: any PresentableComponent) {
+    internal func present(actionComponent: any PresentableComponent) {
         router?.present(actionComponent: actionComponent) { [weak self] in
             self?.stopLoading()
         }

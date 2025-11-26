@@ -36,7 +36,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             style: configuration.style.listComponent
         )
         self.dropInFlowManager = dropInFlowManager
-        self.dropInFlowManager.delegate = self
         self.paymentMethodListComponent.localizationParameters = configuration.localizationParameters
         self.paymentMethodListComponent.delegate = self
     }
@@ -108,7 +107,7 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        dropInFlowManager.submit(data, from: component)
+        dropInFlowManager.submit(data, from: component, actionPresenter: self)
     }
     
     internal func didFail(
@@ -125,11 +124,11 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
     }
 }
 
-// MARK: - DropInFlowManagerDelegate
+// MARK: - ActionPresenter
 
-extension PaymentMethodListViewModel: DropInFlowManagerDelegate {
+extension PaymentMethodListViewModel: ActionPresenter {
 
-    internal func didPresent(actionComponent: any PresentableComponent) {
+    internal func present(actionComponent: any PresentableComponent) {
         router?.present(actionComponent: actionComponent) { [weak self] in
             self?.stopLoading()
         }

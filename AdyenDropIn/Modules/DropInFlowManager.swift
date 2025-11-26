@@ -10,14 +10,18 @@
 #endif
 import Foundation
 
-internal protocol DropInFlowManagerDelegate: AnyObject {
-    func didPresent(actionComponent: PresentableComponent)
+internal protocol ActionPresenter: AnyObject {
+    func present(actionComponent: PresentableComponent)
     func didCancel(actionComponent: ActionComponent)
 }
 
 internal protocol DropInFlowManaging {
-    var delegate: DropInFlowManagerDelegate? { get set }
-    func submit(_ data: PaymentComponentData, from component: PaymentComponent)
+//    func submit(_ data: PaymentComponentData, from component: PaymentComponent)
+    func submit(
+        _ data: PaymentComponentData,
+        from component: PaymentComponent,
+        actionPresenter: ActionPresenter
+    )
     func fail(with error: Error, from component: PaymentComponent)
     func cancel(component: PaymentComponent)
     func handle(action: Action)
@@ -31,7 +35,7 @@ internal class DropInFlowManager: DropInFlowManaging {
     private weak var dropInComponentDelegate: DropInComponentDelegate?
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
-    internal weak var delegate: DropInFlowManagerDelegate?
+    private weak var actionPresenter: ActionPresenter?
 
     // MARK: - Initializers
 
@@ -62,8 +66,13 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     // MARK: - DropInFlowManaging
 
-    internal func submit(_ data: PaymentComponentData, from component: PaymentComponent) {
+    internal func submit(
+        _ data: PaymentComponentData,
+        from component: PaymentComponent,
+        actionPresenter: ActionPresenter
+    ) {
         guard let dropInComponent else { return }
+        self.actionPresenter = actionPresenter
 
         let checkoutAttemptId = component.context.analyticsProvider?.checkoutAttemptId
         let updatedData = data.replacing(
@@ -120,7 +129,7 @@ extension DropInFlowManager: ActionComponentDelegate {
         guard let dropInComponent else { return }
 
         if case ComponentError.cancelled = error {
-            delegate?.didCancel(actionComponent: component)
+            actionPresenter?.didCancel(actionComponent: component)
         } else {
             dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
         }
@@ -132,6 +141,6 @@ extension DropInFlowManager: ActionComponentDelegate {
 extension DropInFlowManager: PresentationDelegate {
 
     internal func present(component: any PresentableComponent) {
-        delegate?.didPresent(actionComponent: component)
+        actionPresenter?.present(actionComponent: component)
     }
 }
