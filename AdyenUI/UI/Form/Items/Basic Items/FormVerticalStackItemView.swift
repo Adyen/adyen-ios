@@ -16,10 +16,16 @@ open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormI
 
     private var observations: [Observation] = []
 
-    /// Initializes the vertical stack item view.
+    /// The theme for styling subitems.
+    package let theme: AdyenTheme
+
+    /// Initializes the vertical stack item view with theme.
     ///
-    /// - Parameter item: The item represented by the view.
-    public required init(item: FormItemType) {
+    /// - Parameters:
+    ///   - item: The item represented by the view.
+    ///   - theme: The theme to use for styling subitems.
+    public init(item: FormItemType, theme: AdyenTheme) {
+        self.theme = theme
         super.init(item: item)
 
         prepareSubItems()
@@ -32,13 +38,19 @@ open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormI
         stackView.adyen.anchor(inside: self)
     }
 
+    /// Backward-compatible initializer using default theme.
+    public required convenience init(item: FormItemType) {
+        self.init(item: item, theme: .default)
+    }
+
     /// Creates a `FormVerticalStackItemView` with the specified spacing between its vertical items.
     /// - Parameters:
     ///   - item: The item represented by the view.
     ///   - itemSpacing: Spacing among the child views of the stack.
+    ///   - theme: The theme to use for styling subitems. Defaults to `.default`.
     ///   :nodoc:
-    public convenience init(item: FormItemType, itemSpacing: CGFloat) {
-        self.init(item: item)
+    public convenience init(item: FormItemType, itemSpacing: CGFloat, theme: AdyenTheme = .default) {
+        self.init(item: item, theme: theme)
         stackView.spacing = itemSpacing
     }
 
@@ -56,8 +68,10 @@ open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormI
         return stackView
     }()
 
-    private static func build(_ item: FormItem) -> AnyFormItemView {
-        let itemView = FormItemViewBuilder.build(item)
+    private func build(_ item: FormItem) -> AnyFormItemView {
+        let builder = FormItemViewBuilder(theme: theme)
+        let itemView = item.build(with: builder)
+        itemView.accessibilityIdentifier = item.identifier
         itemView.preservesSuperviewLayoutMargins = true
         return itemView
     }
@@ -66,9 +80,9 @@ open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormI
         views.removeAll()
         item.subitems.forEach(prepareSubViews(from:))
     }
-    
+
     private func prepareSubViews(from subItem: FormItem) {
-        let view = FormVerticalStackItemView.build(subItem)
+        let view = build(subItem)
         views.append(view)
         let itemView = view as UIView
         stackView.addArrangedSubview(view)
@@ -84,10 +98,12 @@ open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormI
             extraView.heightAnchor.constraint(equalToConstant: 1).isActive = true
         }
     }
-    
+
     private func addVisibilityObserver(for subItem: FormItem, view: UIView) {
         let observation = observe(subItem.isHidden) { isHidden in
-            view.adyen.hide(animationKey: String(describing: view), hidden: isHidden, animated: true)
+            view.adyen.hide(
+                animationKey: String(describing: view), hidden: isHidden, animated: true
+            )
         }
         observations.append(observation)
     }
@@ -96,13 +112,14 @@ open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormI
         observations.forEach(remove)
         observations = []
     }
-    
+
     override open var canBecomeFirstResponder: Bool {
         views.first { $0.canBecomeFirstResponder } != nil
     }
 
     override open func becomeFirstResponder() -> Bool {
-        views.first { $0.canBecomeFirstResponder }?.becomeFirstResponder() ?? super.becomeFirstResponder()
+        views.first { $0.canBecomeFirstResponder }?.becomeFirstResponder()
+            ?? super.becomeFirstResponder()
     }
 
 }
