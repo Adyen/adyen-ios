@@ -86,20 +86,11 @@ class SEPADirectDebitComponentTests: XCTestCase {
     }
     
     func testUIConfiguration() {
-        // Given - custom theme with distinctive colors and button styling
-        let customColors = AdyenColors(
-            container: .systemYellow,
-            containerOutline: .systemPurple,
-            primary: .systemPink,
-            highlight: .systemBlue
-        )
-        
-        let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
+        // Given - use TestTheme helper for distinctive, verifiable styling
         var configuration = SEPADirectDebitComponent.Configuration()
-        configuration.theme = AdyenTheme(colors: customColors)
-            .primaryButton(backgroundColor: .systemRed, textColor: .white, cornerRadius: 12)
-            .cornerRadius(8)
+        configuration.theme = TestTheme.distinctive()
 
+        let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
         let sut = SEPADirectDebitComponent(
             paymentMethod: sepaPaymentMethod,
             context: context,
@@ -109,42 +100,23 @@ class SEPADirectDebitComponentTests: XCTestCase {
         setupRootViewController(sut.viewController)
         wait(for: .milliseconds(300))
 
-        // MARK: - Test 1: Semantic Primary Color Applied to All Text Fields
-        
-        // Name field
-        let nameItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.titleLabel")
-        let nameItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.textField")
-        let nameItemContainer: UIView? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
-        
-        XCTAssertEqual(nameItemTitleLabel?.textColor, .systemPink, "Name title should use theme primary color")
-        XCTAssertEqual(nameItemTextField?.textColor, .systemPink, "Name text should use theme primary color")
-        
-        // IBAN field
-        let ibanItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem.titleLabel")
-        let ibanItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem.textField")
-        let ibanItemContainer: UIView? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem")
-        
-        XCTAssertEqual(ibanItemTitleLabel?.textColor, .systemPink, "IBAN title should use theme primary color")
-        XCTAssertEqual(ibanItemTextField?.textColor, .systemPink, "IBAN text should use theme primary color")
-        
-        // MARK: - Test 2: Containers Exist
-        
-        XCTAssertNotNil(nameItemContainer, "Name container should exist")
-        XCTAssertNotNil(ibanItemContainer, "IBAN container should exist")
-        
-        // MARK: - Test 3: Pay Button Uses Theme
-        
-        let payButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button")
-        let payButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button.titleLabel")
-        
-        XCTAssertNotNil(payButton, "Pay button should exist")
-        XCTAssertEqual(payButton?.backgroundColor, .systemRed, "Pay button should use theme button background color")
-        XCTAssertEqual(payButtonTitle?.textColor, .white, "Pay button title should use theme button text color")
-        
-        // Verify button corner radius
-        if let payButton {
-            XCTAssertEqual(payButton.layer.cornerRadius, 12, accuracy: 0.1, "Pay button should use theme corner radius")
-        }
+        // MARK: - Assert text fields use theme styling
+
+        let prefix = "AdyenComponents.SEPADirectDebitComponent"
+        sut.viewController.assertTextFieldsUseTheme(
+            [
+                "\(prefix).nameItem",
+                "\(prefix).ibanItem"
+            ],
+            style: TestTheme.expectedTextFieldStyle
+        )
+
+        // MARK: - Assert pay button uses theme styling
+
+        sut.viewController.assertButtonUsesTheme(
+            "\(prefix).payButtonItem",
+            style: TestTheme.expectedButtonStyle
+        )
     }
 
     func testBigTitle() {
