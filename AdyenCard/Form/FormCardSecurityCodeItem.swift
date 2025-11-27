@@ -76,6 +76,6 @@ internal final class FormCardSecurityCodeItem: FormTextInputItem {
 
 extension FormItemViewBuilder {
     internal func build(with item: FormCardSecurityCodeItem) -> FormItemView<FormCardSecurityCodeItem> {
-        FormCardSecurityCodeItemView(item: item)
+        FormCardSecurityCodeItemView(item: item, theme: theme)
     }
 }

@@ -30,7 +30,7 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
     public var paymentMethod: PaymentMethod { payToPaymentMethod }
 
     private let payToPaymentMethod: PayToPaymentMethod
-    
+
     internal lazy var itemsProvider: PayToItemsProviding = {
         PayToItemsProvider(
             style: configuration.style,
@@ -39,18 +39,18 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
             presenter: .init(self)
         )
     }()
-    
+
     /// The viewController for the component.
     public lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
     )
-    
+
     /// This indicates that `viewController` expected to be presented modally,
     public var requiresModalPresentation: Bool = true
-    
+
     // MARK: Component specific
-    
+
     /// Currently selected PayId identifier
     private var selectedIdentifier: PayToPayIdentifier = .phone
 
@@ -63,7 +63,7 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
             }
         }
     }
-    
+
     /// Items on PayId segment that can be shown/hidden
     private lazy var payIdDynamicItems: [FormItem] = [
         payIdFlowTitleItem,
@@ -73,7 +73,7 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
         abnInputItem,
         organizationIdInputItem
     ]
-    
+
     /// Items on BSB segment that can be shown/hidden
     private lazy var bsbDynamicItems: [FormItem] = [
         bsbInstructionTitleItem,
@@ -168,7 +168,7 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
     internal lazy var bsbInputItem: FormTextInputItem = {
         itemsProvider.createBsbInputItem()
     }()
-    
+
     /// The continue button item.
     internal lazy var continueButtonItem: FormButtonItem = {
         let item = itemsProvider.createContinueButtonItem()
@@ -186,10 +186,10 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
         )
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.delegate = self
-        
+
         addTopItems(to: formViewController)
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
-        
+
         addDynamicItems(to: formViewController)
         addBottomItems(to: formViewController)
 
@@ -198,11 +198,11 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
             formViewController.append(FormSpacerItem(numberOfSpaces: 2))
             formViewController.append(continueButtonItem)
         }
-        
+
         observe(identifierPickerItem.publisher) { [weak self] newValue in
             self?.updatePayIdIdentifier(newValue.element.identifier)
         }
-        
+
         updateInterface()
 
         return formViewController
@@ -215,11 +215,11 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
 }
 
 extension PayToComponent: SubmittableComponent {
-    
+
     public func submit() {
         didSelectContinueButton()
     }
-    
+
     public func validate() -> Bool {
         formViewController.validate()
     }
@@ -233,11 +233,11 @@ extension PayToComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)
 extension PayToComponent: ViewControllerPresenter {
-    
+
     public func presentViewController(_ viewController: UIViewController, animated: Bool) {
         self.viewController.presentViewController(viewController, animated: animated)
     }
-    
+
     public func dismissViewController(animated: Bool) {
         self.viewController.dismissViewController(animated: animated)
     }
@@ -249,7 +249,7 @@ private extension PayToComponent {
 
     func didSelectContinueButton() {
         guard validate() else { return }
-        
+
         startLoading()
 
         let details = PayToDetails(
@@ -260,7 +260,7 @@ private extension PayToComponent {
                 lastName: lastNameInputItem.value
             )
         )
-        
+
         submit(
             data: PaymentComponentData(
                 paymentMethodDetails: details,
@@ -269,12 +269,12 @@ private extension PayToComponent {
             )
         )
     }
-    
+
     func startLoading() {
         continueButtonItem.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
     }
-    
+
     func updatePayIdIdentifier(_ newValue: String) {
         guard let newIdentifier = PayToPayIdentifier(rawValue: newValue) else { return }
         selectedIdentifier = newIdentifier
@@ -282,7 +282,7 @@ private extension PayToComponent {
     }
 
     func didChangeSegment(_ index: Int) {
-        
+
         formViewController.view.endEditing(true)
         switch index {
         case 0:
@@ -301,7 +301,8 @@ private extension PayToComponent {
         case let .payId(identifier):
             switch identifier {
             case .phone:
-                phoneNumberItem.phoneNumber
+                // Insert hyphen between prefix and number to match PayTo backend format for accountIdentifier (e.g., +61-012345678)
+                [phoneNumberItem.prefix, phoneNumberItem.value].joined(separator: "-")
             case .email:
                 emailInputItem.value
             case .abn:
@@ -319,23 +320,23 @@ private extension PayToComponent {
 // MARK: - Private
 
 private extension PayToComponent {
-    
+
     func addTopItems(to formViewController: FormViewController) {
         let topItems: [FormItem] = [
             flowSelectionTitleItem.padding(),
             flowSelectionItem.padding()
         ]
-        
+
         add(topItems, to: formViewController, spacing: 1)
     }
-    
+
     func addDynamicItems(to formViewController: FormViewController) {
         add(
             payIdDynamicItems,
             to: formViewController,
             isHidden: true
         )
-        
+
         formViewController.append(bsbInstructionTitleItem)
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
         formViewController.append(bsbInputItem)
@@ -348,7 +349,7 @@ private extension PayToComponent {
             firstNameInputItem,
             lastNameInputItem
         ]
-        
+
         add(bottomItems, to: formViewController)
     }
 
@@ -366,12 +367,12 @@ private extension PayToComponent {
             $0.isHidden.wrappedValue = isHidden
         }
     }
-    
+
     func updateInterface() {
         switch selectedPaymentOption {
         case let .payId(identifier):
             resetPayIdItemsVisibility()
-            
+
             switch identifier {
             case .phone:
                 phoneNumberItem.isHidden.wrappedValue = false
@@ -387,7 +388,7 @@ private extension PayToComponent {
             bsbDynamicItems.forEach { $0.isHidden.wrappedValue = false }
         }
     }
-    
+
     func resetPayIdItemsVisibility() {
         let payIdItemsToHide: [FormItem] = [
             phoneNumberItem,
@@ -397,7 +398,7 @@ private extension PayToComponent {
         ]
         payIdItemsToHide.forEach { $0.isHidden.wrappedValue = true }
         bsbDynamicItems.forEach { $0.isHidden.wrappedValue = true }
-        
+
         identifierPickerItem.isHidden.wrappedValue = false
         payIdFlowTitleItem.isHidden.wrappedValue = false
     }

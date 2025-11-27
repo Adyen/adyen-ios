@@ -47,21 +47,36 @@ public class FormLabelItem: FormItem {
     internal var labelStyle: AdyenLabelStyle = .init()
 
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
-        let label = ADYLabel()
-        label.text = text
-        label.numberOfLines = 0
-        label.accessibilityIdentifier = identifier
-        label.font = style.font
-        label.textColor = style.color
-        label.textAlignment = style.textAlignment
-        return label
+        FormLabelItemView(item: self, theme: builder.theme)
     }
 }
 
-internal class ADYLabel: UILabel, AnyFormItemView {
+internal final class FormLabelItemView: UILabel, AnyFormItemView {
 
-    public var childItemViews: [AnyFormItemView] { [] }
+    package let theme: AdyenTheme
 
-    public func reset() { /* Do nothing */ }
-    
+    internal init(item: FormLabelItem, theme: AdyenTheme) {
+        self.theme = theme
+        super.init(frame: .zero)
+        configure(with: item)
+    }
+
+    @available(*, unavailable)
+    internal required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func configure(with item: FormLabelItem) {
+        text = item.text
+        numberOfLines = 0
+        accessibilityIdentifier = item.identifier
+
+        apply(theme.elements.labels.body)
+    }
+
+    // MARK: - AnyFormItemView
+
+    internal var childItemViews: [AnyFormItemView] { [] }
+
+    internal func reset() { /* Do nothing */ }
 }

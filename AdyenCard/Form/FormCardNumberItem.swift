@@ -256,7 +256,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
 
 extension FormItemViewBuilder {
     internal func build(with item: FormCardNumberItem) -> FormItemView<FormCardNumberItem> {
-        FormCardNumberItemView(item: item)
+        FormCardNumberItemView(item: item, theme: theme)
     }
 }
 

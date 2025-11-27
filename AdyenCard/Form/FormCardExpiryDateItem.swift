@@ -85,7 +85,7 @@ internal final class FormCardExpiryDateItem: FormTextInputItem {
 
 extension FormItemViewBuilder {
     internal func build(with item: FormCardExpiryDateItem) -> FormTextInputItemView {
-        let view = FormTextInputItemView(item: item)
+        let view = FormTextInputItemView(item: item, theme: theme)
         view.observe(item.$title) { _ in
             view.accessibilityLabelView?.accessibilityLabel = item.accessibilityValue
         }

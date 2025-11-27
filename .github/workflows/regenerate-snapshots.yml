@@ -2,6 +2,10 @@ name: 📸 Generate Snapshots
 on:
     workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read          
 jobs:
@@ -10,9 +14,6 @@ jobs:
     
     steps:
     - uses: actions/checkout@v5
-    - uses: n1hility/cancel-previous-runs@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: 🔨 Select Xcode
       uses: maxim-lobanov/setup-xcode@v1

@@ -13,7 +13,8 @@ public final class FormSpacerItemView: FormItemView<FormSpacerItem> {
 
     /// Initializes the spacer item view.
     ///
-    /// - Parameter item: The item represented by the view.
+    /// - Parameters:
+    ///   - item: The item represented by the view.
     internal required init(item: FormSpacerItem) {
         super.init(item: item)
         addSubview(stackView)

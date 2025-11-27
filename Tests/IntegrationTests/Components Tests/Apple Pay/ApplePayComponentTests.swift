@@ -63,8 +63,8 @@ class ApplePayComponentTest: XCTestCase {
             self.mockDelegate = nil // to prevent false triggering
         }
 
-        presentOnRoot(viewController)
-        
+        viewController.loadViewIfNeeded()
+
         self.sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
 
         waitForExpectations(timeout: 10)

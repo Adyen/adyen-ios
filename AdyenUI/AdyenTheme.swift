@@ -22,7 +22,7 @@ public struct AdyenTheme {
     public init(colors: AdyenColors = .default) {
         self.colors = colors
         self.attributes = .default
-        self.elements = .default
+        self.elements = AdyenElements(colors: colors)
     }
     
     /// Internal initializer that accepts elements (for SDK use).

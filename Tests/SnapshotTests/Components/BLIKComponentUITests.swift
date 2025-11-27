@@ -66,7 +66,7 @@ final class BLIKComponentUITests: XCTestCase {
         
         setupRootViewController(sut.viewController)
 
-        let submitButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button"))
+        let submitButton: FormButton = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button"))
 
         let blikCodeView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
         self.populate(textItemView: blikCodeView, with: "123456")

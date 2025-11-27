@@ -77,7 +77,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
     }
     
     func testPressSubmitButton() {
-        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton.button")
+        let button: FormButton! = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton.button")
         button.sendActions(for: .touchUpInside)
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
@@ -93,7 +93,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
 
     func testSubmitButtonLoading() {
         setupRootViewController(sut.viewController)
-        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton.button")
+        let button: FormButton! = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton.button")
         XCTAssertFalse(button.showsActivityIndicator)
         sut.startLoading(for: component)
 
@@ -105,7 +105,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
     }
     
     func testPressOpenAllButton() {
-        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.openAllButton.button")
+        let button: FormButton! = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.openAllButton.button")
         button!.sendActions(for: .touchUpInside)
         
         let expectation = XCTestExpectation(description: "Dummy Expectation")
@@ -124,48 +124,49 @@ class PreselectedPaymentComponentTests: XCTestCase {
         formStyle.separatorColor = .red
         formStyle.mainButtonItem = FormButtonItemStyle(button: ButtonStyle(title: TextStyle(font: .systemFont(ofSize: 20), color: .cyan, textAlignment: .center), cornerRadius: 0, background: .brown), background: .red)
         formStyle.secondaryButtonItem = FormButtonItemStyle(button: ButtonStyle(title: TextStyle(font: .systemFont(ofSize: 22), color: .brown, textAlignment: .center), cornerRadius: 0, background: .cyan), background: .black)
-        
+
         var listStyle = sut.listItemStyle
         listStyle.image.backgroundColor = .red
         listStyle.title.color = .white
         listStyle.subtitle.color = .white
-        
+
         component = StoredPaymentMethodComponent(paymentMethod: getStoredCard(), context: Dummy.context)
         sut = PreselectedPaymentMethodComponent(component: component, title: "", style: formStyle, listItemStyle: listStyle)
-        
+
         setupRootViewController(sut.viewController)
-        
+
         let view = sut.viewController.view!
         let listView = view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.defaultComponent")
         let listViewTitle: UILabel! = listView!.findView(by: "titleLabel")
         let listViewSubtitle: UILabel! = listView!.findView(by: "subtitleLabel")
-        
+
         let submitButtonContainer = view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton")
         let submitButton = submitButtonContainer!.findView(by: "button")
         let submitButtonLabel: UILabel! = submitButton!.findView(by: "titleLabel")
-        
+
         let openAllButtonContainer = view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.openAllButton")
         let openAllButton = openAllButtonContainer!.findView(by: "button")
         let openAllButtonLabel: UILabel! = openAllButton!.findView(by: "titleLabel")
-        
+
         let separator = view.findView(by: "separatorLine")
-        
+
         wait(for: .milliseconds(300))
-        
+
         XCTAssertEqual(view.backgroundColor, .green)
         XCTAssertEqual(listViewTitle.textColor, .white)
         XCTAssertEqual(listViewSubtitle.textColor, .white)
-        
-        // TODO: FIX LATER
-//        XCTAssertEqual(submitButtonContainer!.backgroundColor, .red)
-//        XCTAssertEqual(submitButton!.backgroundColor, .brown)
-//        XCTAssertEqual(submitButtonLabel.textColor, .cyan)
-//
-//        XCTAssertEqual(openAllButtonContainer!.backgroundColor, .black)
-//        XCTAssertEqual(openAllButton!.backgroundColor, .cyan)
-//        XCTAssertEqual(openAllButtonLabel.textColor, .brown)
-        
-        XCTAssertEqual(separator!.backgroundColor, .red)
+
+        // Button and separator styling now use AdyenTheme instead of FormComponentStyle
+        // PreselectedPaymentMethodComponent uses default theme, so elements get default theme colors
+        let defaultButtonStyle = AdyenButtonStyle.primary(for: .default)
+        XCTAssertEqual(submitButton!.backgroundColor, defaultButtonStyle.backgroundColor)
+        XCTAssertEqual(submitButtonLabel.textColor, defaultButtonStyle.textColor)
+
+        XCTAssertEqual(openAllButton!.backgroundColor, defaultButtonStyle.backgroundColor)
+        XCTAssertEqual(openAllButtonLabel.textColor, defaultButtonStyle.textColor)
+
+        // Separator also uses theme colors now (migrated in PR #2)
+        XCTAssertEqual(separator!.backgroundColor, AdyenColors.default.separator)
     }
     
     func testPayButtonTitle() {

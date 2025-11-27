@@ -7,11 +7,16 @@ on:
   push:
     branches:
       - develop
-      
+
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
   pull-requests: write # sonar
-      
+
 jobs:
 
   build:
@@ -21,14 +26,11 @@ jobs:
       destination_iPad: "name=iPad (10th generation),OS=18.6"
       project: "Adyen.xcodeproj"
       params: "-derivedDataPath ./DerivedData -skipPackagePluginValidation"
-    runs-on: macos-15-xlarge 
+    runs-on: macos-15-xlarge
 
     steps:
     - uses: actions/checkout@v5
-    - uses: n1hility/cancel-previous-runs@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        
+
     - name: Validate Versions
       run: |
         Scripts/validate-3ds2-SDK-version.sh
@@ -43,7 +45,7 @@ jobs:
       run: |
         brew update
         brew install sonar-scanner
-        
+
     - name: 👷 Clean Build
       run: |
         xcodebuild -version
@@ -51,7 +53,7 @@ jobs:
       env:
         params: '${{env.params}}'
         scheme: 'AdyenUIHost'
-        
+
     - name: 🧪 Unit + Integration Tests
       run: |
         xcodebuild test \

@@ -6,6 +6,10 @@ on:
         description: 'SDK Version'
         required: true
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write # create branch and new release
   pull-requests: write # create PR
@@ -26,11 +30,6 @@ jobs:
     - uses: actions/checkout@v5
       with:
         fetch-depth: 0
-        
-    # Cancel previous runs
-    - uses: n1hility/cancel-previous-runs@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
     
     # Update Version
     - name: Updating Version Number
@@ -67,6 +66,7 @@ jobs:
     
     # Creates a release/[sdk-version] branch with a PR to develop
     - name: Create Pull Request
+      id: create_pr
       uses: peter-evans/create-pull-request@v7
       with:
         delete-branch: true
@@ -75,3 +75,16 @@ jobs:
         title: "[Release] ${{ github.event.inputs.sdk-version }}"
         body-path: "${{ github.workspace }}/.tmp/release_notes.md"
         token: ${{ secrets.AUTOMATION_BOT_TOKEN }}
+    
+    - name: Add release label
+      uses: actions-ecosystem/action-add-labels@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        labels: "release"
+        number: ${{ steps.create_pr.outputs.pull-request-number }}
+
+    - name: Auto approve release PR
+      uses: hmarr/auto-approve-action@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
