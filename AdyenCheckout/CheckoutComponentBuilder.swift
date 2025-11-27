@@ -33,6 +33,13 @@ internal enum CheckoutComponentBuilder {
                     paymentMethod: blikPaymentMethod,
                     configuration: configuration
                 )
+            
+            case let achPaymentMethod as ACHDirectDebitPaymentMethod:
+                return createComponent(
+                    using: ACHDirectDebitComponentFactory(),
+                    paymentMethod: achPaymentMethod,
+                    configuration: configuration
+                )
         #endif
             
         // card module
