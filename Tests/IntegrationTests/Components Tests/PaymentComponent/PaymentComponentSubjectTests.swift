@@ -257,6 +257,7 @@ private struct MockAuthenticationPaymentDetails: PaymentMethodDetails, SDKDataAu
     let type: PaymentMethodType = .scheme
     var checkoutAttemptId: String?
     let authProvider: MockSDKDataAuthenticationProvider
+    var sdkData: String?
     
     var authentication: SDKData.Authentication {
         authProvider.authentication
