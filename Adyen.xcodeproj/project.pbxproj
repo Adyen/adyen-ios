@@ -6,6 +6,22 @@
 	objectVersion = 54;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		C99BC9062ED8B17B00360DC3 /* GenerateSourcery */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = C99BC9072ED8B17B00360DC3 /* Build configuration list for PBXAggregateTarget "GenerateSourcery" */;
+			buildPhases = (
+				C99BC90A2ED8B18800360DC3 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = GenerateSourcery;
+			packageProductDependencies = (
+			);
+			productName = GenerateSourcery;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		000888742D4CF597009C03E1 /* PayToPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000888732D4CF58D009C03E1 /* PayToPaymentMethod.swift */; };
 		000888782D4CF5FC009C03E1 /* PayToComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000888772D4CF5F5009C03E1 /* PayToComponent.swift */; };
@@ -7550,6 +7566,9 @@
 					C96844842D7712DC001DB7F1 = {
 						CreatedOnToolsVersion = 16.1;
 					};
+					C99BC9062ED8B17B00360DC3 = {
+						CreatedOnToolsVersion = 26.0;
+					};
 					C9FC2C3C2D50D0B700C9D0F3 = {
 						CreatedOnToolsVersion = 16.1;
 					};
@@ -7677,6 +7696,7 @@
 				F9CCA3B4296ECB3E00AD643D /* SnapshotsTests */,
 				81DF94042BAAD8EB0001DCBC /* GenerateSnapshots */,
 				C96844842D7712DC001DB7F1 /* AdyenCardScannerTests */,
+				C99BC9062ED8B17B00360DC3 /* GenerateSourcery */,
 			);
 		};
 /* End PBXProject section */
@@ -7903,6 +7923,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "swiftlintPath=/usr/local/adyen/bin/swiftlint\n\nif [ ! -f $swiftlintPath ]; then\n  echo \"swiftlint CLI is not installed on your machine at $swiftlintPath, please contact IS to install it for you at /usr/local/adyen/bin/ .\"\n  exit\nfi\n\n$swiftlintPath --config \"$SRCROOT/.swiftlint.yml\"\n";
+		};
+		C99BC90A2ED8B18800360DC3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\nset -euo pipefail\n\necho \"🔧 Running Sourcery via sourcery.sh from Xcode target...\"\n\n# Path to the script relative to project root\nSCRIPT=\"$SRCROOT/Tools/Sourcery/sourcery.sh\"\n\n# Run the script\n\"$SCRIPT\"\n\nEXIT_CODE=$?\nif [ $EXIT_CODE -ne 0 ]; then\n  echo \"❌ Sourcery generation failed\"\n  exit $EXIT_CODE\nfi\n\necho \"✅ Sourcery finished successfully\"\n";
 		};
 		F95B6DD2252B1F6A002C9062 /* SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -10119,6 +10156,24 @@
 			};
 			name = Release;
 		};
+		C99BC9082ED8B17B00360DC3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B2NYSS5932;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		C99BC9092ED8B17B00360DC3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = B2NYSS5932;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		C9FC2C472D50D0B700C9D0F3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -11296,6 +11351,15 @@
 			buildConfigurations = (
 				C968448C2D7712DC001DB7F1 /* Debug */,
 				C968448D2D7712DC001DB7F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C99BC9072ED8B17B00360DC3 /* Build configuration list for PBXAggregateTarget "GenerateSourcery" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C99BC9082ED8B17B00360DC3 /* Debug */,
+				C99BC9092ED8B17B00360DC3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
