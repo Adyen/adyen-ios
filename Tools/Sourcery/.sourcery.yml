@@ -1,7 +1,9 @@
 sources:
   - ../../
-
 templates:
   - ./Templates/AutoMockable.stencil
-
 output: ../../Tests/UnitTests/Generated
+args:
+  autoMockableTestableImports:
+    - Adyen
+    - AdyenDropIn
