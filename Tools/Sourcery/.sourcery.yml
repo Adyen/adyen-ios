@@ -1,0 +1,12 @@
+sources:
+  - ../../AdyenDropIn
+
+templates:
+  - ./Templates
+
+targets:
+  AdyenDropInMocks:
+    templates:
+      - ./Templates/AutoMockable.stencil
+    output:
+      ../../Tests/AdyenDropIn/Generated
