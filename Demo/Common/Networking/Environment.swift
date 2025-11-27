@@ -21,9 +21,7 @@ internal struct DemoAPIContext: AnyAPIContext {
         "X-API-Key": ConfigurationConstants.adyenServerKey
     ]
     
-    internal let queryParameters: [URLQueryItem] = [
-        .init(name: "clientKey", value: ConfigurationConstants.clientKey)
-    ]
+    internal let queryParameters: [URLQueryItem] = []
     
 }
 
