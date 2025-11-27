@@ -183,7 +183,6 @@
 		0058691728B6450900B65A19 /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691628B6450900B65A19 /* QRCodeViewController.swift */; };
 		0058691928B6451000B65A19 /* QRCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691828B6451000B65A19 /* QRCodeViewModel.swift */; };
 		0058691C28B6457700B65A19 /* QRCodeActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058691B28B6457700B65A19 /* QRCodeActionComponent.swift */; };
-		0058692528BE0FB700B65A19 /* QRCodeViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058692428BE0FB700B65A19 /* QRCodeViewDelegateMock.swift */; };
 		00600F152E6F145D00637477 /* AdyenUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 003BDD192E15200A009177E0 /* AdyenUI.framework */; };
 		00600F182E6F14AA00637477 /* AdyenUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 003BDD192E15200A009177E0 /* AdyenUI.framework */; };
 		00600F1B2E6F14C600637477 /* AdyenUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 003BDD192E15200A009177E0 /* AdyenUI.framework */; };
@@ -194,7 +193,6 @@
 		00600F332E7D9D6F00637477 /* CheckoutConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01948542D91AD8700AA27AC /* CheckoutConfiguration.swift */; };
 		00600F362E7D9D8800637477 /* AdyenUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 003BDD192E15200A009177E0 /* AdyenUI.framework */; };
 		00600F372E7D9FE600637477 /* CheckoutConfiguration+Callbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D87A252D9420AF00763AD6 /* CheckoutConfiguration+Callbacks.swift */; };
-		0067E73D29658CB6005B8D76 /* FormImageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0067E73C29658CB6005B8D76 /* FormImageItem.swift */; };
 		0067E740296C161E005B8D76 /* UPIComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0067E73F296C161E005B8D76 /* UPIComponentTests.swift */; };
 		00731C9F2E8589C20019BA29 /* AdyenStyleAssertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00731C9E2E8589B60019BA29 /* AdyenStyleAssertions.swift */; };
 		0080A7812E423FC700F639DE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080A7802E423FC300F639DE /* UIColor.swift */; };
@@ -620,6 +618,7 @@
 		B65F0EBE2ED89EC60015AC41 /* FormViewExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65F0EBD2ED89EC60015AC41 /* FormViewExtractor.swift */; };
 		B65F0EBF2ED89EC60015AC41 /* FormViewExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65F0EBD2ED89EC60015AC41 /* FormViewExtractor.swift */; };
 		B65F0EC02ED89EC60015AC41 /* FormViewExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65F0EBD2ED89EC60015AC41 /* FormViewExtractor.swift */; };
+		B65F0EC22ED8BCBC0015AC41 /* ACHDirectDebitComponentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65F0EC12ED8BCBC0015AC41 /* ACHDirectDebitComponentFactory.swift */; };
 		B66CAF3A2DAEB16D0017984C /* DummyCardScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66CAF392DAEB16D0017984C /* DummyCardScannerController.swift */; };
 		B67D1F632E4615390000C37F /* DropInAdvancedFlowExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D1F582E4615390000C37F /* DropInAdvancedFlowExample.swift */; };
 		B67D1F642E4615390000C37F /* DropInExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67D1F602E4615390000C37F /* DropInExample.swift */; };
@@ -811,8 +810,6 @@
 		C9DA53DD2E97F65900D83C94 /* QRCodeViewModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53DC2E97F65900D83C94 /* QRCodeViewModelMock.swift */; };
 		C9DA53E12E97F6DE00D83C94 /* QRCodeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53DF2E97F6DE00D83C94 /* QRCodeViewControllerTests.swift */; };
 		C9DA53E32E97F71C00D83C94 /* QRCodeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */; };
-		C9DCCD122E3CE5B500B88C52 /* TestPresentingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DCCD112E3CE5B500B88C52 /* TestPresentingView.swift */; };
-		C9DCCD142E3CE83C00B88C52 /* FullScreenViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DCCD132E3CE83C00B88C52 /* FullScreenViewControllerTests.swift */; };
 		C9EEEFEC2D5516B300B7AFFC /* ExpirationDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EEEFEA2D5516B300B7AFFC /* ExpirationDateFormatter.swift */; };
 		C9F468E227465FCF00500FF5 /* BACSDirectDebitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F468E127465FCF00500FF5 /* BACSDirectDebitData.swift */; };
 		C9F9905D2DC2566C00D2BFB0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C9F9905C2DC2566C00D2BFB0 /* README.md */; };
@@ -1868,7 +1865,6 @@
 		0058691828B6451000B65A19 /* QRCodeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeViewModel.swift; sourceTree = "<group>"; };
 		0058691B28B6457700B65A19 /* QRCodeActionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeActionComponent.swift; sourceTree = "<group>"; };
 		0058692228B8C1FE00B65A19 /* QRCodeActionComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeActionComponentUITests.swift; sourceTree = "<group>"; };
-		0058692428BE0FB700B65A19 /* QRCodeViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewDelegateMock.swift; sourceTree = "<group>"; };
 		005ECD682E5857CC00ADC9BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00600F242E73030900637477 /* CoreBundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CoreBundleExtension.swift; path = "Adyen/Utilities/Non SPM Bundle Extension/CoreBundleExtension.swift"; sourceTree = SOURCE_ROOT; };
 		00600F2E2E78B02F00637477 /* AdyenTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenTextFieldStyle.swift; sourceTree = "<group>"; };
@@ -2239,6 +2235,7 @@
 		B65F0EB32ED493250015AC41 /* FormButtonItemViewThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormButtonItemViewThemeTests.swift; sourceTree = "<group>"; };
 		B65F0EB92ED89EC00015AC41 /* TestTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTheme.swift; sourceTree = "<group>"; };
 		B65F0EBD2ED89EC60015AC41 /* FormViewExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormViewExtractor.swift; sourceTree = "<group>"; };
+		B65F0EC12ED8BCBC0015AC41 /* ACHDirectDebitComponentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitComponentFactory.swift; sourceTree = "<group>"; };
 		B66CAF392DAEB16D0017984C /* DummyCardScannerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyCardScannerController.swift; sourceTree = "<group>"; };
 		B67D1F532E4615390000C37F /* ApplePayComponentAdvancedFlowExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayComponentAdvancedFlowExample.swift; sourceTree = "<group>"; };
 		B67D1F542E4615390000C37F /* CardComponentAdvancedFlowExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentAdvancedFlowExample.swift; sourceTree = "<group>"; };
@@ -3970,6 +3967,7 @@
 		A0414C1B27888BF300DF3FE9 /* ACH Direct Debit */ = {
 			isa = PBXGroup;
 			children = (
+				B65F0EC12ED8BCBC0015AC41 /* ACHDirectDebitComponentFactory.swift */,
 				A0414C1C278C275C00DF3FE9 /* ACHDirectDebitComponent.swift */,
 				A0414C20278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift */,
 			);
@@ -4722,23 +4720,6 @@
 				C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */,
 			);
 			path = QRCode;
-			sourceTree = "<group>";
-		};
-		C9DCCD0E2E3CE57300B88C52 /* AdyenSwiftUI */ = {
-			isa = PBXGroup;
-			children = (
-				C9DCCD102E3CE58600B88C52 /* Present View Controller */,
-			);
-			path = AdyenSwiftUI;
-			sourceTree = "<group>";
-		};
-		C9DCCD102E3CE58600B88C52 /* Present View Controller */ = {
-			isa = PBXGroup;
-			children = (
-				C9DCCD112E3CE5B500B88C52 /* TestPresentingView.swift */,
-				C9DCCD132E3CE83C00B88C52 /* FullScreenViewControllerTests.swift */,
-			);
-			path = "Present View Controller";
 			sourceTree = "<group>";
 		};
 		C9EEEFEB2D5516B300B7AFFC /* Formatters */ = {
@@ -8936,6 +8917,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				00F621BE27EB132500C04097 /* AtomeComponent.swift in Sources */,
+				B65F0EC22ED8BCBC0015AC41 /* ACHDirectDebitComponentFactory.swift in Sources */,
 				F9B017252604F49C001F23FC /* BasicPersonalInfoFormDetails.swift in Sources */,
 				F9175EC22593950D00D653BE /* QiwiWalletComponent.swift in Sources */,
 				F9175EAC259394FF00D653BE /* ApplePayComponent.swift in Sources */,
@@ -9024,9 +9006,6 @@
 				F9175FF9259499D500D653BE /* AwaitComponentViewModel.swift in Sources */,
 				F9175FE32594999C00D653BE /* PollingComponent.swift in Sources */,
 				F917617325A30B6A00D653BE /* ThreeDS2ClassicActionHandler.swift in Sources */,
-				0058691528B644FB00B65A19 /* QRCodeView.swift in Sources */,
-				F99D2F702664EDC900BB5B2F /* AnyVoucherAction.swift in Sources */,
-				F9175FB82594996000D653BE /* ThreeDS2Action.swift in Sources */,
 				5A4633B6265FBE88005FE0D8 /* VoucherViewModel.swift in Sources */,
 				21CBEF4F2D88CA2300178809 /* ThreeDS2ComponentThreeDSConfiguration.swift in Sources */,
 				F97C855A25C1ABD700D7F85C /* VoucherCardView.swift in Sources */,
