@@ -349,7 +349,9 @@ public protocol AnyACHDirectDebitConfiguration {
 extension ACHDirectDebitComponent {
     
     /// Configuration for the ACH Direct Debit Component
-    public struct Configuration: AnyACHDirectDebitConfiguration, AnyPersonalInformationConfiguration {
+    public struct Configuration: AnyACHDirectDebitConfiguration, AnyPersonalInformationConfiguration, CheckoutComponentConfiguration {
+
+        package let componentType: CheckoutComponentType = .payment(.achDirectDebit)
 
         /// Describes the component's UI style.
         public var style: FormComponentStyle
@@ -358,7 +360,7 @@ extension ACHDirectDebitComponent {
         package var theme: AdyenTheme = .init()
 
         /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
-        internal let showsSubmitButton: Bool
+        package var showsSubmitButton: Bool
 
         /// The shopper's information to be prefilled.
         public var shopperInformation: PrefilledShopperInformation?
