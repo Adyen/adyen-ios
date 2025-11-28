@@ -75,100 +75,43 @@ class ACHDirectDebitComponentTests: XCTestCase {
     }
     
     func testUIConfiguration() {
-        var achComponentStyle = FormComponentStyle()
-        
-        /// Footer
-        achComponentStyle.mainButtonItem.button.title.color = .white
-        achComponentStyle.mainButtonItem.button.title.backgroundColor = .red
-        achComponentStyle.mainButtonItem.button.title.textAlignment = .center
-        achComponentStyle.mainButtonItem.button.title.font = .systemFont(ofSize: 22)
-        achComponentStyle.mainButtonItem.button.backgroundColor = .red
-        achComponentStyle.mainButtonItem.backgroundColor = .brown
-        
-        /// background color
-        achComponentStyle.backgroundColor = .red
-        
-        /// Text field
-        achComponentStyle.textField.text.color = .red
-        achComponentStyle.textField.text.font = .systemFont(ofSize: 13)
-        achComponentStyle.textField.text.textAlignment = .right
-        
-        achComponentStyle.textField.title.backgroundColor = .blue
-        achComponentStyle.textField.title.color = .yellow
-        achComponentStyle.textField.title.font = .systemFont(ofSize: 20)
-        achComponentStyle.textField.title.textAlignment = .center
-        achComponentStyle.textField.backgroundColor = .red
-        
+        // Given - use TestTheme helper for distinctive, verifiable styling
+        var configuration = ACHDirectDebitComponent.Configuration(billingAddressCountryCodes: [
+            "US", "UK"
+        ])
+        configuration.theme = TestTheme.distinctive()
+
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: .init(
-                style: achComponentStyle,
-                billingAddressCountryCodes: ["US", "UK"]
-            ),
+            configuration: configuration,
             publicKeyProvider: PublicKeyProviderMock()
         )
-        
+
         setupRootViewController(sut.viewController)
         wait(for: .milliseconds(300))
-        
-        let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem")
-        let nameItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem.titleLabel")
-        let nameItemViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.holderNameItem.textField")
-        
-        let accountNumberItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.bankAccountNumberItem")
-        let accountNumberItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.bankAccountNumberItem.titleLabel")
-        let accountNumberItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.bankAccountNumberItem.textField")
-        
-        let routingNumberItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.bankRoutingNumberItem")
-        let routingNumberItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.bankRoutingNumberItem.titleLabel")
-        let routingNumberItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.bankRoutingNumberItem.textField")
-        
-        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.payButtonItem.button")
-        let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.ACHDirectDebitComponent.payButtonItem.button.titleLabel")
-        
-        XCTAssertNotNil(sut.viewController.view.findView(by: "AdyenComponents.ACHDirectDebitComponent.billingAddressItem"))
-        // TODO: Fix nameItemView, accountNumberItemView, routingNumberItemView and payButtonItemViewButton UI asserts
-        /// holder name
-//        XCTAssertEqual(nameItemView?.backgroundColor, .red)
-//        XCTAssertEqual(nameItemViewTitleLabel?.backgroundColor, .blue)
-//        XCTAssertEqual(nameItemViewTitleLabel?.textAlignment, .center)
-//        XCTAssertEqual(nameItemViewTitleLabel?.font, .systemFont(ofSize: 20))
-//        XCTAssertEqual(nameItemViewTextField?.backgroundColor, .red)
-//        XCTAssertEqual(nameItemViewTextField?.textAlignment, .right)
-//        XCTAssertEqual(nameItemViewTextField?.textColor, .red)
-//        XCTAssertEqual(nameItemViewTextField?.font, .systemFont(ofSize: 13))
-        
-        /// account number
-//        XCTAssertEqual(accountNumberItemView?.backgroundColor, .red)
-//        XCTAssertEqual(accountNumberItemTitleLabel?.backgroundColor, .blue)
-//        XCTAssertEqual(accountNumberItemTitleLabel?.textAlignment, .center)
-//        XCTAssertEqual(accountNumberItemTitleLabel?.font, .systemFont(ofSize: 20))
-//        XCTAssertEqual(accountNumberItemTextField?.backgroundColor, .red)
-//        XCTAssertEqual(accountNumberItemTextField?.textAlignment, .right)
-//        XCTAssertEqual(accountNumberItemTextField?.textColor, .red)
-//        XCTAssertEqual(accountNumberItemTextField?.font, .systemFont(ofSize: 13))
-        
-        /// routing number
-//        XCTAssertEqual(routingNumberItemView?.backgroundColor, .red)
-//        XCTAssertEqual(routingNumberItemTitleLabel?.backgroundColor, .blue)
-//        XCTAssertEqual(routingNumberItemTitleLabel?.textAlignment, .center)
-//        XCTAssertEqual(routingNumberItemTitleLabel?.font, .systemFont(ofSize: 20))
-//        XCTAssertEqual(routingNumberItemTextField?.backgroundColor, .red)
-//        XCTAssertEqual(routingNumberItemTextField?.textAlignment, .right)
-//        XCTAssertEqual(routingNumberItemTextField?.textColor, .red)
-//        XCTAssertEqual(routingNumberItemTextField?.font, .systemFont(ofSize: 13))
-        
-        /// Test footer
-        // XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
-        
-//        XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
-//        XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
-//        XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
-//        XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
+
+        // MARK: - Assert text fields use theme styling
+
+        let prefix = "AdyenComponents.ACHDirectDebitComponent"
+        sut.viewController.assertTextFieldsUseTheme(
+            [
+                "\(prefix).holderNameItem",
+                "\(prefix).bankAccountNumberItem",
+                "\(prefix).bankRoutingNumberItem"
+            ],
+            style: TestTheme.expectedTextFieldStyle
+        )
+
+        // MARK: - Assert pay button uses theme styling
+
+        sut.viewController.assertButtonUsesTheme(
+            "\(prefix).payButtonItem",
+            style: TestTheme.expectedButtonStyle
+        )
     }
-    
+
     func testPrefillInfo() throws {
         // Given
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
