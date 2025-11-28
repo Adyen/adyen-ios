@@ -827,6 +827,9 @@
 		C9DA53E32E97F71C00D83C94 /* QRCodeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */; };
 		C9E4DF672ED9A9B5000B6CBE /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */; };
 		C9E4DF682ED9A9B5000B6CBE /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */; };
+		C9E9144D2ED9D37500584184 /* AdyenSwiftUI.h in Headers */ = {isa = PBXBuildFile; fileRef = C9E9144A2ED9D37500584184 /* AdyenSwiftUI.h */; };
+		C9E9144E2ED9D37500584184 /* FullScreenViewControllerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E914482ED9D37500584184 /* FullScreenViewControllerPresenter.swift */; };
+		C9E9144F2ED9D37500584184 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C9E9144B2ED9D37500584184 /* Info.plist */; };
 		C9EEEFEC2D5516B300B7AFFC /* ExpirationDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EEEFEA2D5516B300B7AFFC /* ExpirationDateFormatter.swift */; };
 		C9F468E227465FCF00500FF5 /* BACSDirectDebitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F468E127465FCF00500FF5 /* BACSDirectDebitData.swift */; };
 		C9F9905D2DC2566C00D2BFB0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C9F9905C2DC2566C00D2BFB0 /* README.md */; };
@@ -889,7 +892,6 @@
 		E71C328F2DC3B706003D45F4 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = E71C328E2DC3B706003D45F4 /* Localizable.xcstrings */; };
 		E71C32922DC50E15003D45F4 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = E71C32912DC50E15003D45F4 /* Localizable.xcstrings */; };
 		E71C32932DC50E15003D45F4 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = E71C32912DC50E15003D45F4 /* Localizable.xcstrings */; };
-		E71D82FB260D0B0500A4F15B /* FullScreenViewControllerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95B6DAA25274A3D002C9062 /* FullScreenViewControllerPresenter.swift */; };
 		E71E8F3E257921D10054B03D /* StoredBLIKPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */; };
 		E72375D327AAB90D0020DCF9 /* AdyenActions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9175F8C2594986900D653BE /* AdyenActions.framework */; };
 		E72375D827AABF400020DCF9 /* AdyenWeChatPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; };
@@ -1117,7 +1119,6 @@
 		F957AA722552DBC80099AD73 /* AnyRedirectComponentMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA712552DBC80099AD73 /* AnyRedirectComponentMock.swift */; };
 		F957AAA62552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AAA52552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift */; };
 		F957AAAE2552FDD70099AD73 /* AnyADYServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AAAD2552FDD70099AD73 /* AnyADYServiceMock.swift */; };
-		F95899CA25FA524100E4113F /* AdyenSwiftUI.h in Headers */ = {isa = PBXBuildFile; fileRef = F95899C825FA524100E4113F /* AdyenSwiftUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F95899D825FA526A00E4113F /* AdyenSwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F95899C625FA524100E4113F /* AdyenSwiftUI.framework */; };
 		F95899D925FA526A00E4113F /* AdyenSwiftUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F95899C625FA524100E4113F /* AdyenSwiftUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F95A789325C41BB20032CF7E /* NSTextAlignmentHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F95A789225C41BB20032CF7E /* NSTextAlignmentHelpers.swift */; };
@@ -2379,6 +2380,9 @@
 		C9DCCD112E3CE5B500B88C52 /* TestPresentingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPresentingView.swift; sourceTree = "<group>"; };
 		C9DCCD132E3CE83C00B88C52 /* FullScreenViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewControllerTests.swift; sourceTree = "<group>"; };
 		C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoMockable.generated.swift; sourceTree = "<group>"; };
+		C9E914482ED9D37500584184 /* FullScreenViewControllerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewControllerPresenter.swift; sourceTree = "<group>"; };
+		C9E9144A2ED9D37500584184 /* AdyenSwiftUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenSwiftUI.h; sourceTree = "<group>"; };
+		C9E9144B2ED9D37500584184 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9EEEFEA2D5516B300B7AFFC /* ExpirationDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationDateFormatter.swift; sourceTree = "<group>"; };
 		C9F468E127465FCF00500FF5 /* BACSDirectDebitData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitData.swift; sourceTree = "<group>"; };
 		C9F9905C2DC2566C00D2BFB0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -2735,8 +2739,6 @@
 		F957AAA52552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2CompactActionHandlerTests.swift; sourceTree = "<group>"; };
 		F957AAAD2552FDD70099AD73 /* AnyADYServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyADYServiceMock.swift; sourceTree = "<group>"; };
 		F95899C625FA524100E4113F /* AdyenSwiftUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenSwiftUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F95899C825FA524100E4113F /* AdyenSwiftUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenSwiftUI.h; sourceTree = "<group>"; };
-		F95899C925FA524100E4113F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F9589D022601EE7800E4113F /* FormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItemInjector.swift; sourceTree = "<group>"; };
 		F9589D0E2601EF8100E4113F /* NameFormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameFormItemInjector.swift; sourceTree = "<group>"; };
 		F9589D262601F19E00E4113F /* EmailFormItemInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailFormItemInjector.swift; sourceTree = "<group>"; };
@@ -2756,7 +2758,6 @@
 		F95B6DA025274551002C9062 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		F95B6DA325274551002C9062 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F95B6DA525274551002C9062 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F95B6DAA25274A3D002C9062 /* FullScreenViewControllerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewControllerPresenter.swift; sourceTree = "<group>"; };
 		F95B6DAD25274D9C002C9062 /* ComponentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentsViewModel.swift; sourceTree = "<group>"; };
 		F95D76062565447B0088A353 /* AdyenTests.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = AdyenTests.strings; sourceTree = "<group>"; };
 		F95D76142565449A0088A353 /* AdyenTestsCustomSeparator.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = AdyenTestsCustomSeparator.strings; sourceTree = "<group>"; };
@@ -4747,6 +4748,24 @@
 			path = GeneratedMocks;
 			sourceTree = "<group>";
 		};
+		C9E914492ED9D37500584184 /* Present View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C9E914482ED9D37500584184 /* FullScreenViewControllerPresenter.swift */,
+			);
+			path = "Present View Controller";
+			sourceTree = "<group>";
+		};
+		C9E9144C2ED9D37500584184 /* AdyenSwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				C9E914492ED9D37500584184 /* Present View Controller */,
+				C9E9144A2ED9D37500584184 /* AdyenSwiftUI.h */,
+				C9E9144B2ED9D37500584184 /* Info.plist */,
+			);
+			path = AdyenSwiftUI;
+			sourceTree = "<group>";
+		};
 		C9EEEFEB2D5516B300B7AFFC /* Formatters */ = {
 			isa = PBXGroup;
 			children = (
@@ -5057,7 +5076,7 @@
 				E27B8EAD22B79CD20075BB6A /* README.md */,
 				E2C0E03522097917008616F6 /* Adyen */,
 				000A7B082E27CDEC005584F2 /* AdyenUI */,
-				F95899C725FA524100E4113F /* AdyenSwiftUI */,
+				C9E9144C2ED9D37500584184 /* AdyenSwiftUI */,
 				F92326AD25A3669E002C5BC4 /* AdyenEncryption */,
 				F9175F8D2594986900D653BE /* AdyenActions */,
 				E2C0E060220982AE008616F6 /* AdyenCard */,
@@ -6351,16 +6370,6 @@
 			path = "3DS2 Fingerprint Submitter";
 			sourceTree = "<group>";
 		};
-		F95899C725FA524100E4113F /* AdyenSwiftUI */ = {
-			isa = PBXGroup;
-			children = (
-				F95B6DA925274A30002C9062 /* Present View Controller */,
-				F95899C825FA524100E4113F /* AdyenSwiftUI.h */,
-				F95899C925FA524100E4113F /* Info.plist */,
-			);
-			path = AdyenSwiftUI;
-			sourceTree = "<group>";
-		};
 		F95B6D962527454E002C9062 /* SwiftUI */ = {
 			isa = PBXGroup;
 			children = (
@@ -6382,14 +6391,6 @@
 				F95B6DA025274551002C9062 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		F95B6DA925274A30002C9062 /* Present View Controller */ = {
-			isa = PBXGroup;
-			children = (
-				F95B6DAA25274A3D002C9062 /* FullScreenViewControllerPresenter.swift */,
-			);
-			path = "Present View Controller";
 			sourceTree = "<group>";
 		};
 		F960FB06237181DC00AEF74B /* Apple Pay */ = {
@@ -7041,7 +7042,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F95899CA25FA524100E4113F /* AdyenSwiftUI.h in Headers */,
+				C9E9144D2ED9D37500584184 /* AdyenSwiftUI.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7874,6 +7875,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9E9144F2ED9D37500584184 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9191,7 +9193,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E71D82FB260D0B0500A4F15B /* FullScreenViewControllerPresenter.swift in Sources */,
+				C9E9144E2ED9D37500584184 /* FullScreenViewControllerPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
