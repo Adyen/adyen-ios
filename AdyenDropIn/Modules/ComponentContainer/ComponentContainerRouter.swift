@@ -12,7 +12,6 @@ internal protocol ComponentContainerRouterListener: AnyObject {
     func didDismissComponentContainer(completion: (() -> Void)?)
 }
 
-// sourcery:AutoMockable
 internal protocol ComponentContainerRouting: AnyObject {
     func present(component: any PresentableComponent)
     func dismiss(completion: (() -> Void)?)

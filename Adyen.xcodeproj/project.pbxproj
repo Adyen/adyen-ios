@@ -736,7 +736,6 @@
 		C9037F142D5A19BD003A5154 /* ROIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F132D5A19BD003A5154 /* ROIView.swift */; };
 		C9037F162D5A1AC0003A5154 /* CardScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F152D5A1AC0003A5154 /* CardScannerViewController.swift */; };
 		C90494562E8FF2CE007C4EB5 /* LoadControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90494552E8FF2CE007C4EB5 /* LoadControllable.swift */; };
-		C90898602ED8CE3200D7AD01 /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C908985E2ED8CE3200D7AD01 /* AutoMockable.generated.swift */; };
 		C9126051275A3A2800C03DC4 /* BACSItemsFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9126050275A3A2800C03DC4 /* BACSItemsFactoryTests.swift */; };
 		C9174FF32EB3A89800AA1609 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9174FF22EB3A89800AA1609 /* Router.swift */; };
 		C9174FF92EB3B20B00AA1609 /* ActionWrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9174FF72EB3B20B00AA1609 /* ActionWrapperViewController.swift */; };
@@ -820,6 +819,8 @@
 		C9DA53DD2E97F65900D83C94 /* QRCodeViewModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53DC2E97F65900D83C94 /* QRCodeViewModelMock.swift */; };
 		C9DA53E12E97F6DE00D83C94 /* QRCodeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53DF2E97F6DE00D83C94 /* QRCodeViewControllerTests.swift */; };
 		C9DA53E32E97F71C00D83C94 /* QRCodeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */; };
+		C9E4DF672ED9A9B5000B6CBE /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */; };
+		C9E4DF682ED9A9B5000B6CBE /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */; };
 		C9EEEFEC2D5516B300B7AFFC /* ExpirationDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EEEFEA2D5516B300B7AFFC /* ExpirationDateFormatter.swift */; };
 		C9F468E227465FCF00500FF5 /* BACSDirectDebitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F468E127465FCF00500FF5 /* BACSDirectDebitData.swift */; };
 		C9F9905D2DC2566C00D2BFB0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C9F9905C2DC2566C00D2BFB0 /* README.md */; };
@@ -2276,7 +2277,6 @@
 		C9037F132D5A19BD003A5154 /* ROIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ROIView.swift; sourceTree = "<group>"; };
 		C9037F152D5A1AC0003A5154 /* CardScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerViewController.swift; sourceTree = "<group>"; };
 		C90494552E8FF2CE007C4EB5 /* LoadControllable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadControllable.swift; sourceTree = "<group>"; };
-		C908985E2ED8CE3200D7AD01 /* AutoMockable.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoMockable.generated.swift; sourceTree = "<group>"; };
 		C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormViewController+ViewProtocol.swift"; sourceTree = "<group>"; };
 		C90D26B1275900B9001A488F /* BACSInputFormViewProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewProtocolMock.swift; sourceTree = "<group>"; };
 		C90D26B32759048C001A488F /* BACSInputPresenterProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputPresenterProtocolMock.swift; sourceTree = "<group>"; };
@@ -2370,6 +2370,7 @@
 		C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewModelTests.swift; sourceTree = "<group>"; };
 		C9DCCD112E3CE5B500B88C52 /* TestPresentingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPresentingView.swift; sourceTree = "<group>"; };
 		C9DCCD132E3CE83C00B88C52 /* FullScreenViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewControllerTests.swift; sourceTree = "<group>"; };
+		C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoMockable.generated.swift; sourceTree = "<group>"; };
 		C9EEEFEA2D5516B300B7AFFC /* ExpirationDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationDateFormatter.swift; sourceTree = "<group>"; };
 		C9F468E127465FCF00500FF5 /* BACSDirectDebitData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitData.swift; sourceTree = "<group>"; };
 		C9F9905C2DC2566C00D2BFB0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -3776,6 +3777,7 @@
 				B62D48AD2BBE8D79001EF01A /* UnitTests */,
 				E7E58BF825ADDFA000E869F9 /* IntegrationTests */,
 				007D790A2812C81400382D31 /* SnapshotTests */,
+				C9E4DF662ED9A9B5000B6CBE /* GeneratedMocks */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -4110,7 +4112,6 @@
 		B62D48AD2BBE8D79001EF01A /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
-				C908985F2ED8CE3200D7AD01 /* Generated */,
 				E757F02525D2ED4C007C813D /* APIClientMock.swift */,
 				A0DDB1A72E576ADB001B409A /* AdyenSwiftUI */,
 				A03056DD2E005BD000ED7014 /* AdyenCheckout */,
@@ -4280,14 +4281,6 @@
 				C9174FF22EB3A89800AA1609 /* Router.swift */,
 			);
 			path = Protocols;
-			sourceTree = "<group>";
-		};
-		C908985F2ED8CE3200D7AD01 /* Generated */ = {
-			isa = PBXGroup;
-			children = (
-				C908985E2ED8CE3200D7AD01 /* AutoMockable.generated.swift */,
-			);
-			path = Generated;
 			sourceTree = "<group>";
 		};
 		C90D26AF2757C270001A488F /* BACS Direct Debit */ = {
@@ -4734,6 +4727,14 @@
 				C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */,
 			);
 			path = QRCode;
+			sourceTree = "<group>";
+		};
+		C9E4DF662ED9A9B5000B6CBE /* GeneratedMocks */ = {
+			isa = PBXGroup;
+			children = (
+				C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */,
+			);
+			path = GeneratedMocks;
 			sourceTree = "<group>";
 		};
 		C9EEEFEB2D5516B300B7AFFC /* Formatters */ = {
@@ -8300,7 +8301,7 @@
 				B6D808452BCD2B0600F3F5EB /* RSAOAEP256AlgorithmTests.swift in Sources */,
 				B6D8082F2BCD1F8900F3F5EB /* KeyboardObserverTests.swift in Sources */,
 				B6D8081F2BCD151F00F3F5EB /* FormatterMock.swift in Sources */,
-				C90898602ED8CE3200D7AD01 /* AutoMockable.generated.swift in Sources */,
+				C9E4DF672ED9A9B5000B6CBE /* AutoMockable.generated.swift in Sources */,
 				B6D808322BCD1F8900F3F5EB /* BalanceCheckerTests.swift in Sources */,
 				B6D808192BCD151F00F3F5EB /* PaymentMethodMock.swift in Sources */,
 				A0E1B6452EAB9F580070B915 /* CheckoutConfigurationTests.swift in Sources */,
@@ -8663,6 +8664,7 @@
 				81825CC42AC59C6C00F91912 /* XCTestCase+Wait+UIKit.swift in Sources */,
 				E9E3DAC2221ECE1000697074 /* CardSecurityCodeFormatterTests.swift in Sources */,
 				F9A6C453265640E000D8CD3E /* InstantPaymentComponentTests.swift in Sources */,
+				C9E4DF682ED9A9B5000B6CBE /* AutoMockable.generated.swift in Sources */,
 				C9126051275A3A2800C03DC4 /* BACSItemsFactoryTests.swift in Sources */,
 				F9D5751423757013009C18B5 /* CardPublicKeyValidatorTests.swift in Sources */,
 				A00167712BD125A30099A6AE /* CardHolderNameValidatorTests.swift in Sources */,
