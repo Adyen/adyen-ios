@@ -68,8 +68,8 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
             scrollEnabled: configuration.showsSubmitButton,
-            style: configuration.style,
-            localizationParameters: configuration.localizationParameters
+            localizationParameters: configuration.localizationParameters,
+            theme: configuration.theme
         )
         formViewController.delegate = self
 
