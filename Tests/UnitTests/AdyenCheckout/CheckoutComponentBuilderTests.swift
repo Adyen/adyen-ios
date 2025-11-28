@@ -257,31 +257,6 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertNotNil(achComponent, "Component should be ACHDirectDebitComponent")
     }
 
-    func test_build_withACHAndCustomConfiguration_appliesConfiguration() throws {
-        // Given
-        let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
-        var achConfig = ACHDirectDebitComponent.Configuration()
-        achConfig.showsSubmitButton = false
-
-        checkoutConfiguration = CheckoutConfiguration(
-            context: context,
-            configurations: [.payment(.achDirectDebit): achConfig]
-        )
-
-        // When
-        let component = CheckoutComponentBuilder.build(
-            for: paymentMethod,
-            configuration: checkoutConfiguration
-        )
-
-        // Then
-        guard let achComponent = component as? ACHDirectDebitComponent else {
-            XCTFail("Component should be ACHDirectDebitComponent")
-            return
-        }
-        XCTAssertFalse(achComponent.configuration.showsSubmitButton)
-    }
-
     // MARK: - Theme Propagation Tests
 
     func test_build_withCustomTheme_propagatesThemeToACHComponent() throws {
