@@ -397,7 +397,7 @@ private extension ComponentManager {
     }
 
     func createACHDirectDebitComponent(_ paymentMethod: ACHDirectDebitPaymentMethod) -> ACHDirectDebitComponent {
-        let config = ACHDirectDebitComponent.Configuration(
+        let config = ACHDirectDebitComponentConfiguration(
             style: configuration.style.formComponent,
             shopperInformation: configuration.shopperInformation,
             localizationParameters: configuration.localizationParameters,

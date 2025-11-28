@@ -11,7 +11,7 @@
 /// This factory creates `ACHDirectDebitComponent` instances configured with the
 /// provided ACH payment method and component configuration.
 package struct ACHDirectDebitComponentFactory: PaymentComponentFactory {
-    package typealias Configuration = ACHDirectDebitComponent.Configuration
+    package typealias Configuration = ACHDirectDebitComponentConfiguration
     package typealias Method = ACHDirectDebitPaymentMethod
     package typealias Component = ACHDirectDebitComponent
 
@@ -27,7 +27,7 @@ package struct ACHDirectDebitComponentFactory: PaymentComponentFactory {
     package func create(
         with paymentMethod: ACHDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: ACHDirectDebitComponent.Configuration
+        configuration: ACHDirectDebitComponentConfiguration
     ) -> ACHDirectDebitComponent {
         ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
@@ -36,7 +36,7 @@ package struct ACHDirectDebitComponentFactory: PaymentComponentFactory {
         )
     }
 
-    package func defaultConfiguration() -> ACHDirectDebitComponent.Configuration {
-        ACHDirectDebitComponent.Configuration()
+    package func defaultConfiguration() -> ACHDirectDebitComponentConfiguration {
+        ACHDirectDebitComponentConfiguration()
     }
 }

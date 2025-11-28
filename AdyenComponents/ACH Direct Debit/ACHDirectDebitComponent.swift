@@ -47,7 +47,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     }
     
     /// Component configuration
-    package var configuration: Configuration
+    package var configuration: ACHDirectDebitComponentConfiguration
 
     package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
@@ -71,11 +71,11 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     /// - Parameters:
     ///   - paymentMethod: The ACH Direct Debit payment method.
     ///   - context: The context object for this component.
-    ///   - configuration: Configuration for the component.
+    ///   - configuration: ACHDirectDebitComponentConfiguration for the component.
     package convenience init(
         paymentMethod: ACHDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: ACHDirectDebitComponentConfiguration = .init()
     ) {
         self.init(
             paymentMethod: paymentMethod,
@@ -88,7 +88,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     internal init(
         paymentMethod: ACHDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init(),
+        configuration: ACHDirectDebitComponentConfiguration = .init(),
         publicKeyProvider: AnyPublicKeyProvider
     ) {
         self.configuration = configuration
@@ -330,82 +330,6 @@ extension ACHDirectDebitComponent: ViewControllerDelegate {
         sendDidLoadEvent()
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
-    }
-}
-
-/// Describes any configuration for the ACH Direct Debit component.
-public protocol AnyACHDirectDebitConfiguration {
-    
-    /// Indicates if the field for storing the card payment method should be displayed in the form.
-    var showsStorePaymentMethodField: Bool { get }
-    
-    /// Determines whether the billing address should be displayed or not.
-    var showsBillingAddress: Bool { get }
-    
-    /// List of ISO country codes that is supported for the billing address.
-    var billingAddressCountryCodes: [String] { get }
-}
-
-extension ACHDirectDebitComponent {
-    
-    /// Configuration for the ACH Direct Debit Component
-    public struct Configuration: AnyACHDirectDebitConfiguration, AnyPersonalInformationConfiguration, CheckoutComponentConfiguration {
-
-        package let componentType: CheckoutComponentType = .payment(.achDirectDebit)
-
-        /// Describes the component's UI style.
-        public var style: FormComponentStyle
-
-        /// The theming to apply to the component's UI.
-        package var theme: AdyenTheme = .init()
-
-        /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
-        package var showsSubmitButton: Bool
-
-        /// The shopper's information to be prefilled.
-        public var shopperInformation: PrefilledShopperInformation?
-        
-        public var localizationParameters: LocalizationParameters?
-        
-        /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to `true`.
-        public var showsStorePaymentMethodField: Bool
-        
-        /// Determines whether the billing address should be displayed or not.
-        /// Defaults to `true`.
-        public var showsBillingAddress: Bool
-        
-        /// List of ISO country codes that is supported for the billing address.
-        /// Defaults to ["US", "PR"].
-        public var billingAddressCountryCodes: [String]
-
-        /// Initializes the configuration for ACH Direct Debit Component.
-        /// - Parameters:
-        ///   - style: The UI style of the component.
-        ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
-        ///   Defaults to`true`.
-        ///   - shopperInformation: The shopper's information to be prefilled.
-        ///   - localizationParameters: Localization parameters.
-        ///   - showsBillingAddress: Determines whether the billing address should be displayed or not.
-        ///   Defaults to `true`.
-        ///   - billingAddressCountryCodes: ISO country codes that is supported for the billing address.
-        ///   Defaults to ["US", "PR"].
-        public init(
-            style: FormComponentStyle = FormComponentStyle(),
-            showsSubmitButton: Bool = true,
-            shopperInformation: PrefilledShopperInformation? = nil,
-            localizationParameters: LocalizationParameters? = nil,
-            showsStorePaymentMethodField: Bool = true,
-            showsBillingAddress: Bool = true,
-            billingAddressCountryCodes: [String] = ["US", "PR"]
-        ) {
-            self.style = style
-            self.showsSubmitButton = showsSubmitButton
-            self.shopperInformation = shopperInformation
-            self.localizationParameters = localizationParameters
-            self.showsStorePaymentMethodField = showsStorePaymentMethodField
-            self.showsBillingAddress = showsBillingAddress
-            self.billingAddressCountryCodes = billingAddressCountryCodes
-        }
     }
 }
 

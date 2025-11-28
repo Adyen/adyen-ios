@@ -54,7 +54,7 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
     func test_create_withValidPaymentMethod_returnsComponent() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
-        let configuration = ACHDirectDebitComponent.Configuration()
+        let configuration = ACHDirectDebitComponentConfiguration()
 
         // When
         let component = sut.create(
@@ -71,7 +71,7 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
     func test_create_withCustomConfiguration_usesProvidedConfiguration() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
-        var configuration = ACHDirectDebitComponent.Configuration()
+        var configuration = ACHDirectDebitComponentConfiguration()
         configuration.showsSubmitButton = false
 
         // When
@@ -92,7 +92,7 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
     func test_create_preservesPaymentMethodReference() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
-        let configuration = ACHDirectDebitComponent.Configuration()
+        let configuration = ACHDirectDebitComponentConfiguration()
 
         // When
         let component = sut.create(
@@ -115,7 +115,7 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
             amount: customAmount
         )
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
-        let configuration = ACHDirectDebitComponent.Configuration()
+        let configuration = ACHDirectDebitComponentConfiguration()
 
         // When
         let component = sut.create(
@@ -134,7 +134,7 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
     func test_create_withCustomTheme_propagatesThemeToComponent() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
-        var configuration = ACHDirectDebitComponent.Configuration()
+        var configuration = ACHDirectDebitComponentConfiguration()
 
         let customTheme = AdyenTheme()
             .colors(AdyenColors(primary: .systemPink))
@@ -186,7 +186,7 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         // Given
         let paymentMethod1 = try XCTUnwrap(createACHPaymentMethod())
         let paymentMethod2 = try XCTUnwrap(createACHPaymentMethod())
-        let configuration = ACHDirectDebitComponent.Configuration()
+        let configuration = ACHDirectDebitComponentConfiguration()
 
         // When
         let component1 = sut.create(
