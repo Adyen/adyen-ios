@@ -16,7 +16,6 @@ internal protocol ActionPresenter: AnyObject {
 }
 
 internal protocol DropInFlowManaging {
-//    func submit(_ data: PaymentComponentData, from component: PaymentComponent)
     func submit(
         _ data: PaymentComponentData,
         from component: PaymentComponent,

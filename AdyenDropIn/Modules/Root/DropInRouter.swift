@@ -10,7 +10,7 @@ import Foundation
 import SafariServices
 import UIKit
 
-internal protocol DropInRouting: Router, AnyObject { /* Empty implementation */ }
+internal protocol DropInRouting: Router, AnyObject { }
 
 internal class DropInRouter: DropInRouting {
     
