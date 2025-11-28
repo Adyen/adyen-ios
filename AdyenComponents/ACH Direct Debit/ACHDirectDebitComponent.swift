@@ -14,7 +14,7 @@
 import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.
-public final class ACHDirectDebitComponent: PaymentComponent,
+package final class ACHDirectDebitComponent: PaymentComponent,
     PaymentAware,
     PresentableComponent,
     LoadingComponent {
@@ -33,11 +33,11 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     @_spi(AdyenInternal)
     public let context: AdyenContext
     
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         achDirectDebitPaymentMethod
     }
 
-    public weak var delegate: PaymentComponentDelegate? {
+    package weak var delegate: PaymentComponentDelegate? {
         didSet {
             if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
                storePaymentMethodAware.isSession {
@@ -47,14 +47,14 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     }
     
     /// Component configuration
-    public var configuration: Configuration
+    package var configuration: Configuration
 
-    public lazy var viewController: UIViewController = SecuredViewController(
+    package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
     )
 
-    public let requiresModalPresentation: Bool = true
+    package let requiresModalPresentation: Bool = true
     
     @_spi(AdyenInternal)
     public let publicKeyProvider: AnyPublicKeyProvider
@@ -72,7 +72,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     ///   - paymentMethod: The ACH Direct Debit payment method.
     ///   - context: The context object for this component.
     ///   - configuration: Configuration for the component.
-    public convenience init(
+    package convenience init(
         paymentMethod: ACHDirectDebitPaymentMethod,
         context: AdyenContext,
         configuration: Configuration = .init()
@@ -98,7 +98,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
         self.publicKeyProvider = publicKeyProvider
     }
     
-    public func stopLoading() {
+    package func stopLoading() {
         payButton.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
@@ -325,7 +325,7 @@ extension ACHDirectDebitComponent: TrackableComponent {}
 @_spi(AdyenInternal)
 extension ACHDirectDebitComponent: ViewControllerDelegate {
 
-    public func viewDidLoad(viewController: UIViewController) {
+    package func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
         sendDidLoadEvent()
         // just cache the public key value
@@ -412,11 +412,11 @@ extension ACHDirectDebitComponent {
 @_spi(AdyenInternal)
 extension ACHDirectDebitComponent: ViewControllerPresenter {
     
-    public func presentViewController(_ viewController: UIViewController, animated: Bool) {
+    package func presentViewController(_ viewController: UIViewController, animated: Bool) {
         self.viewController.presentViewController(viewController, animated: animated)
     }
     
-    public func dismissViewController(animated: Bool) {
+    package func dismissViewController(animated: Bool) {
         self.viewController.dismissViewController(animated: animated)
     }
 }
@@ -428,11 +428,11 @@ extension ACHDirectDebitComponent: PublicKeyConsumer {}
 
 extension ACHDirectDebitComponent: SubmittableComponent {
 
-    public func submit() {
+    package func submit() {
         didSelectSubmitButton()
     }
 
-    public func validate() -> Bool {
+    package func validate() -> Bool {
         formViewController.validate()
     }
 }
