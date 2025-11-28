@@ -86,86 +86,39 @@ class SEPADirectDebitComponentTests: XCTestCase {
     }
     
     func testUIConfiguration() {
-        var sepaComponentStyle = FormComponentStyle()
-        
-        /// Footer
-        sepaComponentStyle.mainButtonItem.button.title.color = .white
-        sepaComponentStyle.mainButtonItem.button.title.backgroundColor = .red
-        sepaComponentStyle.mainButtonItem.button.title.textAlignment = .center
-        sepaComponentStyle.mainButtonItem.button.title.font = .systemFont(ofSize: 22)
-        sepaComponentStyle.mainButtonItem.button.backgroundColor = .red
-        sepaComponentStyle.mainButtonItem.backgroundColor = .brown
-        
-        /// background color
-        sepaComponentStyle.backgroundColor = .red
-        
-        /// Text field
-        sepaComponentStyle.textField.text.color = .red
-        sepaComponentStyle.textField.text.font = .systemFont(ofSize: 13)
-        sepaComponentStyle.textField.text.textAlignment = .right
-        
-        sepaComponentStyle.textField.title.backgroundColor = .blue
-        sepaComponentStyle.textField.title.color = .yellow
-        sepaComponentStyle.textField.title.font = .systemFont(ofSize: 20)
-        sepaComponentStyle.textField.title.textAlignment = .center
-        sepaComponentStyle.textField.backgroundColor = .red
-        
+        // Given - use TestTheme helper for distinctive, verifiable styling
+        var configuration = SEPADirectDebitComponent.Configuration()
+        configuration.theme = TestTheme.distinctive()
+
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
-        let configuration = SEPADirectDebitComponent.Configuration(style: sepaComponentStyle)
         let sut = SEPADirectDebitComponent(
             paymentMethod: sepaPaymentMethod,
             context: context,
             configuration: configuration
         )
-        
-        setupRootViewController(sut.viewController)
-        
-        wait(for: .milliseconds(300))
-        
-        let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
-        let nameItemViewTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.titleLabel")
-        let nameItemViewTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem.textField")
-        
-        let ibanItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem")
-        let ibanItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem.titleLabel")
-        let ibanItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem.textField")
-        
-        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button")
-        let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button.titleLabel")
-        
-        // TODO: Fix nameItemView, ibanItemView, ibanItemTitleLabel, ibanItemTextField, payButtonItemViewButton and payButtonItemViewButtonTitle UI asserts
 
-        /// Test card number field
-//        XCTAssertEqual(nameItemView?.backgroundColor, .red)
-//        XCTAssertEqual(nameItemViewTitleLabel?.textColor, sut.viewController.view.tintColor)
-//        XCTAssertEqual(nameItemViewTitleLabel?.backgroundColor, .blue)
-//        XCTAssertEqual(nameItemViewTitleLabel?.textAlignment, .center)
-//        XCTAssertEqual(nameItemViewTitleLabel?.font, .systemFont(ofSize: 20))
-//        XCTAssertEqual(nameItemViewTextField?.backgroundColor, .red)
-//        XCTAssertEqual(nameItemViewTextField?.textAlignment, .right)
-//        XCTAssertEqual(nameItemViewTextField?.textColor, .red)
-//        XCTAssertEqual(nameItemViewTextField?.font, .systemFont(ofSize: 13))
-        
-        /// Test IBAN field
-//        XCTAssertEqual(ibanItemView?.backgroundColor, .red)
-//        XCTAssertEqual(ibanItemTitleLabel?.backgroundColor, .blue)
-//        XCTAssertEqual(ibanItemTitleLabel?.textAlignment, .center)
-//        XCTAssertEqual(ibanItemTitleLabel?.font, .systemFont(ofSize: 20))
-//        XCTAssertEqual(ibanItemTitleLabel?.textColor, .yellow)
-//        XCTAssertEqual(ibanItemTextField?.backgroundColor, .red)
-//        XCTAssertEqual(ibanItemTextField?.textAlignment, .right)
-//        XCTAssertEqual(ibanItemTextField?.textColor, .red)
-//        XCTAssertEqual(ibanItemTextField?.font, .systemFont(ofSize: 13))
-        
-//        /// Test footer
-//        XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
-//        XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
-//        XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
-//        XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
-//        XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
-        
+        setupRootViewController(sut.viewController)
+        wait(for: .milliseconds(300))
+
+        // MARK: - Assert text fields use theme styling
+
+        let prefix = "AdyenComponents.SEPADirectDebitComponent"
+        sut.viewController.assertTextFieldsUseTheme(
+            [
+                "\(prefix).nameItem",
+                "\(prefix).ibanItem"
+            ],
+            style: TestTheme.expectedTextFieldStyle
+        )
+
+        // MARK: - Assert pay button uses theme styling
+
+        sut.viewController.assertButtonUsesTheme(
+            "\(prefix).payButtonItem",
+            style: TestTheme.expectedButtonStyle
+        )
     }
-    
+
     func testBigTitle() {
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod, context: context)
