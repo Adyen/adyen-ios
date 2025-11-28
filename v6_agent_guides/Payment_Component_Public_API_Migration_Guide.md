@@ -26,24 +26,37 @@ CheckoutConfiguration (public API)
 
 ---
 
+## Access Level Strategy
+
+**Components are `package`, Configurations are `public`.**
+
+- **Component classes** → `package` access (created through `CheckoutComponentBuilder`)
+- **Configuration structs** → `public` access (used in `CheckoutConfiguration` by integrators)
+
+---
+
 ## Part 1: Main Codebase Changes
 
-### Step 1: Conform Configuration to `CheckoutComponentConfiguration`
+### Step 1: Create Configuration in Separate File
+
+Create a standalone configuration struct in its own file (e.g., `YourComponentConfiguration.swift`), not nested inside the component class.
+
+### Step 2: Conform Configuration to `CheckoutComponentConfiguration`
 
 Update your component's `Configuration` struct to conform to the protocol:
 
 ```swift
-// Before
-public struct Configuration: AnyXXXConfiguration, AnyPersonalInformationConfiguration {
-    public var style: FormComponentStyle
-    internal let showsSubmitButton: Bool
-    // ...
+// Before (nested in component)
+extension YourComponent {
+    public struct Configuration: AnyXXXConfiguration {
+        public var style: FormComponentStyle
+        internal let showsSubmitButton: Bool
+        // ...
+    }
 }
 
-// After
-public struct Configuration: AnyXXXConfiguration,
-                            AnyPersonalInformationConfiguration,
-                            CheckoutComponentConfiguration {  // Add protocol
+// After (standalone in YourComponentConfiguration.swift)
+public struct YourComponentConfiguration: CheckoutComponentConfiguration {
 
     package let componentType: CheckoutComponentType = .payment(.yourPaymentType)
     package var theme: AdyenTheme = .init()
@@ -60,7 +73,7 @@ public struct Configuration: AnyXXXConfiguration,
 - Add `theme` property (package access)
 - Change `showsSubmitButton` from `internal let` to `package var`
 
-### Step 2: Create Component Factory
+### Step 3: Create Component Factory
 
 Create a factory file following this pattern:
 
@@ -71,7 +84,7 @@ Create a factory file following this pattern:
 
 /// Factory for creating YourComponent instances.
 package struct YourComponentFactory: PaymentComponentFactory {
-    package typealias Configuration = YourComponent.Configuration
+    package typealias Configuration = YourComponentConfiguration
     package typealias Method = YourPaymentMethod
     package typealias Component = YourComponent
 
@@ -80,7 +93,7 @@ package struct YourComponentFactory: PaymentComponentFactory {
     package func create(
         with paymentMethod: YourPaymentMethod,
         context: AdyenContext,
-        configuration: YourComponent.Configuration
+        configuration: YourComponentConfiguration
     ) -> YourComponent {
         YourComponent(
             paymentMethod: paymentMethod,
@@ -89,15 +102,15 @@ package struct YourComponentFactory: PaymentComponentFactory {
         )
     }
 
-    package func defaultConfiguration() -> YourComponent.Configuration {
-        YourComponent.Configuration()
+    package func defaultConfiguration() -> YourComponentConfiguration {
+        YourComponentConfiguration()
     }
 }
 ```
 
-**Reference:** `AdyenComponents/BLIK/BLIKComponentFactory.swift`
+**Reference:** `AdyenComponents/BLIK/BLIKComponentConfiguration.swift`, `AdyenComponents/BLIK/BLIKComponentFactory.swift`
 
-### Step 3: Register in CheckoutComponentBuilder
+### Step 4: Register in CheckoutComponentBuilder
 
 Add your component to `CheckoutComponentBuilder.swift`:
 
@@ -127,7 +140,7 @@ switch paymentMethod {
 }
 ```
 
-### Step 4: Ensure Theme is Passed to FormViewController
+### Step 5: Ensure Theme is Passed to FormViewController
 
 Verify your component passes the theme to `FormViewController`:
 
@@ -189,7 +202,7 @@ final class YourComponentFactoryTests: XCTestCase {
     func test_create_withValidPaymentMethod_returnsComponent() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createPaymentMethod())
-        let configuration = YourComponent.Configuration()
+        let configuration = YourComponentConfiguration()
 
         // When
         let component = sut.create(
@@ -205,7 +218,7 @@ final class YourComponentFactoryTests: XCTestCase {
     func test_create_withCustomConfiguration_usesProvidedConfiguration() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createPaymentMethod())
-        var configuration = YourComponent.Configuration()
+        var configuration = YourComponentConfiguration()
         configuration.showsSubmitButton = false
 
         // When
@@ -258,7 +271,7 @@ func test_build_withYourPaymentMethod_returnsYourComponent() throws {
 func test_build_withYourComponentAndCustomConfiguration_appliesConfiguration() throws {
     // Given
     let paymentMethod = try XCTUnwrap(createYourPaymentMethod())
-    var config = YourComponent.Configuration()
+    var config = YourComponentConfiguration()
     config.showsSubmitButton = false
 
     checkoutConfiguration = CheckoutConfiguration(
@@ -455,6 +468,7 @@ func testUIConfiguration() {
 ## Checklist
 
 ### Main Codebase
+- [ ] Configuration in separate file (standalone struct, not nested)
 - [ ] Configuration conforms to `CheckoutComponentConfiguration`
 - [ ] Has `componentType` property with correct `PaymentMethodType`
 - [ ] Has `theme` property (`package var`)
