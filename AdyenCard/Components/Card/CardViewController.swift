@@ -70,7 +70,7 @@ internal class CardViewController: FormViewController {
             localizationParameters: localizationParameters,
             addressViewModelBuilder: DefaultAddressViewModelBuilder(),
             presenter: self,
-            addressMode: configuration.billingAddress.displayMode,
+            addressMode: configuration.billingAddress.mode,
             scanCardHandler: scanCardHandler
         )
     }()
@@ -169,7 +169,7 @@ internal class CardViewController: FormViewController {
         let address: PostalAddress
         let requiredFields: Set<AddressField>
         
-        switch configuration.billingAddress.displayMode {
+        switch configuration.billingAddress.mode {
         case .lookup, .full:
             guard
                 let billingAddressItem = items.billingAddressPickerItem,
@@ -268,7 +268,7 @@ extension CardViewController {
     
     private func updateBillingAddressOptionalStatus(brands: [CardBrand]) {
         let isOptional = configuration.billingAddress.isOptional(for: brands.map(\.type))
-        switch configuration.billingAddress.displayMode {
+        switch configuration.billingAddress.mode {
         case .lookup, .full:
             items.billingAddressPickerItem?.updateOptionalStatus(isOptional: isOptional)
         case .postalCode:
@@ -366,7 +366,7 @@ extension CardViewController {
     
     private var billingAddressItem: FormItem? {
         
-        switch configuration.billingAddress.displayMode {
+        switch configuration.billingAddress.mode {
         case .lookup:
             return items.billingAddressPickerItem
             

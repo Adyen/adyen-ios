@@ -9,7 +9,7 @@ import AdyenUI
 import Contacts
 
 /// Example implementation of an address lookup provider with debouncing and cancelling previous calls
-public class DemoAddressLookupProvider: AddressLookupProvider {
+public class DemoAddressLookupProvider {
     
     private struct AddressCompletionError: LocalizedError {
         var errorDescription: String? { "Could not complete address" }
@@ -95,6 +95,22 @@ public class DemoAddressLookupProvider: AddressLookupProvider {
         }
         
         completionTask = dispatchWorkItem!
+    }
+    
+    func searchAsync(_ searchTerm: String) async -> [LookupAddressModel] {
+        await withCheckedContinuation { continuation in
+            lookUp(searchTerm: searchTerm) { results in
+                continuation.resume(returning: results)
+            }
+        }
+    }
+
+    func completeAsync(_ address: LookupAddressModel) async throws -> PostalAddress {
+        try await withCheckedThrowingContinuation { continuation in
+            complete(incompleteAddress: address) { result in
+                continuation.resume(with: result)
+            }
+        }
     }
 }
 

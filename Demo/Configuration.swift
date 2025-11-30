@@ -231,31 +231,21 @@ internal struct DemoAppSettings: Codable {
     internal var cardConfiguration: CardComponentConfiguration {
         var storedCardConfig = StoredCardConfiguration()
         storedCardConfig.showsSecurityCodeField = cardSettings.showsStoredCardSecurityCodeField
-
-        let billingAddressConfig = BillingAddressConfiguration()
-            .displayMode(cardComponentAddressFormType(from: cardSettings.addressMode))
         
-        let style = FormComponentStyle()
-
-        return .init(
-            style: style,
-            showsHolderNameField: cardSettings.showsHolderNameField,
-            showsStorePaymentMethodField: cardSettings.showsStorePaymentMethodField,
-            showsSecurityCodeField: cardSettings.showsSecurityCodeField,
-            koreanAuthenticationMode: cardSettings.koreanAuthenticationMode,
-            socialSecurityNumberMode: cardSettings.socialSecurityNumberMode
-        )
-        .stored(storedCardConfig)
-        .installmentConfiguration(installmentConfiguration)
-        .billingAddress(billingAddressConfig)
+        return CardComponentConfiguration()
+            .showsHolderNameField(cardSettings.showsHolderNameField)
+            .showsStorePaymentMethodField(cardSettings.showsStorePaymentMethodField)
+            .showsSecurityCodeField(cardSettings.showsSecurityCodeField)
+            .koreanAuthenticationMode(cardSettings.koreanAuthenticationMode)
+            .socialSecurityNumberMode(cardSettings.socialSecurityNumberMode)
+            .stored(storedCardConfig)
+            .installmentConfiguration(installmentConfiguration)
+            .billingAddressMode(billingAddressMode(from: cardSettings.addressMode))
     }
 
     internal var cardDropInConfiguration: DropInComponent.Card {
         var storedCardConfig = StoredCardConfiguration()
         storedCardConfig.showsSecurityCodeField = cardSettings.showsStoredCardSecurityCodeField
-
-        let billingAddressConfig = BillingAddressConfiguration()
-            .displayMode(cardComponentAddressFormType(from: cardSettings.addressMode))
         
         return .init(
             showsHolderNameField: cardSettings.showsHolderNameField,
@@ -264,10 +254,8 @@ internal struct DemoAppSettings: Codable {
             koreanAuthenticationMode: cardSettings.koreanAuthenticationMode,
             socialSecurityNumberMode: cardSettings.socialSecurityNumberMode,
             storedCardConfiguration: storedCardConfig,
-            installmentConfiguration: installmentConfiguration,
-            billingAddress: billingAddressConfig
+            installmentConfiguration: installmentConfiguration
         )
-
     }
 
     internal var dropInConfiguration: DropInComponent.Configuration {
@@ -315,12 +303,25 @@ internal struct DemoAppSettings: Codable {
 
 private extension DemoAppSettings {
     
-    private func cardComponentAddressFormType(from addressFormType: CardSettings.AddressFormType) -> BillingAddressConfiguration.AddressDisplayMode {
+    private func billingAddressMode(from addressFormType: CardSettings.AddressFormType) -> BillingAddressMode {
         switch addressFormType {
         case .lookup:
-            return .lookup(provider: DemoAddressLookupProvider())
+            let provider = DemoAddressLookupProvider()
+            return .lookup(
+                onLookup: { searchTerm in
+                    await provider.searchAsync(searchTerm)
+                },
+                onAddressSelected: { selected in
+                    try await provider.completeAsync(selected)
+                }
+            )
         case .lookupMapKit:
-            return .lookup(provider: MapkitAddressLookupProvider())
+            let provider = MapkitAddressLookupProvider()
+            return .lookup(
+                onLookup: { searchTerm in
+                    await provider.searchAsync(searchTerm)
+                }
+            )
         case .full:
             return .full
         case .postalCode:

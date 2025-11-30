@@ -9,9 +9,33 @@
     @_spi(AdyenInternal) import AdyenUI
 #endif
 
-// TODO: Add a builder type of chaining to address config
+/// The display mode for the billing address form.
+public enum BillingAddressMode {
+    
+    /// Billing address form is not displayed.
+    case none
+    
+    /// Displays a simplified form with only a postal code field.
+    case postalCode
+
+    /// Displays the full billing address form with all address fields.
+    case full
+    
+    /// Displays an address lookup interface that allows the shopper to search for their address.
+    ///
+    /// - Parameters:
+    ///   - onLookup: Called when the shopper enters a search term. Returns matching addresses.
+    ///   - onAddressSelected: Called when the shopper selects an address from the search results.
+    ///     Use this to fetch the complete address details if the initial result was partial.
+    ///     If not provided, the selected address is used as-is.
+    case lookup(
+        onLookup: (String) async -> [LookupAddressModel],
+        onAddressSelected: ((LookupAddressModel) async throws -> PostalAddress)? = nil
+    )
+}
+
 /// Billing address fields configurations
-public struct BillingAddressConfiguration {
+package struct BillingAddressConfiguration {
     
     /// Indicates the requirement level of a field.
     public enum RequirementPolicy {
@@ -26,39 +50,22 @@ public struct BillingAddressConfiguration {
         case optionalForCardTypes(Set<CardType>)
     }
     
-    /// The mode of the address form of the card component
-    public enum AddressDisplayMode {
-        
-        /// Display a form item that allows address lookup and entering the address on a separate screen
-        case lookup(provider: AddressLookupProvider)
-
-        /// Display full address form
-        case full
-        
-        /// Display simple form with only zip code field
-        case postalCode
-
-        /// Do not display address form
-        case none
-    }
-    
-    // TODO: Should we provide both init and builder functions?
     /// Initializes a new instance of `BillingAddressConfiguration`.
-    public init() {
-        self.displayMode = .none
+    package init() {
+        self.mode = .none
         self.countryCodes = nil
         self.requirementPolicy = .required
     }
     
     /// Indicates the display mode of the billing address form.
-    package var displayMode: AddressDisplayMode
+    package var mode: BillingAddressMode = .none
     
     /// List of ISO country codes that is supported for the billing address.
     /// When nil, all countries are provided.
     package var countryCodes: [String]?
     
     /// Indicates the requirement level of a field.
-    package var requirementPolicy: RequirementPolicy
+    package var requirementPolicy: RequirementPolicy = .required
     
     package func isOptional(for cardTypes: [CardType]) -> Bool {
         switch requirementPolicy {
@@ -70,35 +77,4 @@ public struct BillingAddressConfiguration {
             return !optionalCardTypes.isDisjoint(with: cardTypes)
         }
     }
-}
-
-extension BillingAddressConfiguration {
-    
-    /// Sets the display mode of the address form.
-    /// - Parameter displayMode: The display mode.
-    /// - Returns: A modified copy of the configuration.
-    public func displayMode(_ displayMode: AddressDisplayMode) -> Self {
-        var copy = self
-        copy.displayMode = displayMode
-        return copy
-    }
-    
-    /// Sets the supported country codes for the address configuration.
-    /// - Parameter countryCodes: List of ISO country codes that is supported for the billing address.
-    /// - Returns: A modified copy of the configuration.
-    public func countryCodes(_ countryCodes: [String]) -> Self {
-        var copy = self
-        copy.countryCodes = countryCodes
-        return copy
-    }
-    
-    /// Sets the requirement level of fields where applicable.
-    /// - Parameter requirementPolicy: The requirement level.
-    /// - Returns: A modified copy of the configuration.
-    public func requirementPolicy(_ requirementPolicy: RequirementPolicy) -> Self {
-        var copy = self
-        copy.requirementPolicy = requirementPolicy
-        return copy
-    }
-
 }

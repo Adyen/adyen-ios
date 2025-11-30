@@ -124,7 +124,8 @@ class BLIKComponentTests: XCTestCase {
 
     func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
         // Given
-        let configuration = BLIKComponentConfiguration(showsSubmitButton: false)
+        var configuration = BLIKComponentConfiguration()
+        configuration.showsSubmitButton = false
         let sut = BLIKComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -150,7 +151,8 @@ class BLIKComponentTests: XCTestCase {
 
     func testValidateGivenInvalidInputShouldReturnFormViewControllerValidateResult() throws {
         // Given
-        let configuration = BLIKComponentConfiguration(showsSubmitButton: false)
+        var configuration = BLIKComponentConfiguration()
+        configuration.showsSubmitButton = false
         let sut = BLIKComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -158,8 +160,6 @@ class BLIKComponentTests: XCTestCase {
         )
 
         sut.viewController.loadViewIfNeeded()
-
-        let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
 
         let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
         let expectedResult = formViewController.validate()

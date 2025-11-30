@@ -4,28 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
 import Foundation
 
-/// A wrapper around ``PostalAddress`` that allows attaching an identifier
-public struct LookupAddressModel {
-    
-    /// The specified identifier to (later) identify a specific address for a (optional) completion call
-    public let identifier: String
-    /// The underlying postal address
-    public let postalAddress: PostalAddress
-    
-    public init(
-        identifier: String,
-        postalAddress: PostalAddress
-    ) {
-        self.identifier = identifier
-        self.postalAddress = postalAddress
-    }
-}
-
-// TODO: This should not be in UI module. To be checked later
-public protocol AddressLookupProvider: AnyObject {
+package protocol AddressLookupProvider: AnyObject {
     
     /// Provides a list of ``LookupAddressModel`` based on a `searchTerm`
     ///

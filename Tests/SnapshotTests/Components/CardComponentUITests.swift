@@ -49,8 +49,8 @@ class CardComponentUITests: XCTestCase {
         
         var configuration = CardComponentConfiguration.minimal
         
-        [BillingAddressConfiguration.AddressFormType.none, .full, .postalCode].forEach { mode in
-            configuration.billingAddress.mode = mode
+        [BillingAddressMode.none, .full, .postalCode].forEach { mode in
+            configuration = configuration.billingAddressMode(mode)
             
             let sut = CardComponent(
                 paymentMethod: paymentMethod,
@@ -101,7 +101,7 @@ private extension CardComponentConfiguration {
     }
 }
 
-private extension BillingAddressConfiguration.AddressFormType {
+private extension BillingAddressMode {
     
     var description: String {
         switch self {

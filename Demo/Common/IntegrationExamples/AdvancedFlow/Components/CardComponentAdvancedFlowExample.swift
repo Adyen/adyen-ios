@@ -56,6 +56,9 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             )
         ) {
             ConfigurationConstants.current.cardConfiguration
+                .billingAddressMode(.lookup(onLookup: { searchTerm in
+                    await MapkitAddressLookupProvider().searchAsync(searchTerm)
+                }))
         }
         .theme(
             AdyenTheme(colors: AdyenColors(primary: .systemPurple))

@@ -113,6 +113,30 @@ public struct PostalAddress: Equatable, Encodable {
     }
 }
 
+// TODO: rename AddressLookupModel?
+/// A wrapper around ``PostalAddress`` that allows attaching an identifier
+public struct LookupAddressModel {
+    
+    /// The specified identifier to (later) identify a specific address for a (optional) completion call
+    public let identifier: String
+    
+    /// The underlying postal address
+    public let postalAddress: PostalAddress
+    
+    /// Creates a new lookup address model.
+    ///
+    /// - Parameters:
+    ///   - identifier: A unique identifier for this address, used to fetch complete details in a subsequent call.
+    ///   - postalAddress: The postal address data. Can be partial when returned from search results.
+    public init(
+        identifier: String,
+        postalAddress: PostalAddress
+    ) {
+        self.identifier = identifier
+        self.postalAddress = postalAddress
+    }
+}
+
 extension PostalAddress {
     
     /// Multi line mailing address

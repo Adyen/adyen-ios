@@ -55,7 +55,6 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
             )
         ) {
             ConfigurationConstants.current.cardConfiguration
-            CardComponentConfiguration()
                 .installmentConfiguration(
                     InstallmentConfiguration(
                         defaultOptions: .init(
@@ -64,12 +63,9 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
                         )
                     )
                 )
-                .billingAddress(
-                    BillingAddressConfiguration()
-                        .displayMode(.lookup(provider: MapkitAddressLookupProvider()))
-                        .requirementPolicy(.optional)
-                )
-                
+                .billingAddressMode(.lookup(onLookup: { searchTerm in
+                    await MapkitAddressLookupProvider().searchAsync(searchTerm)
+                }))
         }
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(

@@ -11,7 +11,7 @@ import Foundation
 import MapKit
 
 /// Example implementation of an address lookup provider with debouncing and cancelling previous calls
-public class MapkitAddressLookupProvider: AddressLookupProvider {
+public class MapkitAddressLookupProvider {
     
     public init() {}
     
@@ -50,6 +50,14 @@ public class MapkitAddressLookupProvider: AddressLookupProvider {
         }
         
         searchTask = searchTask(for: searchTerm, completion: resultHandler)
+    }
+    
+    func searchAsync(_ searchTerm: String) async -> [LookupAddressModel] {
+        await withCheckedContinuation { continuation in
+            lookUp(searchTerm: searchTerm) { results in
+                continuation.resume(returning: results)
+            }
+        }
     }
 }
 

@@ -16,7 +16,7 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
     
     package let componentType: Adyen.CheckoutComponentType = .payment(.blik)
     
-    package var showsSubmitButton: Bool
+    package var showsSubmitButton: Bool = true
 
     package var style: FormComponentStyle
 
@@ -25,22 +25,18 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
     package var localizationParameters: LocalizationParameters?
     
     public init(
-        showsSubmitButton: Bool = true,
         style: FormComponentStyle,
         localizationParameters: LocalizationParameters? = nil
     ) {
-        self.showsSubmitButton = showsSubmitButton
         self.style = style
         self.localizationParameters = localizationParameters
     }
 
     public init(
-        showsSubmitButton: Bool = true,
         localizationParameters: LocalizationParameters? = nil,
         theme: AdyenTheme = .default,
         style: FormComponentStyle = .init()
     ) {
-        self.showsSubmitButton = showsSubmitButton
         self.theme = theme
         self.localizationParameters = localizationParameters
         self.style = style

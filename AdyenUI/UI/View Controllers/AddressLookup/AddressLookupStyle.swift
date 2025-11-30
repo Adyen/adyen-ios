@@ -7,17 +7,17 @@
 import UIKit
 
 /// The style of the screen that performs an address lookup
-public struct AddressLookupStyle: ViewStyle {
+package struct AddressLookupStyle: ViewStyle {
     
-    public var backgroundColor: UIColor = .Adyen.componentBackground
-    public var search: AddressLookupSearchStyle = .init()
-    public var form: FormComponentStyle = .init()
+    package var backgroundColor: UIColor = .Adyen.componentBackground
+    package var search: AddressLookupSearchStyle = .init()
+    package var form: FormComponentStyle = .init()
     
     /// Initializes the address lookup style.
     ///
     /// - Parameter search: The address lookup search style
     /// - Parameter form: The form style
-    public init(
+    package init(
         search: AddressLookupSearchStyle = .init(),
         form: FormComponentStyle = .init()
     ) {
