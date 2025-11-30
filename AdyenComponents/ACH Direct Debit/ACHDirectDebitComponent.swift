@@ -288,8 +288,8 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
             scrollEnabled: configuration.showsSubmitButton,
-            style: configuration.style,
-            localizationParameters: configuration.localizationParameters
+            localizationParameters: configuration.localizationParameters,
+            theme: configuration.theme
         )
         formViewController.delegate = self
 
@@ -353,6 +353,9 @@ extension ACHDirectDebitComponent {
 
         /// Describes the component's UI style.
         public var style: FormComponentStyle
+
+        /// The theming to apply to the component's UI.
+        package var theme: AdyenTheme = .init()
 
         /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
         internal let showsSubmitButton: Bool
