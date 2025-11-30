@@ -70,7 +70,7 @@ extension AddressLookupSearchViewController {
             }
         }
         
-        internal func handleDidSelect(item: ListItem, addressModel: LookupAddressModel) {
+        internal func handleDidSelect(item: ListItem, addressModel: AddressLookupResult) {
             guard let lookupProvider else { return }
             
             item.startLoading()
@@ -119,7 +119,7 @@ private extension AddressLookupSearchViewController.ViewModel {
         }
     }
     
-    func listItem(for addressModel: LookupAddressModel) -> ListItem? {
+    func listItem(for addressModel: AddressLookupResult) -> ListItem? {
         
         let address = addressModel.postalAddress
         

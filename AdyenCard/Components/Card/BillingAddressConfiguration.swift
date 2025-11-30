@@ -29,8 +29,8 @@ public enum BillingAddressMode {
     ///     Use this to fetch the complete address details if the initial result was partial.
     ///     If not provided, the selected address is used as-is.
     case lookup(
-        onLookup: (String) async -> [LookupAddressModel],
-        onAddressSelected: ((LookupAddressModel) async throws -> PostalAddress)? = nil
+        onLookup: (String) async -> [AddressLookupResult],
+        onAddressSelected: ((AddressLookupResult) async throws -> PostalAddress)? = nil
     )
 }
 

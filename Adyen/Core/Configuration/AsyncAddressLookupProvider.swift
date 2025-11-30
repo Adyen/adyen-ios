@@ -9,12 +9,12 @@ import Foundation
 /// Internal adapter that bridges async closures to the AddressLookupProvider protocol
 package final class AsyncAddressLookupProvider: AddressLookupProvider {
     
-    private let lookupHandler: (String) async -> [LookupAddressModel]
-    private let addressSelectedHandler: ((LookupAddressModel) async throws -> PostalAddress)?
+    private let lookupHandler: (String) async -> [AddressLookupResult]
+    private let addressSelectedHandler: ((AddressLookupResult) async throws -> PostalAddress)?
     
     package init(
-        onLookup: @escaping (String) async -> [LookupAddressModel],
-        onAddressSelected: ((LookupAddressModel) async throws -> PostalAddress)? = nil
+        onLookup: @escaping (String) async -> [AddressLookupResult],
+        onAddressSelected: ((AddressLookupResult) async throws -> PostalAddress)? = nil
     ) {
         self.lookupHandler = onLookup
         self.addressSelectedHandler = onAddressSelected
@@ -22,7 +22,7 @@ package final class AsyncAddressLookupProvider: AddressLookupProvider {
     
     package func lookUp(
         searchTerm: String,
-        resultHandler: @escaping ([LookupAddressModel]) -> Void
+        resultHandler: @escaping ([AddressLookupResult]) -> Void
     ) {
         Task {
             let results = await lookupHandler(searchTerm)
@@ -31,7 +31,7 @@ package final class AsyncAddressLookupProvider: AddressLookupProvider {
     }
     
     package func complete(
-        incompleteAddress: LookupAddressModel,
+        incompleteAddress: AddressLookupResult,
         resultHandler: @escaping (Result<PostalAddress, Error>) -> Void
     ) {
         guard let addressSelectedHandler else {

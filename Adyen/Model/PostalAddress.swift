@@ -113,21 +113,30 @@ public struct PostalAddress: Equatable, Encodable {
     }
 }
 
-// TODO: rename AddressLookupModel?
-/// A wrapper around ``PostalAddress`` that allows attaching an identifier
-public struct LookupAddressModel {
+/// Represents an address returned from a lookup search.
+///
+/// Use this type to return results from the `onLookup` closure in ``BillingAddressMode/lookup(onLookup:onAddressSelected:)``.
+/// The result may contain partial address data. When the shopper selects a result,
+/// use the `identifier` in `onAddressSelected` to fetch the complete address from your service.
+public struct AddressLookupResult {
     
-    /// The specified identifier to (later) identify a specific address for a (optional) completion call
+    /// A unique identifier for this address result.
+    ///
+    /// Use this to fetch complete address details from your address service
+    /// when the shopper selects this result.
     public let identifier: String
     
-    /// The underlying postal address
+    /// The address data returned from the lookup.
+    ///
+    /// This may be partial depending on your address service.
+    /// The complete address should be returned from `onAddressSelected`.
     public let postalAddress: PostalAddress
     
-    /// Creates a new lookup address model.
+    /// Creates a new address lookup result.
     ///
     /// - Parameters:
-    ///   - identifier: A unique identifier for this address, used to fetch complete details in a subsequent call.
-    ///   - postalAddress: The postal address data. Can be partial when returned from search results.
+    ///   - identifier: A unique identifier for this result, used to fetch complete details when selected.
+    ///   - postalAddress: The address data. Can be partial when returned from search.
     public init(
         identifier: String,
         postalAddress: PostalAddress
