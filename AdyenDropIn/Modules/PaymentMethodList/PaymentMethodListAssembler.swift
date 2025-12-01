@@ -22,8 +22,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     private let componentManager: ComponentManager
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
-    private let dropInComponent: DropInComponent
-    private let dropInComponentDelegate: DropInComponentDelegate?
+    private let dropInFlowManager: DropInFlowManaging
     private let cardComponentDelegate: CardComponentDelegate?
     private let partialPaymentDelegate: PartialPaymentDelegate?
 
@@ -34,8 +33,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         componentManager: ComponentManager,
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
-        dropInComponent: DropInComponent,
-        dropInComponentDelegate: DropInComponentDelegate?,
+        dropInFlowManager: DropInFlowManaging,
         cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
@@ -43,8 +41,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         self.componentManager = componentManager
         self.context = context
         self.configuration = configuration
-        self.dropInComponent = dropInComponent
-        self.dropInComponentDelegate = dropInComponentDelegate
+        self.dropInFlowManager = dropInFlowManager
         self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
     }
@@ -58,8 +55,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
             context: context,
             componentManager: componentManager,
             configuration: configuration,
-            dropInComponent: dropInComponent,
-            dropInComponentDelegate: dropInComponentDelegate
+            dropInFlowManager: dropInFlowManager
         )
         let view = PaymentMethodListViewController(viewModel: viewModel)
         let router = PaymentMethodListRouter(
