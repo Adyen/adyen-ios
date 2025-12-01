@@ -25,7 +25,6 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
-    private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
     private let dropInFlowManager: DropInFlowManaging
     private let cardComponentDelegate: CardComponentDelegate?
@@ -36,7 +35,6 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     internal init(
         paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
         componentContainerAssembler: ComponentContainerAssemblerProtocol,
-        context: AdyenContext,
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging,
         cardComponentDelegate: CardComponentDelegate?,
@@ -44,7 +42,6 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     ) {
         self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
-        self.context = context
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
         self.cardComponentDelegate = cardComponentDelegate

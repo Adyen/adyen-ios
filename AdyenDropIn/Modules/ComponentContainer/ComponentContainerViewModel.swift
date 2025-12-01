@@ -22,7 +22,6 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     internal weak var router: ComponentContainerRouting?
     private let component: PresentableComponent
-    private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
     private var dropInFlowManager: DropInFlowManaging
     private weak var cardComponentDelegate: CardComponentDelegate?
@@ -33,7 +32,6 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     internal init(
         component: PresentableComponent,
-        context: AdyenContext,
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging,
         cardComponentDelegate: CardComponentDelegate?,
@@ -41,7 +39,6 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         onCancel: (() -> Void)? = nil
     ) {
         self.component = component
-        self.context = context
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
         self.cardComponentDelegate = cardComponentDelegate

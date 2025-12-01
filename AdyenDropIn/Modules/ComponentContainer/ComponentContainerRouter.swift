@@ -13,7 +13,7 @@ internal protocol ComponentContainerRouterListener: AnyObject {
 }
 
 internal protocol ComponentContainerRouting: AnyObject {
-    func present(component: any PresentableComponent)
+    func present(paymentComponent: any PresentableComponent)
     func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?)
     func dismiss(completion: (() -> Void)?)
 }
@@ -48,8 +48,8 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouting {
 
     // MARK: - ComponentContainerRouting
     
-    internal func present(component: any PresentableComponent) {
-        let componentViewController = component.viewController
+    internal func present(paymentComponent: any PresentableComponent) {
+        let componentViewController = paymentComponent.viewController
         rootViewController.navigationController?.pushViewController(componentViewController, animated: true)
     }
 

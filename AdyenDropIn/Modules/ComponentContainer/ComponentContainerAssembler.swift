@@ -23,7 +23,6 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
 
     // MARK: - Properties
 
-    private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
     private let dropInFlowManager: DropInFlowManaging
     private let cardComponentDelegate: CardComponentDelegate?
@@ -32,13 +31,11 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
     // MARK: - Initializers
 
     internal init(
-        context: AdyenContext,
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging,
         cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
-        self.context = context
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
         self.cardComponentDelegate = cardComponentDelegate
@@ -54,7 +51,6 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
     ) -> Router {
         let viewModel = ComponentContainerViewModel(
             component: component,
-            context: context,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
             cardComponentDelegate: cardComponentDelegate,

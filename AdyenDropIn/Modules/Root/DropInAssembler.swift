@@ -93,7 +93,6 @@ internal struct DropInAssembler {
         PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler,
-            context: context,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
             cardComponentDelegate: cardComponentDelegate,
@@ -115,7 +114,6 @@ internal struct DropInAssembler {
     
     private var componentContainerAssembler: ComponentContainerAssemblerProtocol {
         ComponentContainerAssembler(
-            context: context,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
             cardComponentDelegate: cardComponentDelegate,

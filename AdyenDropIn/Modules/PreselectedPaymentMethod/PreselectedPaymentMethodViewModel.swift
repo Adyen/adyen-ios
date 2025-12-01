@@ -39,6 +39,7 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
             style: style.formComponent,
             listItemStyle: style.listComponent.listItem
         )
+        // TODO: - Localization parameters need to be moved to configuration level.
         self.preselectedPaymentMethodComponent.localizationParameters = configuration.localizationParameters
         self.preselectedPaymentMethodComponent.delegate = self
     }
@@ -73,7 +74,7 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
         
         switch component {
         case let component as PresentableComponent:
-            router?.present(component: component) { [weak self] in
+            router?.present(paymentComponent: component) { [weak self] in
                 self?.stopLoading()
             }
         case let component as PaymentInitiable:
