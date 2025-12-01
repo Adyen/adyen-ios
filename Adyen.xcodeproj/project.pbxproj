@@ -829,7 +829,6 @@
 		C9E4DF682ED9A9B5000B6CBE /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */; };
 		C9E9144D2ED9D37500584184 /* AdyenSwiftUI.h in Headers */ = {isa = PBXBuildFile; fileRef = C9E9144A2ED9D37500584184 /* AdyenSwiftUI.h */; };
 		C9E9144E2ED9D37500584184 /* FullScreenViewControllerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E914482ED9D37500584184 /* FullScreenViewControllerPresenter.swift */; };
-		C9E9144F2ED9D37500584184 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C9E9144B2ED9D37500584184 /* Info.plist */; };
 		C9EEEFEC2D5516B300B7AFFC /* ExpirationDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EEEFEA2D5516B300B7AFFC /* ExpirationDateFormatter.swift */; };
 		C9F468E227465FCF00500FF5 /* BACSDirectDebitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F468E127465FCF00500FF5 /* BACSDirectDebitData.swift */; };
 		C9F9905D2DC2566C00D2BFB0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C9F9905C2DC2566C00D2BFB0 /* README.md */; };
@@ -7875,7 +7874,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9E9144F2ED9D37500584184 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
