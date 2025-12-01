@@ -13,8 +13,9 @@ internal protocol PaymentMethodListRouterListener: AnyObject {
 }
 
 internal protocol PaymentMethodListRouting: AnyObject {
+    func present(paymentComponent: PresentableComponent, onCancel: @escaping () -> Void)
+    func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?)
     func dismiss(completion: (() -> Void)?)
-    func present(_ component: PresentableComponent, onCancel: @escaping () -> Void)
 }
 
 internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
@@ -53,9 +54,9 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         listener?.didDismissPaymentMethodList(completion: completion)
     }
 
-    internal func present(_ component: PresentableComponent, onCancel: @escaping () -> Void) {
+    internal func present(paymentComponent: PresentableComponent, onCancel: @escaping () -> Void) {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
-            for: component,
+            for: paymentComponent,
             delegate: self,
             onCancel: onCancel
         )
@@ -64,11 +65,19 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         let componentContainerViewController = componentContainerRouter.rootViewController
 
         // TODO: - Invert `requiresModalPresentation` logic or remove it fully.
-        if component.requiresModalPresentation {
+        if paymentComponent.requiresModalPresentation {
             viewController.navigationController?.pushViewController(componentContainerViewController, animated: true)
         } else {
             viewController.present(componentContainerViewController, animated: true)
         }
+    }
+
+    internal func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?) {
+        let actionViewController = ActionPresentationHelper.viewController(
+            for: actionComponent,
+            onCancel: onCancel
+        )
+        viewController.present(actionViewController, animated: true)
     }
 }
 

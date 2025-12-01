@@ -33,14 +33,22 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Properties
 
+    internal private(set) lazy var dropInFlowManager: DropInFlowManaging = {
+        DropInFlowManager(
+            dropInComponent: self,
+            dropInComponentDelegate: delegate,
+            context: context,
+            configuration: configuration
+        )
+    }()
+
     internal private(set) lazy var router: DropInRouting = {
         let dropInAssembler = DropInAssembler(
             title: title,
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            dropInComponent: self,
-            dropInComponentDelegate: delegate,
+            dropInFlowManager: dropInFlowManager,
             cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
@@ -144,7 +152,7 @@ public final class DropInComponent: NSObject,
     ///
     /// - Parameter action: The action to handle.
     public func handle(_ action: Action) {
-        router.handle(action: action)
+        dropInFlowManager.handle(action: action)
     }
 
     // MARK: - Handling Partial Payments
