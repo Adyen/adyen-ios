@@ -61,6 +61,12 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                             await MapkitAddressLookupProvider().searchAsync(searchTerm)
                         })
                 )
+                .onBinValue { bin in
+                    print("here is the bin \(bin)")
+                }
+                .onBinLookup { brands in
+                    print("bin lookup response \(brands)")
+                }
         }
         .theme(
             AdyenTheme(colors: AdyenColors(primary: .systemPurple))
