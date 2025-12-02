@@ -66,20 +66,20 @@ public struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfig
     }
 
     /// Sets whether the field for storing the payment method should be displayed.
-    /// - Parameter show: A Boolean value indicating whether to show the store payment method field.
+    /// - Parameter showsStorePaymentMethodField: A Boolean value indicating whether to show the store payment method field.
     /// - Returns: A modified configuration with the updated setting.
-    public func showsStorePaymentMethodField(_ show: Bool) -> Self {
+    public func showsStorePaymentMethodField(_ showsStorePaymentMethodField: Bool) -> Self {
         var config = self
-        config.showsStorePaymentMethodField = show
+        config.showsStorePaymentMethodField = showsStorePaymentMethodField
         return config
     }
 
     /// Sets whether the billing address should be displayed.
-    /// - Parameter show: A Boolean value indicating whether to show the billing address.
+    /// - Parameter showsBillingAddress: A Boolean value indicating whether to show the billing address.
     /// - Returns: A modified configuration with the updated setting.
-    public func showsBillingAddress(_ show: Bool) -> Self {
+    public func showsBillingAddress(_ showsBillingAddress: Bool) -> Self {
         var config = self
-        config.showsBillingAddress = show
+        config.showsBillingAddress = showsBillingAddress
         return config
     }
 
