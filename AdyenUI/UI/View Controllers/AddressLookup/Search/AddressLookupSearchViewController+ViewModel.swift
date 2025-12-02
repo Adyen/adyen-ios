@@ -63,10 +63,11 @@ extension AddressLookupSearchViewController {
         internal func handleLookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void) {
             
             lookupProvider?.lookUp(searchTerm: searchTerm) { result in
-                
-                let listItems = result.compactMap(listItem(for:))
-                guard !listItems.isEmpty else { return resultHandler([]) }
-                resultHandler([manualEntryListItem] + listItems)
+                DispatchQueue.main.async { [self] in
+                    let listItems = result.compactMap { self.listItem(for: $0) }
+                    guard !listItems.isEmpty else { return resultHandler([]) }
+                    resultHandler([self.manualEntryListItem] + listItems)
+                }
             }
         }
         
@@ -76,13 +77,15 @@ extension AddressLookupSearchViewController {
             item.startLoading()
             
             lookupProvider.complete(incompleteAddress: addressModel) { [weak item] result in
-                item?.stopLoading()
-                
-                switch result {
-                case let .success(address):
-                    self.handleShowForm(with: address)
-                case let .failure(error):
-                    self.handleShowError(error)
+                DispatchQueue.main.async {
+                    item?.stopLoading()
+                    
+                    switch result {
+                    case let .success(address):
+                        self.handleShowForm(with: address)
+                    case let .failure(error):
+                        self.handleShowError(error)
+                    }
                 }
             }
         }

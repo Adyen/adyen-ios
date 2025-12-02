@@ -327,7 +327,7 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
         configuration.billingAddress.mode = .lookup(
-            onLookup: { searchTerm in
+            onAddressLookup: { searchTerm in
                 XCTFail("Lookup handler should not be called")
                 return []
             }
@@ -1678,7 +1678,7 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
         configuration.billingAddress.mode = .lookup(
-            onLookup: { searchTerm in
+            onAddressLookup: { searchTerm in
                 [.init(identifier: searchTerm, postalAddress: .init(city: searchTerm))]
             }
         )

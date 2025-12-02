@@ -24,12 +24,12 @@ public enum BillingAddressMode {
     /// Displays an address lookup interface that allows the shopper to search for their address.
     ///
     /// - Parameters:
-    ///   - onLookup: Called when the shopper enters a search term. Returns matching addresses.
+    ///   - onAddressLookup: Called when the shopper enters a search term. Returns matching addresses.
     ///   - onAddressSelected: Called when the shopper selects an address from the search results.
     ///     Use this to fetch the complete address details if the initial result was partial.
     ///     If not provided, the selected address is used as-is.
     case lookup(
-        onLookup: (String) async -> [AddressLookupResult],
+        onAddressLookup: (String) async -> [AddressLookupResult],
         onAddressSelected: ((AddressLookupResult) async throws -> PostalAddress)? = nil
     )
 }
