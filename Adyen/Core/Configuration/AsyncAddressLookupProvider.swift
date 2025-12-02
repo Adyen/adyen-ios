@@ -26,7 +26,7 @@ package final class AsyncAddressLookupProvider: AddressLookupProvider {
     ) {
         Task {
             let results = await lookupHandler(searchTerm)
-            await callOnMainActor(resultHandler, with: results)
+            resultHandler(results)
         }
     }
     
@@ -35,24 +35,17 @@ package final class AsyncAddressLookupProvider: AddressLookupProvider {
         resultHandler: @escaping (Result<PostalAddress, Error>) -> Void
     ) {
         guard let addressSelectedHandler else {
-            Task {
-                await callOnMainActor(resultHandler, with: .success(incompleteAddress.postalAddress))
-            }
+            resultHandler(.success(incompleteAddress.postalAddress))
             return
         }
         
         Task {
             do {
                 let result = try await addressSelectedHandler(incompleteAddress)
-                await callOnMainActor(resultHandler, with: .success(result))
+                resultHandler(.success(result))
             } catch {
-                await callOnMainActor(resultHandler, with: .failure(error))
+                resultHandler(.failure(error))
             }
         }
-    }
-    
-    @MainActor
-    private func callOnMainActor<T>(_ handler: (T) -> Void, with value: T) {
-        handler(value)
     }
 }

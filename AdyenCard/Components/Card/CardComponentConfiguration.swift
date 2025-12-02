@@ -14,13 +14,13 @@ public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPer
     
     package let componentType: Adyen.CheckoutComponentType = .payment(.scheme)
     
-    package var theme: AdyenTheme = .init()
+    package var theme: AdyenTheme
     
     /// Describes the component's UI style.
     package var style: FormComponentStyle
 
     /// A boolean value that determines whether the payment button is displayed. Defaults to `true`.
-    package var showsSubmitButton: Bool = true
+    package var showsSubmitButton: Bool
 
     /// The shopper's information to be prefilled.
     package var shopperInformation: PrefilledShopperInformation?
@@ -46,7 +46,7 @@ public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPer
 
     // TODO: Move this to its own config?
     /// Stored card configuration.
-    internal var stored: StoredCardConfiguration = .init()
+    internal var stored: StoredCardConfiguration
 
     /// The list of allowed card types.  Defaults to nil.
     /// By default list of supported cards is extracted from component's `AnyCardPaymentMethod`.
@@ -57,22 +57,28 @@ public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPer
     internal var installmentConfiguration: InstallmentConfiguration?
     
     /// Billing address fields configurations.
-    internal var billingAddress: BillingAddressConfiguration = .init()
+    internal var billingAddress: BillingAddressConfiguration
     
     /// The type used for the bin lookup
-    internal var binLookupType: BinLookupRequestType = .card
+    internal var binLookupType: BinLookupRequestType
     
     /// Indicates whether or not to show the supported card logos under the card number item
-    internal var showsSupportedCardLogos: Bool = true
+    internal var showsSupportedCardLogos: Bool
 
     /// Initializes a new instance of `CardComponentConfiguration`.
     public init() {
+        self.theme = .init()
         self.style = FormComponentStyle()
+        self.stored = .init()
+        self.billingAddress = .init()
+        self.showsSubmitButton = true
         self.showsHolderNameField = false
         self.showsSecurityCodeField = true
         self.showsStorePaymentMethodField = true
         self.koreanAuthenticationMode = .auto
         self.socialSecurityNumberMode = .auto
+        self.binLookupType = .card
+        self.showsSupportedCardLogos = true
     }
 
     internal func showAdditionalAuthenticationFields(for issuingCountryCode: String?) -> Bool {

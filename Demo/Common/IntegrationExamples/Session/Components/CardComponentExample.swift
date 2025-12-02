@@ -63,9 +63,16 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
                         )
                     )
                 )
-                .billingAddressMode(.lookup(onLookup: { searchTerm in
-                    await MapkitAddressLookupProvider().searchAsync(searchTerm)
-                }))
+                .billingAddressMode(
+                    .lookup(
+                        onAddressLookup: { searchTerm in
+                            await MapkitAddressLookupProvider().searchAsync(searchTerm)
+                        },
+                        onAddressSelected: { result in
+                            try await DemoAddressLookupProvider().completeAsync(result)
+                        }
+                    )
+                )
         }
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(

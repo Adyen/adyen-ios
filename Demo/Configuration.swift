@@ -308,7 +308,7 @@ private extension DemoAppSettings {
         case .lookup:
             let provider = DemoAddressLookupProvider()
             return .lookup(
-                onLookup: { searchTerm in
+                onAddressLookup: { searchTerm in
                     await provider.searchAsync(searchTerm)
                 },
                 onAddressSelected: { selected in
@@ -318,7 +318,7 @@ private extension DemoAppSettings {
         case .lookupMapKit:
             let provider = MapkitAddressLookupProvider()
             return .lookup(
-                onLookup: { searchTerm in
+                onAddressLookup: { searchTerm in
                     await provider.searchAsync(searchTerm)
                 }
             )
