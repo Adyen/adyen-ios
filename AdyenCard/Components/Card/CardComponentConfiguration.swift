@@ -192,11 +192,11 @@ extension CardComponentConfiguration {
     }
     
     /// Sets the supported country codes for billing address.
-    /// - Parameter countryCodes: List of ISO country codes supported for the billing address.
+    /// - Parameter billingAddressCountryCodes: List of ISO country codes supported for the billing address.
     /// - Returns: A modified copy of the configuration.
-    public func billingAddressCountryCodes(_ countryCodes: [String]) -> Self {
+    public func billingAddressCountryCodes(_ billingAddressCountryCodes: [String]) -> Self {
         var copy = self
-        copy.billingAddress.countryCodes = countryCodes
+        copy.billingAddress.countryCodes = billingAddressCountryCodes
         return copy
     }
     
