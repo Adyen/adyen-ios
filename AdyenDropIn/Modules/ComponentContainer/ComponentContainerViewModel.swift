@@ -5,9 +5,6 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-#if canImport(AdyenCard)
-    import AdyenCard
-#endif
 import Foundation
 import UIKit
 
@@ -26,7 +23,6 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     private let configuration: DropInComponent.Configuration
     private weak var dropInComponent: DropInComponent?
     private weak var dropInComponentDelegate: DropInComponentDelegate?
-    private weak var cardComponentDelegate: CardComponentDelegate?
     private weak var partialPaymentDelegate: PartialPaymentDelegate?
     private let onCancel: (() -> Void)?
 
@@ -38,7 +34,6 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         configuration: DropInComponent.Configuration,
         dropInComponent: DropInComponent,
         dropInComponentDelegate: DropInComponentDelegate?,
-        cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?,
         onCancel: (() -> Void)? = nil
     ) {
@@ -47,7 +42,6 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         self.configuration = configuration
         self.dropInComponent = dropInComponent
         self.dropInComponentDelegate = dropInComponentDelegate
-        self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
         self.onCancel = onCancel
 
@@ -76,7 +70,6 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     private func setupComponent() {
         (component as? PaymentComponent)?.delegate = self
-        (component as? CardComponent)?.cardComponentDelegate = cardComponentDelegate
         (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
     }

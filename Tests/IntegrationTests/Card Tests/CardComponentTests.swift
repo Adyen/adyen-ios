@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -304,24 +304,21 @@ class CardComponentTests: XCTestCase {
 
         let expectationBin = XCTestExpectation(description: "Bin Expectation")
         let expectationCardType = XCTestExpectation(description: "CardType Expectation")
-        let expectationLastFour = XCTestExpectation(description: "LastFour Expectation")
-        let delegateMock = CardComponentDelegateMock(onBINDidChange: { value in
-            XCTAssertEqual(value, "371449")
-            expectationBin.fulfill()
-        }, onCardBrandChange: { value in
-            XCTAssertEqual(value, [CardBrand(type: .americanExpress)])
-            expectationCardType.fulfill()
-        }, onSubmitLastFour: { lastFour, finalBin in
-            XCTAssertEqual(lastFour, "8431")
-            XCTAssertEqual(finalBin, "371449")
-            expectationLastFour.fulfill()
-        })
-        sut.cardComponentDelegate = delegateMock
+        
+        sut.configuration = sut.configuration
+            .onBinValue { value in
+                XCTAssertEqual(value, "371449")
+                expectationBin.fulfill()
+            }
+            .onBinLookup { value in
+                XCTAssertEqual(value, [CardBrand(type: .americanExpress)])
+                expectationCardType.fulfill()
+            }
         
         self.fillCard(on: sut.viewController.view, with: Dummy.amexCard)
         self.tapSubmitButton(on: sut.viewController.view)
 
-        wait(for: [expectationBin, expectationCardType, expectationLastFour], timeout: 10)
+        wait(for: [expectationBin, expectationCardType], timeout: 10)
     }
     
     func testAddressLookupPrefill() throws {

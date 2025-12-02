@@ -5,9 +5,6 @@
 //
 
 import Adyen
-#if canImport(AdyenCard)
-    import AdyenCard
-#endif
 import Foundation
 import UIKit
 
@@ -27,7 +24,6 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
     private let configuration: DropInComponent.Configuration
     private let dropInComponent: DropInComponent
     private let dropInComponentDelegate: DropInComponentDelegate?
-    private let cardComponentDelegate: CardComponentDelegate?
     private let partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
@@ -37,14 +33,12 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
         configuration: DropInComponent.Configuration,
         dropInComponent: DropInComponent,
         dropInComponentDelegate: DropInComponentDelegate?,
-        cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.context = context
         self.configuration = configuration
         self.dropInComponent = dropInComponent
         self.dropInComponentDelegate = dropInComponentDelegate
-        self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
     }
 
@@ -61,7 +55,6 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
             configuration: configuration,
             dropInComponent: dropInComponent,
             dropInComponentDelegate: dropInComponentDelegate,
-            cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate,
             onCancel: onCancel
         )

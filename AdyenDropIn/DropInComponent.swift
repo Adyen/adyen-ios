@@ -41,7 +41,6 @@ public final class DropInComponent: NSObject,
             configuration: configuration,
             dropInComponent: self,
             dropInComponentDelegate: delegate,
-            cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
         return dropInAssembler.resolveDropInRouter()
@@ -128,9 +127,6 @@ public final class DropInComponent: NSObject,
             configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = showRemoveStoredPaymentButton
         }
     }
-
-    /// The delegate for user activity on card component.
-    public weak var cardComponentDelegate: CardComponentDelegate?
 
     // MARK: - Presentable Component Protocol
 

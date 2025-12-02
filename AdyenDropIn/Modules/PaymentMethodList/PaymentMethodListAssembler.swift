@@ -5,9 +5,6 @@
 //
 
 import Adyen
-#if canImport(AdyenCard)
-    import AdyenCard
-#endif
 import Foundation
 
 internal protocol PaymentMethodListAssemblerProtocol {
@@ -24,7 +21,6 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     private let configuration: DropInComponent.Configuration
     private let dropInComponent: DropInComponent
     private let dropInComponentDelegate: DropInComponentDelegate?
-    private let cardComponentDelegate: CardComponentDelegate?
     private let partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
@@ -36,7 +32,6 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         configuration: DropInComponent.Configuration,
         dropInComponent: DropInComponent,
         dropInComponentDelegate: DropInComponentDelegate?,
-        cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.componentContainerAssembler = componentContainerAssembler
@@ -45,7 +40,6 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         self.configuration = configuration
         self.dropInComponent = dropInComponent
         self.dropInComponentDelegate = dropInComponentDelegate
-        self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
     }
 

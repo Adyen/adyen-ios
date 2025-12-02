@@ -4,9 +4,6 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-#if canImport(AdyenCard)
-    import AdyenCard
-#endif
 import Adyen
 import AdyenNetworking
 import Foundation
@@ -23,7 +20,6 @@ internal struct DropInAssembler {
     private let componentManager: ComponentManager
     private let dropInComponent: DropInComponent
     private let dropInComponentDelegate: DropInComponentDelegate?
-    private let cardComponentDelegate: CardComponentDelegate?
     private let partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
@@ -35,7 +31,6 @@ internal struct DropInAssembler {
         configuration: DropInComponent.Configuration,
         dropInComponent: DropInComponent,
         dropInComponentDelegate: DropInComponentDelegate?,
-        cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.title = title
@@ -44,7 +39,6 @@ internal struct DropInAssembler {
         self.configuration = configuration
         self.dropInComponent = dropInComponent
         self.dropInComponentDelegate = dropInComponentDelegate
-        self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
         self.componentManager = ComponentManager(
             paymentMethods: paymentMethods,
@@ -103,7 +97,6 @@ internal struct DropInAssembler {
             configuration: configuration,
             dropInComponent: dropInComponent,
             dropInComponentDelegate: dropInComponentDelegate,
-            cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
     }
@@ -116,7 +109,6 @@ internal struct DropInAssembler {
             configuration: configuration,
             dropInComponent: dropInComponent,
             dropInComponentDelegate: dropInComponentDelegate,
-            cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
     }
@@ -127,7 +119,6 @@ internal struct DropInAssembler {
             configuration: configuration,
             dropInComponent: dropInComponent,
             dropInComponentDelegate: dropInComponentDelegate,
-            cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
     }

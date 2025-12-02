@@ -64,6 +64,15 @@ public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPer
     
     /// Indicates whether or not to show the supported card logos under the card number item
     internal var showsSupportedCardLogos: Bool = true
+    
+    /// Called when the BIN value changes (first 6-8 digits of the card number).
+    internal var onBinValue: ((String) -> Void)?
+    
+    /// Called when card brand(s) are detected from the entered card number.
+    internal var onBinLookup: (([CardBrand]) -> Void)?
+    
+    // TODO: Add onFieldValidationChange closure that provides field validation updates including last 4 digits. or add it here after deciding on alingment
+    // This will replace the didSubmit(lastFour:finalBIN:) delegate method.
 
     /// Initializes a new instance of `CardComponentConfiguration`.
     public init() {
@@ -195,6 +204,25 @@ extension CardComponentConfiguration {
 //        copy.billingAddress.requirementPolicy = policy
 //        return copy
 //    }
+    
+    /// Sets the handler to be called when the BIN value changes.
+    /// The BIN is the first 6-8 digits of the card number.
+    /// - Parameter onBinValue: The closure to call with the BIN value.
+    /// - Returns: A modified copy of the configuration.
+    public func onBinValue(_ onBinValue: @escaping (String) -> Void) -> Self {
+        var copy = self
+        copy.onBinValue = onBinValue
+        return copy
+    }
+    
+    /// Sets the handler to be called when card brand(s) are detected.
+    /// - Parameter onBinLookup: The closure to call with the detected card brands.
+    /// - Returns: A modified copy of the configuration.
+    public func onBinLookup(_ onBinLookup: @escaping ([CardBrand]) -> Void) -> Self {
+        var copy = self
+        copy.onBinLookup = onBinLookup
+        return copy
+    }
 }
 
 /// Describes any configuration for the card component.
