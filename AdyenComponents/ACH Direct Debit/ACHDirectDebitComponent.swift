@@ -30,8 +30,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     }
     
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
+    package let context: AdyenContext
     
     package var paymentMethod: PaymentMethod {
         achDirectDebitPaymentMethod
@@ -56,8 +55,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
 
     package let requiresModalPresentation: Bool = true
     
-    @_spi(AdyenInternal)
-    public let publicKeyProvider: AnyPublicKeyProvider
+    package let publicKeyProvider: AnyPublicKeyProvider
     
     private var defaultCountryCode: String {
         payment?.countryCode ?? configuration.billingAddressCountryCodes.first ?? "US"
@@ -319,10 +317,8 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     }()
 }
 
-@_spi(AdyenInternal)
 extension ACHDirectDebitComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
 extension ACHDirectDebitComponent: ViewControllerDelegate {
 
     package func viewDidLoad(viewController: UIViewController) {
@@ -333,7 +329,6 @@ extension ACHDirectDebitComponent: ViewControllerDelegate {
     }
 }
 
-@_spi(AdyenInternal)
 extension ACHDirectDebitComponent: ViewControllerPresenter {
     
     package func presentViewController(_ viewController: UIViewController, animated: Bool) {
@@ -345,7 +340,6 @@ extension ACHDirectDebitComponent: ViewControllerPresenter {
     }
 }
 
-@_spi(AdyenInternal)
 extension ACHDirectDebitComponent: PublicKeyConsumer {}
 
 // MARK: - SubmitCustomizable
