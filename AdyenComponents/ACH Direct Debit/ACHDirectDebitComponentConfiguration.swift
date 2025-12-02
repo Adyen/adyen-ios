@@ -66,7 +66,7 @@ extension ACHDirectDebitComponentConfiguration {
     }
 
     /// Sets whether the field for storing the payment method should be displayed.
-    /// - Parameter showsStorePaymentMethodField: A Boolean value indicating whether to show the store payment method field.
+    /// - Parameter showStorePaymentMethodField: A Boolean value indicating whether to show the store payment method field.
     /// - Returns: A modified configuration with the updated setting.
     public func showStorePaymentMethodField(_ showStorePaymentMethodField: Bool) -> Self {
         var config = self
@@ -75,7 +75,7 @@ extension ACHDirectDebitComponentConfiguration {
     }
 
     /// Sets whether the billing address should be displayed.
-    /// - Parameter showsBillingAddress: A Boolean value indicating whether to show the billing address.
+    /// - Parameter showBillingAddress: A Boolean value indicating whether to show the billing address.
     /// - Returns: A modified configuration with the updated setting.
     public func showBillingAddress(_ showBillingAddress: Bool) -> Self {
         var config = self
