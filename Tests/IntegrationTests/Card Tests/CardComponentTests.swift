@@ -329,10 +329,12 @@ class CardComponentTests: XCTestCase {
         // Given
         var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
-        configuration.billingAddress.mode = .lookup(provider: MockAddressLookupProvider { searchTerm in
-            XCTFail("Lookup handler should not be called")
-            return []
-        })
+        configuration.billingAddress.mode = .lookup(
+            onAddressLookup: { searchTerm in
+                XCTFail("Lookup handler should not be called")
+                return []
+            }
+        )
         configuration.shopperInformation = shopperInformation
 
         let component = CardComponent(
@@ -1678,9 +1680,11 @@ class CardComponentTests: XCTestCase {
         // Given
         var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
-        configuration.billingAddress.mode = .lookup(provider: MockAddressLookupProvider { searchTerm in
-            [.init(identifier: searchTerm, postalAddress: .init(city: searchTerm))]
-        })
+        configuration.billingAddress.mode = .lookup(
+            onAddressLookup: { searchTerm in
+                [.init(identifier: searchTerm, postalAddress: .init(city: searchTerm))]
+            }
+        )
         configuration.shopperInformation = shopperInformation
 
         let component = CardComponent(

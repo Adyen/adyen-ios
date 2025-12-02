@@ -14,9 +14,6 @@ internal class AddressLookupSearchViewController: SearchViewController {
     
     private let lookupSearchViewModel: ViewModel
 
-    /// Initializes the address lookup search
-    ///
-    
     internal init(
         viewModel lookupSearchViewModel: ViewModel
     ) {

@@ -24,7 +24,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         
         let expectation = expectation(description: "Lookup provider was called on viewDidLoad")
         
-        let results: [LookupAddressModel] = PostalAddressMocks.all.map {
+        let results: [AddressLookupResult] = PostalAddressMocks.all.map {
             .init(identifier: UUID().uuidString, postalAddress: $0)
         }
         
@@ -185,7 +185,7 @@ class AddressLookupViewControllerTests: XCTestCase {
 
         // Given
         let expectedSearchTerm = "Test"
-        let results: [LookupAddressModel] = PostalAddressMocks.all.map {
+        let results: [AddressLookupResult] = PostalAddressMocks.all.map {
             .init(identifier: UUID().uuidString, postalAddress: $0)
         }
         

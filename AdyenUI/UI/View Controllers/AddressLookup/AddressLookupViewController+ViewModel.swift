@@ -7,7 +7,7 @@
 import Adyen
 import UIKit
 
-public extension AddressLookupViewController {
+package extension AddressLookupViewController {
     
     /// Defining the currently active screen
     internal enum InterfaceState: Equatable {
@@ -53,7 +53,7 @@ public extension AddressLookupViewController {
         ///   - lookupProvider: A closure providing addresses based on a search term
         ///   - completionHandler: A closure that takes an optional address.
         ///    It's the presenters responsibility to dismiss the viewController.
-        public init(
+        package init(
             for addressType: FormAddressPickerItem.AddressType,
             style: AddressLookupStyle = .init(),
             localizationParameters: LocalizationParameters?,

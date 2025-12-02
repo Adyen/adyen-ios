@@ -31,7 +31,7 @@ extension CardViewController {
         private let initialCountry: String
         private let addressViewModelBuilder: AddressViewModelBuilder
         private let presenter: WeakReferenceViewControllerPresenter
-        private let addressMode: CardComponentConfiguration.AddressFormType
+        private let addressMode: BillingAddressMode
         private let scanCardHandler: (() -> Void)?
 
         /// Closure that is called when an event is triggered via the field items.
@@ -49,7 +49,7 @@ extension CardViewController {
             localizationParameters: LocalizationParameters?,
             addressViewModelBuilder: AddressViewModelBuilder,
             presenter: ViewControllerPresenter,
-            addressMode: CardComponentConfiguration.AddressFormType,
+            addressMode: BillingAddressMode,
             scanCardHandler: (() -> Void)?
         ) {
             self.formStyle = formStyle
@@ -69,7 +69,11 @@ extension CardViewController {
         
         internal lazy var billingAddressPickerItem: FormAddressPickerItem? = {
             switch addressMode {
-            case let .lookup(provider):
+            case let .lookup(onLookup, onAddressSelected):
+                let provider = AsyncAddressLookupProvider(
+                    onLookup: onLookup,
+                    onAddressSelected: onAddressSelected
+                )
                 return billingAddressPickerItem(with: provider)
             case .full:
                 return billingAddressPickerItem(with: nil)

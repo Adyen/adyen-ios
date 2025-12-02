@@ -316,21 +316,11 @@ private extension ComponentManager {
     }
 
     func createBancontactComponent(with paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
-        let cardConfiguration = configuration.card
-        let configuration = CardComponentConfiguration(
-            style: configuration.style.formComponent,
-            shopperInformation: configuration.shopperInformation,
-            localizationParameters: configuration.localizationParameters,
-            showsHolderNameField: cardConfiguration.showsHolderNameField,
-            showsStorePaymentMethodField: cardConfiguration.showsStorePaymentMethodField,
-            showsSecurityCodeField: cardConfiguration.showsSecurityCodeField
-        )
-        .stored(cardConfiguration.stored)
-
-        return BCMCComponent(
+        // TODO: these will be also be replaced by the factories, no need to update
+        BCMCComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: CardComponentConfiguration()
         )
     }
 

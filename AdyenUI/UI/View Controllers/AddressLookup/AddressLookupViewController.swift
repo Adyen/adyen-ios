@@ -9,17 +9,16 @@ import UIKit
 
 /// A view controller that allows looking up of addresses via a search term
 /// and also allows manual input of an address
-@_spi(AdyenInternal)
-public class AddressLookupViewController: UINavigationController, AdyenObserver {
+package class AddressLookupViewController: UINavigationController, AdyenObserver {
     
     internal private(set) var viewModel: ViewModel
     
-    public init(viewModel: ViewModel) {
+    package init(viewModel: ViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
-    override public func viewDidLoad() {
+    override package func viewDidLoad() {
         super.viewDidLoad()
         
         updateInterface(for: viewModel.interfaceState)
@@ -29,7 +28,7 @@ public class AddressLookupViewController: UINavigationController, AdyenObserver 
     }
     
     @available(*, unavailable)
-    public required init?(coder aDecoder: NSCoder) {
+    package required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

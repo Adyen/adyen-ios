@@ -47,7 +47,7 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
     ///   - addressViewModelBuilder: The builder to build the Address ViewModel
     ///   - presenter: The presenter to handle view controller presentation
     ///   - lookupProvider: The optional lookup provider
-    public init(
+    package init(
         for addressType: AddressType,
         initialCountry: String,
         supportedCountryCodes: [String]?,

@@ -10,7 +10,7 @@ import UIKit
 extension AddressLookupSearchViewController {
     
     /// The model for ``AddressLookupSearchViewController``
-    struct ViewModel {
+    internal struct ViewModel {
         
         internal let localizationParameters: LocalizationParameters?
         internal let style: AddressLookupSearchStyle
@@ -63,26 +63,29 @@ extension AddressLookupSearchViewController {
         internal func handleLookUp(searchTerm: String, resultHandler: @escaping ([ListItem]) -> Void) {
             
             lookupProvider?.lookUp(searchTerm: searchTerm) { result in
-                
-                let listItems = result.compactMap(listItem(for:))
-                guard !listItems.isEmpty else { return resultHandler([]) }
-                resultHandler([manualEntryListItem] + listItems)
+                DispatchQueue.main.async { [self] in
+                    let listItems = result.compactMap { self.listItem(for: $0) }
+                    guard !listItems.isEmpty else { return resultHandler([]) }
+                    resultHandler([self.manualEntryListItem] + listItems)
+                }
             }
         }
         
-        internal func handleDidSelect(item: ListItem, addressModel: LookupAddressModel) {
+        internal func handleDidSelect(item: ListItem, addressModel: AddressLookupResult) {
             guard let lookupProvider else { return }
             
             item.startLoading()
             
             lookupProvider.complete(incompleteAddress: addressModel) { [weak item] result in
-                item?.stopLoading()
-                
-                switch result {
-                case let .success(address):
-                    self.handleShowForm(with: address)
-                case let .failure(error):
-                    self.handleShowError(error)
+                DispatchQueue.main.async {
+                    item?.stopLoading()
+                    
+                    switch result {
+                    case let .success(address):
+                        self.handleShowForm(with: address)
+                    case let .failure(error):
+                        self.handleShowError(error)
+                    }
                 }
             }
         }
@@ -119,7 +122,7 @@ private extension AddressLookupSearchViewController.ViewModel {
         }
     }
     
-    func listItem(for addressModel: LookupAddressModel) -> ListItem? {
+    func listItem(for addressModel: AddressLookupResult) -> ListItem? {
         
         let address = addressModel.postalAddress
         

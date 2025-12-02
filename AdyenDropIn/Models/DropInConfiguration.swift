@@ -20,6 +20,7 @@
 import Foundation
 import PassKit
 
+// TODO: get rid of duplicate component configs inside dropin. they should be only one specified by merchant
 public extension DropInComponent {
     
     /// Contains the configuration for the drop in component and the embedded payment method components.
@@ -147,6 +148,7 @@ public extension DropInComponent {
         public var showsSecurityCodeField: Bool = true
     }
     
+    // TODO: since these will be removed, changes on card config don't need to be added here
     /// Card Component configuration specific to Drop In Component.
     struct Card: AnyCardComponentConfiguration {
         
@@ -178,9 +180,6 @@ public extension DropInComponent {
         /// Installments options to present to the user.
         public var installmentConfiguration: InstallmentConfiguration?
         
-        /// Billing address fields configurations.
-        public var billingAddress: BillingAddressConfiguration
-        
         /// Configuration of Card component.
         ///
         /// - Parameters:
@@ -205,8 +204,7 @@ public extension DropInComponent {
             socialSecurityNumberMode: CardComponentConfiguration.FieldVisibility = .auto,
             storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
             allowedCardTypes: [CardType]? = nil,
-            installmentConfiguration: InstallmentConfiguration? = nil,
-            billingAddress: BillingAddressConfiguration = .init()
+            installmentConfiguration: InstallmentConfiguration? = nil
         ) {
             self.showsHolderNameField = showsHolderNameField
             self.showsSecurityCodeField = showsSecurityCodeField
@@ -216,21 +214,10 @@ public extension DropInComponent {
             self.koreanAuthenticationMode = koreanAuthenticationMode
             self.socialSecurityNumberMode = socialSecurityNumberMode
             self.installmentConfiguration = installmentConfiguration
-            self.billingAddress = billingAddress
         }
         
         internal var cardComponentConfiguration: CardComponentConfiguration {
-            CardComponentConfiguration(
-                showsHolderNameField: showsHolderNameField,
-                showsStorePaymentMethodField: showsStorePaymentMethodField,
-                showsSecurityCodeField: showsSecurityCodeField,
-                koreanAuthenticationMode: koreanAuthenticationMode,
-                socialSecurityNumberMode: socialSecurityNumberMode,
-                allowedCardTypes: allowedCardTypes
-            )
-            .stored(stored)
-            .installmentConfiguration(installmentConfiguration)
-            .billingAddress(billingAddress)
+            CardComponentConfiguration()
         }
         
     }

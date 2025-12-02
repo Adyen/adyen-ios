@@ -55,6 +55,24 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
             )
         ) {
             ConfigurationConstants.current.cardConfiguration
+                .installmentConfiguration(
+                    InstallmentConfiguration(
+                        defaultOptions: .init(
+                            monthValues: [3, 5, 7],
+                            includesRevolving: false
+                        )
+                    )
+                )
+                .billingAddressMode(
+                    .lookup(
+                        onAddressLookup: { searchTerm in
+                            await MapkitAddressLookupProvider().searchAsync(searchTerm)
+                        },
+                        onAddressSelected: { result in
+                            try await DemoAddressLookupProvider().completeAsync(result)
+                        }
+                    )
+                )
         }
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
@@ -109,22 +127,6 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
             let title = success ? "Success" : "Error"
             self.presenter?.presentAlert(withTitle: title, message: message)
         }
-    }
-}
-
-extension CardComponentExample: CardComponentDelegate {
-
-    func didSubmit(lastFour: String, finalBIN: String, component: CardComponent) {
-        print("Card used: **** **** **** \(lastFour)")
-        print("Final BIN: \(finalBIN)")
-    }
-
-    internal func didChangeBIN(_ value: String, component: CardComponent) {
-        print("Current BIN: \(value)")
-    }
-
-    internal func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent) {
-        print("Current card type: \((value ?? []).reduce("") { "\($0), \($1)" })")
     }
 }
 

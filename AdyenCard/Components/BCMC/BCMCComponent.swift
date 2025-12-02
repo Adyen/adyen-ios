@@ -62,11 +62,10 @@ public final class BCMCComponent: CardComponent {
 private extension CardComponentConfiguration {
     
     func bcmcConfiguration() -> CardComponentConfiguration {
-        var configuration = CardComponentConfiguration(
-            style: style,
-            showsHolderNameField: showsHolderNameField,
-            showsStorePaymentMethodField: showsStorePaymentMethodField
-        )
+        var configuration = CardComponentConfiguration()
+        configuration.style = style
+        configuration.showsHolderNameField = showsHolderNameField
+        configuration.showsStorePaymentMethodField = showsStorePaymentMethodField
         configuration.stored = stored
         configuration.showsSupportedCardLogos = false
         configuration.binLookupType = .bcmc

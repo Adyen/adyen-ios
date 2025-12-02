@@ -11,7 +11,7 @@ import Foundation
 import MapKit
 
 /// Example implementation of an address lookup provider with debouncing and cancelling previous calls
-public class MapkitAddressLookupProvider: AddressLookupProvider {
+public class MapkitAddressLookupProvider {
     
     public init() {}
     
@@ -31,7 +31,7 @@ public class MapkitAddressLookupProvider: AddressLookupProvider {
         }
     }
     
-    public func lookUp(searchTerm: String, resultHandler: @escaping ([LookupAddressModel]) -> Void) {
+    public func lookUp(searchTerm: String, resultHandler: @escaping ([AddressLookupResult]) -> Void) {
         
         // Nil-ing out the last search task which also cancels the previous task if applicable
         searchTask = nil
@@ -51,6 +51,14 @@ public class MapkitAddressLookupProvider: AddressLookupProvider {
         
         searchTask = searchTask(for: searchTerm, completion: resultHandler)
     }
+    
+    func searchAsync(_ searchTerm: String) async -> [AddressLookupResult] {
+        await withCheckedContinuation { continuation in
+            lookUp(searchTerm: searchTerm) { results in
+                continuation.resume(returning: results)
+            }
+        }
+    }
 }
 
 // MARK: - Convenience
@@ -59,7 +67,7 @@ private extension MapkitAddressLookupProvider {
     
     func searchTask(
         for searchTerm: String,
-        completion: @escaping ([LookupAddressModel]) -> Void
+        completion: @escaping ([AddressLookupResult]) -> Void
     ) -> DispatchWorkItem {
         
         var dispatchWorkItem: DispatchWorkItem?
@@ -87,7 +95,7 @@ private extension MapkitAddressLookupProvider {
                     return
                 }
                 
-                let addresses: [LookupAddressModel] = response.mapItems.map {
+                let addresses: [AddressLookupResult] = response.mapItems.map {
                     .init(
                         identifier: UUID().uuidString,
                         postalAddress: .init(

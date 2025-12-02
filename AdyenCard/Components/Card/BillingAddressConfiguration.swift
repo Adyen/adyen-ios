@@ -9,22 +9,33 @@
     @_spi(AdyenInternal) import AdyenUI
 #endif
 
-// TODO: Add a builder type of chaining to address config
+/// The display mode for the billing address form.
+public enum BillingAddressMode {
+    
+    /// Billing address form is not displayed.
+    case none
+    
+    /// Displays a simplified form with only a postal code field.
+    case postalCode
+
+    /// Displays the full billing address form with all address fields.
+    case full
+    
+    /// Displays an address lookup interface that allows the shopper to search for their address.
+    ///
+    /// - Parameters:
+    ///   - onAddressLookup: Called when the shopper enters a search term. Returns matching addresses.
+    ///   - onAddressSelected: Called when the shopper selects an address from the search results.
+    ///     Use this to fetch the complete address details if the initial result was partial.
+    ///     If not provided, the selected address is used as-is.
+    case lookup(
+        onAddressLookup: (String) async -> [AddressLookupResult],
+        onAddressSelected: ((AddressLookupResult) async throws -> PostalAddress)? = nil
+    )
+}
+
 /// Billing address fields configurations
-public struct BillingAddressConfiguration {
-    
-    /// Initializes a new instance of `BillingAddressConfiguration`.
-    public init() { /* Empty initializer */ }
-    
-    /// Indicates the display mode of the billing address form. Defaults to none.
-    public var mode: CardComponentConfiguration.AddressFormType = .none
-    
-    /// List of ISO country codes that is supported for the billing address.
-    /// When nil, all countries are provided.
-    public var countryCodes: [String]?
-    
-    /// Indicates the requirement level of a field.
-    public var requirementPolicy: RequirementPolicy = .required
+package struct BillingAddressConfiguration {
     
     /// Indicates the requirement level of a field.
     public enum RequirementPolicy {
@@ -39,6 +50,23 @@ public struct BillingAddressConfiguration {
         case optionalForCardTypes(Set<CardType>)
     }
     
+    /// Initializes a new instance of `BillingAddressConfiguration`.
+    package init() {
+        self.mode = .none
+        self.countryCodes = nil
+        self.requirementPolicy = .required
+    }
+    
+    /// Indicates the display mode of the billing address form.
+    package var mode: BillingAddressMode = .none
+    
+    /// List of ISO country codes that is supported for the billing address.
+    /// When nil, all countries are provided.
+    package var countryCodes: [String]?
+    
+    /// Indicates the requirement level of a field.
+    package var requirementPolicy: RequirementPolicy = .required
+    
     package func isOptional(for cardTypes: [CardType]) -> Bool {
         switch requirementPolicy {
         case .required:
@@ -49,25 +77,4 @@ public struct BillingAddressConfiguration {
             return !optionalCardTypes.isDisjoint(with: cardTypes)
         }
     }
-    
-}
-
-extension CardComponentConfiguration {
-    
-    /// The mode of the address form of the card component
-    public enum AddressFormType {
-        
-        /// Display a form item that allows address lookup and entering the address on a separate screen
-        case lookup(provider: AddressLookupProvider)
-
-        /// Display full address form
-        case full
-        
-        /// Display simple form with only zip code field
-        case postalCode
-
-        /// Do not display address form
-        case none
-    }
-
 }

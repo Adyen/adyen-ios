@@ -44,7 +44,7 @@ internal struct CardAnalyticsConfiguration: AnalyticsStringDictionaryConvertible
     }
 }
 
-private extension CardComponentConfiguration.AddressFormType {
+private extension BillingAddressMode {
     var analyticsDescription: String? {
         switch self {
         case .lookup:

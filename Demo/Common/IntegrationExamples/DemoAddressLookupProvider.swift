@@ -9,7 +9,7 @@ import AdyenUI
 import Contacts
 
 /// Example implementation of an address lookup provider with debouncing and cancelling previous calls
-public class DemoAddressLookupProvider: AddressLookupProvider {
+public class DemoAddressLookupProvider {
     
     private struct AddressCompletionError: LocalizedError {
         var errorDescription: String? { "Could not complete address" }
@@ -44,7 +44,7 @@ public class DemoAddressLookupProvider: AddressLookupProvider {
         }
     }
     
-    public func lookUp(searchTerm: String, resultHandler: @escaping ([LookupAddressModel]) -> Void) {
+    public func lookUp(searchTerm: String, resultHandler: @escaping ([AddressLookupResult]) -> Void) {
         
         // Nil-ing out the last search task which also cancels the previous task if applicable
         searchTask = nil
@@ -66,7 +66,7 @@ public class DemoAddressLookupProvider: AddressLookupProvider {
     }
     
     // Optional implementation to fetch the full address for an incomplete version
-    public func complete(incompleteAddress: LookupAddressModel, resultHandler: @escaping (Result<PostalAddress, Error>) -> Void) {
+    public func complete(incompleteAddress: AddressLookupResult, resultHandler: @escaping (Result<PostalAddress, Error>) -> Void) {
         
         var dispatchWorkItem: DispatchWorkItem?
         
@@ -96,6 +96,22 @@ public class DemoAddressLookupProvider: AddressLookupProvider {
         
         completionTask = dispatchWorkItem!
     }
+    
+    func searchAsync(_ searchTerm: String) async -> [AddressLookupResult] {
+        await withCheckedContinuation { continuation in
+            lookUp(searchTerm: searchTerm) { results in
+                continuation.resume(returning: results)
+            }
+        }
+    }
+
+    func completeAsync(_ address: AddressLookupResult) async throws -> PostalAddress {
+        try await withCheckedThrowingContinuation { continuation in
+            complete(incompleteAddress: address) { result in
+                continuation.resume(with: result)
+            }
+        }
+    }
 }
 
 // MARK: - Convenience
@@ -104,7 +120,7 @@ private extension DemoAddressLookupProvider {
     
     func searchTask(
         for searchTerm: String,
-        completion: @escaping ([LookupAddressModel]) -> Void
+        completion: @escaping ([AddressLookupResult]) -> Void
     ) -> DispatchWorkItem {
         
         var dispatchWorkItem: DispatchWorkItem?
@@ -139,7 +155,7 @@ private extension DemoAddressLookupProvider {
     
     static let failingDummyAddressIdentifier = "failingDummyAddressIdentifier"
     
-    static let dummyAddresses: [LookupAddressModel] = [
+    static let dummyAddresses: [AddressLookupResult] = [
         .init(
             identifier: "1",
             postalAddress: .init(
@@ -192,7 +208,7 @@ private extension DemoAddressLookupProvider {
         )
     ]
     
-    func addresses(for searchTerm: String) -> [LookupAddressModel] {
+    func addresses(for searchTerm: String) -> [AddressLookupResult] {
         Self.dummyAddresses.filter { $0.postalAddress.formatted.range(of: searchTerm, options: .caseInsensitive) != nil }
     }
     
