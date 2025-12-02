@@ -44,9 +44,9 @@ public struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfig
         self.billingAddressCountryCodes = ["US", "PR"]
         self.theme = .init()
     }
+}
 
-    // MARK: - Builder Methods
-
+extension ACHDirectDebitComponentConfiguration {
     /// Sets the shopper's information to be prefilled.
     /// - Parameter shopperInformation: The shopper's information to prefill.
     /// - Returns: A modified configuration with the updated shopper information.
