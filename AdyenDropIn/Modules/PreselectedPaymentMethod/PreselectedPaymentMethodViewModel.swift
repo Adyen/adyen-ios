@@ -20,8 +20,7 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
     internal weak var router: PreselectedPaymentMethodRouting?
     private let component: PaymentComponent
     private let preselectedPaymentMethodComponent: PreselectedPaymentMethodComponent
-    private weak var dropInComponent: DropInComponent?
-    private weak var dropInComponentDelegate: DropInComponentDelegate?
+    private var dropInFlowManager: DropInFlowManaging
 
     // MARK: - Initializers
 
@@ -29,21 +28,20 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
         component: PaymentComponent,
         title: String,
         configuration: DropInComponent.Configuration,
-        dropInComponent: DropInComponent,
-        dropInComponentDelegate: DropInComponentDelegate?
+        dropInFlowManager: DropInFlowManaging
     ) {
         let style = configuration.style
         self.component = component
+        self.dropInFlowManager = dropInFlowManager
         self.preselectedPaymentMethodComponent = PreselectedPaymentMethodComponent(
             component: component,
             title: title,
             style: style.formComponent,
             listItemStyle: style.listComponent.listItem
         )
+        // TODO: - Localization parameters need to be moved to configuration level.
         self.preselectedPaymentMethodComponent.localizationParameters = configuration.localizationParameters
         self.preselectedPaymentMethodComponent.delegate = self
-        self.dropInComponent = dropInComponent
-        self.dropInComponentDelegate = dropInComponentDelegate
     }
 
     // MARK: - PreselectedPaymentMethodViewModelProtocol
@@ -53,9 +51,8 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
     }
 
     internal func cancel() {
-        guard let dropInComponent else { return }
-        dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
-        
+        dropInFlowManager.cancel(component: component)
+
         stopLoading()
         router?.dismiss(completion: nil)
     }
@@ -77,7 +74,7 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
         
         switch component {
         case let component as PresentableComponent:
-            router?.present(component: component) { [weak self] in
+            router?.present(paymentComponent: component) { [weak self] in
                 self?.stopLoading()
             }
         case let component as PaymentInitiable:
@@ -105,20 +102,32 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        guard let dropInComponent else { return }
-        dropInComponentDelegate?.didSubmit(data, from: component, in: dropInComponent)
+        dropInFlowManager.submit(data, from: component, actionPresenter: self)
     }
     
     internal func didFail(
         with error: any Error,
         from component: any PaymentComponent
     ) {
-        guard let dropInComponent else { return }
-        
         if case ComponentError.cancelled = error {
             cancel()
         } else {
-            dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
+            dropInFlowManager.fail(with: error, from: component)
         }
+    }
+}
+
+// MARK: - ActionPresenter
+
+extension PreselectedPaymentMethodViewModel: ActionPresenter {
+
+    internal func present(actionComponent: any PresentableComponent) {
+        router?.present(actionComponent: actionComponent) { [weak self] in
+            self?.stopLoading()
+        }
+    }
+
+    internal func didCancel(actionComponent: any ActionComponent) {
+        stopLoading()
     }
 }

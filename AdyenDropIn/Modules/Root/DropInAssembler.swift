@@ -18,8 +18,7 @@ internal struct DropInAssembler {
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
     private let componentManager: ComponentManager
-    private let dropInComponent: DropInComponent
-    private let dropInComponentDelegate: DropInComponentDelegate?
+    private let dropInFlowManager: DropInFlowManaging
     private let partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
@@ -29,17 +28,15 @@ internal struct DropInAssembler {
         paymentMethods: PaymentMethods,
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
-        dropInComponent: DropInComponent,
-        dropInComponentDelegate: DropInComponentDelegate?,
+        dropInFlowManager: DropInFlowManaging,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.title = title
         self.paymentMethods = paymentMethods
         self.context = context
         self.configuration = configuration
-        self.dropInComponent = dropInComponent
-        self.dropInComponentDelegate = dropInComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
+        self.dropInFlowManager = dropInFlowManager
         self.componentManager = ComponentManager(
             paymentMethods: paymentMethods,
             context: context,
@@ -62,9 +59,7 @@ internal struct DropInAssembler {
             apiClient: apiClient,
             paymentMethods: paymentMethods,
             context: context,
-            configuration: configuration,
-            dropInComponent: dropInComponent,
-            dropInComponentDelegate: dropInComponentDelegate
+            configuration: configuration
         )
 
         let router = DropInRouter(
@@ -73,7 +68,6 @@ internal struct DropInAssembler {
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler
         )
-        viewModel.router = router
 
         return router
     }
@@ -93,10 +87,8 @@ internal struct DropInAssembler {
         PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler,
-            context: context,
             configuration: configuration,
-            dropInComponent: dropInComponent,
-            dropInComponentDelegate: dropInComponentDelegate,
+            dropInFlowManager: dropInFlowManager,
             partialPaymentDelegate: partialPaymentDelegate
         )
     }
@@ -107,18 +99,15 @@ internal struct DropInAssembler {
             componentManager: componentManager,
             context: context,
             configuration: configuration,
-            dropInComponent: dropInComponent,
-            dropInComponentDelegate: dropInComponentDelegate,
+            dropInFlowManager: dropInFlowManager,
             partialPaymentDelegate: partialPaymentDelegate
         )
     }
     
     private var componentContainerAssembler: ComponentContainerAssemblerProtocol {
         ComponentContainerAssembler(
-            context: context,
             configuration: configuration,
-            dropInComponent: dropInComponent,
-            dropInComponentDelegate: dropInComponentDelegate,
+            dropInFlowManager: dropInFlowManager,
             partialPaymentDelegate: partialPaymentDelegate
         )
     }

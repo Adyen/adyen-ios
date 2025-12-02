@@ -20,25 +20,19 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
 
     // MARK: - Properties
 
-    private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
-    private let dropInComponent: DropInComponent
-    private let dropInComponentDelegate: DropInComponentDelegate?
+    private let dropInFlowManager: DropInFlowManaging
     private let partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
 
     internal init(
-        context: AdyenContext,
         configuration: DropInComponent.Configuration,
-        dropInComponent: DropInComponent,
-        dropInComponentDelegate: DropInComponentDelegate?,
+        dropInFlowManager: DropInFlowManaging,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
-        self.context = context
         self.configuration = configuration
-        self.dropInComponent = dropInComponent
-        self.dropInComponentDelegate = dropInComponentDelegate
+        self.dropInFlowManager = dropInFlowManager
         self.partialPaymentDelegate = partialPaymentDelegate
     }
 
@@ -51,10 +45,8 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
     ) -> Router {
         let viewModel = ComponentContainerViewModel(
             component: component,
-            context: context,
             configuration: configuration,
-            dropInComponent: dropInComponent,
-            dropInComponentDelegate: dropInComponentDelegate,
+            dropInFlowManager: dropInFlowManager,
             partialPaymentDelegate: partialPaymentDelegate,
             onCancel: onCancel
         )
