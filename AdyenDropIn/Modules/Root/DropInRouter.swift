@@ -10,10 +10,7 @@ import Foundation
 import SafariServices
 import UIKit
 
-internal protocol DropInRouting: Router, AnyObject {
-    func presentActionComponent(_ component: any PresentableComponent)
-    func handle(action: Action)
-}
+internal protocol DropInRouting: Router, AnyObject {}
 
 internal class DropInRouter: DropInRouting {
     
@@ -42,30 +39,7 @@ internal class DropInRouter: DropInRouting {
         self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
     }
-    
-    // MARK: - DropInRouting
-    
-    internal func handle(action: Action) {
-        viewModel.handle(action: action)
-    }
-    
-    internal func presentActionComponent(_ component: any PresentableComponent) {
-        let actionViewController = component.viewController
-        let viewControllerToPresent: UIViewController
-        
-        if actionViewController is SFSafariViewController {
-            viewControllerToPresent = actionViewController
-        } else {
-            viewControllerToPresent = ActionWrapperViewController(
-                rootViewController: component.viewController
-            ) { [weak self] in
-                // TODO: - Handle action cancellation - stopLoading in component
-            }
-        }
-        
-        latestChildRouter.rootViewController.present(viewControllerToPresent, animated: true)
-    }
-    
+
     // MARK: - Private
     
     private func resolveRootView() -> UIViewController {
