@@ -237,6 +237,82 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertEqual(component.paymentMethod.type, .blik)
     }
     
+    // MARK: - ACH Direct Debit Component Tests
+
+    func test_build_withACHPaymentMethod_returnsACHComponent() throws {
+        // Given
+        let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
+
+        // When
+        let component = CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration
+        )
+
+        // Then
+        XCTAssertEqual(component.paymentMethod.type, .achDirectDebit)
+        XCTAssertEqual(component.paymentMethod.name, paymentMethod.name)
+
+        let achComponent = component as? ACHDirectDebitComponent
+        XCTAssertNotNil(achComponent, "Component should be ACHDirectDebitComponent")
+    }
+
+    // MARK: - Theme Propagation Tests
+
+    func test_build_withCustomTheme_propagatesThemeToACHComponent() throws {
+        // Given
+        let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
+        let customTheme = AdyenTheme()
+            .colors(AdyenColors(primary: .systemPink))
+
+        checkoutConfiguration = CheckoutConfiguration(context: context)
+        checkoutConfiguration.theme = customTheme
+
+        // When
+        let component = CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration
+        )
+
+        // Then
+        guard let achComponent = component as? ACHDirectDebitComponent else {
+            XCTFail("Component should be ACHDirectDebitComponent")
+            return
+        }
+        XCTAssertEqual(
+            achComponent.configuration.theme.colors.primary,
+            UIColor.systemPink,
+            "Theme should be propagated from CheckoutConfiguration to component"
+        )
+    }
+
+    func test_build_withCustomTheme_propagatesThemeToBLIKComponent() throws {
+        // Given
+        let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
+        let customTheme = AdyenTheme()
+            .colors(AdyenColors(primary: .systemPink))
+
+        checkoutConfiguration = CheckoutConfiguration(context: context)
+        checkoutConfiguration.theme = customTheme
+
+        // When
+        let component = CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration
+        )
+
+        // Then
+        guard let blikComponent = component as? BLIKComponent else {
+            XCTFail("Component should be BLIKComponent")
+            return
+        }
+        XCTAssertEqual(
+            blikComponent.configuration.theme.colors.primary,
+            UIColor.systemPink,
+            "Theme should be propagated from CheckoutConfiguration to component"
+        )
+    }
+
     // MARK: - Helper Methods
     
     private func createBLIKPaymentMethod() -> BLIKPaymentMethod? {
@@ -245,5 +321,13 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             "name": "BLIK"
         ]
         return try? AdyenCoder.decode(dict) as BLIKPaymentMethod
+    }
+    
+    private func createACHPaymentMethod() -> ACHDirectDebitPaymentMethod? {
+        let dict: [String: Any] = [
+            "type": "ach",
+            "name": "ACH Direct Debit"
+        ]
+        return try? AdyenCoder.decode(dict) as ACHDirectDebitPaymentMethod
     }
 }

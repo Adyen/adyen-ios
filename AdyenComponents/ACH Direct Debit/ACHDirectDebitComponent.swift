@@ -14,7 +14,7 @@
 import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.
-public final class ACHDirectDebitComponent: PaymentComponent,
+package final class ACHDirectDebitComponent: PaymentComponent,
     PaymentAware,
     PresentableComponent,
     LoadingComponent {
@@ -30,34 +30,32 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     }
     
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
+    package let context: AdyenContext
     
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         achDirectDebitPaymentMethod
     }
 
-    public weak var delegate: PaymentComponentDelegate? {
+    package weak var delegate: PaymentComponentDelegate? {
         didSet {
             if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
                storePaymentMethodAware.isSession {
-                configuration.showsStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
+                configuration.showStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
             }
         }
     }
     
     /// Component configuration
-    public var configuration: Configuration
+    package var configuration: ACHDirectDebitComponentConfiguration
 
-    public lazy var viewController: UIViewController = SecuredViewController(
+    package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
     )
 
-    public let requiresModalPresentation: Bool = true
+    package let requiresModalPresentation: Bool = true
     
-    @_spi(AdyenInternal)
-    public let publicKeyProvider: AnyPublicKeyProvider
+    package let publicKeyProvider: AnyPublicKeyProvider
     
     private var defaultCountryCode: String {
         payment?.countryCode ?? configuration.billingAddressCountryCodes.first ?? "US"
@@ -72,10 +70,10 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     ///   - paymentMethod: The ACH Direct Debit payment method.
     ///   - context: The context object for this component.
     ///   - configuration: Configuration for the component.
-    public convenience init(
+    package convenience init(
         paymentMethod: ACHDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: ACHDirectDebitComponentConfiguration = .init()
     ) {
         self.init(
             paymentMethod: paymentMethod,
@@ -88,7 +86,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     internal init(
         paymentMethod: ACHDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init(),
+        configuration: ACHDirectDebitComponentConfiguration = .init(),
         publicKeyProvider: AnyPublicKeyProvider
     ) {
         self.configuration = configuration
@@ -98,7 +96,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
         self.publicKeyProvider = publicKeyProvider
     }
     
-    public func stopLoading() {
+    package func stopLoading() {
         payButton.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
@@ -149,7 +147,7 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     }
     
     private var storePayment: Bool? {
-        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : nil
+        configuration.showStorePaymentMethodField ? storeDetailsItem.value : nil
     }
     
     // MARK: - Form Items
@@ -303,10 +301,10 @@ public final class ACHDirectDebitComponent: PaymentComponent,
         formViewController.append(bankRoutingNumberItem)
         formViewController.append(FormSpacerItem())
         
-        if configuration.showsBillingAddress {
+        if configuration.showBillingAddress {
             formViewController.append(billingAddressItem)
         }
-        if configuration.showsStorePaymentMethodField {
+        if configuration.showStorePaymentMethodField {
             formViewController.append(storeDetailsItem)
         }
         
@@ -319,13 +317,11 @@ public final class ACHDirectDebitComponent: PaymentComponent,
     }()
 }
 
-@_spi(AdyenInternal)
 extension ACHDirectDebitComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
 extension ACHDirectDebitComponent: ViewControllerDelegate {
 
-    public func viewDidLoad(viewController: UIViewController) {
+    package func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
         sendDidLoadEvent()
         // just cache the public key value
@@ -333,104 +329,28 @@ extension ACHDirectDebitComponent: ViewControllerDelegate {
     }
 }
 
-/// Describes any configuration for the ACH Direct Debit component.
-public protocol AnyACHDirectDebitConfiguration {
-    
-    /// Indicates if the field for storing the card payment method should be displayed in the form.
-    var showsStorePaymentMethodField: Bool { get }
-    
-    /// Determines whether the billing address should be displayed or not.
-    var showsBillingAddress: Bool { get }
-    
-    /// List of ISO country codes that is supported for the billing address.
-    var billingAddressCountryCodes: [String] { get }
-}
-
-extension ACHDirectDebitComponent {
-    
-    /// Configuration for the ACH Direct Debit Component
-    public struct Configuration: AnyACHDirectDebitConfiguration, AnyPersonalInformationConfiguration {
-
-        /// Describes the component's UI style.
-        public var style: FormComponentStyle
-
-        /// The theming to apply to the component's UI.
-        package var theme: AdyenTheme = .init()
-
-        /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
-        internal let showsSubmitButton: Bool
-
-        /// The shopper's information to be prefilled.
-        public var shopperInformation: PrefilledShopperInformation?
-        
-        public var localizationParameters: LocalizationParameters?
-        
-        /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to `true`.
-        public var showsStorePaymentMethodField: Bool
-        
-        /// Determines whether the billing address should be displayed or not.
-        /// Defaults to `true`.
-        public var showsBillingAddress: Bool
-        
-        /// List of ISO country codes that is supported for the billing address.
-        /// Defaults to ["US", "PR"].
-        public var billingAddressCountryCodes: [String]
-
-        /// Initializes the configuration for ACH Direct Debit Component.
-        /// - Parameters:
-        ///   - style: The UI style of the component.
-        ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
-        ///   Defaults to`true`.
-        ///   - shopperInformation: The shopper's information to be prefilled.
-        ///   - localizationParameters: Localization parameters.
-        ///   - showsBillingAddress: Determines whether the billing address should be displayed or not.
-        ///   Defaults to `true`.
-        ///   - billingAddressCountryCodes: ISO country codes that is supported for the billing address.
-        ///   Defaults to ["US", "PR"].
-        public init(
-            style: FormComponentStyle = FormComponentStyle(),
-            showsSubmitButton: Bool = true,
-            shopperInformation: PrefilledShopperInformation? = nil,
-            localizationParameters: LocalizationParameters? = nil,
-            showsStorePaymentMethodField: Bool = true,
-            showsBillingAddress: Bool = true,
-            billingAddressCountryCodes: [String] = ["US", "PR"]
-        ) {
-            self.style = style
-            self.showsSubmitButton = showsSubmitButton
-            self.shopperInformation = shopperInformation
-            self.localizationParameters = localizationParameters
-            self.showsStorePaymentMethodField = showsStorePaymentMethodField
-            self.showsBillingAddress = showsBillingAddress
-            self.billingAddressCountryCodes = billingAddressCountryCodes
-        }
-    }
-}
-
-@_spi(AdyenInternal)
 extension ACHDirectDebitComponent: ViewControllerPresenter {
     
-    public func presentViewController(_ viewController: UIViewController, animated: Bool) {
+    package func presentViewController(_ viewController: UIViewController, animated: Bool) {
         self.viewController.presentViewController(viewController, animated: animated)
     }
     
-    public func dismissViewController(animated: Bool) {
+    package func dismissViewController(animated: Bool) {
         self.viewController.dismissViewController(animated: animated)
     }
 }
 
-@_spi(AdyenInternal)
 extension ACHDirectDebitComponent: PublicKeyConsumer {}
 
 // MARK: - SubmitCustomizable
 
 extension ACHDirectDebitComponent: SubmittableComponent {
 
-    public func submit() {
+    package func submit() {
         didSelectSubmitButton()
     }
 
-    public func validate() -> Bool {
+    package func validate() -> Bool {
         formViewController.validate()
     }
 }

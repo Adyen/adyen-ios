@@ -50,7 +50,7 @@ public struct CheckoutConfiguration {
     package let context: AdyenContext
     
     package var theme: AdyenTheme
-    
+
     /// Creates a CheckoutConfiguration instance.
     /// - Parameters:
     ///   - environment: The environment to retrieve internal resources from.
@@ -59,7 +59,6 @@ public struct CheckoutConfiguration {
     ///   - content: Configuration builder to provide the desired configuration instances.
     ///   See https://docs.adyen.com/user-management/client-side-authentication for more information.
     /// - Throws: `ClientKeyError.invalidClientKey` if the client key is invalid.
-    // swiftlint:disable vertical_parameter_alignment
     public init(
         environment: Environment,
         amount: Amount,
