@@ -40,10 +40,9 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() throws {
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
 
-        let config = ACHDirectDebitComponentConfiguration(
-            localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil),
-            billingAddressCountryCodes: ["US", "UK"]
-        )
+        let config = ACHDirectDebitComponentConfiguration()
+            .localizationParameters(LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
+            .billingAddressCountryCodes(["US", "UK"])
         let sut = ACHDirectDebitComponent(
             paymentMethod: method,
             context: context,
@@ -76,9 +75,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     
     func testUIConfiguration() {
         // Given - use TestTheme helper for distinctive, verifiable styling
-        var configuration = ACHDirectDebitComponentConfiguration(billingAddressCountryCodes: [
-            "US", "UK"
-        ])
+        var configuration = ACHDirectDebitComponentConfiguration().billingAddressCountryCodes(["US", "UK"])
         configuration.theme = TestTheme.distinctive()
 
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
@@ -115,10 +112,9 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testPrefillInfo() throws {
         // Given
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
-        let config = ACHDirectDebitComponentConfiguration(
-            shopperInformation: shopperInformation,
-            billingAddressCountryCodes: ["US", "UK"]
-        )
+        let config = ACHDirectDebitComponentConfiguration()
+            .shopperInformation(shopperInformation)
+            .billingAddressCountryCodes(["US", "UK"])
         let sut = ACHDirectDebitComponent(
             paymentMethod: method,
             context: context,
@@ -139,7 +135,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     
     func testBigTitle() {
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
-        let config = ACHDirectDebitComponentConfiguration(billingAddressCountryCodes: ["US", "UK"])
+        let config = ACHDirectDebitComponentConfiguration().billingAddressCountryCodes(["US", "UK"])
         let sut = ACHDirectDebitComponent(
             paymentMethod: method,
             context: context,
@@ -156,7 +152,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     
     func testRequiresModalPresentation() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
-        let config = ACHDirectDebitComponentConfiguration(billingAddressCountryCodes: ["US", "UK"])
+        let config = ACHDirectDebitComponentConfiguration().billingAddressCountryCodes(["US", "UK"])
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -168,7 +164,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
     func testStopLoading() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
-        let config = ACHDirectDebitComponentConfiguration(billingAddressCountryCodes: ["US", "UK"])
+        let config = ACHDirectDebitComponentConfiguration().billingAddressCountryCodes(["US", "UK"])
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -213,7 +209,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: .init(shopperInformation: shopperInformation, showsBillingAddress: false),
+            configuration: ACHDirectDebitComponentConfiguration().shopperInformation(shopperInformation).showsBillingAddress(false),
             publicKeyProvider: PublicKeyProviderMock()
         )
 
@@ -265,7 +261,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: .init(showsBillingAddress: false),
+            configuration: ACHDirectDebitComponentConfiguration().showsBillingAddress(false),
             publicKeyProvider: PublicKeyProviderMock()
         )
 
@@ -282,7 +278,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testSubmitShouldCallPaymentDelegateDidSubmit() throws {
         // Given
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
-        let configuration = ACHDirectDebitComponentConfiguration(showsBillingAddress: false)
+        let configuration = ACHDirectDebitComponentConfiguration().showsBillingAddress(false)
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -320,10 +316,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testValidateWithValidInputSubmitShouldReturnFormViewControllerValidateResult() throws {
         // Given
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
-        let configuration = ACHDirectDebitComponentConfiguration(
-            showsSubmitButton: false,
-            showsBillingAddress: false
-        )
+        let configuration = ACHDirectDebitComponentConfiguration().showsBillingAddress(false)
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -355,10 +348,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testValidateWithInvalidInputSubmitShouldReturnFormViewControllerValidateResult() throws {
         // Given
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
-        let configuration = ACHDirectDebitComponentConfiguration(
-            showsSubmitButton: false,
-            showsBillingAddress: false
-        )
+        let configuration = ACHDirectDebitComponentConfiguration().showsBillingAddress(false)
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
