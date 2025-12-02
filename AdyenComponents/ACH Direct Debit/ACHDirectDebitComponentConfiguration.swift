@@ -84,11 +84,11 @@ extension ACHDirectDebitComponentConfiguration {
     }
 
     /// Sets the list of ISO country codes supported for the billing address.
-    /// - Parameter codes: An array of ISO country codes.
+    /// - Parameter billingAddressCountryCodes: An array of ISO country codes.
     /// - Returns: A modified configuration with the updated country codes.
-    public func billingAddressCountryCodes(_ codes: [String]) -> Self {
+    public func billingAddressCountryCodes(_ billingAddressCountryCodes: [String]) -> Self {
         var config = self
-        config.billingAddressCountryCodes = codes
+        config.billingAddressCountryCodes = billingAddressCountryCodes
         return config
     }
 }
