@@ -71,7 +71,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     /// - Parameters:
     ///   - paymentMethod: The ACH Direct Debit payment method.
     ///   - context: The context object for this component.
-    ///   - configuration: ACHDirectDebitComponentConfiguration for the component.
+    ///   - configuration: Configuration for the component.
     package convenience init(
         paymentMethod: ACHDirectDebitPaymentMethod,
         context: AdyenContext,
