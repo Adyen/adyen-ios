@@ -32,6 +32,28 @@ CheckoutConfiguration (public API)
 
 - **Component classes** → `package` access (created through `CheckoutComponentBuilder`)
 - **Configuration structs** → `public` access (used in `CheckoutConfiguration` by integrators)
+- **Configuration properties** → `package` access (set by framework internally)
+- **Configuration builder methods** → `public` access (used by SDK integrators)
+
+### Replacing `@_spi(AdyenInternal)` with `package`
+
+For component classes and members, replace SPI attributes with package access:
+
+```swift
+// Before
+@_spi(AdyenInternal)
+public let context: AdyenContext
+
+@_spi(AdyenInternal)
+extension YourComponent: TrackableComponent {}
+
+// After
+package let context: AdyenContext
+
+extension YourComponent: TrackableComponent {}  // Remove @_spi attribute
+```
+
+**Keep** `@_spi(AdyenInternal) import` statements to access internal SPI types from Adyen/AdyenUI modules.
 
 ---
 
@@ -43,7 +65,7 @@ Create a standalone configuration struct in its own file (e.g., `YourComponentCo
 
 ### Step 2: Conform Configuration to `CheckoutComponentConfiguration`
 
-Update your component's `Configuration` struct to conform to the protocol:
+Update your component's `Configuration` struct to conform to the protocol. All properties should be `package` access, with `public` builder methods for SDK users.
 
 ```swift
 // Before (nested in component)
@@ -56,22 +78,53 @@ extension YourComponent {
 }
 
 // After (standalone in YourComponentConfiguration.swift)
-public struct YourComponentConfiguration: CheckoutComponentConfiguration {
+public struct YourComponentConfiguration: AnyXXXConfiguration, CheckoutComponentConfiguration {
 
     package let componentType: CheckoutComponentType = .payment(.yourPaymentType)
+    package var style: FormComponentStyle
     package var theme: AdyenTheme = .init()
-    package var showsSubmitButton: Bool  // Change: internal let → package var
+    package var showsSubmitButton: Bool
+    package var shopperInformation: PrefilledShopperInformation?
+    package var localizationParameters: LocalizationParameters?
+    // ... other properties as package var
 
-    public var style: FormComponentStyle
-    // ...
+    /// Minimal initializer with defaults
+    public init() {
+        self.style = FormComponentStyle()
+        self.showsSubmitButton = true
+        self.shopperInformation = nil
+        self.localizationParameters = nil
+        // ... set all defaults
+    }
+
+    // MARK: - Builder Methods
+
+    /// Sets the shopper's information to be prefilled.
+    public func shopperInformation(_ shopperInformation: PrefilledShopperInformation?) -> Self {
+        var config = self
+        config.shopperInformation = shopperInformation
+        return config
+    }
+
+    /// Sets the localization parameters.
+    public func localizationParameters(_ localizationParameters: LocalizationParameters?) -> Self {
+        var config = self
+        config.localizationParameters = localizationParameters
+        return config
+    }
+
+    // ... add builder methods for other configurable properties
 }
 ```
 
 **Key changes:**
 - Add `CheckoutComponentConfiguration` conformance
+- All properties are `package` (not `public`)
 - Add `componentType` property with correct `PaymentMethodType`
-- Add `theme` property (package access)
+- Add `theme` property (`package var`)
 - Change `showsSubmitButton` from `internal let` to `package var`
+- Add `public init()` with defaults
+- Add `public` builder methods for SDK user configuration
 
 ### Step 3: Create Component Factory
 
@@ -153,6 +206,31 @@ let formViewController = FormViewController(
 )
 ```
 
+### Step 6: Internal vs External Configuration Usage
+
+**Internal code** (ComponentManager/DropIn) has `package` access, so use direct property assignment:
+
+```swift
+// In ComponentManager+PaymentComponentBuilder.swift
+var config = YourComponentConfiguration()
+config.shopperInformation = configuration.shopperInformation
+config.localizationParameters = configuration.localizationParameters
+config.showsStorePaymentMethodField = configuration.yourComponent.showsStorePaymentMethodField
+// ... assign other properties directly
+```
+
+**External/SDK users** use the public builder methods:
+
+```swift
+// SDK user code
+let config = YourComponentConfiguration()
+    .shopperInformation(shopperInfo)
+    .localizationParameters(locParams)
+    .showsBillingAddress(true)
+```
+
+This avoids struct copying overhead in internal code while providing a fluent API for SDK users.
+
 ---
 
 ## Part 2: Testing
@@ -219,7 +297,7 @@ final class YourComponentFactoryTests: XCTestCase {
         // Given
         let paymentMethod = try XCTUnwrap(createPaymentMethod())
         var configuration = YourComponentConfiguration()
-        configuration.showsSubmitButton = false
+        configuration.showsSubmitButton = false  // Works because @testable import gives package access
 
         // When
         let component = sut.create(
@@ -418,14 +496,15 @@ extension UIViewController {
 ```swift
 func testUIConfiguration() {
     // Given - use TestTheme helper for distinctive, verifiable styling
-    var configuration = YourComponent.Configuration()
+    var configuration = YourComponentConfiguration()
     configuration.theme = TestTheme.distinctive()
 
     let paymentMethod = YourPaymentMethod(type: .yourPaymentType, name: "Test")
     let sut = YourComponent(
         paymentMethod: paymentMethod,
         context: context,
-        configuration: configuration
+        configuration: configuration,
+        publicKeyProvider: PublicKeyProviderMock()  // if needed
     )
 
     setupRootViewController(sut.viewController)
@@ -470,12 +549,18 @@ func testUIConfiguration() {
 ### Main Codebase
 - [ ] Configuration in separate file (standalone struct, not nested)
 - [ ] Configuration conforms to `CheckoutComponentConfiguration`
+- [ ] Configuration properties are `package` (not `public`)
+- [ ] Configuration has `public init()` with defaults
+- [ ] Configuration has `public` builder methods for SDK users
 - [ ] Has `componentType` property with correct `PaymentMethodType`
 - [ ] Has `theme` property (`package var`)
 - [ ] Has `showsSubmitButton` as `package var`
 - [ ] Theme is passed to `FormViewController`
 - [ ] Factory created implementing `PaymentComponentFactory`
 - [ ] Factory registered in `CheckoutComponentBuilder`
+- [ ] ComponentManager uses direct property assignment (not builder methods)
+- [ ] Replace `@_spi(AdyenInternal) public` with `package` on component members
+- [ ] Remove `@_spi(AdyenInternal)` from extension conformances
 
 ### Testing
 - [ ] Factory unit tests created
@@ -508,6 +593,9 @@ var sut: YourComponentFactory!
 ---
 
 ## References
+
+- **ACH Configuration:** `AdyenComponents/ACH Direct Debit/ACHDirectDebitComponentConfiguration.swift`
+- **ACH Component:** `AdyenComponents/ACH Direct Debit/ACHDirectDebitComponent.swift`
 
 - **BLIK Factory:** `AdyenComponents/BLIK/BLIKComponentFactory.swift`
 - **BLIK Factory Tests:** `Tests/UnitTests/AdyenCheckout/Component Factory Tests/BLIKComponentFactoryTests.swift`
