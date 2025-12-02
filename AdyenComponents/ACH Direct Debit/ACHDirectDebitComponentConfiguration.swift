@@ -19,7 +19,7 @@ public struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfig
 
     package var style: FormComponentStyle
 
-    package var theme: AdyenTheme = .init()
+    package var theme: AdyenTheme
 
     package var showsSubmitButton: Bool
 
@@ -42,11 +42,14 @@ public struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfig
         self.showsStorePaymentMethodField = true
         self.showsBillingAddress = true
         self.billingAddressCountryCodes = ["US", "PR"]
+        self.theme = .init()
     }
 
     // MARK: - Builder Methods
 
     /// Sets the shopper's information to be prefilled.
+    /// - Parameter shopperInformation: The shopper's information to prefill.
+    /// - Returns: A modified configuration with the updated shopper information.
     public func shopperInformation(_ shopperInformation: PrefilledShopperInformation?) -> Self {
         var config = self
         config.shopperInformation = shopperInformation
@@ -54,6 +57,8 @@ public struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfig
     }
 
     /// Sets the localization parameters.
+    /// - Parameter localizationParameters: The localization parameters to use.
+    /// - Returns: A modified configuration with the updated localization parameters.
     public func localizationParameters(_ localizationParameters: LocalizationParameters?) -> Self {
         var config = self
         config.localizationParameters = localizationParameters
@@ -61,6 +66,8 @@ public struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfig
     }
 
     /// Sets whether the field for storing the payment method should be displayed.
+    /// - Parameter show: A Boolean value indicating whether to show the store payment method field.
+    /// - Returns: A modified configuration with the updated setting.
     public func showsStorePaymentMethodField(_ show: Bool) -> Self {
         var config = self
         config.showsStorePaymentMethodField = show
@@ -68,6 +75,8 @@ public struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfig
     }
 
     /// Sets whether the billing address should be displayed.
+    /// - Parameter show: A Boolean value indicating whether to show the billing address.
+    /// - Returns: A modified configuration with the updated setting.
     public func showsBillingAddress(_ show: Bool) -> Self {
         var config = self
         config.showsBillingAddress = show
@@ -75,6 +84,8 @@ public struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfig
     }
 
     /// Sets the list of ISO country codes supported for the billing address.
+    /// - Parameter codes: An array of ISO country codes.
+    /// - Returns: A modified configuration with the updated country codes.
     public func billingAddressCountryCodes(_ codes: [String]) -> Self {
         var config = self
         config.billingAddressCountryCodes = codes
