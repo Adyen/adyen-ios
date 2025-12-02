@@ -27,9 +27,9 @@ public struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfig
 
     package var localizationParameters: LocalizationParameters?
 
-    package var showsStorePaymentMethodField: Bool
+    package var showStorePaymentMethodField: Bool
 
-    package var showsBillingAddress: Bool
+    package var showBillingAddress: Bool
 
     package var billingAddressCountryCodes: [String]
 
@@ -39,8 +39,8 @@ public struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfig
         self.showsSubmitButton = true
         self.shopperInformation = nil
         self.localizationParameters = nil
-        self.showsStorePaymentMethodField = true
-        self.showsBillingAddress = true
+        self.showStorePaymentMethodField = true
+        self.showBillingAddress = true
         self.billingAddressCountryCodes = ["US", "PR"]
         self.theme = .init()
     }
@@ -68,18 +68,18 @@ public struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfig
     /// Sets whether the field for storing the payment method should be displayed.
     /// - Parameter showsStorePaymentMethodField: A Boolean value indicating whether to show the store payment method field.
     /// - Returns: A modified configuration with the updated setting.
-    public func showsStorePaymentMethodField(_ showsStorePaymentMethodField: Bool) -> Self {
+    public func showStorePaymentMethodField(_ showStorePaymentMethodField: Bool) -> Self {
         var config = self
-        config.showsStorePaymentMethodField = showsStorePaymentMethodField
+        config.showStorePaymentMethodField = showStorePaymentMethodField
         return config
     }
 
     /// Sets whether the billing address should be displayed.
     /// - Parameter showsBillingAddress: A Boolean value indicating whether to show the billing address.
     /// - Returns: A modified configuration with the updated setting.
-    public func showsBillingAddress(_ showsBillingAddress: Bool) -> Self {
+    public func showBillingAddress(_ showBillingAddress: Bool) -> Self {
         var config = self
-        config.showsBillingAddress = showsBillingAddress
+        config.showBillingAddress = showBillingAddress
         return config
     }
 

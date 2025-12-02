@@ -635,8 +635,8 @@ class ComponentManagerTests: XCTestCase {
 
         // Then
         let achComponent = try XCTUnwrap(paymentComponent as? ACHDirectDebitComponent)
-        XCTAssertFalse(achComponent.configuration.showsStorePaymentMethodField)
-        XCTAssertFalse(achComponent.configuration.showsBillingAddress)
+        XCTAssertFalse(achComponent.configuration.showStorePaymentMethodField)
+        XCTAssertFalse(achComponent.configuration.showBillingAddress)
         XCTAssertEqual(achComponent.configuration.billingAddressCountryCodes, ["US", "UK"])
     }
     

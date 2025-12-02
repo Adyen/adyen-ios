@@ -40,7 +40,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         didSet {
             if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
                storePaymentMethodAware.isSession {
-                configuration.showsStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
+                configuration.showStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
             }
         }
     }
@@ -147,7 +147,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     }
     
     private var storePayment: Bool? {
-        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : nil
+        configuration.showStorePaymentMethodField ? storeDetailsItem.value : nil
     }
     
     // MARK: - Form Items
@@ -301,10 +301,10 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         formViewController.append(bankRoutingNumberItem)
         formViewController.append(FormSpacerItem())
         
-        if configuration.showsBillingAddress {
+        if configuration.showBillingAddress {
             formViewController.append(billingAddressItem)
         }
-        if configuration.showsStorePaymentMethodField {
+        if configuration.showStorePaymentMethodField {
             formViewController.append(storeDetailsItem)
         }
         

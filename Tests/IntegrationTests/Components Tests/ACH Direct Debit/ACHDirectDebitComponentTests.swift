@@ -209,7 +209,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: ACHDirectDebitComponentConfiguration().shopperInformation(shopperInformation).showsBillingAddress(false),
+            configuration: ACHDirectDebitComponentConfiguration().shopperInformation(shopperInformation).showBillingAddress(false),
             publicKeyProvider: PublicKeyProviderMock()
         )
 
@@ -261,7 +261,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: ACHDirectDebitComponentConfiguration().showsBillingAddress(false),
+            configuration: ACHDirectDebitComponentConfiguration().showBillingAddress(false),
             publicKeyProvider: PublicKeyProviderMock()
         )
 
@@ -278,7 +278,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testSubmitShouldCallPaymentDelegateDidSubmit() throws {
         // Given
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
-        let configuration = ACHDirectDebitComponentConfiguration().showsBillingAddress(false)
+        let configuration = ACHDirectDebitComponentConfiguration().showBillingAddress(false)
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -316,7 +316,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testValidateWithValidInputSubmitShouldReturnFormViewControllerValidateResult() throws {
         // Given
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
-        let configuration = ACHDirectDebitComponentConfiguration().showsBillingAddress(false)
+        let configuration = ACHDirectDebitComponentConfiguration().showBillingAddress(false)
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -348,7 +348,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testValidateWithInvalidInputSubmitShouldReturnFormViewControllerValidateResult() throws {
         // Given
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
-        let configuration = ACHDirectDebitComponentConfiguration().showsBillingAddress(false)
+        let configuration = ACHDirectDebitComponentConfiguration().showBillingAddress(false)
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,

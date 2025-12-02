@@ -400,8 +400,8 @@ private extension ComponentManager {
         var config = ACHDirectDebitComponentConfiguration()
         config.shopperInformation = configuration.shopperInformation
         config.localizationParameters = configuration.localizationParameters
-        config.showsStorePaymentMethodField = configuration.ach.showsStorePaymentMethodField
-        config.showsBillingAddress = configuration.ach.showsBillingAddress
+        config.showStorePaymentMethodField = configuration.ach.showsStorePaymentMethodField
+        config.showBillingAddress = configuration.ach.showsBillingAddress
         config.billingAddressCountryCodes = configuration.ach.billingAddressCountryCodes
         return ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
