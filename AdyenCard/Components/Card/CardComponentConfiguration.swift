@@ -71,7 +71,7 @@ public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPer
     /// Called when card brand(s) are detected from the entered card number.
     internal var onBinLookup: (([CardBrand]) -> Void)?
     
-    // TODO: Add onFieldValidationChange closure that provides field validation updates including last 4 digits. or add it here after deciding on alingment
+    // TODO: Add onFieldValidationChange closure that provides field validation updates including last 4 digits. or add it here after deciding on alignment
 
     /// Initializes a new instance of `CardComponentConfiguration`.
     public init() {
@@ -192,11 +192,11 @@ extension CardComponentConfiguration {
     }
     
     /// Sets the supported country codes for billing address.
-    /// - Parameter billingAddressCountryCodes: List of ISO country codes supported for the billing address.
+    /// - Parameter countryCodes: List of ISO country codes supported for the billing address.
     /// - Returns: A modified copy of the configuration.
-    public func billingAddressCountryCodes(_ billingAddressCountryCodes: [String]) -> Self {
+    public func billingAddressCountryCodes(_ countryCodes: [String]) -> Self {
         var copy = self
-        copy.billingAddress.countryCodes = billingAddressCountryCodes
+        copy.billingAddress.countryCodes = countryCodes
         return copy
     }
     
