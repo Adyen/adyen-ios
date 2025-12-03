@@ -62,10 +62,10 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                         })
                 )
                 .onBinValue { bin in
-                    print("here is the bin \(bin)")
+                    print("Here is the bin \(bin)")
                 }
                 .onBinLookup { brands in
-                    print("bin lookup response \(brands)")
+                    print("Bin lookup response \(brands)")
                 }
         }
         .theme(
