@@ -12,9 +12,10 @@ internal protocol ComponentContainerRouterListener: AnyObject {
     func didDismissComponentContainer(completion: (() -> Void)?)
 }
 
+// sourcery:AutoMockable
 internal protocol ComponentContainerRouting: AnyObject {
-    func present(paymentComponent: any PresentableComponent)
-    func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?)
+    func present(paymentComponent: PresentableComponent)
+    func present(actionComponent: PresentableComponent, onCancel: (() -> Void)?)
     func dismiss(completion: (() -> Void)?)
 }
 

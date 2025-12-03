@@ -6,6 +6,6 @@
 
 import Foundation
 
-struct MockError: LocalizedError {
+struct ErrorMock: LocalizedError {
     var errorDescription: String?
 }

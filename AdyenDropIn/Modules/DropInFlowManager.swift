@@ -15,6 +15,7 @@ internal protocol ActionPresenter: AnyObject {
     func didCancel(actionComponent: ActionComponent)
 }
 
+// sourcery:AutoMockable
 internal protocol DropInFlowManaging {
     func submit(
         _ data: PaymentComponentData,

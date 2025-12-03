@@ -18,3 +18,129 @@ import Foundation
 
 @testable import Adyen
 @testable import AdyenDropIn
+
+class ComponentContainerRoutingMock: ComponentContainerRouting {
+
+    // MARK: - present
+
+    var presentPaymentComponentCallsCount = 0
+    var presentPaymentComponentCalled: Bool {
+        presentPaymentComponentCallsCount > 0
+    }
+
+    var presentPaymentComponentReceivedPaymentComponent: PresentableComponent?
+    var presentPaymentComponentReceivedInvocations: [PresentableComponent] = []
+    var presentPaymentComponentClosure: ((PresentableComponent) -> Void)?
+
+    func present(paymentComponent: PresentableComponent) {
+        presentPaymentComponentCallsCount += 1
+        presentPaymentComponentReceivedPaymentComponent = paymentComponent
+        presentPaymentComponentReceivedInvocations.append(paymentComponent)
+        presentPaymentComponentClosure?(paymentComponent)
+    }
+
+    // MARK: - present
+
+    var presentActionComponentOnCancelCallsCount = 0
+    var presentActionComponentOnCancelCalled: Bool {
+        presentActionComponentOnCancelCallsCount > 0
+    }
+
+    var presentActionComponentOnCancelClosure: ((PresentableComponent, (() -> Void)?) -> Void)?
+
+    func present(actionComponent: PresentableComponent, onCancel: (() -> Void)?) {
+        presentActionComponentOnCancelCallsCount += 1
+        presentActionComponentOnCancelClosure?(actionComponent, onCancel)
+    }
+
+    // MARK: - dismiss
+
+    var dismissCompletionCallsCount = 0
+    var dismissCompletionCalled: Bool {
+        dismissCompletionCallsCount > 0
+    }
+
+    var dismissCompletionClosure: (((() -> Void)?) -> Void)?
+
+    func dismiss(completion: (() -> Void)?) {
+        dismissCompletionCallsCount += 1
+        dismissCompletionClosure?(completion)
+    }
+
+}
+
+class DropInFlowManagingMock: DropInFlowManaging {
+
+    // MARK: - submit
+
+    var submitFromActionPresenterCallsCount = 0
+    var submitFromActionPresenterCalled: Bool {
+        submitFromActionPresenterCallsCount > 0
+    }
+
+    var submitFromActionPresenterReceivedArguments: (data: PaymentComponentData, component: PaymentComponent, actionPresenter: ActionPresenter)?
+    var submitFromActionPresenterReceivedInvocations: [(data: PaymentComponentData, component: PaymentComponent, actionPresenter: ActionPresenter)] = []
+    var submitFromActionPresenterClosure: ((PaymentComponentData, PaymentComponent, ActionPresenter) -> Void)?
+
+    func submit(_ data: PaymentComponentData, from component: PaymentComponent, actionPresenter: ActionPresenter) {
+        submitFromActionPresenterCallsCount += 1
+        submitFromActionPresenterReceivedArguments = (data: data, component: component, actionPresenter: actionPresenter)
+        submitFromActionPresenterReceivedInvocations.append((data: data, component: component, actionPresenter: actionPresenter))
+        submitFromActionPresenterClosure?(data, component, actionPresenter)
+    }
+
+    // MARK: - fail
+
+    var failWithFromCallsCount = 0
+    var failWithFromCalled: Bool {
+        failWithFromCallsCount > 0
+    }
+
+    var failWithFromReceivedArguments: (error: Error, component: PaymentComponent)?
+    var failWithFromReceivedInvocations: [(error: Error, component: PaymentComponent)] = []
+    var failWithFromClosure: ((Error, PaymentComponent) -> Void)?
+
+    func fail(with error: Error, from component: PaymentComponent) {
+        failWithFromCallsCount += 1
+        failWithFromReceivedArguments = (error: error, component: component)
+        failWithFromReceivedInvocations.append((error: error, component: component))
+        failWithFromClosure?(error, component)
+    }
+
+    // MARK: - cancel
+
+    var cancelComponentCallsCount = 0
+    var cancelComponentCalled: Bool {
+        cancelComponentCallsCount > 0
+    }
+
+    var cancelComponentReceivedComponent: PaymentComponent?
+    var cancelComponentReceivedInvocations: [PaymentComponent] = []
+    var cancelComponentClosure: ((PaymentComponent) -> Void)?
+
+    func cancel(component: PaymentComponent) {
+        cancelComponentCallsCount += 1
+        cancelComponentReceivedComponent = component
+        cancelComponentReceivedInvocations.append(component)
+        cancelComponentClosure?(component)
+    }
+
+    // MARK: - handle
+
+    var handleActionCallsCount = 0
+    var handleActionCalled: Bool {
+        handleActionCallsCount > 0
+    }
+
+    var handleActionReceivedAction: Action?
+    var handleActionReceivedInvocations: [Action] = []
+    var handleActionClosure: ((Action) -> Void)?
+
+    func handle(action: Action) {
+        handleActionCallsCount += 1
+        handleActionReceivedAction = action
+        handleActionReceivedInvocations.append(action)
+        handleActionClosure?(action)
+    }
+
+}
