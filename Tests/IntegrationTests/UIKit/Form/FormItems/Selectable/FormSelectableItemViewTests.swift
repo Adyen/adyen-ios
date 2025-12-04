@@ -160,49 +160,46 @@ class FormPickerItemViewStyleTests: XCTestCase {
         XCTAssertEqual(customSut.titleLabel.text, "Custom Title")
     }
 
-    func test_valueLabel_colorWithValue_shouldUseStyleTextColor() {
-        // Given - Current behavior: uses item.style.text.color
-        var style = FormTextItemStyle()
-        style.text.color = .systemBlue
-        let customItem = TestFormPickerItem(style: style)
+    func test_valueLabel_colorWithValue_shouldUseThemeBodyColor() {
+        // Given
+        let customItem = TestFormPickerItem()
         customItem.formattedValue = "Has Value"
 
         // When
         let customSut = FormPickerItemView(item: customItem)
 
-        // Then - Currently reads from item.style.text.color
-        XCTAssertEqual(customSut.valueLabel.textColor, .systemBlue)
+        // Then - Now uses theme.elements.labels.body.color
+        XCTAssertEqual(
+            customSut.valueLabel.textColor, AdyenTheme.default.elements.labels.body.color
+        )
     }
 
-    func test_valueLabel_colorWithPlaceholder_shouldUsePlaceholderColor() {
-        // Given - Current behavior: uses item.style.placeholderText?.color
-        var style = FormTextItemStyle()
-        style.placeholderText = TextStyle(font: .systemFont(ofSize: 14), color: .systemGray)
-        let customItem = TestFormPickerItem(style: style, placeholder: "Placeholder")
+    func test_valueLabel_colorWithPlaceholder_shouldUseThemeTextSecondary() {
+        // Given
+        let customItem = TestFormPickerItem(placeholder: "Placeholder")
         customItem.formattedValue = nil
 
         // When
         let customSut = FormPickerItemView(item: customItem)
 
-        // Then - Currently reads from item.style.placeholderText?.color
-        XCTAssertEqual(customSut.valueLabel.textColor, .systemGray)
+        // Then - Now uses theme.colors.textSecondary
+        XCTAssertEqual(customSut.valueLabel.textColor, AdyenTheme.default.colors.textSecondary)
     }
 
-    func test_valueLabel_whenFormattedValueChanges_shouldUpdateColorToTextColor() {
+    func test_valueLabel_whenFormattedValueChanges_shouldUpdateColorToThemeBodyColor() {
         // Given
-        var style = FormTextItemStyle()
-        style.text.color = .systemGreen
-        style.placeholderText = TextStyle(font: .systemFont(ofSize: 14), color: .systemGray)
-        let customItem = TestFormPickerItem(style: style)
+        let customItem = TestFormPickerItem()
         customItem.formattedValue = nil
         let customSut = FormPickerItemView(item: customItem)
-        XCTAssertEqual(customSut.valueLabel.textColor, .systemGray) // placeholder color
+        XCTAssertEqual(customSut.valueLabel.textColor, AdyenTheme.default.colors.textSecondary) // placeholder color
 
         // When
         customItem.formattedValue = "New Value"
 
-        // Then
-        XCTAssertEqual(customSut.valueLabel.textColor, .systemGreen) // text color
+        // Then - Now uses theme.elements.labels.body.color
+        XCTAssertEqual(
+            customSut.valueLabel.textColor, AdyenTheme.default.elements.labels.body.color
+        )
     }
 
     func test_chevronView_shouldExist() {
@@ -220,28 +217,16 @@ class FormPickerItemViewStyleTests: XCTestCase {
 
     // MARK: - ValueLabel Font Tests
 
-    func test_valueLabel_font_shouldUseStyleTextFont() {
-        // Given - Current behavior: uses item.style.text font
-        var style = FormTextItemStyle()
-        let customFont = UIFont.systemFont(ofSize: 20, weight: .bold)
-        style.text.font = customFont
-        let customItem = TestFormPickerItem(style: style)
-
-        // When
-        let customSut = FormPickerItemView(item: customItem)
-
-        // Then - Currently reads from item.style.text.font
-        XCTAssertEqual(customSut.valueLabel.font, customFont)
+    func test_valueLabel_font_shouldUseThemeBodyFont() {
+        // Then - Now uses theme.elements.labels.body.font
+        XCTAssertEqual(sut.valueLabel.font, AdyenTheme.default.elements.labels.body.font)
     }
 
     // MARK: - AlertLabel Style Tests
 
-    func test_alertLabel_color_shouldUseThemeSubheadlineColor() {
-        // BUG DOCUMENTATION: alertLabel.textColor is set to item.style.errorColor, but then
-        // alertLabel.apply(theme.elements.labels.subheadline) OVERWRITES it with the subheadline color.
-        // This means item.style.errorColor is never actually displayed.
-        // The current actual behavior uses theme.elements.labels.subheadline.color (not errorColor)
-        let expectedColor = AdyenTheme.default.elements.labels.subheadline.color
+    func test_alertLabel_color_shouldUseThemeDestructiveColor() {
+        // After migration: alertLabel uses theme.colors.destructive for error color
+        let expectedColor = AdyenTheme.default.colors.destructive
         XCTAssertEqual(
             sut.alertLabel.textColor?.resolvedColor(
                 with: UITraitCollection(userInterfaceStyle: .light)),
