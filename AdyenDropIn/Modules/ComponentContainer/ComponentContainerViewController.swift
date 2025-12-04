@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
 
-internal final class ComponentContainerViewController: UIViewController {
+internal class ComponentContainerViewController: UIViewController {
     
     // MARK: - Properties
     

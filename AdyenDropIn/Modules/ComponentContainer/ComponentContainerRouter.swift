@@ -8,6 +8,7 @@ import Adyen
 import Foundation
 import UIKit
 
+// sourcery:AutoMockable
 internal protocol ComponentContainerRouterListener: AnyObject {
     func didDismissComponentContainer(completion: (() -> Void)?)
 }

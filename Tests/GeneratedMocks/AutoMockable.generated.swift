@@ -19,6 +19,24 @@ import Foundation
 @testable import Adyen
 @testable import AdyenDropIn
 
+class ComponentContainerRouterListenerMock: ComponentContainerRouterListener {
+
+    // MARK: - didDismissComponentContainer
+
+    var didDismissComponentContainerCompletionCallsCount = 0
+    var didDismissComponentContainerCompletionCalled: Bool {
+        didDismissComponentContainerCompletionCallsCount > 0
+    }
+
+    var didDismissComponentContainerCompletionClosure: (((() -> Void)?) -> Void)?
+
+    func didDismissComponentContainer(completion: (() -> Void)?) {
+        didDismissComponentContainerCompletionCallsCount += 1
+        didDismissComponentContainerCompletionClosure?(completion)
+    }
+
+}
+
 class ComponentContainerRoutingMock: ComponentContainerRouting {
 
     // MARK: - present
@@ -65,6 +83,31 @@ class ComponentContainerRoutingMock: ComponentContainerRouting {
     func dismiss(completion: (() -> Void)?) {
         dismissCompletionCallsCount += 1
         dismissCompletionClosure?(completion)
+    }
+
+}
+
+class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtocol {
+
+    var componentViewController: UIViewController {
+        get { underlyingComponentViewController }
+        set(value) { underlyingComponentViewController = value }
+    }
+
+    var underlyingComponentViewController: UIViewController!
+
+    // MARK: - cancel
+
+    var cancelCallsCount = 0
+    var cancelCalled: Bool {
+        cancelCallsCount > 0
+    }
+
+    var cancelClosure: (() -> Void)?
+
+    func cancel() {
+        cancelCallsCount += 1
+        cancelClosure?()
     }
 
 }
