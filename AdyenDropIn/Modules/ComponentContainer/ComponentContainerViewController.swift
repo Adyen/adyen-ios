@@ -36,32 +36,32 @@ internal class ComponentContainerViewController: UIViewController {
     
     override public func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        componentView.resignFirstResponder()
+        componentViewController.resignFirstResponder()
         viewModel.cancel()
     }
     
     // MARK: - Internal
     
-    internal var componentView: UIViewController {
+    internal var componentViewController: UIViewController {
         viewModel.componentViewController
     }
     
     // MARK: - Private
 
     private func setupComponentView() {
-        componentView.willMove(toParent: self)
-        addChild(componentView)
-        view.addSubview(componentView.view)
-        componentView.didMove(toParent: self)
+        componentViewController.willMove(toParent: self)
+        addChild(componentViewController)
+        view.addSubview(componentViewController.view)
+        componentViewController.didMove(toParent: self)
         setupLayout()
     }
         
     private func setupLayout() {
-        componentView.view.adyen.anchor(inside: view)
+        componentViewController.view.adyen.anchor(inside: view)
     }
     
     private func setupNavigationItem() {
-        navigationItem.title = componentView.title
+        navigationItem.title = componentViewController.title
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
     }

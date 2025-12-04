@@ -15,15 +15,6 @@ struct ComponentContainerRouterTests {
 
     // MARK: - Spy
 
-    private class ActionWrapperSpy: ActionWrapperViewController {
-        var callbackInvoked: (() -> Void)?
-
-        override func viewDidDisappear(_ animated: Bool) {
-            super.viewDidDisappear(animated)
-            callbackInvoked?()
-        }
-    }
-
     private class ViewControllerSpy: ComponentContainerViewController {
         var pushedViewController: UIViewController?
         var presentedViewControllerCaptured: UIViewController?
