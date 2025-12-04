@@ -55,32 +55,89 @@ test_<subject>_<condition>_<expectedBehavior>
 
 | Component | Description | Example |
 |-----------|-------------|---------|
-| **Subject** | The UI element or unit being tested | `TitleLabel`, `ValueLabel`, `View` |
-| **Condition** | The state or action (optional if testing default) | `withNoFormattedValue`, `colorWithValue`, `whenFormattedValueChanges` |
-| **Expected Behavior** | What should happen | `shouldShowPlaceholder`, `shouldUseStyleTextColor` |
+| **Subject** | The unit being tested (method, property, component) | `submit`, `validate`, `paymentMethod`, `titleLabel` |
+| **Condition** | The state, input, or action (optional if testing default) | `withValidInput`, `whenAmountIsZero`, `afterSessionExpires` |
+| **Expected Behavior** | What should happen | `shouldSucceed`, `shouldThrowError`, `shouldCallDelegate` |
 
 ### Examples
 
+#### Business Logic & Validation
+
 ```swift
-// Subject + default behavior
+// Validation
+func test_validate_withValidIBAN_shouldReturnTrue()
+func test_validate_withInvalidIBAN_shouldReturnFalse()
+func test_validate_withEmptyInput_shouldReturnValidationError()
+
+// Amount formatting
+func test_format_withZeroAmount_shouldReturnFormattedZero()
+func test_format_withNegativeAmount_shouldThrowError()
+
+// Payment method parsing
+func test_paymentMethod_whenDecodingFromJSON_shouldParseAllFields()
+func test_paymentMethod_withMissingRequiredField_shouldThrowDecodingError()
+```
+
+#### Networking & API
+
+```swift
+// API requests
+func test_submit_withValidPaymentData_shouldCallAPIClient()
+func test_submit_whenNetworkFails_shouldReturnNetworkError()
+func test_submit_afterSessionExpires_shouldRefreshAndRetry()
+
+// Response handling
+func test_handleResponse_withSuccessStatus_shouldCallDidProvide()
+func test_handleResponse_withActionRequired_shouldCallDidProvideAction()
+func test_handleResponse_withRefusalReason_shouldCallDidFail()
+```
+
+#### Component Delegates & Callbacks
+
+```swift
+// Delegate calls
+func test_component_whenPaymentCompleted_shouldCallDidProvide()
+func test_component_whenUserCancels_shouldCallDidFail()
+func test_component_afterSubmit_shouldCallDidSubmit()
+
+// Selection handlers
+func test_selectionHandler_whenItemSelected_shouldUpdateValue()
+func test_selectionHandler_withNoHandler_shouldTriggerAssertion()
+```
+
+#### UI Components
+
+```swift
+// View styling
 func test_titleLabel_shouldUseThemeBodyEmphasizedStyle()
-func test_chevronView_shouldExist()
-
-// Subject + condition + expected behavior
 func test_valueLabel_withNoFormattedValue_shouldShowPlaceholder()
-func test_valueLabel_withEmptyFormattedValue_shouldShowPlaceholder()
-func test_valueLabel_withFormattedValue_shouldShowValue()
-
-// Subject + specific property + condition + expected behavior
 func test_valueLabel_colorWithValue_shouldUseStyleTextColor()
-func test_valueLabel_colorWithPlaceholder_shouldUsePlaceholderColor()
 
-// Subject + dynamic state change
-func test_valueLabel_whenFormattedValueChanges_shouldUpdateColorToTextColor()
+// View state changes
+func test_view_whenFormattedValueChanges_shouldUpdateLabel()
+func test_button_whenDisabled_shouldUpdateAppearance()
 
 // View-level properties
 func test_view_tintColor_shouldUseStyleTintColor()
 func test_view_backgroundColor_shouldUseStyleBackgroundColor()
+```
+
+#### Analytics & Tracking
+
+```swift
+// Event tracking
+func test_analytics_whenComponentLoaded_shouldSendRenderEvent()
+func test_analytics_afterSubmit_shouldSendSubmitEvent()
+func test_analytics_withError_shouldIncludeErrorCode()
+```
+
+#### Encryption & Security
+
+```swift
+// Card encryption
+func test_encrypt_withValidCard_shouldReturnEncryptedData()
+func test_encrypt_withExpiredCard_shouldStillEncrypt()
+func test_encrypt_withMissingPublicKey_shouldThrowError()
 ```
 
 ### Guidelines
@@ -91,22 +148,26 @@ func test_view_backgroundColor_shouldUseStyleBackgroundColor()
 - **Be specific** about properties when a subject has multiple testable aspects (e.g., `color`, `font`, `text`)
 - **Use camelCase** within each segment
 - **Avoid redundant words** like "test" in the middle (it's already the method prefix)
+- **Match the abstraction level** - use domain terms (`submit`, `validate`) not implementation details (`callFunction`)
 
 ### Anti-patterns
 
 ```swift
 // ❌ Too vague
-func testLabel()
-func testStyle()
+func test_label()
+func test_validation()
 
 // ❌ Missing structure
 func testThatTheTitleLabelUsesTheCorrectFontFromTheTheme()
+func testSubmitPaymentWithValidDataCallsAPIAndReturnsSuccess()
 
 // ❌ Implementation-focused instead of behavior-focused
-func testTitleLabelFontIsSetInInit()
+func test_titleLabelFontIsSetInInit()
+func test_apiClientPostMethodIsCalled()
 
 // ✅ Correct
 func test_titleLabel_shouldUseThemeBodyEmphasizedStyle()
+func test_submit_withValidPaymentData_shouldSucceed()
 ```
 
 ## Running Tests
