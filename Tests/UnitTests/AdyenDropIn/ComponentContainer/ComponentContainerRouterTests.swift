@@ -15,6 +15,15 @@ struct ComponentContainerRouterTests {
 
     // MARK: - Spy
 
+    private class ActionWrapperSpy: ActionWrapperViewController {
+        var callbackInvoked: (() -> Void)?
+
+        override func viewDidDisappear(_ animated: Bool) {
+            super.viewDidDisappear(animated)
+            callbackInvoked?()
+        }
+    }
+
     private class ViewControllerSpy: ComponentContainerViewController {
         var pushedViewController: UIViewController?
         var presentedViewControllerCaptured: UIViewController?
@@ -63,20 +72,21 @@ struct ComponentContainerRouterTests {
         return (sut, viewControllerSpy, listenerMock)
     }
 
-    private func makePresentableComponent() async -> PresentableComponentMock {
+    private func makePaymentComponent() async -> PresentableComponentMock {
         let viewController = UIViewController()
         let cardPaymentMethodMock = CardPaymentMethodMock(
             type: .scheme,
             name: "Card",
             brands: [.visa, .masterCard]
         )
+
         return PresentableComponentMock(
             paymentMethod: cardPaymentMethodMock,
             viewController: viewController
         )
     }
 
-    private func makeActionComponent() async -> PresentableComponentWrapper {
+    private func makeActionComponent() async -> PresentableComponent {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             payment: nil,
@@ -92,7 +102,7 @@ struct ComponentContainerRouterTests {
     @Test func presentPaymentComponentShouldPushViewController() async throws {
         // Given
         let (sut, viewControllerSpy, _) = await setupSUT()
-        let paymentComponent = await makePresentableComponent()
+        let paymentComponent = await makePaymentComponent()
 
         let navController = UINavigationController(rootViewController: viewControllerSpy)
         viewControllerSpy.attachNavigationController(navController)
@@ -116,19 +126,21 @@ struct ComponentContainerRouterTests {
         #expect(viewControllerSpy.presentedViewControllerCaptured != nil)
     }
 
-    @Test func presentActionComponentShouldCallOnCancelCallback() async throws {
+    @Test func presentActionComponentShouldInvokeOnCancelWhenViewDisappears() async throws {
         // Given
-        let (sut, _, _) = await setupSUT()
+        let (sut, viewControllerMock, _) = await setupSUT()
         let actionComponent = await makeActionComponent()
 
         var callbackCalled = false
-        let onCancel: () -> Void = {
-            callbackCalled = true
-        }
+
+        let actionWrapperSpy = ActionWrapperSpy(actionComponent: actionComponent)
+        actionWrapperSpy.callbackInvoked = { callbackCalled = true }
 
         // When
-        sut.present(actionComponent: actionComponent, onCancel: onCancel)
-        actionComponent.viewController.navigationController?.viewDidDisappear(true)
+        sut.present(actionComponent: actionComponent, onCancel: actionWrapperSpy.callbackInvoked)
+
+        // Simulate disappearance
+        actionWrapperSpy.viewDidDisappear(true)
 
         // Then
         #expect(callbackCalled)
