@@ -45,6 +45,70 @@ func test_formTextField_appliesCustomThemeColors() {
 
 Once the structure stabilizes, focused unit tests can be added back for specific edge cases.
 
+## Test Naming Convention
+
+Follow the **Given-When-Then** pattern for test method names:
+
+```
+test_<subject>_<condition>_<expectedBehavior>
+```
+
+| Component | Description | Example |
+|-----------|-------------|---------|
+| **Subject** | The UI element or unit being tested | `TitleLabel`, `ValueLabel`, `View` |
+| **Condition** | The state or action (optional if testing default) | `withNoFormattedValue`, `colorWithValue`, `whenFormattedValueChanges` |
+| **Expected Behavior** | What should happen | `shouldShowPlaceholder`, `shouldUseStyleTextColor` |
+
+### Examples
+
+```swift
+// Subject + default behavior
+func test_titleLabel_shouldUseThemeBodyEmphasizedStyle()
+func test_chevronView_shouldExist()
+
+// Subject + condition + expected behavior
+func test_valueLabel_withNoFormattedValue_shouldShowPlaceholder()
+func test_valueLabel_withEmptyFormattedValue_shouldShowPlaceholder()
+func test_valueLabel_withFormattedValue_shouldShowValue()
+
+// Subject + specific property + condition + expected behavior
+func test_valueLabel_colorWithValue_shouldUseStyleTextColor()
+func test_valueLabel_colorWithPlaceholder_shouldUsePlaceholderColor()
+
+// Subject + dynamic state change
+func test_valueLabel_whenFormattedValueChanges_shouldUpdateColorToTextColor()
+
+// View-level properties
+func test_view_tintColor_shouldUseStyleTintColor()
+func test_view_backgroundColor_shouldUseStyleBackgroundColor()
+```
+
+### Guidelines
+
+- **Use underscores** to separate the three parts for readability
+- **Start with the subject** (what's being tested)
+- **Omit condition** when testing default/initial state
+- **Be specific** about properties when a subject has multiple testable aspects (e.g., `color`, `font`, `text`)
+- **Use camelCase** within each segment
+- **Avoid redundant words** like "test" in the middle (it's already the method prefix)
+
+### Anti-patterns
+
+```swift
+// ❌ Too vague
+func testLabel()
+func testStyle()
+
+// ❌ Missing structure
+func testThatTheTitleLabelUsesTheCorrectFontFromTheTheme()
+
+// ❌ Implementation-focused instead of behavior-focused
+func testTitleLabelFontIsSetInInit()
+
+// ✅ Correct
+func test_titleLabel_shouldUseThemeBodyEmphasizedStyle()
+```
+
 ## Running Tests
 
 **List available simulators:**
