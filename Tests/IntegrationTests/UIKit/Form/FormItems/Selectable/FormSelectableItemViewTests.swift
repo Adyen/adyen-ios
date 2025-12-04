@@ -83,7 +83,7 @@ class FormSelectableItemViewTests: XCTestCase {
         AdyenAssertion.listener = nil
     }
 
-    func testSelectionHandler() {
+    func test_selectionHandler() {
         AdyenAssertion.listener = { message in
             XCTAssertEqual(
                 message, "'selectionHandler' needs to be provided on 'FormSelectableValueItemMock'"
@@ -97,7 +97,7 @@ class FormSelectableItemViewTests: XCTestCase {
         waitForExpectations(timeout: 10)
     }
 
-    func testValueUpdate() {
+    func test_valueUpdate() {
         XCTAssertNil(item.formattedValue)
         XCTAssertEqual(sut.valueLabel.text, placeholderText)
 
@@ -128,30 +128,30 @@ class FormPickerItemViewStyleTests: XCTestCase {
 
     // MARK: - Value Update Tests
 
-    func testValueLabel_withNoFormattedValue_shouldShowPlaceholder() {
+    func test_valueLabel_withNoFormattedValue_shouldShowPlaceholder() {
         XCTAssertNil(item.formattedValue)
         XCTAssertEqual(sut.valueLabel.text, placeholderText)
     }
 
-    func testValueLabel_withEmptyFormattedValue_shouldShowPlaceholder() {
+    func test_valueLabel_withEmptyFormattedValue_shouldShowPlaceholder() {
         item.formattedValue = ""
         XCTAssertEqual(sut.valueLabel.text, placeholderText)
     }
 
-    func testValueLabel_withFormattedValue_shouldShowValue() {
+    func test_valueLabel_withFormattedValue_shouldShowValue() {
         item.formattedValue = "Hello World"
         XCTAssertEqual(sut.valueLabel.text, item.formattedValue)
     }
 
     // MARK: - Style Tests (Baseline before theme migration)
 
-    func testTitleLabel_shouldUseThemeBodyEmphasizedStyle() {
+    func test_titleLabel_shouldUseThemeBodyEmphasizedStyle() {
         // Then - titleLabel is styled by theme (already migrated in FormValueItemView)
         let expectedFont = AdyenTheme.default.elements.labels.bodyEmphasized.font
         XCTAssertEqual(sut.titleLabel.font, expectedFont)
     }
 
-    func testTitleLabel_shouldDisplayItemTitle() {
+    func test_titleLabel_shouldDisplayItemTitle() {
         // Given
         let customItem = TestFormPickerItem(title: "Custom Title")
         let customSut = FormPickerItemView(item: customItem)
@@ -160,7 +160,7 @@ class FormPickerItemViewStyleTests: XCTestCase {
         XCTAssertEqual(customSut.titleLabel.text, "Custom Title")
     }
 
-    func testValueLabel_colorWithValue_shouldUseStyleTextColor() {
+    func test_valueLabel_colorWithValue_shouldUseStyleTextColor() {
         // Given - Current behavior: uses item.style.text.color
         var style = FormTextItemStyle()
         style.text.color = .systemBlue
@@ -174,7 +174,7 @@ class FormPickerItemViewStyleTests: XCTestCase {
         XCTAssertEqual(customSut.valueLabel.textColor, .systemBlue)
     }
 
-    func testValueLabel_colorWithPlaceholder_shouldUsePlaceholderColor() {
+    func test_valueLabel_colorWithPlaceholder_shouldUsePlaceholderColor() {
         // Given - Current behavior: uses item.style.placeholderText?.color
         var style = FormTextItemStyle()
         style.placeholderText = TextStyle(font: .systemFont(ofSize: 14), color: .systemGray)
@@ -188,7 +188,7 @@ class FormPickerItemViewStyleTests: XCTestCase {
         XCTAssertEqual(customSut.valueLabel.textColor, .systemGray)
     }
 
-    func testValueLabel_whenFormattedValueChanges_shouldUpdateColorToTextColor() {
+    func test_valueLabel_whenFormattedValueChanges_shouldUpdateColorToTextColor() {
         // Given
         var style = FormTextItemStyle()
         style.text.color = .systemGreen
@@ -205,14 +205,14 @@ class FormPickerItemViewStyleTests: XCTestCase {
         XCTAssertEqual(customSut.valueLabel.textColor, .systemGreen) // text color
     }
 
-    func testChevronView_shouldExist() {
+    func test_chevronView_shouldExist() {
         XCTAssertNotNil(sut.chevronView)
         XCTAssertNotNil(sut.chevronView.image)
     }
 
     // MARK: - TitleLabel Complete Style Tests
 
-    func testTitleLabel_color_shouldUseThemeBodyEmphasizedColor() {
+    func test_titleLabel_color_shouldUseThemeBodyEmphasizedColor() {
         // Then - titleLabel color is styled by theme (already migrated in FormValueItemView)
         let expectedColor = AdyenTheme.default.elements.labels.bodyEmphasized.color
         XCTAssertEqual(sut.titleLabel.textColor, expectedColor)
@@ -220,7 +220,7 @@ class FormPickerItemViewStyleTests: XCTestCase {
 
     // MARK: - ValueLabel Font Tests
 
-    func testValueLabel_font_shouldUseStyleTextFont() {
+    func test_valueLabel_font_shouldUseStyleTextFont() {
         // Given - Current behavior: uses item.style.text font
         var style = FormTextItemStyle()
         let customFont = UIFont.systemFont(ofSize: 20, weight: .bold)
@@ -236,7 +236,7 @@ class FormPickerItemViewStyleTests: XCTestCase {
 
     // MARK: - AlertLabel Style Tests
 
-    func testAlertLabel_color_shouldUseThemeSubheadlineColor() {
+    func test_alertLabel_color_shouldUseThemeSubheadlineColor() {
         // BUG DOCUMENTATION: alertLabel.textColor is set to item.style.errorColor, but then
         // alertLabel.apply(theme.elements.labels.subheadline) OVERWRITES it with the subheadline color.
         // This means item.style.errorColor is never actually displayed.
@@ -249,13 +249,13 @@ class FormPickerItemViewStyleTests: XCTestCase {
         )
     }
 
-    func testAlertLabel_font_shouldUseThemeSubheadlineStyle() {
+    func test_alertLabel_font_shouldUseThemeSubheadlineStyle() {
         // Then - alertLabel font is styled by theme (in FormValidatableValueItemView)
         let expectedFont = AdyenTheme.default.elements.labels.subheadline.font
         XCTAssertEqual(sut.alertLabel.font, expectedFont)
     }
 
-    func testAlertLabel_text_shouldUseItemValidationFailureMessage() {
+    func test_alertLabel_text_shouldUseItemValidationFailureMessage() {
         // Given - TestFormPickerItem sets validationFailureMessage in updateValidationFailureMessage()
         // Then
         XCTAssertEqual(sut.alertLabel.text, "Please select a value")
@@ -263,7 +263,7 @@ class FormPickerItemViewStyleTests: XCTestCase {
 
     // MARK: - View-Level Style Tests
 
-    func testView_tintColor_shouldUseStyleTintColor() {
+    func test_view_tintColor_shouldUseStyleTintColor() {
         // Given - Current behavior: uses item.style.tintColor
         var style = FormTextItemStyle()
         style.tintColor = .systemPurple
@@ -276,7 +276,7 @@ class FormPickerItemViewStyleTests: XCTestCase {
         XCTAssertEqual(customSut.tintColor, .systemPurple)
     }
 
-    func testView_backgroundColor_shouldUseStyleBackgroundColor() {
+    func test_view_backgroundColor_shouldUseStyleBackgroundColor() {
         // Given - Current behavior: uses item.style.backgroundColor
         var style = FormTextItemStyle()
         style.backgroundColor = .systemYellow
