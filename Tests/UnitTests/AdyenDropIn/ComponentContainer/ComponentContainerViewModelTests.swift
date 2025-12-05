@@ -11,6 +11,7 @@
 import Testing
 import UIKit
 
+@Suite
 struct ComponentContainerViewModelTests {
 
     // MARK: - Helpers
