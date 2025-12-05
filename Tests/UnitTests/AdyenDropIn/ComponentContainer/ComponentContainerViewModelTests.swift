@@ -4,11 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Testing
-@_spi(AdyenInternal) @testable import Adyen
+@testable import Adyen
 @testable import AdyenActions
 @testable import AdyenDropIn
 @testable import AdyenEncryption
+import Testing
 import UIKit
 
 struct ComponentContainerViewModelTests {
@@ -74,7 +74,8 @@ struct ComponentContainerViewModelTests {
 
     // MARK: - Tests
 
-    @Test func componentViewControllerShouldBeComponentViewController() async throws {
+    @Test
+    func componentViewControllerShouldBeComponentViewController() async throws {
         // Given
         let (sut, _, paymentComponentMock, _, _) = await setupSUT()
         let expectedComponentViewController = paymentComponentMock.viewController
@@ -86,7 +87,8 @@ struct ComponentContainerViewModelTests {
         #expect(expectedComponentViewController === receivedComponentViewController)
     }
 
-    @Test func didSubmitShouldCallDropInFlowManagerSubmit() async throws {
+    @Test
+    func didSubmitShouldCallDropInFlowManagerSubmit() async throws {
         // Given
         let (sut, cardPaymentMethodMock, paymentComponentMock, dropInFlowManagerMock, _) = await setupSUT()
 
@@ -98,7 +100,8 @@ struct ComponentContainerViewModelTests {
         #expect(dropInFlowManagerMock.submitFromActionPresenterCallsCount == 1)
     }
 
-    @Test func didFailGivenComponentErrorShouldCallDropInFlowManagerFail() async throws {
+    @Test
+    func didFailGivenComponentErrorShouldCallDropInFlowManagerFail() async throws {
         // Given
         let (sut, _, paymentComponentMock, dropInFlowManagerMock, _) = await setupSUT()
 
@@ -110,7 +113,8 @@ struct ComponentContainerViewModelTests {
         #expect(dropInFlowManagerMock.failWithFromCallsCount == 1)
     }
 
-    @Test func didFailGivenCancellationShouldCallDropInFlowManagerCancel() async throws {
+    @Test
+    func didFailGivenCancellationShouldCallDropInFlowManagerCancel() async throws {
         // Given
         let (sut, _, paymentComponentMock, dropInFlowManagerMock, _) = await setupSUT()
 
@@ -123,7 +127,8 @@ struct ComponentContainerViewModelTests {
         #expect(dropInFlowManagerMock.cancelComponentCallsCount == 1)
     }
 
-    @Test func didFailGivenCancellationShouldCallStopComponentLoading() async throws {
+    @Test
+    func didFailGivenCancellationShouldCallStopComponentLoading() async throws {
         // Given
         let (sut, _, paymentComponentMock, _, _) = await setupSUT()
 
@@ -135,7 +140,8 @@ struct ComponentContainerViewModelTests {
         #expect(paymentComponentMock.stopLoadingCallsCount == 1)
     }
 
-    @Test func didFailGivenCancellationShouldPerfomCancelCallback() async throws {
+    @Test
+    func didFailGivenCancellationShouldPerfomCancelCallback() async throws {
         // Given
         await withCheckedContinuation { continuation in
             let onCancelCallback: () -> Void = {
@@ -155,7 +161,8 @@ struct ComponentContainerViewModelTests {
         #expect(true)
     }
 
-    @Test func didFailGivenCancellationShouldCallRouterDismiss() async throws {
+    @Test
+    func didFailGivenCancellationShouldCallRouterDismiss() async throws {
         // Given
         let (sut, _, paymentComponentMock, _, routerMock) = await setupSUT()
 
@@ -167,7 +174,8 @@ struct ComponentContainerViewModelTests {
         #expect(routerMock.dismissCompletionCallsCount == 1)
     }
 
-    @Test func presentActionComponentShouldCallRouterPresentActionComponent() async throws {
+    @Test
+    func presentActionComponentShouldCallRouterPresentActionComponent() async throws {
         // Given
         let (sut, _, _, _, routerMock) = await setupSUT()
 
@@ -187,7 +195,8 @@ struct ComponentContainerViewModelTests {
         #expect(routerMock.presentActionComponentOnCancelCallsCount == 1)
     }
 
-    @Test func presentActionComponentShouldStopPaymentComponentLoadingOnCancel() async throws {
+    @Test
+    func presentActionComponentShouldStopPaymentComponentLoadingOnCancel() async throws {
         // Given
         let (sut, _, paymentComponentMock, _, routerMock) = await setupSUT()
 
@@ -210,7 +219,8 @@ struct ComponentContainerViewModelTests {
         sut.present(actionComponent: actionComponentMock)
     }
 
-    @Test func didCancelShouldStopPaymentComponentLoading() async throws {
+    @Test
+    func didCancelShouldStopPaymentComponentLoading() async throws {
         // Given
         let (sut, _, paymentComponentMock, _, _) = await setupSUT()
 

@@ -4,10 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Testing
-@_spi(AdyenInternal) @testable import Adyen
+@testable import Adyen
 @testable import AdyenActions
 @testable import AdyenDropIn
+import Testing
 import UIKit
 
 @MainActor
@@ -90,7 +90,8 @@ struct ComponentContainerRouterTests {
 
     // MARK: - Tests
 
-    @Test func presentPaymentComponentShouldPushViewController() async throws {
+    @Test
+    func presentPaymentComponentShouldPushViewController() async throws {
         // Given
         let (sut, viewControllerSpy, _) = await setupSUT()
         let paymentComponent = await makePaymentComponent()
@@ -105,7 +106,8 @@ struct ComponentContainerRouterTests {
         #expect(navController.viewControllers.contains(paymentComponent.viewController))
     }
 
-    @Test func presentActionComponentShouldPresentModallyViewController() async throws {
+    @Test
+    func presentActionComponentShouldPresentModallyViewController() async throws {
         // Given
         let (sut, viewControllerSpy, _) = await setupSUT()
         let actionComponent = await makeActionComponent()
@@ -117,9 +119,10 @@ struct ComponentContainerRouterTests {
         #expect(viewControllerSpy.presentedViewControllerCaptured != nil)
     }
 
-    @Test func presentActionComponentShouldInvokeOnCancelWhenViewDisappears() async throws {
+    @Test
+    func presentActionComponentShouldInvokeOnCancelWhenViewDisappears() async throws {
         // Given
-        let (sut, viewControllerMock, _) = await setupSUT()
+        let (sut, _, _) = await setupSUT()
         let actionComponent = await makeActionComponent()
 
         var callbackCalled = false
@@ -137,7 +140,8 @@ struct ComponentContainerRouterTests {
         #expect(callbackCalled)
     }
 
-    @Test func dismissShouldCallListenerDidDismissComponentContainer() async throws {
+    @Test
+    func dismissShouldCallListenerDidDismissComponentContainer() async throws {
         // Given
         let (sut, viewControllerSpy, listenerMock) = await setupSUT()
 

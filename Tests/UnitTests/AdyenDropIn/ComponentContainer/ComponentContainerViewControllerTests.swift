@@ -4,10 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Testing
-@_spi(AdyenInternal) @testable import Adyen
+@testable import Adyen
 @testable import AdyenActions
 @testable import AdyenDropIn
+import Testing
 import UIKit
 
 @MainActor
@@ -32,7 +32,8 @@ struct ComponentContainerViewControllerTests {
 
     // MARK: - Tests
 
-    @Test func viewDidDisappearShouldCallViewModelCancel() async throws {
+    @Test
+    func viewDidDisappearShouldCallViewModelCancel() async throws {
         // Given
         let (sut, viewModelMock, _) = await setupSUT()
 
@@ -43,7 +44,8 @@ struct ComponentContainerViewControllerTests {
         #expect(viewModelMock.cancelCallsCount == 1)
     }
 
-    @Test func componentViewShouldMatchViewModelComponentViewController() async throws {
+    @Test
+    func componentViewShouldMatchViewModelComponentViewController() async throws {
         // Given
         let (sut, _, expectedComponentViewController) = await setupSUT()
 
@@ -54,7 +56,8 @@ struct ComponentContainerViewControllerTests {
         #expect(expectedComponentViewController === receivedComponentViewController)
     }
 
-    @Test func viewDidLoadShouldSetComponentViewControllerAsChild() async throws {
+    @Test("Verify component is added to the container")
+    func viewDidLoadShouldSetComponentViewControllerAsChild() async throws {
         // Given
         let (sut, _, componentViewControllerMock) = await setupSUT()
 
@@ -63,10 +66,13 @@ struct ComponentContainerViewControllerTests {
 
         // Then
         #expect(sut.children.count == 1)
-        #expect(sut.children.first === componentViewControllerMock)
+
+        let childViewController = try #require(sut.children.first)
+        #expect(childViewController === componentViewControllerMock)
     }
 
-    @Test func navigationItem() async throws {
+    @Test
+    func navigationItem() async throws {
         // Given
         let (sut, _, componentViewControllerMock) = await setupSUT()
         let expectedNavigationItemTitle = componentViewControllerMock.title
