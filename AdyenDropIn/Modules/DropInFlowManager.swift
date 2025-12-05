@@ -10,6 +10,7 @@
 #endif
 import Foundation
 
+// sourcery:AutoMockable
 internal protocol ActionPresenter: AnyObject {
     func present(actionComponent: PresentableComponent)
     func didCancel(actionComponent: ActionComponent)

@@ -6,6 +6,7 @@
 
 import Foundation
 
+// sourcery:AutoMockable
 /// Defines the methods a delegate of the drop in component should implement.
 public protocol DropInComponentDelegate: AnyObject {
     
