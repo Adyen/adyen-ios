@@ -6,7 +6,6 @@
 
 import Adyen
 import AdyenActions
-import AdyenCard
 import AdyenCheckout
 import AdyenUI
 import PassKit
@@ -62,6 +61,12 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                             await MapkitAddressLookupProvider().searchAsync(searchTerm)
                         })
                 )
+                .onBinValue { bin in
+                    print("Here is the bin \(bin)")
+                }
+                .onBinLookup { brands in
+                    print("Bin lookup response \(brands)")
+                }
         }
         .theme(
             AdyenTheme(colors: AdyenColors(primary: .systemPurple))
@@ -190,22 +195,6 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         presenter?.dismiss(completion: nil)
     }
 
-}
-
-extension CardComponentAdvancedFlowExample: CardComponentDelegate {
-
-    func didSubmit(lastFour: String, finalBIN: String, component: CardComponent) {
-        print("Card used: **** **** **** \(lastFour)")
-        print("Final BIN: \(finalBIN)")
-    }
-
-    internal func didChangeBIN(_ value: String, component: CardComponent) {
-        print("Current BIN: \(value)")
-    }
-
-    internal func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent) {
-        print("Current card type: \((value ?? []).reduce("") { "\($0), \($1)" })")
-    }
 }
 
 extension CardComponentAdvancedFlowExample: PresentationDelegate {

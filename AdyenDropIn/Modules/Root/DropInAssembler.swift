@@ -4,9 +4,6 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-#if canImport(AdyenCard)
-    import AdyenCard
-#endif
 import Adyen
 import AdyenNetworking
 import Foundation
@@ -22,7 +19,6 @@ internal struct DropInAssembler {
     private let configuration: DropInComponent.Configuration
     private let componentManager: ComponentManager
     private let dropInFlowManager: DropInFlowManaging
-    private let cardComponentDelegate: CardComponentDelegate?
     private let partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
@@ -33,14 +29,12 @@ internal struct DropInAssembler {
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging,
-        cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.title = title
         self.paymentMethods = paymentMethods
         self.context = context
         self.configuration = configuration
-        self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
         self.dropInFlowManager = dropInFlowManager
         self.componentManager = ComponentManager(
@@ -95,7 +89,6 @@ internal struct DropInAssembler {
             componentContainerAssembler: componentContainerAssembler,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
-            cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
     }
@@ -107,7 +100,6 @@ internal struct DropInAssembler {
             context: context,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
-            cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
     }
@@ -116,7 +108,6 @@ internal struct DropInAssembler {
         ComponentContainerAssembler(
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
-            cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
     }
