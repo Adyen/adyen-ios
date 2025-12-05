@@ -20,7 +20,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     /// - Parameters:
     ///   - item: The item represented by the view.
     ///   - theme: The theme to use for styling.
-    override internal init(item: FormCardNumberItem, theme: AdyenTheme) {
+    internal required init(item: FormCardNumberItem, theme: AdyenTheme) {
         super.init(item: item, theme: theme)
         accessory = .customView(detectedBrandsView)
         if item.supportsCardScanning {

@@ -15,16 +15,13 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     
     private var itemObserver: Observation?
 
-    // TODO: Pass as dependency
-    private let theme: AdyenTheme = .default
-
-    public required init(item: ItemType) {
-        super.init(item: item)
+    public required init(item: ItemType, theme: AdyenTheme) {
+        super.init(item: item, theme: theme)
         
         setupObservers()
         updateValidationStatus()
     }
-    
+
     // MARK: - Views
     
     /// The alert label to be used to indicate an issue with the value
@@ -32,9 +29,9 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     /// The intended use is to put it inside of a UIStackView as it will be hidden based on the validity of the item
     internal lazy var alertLabel: UILabel = {
         let alertLabel = UILabel()
-        alertLabel.textColor = item.style.errorColor
-        // TODO: Replace AdyenTheme with config's object theme style
+
         alertLabel.apply(theme.elements.labels.subheadline)
+        alertLabel.textColor = theme.colors.destructive
         alertLabel.isAccessibilityElement = false
         alertLabel.numberOfLines = 0
         alertLabel.text = item.validationFailureMessage

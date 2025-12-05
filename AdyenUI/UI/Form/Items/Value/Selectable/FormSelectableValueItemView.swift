@@ -20,8 +20,8 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
     
     override internal var accessibilityLabelView: UIView? { selectionButton }
     
-    public required init(item: ItemType) {
-        super.init(item: item)
+    public required init(item: ItemType, theme: AdyenTheme) {
+        super.init(item: item, theme: theme)
         
         addSubview(selectionButton)
         
@@ -90,7 +90,8 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
     
     /// The value label view.
     internal lazy var valueLabel: UILabel = {
-        let valueLabel = ValueLabel(style: item.style.text)
+        let valueLabel = ValueLabel()
+        valueLabel.apply(theme.elements.labels.body)
         valueLabel.numberOfLines = numberOfLines
         valueLabel.isAccessibilityElement = false
         valueLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "valueLabel") }
@@ -118,13 +119,13 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
         
         guard let formattedValue, !formattedValue.isEmpty else {
             valueLabel.text = item.placeholder
-            valueLabel.textColor = item.style.placeholderText?.color ?? .Adyen.componentPlaceholderText
+            valueLabel.textColor = theme.colors.textSecondary
             resetValidationStatus()
             return
         }
         
         valueLabel.text = formattedValue
-        valueLabel.textColor = item.style.text.color
+        valueLabel.textColor = theme.elements.labels.body.color
         showValidation()
     }
     

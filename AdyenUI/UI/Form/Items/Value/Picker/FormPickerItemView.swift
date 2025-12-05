@@ -10,8 +10,8 @@ import UIKit
 @_spi(AdyenInternal)
 public class FormPickerItemView<Value: FormPickable>: FormSelectableValueItemView<Value, FormPickerItem<Value>> {
     
-    internal required init(item: FormPickerItem<Value>) {
-        super.init(item: item)
+    internal required init(item: FormPickerItem<Value>, theme: AdyenTheme) {
+        super.init(item: item, theme: theme)
         item.selectionHandler = { [weak self] in
             
             let topPresenter = self?.item.presenter

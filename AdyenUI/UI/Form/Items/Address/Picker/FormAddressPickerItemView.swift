@@ -8,11 +8,11 @@ import Adyen
 
 internal class FormAddressPickerItemView: FormSelectableValueItemView<PostalAddress, FormAddressPickerItem> {
     
-    internal required init(item: FormAddressPickerItem) {
-        super.init(item: item)
+    internal required init(item: FormAddressPickerItem, theme: AdyenTheme) {
+        super.init(item: item, theme: theme)
         self.numberOfLines = 0
     }
-    
+
     override internal func reset() {
         item.value = PostalAddress()
         resetValidationStatus()

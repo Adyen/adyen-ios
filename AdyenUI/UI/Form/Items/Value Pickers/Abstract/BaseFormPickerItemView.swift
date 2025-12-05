@@ -37,9 +37,11 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>:
 
     /// Initializes the picker item view.
     ///
-    /// - Parameter item: The item represented by the view.
-    public required init(item: BaseFormPickerItem<T>) {
-        super.init(item: item)
+    /// - Parameters
+    ///   - item: The item represented by the view.
+    ///   - theme: The theme to use for styling.
+    public required init(item: BaseFormPickerItem<T>, theme: AdyenTheme) {
+        super.init(item: item, theme: theme)
         initialize()
         select(value: item.value)
         observe(item.$selectableValues) { [weak self] change in
