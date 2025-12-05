@@ -92,7 +92,7 @@ struct ComponentContainerRouterTests {
     // MARK: - Tests
 
     @Test
-    func presentPaymentComponentShouldPushViewController() async throws {
+    func presentPaymentComponent_shouldPushViewController() async throws {
         // Given
         let (sut, viewControllerSpy, _) = await setupSUT()
         let paymentComponent = await makePaymentComponent()
@@ -108,7 +108,7 @@ struct ComponentContainerRouterTests {
     }
 
     @Test
-    func presentActionComponentShouldPresentModallyViewController() async throws {
+    func presentActionComponent_shouldPresentModallyViewController() async throws {
         // Given
         let (sut, viewControllerSpy, _) = await setupSUT()
         let actionComponent = await makeActionComponent()
@@ -121,7 +121,7 @@ struct ComponentContainerRouterTests {
     }
 
     @Test
-    func presentActionComponentShouldInjectOnCancelCallbackIntoActionWrapper() async throws {
+    func presentActionComponent_shouldInjectOnCancelCallbackIntoActionWrapper() async throws {
         // Given
         let (sut, viewControllerSpy, _) = await setupSUT()
         let actionComponent = await makeActionComponent()
@@ -144,7 +144,7 @@ struct ComponentContainerRouterTests {
     }
 
     @Test
-    func dismissShouldCallListenerDidDismissComponentContainer() async throws {
+    func dismiss_shouldCallListenerDidDismissComponentContainer() async throws {
         // Given
         let (sut, viewControllerSpy, listenerMock) = await setupSUT()
 

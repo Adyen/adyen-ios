@@ -34,7 +34,7 @@ struct ComponentContainerViewControllerTests {
     // MARK: - Tests
 
     @Test
-    func viewDidDisappearShouldCallViewModelCancel() async throws {
+    func viewDidDisappear_shouldCallViewModelCancel() async throws {
         // Given
         let (sut, viewModelMock, _) = await setupSUT()
 
@@ -46,7 +46,7 @@ struct ComponentContainerViewControllerTests {
     }
 
     @Test
-    func componentViewShouldMatchViewModelComponentViewController() async throws {
+    func componentView_shouldMatchViewModelComponentViewController() async throws {
         // Given
         let (sut, _, expectedComponentViewController) = await setupSUT()
 
@@ -58,7 +58,7 @@ struct ComponentContainerViewControllerTests {
     }
 
     @Test("Verify component is added to the container")
-    func viewDidLoadShouldSetComponentViewControllerAsChild() async throws {
+    func viewDidLoad_shouldSetComponentViewControllerAsChild() async throws {
         // Given
         let (sut, _, componentViewControllerMock) = await setupSUT()
 

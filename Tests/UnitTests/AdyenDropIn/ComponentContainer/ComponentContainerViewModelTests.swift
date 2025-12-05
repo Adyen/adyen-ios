@@ -74,8 +74,8 @@ struct ComponentContainerViewModelTests {
 
     // MARK: - Tests
 
-    @Test
-    func componentViewControllerShouldBeComponentViewController() async throws {
+    @Test("The exposed componentViewController should match the one coming from the component's view controller")
+    func componentViewController_shouldMatchComponentViewController() async throws {
         // Given
         let (sut, _, paymentComponentMock, _, _) = await setupSUT()
         let expectedComponentViewController = paymentComponentMock.viewController
@@ -88,7 +88,7 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func didSubmitShouldCallDropInFlowManagerSubmit() async throws {
+    func didSubmit_shouldCallDropInFlowManagerSubmit() async throws {
         // Given
         let (sut, cardPaymentMethodMock, paymentComponentMock, dropInFlowManagerMock, _) = await setupSUT()
 
@@ -101,7 +101,7 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func didFailGivenComponentErrorShouldCallDropInFlowManagerFail() async throws {
+    func didFail_givenComponentError_shouldCallDropInFlowManagerFail() async throws {
         // Given
         let (sut, _, paymentComponentMock, dropInFlowManagerMock, _) = await setupSUT()
 
@@ -114,7 +114,7 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func didFailGivenCancellationShouldCallDropInFlowManagerCancel() async throws {
+    func didFail_givenCancellation_shouldCallDropInFlowManagerCancel() async throws {
         // Given
         let (sut, _, paymentComponentMock, dropInFlowManagerMock, _) = await setupSUT()
 
@@ -128,7 +128,7 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func didFailGivenCancellationShouldCallStopComponentLoading() async throws {
+    func didFail_givenCancellation_shouldCallStopComponentLoading() async throws {
         // Given
         let (sut, _, paymentComponentMock, _, _) = await setupSUT()
 
@@ -141,7 +141,7 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func didFailGivenCancellationShouldPerfomCancelCallback() async throws {
+    func didFail_givenCancellation_shouldPerfomCancelCallback() async throws {
         // Given
         await withCheckedContinuation { continuation in
             let onCancelCallback: () -> Void = {
@@ -162,7 +162,7 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func didFailGivenCancellationShouldCallRouterDismiss() async throws {
+    func didFail_givenCancellation_shouldCallRouterDismiss() async throws {
         // Given
         let (sut, _, paymentComponentMock, _, routerMock) = await setupSUT()
 
@@ -175,7 +175,7 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func presentActionComponentShouldCallRouterPresentActionComponent() async throws {
+    func presentActionComponent_shouldCallRouterPresentActionComponent() async throws {
         // Given
         let (sut, _, _, _, routerMock) = await setupSUT()
 
@@ -196,7 +196,7 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func presentActionComponentShouldStopPaymentComponentLoadingOnCancel() async throws {
+    func presentActionComponent_whenCancelled_shouldStopPaymentComponentLoading() async throws {
         // Given
         let (sut, _, paymentComponentMock, _, routerMock) = await setupSUT()
 
@@ -220,7 +220,7 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func didCancelShouldStopPaymentComponentLoading() async throws {
+    func didCancel_shouldStopPaymentComponentLoading() async throws {
         // Given
         let (sut, _, paymentComponentMock, _, _) = await setupSUT()
 
