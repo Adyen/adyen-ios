@@ -91,7 +91,7 @@ public struct FormItemViewBuilder {
     /// Builds `FormVerticalStackItemView` from `FormAddressItem`.
     @_spi(AdyenInternal)
     public func build(with item: FormAddressItem) -> FormItemView<FormAddressItem> {
-        FormVerticalStackItemView(item: item)
+        FormVerticalStackItemView(item: item, theme: theme)
     }
 
     /// Builds `FormSpacerItemView` from `FormSpacerItem`.

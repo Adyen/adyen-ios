@@ -13,7 +13,8 @@ import UIKit
 internal class PayToIdentifierItem: FormStringPickerItem {
     
     override internal func build(with builder: FormItemViewBuilder) -> any AnyFormItemView {
-        PayToFormPickerItemView(item: self)
+        // TODO: theme to be injected
+        PayToFormPickerItemView(item: self, theme: .default)
     }
 }
 
@@ -28,6 +29,6 @@ internal class PayToFormPickerItemView: BaseFormPickerItemView<FormStringPickerE
 extension FormItemViewBuilder {
     
     internal func build(with item: PayToIdentifierItem) -> PayToFormPickerItemView {
-        PayToFormPickerItemView(item: item)
+        PayToFormPickerItemView(item: item, theme: theme)
     }
 }
