@@ -8,9 +8,8 @@
 import UIKit
 
 /// An address form item that allows picking an address on a separate screen.
-@_spi(AdyenInternal)
-public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?> {
-    
+package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?> {
+
     public enum AddressType {
         case billing
         case delivery
@@ -23,9 +22,7 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
     private let addressViewModelBuilder: AddressViewModelBuilder
     private weak var presenter: ViewControllerPresenter?
     
-    /// The view model to validate the address with
-    @_spi(AdyenInternal)
-    public var addressViewModel: AddressViewModel {
+    package var addressViewModel: AddressViewModel {
         addressViewModelBuilder.build(context: self.context)
     }
     
