@@ -24,10 +24,7 @@ private class FormSelectableValueItemMock: FormSelectableValueItem<String?> {
     }
 }
 
-private class FormSelectableValueItemViewMock: FormSelectableValueItemView<
-    String, FormSelectableValueItemMock
->
-{}
+private class FormSelectableValueItemViewMock: FormSelectableValueItemView<String, FormSelectableValueItemMock> {}
 
 // MARK: - Test Item (concrete subclass of abstract FormPickerItem)
 
