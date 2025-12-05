@@ -5,9 +5,6 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-#if canImport(AdyenCard)
-    import AdyenCard
-#endif
 import Foundation
 import UIKit
 
@@ -25,7 +22,6 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     private let component: PresentableComponent
     private let configuration: DropInComponent.Configuration
     private var dropInFlowManager: DropInFlowManaging
-    private weak var cardComponentDelegate: CardComponentDelegate?
     private weak var partialPaymentDelegate: PartialPaymentDelegate?
     private let onCancel: (() -> Void)?
 
@@ -35,14 +31,12 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         component: PresentableComponent,
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging,
-        cardComponentDelegate: CardComponentDelegate?,
         partialPaymentDelegate: PartialPaymentDelegate?,
         onCancel: (() -> Void)? = nil
     ) {
         self.component = component
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
-        self.cardComponentDelegate = cardComponentDelegate
         self.partialPaymentDelegate = partialPaymentDelegate
         self.onCancel = onCancel
         setupComponent()
@@ -68,7 +62,6 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     private func setupComponent() {
         (component as? PaymentComponent)?.delegate = self
-        (component as? CardComponent)?.cardComponentDelegate = cardComponentDelegate
         (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
     }
