@@ -746,8 +746,6 @@
 		C9037F162D5A1AC0003A5154 /* CardScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F152D5A1AC0003A5154 /* CardScannerViewController.swift */; };
 		C90494562E8FF2CE007C4EB5 /* LoadControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90494552E8FF2CE007C4EB5 /* LoadControllable.swift */; };
 		C90AC76C2EE0F22500DF60EA /* ComponentContainerRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90AC76B2EE0F22500DF60EA /* ComponentContainerRouterTests.swift */; };
-		C90AC7802EE1D41C00DF60EA /* ActionWrapperSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90AC77F2EE1D41C00DF60EA /* ActionWrapperSpy.swift */; };
-		C90AC7812EE1D41C00DF60EA /* ActionWrapperSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90AC77F2EE1D41C00DF60EA /* ActionWrapperSpy.swift */; };
 		C90AC7862EE1D47B00DF60EA /* ComponentContainerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90AC7852EE1D47B00DF60EA /* ComponentContainerViewControllerTests.swift */; };
 		C9126051275A3A2800C03DC4 /* BACSItemsFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9126050275A3A2800C03DC4 /* BACSItemsFactoryTests.swift */; };
 		C9174FF32EB3A89800AA1609 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9174FF22EB3A89800AA1609 /* Router.swift */; };
@@ -2300,7 +2298,6 @@
 		C9037F152D5A1AC0003A5154 /* CardScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerViewController.swift; sourceTree = "<group>"; };
 		C90494552E8FF2CE007C4EB5 /* LoadControllable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadControllable.swift; sourceTree = "<group>"; };
 		C90AC76B2EE0F22500DF60EA /* ComponentContainerRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentContainerRouterTests.swift; sourceTree = "<group>"; };
-		C90AC77F2EE1D41C00DF60EA /* ActionWrapperSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionWrapperSpy.swift; sourceTree = "<group>"; };
 		C90AC7852EE1D47B00DF60EA /* ComponentContainerViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentContainerViewControllerTests.swift; sourceTree = "<group>"; };
 		C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormViewController+ViewProtocol.swift"; sourceTree = "<group>"; };
 		C90D26B1275900B9001A488F /* BACSInputFormViewProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewProtocolMock.swift; sourceTree = "<group>"; };
@@ -3960,7 +3957,6 @@
 		A02B89DD2DD76E550083CE99 /* AdyenDropIn */ = {
 			isa = PBXGroup;
 			children = (
-				C90AC77E2EE1D40400DF60EA /* Spies */,
 				C993EB622EE056D000353ECA /* ComponentContainer */,
 				F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */,
 			);
@@ -4314,14 +4310,6 @@
 				C9174FF22EB3A89800AA1609 /* Router.swift */,
 			);
 			path = Protocols;
-			sourceTree = "<group>";
-		};
-		C90AC77E2EE1D40400DF60EA /* Spies */ = {
-			isa = PBXGroup;
-			children = (
-				C90AC77F2EE1D41C00DF60EA /* ActionWrapperSpy.swift */,
-			);
-			path = Spies;
 			sourceTree = "<group>";
 		};
 		C90D26AF2757C270001A488F /* BACS Direct Debit */ = {
@@ -8322,7 +8310,6 @@
 				B6D808182BCD151F00F3F5EB /* PresentationDelegateMock.swift in Sources */,
 				B6D8081C2BCD151F00F3F5EB /* MockAddressLookupProvider.swift in Sources */,
 				B6D808132BCD149F00F3F5EB /* Dummy.swift in Sources */,
-				C90AC7802EE1D41C00DF60EA /* ActionWrapperSpy.swift in Sources */,
 				81DA70812BDA5F66006CE5D5 /* PaymentMethods+Equatable.swift in Sources */,
 				B6D808382BCD1F8900F3F5EB /* AssertsTests.swift in Sources */,
 				B6D808392BCD1F8900F3F5EB /* LengthValidatorTests.swift in Sources */,
@@ -8777,7 +8764,6 @@
 				A0290DF82C413056005BE269 /* StoredPaymentMethodDelegateMock.swift in Sources */,
 				F96A25472372C39F007DBF0B /* ApplePayDetailsTest.swift in Sources */,
 				A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */,
-				C90AC7812EE1D41C00DF60EA /* ActionWrapperSpy.swift in Sources */,
 				A04E60DB27F30D900051C72C /* SessionDelegateMock.swift in Sources */,
 				F9AC61C424375F510062A00D /* PresentingViewControllerMock.swift in Sources */,
 				5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */,

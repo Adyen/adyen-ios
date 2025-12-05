@@ -120,24 +120,26 @@ struct ComponentContainerRouterTests {
     }
 
     @Test
-    func presentActionComponentShouldInvokeOnCancelWhenViewDisappears() async throws {
+    func presentActionComponentShouldInjectOnCancelCallbackIntoActionWrapper() async throws {
         // Given
-        let (sut, _, _) = await setupSUT()
+        let (sut, viewControllerSpy, _) = await setupSUT()
         let actionComponent = await makeActionComponent()
 
-        var callbackCalled = false
-
-        let actionWrapperSpy = ActionWrapperSpy(actionComponent: actionComponent)
-        actionWrapperSpy.callbackInvoked = { callbackCalled = true }
+        var cancelWasCalled = false
+        let cancelCallback = { cancelWasCalled = true }
 
         // When
-        sut.present(actionComponent: actionComponent, onCancel: actionWrapperSpy.callbackInvoked)
-
-        // Simulate disappearance
-        actionWrapperSpy.viewDidDisappear(true)
+        sut.present(actionComponent: actionComponent, onCancel: cancelCallback)
 
         // Then
-        #expect(callbackCalled)
+        let wrapper = try #require(
+            viewControllerSpy.presentedViewControllerCaptured as? ActionWrapperViewController
+        )
+
+        let injectedCallback = try #require(wrapper.onCancel)
+        injectedCallback()
+
+        #expect(cancelWasCalled)
     }
 
     @Test
