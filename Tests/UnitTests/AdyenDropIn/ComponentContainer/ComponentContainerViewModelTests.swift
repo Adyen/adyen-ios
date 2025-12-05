@@ -40,7 +40,6 @@ struct ComponentContainerViewModelTests {
             component: paymentComponentMock,
             configuration: DropInComponent.Configuration(),
             dropInFlowManager: dropInFlowManagerMock,
-            cardComponentDelegate: nil,
             partialPaymentDelegate: nil,
             onCancel: onCancel
         )

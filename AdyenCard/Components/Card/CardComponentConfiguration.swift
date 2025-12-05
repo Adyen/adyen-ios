@@ -65,7 +65,7 @@ public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPer
     /// Indicates whether or not to show the supported card logos under the card number item
     internal var showsSupportedCardLogos: Bool
     
-    //TODO: rename all related parts after aligning
+    // TODO: rename all related parts after aligning
     /// Called when the BIN value changes (first 6-8 digits of the card number).
     internal var onBinValue: ((String) -> Void)?
     
