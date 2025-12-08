@@ -26,7 +26,7 @@ The demo app uses `.xcconfig` files for secret management and environment config
    | Variable Name | Description |
    |---------------|-------------|
    | `MERCHANT_CLIENT_KEY` | Your Adyen client key. [How to obtain it →](https://docs.adyen.com/development-resources/client-side-authentication#get-your-client-key) |
-   | `MERCHANT_SERVER_HOST` | Hostname of your backend server (without `https://`). The scheme is added automatically. |
+   | `MERCHANT_SERVER_HOST` | Your backend server address (e.g., `your-server.com` or `checkout-test.adyen.com/{VERSION}`), without the `https://` scheme. |
    | `MERCHANT_ACCOUNT` | Your Adyen merchant account identifier. |
    | `ADYEN_SERVER_API_KEY` | API key used **only when connecting directly to Adyen for testing**. Leave empty when using your own backend. |
    | `APPLE_TEAM_IDENTIFIER` | Your Apple Developer Team Identifier. |
@@ -61,7 +61,7 @@ If you do not have your own server, you may configure the demo app to call the A
 
 To enable direct API usage, set the following in your `Secrets.test.xcconfig`:
 ```xcconfig
-MERCHANT_SERVER_HOST = checkout-test.adyen.com/{VERSION}/
+MERCHANT_SERVER_HOST = checkout-test.adyen.com/{VERSION}
 ADYEN_SERVER_API_KEY = <YOUR_API_KEY>
 ```
 
