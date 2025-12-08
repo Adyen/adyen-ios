@@ -13,8 +13,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     FormItemView<ItemType>,
     AnyFormValueItemView {
 
-    // TODO: Pass as a dependency
-    private let theme: AdyenTheme = .default
+    package let theme: AdyenTheme
 
     // MARK: - Title Label
 
@@ -32,8 +31,11 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
 
     /// Initializes the value item view.
     ///
-    /// - Parameter item: The item represented by the view.
-    public required init(item: ItemType) {
+    /// - Parameters:
+    ///   - item: The item represented by the view.
+    ///   - theme: The theme to apply to the view.
+    public required init(item: ItemType, theme: AdyenTheme) {
+        self.theme = theme
         super.init(item: item)
 
         bind(item.$title, to: self.titleLabel, at: \.text)
@@ -41,6 +43,13 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
         tintColor = item.style.tintColor
         backgroundColor = item.style.backgroundColor
         gestureRecognizers = [UITapGestureRecognizer(target: self, action: #selector(becomeFirstResponder))]
+    }
+
+    /// Convenience initializer using the default theme.
+    ///
+    /// - Parameter item: The item represented by the view.
+    public required convenience init(item: ItemType) {
+        self.init(item: item, theme: .default)
     }
     
     override open func didAddSubview(_ subview: UIView) {

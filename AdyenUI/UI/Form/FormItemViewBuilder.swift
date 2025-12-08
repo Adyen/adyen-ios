@@ -41,7 +41,7 @@ public struct FormItemViewBuilder {
     @_spi(AdyenInternal)
     public func build<Value: CustomStringConvertible>(with item: BaseFormPickerItem<Value>)
         -> BaseFormPickerItemView<Value> {
-        BaseFormPickerItemView(item: item)
+        BaseFormPickerItemView(item: item, theme: theme)
     }
 
     /// Builds `FormTextInputItemView` from `FormTextInputItem`.
@@ -123,7 +123,7 @@ public struct FormItemViewBuilder {
     public func build<Value>(with item: FormPickerItem<Value>) -> FormItemView<
         FormPickerItem<Value>
     > {
-        FormPickerItemView(item: item)
+        FormPickerItemView(item: item, theme: theme)
     }
 
     /// Builds `FormPhoneExtensionPickerItemView` from `FormPhoneExtensionPickerItem`.

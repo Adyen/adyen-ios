@@ -39,16 +39,12 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     override public var accessibilityLabelView: UIView? { textField }
 
-    /// The theme for styling (accessible to subclasses)
-    package let theme: AdyenTheme
-
     /// Initializes the text item view with theme.
     /// - Parameters:
     ///   - item: The item represented by the view.
     ///   - theme: The theme to use for styling.
-    public init(item: ItemType, theme: AdyenTheme) {
-        self.theme = theme
-        super.init(item: item)
+    public required init(item: ItemType, theme: AdyenTheme) {
+        super.init(item: item, theme: theme)
 
         bind(item.$placeholder, to: textField, at: \.placeholder)
         observe(item.$formattedValue) { [weak self] newValue in
