@@ -334,6 +334,19 @@ A full list of customization options can be found in the [API Reference][referen
 
 * [Localization][reference.localization]
 
+## Demo App
+
+We provide a fully working **Demo App** to explore Drop-in and Components integrations in a sandbox environment.
+
+The Demo App includes:
+
+* Sample integrations for Session Flow and Advanced Flow
+* UIKit and SwiftUI examples
+* Common payment methods (Card, Apple Pay, Instant Payments, Issuer List)
+
+> **Note:** We recommend using your own backend server. Direct API usage with `ADYEN_SERVER_API_KEY` is possible for testing only and **not** for production.
+
+For detailed setup, see the [Demo README](Demo/README.md).
 
 ## Support
 
