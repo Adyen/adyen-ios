@@ -233,7 +233,9 @@ class AddressLookupViewControllerTests: XCTestCase {
         // When - Selecting address from lookup
 
         let loadingExpectation = expectation(description: "Loading handler was called")
-        loadingExpectation.expectedFulfillmentCount = 2
+        loadingExpectation.expectedFulfillmentCount = 1
+        let firstAddressResult = results.first!.postalAddress
+        let stateChangeExpectation = expectation(description: "State changed to form with address")
         
         let addressSearchViewModel = viewModel.buildAddressSearchViewModel { _ in
             XCTFail("Presentation handler should not have been called")
@@ -248,11 +250,17 @@ class AddressLookupViewControllerTests: XCTestCase {
             
             // Selecting the 2nd item in the list as the first one is the manual input cell
             listItems[1].selectionHandler?()
+            
+            // Wait for state to update after selection
+            DispatchQueue.main.async {
+                stateChangeExpectation.fulfill()
+            }
         }
 
         // Then
 
-        let firstAddressResult = results.first!.postalAddress
+        // Wait for async operations to complete
+        wait(for: [stateChangeExpectation], timeout: 5)
 
         XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: firstAddressResult))
 
