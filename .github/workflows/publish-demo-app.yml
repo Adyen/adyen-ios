@@ -127,7 +127,8 @@ jobs:
           rm -f $AUTH_KEY_PATH
           echo -n "$XCODE_AUTHENTICATION_KEY_BASE64" | base64 --decode -o $AUTH_KEY_PATH
 
-          echo "AUTH_KEY_PATH=$AUTH_KEY_PATH" >> $GITHUB_ENV
+          # Make it available for the current shell
+          export AUTH_KEY_PATH=$AUTH_KEY_PATH
 
           chmod +x ./Scripts/publish-demo-app.sh
           ./Scripts/publish-demo-app.sh
