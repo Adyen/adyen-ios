@@ -12,7 +12,7 @@ EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions.plist"
 DISTRIBUTION_TYPE="${1:-testflight}"  # testflight (default) or firebase
 
 # Validate inputs
-if [[ -z "$DISTRIBUTION_TYPE"]]; then
+if [[ -z "$DISTRIBUTION_TYPE" ]]; then
   echo "❌ Usage: $0 [distribution_type]"
   exit 1
 fi
