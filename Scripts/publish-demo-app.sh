@@ -111,6 +111,10 @@ xcodebuild archive -project Adyen.xcodeproj \
   APPLE_PAY_MERCHANT_IDENTIFIER="${APPLE_PAY_MERCHANT_IDENTIFIER:-"merchant.com.adyen.test"}"
 
 # ---- Export IPA with signing ----
+AUTH_KEY_PATH="$RUNNER_TEMP/auth_key.p8"
+echo -n "$XCODE_AUTHENTICATION_KEY_BASE64" | base64 --decode > "$AUTH_KEY_PATH"
+chmod 600 "$AUTH_KEY_PATH"  # restrict permissions
+
 echo "📤 Exporting .ipa with manual signing..."
 xcodebuild -exportArchive \
   -archivePath "$ARCHIVE_PATH" \
@@ -120,7 +124,7 @@ xcodebuild -exportArchive \
   -skipPackagePluginValidation \
   -authenticationKeyID "$XCODE_AUTHENTICATION_KEY_ID" \
   -authenticationKeyIssuerID "$XCODE_AUTHENTICATION_KEY_ISSUER_ID" \
-  -authenticationKeyPath <(echo -n "$XCODE_AUTHENTICATION_KEY_BASE64" | base64 --decode) \
+  -authenticationKeyPath "$AUTH_KEY_PATH" \
   MERCHANT_CLIENT_KEY="$MERCHANT_CLIENT_KEY" \
   MERCHANT_SERVER_HOST="$MERCHANT_SERVER_HOST" \
   MERCHANT_ACCOUNT="$MERCHANT_ACCOUNT" \
