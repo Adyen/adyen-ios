@@ -74,19 +74,28 @@ jobs:
 
       - name: 🚀 Distribute to Firebase
         env:
-          # Workflow configuration
+          # Apple credentials
           APPLE_ID_USERNAME: ${{ secrets.APPLE_ID_USERNAME }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+
+          # Xcode signing key
           XCODE_AUTHENTICATION_KEY_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ID }}
           XCODE_AUTHENTICATION_KEY_ISSUER_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ISSUER_ID }}
           XCODE_AUTHENTICATION_KEY_BASE64: ${{ secrets.XCODE_AUTHENTICATION_KEY_BASE64 }}
 
-          # Firebase env
+          # Build certificates & profiles
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          DEVELOPMENT_CERTIFICATE_BASE64: ${{ secrets.DEVELOPMENT_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+
+           # Firebase configuration
           FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           FIREBASE_RELEASE_NAME: ${{ env.FIREBASE_RELEASE_NAME }}
-          
-          # App build configuration
+
+          # App configuration
           MERCHANT_CLIENT_KEY: ${{ secrets.DEMO_APP_TEST_ENV_CLIENT_KEY }}
           MERCHANT_SERVER_HOST: ${{ secrets.MERCHANT_SERVER_HOST }}
           MERCHANT_ACCOUNT: ${{ secrets.MERCHANT_ACCOUNT }}
@@ -94,12 +103,5 @@ jobs:
           APPLE_TEAM_IDENTIFIER: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
           ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
         run: |
-          AUTH_KEY_PATH=$RUNNER_TEMP/authentication_key_path.p8
-          rm -f $AUTH_KEY_PATH
-          echo -n "$XCODE_AUTHENTICATION_KEY_BASE64" | base64 --decode -o $AUTH_KEY_PATH
-
-          # Make it available for the current shell
-          export AUTH_KEY_PATH=$AUTH_KEY_PATH
-
           chmod +x ./Scripts/publish-demo-app.sh
           ./Scripts/publish-demo-app.sh "firebase"
