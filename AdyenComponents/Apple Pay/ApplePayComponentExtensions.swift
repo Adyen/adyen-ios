@@ -121,10 +121,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         completion: @escaping (PKPaymentAuthorizationResult) -> Void
     ) {
         state = .submitted(completion)
-        performSubmit(with: payment)
-    }
-    
-    private func performSubmit(with payment: PKPayment) {
+        
         let token = payment.token.paymentData.base64EncodedString()
         let network = payment.token.paymentMethod.network?.rawValue ?? ""
         let details = ApplePayDetails(
@@ -135,7 +132,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
             shippingContact: payment.shippingContact,
             shippingMethod: payment.shippingMethod
         )
+        
         submit(data: PaymentComponentData(paymentMethodDetails: details, amount: applePayPayment.amount, order: order))
     }
-
 }
