@@ -1,21 +1,12 @@
-name: Firebase App Distribution
+name: Firebase Distribution
 
 on:
   workflow_dispatch:
     inputs:
       branch:
-        description: "Branch to distribute"
+        description: "Branch to build and distribute"
         required: true
         default: "develop"
-        type: string
-
-env:
-  SCHEME: "AdyenUIHost"
-  PROJECT: "AdyenUIHost.xcodeproj"
-  CONFIGURATION: "Release"
-  ARCHIVE_PATH: "${{ github.workspace }}/build/AdyenUIHost.xcarchive"
-  EXPORT_PATH: "${{ github.workspace }}/build/ipa"
-  IPA_PATH: "${{ github.workspace }}/build/ipa/AdyenUIHost.ipa"
 
 permissions:
   contents: read
@@ -30,71 +21,38 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branch }}
 
-      # ---- BUILD ARCHIVE ----
-      - name: Archive (App Store signing)
+      - name: Install Firebase CLI
         run: |
-          mkdir -p build
-          xcodebuild clean \
-            -project "$PROJECT" \
-            -scheme "$SCHEME" \
-            -configuration "$CONFIGURATION"
+          curl -sL https://firebase.tools | bash
 
-          xcodebuild archive \
-            -project "$PROJECT" \
-            -scheme "$SCHEME" \
-            -configuration "$CONFIGURATION" \
-            -archivePath "$ARCHIVE_PATH" \
-            -allowProvisioningUpdates \
-            SKIP_INSTALL=NO \
-            BUILD_LIBRARY_FOR_DISTRIBUTION=NO
-
-      # ---- EXPORT IPA ----
-      - name: Create ExportOptions.plist (app-store)
+      - name: Set environment variables
         run: |
-          cat > exportOptions.plist <<EOF
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-          <dict>
-            <key>method</key>
-            <string>app-store</string>
-            <key>signingStyle</key>
-            <string>automatic</string>
-            <key>stripSwiftSymbols</key>
-            <true/>
-            <key>compileBitcode</key>
-            <false/>
-          </dict>
-          </plist>
-          EOF
+          echo "CLIENT_KEY=${{ secrets.CLIENT_KEY }}" >> $GITHUB_ENV
+          echo "DEMO_SERVER_API_KEY=${{ secrets.DEMO_SERVER_API_KEY }}" >> $GITHUB_ENV
+          echo "MERCHANT_ACCOUNT=${{ secrets.MERCHANT_ACCOUNT }}" >> $GITHUB_ENV
+          echo "APPLE_DEVELOPMENT_TEAM_ID=${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}" >> $GITHUB_ENV
+          echo "ENVIRONMENT=ci" >> $GITHUB_ENV
+          echo "FIREBASE_SERVICE_ACCOUNT_JSON=${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}" >> $GITHUB_ENV
+          echo "FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }}" >> $GITHUB_ENV
+          echo "XCODE_AUTHENTICATION_KEY_ID=${{ secrets.XCODE_AUTHENTICATION_KEY_ID }}" >> $GITHUB_ENV
+          echo "XCODE_AUTHENTICATION_KEY_ISSUER_ID=${{ secrets.XCODE_AUTHENTICATION_KEY_ISSUER_ID }}" >> $GITHUB_ENV
 
-      - name: Export IPA
+      - name: Determine release name
+        id: release_name
         run: |
-          mkdir -p build/ipa
-          xcodebuild -exportArchive \
-            -archivePath "$ARCHIVE_PATH" \
-            -exportPath "$EXPORT_PATH" \
-            -exportOptionsPlist exportOptions.plist \
-            -allowProvisioningUpdates
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          RELEASE_NAME="firebase-${BRANCH_NAME}-${SHORT_SHA}"
+          echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
+          echo "Release name set to $RELEASE_NAME"
 
-      - name: Verify IPA exists
+      - name: Run Firebase distribution script
         run: |
-          ls -la "${EXPORT_PATH}"
-          test -f "${IPA_PATH}"
-
-      # ---- FIREBASE AUTH ----
-      - name: Write Firebase service account file
+          chmod +x scripts/publish-demo-app.sh
+          ./Scripts/publish-demo-app.sh \
+            "${{ secrets.APPLE_ID_USERNAME }}" \
+            "${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}" \
+            "${{ secrets.XCODE_AUTHENTICATION_KEY_PATH }}" \
+            "firebase"
         env:
-          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
-        run: |
-          echo "$FIREBASE_SERVICE_ACCOUNT_JSON" > firebase.json
-
-      # ---- FIREBASE DISTRIBUTION ----
-      - name: Upload IPA to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
-        with:
-          appId: ${{ secrets.FIREBASE_APP_ID }}
-          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
-          ipaPath: ${{ env.IPA_PATH }}
-          releaseNotes: "Build from branch '${{ github.event.inputs.branch }}' at commit ${{ github.sha }}"
-          testerGroups: "ios-team"
+          FIREBASE_RELEASE_NAME: ${{ env.RELEASE_NAME }}
