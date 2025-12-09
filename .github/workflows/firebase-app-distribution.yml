@@ -69,4 +69,4 @@ jobs:
           export AUTH_KEY_PATH=$AUTH_KEY_PATH
 
           chmod +x ./Scripts/publish-demo-app.sh
-          ./Scripts/publish-demo-app.sh "firebsae"
+          ./Scripts/publish-demo-app.sh "firebase"
