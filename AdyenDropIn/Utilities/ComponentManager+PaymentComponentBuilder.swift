@@ -316,6 +316,7 @@ private extension ComponentManager {
     }
 
     func createBancontactComponent(with paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
+        // TODO: To be replaced with a factory call
         var cardConfiguration = configuration.card.cardComponentConfiguration
         cardConfiguration.style = configuration.style.formComponent
         cardConfiguration.localizationParameters = configuration.localizationParameters
