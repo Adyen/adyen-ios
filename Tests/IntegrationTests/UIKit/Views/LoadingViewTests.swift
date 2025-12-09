@@ -26,7 +26,7 @@ class LoadingViewTests: XCTestCase {
     }
 
     func testShowingSpinnerDelay() throws {
-        setupRootViewController(viewController)
+        viewController.loadViewIfNeeded()
         
         sut.showsActivityIndicator = true
         XCTAssertEqual(sut.showsActivityIndicator, false)
@@ -35,7 +35,7 @@ class LoadingViewTests: XCTestCase {
     }
     
     func testHidingSpinner() throws {
-        setupRootViewController(viewController)
+        viewController.loadViewIfNeeded()
         
         sut.showsActivityIndicator = true
         wait(for: .milliseconds(2))

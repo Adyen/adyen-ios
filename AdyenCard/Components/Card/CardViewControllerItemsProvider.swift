@@ -91,6 +91,7 @@ extension CardViewController {
                 initialCountry: initialCountry,
                 supportedCountryCodes: configuration.billingAddress.countryCodes,
                 prefillAddress: prefillAddress,
+                theme: theme,
                 style: formStyle,
                 localizationParameters: localizationParameters,
                 identifier: identifier,

@@ -8,27 +8,25 @@
 import UIKit
 
 /// An address form item that allows picking an address on a separate screen.
-@_spi(AdyenInternal)
-public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?> {
-    
-    public enum AddressType {
+package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?> {
+
+    package enum AddressType {
         case billing
         case delivery
     }
     
     private var initialCountry: String
+    private let theme: AdyenTheme
     private var context: AddressViewModelBuilderContext
     private let localizationParameters: LocalizationParameters?
     private let addressViewModelBuilder: AddressViewModelBuilder
     private weak var presenter: ViewControllerPresenter?
     
-    /// The view model to validate the address with
-    @_spi(AdyenInternal)
-    public var addressViewModel: AddressViewModel {
+    package var addressViewModel: AddressViewModel {
         addressViewModelBuilder.build(context: self.context)
     }
     
-    override public var value: PostalAddress? {
+    override package var value: PostalAddress? {
         didSet {
             updateContext()
             updateValidationFailureMessage()
@@ -52,6 +50,7 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
         initialCountry: String,
         supportedCountryCodes: [String]?,
         prefillAddress: PostalAddress?,
+        theme: AdyenTheme = .default,
         style: FormComponentStyle,
         localizationParameters: LocalizationParameters? = nil,
         identifier: String? = nil,
@@ -60,6 +59,7 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
         lookupProvider: AddressLookupProvider? = nil
     ) {
         self.initialCountry = initialCountry
+        self.theme = theme
         self.addressViewModelBuilder = addressViewModelBuilder
         self.localizationParameters = localizationParameters
         self.context = .init(countryCode: prefillAddress?.country ?? initialCountry, isOptional: false)
@@ -82,6 +82,7 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
             self.didSelectAddressPicker(
                 for: addressType,
                 with: self.value,
+                theme: self.theme,
                 initialCountry: initialCountry,
                 supportedCountryCodes: supportedCountryCodes,
                 lookupProvider: lookupProvider,
@@ -93,50 +94,54 @@ public final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?
             }
         }
     }
-    
-    public func updateOptionalStatus(isOptional: Bool) {
+
+    package func updateOptionalStatus(isOptional: Bool) {
         context.isOptional = isOptional
     }
-    
-    override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+
+    override package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
-    
+
     // MARK: ValidatableFormItem
-    
-    override public func isValid() -> Bool {
+
+    override package func isValid() -> Bool {
         if context.isOptional {
             return true
         }
         guard let address = value else { return false }
         return address.satisfies(requiredFields: addressViewModel.requiredFields)
     }
-    
-    override public func validationStatus() -> ValidationStatus? {
+
+    override package func validationStatus() -> ValidationStatus? {
         nil
     }
 }
 
 // MARK: - Convenience
 
-private extension FormAddressPickerItem {
-    
-    func updateContext() {
+extension FormAddressPickerItem {
+
+    private func updateContext() {
         guard let country = value?.country else { return }
         context.countryCode = country
     }
-    
-    func updateValidationFailureMessage() {
+
+    private func updateValidationFailureMessage() {
         validationFailureMessage = {
             if value == nil {
-                return localizedString(.addressLookupItemValidationFailureMessageEmpty, localizationParameters)
+                return localizedString(
+                    .addressLookupItemValidationFailureMessageEmpty, localizationParameters
+                )
             } else {
-                return localizedString(.addressLookupItemValidationFailureMessageInvalid, localizationParameters)
+                return localizedString(
+                    .addressLookupItemValidationFailureMessageInvalid, localizationParameters
+                )
             }
         }()
     }
-    
-    func updateFormattedValue() {
+
+    private func updateFormattedValue() {
         formattedValue = value?.formatted(using: localizationParameters)
     }
 }
@@ -144,11 +149,12 @@ private extension FormAddressPickerItem {
 // MARK: - Picker Presentation
 
 extension FormAddressPickerItem {
-    
+
     // swiftlint:disable function_parameter_count
     private func didSelectAddressPicker(
         for addressType: FormAddressPickerItem.AddressType,
         with prefillAddress: PostalAddress?,
+        theme: AdyenTheme = .default,
         initialCountry: String,
         supportedCountryCodes: [String]?,
         lookupProvider: AddressLookupProvider?,
@@ -161,6 +167,7 @@ extension FormAddressPickerItem {
             child: addressPickerViewController(
                 for: addressType,
                 with: prefillAddress,
+                theme: theme,
                 initialCountry: initialCountry,
                 supportedCountryCodes: supportedCountryCodes,
                 lookupProvider: lookupProvider,
@@ -172,14 +179,15 @@ extension FormAddressPickerItem {
             ),
             style: style
         )
-        
+
         presenter.presentViewController(securedViewController, animated: true)
     }
-    
+
     // swiftlint:disable function_parameter_count
     private func addressPickerViewController(
         for addressType: FormAddressPickerItem.AddressType,
         with prefillAddress: PostalAddress?,
+        theme: AdyenTheme = .default,
         initialCountry: String,
         supportedCountryCodes: [String]?,
         lookupProvider: AddressLookupProvider?,
@@ -187,12 +195,13 @@ extension FormAddressPickerItem {
         completionHandler: @escaping (PostalAddress?) -> Void
     ) -> UIViewController {
         // swiftlint:enable function_parameter_count
-        
+
         guard let lookupProvider else {
-        
+
             let viewModel = AddressInputFormViewController.ViewModel(
                 for: addressType,
                 style: style,
+                theme: theme,
                 localizationParameters: localizationParameters,
                 initialCountry: initialCountry,
                 prefillAddress: prefillAddress,
@@ -201,7 +210,7 @@ extension FormAddressPickerItem {
                 handleShowSearch: nil,
                 completionHandler: completionHandler
             )
-            
+
             return UINavigationController(
                 rootViewController: AddressInputFormViewController(viewModel: viewModel)
             )
@@ -210,6 +219,7 @@ extension FormAddressPickerItem {
         let viewModel = AddressLookupViewController.ViewModel(
             for: addressType,
             style: .init(form: style),
+            theme: theme,
             localizationParameters: localizationParameters,
             supportedCountryCodes: supportedCountryCodes,
             initialCountry: initialCountry,
@@ -224,16 +234,16 @@ extension FormAddressPickerItem {
 
 // MARK: - AddressType
 
-public extension FormAddressPickerItem.AddressType {
-    
-    func placeholder(with localizationParameters: LocalizationParameters?) -> String {
+extension FormAddressPickerItem.AddressType {
+
+    package func placeholder(with localizationParameters: LocalizationParameters?) -> String {
         switch self {
         case .billing: return localizedString(.billingAddressPlaceholder, localizationParameters)
         case .delivery: return localizedString(.deliveryAddressPlaceholder, localizationParameters)
         }
     }
-    
-    func title(with localizationParameters: LocalizationParameters?) -> String {
+
+    package func title(with localizationParameters: LocalizationParameters?) -> String {
         switch self {
         case .billing: return localizedString(.billingAddressSectionTitle, localizationParameters)
         case .delivery: return localizedString(.deliveryAddressSectionTitle, localizationParameters)

@@ -316,11 +316,15 @@ private extension ComponentManager {
     }
 
     func createBancontactComponent(with paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
-        // TODO: these will be also be replaced by the factories, no need to update
-        BCMCComponent(
+        // TODO: To be replaced with a factory call
+        var cardConfiguration = configuration.card.cardComponentConfiguration
+        cardConfiguration.style = configuration.style.formComponent
+        cardConfiguration.localizationParameters = configuration.localizationParameters
+        cardConfiguration.shopperInformation = configuration.shopperInformation
+        return BCMCComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: CardComponentConfiguration()
+            configuration: cardConfiguration
         )
     }
 

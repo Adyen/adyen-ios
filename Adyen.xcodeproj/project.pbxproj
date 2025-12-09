@@ -16,8 +16,6 @@
 			dependencies = (
 			);
 			name = GenerateSourcery;
-			packageProductDependencies = (
-			);
 			productName = GenerateSourcery;
 		};
 /* End PBXAggregateTarget section */
@@ -270,6 +268,7 @@
 		21CBEF4F2D88CA2300178809 /* ThreeDS2ComponentThreeDSConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CBEF4E2D88CA1600178809 /* ThreeDS2ComponentThreeDSConfiguration.swift */; };
 		21CBEF642D8B0A0700178809 /* ThreeDSServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CBEF632D8B0A0500178809 /* ThreeDSServiceProvider.swift */; };
 		21CBEF662D8B6B3A00178809 /* ThreeDSServiceProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CBEF652D8B6B2F00178809 /* ThreeDSServiceProviderTests.swift */; };
+		4D6ACC5A19457F96B7013F0E /* FormAddressPickerItemViewStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A944D9CA552D7C8E2063601 /* FormAddressPickerItemViewStyleTests.swift */; };
 		5A15D589264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */; };
 		5A15D5A1264BE1E500A8E3C7 /* PrefilledShopperInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */; };
 		5A22C279262D688600F12D97 /* QRCodeActionComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A22C26D262D686200F12D97 /* QRCodeActionComponentTests.swift */; };
@@ -829,11 +828,11 @@
 		C9DA53DD2E97F65900D83C94 /* QRCodeViewModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53DC2E97F65900D83C94 /* QRCodeViewModelMock.swift */; };
 		C9DA53E12E97F6DE00D83C94 /* QRCodeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53DF2E97F6DE00D83C94 /* QRCodeViewControllerTests.swift */; };
 		C9DA53E32E97F71C00D83C94 /* QRCodeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */; };
+		C9DC5B132EC4BF6A00E75C93 /* DropInFlowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC5B122EC4BF6A00E75C93 /* DropInFlowManager.swift */; };
 		C9E4DF672ED9A9B5000B6CBE /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */; };
 		C9E4DF682ED9A9B5000B6CBE /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */; };
 		C9E9144D2ED9D37500584184 /* AdyenSwiftUI.h in Headers */ = {isa = PBXBuildFile; fileRef = C9E9144A2ED9D37500584184 /* AdyenSwiftUI.h */; };
 		C9E9144E2ED9D37500584184 /* FullScreenViewControllerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E914482ED9D37500584184 /* FullScreenViewControllerPresenter.swift */; };
-		C9DC5B132EC4BF6A00E75C93 /* DropInFlowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC5B122EC4BF6A00E75C93 /* DropInFlowManager.swift */; };
 		C9EEEFEC2D5516B300B7AFFC /* ExpirationDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EEEFEA2D5516B300B7AFFC /* ExpirationDateFormatter.swift */; };
 		C9F468E227465FCF00500FF5 /* BACSDirectDebitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F468E127465FCF00500FF5 /* BACSDirectDebitData.swift */; };
 		C9F9905D2DC2566C00D2BFB0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C9F9905C2DC2566C00D2BFB0 /* README.md */; };
@@ -1960,6 +1959,7 @@
 		21CBEF4E2D88CA1600178809 /* ThreeDS2ComponentThreeDSConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ComponentThreeDSConfiguration.swift; sourceTree = "<group>"; };
 		21CBEF632D8B0A0500178809 /* ThreeDSServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSServiceProvider.swift; sourceTree = "<group>"; };
 		21CBEF652D8B6B2F00178809 /* ThreeDSServiceProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSServiceProviderTests.swift; sourceTree = "<group>"; };
+		3A944D9CA552D7C8E2063601 /* FormAddressPickerItemViewStyleTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FormAddressPickerItemViewStyleTests.swift; sourceTree = "<group>"; };
 		5A1315C826296B100092366D /* ProgressViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewStyle.swift; sourceTree = "<group>"; };
 		5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoComponentExtensions.swift; sourceTree = "<group>"; };
 		5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefilledShopperInformation.swift; sourceTree = "<group>"; };
@@ -3837,6 +3837,7 @@
 				F99D4602262D647400880D72 /* AddressViewModelTests.swift */,
 				81EA6C112A44836E0071A141 /* FormAddressItemTests.swift */,
 				81BBB34C2A6938A400AF1F9E /* FormAddressPickerItemTests.swift */,
+				3A944D9CA552D7C8E2063601 /* FormAddressPickerItemViewStyleTests.swift */,
 			);
 			path = Address;
 			sourceTree = "<group>";
@@ -8798,6 +8799,7 @@
 				F926D55523FBF1A800D058D3 /* QiwiWalletComponentTests.swift in Sources */,
 				5A238C9F263BDEA200758FEF /* PreApplePayComponentTests.swift in Sources */,
 				C927083A27590B7D00D15EA0 /* BACSItemsFactoryProtocolMock.swift in Sources */,
+				4D6ACC5A19457F96B7013F0E /* FormAddressPickerItemViewStyleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
