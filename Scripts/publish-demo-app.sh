@@ -102,20 +102,18 @@ if [[ "$DISTRIBUTION_TYPE" == "testflight" ]]; then
 
 elif [[ "$DISTRIBUTION_TYPE" == "firebase" ]]; then
   echo "🔥 Uploading to Firebase App Distribution..."
-  
-  if [[ -z "${FIREBASE_SERVICE_ACCOUNT_JSON:-}" || -z "${FIREBASE_APP_ID:-}" ]]; then
-    echo "❌ FIREBASE_SERVICE_ACCOUNT_JSON and FIREBASE_APP_ID environment variables must be set for Firebase distribution"
-    exit 1
-  fi
 
+  # Write service account JSON to temp file
   FIREBASE_JSON_PATH="$(mktemp)"
   echo "$FIREBASE_SERVICE_ACCOUNT_JSON" > "$FIREBASE_JSON_PATH"
   export GOOGLE_APPLICATION_CREDENTIALS=$FIREBASE_JSON_PATH
 
+  # Upload
   firebase appdistribution:distribute "$IPA_PATH" \
     --app "$FIREBASE_APP_ID" \
     --groups "ios-checkout-team" \
-    --release-notes "${FIREBASE_RELEASE_NAME:-Build from branch ${GITHUB_REF_NAME:-manual}}"
+    --release-notes "Branch: ${GITHUB_REF_NAME:-manual}, Build: ${GITHUB_SHA:-manual}" \
+    --release-name "$FIREBASE_RELEASE_NAME"
 
-  echo "✅ Firebase upload complete!"
+  echo "✅ Firebase upload complete! Release name: $FIREBASE_RELEASE_NAME"
 fi
