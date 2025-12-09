@@ -17,6 +17,9 @@ env:
   EXPORT_PATH: "${{ github.workspace }}/build/ipa"
   IPA_PATH: "${{ github.workspace }}/build/ipa/AdyenUIHost.ipa"
 
+permissions:
+  contents: read
+
 jobs:
   distribute:
     runs-on: macos-15-xlarge
