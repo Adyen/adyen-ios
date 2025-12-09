@@ -25,13 +25,21 @@ if [[ "$DISTRIBUTION_TYPE" != "testflight" && "$DISTRIBUTION_TYPE" != "firebase"
   exit 1
 fi
 
-# Required env vars
+# Required environment variables (precondition checks)
+: "${APPLE_ID_USERNAME:?Environment variable APPLE_ID_USERNAME not set}"
+: "${APPLE_APP_SPECIFIC_PASSWORD:?Environment variable APPLE_APP_SPECIFIC_PASSWORD not set}"
+: "${APPLE_PAY_MERCHANT_IDENTIFIER:?Environment variable APPLE_PAY_MERCHANT_IDENTIFIER not set}"
 : "${XCODE_AUTHENTICATION_KEY_ID:?Environment variable XCODE_AUTHENTICATION_KEY_ID not set}"
 : "${XCODE_AUTHENTICATION_KEY_ISSUER_ID:?Environment variable XCODE_AUTHENTICATION_KEY_ISSUER_ID not set}"
-: "${CLIENT_KEY:?Environment variable CLIENT_KEY not set}"
-: "${DEMO_SERVER_API_KEY:?Environment variable DEMO_SERVER_API_KEY not set}"
+: "${XCODE_AUTHENTICATION_KEY_BASE64:?Environment variable XCODE_AUTHENTICATION_KEY_BASE64 not set}"
+: "${FIREBASE_SERVICE_ACCOUNT_JSON:?Environment variable FIREBASE_SERVICE_ACCOUNT_JSON not set}"
+: "${FIREBASE_APP_ID:?Environment variable FIREBASE_APP_ID not set}"
+
+: "${MERCHANT_CLIENT_KEY:?Environment variable MERCHANT_CLIENT_KEY not set}"
+: "${MERCHANT_SERVER_HOST:?Environment variable MERCHANT_SERVER_HOST not set}"
 : "${MERCHANT_ACCOUNT:?Environment variable MERCHANT_ACCOUNT not set}"
-: "${APPLE_DEVELOPMENT_TEAM_ID:?Environment variable APPLE_DEVELOPMENT_TEAM_ID not set}"
+: "${ADYEN_SERVER_API_KEY:?Environment variable ADYEN_SERVER_API_KEY not set}"
+: "${APPLE_TEAM_IDENTIFIER:?Environment variable APPLE_TEAM_IDENTIFIER not set}"
 : "${ENVIRONMENT:?Environment variable ENVIRONMENT not set}"
 
 echo "🧹 Cleaning project..."
@@ -54,10 +62,11 @@ xcodebuild archive -project Adyen.xcodeproj \
   -archivePath "$ARCHIVE_PATH" \
   -skipPackagePluginValidation \
   CODE_SIGNING_ALLOWED=NO \
-  ADYEN_CLIENT_KEY="$CLIENT_KEY" \
-  ADYEN_DEMO_SERVER_API_KEY="$DEMO_SERVER_API_KEY" \
-  ADYEN_MERCHANT_ACCOUNT="$MERCHANT_ACCOUNT" \
-  APPLE_TEAM_IDENTIFIER="$APPLE_DEVELOPMENT_TEAM_ID" \
+  MERCHANT_CLIENT_KEY="$MERCHANT_CLIENT_KEY" \
+  MERCHANT_SERVER_HOST="$MERCHANT_SERVER_HOST" \
+  MERCHANT_ACCOUNT="$MERCHANT_ACCOUNT" \
+  ADYEN_SERVER_API_KEY="$ADYEN_SERVER_API_KEY" \
+  APPLE_TEAM_IDENTIFIER="$APPLE_TEAM_IDENTIFIER" \
   APPLE_PAY_MERCHANT_IDENTIFIER="${APPLE_PAY_MERCHANT_IDENTIFIER:-"merchant.com.adyen.test"}"
 
 echo "📤 Exporting .ipa with manual signing..."
@@ -70,10 +79,11 @@ xcodebuild -exportArchive \
   -authenticationKeyID "$XCODE_AUTHENTICATION_KEY_ID" \
   -authenticationKeyIssuerID "$XCODE_AUTHENTICATION_KEY_ISSUER_ID" \
   -authenticationKeyPath "$AUTH_KEY_PATH" \
-  ADYEN_CLIENT_KEY="$CLIENT_KEY" \
-  ADYEN_DEMO_SERVER_API_KEY="$DEMO_SERVER_API_KEY" \
-  ADYEN_MERCHANT_ACCOUNT="$MERCHANT_ACCOUNT" \
-  APPLE_TEAM_IDENTIFIER="$APPLE_DEVELOPMENT_TEAM_ID" \
+  MERCHANT_CLIENT_KEY="$MERCHANT_CLIENT_KEY" \
+  MERCHANT_SERVER_HOST="$MERCHANT_SERVER_HOST" \
+  MERCHANT_ACCOUNT="$MERCHANT_ACCOUNT" \
+  ADYEN_SERVER_API_KEY="$ADYEN_SERVER_API_KEY" \
+  APPLE_TEAM_IDENTIFIER="$APPLE_TEAM_IDENTIFIER" \
   APPLE_PAY_MERCHANT_IDENTIFIER="${APPLE_PAY_MERCHANT_IDENTIFIER:-"merchant.com.adyen.test"}"
 
 # ---- Upload step ----
