@@ -9,24 +9,43 @@ IPA_PATH="$BUILD_PATH/AdyenUIHost.ipa"
 EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions.plist"
 
 # Input arguments
-APPLE_ID_USERNAME="$1"
-APPLE_APP_SPECIFIC_PASSWORD="$2"
-AUTH_KEY_PATH="$3"
+DISTRIBUTION_TYPE="${1:-testflight}"  # testflight (default) or firebase
 
-# Validate
-if [[ -z "$APPLE_ID_USERNAME" || -z "$APPLE_APP_SPECIFIC_PASSWORD" || -z "$AUTH_KEY_PATH" ]]; then
-  echo "❌ Usage: $0 <APPLE_ID_USERNAME> <APPLE_APP_SPECIFIC_PASSWORD> <AUTH_KEY_PATH>"
+# Validate inputs
+if [[ -z "$DISTRIBUTION_TYPE"]]; then
+  echo "❌ Usage: $0 [distribution_type]"
   exit 1
 fi
 
-# Required env vars
+if [[ "$DISTRIBUTION_TYPE" != "testflight" && "$DISTRIBUTION_TYPE" != "firebase" ]]; then
+  echo "❌ distribution_type must be 'testflight' or 'firebase'"
+  exit 1
+fi
+
+# Required environment variables (precondition checks)
+: "${APPLE_ID_USERNAME:?Environment variable APPLE_ID_USERNAME not set}"
+: "${APPLE_APP_SPECIFIC_PASSWORD:?Environment variable APPLE_APP_SPECIFIC_PASSWORD not set}"
+: "${APPLE_PAY_MERCHANT_IDENTIFIER:?Environment variable APPLE_PAY_MERCHANT_IDENTIFIER not set}"
 : "${XCODE_AUTHENTICATION_KEY_ID:?Environment variable XCODE_AUTHENTICATION_KEY_ID not set}"
 : "${XCODE_AUTHENTICATION_KEY_ISSUER_ID:?Environment variable XCODE_AUTHENTICATION_KEY_ISSUER_ID not set}"
-: "${CLIENT_KEY:?Environment variable CLIENT_KEY not set}"
-: "${DEMO_SERVER_API_KEY:?Environment variable DEMO_SERVER_API_KEY not set}"
+: "${XCODE_AUTHENTICATION_KEY_BASE64:?Environment variable XCODE_AUTHENTICATION_KEY_BASE64 not set}"
+: "${AUTH_KEY_PATH:?Environment variable AUTH_KEY_PATH not set}"
+
+: "${MERCHANT_CLIENT_KEY:?Environment variable MERCHANT_CLIENT_KEY not set}"
+: "${MERCHANT_SERVER_HOST:?Environment variable MERCHANT_SERVER_HOST not set}"
 : "${MERCHANT_ACCOUNT:?Environment variable MERCHANT_ACCOUNT not set}"
-: "${APPLE_DEVELOPMENT_TEAM_ID:?Environment variable APPLE_DEVELOPMENT_TEAM_ID not set}"
+: "${ADYEN_SERVER_API_KEY:?Environment variable ADYEN_SERVER_API_KEY not set}"
+: "${APPLE_TEAM_IDENTIFIER:?Environment variable APPLE_TEAM_IDENTIFIER not set}"
 : "${ENVIRONMENT:?Environment variable ENVIRONMENT not set}"
+
+if [[ "$DISTRIBUTION" == "firebase" ]]; then
+  : "${FIREBASE_SERVICE_ACCOUNT_JSON:?Environment variable FIREBASE_SERVICE_ACCOUNT_JSON not set}"
+  : "${FIREBASE_APP_ID:?Environment variable FIREBASE_APP_ID not set}"
+  : "${FIREBASE_RELEASE_NAME:?Environment variable FIREBASE_RELEASE_NAME not set}"
+
+  echo "ℹ️ Firebase distribution selected — Firebase env vars validated."
+fi
+
 
 echo "🧹 Cleaning project..."
 xcodebuild clean -project Adyen.xcodeproj \
@@ -48,10 +67,11 @@ xcodebuild archive -project Adyen.xcodeproj \
   -archivePath "$ARCHIVE_PATH" \
   -skipPackagePluginValidation \
   CODE_SIGNING_ALLOWED=NO \
-  ADYEN_CLIENT_KEY="$CLIENT_KEY" \
-  ADYEN_DEMO_SERVER_API_KEY="$DEMO_SERVER_API_KEY" \
-  ADYEN_MERCHANT_ACCOUNT="$MERCHANT_ACCOUNT" \
-  APPLE_TEAM_IDENTIFIER="$APPLE_DEVELOPMENT_TEAM_ID" \
+  MERCHANT_CLIENT_KEY="$MERCHANT_CLIENT_KEY" \
+  MERCHANT_SERVER_HOST="$MERCHANT_SERVER_HOST" \
+  MERCHANT_ACCOUNT="$MERCHANT_ACCOUNT" \
+  ADYEN_SERVER_API_KEY="$ADYEN_SERVER_API_KEY" \
+  APPLE_TEAM_IDENTIFIER="$APPLE_TEAM_IDENTIFIER" \
   APPLE_PAY_MERCHANT_IDENTIFIER="${APPLE_PAY_MERCHANT_IDENTIFIER:-"merchant.com.adyen.test"}"
 
 echo "📤 Exporting .ipa with manual signing..."
@@ -64,17 +84,41 @@ xcodebuild -exportArchive \
   -authenticationKeyID "$XCODE_AUTHENTICATION_KEY_ID" \
   -authenticationKeyIssuerID "$XCODE_AUTHENTICATION_KEY_ISSUER_ID" \
   -authenticationKeyPath "$AUTH_KEY_PATH" \
-  ADYEN_CLIENT_KEY="$CLIENT_KEY" \
-  ADYEN_DEMO_SERVER_API_KEY="$DEMO_SERVER_API_KEY" \
-  ADYEN_MERCHANT_ACCOUNT="$MERCHANT_ACCOUNT" \
-  APPLE_TEAM_IDENTIFIER="$APPLE_DEVELOPMENT_TEAM_ID" \
+  MERCHANT_CLIENT_KEY="$MERCHANT_CLIENT_KEY" \
+  MERCHANT_SERVER_HOST="$MERCHANT_SERVER_HOST" \
+  MERCHANT_ACCOUNT="$MERCHANT_ACCOUNT" \
+  ADYEN_SERVER_API_KEY="$ADYEN_SERVER_API_KEY" \
+  APPLE_TEAM_IDENTIFIER="$APPLE_TEAM_IDENTIFIER" \
   APPLE_PAY_MERCHANT_IDENTIFIER="${APPLE_PAY_MERCHANT_IDENTIFIER:-"merchant.com.adyen.test"}"
 
-echo "☁️ Uploading to App Store Connect..."
-xcrun altool --upload-app \
-  -f "$IPA_PATH" \
-  -u "$APPLE_ID_USERNAME" \
-  -p "$APPLE_APP_SPECIFIC_PASSWORD" \
-  --type ios
+# ---- Upload step ----
+if [[ "$DISTRIBUTION_TYPE" == "testflight" ]]; then
+  echo "☁️ Uploading to App Store Connect (TestFlight)..."
+  xcrun altool --upload-app \
+    -f "$IPA_PATH" \
+    -u "$APPLE_ID_USERNAME" \
+    -p "$APPLE_APP_SPECIFIC_PASSWORD" \
+    --type ios
+  echo "✅ TestFlight upload complete!"
 
-echo "✅ Upload complete!"
+elif [[ "$DISTRIBUTION_TYPE" == "firebase" ]]; then
+  echo "🔥 Uploading to Firebase App Distribution..."
+  
+  if [[ -z "${FIREBASE_SERVICE_ACCOUNT_JSON:-}" || -z "${FIREBASE_APP_ID:-}" ]]; then
+    echo "❌ FIREBASE_SERVICE_ACCOUNT_JSON and FIREBASE_APP_ID environment variables must be set for Firebase distribution"
+    exit 1
+  fi
+
+  # Write service account JSON to a temp file
+  FIREBASE_JSON_PATH="$(mktemp)"
+  echo "$FIREBASE_SERVICE_ACCOUNT_JSON" > "$FIREBASE_JSON_PATH"
+
+  # Upload using Firebase CLI
+  firebase appdistribution:distribute "$IPA_PATH" \
+    --app "$FIREBASE_APP_ID" \
+    --groups "ios-team" \
+    --release-notes "${FIREBASE_RELEASE_NAME:-Build from branch ${GITHUB_REF_NAME:-manual}}" \
+    --service-account "$FIREBASE_JSON_PATH"
+
+  echo "✅ Firebase upload complete!"
+fi
