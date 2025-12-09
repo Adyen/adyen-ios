@@ -11,9 +11,11 @@ protocol ApplePayDelegateMock: ApplePayComponentDelegate {
     var contact: PKContact? { get }
     var shippingMethod: PKShippingMethod? { get }
     var couponCode: String? { get }
+    var authorizedPayment: PKPayment? { get }
 
     var onShippingContactChange: ((PKContact, ApplePayPayment) -> PKPaymentRequestShippingContactUpdate)? { get set }
     var onShippingMethodChange: ((PKShippingMethod, ApplePayPayment) -> PKPaymentRequestShippingMethodUpdate)? { get set }
+    var onAuthorize: ((PKPayment) -> PKPaymentAuthorizationResult)? { get set }
 }
 
 final class ApplePayDelegateMockClassic: ApplePayDelegateMock {
@@ -21,9 +23,11 @@ final class ApplePayDelegateMockClassic: ApplePayDelegateMock {
     var contact: PKContact?
     var shippingMethod: PKShippingMethod?
     var couponCode: String?
+    var authorizedPayment: PKPayment?
 
     var onShippingContactChange: ((PKContact, ApplePayPayment) -> PKPaymentRequestShippingContactUpdate)?
     var onShippingMethodChange: ((PKShippingMethod, ApplePayPayment) -> PKPaymentRequestShippingMethodUpdate)?
+    var onAuthorize: ((PKPayment) -> PKPaymentAuthorizationResult)?
 
     func didUpdate(contact: PKContact, for payment: ApplePayPayment, completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void) {
         self.contact = contact
@@ -41,6 +45,20 @@ final class ApplePayDelegateMockClassic: ApplePayDelegateMock {
     func didUpdate(couponCode: String, for payment: ApplePayPayment, completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void) {
         fatalError("Use ApplePayDelegateMockiOS15")
     }
+    
+    func didAuthorize(
+        _ payment: PKPayment,
+        completion: @escaping (PKPaymentAuthorizationResult) -> Void
+    ) {
+        self.authorizedPayment = payment
+        if let onAuthorize {
+            let result = onAuthorize(payment)
+            completion(result)
+        } else {
+            // Default behavior - auto-approve
+            completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
+        }
+    }
 }
 
 @available(iOS 15.0, *)
@@ -49,9 +67,11 @@ final class ApplePayDelegateMockiOS15: ApplePayDelegateMock {
     var contact: PKContact?
     var shippingMethod: PKShippingMethod?
     var couponCode: String?
+    var authorizedPayment: PKPayment?
 
     var onShippingContactChange: ((PKContact, ApplePayPayment) -> PKPaymentRequestShippingContactUpdate)?
     var onShippingMethodChange: ((PKShippingMethod, ApplePayPayment) -> PKPaymentRequestShippingMethodUpdate)?
+    var onAuthorize: ((PKPayment) -> PKPaymentAuthorizationResult)?
 
     var onCouponChange: ((String, ApplePayPayment) -> PKPaymentRequestCouponCodeUpdate)?
 
@@ -72,5 +92,19 @@ final class ApplePayDelegateMockiOS15: ApplePayDelegateMock {
         self.couponCode = couponCode
         let result = onCouponChange!(couponCode, payment)
         completion(result)
+    }
+    
+    func didAuthorize(
+        _ payment: PKPayment,
+        completion: @escaping (PKPaymentAuthorizationResult) -> Void
+    ) {
+        self.authorizedPayment = payment
+        if let onAuthorize {
+            let result = onAuthorize(payment)
+            completion(result)
+        } else {
+            // Default behavior - auto-approve
+            completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
+        }
     }
 }

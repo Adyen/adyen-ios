@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenComponents
+import Contacts
 import PassKit
 import XCTest
 
@@ -461,6 +462,246 @@ class ApplePayComponentTest: XCTestCase {
         return contactFieldsPool.randomElement().map { [$0] } ?? []
     }
     
+    // MARK: - didAuthorize Tests
+    
+    func testDidAuthorizeSuccess_shouldTriggerDidSubmit() {
+        // Given
+        wait(for: .seconds(1))
+        
+        sut.delegate = mockDelegate
+        sut.applePayDelegate = mockApplePayDelegate
+        
+        let didSubmitExpectation = expectation(description: "didSubmit should be called")
+        mockDelegate.onDidSubmit = { data, component in
+            XCTAssertTrue(data.paymentMethod is ApplePayDetails)
+            didSubmitExpectation.fulfill()
+        }
+        
+        mockApplePayDelegate.onAuthorize = { payment in
+            // Simulate successful validation
+            PKPaymentAuthorizationResult(status: .success, errors: nil)
+        }
+        
+        let mockPayment = PKPaymentMock.create(withPaymentData: "test_token".data(using: .utf8)!)
+        
+        // When
+        sut.paymentAuthorizationViewController(
+            sut.viewController as! PKPaymentAuthorizationViewController,
+            didAuthorizePayment: mockPayment
+        ) { result in
+            // This completion is called after finalize, not after authorize
+        }
+        
+        // Then
+        waitForExpectations(timeout: 5)
+        XCTAssertNotNil(mockApplePayDelegate.authorizedPayment)
+    }
+    
+    func testDidAuthorizeFailure_shouldNotTriggerDidSubmit() {
+        // Given
+        wait(for: .seconds(1))
+        
+        sut.delegate = mockDelegate
+        sut.applePayDelegate = mockApplePayDelegate
+        
+        var didSubmitCalled = false
+        mockDelegate.onDidSubmit = { _, _ in
+            didSubmitCalled = true
+        }
+        
+        let authorizationCompletionExpectation = expectation(description: "Authorization completion should be called with failure")
+        
+        mockApplePayDelegate.onAuthorize = { payment in
+            // Simulate validation failure with specific errors
+            let error = PKPaymentRequest.paymentShippingAddressInvalidError(
+                withKey: CNPostalAddressPostalCodeKey,
+                localizedDescription: "Invalid postal code"
+            )
+            return PKPaymentAuthorizationResult(status: .failure, errors: [error])
+        }
+        
+        let mockPayment = PKPaymentMock.create(withPaymentData: "test_token".data(using: .utf8)!)
+        
+        // When
+        sut.paymentAuthorizationViewController(
+            sut.viewController as! PKPaymentAuthorizationViewController,
+            didAuthorizePayment: mockPayment
+        ) { result in
+            // Completion should be called with failure result
+            XCTAssertEqual(result.status, .failure)
+            XCTAssertEqual(result.errors?.count, 1)
+            authorizationCompletionExpectation.fulfill()
+        }
+        
+        // Then
+        waitForExpectations(timeout: 5)
+        XCTAssertFalse(didSubmitCalled, "didSubmit should not be called when authorization fails")
+        XCTAssertNotNil(mockApplePayDelegate.authorizedPayment)
+    }
+    
+    func testDidAuthorizeWithoutDelegate_shouldAutoApproveAndSubmit() {
+        // Given
+        wait(for: .seconds(1))
+        
+        sut.delegate = mockDelegate
+        // Note: applePayDelegate is NOT set - should use default behavior
+        
+        let didSubmitExpectation = expectation(description: "didSubmit should be called")
+        mockDelegate.onDidSubmit = { data, component in
+            XCTAssertTrue(data.paymentMethod is ApplePayDetails)
+            didSubmitExpectation.fulfill()
+        }
+        
+        let mockPayment = PKPaymentMock.create(withPaymentData: "test_token".data(using: .utf8)!)
+        
+        // When
+        sut.paymentAuthorizationViewController(
+            sut.viewController as! PKPaymentAuthorizationViewController,
+            didAuthorizePayment: mockPayment
+        ) { result in
+            // Completion called after finalize
+        }
+        
+        // Then
+        waitForExpectations(timeout: 5)
+    }
+    
+    func testDidAuthorizeWithEmptyToken_shouldFailImmediately() {
+        // Given
+        wait(for: .seconds(1))
+        
+        sut.delegate = mockDelegate
+        sut.applePayDelegate = mockApplePayDelegate
+        
+        let didFailExpectation = expectation(description: "didFail should be called")
+        mockDelegate.onDidFail = { error, component in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .invalidToken)
+            didFailExpectation.fulfill()
+        }
+        
+        var authorizeCalled = false
+        mockApplePayDelegate.onAuthorize = { _ in
+            authorizeCalled = true
+            return PKPaymentAuthorizationResult(status: .success, errors: nil)
+        }
+        
+        let mockPayment = PKPaymentMock.create(withPaymentData: Data()) // Empty token
+        
+        let completionExpectation = expectation(description: "Completion should be called with failure")
+        
+        // When
+        sut.paymentAuthorizationViewController(
+            sut.viewController as! PKPaymentAuthorizationViewController,
+            didAuthorizePayment: mockPayment
+        ) { result in
+            XCTAssertEqual(result.status, .failure)
+            completionExpectation.fulfill()
+        }
+        
+        // Then
+        waitForExpectations(timeout: 5)
+        XCTAssertFalse(authorizeCalled, "didAuthorize should not be called when token is empty")
+    }
+    
+    func testDidAuthorizeWithDelegateUsingDefaultImplementation_shouldAutoApproveAndSubmit() {
+        // Given
+        // Delegate is set but onAuthorize is NOT set - uses default auto-approve behavior
+        wait(for: .seconds(1))
+        
+        sut.delegate = mockDelegate
+        sut.applePayDelegate = mockApplePayDelegate
+        // Note: NOT setting mockApplePayDelegate.onAuthorize - uses default
+        
+        let didSubmitExpectation = expectation(description: "didSubmit should be called")
+        mockDelegate.onDidSubmit = { data, component in
+            XCTAssertTrue(data.paymentMethod is ApplePayDetails)
+            didSubmitExpectation.fulfill()
+        }
+        
+        let mockPayment = PKPaymentMock.create(withPaymentData: "test_token".data(using: .utf8)!)
+        
+        // When
+        sut.paymentAuthorizationViewController(
+            sut.viewController as! PKPaymentAuthorizationViewController,
+            didAuthorizePayment: mockPayment
+        ) { result in
+            // Completion called after finalize
+        }
+        
+        // Then
+        waitForExpectations(timeout: 5)
+        XCTAssertNotNil(mockApplePayDelegate.authorizedPayment, "didAuthorize should still be called")
+    }
+    
+}
+
+// MARK: - PKPayment Mock
+
+/// Mock PKPayment for testing purposes.
+/// PKPayment cannot be instantiated directly, so we use a subclass with mocked properties.
+private final class PKPaymentMock: PKPayment {
+    
+    private let _token: PKPaymentToken
+    private let _billingContact: PKContact?
+    private let _shippingContact: PKContact?
+    private let _shippingMethod: PKShippingMethod?
+    
+    override var token: PKPaymentToken { _token }
+    override var billingContact: PKContact? { _billingContact }
+    override var shippingContact: PKContact? { _shippingContact }
+    override var shippingMethod: PKShippingMethod? { _shippingMethod }
+    
+    private init(
+        token: PKPaymentToken,
+        billingContact: PKContact? = nil,
+        shippingContact: PKContact? = nil,
+        shippingMethod: PKShippingMethod? = nil
+    ) {
+        self._token = token
+        self._billingContact = billingContact
+        self._shippingContact = shippingContact
+        self._shippingMethod = shippingMethod
+        super.init()
+    }
+    
+    static func create(
+        withPaymentData paymentData: Data,
+        billingContact: PKContact? = nil,
+        shippingContact: PKContact? = nil,
+        shippingMethod: PKShippingMethod? = nil
+    ) -> PKPaymentMock {
+        let token = PKPaymentTokenMock(paymentData: paymentData)
+        return PKPaymentMock(
+            token: token,
+            billingContact: billingContact,
+            shippingContact: shippingContact,
+            shippingMethod: shippingMethod
+        )
+    }
+}
+
+/// Mock PKPaymentToken for testing purposes.
+private final class PKPaymentTokenMock: PKPaymentToken {
+    
+    private let _paymentData: Data
+    private let _paymentMethod: PKPaymentMethod
+    
+    override var paymentData: Data { _paymentData }
+    override var paymentMethod: PKPaymentMethod { _paymentMethod }
+    
+    init(paymentData: Data) {
+        self._paymentData = paymentData
+        self._paymentMethod = PKPaymentMethodMock()
+        super.init()
+    }
+}
+
+/// Mock PKPaymentMethod for testing purposes.
+private final class PKPaymentMethodMock: PKPaymentMethod {
+    
+    override var network: PKPaymentNetwork? { .visa }
+    override var type: PKPaymentMethodType { .credit }
+    override var displayName: String? { "Test Card" }
 }
 
 extension XCTestCase {

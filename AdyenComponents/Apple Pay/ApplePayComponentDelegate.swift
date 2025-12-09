@@ -31,5 +31,38 @@ public protocol ApplePayComponentDelegate: AnyObject {
         for payment: ApplePayPayment,
         completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void
     )
+    
+    /// Tells the delegate that the shopper authorized the payment and asks for a validation result.
+    ///
+    /// Use this method to validate the shopper's payment information (e.g., billing/shipping address)
+    /// before the payment is submitted. You can perform synchronous or asynchronous validation,
+    /// including backend calls if needed.
+    ///
+    /// - Parameters:
+    ///   - payment: The authorized payment containing the token, billing/shipping contacts, and shipping method.
+    ///   - completion: The completion handler to call with the validation result.
+    ///   Call with `.success` to proceed, or `.failure` with errors to let the shopper retry.
+    ///
+    /// - Note: Return `.failure` with non-empty `errors` to keep the sheet open for correction.
+    ///   Use `PKPaymentRequest.paymentBillingAddressInvalidError(withKey:localizedDescription:)` or similar
+    ///   factory methods to create field-specific errors. If `errors` is empty on `.failure`, the system dismisses the sheet.
+    ///
+    /// - Note: If not implemented, the payment proceeds automatically.
+    func didAuthorize(
+        _ payment: PKPayment,
+        completion: @escaping (PKPaymentAuthorizationResult) -> Void
+    )
+}
 
+// MARK: - Default Implementations
+
+public extension ApplePayComponentDelegate {
+    
+    /// Default implementation that automatically authorizes the payment.
+    func didAuthorize(
+        _ payment: PKPayment,
+        completion: @escaping (PKPaymentAuthorizationResult) -> Void
+    ) {
+        completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
+    }
 }
