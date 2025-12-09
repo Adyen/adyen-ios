@@ -43,10 +43,12 @@ internal enum ConfigurationConstants {
     }
 
     static let clientKey = secretValue(for: .clientKey)
-
-    static let demoServerAPIKey = secretValue(for: .demoServerAPIKey)
-
+    
+    static let serverUrl = secretValue(for: .serverUrl)
+    
     static let merchantAccount = secretValue(for: .merchantAccount)
+    
+    static let adyenServerKey = secretValue(for: .adyenServerKey)
 
     static let appleTeamIdentifier = secretValue(for: .appleTeamIdentifier)
 
