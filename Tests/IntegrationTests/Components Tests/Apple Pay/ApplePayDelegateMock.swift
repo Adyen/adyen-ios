@@ -47,7 +47,7 @@ final class ApplePayDelegateMockClassic: ApplePayDelegateMock {
     }
     
     func didAuthorize(
-        _ payment: PKPayment,
+        payment: PKPayment,
         completion: @escaping (PKPaymentAuthorizationResult) -> Void
     ) {
         self.authorizedPayment = payment
@@ -95,7 +95,7 @@ final class ApplePayDelegateMockiOS15: ApplePayDelegateMock {
     }
     
     func didAuthorize(
-        _ payment: PKPayment,
+        payment: PKPayment,
         completion: @escaping (PKPaymentAuthorizationResult) -> Void
     ) {
         self.authorizedPayment = payment

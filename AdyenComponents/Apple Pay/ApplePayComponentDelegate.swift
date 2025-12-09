@@ -49,7 +49,7 @@ public protocol ApplePayComponentDelegate: AnyObject {
     ///
     /// - Note: If not implemented, the payment proceeds automatically.
     func didAuthorize(
-        _ payment: PKPayment,
+        payment: PKPayment,
         completion: @escaping (PKPaymentAuthorizationResult) -> Void
     )
 }
@@ -60,7 +60,7 @@ public extension ApplePayComponentDelegate {
     
     /// Default implementation that automatically authorizes the payment.
     func didAuthorize(
-        _ payment: PKPayment,
+        payment: PKPayment,
         completion: @escaping (PKPaymentAuthorizationResult) -> Void
     ) {
         completion(PKPaymentAuthorizationResult(status: .success, errors: nil))

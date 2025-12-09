@@ -34,7 +34,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         // Call the delegate's didAuthorize method for validation
         // If no delegate is set, proceed directly with payment submission
         if let applePayDelegate {
-            applePayDelegate.didAuthorize(payment) { [weak self] result in
+            applePayDelegate.didAuthorize(payment: payment) { [weak self] result in
                 guard let self else { return }
                 if result.status == .success {
                     self.proceedWithSubmission(for: payment, completion: completion)
