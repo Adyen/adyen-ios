@@ -30,14 +30,14 @@ jobs:
         run: |
           curl -sL https://firebase.tools | bash
 
-      - name: 📝 Determine release name
-        id: release_name
+      - name: 📝 Create Firebase release name
+        id: firebase_release_name
         run: |
           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
           SHORT_SHA=$(git rev-parse --short HEAD)
-          RELEASE_NAME="firebase-${BRANCH_NAME}-${SHORT_SHA}"
-          echo "FIREBASE_RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
-          echo "Release name set to $RELEASE_NAME"
+          FIREBASE_RELEASE_NAME="firebase-${BRANCH_NAME}-${SHORT_SHA}"
+          echo "FIREBASE_RELEASE_NAME=$FIREBASE_RELEASE_NAME" >> $GITHUB_ENV
+          echo "Release name set to $FIREBASE_RELEASE_NAME"
 
       - name: 🛡️ Install the distribution certificate and provisioning profile
         env:
@@ -84,7 +84,7 @@ jobs:
           # Firebase env
           FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
-          FIREBASE_RELEASE_NAME: ${{ env.RELEASE_NAME }}
+          FIREBASE_RELEASE_NAME: ${{ env.FIREBASE_RELEASE_NAME }}
           
           # App build configuration
           MERCHANT_CLIENT_KEY: ${{ secrets.DEMO_APP_TEST_ENV_CLIENT_KEY }}
