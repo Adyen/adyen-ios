@@ -4,7 +4,7 @@ on:
   pull_request:
     branches:
       - develop
-  workflow_dispatch:
+  workflow_dispatch: {}
   workflow_call:
     secrets: # When triggered via another workflow, secrets are not automatically forwarded
       BUILD_CERTIFICATE_BASE64:
