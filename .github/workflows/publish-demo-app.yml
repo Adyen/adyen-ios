@@ -46,7 +46,7 @@ jobs:
   Publish:
     runs-on: macos-15-xlarge
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
       with:
         fetch-depth: 0
 
