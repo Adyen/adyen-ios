@@ -9,7 +9,17 @@
 import XCTest
 
 class AddressLookupViewControllerTests: XCTestCase {
-    
+
+    // MARK: - Test Data
+
+    private var mockAddressResults: [AddressLookupResult] {
+        PostalAddressMocks.all.map {
+            .init(identifier: UUID().uuidString, postalAddress: $0)
+        }
+    }
+
+    // MARK: - Setup
+
     override func run() {
         AdyenDependencyValues.runTestWithValues {
             $0.imageLoader = ImageLoaderMock()
@@ -17,265 +27,297 @@ class AddressLookupViewControllerTests: XCTestCase {
             super.run()
         }
     }
-    
-    func testViewControllerBinding() {
-        
+
+    // MARK: - ViewController Binding Tests
+
+    func testViewControllerBinding_showsFormInitially_whenPrefillAddressProvided() {
         // Given
-        
-        let expectation = expectation(description: "Lookup provider was called on viewDidLoad")
-        
-        let results: [AddressLookupResult] = PostalAddressMocks.all.map {
-            .init(identifier: UUID().uuidString, postalAddress: $0)
-        }
-        
-        let mockLookupProvider = MockAddressLookupProvider { _ in
-            expectation.fulfill()
-            return results
-        }
-        
-        let viewModel = AddressLookupViewController.ViewModel(
-            for: .billing,
-            style: .init(),
-            localizationParameters: nil,
-            supportedCountryCodes: nil,
-            initialCountry: "NL",
+        let results = mockAddressResults
+        let (viewModel, sut) = makeSUTWithViewController(
+            prefillAddress: results.first?.postalAddress)
+
+        // When
+        sut.loadViewIfNeeded()
+
+        // Then
+        XCTAssertNotNil(sut.viewControllers.first as? AddressInputFormViewController)
+    }
+
+    func testViewControllerBinding_showsSearch_whenInterfaceStateChangesToSearch() {
+        // Given
+        let lookupExpectation = expectation(description: "Lookup provider called")
+        let results = mockAddressResults
+        let (viewModel, sut) = makeSUTWithViewController(
             prefillAddress: results.first?.postalAddress,
-            lookupProvider: mockLookupProvider
-        ) { address in
-            XCTFail("Completion handler should not have been called")
+            onLookup: { _ in
+                lookupExpectation.fulfill()
+                return results
+            }
+        )
+        setupRootViewController(sut)
+
+        // When
+        viewModel.interfaceState = .search
+
+        // Then
+        wait(for: [lookupExpectation], timeout: 10)
+        XCTAssertNotNil(sut.viewControllers.first as? AddressLookupSearchViewController)
+    }
+
+    func testViewControllerBinding_showsForm_whenSwitchingToManualEntry() {
+        // Given
+        let results = mockAddressResults
+        let (viewModel, sut) = makeSUTWithViewController(
+            prefillAddress: results.first?.postalAddress)
+        sut.loadViewIfNeeded()
+        viewModel.interfaceState = .search
+
+        // When
+        viewModel.handleSwitchToManualEntryTapped()
+        wait(for: .aMoment)
+
+        // Then
+        XCTAssertEqual(
+            viewModel.interfaceState, .form(prefillAddress: results.first?.postalAddress)
+        )
+        XCTAssertNotNil(sut.viewControllers.first as? AddressInputFormViewController)
+    }
+
+    // MARK: - Search Dismissal Tests
+
+    func testSearchDismissal_completesWithNil_whenNoPrefillAndNoAction() {
+        // Given
+        let completionExpectation = expectation(description: "Completion called with nil")
+        let viewModel = makeSUT(prefillAddress: nil) { address in
+            XCTAssertNil(address)
+            completionExpectation.fulfill()
         }
 
         // When
-        
-        let addressLookupViewController = AddressLookupViewController(viewModel: viewModel)
-        
-        setupRootViewController(addressLookupViewController)
-        
+        viewModel.handleDismissSearchTapped()
+
         // Then
-        
-        // Should show form initially as a prefillAddress was provided
-        XCTAssertNotNil(addressLookupViewController.viewControllers.first as? AddressInputFormViewController)
-        
-        viewModel.interfaceState = .search
-        wait(for: [expectation], timeout: 10)
-        XCTAssertNotNil(addressLookupViewController.viewControllers.first as? AddressLookupSearchViewController)
-        
-        viewModel.handleSwitchToManualEntryTapped()
-        wait(for: .aMoment)
-        XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: results.first?.postalAddress))
-        XCTAssertNotNil(addressLookupViewController.viewControllers.first as? AddressInputFormViewController)
+        wait(for: [completionExpectation], timeout: 10)
     }
-    
-    func testSearchDismissalNoPrefillNoAction() {
 
+    func testSearchDismissal_returnsToForm_afterUserInteraction() {
         // Given
-
-        let emptyCompletionExpectation = expectation(description: "Completion handler called with nil object")
-        
-        let viewModel = AddressLookupViewController.ViewModel(
-            for: .billing,
-            style: .init(),
-            localizationParameters: nil,
-            supportedCountryCodes: nil,
-            initialCountry: "NL",
-            prefillAddress: nil,
-            lookupProvider: MockAddressLookupProvider.alwaysFailing
-        ) { address in
-            XCTAssertNil(address)
-            emptyCompletionExpectation.fulfill()
+        let completionExpectation = expectation(description: "Completion called")
+        let (viewModel, sut) = makeSUTWithViewController(prefillAddress: nil) { address in
+            XCTAssertEqual(address, PostalAddress())
+            completionExpectation.fulfill()
         }
+        sut.loadViewIfNeeded()
 
-        // Then
+        // When - User switches to manual entry then back to search
+        viewModel.handleSwitchToManualEntryTapped()
+        XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: nil))
+
+        viewModel.handleShowSearchTapped(currentInput: PostalAddress())
+        XCTAssertEqual(viewModel.interfaceState, .search)
 
         viewModel.handleDismissSearchTapped()
 
-        wait(for: [emptyCompletionExpectation], timeout: 10)
-    }
-
-    func testSearchDismissalAfterInteraction() {
-
-        // Given
-
-        let completionHandlerExpectation = expectation(description: "Completion handler called")
-
-        let mockLookupProvider = MockAddressLookupProvider { _ in [] }
-        
-        let viewModel = AddressLookupViewController.ViewModel(
-            for: .billing,
-            style: .init(),
-            localizationParameters: nil,
-            supportedCountryCodes: nil,
-            initialCountry: "NL",
-            prefillAddress: nil,
-            lookupProvider: mockLookupProvider
-        ) { address in
-            XCTAssertEqual(address, .init())
-            completionHandlerExpectation.fulfill()
-        }
-
-        // Then
-
-        let addressLookupViewController = AddressLookupViewController(viewModel: viewModel)
-
-        setupRootViewController(addressLookupViewController)
-
-        addressLookupViewController.viewModel.handleSwitchToManualEntryTapped()
-        XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: nil))
-
-        addressLookupViewController.viewModel.handleShowSearchTapped(currentInput: PostalAddress())
-        XCTAssertEqual(viewModel.interfaceState, .search)
-
-        addressLookupViewController.viewModel.handleDismissSearchTapped() // Should not cancel the flow
+        // Then - Should return to form, not dismiss
         XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: PostalAddress()))
 
-        addressLookupViewController.viewModel.handleAddressInputFormCompletion(validAddress: .init()) // Should trigger completion handler with postal address
-
-        wait(for: [completionHandlerExpectation], timeout: 10)
-    }
-
-    // MARK: - ViewModel
-
-    func testViewModelInitialization() {
-
-        // Given
-
-        let viewModel = AddressLookupViewController.ViewModel(
-            for: .billing,
-            style: .init(),
-            localizationParameters: nil,
-            supportedCountryCodes: nil,
-            initialCountry: "NL",
-            prefillAddress: nil,
-            lookupProvider: MockAddressLookupProvider.alwaysFailing
-        ) { address in
-            XCTFail("Completion handler should not have been called")
-        }
+        // When - User submits
+        viewModel.handleAddressInputFormCompletion(validAddress: PostalAddress())
 
         // Then
+        wait(for: [completionExpectation], timeout: 10)
+    }
 
+    // MARK: - ViewModel Initialization Tests
+
+    func testViewModelInitialization_startsInSearchState_whenNoPrefillAddress() {
+        // Given/When
+        let viewModel = makeSUT(prefillAddress: nil)
+
+        // Then
         XCTAssertTrue(viewModel.shouldDismissOnSearchDismissal)
         XCTAssertEqual(viewModel.interfaceState, .search)
     }
 
-    func testViewModelInitializationPrefilled() {
-
+    func testViewModelInitialization_startsInFormState_whenPrefillAddressProvided() {
         // Given
+        let prefillAddress = PostalAddressMocks.newYorkPostalAddress
 
-        let prefillAddress = PostalAddressMocks.all.first!
+        // When
+        let viewModel = makeSUT(prefillAddress: prefillAddress)
 
-        let viewModel = AddressLookupViewController.ViewModel(
+        // Then
+        XCTAssertFalse(viewModel.shouldDismissOnSearchDismissal)
+        XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: prefillAddress))
+    }
+
+    // MARK: - Search Interaction Tests
+
+    func testShowSearch_updatesPrefillAddressAndState() {
+        // Given
+        let currentInput = PostalAddressMocks.losAngelesPostalAddress
+        let viewModel = makeSUT(prefillAddress: PostalAddressMocks.newYorkPostalAddress)
+
+        // When
+        viewModel.handleShowSearchTapped(currentInput: currentInput)
+
+        // Then
+        XCTAssertEqual(viewModel.prefillAddress, currentInput)
+        XCTAssertEqual(viewModel.interfaceState, .search)
+    }
+
+    func testDismissSearch_returnsToFormWithPrefillAddress() {
+        // Given
+        let prefillAddress = PostalAddressMocks.newYorkPostalAddress
+        let viewModel = makeSUT(prefillAddress: prefillAddress)
+        viewModel.handleShowSearchTapped(currentInput: prefillAddress)
+
+        // When
+        viewModel.handleDismissSearchTapped()
+
+        // Then
+        XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: prefillAddress))
+    }
+
+    // MARK: - Address Selection Tests
+
+    func testAddressSelection_updatesStateWithSelectedAddress() {
+        // Given
+        let results = mockAddressResults
+        let expectedAddress = results.first!.postalAddress
+        let stateChangeExpectation = expectation(description: "State changed")
+
+        let viewModel = makeSUT(
+            prefillAddress: nil,
+            onLookup: { _ in results }
+        )
+        let searchViewModel = viewModel.buildAddressSearchViewModel { _ in
+            XCTFail("Presentation handler should not be called")
+        }
+
+        // When
+        performAddressSelection(
+            on: searchViewModel,
+            searchTerm: "Test",
+            selectingIndex: 1, // Index 0 is manual entry cell
+            onComplete: { stateChangeExpectation.fulfill() }
+        )
+
+        // Then
+        wait(for: [stateChangeExpectation], timeout: 5)
+        XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: expectedAddress))
+    }
+
+    func testAddressSelection_triggersLoadingHandler() {
+        // Given
+        let results = mockAddressResults
+        let loadingExpectation = expectation(description: "Loading handler called")
+
+        let viewModel = makeSUT(
+            prefillAddress: nil,
+            onLookup: { _ in results }
+        )
+        let searchViewModel = viewModel.buildAddressSearchViewModel { _ in }
+
+        // When
+        searchViewModel.handleLookUp(searchTerm: "Test") { listItems in
+            listItems.forEach { $0.loadingHandler = { _, _ in loadingExpectation.fulfill() } }
+            listItems[1].selectionHandler?()
+        }
+
+        // Then
+        wait(for: [loadingExpectation], timeout: 5)
+    }
+
+    // MARK: - Form Completion Tests
+
+    func testFormCompletion_callsCompletionHandler_withValidAddress() {
+        // Given
+        let expectedAddress = PostalAddressMocks.newYorkPostalAddress
+        let completionExpectation = expectation(description: "Completion called")
+
+        let viewModel = makeSUT(prefillAddress: expectedAddress) { address in
+            XCTAssertEqual(address, expectedAddress)
+            completionExpectation.fulfill()
+        }
+
+        // When
+        viewModel.handleAddressInputFormCompletion(validAddress: expectedAddress)
+
+        // Then
+        wait(for: [completionExpectation], timeout: 5)
+    }
+
+    func testFormCompletion_callsCompletionHandler_withNilAddress() {
+        // Given
+        let completionExpectation = expectation(description: "Completion called")
+
+        let viewModel = makeSUT(prefillAddress: nil) { address in
+            XCTAssertNil(address)
+            completionExpectation.fulfill()
+        }
+
+        // When
+        viewModel.handleAddressInputFormCompletion(validAddress: nil)
+
+        // Then
+        wait(for: [completionExpectation], timeout: 5)
+    }
+}
+
+// MARK: - SUT Factory Methods
+
+extension AddressLookupViewControllerTests {
+
+    private func makeSUT(
+        prefillAddress: PostalAddress?,
+        onLookup: @escaping (String) -> [AddressLookupResult] = { _ in [] },
+        completionHandler: @escaping (PostalAddress?) -> Void = { _ in }
+    ) -> AddressLookupViewController.ViewModel {
+        let provider = MockAddressLookupProvider(resultProvider: onLookup)
+        return AddressLookupViewController.ViewModel(
             for: .billing,
             style: .init(),
             localizationParameters: nil,
             supportedCountryCodes: nil,
             initialCountry: "NL",
             prefillAddress: prefillAddress,
-            lookupProvider: MockAddressLookupProvider.alwaysFailing
-        ) { address in
-            XCTFail("Completion handler should not have been called")
-        }
-
-        // Then
-
-        XCTAssertFalse(viewModel.shouldDismissOnSearchDismissal)
-        XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: prefillAddress))
+            lookupProvider: provider,
+            completionHandler: completionHandler
+        )
     }
 
-    func testViewModelInteraction() {
+    private func makeSUTWithViewController(
+        prefillAddress: PostalAddress?,
+        onLookup: @escaping (String) -> [AddressLookupResult] = { _ in [] },
+        completionHandler: @escaping (PostalAddress?) -> Void = { _ in }
+    ) -> (
+        viewModel: AddressLookupViewController.ViewModel,
+        viewController: AddressLookupViewController
+    ) {
+        let viewModel = makeSUT(
+            prefillAddress: prefillAddress,
+            onLookup: onLookup,
+            completionHandler: completionHandler
+        )
+        let viewController = AddressLookupViewController(viewModel: viewModel)
+        return (viewModel, viewController)
+    }
+}
 
-        // Given
-        let expectedSearchTerm = "Test"
-        let results: [AddressLookupResult] = PostalAddressMocks.all.map {
-            .init(identifier: UUID().uuidString, postalAddress: $0)
+// MARK: - Action Helpers
+
+extension AddressLookupViewControllerTests {
+
+    private func performAddressSelection(
+        on searchViewModel: AddressLookupSearchViewController.ViewModel,
+        searchTerm: String,
+        selectingIndex index: Int,
+        onComplete: @escaping () -> Void
+    ) {
+        searchViewModel.handleLookUp(searchTerm: searchTerm) { listItems in
+            listItems[index].selectionHandler?()
+            DispatchQueue.main.async { onComplete() }
         }
-        
-        let currentInput = results.last!.postalAddress
-        var expectedCompletionHandlerAddress: PostalAddress?
-
-        let completionHandlerExpectation = expectation(description: "Completion handler was called on submit")
-        completionHandlerExpectation.expectedFulfillmentCount = 2
-
-        let mockLookupProvider = MockAddressLookupProvider { searchTerm in
-            XCTAssertEqual(searchTerm, expectedSearchTerm)
-            return results
-        }
-        
-        let viewModel = AddressLookupViewController.ViewModel(
-            for: .billing,
-            style: .init(),
-            localizationParameters: nil,
-            supportedCountryCodes: nil,
-            initialCountry: "NL",
-            prefillAddress: results.first?.postalAddress,
-            lookupProvider: mockLookupProvider
-        ) { address in
-            XCTAssertEqual(address, expectedCompletionHandlerAddress)
-            completionHandlerExpectation.fulfill()
-        }
-
-        // When - Showing Search
-
-        viewModel.handleShowSearchTapped(currentInput: currentInput)
-
-        // Then
-
-        XCTAssertEqual(viewModel.prefillAddress, currentInput)
-        XCTAssertEqual(viewModel.interfaceState, .search)
-
-        // When - Dismissing Search
-
-        viewModel.handleDismissSearchTapped()
-
-        // Then
-
-        XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: viewModel.prefillAddress))
-
-        // When - Selecting address from lookup
-
-        let loadingExpectation = expectation(description: "Loading handler was called")
-        loadingExpectation.expectedFulfillmentCount = 1
-        let firstAddressResult = results.first!.postalAddress
-        let stateChangeExpectation = expectation(description: "State changed to form with address")
-        
-        let addressSearchViewModel = viewModel.buildAddressSearchViewModel { _ in
-            XCTFail("Presentation handler should not have been called")
-        }
-
-        addressSearchViewModel.handleLookUp(searchTerm: expectedSearchTerm) { listItems in
-            // We don't have a ListViewController that provides the loadingHandler
-            // so we provide one here which also allows us to test if it's called correctly
-            listItems.forEach {
-                $0.loadingHandler = { _, _ in loadingExpectation.fulfill() }
-            }
-            
-            // Selecting the 2nd item in the list as the first one is the manual input cell
-            listItems[1].selectionHandler?()
-            
-            // Wait for state to update after selection
-            DispatchQueue.main.async {
-                stateChangeExpectation.fulfill()
-            }
-        }
-
-        // Then
-
-        // Wait for async operations to complete
-        wait(for: [stateChangeExpectation], timeout: 5)
-
-        XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: firstAddressResult))
-
-        // When - Submitting address
-
-        expectedCompletionHandlerAddress = firstAddressResult
-        // Check if the AddressLookupViewController.ViewModel completionHandler was called with the expected address
-        viewModel.handleAddressInputFormCompletion(validAddress: firstAddressResult)
-
-        expectedCompletionHandlerAddress = nil
-        // Check if the AddressLookupViewController.ViewModel completionHandler was called with the expected address
-        viewModel.handleAddressInputFormCompletion(validAddress: nil)
-
-        // Then
-
-        wait(for: [completionHandlerExpectation, loadingExpectation], timeout: 10)
     }
 }
