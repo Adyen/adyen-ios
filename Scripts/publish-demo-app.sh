@@ -114,7 +114,7 @@ elif [[ "$DISTRIBUTION_TYPE" == "firebase" ]]; then
 
   firebase appdistribution:distribute "$IPA_PATH" \
     --app "$FIREBASE_APP_ID" \
-    --groups "ios-team" \
+    --groups "ios-checkout-team" \
     --release-notes "${FIREBASE_RELEASE_NAME:-Build from branch ${GITHUB_REF_NAME:-manual}}"
 
   echo "✅ Firebase upload complete!"
