@@ -1,5 +1,9 @@
-name: 🚀 Publish Demo App
+name: 🚀 Publish Demo App (TestFlight)
+
 on:
+  pull_request:
+    branches:
+      - develop
   workflow_dispatch:
   workflow_call:
     secrets: # When triggered via another workflow, secrets are not automatically forwarded
