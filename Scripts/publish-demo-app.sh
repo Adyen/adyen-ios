@@ -6,7 +6,6 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BUILD_PATH="$SCRIPT_DIR/../Build-Temp"
 ARCHIVE_PATH="$BUILD_PATH/AdyenUIHost.xcarchive"
 IPA_PATH="$BUILD_PATH/AdyenUIHost.ipa"
-EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions.plist"
 
 # Input arguments
 DISTRIBUTION_TYPE="${1:-testflight}"  # testflight (default) or firebase
@@ -21,6 +20,15 @@ if [[ "$DISTRIBUTION_TYPE" != "testflight" && "$DISTRIBUTION_TYPE" != "firebase"
   echo "❌ distribution_type must be 'testflight' or 'firebase'"
   exit 1
 fi
+
+# Set export options based on distribution type
+if [[ "$DISTRIBUTION_TYPE" == "testflight" ]]; then
+  EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions.plist"
+else
+  EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions-Firebase.plist"
+fi
+
+echo "📋 Using export options: $EXPORT_OPTIONS_PLIST"
 
 # ---- Required environment variables ----
 # Apple credentials
