@@ -15,7 +15,7 @@
     <key>provisioningProfiles</key>
     <dict>
       <key>com.adyen.CheckoutDemoUIKit</key>
-      <string>Firebase Distribution</string>
+      <string>Firebase Distribution - Checkout</string>
     </dict>
 </dict>
 </plist>
