@@ -12,10 +12,16 @@ EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions.plist"
 APPLE_ID_USERNAME="$1"
 APPLE_APP_SPECIFIC_PASSWORD="$2"
 AUTH_KEY_PATH="$3"
+DISTRIBUTION_TYPE="${4:-testflight}"  # testflight (default) or firebase
 
-# Validate
+# Validate inputs
 if [[ -z "$APPLE_ID_USERNAME" || -z "$APPLE_APP_SPECIFIC_PASSWORD" || -z "$AUTH_KEY_PATH" ]]; then
-  echo "❌ Usage: $0 <APPLE_ID_USERNAME> <APPLE_APP_SPECIFIC_PASSWORD> <AUTH_KEY_PATH>"
+  echo "❌ Usage: $0 <APPLE_ID_USERNAME> <APPLE_APP_SPECIFIC_PASSWORD> <AUTH_KEY_PATH> [distribution_type]"
+  exit 1
+fi
+
+if [[ "$DISTRIBUTION_TYPE" != "testflight" && "$DISTRIBUTION_TYPE" != "firebase" ]]; then
+  echo "❌ distribution_type must be 'testflight' or 'firebase'"
   exit 1
 fi
 
@@ -70,11 +76,34 @@ xcodebuild -exportArchive \
   APPLE_TEAM_IDENTIFIER="$APPLE_DEVELOPMENT_TEAM_ID" \
   APPLE_PAY_MERCHANT_IDENTIFIER="${APPLE_PAY_MERCHANT_IDENTIFIER:-"merchant.com.adyen.test"}"
 
-echo "☁️ Uploading to App Store Connect..."
-xcrun altool --upload-app \
-  -f "$IPA_PATH" \
-  -u "$APPLE_ID_USERNAME" \
-  -p "$APPLE_APP_SPECIFIC_PASSWORD" \
-  --type ios
+# ---- Upload step ----
+if [[ "$DISTRIBUTION_TYPE" == "testflight" ]]; then
+  echo "☁️ Uploading to App Store Connect (TestFlight)..."
+  xcrun altool --upload-app \
+    -f "$IPA_PATH" \
+    -u "$APPLE_ID_USERNAME" \
+    -p "$APPLE_APP_SPECIFIC_PASSWORD" \
+    --type ios
+  echo "✅ TestFlight upload complete!"
 
-echo "✅ Upload complete!"
+elif [[ "$DISTRIBUTION_TYPE" == "firebase" ]]; then
+  echo "☁️ Uploading to Firebase App Distribution..."
+  
+  if [[ -z "${FIREBASE_SERVICE_ACCOUNT_JSON:-}" || -z "${FIREBASE_APP_ID:-}" ]]; then
+    echo "❌ FIREBASE_SERVICE_ACCOUNT_JSON and FIREBASE_APP_ID environment variables must be set for Firebase distribution"
+    exit 1
+  fi
+
+  # Write service account JSON to a temp file
+  FIREBASE_JSON_PATH="$(mktemp)"
+  echo "$FIREBASE_SERVICE_ACCOUNT_JSON" > "$FIREBASE_JSON_PATH"
+
+  # Upload using Firebase CLI
+  firebase appdistribution:distribute "$IPA_PATH" \
+    --app "$FIREBASE_APP_ID" \
+    --groups "ios-team" \
+    --release-notes "Build from branch ${GITHUB_REF:-manual}" \
+    --service-account "$FIREBASE_JSON_PATH"
+
+  echo "✅ Firebase upload complete!"
+fi
