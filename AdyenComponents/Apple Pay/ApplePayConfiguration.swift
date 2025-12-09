@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -185,31 +185,21 @@ internal enum ApplePayBrandsMapper {
     }
 }
 
-internal enum ApplePayBrandsMapperRepsectingBrandsOrder {
-    static func map(brands: [String]?, supportedNetworks: [PKPaymentNetwork]) -> [PKPaymentNetwork] {
-        guard let brands else { return [] }
-
-        return brands.compactMap { brand in
-            supportedNetworks.first(where: { $0.txVariantName == brand })
-        }
-    }
-}
-
 extension ApplePayPaymentMethod {
 
-//    internal var supportedNetworks: [PKPaymentNetwork] {
-//        let networks: [PKPaymentNetwork] = PKPaymentRequest.availableNetworks()
-//        return ApplePayBrandsMapper.map(brands: brands, supportedNetworks: networks)
-//    }
-
-    // =====================
-
     internal var supportedNetworks: [PKPaymentNetwork] {
-        let networks: [PKPaymentNetwork] = PKPaymentRequest.availableNetworks()
-        let brands: [String]? = brands?.reversed()
-        return ApplePayBrandsMapperRepsectingBrandsOrder.map(brands: brands, supportedNetworks: networks)
-    }
+        guard let brands else { return [] }
 
+        let networks = PKPaymentRequest.availableNetworks()
+
+        let networkByBrand: [String: PKPaymentNetwork] = networks.reduce(into: [:]) { dict, network in
+            if dict[network.txVariantName] == nil {
+                dict[network.txVariantName] = network
+            }
+        }
+
+        return brands.compactMap { networkByBrand[$0] }
+    }
 }
 
 extension PKPaymentNetwork {
