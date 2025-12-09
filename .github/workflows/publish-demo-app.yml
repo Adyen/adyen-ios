@@ -91,12 +91,7 @@ jobs:
         
     - name: ⚙️ Configure Demo App
       env:
-        CLIENT_KEY: ${{ secrets.DEMO_APP_TEST_ENV_CLIENT_KEY }}
-        DEMO_SERVER_API_KEY: ${{ secrets.DEMO_SERVER_TEST_ENV_API_KEY }}
-        MERCHANT_ACCOUNT: ${{ secrets.MERCHANT_ACCOUNT }}
-        APPLE_DEVELOPMENT_TEAM_ID: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
         ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
-        APPLE_PAY_MERCHANT_IDENTIFIER: ${{ secrets.APPLE_PAY_MERCHANT_IDENTIFIER }}
       run: |
         # demoServerEnvironment
         sed -i '' "s/static let demoServerEnvironment.*=.*/static let demoServerEnvironment = DemoCheckoutAPIEnvironment.$ENVIRONMENT/g" ./Demo/Configuration.swift

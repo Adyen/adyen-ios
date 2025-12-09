@@ -108,16 +108,14 @@ elif [[ "$DISTRIBUTION_TYPE" == "firebase" ]]; then
     exit 1
   fi
 
-  # Write service account JSON to a temp file
   FIREBASE_JSON_PATH="$(mktemp)"
   echo "$FIREBASE_SERVICE_ACCOUNT_JSON" > "$FIREBASE_JSON_PATH"
+  export GOOGLE_APPLICATION_CREDENTIALS=$FIREBASE_JSON_PATH
 
-  # Upload using Firebase CLI
   firebase appdistribution:distribute "$IPA_PATH" \
     --app "$FIREBASE_APP_ID" \
     --groups "ios-team" \
-    --release-notes "${FIREBASE_RELEASE_NAME:-Build from branch ${GITHUB_REF_NAME:-manual}}" \
-    --service-account "$FIREBASE_JSON_PATH"
+    --release-notes "${FIREBASE_RELEASE_NAME:-Build from branch ${GITHUB_REF_NAME:-manual}}"
 
   echo "✅ Firebase upload complete!"
 fi
