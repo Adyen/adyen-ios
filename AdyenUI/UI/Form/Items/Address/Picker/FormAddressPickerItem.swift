@@ -10,7 +10,7 @@ import UIKit
 /// An address form item that allows picking an address on a separate screen.
 package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?> {
 
-    public enum AddressType {
+    package enum AddressType {
         case billing
         case delivery
     }
@@ -26,7 +26,7 @@ package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress
         addressViewModelBuilder.build(context: self.context)
     }
     
-    override public var value: PostalAddress? {
+    override package var value: PostalAddress? {
         didSet {
             updateContext()
             updateValidationFailureMessage()
@@ -95,17 +95,17 @@ package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress
         }
     }
 
-    public func updateOptionalStatus(isOptional: Bool) {
+    package func updateOptionalStatus(isOptional: Bool) {
         context.isOptional = isOptional
     }
 
-    override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    override package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
 
     // MARK: ValidatableFormItem
 
-    override public func isValid() -> Bool {
+    override package func isValid() -> Bool {
         if context.isOptional {
             return true
         }
@@ -113,7 +113,7 @@ package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress
         return address.satisfies(requiredFields: addressViewModel.requiredFields)
     }
 
-    override public func validationStatus() -> ValidationStatus? {
+    override package func validationStatus() -> ValidationStatus? {
         nil
     }
 }
@@ -236,14 +236,14 @@ extension FormAddressPickerItem {
 
 extension FormAddressPickerItem.AddressType {
 
-    public func placeholder(with localizationParameters: LocalizationParameters?) -> String {
+    package func placeholder(with localizationParameters: LocalizationParameters?) -> String {
         switch self {
         case .billing: return localizedString(.billingAddressPlaceholder, localizationParameters)
         case .delivery: return localizedString(.deliveryAddressPlaceholder, localizationParameters)
         }
     }
 
-    public func title(with localizationParameters: LocalizationParameters?) -> String {
+    package func title(with localizationParameters: LocalizationParameters?) -> String {
         switch self {
         case .billing: return localizedString(.billingAddressSectionTitle, localizationParameters)
         case .delivery: return localizedString(.deliveryAddressSectionTitle, localizationParameters)
