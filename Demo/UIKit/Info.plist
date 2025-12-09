@@ -2,12 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>ADYEN_CLIENT_KEY</key>
-	<string>$(ADYEN_CLIENT_KEY)</string>
-	<key>ADYEN_DEMO_SERVER_API_KEY</key>
-	<string>$(ADYEN_DEMO_SERVER_API_KEY)</string>
-	<key>ADYEN_MERCHANT_ACCOUNT</key>
-	<string>$(ADYEN_MERCHANT_ACCOUNT)</string>
+	<key>MERCHANT_CLIENT_KEY</key>
+	<string>$(MERCHANT_CLIENT_KEY)</string>
+	<key>MERCHANT_SERVER_HOST</key>
+	<string>$(MERCHANT_SERVER_HOST)</string>
+	<key>MERCHANT_ACCOUNT</key>
+	<string>$(MERCHANT_ACCOUNT)</string>
+	<key>ADYEN_SERVER_API_KEY</key>
+	<string>$(ADYEN_SERVER_API_KEY)</string>
 	<key>APPLE_PAY_MERCHANT_IDENTIFIER</key>
 	<string>$(APPLE_PAY_MERCHANT_IDENTIFIER)</string>
 	<key>APPLE_TEAM_IDENTIFIER</key>
