@@ -37,7 +37,7 @@ fi
 : "${APPLE_TEAM_IDENTIFIER:?Environment variable APPLE_TEAM_IDENTIFIER not set}"
 : "${ENVIRONMENT:?Environment variable ENVIRONMENT not set}"
 
-if [[ "$DISTRIBUTION" == "firebase" ]]; then
+if [[ "$DISTRIBUTION_TYPE" == "firebase" ]]; then
   : "${FIREBASE_SERVICE_ACCOUNT_JSON:?Environment variable FIREBASE_SERVICE_ACCOUNT_JSON not set}"
   : "${FIREBASE_APP_ID:?Environment variable FIREBASE_APP_ID not set}"
   : "${FIREBASE_RELEASE_NAME:?Environment variable FIREBASE_RELEASE_NAME not set}"
