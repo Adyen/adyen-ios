@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: "Git branch to build"
+        description: "Branch to distribute"
         required: true
         default: "develop"
         type: string
