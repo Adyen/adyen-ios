@@ -25,7 +25,6 @@ fi
 # Required environment variables (precondition checks)
 : "${APPLE_ID_USERNAME:?Environment variable APPLE_ID_USERNAME not set}"
 : "${APPLE_APP_SPECIFIC_PASSWORD:?Environment variable APPLE_APP_SPECIFIC_PASSWORD not set}"
-: "${APPLE_PAY_MERCHANT_IDENTIFIER:?Environment variable APPLE_PAY_MERCHANT_IDENTIFIER not set}"
 : "${XCODE_AUTHENTICATION_KEY_ID:?Environment variable XCODE_AUTHENTICATION_KEY_ID not set}"
 : "${XCODE_AUTHENTICATION_KEY_ISSUER_ID:?Environment variable XCODE_AUTHENTICATION_KEY_ISSUER_ID not set}"
 : "${XCODE_AUTHENTICATION_KEY_BASE64:?Environment variable XCODE_AUTHENTICATION_KEY_BASE64 not set}"
