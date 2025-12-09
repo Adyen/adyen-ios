@@ -45,6 +45,131 @@ func test_formTextField_appliesCustomThemeColors() {
 
 Once the structure stabilizes, focused unit tests can be added back for specific edge cases.
 
+## Test Naming Convention
+
+Follow the **Given-When-Then** pattern for test method names:
+
+```
+test_<subject>_<condition>_<expectedBehavior>
+```
+
+| Component | Description | Example |
+|-----------|-------------|---------|
+| **Subject** | The unit being tested (method, property, component) | `submit`, `validate`, `paymentMethod`, `titleLabel` |
+| **Condition** | The state, input, or action (optional if testing default) | `withValidInput`, `whenAmountIsZero`, `afterSessionExpires` |
+| **Expected Behavior** | What should happen | `shouldSucceed`, `shouldThrowError`, `shouldCallDelegate` |
+
+### Examples
+
+#### Business Logic & Validation
+
+```swift
+// Validation
+func test_validate_withValidIBAN_shouldReturnTrue()
+func test_validate_withInvalidIBAN_shouldReturnFalse()
+func test_validate_withEmptyInput_shouldReturnValidationError()
+
+// Amount formatting
+func test_format_withZeroAmount_shouldReturnFormattedZero()
+func test_format_withNegativeAmount_shouldThrowError()
+
+// Payment method parsing
+func test_paymentMethod_whenDecodingFromJSON_shouldParseAllFields()
+func test_paymentMethod_withMissingRequiredField_shouldThrowDecodingError()
+```
+
+#### Networking & API
+
+```swift
+// API requests
+func test_submit_withValidPaymentData_shouldCallAPIClient()
+func test_submit_whenNetworkFails_shouldReturnNetworkError()
+func test_submit_afterSessionExpires_shouldRefreshAndRetry()
+
+// Response handling
+func test_handleResponse_withSuccessStatus_shouldCallDidProvide()
+func test_handleResponse_withActionRequired_shouldCallDidProvideAction()
+func test_handleResponse_withRefusalReason_shouldCallDidFail()
+```
+
+#### Component Delegates & Callbacks
+
+```swift
+// Delegate calls
+func test_component_whenPaymentCompleted_shouldCallDidProvide()
+func test_component_whenUserCancels_shouldCallDidFail()
+func test_component_afterSubmit_shouldCallDidSubmit()
+
+// Selection handlers
+func test_selectionHandler_whenItemSelected_shouldUpdateValue()
+func test_selectionHandler_withNoHandler_shouldTriggerAssertion()
+```
+
+#### UI Components
+
+```swift
+// View styling
+func test_titleLabel_shouldUseThemeBodyEmphasizedStyle()
+func test_valueLabel_withNoFormattedValue_shouldShowPlaceholder()
+func test_valueLabel_colorWithValue_shouldUseStyleTextColor()
+
+// View state changes
+func test_view_whenFormattedValueChanges_shouldUpdateLabel()
+func test_button_whenDisabled_shouldUpdateAppearance()
+
+// View-level properties
+func test_view_tintColor_shouldUseStyleTintColor()
+func test_view_backgroundColor_shouldUseStyleBackgroundColor()
+```
+
+#### Analytics & Tracking
+
+```swift
+// Event tracking
+func test_analytics_whenComponentLoaded_shouldSendRenderEvent()
+func test_analytics_afterSubmit_shouldSendSubmitEvent()
+func test_analytics_withError_shouldIncludeErrorCode()
+```
+
+#### Encryption & Security
+
+```swift
+// Card encryption
+func test_encrypt_withValidCard_shouldReturnEncryptedData()
+func test_encrypt_withExpiredCard_shouldStillEncrypt()
+func test_encrypt_withMissingPublicKey_shouldThrowError()
+```
+
+### Guidelines
+
+- **Use underscores** to separate the three parts for readability
+- **Start with the subject** (what's being tested)
+- **Omit condition** when testing default/initial state
+- **Be specific** about properties when a subject has multiple testable aspects (e.g., `color`, `font`, `text`)
+- **Use camelCase** within each segment
+- **Avoid redundant words** like "test" in the middle (it's already the method prefix)
+- **Match the abstraction level** - use domain terms (`submit`, `validate`) not implementation details (`callFunction`)
+
+### Anti-patterns
+
+```swift
+// ❌ Too vague
+func test_label()
+func test_validation()
+
+// ❌ Missing structure
+func testThatTheTitleLabelUsesTheCorrectFontFromTheTheme()
+func testSubmitPaymentWithValidDataCallsAPIAndReturnsSuccess()
+
+// ❌ Implementation-focused instead of behavior-focused
+func test_titleLabelFontIsSetInInit()
+func test_apiClientPostMethodIsCalled()
+
+// ✅ Correct
+func test_titleLabel_shouldUseThemeBodyEmphasizedStyle()
+func test_submit_withValidPaymentData_shouldSucceed()
+```
+
 ## Running Tests
 
 **List available simulators:**
