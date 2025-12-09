@@ -108,21 +108,30 @@ jobs:
         sed -i '' "s/static let componentsEnvironment.*=.*/static let componentsEnvironment = Environment.$ENVIRONMENT/g" ./Demo/Configuration.swift
     - name: 🚀 Publish Demo App
       env:
+        # Workflow configuration
         APPLE_ID_USERNAME: ${{ secrets.APPLE_ID_USERNAME }}
         APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+        APPLE_PAY_MERCHANT_IDENTIFIER: ${{ secrets.APPLE_PAY_MERCHANT_IDENTIFIER }}
         XCODE_AUTHENTICATION_KEY_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ID }}
         XCODE_AUTHENTICATION_KEY_ISSUER_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ISSUER_ID }}
         XCODE_AUTHENTICATION_KEY_BASE64: ${{ secrets.XCODE_AUTHENTICATION_KEY_BASE64 }}
-        
-        CLIENT_KEY: ${{ secrets.DEMO_APP_TEST_ENV_CLIENT_KEY }}
-        DEMO_SERVER_API_KEY: ${{ secrets.DEMO_SERVER_TEST_ENV_API_KEY }}
+        FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+        FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+        FIREBASE_RELEASE_NAME: ${{ env.RELEASE_NAME }}
+          
+        # Build configuration
+        MERCHANT_CLIENT_KEY: ${{ secrets.DEMO_APP_TEST_ENV_CLIENT_KEY }}
+        MERCHANT_SERVER_HOST: ${{ secrets.MERCHANT_SERVER_HOST }}
         MERCHANT_ACCOUNT: ${{ secrets.MERCHANT_ACCOUNT }}
-        APPLE_DEVELOPMENT_TEAM_ID: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
+        ADYEN_SERVER_API_KEY: ${{ secrets.DEMO_SERVER_TEST_ENV_API_KEY }}
+        APPLE_TEAM_IDENTIFIER: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
         ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
-        APPLE_PAY_MERCHANT_IDENTIFIER: ${{ secrets.APPLE_PAY_MERCHANT_IDENTIFIER }}
-      run: |
-        AUTH_KEY_PATH=$RUNNER_TEMP/authentication_key_path.p8
-        rm -f $AUTH_KEY_PATH
-        echo -n "$XCODE_AUTHENTICATION_KEY_BASE64" | base64 --decode -o $AUTH_KEY_PATH
+        run: |
+          AUTH_KEY_PATH=$RUNNER_TEMP/authentication_key_path.p8
+          rm -f $AUTH_KEY_PATH
+          echo -n "$XCODE_AUTHENTICATION_KEY_BASE64" | base64 --decode -o $AUTH_KEY_PATH
 
-        ./Scripts/publish-demo-app.sh "$APPLE_ID_USERNAME" "$APPLE_APP_SPECIFIC_PASSWORD" "$AUTH_KEY_PATH"
+          echo "AUTH_KEY_PATH=$AUTH_KEY_PATH" >> $GITHUB_ENV
+
+          chmod +x ./Scripts/publish-demo-app.sh
+          ./Scripts/publish-demo-app.sh

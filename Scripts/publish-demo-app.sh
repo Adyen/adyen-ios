@@ -9,14 +9,11 @@ IPA_PATH="$BUILD_PATH/AdyenUIHost.ipa"
 EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions.plist"
 
 # Input arguments
-APPLE_ID_USERNAME="$1"
-APPLE_APP_SPECIFIC_PASSWORD="$2"
-AUTH_KEY_PATH="$3"
-DISTRIBUTION_TYPE="${4:-testflight}"  # testflight (default) or firebase
+DISTRIBUTION_TYPE="${1:-testflight}"  # testflight (default) or firebase
 
 # Validate inputs
-if [[ -z "$APPLE_ID_USERNAME" || -z "$APPLE_APP_SPECIFIC_PASSWORD" || -z "$AUTH_KEY_PATH" ]]; then
-  echo "❌ Usage: $0 <APPLE_ID_USERNAME> <APPLE_APP_SPECIFIC_PASSWORD> <AUTH_KEY_PATH> [distribution_type]"
+if [[ -z "$DISTRIBUTION_TYPE"]]; then
+  echo "❌ Usage: $0 [distribution_type]"
   exit 1
 fi
 
@@ -32,8 +29,7 @@ fi
 : "${XCODE_AUTHENTICATION_KEY_ID:?Environment variable XCODE_AUTHENTICATION_KEY_ID not set}"
 : "${XCODE_AUTHENTICATION_KEY_ISSUER_ID:?Environment variable XCODE_AUTHENTICATION_KEY_ISSUER_ID not set}"
 : "${XCODE_AUTHENTICATION_KEY_BASE64:?Environment variable XCODE_AUTHENTICATION_KEY_BASE64 not set}"
-: "${FIREBASE_SERVICE_ACCOUNT_JSON:?Environment variable FIREBASE_SERVICE_ACCOUNT_JSON not set}"
-: "${FIREBASE_APP_ID:?Environment variable FIREBASE_APP_ID not set}"
+: "${AUTH_KEY_PATH:?Environment variable AUTH_KEY_PATH not set}"
 
 : "${MERCHANT_CLIENT_KEY:?Environment variable MERCHANT_CLIENT_KEY not set}"
 : "${MERCHANT_SERVER_HOST:?Environment variable MERCHANT_SERVER_HOST not set}"
@@ -41,6 +37,15 @@ fi
 : "${ADYEN_SERVER_API_KEY:?Environment variable ADYEN_SERVER_API_KEY not set}"
 : "${APPLE_TEAM_IDENTIFIER:?Environment variable APPLE_TEAM_IDENTIFIER not set}"
 : "${ENVIRONMENT:?Environment variable ENVIRONMENT not set}"
+
+if [[ "$DISTRIBUTION" == "firebase" ]]; then
+  : "${FIREBASE_SERVICE_ACCOUNT_JSON:?Environment variable FIREBASE_SERVICE_ACCOUNT_JSON not set}"
+  : "${FIREBASE_APP_ID:?Environment variable FIREBASE_APP_ID not set}"
+  : "${FIREBASE_RELEASE_NAME:?Environment variable FIREBASE_RELEASE_NAME not set}"
+
+  echo "ℹ️ Firebase distribution selected — Firebase env vars validated."
+fi
+
 
 echo "🧹 Cleaning project..."
 xcodebuild clean -project Adyen.xcodeproj \
@@ -97,7 +102,7 @@ if [[ "$DISTRIBUTION_TYPE" == "testflight" ]]; then
   echo "✅ TestFlight upload complete!"
 
 elif [[ "$DISTRIBUTION_TYPE" == "firebase" ]]; then
-  echo "☁️ Uploading to Firebase App Distribution..."
+  echo "🔥 Uploading to Firebase App Distribution..."
   
   if [[ -z "${FIREBASE_SERVICE_ACCOUNT_JSON:-}" || -z "${FIREBASE_APP_ID:-}" ]]; then
     echo "❌ FIREBASE_SERVICE_ACCOUNT_JSON and FIREBASE_APP_ID environment variables must be set for Firebase distribution"
@@ -112,7 +117,7 @@ elif [[ "$DISTRIBUTION_TYPE" == "firebase" ]]; then
   firebase appdistribution:distribute "$IPA_PATH" \
     --app "$FIREBASE_APP_ID" \
     --groups "ios-team" \
-    --release-notes "Build from branch ${GITHUB_REF:-manual}" \
+    --release-notes "${FIREBASE_RELEASE_NAME:-Build from branch ${GITHUB_REF_NAME:-manual}}" \
     --service-account "$FIREBASE_JSON_PATH"
 
   echo "✅ Firebase upload complete!"
