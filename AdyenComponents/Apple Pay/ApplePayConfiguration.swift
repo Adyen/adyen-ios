@@ -174,17 +174,6 @@ extension ApplePayComponent {
 
 }
 
-internal enum ApplePayBrandsMapper {
-    static func map(brands: [String]?, supportedNetworks: [PKPaymentNetwork]) -> [PKPaymentNetwork] {
-        var networks: [PKPaymentNetwork] = supportedNetworks
-        if let brands {
-            let brandsSet = Set(brands)
-            networks = networks.filter { brandsSet.contains($0.txVariantName) }
-        }
-        return networks
-    }
-}
-
 extension ApplePayPaymentMethod {
 
     internal func supportedNetworks(
