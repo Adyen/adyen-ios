@@ -549,6 +549,8 @@
 		C92245B62EE988F200815A51 /* ApplePayNetworksProvidingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92245B42EE988F200815A51 /* ApplePayNetworksProvidingMock.swift */; };
 		C92245BB2EE98C0C00815A51 /* ApplePayPaymentMethodTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92245BA2EE98C0C00815A51 /* ApplePayPaymentMethodTests.swift */; };
 		C92245BC2EE98C0C00815A51 /* ApplePayPaymentMethodTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92245BA2EE98C0C00815A51 /* ApplePayPaymentMethodTests.swift */; };
+		C92245BE2EE9CB0900815A51 /* PKPaymentNetworkExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92245BD2EE9CB0900815A51 /* PKPaymentNetworkExtensionsTests.swift */; };
+		C92245BF2EE9CB0900815A51 /* PKPaymentNetworkExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92245BD2EE9CB0900815A51 /* PKPaymentNetworkExtensionsTests.swift */; };
 		C923A8232E900165004AC234 /* QRCodeViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923A8222E900165004AC234 /* QRCodeViewStyle.swift */; };
 		C923A8252E9001B9004AC234 /* QRCodeFlowType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923A8242E9001B9004AC234 /* QRCodeFlowType.swift */; };
 		C92665362C49346200D3D852 /* SubmittableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92665352C49346200D3D852 /* SubmittableComponent.swift */; };
@@ -2025,6 +2027,7 @@
 		C92245B02EE9863F00815A51 /* ApplePayNetworksProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayNetworksProvider.swift; sourceTree = "<group>"; };
 		C92245B42EE988F200815A51 /* ApplePayNetworksProvidingMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayNetworksProvidingMock.swift; sourceTree = "<group>"; };
 		C92245BA2EE98C0C00815A51 /* ApplePayPaymentMethodTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayPaymentMethodTests.swift; sourceTree = "<group>"; };
+		C92245BD2EE9CB0900815A51 /* PKPaymentNetworkExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKPaymentNetworkExtensionsTests.swift; sourceTree = "<group>"; };
 		C923A8222E900165004AC234 /* QRCodeViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewStyle.swift; sourceTree = "<group>"; };
 		C923A8242E9001B9004AC234 /* QRCodeFlowType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeFlowType.swift; sourceTree = "<group>"; };
 		C92665352C49346200D3D852 /* SubmittableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittableComponent.swift; sourceTree = "<group>"; };
@@ -5261,6 +5264,7 @@
 				5A54FFD5262995F6007194B7 /* TimeIntervalExtensionsTests.swift */,
 				5AD40F42263150F90090E01C /* UILabelHelpersTests.swift */,
 				5AD40F4E263157D50090E01C /* UIButtonHelpersTests.swift */,
+				C92245BD2EE9CB0900815A51 /* PKPaymentNetworkExtensionsTests.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -7403,6 +7407,7 @@
 				B6D808262BCD165F00F3F5EB /* DummyPaymentMethods.swift in Sources */,
 				B6D808172BCD151F00F3F5EB /* PresenterMock.swift in Sources */,
 				B6D8080F2BCD147D00F3F5EB /* PaymentMethodTests.swift in Sources */,
+				C92245BE2EE9CB0900815A51 /* PKPaymentNetworkExtensionsTests.swift in Sources */,
 				C92245B62EE988F200815A51 /* ApplePayNetworksProvidingMock.swift in Sources */,
 				B6D808062BCD147600F3F5EB /* UIButtonHelpersTests.swift in Sources */,
 				B62D48C42BBE8F25001EF01A /* XCTestCase+Wait.swift in Sources */,
@@ -7859,6 +7864,7 @@
 				81A2E3BE2A5C453200CF5F9C /* LinkTextViewTests.swift in Sources */,
 				E7AEDBEC2E1E742900377AB2 /* ApplePayPaymentTests.swift in Sources */,
 				81825CC42AC59C6C00F91912 /* XCTestCase+Wait+UIKit.swift in Sources */,
+				C92245BF2EE9CB0900815A51 /* PKPaymentNetworkExtensionsTests.swift in Sources */,
 				E9E3DAC2221ECE1000697074 /* CardSecurityCodeFormatterTests.swift in Sources */,
 				F9A6C453265640E000D8CD3E /* InstantPaymentComponentTests.swift in Sources */,
 				C9126051275A3A2800C03DC4 /* BACSItemsFactoryTests.swift in Sources */,
