@@ -192,6 +192,9 @@ extension ApplePayPaymentMethod {
 
         let networks = PKPaymentRequest.availableNetworks()
 
+        // Build a lookup table from brand identifier → PKPaymentNetwork.
+        // Some networks appear more than once on iOS (e.g., cartebancaire), so we
+        // keep the first occurrence and ignore duplicates.
         let networkByBrand: [String: PKPaymentNetwork] = networks.reduce(into: [:]) { dict, network in
             if dict[network.txVariantName] == nil {
                 dict[network.txVariantName] = network
