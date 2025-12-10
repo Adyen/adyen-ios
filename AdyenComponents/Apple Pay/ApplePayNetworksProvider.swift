@@ -12,7 +12,8 @@ internal protocol ApplePayNetworksProviding {
 }
 
 internal struct ApplePayNetworksProvider: ApplePayNetworksProviding {
-    func availableNetworks() -> [PKPaymentNetwork] {
+
+    internal func availableNetworks() -> [PKPaymentNetwork] {
         PKPaymentRequest.availableNetworks()
     }
 }
