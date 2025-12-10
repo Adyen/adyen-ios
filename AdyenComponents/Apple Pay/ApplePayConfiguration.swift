@@ -187,10 +187,12 @@ internal enum ApplePayBrandsMapper {
 
 extension ApplePayPaymentMethod {
 
-    internal var supportedNetworks: [PKPaymentNetwork] {
+    internal func supportedNetworks(
+        provider: ApplePayNetworksProviding = ApplePayNetworksProvider()
+    ) -> [PKPaymentNetwork] {
         guard let brands else { return [] }
 
-        let networks = PKPaymentRequest.availableNetworks()
+        let networks = provider.availableNetworks()
 
         // Build a lookup table from brand identifier → PKPaymentNetwork.
         // Some networks appear more than once on iOS (e.g., cartebancaire), so we

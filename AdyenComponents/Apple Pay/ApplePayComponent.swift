@@ -58,7 +58,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         guard PKPaymentAuthorizationViewController.canMakePayments() else {
             throw Error.deviceDoesNotSupportApplyPay
         }
-        let supportedNetworks = paymentMethod.supportedNetworks
+        let supportedNetworks = paymentMethod.supportedNetworks()
         guard configuration.allowOnboarding || Self.canMakePaymentWith(supportedNetworks) else {
             throw Error.userCannotMakePayment
         }
