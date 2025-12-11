@@ -464,7 +464,7 @@ class ApplePayComponentTest: XCTestCase {
     
     // MARK: - didAuthorize Tests
     
-    func testDidAuthorizeSuccess_shouldTriggerDidSubmit() {
+    func test_didAuthorizeSuccess_shouldTriggerDidSubmit() {
         // Given
         wait(for: .seconds(1))
         
@@ -497,7 +497,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertNotNil(mockApplePayDelegate.authorizedPayment)
     }
     
-    func testDidAuthorizeFailure_shouldNotTriggerDidSubmit() {
+    func test_didAuthorizeFailure_shouldNotTriggerDidSubmit() {
         // Given
         wait(for: .seconds(1))
         
@@ -539,7 +539,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertNotNil(mockApplePayDelegate.authorizedPayment)
     }
     
-    func testDidAuthorizeWithoutDelegate_shouldAutoApproveAndSubmit() {
+    func test_didAuthorizeWithoutDelegate_shouldAutoApproveAndSubmit() {
         // Given
         wait(for: .seconds(1))
         
@@ -566,7 +566,7 @@ class ApplePayComponentTest: XCTestCase {
         waitForExpectations(timeout: 5)
     }
     
-    func testDidAuthorizeWithEmptyToken_shouldFailImmediately() {
+    func tes_didAuthorizeWithEmptyToken_shouldFailImmediately() {
         // Given
         wait(for: .seconds(1))
         
@@ -603,7 +603,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertFalse(authorizeCalled, "didAuthorize should not be called when token is empty")
     }
     
-    func testDidAuthorizeWithDelegateUsingDefaultImplementation_shouldAutoApproveAndSubmit() {
+    func test_didAuthorizeWithDelegateUsingDefaultImplementation_shouldAutoApproveAndSubmit() {
         // Given
         // Delegate is set but onAuthorize is NOT set - uses default auto-approve behavior
         wait(for: .seconds(1))
