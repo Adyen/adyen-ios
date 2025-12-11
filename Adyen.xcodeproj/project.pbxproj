@@ -628,6 +628,7 @@
 		B62D48C82BBE8F47001EF01A /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */; };
 		B62F51802E97AAD200610EFD /* TextFieldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62F517F2E97AA6600610EFD /* TextFieldTests.swift */; };
 		B639C0822D8039F600472EBB /* CardScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B639C0812D80399800472EBB /* CardScannerController.swift */; };
+		B643C7642EEAD2CF00EF8407 /* FormSectionHeaderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B643C7622EEAD2CF00EF8407 /* FormSectionHeaderItem.swift */; };
 		B65F0EB42ED493250015AC41 /* FormButtonItemViewThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65F0EB32ED493250015AC41 /* FormButtonItemViewThemeTests.swift */; };
 		B65F0EBA2ED89EC00015AC41 /* TestTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65F0EB92ED89EC00015AC41 /* TestTheme.swift */; };
 		B65F0EBB2ED89EC00015AC41 /* TestTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65F0EB92ED89EC00015AC41 /* TestTheme.swift */; };
@@ -2254,6 +2255,7 @@
 		B62D48CA2BBE9059001EF01A /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
 		B62F517F2E97AA6600610EFD /* TextFieldTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTests.swift; sourceTree = "<group>"; };
 		B639C0812D80399800472EBB /* CardScannerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerController.swift; sourceTree = "<group>"; };
+		B643C7622EEAD2CF00EF8407 /* FormSectionHeaderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSectionHeaderItem.swift; sourceTree = "<group>"; };
 		B65F0EB32ED493250015AC41 /* FormButtonItemViewThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormButtonItemViewThemeTests.swift; sourceTree = "<group>"; };
 		B65F0EB92ED89EC00015AC41 /* TestTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTheme.swift; sourceTree = "<group>"; };
 		B65F0EBD2ED89EC60015AC41 /* FormViewExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormViewExtractor.swift; sourceTree = "<group>"; };
@@ -4155,6 +4157,14 @@
 			path = Form;
 			sourceTree = "<group>";
 		};
+		B643C7632EEAD2CF00EF8407 /* SectionHeader */ = {
+			isa = PBXGroup;
+			children = (
+				B643C7622EEAD2CF00EF8407 /* FormSectionHeaderItem.swift */,
+			);
+			path = SectionHeader;
+			sourceTree = "<group>";
+		};
 		B67D1F572E4615390000C37F /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -4830,6 +4840,7 @@
 				E2D12C05221ED15300EF682F /* Toggle */,
 				E2D12BED221D55F800EF682F /* Value */,
 				E7085B062628B29600D0153B /* Value Pickers */,
+				B643C7632EEAD2CF00EF8407 /* SectionHeader */,
 			);
 			path = Items;
 			sourceTree = "<group>";
@@ -8154,6 +8165,7 @@
 				0019C4932E6AE09900B0C3A3 /* FormErrorItemView.swift in Sources */,
 				0019C48D2E6AE08200B0C3A3 /* FormButtonItemView.swift in Sources */,
 				0019C48E2E6AE08200B0C3A3 /* FormButtonItem.swift in Sources */,
+				B643C7642EEAD2CF00EF8407 /* FormSectionHeaderItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
