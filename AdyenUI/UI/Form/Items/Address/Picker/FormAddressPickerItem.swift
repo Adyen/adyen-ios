@@ -7,7 +7,6 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-/// An address form item that allows picking an address on a separate screen.
 package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?> {
 
     package enum AddressType {
@@ -34,17 +33,6 @@ package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress
         }
     }
 
-    /// Initializes the address lookup item.
-    /// - Parameters:
-    ///   - addressType: The type of address to pick
-    ///   - initialCountry: The items displayed side-by-side. Must be two.
-    ///   - prefillAddress: The provided prefill address
-    ///   - style: The `FormComponentStyle` UI style.
-    ///   - localizationParameters: The localization parameters
-    ///   - identifier: The item identifier
-    ///   - addressViewModelBuilder: The builder to build the Address ViewModel
-    ///   - presenter: The presenter to handle view controller presentation
-    ///   - lookupProvider: The optional lookup provider
     package init(
         for addressType: AddressType,
         initialCountry: String,
@@ -244,6 +232,10 @@ extension FormAddressPickerItem.AddressType {
     }
 
     package func title(with localizationParameters: LocalizationParameters?) -> String {
+        localizedString(.addressFieldTitle, localizationParameters)
+    }
+    
+    package func sectionTitle(with localizationParameters: LocalizationParameters?) -> String {
         switch self {
         case .billing: return localizedString(.billingAddressSectionTitle, localizationParameters)
         case .delivery: return localizedString(.deliveryAddressSectionTitle, localizationParameters)
