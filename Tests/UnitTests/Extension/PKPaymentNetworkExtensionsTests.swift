@@ -36,10 +36,34 @@ final class PKPaymentNetworkExtensionsTests: XCTestCase {
         XCTAssertEqual(expectedVariantName, receivedVariantName)
     }
 
-    func test_txVariantName_shouldReturnVariantNameLowercased() throws {
+    func test_txVariantName_givenUppercasedNetwork_shouldReturnVariantNameLowercased() throws {
         // Given
         let sut = PKPaymentNetwork.JCB
-        let expectedVariantName = sut.rawValue.lowercased()
+        let expectedVariantName = "jcb"
+
+        // When
+        let receivedVariantName = sut.txVariantName
+
+        // Then
+        XCTAssertEqual(expectedVariantName, receivedVariantName)
+    }
+
+    func test_txVariantName_givenLowercasedNetwork_shouldReturnSame() throws {
+        // Given
+        let sut = PKPaymentNetwork.amex
+        let expectedVariantName = "amex"
+
+        // When
+        let receivedVariantName = sut.txVariantName
+
+        // Then
+        XCTAssertEqual(expectedVariantName, receivedVariantName)
+    }
+
+    func test_txVariantName_givenMixedCasedNetwork_shouldReturnVariantNameLowercased() throws {
+        // Given
+        let sut = PKPaymentNetwork(rawValue: "DiSCover")
+        let expectedVariantName = "discover"
 
         // When
         let receivedVariantName = sut.txVariantName
