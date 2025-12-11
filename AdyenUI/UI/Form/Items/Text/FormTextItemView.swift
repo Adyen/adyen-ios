@@ -46,7 +46,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     public required init(item: ItemType, theme: AdyenTheme) {
         super.init(item: item, theme: theme)
 
-        bind(item.$placeholder, to: textField, at: \.placeholder)
         observe(item.$formattedValue) { [weak self] newValue in
             self?.handleFormattedValueDidChange(newValue)
         }
@@ -56,10 +55,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         addSubview(textStackView)
         configureConstraints()
         
-        observe(item.$validationFailureMessage) { [weak self] newValue in
-            self?.alertLabel.text = newValue
-        }
-
         configure()
     }
 
@@ -84,16 +79,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         textField.textColor = style.text.color
         textField.textAlignment = style.text.textAlignment
 
-        // Placeholder
-        textField.apply(placeholderText: item.placeholder, with: style.placeholder)
-
         // Container
         entryTextStackView.backgroundColor = style.containerColor
         entryTextStackView.layer.borderWidth = style.borderWidth
-
-        // Alert
-        alertLabel.textColor = style.errorColor
-
         // Corner radius
         switch style.cornerRadius {
         case let .fixed(radius):
@@ -118,7 +106,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     // MARK: - Stack View
     
     private lazy var textStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, entryTextStackView, alertLabel])
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, entryTextStackView, footerLabel])
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.spacing = 8.0
