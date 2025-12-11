@@ -11,7 +11,6 @@ import UIKit
 @_spi(AdyenInternal)
 open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFormItem {
 
-    
     override public var value: String {
         get { publisher.wrappedValue }
         set { publishTransformed(value: newValue) }
