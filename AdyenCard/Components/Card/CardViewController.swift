@@ -367,12 +367,12 @@ extension CardViewController {
     private var billingAddressItem: FormItem? {
         
         switch configuration.billingAddress.mode {
-        case .lookup:
-            return items.billingAddressPickerItem
-            
-        case .full:
-            return items.billingAddressPickerItem
-            
+        case .lookup, .full:
+            guard let pickerItem = items.billingAddressPickerItem else { return nil }
+            return pickerItem.withSectionHeader(
+                title: localizedString(.billingAddressSectionTitle, localizationParameters),
+                subtitle: "Enter the billing address that is linked to the card"
+            )
         case .postalCode:
             return items.postalCodeItem
             
