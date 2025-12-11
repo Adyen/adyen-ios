@@ -7,9 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-/// An abstract view representing a selectable value item.
-@_spi(AdyenInternal)
-open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueItem<ValueType?>>:
+package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueItem<ValueType?>>:
     FormValidatableValueItemView<ValueType?, ItemType> {
 
     internal var numberOfLines: Int = 1 {
@@ -20,7 +18,7 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
 
     override internal var accessibilityLabelView: UIView? { selectionButton }
 
-    public required init(item: ItemType, theme: AdyenTheme) {
+    package required init(item: ItemType, theme: AdyenTheme) {
         super.init(item: item, theme: theme)
 
         addSubview(selectionButton)
@@ -152,7 +150,6 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
         footerLabel.text = item.placeholder
         footerLabel.isHidden = item.placeholder.isEmpty
     }
-
 
     private func updateContainerBorderColor(isValid: Bool) {
         let style = theme.elements.textField

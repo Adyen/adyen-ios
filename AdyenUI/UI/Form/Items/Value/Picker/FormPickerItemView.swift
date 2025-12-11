@@ -7,9 +7,8 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-@_spi(AdyenInternal)
-public class FormPickerItemView<Value: FormPickable>: FormSelectableValueItemView<Value, FormPickerItem<Value>> {
-    
+package class FormPickerItemView<Value: FormPickable>: FormSelectableValueItemView<Value, FormPickerItem<Value>> {
+
     internal required init(item: FormPickerItem<Value>, theme: AdyenTheme) {
         super.init(item: item, theme: theme)
         item.selectionHandler = { [weak self] in
@@ -29,7 +28,7 @@ public class FormPickerItemView<Value: FormPickable>: FormSelectableValueItemVie
         }
     }
     
-    override public func showValidation() {
+    override package func showValidation() {
         if item.isValid() {
             updateValidationStatus(forced: false)
         } else {
@@ -37,7 +36,7 @@ public class FormPickerItemView<Value: FormPickable>: FormSelectableValueItemVie
         }
     }
     
-    override public func reset() {
+    override package func reset() {
         item.resetValue()
         resetValidationStatus()
     }
