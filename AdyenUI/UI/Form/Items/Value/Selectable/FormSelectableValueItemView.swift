@@ -110,16 +110,6 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
         return valueLabel
     }()
 
-    internal lazy var footerLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.isAccessibilityElement = false
-        label.accessibilityIdentifier = item.identifier.map {
-            ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "footerLabel")
-        }
-        return label
-    }()
-
     // MARK: - Selection
 
     @objc
@@ -145,35 +135,12 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
 
         chevronView.tintColor = theme.colors.primary
         valueLabel.apply(theme.elements.labels.body)
-        footerLabel.apply(theme.elements.labels.subheadline)
-
-        footerLabel.text = item.placeholder
-        footerLabel.isHidden = item.placeholder.isEmpty
     }
 
     private func updateContainerBorderColor(isValid: Bool) {
         let style = theme.elements.textField
         let borderColor = isValid ? style.borderColor : style.errorColor
         containerView.layer.borderColor = borderColor.cgColor
-    }
-
-    // MARK: - Hint/Error Display
-
-    private func showHint() {
-
-        footerLabel.text = item.placeholder
-        footerLabel.textColor = theme.colors.textSecondary
-        footerLabel.isHidden = item.placeholder.isEmpty
-    }
-
-    private func showError(_ message: String?) {
-        guard let message, !message.isEmpty else {
-            showHint()
-            return
-        }
-        footerLabel.text = message
-        footerLabel.textColor = theme.colors.destructive
-        footerLabel.isHidden = false
     }
 
     // MARK: - Convenience
