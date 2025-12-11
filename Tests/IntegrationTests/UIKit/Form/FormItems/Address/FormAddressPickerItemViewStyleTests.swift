@@ -47,13 +47,13 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
         XCTAssertEqual(sut.valueLabel.font, expectedFont)
     }
 
-    func test_valueLabel_colorWithPlaceholder_shouldUseThemeTextSecondary() {
+    func test_footerLabel_colorWithPlaceholder_shouldUseThemeTextSecondary() {
         // Given - item has no value, so placeholder is shown
         XCTAssertNil(item.formattedValue)
 
         // Then
         let expectedColor = AdyenTheme.default.colors.textSecondary
-        XCTAssertEqual(sut.valueLabel.textColor, expectedColor)
+        XCTAssertEqual(sut.footerLabel.textColor, expectedColor)
     }
 
     func test_valueLabel_colorWithValue_shouldUseThemeBodyColor() {
