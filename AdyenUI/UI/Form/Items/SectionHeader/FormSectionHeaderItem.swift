@@ -61,7 +61,7 @@ internal final class FormSectionHeaderItemView: UIView, AnyFormItemView {
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.apply(theme.elements.labels.bodyEmphasized)
+        label.apply(theme.elements.labels.subtitle)
         label.numberOfLines = 0
         return label
     }()

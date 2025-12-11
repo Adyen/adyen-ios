@@ -7,14 +7,14 @@ Redesign of the address picker UI component for v6. Creates a generic reusable s
 ## Visual Structure
 
 ```
-Billing address              (title)
-Enter the billing address... (subtitle)
+Billing address              (title - subtitle style)
+Enter the billing address... (subtitle - subheadline style)
 
-Address                      (label)
+Address                      (label - bodyEmphasized style)
 ┌─────────────────────────────────────┐
 │ [empty or address value]          > │  (rounded container + chevron)
 └─────────────────────────────────────┘
-Your billing address         (hint)
+Your billing address         (hint - subheadline style)
 
 [Validation error replaces hint]
 ```
@@ -24,6 +24,15 @@ Your billing address         (hint)
 - **Empty container**: No placeholder inside container; hint shows below
 - **Footer label**: Shows placeholder text OR validation error (not both)
 - **Validation**: Red border on container + error message in footer
+
+## Label Styles
+
+| Element | Style |
+|---------|-------|
+| Section title ("Billing address") | `subtitle` |
+| Section subtitle | `subheadline` |
+| Field label ("Address") | `bodyEmphasized` |
+| Footer hint/error | `subheadline` |
 
 ## Components
 
@@ -43,15 +52,14 @@ Generic wrapper that adds title + subtitle to any FormItem. Uses `package` acces
 
 ## Files Changed
 
-| File | Change |
-|------|--------|
-| `AdyenUI/.../SectionHeader/FormSectionHeaderItem.swift` | NEW - Generic section header |
-| `AdyenUI/.../Selectable/FormSelectableValueItemView.swift` | Container + footer label |
-| `AdyenUI/UI/Form/FormItemViewBuilder.swift` | Pass theme to FormAddressPickerItemView |
-| `AdyenUI/AdyenUIConstants.swift` | Added `minimumInputHeight` |
-| `AdyenCard/.../CardViewController.swift` | Wrap picker with section header |
-| `AdyenComponents/.../ACHDirectDebitComponent.swift` | Wrap picker with section header |
-| `AdyenComponents/.../AddressFormItemInjector.swift` | Wrap picker with section header |
+| New | Modified |
+|-----|----------|
+| `FormSectionHeaderItem.swift` | `FormSelectableValueItemView.swift` |
+| | `CardViewController.swift` |
+| | `ACHDirectDebitComponent.swift` |
+| | `AddressFormItemInjector.swift` |
+| | `FormItemViewBuilder.swift` |
+| | `AdyenUIConstants.swift` |
 
 ## Status
 
@@ -64,12 +72,6 @@ Generic wrapper that adds title + subtitle to any FormItem. Uses `package` acces
 | AddressFormItemInjector | Done |
 | Unit tests | Pending |
 | Snapshots | Pending |
-
-## Remaining Work
-
-- Write tests for FormSectionHeaderItem
-- Write tests for FormSelectableValueItemView styling
-- Regenerate snapshots for Affirm, Atome, Boleto components
 
 ## Code Style
 

@@ -373,6 +373,7 @@ extension CardViewController {
                 title: localizedString(.billingAddressSectionTitle, localizationParameters),
                 subtitle: "Enter the billing address that is linked to the card"
             )
+
         case .postalCode:
             return items.postalCodeItem
             
