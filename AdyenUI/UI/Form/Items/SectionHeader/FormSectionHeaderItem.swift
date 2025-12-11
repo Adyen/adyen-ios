@@ -7,20 +7,6 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-/// A container form item that wraps another form item and adds a section title and optional subtitle.
-///
-/// Use this to group form elements with a descriptive header, commonly used for address sections
-/// or other complex form areas that benefit from additional context.
-///
-/// Example:
-/// ```swift
-/// let addressSection = FormSectionHeaderItem(
-///     title: "Billing address",
-///     subtitle: "Enter the billing address linked to the card",
-///     content: addressPickerItem
-/// )
-/// ```
-
 package final class FormSectionHeaderItem<ContentItem: FormItem>: FormItem {
 
     package var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
