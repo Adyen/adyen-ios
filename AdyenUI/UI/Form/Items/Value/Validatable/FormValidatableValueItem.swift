@@ -11,6 +11,9 @@ import Foundation
 @_spi(AdyenInternal)
 open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueType, FormTextItemStyle>, ValidatableFormItem {
     
+    /// The placeholder text shown as a hint below the input field.
+    @AdyenObservable(nil) public var placeholder: String?
+    
     /// A message that is displayed when validation fails. Observable.
     @AdyenObservable(nil) public var validationFailureMessage: String?
     

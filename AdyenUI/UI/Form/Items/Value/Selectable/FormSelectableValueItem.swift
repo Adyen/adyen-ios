@@ -11,9 +11,6 @@ import Foundation
 @_spi(AdyenInternal)
 open class FormSelectableValueItem<ValueType: Equatable>: FormValidatableValueItem<ValueType> {
     
-    /// The placeholder of the item.
-    public let placeholder: String
-    
     /// A closure that will be invoked when the item is selected.
     public var selectionHandler: () -> Void
     
@@ -25,12 +22,12 @@ open class FormSelectableValueItem<ValueType: Equatable>: FormValidatableValueIt
         style: FormTextItemStyle,
         placeholder: String
     ) {
-        self.placeholder = placeholder
-        
         selectionHandler = {
             AdyenAssertion.assertionFailure(message: "'selectionHandler' needs to be provided on '\(String(describing: Self.self))'")
         }
         
         super.init(value: value, style: style)
+        
+        self.placeholder = placeholder
     }
 }

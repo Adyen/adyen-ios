@@ -11,8 +11,6 @@ import UIKit
 @_spi(AdyenInternal)
 open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFormItem {
 
-    /// The placeholder of the text field.
-    @AdyenObservable(nil) public var placeholder: String?
     
     override public var value: String {
         get { publisher.wrappedValue }
