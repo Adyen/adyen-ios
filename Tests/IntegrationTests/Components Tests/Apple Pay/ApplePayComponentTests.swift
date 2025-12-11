@@ -226,7 +226,7 @@ class ApplePayComponentTest: XCTestCase {
         )
         configuration.requiredBillingContactFields = expectedRequiredBillingFields
         configuration.requiredShippingContactFields = expectedRequiredShippingFields
-        let paymentRequest = configuration.paymentRequest(with: paymentMethod.supportedNetworks)
+        let paymentRequest = configuration.paymentRequest(with: paymentMethod.supportedNetworks())
         XCTAssertEqual(paymentRequest.paymentSummaryItems, expectedSummaryItems)
         XCTAssertEqual(paymentRequest.merchantCapabilities, PKMerchantCapability.capability3DS)
         XCTAssertEqual(paymentRequest.currencyCode, currencyCode)
@@ -257,7 +257,7 @@ class ApplePayComponentTest: XCTestCase {
         )
         configuration.requiredBillingContactFields = expectedRequiredBillingFields
         configuration.requiredShippingContactFields = expectedRequiredShippingFields
-        let paymentRequest = configuration.paymentRequest(with: paymentMethod.supportedNetworks)
+        let paymentRequest = configuration.paymentRequest(with: paymentMethod.supportedNetworks())
 
         XCTAssertEqual(paymentRequest.paymentSummaryItems.count, 1)
         XCTAssertEqual(paymentRequest.paymentSummaryItems[0].label, "TEST")
@@ -301,7 +301,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertEqual(component.paymentRequest.currencyCode, request.currencyCode)
         XCTAssertEqual(component.paymentRequest.paymentSummaryItems, request.paymentSummaryItems)
         XCTAssertNotNil(component.paymentRequest.recurringPaymentRequest)
-        XCTAssertEqual(component.paymentRequest.supportedNetworks, paymentMethod.supportedNetworks)
+        XCTAssertEqual(component.paymentRequest.supportedNetworks, paymentMethod.supportedNetworks())
     }
     
     func testNewInitMissingMerchantIdenfitifer() {
@@ -419,7 +419,7 @@ class ApplePayComponentTest: XCTestCase {
 
     func testBrandsFiltering() {
         let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: ["mc", "elo", "unknown_network"])
-        let supportedNetworks = paymentMethod.supportedNetworks
+        let supportedNetworks = paymentMethod.supportedNetworks()
 
         XCTAssertTrue(compareCollections(supportedNetworks, [.masterCard, .elo]))
     }
