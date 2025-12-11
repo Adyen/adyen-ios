@@ -179,9 +179,8 @@ extension ApplePayPaymentMethod {
     internal func supportedNetworks(
         provider: ApplePayNetworksProviding = ApplePayNetworksProvider()
     ) -> [PKPaymentNetwork] {
-        guard let brands else { return [] }
-
         let networks = provider.availableNetworks()
+        guard let brands else { return networks }
 
         // Build a lookup table from txVariantName → PKPaymentNetwork.
         // Some networks appear more than once on iOS (e.g., cartebancaire), so we

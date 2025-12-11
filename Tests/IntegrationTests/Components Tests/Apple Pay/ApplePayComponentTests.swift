@@ -50,28 +50,7 @@ class ApplePayComponentTest: XCTestCase {
         setupRootViewController(emptyVC)
     }
 
-    func testApplePay_givenBrandsIsNil_shouldThrowUserCannotMakePayment() throws {
-        // Given
-        let brands: [String]? = nil
-        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: brands)
-        let configuration = ApplePayComponent.Configuration(
-            payment: Dummy.createTestApplePayPayment(),
-            merchantIdentifier: "test_id"
-        )
-
-        // When / Then
-        XCTAssertThrowsError(
-            try ApplePayComponent(
-                paymentMethod: paymentMethod,
-                context: Dummy.context,
-                configuration: configuration
-            )
-        ) { error in
-            XCTAssertEqual(error as? ApplePayComponent.Error, .userCannotMakePayment)
-        }
-    }
-
-    func testApplePay_givenNoBrands_shouldThrowUserCannotMakePayment() throws {
+    func testApplePay_givenBrandsIsEmpty_shouldThrowUserCannotMakePayment() throws {
         // Given
         let brands: [String]? = []
         let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: brands)

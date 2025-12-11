@@ -548,7 +548,6 @@
 		C92245B52EE988F200815A51 /* ApplePayNetworksProvidingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92245B42EE988F200815A51 /* ApplePayNetworksProvidingMock.swift */; };
 		C92245B62EE988F200815A51 /* ApplePayNetworksProvidingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92245B42EE988F200815A51 /* ApplePayNetworksProvidingMock.swift */; };
 		C92245BB2EE98C0C00815A51 /* ApplePayPaymentMethodTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92245BA2EE98C0C00815A51 /* ApplePayPaymentMethodTests.swift */; };
-		C92245BC2EE98C0C00815A51 /* ApplePayPaymentMethodTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92245BA2EE98C0C00815A51 /* ApplePayPaymentMethodTests.swift */; };
 		C92245BE2EE9CB0900815A51 /* PKPaymentNetworkExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92245BD2EE9CB0900815A51 /* PKPaymentNetworkExtensionsTests.swift */; };
 		C92245BF2EE9CB0900815A51 /* PKPaymentNetworkExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92245BD2EE9CB0900815A51 /* PKPaymentNetworkExtensionsTests.swift */; };
 		C923A8232E900165004AC234 /* QRCodeViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923A8222E900165004AC234 /* QRCodeViewStyle.swift */; };
@@ -7342,7 +7341,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C92245BC2EE98C0C00815A51 /* ApplePayPaymentMethodTests.swift in Sources */,
 				B6D808372BCD1F8900F3F5EB /* AmountFormatterTests.swift in Sources */,
 				B6D808272BCD166D00F3F5EB /* DummyHelper.swift in Sources */,
 				B6D8080C2BCD147D00F3F5EB /* ImageLoaderTests.swift in Sources */,

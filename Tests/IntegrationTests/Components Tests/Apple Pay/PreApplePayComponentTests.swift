@@ -50,29 +50,7 @@ class PreApplePayComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testPreApplePay_givenBrandsIsNil_shouldThrowUserCannotMakePayment() throws {
-        // Given
-        let brands: [String]? = nil
-        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: brands)
-        let applePayConfiguration = ApplePayComponent.Configuration(
-            payment: Dummy.createTestApplePayPayment(),
-            merchantIdentifier: "test_id"
-        )
-
-        // When / Then
-        XCTAssertThrowsError(
-            try PreApplePayComponent(
-                paymentMethod: paymentMethod,
-                context: Dummy.context,
-                configuration: .init(),
-                applePayConfiguration: applePayConfiguration
-            )
-        ) { error in
-            XCTAssertEqual(error as? ApplePayComponent.Error, .userCannotMakePayment)
-        }
-    }
-
-    func testPreApplePay_givenNoBrands_shouldThrowUserCannotMakePayment() throws {
+    func testPreApplePay_givenBrandsIsEmpty_shouldThrowUserCannotMakePayment() throws {
         // Given
         let brands: [String]? = []
         let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: brands)

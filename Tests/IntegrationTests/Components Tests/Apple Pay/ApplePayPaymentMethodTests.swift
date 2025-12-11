@@ -13,9 +13,9 @@ final class ApplePayPaymentMethodTests: XCTestCase {
 
     // MARK: - supportedNetworks tests
 
-    func testSupportedNetworks_givenNilBrands_shouldReturnEmpty() {
+    func testSupportedNetworks_givenNilBrands_shouldReturnAppleSupportedNetworks() {
         // Given
-        let expectedBrands: [String] = []
+        let expectedBrands: [String] = ["visa", "mc"]
         let sut = makeSUT(brands: nil)
         let networksProviderMock = ApplePayNetworksProvidingMock()
         networksProviderMock.availableNetworksReturnValue = [.visa, .masterCard]
@@ -24,7 +24,7 @@ final class ApplePayPaymentMethodTests: XCTestCase {
         let result = sut.supportedNetworks(provider: networksProviderMock)
 
         // Then
-        XCTAssertEqual(networksProviderMock.availableNetworksCallsCount, 0)
+        XCTAssertEqual(networksProviderMock.availableNetworksCallsCount, 1)
         let receivedBrands = result.map(\.txVariantName)
         XCTAssertEqual(expectedBrands, receivedBrands)
     }
