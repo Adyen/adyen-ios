@@ -119,7 +119,8 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     }
 
     private static func canMakePaymentWith(_ networks: [PKPaymentNetwork]) -> Bool {
-        PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: networks)
+        guard !networks.isEmpty else { return false }
+        return PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: networks)
     }
 }
 
