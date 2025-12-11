@@ -31,6 +31,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var allowForceCardRedirectAction: Bool = false
     
     @Published internal var applePayMerchantIdentifier: String = ""
+    @Published internal var applePayDidAuthorizeSuccessful: Bool = true
     @Published internal var allowOnboarding: Bool = false
     @Published internal var analyticsIsEnabled: Bool = true
     @Published internal var installmentsEnabled: Bool = false
@@ -68,6 +69,7 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.allowForceCardRedirectAction = configuration.threeDSConfigurationSettings.allowForceCardRedirectAction
         self.applePayMerchantIdentifier = configuration.applePaySettings.merchantIdentifier
         self.allowOnboarding = configuration.applePaySettings.allowOnboarding
+        self.applePayDidAuthorizeSuccessful = configuration.applePaySettings.didAuthorizeSuccessful
         self.analyticsIsEnabled = configuration.analyticsSettings.isEnabled
         self.installmentsEnabled = configuration.cardSettings.enableInstallments
         self.showInstallmentAmount = configuration.cardSettings.showsInstallmentAmount
@@ -109,7 +111,8 @@ internal final class ConfigurationViewModel: ObservableObject {
             ),
             applePaySettings: ApplePaySettings(
                 merchantIdentifier: applePayMerchantIdentifier,
-                allowOnboarding: allowOnboarding
+                allowOnboarding: allowOnboarding,
+                didAuthorizeSuccessful: applePayDidAuthorizeSuccessful
             ),
             analyticsSettings: AnalyticsSettings(isEnabled: analyticsIsEnabled)
         )

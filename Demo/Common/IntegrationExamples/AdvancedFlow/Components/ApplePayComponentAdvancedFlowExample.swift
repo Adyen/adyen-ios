@@ -195,4 +195,19 @@ extension ApplePayComponentAdvancedFlowExample: ApplePayComponentDelegate {
         completion(.init(paymentSummaryItems: items))
     }
 
+    func didAuthorize(
+        payment: PKPayment,
+        completion: @escaping (PKPaymentAuthorizationResult) -> Void
+    ) {
+        if ConfigurationConstants.current.applePaySettings.didAuthorizeSuccessful {
+            completion(.init(status: .success, errors: nil))
+        } else {
+            let postalCodeError = PKPaymentRequest.paymentShippingAddressInvalidError(
+                withKey: CNPostalAddressPostalCodeKey,
+                localizedDescription: "Wrong postal code"
+            )
+            completion(.init(status: .failure, errors: [postalCodeError]))
+        }
+        
+    }
 }

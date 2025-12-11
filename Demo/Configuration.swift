@@ -129,6 +129,7 @@ internal struct ThreeDSConfigurationSettings: Codable {
 internal struct ApplePaySettings: Codable {
     internal var merchantIdentifier: String
     internal var allowOnboarding: Bool = false
+    internal var didAuthorizeSuccessful: Bool = true
 }
 
 internal struct AnalyticsSettings: Codable {
@@ -202,7 +203,8 @@ internal struct DemoAppSettings: Codable {
 
     internal static let defaultApplePaySettings = ApplePaySettings(
         merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier,
-        allowOnboarding: false
+        allowOnboarding: false,
+        didAuthorizeSuccessful: true
     )
 
     internal static let defaultAnalyticsSettings = AnalyticsSettings(isEnabled: true)
