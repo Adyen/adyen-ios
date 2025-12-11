@@ -24,7 +24,7 @@ final class PKPaymentNetworkExtensionsTests: XCTestCase {
     }
 
     // Note: Edge case where we transform `cartesBancaires` into `cartebancaire`
-    func test_txVariantName_givenCartesBancaires_shouldReturnMC() throws {
+    func test_txVariantName_givenCartesBancaires_shouldReturnCartebancaire() throws {
         // Given
         let expectedVariantName = "cartebancaire"
         let sut = PKPaymentNetwork.cartesBancaires
