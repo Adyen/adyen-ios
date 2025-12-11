@@ -6884,7 +6884,6 @@
 					};
 					B62D48AB2BBE8D79001EF01A = {
 						CreatedOnToolsVersion = 15.2;
-						LastSwiftMigration = 2600;
 					};
 					C96844842D7712DC001DB7F1 = {
 						CreatedOnToolsVersion = 16.1;
@@ -6898,7 +6897,7 @@
 					};
 					E2C0E03B22097917008616F6 = {
 						CreatedOnToolsVersion = 10.1;
-						LastSwiftMigration = 2600;
+						LastSwiftMigration = 1020;
 						TestTargetID = E2C0E07C220B0399008616F6;
 					};
 					E2C0E05E220982AE008616F6 = {
