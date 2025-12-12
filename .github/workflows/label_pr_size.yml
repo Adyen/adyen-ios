@@ -1,0 +1,39 @@
+name: Label PR size
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  label_pr_size:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Label PR size
+        uses: codelytv/pr-size-labeler@4ec67706cd878fbc1c8db0a5dcd28b6bb412e85a
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          xs_label: 'size:tiny'
+          xs_max_size: '100'
+          s_label: 'size:small'
+          s_max_size: '250'
+          m_label: 'size:medium'
+          m_max_size: '500'
+          l_label: 'size:large'
+          l_max_size: '1000'
+          xl_label: 'size:huge'
+          fail_if_xl: 'false'
+          ignore_line_deletions: 'false'
+          ignore_file_deletions: 'true'
+          files_to_ignore: |
+            "Package.resolved"
+            "*.pbxproj"
+            "*.png"
+            "*.jpg"
+            "*.jpeg"
+            "*.strings"
+            "*/Generated/LocalizationKey.swift"
+            "*.generated.swift"
