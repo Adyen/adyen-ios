@@ -17,7 +17,7 @@ final class FormTextItemViewThemeTests: XCTestCase {
         // Then
         XCTAssertEqual(sut.titleLabel.textColor, AdyenColors.default.primary)
         XCTAssertEqual(sut.textField.textColor, AdyenColors.default.primary)
-        XCTAssertEqual(sut.alertLabel.textColor, AdyenColors.default.destructive)
+        XCTAssertEqual(sut.footerLabel.textColor, AdyenColors.default.destructive)
 
         let containerView = getContainerView(from: sut)
         XCTAssertEqual(containerView?.backgroundColor, AdyenColors.default.container)
@@ -39,7 +39,7 @@ final class FormTextItemViewThemeTests: XCTestCase {
         // Then
         XCTAssertEqual(sut.titleLabel.textColor, .systemPink)
         XCTAssertEqual(sut.textField.textColor, .systemPink)
-        XCTAssertEqual(sut.alertLabel.textColor, .systemOrange)
+        XCTAssertEqual(sut.footerLabel.textColor, .systemOrange)
 
         let containerView = getContainerView(from: sut)
         XCTAssertEqual(containerView?.backgroundColor, .systemYellow)

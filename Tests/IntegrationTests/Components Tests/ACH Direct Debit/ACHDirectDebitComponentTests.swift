@@ -199,9 +199,9 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        XCTAssertEqual(nameItemView?.alertLabel.text, "Invalid account holder name")
-        XCTAssertEqual(accountNumberItemView?.alertLabel.text, "Invalid account number")
-        XCTAssertEqual(routingNumberItemView?.alertLabel.text, "Invalid ABA routing number")
+        XCTAssertEqual(nameItemView?.footerLabel.text, "Invalid account holder name")
+        XCTAssertEqual(accountNumberItemView?.footerLabel.text, "Invalid account number")
+        XCTAssertEqual(routingNumberItemView?.footerLabel.text, "Invalid ABA routing number")
     }
     
     func testSubmission() throws {

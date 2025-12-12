@@ -74,12 +74,12 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
 
     func test_alertLabel_font_shouldUseThemeSubheadlineFont() {
         let expectedFont = AdyenTheme.default.elements.labels.subheadline.font
-        XCTAssertEqual(sut.alertLabel.font, expectedFont)
+        XCTAssertEqual(sut.footerLabel.font, expectedFont)
     }
 
     func test_alertLabel_color_shouldUseThemeDestructiveColor() {
         let expectedColor = AdyenTheme.default.colors.destructive
-        XCTAssertEqual(sut.alertLabel.textColor, expectedColor)
+        XCTAssertEqual(sut.footerLabel.textColor, expectedColor)
     }
 
     // MARK: - ChevronView Tests
@@ -117,7 +117,7 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
         let sutWithCustomTheme = makeSUT(theme: customTheme)
 
         // Then
-        XCTAssertEqual(sutWithCustomTheme.alertLabel.textColor, expectedColor)
+        XCTAssertEqual(sutWithCustomTheme.footerLabel.textColor, expectedColor)
     }
 
     // MARK: - Private
