@@ -42,9 +42,9 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     ///   regardless of whether the payment succeeded or failed. This ensures the Apple Pay sheet
     ///   displays the correct status to the user.
     ///
-    /// - Warning: The dismissal behavior depends on the `dismissesAutomatically` configuration:
+    ///   The dismissal behavior depends on the `dismissesAutomatically` configuration:
     ///   - When `true`: The component automatically dismisses the Apple Pay sheet. Do not dismiss it yourself.
-    ///   - When `false` (default): You must dismiss the view controller yourself within the
+    ///   - When `false` (default flow): Dismiss the view controller yourself within the
     ///     `finalizeIfNeeded(with:completion:)` completion block.
     ///
     /// - Note: This component should not be reused. Create a new instance for each payment attempt.

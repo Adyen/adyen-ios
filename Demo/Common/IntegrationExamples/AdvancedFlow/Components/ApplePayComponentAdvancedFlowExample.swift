@@ -67,6 +67,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         config.requiredShippingContactFields = [.postalAddress]
         config.requiredBillingContactFields = [.postalAddress]
         config.shippingMethods = ConfigurationConstants.shippingMethods
+        config.dismissesAutomatically = true
 
         let component = try ApplePayComponent(
             paymentMethod: paymentMethod,

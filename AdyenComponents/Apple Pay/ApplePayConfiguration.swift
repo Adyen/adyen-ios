@@ -71,7 +71,7 @@ extension ApplePayComponent {
         
         /// When `true`, the component automatically dismisses the `PKPaymentAuthorizationViewController`
         /// when the payment flow completes or is cancelled. When `false` (default), you are
-        /// responsible for dismissing the view controller in their callbacks.
+        /// responsible for dismissing the view controller within the `finalizeIfNeeded(with:completion:)` completion block.
         ///
         /// - Note: Apple recommends dismissing the controller in `paymentAuthorizationViewControllerDidFinish`.
         ///   Setting this to `true` follows Apple's guidance and may resolve dismissal issues.
