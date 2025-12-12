@@ -14,6 +14,7 @@ class ApplePayComponentTest: XCTestCase {
 
     var mockDelegate: PaymentComponentDelegateMock!
     var mockApplePayDelegate: ApplePayDelegateMock!
+    var mockAuthorizationDelegate: ApplePayAuthorizationDelegateMock!
     var sut: ApplePayComponent!
     lazy var amount = Amount(value: 2, currencyCode: "USD")
     lazy var payment = Payment(amount: amount, countryCode: getRandomCountryCode())
@@ -41,11 +42,13 @@ class ApplePayComponentTest: XCTestCase {
         } else {
             mockApplePayDelegate = ApplePayDelegateMockClassic()
         }
+        mockAuthorizationDelegate = ApplePayAuthorizationDelegateMock()
     }
 
     override func tearDown() {
         sut = nil
         mockDelegate = nil
+        mockAuthorizationDelegate = nil
         
         UIApplication.shared.adyen.mainKeyWindow?.rootViewController?.dismiss(animated: false)
         setupRootViewController(emptyVC)
@@ -469,7 +472,7 @@ class ApplePayComponentTest: XCTestCase {
         wait(for: .seconds(1))
         
         sut.delegate = mockDelegate
-        sut.applePayDelegate = mockApplePayDelegate
+        sut.authorizationDelegate = mockAuthorizationDelegate
         
         let didSubmitExpectation = expectation(description: "didSubmit should be called")
         mockDelegate.onDidSubmit = { data, component in
@@ -477,7 +480,7 @@ class ApplePayComponentTest: XCTestCase {
             didSubmitExpectation.fulfill()
         }
         
-        mockApplePayDelegate.onAuthorize = { payment in
+        mockAuthorizationDelegate.onAuthorize = { payment in
             // Simulate successful validation
             PKPaymentAuthorizationResult(status: .success, errors: nil)
         }
@@ -494,7 +497,7 @@ class ApplePayComponentTest: XCTestCase {
         
         // Then
         waitForExpectations(timeout: 5)
-        XCTAssertNotNil(mockApplePayDelegate.authorizedPayment)
+        XCTAssertNotNil(mockAuthorizationDelegate.authorizedPayment)
     }
     
     func test_didAuthorizeFailure_shouldNotTriggerDidSubmit() {
@@ -502,7 +505,7 @@ class ApplePayComponentTest: XCTestCase {
         wait(for: .seconds(1))
         
         sut.delegate = mockDelegate
-        sut.applePayDelegate = mockApplePayDelegate
+        sut.authorizationDelegate = mockAuthorizationDelegate
         
         var didSubmitCalled = false
         mockDelegate.onDidSubmit = { _, _ in
@@ -511,7 +514,7 @@ class ApplePayComponentTest: XCTestCase {
         
         let authorizationCompletionExpectation = expectation(description: "Authorization completion should be called with failure")
         
-        mockApplePayDelegate.onAuthorize = { payment in
+        mockAuthorizationDelegate.onAuthorize = { payment in
             // Simulate validation failure with specific errors
             let error = PKPaymentRequest.paymentShippingAddressInvalidError(
                 withKey: CNPostalAddressPostalCodeKey,
@@ -536,7 +539,7 @@ class ApplePayComponentTest: XCTestCase {
         // Then
         waitForExpectations(timeout: 5)
         XCTAssertFalse(didSubmitCalled, "didSubmit should not be called when authorization fails")
-        XCTAssertNotNil(mockApplePayDelegate.authorizedPayment)
+        XCTAssertNotNil(mockAuthorizationDelegate.authorizedPayment)
     }
     
     func test_didAuthorizeWithoutDelegate_shouldAutoApproveAndSubmit() {
@@ -544,7 +547,7 @@ class ApplePayComponentTest: XCTestCase {
         wait(for: .seconds(1))
         
         sut.delegate = mockDelegate
-        // Note: applePayDelegate is NOT set - should use default behavior
+        // Note: authorizationDelegate is NOT set - should use default behavior
         
         let didSubmitExpectation = expectation(description: "didSubmit should be called")
         mockDelegate.onDidSubmit = { data, component in
@@ -566,12 +569,12 @@ class ApplePayComponentTest: XCTestCase {
         waitForExpectations(timeout: 5)
     }
     
-    func tes_didAuthorizeWithEmptyToken_shouldFailImmediately() {
+    func test_didAuthorizeWithEmptyToken_shouldFailImmediately() {
         // Given
         wait(for: .seconds(1))
         
         sut.delegate = mockDelegate
-        sut.applePayDelegate = mockApplePayDelegate
+        sut.authorizationDelegate = mockAuthorizationDelegate
         
         let didFailExpectation = expectation(description: "didFail should be called")
         mockDelegate.onDidFail = { error, component in
@@ -580,7 +583,7 @@ class ApplePayComponentTest: XCTestCase {
         }
         
         var authorizeCalled = false
-        mockApplePayDelegate.onAuthorize = { _ in
+        mockAuthorizationDelegate.onAuthorize = { _ in
             authorizeCalled = true
             return PKPaymentAuthorizationResult(status: .success, errors: nil)
         }
@@ -601,36 +604,6 @@ class ApplePayComponentTest: XCTestCase {
         // Then
         waitForExpectations(timeout: 5)
         XCTAssertFalse(authorizeCalled, "didAuthorize should not be called when token is empty")
-    }
-    
-    func test_didAuthorizeWithDelegateUsingDefaultImplementation_shouldAutoApproveAndSubmit() {
-        // Given
-        // Delegate is set but onAuthorize is NOT set - uses default auto-approve behavior
-        wait(for: .seconds(1))
-        
-        sut.delegate = mockDelegate
-        sut.applePayDelegate = mockApplePayDelegate
-        // Note: NOT setting mockApplePayDelegate.onAuthorize - uses default
-        
-        let didSubmitExpectation = expectation(description: "didSubmit should be called")
-        mockDelegate.onDidSubmit = { data, component in
-            XCTAssertTrue(data.paymentMethod is ApplePayDetails)
-            didSubmitExpectation.fulfill()
-        }
-        
-        let mockPayment = PKPaymentMock.create(withPaymentData: "test_token".data(using: .utf8)!)
-        
-        // When
-        sut.paymentAuthorizationViewController(
-            sut.viewController as! PKPaymentAuthorizationViewController,
-            didAuthorizePayment: mockPayment
-        ) { result in
-            // Completion called after finalize
-        }
-        
-        // Then
-        waitForExpectations(timeout: 5)
-        XCTAssertNotNil(mockApplePayDelegate.authorizedPayment, "didAuthorize should still be called")
     }
     
 }

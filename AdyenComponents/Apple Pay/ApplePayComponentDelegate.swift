@@ -7,7 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import PassKit
 
-/// Delegates methods that respond to shopper interactions with payment authorization view controller.
+/// Delegate methods that respond to shopper interactions with payment authorization view controller.
 public protocol ApplePayComponentDelegate: AnyObject {
 
     /// Tells the delegate that the shopper selected a shipping address, and asks for an updated payment request.
@@ -31,6 +31,13 @@ public protocol ApplePayComponentDelegate: AnyObject {
         for payment: ApplePayPayment,
         completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void
     )
+}
+
+/// Delegate that handles Apple Pay payment authorization validation.
+///
+/// Implement this protocol to validate the shopper's payment information (e.g., billing/shipping address)
+/// before the payment is submitted to Adyen.
+public protocol ApplePayAuthorizationDelegate: AnyObject {
     
     /// Tells the delegate that the shopper authorized the payment and asks for a validation result.
     ///
@@ -46,23 +53,8 @@ public protocol ApplePayComponentDelegate: AnyObject {
     /// - Note: Return `.failure` with non-empty `errors` to keep the sheet open for correction.
     ///   Use `PKPaymentRequest.paymentBillingAddressInvalidError(withKey:localizedDescription:)` or similar
     ///   factory methods to create field-specific errors. If `errors` is empty on `.failure`, the system dismisses the sheet.
-    ///
-    /// - Note: If not implemented, the payment proceeds automatically.
     func didAuthorize(
         payment: PKPayment,
         completion: @escaping (PKPaymentAuthorizationResult) -> Void
     )
-}
-
-// MARK: - Default Implementations
-
-public extension ApplePayComponentDelegate {
-    
-    /// Default implementation that automatically authorizes the payment.
-    func didAuthorize(
-        payment: PKPayment,
-        completion: @escaping (PKPaymentAuthorizationResult) -> Void
-    ) {
-        completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
-    }
 }

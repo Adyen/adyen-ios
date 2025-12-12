@@ -75,6 +75,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         )
         component.delegate = self
         component.applePayDelegate = self
+        component.authorizationDelegate = self
         return component
     }
 
@@ -195,6 +196,10 @@ extension ApplePayComponentAdvancedFlowExample: ApplePayComponentDelegate {
         completion(.init(paymentSummaryItems: items))
     }
 
+}
+
+extension ApplePayComponentAdvancedFlowExample: ApplePayAuthorizationDelegate {
+    
     func didAuthorize(
         payment: PKPayment,
         completion: @escaping (PKPaymentAuthorizationResult) -> Void
@@ -208,6 +213,5 @@ extension ApplePayComponentAdvancedFlowExample: ApplePayComponentDelegate {
             )
             completion(.init(status: .failure, errors: [postalCodeError]))
         }
-        
     }
 }

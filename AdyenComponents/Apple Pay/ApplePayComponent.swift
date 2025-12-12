@@ -38,6 +38,9 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// The delegate changes of ApplePay payment state.
     public weak var applePayDelegate: ApplePayComponentDelegate?
     
+    /// The delegate for handling Apple Pay authorization validation.
+    public weak var authorizationDelegate: ApplePayAuthorizationDelegate?
+    
     /// Initializes the component.
     /// - Warning: Do not dismiss this component directly.
     ///  First, call `didFinalize(with:completion:)` on error or success, then dismiss it.
