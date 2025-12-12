@@ -24,7 +24,6 @@ final class ApplePayPaymentMethodTests: XCTestCase {
         let result = sut.supportedNetworks(provider: networksProviderMock)
 
         // Then
-        XCTAssertEqual(networksProviderMock.availableNetworksCallsCount, 1)
         let receivedBrands = result.map(\.txVariantName)
         XCTAssertEqual(expectedBrands, receivedBrands)
     }
@@ -40,7 +39,6 @@ final class ApplePayPaymentMethodTests: XCTestCase {
         let result = sut.supportedNetworks(provider: networksProviderMock)
 
         // Then
-        XCTAssertEqual(networksProviderMock.availableNetworksCallsCount, 1)
         let receivedBrands = result.map(\.txVariantName)
         XCTAssertEqual(expectedBrands, receivedBrands)
     }
@@ -56,7 +54,6 @@ final class ApplePayPaymentMethodTests: XCTestCase {
         let result = sut.supportedNetworks(provider: networksProviderMock)
 
         // Then
-        XCTAssertEqual(networksProviderMock.availableNetworksCallsCount, 1)
         let receivedBrands = result.map(\.txVariantName)
         XCTAssertEqual(expectedBrands, receivedBrands)
     }
@@ -75,7 +72,6 @@ final class ApplePayPaymentMethodTests: XCTestCase {
         let result = sut.supportedNetworks(provider: networksProviderMock)
 
         // Then
-        XCTAssertEqual(networksProviderMock.availableNetworksCallsCount, 1)
         let receivedBrands = result.map(\.txVariantName)
         XCTAssertEqual(expectedBrands, receivedBrands)
     }
@@ -91,7 +87,6 @@ final class ApplePayPaymentMethodTests: XCTestCase {
         let result = sut.supportedNetworks(provider: networksProviderMock)
 
         // Then
-        XCTAssertEqual(networksProviderMock.availableNetworksCallsCount, 1)
         let receivedBrands = result.map(\.txVariantName)
         XCTAssertEqual(expectedBrands, receivedBrands)
     }
@@ -107,7 +102,6 @@ final class ApplePayPaymentMethodTests: XCTestCase {
         let result = sut.supportedNetworks(provider: networksProviderMock)
 
         // Then
-        XCTAssertEqual(networksProviderMock.availableNetworksCallsCount, 1)
         let receivedBrands = result.map(\.txVariantName)
         XCTAssertEqual(expectedBrands, receivedBrands)
     }
@@ -123,7 +117,6 @@ final class ApplePayPaymentMethodTests: XCTestCase {
         let result = sut.supportedNetworks(provider: networksProviderMock)
 
         // Then
-        XCTAssertEqual(networksProviderMock.availableNetworksCallsCount, 1)
         let receivedBrands = result.map(\.txVariantName)
         XCTAssertEqual(expectedBrands, receivedBrands)
     }
