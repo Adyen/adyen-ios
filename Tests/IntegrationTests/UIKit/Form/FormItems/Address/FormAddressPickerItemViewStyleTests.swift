@@ -70,14 +70,18 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
         XCTAssertEqual(sut.valueLabel.numberOfLines, expectedNumberOfLines)
     }
 
-    // MARK: - AlertLabel Style Tests
+    // MARK: - FooterLabel Style Tests
 
-    func test_alertLabel_font_shouldUseThemeSubheadlineFont() {
+    func test_footerLabel_font_shouldUseThemeSubheadlineFont() {
         let expectedFont = AdyenTheme.default.elements.labels.subheadline.font
         XCTAssertEqual(sut.footerLabel.font, expectedFont)
     }
 
-    func test_alertLabel_color_shouldUseThemeDestructiveColor() {
+    func test_footerLabel_color_shouldUseThemeDestructiveColor() {
+        // Given - force validation to show error state
+        sut.showValidation()
+        
+        // Then
         let expectedColor = AdyenTheme.default.colors.destructive
         XCTAssertEqual(sut.footerLabel.textColor, expectedColor)
     }
@@ -106,7 +110,7 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
         XCTAssertEqual(sutWithCustomTheme.valueLabel.textColor, expectedColor)
     }
 
-    func test_customTheme_alertLabel_shouldUseCustomDestructiveColor() {
+    func test_customTheme_footerLabel_shouldUseCustomDestructiveColor() {
         // Given
         let expectedColor = UIColor.systemPurple
         var customColors = AdyenColors()
@@ -115,6 +119,7 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
 
         // When
         let sutWithCustomTheme = makeSUT(theme: customTheme)
+        sutWithCustomTheme.showValidation()
 
         // Then
         XCTAssertEqual(sutWithCustomTheme.footerLabel.textColor, expectedColor)

@@ -816,7 +816,7 @@ class CardComponentTests: XCTestCase {
 
         let postalCodeItemView: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.CardComponent.postalCodeItem"))
         XCTAssertEqual(postalCodeItemView.titleLabel.text, "Postal code")
-        XCTAssertTrue(postalCodeItemView.alertLabel.isHidden)
+        XCTAssertTrue(postalCodeItemView.footerLabel.isHidden)
         
         self.populate(textItemView: postalCodeItemView, with: "12345")
 

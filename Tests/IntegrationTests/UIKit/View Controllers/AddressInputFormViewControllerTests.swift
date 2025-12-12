@@ -52,22 +52,22 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertEqual(provinceOrTerritoryItemView.titleLabel.text, "Province or Territory")
         XCTAssertEqual(postalCodeItemView.titleLabel.text, "Postal code")
 
-        XCTAssertTrue(houseNumberItemView.alertLabel.isHidden)
-        XCTAssertTrue(addressItemView.alertLabel.isHidden)
-        XCTAssertTrue(apartmentSuiteItemView.alertLabel.isHidden)
-        XCTAssertTrue(cityItemView.alertLabel.isHidden)
-        XCTAssertTrue(provinceOrTerritoryItemView.alertLabel.isHidden)
-        XCTAssertTrue(postalCodeItemView.alertLabel.isHidden)
+        XCTAssertTrue(houseNumberItemView.footerLabel.isHidden)
+        XCTAssertTrue(addressItemView.footerLabel.isHidden)
+        XCTAssertTrue(apartmentSuiteItemView.footerLabel.isHidden)
+        XCTAssertTrue(cityItemView.footerLabel.isHidden)
+        XCTAssertTrue(provinceOrTerritoryItemView.footerLabel.isHidden)
+        XCTAssertTrue(postalCodeItemView.footerLabel.isHidden)
         
         let doneButton = try XCTUnwrap(viewController.navigationItem.rightBarButtonItem)
         try doneButton.tap()
         
-        wait { !houseNumberItemView.alertLabel.isHidden }
-        XCTAssertFalse(addressItemView.alertLabel.isHidden)
-        XCTAssertTrue(apartmentSuiteItemView.alertLabel.isHidden)
-        XCTAssertFalse(cityItemView.alertLabel.isHidden)
-        XCTAssertFalse(provinceOrTerritoryItemView.alertLabel.isHidden)
-        XCTAssertFalse(postalCodeItemView.alertLabel.isHidden)
+        wait { !houseNumberItemView.footerLabel.isHidden }
+        XCTAssertFalse(addressItemView.footerLabel.isHidden)
+        XCTAssertTrue(apartmentSuiteItemView.footerLabel.isHidden)
+        XCTAssertFalse(cityItemView.footerLabel.isHidden)
+        XCTAssertFalse(provinceOrTerritoryItemView.footerLabel.isHidden)
+        XCTAssertFalse(postalCodeItemView.footerLabel.isHidden)
     }
     
     func testAddressUS() throws {
@@ -107,18 +107,18 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertEqual(provinceOrTerritoryItemView.titleLabel.text, "State")
         XCTAssertEqual(postalCodeItemView.titleLabel.text, "Zip code")
 
-        XCTAssertTrue(houseNumberItemView.alertLabel.isHidden)
-        XCTAssertTrue(addressItemView.alertLabel.isHidden)
-        XCTAssertTrue(cityItemView.alertLabel.isHidden)
-        XCTAssertTrue(postalCodeItemView.alertLabel.isHidden)
+        XCTAssertTrue(houseNumberItemView.footerLabel.isHidden)
+        XCTAssertTrue(addressItemView.footerLabel.isHidden)
+        XCTAssertTrue(cityItemView.footerLabel.isHidden)
+        XCTAssertTrue(postalCodeItemView.footerLabel.isHidden)
 
         let doneButton = try XCTUnwrap(viewController.navigationItem.rightBarButtonItem)
         try doneButton.tap()
         
-        wait(until: houseNumberItemView.alertLabel, at: \.isHidden, is: true)
-        wait(until: addressItemView.alertLabel, at: \.isHidden, is: false)
-        wait(until: cityItemView.alertLabel, at: \.isHidden, is: false)
-        wait(until: postalCodeItemView.alertLabel, at: \.isHidden, is: false)
+        wait(until: houseNumberItemView.footerLabel, at: \.isHidden, is: true)
+        wait(until: addressItemView.footerLabel, at: \.isHidden, is: false)
+        wait(until: cityItemView.footerLabel, at: \.isHidden, is: false)
+        wait(until: postalCodeItemView.footerLabel, at: \.isHidden, is: false)
     }
 
     func testAddressUK() throws {
