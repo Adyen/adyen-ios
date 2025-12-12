@@ -17,8 +17,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
     internal var state: State = .initial
 
-    internal var viewControllerDidFinish: Bool = false
-
     internal let applePayPaymentMethod: ApplePayPaymentMethod
 
     /// The context object for this component.
@@ -39,9 +37,17 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     public weak var applePayDelegate: ApplePayComponentDelegate?
     
     /// Initializes the component.
-    /// - Warning: Do not dismiss this component directly.
-    ///  First, call `didFinalize(with:completion:)` on error or success, then dismiss it.
-    ///  Dismissal should occur within `completion` block.
+    ///
+    /// - Important: After receiving a payment response, you must call `finalizeIfNeeded(with:completion:)`
+    ///   regardless of whether the payment succeeded or failed. This ensures the Apple Pay sheet
+    ///   displays the correct status to the user.
+    ///
+    /// - Warning: The dismissal behavior depends on the `dismissesAutomatically` configuration:
+    ///   - When `true`: The component automatically dismisses the Apple Pay sheet. Do not dismiss it yourself.
+    ///   - When `false` (default): You must dismiss the view controller yourself within the
+    ///     `finalizeIfNeeded(with:completion:)` completion block.
+    ///
+    /// - Note: This component should not be reused. Create a new instance for each payment attempt.
     ///
     /// - Parameter paymentMethod: The Apple Pay payment method. Must include country code.
     /// - Parameter context: The context object for this component.

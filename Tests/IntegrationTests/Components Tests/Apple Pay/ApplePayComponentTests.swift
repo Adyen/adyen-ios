@@ -424,6 +424,140 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertTrue(compareCollections(supportedNetworks, [.masterCard, .elo]))
     }
 
+    // MARK: - dismissesAutomatically Tests
+    
+    func test_DismissesAutomatically_WhenFalse_ShouldCallDidFailImmediately() {
+        // Given
+        wait(for: .seconds(2))
+        
+        var configuration = ApplePayComponent.Configuration(
+            payment: Dummy.createTestApplePayPayment(),
+            merchantIdentifier: "test_id"
+        )
+        configuration.dismissesAutomatically = false
+        
+        sut = try! ApplePayComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: configuration
+        )
+        sut.delegate = mockDelegate
+        
+        let viewController = sut.viewController
+        let onDidFailExpectation = expectation(description: "didFail should be called")
+        
+        mockDelegate.onDidFail = { error, component in
+            XCTAssertEqual(error as! ComponentError, ComponentError.cancelled)
+            onDidFailExpectation.fulfill()
+        }
+        
+        presentOnRoot(viewController)
+        
+        // When
+        sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
+        
+        // Then - should be called immediately (not waiting for dismiss animation)
+        waitForExpectations(timeout: 2)
+    }
+    
+    func test_DismissesAutomatically_WhenFalse_ShouldCallFinalizeCompletionImmediately() {
+        // Given
+        wait(for: .seconds(2))
+        
+        var configuration = ApplePayComponent.Configuration(
+            payment: Dummy.createTestApplePayPayment(),
+            merchantIdentifier: "test_id"
+        )
+        configuration.dismissesAutomatically = false
+        
+        sut = try! ApplePayComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: configuration
+        )
+        
+        let viewController = sut.viewController
+        let onDidFinalizeExpectation = expectation(description: "finalize completion should be called")
+        
+        presentOnRoot(viewController)
+        
+        sut.finalizeIfNeeded(with: true) {
+            onDidFinalizeExpectation.fulfill()
+        }
+        
+        // When
+        sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
+        
+        // Then - should be called immediately
+        waitForExpectations(timeout: 2)
+    }
+    
+    func test_DismissesAutomatically_WhenTrue_ShouldCallDidFailAfterDismiss() {
+        // Given
+        wait(for: .seconds(2))
+        
+        var configuration = ApplePayComponent.Configuration(
+            payment: Dummy.createTestApplePayPayment(),
+            merchantIdentifier: "test_id"
+        )
+        configuration.dismissesAutomatically = true
+        
+        sut = try! ApplePayComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: configuration
+        )
+        sut.delegate = mockDelegate
+        
+        let viewController = sut.viewController
+        let onDidFailExpectation = expectation(description: "didFail should be called")
+        
+        mockDelegate.onDidFail = { error, component in
+            XCTAssertEqual(error as! ComponentError, ComponentError.cancelled)
+            onDidFailExpectation.fulfill()
+        }
+        
+        presentOnRoot(viewController)
+        
+        // When
+        sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
+        
+        // Then - should be called after dismiss animation completes
+        waitForExpectations(timeout: 10)
+    }
+    
+    func test_DismissesAutomatically_WhenTrue_ShouldCallFinalizeCompletionAfterDismiss() {
+        // Given
+        wait(for: .seconds(2))
+        
+        var configuration = ApplePayComponent.Configuration(
+            payment: Dummy.createTestApplePayPayment(),
+            merchantIdentifier: "test_id"
+        )
+        configuration.dismissesAutomatically = true
+        
+        sut = try! ApplePayComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: configuration
+        )
+        
+        let viewController = sut.viewController
+        let onDidFinalizeExpectation = expectation(description: "finalize completion should be called")
+        
+        presentOnRoot(viewController)
+        
+        sut.finalizeIfNeeded(with: true) {
+            onDidFinalizeExpectation.fulfill()
+        }
+        
+        // When
+        sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
+        
+        // Then - should be called after dismiss animation completes
+        waitForExpectations(timeout: 10)
+    }
+    
     func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()

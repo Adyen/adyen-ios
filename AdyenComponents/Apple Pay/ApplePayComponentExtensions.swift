@@ -12,7 +12,16 @@ import PassKit
 extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     
     public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-        paymentAuthorizationViewController = nil
+        if configuration.dismissesAutomatically {
+            controller.dismiss(animated: true) { [weak self] in
+                self?.handleViewControllerDidFinish()
+            }
+        } else {
+            handleViewControllerDidFinish()
+        }
+    }
+    
+    private func handleViewControllerDidFinish() {
         if case let State.finalized(completion) = state {
             completion?()
         } else {
