@@ -11,13 +11,19 @@ import XCTest
 final class FormTextItemViewThemeTests: XCTestCase {
 
     func test_formTextItemView_withDefaultTheme_shouldUseDefaultColors() {
-        // Given
-        let sut = makeSUT()
+        // Given - item with required validation that will fail when empty
+        let expectedErrorMessage = "Required"
+        let item = FormTextInputItem()
+        item.validator = LengthValidator(minimumLength: 1, maximumLength: 100)
+        item.validationFailureMessage = expectedErrorMessage
+        let sut = makeSUT(item: item)
 
-        // Then
+        // Then - trigger validation to show error state
+        sut.showValidation()
         XCTAssertEqual(sut.titleLabel.textColor, AdyenColors.default.primary)
         XCTAssertEqual(sut.textField.textColor, AdyenColors.default.primary)
         XCTAssertEqual(sut.footerLabel.textColor, AdyenColors.default.destructive)
+        XCTAssertEqual(sut.footerLabel.text, expectedErrorMessage)
 
         let containerView = getContainerView(from: sut)
         XCTAssertEqual(containerView?.backgroundColor, AdyenColors.default.container)
@@ -25,18 +31,22 @@ final class FormTextItemViewThemeTests: XCTestCase {
     }
 
     func test_formTextItemView_withCustomColors_shouldApplyToUI() {
-        // Given
+        // Given - item with required validation that will fail when empty
         let customColors = AdyenColors(
             container: .systemYellow,
             containerOutline: .systemPurple,
             primary: .systemPink,
             destructive: .systemOrange
         )
-
+        let item = FormTextInputItem()
+        item.validator = LengthValidator(minimumLength: 1, maximumLength: 100)
+        item.validationFailureMessage = "Required"
+        
         // When
-        let sut = makeSUT(colors: customColors)
+        let sut = makeSUT(item: item, colors: customColors)
 
-        // Then
+        // Then - trigger validation to show error state
+        sut.showValidation()
         XCTAssertEqual(sut.titleLabel.textColor, .systemPink)
         XCTAssertEqual(sut.textField.textColor, .systemPink)
         XCTAssertEqual(sut.footerLabel.textColor, .systemOrange)
