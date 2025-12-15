@@ -106,6 +106,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     }
 
     internal func dismissAndShowAlert(_ success: Bool, _ message: String) {
+        // dismiss ourselves as the auto dismiss flag is false
         presenter?.dismiss {
             // Payment is processed. Add your code here.
             let title = success ? "Success" : "Error"

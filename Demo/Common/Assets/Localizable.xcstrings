@@ -112,9 +112,6 @@
     "Set to country currency" : {
 
     },
-    "Simulate a success or a failure from the didAuthorize delegate method." : {
-
-    },
     "Skip Payment List" : {
 
     },
@@ -134,6 +131,9 @@
 
     },
     "Visibility" : {
+
+    },
+    "When false, simulates a shipping error returned from the didAuthorize delegate method." : {
 
     }
   },

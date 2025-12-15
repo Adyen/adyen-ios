@@ -22,9 +22,16 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     }
     
     private func handleViewControllerDidFinish() {
-        if case let State.finalized(completion) = state {
+        switch state {
+        case let .finalized(completion):
             completion?()
-        } else {
+        case .initial:
+            // User cancelled without authorizing payment - allow component reuse
+            paymentAuthorizationViewController = nil
+            delegate?.didFail(with: ComponentError.cancelled, from: self)
+        case .submitted:
+            // Payment was authorized but finalizeIfNeeded wasn't called
+            // we call didFail here to not cause a breaking behavior change
             delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
     }
