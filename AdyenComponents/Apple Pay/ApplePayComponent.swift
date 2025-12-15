@@ -50,7 +50,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     ///   - When `false` (default flow): Dismiss the view controller yourself within the
     ///     `finalizeIfNeeded(with:completion:)` completion block.
     ///
-    /// - Note: This component should not be reused. Create a new instance for each payment attempt.
+    /// - Note: Do not reuse this component after a payment is authorized. It can be re-presented if the user cancels before authorizing.
     ///
     /// - Parameter paymentMethod: The Apple Pay payment method. Must include country code.
     /// - Parameter context: The context object for this component.

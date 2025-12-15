@@ -110,6 +110,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
     private func finalize(_ success: Bool, _ message: String) {
         applePayComponent?.finalizeIfNeeded(with: success) { [weak self] in
             guard let self else { return }
+            // no dismiss as the auto dismiss flag is true
             self.showAlert(success, message)
         }
     }
