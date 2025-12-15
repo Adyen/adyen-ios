@@ -74,3 +74,20 @@ final class ApplePayDelegateMockiOS15: ApplePayDelegateMock {
         completion(result)
     }
 }
+
+// MARK: - ApplePayAuthorizationDelegate Mock
+
+final class ApplePayAuthorizationDelegateMock: ApplePayAuthorizationDelegate {
+    
+    var authorizedPayment: PKPayment?
+    var onAuthorize: ((PKPayment) -> PKPaymentAuthorizationResult)?
+    
+    func didAuthorize(
+        payment: PKPayment,
+        completion: @escaping (PKPaymentAuthorizationResult) -> Void
+    ) {
+        self.authorizedPayment = payment
+        let result = onAuthorize!(payment)
+        completion(result)
+    }
+}

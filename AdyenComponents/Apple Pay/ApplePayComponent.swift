@@ -38,6 +38,9 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// The delegate changes of ApplePay payment state.
     public weak var applePayDelegate: ApplePayComponentDelegate?
     
+    /// The delegate for handling Apple Pay authorization validation.
+    public weak var authorizationDelegate: ApplePayAuthorizationDelegate?
+    
     /// Initializes the component.
     /// - Warning: Do not dismiss this component directly.
     ///  First, call `didFinalize(with:completion:)` on error or success, then dismiss it.
@@ -88,7 +91,8 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     public func didFinalize(with success: Bool, completion: (() -> Void)?) {
         if case let .submitted(paymentAuthorizationCompletion) = state {
             state = .finalized(completion)
-            paymentAuthorizationCompletion(success ? .success : .failure)
+            let result = PKPaymentAuthorizationResult(status: success ? .success : .failure, errors: nil)
+            paymentAuthorizationCompletion(result)
         } else {
             state = .initial
             completion?()
@@ -127,7 +131,7 @@ extension ApplePayComponent {
 
     internal enum State {
         case initial
-        case submitted((PKPaymentAuthorizationStatus) -> Void)
+        case submitted((PKPaymentAuthorizationResult) -> Void)
         case finalized((() -> Void)?)
     }
 
