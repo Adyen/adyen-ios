@@ -109,16 +109,14 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
     private func finalize(_ success: Bool, _ message: String) {
         applePayComponent?.finalizeIfNeeded(with: success) { [weak self] in
             guard let self else { return }
-            self.dismissAndShowAlert(success, message)
+            self.showAlert(success, message)
         }
     }
 
-    internal func dismissAndShowAlert(_ success: Bool, _ message: String) {
-        presenter?.dismiss {
-            // Payment is processed. Add your code here.
-            let title = success ? "Success" : "Error"
-            self.presenter?.presentAlert(withTitle: title, message: message)
-        }
+    internal func showAlert(_ success: Bool, _ message: String) {
+        // Payment is processed. Add your code here.
+        let title = success ? "Success" : "Error"
+        self.presenter?.presentAlert(withTitle: title, message: message)
     }
 
     private func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {

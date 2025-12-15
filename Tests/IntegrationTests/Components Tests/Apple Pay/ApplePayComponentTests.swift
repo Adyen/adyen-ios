@@ -68,6 +68,9 @@ class ApplePayComponentTest: XCTestCase {
         self.sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
 
         waitForExpectations(timeout: 10)
+        
+        // After cancel, component should be reusable with a new view controller
+        XCTAssertTrue(viewController !== self.sut.viewController)
     }
 
     func testApplePayViewControllerShouldCallFinalizeCompletion() {

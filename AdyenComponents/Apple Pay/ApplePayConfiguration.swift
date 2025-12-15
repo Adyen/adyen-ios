@@ -74,7 +74,7 @@ extension ApplePayComponent {
         /// responsible for dismissing the view controller within the `finalizeIfNeeded(with:completion:)` completion block.
         ///
         /// - Note: Apple recommends dismissing the controller in `paymentAuthorizationViewControllerDidFinish`.
-        ///   Setting this to `true` follows Apple's guidance and may resolve dismissal issues.
+        ///   Setting this to `true` follows Apple's guidance.
         public var dismissesAutomatically: Bool = false
         
         /// The payment request object needed for Apple Pay. Must contain all the required fileds
