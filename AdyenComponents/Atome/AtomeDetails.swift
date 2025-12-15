@@ -23,6 +23,10 @@ public struct AtomeDetails: PaymentMethodDetails, ShopperInformation {
     
     /// The shopper's billing address.
     public let billingAddress: PostalAddress?
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
 
     /// Initializes the Atome details.
     /// - Parameters:
@@ -46,5 +50,6 @@ public struct AtomeDetails: PaymentMethodDetails, ShopperInformation {
     
     private enum CodingKeys: CodingKey {
         case type
+        case sdkData
     }
 }

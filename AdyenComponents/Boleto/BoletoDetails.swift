@@ -30,6 +30,10 @@ public struct BoletoDetails: PaymentMethodDetails, ShopperInformation {
     
     public let telephoneNumber: String? = nil
     
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
+    
     /// Initializes the Boleto details
     /// - Parameters:
     ///   - type: Boleto payment method.
@@ -53,5 +57,6 @@ public struct BoletoDetails: PaymentMethodDetails, ShopperInformation {
     
     private enum CodingKeys: CodingKey {
         case type
+        case sdkData
     }
 }
