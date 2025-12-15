@@ -24,6 +24,10 @@ public struct DokuDetails: PaymentMethodDetails {
 
     /// The email address.
     public let emailAddress: String
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
 
     /// Initializes the MB Way details.
     ///
@@ -50,6 +54,7 @@ public struct DokuDetails: PaymentMethodDetails {
         case firstName
         case lastName
         case emailAddress = "shopperEmail"
+        case sdkData
     }
 
 }
