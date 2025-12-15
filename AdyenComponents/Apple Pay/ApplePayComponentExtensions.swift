@@ -32,28 +32,31 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     public func paymentAuthorizationViewController(
         _ controller: PKPaymentAuthorizationViewController,
         didAuthorizePayment payment: PKPayment,
-        completion: @escaping (PKPaymentAuthorizationStatus) -> Void
+        handler completion: @escaping (PKPaymentAuthorizationResult) -> Void
     ) {
         guard payment.token.paymentData.isEmpty == false else {
-            completion(.failure)
+            completion(PKPaymentAuthorizationResult(status: .failure, errors: nil))
             delegate?.didFail(with: Error.invalidToken, from: self)
             return
         }
 
-        state = .submitted(completion)
-        let token = payment.token.paymentData.base64EncodedString()
-        let network = payment.token.paymentMethod.network?.rawValue ?? ""
-        let details = ApplePayDetails(
-            paymentMethod: applePayPaymentMethod,
-            token: token,
-            network: network,
-            billingContact: payment.billingContact,
-            shippingContact: payment.shippingContact,
-            shippingMethod: payment.shippingMethod
-        )
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: applePayPayment.amount, order: order))
+        // Call the authorization delegate's didAuthorize method for validation
+        // If no delegate is set, proceed directly with payment submission
+        if let authorizationDelegate {
+            authorizationDelegate.didAuthorize(payment: payment) { [weak self] result in
+                guard let self else { return }
+                if result.status == .success {
+                    self.proceedWithSubmission(for: payment, completion: completion)
+                } else {
+                    // Validation failed - pass the result back to Apple Pay
+                    completion(result)
+                }
+            }
+        } else {
+            proceedWithSubmission(for: payment, completion: completion)
+        }
     }
-
+    
     public func paymentAuthorizationViewController(
         _ controller: PKPaymentAuthorizationViewController,
         didSelectShippingContact contact: PKContact,
@@ -121,5 +124,24 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
             }
         }
     }
-
+    
+    private func proceedWithSubmission(
+        for payment: PKPayment,
+        completion: @escaping (PKPaymentAuthorizationResult) -> Void
+    ) {
+        state = .submitted(completion)
+        
+        let token = payment.token.paymentData.base64EncodedString()
+        let network = payment.token.paymentMethod.network?.rawValue ?? ""
+        let details = ApplePayDetails(
+            paymentMethod: applePayPaymentMethod,
+            token: token,
+            network: network,
+            billingContact: payment.billingContact,
+            shippingContact: payment.shippingContact,
+            shippingMethod: payment.shippingMethod
+        )
+        
+        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: applePayPayment.amount, order: order))
+    }
 }
