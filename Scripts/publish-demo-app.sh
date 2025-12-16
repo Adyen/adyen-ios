@@ -23,8 +23,10 @@ fi
 
 # Set export options based on distribution type
 if [[ "$DISTRIBUTION_TYPE" == "testflight" ]]; then
+  BUILD_CONFIGURATION="Release"
   EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions.plist"
 else
+  BUILD_CONFIGURATION="Enterprise"
   EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions-Firebase.plist"
 fi
 
@@ -93,7 +95,7 @@ echo "🧹 Cleaning project..."
 xcodebuild clean -project Adyen.xcodeproj \
   -scheme AdyenUIHost \
   -sdk iphoneos \
-  -configuration Release \
+  -configuration "$BUILD_CONFIGURATION" \
   -skipPackagePluginValidation
 
 # ---- Prepare build folder ----
@@ -107,7 +109,7 @@ xcodebuild archive -project Adyen.xcodeproj \
   -scheme AdyenUIHost \
   -destination "generic/platform=iOS" \
   -sdk iphoneos \
-  -configuration Release \
+  -configuration "$BUILD_CONFIGURATION" \
   -archivePath "$ARCHIVE_PATH" \
   -skipPackagePluginValidation \
   CODE_SIGNING_ALLOWED=NO \
