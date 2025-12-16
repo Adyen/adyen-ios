@@ -67,6 +67,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         config.requiredShippingContactFields = [.postalAddress]
         config.requiredBillingContactFields = [.postalAddress]
         config.shippingMethods = ConfigurationConstants.shippingMethods
+        config.dismissesAutomatically = true
 
         let component = try ApplePayComponent(
             paymentMethod: paymentMethod,
@@ -75,6 +76,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         )
         component.delegate = self
         component.applePayDelegate = self
+        component.authorizationDelegate = self
         return component
     }
 
@@ -108,16 +110,15 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
     private func finalize(_ success: Bool, _ message: String) {
         applePayComponent?.finalizeIfNeeded(with: success) { [weak self] in
             guard let self else { return }
-            self.dismissAndShowAlert(success, message)
+            // no dismiss as the auto dismiss flag is true
+            self.showAlert(success, message)
         }
     }
 
-    internal func dismissAndShowAlert(_ success: Bool, _ message: String) {
-        presenter?.dismiss {
-            // Payment is processed. Add your code here.
-            let title = success ? "Success" : "Error"
-            self.presenter?.presentAlert(withTitle: title, message: message)
-        }
+    internal func showAlert(_ success: Bool, _ message: String) {
+        // Payment is processed. Add your code here.
+        let title = success ? "Success" : "Error"
+        self.presenter?.presentAlert(withTitle: title, message: message)
     }
 
     private func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
@@ -195,4 +196,22 @@ extension ApplePayComponentAdvancedFlowExample: ApplePayComponentDelegate {
         completion(.init(paymentSummaryItems: items))
     }
 
+}
+
+extension ApplePayComponentAdvancedFlowExample: ApplePayAuthorizationDelegate {
+    
+    func didAuthorize(
+        payment: PKPayment,
+        completion: @escaping (PKPaymentAuthorizationResult) -> Void
+    ) {
+        if ConfigurationConstants.current.applePaySettings.didAuthorizeSuccessful {
+            completion(.init(status: .success, errors: nil))
+        } else {
+            let postalCodeError = PKPaymentRequest.paymentShippingAddressInvalidError(
+                withKey: CNPostalAddressPostalCodeKey,
+                localizedDescription: "Wrong postal code"
+            )
+            completion(.init(status: .failure, errors: [postalCodeError]))
+        }
+    }
 }

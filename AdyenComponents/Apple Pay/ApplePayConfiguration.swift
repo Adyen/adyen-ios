@@ -69,6 +69,14 @@ extension ApplePayComponent {
         /// A funding source supported by the merchant. If `nil`, the transaction allows both credit and debit cards.
         public var merchantCapability: CardFundingSource?
         
+        /// When `true`, the component automatically dismisses the `PKPaymentAuthorizationViewController`
+        /// when the payment flow completes or is cancelled. When `false` (default), you are
+        /// responsible for dismissing the view controller within the `finalizeIfNeeded(with:completion:)` completion block.
+        ///
+        /// - Note: Apple recommends dismissing the controller in `paymentAuthorizationViewControllerDidFinish`.
+        ///   Setting this to `true` follows Apple's guidance.
+        public var dismissesAutomatically: Bool = false
+        
         /// The payment request object needed for Apple Pay. Must contain all the required fileds
         /// such as `merchantIdentifier`, `summaryItems`, `currencyCode`, and `countryCode`.
         internal var paymentRequest: PKPaymentRequest?

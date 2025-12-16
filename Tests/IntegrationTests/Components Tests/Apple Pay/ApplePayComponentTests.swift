@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenComponents
+import Contacts
 import PassKit
 import XCTest
 
@@ -13,6 +14,7 @@ class ApplePayComponentTest: XCTestCase {
 
     var mockDelegate: PaymentComponentDelegateMock!
     var mockApplePayDelegate: ApplePayDelegateMock!
+    var mockAuthorizationDelegate: ApplePayAuthorizationDelegateMock!
     var sut: ApplePayComponent!
     lazy var amount = Amount(value: 2, currencyCode: "USD")
     lazy var payment = Payment(amount: amount, countryCode: getRandomCountryCode())
@@ -40,12 +42,14 @@ class ApplePayComponentTest: XCTestCase {
         } else {
             mockApplePayDelegate = ApplePayDelegateMockClassic()
         }
+        mockAuthorizationDelegate = ApplePayAuthorizationDelegateMock()
     }
 
     override func tearDown() {
         sut = nil
         mockDelegate = nil
-
+        mockAuthorizationDelegate = nil
+        
         UIApplication.shared.adyen.mainKeyWindow?.rootViewController?.dismiss(animated: false)
         setupRootViewController(emptyVC)
     }
@@ -84,11 +88,13 @@ class ApplePayComponentTest: XCTestCase {
             self.mockDelegate = nil // to prevent false triggering
         }
 
-        presentOnRoot(viewController)
-
+        viewController.loadViewIfNeeded()
+        
         self.sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
 
         waitForExpectations(timeout: 10)
+        
+        // After cancel, component should be reusable with a new view controller
         XCTAssertTrue(viewController !== self.sut.viewController)
     }
 
@@ -99,7 +105,7 @@ class ApplePayComponentTest: XCTestCase {
         let viewController = sut!.viewController
         let onDidFinalizeExpectation = expectation(description: "Wait for didFinalize call")
 
-        presentOnRoot(viewController)
+        viewController.loadViewIfNeeded()
 
         sut.finalizeIfNeeded(with: true) {
             onDidFinalizeExpectation.fulfill()
@@ -445,11 +451,151 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertTrue(compareCollections(supportedNetworks, [.masterCard, .elo]))
     }
 
+    // MARK: - dismissesAutomatically Tests
+    
+    func test_DismissesAutomatically_WhenFalse_ShouldCallDidFailImmediately() {
+        // Given
+        var configuration = ApplePayComponent.Configuration(
+            payment: Dummy.createTestApplePayPayment(),
+            merchantIdentifier: "test_id"
+        )
+        configuration.dismissesAutomatically = false
+        
+        sut = try! ApplePayComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: configuration
+        )
+        sut.delegate = mockDelegate
+        
+        let viewController = sut.viewController
+        let onDidFailExpectation = expectation(description: "didFail should be called")
+        
+        mockDelegate.onDidFail = { error, component in
+            XCTAssertEqual(error as! ComponentError, ComponentError.cancelled)
+            onDidFailExpectation.fulfill()
+        }
+        
+        viewController.loadViewIfNeeded()
+        
+        // When
+        sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
+        
+        // Then - should be called immediately (not waiting for dismiss animation)
+        waitForExpectations(timeout: 2)
+    }
+    
+    func test_DismissesAutomatically_WhenFalse_ShouldCallFinalizeCompletionImmediately() {
+        // Given
+        var configuration = ApplePayComponent.Configuration(
+            payment: Dummy.createTestApplePayPayment(),
+            merchantIdentifier: "test_id"
+        )
+        configuration.dismissesAutomatically = false
+        
+        sut = try! ApplePayComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: configuration
+        )
+        
+        let viewController = sut.viewController
+        let onDidFinalizeExpectation = expectation(description: "finalize completion should be called")
+        
+        viewController.loadViewIfNeeded()
+        
+        sut.finalizeIfNeeded(with: true) {
+            onDidFinalizeExpectation.fulfill()
+        }
+        
+        // When
+        sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
+        
+        // Then - should be called immediately
+        waitForExpectations(timeout: 2)
+    }
+    
+    func test_ComponentReuse_WhenCancelledBeforeAuthorization_ShouldAllowReuse() {
+        // Given
+        var configuration = ApplePayComponent.Configuration(
+            payment: Dummy.createTestApplePayPayment(),
+            merchantIdentifier: "test_id"
+        )
+        configuration.dismissesAutomatically = false
+        
+        sut = try! ApplePayComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: configuration
+        )
+        sut.delegate = mockDelegate
+        
+        let firstViewController = sut.viewController
+        
+        let onDidFailExpectation = expectation(description: "didFail should be called")
+        mockDelegate.onDidFail = { _, _ in
+            onDidFailExpectation.fulfill()
+        }
+        
+        firstViewController.loadViewIfNeeded()
+        
+        // When - user cancels before authorization (state is .initial)
+        sut.paymentAuthorizationViewControllerDidFinish(firstViewController as! PKPaymentAuthorizationViewController)
+        
+        waitForExpectations(timeout: 2)
+        
+        // Then - component should be reusable with a new view controller
+        let secondViewController = sut.viewController
+        XCTAssertTrue(firstViewController !== secondViewController, "A new view controller should be created after cancel")
+    }
+    
+    func test_ComponentReuse_WhenPaymentAuthorized_ShouldNotAllowReuse() {
+        // Given
+        wait(for: .seconds(1))
+        
+        var configuration = ApplePayComponent.Configuration(
+            payment: Dummy.createTestApplePayPayment(),
+            merchantIdentifier: "test_id"
+        )
+        configuration.dismissesAutomatically = false
+        
+        sut = try! ApplePayComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: configuration
+        )
+        sut.delegate = mockDelegate
+        
+        let firstViewController = sut.viewController
+        
+        let onDidSubmitExpectation = expectation(description: "didSubmit should be called")
+        mockDelegate.onDidSubmit = { _, _ in
+            onDidSubmitExpectation.fulfill()
+        }
+        
+        firstViewController.loadViewIfNeeded()
+        
+        // When - payment is authorized (moves to .submitted state)
+        let mockPayment = PKPaymentMock.create(withPaymentData: "test_token".data(using: .utf8)!)
+        sut.paymentAuthorizationViewController(
+            firstViewController as! PKPaymentAuthorizationViewController,
+            didAuthorizePayment: mockPayment
+        ) { _ in }
+        
+        waitForExpectations(timeout: 5)
+        
+        // Then simulate didFinish without calling finalizeIfNeeded
+        sut.paymentAuthorizationViewControllerDidFinish(firstViewController as! PKPaymentAuthorizationViewController)
+        
+        // Component should NOT be reusable - same view controller returned
+        let secondViewController = sut.viewController
+        XCTAssertTrue(firstViewController === secondViewController, "Same view controller should be returned after authorization")
+    }
+    
     func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
-        let mockViewController = UIViewController()
 
         let configuration = ApplePayComponent.Configuration(
             payment: Dummy.createTestApplePayPayment(),
@@ -481,7 +627,217 @@ class ApplePayComponentTest: XCTestCase {
         let contactFieldsPool: [PKContactField] = [.emailAddress, .name, .phoneNumber, .postalAddress, .phoneticName]
         return contactFieldsPool.randomElement().map { [$0] } ?? []
     }
+    
+    // MARK: - didAuthorize Tests
+    
+    func test_didAuthorizeSuccess_shouldTriggerDidSubmit() {
+        // Given
+        wait(for: .seconds(1))
+        
+        sut.delegate = mockDelegate
+        sut.authorizationDelegate = mockAuthorizationDelegate
+        
+        let didSubmitExpectation = expectation(description: "didSubmit should be called")
+        mockDelegate.onDidSubmit = { data, component in
+            XCTAssertTrue(data.paymentMethod is ApplePayDetails)
+            didSubmitExpectation.fulfill()
+        }
+        
+        mockAuthorizationDelegate.onAuthorize = { payment in
+            // Simulate successful validation
+            PKPaymentAuthorizationResult(status: .success, errors: nil)
+        }
+        
+        let mockPayment = PKPaymentMock.create(withPaymentData: "test_token".data(using: .utf8)!)
+        
+        // When
+        sut.paymentAuthorizationViewController(
+            sut.viewController as! PKPaymentAuthorizationViewController,
+            didAuthorizePayment: mockPayment
+        ) { result in
+            // This completion is called after finalize, not after authorize
+        }
+        
+        // Then
+        waitForExpectations(timeout: 5)
+        XCTAssertNotNil(mockAuthorizationDelegate.authorizedPayment)
+    }
+    
+    func test_didAuthorizeFailure_shouldNotTriggerDidSubmit() {
+        // Given
+        wait(for: .seconds(1))
+        
+        sut.delegate = mockDelegate
+        sut.authorizationDelegate = mockAuthorizationDelegate
+        
+        var didSubmitCalled = false
+        mockDelegate.onDidSubmit = { _, _ in
+            didSubmitCalled = true
+        }
+        
+        let authorizationCompletionExpectation = expectation(description: "Authorization completion should be called with failure")
+        
+        mockAuthorizationDelegate.onAuthorize = { payment in
+            // Simulate validation failure with specific errors
+            let error = PKPaymentRequest.paymentShippingAddressInvalidError(
+                withKey: CNPostalAddressPostalCodeKey,
+                localizedDescription: "Invalid postal code"
+            )
+            return PKPaymentAuthorizationResult(status: .failure, errors: [error])
+        }
+        
+        let mockPayment = PKPaymentMock.create(withPaymentData: "test_token".data(using: .utf8)!)
+        
+        // When
+        sut.paymentAuthorizationViewController(
+            sut.viewController as! PKPaymentAuthorizationViewController,
+            didAuthorizePayment: mockPayment
+        ) { result in
+            // Completion should be called with failure result
+            XCTAssertEqual(result.status, .failure)
+            XCTAssertEqual(result.errors?.count, 1)
+            authorizationCompletionExpectation.fulfill()
+        }
+        
+        // Then
+        waitForExpectations(timeout: 5)
+        XCTAssertFalse(didSubmitCalled, "didSubmit should not be called when authorization fails")
+        XCTAssertNotNil(mockAuthorizationDelegate.authorizedPayment)
+    }
+    
+    func test_didAuthorizeWithoutDelegate_shouldAutoApproveAndSubmit() {
+        // Given
+        wait(for: .seconds(1))
+        
+        sut.delegate = mockDelegate
+        // Note: authorizationDelegate is NOT set - should use default behavior
+        
+        let didSubmitExpectation = expectation(description: "didSubmit should be called")
+        mockDelegate.onDidSubmit = { data, component in
+            XCTAssertTrue(data.paymentMethod is ApplePayDetails)
+            didSubmitExpectation.fulfill()
+        }
+        
+        let mockPayment = PKPaymentMock.create(withPaymentData: "test_token".data(using: .utf8)!)
+        
+        // When
+        sut.paymentAuthorizationViewController(
+            sut.viewController as! PKPaymentAuthorizationViewController,
+            didAuthorizePayment: mockPayment
+        ) { result in
+            // Completion called after finalize
+        }
+        
+        // Then
+        waitForExpectations(timeout: 5)
+    }
+    
+    func test_didAuthorizeWithEmptyToken_shouldFailImmediately() {
+        // Given
+        wait(for: .seconds(1))
+        
+        sut.delegate = mockDelegate
+        sut.authorizationDelegate = mockAuthorizationDelegate
+        
+        let didFailExpectation = expectation(description: "didFail should be called")
+        mockDelegate.onDidFail = { error, component in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .invalidToken)
+            didFailExpectation.fulfill()
+        }
+        
+        var authorizeCalled = false
+        mockAuthorizationDelegate.onAuthorize = { _ in
+            authorizeCalled = true
+            return PKPaymentAuthorizationResult(status: .success, errors: nil)
+        }
+        
+        let mockPayment = PKPaymentMock.create(withPaymentData: Data()) // Empty token
+        
+        let completionExpectation = expectation(description: "Completion should be called with failure")
+        
+        // When
+        sut.paymentAuthorizationViewController(
+            sut.viewController as! PKPaymentAuthorizationViewController,
+            didAuthorizePayment: mockPayment
+        ) { result in
+            XCTAssertEqual(result.status, .failure)
+            completionExpectation.fulfill()
+        }
+        
+        // Then
+        waitForExpectations(timeout: 5)
+        XCTAssertFalse(authorizeCalled, "didAuthorize should not be called when token is empty")
+    }
+    
+}
 
+// MARK: - PKPayment Mock
+
+/// Mock PKPayment for testing purposes.
+/// PKPayment cannot be instantiated directly, so we use a subclass with mocked properties.
+private final class PKPaymentMock: PKPayment {
+    
+    private let _token: PKPaymentToken
+    private let _billingContact: PKContact?
+    private let _shippingContact: PKContact?
+    private let _shippingMethod: PKShippingMethod?
+    
+    override var token: PKPaymentToken { _token }
+    override var billingContact: PKContact? { _billingContact }
+    override var shippingContact: PKContact? { _shippingContact }
+    override var shippingMethod: PKShippingMethod? { _shippingMethod }
+    
+    private init(
+        token: PKPaymentToken,
+        billingContact: PKContact? = nil,
+        shippingContact: PKContact? = nil,
+        shippingMethod: PKShippingMethod? = nil
+    ) {
+        self._token = token
+        self._billingContact = billingContact
+        self._shippingContact = shippingContact
+        self._shippingMethod = shippingMethod
+        super.init()
+    }
+    
+    static func create(
+        withPaymentData paymentData: Data,
+        billingContact: PKContact? = nil,
+        shippingContact: PKContact? = nil,
+        shippingMethod: PKShippingMethod? = nil
+    ) -> PKPaymentMock {
+        let token = PKPaymentTokenMock(paymentData: paymentData)
+        return PKPaymentMock(
+            token: token,
+            billingContact: billingContact,
+            shippingContact: shippingContact,
+            shippingMethod: shippingMethod
+        )
+    }
+}
+
+/// Mock PKPaymentToken for testing purposes.
+private final class PKPaymentTokenMock: PKPaymentToken {
+    
+    private let _paymentData: Data
+    private let _paymentMethod: PKPaymentMethod
+    
+    override var paymentData: Data { _paymentData }
+    override var paymentMethod: PKPaymentMethod { _paymentMethod }
+    
+    init(paymentData: Data) {
+        self._paymentData = paymentData
+        self._paymentMethod = PKPaymentMethodMock()
+        super.init()
+    }
+}
+
+/// Mock PKPaymentMethod for testing purposes.
+private final class PKPaymentMethodMock: PKPaymentMethod {
+    
+    override var network: PKPaymentNetwork? { .visa }
+    override var type: PKPaymentMethodType { .credit }
+    override var displayName: String? { "Test Card" }
 }
 
 extension XCTestCase {

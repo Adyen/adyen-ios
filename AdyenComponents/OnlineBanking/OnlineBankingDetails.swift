@@ -17,6 +17,10 @@ public struct OnlineBankingDetails: PaymentMethodDetails {
 
     ///  Selected issuer
     public let issuer: String
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
 
     /// Initializes the Online Banking details.
     /// - Parameters:

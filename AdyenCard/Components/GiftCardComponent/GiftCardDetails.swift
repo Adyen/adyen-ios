@@ -27,6 +27,10 @@ public struct GiftCardDetails: PartialPaymentMethodDetails {
 
     /// The gift card brand.
     public let brand: String
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
 
     /// Initializes the gift card payment details.
     ///
@@ -63,6 +67,7 @@ public struct GiftCardDetails: PartialPaymentMethodDetails {
         case encryptedCardNumber
         case encryptedSecurityCode
         case brand
+        case sdkData
     }
 
 }
