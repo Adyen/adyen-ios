@@ -20,6 +20,10 @@ public struct UPIComponentDetails: PaymentMethodDetails {
 
     ///  The selected UPI app
     public let appId: String?
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
 
     /// Initializes the UPI Component Details.
     /// - Parameters:

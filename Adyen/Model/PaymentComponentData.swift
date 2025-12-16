@@ -8,7 +8,7 @@ import Foundation
 
 /**
  The data supplied by a payment component upon completion.
-
+ 
  - SeeAlso:
  [API Reference](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__example_payments-klarna)
  */
@@ -36,6 +36,7 @@ public struct PaymentComponentData {
     public let installments: Installments?
     
     /// Indicates whether the current SDK version suports native redirect without glue pages.
+    @available(*, deprecated, message: "This property is deprecated. Use the new paymentMethod.sdkData property instead.")
     public let supportNativeRedirect: Bool = true
 
     /// Shopper name.
@@ -60,6 +61,7 @@ public struct PaymentComponentData {
     public let browserInfo: BrowserInfo?
 
     /// A unique identifier for a checkout attempt.
+    @available(*, deprecated, message: "This property is deprecated. Use the new paymentMethod.sdkData property instead.")
     public var checkoutAttemptId: String? {
         paymentMethod.checkoutAttemptId
     }
@@ -98,6 +100,7 @@ public struct PaymentComponentData {
     ///   - browserInfo: The device default browser info.
     ///   - checkoutAttemptId: The checkoutAttempt identifier.
     ///   - installments: Installments selection if specified.
+    ///   - sdkData: The encoded SDK data if specified.
     @_spi(AdyenInternal)
     public init(
         paymentMethodDetails: some PaymentMethodDetails,
@@ -113,6 +116,19 @@ public struct PaymentComponentData {
         self.storePaymentMethod = storePaymentMethod
         self.browserInfo = browserInfo
         self.installments = installments
+    }
+    
+    internal func replacing(sdkData: SDKData) -> PaymentComponentData {
+        var paymentMethodDetails = paymentMethod
+        paymentMethodDetails.sdkData = sdkData.encodedValue
+        return PaymentComponentData(
+            paymentMethodDetails: paymentMethodDetails,
+            amount: amount,
+            order: order,
+            storePaymentMethod: storePaymentMethod,
+            browserInfo: browserInfo,
+            installments: installments
+        )
     }
 
     @_spi(AdyenInternal)
