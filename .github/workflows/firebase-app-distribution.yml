@@ -1,0 +1,70 @@
+name: 📱🔥 Firebase Distribution
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  distribute:
+    runs-on: macos-15-xlarge
+
+    steps:
+      - name: 🪾 Checkout selected branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}
+
+      - name: 🛠️ Install Firebase CLI
+        run: |
+          curl -sL https://firebase.tools | bash
+
+      - name: 📝 Create Firebase release name
+        id: firebase_release_name
+        run: |
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          FIREBASE_RELEASE_NAME="firebase-${BRANCH_NAME}-${SHORT_SHA}"
+          echo "FIREBASE_RELEASE_NAME=$FIREBASE_RELEASE_NAME" >> $GITHUB_ENV
+          echo "Release name set to $FIREBASE_RELEASE_NAME"
+
+      - name: 🚀 Distribute to Firebase
+        env:
+          # Apple credentials
+          APPLE_ID_USERNAME: ${{ secrets.APPLE_ID_USERNAME }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+
+          # Xcode signing key
+          XCODE_AUTHENTICATION_KEY_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ID }}
+          XCODE_AUTHENTICATION_KEY_ISSUER_ID: ${{ secrets.XCODE_AUTHENTICATION_KEY_ISSUER_ID }}
+          XCODE_AUTHENTICATION_KEY_BASE64: ${{ secrets.XCODE_AUTHENTICATION_KEY_BASE64 }}
+
+          # Build certificates & profiles
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          DEVELOPMENT_CERTIFICATE_BASE64: ${{ secrets.DEVELOPMENT_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.FIREBASE_PROVISIONING_PROFILE_BASE64 }} # Firebase uses an Ad-Hoc Provisioning Profile
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+
+           # Firebase configuration
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+          FIREBASE_RELEASE_NAME: ${{ env.FIREBASE_RELEASE_NAME }}
+
+          # App configuration
+          MERCHANT_CLIENT_KEY: ${{ secrets.DEMO_APP_TEST_ENV_CLIENT_KEY }}
+          MERCHANT_SERVER_HOST: ${{ secrets.MERCHANT_SERVER_HOST }}
+          MERCHANT_ACCOUNT: ${{ secrets.MERCHANT_ACCOUNT }}
+          ADYEN_SERVER_API_KEY: ${{ secrets.DEMO_SERVER_TEST_ENV_API_KEY }}
+          APPLE_TEAM_IDENTIFIER: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
+          ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+        run: |
+          chmod +x ./Scripts/publish-demo-app.sh
+          ./Scripts/publish-demo-app.sh "firebase"
