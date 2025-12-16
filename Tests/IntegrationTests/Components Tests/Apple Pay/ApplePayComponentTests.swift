@@ -67,7 +67,7 @@ class ApplePayComponentTest: XCTestCase {
             self.mockDelegate = nil // to prevent false triggering
         }
 
-        presentOnRoot(viewController)
+        viewController.loadViewIfNeeded()
         
         self.sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
 
@@ -84,7 +84,7 @@ class ApplePayComponentTest: XCTestCase {
         let viewController = sut!.viewController
         let onDidFinalizeExpectation = expectation(description: "Wait for didFinalize call")
 
-        presentOnRoot(viewController)
+        viewController.loadViewIfNeeded()
 
         sut.finalizeIfNeeded(with: true) {
             onDidFinalizeExpectation.fulfill()
@@ -455,7 +455,7 @@ class ApplePayComponentTest: XCTestCase {
             onDidFailExpectation.fulfill()
         }
         
-        presentOnRoot(viewController)
+        viewController.loadViewIfNeeded()
         
         // When
         sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
@@ -481,7 +481,7 @@ class ApplePayComponentTest: XCTestCase {
         let viewController = sut.viewController
         let onDidFinalizeExpectation = expectation(description: "finalize completion should be called")
         
-        presentOnRoot(viewController)
+        viewController.loadViewIfNeeded()
         
         sut.finalizeIfNeeded(with: true) {
             onDidFinalizeExpectation.fulfill()
@@ -516,7 +516,7 @@ class ApplePayComponentTest: XCTestCase {
             onDidFailExpectation.fulfill()
         }
         
-        presentOnRoot(firstViewController)
+        firstViewController.loadViewIfNeeded()
         
         // When - user cancels before authorization (state is .initial)
         sut.paymentAuthorizationViewControllerDidFinish(firstViewController as! PKPaymentAuthorizationViewController)
@@ -552,7 +552,7 @@ class ApplePayComponentTest: XCTestCase {
             onDidSubmitExpectation.fulfill()
         }
         
-        presentOnRoot(firstViewController)
+        firstViewController.loadViewIfNeeded()
         
         // When - payment is authorized (moves to .submitted state)
         let mockPayment = PKPaymentMock.create(withPaymentData: "test_token".data(using: .utf8)!)
