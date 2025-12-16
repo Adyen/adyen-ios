@@ -67,11 +67,13 @@ class ApplePayComponentTest: XCTestCase {
             self.mockDelegate = nil // to prevent false triggering
         }
 
-        presentOnRoot(viewController)
+        viewController.loadViewIfNeeded()
         
         self.sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
 
         waitForExpectations(timeout: 10)
+        
+        // After cancel, component should be reusable with a new view controller
         XCTAssertTrue(viewController !== self.sut.viewController)
     }
 
@@ -82,7 +84,7 @@ class ApplePayComponentTest: XCTestCase {
         let viewController = sut!.viewController
         let onDidFinalizeExpectation = expectation(description: "Wait for didFinalize call")
 
-        presentOnRoot(viewController)
+        viewController.loadViewIfNeeded()
 
         sut.finalizeIfNeeded(with: true) {
             onDidFinalizeExpectation.fulfill()
@@ -428,11 +430,151 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertTrue(compareCollections(supportedNetworks, [.masterCard, .elo]))
     }
 
+    // MARK: - dismissesAutomatically Tests
+    
+    func test_DismissesAutomatically_WhenFalse_ShouldCallDidFailImmediately() {
+        // Given
+        var configuration = ApplePayComponent.Configuration(
+            payment: Dummy.createTestApplePayPayment(),
+            merchantIdentifier: "test_id"
+        )
+        configuration.dismissesAutomatically = false
+        
+        sut = try! ApplePayComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: configuration
+        )
+        sut.delegate = mockDelegate
+        
+        let viewController = sut.viewController
+        let onDidFailExpectation = expectation(description: "didFail should be called")
+        
+        mockDelegate.onDidFail = { error, component in
+            XCTAssertEqual(error as! ComponentError, ComponentError.cancelled)
+            onDidFailExpectation.fulfill()
+        }
+        
+        viewController.loadViewIfNeeded()
+        
+        // When
+        sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
+        
+        // Then - should be called immediately (not waiting for dismiss animation)
+        waitForExpectations(timeout: 2)
+    }
+    
+    func test_DismissesAutomatically_WhenFalse_ShouldCallFinalizeCompletionImmediately() {
+        // Given
+        var configuration = ApplePayComponent.Configuration(
+            payment: Dummy.createTestApplePayPayment(),
+            merchantIdentifier: "test_id"
+        )
+        configuration.dismissesAutomatically = false
+        
+        sut = try! ApplePayComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: configuration
+        )
+        
+        let viewController = sut.viewController
+        let onDidFinalizeExpectation = expectation(description: "finalize completion should be called")
+        
+        viewController.loadViewIfNeeded()
+        
+        sut.finalizeIfNeeded(with: true) {
+            onDidFinalizeExpectation.fulfill()
+        }
+        
+        // When
+        sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
+        
+        // Then - should be called immediately
+        waitForExpectations(timeout: 2)
+    }
+    
+    func test_ComponentReuse_WhenCancelledBeforeAuthorization_ShouldAllowReuse() {
+        // Given
+        var configuration = ApplePayComponent.Configuration(
+            payment: Dummy.createTestApplePayPayment(),
+            merchantIdentifier: "test_id"
+        )
+        configuration.dismissesAutomatically = false
+        
+        sut = try! ApplePayComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: configuration
+        )
+        sut.delegate = mockDelegate
+        
+        let firstViewController = sut.viewController
+        
+        let onDidFailExpectation = expectation(description: "didFail should be called")
+        mockDelegate.onDidFail = { _, _ in
+            onDidFailExpectation.fulfill()
+        }
+        
+        firstViewController.loadViewIfNeeded()
+        
+        // When - user cancels before authorization (state is .initial)
+        sut.paymentAuthorizationViewControllerDidFinish(firstViewController as! PKPaymentAuthorizationViewController)
+        
+        waitForExpectations(timeout: 2)
+        
+        // Then - component should be reusable with a new view controller
+        let secondViewController = sut.viewController
+        XCTAssertTrue(firstViewController !== secondViewController, "A new view controller should be created after cancel")
+    }
+    
+    func test_ComponentReuse_WhenPaymentAuthorized_ShouldNotAllowReuse() {
+        // Given
+        wait(for: .seconds(1))
+        
+        var configuration = ApplePayComponent.Configuration(
+            payment: Dummy.createTestApplePayPayment(),
+            merchantIdentifier: "test_id"
+        )
+        configuration.dismissesAutomatically = false
+        
+        sut = try! ApplePayComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: configuration
+        )
+        sut.delegate = mockDelegate
+        
+        let firstViewController = sut.viewController
+        
+        let onDidSubmitExpectation = expectation(description: "didSubmit should be called")
+        mockDelegate.onDidSubmit = { _, _ in
+            onDidSubmitExpectation.fulfill()
+        }
+        
+        firstViewController.loadViewIfNeeded()
+        
+        // When - payment is authorized (moves to .submitted state)
+        let mockPayment = PKPaymentMock.create(withPaymentData: "test_token".data(using: .utf8)!)
+        sut.paymentAuthorizationViewController(
+            firstViewController as! PKPaymentAuthorizationViewController,
+            didAuthorizePayment: mockPayment
+        ) { _ in }
+        
+        waitForExpectations(timeout: 5)
+        
+        // Then simulate didFinish without calling finalizeIfNeeded
+        sut.paymentAuthorizationViewControllerDidFinish(firstViewController as! PKPaymentAuthorizationViewController)
+        
+        // Component should NOT be reusable - same view controller returned
+        let secondViewController = sut.viewController
+        XCTAssertTrue(firstViewController === secondViewController, "Same view controller should be returned after authorization")
+    }
+    
     func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
-        let mockViewController = UIViewController()
 
         let configuration = ApplePayComponent.Configuration(
             payment: Dummy.createTestApplePayPayment(),

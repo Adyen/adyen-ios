@@ -12,10 +12,26 @@ import PassKit
 extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     
     public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-        paymentAuthorizationViewController = nil
-        if case let State.finalized(completion) = state {
-            completion?()
+        if configuration.dismissesAutomatically {
+            controller.dismiss(animated: true) { [weak self] in
+                self?.handleViewControllerDidFinish()
+            }
         } else {
+            handleViewControllerDidFinish()
+        }
+    }
+    
+    private func handleViewControllerDidFinish() {
+        switch state {
+        case let .finalized(completion):
+            completion?()
+        case .initial:
+            // User cancelled without authorizing payment - allow component reuse
+            paymentAuthorizationViewController = nil
+            delegate?.didFail(with: ComponentError.cancelled, from: self)
+        case .submitted:
+            // Payment authorized but finalizeIfNeeded not called
+            // we call didFail here to not cause a breaking behavior change
             delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
     }
