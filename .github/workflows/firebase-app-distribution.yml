@@ -1,12 +1,9 @@
 name: 📱🔥 Firebase Distribution
 
 on:
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: "Branch to distribute"
-        required: true
-        default: "develop"
+  pull_request:
+    branches:
+      - develop
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
