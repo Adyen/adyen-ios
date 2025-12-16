@@ -9123,7 +9123,7 @@
 				);
 				MARKETING_VERSION = "";
 				OTHER_SWIFT_FLAGS = "-Xfrontend -warn-long-expression-type-checking=100";
-				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.enterprise.CheckoutDemoUIKit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.enterprise.checkout.demo.uikit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
