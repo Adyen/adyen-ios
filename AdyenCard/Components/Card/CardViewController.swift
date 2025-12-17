@@ -371,6 +371,7 @@ extension CardViewController {
             guard let pickerItem = items.billingAddressPickerItem else { return nil }
             return pickerItem.withSectionHeader(
                 title: localizedString(.billingAddressSectionTitle, localizationParameters),
+                // TODO: Localize subtitle after aligning on i18n cases with Android
                 subtitle: "Enter the billing address that is linked to the card"
             )
 

@@ -102,6 +102,11 @@ internal final class FormSectionHeaderItemView: UIView, AnyFormItemView {
     // MARK: - Setup
 
     private func setupView(title: String, subtitle: String?, contentView: AnyFormItemView) {
+        configureContent(title: title, subtitle: subtitle, contentView: contentView)
+        setupConstraints()
+    }
+
+    private func configureContent(title: String, subtitle: String?, contentView: AnyFormItemView) {
         preservesSuperviewLayoutMargins = true
 
         titleLabel.text = title
@@ -114,7 +119,9 @@ internal final class FormSectionHeaderItemView: UIView, AnyFormItemView {
 
         addSubview(headerStackView)
         addSubview(contentContainer)
+    }
 
+    private func setupConstraints() {
         // Header aligned with form margins
         NSLayoutConstraint.activate([
             headerStackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
