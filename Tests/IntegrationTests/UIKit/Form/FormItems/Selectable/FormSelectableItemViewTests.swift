@@ -96,10 +96,12 @@ class FormSelectableItemViewTests: XCTestCase {
 
     func test_valueUpdate() {
         XCTAssertNil(item.formattedValue)
-        XCTAssertEqual(sut.valueLabel.text, placeholderText)
+        XCTAssertNil(sut.valueLabel.text)
+        XCTAssertEqual(sut.footerLabel.text, placeholderText)
 
         item.formattedValue = ""
-        XCTAssertEqual(sut.valueLabel.text, placeholderText)
+        XCTAssertNil(sut.valueLabel.text)
+        XCTAssertEqual(sut.footerLabel.text, placeholderText)
 
         item.formattedValue = "Hello World"
         XCTAssertEqual(sut.valueLabel.text, item.formattedValue)
@@ -127,12 +129,14 @@ class FormPickerItemViewStyleTests: XCTestCase {
 
     func test_valueLabel_withNoFormattedValue_shouldShowPlaceholder() {
         XCTAssertNil(item.formattedValue)
-        XCTAssertEqual(sut.valueLabel.text, placeholderText)
+        XCTAssertNil(sut.valueLabel.text)
+        XCTAssertEqual(sut.footerLabel.text, placeholderText)
     }
 
     func test_valueLabel_withEmptyFormattedValue_shouldShowPlaceholder() {
         item.formattedValue = ""
-        XCTAssertEqual(sut.valueLabel.text, placeholderText)
+        XCTAssertNil(sut.valueLabel.text)
+        XCTAssertEqual(sut.footerLabel.text, placeholderText)
     }
 
     func test_valueLabel_withFormattedValue_shouldShowValue() {
@@ -171,7 +175,7 @@ class FormPickerItemViewStyleTests: XCTestCase {
         )
     }
 
-    func test_valueLabel_colorWithPlaceholder_shouldUseThemeTextSecondary() {
+    func test_footerLabel_colorWithPlaceholder_shouldUseThemeTextSecondary() {
         // Given
         let customItem = TestFormPickerItem(placeholder: "Placeholder")
         customItem.formattedValue = nil
@@ -180,7 +184,7 @@ class FormPickerItemViewStyleTests: XCTestCase {
         let customSut = FormPickerItemView(item: customItem)
 
         // Then - Now uses theme.colors.textSecondary
-        XCTAssertEqual(customSut.valueLabel.textColor, AdyenTheme.default.colors.textSecondary)
+        XCTAssertEqual(customSut.footerLabel.textColor, AdyenTheme.default.colors.textSecondary)
     }
 
     func test_valueLabel_whenFormattedValueChanges_shouldUpdateColorToThemeBodyColor() {
@@ -188,7 +192,7 @@ class FormPickerItemViewStyleTests: XCTestCase {
         let customItem = TestFormPickerItem()
         customItem.formattedValue = nil
         let customSut = FormPickerItemView(item: customItem)
-        XCTAssertEqual(customSut.valueLabel.textColor, AdyenTheme.default.colors.textSecondary) // placeholder color
+        XCTAssertEqual(customSut.footerLabel.textColor, AdyenTheme.default.colors.textSecondary) // placeholder color
 
         // When
         customItem.formattedValue = "New Value"

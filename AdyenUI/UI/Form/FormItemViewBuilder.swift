@@ -99,7 +99,7 @@ public struct FormItemViewBuilder {
 
     /// Builds `FormAddressPickerItemView` from `FormAddressPickerItem`.
     package func build(with item: FormAddressPickerItem) -> FormItemView<FormAddressPickerItem> {
-        FormAddressPickerItemView(item: item)
+        FormAddressPickerItemView(item: item, theme: theme)
     }
 
     /// Builds `FormPickerItemView` from `FormPickerItem`.

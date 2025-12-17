@@ -303,7 +303,10 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         formViewController.append(FormSpacerItem())
         
         if configuration.showBillingAddress {
-            formViewController.append(billingAddressItem)
+            formViewController.append(billingAddressItem.withSectionHeader(
+                title: localizedString(.billingAddressSectionTitle, configuration.localizationParameters),
+                subtitle: nil // TODO: Add subtitle localization key
+            ))
         }
         if configuration.showStorePaymentMethodField {
             formViewController.append(storeDetailsItem)
