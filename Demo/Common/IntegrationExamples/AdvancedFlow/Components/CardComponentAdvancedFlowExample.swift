@@ -69,15 +69,19 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 }
         }
         .theme(
-            AdyenTheme(colors: AdyenColors(primary: .systemPurple))
-                .bodyLabel(font: AdyenFonts.default.bodyEmphasized)
-                .destructiveButton(
-                    backgroundColor: .systemRed,
-                    textColor: .white,
-                    disabledBackgroundColor: .systemGray,
-                    disabledTextColor: .lightGray
-                )
-                .cornerRadius(8.0)
+            AdyenTheme(
+                colors:
+                .default
+//                AdyenColors(primary: .systemPurple)
+            )
+            .bodyLabel(font: AdyenFonts.default.bodyEmphasized)
+            .destructiveButton(
+                backgroundColor: .systemRed,
+                textColor: .white,
+                disabledBackgroundColor: .systemGray,
+                disabledTextColor: .lightGray
+            )
+            .cornerRadius(8.0)
         )
         .onSubmit { [weak self] data, handler in
             self?.callPayments(with: data, completion: handler)
