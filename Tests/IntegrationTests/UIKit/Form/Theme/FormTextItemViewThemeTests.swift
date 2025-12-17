@@ -27,7 +27,8 @@ final class FormTextItemViewThemeTests: XCTestCase {
 
         let containerView = getContainerView(from: sut)
         XCTAssertEqual(containerView?.backgroundColor, AdyenColors.default.container)
-        XCTAssertEqual(containerView?.layer.borderColor, AdyenColors.default.containerOutline.cgColor)
+        // Error state should show destructive border color
+        XCTAssertEqual(containerView?.layer.borderColor, AdyenColors.default.destructive.cgColor)
     }
 
     func test_formTextItemView_withCustomColors_shouldApplyToUI() {
@@ -41,7 +42,7 @@ final class FormTextItemViewThemeTests: XCTestCase {
         let item = FormTextInputItem()
         item.validator = LengthValidator(minimumLength: 1, maximumLength: 100)
         item.validationFailureMessage = "Required"
-        
+
         // When
         let sut = makeSUT(item: item, colors: customColors)
 
@@ -53,7 +54,8 @@ final class FormTextItemViewThemeTests: XCTestCase {
 
         let containerView = getContainerView(from: sut)
         XCTAssertEqual(containerView?.backgroundColor, .systemYellow)
-        XCTAssertEqual(containerView?.layer.borderColor, UIColor.systemPurple.cgColor)
+        // Error state should show destructive border color
+        XCTAssertEqual(containerView?.layer.borderColor, UIColor.systemOrange.cgColor)
     }
 
     func test_formTextItemView_borderColor_shouldUpdateOnEditingStateChange() {

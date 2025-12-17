@@ -82,6 +82,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         // Container
         entryTextStackView.backgroundColor = style.containerColor
         entryTextStackView.layer.borderWidth = style.borderWidth
+
         // Corner radius
         switch style.cornerRadius {
         case let .fixed(radius):
@@ -91,7 +92,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         }
 
         // Border styling
-        updateBorderStyling()
+        updateBorderColor()
     }
     
     override public func reset() {
@@ -270,7 +271,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// Subclasses can override this method to stay notified when the text field resigns its first responder status.
     open func textFieldDidEndEditing(_ textField: UITextField) {
         isEditing = false
-        updateBorderStyling()
+        updateBorderColor()
         item.onDidEndEditing?()
     }
     
@@ -278,7 +279,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// Subclasses can override this method to stay notified when textField became the first responder.
     open func textFieldDidBeginEditing(_ textField: UITextField) {
         isEditing = true
-        updateBorderStyling()
+        updateBorderColor()
         item.onDidBeginEditing?()
     }
     
@@ -291,9 +292,12 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         
         if forceShowValidationStatus {
             accessory = item.isValid() ? .valid : .invalid
+            isShowingValidationError = !item.isValid()
         } else {
             removeAccessoryIfNeeded()
+            isShowingValidationError = false
         }
+        updateBorderColor()
         
         super.updateValidationStatus(forced: forceShowValidationStatus)
     }
@@ -307,6 +311,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
 
     override internal func resetValidationStatus() {
         super.resetValidationStatus()
+        isShowingValidationError = false
+        updateBorderColor()
         removeAccessoryIfNeeded()
     }
 
@@ -317,9 +323,21 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
 
     // MARK: - Border Styling
 
-    /// Updates the border color based on editing state.
-    private func updateBorderStyling() {
-        let borderColor = isEditing ? theme.elements.textField.borderActiveColor : theme.elements.textField.borderColor
+    /// Tracks whether a validation error is currently being shown.
+    private var isShowingValidationError = false
+
+    /// Updates the border color based on both editing state and validation state.
+    /// Priority: editing (active color) > validation error (error color) > default (normal color)
+    private func updateBorderColor() {
+        let style = theme.elements.textField
+        let borderColor: UIColor
+        if isEditing {
+            borderColor = style.borderActiveColor
+        } else if isShowingValidationError {
+            borderColor = style.errorColor
+        } else {
+            borderColor = style.borderColor
+        }
         entryTextStackView.layer.borderColor = borderColor.cgColor
     }
 }
