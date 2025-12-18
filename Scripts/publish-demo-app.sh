@@ -25,11 +25,11 @@ fi
 if [[ "$DISTRIBUTION_TYPE" == "testflight" ]]; then
   echo "📦 Using TestFlight export options"
   EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions.plist"
-  BUNDLE_ID_ARGS=()  # Use default bundle ID
+  EXPORT_CONFIGURATION="Release"
 else
   echo "📦 Using Firebase export options"
+  EXPORT_CONFIGURATION="Firebase"
   EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions-Firebase.plist"
-  BUNDLE_ID_ARGS=("PRODUCT_BUNDLE_IDENTIFIER=com.adyen.enterprise.checkout.demo.uikit")
 fi
 
 echo "📋 Using export options: $EXPORT_OPTIONS_PLIST"
@@ -97,7 +97,7 @@ echo "🧹 Cleaning project..."
 xcodebuild clean -project Adyen.xcodeproj \
   -scheme AdyenUIHost \
   -sdk iphoneos \
-  -configuration Release \
+  -configuration "$EXPORT_CONFIGURATION" \
   -skipPackagePluginValidation
 
 # ---- Prepare build folder ----
@@ -110,14 +110,12 @@ echo "📦 Archiving app (signing disabled)..."
 xcodebuild archive \
   -project Adyen.xcodeproj \
   -scheme AdyenUIHost \
-  -configuration Release \
+  -configuration "$EXPORT_CONFIGURATION" \
   -archivePath "$ARCHIVE_PATH" \
   -destination "generic/platform=iOS" \
   -sdk iphoneos \
   -skipPackagePluginValidation \
   CODE_SIGNING_ALLOWED=NO \
-  SKIP_INSTALL=NO \
-  "${BUNDLE_ID_ARGS[@]}" \
   MERCHANT_CLIENT_KEY="$MERCHANT_CLIENT_KEY" \
   MERCHANT_SERVER_HOST="$MERCHANT_SERVER_HOST" \
   MERCHANT_ACCOUNT="$MERCHANT_ACCOUNT" \
