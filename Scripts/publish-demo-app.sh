@@ -97,7 +97,7 @@ echo "🧹 Cleaning project..."
 xcodebuild clean -project Adyen.xcodeproj \
   -scheme AdyenUIHost \
   -sdk iphoneos \
-  -configuration "Release" \
+  -configuration Release \
   -skipPackagePluginValidation
 
 # ---- Prepare build folder ----
@@ -107,12 +107,13 @@ mkdir -p "$BUILD_PATH"
 
 # ---- Archive app ----
 echo "📦 Archiving app (signing disabled)..."
-xcodebuild archive -project Adyen.xcodeproj \
+xcodebuild archive \
+  -project Adyen.xcodeproj \
   -scheme AdyenUIHost \
+  -configuration Release \
+  -archivePath "$ARCHIVE_PATH" \
   -destination "generic/platform=iOS" \
   -sdk iphoneos \
-  -configuration "Release" \
-  -archivePath "$ARCHIVE_PATH" \
   -skipPackagePluginValidation \
   CODE_SIGNING_ALLOWED=NO \
   SKIP_INSTALL=NO \
@@ -138,7 +139,8 @@ xcodebuild -exportArchive \
   -authenticationKeyID "$XCODE_AUTHENTICATION_KEY_ID" \
   -authenticationKeyIssuerID "$XCODE_AUTHENTICATION_KEY_ISSUER_ID" \
   -authenticationKeyPath "$AUTH_KEY_PATH" \
-  -skipPackagePluginValidation \
+  -skipPackagePluginValidation
+echo "📤 Exporting .ipa..."
 
 # ---- Distribution ----
 if [[ "$DISTRIBUTION_TYPE" == "testflight" ]]; then
