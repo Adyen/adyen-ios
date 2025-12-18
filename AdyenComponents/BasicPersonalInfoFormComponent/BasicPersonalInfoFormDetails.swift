@@ -34,6 +34,10 @@ public struct BasicPersonalInfoFormDetails: PaymentMethodDetails, ShopperInforma
 
     /// The telephone number.
     public let telephoneNumber: String?
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
 
     /// Initializes the  generic personal details.
     ///
@@ -60,6 +64,7 @@ public struct BasicPersonalInfoFormDetails: PaymentMethodDetails, ShopperInforma
 
     private enum CodingKeys: String, CodingKey {
         case type
+        case sdkData
     }
 
 }

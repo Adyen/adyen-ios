@@ -27,6 +27,12 @@ internal struct ApplePaySettingsView: View {
                     Toggle(isOn: $viewModel.allowOnboarding) {
                         Text("Allow OnBoarding")
                     }
+                    Toggle(isOn: $viewModel.applePayDidAuthorizeSuccessful) {
+                        Text("Return success from didAuthorize")
+                        Text("When false, simulates a shipping error returned from the didAuthorize delegate method.")
+                            .foregroundColor(.gray)
+                            .font(.footnote)
+                    }
                 }
             }
             .navigationBarTitle("")

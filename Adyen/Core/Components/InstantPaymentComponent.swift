@@ -82,6 +82,10 @@ public struct InstantPaymentDetails: PaymentMethodDetails {
     
     @_spi(AdyenInternal)
     public var checkoutAttemptId: String?
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
 
     /// The payment method type name.
     public let type: PaymentMethodType
