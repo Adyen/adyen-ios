@@ -115,6 +115,7 @@ xcodebuild archive -project Adyen.xcodeproj \
   -archivePath "$ARCHIVE_PATH" \
   -skipPackagePluginValidation \
   CODE_SIGNING_ALLOWED=NO \
+  SKIP_INSTALL=NO \
   "${BUNDLE_ID_ARGS[@]}" \
   MERCHANT_CLIENT_KEY="$MERCHANT_CLIENT_KEY" \
   MERCHANT_SERVER_HOST="$MERCHANT_SERVER_HOST" \
@@ -134,16 +135,10 @@ xcodebuild -exportArchive \
   -exportOptionsPlist "$EXPORT_OPTIONS_PLIST" \
   -exportPath "$BUILD_PATH" \
   -allowProvisioningUpdates \
-  -skipPackagePluginValidation \
   -authenticationKeyID "$XCODE_AUTHENTICATION_KEY_ID" \
   -authenticationKeyIssuerID "$XCODE_AUTHENTICATION_KEY_ISSUER_ID" \
   -authenticationKeyPath "$AUTH_KEY_PATH" \
-  MERCHANT_CLIENT_KEY="$MERCHANT_CLIENT_KEY" \
-  MERCHANT_SERVER_HOST="$MERCHANT_SERVER_HOST" \
-  MERCHANT_ACCOUNT="$MERCHANT_ACCOUNT" \
-  ADYEN_SERVER_API_KEY="$ADYEN_SERVER_API_KEY" \
-  APPLE_TEAM_IDENTIFIER="$APPLE_TEAM_IDENTIFIER" \
-  APPLE_PAY_MERCHANT_IDENTIFIER="${APPLE_PAY_MERCHANT_IDENTIFIER:-"merchant.com.adyen.test"}"
+  -skipPackagePluginValidation \
 
 # ---- Distribution ----
 if [[ "$DISTRIBUTION_TYPE" == "testflight" ]]; then
