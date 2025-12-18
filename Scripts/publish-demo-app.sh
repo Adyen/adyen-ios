@@ -21,13 +21,15 @@ if [[ "$DISTRIBUTION_TYPE" != "testflight" && "$DISTRIBUTION_TYPE" != "firebase"
   exit 1
 fi
 
-# Set export options based on distribution type
+# ---- Determine export options ----
 if [[ "$DISTRIBUTION_TYPE" == "testflight" ]]; then
-  BUILD_CONFIGURATION="Release"
+  echo "📦 Using TestFlight export options"
   EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions.plist"
+  BUNDLE_ID_ARGS=()  # Use default bundle ID
 else
-  BUILD_CONFIGURATION="Enterprise"
+  echo "📦 Using Firebase export options"
   EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions-Firebase.plist"
+  BUNDLE_ID_ARGS=("PRODUCT_BUNDLE_IDENTIFIER=com.adyen.enterprise.checkout.demo.uikit")
 fi
 
 echo "📋 Using export options: $EXPORT_OPTIONS_PLIST"
@@ -95,7 +97,7 @@ echo "🧹 Cleaning project..."
 xcodebuild clean -project Adyen.xcodeproj \
   -scheme AdyenUIHost \
   -sdk iphoneos \
-  -configuration "$BUILD_CONFIGURATION" \
+  -configuration "Release" \
   -skipPackagePluginValidation
 
 # ---- Prepare build folder ----
@@ -109,10 +111,11 @@ xcodebuild archive -project Adyen.xcodeproj \
   -scheme AdyenUIHost \
   -destination "generic/platform=iOS" \
   -sdk iphoneos \
-  -configuration "$BUILD_CONFIGURATION" \
+  -configuration "Release" \
   -archivePath "$ARCHIVE_PATH" \
   -skipPackagePluginValidation \
   CODE_SIGNING_ALLOWED=NO \
+  "${BUNDLE_ID_ARGS[@]}" \
   MERCHANT_CLIENT_KEY="$MERCHANT_CLIENT_KEY" \
   MERCHANT_SERVER_HOST="$MERCHANT_SERVER_HOST" \
   MERCHANT_ACCOUNT="$MERCHANT_ACCOUNT" \
@@ -135,12 +138,6 @@ xcodebuild -exportArchive \
   -authenticationKeyID "$XCODE_AUTHENTICATION_KEY_ID" \
   -authenticationKeyIssuerID "$XCODE_AUTHENTICATION_KEY_ISSUER_ID" \
   -authenticationKeyPath "$AUTH_KEY_PATH" \
-  MERCHANT_CLIENT_KEY="$MERCHANT_CLIENT_KEY" \
-  MERCHANT_SERVER_HOST="$MERCHANT_SERVER_HOST" \
-  MERCHANT_ACCOUNT="$MERCHANT_ACCOUNT" \
-  ADYEN_SERVER_API_KEY="$ADYEN_SERVER_API_KEY" \
-  APPLE_TEAM_IDENTIFIER="$APPLE_TEAM_IDENTIFIER" \
-  APPLE_PAY_MERCHANT_IDENTIFIER="${APPLE_PAY_MERCHANT_IDENTIFIER:-"merchant.com.adyen.test"}"
 
 # ---- Distribution ----
 if [[ "$DISTRIBUTION_TYPE" == "testflight" ]]; then
