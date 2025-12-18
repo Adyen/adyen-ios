@@ -146,12 +146,14 @@ class PreApplePayComponentTests: XCTestCase {
         )
 
         // When
-        XCTAssertNil(paymentComponentData.checkoutAttemptId)
+        let sdkData = paymentComponentData.paymentMethod.sdkData
+        let sdkDataDecoded = decodeSDKData(from: sdkData)
+        XCTAssertNil(sdkData)
         sut.didSubmit(paymentComponentData, from: sut)
 
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
-            XCTAssertEqual(expectedCheckoutAttemptId, data.checkoutAttemptId)
+            XCTAssertEqual(expectedCheckoutAttemptId, sdkDataDecoded?.analytics.checkoutAttemptId)
         }
     }
 
@@ -173,12 +175,23 @@ class PreApplePayComponentTests: XCTestCase {
         )
 
         // When
-        XCTAssertNil(paymentComponentData.checkoutAttemptId)
+        let sdkData = paymentComponentData.paymentMethod.sdkData
+        let sdkDataDecoded = decodeSDKData(from: sdkData)
+        XCTAssertNil(sdkData)
         sut.didSubmit(paymentComponentData, from: sut)
 
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
-            XCTAssertNil(data.checkoutAttemptId)
+            XCTAssertNil(sdkDataDecoded?.analytics.checkoutAttemptId)
         }
+    }
+    
+    private func decodeSDKData(from sdkDataString: String?) -> SDKData? {
+        guard let sdkDataString,
+              let sdkDataDecoded: SDKData = try? AdyenCoder.decodeBase64(sdkDataString) else {
+            XCTFail("SDKData should be present and decodable")
+            return nil
+        }
+        return sdkDataDecoded
     }
 }

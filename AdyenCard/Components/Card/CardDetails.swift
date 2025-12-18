@@ -55,10 +55,6 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
 
     /// Social security number of the shopper, if required by country.
     public let socialSecurityNumber: String?
-
-    /// The 3DS2 SDK version.
-    @available(*, deprecated, message: "This property is deprecated. Use the new sdkData property instead.")
-    public let threeDS2SDKVersion: String = threeDS2SdkVersion
     
     /// Brand of the card.
     public let selectedBrand: String?
@@ -155,7 +151,6 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         case fundingSource
         case taxNumber
         case password = "encryptedPassword"
-        case threeDS2SDKVersion = "threeDS2SdkVersion"
         case sdkData
     }
 

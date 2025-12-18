@@ -25,20 +25,10 @@ public struct PaymentComponentData {
 
     /// The partial payment order if any.
     public let order: PartialPaymentOrder?
-
-    /// The remaining amount if there is an order, the full amount otherwise.
-    @available(*, deprecated, message: "This property is deprecated. Use the amount property if needed.")
-    public var amountToPay: Amount? {
-        order?.remainingAmount ?? amount
-    }
     
     /// The installments object.
     public let installments: Installments?
     
-    /// Indicates whether the current SDK version suports native redirect without glue pages.
-    @available(*, deprecated, message: "This property is deprecated. Use the new paymentMethod.sdkData property instead.")
-    public let supportNativeRedirect: Bool = true
-
     /// Shopper name.
     public var shopperName: ShopperName? {
         guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }
@@ -59,12 +49,6 @@ public struct PaymentComponentData {
     
     /// Indicates the device default browser info.
     public let browserInfo: BrowserInfo?
-
-    /// A unique identifier for a checkout attempt.
-    @available(*, deprecated, message: "This property is deprecated. Use the new paymentMethod.sdkData property instead.")
-    public var checkoutAttemptId: String? {
-        paymentMethod.checkoutAttemptId
-    }
 
     /// The billing address information.
     public var billingAddress: PostalAddress? {
