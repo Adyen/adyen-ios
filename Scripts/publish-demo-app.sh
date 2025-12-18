@@ -140,7 +140,6 @@ xcodebuild -exportArchive \
   -authenticationKeyIssuerID "$XCODE_AUTHENTICATION_KEY_ISSUER_ID" \
   -authenticationKeyPath "$AUTH_KEY_PATH" \
   -skipPackagePluginValidation
-echo "📤 Exporting .ipa..."
 
 # ---- Distribution ----
 if [[ "$DISTRIBUTION_TYPE" == "testflight" ]]; then
