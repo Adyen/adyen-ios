@@ -61,7 +61,6 @@ class PaymentComponentSubjectTests: XCTestCase {
             }
             
             XCTAssertEqual(sdkDataDecoded.analytics.checkoutAttemptId, "fetch-checkoutAttemptId-failed")
-            XCTAssertEqual(data.checkoutAttemptId, "fetch-checkoutAttemptId-failed")
             didSubmitExpectation.fulfill()
         }
         
@@ -136,8 +135,6 @@ class PaymentComponentSubjectTests: XCTestCase {
             // Verify SDKData contains checkoutAttemptId
             XCTAssertEqual(sdkDataDecoded.analytics.checkoutAttemptId, expectedCheckoutAttemptId)
             XCTAssertEqual(sdkDataDecoded.schemaVersion, 1)
-            // Verify through the deprecated property for backward compatibility
-            XCTAssertEqual(data.checkoutAttemptId, expectedCheckoutAttemptId)
             didSubmitExpectation.fulfill()
         }
         

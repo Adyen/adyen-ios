@@ -18,18 +18,6 @@ public final class UPIComponent: PaymentComponent,
     
     /// The flow types for UPI component.
     public enum UPIFlowType: Int {
-        /// Transaction handled through UPI-enabled apps.
-        @available(*, deprecated, renamed: "upiIntent", message: "Use `.upiIntent` instead.")
-        case upiApps = -1 // Old placeholder value
-
-        /// Transaction initiated by scanning a QR code.
-        @available(
-            *,
-            deprecated,
-            renamed: "upiCollect",
-            message: "The `.qrCode` is deprecated and not available any more. Use, `.upiIntent` instead."
-        )
-        case qrCode = -2 // Old placeholder value
 
         /// Transaction handled through UPI-enabled apps.
         case upiIntent = 0
@@ -39,9 +27,9 @@ public final class UPIComponent: PaymentComponent,
 
         internal var value: String {
             switch self {
-            case .upiIntent, .upiApps:
+            case .upiIntent:
                 return "upi_intent"
-            case .upiCollect, .qrCode:
+            case .upiCollect:
                 return "upi_collect"
             }
         }
@@ -356,13 +344,13 @@ private extension UPIComponent {
     
     func updateInterface() {
         switch selectedUPIFlow {
-        case .upiIntent, .upiApps:
+        case .upiIntent:
             upiAppsList.forEach { $0.isHidden.wrappedValue = false }
             intentInstructionsLabelItem.isVisible = true
             collectInstructionsLabelItem.isVisible = false
             vpaInputItem.isVisible = false
             focusVpaInput()
-        case .upiCollect, .qrCode:
+        case .upiCollect:
             upiAppsList.forEach { $0.isHidden.wrappedValue = true }
             intentInstructionsLabelItem.isVisible = false
             collectInstructionsLabelItem.isVisible = true
@@ -391,23 +379,23 @@ private extension UPIComponent {
     
     func canSubmit() -> Bool {
         switch selectedUPIFlow {
-        case .upiIntent, .upiApps:
+        case .upiIntent:
             return currentSelectedItemIdentifier != nil
-        case .upiCollect, .qrCode:
+        case .upiCollect:
             return vpaInputItem.isValid()
         }
     }
     
     func submitPayment() {
         switch selectedUPIFlow {
-        case .upiIntent, .upiApps:
+        case .upiIntent:
             let details = UPIComponentDetails(
                 type: selectedUPIFlow.value,
                 virtualPaymentAddress: nil,
                 appId: currentSelectedItemIdentifier
             )
             submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
-        case .upiCollect, .qrCode:
+        case .upiCollect:
             let details = UPIComponentDetails(
                 type: selectedUPIFlow.value,
                 virtualPaymentAddress: vpaInputItem.value,

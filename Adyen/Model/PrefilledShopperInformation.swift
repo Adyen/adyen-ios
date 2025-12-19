@@ -29,10 +29,6 @@ public struct PrefilledShopperInformation: ShopperInformation {
     
     /// The email address.
     public var emailAddress: String?
-    
-    /// The telephone number.
-    @available(*, deprecated, renamed: "phoneNumber")
-    public var telephoneNumber: String?
 
     /// The phone number.
     public var phoneNumber: PhoneNumber?
@@ -48,35 +44,6 @@ public struct PrefilledShopperInformation: ShopperInformation {
 
     /// The card information
     public var card: CardInformation?
-    
-    /// Initializes the ShopperInfo struct
-    /// - Parameters:
-    ///   - shopperName: The name of the shopper, optional.
-    ///   - emailAddress: The email of the shopper, optional.
-    ///   - telephoneNumber: The telephone number of the shopper, optional.
-    ///   - billingAddress: The billing address of the shopper, optional.
-    ///   - deliveryAddress: The delivery address of the shopper, optional.
-    ///   - socialSecurityNumber: The social security number of the shopper, optional.
-    ///   - card: Shopper's card basic information, optional.
-    // swiftlint:disable:next line_length
-    @available(*, deprecated, renamed: "init(shopperName:emailAddress:phoneNumber:billingAddress:deliveryAddress:socialSecurityNumber:card:)")
-    public init(
-        shopperName: ShopperName? = nil,
-        emailAddress: String? = nil,
-        telephoneNumber: String? = nil,
-        billingAddress: PostalAddress? = nil,
-        deliveryAddress: PostalAddress? = nil,
-        socialSecurityNumber: String? = nil,
-        card: CardInformation? = nil
-    ) {
-        self.shopperName = shopperName
-        self.emailAddress = emailAddress
-        self.telephoneNumber = telephoneNumber
-        self.billingAddress = billingAddress
-        self.deliveryAddress = deliveryAddress
-        self.socialSecurityNumber = socialSecurityNumber
-        self.card = card
-    }
 
     /// Initializes the ShopperInfo struct
     /// - Parameters:
