@@ -18,7 +18,7 @@ class ApplePayComponentTest: XCTestCase {
     var sut: ApplePayComponent!
     lazy var amount = Amount(value: 2, currencyCode: "USD")
     lazy var payment = Payment(amount: amount, countryCode: getRandomCountryCode())
-    let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: nil)
+    let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: ["visa", "amex", "mc"])
 
     private var emptyVC: UIViewController {
         let vc = UIViewController()
@@ -52,6 +52,27 @@ class ApplePayComponentTest: XCTestCase {
         
         UIApplication.shared.adyen.mainKeyWindow?.rootViewController?.dismiss(animated: false)
         setupRootViewController(emptyVC)
+    }
+
+    func testApplePay_givenBrandsIsEmpty_shouldThrowUserCannotMakePayment() throws {
+        // Given
+        let brands: [String]? = []
+        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: brands)
+        let configuration = ApplePayComponent.Configuration(
+            payment: Dummy.createTestApplePayPayment(),
+            merchantIdentifier: "test_id"
+        )
+
+        // When / Then
+        XCTAssertThrowsError(
+            try ApplePayComponent(
+                paymentMethod: paymentMethod,
+                context: Dummy.context,
+                configuration: configuration
+            )
+        ) { error in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .userCannotMakePayment)
+        }
     }
 
     func testApplePayViewControllerShouldCallDelegateDidFail() {
@@ -205,15 +226,15 @@ class ApplePayComponentTest: XCTestCase {
 
         waitForExpectations(timeout: 10)
     }
-    
+
     func testRequiresModalPresentation() {
         XCTAssertEqual(sut?.requiresModalPresentation, false)
     }
-    
+
     func testPresentationViewControllerValidPayment() {
         XCTAssertTrue(sut?.viewController is PKPaymentAuthorizationViewController)
     }
-    
+
     func testPaymentRequestViaSummeryItems() throws {
         let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
         let countryCode = getRandomCountryCode()
@@ -231,7 +252,7 @@ class ApplePayComponentTest: XCTestCase {
         )
         configuration.requiredBillingContactFields = expectedRequiredBillingFields
         configuration.requiredShippingContactFields = expectedRequiredShippingFields
-        let paymentRequest = configuration.paymentRequest(with: paymentMethod.supportedNetworks)
+        let paymentRequest = configuration.paymentRequest(with: paymentMethod.supportedNetworks())
         XCTAssertEqual(paymentRequest.paymentSummaryItems, expectedSummaryItems)
         XCTAssertEqual(paymentRequest.merchantCapabilities, PKMerchantCapability.capability3DS)
         XCTAssertEqual(paymentRequest.currencyCode, currencyCode)
@@ -240,13 +261,13 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertEqual(paymentRequest.requiredBillingContactFields, expectedRequiredBillingFields)
         XCTAssertEqual(paymentRequest.requiredShippingContactFields, expectedRequiredShippingFields)
     }
-    
+
     func testNetworks() {
         if #available(iOS 15.1, *) {
             let request = PKPaymentRequest()
             let collection: [PKPaymentNetwork] = [.dankort]
             XCTAssertEqual(collection.count, 1)
-            
+
             request.supportedNetworks = collection
             XCTAssertEqual(request.supportedNetworks.count, 1)
         }
@@ -262,7 +283,7 @@ class ApplePayComponentTest: XCTestCase {
         )
         configuration.requiredBillingContactFields = expectedRequiredBillingFields
         configuration.requiredShippingContactFields = expectedRequiredShippingFields
-        let paymentRequest = configuration.paymentRequest(with: paymentMethod.supportedNetworks)
+        let paymentRequest = configuration.paymentRequest(with: paymentMethod.supportedNetworks())
 
         XCTAssertEqual(paymentRequest.paymentSummaryItems.count, 1)
         XCTAssertEqual(paymentRequest.paymentSummaryItems[0].label, "TEST")
@@ -275,13 +296,13 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertEqual(paymentRequest.requiredBillingContactFields, expectedRequiredBillingFields)
         XCTAssertEqual(paymentRequest.requiredShippingContactFields, expectedRequiredShippingFields)
     }
-    
+
     func testNewInitSuccess() throws {
         guard #available(iOS 16.0, *) else {
             // XCTestCase does not respect @available so we have to skip the test like this
             throw XCTSkip("Unsupported iOS version")
         }
-        
+
         let request = PKPaymentRequest()
         request.merchantIdentifier = "test_id"
         request.countryCode = getRandomCountryCode()
@@ -291,24 +312,24 @@ class ApplePayComponentTest: XCTestCase {
             PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
             PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
         ]
-        
+
         request.recurringPaymentRequest = PKRecurringPaymentRequest(
             paymentDescription: "recurring",
             regularBilling: .init(label: "recurring item", amount: 1500, type: .final),
             managementURL: URL(string: "test")!
         )
-        
+
         let config = try! ApplePayComponent.Configuration(paymentRequest: request)
-        
+
         let component = try! ApplePayComponent(paymentMethod: paymentMethod, context: Dummy.context, configuration: config)
-        
+
         XCTAssertEqual(component.paymentRequest.countryCode, request.countryCode)
         XCTAssertEqual(component.paymentRequest.currencyCode, request.currencyCode)
         XCTAssertEqual(component.paymentRequest.paymentSummaryItems, request.paymentSummaryItems)
         XCTAssertNotNil(component.paymentRequest.recurringPaymentRequest)
-        XCTAssertEqual(component.paymentRequest.supportedNetworks, paymentMethod.supportedNetworks)
+        XCTAssertEqual(component.paymentRequest.supportedNetworks, paymentMethod.supportedNetworks())
     }
-    
+
     func testNewInitMissingMerchantIdenfitifer() {
         let request = PKPaymentRequest()
         request.currencyCode = getRandomCurrencyCode()
@@ -317,10 +338,10 @@ class ApplePayComponentTest: XCTestCase {
             PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
             PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
         ]
-        
+
         XCTAssertThrowsError(try ApplePayComponent.Configuration(paymentRequest: request))
     }
-    
+
     func testNewInitMissingCountryCode() {
         let request = PKPaymentRequest()
         request.merchantIdentifier = "test_id"
@@ -329,10 +350,10 @@ class ApplePayComponentTest: XCTestCase {
             PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
             PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
         ]
-        
+
         XCTAssertThrowsError(try ApplePayComponent.Configuration(paymentRequest: request))
     }
-    
+
     func testNewInitMissingCurrencyCode() {
         let request = PKPaymentRequest()
         request.merchantIdentifier = "test_id"
@@ -341,16 +362,16 @@ class ApplePayComponentTest: XCTestCase {
             PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
             PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
         ]
-        
+
         XCTAssertThrowsError(try ApplePayComponent.Configuration(paymentRequest: request))
     }
-    
+
     func testNewInitMissingSummaryItems() {
         let request = PKPaymentRequest()
         request.merchantIdentifier = "test_id"
         request.currencyCode = getRandomCurrencyCode()
         request.countryCode = getRandomCountryCode()
-        
+
         XCTAssertThrowsError(try ApplePayComponent.Configuration(paymentRequest: request))
     }
 
@@ -424,7 +445,7 @@ class ApplePayComponentTest: XCTestCase {
 
     func testBrandsFiltering() {
         let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: ["mc", "elo", "unknown_network"])
-        let supportedNetworks = paymentMethod.supportedNetworks
+        let supportedNetworks = paymentMethod.supportedNetworks()
 
         XCTAssertTrue(compareCollections(supportedNetworks, [.masterCard, .elo]))
     }
@@ -593,14 +614,14 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertEqual(analyticsProviderMock.infos.count, 1)
         let infoType = analyticsProviderMock.infos.first?.type
         XCTAssertEqual(infoType, .rendered)
-        
+
         // access view controller again but not trigger render
         sut.viewController.loadViewIfNeeded()
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
         XCTAssertEqual(analyticsProviderMock.infos.count, 1)
-        
+
     }
-    
+
     private func getRandomContactFieldSet() -> Set<PKContactField> {
         let contactFieldsPool: [PKContactField] = [.emailAddress, .name, .phoneNumber, .postalAddress, .phoneticName]
         return contactFieldsPool.randomElement().map { [$0] } ?? []
@@ -819,7 +840,7 @@ private final class PKPaymentMethodMock: PKPaymentMethod {
 }
 
 extension XCTestCase {
-    
+
     func compareCollections<T: Hashable>(_ lhs: [T], _ rhs: [T]) -> Bool {
         if lhs.count != rhs.count { return false }
 
@@ -827,5 +848,5 @@ extension XCTestCase {
         let rhsSet = Set<T>(rhs)
         return lhsSet.intersection(rhsSet).count == lhs.count
     }
-    
+
 }

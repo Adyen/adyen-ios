@@ -15,7 +15,7 @@ class PreApplePayComponentTests: XCTestCase {
 
     var analyticsProviderMock: AnalyticsProviderMock!
     let amount = Dummy.payment.amount
-    var paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
+    var paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: ["mc", "visa"])
     var context: AdyenContext!
     var paymentComponentDelegate: PaymentComponentDelegateMock!
     var sut: PreApplePayComponent!
@@ -35,7 +35,7 @@ class PreApplePayComponentTests: XCTestCase {
         applePayStyle.paymentButtonType = .inStore
         let preApplePayConfig = PreApplePayComponent.Configuration(style: applePayStyle)
         sut = try! PreApplePayComponent(
-            paymentMethod: ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil),
+            paymentMethod: paymentMethod,
             context: Dummy.context,
             configuration: preApplePayConfig,
             applePayConfiguration: configuration
@@ -50,7 +50,29 @@ class PreApplePayComponentTests: XCTestCase {
         sut = nil
         try super.tearDownWithError()
     }
-    
+
+    func testPreApplePay_givenBrandsIsEmpty_shouldThrowUserCannotMakePayment() throws {
+        // Given
+        let brands: [String]? = []
+        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: brands)
+        let applePayConfiguration = ApplePayComponent.Configuration(
+            payment: Dummy.createTestApplePayPayment(),
+            merchantIdentifier: "test_id"
+        )
+
+        // When / Then
+        XCTAssertThrowsError(
+            try PreApplePayComponent(
+                paymentMethod: paymentMethod,
+                context: Dummy.context,
+                configuration: .init(),
+                applePayConfiguration: applePayConfiguration
+            )
+        ) { error in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .userCannotMakePayment)
+        }
+    }
+
     func testUIConfiguration() {
         let applePayStyle = ApplePayStyle(
             paymentButtonStyle: .whiteOutline,
