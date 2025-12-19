@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name = 'Adyen'
-  s.version = '5.22.0'
-  s.summary = "Adyen Checkout SDK for iOS"
+  s.version = '5.22.1'
+  s.summary = "Adyen Components for iOS"
   s.description = <<-DESC
     Adyen Checkout SDK for iOS allows you to accept in-app payments by providing you with the building blocks you need to create a checkout experience.
   DESC
