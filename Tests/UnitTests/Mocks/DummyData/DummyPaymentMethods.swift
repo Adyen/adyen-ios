@@ -70,6 +70,7 @@ let storedPayPalDictionary = [
 ] as [String: Any]
 
 let applePayDictionary = [
+    "brands": ["maestro", "amex", "discover"],
     "name": "Apple Pay",
     "supportsRecurring": true,
     "type": "applepay"

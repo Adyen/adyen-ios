@@ -27,6 +27,17 @@ class DropInTests: XCTestCase {
                   "type" : "applePayToken"
                 }
               ],
+                "brands" : [
+                  "maestro",
+                  "amex",
+                  "discover",
+                  "eftpos_australia",
+                  "elo",
+                  "jcb",
+                  "mc",
+                  "sodexo",
+                  "visa"
+            ],
               "name" : "Apple Pay",
               "supportsRecurring" : true,
               "type" : "applepay"
@@ -166,7 +177,7 @@ class DropInTests: XCTestCase {
         XCTAssertEqual(style.formComponent.separatorColor, .green)
         XCTAssertEqual(style.navigation.separatorColor, .green)
     }
-    
+
     func test_Initialization_Should_Send_InitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
@@ -180,7 +191,7 @@ class DropInTests: XCTestCase {
             context: context,
             configuration: config
         )
-        
+
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
         XCTAssertEqual(analyticsProviderMock.checkoutAttemptId, "testAttemptId")
     }
@@ -214,7 +225,7 @@ class DropInTests: XCTestCase {
         XCTAssertEqual(configDataDict["openFirstStoredPaymentMethod"], "false")
         XCTAssertEqual(configDataDict.keys.count, 2)
     }
-    
+
     func test_Should_Send_RenderEvent_For_Preselected() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
@@ -229,7 +240,7 @@ class DropInTests: XCTestCase {
 
         // When
         presentOnRoot(sut.viewController)
-        
+
         // Then
         XCTAssertEqual(analyticsProviderMock.infos.count, 1)
 
@@ -237,7 +248,7 @@ class DropInTests: XCTestCase {
         XCTAssertEqual(info?.type, .rendered)
         XCTAssertEqual(info?.component, "dropin")
     }
-    
+
     func test_Should_Send_RenderEvent_For_SkippedPaymentList() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
@@ -251,7 +262,7 @@ class DropInTests: XCTestCase {
             context: context,
             configuration: config
         )
-        
+
         // When
         presentOnRoot(sut.viewController)
 
@@ -269,7 +280,7 @@ class DropInTests: XCTestCase {
         XCTAssertEqual(configDataDict["skipPaymentMethodList"], "true")
         XCTAssertEqual(configDataDict["openFirstStoredPaymentMethod"], "true")
         XCTAssertEqual(configDataDict.keys.count, 2)
-        
+
         let info2 = analyticsProviderMock.infos[1]
         XCTAssertEqual(info2.type, .rendered)
         XCTAssertEqual(info2.component, "sepadirectdebit")
@@ -314,13 +325,13 @@ class DropInTests: XCTestCase {
         var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
         paymentMethods.stored = [storedPaymentMethod]
-        
+
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
             configuration: config
         )
-        
+
         let storedPaymentMethodsDelegate = SessionStoredPaymentMethodDelegateMock()
         storedPaymentMethodsDelegate.onDisable = { storedPM, dropIn in
             XCTAssertEqual(storedPM.identifier, storedPaymentMethod.identifier)
@@ -350,13 +361,13 @@ class DropInTests: XCTestCase {
         var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
         paymentMethods.stored = [storedPaymentMethod]
-        
+
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
             configuration: config
         )
-        
+
         let storedPaymentMethodsDelegate = SessionStoredPaymentMethodDelegateMock()
         storedPaymentMethodsDelegate.onDisable = { storedPM, dropIn in
             XCTAssertEqual(storedPM.identifier, storedPaymentMethod.identifier)
@@ -385,13 +396,13 @@ class DropInTests: XCTestCase {
         var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
         paymentMethods.stored = [storedPaymentMethod]
-        
+
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
             configuration: config
         )
-        
+
         let storedPaymentMethodsDelegate = StoredPaymentMethodDelegateMock()
         storedPaymentMethodsDelegate.onDisable = { storedPM in
             XCTAssertEqual(storedPM.identifier, storedPaymentMethod.identifier)
@@ -420,13 +431,13 @@ class DropInTests: XCTestCase {
         var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
         let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
         paymentMethods.stored = [storedPaymentMethod]
-        
+
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
             configuration: config
         )
-        
+
         let storedPaymentMethodsDelegate = StoredPaymentMethodDelegateMock()
         storedPaymentMethodsDelegate.onDisable = { storedPM in
             XCTAssertEqual(storedPM.identifier, storedPaymentMethod.identifier)
@@ -525,7 +536,7 @@ class DropInTests: XCTestCase {
             context: Dummy.context,
             configuration: config
         )
-        
+
         presentOnRoot(sut.viewController)
 
         // presented screen is SEPA (payment list is skipped)
@@ -542,7 +553,7 @@ class DropInTests: XCTestCase {
             context: Dummy.context,
             configuration: config
         )
-        
+
         presentOnRoot(sut.viewController)
 
         // presented screen should be payment list with 1 instant payment element
