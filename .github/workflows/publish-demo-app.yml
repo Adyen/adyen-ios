@@ -1,12 +1,7 @@
 name: 🚀 Publish Demo App (TestFlight)
 
 on:
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: "Branch to publish"
-        required: true
-        default: "develop"
+  workflow_dispatch: {}
   workflow_call:
     secrets: # When triggered via another workflow, secrets are not automatically forwarded
       BUILD_CERTIFICATE_BASE64:

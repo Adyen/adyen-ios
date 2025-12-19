@@ -21,10 +21,14 @@ if [[ "$DISTRIBUTION_TYPE" != "testflight" && "$DISTRIBUTION_TYPE" != "firebase"
   exit 1
 fi
 
-# Set export options based on distribution type
+# ---- Determine export options ----
 if [[ "$DISTRIBUTION_TYPE" == "testflight" ]]; then
+  echo "📦 Using TestFlight export options"
   EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions.plist"
+  EXPORT_CONFIGURATION="Release"
 else
+  echo "📦 Using Firebase export options"
+  EXPORT_CONFIGURATION="Firebase"
   EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions-Firebase.plist"
 fi
 
@@ -93,7 +97,7 @@ echo "🧹 Cleaning project..."
 xcodebuild clean -project Adyen.xcodeproj \
   -scheme AdyenUIHost \
   -sdk iphoneos \
-  -configuration Release \
+  -configuration "$EXPORT_CONFIGURATION" \
   -skipPackagePluginValidation
 
 # ---- Prepare build folder ----
@@ -103,12 +107,13 @@ mkdir -p "$BUILD_PATH"
 
 # ---- Archive app ----
 echo "📦 Archiving app (signing disabled)..."
-xcodebuild archive -project Adyen.xcodeproj \
+xcodebuild archive \
+  -project Adyen.xcodeproj \
   -scheme AdyenUIHost \
+  -configuration "$EXPORT_CONFIGURATION" \
+  -archivePath "$ARCHIVE_PATH" \
   -destination "generic/platform=iOS" \
   -sdk iphoneos \
-  -configuration Release \
-  -archivePath "$ARCHIVE_PATH" \
   -skipPackagePluginValidation \
   CODE_SIGNING_ALLOWED=NO \
   MERCHANT_CLIENT_KEY="$MERCHANT_CLIENT_KEY" \
@@ -129,16 +134,10 @@ xcodebuild -exportArchive \
   -exportOptionsPlist "$EXPORT_OPTIONS_PLIST" \
   -exportPath "$BUILD_PATH" \
   -allowProvisioningUpdates \
-  -skipPackagePluginValidation \
   -authenticationKeyID "$XCODE_AUTHENTICATION_KEY_ID" \
   -authenticationKeyIssuerID "$XCODE_AUTHENTICATION_KEY_ISSUER_ID" \
   -authenticationKeyPath "$AUTH_KEY_PATH" \
-  MERCHANT_CLIENT_KEY="$MERCHANT_CLIENT_KEY" \
-  MERCHANT_SERVER_HOST="$MERCHANT_SERVER_HOST" \
-  MERCHANT_ACCOUNT="$MERCHANT_ACCOUNT" \
-  ADYEN_SERVER_API_KEY="$ADYEN_SERVER_API_KEY" \
-  APPLE_TEAM_IDENTIFIER="$APPLE_TEAM_IDENTIFIER" \
-  APPLE_PAY_MERCHANT_IDENTIFIER="${APPLE_PAY_MERCHANT_IDENTIFIER:-"merchant.com.adyen.test"}"
+  -skipPackagePluginValidation
 
 # ---- Distribution ----
 if [[ "$DISTRIBUTION_TYPE" == "testflight" ]]; then

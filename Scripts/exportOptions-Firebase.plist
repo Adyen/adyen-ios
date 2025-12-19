@@ -3,19 +3,19 @@
 <plist version="1.0">
 <dict>
     <key>method</key>
-    <string>ad-hoc</string>
+    <string>enterprise</string>
     <key>signingStyle</key>
     <string>manual</string>
     <key>teamID</key>
-    <string>B2NYSS5932</string>
+    <string>8GDUWCHDXJ</string>
     <key>teamName</key>
-    <string>Adyen N.V.</string>
+    <string>Adyen B.V.</string>
     <key>signingCertificate</key>
-	  <string>iPhone Distribution: Adyen N.V. (B2NYSS5932)</string>
+	  <string>iPhone Distribution: Adyen B.V.</string>
     <key>provisioningProfiles</key>
     <dict>
-      <key>com.adyen.CheckoutDemoUIKit</key>
-      <string>Firebase Distribution - Checkout</string>
+      <key>com.adyen.enterprise.checkout.demo.uikit</key>
+      <string>CheckoutDemoUIKit - Firebase Distribution Profile</string>
     </dict>
 </dict>
 </plist>
