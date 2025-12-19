@@ -24,6 +24,7 @@ class PreApplePayComponentTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
+        analyticsProviderMock._checkoutAttemptId = "test_attemp_id"
         context = Dummy.context(with: analyticsProviderMock)
         paymentComponentDelegate = PaymentComponentDelegateMock()
 
@@ -36,7 +37,7 @@ class PreApplePayComponentTests: XCTestCase {
         let preApplePayConfig = PreApplePayComponent.Configuration(style: applePayStyle)
         sut = try! PreApplePayComponent(
             paymentMethod: ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil),
-            context: Dummy.context,
+            context: context,
             configuration: preApplePayConfig,
             applePayConfiguration: configuration
         )
@@ -129,8 +130,6 @@ class PreApplePayComponentTests: XCTestCase {
 
     func testSubmitWithAnalyticsEnabledShouldSetCheckoutAttemptIdInPaymentComponentData() throws {
         // Given
-        let expectedCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
-        analyticsProviderMock._checkoutAttemptId = expectedCheckoutAttemptId
         let paymentMethodDetails = ApplePayDetails(
             paymentMethod: paymentMethod,
             token: "test_token",
@@ -144,17 +143,22 @@ class PreApplePayComponentTests: XCTestCase {
             amount: nil,
             order: nil
         )
-
+        
         // When
-        sut.didSubmit(paymentComponentData, from: sut)
+        let expectation = expectation(description: "didSubmit is called")
 
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
             let sdkData = data.paymentMethod.sdkData
             let sdkDataDecoded = self.decodeSDKData(from: sdkData)
-            XCTAssertNil(sdkData)
-            XCTAssertEqual(expectedCheckoutAttemptId, sdkDataDecoded?.analytics.checkoutAttemptId)
+            XCTAssertNotNil(sdkData)
+            XCTAssertEqual("test_attemp_id", sdkDataDecoded?.analytics.checkoutAttemptId)
+            expectation.fulfill()
         }
+        
+        sut.submit(data: paymentComponentData)
+        
+        waitForExpectations(timeout: 5)
     }
     
     private func decodeSDKData(from sdkDataString: String?) -> SDKData? {
