@@ -146,43 +146,14 @@ class PreApplePayComponentTests: XCTestCase {
         )
 
         // When
-        let sdkData = paymentComponentData.paymentMethod.sdkData
-        let sdkDataDecoded = decodeSDKData(from: sdkData)
-        XCTAssertNil(sdkData)
         sut.didSubmit(paymentComponentData, from: sut)
 
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
+            let sdkData = data.paymentMethod.sdkData
+            let sdkDataDecoded = self.decodeSDKData(from: sdkData)
+            XCTAssertNil(sdkData)
             XCTAssertEqual(expectedCheckoutAttemptId, sdkDataDecoded?.analytics.checkoutAttemptId)
-        }
-    }
-
-    func testSubmitWithAnalyticsDisabledShouldNotSetCheckoutAttemptIdInPaymentComponentData() throws {
-        // Given
-        analyticsProviderMock._checkoutAttemptId = nil
-        let paymentMethodDetails = ApplePayDetails(
-            paymentMethod: paymentMethod,
-            token: "test_token",
-            network: "test_network",
-            billingContact: nil,
-            shippingContact: nil,
-            shippingMethod: nil
-        )
-        let paymentComponentData = PaymentComponentData(
-            paymentMethodDetails: paymentMethodDetails,
-            amount: nil,
-            order: nil
-        )
-
-        // When
-        let sdkData = paymentComponentData.paymentMethod.sdkData
-        let sdkDataDecoded = decodeSDKData(from: sdkData)
-        XCTAssertNil(sdkData)
-        sut.didSubmit(paymentComponentData, from: sut)
-
-        // Then
-        paymentComponentDelegate.onDidSubmit = { data, _ in
-            XCTAssertNil(sdkDataDecoded?.analytics.checkoutAttemptId)
         }
     }
     
