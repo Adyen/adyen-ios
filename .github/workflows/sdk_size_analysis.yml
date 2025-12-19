@@ -43,7 +43,7 @@ jobs:
 
       - name: Upload current SDK size JSON
         if: ${{ github.event_name != 'pull_request' }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: sdk-sizes-${{ steps.sanitize.outputs.sanitized_head }}
           path: sdk_size_output/sdk_sizes.json
