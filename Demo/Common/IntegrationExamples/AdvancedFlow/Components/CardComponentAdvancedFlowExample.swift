@@ -61,7 +61,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                             await MapkitAddressLookupProvider().searchAsync(searchTerm)
                         })
                 )
-                .onBinValue { bin in
+                .onBinChange { bin in
                     print("Here is the bin \(bin)")
                 }
                 .onBinLookup { brands in
