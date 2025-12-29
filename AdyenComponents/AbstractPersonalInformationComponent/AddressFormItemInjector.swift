@@ -62,7 +62,11 @@ internal final class AddressFormItemInjector: FormItemInjector, Localizable {
     }
 
     internal func inject(into formViewController: FormViewController) {
-        formViewController.append(item)
+        let sectionTitle = addressType.sectionTitle(with: localizationParameters)
+        formViewController.append(item.withSectionHeader(
+            title: sectionTitle,
+            subtitle: nil // TODO: Add subtitle localization key
+        ))
     }
     
 }

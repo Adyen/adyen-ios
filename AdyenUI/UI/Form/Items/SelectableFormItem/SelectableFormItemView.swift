@@ -7,10 +7,8 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-/// A view representing a selectableFormItem item.
-@_spi(AdyenInternal)
-public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
-    
+package final class SelectableFormItemView: FormItemView<SelectableFormItem> {
+
     private enum Constants {
         static let upiLogo = "upiLogo"
         static let checkmarkIcon = "verification_true"
@@ -108,9 +106,7 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
         customButton.addTarget(self, action: #selector(didSelectItemButton), for: .touchUpInside)
         customButton.translatesAutoresizingMaskIntoConstraints = false
         customButton.preservesSuperviewLayoutMargins = true
-        customButton.accessibilityIdentifier = item.identifier.map {
-            ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "button")
-        }
+        customButton.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "button") }
         customButton.addSubview(contentStackView)
 
         contentStackView.isUserInteractionEnabled = false
@@ -124,7 +120,7 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
     }
 
     /// Initializes the selectable form item view.
-    public required init(item: SelectableFormItem) {
+    package required init(item: SelectableFormItem) {
         super.init(item: item)
         backgroundColor = item.style.backgroundColor
 
@@ -152,12 +148,12 @@ public final class SelectableFormItemView: FormItemView<SelectableFormItem> {
         }
     }
 
-    override public func didMoveToWindow() {
+    override package func didMoveToWindow() {
         super.didMoveToWindow()
         updateIcon()
     }
 
-    override public func layoutSubviews() {
+    override package func layoutSubviews() {
         super.layoutSubviews()
         imageView.adyen.round(using: item.style.imageStyle.cornerRounding)
     }

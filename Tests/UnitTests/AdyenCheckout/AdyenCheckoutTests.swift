@@ -194,7 +194,7 @@ final class AdyenCheckoutTests: XCTestCase {
         
         configuration.onSubmit = { data, completion in
             didCallSubmit = true
-            XCTAssertEqual(data.checkoutAttemptId, paymentData.checkoutAttemptId)
+            XCTAssertEqual(data.paymentMethod.sdkData, paymentData.paymentMethod.sdkData)
             let details = data.paymentMethod as! BLIKDetails
             XCTAssertEqual(details.type, blikDetails.type)
             XCTAssertEqual(details.blikCode, blikDetails.blikCode)

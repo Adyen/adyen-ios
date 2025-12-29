@@ -7,136 +7,240 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-/// An abstract view representing a selectable value item.
-@_spi(AdyenInternal)
-open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueItem<ValueType?>>:
+package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueItem<ValueType?>>:
     FormValidatableValueItemView<ValueType?, ItemType> {
-    
+
     internal var numberOfLines: Int = 1 {
         didSet {
             valueLabel.numberOfLines = numberOfLines
         }
     }
-    
+
     override internal var accessibilityLabelView: UIView? { selectionButton }
-    
-    public required init(item: ItemType, theme: AdyenTheme) {
+
+    package required init(item: ItemType, theme: AdyenTheme) {
         super.init(item: item, theme: theme)
-        
+
         addSubview(selectionButton)
-        
+
         configureConstraints()
-        setupObservers()
+        apply(theme)
         
+        setupObservers()
+
         updateValueLabel(with: item.formattedValue)
     }
-    
+
     // MARK: - Views
-    
+
     private lazy var selectionButton: UIButton = {
         let button = UIButton(type: .custom)
         button.addTarget(self, action: #selector(selectionButtonTapped), for: .touchUpInside)
         button.preservesSuperviewLayoutMargins = true
         button.translatesAutoresizingMaskIntoConstraints = false
-        
+
         button.addSubview(itemStackView)
         itemStackView.isUserInteractionEnabled = false
         itemStackView.adyen.anchor(inside: button)
-        
+
         return button
     }()
-    
+
     private lazy var itemStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [contentStackView, alertLabel])
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, containerView, footerLabel])
         stackView.axis = .vertical
         stackView.alignment = .fill
-        stackView.spacing = 8.0
+        stackView.spacing = AdyenUIConstants.stackViewSpacing
         stackView.preservesSuperviewLayoutMargins = true
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return stackView
     }()
-    
+
+    internal lazy var containerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(contentStackView)
+        contentStackView.adyen.anchor(inside: view, with: AdyenUIConstants.contentInsets)
+
+        // Ensure minimum height for empty state
+        view.heightAnchor.constraint(
+            greaterThanOrEqualToConstant: AdyenUIConstants.minimumInputHeight
+        ).isActive = true
+
+        return view
+    }()
+
     private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [labelStackView, chevronView])
+        let stackView = UIStackView(arrangedSubviews: [valueLabel, chevronView])
         stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.spacing = 8.0
-        stackView.preservesSuperviewLayoutMargins = true
-        
+        stackView.alignment = .center
+        stackView.spacing = AdyenUIConstants.stackViewSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
         return stackView
     }()
-    
-    private lazy var labelStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, valueLabel])
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.spacing = 8.0
-        
-        return stackView
-    }()
-    
+
     internal lazy var chevronView: UIImageView = {
-        let chevron = UIImage(named: "chevron", in: Bundle.coreInternalResources, compatibleWith: nil)
+        let chevron = UIImage(
+            named: "chevron",
+            in: Bundle.coreInternalResources,
+            compatibleWith: nil
+        )?.withRenderingMode(.alwaysTemplate)
+
         let imageView = UIImageView(image: chevron)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.setContentHuggingPriority(.required, for: .horizontal)
         imageView.widthAnchor.constraint(equalToConstant: 8).isActive = true
         imageView.contentMode = .scaleAspectFit
-        
+
         return imageView
     }()
-    
-    /// The value label view.
+
     internal lazy var valueLabel: UILabel = {
         let valueLabel = ValueLabel()
-        valueLabel.apply(theme.elements.labels.body)
         valueLabel.numberOfLines = numberOfLines
         valueLabel.isAccessibilityElement = false
-        valueLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "valueLabel") }
+        valueLabel.accessibilityIdentifier = item.identifier.map {
+            ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "valueLabel")
+        }
 
         return valueLabel
     }()
-    
+
+    internal lazy var footerLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.isAccessibilityElement = false
+        label.accessibilityIdentifier = item.identifier.map {
+            ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "footerLabel")
+        }
+        return label
+    }()
+
     // MARK: - Selection
-    
+
     @objc
     internal func selectionButtonTapped() {
         item.selectionHandler()
     }
-    
+
+    // MARK: - Styling
+
+    private func apply(_ theme: AdyenTheme) {
+        let style = theme.elements.textField
+
+        containerView.backgroundColor = style.containerColor
+        containerView.layer.borderWidth = style.borderWidth
+        containerView.layer.borderColor = style.borderColor.cgColor
+
+        switch style.cornerRadius {
+        case let .fixed(radius):
+            containerView.layer.cornerRadius = radius
+        default:
+            containerView.layer.cornerRadius = AdyenUIConstants.defaultCornerRadius
+        }
+
+        chevronView.tintColor = theme.colors.primary
+        valueLabel.apply(theme.elements.labels.body)
+        footerLabel.apply(theme.elements.labels.subheadline)
+
+        footerLabel.text = item.placeholder
+        footerLabel.isHidden = item.placeholder.isEmpty
+    }
+
+    private func updateContainerBorderColor(isValid: Bool) {
+        let style = theme.elements.textField
+        let borderColor = isValid ? style.borderColor : style.errorColor
+        containerView.layer.borderColor = borderColor.cgColor
+    }
+
+    // MARK: - Hint/Error Display
+
+    private func showHint() {
+
+        footerLabel.text = item.placeholder
+        footerLabel.textColor = theme.colors.textSecondary
+        footerLabel.isHidden = item.placeholder.isEmpty
+    }
+
+    private func showError(_ message: String?) {
+        guard let message, !message.isEmpty else {
+            showHint()
+            return
+        }
+        footerLabel.text = message
+        footerLabel.textColor = theme.colors.destructive
+        footerLabel.isHidden = false
+    }
+
     // MARK: - Convenience
-    
+
     private func setupObservers() {
         observe(item.$formattedValue) { [weak self] in
             self?.updateValueLabel(with: $0)
         }
     }
-    
+
     private func updateValueLabel(with formattedValue: String?) {
         accessibilityLabelView?.accessibilityValue = formattedValue
-        
+
         guard let formattedValue, !formattedValue.isEmpty else {
-            valueLabel.text = item.placeholder
-            valueLabel.textColor = theme.colors.textSecondary
+            valueLabel.text = nil
             resetValidationStatus()
             return
         }
-        
+
         valueLabel.text = formattedValue
         valueLabel.textColor = theme.elements.labels.body.color
         showValidation()
     }
-    
+
     private func configureConstraints() {
         selectionButton.adyen.anchor(inside: self)
+    }
+
+    // MARK: - Validation
+
+    override open func updateValidationStatus(forced: Bool = false) {
+        guard forced else {
+            showHint()
+            updateContainerBorderColor(isValid: true)
+            accessibilityLabelView?.accessibilityLabel = item.title
+            return
+        }
+
+        if item.isValid() {
+            showHint()
+            updateContainerBorderColor(isValid: true)
+            accessibilityLabelView?.accessibilityLabel = item.title
+        } else {
+            showError(item.validationFailureMessage)
+            updateContainerBorderColor(isValid: false)
+            accessibilityLabelView?.accessibilityLabel = [
+                item.title,
+                item.validationFailureMessage
+            ].compactMap { $0 }.joined(separator: ", ")
+
+            if let validationStatus = item.validationStatus(),
+               let error = validationStatus.validationError {
+                item.onDidShowValidationError?(error)
+            }
+        }
+    }
+
+    override internal func resetValidationStatus() {
+        showHint()
+        updateContainerBorderColor(isValid: true)
+        accessibilityLabelView?.accessibilityLabel = item.title
     }
 }
 
 /// A label reporting it's intrinsic content size to match the text field of the ``FormTextItemView``
 private class ValueLabel: UILabel {
-    
+
     override var intrinsicContentSize: CGSize {
         let size = super.intrinsicContentSize
         return .init(

@@ -20,115 +20,97 @@ public struct FormItemViewBuilder {
     }
 
     /// Builds `FormToggleItemView` from `FormToggleItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormToggleItem) -> FormItemView<FormToggleItem> {
+    package func build(with item: FormToggleItem) -> FormItemView<FormToggleItem> {
         FormToggleItemView(item: item, theme: theme)
     }
 
     /// Builds `FormSplitItemView` from `FormSplitItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormSplitItem) -> FormItemView<FormSplitItem> {
+    package func build(with item: FormSplitItem) -> FormItemView<FormSplitItem> {
         FormSplitItemView(item: item)
     }
 
     /// Builds `PhoneNumberItemView` from `PhoneNumberItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormPhoneNumberItem) -> FormItemView<FormPhoneNumberItem> {
+    package func build(with item: FormPhoneNumberItem) -> FormItemView<FormPhoneNumberItem> {
         FormPhoneNumberItemView(item: item, theme: theme)
     }
 
     /// Builds `FormIssuerPickerItemView` from `FormIssuerPickerItem`.
-    @_spi(AdyenInternal)
-    public func build<Value: CustomStringConvertible>(with item: BaseFormPickerItem<Value>)
+    package func build<Value: CustomStringConvertible>(with item: BaseFormPickerItem<Value>)
         -> BaseFormPickerItemView<Value> {
         BaseFormPickerItemView(item: item, theme: theme)
     }
 
     /// Builds `FormTextInputItemView` from `FormTextInputItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormTextInputItem) -> FormItemView<FormTextInputItem> {
+    package func build(with item: FormTextInputItem) -> FormItemView<FormTextInputItem> {
         FormTextInputItemView(item: item, theme: theme)
     }
 
     /// Builds `ListItemView` from `ListItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: ListItem) -> ListItemView {
+    package func build(with item: ListItem) -> ListItemView {
         let listView = ListItemView()
         listView.item = item
         return listView
     }
 
     /// Builds `SelectableFormItemView` from `SelectableFormItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: SelectableFormItem) -> FormItemView<SelectableFormItem> {
+    package func build(with item: SelectableFormItem) -> FormItemView<SelectableFormItem> {
         SelectableFormItemView(item: item)
     }
 
     /// Builds `FormButtonItemView` from `FormButtonItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormButtonItem) -> FormItemView<FormButtonItem> {
+    package func build(with item: FormButtonItem) -> FormItemView<FormButtonItem> {
         FormButtonItemView(item: item, theme: theme)
     }
 
     /// Builds `FormImageView` from `FormImageItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormImageItem) -> FormItemView<FormImageItem> {
+    package func build(with item: FormImageItem) -> FormItemView<FormImageItem> {
         FormImageView(item: item)
     }
 
     /// Builds `FormSeparatorItemView` from `FormSeparatorItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormSeparatorItem) -> FormItemView<FormSeparatorItem> {
+    package func build(with item: FormSeparatorItem) -> FormItemView<FormSeparatorItem> {
         FormSeparatorItemView(item: item, theme: theme)
     }
 
     /// Builds `FormErrorItemView` from `FormErrorItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormErrorItem) -> FormItemView<FormErrorItem> {
+    package func build(with item: FormErrorItem) -> FormItemView<FormErrorItem> {
         FormErrorItemView(item: item)
     }
 
     /// Builds `FormVerticalStackItemView` from `FormAddressItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormAddressItem) -> FormItemView<FormAddressItem> {
-        FormVerticalStackItemView(item: item)
+    package func build(with item: FormAddressItem) -> FormItemView<FormAddressItem> {
+        FormVerticalStackItemView(item: item, theme: theme)
     }
 
     /// Builds `FormSpacerItemView` from `FormSpacerItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormSpacerItem) -> FormItemView<FormSpacerItem> {
+    package func build(with item: FormSpacerItem) -> FormItemView<FormSpacerItem> {
         FormSpacerItemView(item: item)
     }
 
     /// Builds `FormTextItemView` from `FormPostalCodeItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormPostalCodeItem) -> FormItemView<FormPostalCodeItem> {
+    package func build(with item: FormPostalCodeItem) -> FormItemView<FormPostalCodeItem> {
         FormTextItemView(item: item, theme: theme)
     }
 
     /// Builds `FormSearchButtonItemView` from `FormSearchButtonItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormSearchButtonItem) -> FormItemView<FormSearchButtonItem> {
+    package func build(with item: FormSearchButtonItem) -> FormItemView<FormSearchButtonItem> {
         FormSearchButtonItemView(item: item)
     }
 
     /// Builds `FormAddressPickerItemView` from `FormAddressPickerItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormAddressPickerItem) -> FormItemView<FormAddressPickerItem> {
-        FormAddressPickerItemView(item: item)
+    package func build(with item: FormAddressPickerItem) -> FormItemView<FormAddressPickerItem> {
+        FormAddressPickerItemView(item: item, theme: theme)
     }
 
     /// Builds `FormPickerItemView` from `FormPickerItem`.
-    @_spi(AdyenInternal)
-    public func build<Value>(with item: FormPickerItem<Value>) -> FormItemView<
+    package func build<Value>(with item: FormPickerItem<Value>) -> FormItemView<
         FormPickerItem<Value>
     > {
         FormPickerItemView(item: item, theme: theme)
     }
 
     /// Builds `FormPhoneExtensionPickerItemView` from `FormPhoneExtensionPickerItem`.
-    @_spi(AdyenInternal)
-    public func build(with item: FormPhoneExtensionPickerItem) -> FormPhoneExtensionPickerItemView {
+    package func build(with item: FormPhoneExtensionPickerItem) -> FormPhoneExtensionPickerItemView {
         FormPhoneExtensionPickerItemView(item: item)
     }
 

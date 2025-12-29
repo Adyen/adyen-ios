@@ -29,6 +29,17 @@ class DropInTests: XCTestCase {
                   "type" : "applePayToken"
                 }
               ],
+                "brands" : [
+                  "maestro",
+                  "amex",
+                  "discover",
+                  "eftpos_australia",
+                  "elo",
+                  "jcb",
+                  "mc",
+                  "sodexo",
+                  "visa"
+            ],
               "name" : "Apple Pay",
               "supportsRecurring" : true,
               "type" : "applepay"

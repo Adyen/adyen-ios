@@ -8,7 +8,7 @@ import Foundation
 
 /**
  The data supplied by a payment component upon completion.
-
+ 
  - SeeAlso:
  [API Reference](https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/payments__example_payments-klarna)
  */
@@ -25,19 +25,10 @@ public struct PaymentComponentData {
 
     /// The partial payment order if any.
     public let order: PartialPaymentOrder?
-
-    /// The remaining amount if there is an order, the full amount otherwise.
-    @available(*, deprecated, message: "This property is deprecated. Use the amount property if needed.")
-    public var amountToPay: Amount? {
-        order?.remainingAmount ?? amount
-    }
     
     /// The installments object.
     public let installments: Installments?
     
-    /// Indicates whether the current SDK version suports native redirect without glue pages.
-    public let supportNativeRedirect: Bool = true
-
     /// Shopper name.
     public var shopperName: ShopperName? {
         guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }
@@ -58,11 +49,6 @@ public struct PaymentComponentData {
     
     /// Indicates the device default browser info.
     public let browserInfo: BrowserInfo?
-
-    /// A unique identifier for a checkout attempt.
-    public var checkoutAttemptId: String? {
-        paymentMethod.checkoutAttemptId
-    }
 
     /// The billing address information.
     public var billingAddress: PostalAddress? {
@@ -98,6 +84,7 @@ public struct PaymentComponentData {
     ///   - browserInfo: The device default browser info.
     ///   - checkoutAttemptId: The checkoutAttempt identifier.
     ///   - installments: Installments selection if specified.
+    ///   - sdkData: The encoded SDK data if specified.
     package init(
         paymentMethodDetails: some PaymentMethodDetails,
         amount: Amount?,
@@ -112,6 +99,19 @@ public struct PaymentComponentData {
         self.storePaymentMethod = storePaymentMethod
         self.browserInfo = browserInfo
         self.installments = installments
+    }
+    
+    internal func replacing(sdkData: SDKData) -> PaymentComponentData {
+        var paymentMethodDetails = paymentMethod
+        paymentMethodDetails.sdkData = sdkData.encodedValue
+        return PaymentComponentData(
+            paymentMethodDetails: paymentMethodDetails,
+            amount: amount,
+            order: order,
+            storePaymentMethod: storePaymentMethod,
+            browserInfo: browserInfo,
+            installments: installments
+        )
     }
 
     package func replacing(order: PartialPaymentOrder) -> PaymentComponentData {

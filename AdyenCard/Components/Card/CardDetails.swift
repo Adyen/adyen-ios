@@ -55,15 +55,16 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
 
     /// Social security number of the shopper, if required by country.
     public let socialSecurityNumber: String?
-
-    /// The 3DS2 SDK version.
-    public let threeDS2SDKVersion: String = threeDS2SdkVersion
     
     /// Brand of the card.
     public let selectedBrand: String?
     
     /// Delegated Authentication Data.
     public let delegatedAuthenticationData: DelegatedAuthenticationData?
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
 
     /// Initializes the card payment details.
     ///
@@ -150,10 +151,16 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         case fundingSource
         case taxNumber
         case password = "encryptedPassword"
-        case threeDS2SDKVersion = "threeDS2SdkVersion"
+        case sdkData
     }
 
 }
 
 @_spi(AdyenInternal)
 extension CardDetails: DelegatedAuthenticationAware {}
+
+extension CardDetails: SDKDataAuthenticationProvider {
+    package var authentication: SDKData.Authentication {
+        .init(threeDS2SdkVersion: threeDS2SdkVersion)
+    }
+}

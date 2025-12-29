@@ -15,7 +15,7 @@ class PreApplePayComponentTests: XCTestCase {
 
     var analyticsProviderMock: AnalyticsProviderMock!
     let amount = Dummy.payment.amount
-    var paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
+    var paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: ["mc", "visa"])
     var context: AdyenContext!
     var paymentComponentDelegate: PaymentComponentDelegateMock!
     var sut: PreApplePayComponent!
@@ -24,6 +24,7 @@ class PreApplePayComponentTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
+        analyticsProviderMock._checkoutAttemptId = "test_attemp_id"
         context = Dummy.context(with: analyticsProviderMock)
         paymentComponentDelegate = PaymentComponentDelegateMock()
 
@@ -35,8 +36,8 @@ class PreApplePayComponentTests: XCTestCase {
         applePayStyle.paymentButtonType = .inStore
         let preApplePayConfig = PreApplePayComponent.Configuration(style: applePayStyle)
         sut = try! PreApplePayComponent(
-            paymentMethod: ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil),
-            context: Dummy.context,
+            paymentMethod: paymentMethod,
+            context: context,
             configuration: preApplePayConfig,
             applePayConfiguration: configuration
         )
@@ -50,7 +51,29 @@ class PreApplePayComponentTests: XCTestCase {
         sut = nil
         try super.tearDownWithError()
     }
-    
+
+    func testPreApplePay_givenBrandsIsEmpty_shouldThrowUserCannotMakePayment() throws {
+        // Given
+        let brands: [String]? = []
+        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: brands)
+        let applePayConfiguration = ApplePayComponent.Configuration(
+            payment: Dummy.createTestApplePayPayment(),
+            merchantIdentifier: "test_id"
+        )
+
+        // When / Then
+        XCTAssertThrowsError(
+            try PreApplePayComponent(
+                paymentMethod: paymentMethod,
+                context: Dummy.context,
+                configuration: .init(),
+                applePayConfiguration: applePayConfiguration
+            )
+        ) { error in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .userCannotMakePayment)
+        }
+    }
+
     func testUIConfiguration() {
         let applePayStyle = ApplePayStyle(
             paymentButtonStyle: .whiteOutline,
@@ -129,8 +152,6 @@ class PreApplePayComponentTests: XCTestCase {
 
     func testSubmitWithAnalyticsEnabledShouldSetCheckoutAttemptIdInPaymentComponentData() throws {
         // Given
-        let expectedCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
-        analyticsProviderMock._checkoutAttemptId = expectedCheckoutAttemptId
         let paymentMethodDetails = ApplePayDetails(
             paymentMethod: paymentMethod,
             token: "test_token",
@@ -144,41 +165,30 @@ class PreApplePayComponentTests: XCTestCase {
             amount: nil,
             order: nil
         )
-
+        
         // When
-        XCTAssertNil(paymentComponentData.checkoutAttemptId)
-        sut.didSubmit(paymentComponentData, from: sut)
+        let expectation = expectation(description: "didSubmit is called")
 
         // Then
         paymentComponentDelegate.onDidSubmit = { data, _ in
-            XCTAssertEqual(expectedCheckoutAttemptId, data.checkoutAttemptId)
+            let sdkData = data.paymentMethod.sdkData
+            let sdkDataDecoded = self.decodeSDKData(from: sdkData)
+            XCTAssertNotNil(sdkData)
+            XCTAssertEqual("test_attemp_id", sdkDataDecoded?.analytics.checkoutAttemptId)
+            expectation.fulfill()
         }
+        
+        sut.submit(data: paymentComponentData)
+        
+        waitForExpectations(timeout: 5)
     }
-
-    func testSubmitWithAnalyticsDisabledShouldNotSetCheckoutAttemptIdInPaymentComponentData() throws {
-        // Given
-        analyticsProviderMock._checkoutAttemptId = nil
-        let paymentMethodDetails = ApplePayDetails(
-            paymentMethod: paymentMethod,
-            token: "test_token",
-            network: "test_network",
-            billingContact: nil,
-            shippingContact: nil,
-            shippingMethod: nil
-        )
-        let paymentComponentData = PaymentComponentData(
-            paymentMethodDetails: paymentMethodDetails,
-            amount: nil,
-            order: nil
-        )
-
-        // When
-        XCTAssertNil(paymentComponentData.checkoutAttemptId)
-        sut.didSubmit(paymentComponentData, from: sut)
-
-        // Then
-        paymentComponentDelegate.onDidSubmit = { data, _ in
-            XCTAssertNil(data.checkoutAttemptId)
+    
+    private func decodeSDKData(from sdkDataString: String?) -> SDKData? {
+        guard let sdkDataString,
+              let sdkDataDecoded: SDKData = try? AdyenCoder.decodeBase64(sdkDataString) else {
+            XCTFail("SDKData should be present and decodable")
+            return nil
         }
+        return sdkDataDecoded
     }
 }

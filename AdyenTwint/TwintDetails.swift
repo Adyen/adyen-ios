@@ -17,6 +17,10 @@ public struct TwintDetails: PaymentMethodDetails {
 
     /// The payment method subType.
     public let subType: String
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
 
     /// Initializes the Twint details.
     /// - Parameters:
@@ -35,5 +39,6 @@ public struct TwintDetails: PaymentMethodDetails {
     private enum CodingKeys: String, CodingKey {
         case type
         case subType = "subtype"
+        case sdkData
     }
 }

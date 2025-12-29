@@ -30,6 +30,10 @@ public struct AffirmDetails: PaymentMethodDetails, ShopperInformation {
     /// The shopper's delivery address.
     public let deliveryAddress: PostalAddress?
     
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
+    
     /// Initializes the Affirm details.
     /// - Parameters:
     ///   - paymentMethod: Affirm payment method.
@@ -58,5 +62,6 @@ public struct AffirmDetails: PaymentMethodDetails, ShopperInformation {
     
     private enum CodingKeys: CodingKey {
         case type
+        case sdkData
     }
 }
