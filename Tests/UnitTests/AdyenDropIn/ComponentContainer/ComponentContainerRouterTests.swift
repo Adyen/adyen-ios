@@ -14,6 +14,73 @@ import UIKit
 @MainActor
 struct ComponentContainerRouterTests {
 
+    // MARK: - Tests
+
+    @Test
+    func presentPaymentComponent_shouldPushViewController() async throws {
+        // Given
+        let (sut, viewControllerSpy, _) = await setupSUT()
+        let paymentComponent = await makePaymentComponent()
+
+        let navController = UINavigationController(rootViewController: viewControllerSpy)
+        viewControllerSpy.attachNavigationController(navController)
+
+        // When
+        sut.present(paymentComponent: paymentComponent)
+
+        // Then
+        #expect(navController.viewControllers.contains(paymentComponent.viewController))
+    }
+
+    @Test
+    func presentActionComponent_shouldPresentModallyViewController() async throws {
+        // Given
+        let (sut, viewControllerSpy, _) = await setupSUT()
+        let actionComponent = await makeActionComponent()
+
+        // When
+        sut.present(actionComponent: actionComponent, onCancel: nil)
+
+        // Then
+        #expect(viewControllerSpy.presentedViewControllerCaptured != nil)
+    }
+
+    @Test
+    func presentActionComponent_shouldInjectOnCancelCallbackIntoActionWrapper() async throws {
+        // Given
+        let (sut, viewControllerSpy, _) = await setupSUT()
+        let actionComponent = await makeActionComponent()
+
+        var cancelWasCalled = false
+        let cancelCallback = { cancelWasCalled = true }
+
+        // When
+        sut.present(actionComponent: actionComponent, onCancel: cancelCallback)
+
+        // Then
+        let wrapper = try #require(
+            viewControllerSpy.presentedViewControllerCaptured as? ActionWrapperViewController
+        )
+
+        let injectedCallback = try #require(wrapper.onCancel)
+        injectedCallback()
+
+        #expect(cancelWasCalled)
+    }
+
+    @Test
+    func dismiss_shouldCallListenerDidDismissComponentContainer() async throws {
+        // Given
+        let (sut, viewControllerSpy, listenerMock) = await setupSUT()
+
+        // When
+        sut.dismiss(completion: nil)
+
+        // Then
+        #expect(viewControllerSpy.dismissCalled)
+        #expect(listenerMock.didDismissComponentContainerCompletionCallsCount == 1)
+    }
+
     // MARK: - Spy
 
     private class ViewControllerSpy: ComponentContainerViewController {
@@ -87,72 +154,5 @@ struct ComponentContainerRouterTests {
         let redirect = RedirectComponent(context: context)
         let viewController = UIViewController()
         return PresentableComponentWrapper(component: redirect, viewController: viewController)
-    }
-
-    // MARK: - Tests
-
-    @Test
-    func presentPaymentComponent_shouldPushViewController() async throws {
-        // Given
-        let (sut, viewControllerSpy, _) = await setupSUT()
-        let paymentComponent = await makePaymentComponent()
-
-        let navController = UINavigationController(rootViewController: viewControllerSpy)
-        viewControllerSpy.attachNavigationController(navController)
-
-        // When
-        sut.present(paymentComponent: paymentComponent)
-
-        // Then
-        #expect(navController.viewControllers.contains(paymentComponent.viewController))
-    }
-
-    @Test
-    func presentActionComponent_shouldPresentModallyViewController() async throws {
-        // Given
-        let (sut, viewControllerSpy, _) = await setupSUT()
-        let actionComponent = await makeActionComponent()
-
-        // When
-        sut.present(actionComponent: actionComponent, onCancel: nil)
-
-        // Then
-        #expect(viewControllerSpy.presentedViewControllerCaptured != nil)
-    }
-
-    @Test
-    func presentActionComponent_shouldInjectOnCancelCallbackIntoActionWrapper() async throws {
-        // Given
-        let (sut, viewControllerSpy, _) = await setupSUT()
-        let actionComponent = await makeActionComponent()
-
-        var cancelWasCalled = false
-        let cancelCallback = { cancelWasCalled = true }
-
-        // When
-        sut.present(actionComponent: actionComponent, onCancel: cancelCallback)
-
-        // Then
-        let wrapper = try #require(
-            viewControllerSpy.presentedViewControllerCaptured as? ActionWrapperViewController
-        )
-
-        let injectedCallback = try #require(wrapper.onCancel)
-        injectedCallback()
-
-        #expect(cancelWasCalled)
-    }
-
-    @Test
-    func dismiss_shouldCallListenerDidDismissComponentContainer() async throws {
-        // Given
-        let (sut, viewControllerSpy, listenerMock) = await setupSUT()
-
-        // When
-        sut.dismiss(completion: nil)
-
-        // Then
-        #expect(viewControllerSpy.dismissCalled)
-        #expect(listenerMock.didDismissComponentContainerCompletionCallsCount == 1)
     }
 }
