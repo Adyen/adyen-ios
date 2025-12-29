@@ -19,7 +19,7 @@ struct ComponentContainerRouterTests {
     @Test
     func presentPaymentComponent_shouldPushViewController() async throws {
         // Given
-        let (sut, viewControllerSpy, _) = await setupSUT()
+        let (sut, viewControllerSpy, _) = await makeSUT()
         let paymentComponent = await makePaymentComponent()
 
         let navController = UINavigationController(rootViewController: viewControllerSpy)
@@ -35,7 +35,7 @@ struct ComponentContainerRouterTests {
     @Test
     func presentActionComponent_shouldPresentModallyViewController() async throws {
         // Given
-        let (sut, viewControllerSpy, _) = await setupSUT()
+        let (sut, viewControllerSpy, _) = await makeSUT()
         let actionComponent = await makeActionComponent()
 
         // When
@@ -48,7 +48,7 @@ struct ComponentContainerRouterTests {
     @Test
     func presentActionComponent_shouldInjectOnCancelCallbackIntoActionWrapper() async throws {
         // Given
-        let (sut, viewControllerSpy, _) = await setupSUT()
+        let (sut, viewControllerSpy, _) = await makeSUT()
         let actionComponent = await makeActionComponent()
 
         var cancelWasCalled = false
@@ -69,9 +69,9 @@ struct ComponentContainerRouterTests {
     }
 
     @Test
-    func dismiss_shouldCallListenerDidDismissComponentContainer() async throws {
+    func dismiss_shouldCall_listener_didDismissComponentContainer() async throws {
         // Given
-        let (sut, viewControllerSpy, listenerMock) = await setupSUT()
+        let (sut, viewControllerSpy, listenerMock) = await makeSUT()
 
         // When
         sut.dismiss(completion: nil)
@@ -113,7 +113,7 @@ struct ComponentContainerRouterTests {
 
     // MARK: - Helpers
 
-    private func setupSUT() async -> (
+    private func makeSUT() async -> (
         sut: ComponentContainerRouter,
         viewControllerSpy: ViewControllerSpy,
         listenerMock: ComponentContainerRouterListenerMock

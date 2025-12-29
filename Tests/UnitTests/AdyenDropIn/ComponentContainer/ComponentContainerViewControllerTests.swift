@@ -14,29 +14,12 @@ import UIKit
 @MainActor
 struct ComponentContainerViewControllerTests {
 
-    // MARK: - Helper
-
-    private func setupSUT() async -> (
-        sut: ComponentContainerViewController,
-        viewModelMock: ComponentContainerViewModelProtocolMock,
-        componentViewControllerMock: UIViewController
-    ) {
-        let viewModelMock = ComponentContainerViewModelProtocolMock()
-        let componentViewControllerMock = UIViewController()
-        componentViewControllerMock.title = "Payment Component"
-        viewModelMock.componentViewController = componentViewControllerMock
-
-        let sut = ComponentContainerViewController(viewModel: viewModelMock)
-
-        return (sut, viewModelMock, componentViewControllerMock)
-    }
-
     // MARK: - Tests
 
     @Test
     func viewDidDisappear_shouldCallViewModelCancel() async throws {
         // Given
-        let (sut, viewModelMock, _) = await setupSUT()
+        let (sut, viewModelMock, _) = await makeSUT()
 
         // When
         sut.viewDidDisappear(true)
@@ -48,7 +31,7 @@ struct ComponentContainerViewControllerTests {
     @Test
     func componentView_shouldMatchViewModelComponentViewController() async throws {
         // Given
-        let (sut, _, expectedComponentViewController) = await setupSUT()
+        let (sut, _, expectedComponentViewController) = await makeSUT()
 
         // When
         let receivedComponentViewController = sut.componentViewController
@@ -60,7 +43,7 @@ struct ComponentContainerViewControllerTests {
     @Test("Verify component is added to the container")
     func viewDidLoad_shouldSetComponentViewControllerAsChild() async throws {
         // Given
-        let (sut, _, componentViewControllerMock) = await setupSUT()
+        let (sut, _, componentViewControllerMock) = await makeSUT()
 
         // When
         sut.loadViewIfNeeded()
@@ -75,7 +58,7 @@ struct ComponentContainerViewControllerTests {
     @Test
     func navigationItem() async throws {
         // Given
-        let (sut, _, componentViewControllerMock) = await setupSUT()
+        let (sut, _, componentViewControllerMock) = await makeSUT()
         let expectedNavigationItemTitle = componentViewControllerMock.title
 
         // When
@@ -86,4 +69,22 @@ struct ComponentContainerViewControllerTests {
         #expect(expectedNavigationItemTitle == receivedNavigationItemTitle)
         #expect(sut.navigationItem.largeTitleDisplayMode == .always)
     }
+
+    // MARK: - Helper
+
+    private func makeSUT() async -> (
+        sut: ComponentContainerViewController,
+        viewModelMock: ComponentContainerViewModelProtocolMock,
+        componentViewControllerMock: UIViewController
+    ) {
+        let viewModelMock = ComponentContainerViewModelProtocolMock()
+        let componentViewControllerMock = UIViewController()
+        componentViewControllerMock.title = "Payment Component"
+        viewModelMock.componentViewController = componentViewControllerMock
+
+        let sut = ComponentContainerViewController(viewModel: viewModelMock)
+
+        return (sut, viewModelMock, componentViewControllerMock)
+    }
+
 }
