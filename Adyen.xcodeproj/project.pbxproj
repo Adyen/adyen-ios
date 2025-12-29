@@ -554,8 +554,8 @@
 		A09FB2EB2B8399B700270D51 /* TrackableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09FB2EA2B8399B700270D51 /* TrackableComponent.swift */; };
 		A09FB2ED2B86051000270D51 /* AnalyticsEventDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09FB2EC2B86051000270D51 /* AnalyticsEventDataSource.swift */; };
 		A0A0B37A2E8FEBC800E8567D /* ObservableThreadSafetyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A0B3792E8FEBC800E8567D /* ObservableThreadSafetyTests.swift */; };
-		A0A26BFA2DC101B800DB5B4E /* CheckoutBaseCallbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A26BF92DC101B600DB5B4E /* CheckoutBaseCallbacks.swift */; };
 		A0A0B37E2E93F87200E8567D /* SDKData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A0B37D2E93F86F00E8567D /* SDKData.swift */; };
+		A0A26BFA2DC101B800DB5B4E /* CheckoutBaseCallbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A26BF92DC101B600DB5B4E /* CheckoutBaseCallbacks.swift */; };
 		A0B180312A2DE445003C608E /* MealVoucherDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B180302A2DE445003C608E /* MealVoucherDetails.swift */; };
 		A0B4B9B12BC027DE00C99926 /* CardComponentEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B4B9B02BC027DE00C99926 /* CardComponentEventTests.swift */; };
 		A0BC64E628F062E400CED2A1 /* AdyenSessionAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BC64E528F062E400CED2A1 /* AdyenSessionAware.swift */; };
@@ -743,8 +743,6 @@
 		C9037F142D5A19BD003A5154 /* ROIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F132D5A19BD003A5154 /* ROIView.swift */; };
 		C9037F162D5A1AC0003A5154 /* CardScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F152D5A1AC0003A5154 /* CardScannerViewController.swift */; };
 		C90494562E8FF2CE007C4EB5 /* LoadControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90494552E8FF2CE007C4EB5 /* LoadControllable.swift */; };
-		C90AC76C2EE0F22500DF60EA /* ComponentContainerRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90AC76B2EE0F22500DF60EA /* ComponentContainerRouterTests.swift */; };
-		C90AC7862EE1D47B00DF60EA /* ComponentContainerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90AC7852EE1D47B00DF60EA /* ComponentContainerViewControllerTests.swift */; };
 		C9126051275A3A2800C03DC4 /* BACSItemsFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9126050275A3A2800C03DC4 /* BACSItemsFactoryTests.swift */; };
 		C9174FF32EB3A89800AA1609 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9174FF22EB3A89800AA1609 /* Router.swift */; };
 		C9174FF92EB3B20B00AA1609 /* ActionWrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9174FF72EB3B20B00AA1609 /* ActionWrapperViewController.swift */; };
@@ -809,7 +807,6 @@
 		C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFD726946F0800AED849 /* AffirmComponent.swift */; };
 		C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */; };
 		C98FF6672C5A793A00B0050D /* StoredTwintPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98FF6662C5A793A00B0050D /* StoredTwintPaymentMethod.swift */; };
-		C993EB642EE056F000353ECA /* ComponentContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C993EB632EE056F000353ECA /* ComponentContainerViewModelTests.swift */; };
 		C993EB652EE0707200353ECA /* ErrorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122B9BC2B9A0FF3002FC4D6 /* ErrorMock.swift */; };
 		C99AA1422D6DF6480043AA96 /* CardScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99AA1412D6DF6480043AA96 /* CardScanner.swift */; };
 		C99FF2BB2D50E872007179C5 /* CardScannerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99FF2B22D50E872007179C5 /* CardScannerError.swift */; };
@@ -842,6 +839,9 @@
 		C9DC5B132EC4BF6A00E75C93 /* DropInFlowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC5B122EC4BF6A00E75C93 /* DropInFlowManager.swift */; };
 		C9E4DF672ED9A9B5000B6CBE /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */; };
 		C9E4DF682ED9A9B5000B6CBE /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */; };
+		C9E6C5C72F02C5C50030E6C5 /* ComponentContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C993EB632EE056F000353ECA /* ComponentContainerViewModelTests.swift */; };
+		C9E6C5C82F02C5CF0030E6C5 /* ComponentContainerRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90AC76B2EE0F22500DF60EA /* ComponentContainerRouterTests.swift */; };
+		C9E6C5C92F02C5D80030E6C5 /* ComponentContainerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90AC7852EE1D47B00DF60EA /* ComponentContainerViewControllerTests.swift */; };
 		C9E9144D2ED9D37500584184 /* AdyenSwiftUI.h in Headers */ = {isa = PBXBuildFile; fileRef = C9E9144A2ED9D37500584184 /* AdyenSwiftUI.h */; };
 		C9E9144E2ED9D37500584184 /* FullScreenViewControllerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E914482ED9D37500584184 /* FullScreenViewControllerPresenter.swift */; };
 		C9EEEFEC2D5516B300B7AFFC /* ExpirationDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EEEFEA2D5516B300B7AFFC /* ExpirationDateFormatter.swift */; };
@@ -2210,8 +2210,8 @@
 		A09FB2EA2B8399B700270D51 /* TrackableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackableComponent.swift; sourceTree = "<group>"; };
 		A09FB2EC2B86051000270D51 /* AnalyticsEventDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEventDataSource.swift; sourceTree = "<group>"; };
 		A0A0B3792E8FEBC800E8567D /* ObservableThreadSafetyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableThreadSafetyTests.swift; sourceTree = "<group>"; };
-		A0A26BF92DC101B600DB5B4E /* CheckoutBaseCallbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutBaseCallbacks.swift; sourceTree = "<group>"; };
 		A0A0B37D2E93F86F00E8567D /* SDKData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SDKData.swift; sourceTree = "<group>"; };
+		A0A26BF92DC101B600DB5B4E /* CheckoutBaseCallbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutBaseCallbacks.swift; sourceTree = "<group>"; };
 		A0B180302A2DE445003C608E /* MealVoucherDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealVoucherDetails.swift; sourceTree = "<group>"; };
 		A0B4B9B02BC027DE00C99926 /* CardComponentEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentEventTests.swift; sourceTree = "<group>"; };
 		A0BC64E528F062E400CED2A1 /* AdyenSessionAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenSessionAware.swift; sourceTree = "<group>"; };
@@ -3969,7 +3969,6 @@
 		A02B89DD2DD76E550083CE99 /* AdyenDropIn */ = {
 			isa = PBXGroup;
 			children = (
-				C993EB622EE056D000353ECA /* ComponentContainer */,
 				F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */,
 			);
 			path = AdyenDropIn;
@@ -5524,6 +5523,7 @@
 		E759E1F325CB371800B1F8DC /* DropIn Tests */ = {
 			isa = PBXGroup;
 			children = (
+				C993EB622EE056D000353ECA /* ComponentContainer */,
 				F9EDB79023965FFC00CFB3C9 /* Payment Method List */,
 				E759E1F425CB373F00B1F8DC /* DropInTests.swift */,
 				E74CE3DE26727EB1008231D2 /* DropInDelegateMock.swift */,
@@ -8328,7 +8328,6 @@
 				B6D808302BCD1F8900F3F5EB /* DateValidationTests.swift in Sources */,
 				B6D808442BCD2B0600F3F5EB /* JWAA256CBCHS512AlgorithmTests.swift in Sources */,
 				B6D8080D2BCD147D00F3F5EB /* AdyenContextTests.swift in Sources */,
-				C993EB642EE056F000353ECA /* ComponentContainerViewModelTests.swift in Sources */,
 				B62D48B42BBE8DBE001EF01A /* AnalyticsFlavorTests.swift in Sources */,
 				B6D8081D2BCD151F00F3F5EB /* CancellableMock.swift in Sources */,
 				B6D808282BCD166D00F3F5EB /* PostalAddressMocks.swift in Sources */,
@@ -8340,7 +8339,6 @@
 				A0DDB1A92E576ADB001B409A /* TestPresentingView.swift in Sources */,
 				B6D808122BCD147D00F3F5EB /* BrowserInfoTests.swift in Sources */,
 				00731C9F2E8589C20019BA29 /* AdyenStyleAssertions.swift in Sources */,
-				C90AC7862EE1D47B00DF60EA /* ComponentContainerViewControllerTests.swift in Sources */,
 				B6D808032BCD140E00F3F5EB /* AssetsAccessTests.swift in Sources */,
 				B6D808182BCD151F00F3F5EB /* PresentationDelegateMock.swift in Sources */,
 				B6D8081C2BCD151F00F3F5EB /* MockAddressLookupProvider.swift in Sources */,
@@ -8375,7 +8373,6 @@
 				B6D808192BCD151F00F3F5EB /* PaymentMethodMock.swift in Sources */,
 				A0E1B6452EAB9F580070B915 /* CheckoutConfigurationTests.swift in Sources */,
 				C993EB652EE0707200353ECA /* ErrorMock.swift in Sources */,
-				C90AC76C2EE0F22500DF60EA /* ComponentContainerRouterTests.swift in Sources */,
 				B6D808052BCD147600F3F5EB /* KeyedDecodingContainerExtensionsTests.swift in Sources */,
 				A0A0B37A2E8FEBC800E8567D /* ObservableThreadSafetyTests.swift in Sources */,
 				B6ABA1C32CA6B058003514E5 /* ListItemTests.swift in Sources */,
@@ -8731,6 +8728,7 @@
 				F9842CD025710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift in Sources */,
 				F9D57535238291A1009C18B5 /* BCMCComponentTests.swift in Sources */,
 				F9D57526237C3576009C18B5 /* RandomStringGenerator.swift in Sources */,
+				C9E6C5C92F02C5D80030E6C5 /* ComponentContainerViewControllerTests.swift in Sources */,
 				F957AA5A2552D8BB0099AD73 /* ThreeDS2ComponentTests.swift in Sources */,
 				B6EE0F3F2BBEBF7400B9810D /* APIClientMock.swift in Sources */,
 				5A56E15326B6DB9C00744CA0 /* VoucherViewTests.swift in Sources */,
@@ -8779,6 +8777,7 @@
 				F9E4725F28CF1A2100FF9550 /* ThreeDS2PlusDACoreActionHandlerTests.swift in Sources */,
 				A05D7212276A28EE0087F3E9 /* DocumentComponentTests.swift in Sources */,
 				F96AE5052603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift in Sources */,
+				C9E6C5C72F02C5C50030E6C5 /* ComponentContainerViewModelTests.swift in Sources */,
 				F9EDB78F23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift in Sources */,
 				E7F563EA28B7758D00082D4C /* DropInTestInternal.swift in Sources */,
 				F97BC2CE2668EB4500F1D242 /* VoucherViewDelegateMock.swift in Sources */,
@@ -8837,6 +8836,7 @@
 				C927083827590B7500D15EA0 /* BACSInputFormViewProtocolMock.swift in Sources */,
 				C92708422759106500D15EA0 /* BACSRouterProtocolMock.swift in Sources */,
 				00EACBC9288013AE0082B360 /* XCTestCase+Coder.swift in Sources */,
+				C9E6C5C82F02C5CF0030E6C5 /* ComponentContainerRouterTests.swift in Sources */,
 				E7975F982880421600A12C40 /* XCTestCase+Result.swift in Sources */,
 				81B505792A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift in Sources */,
 				813F21C82CEB64EB0072D193 /* PayByBankUSComponentTests.swift in Sources */,
@@ -10967,6 +10967,27 @@
 			};
 			name = Release;
 		};
+		C9E6C5C42F029BD80030E6C5 /* Firebase */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = AdyenCheckout;
+			};
+			name = Firebase;
+		};
+		C9E6C5C52F029BD80030E6C5 /* Firebase */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = AdyenUI;
+			};
+			name = Firebase;
+		};
+		C9E6C5C62F029BD80030E6C5 /* Firebase */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = GenerateSourcery;
+			};
+			name = Firebase;
+		};
 		C9FC2C472D50D0B700C9D0F3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -12092,6 +12113,7 @@
 			buildConfigurations = (
 				003BDD232E15200A009177E0 /* Debug */,
 				003BDD242E15200A009177E0 /* Release */,
+				C9E6C5C52F029BD80030E6C5 /* Firebase */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -12131,6 +12153,7 @@
 			buildConfigurations = (
 				A0F749982D958B3000014A05 /* Debug */,
 				A0F749992D958B3000014A05 /* Release */,
+				C9E6C5C42F029BD80030E6C5 /* Firebase */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -12160,6 +12183,7 @@
 			buildConfigurations = (
 				C99BC9082ED8B17B00360DC3 /* Debug */,
 				C99BC9092ED8B17B00360DC3 /* Release */,
+				C9E6C5C62F029BD80030E6C5 /* Firebase */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
