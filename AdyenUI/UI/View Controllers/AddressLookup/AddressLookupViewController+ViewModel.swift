@@ -19,6 +19,7 @@ package extension AddressLookupViewController {
     struct ViewModel {
         
         internal let style: AddressLookupStyle
+        internal let theme: AdyenTheme
         internal let localizationParameters: LocalizationParameters?
         internal let supportedCountryCodes: [String]?
         internal let initialCountry: String
@@ -56,6 +57,7 @@ package extension AddressLookupViewController {
         package init(
             for addressType: FormAddressPickerItem.AddressType,
             style: AddressLookupStyle = .init(),
+            theme: AdyenTheme = .default,
             localizationParameters: LocalizationParameters?,
             supportedCountryCodes: [String]?,
             initialCountry: String,
@@ -65,6 +67,7 @@ package extension AddressLookupViewController {
         ) {
             self.addressType = addressType
             self.style = style
+            self.theme = theme
             self.localizationParameters = localizationParameters
             self.supportedCountryCodes = supportedCountryCodes
             self.lookupProvider = lookupProvider

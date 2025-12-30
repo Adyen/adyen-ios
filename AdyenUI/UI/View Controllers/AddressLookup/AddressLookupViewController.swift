@@ -88,6 +88,7 @@ extension AddressLookupViewController.ViewModel {
         .init(
             for: addressType,
             style: style.form,
+            theme: theme,
             localizationParameters: localizationParameters,
             initialCountry: initialCountry,
             prefillAddress: prefillAddress,

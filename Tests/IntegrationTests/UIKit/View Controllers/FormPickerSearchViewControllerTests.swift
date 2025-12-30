@@ -81,7 +81,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         ) { _ in }
         
         // Allow setup in viewDidLoad
-        setupRootViewController(pickerSearchViewController)
+        pickerSearchViewController.loadViewIfNeeded()
         
         let searchViewController = pickerSearchViewController.viewControllers.first as! SearchViewController
         
@@ -119,7 +119,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         ) { _ in }
         
         // Allow setup in viewDidLoad
-        setupRootViewController(pickerSearchViewController)
+        pickerSearchViewController.loadViewIfNeeded()
         
         let searchViewController = pickerSearchViewController.viewControllers.first as! SearchViewController
         

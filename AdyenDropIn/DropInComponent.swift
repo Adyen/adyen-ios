@@ -49,7 +49,6 @@ public final class DropInComponent: NSObject,
             context: context,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
-            cardComponentDelegate: cardComponentDelegate,
             partialPaymentDelegate: partialPaymentDelegate
         )
         return dropInAssembler.resolveDropInRouter()
@@ -100,6 +99,8 @@ public final class DropInComponent: NSObject,
             .retryAPIClient(with: scheduler)
             .retryOnErrorAPIClient()
         super.init()
+        
+        sendInitialAnalytics()
     }
 
     //    /// For testing only
@@ -136,9 +137,6 @@ public final class DropInComponent: NSObject,
             configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = showRemoveStoredPaymentButton
         }
     }
-
-    /// The delegate for user activity on card component.
-    public weak var cardComponentDelegate: CardComponentDelegate?
 
     // MARK: - Presentable Component Protocol
 
@@ -237,7 +235,7 @@ public final class DropInComponent: NSObject,
 //    }()
 
     // ================= ROOT VIEW CONTROLLER ===============
-
+    // TODO: Make sure Analytic events are preserved
 //    internal lazy var rootViewController: UIViewController = {
 //        if configuration.allowPreselectedPaymentView,
 //           let preselectedComponent = componentManager.storedComponents.first {

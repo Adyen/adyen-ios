@@ -12,5 +12,6 @@ package enum AdyenUIConstants {
     package static let defaultBorderWidth = 2.0
 
     package static let stackViewSpacing = 8.0
+    package static let minimumInputHeight = 48.0
     package static let contentInsets = UIEdgeInsets(top: 11, left: 16, bottom: 11, right: 16)
 }

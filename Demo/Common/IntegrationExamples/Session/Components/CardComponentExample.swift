@@ -73,6 +73,13 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
                         }
                     )
                 )
+                .onBinChange { bin in
+                    print("Here is the bin \(bin)")
+                }
+                .onBinLookup { brands in
+                    print("Bin lookup response \(brands)")
+                }
+                .showsSecurityCodeField(false)
         }
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(

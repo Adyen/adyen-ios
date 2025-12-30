@@ -22,6 +22,10 @@ public struct SEPADirectDebitDetails: PaymentMethodDetails {
     /// The account owner name.
     public let ownerName: String
     
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
+    
     /// Initializes the SEPA Direct Debit details.
     ///
     ///
@@ -39,6 +43,7 @@ public struct SEPADirectDebitDetails: PaymentMethodDetails {
         case type
         case iban
         case ownerName
+        case sdkData
     }
     
 }

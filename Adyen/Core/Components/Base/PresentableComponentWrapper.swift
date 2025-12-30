@@ -8,33 +8,31 @@ import Foundation
 import UIKit
 
 /// A component that wraps any `Component` to make it a `PresentableComponent`.
-@_spi(AdyenInternal)
-public final class PresentableComponentWrapper: PresentableComponent,
+package final class PresentableComponentWrapper: PresentableComponent,
     Cancellable,
     FinalizableComponent,
     LoadingComponent {
     
-    public var apiContext: APIContext { component.context.apiContext }
+    package var apiContext: APIContext { component.context.apiContext }
 
     /// The context object for this component.
-    public var context: AdyenContext { component.context }
-    
-    public let viewController: UIViewController
-    
+    package var context: AdyenContext { component.context }
+
+    package let viewController: UIViewController
+
     /// The wrapped component.
-    public let component: Component
-    
-    public var requiresModalPresentation: Bool = true
-    
-    @_spi(AdyenInternal)
-    public var navBarType: NavigationBarType
-    
+    package let component: Component
+
+    package var requiresModalPresentation: Bool = true
+
+    package var navBarType: NavigationBarType
+
     /// Initializes the wrapper component.
     ///
     /// - Parameter component: The wrapped component.
     /// - Parameter viewController: The `ViewController` used as the UI of the `PresentableComponent`.
     /// - Parameter navBarType: Type of the navigation bar to use.
-    public init(
+    package init(
         component: Component,
         viewController: UIViewController,
         navBarType: NavigationBarType = .regular
@@ -44,16 +42,16 @@ public final class PresentableComponentWrapper: PresentableComponent,
         self.navBarType = navBarType
     }
 
-    public func didCancel() {
+    package func didCancel() {
         component.cancel()
         stopLoading()
     }
 
-    public func didFinalize(with success: Bool, completion: (() -> Void)?) {
+    package func didFinalize(with success: Bool, completion: (() -> Void)?) {
         component.finalizeIfNeeded(with: success, completion: completion)
     }
 
-    public func stopLoading() {
+    package func stopLoading() {
         component.stopLoading()
     }
 }

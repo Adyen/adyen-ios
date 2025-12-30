@@ -44,14 +44,11 @@ public class CardComponent: PresentableComponent,
     /// The card payment method.
     public var paymentMethod: PaymentMethod { cardPaymentMethod }
 
-    /// The delegate for user activity on card component.
-    public weak var cardComponentDelegate: CardComponentDelegate?
-
     /// The supported card types.
     public let supportedCardTypes: [CardType]
 
     /// Card component configuration.
-    public private(set) var configuration: CardComponentConfiguration
+    public internal(set) var configuration: CardComponentConfiguration
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate? {
@@ -259,7 +256,7 @@ extension CardComponent: CardViewControllerDelegate {
     internal func didChange(bin: String) {
         binThrottler.throttle { [weak self] in
             guard let self else { return }
-            self.cardComponentDelegate?.didChangeBIN(bin, component: self)
+            self.configuration.onBinChange?(bin)
         }
     }
     
@@ -267,7 +264,7 @@ extension CardComponent: CardViewControllerDelegate {
         binInfoProvider.provide(for: pan, supportedTypes: supportedCardTypes) { [weak self] binInfo in
             guard let self else { return }
             self.cardViewController.update(binInfo: binInfo)
-            self.cardComponentDelegate?.didChangeCardBrand(binInfo.brands ?? [], component: self)
+            self.configuration.onBinLookup?(binInfo.brands ?? [])
         }
     }
 }

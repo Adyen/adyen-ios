@@ -18,8 +18,8 @@ public class AddressInputFormViewController: FormViewController {
         
         super.init(
             scrollEnabled: true,
-            style: viewModel.style,
-            localizationParameters: viewModel.localizationParameters
+            localizationParameters: viewModel.localizationParameters,
+            theme: viewModel.theme
         )
         
         title = viewModel.title

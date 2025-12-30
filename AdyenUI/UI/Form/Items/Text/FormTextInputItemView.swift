@@ -17,7 +17,7 @@ open class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
     /// - Parameters:
     ///   - item: The item represented by the view.
     ///   - theme: The theme to use for styling.
-    override public init(item: FormTextInputItem, theme: AdyenTheme) {
+    public required init(item: FormTextInputItem, theme: AdyenTheme) {
         super.init(item: item, theme: theme)
 
         observe(item.$isEnabled) { [weak self] isEnabled in

@@ -12,7 +12,7 @@ internal class ActionWrapperViewController: UINavigationController {
 
     // MARK: - Properties
 
-    private var onCancel: (() -> Void)?
+    internal var onCancel: (() -> Void)?
 
     // MARK: - Initializers
 
