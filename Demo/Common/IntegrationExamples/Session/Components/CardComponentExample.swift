@@ -73,7 +73,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
                         }
                     )
                 )
-                .onBinValue { bin in
+                .onBinChange { bin in
                     print("Here is the bin \(bin)")
                 }
                 .onBinLookup { brands in

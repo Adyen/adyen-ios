@@ -256,7 +256,7 @@ extension CardComponent: CardViewControllerDelegate {
     internal func didChange(bin: String) {
         binThrottler.throttle { [weak self] in
             guard let self else { return }
-            self.configuration.onBinValue?(bin)
+            self.configuration.onBinChange?(bin)
         }
     }
     
