@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+// sourcery:AutoMockable
 internal protocol ComponentContainerViewModelProtocol {
     var componentViewController: UIViewController { get }
     func cancel()

@@ -85,8 +85,7 @@ public struct PaymentComponentData {
     ///   - checkoutAttemptId: The checkoutAttempt identifier.
     ///   - installments: Installments selection if specified.
     ///   - sdkData: The encoded SDK data if specified.
-    @_spi(AdyenInternal)
-    public init(
+    package init(
         paymentMethodDetails: some PaymentMethodDetails,
         amount: Amount?,
         order: PartialPaymentOrder?,
@@ -115,8 +114,7 @@ public struct PaymentComponentData {
         )
     }
 
-    @_spi(AdyenInternal)
-    public func replacing(order: PartialPaymentOrder) -> PaymentComponentData {
+    package func replacing(order: PartialPaymentOrder) -> PaymentComponentData {
         PaymentComponentData(
             paymentMethodDetails: paymentMethod,
             amount: amount,
@@ -127,8 +125,7 @@ public struct PaymentComponentData {
         )
     }
 
-    @_spi(AdyenInternal)
-    public func replacing(amount: Amount) -> PaymentComponentData {
+    package func replacing(amount: Amount) -> PaymentComponentData {
         PaymentComponentData(
             paymentMethodDetails: paymentMethod,
             amount: amount,
@@ -139,8 +136,7 @@ public struct PaymentComponentData {
         )
     }
 
-    @_spi(AdyenInternal)
-    public func replacing(checkoutAttemptId: String?) -> PaymentComponentData {
+    package func replacing(checkoutAttemptId: String?) -> PaymentComponentData {
         guard let checkoutAttemptId else { return self }
         var paymentMethod = paymentMethod
         paymentMethod.checkoutAttemptId = checkoutAttemptId
@@ -159,8 +155,7 @@ public struct PaymentComponentData {
     ///
     /// - Parameters:
     ///   - completion: The completion closure that is called with the new `PaymentComponentData` instance.
-    @_spi(AdyenInternal)
-    public func dataByAddingBrowserInfo(completion: @escaping ((_ newData: PaymentComponentData) -> Void)) {
+    package func dataByAddingBrowserInfo(completion: @escaping ((_ newData: PaymentComponentData) -> Void)) {
         BrowserInfo.initialize {
             completion(PaymentComponentData(
                 paymentMethodDetails: paymentMethod,
