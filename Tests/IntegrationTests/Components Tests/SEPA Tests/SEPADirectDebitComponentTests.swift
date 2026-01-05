@@ -165,8 +165,8 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        XCTAssertEqual(nameItemView?.alertLabel.text, "Holder name invalid")
-        XCTAssertEqual(ibanItemView?.alertLabel.text, "Invalid account number")
+        XCTAssertEqual(nameItemView?.footerLabel.text, "Holder name invalid")
+        XCTAssertEqual(ibanItemView?.footerLabel.text, "Invalid account number")
 
     }
 
