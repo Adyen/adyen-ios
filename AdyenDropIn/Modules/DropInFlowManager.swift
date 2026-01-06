@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,6 +15,7 @@ internal protocol ActionPresenter: AnyObject {
     func didCancel(actionComponent: ActionComponent)
 }
 
+// sourcery:AutoMockable
 internal protocol DropInFlowManaging {
     func submit(
         _ data: PaymentComponentData,

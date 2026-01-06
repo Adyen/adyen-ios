@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -22,6 +22,10 @@ public struct QiwiWalletDetails: PaymentMethodDetails {
     /// The telephone number.
     public let phoneNumber: String
     
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
+    
     /// Initializes the Qiwi Wallet details.
     ///
     ///
@@ -39,6 +43,7 @@ public struct QiwiWalletDetails: PaymentMethodDetails {
         case type
         case phonePrefix = "qiwiwallet.telephoneNumberPrefix"
         case phoneNumber = "qiwiwallet.telephoneNumber"
+        case sdkData
     }
     
 }

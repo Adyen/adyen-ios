@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -71,6 +71,23 @@ final class ApplePayDelegateMockiOS15: ApplePayDelegateMock {
     func didUpdate(couponCode: String, for payment: ApplePayPayment, completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void) {
         self.couponCode = couponCode
         let result = onCouponChange!(couponCode, payment)
+        completion(result)
+    }
+}
+
+// MARK: - ApplePayAuthorizationDelegate Mock
+
+final class ApplePayAuthorizationDelegateMock: ApplePayAuthorizationDelegate {
+    
+    var authorizedPayment: PKPayment?
+    var onAuthorize: ((PKPayment) -> PKPaymentAuthorizationResult)?
+    
+    func didAuthorize(
+        payment: PKPayment,
+        completion: @escaping (PKPaymentAuthorizationResult) -> Void
+    ) {
+        self.authorizedPayment = payment
+        let result = onAuthorize!(payment)
         completion(result)
     }
 }

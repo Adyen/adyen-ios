@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,13 +8,15 @@ import Adyen
 import Foundation
 import UIKit
 
+// sourcery:AutoMockable
 internal protocol ComponentContainerRouterListener: AnyObject {
     func didDismissComponentContainer(completion: (() -> Void)?)
 }
 
+// sourcery:AutoMockable
 internal protocol ComponentContainerRouting: AnyObject {
-    func present(paymentComponent: any PresentableComponent)
-    func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?)
+    func present(paymentComponent: PresentableComponent)
+    func present(actionComponent: PresentableComponent, onCancel: (() -> Void)?)
     func dismiss(completion: (() -> Void)?)
 }
 
@@ -39,8 +41,8 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouting {
     // MARK: - Router
     
     internal var rootViewController: UIViewController {
-        if viewController.componentView is UIAlertController {
-            return viewController.componentView
+        if viewController.componentViewController is UIAlertController {
+            return viewController.componentViewController
         }
         
         return viewController

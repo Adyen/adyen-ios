@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+// sourcery:AutoMockable
 internal protocol ComponentContainerViewModelProtocol {
     var componentViewController: UIViewController { get }
     func cancel()

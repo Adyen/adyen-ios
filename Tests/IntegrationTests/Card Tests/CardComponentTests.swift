@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -286,7 +286,7 @@ class CardComponentTests: XCTestCase {
 
     }
 
-    func test_onBinValueAndOnBinLookup_whenCardNumberEntered_shouldBeCalledWithCorrectValues() {
+    func test_onBinChangeAndOnBinLookup_whenCardNumberEntered_shouldBeCalledWithCorrectValues() {
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(brands: [CardBrand(type: .americanExpress)]))
@@ -306,7 +306,7 @@ class CardComponentTests: XCTestCase {
         let expectationCardType = XCTestExpectation(description: "CardType Expectation")
         
         sut.configuration = sut.configuration
-            .onBinValue { value in
+            .onBinChange { value in
                 XCTAssertEqual(value, "371449")
                 expectationBin.fulfill()
             }

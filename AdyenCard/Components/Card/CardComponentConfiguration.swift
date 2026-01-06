@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -65,9 +65,8 @@ public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPer
     /// Indicates whether or not to show the supported card logos under the card number item
     internal var showsSupportedCardLogos: Bool
     
-    // TODO: rename all related parts after aligning
     /// Called when the BIN value changes (first 6-8 digits of the card number).
-    internal var onBinValue: ((String) -> Void)?
+    internal var onBinChange: ((String) -> Void)?
     
     /// Called when card brand(s) are detected from the entered card number.
     internal var onBinLookup: (([CardBrand]) -> Void)?
@@ -213,11 +212,11 @@ extension CardComponentConfiguration {
     
     /// Sets the handler to be called when the BIN value changes.
     /// The BIN is the first 6-8 digits of the card number.
-    /// - Parameter onBinValue: The closure to call with the BIN value.
+    /// - Parameter onBinChange: The closure to call with the BIN value.
     /// - Returns: A modified copy of the configuration.
-    public func onBinValue(_ onBinValue: @escaping (String) -> Void) -> Self {
+    public func onBinChange(_ onBinChange: @escaping (String) -> Void) -> Self {
         var copy = self
-        copy.onBinValue = onBinValue
+        copy.onBinChange = onBinChange
         return copy
     }
     

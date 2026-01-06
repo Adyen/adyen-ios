@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -32,6 +32,10 @@ public struct ApplePayDetails: PaymentMethodDetails {
     /// The shipping method that the user chose.
     public let shippingMethod: PKShippingMethod?
     
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
+    
     /// Initializes the Apple Pay details.
     ///
     /// - Parameters:
@@ -62,6 +66,7 @@ public struct ApplePayDetails: PaymentMethodDetails {
     private enum CodingKeys: String, CodingKey {
         case token = "applePayToken"
         case type
+        case sdkData
     }
     
 }

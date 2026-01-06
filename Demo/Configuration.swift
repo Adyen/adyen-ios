@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2017 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -46,10 +46,12 @@ internal enum ConfigurationConstants {
     }
 
     static let clientKey = secretValue(for: .clientKey)
-
-    static let demoServerAPIKey = secretValue(for: .demoServerAPIKey)
-
+    
+    static let serverUrl = secretValue(for: .serverUrl)
+    
     static let merchantAccount = secretValue(for: .merchantAccount)
+    
+    static let adyenServerKey = secretValue(for: .adyenServerKey)
 
     static let appleTeamIdentifier = secretValue(for: .appleTeamIdentifier)
 
@@ -130,6 +132,7 @@ internal struct ThreeDSConfigurationSettings: Codable {
 internal struct ApplePaySettings: Codable {
     internal var merchantIdentifier: String
     internal var allowOnboarding: Bool = false
+    internal var didAuthorizeSuccessful: Bool = true
 }
 
 internal struct AnalyticsSettings: Codable {
@@ -203,7 +206,8 @@ internal struct DemoAppSettings: Codable {
 
     internal static let defaultApplePaySettings = ApplePaySettings(
         merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier,
-        allowOnboarding: false
+        allowOnboarding: false,
+        didAuthorizeSuccessful: true
     )
 
     internal static let defaultAnalyticsSettings = AnalyticsSettings(isEnabled: true)

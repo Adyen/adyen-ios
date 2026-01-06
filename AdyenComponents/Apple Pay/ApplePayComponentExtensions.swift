@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -12,10 +12,26 @@ import PassKit
 extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     
     public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-        paymentAuthorizationViewController = nil
-        if case let State.finalized(completion) = state {
-            completion?()
+        if configuration.dismissesAutomatically {
+            controller.dismiss(animated: true) { [weak self] in
+                self?.handleViewControllerDidFinish()
+            }
         } else {
+            handleViewControllerDidFinish()
+        }
+    }
+    
+    private func handleViewControllerDidFinish() {
+        switch state {
+        case let .finalized(completion):
+            completion?()
+        case .initial:
+            // User cancelled without authorizing payment - allow component reuse
+            paymentAuthorizationViewController = nil
+            delegate?.didFail(with: ComponentError.cancelled, from: self)
+        case .submitted:
+            // Payment authorized but finalizeIfNeeded not called
+            // we call didFail here to not cause a breaking behavior change
             delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
     }
@@ -23,28 +39,31 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     public func paymentAuthorizationViewController(
         _ controller: PKPaymentAuthorizationViewController,
         didAuthorizePayment payment: PKPayment,
-        completion: @escaping (PKPaymentAuthorizationStatus) -> Void
+        handler completion: @escaping (PKPaymentAuthorizationResult) -> Void
     ) {
         guard payment.token.paymentData.isEmpty == false else {
-            completion(.failure)
+            completion(PKPaymentAuthorizationResult(status: .failure, errors: nil))
             delegate?.didFail(with: Error.invalidToken, from: self)
             return
         }
 
-        state = .submitted(completion)
-        let token = payment.token.paymentData.base64EncodedString()
-        let network = payment.token.paymentMethod.network?.rawValue ?? ""
-        let details = ApplePayDetails(
-            paymentMethod: applePayPaymentMethod,
-            token: token,
-            network: network,
-            billingContact: payment.billingContact,
-            shippingContact: payment.shippingContact,
-            shippingMethod: payment.shippingMethod
-        )
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: applePayPayment.amount, order: order))
+        // Call the authorization delegate's didAuthorize method for validation
+        // If no delegate is set, proceed directly with payment submission
+        if let authorizationDelegate {
+            authorizationDelegate.didAuthorize(payment: payment) { [weak self] result in
+                guard let self else { return }
+                if result.status == .success {
+                    self.proceedWithSubmission(for: payment, completion: completion)
+                } else {
+                    // Validation failed - pass the result back to Apple Pay
+                    completion(result)
+                }
+            }
+        } else {
+            proceedWithSubmission(for: payment, completion: completion)
+        }
     }
-
+    
     public func paymentAuthorizationViewController(
         _ controller: PKPaymentAuthorizationViewController,
         didSelectShippingContact contact: PKContact,
@@ -112,5 +131,24 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
             }
         }
     }
-
+    
+    private func proceedWithSubmission(
+        for payment: PKPayment,
+        completion: @escaping (PKPaymentAuthorizationResult) -> Void
+    ) {
+        state = .submitted(completion)
+        
+        let token = payment.token.paymentData.base64EncodedString()
+        let network = payment.token.paymentMethod.network?.rawValue ?? ""
+        let details = ApplePayDetails(
+            paymentMethod: applePayPaymentMethod,
+            token: token,
+            network: network,
+            billingContact: payment.billingContact,
+            shippingContact: payment.shippingContact,
+            shippingMethod: payment.shippingMethod
+        )
+        
+        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: applePayPayment.amount, order: order))
+    }
 }

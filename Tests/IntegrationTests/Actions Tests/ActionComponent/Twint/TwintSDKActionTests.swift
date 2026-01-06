@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -230,7 +230,7 @@ import XCTest
                 configurationsBlock([.dummy])
             } handlePay: { code, appConfiguration, callbackAppScheme, completionHandler in
                 payBlockExpectation.fulfill()
-                let error = MockError(errorDescription: expectedAlertMessage)
+                let error = ErrorMock(errorDescription: expectedAlertMessage)
                 completionHandler(error)
             } handleRegisterForUOF: { _, _, _, completionHandler in
                 XCTFail("RegisterForUOF should not have been called.")

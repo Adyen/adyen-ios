@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -115,6 +115,10 @@ public struct StoredPaymentDetails: PaymentMethodDetails {
     @_spi(AdyenInternal)
     public var checkoutAttemptId: String?
     
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
+    
     internal let type: PaymentMethodType
     
     internal let storedPaymentMethodIdentifier: String
@@ -130,6 +134,7 @@ public struct StoredPaymentDetails: PaymentMethodDetails {
     private enum CodingKeys: String, CodingKey {
         case type
         case storedPaymentMethodIdentifier = "storedPaymentMethodId"
+        case sdkData
     }
     
 }

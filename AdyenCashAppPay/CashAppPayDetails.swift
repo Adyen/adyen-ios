@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -26,6 +26,10 @@ public struct CashAppPayDetails: PaymentMethodDetails {
     
     /// Public identifier for the customer on Cash App.
     public let cashtag: String?
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
     
     /// Initializes the Cash App Pay details.
     /// - Parameters:
@@ -56,5 +60,6 @@ public struct CashAppPayDetails: PaymentMethodDetails {
         case onFileGrantId
         case customerId
         case cashtag
+        case sdkData
     }
 }

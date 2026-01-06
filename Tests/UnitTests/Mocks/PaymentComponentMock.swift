@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,7 +19,7 @@ class PaymentComponentMock: PaymentComponent {
     }
 }
 
-class PresentableComponentMock: PaymentComponentMock, PresentableComponent {
+class PresentableComponentMock: PaymentComponentMock, PresentableComponent, LoadingComponent {
 
     // MARK: - Properties
 
@@ -33,6 +33,20 @@ class PresentableComponentMock: PaymentComponentMock, PresentableComponent {
     ) {
         self.viewController = viewController
         super.init(paymentMethod: paymentMethod)
+    }
+
+    // MARK: - stopLoading
+
+    var stopLoadingCallsCount = 0
+    var stopLoadingCalled: Bool {
+        stopLoadingCallsCount > 0
+    }
+
+    var stopLoadingClosure: (() -> Void)?
+
+    func stopLoading() {
+        stopLoadingCallsCount += 1
+        stopLoadingClosure?()
     }
 }
 

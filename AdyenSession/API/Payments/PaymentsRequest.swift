@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -44,7 +44,6 @@ internal struct PaymentsRequest: APIRequest {
         
         try container.encode(data.paymentMethod.encodable, forKey: .paymentMethod)
         try container.encode(sessionData, forKey: .sessionData)
-        try container.encode(data.supportNativeRedirect, forKey: .supportNativeRedirect)
         try container.encode(data.storePaymentMethod, forKey: .storePaymentMethod)
         try container.encodeIfPresent(
             data.delegatedAuthenticationData,
@@ -57,18 +56,15 @@ internal struct PaymentsRequest: APIRequest {
         try container.encodeIfPresent(data.deliveryAddress, forKey: .deliveryAddress)
         try container.encodeIfPresent(data.socialSecurityNumber, forKey: .socialSecurityNumber)
         try container.encodeIfPresent(data.browserInfo, forKey: .browserInfo)
-        try container.encodeIfPresent(data.checkoutAttemptId, forKey: .checkoutAttemptId)
         try container.encodeIfPresent(data.order?.compactOrder, forKey: .order)
     }
     
     private enum CodingKeys: String, CodingKey {
         case sessionData
         case paymentMethod
-        case supportNativeRedirect
         case storePaymentMethod
         case shopperEmail
         case browserInfo
-        case checkoutAttemptId
         case shopperName
         case telephoneNumber
         case billingAddress

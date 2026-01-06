@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -29,6 +29,17 @@ class DropInTests: XCTestCase {
                   "type" : "applePayToken"
                 }
               ],
+                "brands" : [
+                  "maestro",
+                  "amex",
+                  "discover",
+                  "eftpos_australia",
+                  "elo",
+                  "jcb",
+                  "mc",
+                  "sodexo",
+                  "visa"
+            ],
               "name" : "Apple Pay",
               "supportsRecurring" : true,
               "type" : "applepay"

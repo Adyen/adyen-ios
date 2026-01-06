@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -256,7 +256,7 @@ extension CardComponent: CardViewControllerDelegate {
     internal func didChange(bin: String) {
         binThrottler.throttle { [weak self] in
             guard let self else { return }
-            self.configuration.onBinValue?(bin)
+            self.configuration.onBinChange?(bin)
         }
     }
     

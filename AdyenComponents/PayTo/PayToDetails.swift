@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -20,6 +20,10 @@ public struct PayToDetails: PaymentMethodDetails, ShopperInformation {
     
     /// Name of the shopper.
     public let shopperName: ShopperName?
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
 
     /// Initializes the PayTo Component Details.
     /// - Parameters:
@@ -39,5 +43,6 @@ public struct PayToDetails: PaymentMethodDetails, ShopperInformation {
     private enum CodingKeys: String, CodingKey {
         case type
         case accountIdentifier = "shopperAccountIdentifier"
+        case sdkData
     }
 }

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -561,7 +561,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             let onAuthenticateExpectation = expectation(description: "On Authentication - should be called in the AuthneticationSDK")
             authenticationServiceMock.onAuthenticate = { _ in
                 onAuthenticateExpectation.fulfill()
-                throw MockError()
+                throw ErrorMock()
             }
             authenticationServiceMock.onRegister = { _ in
                 XCTFail("On Register should not be called in the SDK.")
@@ -804,7 +804,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             let onRegisterExpectation = expectation(description: "On Registration - should be called in the AuthneticationSDK")
             authenticationServiceMock.onRegister = { _ in
                 onRegisterExpectation.fulfill()
-                throw MockError()
+                throw ErrorMock()
             }
     
             let delegate = ActionComponentDelegateMock()

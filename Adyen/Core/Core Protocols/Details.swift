@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,6 +14,10 @@ public protocol PaymentMethodDetails: Details {
     
     @_spi(AdyenInternal)
     var checkoutAttemptId: String? { get set }
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    var sdkData: String? { get set }
 }
 
 public extension PaymentMethodDetails {

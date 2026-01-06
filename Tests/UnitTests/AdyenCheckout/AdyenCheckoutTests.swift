@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -194,7 +194,7 @@ final class AdyenCheckoutTests: XCTestCase {
         
         configuration.onSubmit = { data, completion in
             didCallSubmit = true
-            XCTAssertEqual(data.checkoutAttemptId, paymentData.checkoutAttemptId)
+            XCTAssertEqual(data.paymentMethod.sdkData, paymentData.paymentMethod.sdkData)
             let details = data.paymentMethod as! BLIKDetails
             XCTAssertEqual(details.type, blikDetails.type)
             XCTAssertEqual(details.blikCode, blikDetails.blikCode)

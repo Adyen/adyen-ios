@@ -27,7 +27,7 @@ jobs:
     steps:
     
     # Checking out the current branch
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
       with:
         fetch-depth: 0
     
@@ -67,7 +67,7 @@ jobs:
     # Creates a release/[sdk-version] branch with a PR to develop
     - name: Create Pull Request
       id: create_pr
-      uses: peter-evans/create-pull-request@v7
+      uses: peter-evans/create-pull-request@v8
       with:
         delete-branch: true
         branch: "release/${{ github.event.inputs.sdk-version }}"

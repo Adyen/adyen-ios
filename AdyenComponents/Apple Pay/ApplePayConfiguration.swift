@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -68,6 +68,14 @@ extension ApplePayComponent {
 
         /// A funding source supported by the merchant. If `nil`, the transaction allows both credit and debit cards.
         public var merchantCapability: CardFundingSource?
+        
+        /// When `true`, the component automatically dismisses the `PKPaymentAuthorizationViewController`
+        /// when the payment flow completes or is cancelled. When `false` (default), you are
+        /// responsible for dismissing the view controller within the `finalizeIfNeeded(with:completion:)` completion block.
+        ///
+        /// - Note: Apple recommends dismissing the controller in `paymentAuthorizationViewControllerDidFinish`.
+        ///   Setting this to `true` follows Apple's guidance.
+        public var dismissesAutomatically: Bool = false
         
         /// The payment request object needed for Apple Pay. Must contain all the required fileds
         /// such as `merchantIdentifier`, `summaryItems`, `currencyCode`, and `countryCode`.
@@ -176,15 +184,23 @@ extension ApplePayComponent {
 
 extension ApplePayPaymentMethod {
 
-    internal var supportedNetworks: [PKPaymentNetwork] {
-        var networks = PKPaymentRequest.availableNetworks()
-        if let brands {
-            let brandsSet = Set(brands)
-            networks = networks.filter { brandsSet.contains($0.txVariantName) }
-        }
-        return networks
-    }
+    internal func supportedNetworks(
+        provider: ApplePayNetworksProviding = ApplePayNetworksProvider()
+    ) -> [PKPaymentNetwork] {
+        let networks = provider.availableNetworks()
+        guard let brands else { return networks }
 
+        // Build a lookup table from txVariantName → PKPaymentNetwork.
+        // Some networks appear more than once on iOS (e.g., cartebancaire), so we
+        // keep the first occurrence and ignore duplicates.
+        let networkByBrand: [String: PKPaymentNetwork] = networks.reduce(into: [:]) { dict, network in
+            if dict[network.txVariantName] == nil {
+                dict[network.txVariantName] = network
+            }
+        }
+
+        return brands.compactMap { networkByBrand[$0] }
+    }
 }
 
 extension PKPaymentNetwork {

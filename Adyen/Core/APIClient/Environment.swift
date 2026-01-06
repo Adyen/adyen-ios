@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -20,10 +20,6 @@ public struct Environment: AnyAPIEnvironment {
     
     @_spi(AdyenInternal)
     public static let local = Environment(baseURL: URL(string: "http://localhost:8080/")!)
-
-    /// Adyen's default live environment.
-    @available(*, deprecated, message: "Please explicitly select the environment matching your region.")
-    public static let live = liveEurope
 
     /// Adyen's European live environment.
     public static let liveEurope = Environment(baseURL: URL(string: "https://checkoutshopper-live.adyen.com/")!)

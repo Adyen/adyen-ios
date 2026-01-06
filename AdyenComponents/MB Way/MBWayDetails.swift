@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,6 +19,10 @@ public struct MBWayDetails: PaymentMethodDetails {
     /// The telephone number.
     public let telephoneNumber: String
     
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
+    
     /// Initializes the MB Way details.
     ///
     ///
@@ -33,6 +37,7 @@ public struct MBWayDetails: PaymentMethodDetails {
     private enum CodingKeys: String, CodingKey {
         case type
         case telephoneNumber
+        case sdkData
     }
     
 }

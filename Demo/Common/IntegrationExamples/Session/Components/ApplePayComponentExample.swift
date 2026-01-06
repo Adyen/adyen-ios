@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,6 +7,7 @@
 import Adyen
 import AdyenComponents
 import AdyenSession
+import PassKit
 
 internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 
@@ -91,6 +92,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
             configuration: config
         )
         component.delegate = session
+        component.authorizationDelegate = self
         return component
     }
 
@@ -105,6 +107,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     }
 
     internal func dismissAndShowAlert(_ success: Bool, _ message: String) {
+        // dismiss ourselves as the auto dismiss flag is false
         presenter?.dismiss {
             // Payment is processed. Add your code here.
             let title = success ? "Success" : "Error"
@@ -132,4 +135,22 @@ extension ApplePayComponentExample: PresentationDelegate {
     // The implementation of this delegate method is not needed when using AdyenSession
     internal func present(component: PresentableComponent) {}
 
+}
+
+extension ApplePayComponentExample: ApplePayAuthorizationDelegate {
+    
+    func didAuthorize(
+        payment: PKPayment,
+        completion: @escaping (PKPaymentAuthorizationResult) -> Void
+    ) {
+        if ConfigurationConstants.current.applePaySettings.didAuthorizeSuccessful {
+            completion(.init(status: .success, errors: nil))
+        } else {
+            let postalCodeError = PKPaymentRequest.paymentShippingAddressInvalidError(
+                withKey: CNPostalAddressPostalCodeKey,
+                localizedDescription: "Wrong postal code"
+            )
+            completion(.init(status: .failure, errors: [postalCodeError]))
+        }
+    }
 }

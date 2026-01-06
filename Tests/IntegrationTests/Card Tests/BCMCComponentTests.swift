@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -279,7 +279,7 @@ class BCMCComponentTests: XCTestCase {
         wait(for: [expectationCardType], timeout: 10)
     }
 
-    func test_onBinValue_withCorrectBIN_shouldReturnBINValue() {
+    func test_onBinChange_withCorrectBIN_shouldReturnBINValue() {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.masterCard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(
@@ -293,7 +293,7 @@ class BCMCComponentTests: XCTestCase {
         expectationBin.expectedFulfillmentCount = 1
         expectationBin.assertForOverFulfill = true
         sut.configuration = sut.configuration
-            .onBinValue { value in
+            .onBinChange { value in
                 XCTAssertTrue("67034444".hasPrefix(value))
                 XCTAssertTrue(value.count <= 8)
                 expectationBin.fulfill()
@@ -305,7 +305,7 @@ class BCMCComponentTests: XCTestCase {
         wait(for: [expectationBin], timeout: 10)
     }
     
-    func test_onBinValue_with6DigitsBIN_shouldReturn6Digits() {
+    func test_onBinChange_with6DigitsBIN_shouldReturn6Digits() {
         
         let expectationBinLookup = XCTestExpectation(description: "Bin Lookup Expectation")
         let cardTypeProviderMock = BinInfoProviderMock()
@@ -328,7 +328,7 @@ class BCMCComponentTests: XCTestCase {
 
         let expectationBin = XCTestExpectation(description: "Bin Expectation")
         sut.configuration = sut.configuration
-            .onBinValue { value in
+            .onBinChange { value in
                 XCTAssertTrue("67034444".hasPrefix(value))
                 XCTAssertTrue(value.count <= 8)
                 if value == "67034444" {
@@ -343,7 +343,7 @@ class BCMCComponentTests: XCTestCase {
         wait(for: [expectationBin], timeout: 10)
     }
     
-    func test_onBinValue_with8DigitsBIN_shouldReturn8Digits() {
+    func test_onBinChange_with8DigitsBIN_shouldReturn8Digits() {
         
         let expectationBinLookup = XCTestExpectation(description: "Bin Lookup Expectation")
         let cardTypeProviderMock = BinInfoProviderMock()
@@ -366,7 +366,7 @@ class BCMCComponentTests: XCTestCase {
 
         let expectationBin = XCTestExpectation(description: "Bin Expectation")
         sut.configuration = sut.configuration
-            .onBinValue { value in
+            .onBinChange { value in
                 XCTAssertTrue("67030000".hasPrefix(value))
                 XCTAssertTrue(value.count <= 8)
                 if value == "67030000" {
