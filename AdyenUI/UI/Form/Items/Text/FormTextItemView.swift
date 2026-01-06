@@ -290,7 +290,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     }
     
     override open func updateValidationStatus(forced: Bool = false) {
-        let textFieldNotEmpty = !(textField.text ?? "").isEmpty
+        let isTextFieldEmpty = (textField.text ?? "").isEmpty
         
         // Determine if we should show validation UI (accessory, border)
         // When forced (explicit validation like Pay button), always validate
@@ -298,8 +298,10 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         let shouldShowValidationUI: Bool
         if forced {
             shouldShowValidationUI = true
+        } else if isTextFieldEmpty {
+            shouldShowValidationUI = false
         } else {
-            shouldShowValidationUI = textFieldNotEmpty && (item.allowsValidationWhileEditing || !isEditing)
+            shouldShowValidationUI = item.allowsValidationWhileEditing || !isEditing
         }
         
         if shouldShowValidationUI {
