@@ -270,11 +270,12 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// This method updates UI according to a validity state.
     /// Subclasses can override this method to stay notified when the text field resigns its first responder status.
     open func textFieldDidEndEditing(_ textField: UITextField) {
+        item.isEditing = false
         isEditing = false
         // Validate on focus loss (if field has content)
         let hasContent = !(textField.text ?? "").isEmpty
         if hasContent {
-            updateValidationStatus(forced: true)
+            item.shouldShowValidationError = !item.isValid()
         }
         updateBorderColor()
         item.onDidEndEditing?()
@@ -283,6 +284,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// This method hides validation accessories icons.
     /// Subclasses can override this method to stay notified when textField became the first responder.
     open func textFieldDidBeginEditing(_ textField: UITextField) {
+        item.isEditing = true
         isEditing = true
         resetValidationStatus()
         updateBorderColor()
