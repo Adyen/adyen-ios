@@ -81,7 +81,6 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     /// Clears validation error state.
     internal func resetValidationStatus() {
         item.shouldShowValidationError = false
-        updateFooterDisplay(animated: false) // Immediate feedback on focus
         accessibilityLabelView?.accessibilityLabel = item.title
     }
 
