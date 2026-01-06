@@ -106,17 +106,15 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
 
     // MARK: - Footer Display (Private)
 
-    private var footerAnimationKey: String { "footerLabel_visibility" }
-
     /// Displays the placeholder hint in the footer.
     private func displayHint(animated: Bool) {
         guard let placeholder = item.placeholder, !placeholder.isEmpty else {
-            footerLabel.adyen.hide(animationKey: footerAnimationKey, hidden: true, animated: animated)
+            footerLabel.adyen.hide(animationKey: Constants.footerAnimationKey, hidden: true, animated: animated)
             return
         }
         footerLabel.text = placeholder
         footerLabel.textColor = theme.colors.textSecondary
-        footerLabel.adyen.hide(animationKey: footerAnimationKey, hidden: false, animated: animated)
+        footerLabel.adyen.hide(animationKey: Constants.footerAnimationKey, hidden: false, animated: animated)
     }
 
     /// Displays the error message in the footer.
@@ -127,7 +125,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         }
         footerLabel.text = message
         footerLabel.textColor = theme.colors.destructive
-        footerLabel.adyen.hide(animationKey: footerAnimationKey, hidden: false, animated: animated)
+        footerLabel.adyen.hide(animationKey: Constants.footerAnimationKey, hidden: false, animated: animated)
     }
 
     // MARK: - Package API (for subclasses that need direct control)
@@ -150,4 +148,8 @@ public protocol AnyFormValidatableValueItemView: AnyFormValueItemView {
 
     /// Whether or not the value is valid
     var isValid: Bool { get }
+}
+
+private enum Constants {
+    static let footerAnimationKey = "footerLabel_visibility"
 }
