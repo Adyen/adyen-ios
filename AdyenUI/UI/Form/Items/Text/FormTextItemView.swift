@@ -311,8 +311,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         }
         updateBorderColor()
         
-        // Pass forced to parent for error message display
-        super.updateValidationStatus(forced: forced)
+        super.updateValidationStatus(forced: shouldShowValidationUI)
     }
     
     public func notifyDelegateOfMaxLengthIfNeeded() {
