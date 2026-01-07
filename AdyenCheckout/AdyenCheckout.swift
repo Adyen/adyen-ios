@@ -19,7 +19,7 @@ import Foundation
 
 /// `AdyenCheckout` is the entry point to the Checkout flow. You initialize it through its static methods for your chosen flow
 /// and it prepares all the required data asynchronously and returns an `AdyenCheckout` instance ready to be used.
-public final class AdyenCheckout: AdyenCheckoutProtocol {
+public final class Checkout: AdyenCheckoutProtocol {
     
     public let paymentMethods: PaymentMethods?
     internal let session: AdyenSessionProtocol?
@@ -54,7 +54,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         sessionData: String,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil
-    ) async throws -> AdyenCheckout {
+    ) async throws -> Checkout {
         try await setup(
             with: sessionId,
             sessionData: sessionData,
@@ -70,7 +70,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil,
         provider: AdyenCheckoutProviding = AdyenCheckoutProvider.default
-    ) async throws -> AdyenCheckout {
+    ) async throws -> Checkout {
         try await provider.setup(
             with: sessionId,
             sessionData: sessionData,
@@ -90,7 +90,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil
-    ) async throws -> AdyenCheckout {
+    ) async throws -> Checkout {
         try await setup(
             with: paymentMethods,
             configuration: configuration,
@@ -104,7 +104,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil,
         provider: AdyenCheckoutProviding = AdyenCheckoutProvider.default
-    ) async throws -> AdyenCheckout {
+    ) async throws -> Checkout {
         try await provider.setup(
             with: paymentMethods,
             configuration: configuration,

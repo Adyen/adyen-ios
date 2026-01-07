@@ -15,7 +15,7 @@
 // If not, we check session and pass the work to it.
 // Finally if neither, we will fail/assert/show error.
 
-extension AdyenCheckout: PaymentComponentDelegate {
+extension Checkout: PaymentComponentDelegate {
     
     public func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         if let onSubmit = configuration.onSubmit {
@@ -48,7 +48,7 @@ extension AdyenCheckout: PaymentComponentDelegate {
     }
 }
 
-extension AdyenCheckout: ActionComponentDelegate {
+extension Checkout: ActionComponentDelegate {
     public func didProvide(_ data: Adyen.ActionComponentData, from component: any Adyen.ActionComponent) {
         if let onAdditionalDetails = configuration.onAdditionalDetails {
             onAdditionalDetails(data) { [weak self] response in
@@ -75,7 +75,7 @@ extension AdyenCheckout: ActionComponentDelegate {
     }
 }
 
-extension AdyenCheckout: AdyenSessionDelegate {
+extension Checkout: AdyenSessionDelegate {
     public func didComplete(with result: CheckoutResult, component: any Component, session: AdyenSession) {
         finish(with: result)
     }
