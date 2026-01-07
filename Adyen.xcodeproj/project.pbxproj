@@ -743,7 +743,6 @@
 		C9037F142D5A19BD003A5154 /* ROIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F132D5A19BD003A5154 /* ROIView.swift */; };
 		C9037F162D5A1AC0003A5154 /* CardScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F152D5A1AC0003A5154 /* CardScannerViewController.swift */; };
 		C90494562E8FF2CE007C4EB5 /* LoadControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90494552E8FF2CE007C4EB5 /* LoadControllable.swift */; };
-		C90AC7882EE1FDA900DF60EA /* DropInFlowManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90AC7872EE1FDA900DF60EA /* DropInFlowManagerTests.swift */; };
 		C9126051275A3A2800C03DC4 /* BACSItemsFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9126050275A3A2800C03DC4 /* BACSItemsFactoryTests.swift */; };
 		C9174FF32EB3A89800AA1609 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9174FF22EB3A89800AA1609 /* Router.swift */; };
 		C9174FF92EB3B20B00AA1609 /* ActionWrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9174FF72EB3B20B00AA1609 /* ActionWrapperViewController.swift */; };
@@ -830,6 +829,7 @@
 		C9C22DA12DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22DA02DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift */; };
 		C9D5139A2F0E7A5C00F57DD6 /* PaymentMethodListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D513992F0E7A5C00F57DD6 /* PaymentMethodListViewModelTests.swift */; };
 		C9D5139C2F0E810500F57DD6 /* PaymentMethodsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D5139B2F0E810500F57DD6 /* PaymentMethodsMock.swift */; };
+		C9D513A32F0E8AE500F57DD6 /* DropInFlowManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90AC7872EE1FDA900DF60EA /* DropInFlowManagerTests.swift */; };
 		C9D8EB9927452355006D8CA1 /* BACSInputFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9827452355006D8CA1 /* BACSInputFormViewController.swift */; };
 		C9D8EB9B2745282E006D8CA1 /* BACSInputPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9A2745282E006D8CA1 /* BACSInputPresenter.swift */; };
 		C9D8EB9E27452D3B006D8CA1 /* BACSItemsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9D27452D3B006D8CA1 /* BACSItemsFactory.swift */; };
@@ -3976,7 +3976,6 @@
 			isa = PBXGroup;
 			children = (
 				F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */,
-				C90AC7872EE1FDA900DF60EA /* DropInFlowManagerTests.swift */,
 			);
 			path = AdyenDropIn;
 			sourceTree = "<group>";
@@ -4770,6 +4769,14 @@
 			path = AdyenContext;
 			sourceTree = "<group>";
 		};
+		C9D513A12F0E8A4A00F57DD6 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				E74CE3DE26727EB1008231D2 /* DropInComponentDelegateMock.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
 		C9D8EB9527440297006D8CA1 /* Input */ = {
 			isa = PBXGroup;
 			children = (
@@ -5530,10 +5537,11 @@
 		E759E1F325CB371800B1F8DC /* DropIn Tests */ = {
 			isa = PBXGroup;
 			children = (
+				C9D513A12F0E8A4A00F57DD6 /* Mocks */,
+				C90AC7872EE1FDA900DF60EA /* DropInFlowManagerTests.swift */,
 				C993EB622EE056D000353ECA /* ComponentContainer */,
 				F9EDB79023965FFC00CFB3C9 /* PaymentMethodList */,
 				E759E1F425CB373F00B1F8DC /* DropInTests.swift */,
-				E74CE3DE26727EB1008231D2 /* DropInComponentDelegateMock.swift */,
 				E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */,
 				E767F4DB25A603A50077029E /* ModalToolbarTests.swift */,
 				E7D5311B2447065B000046B4 /* PreselectedPaymentComponentTests.swift */,
@@ -8378,7 +8386,6 @@
 				B6D8082F2BCD1F8900F3F5EB /* KeyboardObserverTests.swift in Sources */,
 				B6D8081F2BCD151F00F3F5EB /* FormatterMock.swift in Sources */,
 				C9E4DF672ED9A9B5000B6CBE /* AutoMockable.generated.swift in Sources */,
-				C90AC7882EE1FDA900DF60EA /* DropInFlowManagerTests.swift in Sources */,
 				B6D808322BCD1F8900F3F5EB /* BalanceCheckerTests.swift in Sources */,
 				B6D808192BCD151F00F3F5EB /* PaymentMethodMock.swift in Sources */,
 				A0E1B6452EAB9F580070B915 /* CheckoutConfigurationTests.swift in Sources */,
@@ -8690,6 +8697,7 @@
 				F9B019442611E965001F23FC /* EContextATMShareableVoucherViewProviderTests.swift in Sources */,
 				E9E3DAB2221D79C800697074 /* CardNumberFormatterTests.swift in Sources */,
 				F9EDB796239663F800CFB3C9 /* PaymentComponentMock.swift in Sources */,
+				C9D513A32F0E8AE500F57DD6 /* DropInFlowManagerTests.swift in Sources */,
 				F9B9F625295485A2008C2E49 /* ThreeDSResultExtension.swift in Sources */,
 				E7D189B025D31936006AD3B7 /* DropInActionTests.swift in Sources */,
 				B65F0EB42ED493250015AC41 /* FormButtonItemViewThemeTests.swift in Sources */,

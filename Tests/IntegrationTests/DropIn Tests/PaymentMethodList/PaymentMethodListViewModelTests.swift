@@ -5,6 +5,7 @@
 //
 
 @testable import Adyen
+@testable import AdyenActions
 @testable import AdyenDropIn
 @testable import AdyenEncryption
 @testable import AdyenUI
@@ -83,76 +84,80 @@ struct PaymentMethodListViewModelTests {
 //        #expect(component.initiatePaymentCallsCount == 1)
 //        #expect(component.delegate === sut)
 //    }
-//
+
+    @Test
+    func didSubmit_shoulCallDropInFlowManager_submit() async throws {
+        // Given
+        let (sut, dropInFlowManagerMock, _) = await makeSUT()
+        let paymentComponentMock = makePaymentComponentMock()
+        let data = makePaymentComponentDataMock()
+
+        // When
+        sut.didSubmit(data, from: paymentComponentMock)
+
+        // Then
+        #expect(dropInFlowManagerMock.submitFromActionPresenterCallsCount == 1)
+
+        let receivedActionPresenter = dropInFlowManagerMock.submitFromActionPresenterReceivedArguments?.actionPresenter
+        #expect(sut === receivedActionPresenter)
+    }
+
+    @Test
+    func didFail_givenComponentError_shouldCallDropInFlowManagerFail() async throws {
+        // Given
+        let (sut, dropInFlowManagerMock, _) = await makeSUT()
+        let paymentComponentMock = makePaymentComponentMock()
+        let error = ErrorMock(errorDescription: "Failure")
+
+        // When
+        sut.didFail(with: error, from: paymentComponentMock)
+
+        // Then
+        #expect(dropInFlowManagerMock.failWithFromCallsCount == 1)
+    }
+
+    @Test
+    func didFail_givenCancellation_shouldDismissAndStopLoading() async throws {
+        // Given
+        let (sut, dropInFlowManagerMock, routerMock) = await makeSUT()
+        let paymentComponentMock = makePaymentComponentMock()
+
+        // When
+        sut.didFail(with: ComponentError.cancelled, from: paymentComponentMock)
+
+        // Then
+        #expect(routerMock.dismissCompletionCallsCount == 1)
+        #expect(dropInFlowManagerMock.failWithFromCallsCount == 0)
+    }
+
+    @Test
+    func presentActionComponent_shouldCallRouterPresentActionComponent() async throws {
+        // Given
+        let (sut, _, routerMock) = await makeSUT()
+        let actionComponentMock = makeActionComponentMock()
+
+        // When
+        sut.present(actionComponent: actionComponentMock)
+
+        // Then
+        #expect(routerMock.presentActionComponentOnCancelCallsCount == 1)
+    }
+
 //    @Test
-//    func didSubmit_shouldForwardSubmitToDropInFlowManager() async throws {
-//        // Given
-//        let (sut, dropInFlowManagerMock, _) = await makeSUT()
-//        let component = componentManagerMock.paymentInitiableComponentMock
-//        let data = makePaymentComponentData()
-//
-//        // When
-//        sut.didSubmit(data, from: component)
-//
-//        // Then
-//        #expect(dropInFlowManagerMock.submitFromActionPresenterCallsCount == 1)
-//    }
-//
-//    @Test
-//    func didFail_givenComponentError_shouldCallDropInFlowManagerFail() async throws {
-//        // Given
-//        let (sut, dropInFlowManagerMock, _) = await makeSUT()
-//        let component = componentManagerMock.paymentInitiableComponentMock
-//        let error = ErrorMock(errorDescription: "Failure")
-//
-//        // When
-//        sut.didFail(with: error, from: component)
-//
-//        // Then
-//        #expect(dropInFlowManagerMock.failWithFromCallsCount == 1)
-//        #expect(componentManagerMock.paymentMethodListComponentMock.stopLoadingCallsCount == 1)
-//    }
-//
-//    @Test
-//    func didFail_givenCancellation_shouldDismissAndStopLoading() async throws {
-//        // Given
-//        let (sut, dropInFlowManagerMock, routerMock) = await makeSUT()
-//        let component = componentManagerMock.paymentInitiableComponentMock
-//
-//        // When
-//        sut.didFail(with: ComponentError.cancelled, from: component)
-//
-//        // Then
-//        #expect(routerMock.dismissCallsCount == 1)
-//        #expect(dropInFlowManagerMock.failWithFromCallsCount == 0)
-//        #expect(componentManagerMock.paymentMethodListComponentMock.stopLoadingCallsCount == 1)
-//    }
-//
-//    @Test
-//    func presentActionComponent_shouldCallRouterPresentActionComponent() async throws {
+//    func presentActionComponent_whenCancelled_shouldRunCancalCallback() async throws {
 //        // Given
 //        let (sut, _, routerMock) = await makeSUT()
-//        let actionComponent = componentManagerMock.actionComponentMock
+//        let actionComponentMock = makeActionComponentMock()
 //
-//        // When
-//        sut.present(actionComponent: actionComponent)
-//
-//        // Then
-//        #expect(routerMock.presentActionComponentCallsCount == 1)
-//    }
-//
-//    @Test
-//    func presentActionComponent_whenCancelled_shouldStopLoading() async throws {
-//        // Given
-//        let (sut, _, routerMock) = await makeSUT()
-//
-//        routerMock.presentActionComponentCompletion = {
-//            // Then
-//            #expect(componentManagerMock.paymentMethodListComponentMock.stopLoadingCallsCount == 1)
+//        await confirmation("onCancelClosure is called") { @MainActor confirm in
+//            routerMock.presentActionComponentOnCancelClosure = {
+//                // Then
+//                confirm()
+//            }
 //        }
 //
 //        // When
-//        sut.present(actionComponent: componentManagerMock.actionComponentMock)
+//        sut.present(actionComponent: actionComponentMock)
 //    }
 //
 //    @Test
@@ -202,7 +207,7 @@ struct PaymentMethodListViewModelTests {
         return (sut, dropInFlowManagerMock, routerMock)
     }
 
-    private func makePaymentComponentData() -> PaymentComponentData {
+    private func makePaymentComponentDataMock() -> PaymentComponentData {
         let encryptedCard = EncryptedCard(
             number: "4111111111111111",
             securityCode: "737",
@@ -231,4 +236,33 @@ struct PaymentMethodListViewModelTests {
         let paymentMethodsDictionary = PaymentMethodsMock.paymentMethodsDictionary
         return try! AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
     }
+
+    private func makePaymentComponentMock() -> PresentableComponentMock {
+        let cardPaymentMethodMock = CardPaymentMethodMock(
+            type: .scheme,
+            name: "Card",
+            brands: [.visa, .masterCard]
+        )
+        let viewControllerMock = UIViewController()
+
+        return PresentableComponentMock(
+            paymentMethod: cardPaymentMethodMock,
+            viewController: viewControllerMock
+        )
+    }
+
+    private func makeActionComponentMock() -> PresentableComponent {
+        let redirectComponent = RedirectComponent(context: contextMock)
+        let viewControllerMock = UIViewController()
+        return PresentableComponentWrapper(
+            component: redirectComponent,
+            viewController: viewControllerMock
+        )
+    }
+
+    private let contextMock = AdyenContext(
+        apiContext: Dummy.apiContext,
+        payment: nil,
+        amount: .init(value: 100, currencyCode: "EUR")
+    )
 }

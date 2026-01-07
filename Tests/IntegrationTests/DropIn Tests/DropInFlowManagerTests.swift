@@ -13,9 +13,32 @@ import UIKit
 
 struct DropInFlowManagerTests {
 
+    // MARK: - Tests
+ 
+    @Test
+    func submitShouldCallDropInComponentDelegateDidSubmit() async throws {
+        // Given
+        let (sut, dropInComponentDelegateMock, _) = makeSUT()
+        let paymentComponentDataMock = makePaymentComponentData(paymentMethod: makePaymentMethod())
+        let paymentComponentMock = await PresentableComponentMock(
+            paymentMethod: makePaymentMethod(),
+            viewController: UIViewController()
+        )
+        let actionPresenterMock = ActionPresenterMock()
+
+        // When
+        sut.submit(
+            paymentComponentDataMock,
+            from: paymentComponentMock,
+            actionPresenter: actionPresenterMock
+        )
+
+        #expect(dropInComponentDelegateMock.didSubmitFromInCallsCount == 1)
+    }
+
     // MARK: - Helpers
 
-    private func setupSUT() -> (
+    private func makeSUT() -> (
         sut: DropInFlowManager,
         dropInComponentDelegateMock: DropInComponentDelegateMock,
         configurationMock: DropInComponent.Configuration
@@ -63,25 +86,4 @@ struct DropInFlowManagerTests {
         return PaymentComponentData(paymentMethodDetails: cardDetails, amount: amount, order: nil)
     }
 
-    // MARK: - Tests
- 
-    @Test func submitShouldCallDropInComponentDelegateDidSubmit() async throws {
-        // Given
-        let (sut, dropInComponentDelegateMock, _) = setupSUT()
-        let paymentComponentDataMock = makePaymentComponentData(paymentMethod: makePaymentMethod())
-        let paymentComponentMock = await PresentableComponentMock(
-            paymentMethod: makePaymentMethod(),
-            viewController: UIViewController()
-        )
-        let actionPresenterMock = ActionPresenterMock()
-
-        // When
-        sut.submit(
-            paymentComponentDataMock,
-            from: paymentComponentMock,
-            actionPresenter: actionPresenterMock
-        )
-
-        #expect(dropInComponentDelegateMock.didSubmitFromInCallsCount == 1)
-    }
 }
