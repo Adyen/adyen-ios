@@ -43,7 +43,7 @@ import Foundation
 /// ```swift
 /// let component = checkout.createPaymentComponent(for: .scheme)
 /// ```
-public final class AdyenCheckout: AdyenCheckoutProtocol {
+public final class Checkout: AdyenCheckoutProtocol {
     
     /// The available payment methods for this checkout session.
     public let paymentMethods: PaymentMethods?
@@ -66,7 +66,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     }()
     
     // MARK: - Public
-    
+
     // TODO: should we replace sessionId/sessionData params with a struct to future proof session init?
     /// Sets up checkout for the session flow.
     ///
@@ -84,7 +84,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         sessionData: String,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil
-    ) async throws -> AdyenCheckout {
+    ) async throws -> Checkout {
         try await setup(
             with: sessionId,
             sessionData: sessionData,
@@ -108,7 +108,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil
-    ) async throws -> AdyenCheckout {
+    ) async throws -> Checkout {
         try await setup(
             with: paymentMethods,
             configuration: configuration,
@@ -116,7 +116,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
             provider: AdyenCheckoutProvider.default
         )
     }
-    
+
     // MARK: Internal
 
     internal init(
@@ -138,7 +138,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
 }
 
 public extension AdyenCheckout {
-    
+
     /// Creates a payment component for the specified payment method type.
     ///
     /// Use this method to create a component for regular (non-stored) payment methods.
@@ -155,7 +155,7 @@ public extension AdyenCheckout {
     /// ```
     func createPaymentComponent(for type: PaymentMethodType) -> CheckoutPaymentComponent? {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: type) else { return nil }
-        
+
         // TODO: Add new v6 style here
         return CheckoutPaymentComponent(
             paymentMethod: paymentMethod,
@@ -163,7 +163,7 @@ public extension AdyenCheckout {
             delegate: self
         )
     }
-    
+
     /// Creates a payment component for a stored payment method.
     ///
     /// Use this method to create a component for previously saved payment methods,
@@ -185,7 +185,7 @@ public extension AdyenCheckout {
     /// ```
     func createPaymentComponent(for identifier: String) -> CheckoutPaymentComponent? {
         guard let storedPaymentMethod = paymentMethods?.stored.first(where: { $0.identifier == identifier }) else { return nil }
-        
+
         // TODO: Add new v6 style here
         return CheckoutPaymentComponent(
             storedPaymentMethod: storedPaymentMethod,
@@ -193,7 +193,7 @@ public extension AdyenCheckout {
             delegate: self
         )
     }
-    
+
     /// Creates a Drop-in component with all available payment methods.
     ///
     /// - Returns: A configured Drop-in component, or `nil` if unavailable.
@@ -201,7 +201,7 @@ public extension AdyenCheckout {
         // TODO: dropin creation discussion with new changes
         nil
     }
-    
+
     /// Handles an action received from the `/payments` or `/payments/details` response.
     ///
     /// Some actions require showing UI (e.g., 3DS challenges, vouchers, QR codes).
@@ -214,7 +214,7 @@ public extension AdyenCheckout {
 }
 
 internal extension AdyenCheckout {
-    
+
     static func setup(
         with sessionId: String,
         sessionData: String,
@@ -229,7 +229,7 @@ internal extension AdyenCheckout {
             presentationDelegate: presentationDelegate
         )
     }
-    
+
     static func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,

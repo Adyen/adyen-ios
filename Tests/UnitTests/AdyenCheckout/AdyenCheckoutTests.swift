@@ -47,7 +47,7 @@ final class AdyenCheckoutTests: XCTestCase {
             responseConfiguration: .init(installmentOptions: nil, enableStoreDetails: true)
         ))
         
-        let expectedCheckout = AdyenCheckout(
+        let expectedCheckout = Checkout(
             configuration: configuration,
             session: expectedSession,
             paymentMethods: nil,
@@ -56,7 +56,7 @@ final class AdyenCheckoutTests: XCTestCase {
         )
         mockProvider.setupWithSessionResult = .success(expectedCheckout)
 
-        let checkout = try await AdyenCheckout.setup(
+        let checkout = try await Checkout.setup(
             with: "sessionId",
             sessionData: "sessionData",
             configuration: configuration,
@@ -78,7 +78,7 @@ final class AdyenCheckoutTests: XCTestCase {
         mockProvider.setupWithSessionResult = .failure(TestError())
         
         do {
-            _ = try await AdyenCheckout.setup(
+            _ = try await Checkout.setup(
                 with: "sessionId",
                 sessionData: "sessionData",
                 configuration: configuration,
@@ -92,7 +92,7 @@ final class AdyenCheckoutTests: XCTestCase {
     }
 
     func testSetupWithPaymentMethods_Success() async throws {
-        let expectedCheckout = AdyenCheckout(
+        let expectedCheckout = Checkout(
             configuration: configuration,
             session: nil,
             paymentMethods: paymentMethods,
@@ -102,7 +102,7 @@ final class AdyenCheckoutTests: XCTestCase {
         
         mockProvider.setupWithPaymentMethodsResult = .success(expectedCheckout)
         
-        let checkout = try await AdyenCheckout.setup(
+        let checkout = try await Checkout.setup(
             with: paymentMethods,
             configuration: configuration,
             presentationDelegate: nil,
@@ -119,7 +119,7 @@ final class AdyenCheckoutTests: XCTestCase {
         mockProvider.setupWithPaymentMethodsResult = .failure(TestError())
         
         do {
-            _ = try await AdyenCheckout.setup(
+            _ = try await Checkout.setup(
                 with: paymentMethods,
                 configuration: configuration,
                 presentationDelegate: nil,
@@ -203,7 +203,7 @@ final class AdyenCheckoutTests: XCTestCase {
             completion?(CheckoutPaymentsResponse(resultCode: .authorised))
         }
         
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             checkoutAttemptId: "attemptId",
             presentationDelegate: nil

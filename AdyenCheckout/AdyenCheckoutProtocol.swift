@@ -28,13 +28,13 @@ internal protocol AdyenCheckoutProviding: AdyenSessionProviding, CheckoutAttempt
         sessionData: String,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> AdyenCheckout
+    ) async throws -> Checkout
     
     func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> AdyenCheckout
+    ) async throws -> Checkout
 }
 
 internal protocol AdyenSessionProviding {

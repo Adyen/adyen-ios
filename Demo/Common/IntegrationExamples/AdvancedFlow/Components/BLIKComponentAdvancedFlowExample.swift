@@ -14,7 +14,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var adyenCheckout: AdyenCheckout?
+    private var adyenCheckout: Checkout?
     private var adyenComponent: CheckoutPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
@@ -81,7 +81,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
 
-        let checkout = try await AdyenCheckout.setup(
+        let checkout = try await Checkout.setup(
             with: paymentMethods,
             configuration: configuration,
             presentationDelegate: self

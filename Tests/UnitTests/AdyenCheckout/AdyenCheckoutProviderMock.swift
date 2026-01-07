@@ -13,10 +13,10 @@ import AdyenNetworking
 
 internal class AdyenCheckoutProviderMock: AdyenCheckoutProviding {
     var setupSessionCalled = false
-    var setupWithSessionResult: Result<AdyenCheckout, Error>?
+    var setupWithSessionResult: Result<Checkout, Error>?
     
     var setupPaymentMethodsCalled = false
-    var setupWithPaymentMethodsResult: Result<AdyenCheckout, Error>?
+    var setupWithPaymentMethodsResult: Result<Checkout, Error>?
     
     // For AdyenSessionProviding
     var mockedSessionResult: Result<AdyenSessionProtocol, Error>?
@@ -61,7 +61,7 @@ internal class AdyenCheckoutProviderMock: AdyenCheckoutProviding {
         sessionData: String,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> AdyenCheckout {
+    ) async throws -> Checkout {
         setupSessionCalled = true
         
         switch setupWithSessionResult {
@@ -78,7 +78,7 @@ internal class AdyenCheckoutProviderMock: AdyenCheckoutProviding {
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> AdyenCheckout {
+    ) async throws -> Checkout {
         setupPaymentMethodsCalled = true
         
         switch setupWithPaymentMethodsResult {

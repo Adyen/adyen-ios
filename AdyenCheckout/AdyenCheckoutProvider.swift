@@ -23,7 +23,7 @@ internal class AdyenCheckoutProvider: AdyenCheckoutProviding {
         sessionData: String,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> AdyenCheckout {
+    ) async throws -> Checkout {
         
         let apiClient = APIClient(apiContext: configuration.context.apiContext)
         
@@ -43,7 +43,7 @@ internal class AdyenCheckoutProvider: AdyenCheckoutProviding {
             apiClient: apiClient
         )
         
-        let checkout = try await AdyenCheckout(
+        let checkout = try await Checkout(
             configuration: configuration,
             session: session,
             checkoutAttemptId: checkoutAttemptId,
@@ -64,7 +64,7 @@ internal class AdyenCheckoutProvider: AdyenCheckoutProviding {
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> AdyenCheckout {
+    ) async throws -> Checkout {
         let apiClient = APIClient(apiContext: configuration.context.apiContext)
         
         // fetch and store checkout attempt id
@@ -73,7 +73,7 @@ internal class AdyenCheckoutProvider: AdyenCheckoutProviding {
             apiClient: apiClient
         )
         
-        let checkout = AdyenCheckout(
+        let checkout = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: checkoutAttemptId,
