@@ -8,6 +8,7 @@ import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
 
+// sourcery:AutoMockable
 internal protocol PaymentMethodListViewModelProtocol {
     var paymentMethodListView: UIViewController { get }
     func cancel()

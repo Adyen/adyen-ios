@@ -17,7 +17,6 @@ import Foundation
 #endif
 
 @testable import Adyen
-@testable import AdyenActions
 @testable import AdyenDropIn
 
 class ActionPresenterMock: ActionPresenter {
@@ -153,156 +152,6 @@ class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtoc
 
 }
 
-public class DropInComponentDelegateMock: DropInComponentDelegate {
-
-    public init() {}
-
-    // MARK: - didSubmit
-
-    public var didSubmitFromInCallsCount = 0
-    public var didSubmitFromInCalled: Bool {
-        didSubmitFromInCallsCount > 0
-    }
-
-    public var didSubmitFromInReceivedArguments: (data: PaymentComponentData, component: PaymentComponent, dropInComponent: AnyDropInComponent)?
-    public var didSubmitFromInReceivedInvocations: [(data: PaymentComponentData, component: PaymentComponent, dropInComponent: AnyDropInComponent)] = []
-    public var didSubmitFromInClosure: ((PaymentComponentData, PaymentComponent, AnyDropInComponent) -> Void)?
-
-    public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
-        didSubmitFromInCallsCount += 1
-        didSubmitFromInReceivedArguments = (data: data, component: component, dropInComponent: dropInComponent)
-        didSubmitFromInReceivedInvocations.append((data: data, component: component, dropInComponent: dropInComponent))
-        didSubmitFromInClosure?(data, component, dropInComponent)
-    }
-
-    // MARK: - didFail
-
-    public var didFailWithFromInCallsCount = 0
-    public var didFailWithFromInCalled: Bool {
-        didFailWithFromInCallsCount > 0
-    }
-
-    public var didFailWithFromInReceivedArguments: (error: Error, component: PaymentComponent, dropInComponent: AnyDropInComponent)?
-    public var didFailWithFromInReceivedInvocations: [(error: Error, component: PaymentComponent, dropInComponent: AnyDropInComponent)] = []
-    public var didFailWithFromInClosure: ((Error, PaymentComponent, AnyDropInComponent) -> Void)?
-
-    public func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
-        didFailWithFromInCallsCount += 1
-        didFailWithFromInReceivedArguments = (error: error, component: component, dropInComponent: dropInComponent)
-        didFailWithFromInReceivedInvocations.append((error: error, component: component, dropInComponent: dropInComponent))
-        didFailWithFromInClosure?(error, component, dropInComponent)
-    }
-
-    // MARK: - didProvide
-
-    public var didProvideFromInCallsCount = 0
-    public var didProvideFromInCalled: Bool {
-        didProvideFromInCallsCount > 0
-    }
-
-    public var didProvideFromInReceivedArguments: (data: ActionComponentData, component: ActionComponent, dropInComponent: AnyDropInComponent)?
-    public var didProvideFromInReceivedInvocations: [(data: ActionComponentData, component: ActionComponent, dropInComponent: AnyDropInComponent)] = []
-    public var didProvideFromInClosure: ((ActionComponentData, ActionComponent, AnyDropInComponent) -> Void)?
-
-    public func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
-        didProvideFromInCallsCount += 1
-        didProvideFromInReceivedArguments = (data: data, component: component, dropInComponent: dropInComponent)
-        didProvideFromInReceivedInvocations.append((data: data, component: component, dropInComponent: dropInComponent))
-        didProvideFromInClosure?(data, component, dropInComponent)
-    }
-
-    // MARK: - didComplete
-
-    public var didCompleteFromInCallsCount = 0
-    public var didCompleteFromInCalled: Bool {
-        didCompleteFromInCallsCount > 0
-    }
-
-    public var didCompleteFromInReceivedArguments: (component: ActionComponent, dropInComponent: AnyDropInComponent)?
-    public var didCompleteFromInReceivedInvocations: [(component: ActionComponent, dropInComponent: AnyDropInComponent)] = []
-    public var didCompleteFromInClosure: ((ActionComponent, AnyDropInComponent) -> Void)?
-
-    public func didComplete(from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
-        didCompleteFromInCallsCount += 1
-        didCompleteFromInReceivedArguments = (component: component, dropInComponent: dropInComponent)
-        didCompleteFromInReceivedInvocations.append((component: component, dropInComponent: dropInComponent))
-        didCompleteFromInClosure?(component, dropInComponent)
-    }
-
-    // MARK: - didFail
-
-//    public var didFailWithFromInCallsCount = 0
-//    public var didFailWithFromInCalled: Bool {
-//        didFailWithFromInCallsCount > 0
-//    }
-//
-//    public var didFailWithFromInReceivedArguments: (error: Error, component: ActionComponent, dropInComponent: AnyDropInComponent)?
-//    public var didFailWithFromInReceivedInvocations: [(error: Error, component: ActionComponent, dropInComponent: AnyDropInComponent)] = []
-//    public var didFailWithFromInClosure: ((Error, ActionComponent, AnyDropInComponent) -> Void)?
-
-    public func didFail(with error: Error, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
-//        didFailWithFromInCallsCount += 1
-//        didFailWithFromInReceivedArguments = (error: error, component: component, dropInComponent: dropInComponent)
-//        didFailWithFromInReceivedInvocations.append((error: error, component: component, dropInComponent: dropInComponent))
-//        didFailWithFromInClosure?(error, component, dropInComponent)
-    }
-
-    // MARK: - didOpenExternalApplication
-
-    public var didOpenExternalApplicationComponentInCallsCount = 0
-    public var didOpenExternalApplicationComponentInCalled: Bool {
-        didOpenExternalApplicationComponentInCallsCount > 0
-    }
-
-    public var didOpenExternalApplicationComponentInReceivedArguments: (component: ActionComponent, dropInComponent: AnyDropInComponent)?
-    public var didOpenExternalApplicationComponentInReceivedInvocations: [(component: ActionComponent, dropInComponent: AnyDropInComponent)] = []
-    public var didOpenExternalApplicationComponentInClosure: ((ActionComponent, AnyDropInComponent) -> Void)?
-
-    public func didOpenExternalApplication(component: ActionComponent, in dropInComponent: AnyDropInComponent) {
-        didOpenExternalApplicationComponentInCallsCount += 1
-        didOpenExternalApplicationComponentInReceivedArguments = (component: component, dropInComponent: dropInComponent)
-        didOpenExternalApplicationComponentInReceivedInvocations.append((component: component, dropInComponent: dropInComponent))
-        didOpenExternalApplicationComponentInClosure?(component, dropInComponent)
-    }
-
-    // MARK: - didFail
-
-    public var didFailWithFromCallsCount = 0
-    public var didFailWithFromCalled: Bool {
-        didFailWithFromCallsCount > 0
-    }
-
-    public var didFailWithFromReceivedArguments: (error: Error, dropInComponent: AnyDropInComponent)?
-    public var didFailWithFromReceivedInvocations: [(error: Error, dropInComponent: AnyDropInComponent)] = []
-    public var didFailWithFromClosure: ((Error, AnyDropInComponent) -> Void)?
-
-    public func didFail(with error: Error, from dropInComponent: AnyDropInComponent) {
-        didFailWithFromCallsCount += 1
-        didFailWithFromReceivedArguments = (error: error, dropInComponent: dropInComponent)
-        didFailWithFromReceivedInvocations.append((error: error, dropInComponent: dropInComponent))
-        didFailWithFromClosure?(error, dropInComponent)
-    }
-
-    // MARK: - didCancel
-
-    public var didCancelComponentFromCallsCount = 0
-    public var didCancelComponentFromCalled: Bool {
-        didCancelComponentFromCallsCount > 0
-    }
-
-    public var didCancelComponentFromReceivedArguments: (component: PaymentComponent, dropInComponent: AnyDropInComponent)?
-    public var didCancelComponentFromReceivedInvocations: [(component: PaymentComponent, dropInComponent: AnyDropInComponent)] = []
-    public var didCancelComponentFromClosure: ((PaymentComponent, AnyDropInComponent) -> Void)?
-
-    public func didCancel(component: PaymentComponent, from dropInComponent: AnyDropInComponent) {
-        didCancelComponentFromCallsCount += 1
-        didCancelComponentFromReceivedArguments = (component: component, dropInComponent: dropInComponent)
-        didCancelComponentFromReceivedInvocations.append((component: component, dropInComponent: dropInComponent))
-        didCancelComponentFromClosure?(component, dropInComponent)
-    }
-
-}
-
 class DropInFlowManagingMock: DropInFlowManaging {
 
     // MARK: - submit
@@ -375,6 +224,99 @@ class DropInFlowManagingMock: DropInFlowManaging {
         handleActionReceivedAction = action
         handleActionReceivedInvocations.append(action)
         handleActionClosure?(action)
+    }
+
+}
+
+class PaymentMethodListRouterListenerMock: PaymentMethodListRouterListener {
+
+    // MARK: - didDismissPaymentMethodList
+
+    var didDismissPaymentMethodListCompletionCallsCount = 0
+    var didDismissPaymentMethodListCompletionCalled: Bool {
+        didDismissPaymentMethodListCompletionCallsCount > 0
+    }
+
+    var didDismissPaymentMethodListCompletionClosure: (((() -> Void)?) -> Void)?
+
+    func didDismissPaymentMethodList(completion: (() -> Void)?) {
+        didDismissPaymentMethodListCompletionCallsCount += 1
+        didDismissPaymentMethodListCompletionClosure?(completion)
+    }
+
+}
+
+class PaymentMethodListRoutingMock: PaymentMethodListRouting {
+
+    // MARK: - present
+
+    var presentPaymentComponentOnCancelCallsCount = 0
+    var presentPaymentComponentOnCancelCalled: Bool {
+        presentPaymentComponentOnCancelCallsCount > 0
+    }
+
+    var presentPaymentComponentOnCancelReceivedArguments: (paymentComponent: PresentableComponent, onCancel: () -> Void)?
+    var presentPaymentComponentOnCancelReceivedInvocations: [(paymentComponent: PresentableComponent, onCancel: () -> Void)] = []
+    var presentPaymentComponentOnCancelClosure: ((PresentableComponent, @escaping () -> Void) -> Void)?
+
+    func present(paymentComponent: PresentableComponent, onCancel: @escaping () -> Void) {
+        presentPaymentComponentOnCancelCallsCount += 1
+        presentPaymentComponentOnCancelReceivedArguments = (paymentComponent: paymentComponent, onCancel: onCancel)
+        presentPaymentComponentOnCancelReceivedInvocations.append((paymentComponent: paymentComponent, onCancel: onCancel))
+        presentPaymentComponentOnCancelClosure?(paymentComponent, onCancel)
+    }
+
+    // MARK: - present
+
+    var presentActionComponentOnCancelCallsCount = 0
+    var presentActionComponentOnCancelCalled: Bool {
+        presentActionComponentOnCancelCallsCount > 0
+    }
+
+    var presentActionComponentOnCancelClosure: ((any PresentableComponent, (() -> Void)?) -> Void)?
+
+    func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?) {
+        presentActionComponentOnCancelCallsCount += 1
+        presentActionComponentOnCancelClosure?(actionComponent, onCancel)
+    }
+
+    // MARK: - dismiss
+
+    var dismissCompletionCallsCount = 0
+    var dismissCompletionCalled: Bool {
+        dismissCompletionCallsCount > 0
+    }
+
+    var dismissCompletionClosure: (((() -> Void)?) -> Void)?
+
+    func dismiss(completion: (() -> Void)?) {
+        dismissCompletionCallsCount += 1
+        dismissCompletionClosure?(completion)
+    }
+
+}
+
+class PaymentMethodListViewModelProtocolMock: PaymentMethodListViewModelProtocol {
+
+    var paymentMethodListView: UIViewController {
+        get { underlyingPaymentMethodListView }
+        set(value) { underlyingPaymentMethodListView = value }
+    }
+
+    var underlyingPaymentMethodListView: UIViewController!
+
+    // MARK: - cancel
+
+    var cancelCallsCount = 0
+    var cancelCalled: Bool {
+        cancelCallsCount > 0
+    }
+
+    var cancelClosure: (() -> Void)?
+
+    func cancel() {
+        cancelCallsCount += 1
+        cancelClosure?()
     }
 
 }

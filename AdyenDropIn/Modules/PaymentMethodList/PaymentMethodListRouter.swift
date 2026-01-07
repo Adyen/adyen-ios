@@ -8,10 +8,12 @@ import Adyen
 import Foundation
 import UIKit
 
+// sourcery:AutoMockable
 internal protocol PaymentMethodListRouterListener: AnyObject {
     func didDismissPaymentMethodList(completion: (() -> Void)?)
 }
 
+// sourcery:AutoMockable
 internal protocol PaymentMethodListRouting: AnyObject {
     func present(paymentComponent: PresentableComponent, onCancel: @escaping () -> Void)
     func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?)
