@@ -14,7 +14,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var adyenCheckout: Checkout?
+    private var checkout: Checkout?
     private var adyenComponent: CheckoutPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
@@ -87,7 +87,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             presentationDelegate: self
         )
 
-        self.adyenCheckout = checkout
+        self.checkout = checkout
 
         guard let component = checkout.createPaymentComponent(for: .blik) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: BLIKPaymentMethod.self)

@@ -19,12 +19,12 @@ import Foundation
 
 /// The entry point for the Adyen Checkout SDK.
 ///
-/// Use `AdyenCheckout` to create payment components and handle actions.
+/// Use `Checkout` to create payment components and handle actions.
 /// Initialize using one of the static `setup` methods.
 ///
 /// ## Session Flow
 /// ```swift
-/// let checkout = try await AdyenCheckout.setup(
+/// let checkout = try await Checkout.setup(
 ///     with: sessionId,
 ///     sessionData: sessionData,
 ///     configuration: config
@@ -33,7 +33,7 @@ import Foundation
 ///
 /// ## Advanced Flow
 /// ```swift
-/// let checkout = try await AdyenCheckout.setup(
+/// let checkout = try await Checkout.setup(
 ///     with: paymentMethods,
 ///     configuration: config
 /// )
