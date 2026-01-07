@@ -12,8 +12,8 @@
 @_spi(AdyenInternal) @testable import AdyenActions
 import XCTest
 
-final class AdyenCheckoutTests: XCTestCase {
-    var mockProvider: AdyenCheckoutProviderMock!
+final class CheckoutTests: XCTestCase {
+    var mockProvider: CheckoutProviderMock!
     var configuration: CheckoutConfiguration!
     var paymentMethods: PaymentMethods!
     
@@ -31,7 +31,7 @@ final class AdyenCheckoutTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        mockProvider = AdyenCheckoutProviderMock()
+        mockProvider = CheckoutProviderMock()
         configuration = CheckoutConfiguration(context: Dummy.context)
         paymentMethods = try! AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
     }

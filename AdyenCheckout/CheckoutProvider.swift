@@ -11,12 +11,12 @@
 import AdyenNetworking
 import Foundation
 
-/// Plain static provider layer to create the AdyenCheckout object.
-internal class AdyenCheckoutProvider: AdyenCheckoutProviding {
+/// Plain static provider layer to create the Checkout object.
+internal class CheckoutProvider: CheckoutProviding {
     
     private init() {}
     
-    internal static let `default` = AdyenCheckoutProvider()
+    internal static let `default` = CheckoutProvider()
     
     internal func setup(
         with sessionId: String,

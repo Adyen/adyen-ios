@@ -11,7 +11,7 @@
 @_spi(AdyenInternal) @testable import AdyenActions
 import AdyenNetworking
 
-internal class AdyenCheckoutProviderMock: AdyenCheckoutProviding {
+internal class CheckoutProviderMock: CheckoutProviding {
     var setupSessionCalled = false
     var setupWithSessionResult: Result<Checkout, Error>?
     

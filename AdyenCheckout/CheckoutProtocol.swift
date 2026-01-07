@@ -13,7 +13,7 @@
 #endif
 import AdyenNetworking
 
-internal protocol AdyenCheckoutProtocol {
+internal protocol CheckoutProtocol {
     
     func createPaymentComponent(for type: PaymentMethodType) -> CheckoutPaymentComponent?
     
@@ -22,7 +22,7 @@ internal protocol AdyenCheckoutProtocol {
     func createDropIn() -> DropInComponent?
 }
 
-internal protocol AdyenCheckoutProviding: AdyenSessionProviding, CheckoutAttemptIdProviding {
+internal protocol CheckoutProviding: AdyenSessionProviding, CheckoutAttemptIdProviding {
     func setup(
         with sessionId: String,
         sessionData: String,

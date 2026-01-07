@@ -90,7 +90,7 @@ public final class Checkout: AdyenCheckoutProtocol {
             sessionData: sessionData,
             configuration: configuration,
             presentationDelegate: presentationDelegate,
-            provider: AdyenCheckoutProvider.default
+            provider: CheckoutProvider.default
         )
     }
     
@@ -113,7 +113,7 @@ public final class Checkout: AdyenCheckoutProtocol {
             with: paymentMethods,
             configuration: configuration,
             presentationDelegate: presentationDelegate,
-            provider: AdyenCheckoutProvider.default
+            provider: CheckoutProvider.default
         )
     }
 
