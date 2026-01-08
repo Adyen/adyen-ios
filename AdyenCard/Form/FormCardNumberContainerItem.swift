@@ -91,9 +91,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     internal func update(brands: [CardBrand]) {
         numberItem.update(brands: brands)
         
-        if showsSupportedCardLogos {
-            supportedCardLogosItem.isHidden.wrappedValue = brands.contains(where: \.isSupported)
-        }
+        updateLogosVisibility()
     }
     
     internal func setCardNumber(_ cardNumber: String) {
