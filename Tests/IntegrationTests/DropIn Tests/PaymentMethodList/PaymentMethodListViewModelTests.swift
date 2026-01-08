@@ -54,35 +54,19 @@ struct PaymentMethodListViewModelTests {
         #expect(routerMock.presentPaymentComponentOnCancelCallsCount == 1)
     }
 
-//
-//    @Test
-//    func didSelect_presentableComponent_whenDismissed_shouldStopLoading() async throws {
-//        // Given
-//        let (sut, _, routerMock) = await makeSUT()
-//        let component = componentManagerMock.presentableComponentMock
-//
-//        routerMock.presentPaymentComponentCompletion = {
-//            // Then
-//            #expect(componentManagerMock.paymentMethodListComponentMock.stopLoadingCallsCount == 1)
-//        }
-//
-//        // When
-//        sut.didSelect(component, in: componentManagerMock.paymentMethodListComponentMock)
-//    }
-//
-//    @Test
-//    func didSelect_paymentInitiableComponent_shouldInitiatePayment() async throws {
-//        // Given
-//        let (sut, _, _) = await makeSUT()
-//        let component = componentManagerMock.paymentInitiableComponentMock
-//
-//        // When
-//        sut.didSelect(component, in: componentManagerMock.paymentMethodListComponentMock)
-//
-//        // Then
-//        #expect(component.initiatePaymentCallsCount == 1)
-//        #expect(component.delegate === sut)
-//    }
+    @Test
+    func didSelect_paymentInitiableComponent_shouldInitiatePayment() async throws {
+        // Given
+        let (sut, _, _) = await makeSUT()
+        let paymentMethodMock = PaymentMethodMock(type: .twint, name: "Twint")
+        let initiableComponentMock = InitiableComponentMock(paymentMethod: paymentMethodMock)
+
+        // When
+        sut.didSelect(initiableComponentMock, in: sut.paymentMethodListComponent)
+
+        // Then
+        #expect(initiableComponentMock.initiatePaymentCallsCount == 1)
+    }
 
     @Test
     func didSubmit_shoulCallDropInFlowManager_submit() async throws {
@@ -142,34 +126,23 @@ struct PaymentMethodListViewModelTests {
         #expect(routerMock.presentActionComponentOnCancelCallsCount == 1)
     }
 
-//    @Test
-//    func presentActionComponent_whenCancelled_shouldRunCancalCallback() async throws {
-//        // Given
-//        let (sut, _, routerMock) = await makeSUT()
-//        let actionComponentMock = makeActionComponentMock()
-//
-//        await confirmation("onCancelClosure is called") { @MainActor confirm in
-//            routerMock.presentActionComponentOnCancelClosure = {
-//                // Then
-//                confirm()
-//            }
-//        }
-//
-//        // When
-//        sut.present(actionComponent: actionComponentMock)
-//    }
-//
-//    @Test
-//    func didCancelActionComponent_shouldStopLoading() async throws {
-//        // Given
-//        let (sut, _, _) = await makeSUT()
-//
-//        // When
-//        sut.didCancel(actionComponent: componentManagerMock.actionComponentMock)
-//
-//        // Then
-//        #expect(componentManagerMock.paymentMethodListComponentMock.stopLoadingCallsCount == 1)
-//    }
+    @Test
+    func presentActionComponent_whenCancelled_shouldRunCancelCallback() async throws {
+        // Given
+        let (sut, _, routerMock) = await makeSUT()
+        let actionComponentMock = makeActionComponentMock()
+
+        await confirmation("The cancel callback should be called") { (confirm: Confirmation) in
+
+            // Then
+            routerMock.presentActionComponentOnCancelClosure = { _, _ in
+                confirm()
+            }
+
+            // When
+            sut.present(actionComponent: actionComponentMock)
+        }
+    }
 
     // MARK: - Helpers
 

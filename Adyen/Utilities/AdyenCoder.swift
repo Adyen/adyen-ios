@@ -11,15 +11,15 @@ package enum AdyenCoder {
 
     // MARK: - Decoding
     
-    public static func decode<T: Decodable>(_ data: Data) throws -> T {
+    package static func decode<T: Decodable>(_ data: Data) throws -> T {
         try decoder.decode(T.self, from: data)
     }
     
-    public static func decode<T: Decodable>(_ string: String) throws -> T {
+    package static func decode<T: Decodable>(_ string: String) throws -> T {
         try decode(Data(string.utf8))
     }
     
-    public static func decodeBase64<T: Decodable>(_ string: String) throws -> T {
+    package static func decodeBase64<T: Decodable>(_ string: String) throws -> T {
         guard let data = Data(base64Encoded: string) else {
             let context = DecodingError.Context(codingPath: [], debugDescription: "Given string is not valid base64.")
             
@@ -31,11 +31,11 @@ package enum AdyenCoder {
     
     // MARK: - Encoding
     
-    public static func encode(_ value: some Encodable) throws -> Data {
+    package static func encode(_ value: some Encodable) throws -> Data {
         try encoder.encode(value)
     }
     
-    public static func encode(_ value: some Encodable) throws -> String {
+    package static func encode(_ value: some Encodable) throws -> String {
         let data: Data = try encode(value)
         
         guard let string = String(data: data, encoding: .utf8) else {
@@ -45,7 +45,7 @@ package enum AdyenCoder {
         return string
     }
     
-    public static func encodeBase64(_ value: some Encodable) throws -> String {
+    package static func encodeBase64(_ value: some Encodable) throws -> String {
         let encodedValue = try encode(value) as Data
         
         return encodedValue.base64EncodedString()
