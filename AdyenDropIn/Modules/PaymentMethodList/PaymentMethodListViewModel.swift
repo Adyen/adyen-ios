@@ -19,7 +19,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     // MARK: - Properties
 
     internal weak var router: PaymentMethodListRouting?
-    private let paymentMethodListComponent: PaymentMethodListComponent
+    internal let paymentMethodListComponent: PaymentMethodListComponent
     private var dropInFlowManager: DropInFlowManaging
 
     // MARK: - Initializers

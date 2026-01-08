@@ -41,20 +41,19 @@ struct PaymentMethodListViewModelTests {
         #expect(routerMock.dismissCompletionCallsCount == 1)
     }
 
-//
-//    @Test
-//    func didSelect_presentableComponent_shouldStartLoadingAndPresent() async throws {
-//        // Given
-//        let (sut, _, routerMock) = await makeSUT()
-//        let component = componentManagerMock.presentableComponentMock
-//
-//        // When
-//        sut.didSelect(component, in: componentManagerMock.paymentMethodListComponentMock)
-//
-//        // Then
-//        #expect(componentManagerMock.paymentMethodListComponentMock.startLoadingCallsCount == 1)
-//        #expect(routerMock.presentPaymentComponentCallsCount == 1)
-//    }
+    @Test
+    func didSelect_presentableComponent_shouldStartLoadingAndPresent() async throws {
+        // Given
+        let (sut, _, routerMock) = await makeSUT()
+        let paymentComponentMock = makePaymentComponentMock()
+
+        // When
+        sut.didSelect(paymentComponentMock, in: sut.paymentMethodListComponent)
+
+        // Then
+        #expect(routerMock.presentPaymentComponentOnCancelCallsCount == 1)
+    }
+
 //
 //    @Test
 //    func didSelect_presentableComponent_whenDismissed_shouldStopLoading() async throws {
