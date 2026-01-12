@@ -59,6 +59,29 @@ class ActionPresenterMock: ActionPresenter {
 
 }
 
+class ComponentContainerAssemblerProtocolMock: ComponentContainerAssemblerProtocol {
+
+    // MARK: - resolveComponentContainerRouter
+
+    var resolveComponentContainerRouterForDelegateOnCancelCallsCount = 0
+    var resolveComponentContainerRouterForDelegateOnCancelCalled: Bool {
+        resolveComponentContainerRouterForDelegateOnCancelCallsCount > 0
+    }
+
+    var resolveComponentContainerRouterForDelegateOnCancelReturnValue: Router!
+    var resolveComponentContainerRouterForDelegateOnCancelClosure: ((PresentableComponent, ComponentContainerRouterListener, (() -> Void)?) -> Router)?
+
+    func resolveComponentContainerRouter(for component: PresentableComponent, delegate: ComponentContainerRouterListener, onCancel: (() -> Void)?) -> Router {
+        resolveComponentContainerRouterForDelegateOnCancelCallsCount += 1
+        if let resolveComponentContainerRouterForDelegateOnCancelClosure {
+            return resolveComponentContainerRouterForDelegateOnCancelClosure(component, delegate, onCancel)
+        } else {
+            return resolveComponentContainerRouterForDelegateOnCancelReturnValue
+        }
+    }
+
+}
+
 class ComponentContainerRouterListenerMock: ComponentContainerRouterListener {
 
     // MARK: - didDismissComponentContainer
@@ -318,5 +341,17 @@ class PaymentMethodListViewModelProtocolMock: PaymentMethodListViewModelProtocol
         cancelCallsCount += 1
         cancelClosure?()
     }
+
+}
+
+class RouterMock: Router {
+
+    var childRouter: Router?
+    var rootViewController: UIViewController {
+        get { underlyingRootViewController }
+        set(value) { underlyingRootViewController = value }
+    }
+
+    var underlyingRootViewController: UIViewController!
 
 }

@@ -8,6 +8,7 @@ import Adyen
 import Foundation
 import UIKit
 
+// sourcery:AutoMockable
 internal protocol ComponentContainerAssemblerProtocol {
     func resolveComponentContainerRouter(
         for component: PresentableComponent,
