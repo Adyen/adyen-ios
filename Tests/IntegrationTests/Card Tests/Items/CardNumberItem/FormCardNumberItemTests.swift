@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -166,7 +166,7 @@ class FormCardNumberItemTests: XCTestCase {
         let sut = FormCardNumberItem(cardTypeLogos: [], localizationParameters: expectedLocalizationParameters)
         
         XCTAssertEqual(sut.title, localizedString(.cardNumberItemTitle, expectedLocalizationParameters))
-        XCTAssertEqual(sut.placeholder, localizedString(.cardNumberItemPlaceholder, expectedLocalizationParameters))
+        XCTAssertNil(sut.placeholder) // Brand icons are used instead of a placeholder
         XCTAssertEqual(sut.validationFailureMessage, localizedString(.cardNumberItemInvalid, expectedLocalizationParameters))
     }
     
@@ -175,7 +175,7 @@ class FormCardNumberItemTests: XCTestCase {
         let sut = FormCardNumberItem(cardTypeLogos: [], localizationParameters: expectedLocalizationParameters)
         
         XCTAssertEqual(sut.title, localizedString(LocalizationKey(key: "adyen_card_numberItem_title"), expectedLocalizationParameters))
-        XCTAssertEqual(sut.placeholder, localizedString(LocalizationKey(key: "adyen_card_numberItem_placeholder"), expectedLocalizationParameters))
+        XCTAssertNil(sut.placeholder) // Brand icons are used instead of a placeholder
         XCTAssertEqual(sut.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_numberItem_invalid"), expectedLocalizationParameters))
     }
     

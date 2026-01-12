@@ -627,6 +627,9 @@
 		B62F51802E97AAD200610EFD /* TextFieldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62F517F2E97AA6600610EFD /* TextFieldTests.swift */; };
 		B639C0822D8039F600472EBB /* CardScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B639C0812D80399800472EBB /* CardScannerController.swift */; };
 		B643C7642EEAD2CF00EF8407 /* FormSectionHeaderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B643C7622EEAD2CF00EF8407 /* FormSectionHeaderItem.swift */; };
+		B643C7662EEC53E200EF8407 /* FormItemView+ValidationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B643C7652EEC53E200EF8407 /* FormItemView+ValidationState.swift */; };
+		B643C7672EEC53E200EF8407 /* FormItemView+ValidationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B643C7652EEC53E200EF8407 /* FormItemView+ValidationState.swift */; };
+		B643C7682EEC53E200EF8407 /* FormItemView+ValidationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B643C7652EEC53E200EF8407 /* FormItemView+ValidationState.swift */; };
 		B65F0EB42ED493250015AC41 /* FormButtonItemViewThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65F0EB32ED493250015AC41 /* FormButtonItemViewThemeTests.swift */; };
 		B65F0EBA2ED89EC00015AC41 /* TestTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65F0EB92ED89EC00015AC41 /* TestTheme.swift */; };
 		B65F0EBB2ED89EC00015AC41 /* TestTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65F0EB92ED89EC00015AC41 /* TestTheme.swift */; };
@@ -2273,6 +2276,7 @@
 		B62F517F2E97AA6600610EFD /* TextFieldTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTests.swift; sourceTree = "<group>"; };
 		B639C0812D80399800472EBB /* CardScannerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerController.swift; sourceTree = "<group>"; };
 		B643C7622EEAD2CF00EF8407 /* FormSectionHeaderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSectionHeaderItem.swift; sourceTree = "<group>"; };
+		B643C7652EEC53E200EF8407 /* FormItemView+ValidationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormItemView+ValidationState.swift"; sourceTree = "<group>"; };
 		B65F0EB32ED493250015AC41 /* FormButtonItemViewThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormButtonItemViewThemeTests.swift; sourceTree = "<group>"; };
 		B65F0EB92ED89EC00015AC41 /* TestTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTheme.swift; sourceTree = "<group>"; };
 		B65F0EBD2ED89EC60015AC41 /* FormViewExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormViewExtractor.swift; sourceTree = "<group>"; };
@@ -4480,6 +4484,7 @@
 				F96AE51A26038602009F82BD /* XCTestCase+FormTextItemView.swift */,
 				81825CC02AC59C6400F91912 /* XCTestCase+RootViewController.swift */,
 				C92F6DC026B04B63004BD516 /* XCTestCase+FormAddressItem.swift */,
+				B643C7652EEC53E200EF8407 /* FormItemView+ValidationState.swift */,
 				5A56E15426B6DEF800744CA0 /* XCTestCase+Style.swift */,
 				81B505782A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift */,
 				8122B9BC2B9A0FF3002FC4D6 /* ErrorMock.swift */,
@@ -8274,6 +8279,7 @@
 				81DF940B2BAAD8EB0001DCBC /* AtomeComponentUITests.swift in Sources */,
 				81DF940C2BAAD8EB0001DCBC /* XCTestCase+FirstResponder.swift in Sources */,
 				81DF940D2BAAD8EB0001DCBC /* OnlineBankingComponentUITests.swift in Sources */,
+				B643C7672EEC53E200EF8407 /* FormItemView+ValidationState.swift in Sources */,
 				81DF940E2BAAD8EB0001DCBC /* SecuredViewControllerUITests.swift in Sources */,
 				814E154B2C87407F00D90D4B /* CardComponentUITests.swift in Sources */,
 				817C90812C3D590C0072A202 /* GiftCardComponentUITests.swift in Sources */,
@@ -8857,6 +8863,7 @@
 				8100F2C02A4C37E4008C09E7 /* FormSelectableItemViewTests.swift in Sources */,
 				E9021DF2225CC6D0009CF7F4 /* RedirectDetailsTests.swift in Sources */,
 				81825CB82AC59C3300F91912 /* UIView+Search.swift in Sources */,
+				B643C7682EEC53E200EF8407 /* FormItemView+ValidationState.swift in Sources */,
 				C981254E2851E9AF006D1374 /* PaymentComponentSubject.swift in Sources */,
 				81A48DC62A5800EA00242341 /* AddressLookupViewControllerTests.swift in Sources */,
 				21B387B62C401C890029101E /* ThreeDS2DAScreenPresenterMock.swift in Sources */,
@@ -9404,6 +9411,7 @@
 				F9CCA3CE296ECC9C00AD643D /* DummyPaymentMethods.swift in Sources */,
 				0022096429A8C39100B2BACD /* DokuComponentUITests.swift in Sources */,
 				F9CCA3C8296ECB9900AD643D /* IssuerListComponentUITests.swift in Sources */,
+				B643C7662EEC53E200EF8407 /* FormItemView+ValidationState.swift in Sources */,
 				B6EE0F412BBEBF7600B9810D /* APIClientMock.swift in Sources */,
 				F9CCA3C7296ECB9900AD643D /* AffirmComponentUITests.swift in Sources */,
 				F9CCA3D1296ECCEE00AD643D /* XCTestCase+FormAddressItem.swift in Sources */,

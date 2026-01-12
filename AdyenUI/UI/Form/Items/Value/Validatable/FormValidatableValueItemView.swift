@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -24,21 +24,20 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
 
     // MARK: - Views
     
-    /// The alert label to be used to indicate an issue with the value
+    /// The footer label used to display hints and validation errors
     ///
-    /// The intended use is to put it inside of a UIStackView as it will be hidden based on the validity of the item
-    internal lazy var alertLabel: UILabel = {
-        let alertLabel = UILabel()
+    /// Shows placeholder hint when valid, validation error when invalid
+    internal lazy var footerLabel: UILabel = {
+        let footerLabel = UILabel()
 
-        alertLabel.apply(theme.elements.labels.subheadline)
-        alertLabel.textColor = theme.colors.destructive
-        alertLabel.isAccessibilityElement = false
-        alertLabel.numberOfLines = 0
-        alertLabel.text = item.validationFailureMessage
-        alertLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "alertLabel") }
-        alertLabel.isHidden = true
+        footerLabel.apply(theme.elements.labels.subheadline)
+        footerLabel.textColor = theme.colors.textSecondary
+        footerLabel.isAccessibilityElement = false
+        footerLabel.numberOfLines = 0
+        footerLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "footerLabel") }
+        footerLabel.isHidden = true
         
-        return alertLabel
+        return footerLabel
     }()
     
     // MARK: - Convenience
@@ -46,10 +45,6 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     private func setupObservers() {
         itemObserver = observe(item.publisher) { [weak self] _ in
             self?.updateValidationStatus()
-        }
-        
-        observe(item.$validationFailureMessage) { [weak self] in
-            self?.alertLabel.text = $0
         }
     }
     
@@ -64,30 +59,21 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     }
     
     open func updateValidationStatus(forced: Bool = false) {
-        
         guard forced else {
-            hideAlertLabel(true)
+            showHint()
             accessibilityLabelView?.accessibilityLabel = item.title
             return
         }
         if item.isValid() {
-            hideAlertLabel(true)
+            showHint()
             accessibilityLabelView?.accessibilityLabel = item.title
         } else {
-            hideAlertLabel(false)
+            showError(item.validationFailureMessage)
             accessibilityLabelView?.accessibilityLabel = [
                 item.title,
                 item.validationFailureMessage
             ].compactMap { $0 }.joined(separator: ", ")
         }
-    }
-    
-    private func hideAlertLabel(_ shouldHide: Bool, animated: Bool = true) {
-        guard shouldHide || alertLabel.text != nil else { return }
-        if !shouldHide {
-            triggerValidationErrorIfNeeded()
-        }
-        alertLabel.adyen.hide(animationKey: "hide_alertLabel", hidden: shouldHide, animated: animated)
     }
     
     private func triggerValidationErrorIfNeeded() {
@@ -98,8 +84,31 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     }
     
     internal func resetValidationStatus() {
-        hideAlertLabel(true, animated: false)
+        showHint()
         accessibilityLabelView?.accessibilityLabel = item.title
+    }
+
+    // MARK: - Footer Label (Hint/Error Display)
+    
+    package func showHint() {
+        guard let placeholder = item.placeholder, !placeholder.isEmpty else {
+            footerLabel.isHidden = true
+            return
+        }
+        footerLabel.text = placeholder
+        footerLabel.textColor = theme.colors.textSecondary
+        footerLabel.isHidden = false
+    }
+    
+    package func showError(_ message: String?) {
+        guard let message, !message.isEmpty else {
+            showHint()
+            return
+        }
+        footerLabel.text = message
+        footerLabel.textColor = theme.colors.destructive
+        footerLabel.isHidden = false
+        triggerValidationErrorIfNeeded()
     }
 }
 

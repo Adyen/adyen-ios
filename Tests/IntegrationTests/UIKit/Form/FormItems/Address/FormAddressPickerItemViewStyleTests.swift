@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -70,16 +70,20 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
         XCTAssertEqual(sut.valueLabel.numberOfLines, expectedNumberOfLines)
     }
 
-    // MARK: - AlertLabel Style Tests
+    // MARK: - FooterLabel Style Tests
 
-    func test_alertLabel_font_shouldUseThemeSubheadlineFont() {
+    func test_footerLabel_font_shouldUseThemeSubheadlineFont() {
         let expectedFont = AdyenTheme.default.elements.labels.subheadline.font
-        XCTAssertEqual(sut.alertLabel.font, expectedFont)
+        XCTAssertEqual(sut.footerLabel.font, expectedFont)
     }
 
-    func test_alertLabel_color_shouldUseThemeDestructiveColor() {
+    func test_footerLabel_color_shouldUseThemeDestructiveColor() {
+        // Given - force validation to show error state
+        sut.showValidation()
+        
+        // Then
         let expectedColor = AdyenTheme.default.colors.destructive
-        XCTAssertEqual(sut.alertLabel.textColor, expectedColor)
+        XCTAssertEqual(sut.footerLabel.textColor, expectedColor)
     }
 
     // MARK: - ChevronView Tests
@@ -106,7 +110,7 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
         XCTAssertEqual(sutWithCustomTheme.valueLabel.textColor, expectedColor)
     }
 
-    func test_customTheme_alertLabel_shouldUseCustomDestructiveColor() {
+    func test_customTheme_footerLabel_shouldUseCustomDestructiveColor() {
         // Given
         let expectedColor = UIColor.systemPurple
         var customColors = AdyenColors()
@@ -115,9 +119,10 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
 
         // When
         let sutWithCustomTheme = makeSUT(theme: customTheme)
+        sutWithCustomTheme.showValidation()
 
         // Then
-        XCTAssertEqual(sutWithCustomTheme.alertLabel.textColor, expectedColor)
+        XCTAssertEqual(sutWithCustomTheme.footerLabel.textColor, expectedColor)
     }
 
     // MARK: - Private

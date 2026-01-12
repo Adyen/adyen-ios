@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -437,7 +437,7 @@ class BCMCComponentTests: XCTestCase {
         
         wait(for: .milliseconds(300))
         
-        let alertLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem.alertLabel")
+        let alertLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem.footerLabel")
         XCTAssertNotNil(alertLabel)
         XCTAssertEqual(alertLabel?.text, cardNumberView?.item.validationFailureMessage)
         

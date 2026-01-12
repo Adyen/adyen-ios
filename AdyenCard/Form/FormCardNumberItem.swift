@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -88,7 +88,8 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         title = localizedString(.cardNumberItemTitle, localizationParameters)
         validator = CardNumberValidator(isLuhnCheckEnabled: true, isEnteredBrandSupported: true)
         formatter = cardNumberFormatter
-        placeholder = localizedString(.cardNumberItemPlaceholder, localizationParameters)
+        // Brand icons are used instead of a placeholder
+        placeholder = nil
         validationFailureMessage = localizedString(.cardNumberItemInvalid, localizationParameters)
         keyboardType = .numberPad
     }

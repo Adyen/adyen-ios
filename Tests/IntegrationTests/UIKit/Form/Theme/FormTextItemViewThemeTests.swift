@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,39 +11,51 @@ import XCTest
 final class FormTextItemViewThemeTests: XCTestCase {
 
     func test_formTextItemView_withDefaultTheme_shouldUseDefaultColors() {
-        // Given
-        let sut = makeSUT()
+        // Given - item with required validation that will fail when empty
+        let expectedErrorMessage = "Required"
+        let item = FormTextInputItem()
+        item.validator = LengthValidator(minimumLength: 1, maximumLength: 100)
+        item.validationFailureMessage = expectedErrorMessage
+        let sut = makeSUT(item: item)
 
-        // Then
+        // Then - trigger validation to show error state
+        sut.showValidation()
         XCTAssertEqual(sut.titleLabel.textColor, AdyenColors.default.primary)
         XCTAssertEqual(sut.textField.textColor, AdyenColors.default.primary)
-        XCTAssertEqual(sut.alertLabel.textColor, AdyenColors.default.destructive)
+        XCTAssertEqual(sut.footerLabel.textColor, AdyenColors.default.destructive)
+        XCTAssertEqual(sut.footerLabel.text, expectedErrorMessage)
 
         let containerView = getContainerView(from: sut)
         XCTAssertEqual(containerView?.backgroundColor, AdyenColors.default.container)
-        XCTAssertEqual(containerView?.layer.borderColor, AdyenColors.default.containerOutline.cgColor)
+        // Error state should show destructive border color
+        XCTAssertEqual(containerView?.layer.borderColor, AdyenColors.default.destructive.cgColor)
     }
 
     func test_formTextItemView_withCustomColors_shouldApplyToUI() {
-        // Given
+        // Given - item with required validation that will fail when empty
         let customColors = AdyenColors(
             container: .systemYellow,
             containerOutline: .systemPurple,
             primary: .systemPink,
             destructive: .systemOrange
         )
+        let item = FormTextInputItem()
+        item.validator = LengthValidator(minimumLength: 1, maximumLength: 100)
+        item.validationFailureMessage = "Required"
 
         // When
-        let sut = makeSUT(colors: customColors)
+        let sut = makeSUT(item: item, colors: customColors)
 
-        // Then
+        // Then - trigger validation to show error state
+        sut.showValidation()
         XCTAssertEqual(sut.titleLabel.textColor, .systemPink)
         XCTAssertEqual(sut.textField.textColor, .systemPink)
-        XCTAssertEqual(sut.alertLabel.textColor, .systemOrange)
+        XCTAssertEqual(sut.footerLabel.textColor, .systemOrange)
 
         let containerView = getContainerView(from: sut)
         XCTAssertEqual(containerView?.backgroundColor, .systemYellow)
-        XCTAssertEqual(containerView?.layer.borderColor, UIColor.systemPurple.cgColor)
+        // Error state should show destructive border color
+        XCTAssertEqual(containerView?.layer.borderColor, UIColor.systemOrange.cgColor)
     }
 
     func test_formTextItemView_borderColor_shouldUpdateOnEditingStateChange() {

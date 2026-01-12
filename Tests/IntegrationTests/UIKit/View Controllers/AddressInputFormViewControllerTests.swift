@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -52,22 +52,22 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertEqual(provinceOrTerritoryItemView.titleLabel.text, "Province or Territory")
         XCTAssertEqual(postalCodeItemView.titleLabel.text, "Postal code")
 
-        XCTAssertTrue(houseNumberItemView.alertLabel.isHidden)
-        XCTAssertTrue(addressItemView.alertLabel.isHidden)
-        XCTAssertTrue(apartmentSuiteItemView.alertLabel.isHidden)
-        XCTAssertTrue(cityItemView.alertLabel.isHidden)
-        XCTAssertTrue(provinceOrTerritoryItemView.alertLabel.isHidden)
-        XCTAssertTrue(postalCodeItemView.alertLabel.isHidden)
+        XCTAssertFalse(houseNumberItemView.isShowingValidationError)
+        XCTAssertFalse(addressItemView.isShowingValidationError)
+        XCTAssertFalse(apartmentSuiteItemView.isShowingValidationError)
+        XCTAssertFalse(cityItemView.isShowingValidationError)
+        XCTAssertFalse(provinceOrTerritoryItemView.isShowingValidationError)
+        XCTAssertFalse(postalCodeItemView.isShowingValidationError)
         
         let doneButton = try XCTUnwrap(viewController.navigationItem.rightBarButtonItem)
         try doneButton.tap()
         
-        wait { !houseNumberItemView.alertLabel.isHidden }
-        XCTAssertFalse(addressItemView.alertLabel.isHidden)
-        XCTAssertTrue(apartmentSuiteItemView.alertLabel.isHidden)
-        XCTAssertFalse(cityItemView.alertLabel.isHidden)
-        XCTAssertFalse(provinceOrTerritoryItemView.alertLabel.isHidden)
-        XCTAssertFalse(postalCodeItemView.alertLabel.isHidden)
+        wait { houseNumberItemView.isShowingValidationError }
+        XCTAssertTrue(addressItemView.isShowingValidationError)
+        XCTAssertFalse(apartmentSuiteItemView.isShowingValidationError)
+        XCTAssertTrue(cityItemView.isShowingValidationError)
+        XCTAssertTrue(provinceOrTerritoryItemView.isShowingValidationError)
+        XCTAssertTrue(postalCodeItemView.isShowingValidationError)
     }
     
     func testAddressUS() throws {
@@ -107,18 +107,18 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertEqual(provinceOrTerritoryItemView.titleLabel.text, "State")
         XCTAssertEqual(postalCodeItemView.titleLabel.text, "Zip code")
 
-        XCTAssertTrue(houseNumberItemView.alertLabel.isHidden)
-        XCTAssertTrue(addressItemView.alertLabel.isHidden)
-        XCTAssertTrue(cityItemView.alertLabel.isHidden)
-        XCTAssertTrue(postalCodeItemView.alertLabel.isHidden)
+        XCTAssertFalse(houseNumberItemView.isShowingValidationError)
+        XCTAssertFalse(addressItemView.isShowingValidationError)
+        XCTAssertFalse(cityItemView.isShowingValidationError)
+        XCTAssertFalse(postalCodeItemView.isShowingValidationError)
 
         let doneButton = try XCTUnwrap(viewController.navigationItem.rightBarButtonItem)
         try doneButton.tap()
         
-        wait(until: houseNumberItemView.alertLabel, at: \.isHidden, is: true)
-        wait(until: addressItemView.alertLabel, at: \.isHidden, is: false)
-        wait(until: cityItemView.alertLabel, at: \.isHidden, is: false)
-        wait(until: postalCodeItemView.alertLabel, at: \.isHidden, is: false)
+        wait { !houseNumberItemView.isShowingValidationError }
+        wait { addressItemView.isShowingValidationError }
+        wait { cityItemView.isShowingValidationError }
+        wait { postalCodeItemView.isShowingValidationError }
     }
 
     func testAddressUK() throws {

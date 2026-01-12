@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -278,11 +278,11 @@ class CardComponentTests: XCTestCase {
 
         XCTAssertNotNil(securityCodeCvvHint)
         XCTAssertFalse(securityCodeCvvHint!.showFront)
-        XCTAssertEqual(securityCodeItemView?.textField.placeholder, "3 digits")
+        XCTAssertEqual(securityCodeItemView?.footerLabel.text, "3 digits")
 
         self.populate(textItemView: cardNumberItemView!, with: "370000")
         XCTAssertTrue(securityCodeCvvHint!.showFront)
-        XCTAssertEqual(securityCodeItemView?.textField.placeholder, "4 digits")
+        XCTAssertEqual(securityCodeItemView?.footerLabel.text, "4 digits")
 
     }
 
@@ -816,7 +816,7 @@ class CardComponentTests: XCTestCase {
 
         let postalCodeItemView: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.CardComponent.postalCodeItem"))
         XCTAssertEqual(postalCodeItemView.titleLabel.text, "Postal code")
-        XCTAssertTrue(postalCodeItemView.alertLabel.isHidden)
+        XCTAssertFalse(postalCodeItemView.isShowingValidationError)
         
         self.populate(textItemView: postalCodeItemView, with: "12345")
 

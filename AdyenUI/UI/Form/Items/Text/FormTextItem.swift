@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,9 +11,6 @@ import UIKit
 @_spi(AdyenInternal)
 open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFormItem {
 
-    /// The placeholder of the text field.
-    @AdyenObservable(nil) public var placeholder: String?
-    
     override public var value: String {
         get { publisher.wrappedValue }
         set { publishTransformed(value: newValue) }

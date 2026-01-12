@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2023 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,6 +10,9 @@ import Foundation
 /// A validatable item in a form in which holds a generic value.
 @_spi(AdyenInternal)
 open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueType, FormTextItemStyle>, ValidatableFormItem {
+    
+    /// The placeholder text shown as a hint below the input field.
+    @AdyenObservable(nil) public var placeholder: String?
     
     /// A message that is displayed when validation fails. Observable.
     @AdyenObservable(nil) public var validationFailureMessage: String?

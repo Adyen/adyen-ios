@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -165,8 +165,8 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        XCTAssertEqual(nameItemView?.alertLabel.text, "Holder name invalid")
-        XCTAssertEqual(ibanItemView?.alertLabel.text, "Invalid account number")
+        XCTAssertEqual(nameItemView?.footerLabel.text, "Holder name invalid")
+        XCTAssertEqual(ibanItemView?.footerLabel.text, "Invalid account number")
 
     }
 
