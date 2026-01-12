@@ -758,6 +758,7 @@
 		C923A8232E900165004AC234 /* QRCodeViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923A8222E900165004AC234 /* QRCodeViewStyle.swift */; };
 		C923A8252E9001B9004AC234 /* QRCodeFlowType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923A8242E9001B9004AC234 /* QRCodeFlowType.swift */; };
 		C923E1992F0FF07400E38413 /* ViewControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923E1972F0FF07400E38413 /* ViewControllerSpy.swift */; };
+		C923E19B2F1548FC00E38413 /* PaymentMethodListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923E19A2F1548FC00E38413 /* PaymentMethodListViewControllerTests.swift */; };
 		C924FB902ECF6E27009D57EC /* ActionPresentationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C924FB8F2ECF6E27009D57EC /* ActionPresentationHelper.swift */; };
 		C92665362C49346200D3D852 /* SubmittableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92665352C49346200D3D852 /* SubmittableComponent.swift */; };
 		C927083827590B7500D15EA0 /* BACSInputFormViewProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26B1275900B9001A488F /* BACSInputFormViewProtocolMock.swift */; };
@@ -2329,6 +2330,7 @@
 		C923A8222E900165004AC234 /* QRCodeViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewStyle.swift; sourceTree = "<group>"; };
 		C923A8242E9001B9004AC234 /* QRCodeFlowType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeFlowType.swift; sourceTree = "<group>"; };
 		C923E1972F0FF07400E38413 /* ViewControllerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerSpy.swift; sourceTree = "<group>"; };
+		C923E19A2F1548FC00E38413 /* PaymentMethodListViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListViewControllerTests.swift; sourceTree = "<group>"; };
 		C924FB8F2ECF6E27009D57EC /* ActionPresentationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionPresentationHelper.swift; sourceTree = "<group>"; };
 		C92665352C49346200D3D852 /* SubmittableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittableComponent.swift; sourceTree = "<group>"; };
 		C927083D27590BDB00D15EA0 /* BACSInputFormViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewControllerTests.swift; sourceTree = "<group>"; };
@@ -4575,6 +4577,7 @@
 			children = (
 				C97518822F0FC6C60091DFE4 /* PaymentMethodListComponentDelegateMock.swift */,
 				C97518832F0FC6C60091DFE4 /* PaymentMethodListComponentTests.swift */,
+				C923E19A2F1548FC00E38413 /* PaymentMethodListViewControllerTests.swift */,
 			);
 			path = PaymentMethodListComponent;
 			sourceTree = "<group>";
@@ -8763,6 +8766,7 @@
 				B60946152DA5656100CEE6CF /* CardScannerTestsHelpers.swift in Sources */,
 				B6D808402BCD29DF00F3F5EB /* LocalizationTests.swift in Sources */,
 				C927083E27590BDB00D15EA0 /* BACSInputFormViewControllerTests.swift in Sources */,
+				C923E19B2F1548FC00E38413 /* PaymentMethodListViewControllerTests.swift in Sources */,
 				0067E740296C161E005B8D76 /* UPIComponentTests.swift in Sources */,
 				F9C5F0F125CAB917005A6E54 /* VoucherShareableViewProviderMock.swift in Sources */,
 				F96AE51B26038602009F82BD /* XCTestCase+FormTextItemView.swift in Sources */,
