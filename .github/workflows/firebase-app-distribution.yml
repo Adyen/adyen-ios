@@ -20,9 +20,12 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branch }}
 
-      - name: 🛠️ Install Firebase CLI
-        run: |
-          curl -sL https://firebase.tools | bash
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools@13
 
       - name: 📝 Create Firebase release name
         id: firebase_release_name
